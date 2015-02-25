@@ -1,0 +1,155 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="20,20" windowSize="1800,900" maxSimulationTime="10mn">
+	<camera target="250,250,0" directionSpherical="0,38,580" angle="45"/>
+	<spotlight target="210,120,0" directionSpherical="-30,50,450" angle="35"/>
+
+	<blockList color="0,255,0" blocksize="25.0,25.0,11.0">
+		<block position="6,7" color="255,32,32"/>
+		<blocksLine line="15" values="000000000000000111000"/>
+		<blocksLine line="14" values="000011100000000111000"/>
+		<blocksLine line="13" values="000111111000011111000"/>
+		<blocksLine line="12" values="000111111100011111000"/>
+		<blocksLine line="11" values="000111111100011111000"/>
+		<blocksLine line="10" values="000111111100011111000"/>
+		<blocksLine line=" 9" values="000111111100011111000"/>
+		<blocksLine line=" 8" values="001111111111111100000"/>
+		<blocksLine line=" 7" values="001111011111111100000"/>
+		<blocksLine line=" 6" values="001111111111111100000"/>
+		<blocksLine line=" 5" values="001111111111111100000"/>
+		<blocksLine line=" 4" values="000000111111111100000"/>
+		<blocksLine line=" 3" values="000000000011111000000"/>
+	</blockList>
+
+	<targetGrid>
+	    <targetLine line="16" values="00011111100111111110"/>
+	    <targetLine line="15" values="00111111111111111110"/>
+	    <targetLine line="14" values="00111111111111111110"/>
+	    <targetLine line="13" values="00111111111111111110"/>
+	    <targetLine line="12" values="01111111111111111110"/>
+	    <targetLine line="11" values="01111111111100000000"/>
+	    <targetLine line="10" values="01111111111100000000"/>
+	</targetGrid>
+
+<capabilities>
+<!--
+	<capability level="2" name="simple" head="1" end="1">
+    <states>
+      8 3 8
+      6 7 5
+      0 0 8
+    </states>
+    <this pos="1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="2,1"/>
+      <motion obj="1" time="0" from="0,1" to="1,1"/>
+    </motions>
+  </capability>
+
+    <capability level="3" name="turn_Left" head="1" end="1">
+    <states>
+      3 5 0
+      6 7 0
+      0 0 8
+    </states>
+    <this pos="1,1" isAngle="1" unlockPath="WS" />
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="1,2"/>
+      <motion obj="1" time="1" from="0,1" to="1,1"/>
+    </motions>
+  </capability>
+-->
+  <capability level="15" name="head_Ahead_Train" head="1">
+    <states>
+      8 3 8
+      7 7 5
+      8 0 0
+    </states>
+    <this pos="1,1" linkNextPos="0,1" linkPrevPos="2,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="2,1"/>
+      <motion obj="1" time="0" from="0,1" to="1,1"/>
+    </motions>
+  </capability>
+
+<capability level="11" name="end_Ahead_Train" end="1">
+    <states>
+      8 8 3
+      8 6 7
+      8 0 8
+    </states>
+    <this pos="1,1" linkPrevPos="2,1" linkNextPos="0,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="2,1"/>
+    </motions>
+  </capability>
+
+
+<capability level="14" name="head_Turn_Left" head="1">
+    <states>
+      3 5 0
+      7 7 0
+      0 0 8
+   </states>
+    <this pos="1,1" linkNextPos="0,1" linkPrevPos="1,2" isAngle="1" unlockPath="WS"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="1,2"/>
+<!--      <motion obj="1" time="1" from="0,1" to="1,1"/> -->
+    </motions>
+  </capability>
+
+<capability level="21" name="Ahead_Train" >
+    <states>
+      8 3 8
+      7 7 7
+      8 0 8
+    </states>
+    <this pos="1,1" linkPrevPos="2,1" linkNextPos="0,1" />
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="2,1"/>
+    </motions>
+  </capability>
+
+<capability level="22" name="turn_Left_Train">
+    <states>
+      3 7 8
+      7 7 0
+      8 0 8
+    </states>
+    <this pos="1,1" linkPrevPos="1,2" linkNextPos="0,1" isAngle="1" unlockPath="WS" />
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="1,2"/>
+<!--      <motion obj="1" time="1" from="0,1" to="1,1"/> -->
+    </motions>
+  </capability>
+
+<capability level="23" name="turn_Right_Train">
+    <states>
+      3 3 3
+      7 7 3
+      0 7 3
+    </states>
+    <this pos="1,1" linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="1,0"/>
+<!--      <motion obj="1" time="1" from="0,1" to="1,1"/> -->
+    </motions>
+  </capability>
+
+<capability level="15" name="head_turn_Right" head="1">
+    <states>
+      3 3 3
+      7 7 3
+      0 5 3
+    </states>
+    <this pos="1,1" linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion obj="0" time="0" from="1,1" to="1,0"/>
+<!--      <motion obj="1" time="1" from="0,1" to="1,1"/> -->
+    </motions>
+  </capability>
+
+
+</capabilities>
+</world>
+
+

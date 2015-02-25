@@ -1,0 +1,28 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 15.01.2014 07:30:26
+
+newmtl plastic
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.8627 0.8627 0.8627
+	Kd 0.8627 0.8627 0.8627
+	Ks 0.1530 0.1530 0.1530
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\Documents\2-Recherche\LIFC\svn\svn-simulateur\VisibleSim\simulatorCore\robotBlocksTextures\robotTexture.tga
+	map_Kd D:\Documents\2-Recherche\LIFC\svn\svn-simulateur\VisibleSim\simulatorCore\robotBlocksTextures\robotTexture.tga
+
+newmtl lighted
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1176 0.1176 0.1176
+	Kd 0.1176 0.1176 0.1176
+	Ks 0.2430 0.2430 0.2430
+	Ke 0.0000 0.0000 0.0000
