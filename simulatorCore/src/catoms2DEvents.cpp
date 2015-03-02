@@ -127,10 +127,9 @@ void MotionStopEvent::consume() {
 /* Transformer les coordonnées GL en coordonnées grille*/
 
     Catoms2DWorld *wrld=Catoms2DWorld::getWorld();
-    int ix = int(rb->position.pt[0]),
-        iy = int(rb->position.pt[1]),
-        iz = int(rb->position.pt[2]);
-	wrld->setGridPtr(ix,iy,iz,rb);
+    Vecteur worldPos = Vecteur(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
+    Vecteur gridPos = wrld->worldToGridPosition(worldPos);
+	wrld->setGridPtr(gridPos.pt[0],gridPos.pt[1],gridPos.pt[2],rb);
 
 	stringstream info;
     info.str("");

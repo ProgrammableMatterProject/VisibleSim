@@ -91,6 +91,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	}
 	break;
 	case EVENT_MOTION_END: {
+		cout << "motion end" << endl;
 		switch(cpt) {
 			case 1:
 				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(2));
