@@ -10,9 +10,9 @@
 #include "catom2D1BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
+#include "catoms2DEvents.h"
 //MODIF NICO
 #include <boost/shared_ptr.hpp>
-
 
 using namespace std;
 using namespace Catoms2D;
@@ -31,6 +31,11 @@ void Catoms2D1BlockCode::startup() {
 	int *gridSize = world->getGridSize();
 	info << "Starting ";
 	scheduler->trace(info.str(),hostBlock->blockId);
+	
+	
+	if (catom2D->blockId == 4) {
+		startMotion(ROTATE_LEFT,world->getBlockById(3));
+	}
 	
 	/*
 	if (catom2D->blockId == 1) {
@@ -73,6 +78,7 @@ void Catoms2D1BlockCode::startup() {
 	}*/
 }
 
+int cpt = 1;
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	int i;
 	MessagePtr message;
@@ -83,9 +89,35 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	  message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 	  P2PNetworkInterface * recv_interface = message->destinationInterface;
 	}
-	  break;
+	break;
+	case EVENT_MOTION_END: {
+		switch(cpt) {
+			case 1:
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(2));
+			break;
+			case 2:
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(1));
+			break;
+			case 3:
+				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(1));
+			break;
+			case 4:
+				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(2));
+			break;
+			case 5:
+				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(3));
+			break;
+		}
+		cpt++;
+	}
+	break;
 	}
 }
+
+void Catoms2D1BlockCode::startMotion(int direction, Catoms2DBlock *pivot) {
+	//scheduler->schedule(new MotionStartEvent(catom2D,direction,pivot));
+}
+
 
 Catoms2D::Catoms2DBlockCode* Catoms2D1BlockCode::buildNewBlockCode(Catoms2DBlock *host) {
 	return(new Catoms2D1BlockCode(host));

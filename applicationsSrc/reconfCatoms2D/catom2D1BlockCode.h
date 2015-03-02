@@ -25,6 +25,8 @@ public:
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
+	
+	void startMotion(int direction, Catoms2D::Catoms2DBlock *pivot);
 
 	static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };

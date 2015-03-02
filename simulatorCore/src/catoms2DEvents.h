@@ -13,6 +13,8 @@
 
 namespace Catoms2D {
 
+#define ROTATE_LEFT 1
+#define ROTATE_RIGHT -1
 //===========================================================================================================
 //
 //          MotionStartEvent  (class)
