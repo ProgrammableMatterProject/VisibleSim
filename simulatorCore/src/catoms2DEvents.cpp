@@ -24,7 +24,7 @@ namespace Catoms2D {
 MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block,const Catoms2DBlock *pivotBlock, int sens): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_START;
-	pivot = pivotBlock->position;
+	pivot.set(pivotBlock->ptrGlBlock->position[0],pivotBlock->ptrGlBlock->position[1],pivotBlock->ptrGlBlock->position[2]);
 	angle = sens*M_PI/3.0;
 }
 
@@ -40,8 +40,8 @@ void MotionStartEvent::consume() {
 	EVENT_CONSUME_INFO();
 	Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
 	Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
-  Catoms2DWorld::getWorld()->disconnectBlock(rb);
-  rb->setColor(DARKGREY);
+    Catoms2DWorld::getWorld()->disconnectBlock(rb);
+    rb->setColor(DARKGREY);
 	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,pivot,angle));
 }
 
@@ -81,14 +81,14 @@ void MotionStepEvent::consume() {
     Matrice roty;
     if (angle<M_PI/(3.0*5)) {
         roty.setRotationY(angle);
-        Vecteur BA = rb->position - pivot;
+        Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         rb->position = pivot+BC;
         Catoms2DWorld::getWorld()->updateGlData(rb);
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
 	} else {
         roty.setRotationY(M_PI/(3.0*5));
-        Vecteur BA = rb->position - pivot;
+        Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         rb->position = pivot+BC;
         Catoms2DWorld::getWorld()->updateGlData(rb);
@@ -124,7 +124,7 @@ void MotionStopEvent::consume() {
 	Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
     rb->setColor(YELLOW);
 
-/*Transformer les coordonnées GL en coordonnées grille*/
+/* Transformer les coordonnées GL en coordonnées grille*/
 
     Catoms2DWorld *wrld=Catoms2DWorld::getWorld();
     int ix = int(rb->position.pt[0]),
