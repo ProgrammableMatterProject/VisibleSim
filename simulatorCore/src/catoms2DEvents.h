@@ -20,9 +20,10 @@ namespace Catoms2D {
 //===========================================================================================================
 
 class MotionStartEvent : public BlockEvent {
-    Vecteur finalPosition;
+    Vecteur pivot;
+    double angle;
 public:
-	MotionStartEvent(uint64_t, Catoms2DBlock *block,const Vecteur &fpos);
+	MotionStartEvent(uint64_t, Catoms2DBlock *block,const Catoms2DBlock *pivotBlock,int sens);
 	MotionStartEvent(MotionStartEvent *ev);
 	~MotionStartEvent();
 	void consumeBlockEvent() {};
@@ -37,10 +38,10 @@ public:
 //===========================================================================================================
 
 class MotionStepEvent : public BlockEvent {
-    Vecteur finalPosition,motionStep;
+    Vecteur pivot;
+    double angle;
 public:
-	MotionStepEvent(uint64_t, Catoms2DBlock *block,const Vecteur &fpos);
-	MotionStepEvent(uint64_t, Catoms2DBlock *block,const Vecteur &fpos,const Vecteur &step);
+	MotionStepEvent(uint64_t, Catoms2DBlock *block,const Vecteur &pivot,double angle2goal);
 	MotionStepEvent(MotionStepEvent *ev);
 	~MotionStepEvent();
 	void consumeBlockEvent() {};
@@ -57,7 +58,7 @@ public:
 class MotionStopEvent : public BlockEvent {
     Vecteur finalPosition;
 public:
-	MotionStopEvent(uint64_t, Catoms2DBlock *block,const Vecteur &fpos);
+	MotionStopEvent(uint64_t, Catoms2DBlock *block);
 	MotionStopEvent(MotionStepEvent *ev);
 	~MotionStopEvent();
 	void consumeBlockEvent() {};
