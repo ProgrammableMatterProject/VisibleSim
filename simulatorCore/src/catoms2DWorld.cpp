@@ -450,14 +450,27 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc) {
 	Catoms2DGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
 		lock();
-		Vecteur pos;
-		pos.pt[0] = (blc->position[0]+((int)blc->position[2]%2)*0.5)*blockSize[0];
-		pos.pt[1] = blockSize[1]/2.0;
-		pos.pt[2] = M_SQRT3_2*blc->position[2]*blockSize[2];
-		glblc->setPosition(pos);
+		glblc->setPosition(gridToWorldPosition(blc->position));
 		glblc->setColor(blc->color);
 		unlock();
 	}
+}
+
+Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
+	Vecteur res;
+	res.pt[0] = (pos[0]+((int)pos[2]%2)*0.5)*blockSize[0];
+	res.pt[1] = blockSize[1]/2.0;
+	res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
+	return res;
+}
+
+Vecteur Catoms2DWorld::gridToWorldPosition(Vecteur &pos) {
+	Vecteur res;
+	res.pt[2] = pos[2] / (M_SQRT3_2 * blockSize[2]);
+	res.pt[1] = 0.0;
+	res.pt[0] = pos[0]/blockSize[0] - ((int)pos[2]%2)*0.5;
+	
+	return res;	
 }
 
 void Catoms2DWorld::createPopupMenu(int ix, int iy) {

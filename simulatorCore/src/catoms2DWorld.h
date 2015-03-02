@@ -72,6 +72,10 @@ public:
 	inline Catoms2DCapabilities* getCapabilities() { return capabilities; };
 	void linkBlocks();
 	void loadTextures(const string &str);
+	
+	Vecteur worldToGridPosition(Vecteur &pos);
+	Vecteur gridToWorldPosition(Vecteur &pos);
+	
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();

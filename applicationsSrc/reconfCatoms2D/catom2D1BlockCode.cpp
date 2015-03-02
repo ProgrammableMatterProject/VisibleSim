@@ -115,7 +115,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 }
 
 void Catoms2D1BlockCode::startMotion(int direction, Catoms2DBlock *pivot) {
-	//scheduler->schedule(new MotionStartEvent(catom2D,direction,pivot));
+	scheduler->schedule(new MotionStartEvent(scheduler->now(),catom2D,pivot,direction));
 }
 
 
