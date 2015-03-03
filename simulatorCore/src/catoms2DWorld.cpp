@@ -447,10 +447,16 @@ void Catoms2DWorld::loadTextures(const string &str) {
 }
 
 void Catoms2DWorld::updateGlData(Catoms2DBlock*blc) {
+	//cout << "update posgrid:" << blc->position << endl;
+	updateGlData(blc,gridToWorldPosition(blc->position));
+}
+
+void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vecteur &position) {
 	Catoms2DGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
 		lock();
-		glblc->setPosition(gridToWorldPosition(blc->position));
+		//cout << "update pos:" << position << endl;
+		glblc->setPosition(position);
 		glblc->setColor(blc->color);
 		unlock();
 	}
@@ -458,18 +464,31 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc) {
 
 Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
 	Vecteur res;
-	res.pt[0] = (pos[0]+((int)pos[2]%2)*0.5)*blockSize[0];
+	res.pt[2] = pos[2] / (M_SQRT3_2 * blockSize[2]);
 	res.pt[1] = 0;
-	res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
+	res.pt[0] = (int) (pos[0]/blockSize[0] - ((int)res.pt[2]%2)*0.5);
+	/*
+	cout << "------------computation worldToGridPosition--------------" << endl;
+	cout << pos << endl;
+	cout << res << endl;
+	cout << "---------------------------------------------------------" << endl;*/
 	return res;
 }
 
 Vecteur Catoms2DWorld::gridToWorldPosition(Vecteur &pos) {
 	Vecteur res;
-	res.pt[2] = pos[2] / (M_SQRT3_2 * blockSize[2]);
-	res.pt[1] = blockSize[1]/2.0;
-	res.pt[0] = pos[0]/blockSize[0] - ((int)pos[2]%2)*0.5;
 	
+	res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
+	res.pt[1] = blockSize[1]/2.0;
+	res.pt[0] = (pos[0]+((int)(pos[2]+0.01)%2)*0.5)*blockSize[0]; // +0.01 because of round problem
+	/*cout << "------------computation gridToWorldPosition--------------" << endl;
+	cout << pos << endl;
+	cout << ((int)pos[2]%2)*0.5 << endl;
+	cout << (int)pos[2]%2 << endl;
+	cout << pos[2] << endl;
+	cout << (int)(pos[2]+0.01) << endl;
+	cout << res << endl;
+	cout << "---------------------------------------------------------" << endl;*/
 	return res;	
 }
 

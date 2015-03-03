@@ -25,7 +25,7 @@ MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block,const Catoms
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_START;
 	pivot.set(pivotBlock->ptrGlBlock->position[0],pivotBlock->ptrGlBlock->position[1],pivotBlock->ptrGlBlock->position[2]);
-	angle = sens*M_PI/3.0;
+	angle = sens*60;
 }
 
 MotionStartEvent::MotionStartEvent(MotionStartEvent *ev) : BlockEvent(ev) {
@@ -79,20 +79,20 @@ void MotionStepEvent::consume() {
 
 
     Matrice roty;
-    if (angle<M_PI/(3.0*5)) {
+    if (angle<12) {
         roty.setRotationY(angle);
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
-        rb->position = pivot+BC;
-        Catoms2DWorld::getWorld()->updateGlData(rb);
+        Vecteur pos = pivot+BC;
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos);
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
 	} else {
-        roty.setRotationY(M_PI/(3.0*5));
+        roty.setRotationY(12);
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
-        rb->position = pivot+BC;
-        Catoms2DWorld::getWorld()->updateGlData(rb);
-        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-M_PI/(3.0*5)));
+        Vecteur pos = pivot+BC;
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos);
+        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-12));
 	}
 }
 
@@ -129,6 +129,7 @@ void MotionStopEvent::consume() {
     Catoms2DWorld *wrld=Catoms2DWorld::getWorld();
     Vecteur worldPos = Vecteur(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
     Vecteur gridPos = wrld->worldToGridPosition(worldPos);
+    rb->setPosition(gridPos);
 	wrld->setGridPtr(gridPos.pt[0],gridPos.pt[1],gridPos.pt[2],rb);
 
 	stringstream info;

@@ -90,7 +90,7 @@ void Catoms2DBlock::setPosition(const Vecteur &p) {
 
 void Catoms2DBlock::setColor(const Color &c) {
 	color = c;
-	getWorld()->updateGlData(this);
+	getWorld()->updateGlData(this,Vecteur(ptrGlBlock->position[0],ptrGlBlock->position[1],ptrGlBlock->position[2]));
 }
 
 NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *given_interface) {

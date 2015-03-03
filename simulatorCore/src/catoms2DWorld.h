@@ -80,6 +80,7 @@ public:
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
 	virtual void updateGlData(Catoms2DBlock*blc);
+	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position);
 	virtual void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
