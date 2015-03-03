@@ -101,7 +101,7 @@ void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBui
 /*
 ********************************************************************
 A ECRIRE AVEC LE MAILLAGE HEXAGONAL
-*/ 
+*/
 	int ix,iy,iz;
 	ix = int(robotBlock->position.pt[0]);
 	iy = int(robotBlock->position.pt[1]);
@@ -118,20 +118,20 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
 
 void Catoms2DWorld::connectBlock(Catoms2DBlock *block) {
     int ix,iy,iz;
-    
+
     ix = int(block->position.pt[0]);
 	iy = int(block->position.pt[1]);
 	iz = int(block->position.pt[2]);
 	setGridPtr(ix,iy,iz,block);
 	OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << "," << iz << endl;
 	linkBlock(ix,iy,iz);
-	
+
 	if (ix<gridSize[0]-1) linkBlock(ix+1,iy,iz);
 	if (ix>0) linkBlock(ix-1,iy,iz);
-	
+
 	if (iz<gridSize[2]-1) linkBlock(ix,iy,iz+1);
 	if (iz>0) linkBlock(ix,iy,iz-1);
-	
+
 	if (iz%2 == 1) {
 		if (ix<gridSize[0]-1) {
 			if (iz<gridSize[2]-1) linkBlock(ix+1,iy,iz+1);
@@ -144,7 +144,7 @@ void Catoms2DWorld::connectBlock(Catoms2DBlock *block) {
 			if (iz>0) linkBlock(ix-1,iy,iz-1);
 		}
 	}
-	
+
 }
 
 void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
@@ -168,10 +168,10 @@ void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
 
 void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
     Catoms2DBlock *ptrBlock = getGridPtr(ix,iy,iz);
-    
+
 	if (ptrBlock) {
 		OUTPUT << "link block " << ptrBlock->blockId << endl;
-		
+
 		OUTPUT << "X AXIS" << endl;
 		if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy,iz)) {
 			(ptrBlock)->getInterface(NeighborDirection::Right)->connect(getGridPtr(ix+1,iy,iz)->getInterface(NeighborDirection::Left));
@@ -185,7 +185,7 @@ void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
 		} else {
 			(ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
 		}
-		
+
 		OUTPUT << "Y AXIS - 1" << endl;
 		if (iz%2 == 1) {
 			if (iz<gridSize[2]-1 && getGridPtr(ix,iy,iz+1)) {
@@ -214,8 +214,8 @@ void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
 				(ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(NULL);
 			}
 		}
-		
-		
+
+
 		OUTPUT << "Y AXIS - 2" << endl;
 		if (iz%2 == 1) {
 			if (ix<gridSize[0]-1) {
@@ -226,7 +226,7 @@ void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
 				} else {
 					(ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(NULL);
 				}
-				
+
 				if (iz>0 && getGridPtr(ix+1,iy,iz-1)) {
 					(ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(getGridPtr(ix+1,iy,iz-1)->getInterface(NeighborDirection::TopLeft));
 					OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz-1)->blockId << endl;
@@ -243,7 +243,7 @@ void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
 				} else {
 					(ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(NULL);
 				}
-				
+
 				if (iz>0 && getGridPtr(ix-1,iy,iz-1)) {
 					(ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(getGridPtr(ix-1,iy,iz-1)->getInterface(NeighborDirection::TopRight));
 					OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz-1)->blockId << endl;
@@ -462,6 +462,18 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vecteur &position) {
 	}
 }
 
+void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vecteur &position, double angle) {
+	Catoms2DGlBlock *glblc = blc->getGlBlock();
+	if (glblc) {
+		lock();
+		//cout << "update pos:" << position << endl;
+		glblc->setAngle(angle);
+		glblc->setPosition(position);
+		glblc->setColor(blc->color);
+		unlock();
+	}
+}
+
 Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
 	Vecteur res;
 	res.pt[2] = pos[2] / (M_SQRT3_2 * blockSize[2]);
@@ -477,7 +489,7 @@ Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
 
 Vecteur Catoms2DWorld::gridToWorldPosition(Vecteur &pos) {
 	Vecteur res;
-	
+
 	res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
 	res.pt[1] = blockSize[1]/2.0;
 	res.pt[0] = (pos[0]+((int)(pos[2]+0.01)%2)*0.5)*blockSize[0]; // +0.01 because of round problem
@@ -489,7 +501,7 @@ Vecteur Catoms2DWorld::gridToWorldPosition(Vecteur &pos) {
 	cout << (int)(pos[2]+0.01) << endl;
 	cout << res << endl;
 	cout << "---------------------------------------------------------" << endl;*/
-	return res;	
+	return res;
 }
 
 void Catoms2DWorld::createPopupMenu(int ix, int iy) {
@@ -537,8 +549,8 @@ void Catoms2DWorld::menuChoice(int n) {
 		case 1 : {
 			Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 			OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-			Vecteur pos=bb->position;
-			/*switch (numSelectedFace) {
+			/*Vecteur pos=bb->position;
+			switch (numSelectedFace) {
 				case NeighborDirection::Left :
 					pos.pt[0]--;
 					break;

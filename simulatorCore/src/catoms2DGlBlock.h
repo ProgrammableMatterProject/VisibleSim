@@ -16,9 +16,13 @@ namespace Catoms2D {
 class Catoms2DGlBlock:public GlBlock {
 protected :
 public :
+    double angle; //!< orientation angle in degree around Y axis
+
 	Catoms2DGlBlock(int id);
 	virtual ~Catoms2DGlBlock();
 	virtual string getInfo();
+
+	inline void setAngle(double a) {angle=a;};
 
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
 	void glDrawId(ObjLoader::ObjLoader *ptrObj,int &n);

@@ -72,15 +72,16 @@ public:
 	inline Catoms2DCapabilities* getCapabilities() { return capabilities; };
 	void linkBlocks();
 	void loadTextures(const string &str);
-	
+
 	Vecteur worldToGridPosition(Vecteur &pos);
 	Vecteur gridToWorldPosition(Vecteur &pos);
-	
+
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
 	virtual void updateGlData(Catoms2DBlock*blc);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position);
+	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position, double angle);
 	virtual void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };

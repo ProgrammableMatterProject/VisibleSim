@@ -90,7 +90,7 @@ void Catoms2DBlock::setPosition(const Vecteur &p) {
 
 void Catoms2DBlock::setColor(const Color &c) {
 	color = c;
-	getWorld()->updateGlData(this,Vecteur(ptrGlBlock->position[0],ptrGlBlock->position[1],ptrGlBlock->position[2]));
+	getWorld()->updateGlData(this,Vecteur(ptrGlBlock->position[0],ptrGlBlock->position[1],ptrGlBlock->position[2]),ptrGlBlock->angle);
 }
 
 NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *given_interface) {
@@ -107,10 +107,10 @@ P2PNetworkInterface *Catoms2DBlock::getP2PNetworkInterfaceByRelPos(const PointRe
 	// NOT TESTED. FALSE I THINK, DEPENDS ON THE PARITY OF THE LINE
     if (pos.x==-1 && pos.y==0) return tabInterfaces[NeighborDirection::Left];
     else if (pos.x==1 && pos.y==0) return tabInterfaces[NeighborDirection::Right];
-    
+
     else if (pos.y==-1 && pos.x==1) return tabInterfaces[NeighborDirection::BottomRight];
     else if (pos.y==1 && pos.x==1) return tabInterfaces[NeighborDirection::TopRight];
-    
+
     else if (pos.z==-1) return tabInterfaces[NeighborDirection::BottomLeft];
     else if (pos.z==1) return tabInterfaces[NeighborDirection::TopLeft];
 
