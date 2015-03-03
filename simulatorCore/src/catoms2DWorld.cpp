@@ -459,7 +459,7 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc) {
 Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
 	Vecteur res;
 	res.pt[0] = (pos[0]+((int)pos[2]%2)*0.5)*blockSize[0];
-	res.pt[1] = blockSize[1]/2.0;
+	res.pt[1] = 0;
 	res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
 	return res;
 }
@@ -467,7 +467,7 @@ Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
 Vecteur Catoms2DWorld::gridToWorldPosition(Vecteur &pos) {
 	Vecteur res;
 	res.pt[2] = pos[2] / (M_SQRT3_2 * blockSize[2]);
-	res.pt[1] = 0.0;
+	res.pt[1] = blockSize[1]/2.0;
 	res.pt[0] = pos[0]/blockSize[0] - ((int)pos[2]%2)*0.5;
 	
 	return res;	

@@ -32,8 +32,8 @@ void Catoms2D1BlockCode::startup() {
 	info << "Starting ";
 	scheduler->trace(info.str(),hostBlock->blockId);
 	
-	
 	if (catom2D->blockId == 4) {
+		cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
 		startMotion(ROTATE_LEFT,world->getBlockById(3));
 	}
 	
@@ -92,7 +92,8 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	break;
 	case EVENT_MOTION_END: {
 		cout << "motion end" << endl;
-		switch(cpt) {
+		cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
+		/*switch(cpt) {
 			case 1:
 				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(2));
 			break;
@@ -109,7 +110,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(3));
 			break;
 		}
-		cpt++;
+		cpt++;*/
 	}
 	break;
 	}
