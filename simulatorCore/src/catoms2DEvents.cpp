@@ -84,14 +84,14 @@ void MotionStepEvent::consume() {
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         Vecteur pos = pivot+BC;
-        Catoms2DWorld::getWorld()->updateGlData(rb,pos);
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+angle);
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
 	} else {
         roty.setRotationY(12);
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         Vecteur pos = pivot+BC;
-        Catoms2DWorld::getWorld()->updateGlData(rb,pos);
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+12);
         scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-12));
 	}
 }
