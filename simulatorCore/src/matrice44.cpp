@@ -78,7 +78,7 @@ void Matrice::setRotationX(double a)
 void Matrice::setRotationY(double a)
 { identity();
   double cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
-  m[0]=m[10]=cs; m[2]=-sn; m[8]=sn;
+  m[0]=m[10]=cs; m[2]=sn; m[8]=-sn;
 }
 
 void Matrice::setRotationZ(double a)

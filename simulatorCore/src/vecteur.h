@@ -1,8 +1,8 @@
-/*
- * Vecteur.h
- *
- *  Created on: 29 janv. 2012
- *
+/*!
+ * \file vecteur.h
+ * \brief 3D homogeneous vector
+ * \date 29/01/2012
+ * \author Benoît Piranda
  */
 
 #ifndef VECTEUR_H_
@@ -15,28 +15,61 @@
 #include <memory.h>
 #endif
 
-
 #ifndef M_PI
 #define M_PI	3.1415926535897932384626433832795
 #endif
 
 using namespace std;
 
+/**
+ * \class Vecteur vecteur.h
+*/
 class Vecteur
 { public :
-  double pt[4];
+  double pt[4]; //!< x,y,z,w in a table (w=0 for a vector, w=1 for a point)
 
+/**
+    \brief Constructor, initialize the vector to 0
+*/
   Vecteur() { memset(pt,0,4*sizeof(double)); };
+/**
+    \brief Constructor, initialize the vector to (x,y,z,w)
+    \param Coordinates
+*/
   Vecteur(double x,double y,double z,double w=0.0) { pt[0]=x; pt[1]=y; pt[2]=z; pt[3]=w; };
+/**
+    \brief Set method, initialize the vector to (x,y,z,w)
+    \param Coordinates
+*/
   inline void set(double x,double y,double z,double w=0.0) { pt[0]=x; pt[1]=y; pt[2]=z; pt[3]=w; };
   void setMin(double x,double y,double z) { if (x<pt[0]) pt[0]=x; if (y<pt[1]) pt[1]=y; if (z<pt[2]) pt[2]=z; };
   void setMax(double x,double y,double z) { if (x>pt[0]) pt[0]=x; if (y>pt[1]) pt[1]=y; if (z>pt[2]) pt[2]=z; };
+/**
+    \brief Return a normalized copy of the vector
+*/
   const Vecteur normer() const;
+/**
+    \brief Normalize the current vector
+*/
   void normer_interne();
+/**
+    \brief Normalize the current vector with a lenght l
+    \param l : length of the vector
+*/
   void setLength(double l);
+/**
+    \brief Return the length of the vector
+*/
   double norme();
+/**
+    \brief Return the square of the length of the vector
+*/
   double norme2();
-  void operator +=(const Vecteur &);
+/**
+    \brief Incrementation of the vecteur by p
+    \param p : vector to add to the current vector
+*/
+  void operator +=(const Vecteur &p);
   bool operator ==(const Vecteur &V1) { return (V1.pt[0]==pt[0] && V1.pt[1]==pt[1] && V1.pt[2]==pt[2] && V1.pt[3]==pt[3]); };
   friend istream& operator>>(istream& f,Vecteur &p);
   friend ostream& operator<<(ostream& f,const Vecteur &p);
