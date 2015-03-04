@@ -95,18 +95,30 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
 		switch(cpt) {
 			case 1:
-				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(2));
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(3));
 			break;
 			case 2:
-				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(1));
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(2));
 			break;
 			case 3:
-				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(1));
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(1));
 			break;
 			case 4:
-				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(2));
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(1));
 			break;
 			case 5:
+				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(1));
+			break;
+			case 6:
+				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(1));
+			break;		
+			case 7:
+				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(2));
+			break;
+			case 8:
+				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(3));
+			break;			
+			case 9:
 				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(3));
 			break;
 		}
