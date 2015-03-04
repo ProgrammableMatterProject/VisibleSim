@@ -1,8 +1,8 @@
-/*
- * catoms2DEvents.h
- *
- *  Created on: 2014 febrary 1st
- *      Author: Benoît
+/*!
+ * \file catoms2DEvents.h
+ * \brief Motion events for 2D Catoms
+ * \date 15/02/2015
+ * \author Benoît Piranda
  */
 
 #ifndef CATOMS2DEVENTS_H_
@@ -24,6 +24,7 @@ namespace Catoms2D {
 class MotionStartEvent : public BlockEvent {
     Vecteur pivot;
     double angle;
+    int sens;
 public:
 	MotionStartEvent(uint64_t, Catoms2DBlock *block,const Catoms2DBlock *pivotBlock,int sens);
 	MotionStartEvent(MotionStartEvent *ev);
@@ -42,8 +43,9 @@ public:
 class MotionStepEvent : public BlockEvent {
     Vecteur pivot;
     double angle;
+    int sens;
 public:
-	MotionStepEvent(uint64_t, Catoms2DBlock *block,const Vecteur &pivot,double angle2goal);
+	MotionStepEvent(uint64_t, Catoms2DBlock *block,const Vecteur &pivot,double angle2goal,int s);
 	MotionStepEvent(MotionStepEvent *ev);
 	~MotionStepEvent();
 	void consumeBlockEvent() {};

@@ -1,8 +1,8 @@
-/*
- * Vecteur.cpp
- *
- *  Created on: 29 janv. 2012
- *
+/*!
+ * \file vecteur.cpp
+ * \brief 3D homogeneous vector
+ * \date 29/01/2012
+ * \author Benoît Piranda
  */
 
 #include "vecteur.h"

@@ -11,6 +11,7 @@
 
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
+const int ANGULAR_STEP=12;
 
 const double EPS=1E-5;
 namespace Catoms2D {
@@ -21,11 +22,12 @@ namespace Catoms2D {
 //
 //===========================================================================================================
 
-MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block,const Catoms2DBlock *pivotBlock, int sens): BlockEvent(t,block) {
+MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block,const Catoms2DBlock *pivotBlock, int s): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_START;
 	pivot.set(pivotBlock->ptrGlBlock->position[0],pivotBlock->ptrGlBlock->position[1],pivotBlock->ptrGlBlock->position[2]);
-	angle = sens*60;
+	angle = 60;
+    sens = s;
 }
 
 MotionStartEvent::MotionStartEvent(MotionStartEvent *ev) : BlockEvent(ev) {
@@ -42,7 +44,7 @@ void MotionStartEvent::consume() {
 	Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
     Catoms2DWorld::getWorld()->disconnectBlock(rb);
     rb->setColor(DARKGREY);
-	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,pivot,angle));
+	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,pivot,angle,sens));
 }
 
 const string MotionStartEvent::getEventName() {
@@ -55,12 +57,13 @@ const string MotionStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStepEvent::MotionStepEvent(uint64_t t, Catoms2DBlock *block,const Vecteur &p,double angle2goal): BlockEvent(t,block) {
+MotionStepEvent::MotionStepEvent(uint64_t t, Catoms2DBlock *block,const Vecteur &p,double angle2goal,int s): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STEP;
 
     pivot = p;
     angle = angle2goal;
+    sens = s;
 }
 
 MotionStepEvent::MotionStepEvent(MotionStepEvent *ev) : BlockEvent(ev) {
@@ -77,22 +80,21 @@ void MotionStepEvent::consume() {
 
 	Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
 
-
     Matrice roty;
-    if (angle<12) {
-        roty.setRotationY(angle);
+    if (angle<ANGULAR_STEP) {
+        roty.setRotationY(-sens*angle);
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         Vecteur pos = pivot+BC;
-        Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+angle);
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle-angle*sens);
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
 	} else {
-        roty.setRotationY(12);
+        roty.setRotationY(-sens*ANGULAR_STEP);
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         Vecteur pos = pivot+BC;
-        Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+12);
-        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-12));
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle-ANGULAR_STEP*sens);
+        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-ANGULAR_STEP,sens));
 	}
 }
 
