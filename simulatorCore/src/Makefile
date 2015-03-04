@@ -23,6 +23,10 @@ CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp ca
 CATOMS2D_OBJS = $(CATOMS2D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 CATOMS2D_DEPS = $(CATOMS2D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
+CATOMS3D_SRCS = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DScheduler.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DCapabilities.cpp catoms3DEvents.cpp
+CATOMS3D_OBJS = $(CATOMS3D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
+CATOMS3D_DEPS = $(CATOMS3D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
+
 SMARTBLOCKS_SRCS = smartBlocksSimulator.cpp smartBlocksBlock.cpp smartBlocksBlockCode.cpp smartBlocksScheduler.cpp smartBlocksWorld.cpp smartBlocksGlBlock.cpp smartBlocksCapabilities.cpp smartBlocksEvents.cpp
 SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
@@ -86,6 +90,11 @@ libsimCatoms2D.a: $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
 	mkdir -p ../lib
 	ar rcs libsimCatoms2D.a $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
 	cp libsimCatoms2D.a ../lib
+
+libsimCatoms3D.a: $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
+	mkdir -p ../lib
+	ar rcs libsimCatoms3D.a $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
+	cp libsimCatoms3D.a ../lib
 
 libsimSmartBlocks.a: $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
 	mkdir -p ../lib

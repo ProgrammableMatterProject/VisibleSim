@@ -1,0 +1,106 @@
+/*
+ * catoms3DWorld.h
+ *
+ *  Created on: 12 janvier 2014
+ *      Author: Benoît
+ */
+
+#ifndef CATOMS3DWORLD_H_
+#define CATOMS3DWORLD_H_
+
+#include "openglViewer.h"
+#include "world.h"
+#include "vecteur.h"
+#include "catoms3DBlock.h"
+#include "catoms3DCapabilities.h"
+#include "objLoader.h"
+#include <boost/asio.hpp>
+#include "trace.h"
+#include <vector>
+
+namespace Catoms3D {
+
+class Catoms3DWorld : BaseSimulator::World {
+protected:
+	int gridSize[3];
+	Catoms3DBlock **gridPtrBlocks;
+	GLfloat blockSize[3];
+	Camera *camera;
+	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
+	GLuint idTextureHexa,idTextureLines;
+	GLushort numSelectedFace;
+	GLuint numSelectedBlock;
+	GLint menuId;
+	presence *targetGrid;
+	Catoms3DCapabilities *capabilities;
+
+	Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]);
+	virtual ~Catoms3DWorld();
+	void linkBlock(int ix,int iy,int iz);
+
+public:
+	static void createWorld(int slx,int sly,int slz, int argc, char *argv[]);
+	static void deleteWorld();
+	static Catoms3DWorld* getWorld() {
+		assert(world != NULL);
+		return((Catoms3DWorld*)world);
+	}
+
+	void printInfo() {
+		OUTPUT << "I'm a Catoms3DWorld" << endl;
+	}
+
+	virtual Catoms3DBlock* getBlockById(int bId) {
+		return((Catoms3DBlock*)World::getBlockById(bId));
+	}
+
+	virtual void addBlock(int blockId, Catoms3DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms3DBlock*), const Vecteur &pos, const Color &col, bool master=false);
+	void deleteBlock(Catoms3DBlock *bb);
+	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
+	inline const float *getBlocksSize() { return blockSize; };
+
+	inline void setGridPtr(int ix,int iy,int iz,Catoms3DBlock *ptr) { gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr; };
+	inline Catoms3DBlock* getGridPtr(int ix,int iy,int iz) { return gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]; };
+	inline int* getGridSize() {return gridSize;}
+	inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,3*sizeof(int)); return targetGrid; };
+	inline presence getTargetGrid(int ix,int iy,int iz) { return targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]; };
+	inline void setTargetGrid(presence value,int ix,int iy,int iz) { targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value; };
+	void initTargetGrid();
+
+	inline void setCapabilities(Catoms3DCapabilities *capa) { capabilities=capa; };
+	void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
+	inline Catoms3DCapabilities* getCapabilities() { return capabilities; };
+	void linkBlocks();
+	void loadTextures(const string &str);
+
+	Vecteur worldToGridPosition(Vecteur &pos);
+	Vecteur gridToWorldPosition(Vecteur &pos);
+
+	virtual void glDraw();
+	virtual void glDrawId();
+	virtual void glDrawIdByMaterial();
+	virtual void updateGlData(Catoms3DBlock*blc);
+	virtual void updateGlData(Catoms3DBlock*blc, const Vecteur &position);
+	virtual void updateGlData(Catoms3DBlock*blc, const Vecteur &position, double angle);
+	virtual void createPopupMenu(int ix, int iy);
+	virtual void createHelpWindow();
+	inline virtual Camera *getCamera() { return camera; };
+	virtual void setSelectedFace(int n);
+	virtual void menuChoice(int n);
+	virtual void disconnectBlock(Catoms3DBlock *block);
+	virtual void connectBlock(Catoms3DBlock *block);
+};
+
+inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
+	Catoms3DWorld::createWorld(slx,sly,slz, argc,argv);
+}
+
+inline void deleteWorld() {
+	Catoms3DWorld::deleteWorld();
+}
+
+inline Catoms3DWorld* getWorld() { return(Catoms3DWorld::getWorld()); }
+
+} // Catoms3D namespace
+
+#endif /* CATOMS3DWORLD_H_ */

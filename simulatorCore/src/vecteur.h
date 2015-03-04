@@ -34,12 +34,18 @@ class Vecteur
   Vecteur() { memset(pt,0,4*sizeof(double)); };
 /**
     \brief Constructor, initialize the vector to (x,y,z,w)
-    \param Coordinates
+    \param x : x coordinate of the vector
+    \param y : y coordinate of the vector
+    \param z : z coordinate of the vector
+    \param w : w=0 for a vector (default), w=1 for a point
 */
   Vecteur(double x,double y,double z,double w=0.0) { pt[0]=x; pt[1]=y; pt[2]=z; pt[3]=w; };
 /**
     \brief Set method, initialize the vector to (x,y,z,w)
-    \param Coordinates
+    \param x : x coordinate of the vector
+    \param y : y coordinate of the vector
+    \param z : z coordinate of the vector
+    \param w : w=0 for a vector (default), w=1 for a point
 */
   inline void set(double x,double y,double z,double w=0.0) { pt[0]=x; pt[1]=y; pt[2]=z; pt[3]=w; };
   void setMin(double x,double y,double z) { if (x<pt[0]) pt[0]=x; if (y<pt[1]) pt[1]=y; if (z<pt[2]) pt[2]=z; };
@@ -70,14 +76,28 @@ class Vecteur
     \param p : vector to add to the current vector
 */
   void operator +=(const Vecteur &p);
+/**
+    \brief Comparison of two vectors, return true if equal
+    \param p : vector to compare to the current vector
+*/
   bool operator ==(const Vecteur &V1) { return (V1.pt[0]==pt[0] && V1.pt[1]==pt[1] && V1.pt[2]==pt[2] && V1.pt[3]==pt[3]); };
   friend istream& operator>>(istream& f,Vecteur &p);
   friend ostream& operator<<(ostream& f,const Vecteur &p);
   friend const Vecteur operator *(double,const Vecteur);
-  friend const double operator *(const Vecteur,const Vecteur);
+/**
+    \brief Return the scalar product of two vectors
+    \param v1 : first vector
+    \param v2 : second vector
+*/
+  friend const double operator *(const Vecteur v1,const Vecteur v2);
   friend const Vecteur operator +(const Vecteur,const Vecteur);
   friend const Vecteur operator -(const Vecteur,const Vecteur);
   friend const Vecteur operator -(const Vecteur);
+/**
+    \brief Return the cross product of two vectors
+    \param v1 : first vector
+    \param v2 : second vector
+*/
   friend const Vecteur operator ^(const Vecteur,const Vecteur);
   inline const double operator[](const int i) const { return pt[i]; };
   inline void setPoint(bool v) { pt[3]=(double)v; };
