@@ -1,8 +1,8 @@
-/*
- * catoms3DBlock.cpp
- *
- *  Created on: 12 janvier 2014
- *      Author: Benoît
+/*!
+ * \file catoms3DBlock.cpp
+ * \brief catoms Block
+ * \date 05/03/2015
+ * \author Benoît Piranda
  */
 
 #include <iostream>
@@ -14,65 +14,12 @@
 
 using namespace std;
 
+//! \namespace Catoms3D
 namespace Catoms3D {
-
-string NeighborDirection::getString(int d) {
-	switch(d) {
-		case BottomLeft:
-			return string("Bottom-left");
-			break;
-		case Left:
-			return string("Left");
-			break;
-		case TopLeft:
-			return string("Top-left");
-			break;
-		case BottomRight:
-			return string("Bottom-right");
-			break;
-		case Right:
-			return string("Right");
-			break;
-		case TopRight:
-			return string("Top-right");
-			break;
-		default:
-			cerr << "Unknown direction" << endl;
-			return string("Unknown");
-			break;
-	}
-}
-
-int NeighborDirection::getOpposite(int d) {
-switch (Direction(d)) {
-		case BottomLeft:
-			return TopRight;
-			break;
-		case Left:
-			return Right;
-			break;
-		case TopLeft:
-			return BottomRight;
-			break;
-		case BottomRight:
-			return TopLeft;
-			break;
-		case Right:
-			return Left;
-			break;
-		case TopRight:
-			return BottomLeft;
-			break;
-		default:
-			ERRPUT << "*** ERROR *** : unknown face" << endl;
-			return -1;
-			break;
-	}
-}
 
 Catoms3DBlock::Catoms3DBlock(int bId, Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) : BaseSimulator::BuildingBlock(bId) {
 	OUTPUT << "Catoms3DBlock constructor" << endl;
-	for (int i=0; i<6; i++) {
+	for (int i=0; i<12; i++) {
 		tabInterfaces[i] = new P2PNetworkInterface(this);
 	}
 	buildNewBlockCode = catoms3DBlockCodeBuildingFunction;
@@ -83,29 +30,29 @@ Catoms3DBlock::~Catoms3DBlock() {
 	OUTPUT << "Catoms3DBlock destructor " << blockId << endl;
 }
 
-void Catoms3DBlock::setPosition(const Vecteur &p) {
+void Catoms3DBlock::setPosition(const Cell3DPosition &p) {
 	position=p;
 	getWorld()->updateGlData(this);
 }
 
 void Catoms3DBlock::setColor(const Color &c) {
 	color = c;
-	getWorld()->updateGlData(this,Vecteur(ptrGlBlock->position[0],ptrGlBlock->position[1],ptrGlBlock->position[2]),ptrGlBlock->angle);
+	getWorld()->updateGlData(this);
 }
 
-NeighborDirection::Direction Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
+int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
 	if( !given_interface) {
-		return NeighborDirection::Direction(0);
+		return -1;
 	}
-	for( int i(0); i < 6; ++i) {
-		if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+	for( int i(0); i < 12; ++i) {
+		if( tabInterfaces[i] == given_interface) return i;
 	}
-	return NeighborDirection::Direction(0);
+	return -1;
 }
 
 P2PNetworkInterface *Catoms3DBlock::getP2PNetworkInterfaceByRelPos(const PointRel3D &pos) {
 	// NOT TESTED. FALSE I THINK, DEPENDS ON THE PARITY OF THE LINE
-    if (pos.x==-1 && pos.y==0) return tabInterfaces[NeighborDirection::Left];
+/*    if (pos.x==-1 && pos.y==0) return tabInterfaces[NeighborDirection::Left];
     else if (pos.x==1 && pos.y==0) return tabInterfaces[NeighborDirection::Right];
 
     else if (pos.y==-1 && pos.x==1) return tabInterfaces[NeighborDirection::BottomRight];
@@ -113,7 +60,7 @@ P2PNetworkInterface *Catoms3DBlock::getP2PNetworkInterfaceByRelPos(const PointRe
 
     else if (pos.z==-1) return tabInterfaces[NeighborDirection::BottomLeft];
     else if (pos.z==1) return tabInterfaces[NeighborDirection::TopLeft];
-
+*/
     return NULL;
 }
 

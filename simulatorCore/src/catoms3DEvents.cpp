@@ -130,7 +130,7 @@ void MotionStopEvent::consume() {
 
     Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
     Vecteur worldPos = Vecteur(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
-    Vecteur gridPos = wrld->worldToGridPosition(worldPos);
+    Cell3DPosition gridPos = wrld->worldToGridPosition(worldPos);
     rb->setPosition(gridPos);
 	wrld->setGridPtr(gridPos.pt[0],gridPos.pt[1],gridPos.pt[2],rb);
 

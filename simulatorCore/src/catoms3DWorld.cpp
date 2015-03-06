@@ -1,8 +1,8 @@
-/*
- * robotBlockWorld.cpp
- *
- *  Created on: 12 janvier 2014
- *      Author: Benoît
+/*!
+ * \file catoms3DWorld.cpp
+ * \brief catoms world
+ * \date 05/03/2015
+ * \author Benoît Piranda
  */
 
 #include <iostream>
@@ -18,10 +18,20 @@
 
 using namespace std;
 
+//! \namespace Catoms3D
 namespace Catoms3D {
 
 const double M_SQRT3_2 = sqrt(3.0)/2.0;
+const double M_SQRT2_2 = sqrt(2.0)/2.0;
 
+/**
+    \brief Constructor
+    \param slx : grid size along x axis
+    \param sly : grid size along x axis
+    \param slz : grid size along x axis
+    \param argc : number of execution parameters
+    \param argv : string array of parameters
+*/
 Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
 	OUTPUT << "\033[1;31mCatoms3DWorld constructor\033[0m" << endl;
 	gridSize[0]=slx;
@@ -44,9 +54,9 @@ Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
 	blockSize[0]=1.0;
 	blockSize[1]=5.0;
 	blockSize[2]=1.0;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom2D.obj");
-	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom2Dpicking.obj");
-	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D.obj");
+	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
+	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repere25.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
 	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
 	camera->setTarget(Vecteur(0,0,1.0));
@@ -75,7 +85,7 @@ void Catoms3DWorld::deleteWorld() {
 	delete((Catoms3DWorld*)world);
 }
 
-void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms3DBlock*),const Vecteur &pos,const Color &color,bool master) {
+void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuildingFunction)(Catoms3DBlock*),const Cell3DPosition &pos,const Color &color,bool master) {
 
 	if (blockId == -1) {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -86,30 +96,28 @@ void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*robotBlockCodeBui
 			}
 		blockId++;
 	}
-	Catoms3DBlock *robotBlock = new Catoms3DBlock(blockId,robotBlockCodeBuildingFunction);
-	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>(robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
+	Catoms3DBlock *catom = new Catoms3DBlock(blockId,catomCodeBuildingFunction);
+	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>(catom->blockId, (BaseSimulator::BuildingBlock*)catom));
 
-	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), robotBlock));
+	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
 
 	Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
 	tabGlBlocks.push_back(glBlock);
-	robotBlock->setGlBlock(glBlock);
-
-	robotBlock->setPosition(pos);
-	robotBlock->setColor(color);
-	robotBlock->isMaster=master;
+	catom->setGlBlock(glBlock);
+	catom->setPosition(pos);
+	catom->setColor(color);
 /*
 ********************************************************************
 A ECRIRE AVEC LE MAILLAGE HEXAGONAL
 */
 	int ix,iy,iz;
-	ix = int(robotBlock->position.pt[0]);
-	iy = int(robotBlock->position.pt[1]);
-	iz = int(robotBlock->position.pt[2]);
+	ix = int(catom->position.pt[0]);
+	iy = int(catom->position.pt[1]);
+	iz = int(catom->position.pt[2]);
 	if (ix>=0 && ix<gridSize[0] &&
 		iy>=0 && iy<gridSize[1] &&
 		iz>=0 && iz<gridSize[2]) {
-		setGridPtr(ix,iy,iz,robotBlock);
+		setGridPtr(ix,iy,iz,catom);
 	} else {
 		ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
 		exit(1);
@@ -150,8 +158,8 @@ void Catoms3DWorld::connectBlock(Catoms3DBlock *block) {
 void Catoms3DWorld::disconnectBlock(Catoms3DBlock *block) {
     P2PNetworkInterface *fromBlock,*toBlock;
 
-    for(int i=0; i<6; i++) {
-        fromBlock = block->getInterface(NeighborDirection::Direction(i));
+    for(int i=0; i<12; i++) {
+        fromBlock = block->getInterface(i);
         if (fromBlock && fromBlock->connectedInterface) {
             toBlock = fromBlock->connectedInterface;
             fromBlock->connectedInterface=NULL;
@@ -168,7 +176,7 @@ void Catoms3DWorld::disconnectBlock(Catoms3DBlock *block) {
 
 void Catoms3DWorld::linkBlock(int ix, int iy, int iz) {
     Catoms3DBlock *ptrBlock = getGridPtr(ix,iy,iz);
-
+/*
 	if (ptrBlock) {
 		OUTPUT << "link block " << ptrBlock->blockId << endl;
 
@@ -252,7 +260,7 @@ void Catoms3DWorld::linkBlock(int ix, int iy, int iz) {
 				}
 			}
 		}
-	}
+	}*/
 }
 
 void Catoms3DWorld::linkBlocks() {
@@ -269,8 +277,8 @@ void Catoms3DWorld::linkBlocks() {
 void Catoms3DWorld::deleteBlock(Catoms3DBlock *bb) {
 	if (bb->getState() >= Catoms3DBlock::ALIVE ) {
 		// cut links between bb and others
-		for(int i=0; i<6; i++) {
-			P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+		for(int i=0; i<12; i++) {
+			P2PNetworkInterface *bbi = bb->getInterface(i);
 			if (bbi->connectedInterface) {
 				//bb->removeNeighbor(bbi); //Useless
 				bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
@@ -319,89 +327,89 @@ void Catoms3DWorld::glDraw() {
 
 
 	static const GLfloat white[]={1.0,1.0,1.0,1.0},
-			gray[]={0.6,0.6,0.6,1.0};
-	glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-	glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-	glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-	glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-	glPushMatrix();
-        enableTexture(true);
-		glBindTexture(GL_TEXTURE_2D,idTextureLines);
-		glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT3_2);
-		glBegin(GL_QUADS);
-		// bottom
-			glNormal3f(0,0,1.0f);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(gridSize[0],0);
-			glVertex3f(1.0f,0.0f,0.0f);
-			glTexCoord2f(gridSize[0],gridSize[1]);
-			glVertex3f(1.0,1.0,0.0f);
-			glTexCoord2f(0,gridSize[1]);
-			glVertex3f(0.0,1.0,0.0f);
-		// top
-			glNormal3f(0,0,-1.0f);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,1.0f);
-			glTexCoord2f(0,gridSize[1]);
-			glVertex3f(0.0,1.0,1.0f);
-			glTexCoord2f(gridSize[0],gridSize[1]);
-			glVertex3f(1.0,1.0,1.0f);
-			glTexCoord2f(gridSize[0],0);
-			glVertex3f(1.0f,0.0f,1.0f);
-		// left
-			glNormal3f(1.0f,0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(0,1.0f);
-			glVertex3f(0.0f,1.0f,0.0f);
-			glTexCoord2f(1.0f,1.0f);
-			glVertex3f(0.0,1.0,1.0f);
-			glTexCoord2f(1.0f,0.0);
-			glVertex3f(0.0,0.0,1.0f);
-		// right
-			glNormal3f(-1.0f,0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(1.0f,0.0f,0.0f);
-			glTexCoord2f(1.0f,0.0f);
-			glVertex3f(1.0,0.0,1.0f);
-			glTexCoord2f(1.0f,1.0f);
-			glVertex3f(1.0,1.0,1.0f);
-			glTexCoord2f(0,1.0f);
-			glVertex3f(1.0f,1.0f,0.0f);
-		glEnd();
+    gray[]={0.6,0.6,0.6,1.0};
+    glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+    glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+    glPushMatrix();
+    enableTexture(true);
+    glBindTexture(GL_TEXTURE_2D,idTextureLines);
+    glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT3_2);
+    glBegin(GL_QUADS);
+    // bottom
+        glNormal3f(0,0,1.0f);
+        glTexCoord2f(0,0);
+        glVertex3f(0.0f,0.0f,0.0f);
+        glTexCoord2f(gridSize[0],0);
+        glVertex3f(1.0f,0.0f,0.0f);
+        glTexCoord2f(gridSize[0],gridSize[1]);
+        glVertex3f(1.0,1.0,0.0f);
+        glTexCoord2f(0,gridSize[1]);
+        glVertex3f(0.0,1.0,0.0f);
+    // top
+        glNormal3f(0,0,-1.0f);
+        glTexCoord2f(0,0);
+        glVertex3f(0.0f,0.0f,1.0f);
+        glTexCoord2f(0,gridSize[1]);
+        glVertex3f(0.0,1.0,1.0f);
+        glTexCoord2f(gridSize[0],gridSize[1]);
+        glVertex3f(1.0,1.0,1.0f);
+        glTexCoord2f(gridSize[0],0);
+        glVertex3f(1.0f,0.0f,1.0f);
+    // left
+        glNormal3f(1.0f,0,0);
+        glTexCoord2f(0,0);
+        glVertex3f(0.0f,0.0f,0.0f);
+        glTexCoord2f(0,1.0f);
+        glVertex3f(0.0f,1.0f,0.0f);
+        glTexCoord2f(1.0f,1.0f);
+        glVertex3f(0.0,1.0,1.0f);
+        glTexCoord2f(1.0f,0.0);
+        glVertex3f(0.0,0.0,1.0f);
+    // right
+        glNormal3f(-1.0f,0,0);
+        glTexCoord2f(0,0);
+        glVertex3f(1.0f,0.0f,0.0f);
+        glTexCoord2f(1.0f,0.0f);
+        glVertex3f(1.0,0.0,1.0f);
+        glTexCoord2f(1.0f,1.0f);
+        glVertex3f(1.0,1.0,1.0f);
+        glTexCoord2f(0,1.0f);
+        glVertex3f(1.0f,1.0f,0.0f);
+    glEnd();
     glPopMatrix();
 	// draw hexa
 	glPushMatrix();
-		glBindTexture(GL_TEXTURE_2D,idTextureHexa);
-		glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT3_2);
-        glBegin(GL_QUADS);
+    glBindTexture(GL_TEXTURE_2D,idTextureHexa);
+    glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT3_2);
+    glBegin(GL_QUADS);
 
-		// back
-			glNormal3f(0,-1.0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,1.0f,0.0f);
-			glTexCoord2f(gridSize[0]/3.0f,0);
-			glVertex3f(1.0f,1.0f,0.0f);
-			glTexCoord2f(gridSize[0]/3.0f,gridSize[2]/2.0f);
-			glVertex3f(1.0f,1.0,1.0f);
-			glTexCoord2f(0,gridSize[2]/2.0f);
-			glVertex3f(0.0,1.0,1.0f);
-		// front
-			glNormal3f(0,1.0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(0,gridSize[2]);
-			glVertex3f(0.0,0.0,1.0f);
-			glTexCoord2f(gridSize[0],gridSize[2]);
-			glVertex3f(1.0f,0.0,1.0f);
-			glTexCoord2f(gridSize[0],0);
-			glVertex3f(1.0f,0.0f,0.0f);
-		glEnd();
+    // back
+        glNormal3f(0,-1.0,0);
+        glTexCoord2f(0,0);
+        glVertex3f(0.0f,1.0f,0.0f);
+        glTexCoord2f(gridSize[0]/3.0f,0);
+        glVertex3f(1.0f,1.0f,0.0f);
+        glTexCoord2f(gridSize[0]/3.0f,gridSize[2]/2.0f);
+        glVertex3f(1.0f,1.0,1.0f);
+        glTexCoord2f(0,gridSize[2]/2.0f);
+        glVertex3f(0.0,1.0,1.0f);
+    // front
+        glNormal3f(0,1.0,0);
+        glTexCoord2f(0,0);
+        glVertex3f(0.0f,0.0f,0.0f);
+        glTexCoord2f(0,gridSize[2]);
+        glVertex3f(0.0,0.0,1.0f);
+        glTexCoord2f(gridSize[0],gridSize[2]);
+        glVertex3f(1.0f,0.0,1.0f);
+        glTexCoord2f(gridSize[0],0);
+        glVertex3f(1.0f,0.0f,0.0f);
+    glEnd();
 	glPopMatrix();
 	// draw the axes
 	glPushMatrix();
-		glScalef(0.05f,0.05f,0.05f);
+		glScalef(0.5f,0.5f,0.5f);
 		objRepere->glDraw();
 	glPopMatrix();
 }
@@ -474,34 +482,29 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vecteur &position, dou
 	}
 }
 
-Vecteur Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
-	Vecteur res;
+Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
+	Cell3DPosition res;
+
+/*
 	res.pt[2] = pos[2] / (M_SQRT3_2 * blockSize[2]);
 	res.pt[1] = 0;
 	res.pt[0] = (int) (pos[0]/blockSize[0] - ((int)res.pt[2]%2)*0.5);
-	/*
-	cout << "------------computation worldToGridPosition--------------" << endl;
-	cout << pos << endl;
-	cout << res << endl;
-	cout << "---------------------------------------------------------" << endl;*/
+*/
 	return res;
 }
 
-Vecteur Catoms3DWorld::gridToWorldPosition(Vecteur &pos) {
+Vecteur Catoms3DWorld::gridToWorldPosition(Cell3DPosition &pos) {
 	Vecteur res;
 
-	res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
-	res.pt[1] = blockSize[1]/2.0;
-	res.pt[0] = (pos[0]+((int)(pos[2]+0.01)%2)*0.5)*blockSize[0]; // +0.01 because of round problem
-	/*cout << "------------computation gridToWorldPosition--------------" << endl;
-	cout << pos << endl;
-	cout << ((int)pos[2]%2)*0.5 << endl;
-	cout << (int)pos[2]%2 << endl;
-	cout << pos[2] << endl;
-	cout << (int)(pos[2]+0.01) << endl;
-	cout << res << endl;
-	cout << "---------------------------------------------------------" << endl;*/
-	return res;
+    res.pt[2] = M_SQRT2_2*pos[2]*blockSize[2];
+    if (pos[2]%2) {
+        res.pt[1] = (pos[1]+0.5)*blockSize[1];
+        res.pt[0] = (pos[0]+0.5)*blockSize[0];
+    } else {
+        res.pt[1] = pos[1]*blockSize[1];
+        res.pt[0] = pos[0]*blockSize[0];
+    }
+    return res;
 }
 
 void Catoms3DWorld::createPopupMenu(int ix, int iy) {
@@ -517,8 +520,7 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 	// verify if add is possible for this face
 	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 	bool valid=true;
-	switch (numSelectedFace) {
-		// FALSE: depends on the parity of the line
+/*	switch (numSelectedFace) {
 		//BottomLeft = 0, Left = 1, TopLeft = 2, BottomRight = 3, Right = 4, TopRight =5}
 		case NeighborDirection::Left :
 			valid=(bb->position[0]>0 && getGridPtr(int(bb->position[0])-1,int(bb->position[1]),int(bb->position[2]))==NULL);
@@ -539,7 +541,7 @@ void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 			valid=(bb->position[0]<gridSize[0]-1 && bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2])+1)==NULL);
 		break;
 	}
-	GlutContext::popupMenu->activate(1,valid);
+	GlutContext::popupMenu->activate(1,valid);*/
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
 }

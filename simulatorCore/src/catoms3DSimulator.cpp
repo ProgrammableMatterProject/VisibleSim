@@ -42,10 +42,11 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 		int lx,ly,lz;
 		if (attr) {
 			string str=attr;
-			int pos = str.find_first_of(',');
-			lx = atoi(str.substr(0,pos).c_str());
-			ly = 1;
-			lz = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
+			int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+			lx = atoi(str.substr(0,pos1).c_str());
+			ly = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
+			lz = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
 			OUTPUT << "grid size : " << lx << " x " << ly << " x " << lz << endl;
 		} else {
 			OUTPUT << "WARNING No grid size in XML file" << endl;
@@ -80,11 +81,12 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 		float angle=45.0;
 		if (attr) {
 			string str(attr);
-			int pos = str.find_first_of(',');
+			int pos1 = str.find_first_of(','),
+			pos2 = str.find_last_of(',');
 			Vecteur target;
-			target.pt[0] = atof(str.substr(0,pos).c_str());
-			target.pt[1] = 1;
-			target.pt[2] = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
+			target.pt[0] = atof(str.substr(0,pos1).c_str());
+			target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+			target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 			world->getCamera()->setTarget(target);
 		}
 		attr=cameraElement->Attribute("angle");
@@ -179,7 +181,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 
 	/* Reading a robotblock */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
-		Vecteur position;
+		Cell3DPosition position;
 		Color color;
 		bool master;
 		while (block) {
@@ -199,21 +201,18 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 			attr = element->Attribute("position");
 			if (attr) {
                 string str(attr);
-                int pos = str.find_first_of(',');
-                int ix = atof(str.substr(0,pos).c_str()),
-                    iy = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
-				//position.pt[0] = (ix+(iy%2)*0.5)*blockSize[0];
-				//position.pt[1] = 0.5;
-				//position.pt[2] = M_SQRT3_2*iy*blockSize[2];
-				  position.pt[0] = ix;
-				  position.pt[1] = 0;
-				  position.pt[2] = iy;
+                int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+				position.pt[0] = atof(str.substr(0,pos1).c_str());
+				position.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+				position.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				OUTPUT << "position : " << position << endl;
 			}
 			attr = element->Attribute("master");
 			if (attr) {
                 string str(attr);
                 if (str.compare("true")==0 || str.compare("1")==0) {
-                            master=true;
+                    master=true;
                 }
                 OUTPUT << "master : " << master << endl;
 			}
@@ -312,12 +311,12 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	 } else {
 	 	ERRPUT << "No target grid" << endl;
 	 }
-
+/*
     TiXmlNode *nodeCapa = node->FirstChild("capabilities");
 	if (nodeCapa) {
         world->setCapabilities(new Catoms3DCapabilities(nodeCapa));
     }
-
+*/
     world->linkBlocks();
 
 //	getScheduler()->sem_schedulerStart->post();

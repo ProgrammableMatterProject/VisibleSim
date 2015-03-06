@@ -3,7 +3,7 @@ TINYXMLSRCS = TinyXML/tinyxml.cpp TinyXML/tinyxmlerror.cpp TinyXML/tinyxmlparser
 DEBUGGER = Debugger/debug_Simhandler.cpp Debugger/debug_Simprompt.cpp Debugger/types.cpp
 # Note : when using TIXML_USE_STL flag, TinyXML/tinystr.cpp produce no code, so I removed it from the source list as ar was complaining
 
-BASESIMULATOR_SRCS = $(TINYXMLSRCS) simulator.cpp buildingBlock.cpp blockCode.cpp scheduler.cpp world.cpp network.cpp events.cpp glBlock.cpp interface.cpp openglViewer.cpp shaders.cpp vecteur.cpp matrice44.cpp color.cpp camera.cpp objLoader.cpp vertexArray.cpp trace.cpp
+BASESIMULATOR_SRCS = $(TINYXMLSRCS) simulator.cpp buildingBlock.cpp blockCode.cpp scheduler.cpp world.cpp network.cpp events.cpp glBlock.cpp interface.cpp openglViewer.cpp shaders.cpp vecteur.cpp matrice44.cpp color.cpp camera.cpp objLoader.cpp vertexArray.cpp trace.cpp cell3DPosition.cpp
 BASESIMULATOR_OBJS = $(BASESIMULATOR_SRCS:.cpp=.o)
 BASESIMULATOR_DEPS = $(BASESIMULATOR_SRCS:.cpp=.depends)
 
@@ -32,11 +32,11 @@ SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
 
-SRCS = $(BASESIMULATOR_SRCS) $(MULTICORES_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS)
+SRCS = $(BASESIMULATOR_SRCS) $(MULTICORES_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS)
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
-OUT = libsimMultiCores.a libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a
+OUT = libsimMultiCores.a libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -63,7 +63,7 @@ CC = g++
 .cpp.o:
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
 
-all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a
+all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
 
 #$(OUT)
 

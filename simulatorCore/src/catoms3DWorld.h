@@ -11,15 +11,19 @@
 #include "openglViewer.h"
 #include "world.h"
 #include "vecteur.h"
+#include "cell3DPosition.h"
 #include "catoms3DBlock.h"
-#include "catoms3DCapabilities.h"
 #include "objLoader.h"
 #include <boost/asio.hpp>
 #include "trace.h"
 #include <vector>
 
+//!< \namespace Catoms3D
 namespace Catoms3D {
 
+/**
+ * \class Catoms3DWorld catoms3DWorld.h
+*/
 class Catoms3DWorld : BaseSimulator::World {
 protected:
 	int gridSize[3];
@@ -54,7 +58,7 @@ public:
 		return((Catoms3DBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, Catoms3DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms3DBlock*), const Vecteur &pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId, Catoms3DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms3DBlock*), const Cell3DPosition&pos, const Color &col, bool master=false);
 	void deleteBlock(Catoms3DBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
@@ -73,8 +77,8 @@ public:
 	void linkBlocks();
 	void loadTextures(const string &str);
 
-	Vecteur worldToGridPosition(Vecteur &pos);
-	Vecteur gridToWorldPosition(Vecteur &pos);
+	Cell3DPosition worldToGridPosition(Vecteur &pos);
+	Vecteur gridToWorldPosition(Cell3DPosition &pos);
 
 	virtual void glDraw();
 	virtual void glDrawId();
