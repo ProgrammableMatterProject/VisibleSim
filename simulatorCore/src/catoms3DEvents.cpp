@@ -127,7 +127,7 @@ void MotionStopEvent::consume() {
     rb->setColor(YELLOW);
 
 /* Transformer les coordonnées GL en coordonnées grille*/
-
+/*
     Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
     Vecteur worldPos = Vecteur(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
     Cell3DPosition gridPos = wrld->worldToGridPosition(worldPos);
@@ -140,7 +140,7 @@ void MotionStopEvent::consume() {
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
 	wrld->connectBlock(rb);
     Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
-    scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));
+    scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));*/
 }
 
 const string MotionStopEvent::getEventName() {

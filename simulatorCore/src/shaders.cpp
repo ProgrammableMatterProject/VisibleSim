@@ -208,7 +208,8 @@ void shadowedRenderingStep3(Camera *camera) {
 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle );
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, DARKGREY.rgba);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
 
 // activation du programme de shader
     if(useShaders && shadersProgram)

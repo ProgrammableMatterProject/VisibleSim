@@ -8,12 +8,15 @@ void main() {
 	float shade = clamp(shadow2DProj(shadowMap, gl_TexCoord[1]).r, 0.5, 1.0);
 
 	vec4 texel;
+	vec4 color = ambientGlobal;
 	if (textureEnable) {
- 		texel=diffuse*texture2D(tex,gl_TexCoord[0].st);
+		vec4 texColor = texture2D(tex,gl_TexCoord[0].st); 
+		color+= ambient*texColor;
+ 		texel=diffuse*texColor;
 	} else {
-    	texel=diffuse;
+    		texel=diffuse;
+		color+=ambient;
 	}
-	vec4 color = ambientGlobal + ambient;
 	vec3 D = normalize(gl_LightSource[0].spotDirection);
 	vec3 L = normalize(gl_LightSource[0].position.xyz - ecPos);
 

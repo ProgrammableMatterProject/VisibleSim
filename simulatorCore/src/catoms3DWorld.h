@@ -31,7 +31,7 @@ protected:
 	GLfloat blockSize[3];
 	Camera *camera;
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
-	GLuint idTextureHexa,idTextureLines;
+	GLuint idTextureHexa,idTextureGrid;
 	GLushort numSelectedFace;
 	GLuint numSelectedBlock;
 	GLint menuId;
@@ -40,8 +40,8 @@ protected:
 
 	Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~Catoms3DWorld();
-	void linkBlock(int ix,int iy,int iz);
 
+	void linkBlock(const Cell3DPosition &pos);
 public:
 	static void createWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	static void deleteWorld();
@@ -63,8 +63,14 @@ public:
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
 
-	inline void setGridPtr(int ix,int iy,int iz,Catoms3DBlock *ptr) { gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr; };
-	inline Catoms3DBlock* getGridPtr(int ix,int iy,int iz) { return gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]; };
+/**
+ * \brief associate a block to a cell of the grid
+*/
+	inline void setGridPtr(const Cell3DPosition &pos,Catoms3DBlock *ptr) { gridPtrBlocks[pos.pt[0]+(pos.pt[1]+pos.pt[2]*gridSize[1])*gridSize[0]]=ptr; };
+/**
+ * \brief return the block placed on the cell of position pos
+*/
+	inline Catoms3DBlock* getGridPtr(const Cell3DPosition &pos) { return gridPtrBlocks[pos.pt[0]+(pos.pt[1]+pos.pt[2]*gridSize[1])*gridSize[0]]; };
 	inline int* getGridSize() {return gridSize;}
 	inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,3*sizeof(int)); return targetGrid; };
 	inline presence getTargetGrid(int ix,int iy,int iz) { return targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]; };
@@ -74,11 +80,13 @@ public:
 	inline void setCapabilities(Catoms3DCapabilities *capa) { capabilities=capa; };
 	void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
 	inline Catoms3DCapabilities* getCapabilities() { return capabilities; };
+/**
+ * \brief update the list of connected blocks
+*/
 	void linkBlocks();
-	void loadTextures(const string &str);
 
 	Cell3DPosition worldToGridPosition(Vecteur &pos);
-	Vecteur gridToWorldPosition(Cell3DPosition &pos);
+	Vecteur gridToWorldPosition(const Cell3DPosition &pos);
 
 	virtual void glDraw();
 	virtual void glDrawId();
@@ -93,6 +101,12 @@ public:
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(Catoms3DBlock *block);
 	virtual void connectBlock(Catoms3DBlock *block);
+
+/**
+ * \brief load the background textures (internal)
+*/
+	void loadTextures(const string &str);
+
 };
 
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
