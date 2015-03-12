@@ -290,7 +290,7 @@ void GlutContext::idleFunc(void) {
 #else
 	  usleep(20000);
 #endif
-	if (saveScreenMode && mustSaveImage) {
+	if (saveScreenMode) { //&& mustSaveImage) {
 		static int num=0;
 		char title[16];
 		sprintf(title,"save%04d.ppm",num++);

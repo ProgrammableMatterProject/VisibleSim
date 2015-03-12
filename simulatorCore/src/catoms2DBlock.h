@@ -17,9 +17,11 @@
 
 namespace Catoms2D {
 
+#define MAX_NB_NEIGHBORS 6
+
 class NeighborDirection {
 public:
-	enum Direction { BottomLeft = 0, Left = 1, TopLeft = 2, BottomRight = 3, Right = 4, TopRight =5};
+	enum Direction { Right = 0, TopRight = 1, TopLeft = 2, Left = 3, BottomLeft = 4, BottomRight = 5};
 	static int getOpposite(int d);
 	static string getString(int d);
 };
@@ -36,6 +38,7 @@ public:
 	Color color; // color of the block
 	Vecteur position; // position of the block;
 	bool isMaster;
+	int angle;
 
 	Catoms2DBlockCode *(*buildNewBlockCode)(Catoms2DBlock*);
 	Catoms2DBlock(int bId, Catoms2DBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(Catoms2DBlock*));
@@ -45,10 +48,11 @@ public:
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
 	void setPosition(const Vecteur &p);
-	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
-	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
-
+	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
+	
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
+	int nbNeighbors();
+	int nbConsecutiveNeighbors();
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb);

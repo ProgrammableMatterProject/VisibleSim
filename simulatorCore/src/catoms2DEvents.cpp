@@ -86,7 +86,8 @@ void MotionStepEvent::consume() {
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         Vecteur pos = pivot+BC;
-        cout << pos << endl;
+        //cout << pos << endl;
+        rb->angle += angle*sens;
         Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+angle*sens);
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
 	} else {
@@ -94,7 +95,8 @@ void MotionStepEvent::consume() {
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
         Vecteur BC = roty*BA;
         Vecteur pos = pivot+BC;
-        cout << pos << endl;
+        //cout << pos << endl;
+        rb->angle += ANGULAR_STEP*sens;
         Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+ANGULAR_STEP*sens);
         scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-ANGULAR_STEP,sens));
 	}

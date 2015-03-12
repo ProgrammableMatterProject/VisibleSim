@@ -67,6 +67,8 @@ public:
 	virtual void shakeBlock(uint64_t date, int bId, int f) {};
 	/* Stop the block execution */
 	void stopSimulation();
+	
+	void generateIds(int n, int *ids);
 };
 
 inline void deleteWorld() {

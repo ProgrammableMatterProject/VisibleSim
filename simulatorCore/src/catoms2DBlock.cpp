@@ -72,11 +72,12 @@ switch (Direction(d)) {
 
 Catoms2DBlock::Catoms2DBlock(int bId, Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*)) : BaseSimulator::BuildingBlock(bId) {
 	OUTPUT << "Catoms2DBlock constructor" << endl;
-	for (int i=0; i<6; i++) {
+	for (int i=0; i<MAX_NB_NEIGHBORS; i++) {
 		tabInterfaces[i] = new P2PNetworkInterface(this);
 	}
 	buildNewBlockCode = catoms2DBlockCodeBuildingFunction;
 	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+	angle = 0;
  }
 
 Catoms2DBlock::~Catoms2DBlock() {
@@ -97,29 +98,63 @@ NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *gi
 	if( !given_interface) {
 		return NeighborDirection::Direction(0);
 	}
-	for( int i(0); i < 6; ++i) {
+	for( int i(0); i < MAX_NB_NEIGHBORS; ++i) {
 		if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
 	}
 	return NeighborDirection::Direction(0);
 }
 
-P2PNetworkInterface *Catoms2DBlock::getP2PNetworkInterfaceByRelPos(const PointRel3D &pos) {
-	// NOT TESTED. FALSE I THINK, DEPENDS ON THE PARITY OF THE LINE
-    if (pos.x==-1 && pos.y==0) return tabInterfaces[NeighborDirection::Left];
-    else if (pos.x==1 && pos.y==0) return tabInterfaces[NeighborDirection::Right];
-
-    else if (pos.y==-1 && pos.x==1) return tabInterfaces[NeighborDirection::BottomRight];
-    else if (pos.y==1 && pos.x==1) return tabInterfaces[NeighborDirection::TopRight];
-
-    else if (pos.z==-1) return tabInterfaces[NeighborDirection::BottomLeft];
-    else if (pos.z==1) return tabInterfaces[NeighborDirection::TopLeft];
-
-    return NULL;
-}
-
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {
   stream << bb.blockId << "\tcolor: " << bb.color;
   return stream;
+}
+
+P2PNetworkInterface *Catoms2DBlock::getInterface(NeighborDirection::Direction d) {
+	int alpha = angle;
+	int beta = d*60;
+	int t = beta-alpha;
+	if (t>=0){
+		return tabInterfaces[t/60];	
+	} else {
+		return  tabInterfaces[(360+t)/60];
+	}
+}
+
+int Catoms2DBlock::nbNeighbors() {
+	int cnt = 0;
+	for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {
+		if (tabInterfaces[i]->connectedInterface) 
+			cnt++;
+	}
+	return cnt;
+}
+
+int Catoms2DBlock::nbConsecutiveNeighbors() {
+	int empty = -1;
+	int m = 0;
+	int cnt = 0;
+	for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
+		if(tabInterfaces[i]->connectedInterface == NULL) {
+			empty = i;
+			break;
+		}
+	}
+	if (empty == -1) {
+		return MAX_NB_NEIGHBORS;
+	}
+	
+	
+	for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
+		int j = (empty+i)%MAX_NB_NEIGHBORS;
+		if(tabInterfaces[j]->connectedInterface) {
+			 cnt++;
+		} else {
+			m = max(m,cnt);
+			cnt = 0;
+		}
+	}
+	m = max(m,cnt);
+	return m;
 }
 
 }
