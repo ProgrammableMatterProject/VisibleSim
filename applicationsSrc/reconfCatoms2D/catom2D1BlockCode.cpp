@@ -49,21 +49,27 @@ void Catoms2D1BlockCode::startup() {
 	scheduler->trace(info.str(),hostBlock->blockId);
 	
 	//updateBorder();
-	if (canMove()) {
+	/*if (canMove()) {
 		catom2D->setColor(RED);
 	} else {
 		catom2D->setColor(GREEN);
-	}
+	}*/
+	catom2D->setColor(DARKGREY);
 	
-	if (catom2D->blockId == 10) {
+	/*if (catom2D->blockId == 10) {
 		cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
 		startMotion(ROTATE_LEFT,world->getBlockById(8));
 	}
 	
-	/*if (catom2D->blockId == 4) {
+	if (catom2D->blockId == 8) {
+		cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
+		startMotion(ROTATE_LEFT,world->getBlockById(7));
+	}*/
+	
+	if (catom2D->blockId == 4) {
 		cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
 		startMotion(ROTATE_LEFT,world->getBlockById(3));
-	}*/
+	}
 	
 	
 	
@@ -124,7 +130,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		cout << "motion end" << endl;
 		cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
 		catom2D->setColor(DARKGREY);
-		switch(cpt) {
+		/*switch(cpt) {
 			case 1:
 				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(8));
 			break;
@@ -134,9 +140,9 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 			case 3:
 				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(4));
 			break;
-		}
+		}*/
 		
-		/*switch(cpt) {
+		switch(cpt) {
 			case 1:
 				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(3));
 			break;
@@ -164,7 +170,13 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 			case 9:
 				startMotion(ROTATE_RIGHT,Catoms2DWorld::getWorld()->getBlockById(3));
 			break;
-		}*/
+			case 10:
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(3));
+			break;
+			case 11:
+				startMotion(ROTATE_LEFT,Catoms2DWorld::getWorld()->getBlockById(3));
+			break;
+		}
 		cpt++;
 	}
 	break;

@@ -116,7 +116,7 @@ P2PNetworkInterface *Catoms2DBlock::getInterface(NeighborDirection::Direction d)
 	if (t>=0){
 		return tabInterfaces[t/60];	
 	} else {
-		return  tabInterfaces[(360+t)/60];
+		return tabInterfaces[(360+t)/60];
 	}
 }
 

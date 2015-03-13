@@ -1,3 +1,4 @@
+
 /*
  * robotBlockWorld.cpp
  *
@@ -477,9 +478,13 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vecteur &position, dou
 
 Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
 	Vecteur res;
-	res.pt[2] = pos[2] / (M_SQRT3_2 * blockSize[2]);
+	res.pt[2] = round(pos[2] / (M_SQRT3_2 * blockSize[2]));
 	res.pt[1] = 0;
 	res.pt[0] = (int) (pos[0]/blockSize[0] - ((int)res.pt[2]%2)*0.5);
+	/*cout << pos[0]/blockSize[0] << endl;
+	cout << res.pt[0] << endl;
+	cout << res.pt[2] << endl;
+	cout << pos[2] << endl;*/
 	/*
 	cout << "------------computation worldToGridPosition--------------" << endl;
 	cout << pos << endl;
