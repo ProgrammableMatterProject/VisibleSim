@@ -46,7 +46,7 @@ Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
 		*ptr=NULL;
 		ptr++;
 	}
-	targetGrid=NULL;
+	//targetGrid=NULL;
 
 	GlutContext::init(argc,argv);
 	idTextureHexa=0;
@@ -54,23 +54,25 @@ Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
 	blockSize[0]=1.0;
 	blockSize[1]=5.0;
 	blockSize[2]=1.0;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D.obj");
+	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Drepere2.obj");
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
 	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
 	camera->setTarget(Vecteur(0,0,1.0));
 
-	menuId=0;
+    menuId=0;
 	numSelectedFace=0;
 	numSelectedBlock=0;
+
+	skeleton=NULL;
 }
 
 Catoms3DWorld::~Catoms3DWorld() {
 	OUTPUT << "Catoms3DWorld destructor" << endl;
 	/*	block linked are deleted by world::~world() */
 	delete [] gridPtrBlocks;
-	delete [] targetGrid;
+	//delete [] targetGrid;
 	delete objBlock;
 	delete objBlockForPicking;
 	delete objRepere;
@@ -85,7 +87,7 @@ void Catoms3DWorld::deleteWorld() {
 	delete((Catoms3DWorld*)world);
 }
 
-void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuildingFunction)(Catoms3DBlock*),const Cell3DPosition &pos,const Color &color,bool master) {
+void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuildingFunction)(Catoms3DBlock*),const Cell3DPosition &pos,short orientation,const Color &color,bool master) {
 
     // if blockID==-1, search the maximum id
 	if (blockId == -1) {
@@ -106,6 +108,7 @@ void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuilding
 	tabGlBlocks.push_back(glBlock);
 	catom->setGlBlock(glBlock);
 	catom->setPosition(pos);
+	catom->setOrientation(orientation);
 	catom->setColor(color);
 	setGridPtr(pos,catom);
     glBlock->setPosition(gridToWorldPosition(pos));
@@ -203,43 +206,140 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 		} else {
             (ptrBlock)->getInterface(3)->connect(NULL);
         }
-/*
-		OUTPUT << "Y AXIS - 2" << endl;
-		if (iz%2 == 1) {
-			if (ix<gridSize[0]-1) {
-				// x+1
-				if (iz<gridSize[2]-1 && getGridPtr(ix+1,iy,iz+1)) {
-					(ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(getGridPtr(ix+1,iy,iz+1)->getInterface(NeighborDirection::BottomLeft));
-					OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz+1)->blockId << endl;
-				} else {
-					(ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(NULL);
-				}
 
-				if (iz>0 && getGridPtr(ix+1,iy,iz-1)) {
-					(ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(getGridPtr(ix+1,iy,iz-1)->getInterface(NeighborDirection::TopLeft));
-					OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz-1)->blockId << endl;
-				} else {
-					(ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(NULL);
-				}
-			}
-		} else {
-				if (ix>0) {
-				// x-1
-				if (iz<gridSize[2]-1 && getGridPtr(ix-1,iy,iz+1)) {
-					(ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(getGridPtr(ix-1,iy,iz+1)->getInterface(NeighborDirection::BottomRight));
-					OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz+1)->blockId << endl;
-				} else {
-					(ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(NULL);
-				}
+// 2 cas, z pair / z impair
+        if (pos[2]%2==0) {
 
-				if (iz>0 && getGridPtr(ix-1,iy,iz-1)) {
-					(ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(getGridPtr(ix-1,iy,iz-1)->getInterface(NeighborDirection::TopRight));
-					OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz-1)->blockId << endl;
-				} else {
-					(ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(NULL);
-				}
-			}
-		}*/
+            OUTPUT << "ZXY" << endl;
+            neighborPos.set(pos[0],pos[1],pos[2]+1);
+            if (pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(5)->connect(neighborBlock->getInterface(4));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(5)->connect(NULL);
+            }
+            neighborPos.set(pos[0]-1,pos[1]-1,pos[2]-1);
+            if (pos[0]>0 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(4)->connect(neighborBlock->getInterface(5));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(4)->connect(NULL);
+            }
+
+            OUTPUT << "Z-XY" << endl;
+            neighborPos.set(pos[0]-1,pos[1],pos[2]+1);
+            if (pos[0]>0 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(7)->connect(neighborBlock->getInterface(6));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(7)->connect(NULL);
+            }
+            neighborPos.set(pos[0],pos[1]-1,pos[2]-1);
+            if (pos[1]>0 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(6)->connect(neighborBlock->getInterface(7));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(6)->connect(NULL);
+            }
+
+            OUTPUT << "ZX-Y" << endl;
+            neighborPos.set(pos[0],pos[1]-1,pos[2]+1);
+            if (pos[1]>0 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(9)->connect(neighborBlock->getInterface(8));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(9)->connect(NULL);
+            }
+            neighborPos.set(pos[0]-1,pos[1],pos[2]-1);
+            if (pos[0]>0 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(8)->connect(neighborBlock->getInterface(9));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(8)->connect(NULL);
+            }
+
+            OUTPUT << "Z-X-Y" << endl;
+            neighborPos.set(pos[0]-1,pos[1]-1,pos[2]+1);
+            if (pos[0]>0 && pos[1]>0 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(11)->connect(neighborBlock->getInterface(10));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(11)->connect(NULL);
+            }
+            neighborPos.set(pos[0],pos[1],pos[2]-1);
+            if (pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(10)->connect(neighborBlock->getInterface(11));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(10)->connect(NULL);
+            }
+
+        } else {
+            OUTPUT << "ZXY" << endl;
+            neighborPos.set(pos[0]+1,pos[1]+1,pos[2]+1);
+            if (pos[0]<gridSize[0]-1 && pos[1]<gridSize[1]-1 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(5)->connect(neighborBlock->getInterface(4));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(5)->connect(NULL);
+            }
+            neighborPos.set(pos[0],pos[1],pos[2]-1);
+            if (pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(4)->connect(neighborBlock->getInterface(5));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(4)->connect(NULL);
+            }
+
+            OUTPUT << "Z-XY" << endl;
+            neighborPos.set(pos[0],pos[1]+1,pos[2]+1);
+            if (pos[1]<gridSize[1]-1 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(7)->connect(neighborBlock->getInterface(6));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(7)->connect(NULL);
+            }
+
+            neighborPos.set(pos[0]+1,pos[1],pos[2]-1);
+            if (pos[0]<gridSize[0]-1 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(6)->connect(neighborBlock->getInterface(7));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(6)->connect(NULL);
+            }
+
+            OUTPUT << "ZX-Y" << endl;
+            neighborPos.set(pos[0]+1,pos[1],pos[2]+1);
+            if (pos[0]<gridSize[0]-1 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(9)->connect(neighborBlock->getInterface(8));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(9)->connect(NULL);
+            }
+            neighborPos.set(pos[0],pos[1]+1,pos[2]-1);
+            if (pos[1]<gridSize[1]-1 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(8)->connect(neighborBlock->getInterface(9));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(8)->connect(NULL);
+            }
+
+            OUTPUT << "Z-X-Y" << endl;
+            neighborPos.set(pos[0],pos[1],pos[2]+1);
+            if (pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(11)->connect(neighborBlock->getInterface(10));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(11)->connect(NULL);
+            }
+            neighborPos.set(pos[0]+1,pos[1]+1,pos[2]-1);
+            if (pos[0]<gridSize[0]-1 && pos[1]<gridSize[1]-1 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                (ptrBlock)->getInterface(10)->connect(neighborBlock->getInterface(11));
+                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
+            } else {
+                (ptrBlock)->getInterface(10)->connect(NULL);
+            }
+        }
 	}
 }
 
@@ -434,9 +534,14 @@ void Catoms3DWorld::loadTextures(const string &str) {
 	idTextureGrid = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-void Catoms3DWorld::updateGlData(Catoms3DBlock*blc) {
-	//cout << "update posgrid:" << blc->position << endl;
-	updateGlData(blc,gridToWorldPosition(blc->position));
+void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Color &color) {
+	Catoms3DGlBlock *glblc = blc->getGlBlock();
+	if (glblc) {
+		lock();
+		//cout << "update pos:" << position << endl;
+		glblc->setColor(color);
+		unlock();
+	}
 }
 
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vecteur &position) {
@@ -445,19 +550,26 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vecteur &position) {
 		lock();
 		//cout << "update pos:" << position << endl;
 		glblc->setPosition(position);
-		glblc->setColor(blc->color);
 		unlock();
 	}
 }
 
-void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vecteur &position, double angle) {
+void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position) {
 	Catoms3DGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
 		lock();
 		//cout << "update pos:" << position << endl;
-		glblc->setAngle(angle);
-		glblc->setPosition(position);
-		glblc->setColor(blc->color);
+		glblc->setPosition(gridToWorldPosition(position));
+		unlock();
+	}
+}
+
+void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, float theta, float phi, float psi) {
+	Catoms3DGlBlock *glblc = blc->getGlBlock();
+	if (glblc) {
+		lock();
+		//cout << "update pos:" << position << endl;
+		glblc->setAngles(theta,phi,psi);
 		unlock();
 	}
 }
@@ -465,6 +577,14 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vecteur &position, dou
 Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
 	Cell3DPosition res;
 
+    res.pt[2] = short(pos[2]/(M_SQRT2_2*blockSize[2]));
+    if (res.pt[2]%2) {
+        res.pt[0] = short(pos[0]/blockSize[0]);
+        res.pt[1] = short(pos[1]/blockSize[1]);
+    } else {
+        res.pt[0] = short(pos[0]/blockSize[0]-0.5);
+        res.pt[1] = short(pos[1]/blockSize[1]-0.5);
+    }
 	return res;
 }
 
@@ -578,7 +698,7 @@ void Catoms3DWorld::createHelpWindow() {
 		delete GlutContext::helpWindow;
 	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/catoms3DHelp.txt");
 }
-
+/*
 void Catoms3DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
     presence *gpm=pm.grid;
     Catoms3DBlock **grb;
@@ -611,6 +731,6 @@ void Catoms3DWorld::initTargetGrid() {
     targetGrid = new presence[gridSize[0]*gridSize[1]*gridSize[2]];
     memset(targetGrid,emptyCell,sz*sizeof(presence));
 }
-
+*/
 } // RobotBlock namespace
 

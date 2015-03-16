@@ -80,7 +80,7 @@ void MotionStepEvent::consume() {
 
 	Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
 
-    Matrice roty;
+/*    Matrice roty;
     if (angle<ANGULAR_STEP) {
         roty.setRotationY(-sens*angle);
         Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
@@ -95,7 +95,7 @@ void MotionStepEvent::consume() {
         Vecteur pos = pivot+BC;
         Catoms3DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle-ANGULAR_STEP*sens);
         scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-ANGULAR_STEP,sens));
-	}
+	}*/
 }
 
 const string MotionStepEvent::getEventName() {

@@ -16,13 +16,13 @@ namespace Catoms3D {
 class Catoms3DGlBlock:public GlBlock {
 protected :
 public :
-    double angle; //!< orientation angle in degree around Y axis
+    GLfloat theta,phi,psi; //!< spherical coordinates angles in degree
 
 	Catoms3DGlBlock(int id);
 	virtual ~Catoms3DGlBlock();
 	virtual string getInfo();
 
-	inline void setAngle(double a) {angle=a;};
+	void setAngles(float t,float p,float f);
 
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
 	void glDrawId(ObjLoader::ObjLoader *ptrObj,int &n);

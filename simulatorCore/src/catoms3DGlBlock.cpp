@@ -3,7 +3,7 @@
 namespace Catoms3D {
 
 Catoms3DGlBlock::Catoms3DGlBlock(int id) : GlBlock(id) {
-    angle=0;
+    theta=phi=0;
 }
 
 Catoms3DGlBlock::~Catoms3DGlBlock() {
@@ -12,7 +12,9 @@ Catoms3DGlBlock::~Catoms3DGlBlock() {
 void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
 	glTranslatef(position[0],position[1],position[2]);
-	//glRotatef(-angle,0,1,0);
+	glRotatef(psi,1,0,0);
+	glRotatef(phi,0,1,0);
+	glRotatef(theta,0,0,1);
 	if (isHighlighted) {
 		GLfloat n = 0.5+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);
 		GLfloat c[4];
@@ -24,7 +26,9 @@ void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	} else {
 		ptrObj->setLightedColor(color);
 	}
+	glDisable(GL_CULL_FACE);
 	ptrObj->glDraw();
+	glEnable(GL_CULL_FACE);
     glPopMatrix();
 }
 
@@ -48,6 +52,12 @@ string Catoms3DGlBlock::getInfo() {
 	sprintf(tmp,"%d\nPos=(%.1f,%.1f,%.1f) Col=(%4.1f,%4.1f,%4.1f)",blockId,position[0],position[1],position[2],color[0],color[1],color[2]);
 
 	return string(tmp);
+}
+
+void Catoms3DGlBlock::setAngles(float t,float p,float f) {
+    theta=t;
+    phi = p;
+    psi = f;
 }
 
 }

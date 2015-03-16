@@ -1,0 +1,76 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 13.03.2015 19:14:40
+
+newmtl connectors
+	Ns 48.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2941 0.2941 0.2941
+	Kd 0.2941 0.2941 0.2941
+	Ks 1.0890 1.0890 1.0890
+	Ke 0.0000 0.0000 0.0000
+	map_Ka D:\Documents\2-Recherche\LIFC\svn\svn-simulateur\Catoms3D\textureNumeros.tga
+	map_Kd D:\Documents\2-Recherche\LIFC\svn\svn-simulateur\Catoms3D\textureNumeros.tga
+
+newmtl lighted
+	Ns 5.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2392 0.9059 0.0314
+	Kd 0.2392 0.9059 0.0314
+	Ks 0.5220 0.5220 0.5220
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__36
+	Ns 43.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 0.0000 0.0000
+	Kd 1.0000 0.0000 0.0000
+	Ks 1.2600 1.2600 1.2600
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__38
+	Ns 43.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 1.0000 0.0000
+	Kd 0.0000 1.0000 0.0000
+	Ks 1.2600 1.2600 1.2600
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__39
+	Ns 43.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 1.0000
+	Kd 0.0000 0.0000 1.0000
+	Ks 1.2600 1.2600 1.2600
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__37
+	Ns 43.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.7110 0.7110 0.7110
+	Ke 0.0000 0.0000 0.0000

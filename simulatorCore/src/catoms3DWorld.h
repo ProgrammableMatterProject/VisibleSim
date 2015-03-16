@@ -14,6 +14,7 @@
 #include "cell3DPosition.h"
 #include "catoms3DBlock.h"
 #include "objLoader.h"
+#include "skeleton.h"
 #include <boost/asio.hpp>
 #include "trace.h"
 #include <vector>
@@ -35,8 +36,9 @@ protected:
 	GLushort numSelectedFace;
 	GLuint numSelectedBlock;
 	GLint menuId;
-	presence *targetGrid;
-	Catoms3DCapabilities *capabilities;
+	Skeleton *skeleton;
+/*	presence *targetGrid;
+	Catoms3DCapabilities *capabilities;*/
 
 	Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~Catoms3DWorld();
@@ -58,7 +60,7 @@ public:
 		return((Catoms3DBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, Catoms3DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms3DBlock*), const Cell3DPosition&pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId, Catoms3DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms3DBlock*), const Cell3DPosition&pos, short orientation, const Color &col, bool master=false);
 	void deleteBlock(Catoms3DBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
@@ -72,14 +74,16 @@ public:
 */
 	inline Catoms3DBlock* getGridPtr(const Cell3DPosition &pos) { return gridPtrBlocks[pos.pt[0]+(pos.pt[1]+pos.pt[2]*gridSize[1])*gridSize[0]]; };
 	inline int* getGridSize() {return gridSize;}
-	inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,3*sizeof(int)); return targetGrid; };
-	inline presence getTargetGrid(int ix,int iy,int iz) { return targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]; };
-	inline void setTargetGrid(presence value,int ix,int iy,int iz) { targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value; };
-	void initTargetGrid();
+	//inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,3*sizeof(int)); return targetGrid; };
+	//inline presence getTargetGrid(int ix,int iy,int iz) { return targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]; };
+	//inline void setTargetGrid(presence value,int ix,int iy,int iz) { targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value; };
+	inline void setSkeleton(Skeleton *s) { skeleton=s; };
+	inline double getSkeletonPotentiel(const Vecteur& pos) { return (skeleton==NULL)?-1:skeleton->potentiel(pos); };
+	//void initTargetGrid();
 
-	inline void setCapabilities(Catoms3DCapabilities *capa) { capabilities=capa; };
-	void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
-	inline Catoms3DCapabilities* getCapabilities() { return capabilities; };
+	//inline void setCapabilities(Catoms3DCapabilities *capa) { capabilities=capa; };
+	//void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
+	//inline Catoms3DCapabilities* getCapabilities() { return capabilities; };
 /**
  * \brief update the list of connected blocks
 */
@@ -91,9 +95,10 @@ public:
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
-	virtual void updateGlData(Catoms3DBlock*blc);
+	virtual void updateGlData(Catoms3DBlock*blc,const Color &color);
+	virtual void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
 	virtual void updateGlData(Catoms3DBlock*blc, const Vecteur &position);
-	virtual void updateGlData(Catoms3DBlock*blc, const Vecteur &position, double angle);
+	virtual void updateGlData(Catoms3DBlock*blc, float theta, float phi,float psi);
 	virtual void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };

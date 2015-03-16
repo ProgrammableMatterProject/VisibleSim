@@ -30,6 +30,7 @@ public:
 	Catoms3DGlBlock *ptrGlBlock;
 	Color color; //!< color of the block
 	Cell3DPosition position; //!< position of the block in the grid of cells;
+	short orientationCode; //! number of the connector that is along the x axis.
     Catoms3DBlockCode *(*buildNewBlockCode)(Catoms3DBlock*);
 /**
     \brief Constructor
@@ -43,6 +44,7 @@ public:
 	inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
 	void setPosition(const Cell3DPosition&p);
+	void setOrientation(short code);
 	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 	inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[d]; }
 

@@ -83,11 +83,11 @@ const Vecteur Vecteur::normer() const
   return r;
 }
 
-double Vecteur::norme()
+double Vecteur::norme() const
 { return sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
 }
 
-double Vecteur::norme2()
+double Vecteur::norme2() const
 { return pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2];
 }
 

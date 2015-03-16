@@ -66,11 +66,11 @@ class Vecteur
 /**
     \brief Return the length of the vector
 */
-  double norme();
+  double norme() const;
 /**
     \brief Return the square of the length of the vector
 */
-  double norme2();
+  double norme2() const;
 /**
     \brief Incrementation of the vecteur by p
     \param p : vector to add to the current vector

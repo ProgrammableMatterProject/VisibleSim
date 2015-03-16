@@ -77,7 +77,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	if (nodeConfig) {
 		TiXmlElement* cameraElement = nodeConfig->ToElement();
 		const char *attr=cameraElement->Attribute("target");
-		double def_near=1,def_far=1500;
+		double def_near=0.1,def_far=1500;
 		float angle=45.0;
 		if (attr) {
 			string str(attr);
@@ -179,15 +179,18 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
              world->setBlocksSize(blockSize);
 		}
 
-	/* Reading a robotblock */
+	/* Reading a block */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
 		Cell3DPosition position;
+		int orientation=0;
 		Color color;
 		bool master;
 		while (block) {
 		   element = block->ToElement();
 		   color=defaultColor;
 		   master=false;
+		   orientation=0;
+		   // set the color
 		   attr = element->Attribute("color");
 		   if (attr) {
 			   string str(attr);
@@ -198,15 +201,22 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
                          atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
 			   OUTPUT << "new color :" << defaultColor << endl;
 			}
+			// set the position
 			attr = element->Attribute("position");
 			if (attr) {
                 string str(attr);
                 int pos1 = str.find_first_of(','),
-				pos2 = str.find_last_of(',');
-				position.pt[0] = atof(str.substr(0,pos1).c_str());
-				position.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-				position.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                    pos2 = str.find_last_of(',');
+				position.set(atof(str.substr(0,pos1).c_str()),
+                             atof(str.substr(pos1+1,pos2-pos1-1).c_str()),
+                             atof(str.substr(pos2+1,str.length()-pos1-1).c_str()));
 				OUTPUT << "position : " << position << endl;
+			}
+			// set the orientation
+			attr = element->Attribute("orientation");
+			if (attr) {
+                orientation = atoi(attr);
+                OUTPUT << "orientation : " << orientation << endl;
 			}
 			attr = element->Attribute("master");
 			if (attr) {
@@ -216,7 +226,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
                 }
                 OUTPUT << "master : " << master << endl;
 			}
-			world->addBlock(currentID++,Catoms3DSimulator::buildNewBlockCode,position,color,master);
+			world->addBlock(currentID++,Catoms3DSimulator::buildNewBlockCode,position,orientation,color,master);
 			block = block->NextSibling("block");
 		} // end while (block)
 /*
@@ -262,7 +272,84 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	} else // end if(nodeBlock)
 	{ cerr << "no Block List" << endl;
 	}
-
+/* loading skeleton*/
+    TiXmlNode *nodeGrid = node->FirstChild("skeleton");
+	if (nodeGrid) {
+		Skeleton *sk = new Skeleton();
+		world->setSkeleton(sk);
+		/* skeleton points */
+		TiXmlNode *skelPoint = nodeGrid->FirstChild("skeleton_point");
+		Vecteur position;
+		double radius=10,blobbiness=-0.1;
+		const char *attr;
+		TiXmlElement* element;
+		while (skelPoint) {
+		   	element = skelPoint->ToElement();
+			attr = element->Attribute("pos");
+			if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+				position.pt[0] = atof(str.substr(0,pos1).c_str());
+				position.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+				position.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				OUTPUT << "point position : " << position << endl;
+			}
+			attr = element->Attribute("radius");
+			if (attr) {
+                radius = atof(attr);
+				OUTPUT << "radius : " << radius << endl;
+			}
+			attr = element->Attribute("blobbiness");
+			if (attr) {
+                blobbiness = atof(attr);
+				OUTPUT << "blobbiness: " << blobbiness << endl;
+			}
+			sk->add(new SkelPoint(position,radius,blobbiness));
+			skelPoint = skelPoint->NextSibling("skeleton_point");
+		}
+        /* skeleton points */
+		TiXmlNode *skelLine = nodeGrid->FirstChild("skeleton_line");
+		Vecteur posA,posB;
+		while (skelLine) {
+		   	element = skelLine->ToElement();
+			attr = element->Attribute("posA");
+			if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+				posA.pt[0] = atof(str.substr(0,pos1).c_str());
+				posA.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+				posA.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				OUTPUT << "point position : " << posA << endl;
+			}
+			attr = element->Attribute("posB");
+			if (attr) {
+                string str(attr);
+                int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+				posB.pt[0] = atof(str.substr(0,pos1).c_str());
+				posB.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+				posB.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				OUTPUT << "point position : " << posB << endl;
+			}
+			attr = element->Attribute("radius");
+			if (attr) {
+                radius = atof(attr);
+				OUTPUT << "radius : " << radius << endl;
+			}
+			attr = element->Attribute("blobbiness");
+			if (attr) {
+                blobbiness = atof(attr);
+				OUTPUT << "blobbiness: " << blobbiness << endl;
+			}
+			sk->add(new SkelLine(posA,posB,radius,blobbiness));
+			skelLine = skelLine->NextSibling("skeleton_point");
+		}
+	 } else {
+	 	ERRPUT << "No skeleton" << endl;
+	 }
+/*
 	TiXmlNode *nodeGrid = node->FirstChild("targetGrid");
 	if (nodeGrid) {
 		world->initTargetGrid();
@@ -285,7 +372,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 			world->setTargetGrid(fullCell,position[0],position[1],position[2]);
 			block = block->NextSibling("block");
 		}
-		/*
+
 		TiXmlNode *block = nodeGrid->FirstChild("targetLine");
 		int line,plane;
 		while (block) {
@@ -307,10 +394,10 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	 		    }
 	 		}
 	 		block = block->NextSibling("targetLine");
-	 	}*/
+	 	}
 	 } else {
 	 	ERRPUT << "No target grid" << endl;
-	 }
+	 }*/
 /*
     TiXmlNode *nodeCapa = node->FirstChild("capabilities");
 	if (nodeCapa) {
