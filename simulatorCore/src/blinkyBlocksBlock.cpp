@@ -12,6 +12,7 @@
 #include "blinkyBlocksSimulator.h"
 #include "blinkyBlocksEvents.h"
 #include "trace.h"
+#include "clock.h"
 
 using namespace std;
 
@@ -82,6 +83,7 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlo
 	vm = new BlinkyBlocksVM(this);
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
 	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+	clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC1K_CRC, blockId);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {

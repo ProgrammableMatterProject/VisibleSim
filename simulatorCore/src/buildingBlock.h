@@ -17,7 +17,7 @@
 
 #include "glBlock.h"
 #include "blockCode.h"
-
+#include "clock.h"
 
 class Event;
 typedef boost::shared_ptr<Event> EventPtr;
@@ -25,6 +25,7 @@ typedef boost::shared_ptr<Event> EventPtr;
 using namespace std;
 
 class P2PNetworkInterface;
+//class Clock;
 
 namespace BaseSimulator {
 
@@ -60,6 +61,7 @@ public:
 	int blockId;
 	BlockCode *blockCode;
 	State state;
+	Clock *clock;
 	boost::rand48 generator;
 
 	BuildingBlock(int bId);

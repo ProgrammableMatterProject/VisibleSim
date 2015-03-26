@@ -34,10 +34,14 @@ BuildingBlock::BuildingBlock(int bId) {
 	P2PNetworkInterfaceNextLocalId = 0;
 	state = ALIVE;
 	generator = boost::rand48(50*blockId);
+	clock = NULL;
 }
 
 BuildingBlock::~BuildingBlock() {
 	OUTPUT << "BuildingBlock destructor" << endl;
+	if (clock != NULL) {
+		delete clock;
+	}
 }
 
 unsigned int BuildingBlock::getNextP2PInterfaceLocalId() {
