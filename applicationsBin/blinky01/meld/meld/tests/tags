@@ -1,0 +1,15 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+VM	Makefile	/^VM = ..\/meld -d -f$/;"	m
+do_exit	test.sh	/^do_exit ()$/;"	f
+do_serial	test.sh	/^do_serial ()$/;"	f
+do_test	test.sh	/^do_test ()$/;"	f
+loop_sched	test.sh	/^loop_sched ()$/;"	f
+run_diff	test.sh	/^run_diff ()$/;"	f
+run_serial_n	test.sh	/^run_serial_n ()$/;"	f
+run_test	test_linear.sh	/^run_test ()$/;"	f
+run_test_n	test.sh	/^run_test_n ()$/;"	f

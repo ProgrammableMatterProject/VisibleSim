@@ -79,6 +79,7 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlo
 	OUTPUT << "BlinkyBlocksBlock constructor" << endl;
 	for (int i=0; i<6; i++) {
 		tabInterfaces[i] = new P2PNetworkInterface(this);
+		getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
 	}
 	vm = new BlinkyBlocksVM(this);
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;

@@ -1,0 +1,86 @@
+			Debugger  / Simulator
+
+The simulator launches a VM process for each block:
+./meld ….. -S
+-S: debugger working with the simulator
+
+The debugger is working in a separate thread in the simulator process. 
+Communications between the debugger and the simulator are done through a tcp 
+link similarly to the VM/Simulator exchanges, with the same socket.
+
+When a breakpoint is reached, stop the simulation and one VM or 
+all the VMs ? -> to be determinated later, but should probably indicate to
+all VMs that they should stop at timestamp X.
+
+A seperate thread runs in the simulator with an I/O loop to the
+console.  This thread is already implemented by dave, so dave and
+andre only need to agree on an API.  Proposed is:
+
+debugger exports - simulator:
+
+// All processes will be assumed to be paused before function is called 
+// (./meld -S)
+void (*initDebugger(void (sendMessage)(int id, MessageBuffer* m),
+			void (pauseSimulation)(timestampt t),
+			void (unPausedSimulation)(void)) (MessageBuffer* m) ;
+     	call this to start the debugger thread and get back a callback
+     	to be invoked whenever a debugging type packet is recieved from a
+     	VM.
+
+//no need to be exported
+void handleMessage(MessageBuffer* m);
+	Giving a message, it parses it, and controls the debugging
+
+simulator exports - debugger:
+
+void sendMessage(int id, MessageBuffer* m)
+     	This sends a pre-formatted message to the VM id from the debugger, or
+	to all the VMs if id = - 1.
+
+void pauseSimulation(Timestamp t)
+		Asks simulator to pause the simulation at time t. It only pauses the
+    simulator, and it does not send any pause message to the VMs. The 
+	debugger thread has to do it before, with a call to
+	sendMessage(-1, pauseMessage);. Of course the vm must be paused before
+	the call to pauseSimulation().
+
+void unPauseSimulation()
+     	Asks simulator to continue the simulation. It only resumes the
+    simulation, and it does not send any unpause message to the VMs. The 
+	debugger thread has to do it before, with a call to
+	sendMessage(-1, unPauseMessage);
+
+Message format:
+A message is composed of an array of unsigned integers of 64 bits:
+ The first integer will contain the message size (in bytes) of the remaining 
+integers.         
+ The second integer is a DEBUG flag: 16
+ The third integer is the message command (see below).
+ The remaining integers are the command arguments.
+
+Available messages:
+ 1: DUMP
+     sim -> vm
+       Simulator tells the debugger that it wants to dump the facts of this node
+ 2: BREAK <type> <name of the fact>
+     sim -> vm
+       Simulator tells the vm to set a break point
+       <type :        1. factDer
+                      2. factCon
+                      3. factRet
+                      4. Action
+                      5. Sense
+                      6. Block ?
+       <name of the fact : char* ?
+ 3: UNPAUSE
+     sim -> vm
+       Simulator tells the debugger to continue the execution
+ 4: PAUSE <timestamp>
+     sim -> vm
+       Simulator tells the debugger to stop the execution (make a pause)
+ 5: PRINTCONTENT <content>
+     vm -> sim (- debugger)
+       The debugger tells the simulator to display some information
+ 6: BREAKFOUND <content>
+     vm -> sim (- debugger)
+      The debugger tells the simulator that a breakpoint has been reached.

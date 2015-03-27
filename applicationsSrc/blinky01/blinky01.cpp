@@ -11,6 +11,7 @@
 #include "blinky01BlockCode.h"
 #include "blinkyBlocksDebugger.h"
 #include "blinkyBlocksVM.h"
+#include "configStat.h"
 #include <trace.h> 
 
 using namespace std;
@@ -22,6 +23,9 @@ int main(int argc, char **argv) {
 
 	createSimulator(argc, argv, Blinky01BlockCode::buildNewBlockCode);
 
+	ConfigStat stat(BaseSimulator::getWorld());
+	stat.print();
+	
 	{
 		using namespace BaseSimulator;
 
@@ -32,9 +36,9 @@ int main(int argc, char **argv) {
 	getSimulator()->printInfo();
 	BlinkyBlocks::getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
-	
+		
 	BlinkyBlocks::getScheduler()->waitForSchedulerEnd();
-	
+		
 	if (BlinkyBlocks::BlinkyBlocksVM::isInDebuggingMode()) {
 		BlinkyBlocks::getDebugger()->waitForDebuggerEnd();
 	}

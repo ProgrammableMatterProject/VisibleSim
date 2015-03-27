@@ -1,0 +1,3 @@
+extern int intb(int).
+ 
+setColor2(X, intb(5)).

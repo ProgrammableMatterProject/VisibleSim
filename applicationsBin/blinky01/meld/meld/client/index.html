@@ -1,0 +1,59 @@
+<html>
+   <head>
+      <title>Virtual Machine Browser</title>
+      <script src="http://www.google.com/jsapi"></script>
+      <script>google.load("jquery", "1.3")</script>
+      <script src="http://jquery-json.googlecode.com/files/jquery.json-2.3.min.js"></script>
+      <script src="http://jquery-websocket.googlecode.com/files/jquery.websocket-0.0.1.js"></script>
+		<script src="springy.js"></script>
+		<script src="springyui.js"></script>
+		<script src="ui.js"></script>
+		<link href="style.css" rel="stylesheet" type="text/css"></link>
+</head>
+  <body>
+    <div id="wrap">
+      <div id="main">
+        <div id="graph-parent">
+  			  <canvas id="graph" width="700" height="480"/>
+  			</div>
+  			<div id="controls">
+  			  <button id="button-play" class="btn">Play</button>
+  			  <button id="button-stop" class="btn">Stop</button>
+  			  <button id="button-next" class="btn">Next</button>
+           <input id="input-jump" type="text" value="10"></button>
+  			  <button id="button-jump" class="btn">Jump</button>
+  			  <button id="button-terminate" class="btn">Terminate</button>
+  		  </div>
+  		  <div id="node-window">
+  		    <h1 id="node-name"></h1>
+          <div id="node-database-parent">
+            <h2>Database</h2>
+            <div id="node-database">
+            </div>
+          </div>
+          <div id="node-queue-parent">
+            <h2>Queue</h2>
+            <div id="node-queue">
+            </div>
+          </div>
+          <div id="node-log-parent">
+            <h2>Log</h2>
+            <ul id="node-log">
+            </ul>
+          </div>
+          <div id="node-controls">
+          </div>
+    		</div>
+  		</div>
+  		<div id="side-log">
+  		  <div id="log-message-parent">
+  		    <span id="log-message"></span>
+  		  </div>
+  		  <ul id="main-log">
+		    </ul>
+		  </div>
+  		<p id="version"></p>
+  	</div>
+  </body>
+</html>
+

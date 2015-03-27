@@ -1,0 +1,27 @@
+
+type linear inc(node).
+type linear route bit(node, int, node).
+type linear eps(node).
+type linear value(node, int).
+
+/* initial setup */
+bit(@0, 1, @1). value(@0, 1).
+eps(@1).
+
+inc(@0).
+inc(@0).
+inc(@0).
+
+/* inc/eps */
+inc(DR), eps(DR) -o exists DM. (eps(DM), bit(DR, 1, DM)), value(DR, 1).
+
+/* inc/bit0 */
+bit(DR, 0, DL), inc(DR), value(DR, N) -o bit(DR, 1, DL), value(DR, N + 1).
+
+/* inc/bit1 */
+bit(DR, 1, DL), inc(DR), value(DR, N) -o inc(DL), bit(DR, 0, DL), value(DR, N + 1).
+
+/* inc/eps: eps DR, inc DR -o exists DM. eps DM, bit DR 1 DM */
+/* inc/bit0: bit DR 0 DL, inc DR -o bit DR 1 DL */
+/* inc/bit1: bit DR 1 DL, inc DR -o inc DL, bit DR 0 DL */
+

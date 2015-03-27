@@ -124,7 +124,7 @@ void ConfigStat::computeDistanceMatrix() {
 }
 
 void ConfigStat::computeCenter() {
-	radius = UINT_MAX;
+	radius = INT_MAX;
 	diameter = 0;
 	
 	for (int i = 1; i < size; i++) {
@@ -170,8 +170,8 @@ void ConfigStat::computeBetweennessCenter() {
 }
 
 void ConfigStat::print(string name, list<BaseSimulator::BuildingBlock*>& l) {
-	cout << name;
-	for (list<BaseSimulator::BuildingBlock*>::iterator it=center.begin(); it != center.end(); it++) {
+	cout << name <<":";
+	for (list<BaseSimulator::BuildingBlock*>::iterator it=l.begin(); it != l.end(); it++) {
 		cout << ' ' << (*it)->blockId << "(eccentricity:" << eccentricity[(*it)->blockId]<< ", closeness centrality:" <<  closenessCentrality[(*it)->blockId] << ")";
     }
 	cout << endl; 

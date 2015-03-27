@@ -1,0 +1,444 @@
+\documentclass{article}
+\oddsidemargin  0   in
+\evensidemargin 0   in
+\topmargin     -0.5 in
+\textwidth      6.5 in
+\textheight     9   in
+
+
+\newenvironment{byte}%
+{\begin{tabular}{|c|c|c|c|c|c|c|c|}\hline}%
+{\hline\end{tabular}}%
+
+\begin{document}
+
+\newcommand{\inst}[3]{#1&\byte#2\\\endbyte&{\it #3}\\}
+\newcommand{\op}[2]{\ensuremath{#1}&\byte#2\\\endbyte}
+\newcommand{\val}[3]{#1&\byte#2\\\endbyte&{\it #3}\\}
+
+
+A VM program starts with a byte indicating the number of predicates $P$ in the
+program. Next, there are several components:
+
+\begin{itemize}
+	\item An unsigned integer indicating the number $N$ of nodes to instantiate, followed by $2N$ unsigned integers corresponding to one pair of unsigned integers one for node. The first value is the node ID to use during execution and the second one the ID given by the user.
+   \item A byte indicating the number $t$ of types in the program, followed by the $t$ type specifications.
+   \item An unsigned integer indicating the number of arguments needed to run the program.
+   \item An unsigned integer describing the number of rules $R$ in the program. Followed by $R$ byte regions. Each region contains an unsigned integer, $N$, indicating the size of the rule and then $N$ bytes with the string for this rule.
+	\item An unsigned integer indicating the number $S$ of constant strings in the program followed by $S$ pairs containing the length of the string and the string itself.
+	\item A byte indicating the number of code constants $C$ and then $C$ bytes for the types of such constants. Finally, there's an unsigned integer describing the code size for computing the constants and the code itself.
+	\item A set of $P$ \emph{predicate descriptors}, with 69 bytes each.
+	\item A set of $P$ byte-code instructions, one for each predicate.
+\end{itemize}
+
+A predicate descriptor consists of the following fields:
+\begin{itemize}
+	\item A short integer indicating the size, in bytes, of the corresponding byte-code instructions.
+	\item 1 byte describing the predicate's properties.
+	\item 1 byte indicating the aggregate's type, if any. The high nibble if the aggregate type and the low nibble the aggregate field.
+	\item A byte indicating the predicate's number of fields $F$.
+	\item 32 bytes with information about the fields' types. Actually, only $F$ bytes are used, and the remaining bytes are zeroes.
+	\item 32 bytes containing the predicate's name representing as a string. As before, unnused bytes are left as zeroes.
+\end{itemize}
+
+\begin{tabular}{lll}
+INSTRUCTION & BYTE FORMAT & ARGS\\
+\hline
+\\
+\inst{IF}    {0&1&1&0&0&0&0&0 \\\hline
+0&0&0&r&r&r&r&r \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j} {reg, jump\_offset}
+& if {\it reg} != 0 then process until ELSE and then jump.\\
+& if {\it reg} = 0 then jump to ELSE \\
+& (note: IFs may be nested) \\
+\\
+\inst{ELSE}  {0&0&0&0&0&0&1&0} {---}
+& a marker for if blocks\\
+\\
+\inst{ITER}  {1&0&1&0&0&0&0&0\\\hline
+0&i&i&i&i&i&i&i \\\hline
+o&o&o&o&o&o&o&o \\\hline
+a&a&a&a&a&a&a&a \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j} {id, options, options arg, jump\_offset, matchlist}
+& iterates over all the tuples of type {\it id} that match\\
+& according to the following {\it matchlist}.\\
+& after all matching facts have been processed, use \\
+& {\it jump\_offset} to jump to the next instruction\\
+\\
+\inst{NEXT}  {0&0&0&0&0&0&0&1} {---}
+& return to iter and process next matching fact\\
+\\
+\inst{SEND}  {0&0&0&0&1&0&0&0\\\hline
+0&0&0&r$_1$&r$_1$&r$_1$&r$_1$&r$_1$\\\hline
+0&0&0&r$_2$&r$_2$&r$_2$&r$_2$&r$_2$} {reg$_1$, reg$_2$} \\
+& sends the tuple in {\it reg$_1$} along the path in {\it reg$_2$}\\
+& if {\it reg$_1$ = reg$_2$} then the tuple is stored locally\\
+   \\
+\inst{REMOVE} {1&0&0&r&r&r&r&r} {reg}
+& delete tuple stored in reg from database\\
+\\
+\inst{OP}    {1&1&0&0&0&0&0&0\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$\\\hline
+0&0&v$_3$&v$_3$&v$_3$&v$_3$&v$_3$&v$_3$\\\hline
+0&0&0&o&o&o&o&o} {val$_1$, val$_2$, val$_3$, op}
+& sets {\it val$_3$} = {\it val$_1$ op val$_2$}\\
+\\
+\inst{NOT}    {0&0&0&0&0&1&1&1\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$} {val$_1$, val$_2$}
+& sets {\it val$_2$} = {\it not val$_1$}\\
+\\
+\end{tabular}
+
+\begin{tabular}{lll}
+INSTRUCTION & BYTE FORMAT & ARGS\\
+\hline
+\\
+\inst{MOVE}  {0&0&1&1&0&0&0&0\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$} {val$_1$, val$_2$}
+& copies {\it val$_1$} to {\it val$_2$}\\
+\\
+\inst{MOVE-NIL}  {0&1&1&1&0&0&0&0\\\hline
+0&0&v&v&v&v&v&v} {val}
+& sets {\it val} to the nil list\\
+\\
+\inst{TEST-NIL}    {0&0&0&0&0&0&1&1 \\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$} {val$_1$, val$_2$}
+& v$_2$ = 1 if v$_1$ is nil. \\
+& v$_2$ = 0 if v$_1$ is not nil. \\
+\\
+\inst{ALLOC} {0&1&0&0&0&0&0&0\\\hline
+0&i&i&i&i&i&i&i\\\hline
+0&0&v&v&v&v&v&v} {id, val}
+& allocates a tuple of type {\it id} and stores it in {\it val}\\
+\\
+\inst{RETURN}{0&0&0&0&0&0&0&0} {---}
+& finished processing the tuple - return\\
+\\
+\inst{CALL}  {0&0&1&0&0&0&0&0\\\hline
+0&i&i&i&i&i&i&i\\\hline
+0&0&0&r&r&r&r&r} {id, reg, args}
+& call external function number {\it id} with {\it args} and store\\
+&the result in {\it reg}\\
+\\
+\inst{CONS}    {0&0&0&0&0&1&0&0\\\hline
+0&0&0&0&0&0&$t$&$t$\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$\\\hline
+0&0&v$_3$&v$_3$&v$_3$&v$_3$&v$_3$&v$_3$} {val$_1$, val$_2$, val$_3$}
+& sets {\it val$_3$} = {\it val$_1$ :: val$_2$}\\
+& $t$ is the list type (00 = int, 01 = float, 02 = addr) \\
+\\
+\inst{HEAD}    {0&0&0&0&0&1&0&1\\\hline
+0&0&0&0&0&0&$t$&$t$\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$} {val$_1$, val$_2$}
+& sets {\it val$_2$} = {\it head val$_1$}\\
+& $t$ is the list type (00 = int, 01 = float, 02 = addr) \\
+\\
+\inst{TAIL}    {0&0&0&0&0&1&1&0\\\hline
+0&0&0&0&0&0&$t$&$t$\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$} {val$_1$, val$_2$}
+& sets {\it val$_2$} = {\it tail val$_1$}\\
+& $t$ is the list type (00 = int, 01 = float, 02 = addr) \\
+\\
+\end{tabular}
+
+\begin{tabular}{lll}
+INSTRUCTION & BYTE FORMAT & ARGS\\
+\hline
+\\
+\inst{SELECT}    {0&0&0&0&1&0&1&0} {size,hsize,htable,codeblocks}\\
+& this is a big instruction used to select a specific code \\
+& block for a node. it is followed by a 4-byte integer \\
+& indicating the $size$ of the whole instruction, then \\
+& a 4-byte integer indicating the \\
+& size $N$ of a simplified hash-table. $N$ represents\\
+& the number of nodes in the system for efficiency reasons. \\
+& Next, there is $N$*4-byte integers, where each integer\\
+& is the offset to a code block of the corresponding \\
+& node. The offsets start after the end of the hash\\
+& table. If the offset is 0, this node has no\\
+& associated code block, so it should use $size$ to\\
+& jump to the next instruction. If the offset is\\
+& positive, you should subtract one byte from it\\
+& and then jump to the code block. At the end of\\
+& each code block, there is a RETURN-SELECT. \\
+\\
+\inst{RETURN-SELECT} {0&0&0&0&1&0&1&1} {jump}\\
+& This instruction is followed by a 4-byte integer \\
+& with a jump offset to the next instruction. \\
+\\
+\inst{COLOCATED} {0&0&0&0&1&1&0&0\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$\\\hline
+0&0&0&r&r&r&r&r} {n1,n2,dest}\\
+& sets dest = true if nodes n1 and n2 are on the same machine\\
+& sets dest = false otherwise \\
+\\
+\inst{DELETE} {0&0&0&0&1&1&0&1\\\hline
+0&i&i&i&i&i&i&i\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$} {i,v1}\\
+& deletes the tuples of type $i$ with the first argument as value $v_1$\\
+\\
+\inst{REMOVE} {1&0&0&0&0&0&0&0\\\hline
+0&0&0&r&r&r&r&r} {reg} \\
+& deletes tuple reg from the database\\
+\\
+\inst{RETURN-LINEAR} {1&1&0&1&0&0&0&0} {} \\
+& linear fact was used, execution must terminate\\
+\\
+\inst{RETURN-DERIVED} {1&1&1&1&0&0&0&0} {} \\
+& head of rule was derived, return if some linear fact was used\\
+\\
+\end{tabular}
+
+\begin{tabular}{lll}
+INSTRUCTION & BYTE FORMAT & ARGS\\
+\hline
+\\
+\inst{FLOAT}    {0&0&0&0&1&0&0&1\\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$} {val$_1$, val$_2$}
+& sets {\it val$_2$} = {\it (float)val$_1$}\\
+\\
+\inst{RULE} {0&0&0&1&0&0&0&0} {id} \\
+& rule \textit{id} is gonna be executed \\
+\\
+\inst{RULE DONE} {0&0&0&1&0&0&0&0} {} \\
+& rule \textit{id} has been matched \\
+\\
+\inst{NEW AXIOMS} {0&0&0&1&1&1&1&0 \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j \\\hline
+j&j&j&j&j&j&j&j} {jump} \\
+& after the instruction and jump address, there is an arbitrary \\
+& number of tuples to be instantiated. \\
+& the first byte of each tuple is the predicate code \\
+& the tuple arguments follow next. \\
+& arguments may be integers, floats, node addresses or serialized lists \\
+& if the list is nil, there is a 0x0 byte, if not, \\
+& there is 0x1 byte followed by the element \\
+& of the list and the rest of the list. the jump argument \\
+& indicates the next instruction and where the tuples end \\
+\\
+\inst{SEND DELAY} {0&0&0&1&0&1&0&1 \\\hline
+0&0&0&r$_1$&r$_1$&r$_1$&r$_1$&r$_1$\\\hline
+0&0&0&r$_2$&r$_2$&r$_2$&r$_2$&r$_2$\\\hline
+t&t&t&t&t&t&t&t\\\hline
+t&t&t&t&t&t&t&t\\\hline
+t&t&t&t&t&t&t&t\\\hline
+t&t&t&t&t&t&t&t} {reg$_1$, reg$_2$, time} \\
+& sends the tuple in {\it reg$_1$} along the path in {\it reg$_2$}\\
+& if {\it reg$_1$ = reg$_2$} then the tuple is stored locally\\
+& time indicates the delay (in milliseconds) of the derivation \\
+   \\
+\end{tabular}
+
+\begin{tabular}{lll}
+INSTRUCTION & BYTE FORMAT & ARGS\\
+\hline
+\\
+\inst{PUSH}    {0&0&0&1&0&1&1&0} {}\\
+& pushes an unintialized value into the stack \\
+\\
+\inst{POP}     {0&0&0&1&0&1&1&1} {} \\
+& pops a value from the stack \\
+\\
+\inst{PUSH REGS}  {0&0&0&1&1&0&0&0} {} \\
+& pushes all registers into the stack \\
+\\
+\inst{POP REGS}  {0&0&0&1&1&0&0&1} {} \\
+& pops all registers from the stack and restores their values \\
+\\
+\inst{CALLF}    {0&0&0&1&1&0&1&0\\\hline
+i&i&i&i&i&i&i&i} {id} \\
+& calls a Meld function \\
+\\
+\inst{STRUCT VAL}    {0&0&0&1&1&1&0&0\\\hline
+i&i&i&i&i&i&i&i \\\hline
+0&0&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$&v$_1$\\\hline
+0&0&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$&v$_2$} {i, v$_1$, v$_2$}\\
+& sets v$_2$ with the index $i$ of the struct in v$_1$\\
+\\
+\inst{MAKE STRUCT}    {0&0&0&1&1&1&0&1\\\hline
+t&t&t&t&t&t&t&t \\\hline
+0&0&v&v&v&v&v&v} {t, v}\\
+& sets $v$ as a new struct of type $t$ \\
+\\
+\end{tabular}
+
+\begin{tabular}{lll}
+OP & BYTE FORMAT\\
+\hline
+\\
+\op{float\neq}{0&0&0&0&0}\\
+\op{int\neq}{0&0&0&0&1}\\
+\op{float=}{0&0&0&1&0}\\
+\op{int=}{0&0&0&1&1}\\
+\op{float<}{0&0&1&0&0}\\
+\op{int<}{0&0&1&0&1}\\
+\op{float\leq}{0&0&1&1&0}\\
+\op{int\leq}{0&0&1&1&1}\\
+\op{float>}{0&1&0&0&0}\\
+\op{int>}{0&1&0&0&1}\\
+\op{float\geq}{0&1&0&1&0}\\
+\op{int\geq}{0&1&0&1&1}\\
+\op{float\%}{0&1&1&0&0}\\
+\op{int\%}{0&1&1&0&1}\\
+\op{float+}{0&1&1&1&0}\\
+\op{int+}{0&1&1&1&1}\\
+\op{float-}{1&0&0&0&0}\\
+\op{int-}{1&0&0&0&1}\\
+\op{float*}{1&0&0&1&0}\\
+\op{int*}{1&0&0&1&1}\\
+\op{float\div}{1&0&1&0&0}\\
+\op{int\div}{1&0&1&0&1}\\
+\op{addr\neq}{1&0&1&1&0}\\
+\op{addr=}{1&0&1&1&1}\\
+\op{addr>}{1&1&0&0&0}\\
+\op{bool\; or}{1&1&0&0&1}\\
+\end{tabular}
+\vspace{0.3in}\\
+
+\begin{tabular}{lll}
+VALUE & BYTE FORMAT & ARGS\\
+\hline
+\\
+\val{REG}   {1&r&r&r&r&r} {reg}
+\\
+\val{TUPLE} {0&1&1&1&1&1} {---}
+& refers to the tuple currently being processed\\
+\\
+\val{HOST\_ID}   {0&0&0&0&1&1} {---}
+& refers to the node currently being processed\\
+\\
+\val{NIL}   {0&0&0&1&0&0} {---}
+& the empty list\\
+\\
+\val{INT}   {0&0&0&0&0&1} {int}
+& the next 4 bytes after the current instruction\\
+& are an immediate integer to which this refers\\
+\\
+\val{FLOAT} {0&0&0&0&0&0} {float}
+& the next 4 bytes after the current instruction\\
+& are an immediate float to which this refers\\
+\\
+\val{ADDR}   {0&0&0&1&0&1} {addr}
+& the next 4 bytes after the current instruction\\
+& are the address to which this refers\\
+\\
+\val{FIELD} {0&0&0&0&1&0} {}
+& the next two bytes after the current instruction\\
+& indicate a field of a register in the following format:\\
+\val{}{X&X&X&X&f&f&f&f\\\hline X&X&X&r&r&r&r&r} {field, reg}
+& with {\it reg} indicating a register with a tuple value\\
+& and {\it field} indicating the tuple's field number. \\
+\\
+\val{STRING} {0&0&0&1&1&0} {size, content}
+& the next 4 bytes indicate the length of the string\\
+& which are followed by the string itself \\
+\\
+\val{ARG} {0&0&0&1&1&1} {id}
+& the next byte indicates the argument id\\
+\\
+\val{CONST} {0&0&1&0&0&0} {const id}
+& the next 4 bytes indicates the constant id\\
+\\
+\val{STACK} {0&0&1&0&0&1} {offset}
+& use the element at offset from the top of the stack (4 byte unsigned int) \\
+\\
+\val{PC-COUNTER} {0&0&1&0&1&0} {}
+& refers to the program counter \\
+\\
+\val{PTR} {0&0&1&0&1&1} {ptr}
+& the next 8 bytes are a machine pointer (in the C sense) \\
+\\
+\val{BOOL} {0&0&1&1&0&0} {bool}
+& the next byte is a bool (either 1 or 0) \\
+\\
+\end{tabular}
+\vspace{0.3in}\\
+
+\begin{tabular}{lll}
+ARGS & BYTE FORMAT\\
+\hline
+\\
+\val{VALUE}   {X&X&v&v&v&v&v&v} {value}
+\end{tabular}
+\vspace{0.3in}\\
+
+\begin{tabular}{lll}
+MATCHLIST & BYTE FORMAT\\
+\hline
+\\
+\val{MATCHLIST}   {f&f&f&f&f&f&f&f\\\hline m&m&v&v&v&v&v&v} {field, marker, value}
+& requires that the tuple's field {\it field} match {\it value}\\
+& mm=11 if the match list is empty and mm=01 for the last \\
+& entry in the list.\\
+\end{tabular}\\
+
+\vspace{0.3in}
+
+\begin{tabular}{lll}
+AGGREGATE & BYTE FORMAT\\
+\hline
+\\
+\op{none}{0&0&0&0}\\
+\op{first}{0&0&0&1}\\
+\op{int\ max}{0&0&1&0}\\
+\op{int\ min}{0&0&1&1}\\
+\op{int\ sum}{0&1&0&0}\\
+\op{float\ max}{0&1&0&1}\\
+\op{float\ min}{0&1&1&0}\\
+\op{float\ sum}{0&1&1&1}\\
+\op{int\ set\_union}{1&0&0&0}\\
+\op{float\ set\_union}{1&0&0&1}\\
+\op{int\ list\ sum}{1&0&1&0}\\
+\op{float\ list\ sum}{1&0&1&1}\\
+\end{tabular}
+
+\vspace{0.3in}
+
+\begin{tabular}{lll}
+TYPE & BYTE FORMAT & EXTRA\\
+\hline
+\\
+\op{int}{0&0&0&0} & \\
+\op{float}{0&0&0&1} & \\
+\op{addr}{0&0&1&0} & \\
+\op{list}{0&0&1&1} & the type of the elements \\
+\op{struct}{0&1&0&0} & a byte indicating the size of the structure and then the types of the fields \\
+\op{bool}{0&1&0&1} & \\
+\op{string}{1&0&0&1} & \\
+\end{tabular}\label{tbl:types}
+\vspace{0.3in}\\
+
+\begin{tabular}{lll}
+PROPERTY & BYTE POSITION\\
+\hline
+\\
+\op{aggregate}{1} \\
+\op{persistent}{2} \\
+\op{linear}{3} \\
+\op{delete}{4} \\
+\op{schedule}{5} \\
+\end{tabular}
+\vspace{0.3in}\\
+
+\noindent
+NOTES:\\
+All offsets and lengths are given in bytes.
+\end{document}
+
