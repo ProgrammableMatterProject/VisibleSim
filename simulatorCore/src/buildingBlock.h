@@ -69,6 +69,7 @@ public:
 
 	unsigned int getNextP2PInterfaceLocalId();
 
+	list<P2PNetworkInterface*>& getP2PNetworkInterfaceList() {return P2PNetworkInterfaceList;}
 	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int destBlockId);
 	bool addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock);
 	bool addP2PNetworkInterfaceAndConnectTo(int destBlockId);

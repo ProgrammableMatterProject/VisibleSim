@@ -36,7 +36,8 @@ public:
 	 * returns the current local time for the concerned block
 	 */ 
 	uint64_t getTime();
-	
+	virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime) = 0;
+		
 	/*Clock() {};
 	~Clock();*/
 
@@ -66,6 +67,8 @@ public:
 	
 	LinearDriftClock(Clock::ClockType clockType, int seed);
 	~LinearDriftClock() {};
+	
+	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
 };
 
 #endif // CLOCK_H_

@@ -1,7 +1,6 @@
 #include "clock.h"
 #include "scheduler.h"
 
-// resolution, precision
 void Clock::setClockProperties(ClockType clockType) {
 	switch (clockType) {
 		case XMEGA_RTC_OSC1K_ULPRC:
@@ -39,13 +38,6 @@ uint64_t Clock::getTime() {
 			return 0;
 	}
 }
-// theoretically +-1%
-//#define MIN_CLOCK_DRIFT_FACTOR 0.99
-//#define MAX_CLOCK_DRIFT_FACTOR 1.01
-
-// in practice
-#define MIN_CLOCK_DRIFT_FACTOR 0.994
-#define MAX_CLOCK_DRIFT_FACTOR 1.006
 
 LinearDriftClock::LinearDriftClock(Clock::ClockType clockType, int seed) {
 	double accuracyPercentage = 0;
@@ -68,22 +60,29 @@ uint64_t LinearDriftClock::getTimeMS() {
 }
 
 uint64_t LinearDriftClock::getTimeUS() {
-	double accuracyPercentage = (float)accuracy/pow(10,-6); // ppm to %
 	double localTime = 0;
 	double realTime = (double)BaseSimulator::getScheduler()->now();
-	int sign = 1;
+
 	
-	/*if (generator()%2) {
+	/* see how to add a random offset
+	 * double accuracyPercentage = (float)accuracy/pow(10,-6); // ppm to %
+	 * int sign = 1;
+	 * if (generator()%2) {
 		sign = -1;
 	}*/
 	
-	do {
-		// see how to add a random offset
+	/*do {
 		//double offset = sign * generator() % ;
 		double offset = 0;
 		localTime = (driftFactor*realTime+offset) - startTime;
 	} while ((abs(localTime/realTime-1) > accuracyPercentage) && (localTime < lastLocalTimeRead));
-	
 	lastLocalTimeRead = localTime;
+	*/
+	
+	localTime = driftFactor*(realTime-startTime);
 	return localTime;
+}
+	
+uint64_t LinearDriftClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+	return (double)localTime/driftFactor + startTime;
 }
