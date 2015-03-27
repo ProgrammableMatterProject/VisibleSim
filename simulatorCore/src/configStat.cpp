@@ -16,10 +16,10 @@ ConfigStat::ConfigStat(BaseSimulator::World *w) {
 }
 
 void ConfigStat::deleteComputation() {
-	delete[] eccentricity;
-	delete[] closenessCentrality;
-	delete[] betweennessCentrality;
-	delete distanceMatrix;
+	delete[] eccentricity; eccentricity = NULL;
+	delete[] closenessCentrality; closenessCentrality = NULL;
+	delete[] betweennessCentrality; betweennessCentrality = NULL;
+	delete distanceMatrix; distanceMatrix = NULL;	
 	center.clear();
 	centroid.clear();
 	betweennessCenter.clear();
@@ -29,7 +29,7 @@ void ConfigStat::deleteComputation() {
 
 void ConfigStat::initComputation() {
 	size = world->getMap().size()+1;
-	distanceMatrix = new DistanceMatrix(size);
+	distanceMatrix = new SquareMatrix(size);
 	eccentricity = new int[size];
 	closenessCentrality = new int[size];
 	betweennessCentrality = new int[size];

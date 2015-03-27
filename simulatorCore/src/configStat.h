@@ -15,13 +15,13 @@
 
 using namespace std;
 
-class DistanceMatrix {
+class SquareMatrix {
 	int size;
 	int *distances;
 
 public:	
-	DistanceMatrix(int s) {size = s; distances = new int[size*size];}
-	~DistanceMatrix() {delete[] distances;}
+	SquareMatrix(int s) {size = s; distances = new int[size*size];}
+	~SquareMatrix() {delete[] distances;}
 	
 	int getSize() {return size;}
 	void set(int i, int j, int v) {distances[i*size + j] = v;}
@@ -36,7 +36,7 @@ class ConfigStat {
 private:
 	BaseSimulator::World *world;
 	int size;
-	DistanceMatrix *distanceMatrix;
+	SquareMatrix *distanceMatrix;
 	int *eccentricity; // maximum distance
 	int *closenessCentrality; // sum of the distances
 	int *betweennessCentrality;
