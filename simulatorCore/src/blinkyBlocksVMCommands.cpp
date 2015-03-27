@@ -203,7 +203,8 @@ ReceiveMessageVMCommand::ReceiveMessageVMCommand(SendMessageVMCommand &c) : VMCo
 }
 
 unsigned int ReceiveMessageVMCommand::size() { 
-	return getSize();
+	//return (getContentSize() - 5*sizeof(commandType)); // data size only
+	return 17; // bad fix, BB have fixed size data packet
 }
 
 ReceiveMessageVMCommand::~ReceiveMessageVMCommand() {

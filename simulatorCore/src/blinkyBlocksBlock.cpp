@@ -16,6 +16,10 @@
 
 using namespace std;
 
+#define BLINKYBLOCKS_PACKET_DATASIZE 17
+#define BLINKYBLOCKS_TRANSMISSION_MIN_TIME 6.08
+#define BLINKYBLOCKS_TRANSMISSION_MAX_TIME 6.11
+
 namespace BlinkyBlocks {
 static const GLfloat tabColors[12][4]={{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},{0.0,1.0,0.0,1.0},
 									{0.0,0.0,1.0,1.0},{0.274509804,0.509803922,0.705882353,1.0},{0.815686275,0.125490196,0.564705882,1.0},{0.5,0.5,0.5,1.0},
@@ -77,9 +81,14 @@ switch (Direction(d)) {
 
 BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::BuildingBlock(bId) {
 	OUTPUT << "BlinkyBlocksBlock constructor" << endl;
+	double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
+	double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
+
 	for (int i=0; i<6; i++) {
 		tabInterfaces[i] = new P2PNetworkInterface(this);
 		getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
+		tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
+		tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
 	}
 	vm = new BlinkyBlocksVM(this);
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
