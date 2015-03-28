@@ -78,7 +78,7 @@ void BlinkyBlocksWorld::deleteWorld() {
 	delete((BlinkyBlocksWorld*)world);
 }
 
-void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*),const Vecteur &pos,const Vecteur &col) {
+void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*),const Vecteur &pos,const Color &col) {
 
 	if (blockId == -1) {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -495,107 +495,6 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
 		if (GlutContext::helpWindow)
 			delete GlutContext::helpWindow;
 		GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/blinkyBlocksHelp.txt");
-	}
-
-	bool BlinkyBlocksWorld::dateHasBeenReachedByAll(uint64_t date) {
-		static uint64_t minReallyReached = 0;
-		uint64_t min, min2;
-		int alive = 0, hasNoWork = 0;
-		if (date < minReallyReached) {
-			return true;
-		}
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			BlinkyBlocksBlockCode *bc = (BlinkyBlocksBlockCode*) bb->blockCode;
-			if (bb->getState() < BlinkyBlocksBlock::ALIVE) {
-				continue;
-			}
-			alive++;
-			if (!bc->hasWork || bc->polling) {
-				hasNoWork++;
-				if (alive == 1) {
-					min2 = bc->currentLocalDate;
-				} else if (bc->currentLocalDate < min2) {
-					min2 = bc->currentLocalDate;
-				}
-			} else {
-				if ((alive - 1) == hasNoWork) {
-					min = bc->currentLocalDate;
-				} else if (bc->currentLocalDate < min) {
-					min = bc->currentLocalDate;
-				}
-				if (min < min2) {
-					min2 = min;
-				}
-			}
-		}
-		if (alive==hasNoWork) {
-			return true;
-		}
-		minReallyReached = min2;
-		return (date < min);
-	}
-
-	/*
-	void BlinkyBlocksWorld::killAllVMs() {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			bb->killVM();
-		}
-	}*/
-	/*
-   void BlinkyBlocksWorld::closeAllSockets() {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-         if(bb->vm != NULL) {
-            bb->vm->socket->close();
-            bb->vm->socket.reset();
-         }
-		}
-	}
-	
-		int BlinkyBlocksWorld::broadcastDebugCommand(DebbuggerVMCommand &c) {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		int aliveBlocks = 0;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
-			// Send id & set deterministic mode if necessary
-			bbc->init();
-			aliveBlocks += bb->sendCommand(c);
-		}
-		return aliveBlocks;
-	}
-
-	int BlinkyBlocksWorld::sendCommand(int id, VMCommand &c) {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
-      BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
-		bbc->init();
-      return bb->sendCommand(c);
-	} 
-	*/
-
-	bool BlinkyBlocksWorld::equilibrium() {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			BlinkyBlocksBlockCode *bc = (BlinkyBlocksBlockCode*) bb->blockCode;
-			if (bb->getState() < BlinkyBlocksBlock::ALIVE) {
-				continue;
-			}
-			if (bc->hasWork) {
-				return false;
-			}
-		}
-		return true;
 	}
 
    void BlinkyBlocksWorld::dump() {

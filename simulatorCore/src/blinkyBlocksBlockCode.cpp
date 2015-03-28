@@ -15,9 +15,6 @@ namespace BlinkyBlocks {
 
 BlinkyBlocksBlockCode::BlinkyBlocksBlockCode(BlinkyBlocksBlock *host):BlockCode(host) {
 	OUTPUT << "BlinkyBlocksBlockCode constructor" << endl;
-	currentLocalDate = 0; // mode fastest
-	hasWork = true; // mode fastest
-	polling = false; // mode fastest
 }
 
 BlinkyBlocksBlockCode::~BlinkyBlocksBlockCode() {

@@ -25,7 +25,6 @@ protected:
 	virtual ~BlinkyBlocksSimulator();
 
 public:
-   bool testMode;
 
 	static void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
 	static void deleteSimulator();
@@ -37,11 +36,7 @@ public:
 		return((BlinkyBlocksSimulator*)simulator);
 	}
    
-   
-
-	void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
-   
-   void help();
+   void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {

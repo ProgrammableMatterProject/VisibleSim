@@ -104,7 +104,7 @@ void BlinkyBlocksBlock::setPosition(const Vecteur &p) {
 	getWorld()->updateGlData(this);
 }
 
-void BlinkyBlocksBlock::setColor(const Vecteur &c) {
+void BlinkyBlocksBlock::setColor(const Color &c) {
 	lock();
 	if (state >= ALIVE) {
 		color = c;
@@ -131,30 +131,30 @@ NeighborDirection::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface
 
 void BlinkyBlocksBlock::tap(uint64_t date) {
 	OUTPUT << "tap scheduled" << endl;
-	getScheduler()->scheduleLock(new VMTapEvent(date, this));
+	//getScheduler()->scheduleLock(new VMTapEvent(date, this));
 }
 
 void BlinkyBlocksBlock::accel(uint64_t date, int x, int y, int z) {
-	getScheduler()->scheduleLock(new VMAccelEvent(date, this, x, y, z));
+	//getScheduler()->scheduleLock(new VMAccelEvent(date, this, x, y, z));
 }
 
 void BlinkyBlocksBlock::shake(uint64_t date, int f) {
-	getScheduler()->scheduleLock(new VMShakeEvent(getScheduler()->now(), this, f));
+	//getScheduler()->scheduleLock(new VMShakeEvent(getScheduler()->now(), this, f));
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 	OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;
-	getScheduler()->scheduleLock(new VMAddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
+	//getScheduler()->scheduleLock(new VMAddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
 	OUTPUT << "Simulator: "<< blockId << " remove neighbor on " << NeighborDirection::getString(getDirection(ni)) << endl;
-	getScheduler()->scheduleLock(new VMRemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
+	//getScheduler()->scheduleLock(new VMRemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
 }
 
 void BlinkyBlocksBlock::stop(uint64_t date, State s) {
 	OUTPUT << "Simulator: stop scheduled" << endl;
-	lock();
+	/*lock();
 	state = s;
 	if (s == STOPPED) {
 		// patch en attendant l'objet 3D qui modelise un BB stopped
@@ -162,7 +162,7 @@ void BlinkyBlocksBlock::stop(uint64_t date, State s) {
 	}
 	unlock();
 	getWorld()->updateGlData(this);
-	getScheduler()->scheduleLock(new VMStopEvent(getScheduler()->now(), this));
+	getScheduler()->scheduleLock(new VMStopEvent(getScheduler()->now(), this));*/
 }
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {

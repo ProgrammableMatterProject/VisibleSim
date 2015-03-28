@@ -29,20 +29,6 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 
 	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
 	string confFileName = cmdLine.getConfigFile();
-	
-   /*for (int i=1; i < argc; i++) {
-      if(!strcmp(argv[i], "-c")) {
-         if (i+1 < argc) {
-            confFileName= argv[i+1];
-            break;
-         } else {
-            cerr << "Provide a configuration file after -c" << endl;
-            exit(EXIT_FAILURE);
-         }
-      }
-   }*/
-   
-	
 
 	xmlDoc = new TiXmlDocument(confFileName.c_str());
 

@@ -31,7 +31,7 @@ uint64_t Clock::getTime() {
 		}			
 		break;
 		case RESOLUTION_1MS:
-			return getTimeMS();
+			return getTimeMS()*1000;
 		break;
 		default:
 			cerr << "Undefined clock resolution" << endl;
@@ -45,13 +45,15 @@ LinearDriftClock::LinearDriftClock(Clock::ClockType clockType, int seed) {
 	double minDrift = 0;
 	
 	setClockProperties(clockType);
-	accuracyPercentage = (float)accuracy/pow(10,-6); // ppm to %
+	
+	accuracyPercentage = (float)accuracy/pow(10,6); // ppm to %
 	maxDrift = 1 + accuracyPercentage;
 	minDrift = 1 - accuracyPercentage;
 	
 	startTime = BaseSimulator::getScheduler()->now();
 	generator =  boost::rand48(seed);
 	driftFactor = (generator()/(double)RAND_MAX)*(maxDrift-minDrift) + minDrift;
+	
 	lastLocalTimeRead = 0;
 }
 

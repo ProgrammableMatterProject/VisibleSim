@@ -9,8 +9,6 @@
 #include "blinkyBlocksSimulator.h"
 #include <string.h>
 #include "trace.h"
-#include "blinkyBlocksDebugger.h"
-#include "blinkyBlocksVM.h"
 
 using namespace std;
 
@@ -21,53 +19,11 @@ BlinkyBlocksBlockCode*(* BlinkyBlocksSimulator::buildNewBlockCode)(BlinkyBlocksB
 BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
 	
-	int port = 34000; // default port (if not defined in xml file)
-	string vmPath;
-	string programPath;
-	bool debugging = false;
-    bool realtimeMode = false;
-    bool fastestMode = false;
 	int currentID = 1;
 	BlinkyBlocksWorld *world = NULL;
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
-	testMode = false;
-   
-	/* reading the xml file */
-	/* VM part */	
-	TiXmlNode *node = xmlDoc->FirstChild("vm");
-	if (node) {		
-		TiXmlElement* vmElement = node->ToElement();
-		const char *attr = vmElement->Attribute("serverport");
-		if (attr) {
-			port = atoi(attr);
-		}
-		attr = vmElement->Attribute("vmPath");
-		if (attr) {
-			vmPath = string(attr);
-		}	
-		attr = vmElement->Attribute("programPath");
-		if (attr) {
-         if (programPath == "") {
-            programPath = string(attr);
-         } else {
-            cerr << "Warning: meld program provided in the command line and in the xml file" << endl;
-            cerr << "Warning: meld program provided in the xml file is ignored" << endl;
-         }
-		}
-		attr = vmElement->Attribute("debugging");
-		if (attr) {
-			if ((strcmp(attr, "True") == 0) ||(strcmp(attr, "true") == 0) ) {
-					if (!testMode) {
-                  debugging = true;
-               }
-			}
-		}
-	}
-   
-   //if (programPath == "")
-   //   help();
 	
-	node = xmlDoc->FirstChild("world");
+	TiXmlNode *node = xmlDoc->FirstChild("world");
 	if (node) {
 		TiXmlElement* worldElement = node->ToElement();
 		const char *attr= worldElement->Attribute("gridsize");
@@ -103,12 +59,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	}
 		
 	createScheduler();
-	setVMConfiguration(vmPath, programPath, debugging);
-	createVMServer(port);
-	if(debugging) {
-		createDebugger();
-	}
-	
+
 	// loading the camera parameters
 	TiXmlNode *nodeConfig = node->FirstChild("camera");
 	if (nodeConfig) {
@@ -189,16 +140,16 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	// loading the blocks
 	TiXmlNode *nodeBlock = node->FirstChild("blockList");
 	if (nodeBlock) {
-		Vecteur defaultColor(0.8,0.8,0.8);
+		Color defaultColor = DARKGREY;
 		TiXmlElement* element = nodeBlock->ToElement();
 		const char *attr= element->Attribute("color");
 		if (attr) {
 			string str(attr);
 			int pos1 = str.find_first_of(','),
 			pos2 = str.find_last_of(',');
-			defaultColor.pt[0] = atof(str.substr(0,pos1).c_str())/255.0;
-			defaultColor.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-			defaultColor.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+			defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
+			defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
+			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 		}
 		attr= element->Attribute("blocksize");
 		if (attr) {
@@ -216,7 +167,8 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 		/* Reading a blinkyblock */
 		OUTPUT << "default color :" << defaultColor << endl;
 		nodeBlock = nodeBlock->FirstChild("block");
-		Vecteur color,position;
+		Vecteur position;
+		Color color;
 		while (nodeBlock) {
 			element = nodeBlock->ToElement();
 			color=defaultColor;
@@ -225,9 +177,9 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 				string str(attr);
 				int pos1 = str.find_first_of(','),
 				pos2 = str.find_last_of(',');
-				color.pt[0] = atof(str.substr(0,pos1).c_str())/255.0;
-				color.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-				color.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+				 color.set(atof(str.substr(0,pos1).c_str())/255.0,
+                         atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
+                         atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
 				OUTPUT << "color :" << color << endl;
 			}
 			attr = element->Attribute("position");
@@ -328,24 +280,20 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	}
 	world->linkBlocks();
 
-	getScheduler()->sem_schedulerStart->post();
-	getScheduler()->setState(Scheduler::NOTSTARTED);
-   if (testMode || fastestMode) {
+	//getScheduler()->sem_schedulerStart->post();
+	//getScheduler()->setState(Scheduler::NOTSTARTED);
+	
+	GlutContext::mainLoop();
+	
+   /*if (fastestMode) {
       getScheduler()->start(SCHEDULER_MODE_FASTEST);
    } else if (realtimeMode) {
       getScheduler()->start(SCHEDULER_MODE_REALTIME);
-   }
-#ifndef TEST_DETER
-   if (!testMode) {
-      GlutContext::mainLoop();
-   }
-#endif
+   }*/
 }
 
 BlinkyBlocksSimulator::~BlinkyBlocksSimulator() {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator destructor" << "\033[0m" <<endl;
-	deleteDebugger();
-	deleteVMServer();
 }
 
 void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {

@@ -145,4 +145,20 @@ int BuildingBlock::getNextRandomNumber() {
 	return x;
 }
 
+uint64_t BuildingBlock::getTime() {
+	if (clock == NULL) {
+		cerr << "device has no internal clock" << endl;
+		return 0;
+	}
+	return clock->getTime();
+}
+
+uint64_t BuildingBlock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+	if (clock == NULL) {
+		cerr << "device has no internal clock" << endl;
+		return localTime;
+	}
+	return clock->getSchedulerTimeForLocalTime(localTime);
+}
+
 } // BaseSimulator namespace

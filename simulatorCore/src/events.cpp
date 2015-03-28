@@ -272,3 +272,43 @@ void NetworkInterfaceEnqueueOutgoingEvent::consume() {
 const string NetworkInterfaceEnqueueOutgoingEvent::getEventName() {
 	return("NetworkInterfaceEnqueueOutgoingEvent Event");
 }
+
+
+//===========================================================================================================
+//
+//          SetColorEvent  (class)
+//
+//===========================================================================================================
+
+SetColorEvent::SetColorEvent(uint64_t t, BuildingBlock *conBlock, float r, float g, float b, float a): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_SET_COLOR;
+	randomNumber = conBlock->getNextRandomNumber();
+	color = Color(r, g, b, a);
+}
+
+SetColorEvent::SetColorEvent(uint64_t t, BuildingBlock *conBlock, Color &c): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_SET_COLOR;
+	randomNumber = conBlock->getNextRandomNumber();
+	color = c;
+}
+
+SetColorEvent::SetColorEvent(SetColorEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+	color = ev->color;
+	//randomNumber = ev->randomNumber;
+}
+
+SetColorEvent::~SetColorEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void SetColorEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new SetColorEvent(this)));
+}
+
+const string SetColorEvent::getEventName() {
+	return("SetColor Event");
+}

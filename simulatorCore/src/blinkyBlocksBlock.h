@@ -9,6 +9,7 @@
 #define BLINKYBLOCKSBLOCK_H_
 
 #include "buildingBlock.h"
+#include "color.h"
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksGlBlock.h"
 #include <boost/asio.hpp> 
@@ -30,7 +31,7 @@ class BlinkyBlocksBlock : public BaseSimulator::BuildingBlock {
 
 public:
 	BlinkyBlocksGlBlock *ptrGlBlock;
-	Vecteur color; // color of the block
+	Color color; // color of the block
 	Vecteur position; // position of the block;
 
 	BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
@@ -39,7 +40,7 @@ public:
 
 	inline BlinkyBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(BlinkyBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
-	void setColor(const Vecteur &c);
+	void setColor(const Color &);
 	void setColor(int num);
 	void setPosition(const Vecteur &p);
 	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }

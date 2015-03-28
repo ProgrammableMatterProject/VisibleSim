@@ -38,8 +38,7 @@ public:
 	uint64_t getTime();
 	virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime) = 0;
 		
-	/*Clock() {};
-	~Clock();*/
+	virtual ~Clock() {};
 
 private:
 	enum Resolution {RESOLUTION_1MS = 0, RESOLUTION_1US = 1, RESOLUTION_31US = 2};

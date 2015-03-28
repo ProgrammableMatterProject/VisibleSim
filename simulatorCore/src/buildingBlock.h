@@ -95,6 +95,10 @@ public:
 	
 	/* For Blinky Block determinism version */	
 	int getNextRandomNumber();
+	
+	uint64_t getTime();
+	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+	
 };
 
 } // BaseSimulator namespace

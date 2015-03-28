@@ -16,6 +16,7 @@
 #include "buildingBlock.h"
 #include "uniqueEventsId.h"
 #include "network.h"
+#include "color.h"
 
 using namespace std;
 
@@ -201,6 +202,25 @@ public:
 	NetworkInterfaceEnqueueOutgoingEvent(uint64_t, MessagePtr mes, P2PNetworkInterface *ni);
 	~NetworkInterfaceEnqueueOutgoingEvent();
 	void consume();
+	const virtual string getEventName();
+};
+
+
+//===========================================================================================================
+//
+//          SetColorEvent  (class)
+//
+//===========================================================================================================
+
+class SetColorEvent : public BlockEvent {
+public:
+	Color color;
+
+	SetColorEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, float r, float g, float b, float a);
+	SetColorEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, Color &c);
+	SetColorEvent(SetColorEvent *ev);
+	~SetColorEvent();
+	void consumeBlockEvent();
 	const virtual string getEventName();
 };
 
