@@ -1,21 +1,16 @@
-#include "blinkyBlocksDebugger.h"
-#include "blinkyBlocksSimulator.h"
-#include "blinkyBlocksScheduler.h"
-#include "blinkyBlocksEvents.h"
-#include "blinkyBlocksWorld.h"
-#include "blinkyBlocksBlock.h"
-#include "blinkyBlocksVM.h"
+#include "meldProcessDebugger.h"
+#include "meldProcessVM.h"
 #include "Debugger/debug_Simprompt.hpp"
 #include <stdio.h>
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
 
 
-namespace BlinkyBlocks {
+namespace MeldProcess {
 
-BlinkyBlocksDebugger *BlinkyBlocksDebugger::debugger=NULL;
+MeldProcessDebugger *MeldProcessDebugger::debugger=NULL;
 
-BlinkyBlocksDebugger::BlinkyBlocksDebugger() {
+MeldProcessDebugger::MeldProcessDebugger() {
 	if (debugger == NULL) {
 		debugger = this;
 		debuggerCommandHandler = debugger::initDebugger(&sendCommand, &pauseSimulation, &unPauseSimulation, &quit);
@@ -26,7 +21,7 @@ BlinkyBlocksDebugger::BlinkyBlocksDebugger() {
 }
 
 
-int BlinkyBlocksDebugger::sendCmd(int id, DebbuggerVMCommand &c) {
+int MeldProcessDebugger::sendCmd(int id, DebbuggerVMCommand &c) {
 	return -1;
 	/*if (id > 0) {
 		if (getWorld()->sendCommand(id, c) == 1) {
@@ -42,15 +37,15 @@ int BlinkyBlocksDebugger::sendCmd(int id, DebbuggerVMCommand &c) {
 	}*/
 }
 
-void BlinkyBlocksDebugger::handleDebugCommand(DebbuggerVMCommand *c) {
+void MeldProcessDebugger::handleDebugCommand(DebbuggerVMCommand *c) {
 	debuggerCommandHandler(c->getData());
 	delete c; // delete command object, not the data. The debugger will do it after having processed the command.
 }
 
-void BlinkyBlocksDebugger::pauseSim(int t) {
+void MeldProcessDebugger::pauseSim(int t) {
    if (t == -1) {
 		if (getScheduler()->getMode() == SCHEDULER_MODE_REALTIME) {
-			getScheduler()->pause(BlinkyBlocks::getScheduler()->now());
+			getScheduler()->pause(getScheduler()->now());
 		}
 	} else {
 		ostringstream msg;
@@ -61,43 +56,43 @@ void BlinkyBlocksDebugger::pauseSim(int t) {
 	}
 }
 
-void BlinkyBlocksDebugger::unPauseSim() {
+void MeldProcessDebugger::unPauseSim() {
 	getScheduler()->unPause();
 }
 
-void BlinkyBlocksDebugger::waitForDebuggerEnd() {
+void MeldProcessDebugger::waitForDebuggerEnd() {
 	debugger::joinThread();
 }
 
-void BlinkyBlocksDebugger::detachDebuggerThread() {
+void MeldProcessDebugger::detachDebuggerThread() {
 	debugger::detachThread();
 }
 
-void BlinkyBlocksDebugger::sendTerminateCmd(int id) {
+void MeldProcessDebugger::sendTerminateCmd(int id) {
 	//debugger::sendCmd(id,debugger::TERMINATE,"");
 }
 
 /* Unfreezes the debugger thread when the user presses "p" in the
  * simulator graphical window.
  */
-void BlinkyBlocksDebugger::handlePauseRequest() {
+void MeldProcessDebugger::handlePauseRequest() {
 	debugger::handlePauseCommand();
 }
 
-void BlinkyBlocksDebugger::handleBreakAtTimeReached(uint64_t t) {
+void MeldProcessDebugger::handleBreakAtTimeReached(uint64_t t) {
 	ostringstream msg;
 	msg << "Time break point reached at " << t << endl;
 	debuggerCommandHandler(debugger::pack(debugger::TIME, msg.str(),1));
 	debuggerCommandHandler(debugger::pack(debugger::TIME,"2",0));
 }
 
-void BlinkyBlocksDebugger::print(string s, bool arrow) {   
+void MeldProcessDebugger::print(string s, bool arrow) {   
       cout << s << endl;
-      if (BlinkyBlocksVM::isInDebuggingMode() && arrow) {
+      if (MeldProcessVM::isInDebuggingMode() && arrow) {
          cout << ">";
       }
 }
 
-BlinkyBlocksDebugger::~BlinkyBlocksDebugger() { };
+MeldProcessDebugger::~MeldProcessDebugger() { };
 
 }

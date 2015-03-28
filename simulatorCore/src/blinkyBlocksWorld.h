@@ -84,9 +84,9 @@ public:
 	bool dateHasBeenReachedByAll(uint64_t date);
 	bool equilibrium();
 	
-	void killAllVMs();
+	//void killAllVMs();
 	void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
-   void closeAllSockets();
+   //void closeAllSockets();
    
    // Prints information about the blocks
    void dump();

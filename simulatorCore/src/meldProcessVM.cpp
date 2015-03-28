@@ -1,6 +1,12 @@
-#include "blinkyBlocksVM.h"
-#include "blinkyBlocksBlock.h"
-#include "blinkyBlocksBlockCode.h"
+#include "meldProcessVM.h"
+#include "meldProcessScheduler.h"
+#include "meldProcessDebugger.h"
+#include "meldProcessEvents.h"
+
+//#include "blinkyBlocksBlock.h"
+//#include "blinkyBlocksBlockCode.h"
+//#include "blinkyBlocksEvents.h"
+
 #include <boost/asio/io_service.hpp>
 #include <sys/wait.h>
 #include <stdio.h>
@@ -9,7 +15,6 @@
 #include <stdexcept>
 #include <string.h>
 #include "events.h"
-#include "blinkyBlocksEvents.h"
 #include "openglViewer.h"
 
 #include <boost/bind.hpp>
@@ -19,35 +24,39 @@
 using namespace boost;
 using asio::ip::tcp;
 
-namespace BlinkyBlocks {
+namespace MeldProcess {
 
-boost::asio::io_service *BlinkyBlocksVM::ios = NULL;
-boost::interprocess::interprocess_mutex BlinkyBlocksVM::mutex_ios;
-tcp::acceptor *BlinkyBlocksVM::acceptor = NULL;
-string BlinkyBlocksVM::vmPath;
-string BlinkyBlocksVM::programPath;
-bool BlinkyBlocksVM::debugging = false;
+boost::asio::io_service *MeldProcessVM::ios = NULL;
+boost::interprocess::interprocess_mutex MeldProcessVM::mutex_ios;
+tcp::acceptor *MeldProcessVM::acceptor = NULL;
+string MeldProcessVM::vmPath;
+string MeldProcessVM::programPath;
+bool MeldProcessVM::debugging = false;
 
-BlinkyBlocksVM::BlinkyBlocksVM(BlinkyBlocksBlock* bb){
-   int ret;
-   boost::system::error_code error;
-   stringstream vmLogFile;
+MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
+	int ret;
+	boost::system::error_code error;
+	stringstream vmLogFile;
 
 	assert(ios != NULL && acceptor != NULL);
 	hostBlock = bb;
-   vmLogFile << "VM" << hostBlock->blockId << ".log";
+	currentLocalDate = 0; // mode fastest
+	hasWork = true; // mode fastest
+	polling = false; // mode fastest
+	
+	vmLogFile << "VM" << hostBlock->blockId << ".log";
    
 	OUTPUT << "VM "<< hostBlock->blockId << " constructor" << endl;
 	// Start the VM
 	pid = 0;
-   mutex_ios.lock();
+	mutex_ios.lock();
 	ios->notify_fork(boost::asio::io_service::fork_prepare);
 	pid = fork();
 	if(pid < 0) {ERRPUT << "Error when starting the VM" << endl;}
-    if(pid == 0) {
+	if(pid == 0) {
 		ios->notify_fork(boost::asio::io_service::fork_child);
-      mutex_ios.unlock();
-      acceptor->close();
+		mutex_ios.unlock();
+		acceptor->close();
       //getWorld()->closeAllSockets();
 #ifdef LOGFILE
       log_file.close();
@@ -76,9 +85,9 @@ BlinkyBlocksVM::BlinkyBlocksVM(BlinkyBlocksBlock* bb){
    if (hostBlock->blockId == 1) {
       bool connected = false;
       
-      acceptor->async_accept(*(socket.get()), boost::bind(&BlinkyBlocksVM::asyncAcceptHandler, this, error , &connected));
+      acceptor->async_accept(*(socket.get()), boost::bind(&MeldProcessVM::asyncAcceptHandler, this, error , &connected));
       while(!connected &&  (pid != waitpid(pid, NULL, WNOHANG))) {
-         	if (!BlinkyBlocksVM::isInDebuggingMode()) { // In debugging mode the scheduler thread is looking for connections
+         	if (!MeldProcessVM::isInDebuggingMode()) { // In debugging mode the scheduler thread is looking for connections
                checkForReceivedVMCommands(); // it is actually check for connection
                usleep(10000);
             }
@@ -108,7 +117,7 @@ BlinkyBlocksVM::BlinkyBlocksVM(BlinkyBlocksBlock* bb){
 	asyncReadCommand();
 }
 
-void BlinkyBlocksVM::asyncAcceptHandler(boost::system::error_code& error, bool* connected) {
+void MeldProcessVM::asyncAcceptHandler(boost::system::error_code& error, bool* connected) {
  if (error) {
    *connected = false;
  } else {
@@ -116,21 +125,21 @@ void BlinkyBlocksVM::asyncAcceptHandler(boost::system::error_code& error, bool* 
  }
 }
 
-BlinkyBlocksVM::~BlinkyBlocksVM() {
+MeldProcessVM::~MeldProcessVM() {
 	closeSocket();
 	killProcess();
 }
 
-void BlinkyBlocksVM::terminate() {
+void MeldProcessVM::terminate() {
 	waitpid(pid, NULL, 0);
 }
 
-void BlinkyBlocksVM::killProcess() {
+void MeldProcessVM::killProcess() {
 	kill(pid, SIGTERM);
 	waitpid(pid, NULL, 0);
 }
 
-void BlinkyBlocksVM::closeSocket() {
+void MeldProcessVM::closeSocket() {
 	if (socket != NULL) {
 		socket->cancel();
 		socket->close();
@@ -138,7 +147,7 @@ void BlinkyBlocksVM::closeSocket() {
 	}
 }
 
-void BlinkyBlocksVM::asyncReadCommandHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
+void MeldProcessVM::asyncReadCommandHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
 	if(error) {
 		ERRPUT << "An error occurred while receiving a tcp command from VM " << hostBlock->blockId << " (socket closed ?) " <<endl;
 		return;
@@ -162,13 +171,12 @@ void BlinkyBlocksVM::asyncReadCommandHandler(const boost::system::error_code& er
     this->asyncReadCommand();
 }
 
-void BlinkyBlocksVM::handleInBuffer() {
-	BlinkyBlocksBlockCode *bbc = (BlinkyBlocksBlockCode*)hostBlock->blockCode;
+void MeldProcessVM::handleInBuffer() {
 	VMCommand command(inBuffer);
-	bbc->handleCommand(command);
+	handleCommand(command);
 }
 
-void BlinkyBlocksVM::asyncReadCommand() {
+void MeldProcessVM::asyncReadCommand() {
 	if (socket == NULL) {
 		ERRPUT << "Simulator is not connected to the VM "<< hostBlock->blockId << endl;
 		return;
@@ -177,25 +185,26 @@ void BlinkyBlocksVM::asyncReadCommand() {
 	inBuffer[0] = 0;
 	boost::asio::async_read(getSocket(),
 		boost::asio::buffer(inBuffer, sizeof(commandType)),
-		boost::bind(&BlinkyBlocksVM::asyncReadCommandHandler, this, boost::asio::placeholders::error,
+		boost::bind(&MeldProcessVM::asyncReadCommandHandler, this, boost::asio::placeholders::error,
 		boost::asio::placeholders::bytes_transferred));
 	} catch (std::exception& e) {
 		ERRPUT << "Connection to the VM "<< hostBlock->blockId << " lost" << endl;
 	}
 }
 
-int BlinkyBlocksVM::sendCommand(VMCommand &command){
+int MeldProcessVM::sendCommand(VMCommand &command){
 	if (socket == NULL) {
 		ERRPUT << "Simulator is not connected to the VM "<< hostBlock->blockId << endl;
 		return 0;
 	}
 	if (command.getType() != VM_COMMAND_DEBUG) {
 		nbSentCommands++;
-		((BlinkyBlocksBlockCode*)hostBlock->blockCode)->handleDeterministicMode(command);
+		handleDeterministicMode(command);
+		//((BlinkyBlocksBlockCode*)hostBlock->blockCode)->;
 	}
 	try {
 		boost::asio::write(getSocket(), boost::asio::buffer(command.getData(), command.getSize()));
-      //boost::asio::async_write(getSocket(), boost::asio::buffer(command.getData(), command.getSize()), boost::bind(&BlinkyBlocksVM::handle_write, this,
+      //boost::asio::async_write(getSocket(), boost::asio::buffer(command.getData(), command.getSize()), boost::bind(&MeldProcessVM::handle_write, this,
       //      boost::asio::placeholders::error));
    } catch (std::exception& e) {
 		ERRPUT << "Connection to the VM "<< hostBlock->blockId << " lost" << endl;
@@ -205,7 +214,7 @@ int BlinkyBlocksVM::sendCommand(VMCommand &command){
 }
 
 
-  void BlinkyBlocksVM::handle_write(const boost::system::error_code& error)
+  void MeldProcessVM::handle_write(const boost::system::error_code& error)
   {
     if (!error)
     {
@@ -213,7 +222,7 @@ int BlinkyBlocksVM::sendCommand(VMCommand &command){
     }
   }
 
-void BlinkyBlocksVM::checkForReceivedCommands() {
+void MeldProcessVM::checkForReceivedCommands() {
 	if (ios != NULL) {
       mutex_ios.lock();
       try {
@@ -225,7 +234,7 @@ void BlinkyBlocksVM::checkForReceivedCommands() {
 		}
 }
 
-void BlinkyBlocksVM::waitForOneCommand() {
+void MeldProcessVM::waitForOneCommand() {
 	if (ios != NULL) {
 		mutex_ios.lock();
       try {
@@ -238,23 +247,97 @@ void BlinkyBlocksVM::waitForOneCommand() {
 	checkForReceivedCommands();
 }
 
-void BlinkyBlocksVM::setConfiguration(string v, string p, bool d) {
+void MeldProcessVM::setConfiguration(string v, string p, bool d) {
 	vmPath = v;
 	programPath = p;
 	debugging = d;
 }
 
-void BlinkyBlocksVM::createServer(int p) {
+void MeldProcessVM::createServer(int p) {
 	assert(ios == NULL);
 	ios = new boost::asio::io_service();
 	acceptor =  new tcp::acceptor(*ios, tcp::endpoint(tcp::v4(), p));
 }
 
-void BlinkyBlocksVM::deleteServer() {
+void MeldProcessVM::deleteServer() {
 	ios->stop();
 	delete acceptor;
 	delete ios;
 	ios = NULL; acceptor = NULL;
+}
+
+void MeldProcessVM::handleDeterministicMode(VMCommand &command){
+	currentLocalDate = max(getScheduler()->now(), currentLocalDate);
+	if(!hasWork && (command.getType() != VM_COMMAND_STOP)) {
+		hasWork = true;
+	}
+}
+
+void MeldProcessVM::handleCommand(VMCommand &command) {
+	uint64_t dateToSchedule;
+	
+	currentLocalDate = max(getScheduler()->now(), command.getTimestamp());
+	if (getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) {
+		//assert(currentLocalDate <= command.getTimestamp()); -- not true because of asynchrone debug commands
+		dateToSchedule = currentLocalDate;
+	} else {
+		dateToSchedule = getScheduler()->now();
+	}
+	
+	switch (command.getType()) {
+		case VM_COMMAND_SET_COLOR:	
+			{
+			// format: <size> <command> <timestamp> <src> <red> <blue> <green> <intensity>
+			SetColorVMCommand c(command.getData());
+			Vecteur color = c.getColor();
+			getScheduler()->scheduleLock(new VMSetColorEvent(dateToSchedule, hostBlock, color));
+			}
+			break;
+		case VM_COMMAND_SEND_MESSAGE:
+			{
+			P2PNetworkInterface *interface;
+			SendMessageVMCommand c(command.getData());
+			interface = hostBlock->getP2PNetworkInterfaceByDestBlockId(c.getDestId());
+			if (interface == NULL) {
+				stringstream info;
+				info.str("");
+				info << "Warning: sends a message to " << endl << "the non-connected block " << c.getDestId();
+				getScheduler()->trace(info.str(),hostBlock->blockId);
+				ERRPUT << "Interface not found" << endl;
+				return;
+			}
+			getScheduler()->scheduleLock(new VMSendMessageEvent(dateToSchedule, hostBlock,
+					new ReceiveMessageVMCommand(c), interface));
+			}
+			break;
+		case VM_COMMAND_DEBUG:
+			{
+			// Copy the message because it will be queued
+			DebbuggerVMCommand *c = new DebbuggerVMCommand(command.getData());
+			c->copyData();
+			handleDebugCommand(c);
+			}
+			break;
+		case VM_COMMAND_WORK_END:
+			{
+			WorkEndVMCommand c(command.getData());
+			if (c.getNbProcessedMsg() == nbSentCommands) {
+					hasWork = false;
+			}
+			}
+			break;
+		case VM_COMMAND_TIME_INFO:
+			;
+			break;
+		case VM_COMMAND_POLL_START:
+			// Polling lasts 1us
+			getScheduler()->scheduleLock(new VMEndPollEvent(dateToSchedule+1, hostBlock));
+			polling = true;
+			break;
+		default:
+			ERRPUT << "*** ERROR *** : unsupported message received from VM (" << command.getType() <<")" << endl;
+			break;
+	}
 }
 
 }

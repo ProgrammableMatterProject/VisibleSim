@@ -24,20 +24,22 @@ Blinky01BlockCode::Blinky01BlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlock
 	hasWork = true; // mode fastest
 	polling = false; // mode fastest
 	currentLocalDate = 0; // mode fastest
+	vm = new BlinkyBlocksVM(host);
 }
 
 Blinky01BlockCode::~Blinky01BlockCode() {
 	OUTPUT << "Blinky01BlockCode destructor" << endl;
+	killVM();
 }
 
 void Blinky01BlockCode::init() {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	stringstream info;
 	commandType c[5];
-	BlinkyBlocksVM *vm;
+	//BlinkyBlocksVM *vm;
 	
-	bb->lockVM();
-	vm = bb->vm;
+	lockVM();
+	//vm = bb->vm;
 	if((vm != NULL)) {
 		if((BlinkyBlocks::getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
 			vm->deterministicSet = true;
@@ -56,7 +58,7 @@ void Blinky01BlockCode::init() {
 			OUTPUT << "ID sent to the VM " << hostBlock->blockId << endl;
 		}
 	}
-	bb->unlockVM();
+	unlockVM();
 }
 
 void Blinky01BlockCode::startup() {
@@ -123,7 +125,7 @@ void Blinky01BlockCode::handleCommand(VMCommand &command) {
 		case VM_COMMAND_WORK_END:
 			{
 			WorkEndVMCommand c(command.getData());
-			if (c.getNbProcessedMsg() == bb->vm->nbSentCommands) {
+			if (c.getNbProcessedMsg() == vm->nbSentCommands) {
 					hasWork = false;
 			}
 			}
@@ -155,7 +157,7 @@ void Blinky01BlockCode::handleDeterministicMode(VMCommand &command){
 void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 	stringstream info;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
-	BlinkyBlocksVM *vm = bb->vm;
+	//BlinkyBlocksVM *vm = bb->vm;
 	assert(vm != NULL);
 	info.str("");
 	
@@ -170,11 +172,11 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			if(BlinkyBlocksVM::isInDebuggingMode()) {
 				//getDebugger()->sendTerminateMsg(bb->blockId);
 				delete vm;
-				bb->vm = NULL;
+				vm = NULL;
 			} else {
 				StopVMCommand command(outBuffer, bb->blockId);
-				bb->sendCommand(command);
-				bb->killVM();
+				sendCommand(command);
+				killVM();
 			}			
 			info << "VM stopped";
 			}
@@ -183,21 +185,21 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			{
 			AddNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMAddNeighborEvent>(pev))->target,
 				(boost::static_pointer_cast<VMAddNeighborEvent>(pev))->face);
-			bb->sendCommand(command);
+			sendCommand(command);
 			info << "Add neighbor "<< (boost::static_pointer_cast<VMAddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<VMAddNeighborEvent>(pev))->face));
 			}
 			break;
 		case EVENT_REMOVE_NEIGHBOR:
 			{
 			RemoveNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMRemoveNeighborEvent>(pev))->face);
-			bb->sendCommand(command);
+			sendCommand(command);
 			info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<VMAddNeighborEvent>(pev))->face));
 			}
 			break;
 		case EVENT_TAP:
 			{
 			TapVMCommand command(outBuffer, bb->blockId);
-			bb->sendCommand(command);
+			sendCommand(command);
 			info << "tapped";
 			}
 			break;
@@ -224,7 +226,7 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			{
 			ReceiveMessageVMCommand *command = (ReceiveMessageVMCommand*) (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message.get();
 			command->setTimestamp(BlinkyBlocks::getScheduler()->now());
-			bb->sendCommand(*command);
+			sendCommand(*command);
 #ifdef TEST_DETER
 			cout << "message received from " << command->sourceInterface->hostBlock->blockId << endl;
 #endif
@@ -235,21 +237,21 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			{
 			AccelVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMAccelEvent>(pev))->x, (boost::static_pointer_cast<VMAccelEvent>(pev))->y,
 			(boost::static_pointer_cast<VMAccelEvent>(pev))->z);
-			bb->sendCommand(command);
+			sendCommand(command);
 			info << "accel";
 			}
 			break;
 		case EVENT_SHAKE:
 			{
 			ShakeVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMShakeEvent>(pev))->force);
-			bb->sendCommand(command);
+			sendCommand(command);
 			info << "shake";
 			}
 			break;
 		case EVENT_SET_DETERMINISTIC:
 			{
 			SetDeterministicModeVMCommand command(outBuffer, bb->blockId);
-			bb->sendCommand(command);
+			sendCommand(command);
 			OUTPUT << "VM set in deterministic mode " << hostBlock->blockId << endl;
 			info << "VM set in deterministic mode";
 			}
@@ -258,7 +260,7 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			{
 			polling = false;
 			EndPollVMCommand command(outBuffer, bb->blockId);
-			bb->sendCommand(command);
+			sendCommand(command);
 			info << "Polling time period ended" << endl;
 			}
 			break;
@@ -271,4 +273,38 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 
 BlinkyBlocks::BlinkyBlocksBlockCode* Blinky01BlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
 	return(new Blinky01BlockCode(host));
+}
+
+
+void Blinky01BlockCode::lockVM() {
+	if (BlinkyBlocksVM::isInDebuggingMode()) {
+		mutex_vm.lock();
+	}
+}
+
+void Blinky01BlockCode::unlockVM() {
+	if (BlinkyBlocksVM::isInDebuggingMode()) {
+		mutex_vm.unlock();
+	}
+}
+
+int Blinky01BlockCode::sendCommand(VMCommand &c) {
+	int ret = 0;
+	lockVM();
+	if(vm != NULL) {
+		if ((hostBlock->state == BuildingBlock::ALIVE) || (c.getType() == VM_COMMAND_STOP)) {
+			ret = vm->sendCommand(c);
+		}
+	}
+	unlockVM();
+	return ret;
+}
+
+void Blinky01BlockCode::killVM() {
+	lockVM();
+	if(vm != NULL) {
+		delete vm;
+		vm = NULL;
+	}
+	unlockVM();
 }

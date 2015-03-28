@@ -24,6 +24,8 @@ private:
 	int schedulerMode;
 	bool meldDebugger;
 	string programPath;
+	string configFile;
+	bool stats;
 	
 	void help();
 	void read(int argc, char *argv[]);
@@ -33,6 +35,16 @@ public:
 	~CommandLine() {};
 	
 	void print();
+	
+	bool randomWorldRequested();
+	int getRandomTopology() { return topology; }
+	int getRandomTopologyParameter() { return topologyParameter; }
+	bool getTerminalOnly() { return terminalOnly; }
+	int getSchedulerMode() { return schedulerMode; }
+	bool getMeldDebugger() { return meldDebugger; }
+	string getProgramPath() { return programPath; }
+	string getConfigFile() { return configFile; }
+	bool getStats() { return stats; }
 };
 
 #endif // CONFIGSTAT_H_

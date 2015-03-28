@@ -90,7 +90,6 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlo
 		tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
 		tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
 	}
-	vm = new BlinkyBlocksVM(this);
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
 	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
 	clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC1K_CRC, blockId);
@@ -98,7 +97,6 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlo
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {
 	OUTPUT << "BlinkyBlocksBlock destructor " << blockId << endl;
-	killVM();
 }
 
 void BlinkyBlocksBlock::setPosition(const Vecteur &p) {
@@ -167,42 +165,20 @@ void BlinkyBlocksBlock::stop(uint64_t date, State s) {
 	getScheduler()->scheduleLock(new VMStopEvent(getScheduler()->now(), this));
 }
 
-void BlinkyBlocksBlock::lockVM() {
-	if (BlinkyBlocksVM::isInDebuggingMode()) {
-		mutex_vm.lock();
-	}
+std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {
+	stream << bb.blockId << "\tcolor: " << bb.color;
+	return stream;
 }
 
-void BlinkyBlocksBlock::unlockVM() {
-	if (BlinkyBlocksVM::isInDebuggingMode()) {
-		mutex_vm.unlock();
-	}
-}
-
-int BlinkyBlocksBlock::sendCommand(VMCommand &c) {
-	int ret = 0;
-	lockVM();
-	if(vm != NULL) {
-		if ((state == ALIVE) || (c.getType() == VM_COMMAND_STOP)) {
-			ret = vm->sendCommand(c);
+P2PNetworkInterface* BlinkyBlocksBlock::getInterfaceDestId(int id) {
+	for (int i=0; i<6; i++) {
+		if (tabInterfaces[i]->connectedInterface != NULL) {
+			if (tabInterfaces[i]->connectedInterface->hostBlock->blockId == id) {
+				return tabInterfaces[i];
+			}
 		}
 	}
-	unlockVM();
-	return ret;
-}
-
-void BlinkyBlocksBlock::killVM() {
-	lockVM();
-	if(vm != NULL) {
-		delete vm;
-		vm = NULL;
-	}
-	unlockVM();
-}
-
-std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {
-  stream << bb.blockId << "\tcolor: " << bb.color;
-  return stream;
+	return NULL;
 }
 
 }

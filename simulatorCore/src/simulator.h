@@ -13,6 +13,7 @@
 
 #include "scheduler.h"
 #include "world.h"
+#include "commandLine.h"
 
 using namespace std;
 
@@ -29,6 +30,8 @@ protected:
 
 	TiXmlDocument *xmlDoc;
 	TiXmlNode* xmlWorldNode;
+	
+	CommandLine cmdLine;
 
 	Simulator(int argc, char *argv[]);
 	

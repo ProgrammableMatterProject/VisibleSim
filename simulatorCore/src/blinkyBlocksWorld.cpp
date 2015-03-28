@@ -61,7 +61,6 @@ BlinkyBlocksWorld::~BlinkyBlocksWorld() {
 	delete objRepere;
 	delete camera;
 	/* free Scenario Events */
-	cerr << "deleting scenario events which has non-virtual destructor.  ERROR. FIX THIS\n";
 	vector<ScenarioEvent*>::const_iterator it=tabEvents.begin();
 	while (it!=tabEvents.end()) {
 		delete (*it);
@@ -456,28 +455,6 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
 		bb->shake(date, f);
 	}
 
-	int BlinkyBlocksWorld::broadcastDebugCommand(DebbuggerVMCommand &c) {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		int aliveBlocks = 0;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
-			/* Send id & set deterministic mode if necessary */
-			bbc->init();
-			aliveBlocks += bb->sendCommand(c);
-		}
-		return aliveBlocks;
-	}
-
-	int BlinkyBlocksWorld::sendCommand(int id, VMCommand &c) {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
-      BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
-		bbc->init();
-      return bb->sendCommand(c);
-	}
-
-
 	void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
 		if (bId < 0) {
 			// Delete the block	without deleting the links
@@ -561,6 +538,7 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
 		return (date < min);
 	}
 
+	/*
 	void BlinkyBlocksWorld::killAllVMs() {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
 		for(it = buildingBlocksMap.begin();
@@ -568,8 +546,8 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
 			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
 			bb->killVM();
 		}
-	}
-
+	}*/
+	/*
    void BlinkyBlocksWorld::closeAllSockets() {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
 		for(it = buildingBlocksMap.begin();
@@ -581,6 +559,28 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
          }
 		}
 	}
+	
+		int BlinkyBlocksWorld::broadcastDebugCommand(DebbuggerVMCommand &c) {
+		map<int, BaseSimulator::BuildingBlock*>::iterator it;
+		int aliveBlocks = 0;
+		for(it = buildingBlocksMap.begin();
+				it != buildingBlocksMap.end(); it++) {
+			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
+			BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
+			// Send id & set deterministic mode if necessary
+			bbc->init();
+			aliveBlocks += bb->sendCommand(c);
+		}
+		return aliveBlocks;
+	}
+
+	int BlinkyBlocksWorld::sendCommand(int id, VMCommand &c) {
+		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
+      BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
+		bbc->init();
+      return bb->sendCommand(c);
+	} 
+	*/
 
 	bool BlinkyBlocksWorld::equilibrium() {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;

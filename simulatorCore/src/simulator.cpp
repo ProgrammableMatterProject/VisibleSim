@@ -16,7 +16,7 @@ Simulator* simulator = NULL;
 
 Simulator* Simulator::simulator = NULL;
 
-Simulator::Simulator(int argc, char *argv[]) {
+Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 	if (simulator == NULL) {
 		simulator = this;
 		BaseSimulator::simulator = simulator;
@@ -28,9 +28,9 @@ Simulator::Simulator(int argc, char *argv[]) {
 	xmlWorldNode = NULL;
 
 	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
-	string confFileName = "config.xml";
-
-   for (int i=1; i < argc; i++) {
+	string confFileName = cmdLine.getConfigFile();
+	
+   /*for (int i=1; i < argc; i++) {
       if(!strcmp(argv[i], "-c")) {
          if (i+1 < argc) {
             confFileName= argv[i+1];
@@ -40,7 +40,9 @@ Simulator::Simulator(int argc, char *argv[]) {
             exit(EXIT_FAILURE);
          }
       }
-   }
+   }*/
+   
+	
 
 	xmlDoc = new TiXmlDocument(confFileName.c_str());
 
