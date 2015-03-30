@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 15.03.2015 18:00:09
+# File Created: 25.03.2015 08:27:47
 
 newmtl connectors
 	Ns 48.0000
@@ -12,8 +12,8 @@ newmtl connectors
 	Kd 0.2941 0.2941 0.2941
 	Ks 1.0890 1.0890 1.0890
 	Ke 0.0000 0.0000 0.0000
-	map_Ka D:\Documents\2-Recherche\LIFC\svn\svn-simulateur\Catoms3D\textureNumerosHex.tga
-	map_Kd D:\Documents\2-Recherche\LIFC\svn\svn-simulateur\Catoms3D\textureNumerosHex.tga
+	map_Ka textureSimpleHex2.tga
+	map_Kd textureSimpleHex2.tga
 
 newmtl lighted
 	Ns 5.0000
@@ -22,8 +22,8 @@ newmtl lighted
 	Tr 0.0000
 	Tf 1.0000 1.0000 1.0000 
 	illum 2
-	Ka 0.2392 0.9059 0.0314
-	Kd 0.2392 0.9059 0.0314
+	Ka 0.1882 0.8980 0.0902
+	Kd 0.1882 0.8980 0.0902
 	Ks 0.5220 0.5220 0.5220
 	Ke 0.0000 0.0000 0.0000
 
