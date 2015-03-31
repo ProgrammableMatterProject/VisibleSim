@@ -108,11 +108,7 @@ uint64_t Scheduler::now() {
 }
 
 bool Scheduler::scheduleLock(Event *ev) {
-	bool ret;
-	lock();
-	ret = schedule(ev);
-	unlock();
-	return ret;
+	return schedule(ev); //lock done in schedule
 }
 
 void Scheduler::trace(string message,int id,const Color &color) {

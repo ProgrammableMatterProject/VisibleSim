@@ -44,8 +44,7 @@ void *CppScheduler::startPaused(/*void *param*/) {
 	uint64_t systemCurrentTime, systemCurrentTimeMax;
 
 	//usleep(1000000);
-	cout << "\033[1;33mScheduler Mode :" << schedulerMode << endl;
-
+	cout << "\033[1;33mScheduler Mode :" << schedulerMode << "\033[0m"  << endl;
 	sem_schedulerStart->wait();
 
     state = RUNNING;

@@ -145,10 +145,7 @@ void BlinkyBlocksBlock::shake(uint64_t date, int f) {
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
-	OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;
-	//int test = NeighborDirection::getOpposite(getDirection(ni));
-	//cout << "test" << endl;
-	
+	OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;	
 	getScheduler()->scheduleLock(new AddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
 }
 
