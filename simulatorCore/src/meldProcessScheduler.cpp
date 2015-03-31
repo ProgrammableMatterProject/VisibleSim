@@ -306,4 +306,13 @@ bool MeldProcessScheduler::schedule(Event *ev) {
 	return(true);
 }
 
+
+bool MeldProcessScheduler::scheduleLock(Event *ev) {
+	bool ret;
+	lock();
+	ret = schedule(ev);
+	unlock();
+	return ret;
+}
+
 } // MeldProcess namespace

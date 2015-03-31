@@ -68,6 +68,7 @@ public:
 	 * with the scheduler thread.
 	 */
 	bool schedule(Event *ev);
+	bool scheduleLock(Event *ev);
 	
 	void SemWaitOrReadDebugMessage();
 	
