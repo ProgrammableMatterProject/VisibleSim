@@ -32,6 +32,7 @@ tcp::acceptor *MeldProcessVM::acceptor = NULL;
 string MeldProcessVM::vmPath;
 string MeldProcessVM::programPath;
 bool MeldProcessVM::debugging = false;
+map<int, MeldProcessVM*> MeldProcessVM::vmMap;
 
 MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
 	int ret;
@@ -43,12 +44,13 @@ MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
 	currentLocalDate = 0; // mode fastest
 	hasWork = true; // mode fastest
 	polling = false; // mode fastest
-	
+		
 	vmLogFile << "VM" << hostBlock->blockId << ".log";
    
 	OUTPUT << "VM "<< hostBlock->blockId << " constructor" << endl;
 	// Start the VM
 	pid = 0;
+	memset(inBuffer,0,VM_COMMAND_MAX_LENGHT*sizeof(commandType));
 	mutex_ios.lock();
 	ios->notify_fork(boost::asio::io_service::fork_prepare);
 	pid = fork();
@@ -57,7 +59,7 @@ MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
 		ios->notify_fork(boost::asio::io_service::fork_child);
 		mutex_ios.unlock();
 		acceptor->close();
-      //getWorld()->closeAllSockets();
+		closeAllSockets();
 #ifdef LOGFILE
       log_file.close();
 #endif
@@ -78,11 +80,11 @@ MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
          cerr << "Error: VM executable, " << vmPath.c_str()  << ", does not exist or is not executable" << endl;
          exit(EXIT_FAILURE);
       }
-	}
+	}	
 	ios->notify_fork(boost::asio::io_service::fork_parent);
-   mutex_ios.unlock();
+	mutex_ios.unlock();
 	socket = boost::shared_ptr<tcp::socket>(new tcp::socket(*ios));
-   if (hostBlock->blockId == 1) {
+	if (hostBlock->blockId == 1) {
       bool connected = false;
       
       acceptor->async_accept(*(socket.get()), boost::bind(&MeldProcessVM::asyncAcceptHandler, this, error , &connected));
@@ -93,7 +95,7 @@ MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
             }
       }
       if(!connected) {
-         ifstream file (vmLogFile.str().c_str());
+		ifstream file (vmLogFile.str().c_str());
          string line;
          cerr << "VisibleSim error: unable to connect to the VM" << endl;
          cerr << vmLogFile.str() << ":" << endl;
@@ -107,14 +109,15 @@ MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
          }
          acceptor->close();
          exit(EXIT_FAILURE);
-      }
-   } else {
-      acceptor->accept(*(socket.get()));
-   }
-   idSent = false;
+		}
+	} else {
+		acceptor->accept(*(socket.get()));
+	}
+	idSent = false;
 	deterministicSet = false;
 	nbSentCommands = 0;
 	asyncReadCommand();
+	vmMap.insert(std::pair<int,MeldProcessVM*>(bb->blockId,this));
 }
 
 void MeldProcessVM::asyncAcceptHandler(boost::system::error_code& error, bool* connected) {
@@ -200,12 +203,9 @@ int MeldProcessVM::sendCommand(VMCommand &command){
 	if (command.getType() != VM_COMMAND_DEBUG) {
 		nbSentCommands++;
 		handleDeterministicMode(command);
-		//((BlinkyBlocksBlockCode*)hostBlock->blockCode)->;
 	}
 	try {
 		boost::asio::write(getSocket(), boost::asio::buffer(command.getData(), command.getSize()));
-      //boost::asio::async_write(getSocket(), boost::asio::buffer(command.getData(), command.getSize()), boost::bind(&MeldProcessVM::handle_write, this,
-      //      boost::asio::placeholders::error));
    } catch (std::exception& e) {
 		ERRPUT << "Connection to the VM "<< hostBlock->blockId << " lost" << endl;
 		return 0;
@@ -275,7 +275,7 @@ void MeldProcessVM::handleDeterministicMode(VMCommand &command){
 
 void MeldProcessVM::handleCommand(VMCommand &command) {
 	uint64_t dateToSchedule;
-	
+		
 	currentLocalDate = max(getScheduler()->now(), command.getTimestamp());
 	if (getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) {
 		//assert(currentLocalDate <= command.getTimestamp()); -- not true because of asynchrone debug commands
@@ -289,8 +289,8 @@ void MeldProcessVM::handleCommand(VMCommand &command) {
 			{
 			// format: <size> <command> <timestamp> <src> <red> <blue> <green> <intensity>
 			SetColorVMCommand c(command.getData());
-			Vecteur color = c.getColor();
-			getScheduler()->scheduleLock(new VMSetColorEvent(dateToSchedule, hostBlock, color));
+			Color color = c.getColor();
+			getScheduler()->scheduleLock(new SetColorEvent(dateToSchedule, hostBlock, color));
 			}
 			break;
 		case VM_COMMAND_SEND_MESSAGE:
@@ -335,9 +335,120 @@ void MeldProcessVM::handleCommand(VMCommand &command) {
 			polling = true;
 			break;
 		default:
+			cout << "DEFAULT" << endl;
 			ERRPUT << "*** ERROR *** : unsupported message received from VM (" << command.getType() <<")" << endl;
 			break;
 	}
 }
 
+ void MeldProcessVM::closeAllSockets() {
+	 map<int, MeldProcessVM*>::iterator it;
+	 for(it = vmMap.begin(); it != vmMap.end(); it++) {
+		it->second->socket->close();
+		it->second->socket.reset(); 
+	 }
+	}
+
+
+	bool MeldProcessVM::dateHasBeenReachedByAll(uint64_t date) {
+		static uint64_t minReallyReached = 0;
+		uint64_t min, min2;
+		int alive = 0, hasNoWork = 0;
+		
+		if (date < minReallyReached) {
+			return true;
+		}
+		
+		map<int, MeldProcessVM*>::iterator it;
+		for(it = vmMap.begin(); it != vmMap.end(); it++) {
+			MeldProcessVM *vm = it->second;
+			BuildingBlock *bb = vm->hostBlock;
+			if (bb->getState() < BuildingBlock::ALIVE) {
+				continue;
+			}
+			alive++;
+			if (!vm->hasWork || vm->polling) {
+				hasNoWork++;
+				if (alive == 1) {
+					min2 = vm->currentLocalDate;
+				} else if (vm->currentLocalDate < min2) {
+					min2 = vm->currentLocalDate;
+				}
+			} else {
+				if ((alive - 1) == hasNoWork) {
+					min = vm->currentLocalDate;
+				} else if (vm->currentLocalDate < min) {
+					min = vm->currentLocalDate;
+				}
+				if (min < min2) {
+					min2 = min;
+				}
+			}
+		}
+		if (alive==hasNoWork) {
+			return true;
+		}
+		minReallyReached = min2;
+		return (date < min);
+	}
+	
+	bool MeldProcessVM::equilibrium() {
+		map<int, MeldProcessVM*>::iterator it;
+		for(it = vmMap.begin(); it != vmMap.end(); it++) {
+			MeldProcessVM *vm = it->second;
+			BuildingBlock *bb = vm->hostBlock;
+			if (bb->getState() < BuildingBlock::ALIVE) {
+				continue;
+			}
+			if (vm->hasWork) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/*void BlinkyBlocksWorld::killAllVMs() {
+		map<int, MeldProcessVM*>::iterator it;
+		for(it = vmMap.begin(); it != vmMap.end(); it++) {
+			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
+			bb->killVM();
+		}
+	}*/
+		
+	int MeldProcessVM::broadcastDebugCommand(DebbuggerVMCommand &c) {
+		map<int, MeldProcessVM*>::iterator it;
+		int aliveBlocks = 0;
+		
+		for(it = vmMap.begin(); it != vmMap.end(); it++) {
+			MeldProcessVM *vm = it->second;
+			BuildingBlock *bb = vm->hostBlock;
+			BlockCode* bbc = bb->blockCode;
+			// Send id & set deterministic mode if necessary
+			bbc->init();
+			aliveBlocks += vm->sendCommand(c);	
+		}
+		return aliveBlocks;
+	}
+
+	int MeldProcessVM::sendCommand(int id, VMCommand &c) {
+		BuildingBlock *bb = BaseSimulator::getWorld()->getBlockById(id);
+		if (bb == NULL) {return 0;}
+		MeldProcessVM *vm = getMeldProcessVMById(id);
+		if (vm == NULL) {cout << "vm == NULL!" << endl; return 0;}
+		BlockCode* bbc = bb->blockCode;
+		bbc->init();
+		cout << "sending command" << endl;
+		return vm->sendCommand(c);
+	}
+	
+	MeldProcessVM* MeldProcessVM::getMeldProcessVMById(int id) {
+		map<int, MeldProcessVM*>::iterator it;
+		it = vmMap.find(id);
+		if (it == vmMap.end()) {
+			return(NULL);
+		} else {
+			return(it->second);
+		}
+	}
+	
 }

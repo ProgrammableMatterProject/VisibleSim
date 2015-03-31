@@ -43,6 +43,7 @@ class GlutContext {
 	static void mainLoop(void);
 	static void addTrace(const string &str,int id,const Color &color);
     static void reshapeFunc(int w,int h);
+    static void setFullScreenMode(bool b);
 private :
     static void passiveMotionFunc(int x,int y);
     static void motionFunc(int x,int y);

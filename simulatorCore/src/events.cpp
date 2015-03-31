@@ -312,3 +312,157 @@ void SetColorEvent::consumeBlockEvent() {
 const string SetColorEvent::getEventName() {
 	return("SetColor Event");
 }
+
+//===========================================================================================================
+//
+//          AddNeighborEvent  (class)
+//
+//===========================================================================================================
+
+AddNeighborEvent::AddNeighborEvent(uint64_t t, BuildingBlock *conBlock, uint64_t f, uint64_t ta): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_ADD_NEIGHBOR;
+	face = f;
+	target = ta;
+}
+
+AddNeighborEvent::AddNeighborEvent(AddNeighborEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+	face = ev->face;
+	target = ev->target;
+}
+
+AddNeighborEvent::~AddNeighborEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void AddNeighborEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new AddNeighborEvent(this)));
+}
+
+const string AddNeighborEvent::getEventName() {
+	return("AddNeighbor Event");
+}
+
+//===========================================================================================================
+//
+//          RemoveNeighborEvent  (class)
+//
+//===========================================================================================================
+
+RemoveNeighborEvent::RemoveNeighborEvent(uint64_t t, BuildingBlock *conBlock, uint64_t f): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_REMOVE_NEIGHBOR;
+	face = f;
+}
+
+RemoveNeighborEvent::RemoveNeighborEvent(RemoveNeighborEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+	face = ev->face;
+}
+
+RemoveNeighborEvent::~RemoveNeighborEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void RemoveNeighborEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new RemoveNeighborEvent(this)));
+}
+
+const string RemoveNeighborEvent::getEventName() {
+	return("RemoveNeighbor Event");
+}
+
+//===========================================================================================================
+//
+//          TapEvent  (class)
+//
+//===========================================================================================================
+
+TapEvent::TapEvent(uint64_t t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_TAP;
+}
+
+TapEvent::TapEvent(TapEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+}
+
+TapEvent::~TapEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void TapEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new TapEvent(this)));
+}
+
+const string TapEvent::getEventName() {
+	return("Tap Event");
+}
+
+//===========================================================================================================
+//
+//          AccelEvent  (class)
+//
+//===========================================================================================================
+
+AccelEvent::AccelEvent(uint64_t t, BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_ACCEL;
+	x = xx;
+	y = yy;
+	z = zz;
+}
+
+AccelEvent::AccelEvent(AccelEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+	x = ev->x;
+	y = ev->y;
+	z = ev->z;
+}
+
+AccelEvent::~AccelEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void AccelEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new AccelEvent(this)));
+}
+
+const string AccelEvent::getEventName() {
+	return("Accel Event");
+}
+
+//===========================================================================================================
+//
+//          ShakeEvent  (class)
+//
+//===========================================================================================================
+
+ShakeEvent::ShakeEvent(uint64_t t, BuildingBlock *conBlock, uint64_t f): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_SHAKE;
+	force = f;
+}
+
+ShakeEvent::ShakeEvent(ShakeEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+	force = ev->force;
+}
+
+ShakeEvent::~ShakeEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void ShakeEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new ShakeEvent(this)));
+}
+
+const string ShakeEvent::getEventName() {
+	return("Shake Event");
+}

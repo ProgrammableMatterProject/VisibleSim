@@ -26,6 +26,8 @@ private:
 	string programPath;
 	string configFile;
 	bool stats;
+	bool fullScreen;
+	int gridSize;
 	
 	void help();
 	void read(int argc, char *argv[]);
@@ -45,6 +47,8 @@ public:
 	string getProgramPath() { return programPath; }
 	string getConfigFile() { return configFile; }
 	bool getStats() { return stats; }
+	bool getFullScreen() { return fullScreen; }
+	int getGridSize() { return gridSize; }
 };
 
 #endif // CONFIGSTAT_H_

@@ -17,52 +17,38 @@
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "trace.h"
 
+#include "cppScheduler.h"
+#include "meldProcessScheduler.h"
+#include "simulator.h"
+
 using namespace boost;
 
 namespace BlinkyBlocks {
 
-class BlinkyBlocksScheduler : public BaseSimulator::Scheduler {
-protected:
-	boost::thread *schedulerThread;
-	int schedulerMode;
-
-	BlinkyBlocksScheduler();
-	virtual ~BlinkyBlocksScheduler();
-	void* startPaused(/*void *param */);
-
-public:
-	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
-
-	static void createScheduler();
-	static void deleteScheduler();
-	static BlinkyBlocksScheduler* getScheduler() {
-		assert(scheduler != NULL);
-		return((BlinkyBlocksScheduler*)scheduler);
-	}
-
-	void printInfo() {
-		OUTPUT << "I'm a BlinkyBlocksScheduler" << endl;
-	}
-
-	void start(int mode);
-
-	void waitForSchedulerEnd() {
-		schedulerThread->join();
-	}
-
-	inline int getMode() { return schedulerMode; }
-
-};
-
 inline void createScheduler() {
-	BlinkyBlocksScheduler::createScheduler();
+	switch(BaseSimulator::Simulator::getType()) {
+		case BaseSimulator::Simulator::MELDPROCESS:
+			MeldProcess::MeldProcessScheduler::createScheduler();
+		break;
+		case BaseSimulator::Simulator::CPP:
+			cppScheduler::CppScheduler::createScheduler();
+		break;		
+	}
+	
 }
 
 inline void deleteScheduler() {
-	BlinkyBlocksScheduler::deleteScheduler();
+	switch(BaseSimulator::Simulator::getType()) {
+		case BaseSimulator::Simulator::MELDPROCESS:
+			MeldProcess::MeldProcessScheduler::deleteScheduler();
+		break;
+		case BaseSimulator::Simulator::CPP:
+			cppScheduler::CppScheduler::deleteScheduler();
+		break;		
+	}
 }
 
-inline BlinkyBlocksScheduler* getScheduler() { return(BlinkyBlocksScheduler::getScheduler()); }
+inline BaseSimulator::Scheduler* getScheduler() { return (BaseSimulator::getScheduler()); }
 
 } // BlinkyBlocks namespace
 

@@ -47,11 +47,10 @@ void GlutContext::init(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 
-    for (int i=0; i<argc; i++) {
-        if (strcmp(argv[i],"-f")==0) {
-          glutFullScreen();
-        }
-    }
+    if(fullScreenMode) {
+		glutFullScreen();
+	}
+    
 	initShaders();
 
 	////// GL parameters /////////////////////////////////////
@@ -246,11 +245,9 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
 	//  case 'l' : showLinks = !showLinks; break;
       case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
       //case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
-     
-     //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
+	  case 'p' : MeldProcess::getDebugger()->handlePauseRequest(); break;
 	  case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
-	 // case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
-	 
+	  case 'u' : MeldProcess::getDebugger()->unPauseSim(); break;
 	  case 'z' : {
 		  World *world = BaseSimulator::getWorld();
 		  GlBlock *slct=world->getSelectedBlock();
@@ -478,4 +475,8 @@ bool GlutContext::saveScreen(char *title) {
   fclose(fichier);
   free(pixels);
   return true;
+}
+
+void GlutContext::setFullScreenMode(bool b) {
+	fullScreenMode = true;
 }

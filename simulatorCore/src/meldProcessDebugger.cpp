@@ -22,19 +22,18 @@ MeldProcessDebugger::MeldProcessDebugger() {
 
 
 int MeldProcessDebugger::sendCmd(int id, DebbuggerVMCommand &c) {
-	return -1;
-	/*if (id > 0) {
-		if (getWorld()->sendCommand(id, c) == 1) {
+	if (id > 0) {
+		if (MeldProcessVM::sendCommand(id, c) == 1) {
 			return 1;
 		} else {
 			return -1;
 		}
 	} else if (id == -1) {
 		// send to all vm
-		return getWorld()->broadcastDebugCommand(c);
+		return MeldProcessVM::broadcastDebugCommand(c);
 	} else {
 		return -1;
-	}*/
+	}
 }
 
 void MeldProcessDebugger::handleDebugCommand(DebbuggerVMCommand *c) {

@@ -103,6 +103,7 @@ string VMCommand::getString(commandType t) {
 			return string("VM_COMMAND_END_POLL");
 		default:
 			ERRPUT << "Unknown received-message type" << endl;
+			cout << "Unknown command: " << t << endl;
 			return string("Unknown");
 			break;
 		}
@@ -166,8 +167,8 @@ TapVMCommand::TapVMCommand(commandType *d, commandType src) :
 
 SetColorVMCommand::SetColorVMCommand(commandType* d): VMCommand(d) {};
 
-Vecteur SetColorVMCommand::getColor() {
-	return Vecteur((float)data[4]/255.0, (float)data[5]/255.0, (float)data[6]/255.0, (float)data[7]/255.0);
+Color SetColorVMCommand::getColor() {
+	return Color((float)data[4]/255.0, (float)data[5]/255.0, (float)data[6]/255.0, (float)data[7]/255.0);
 }
 
 

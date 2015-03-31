@@ -49,75 +49,6 @@ public:
 	const virtual string getEventName();
 };
 
-//===========================================================================================================
-//
-//          VMAddNeighborEvent  (class)
-//
-//===========================================================================================================
-
-class VMAddNeighborEvent : public BlockEvent {
-public:
-	uint64_t face;
-	uint64_t target;
-	
-	VMAddNeighborEvent(uint64_t, BuildingBlock *conBlock, uint64_t f, uint64_t ta);
-	VMAddNeighborEvent(VMAddNeighborEvent *ev);
-	~VMAddNeighborEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
-};
-
-//===========================================================================================================
-//
-//          VMRemoveNeighborEvent  (class)
-//
-//===========================================================================================================
-
-class VMRemoveNeighborEvent : public BlockEvent {
-public:
-	uint64_t face;
-	
-	VMRemoveNeighborEvent(uint64_t, BuildingBlock *conBlock, uint64_t f);
-	VMRemoveNeighborEvent(VMRemoveNeighborEvent *ev);
-	~VMRemoveNeighborEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
-};
-
-//===========================================================================================================
-//
-//          VMTapEvent  (class)
-//
-//===========================================================================================================
-
-class VMTapEvent : public BlockEvent {
-public:
-
-	VMTapEvent(uint64_t, BuildingBlock *conBlock);
-	VMTapEvent(VMTapEvent *ev);
-	~VMTapEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
-};
-
-
-//===========================================================================================================
-//
-//          VMSetColorEvent  (class)
-//
-//===========================================================================================================
-
-class VMSetColorEvent : public BlockEvent {
-public:
-	Vecteur color;
-
-	VMSetColorEvent(uint64_t, BuildingBlock *conBlock, float r, float g, float b, float a);
-	VMSetColorEvent(uint64_t, BuildingBlock *conBlock, Vecteur &c);
-	VMSetColorEvent(VMSetColorEvent *ev);
-	~VMSetColorEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
-};
 
 //===========================================================================================================
 //
@@ -133,42 +64,6 @@ public:
 	VMSendMessageEvent(uint64_t, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni);
 	VMSendMessageEvent(VMSendMessageEvent *ev);
 	~VMSendMessageEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
-};
-
-//===========================================================================================================
-//
-//          VMAccelEvent  (class)
-//
-//===========================================================================================================
-
-class VMAccelEvent : public BlockEvent {
-public:
-	uint64_t x;
-	uint64_t y;
-	uint64_t z;
-	
-	VMAccelEvent(uint64_t, BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz);
-	VMAccelEvent(VMAccelEvent *ev);
-	~VMAccelEvent();
-	void consumeBlockEvent();
-	const virtual string getEventName();
-};
-
-//===========================================================================================================
-//
-//          VMShakeEvent  (class)
-//
-//===========================================================================================================
-
-class VMShakeEvent : public BlockEvent {
-public:
-	uint64_t force;
-	
-	VMShakeEvent(uint64_t, BuildingBlock *conBlock, uint64_t f);
-	VMShakeEvent(VMShakeEvent *ev);
-	~VMShakeEvent();
 	void consumeBlockEvent();
 	const virtual string getEventName();
 };

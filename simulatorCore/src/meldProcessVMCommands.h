@@ -9,7 +9,7 @@
 #define MELDPROCESSVMCOMMANDS_H_
 
 #include "network.h"
-#include "vecteur.h"
+#include "color.h"
 
 #define VM_COMMAND_MAX_LENGHT_BYTES 544 // debugger
 #define VM_COMMAND_TYPE_SIZE sizeof(commandType)
@@ -79,7 +79,7 @@ public:
 class SetColorVMCommand : public VMCommand {
 public:
 	SetColorVMCommand(commandType *d);		
-	Vecteur getColor();
+	Color getColor();
 };
 
 

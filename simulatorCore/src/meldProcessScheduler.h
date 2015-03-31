@@ -10,7 +10,6 @@
 
 #include "scheduler.h"
 #include "network.h"
-#include "blinkyBlocksBlock.h"
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
@@ -69,7 +68,6 @@ public:
 	 * with the scheduler thread.
 	 */
 	bool schedule(Event *ev);
-	bool scheduleLock(Event *ev);
 	
 	void SemWaitOrReadDebugMessage();
 	

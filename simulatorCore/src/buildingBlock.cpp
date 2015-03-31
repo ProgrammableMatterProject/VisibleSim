@@ -94,15 +94,25 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(int destBlockId) {
 }
 
 P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock) {
-	list <P2PNetworkInterface*>::const_iterator niIt=P2PNetworkInterfaceList.begin();
-	while (niIt!=P2PNetworkInterfaceList.end() && (*niIt)->connectedInterface->hostBlock!=destBlock) niIt++;
-	return (niIt==P2PNetworkInterfaceList.end())?NULL:(*niIt);
+	for(list <P2PNetworkInterface*>::const_iterator it=P2PNetworkInterfaceList.begin(); it != P2PNetworkInterfaceList.end(); it++) {
+		if ((*it)->connectedInterface) {
+				if ((*it)->connectedInterface->hostBlock == destBlock) {
+					return (*it);
+				}
+		}
+	}
+	return NULL;
 }
 
 P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(int destBlockId) {
-	list <P2PNetworkInterface*>::const_iterator niIt=P2PNetworkInterfaceList.begin();
-	while (niIt!=P2PNetworkInterfaceList.end() && (*niIt)->connectedInterface->hostBlock->blockId != destBlockId) niIt++;
-	return (niIt==P2PNetworkInterfaceList.end())?NULL:(*niIt);
+	for(list <P2PNetworkInterface*>::const_iterator it=P2PNetworkInterfaceList.begin(); it != P2PNetworkInterfaceList.end(); it++) {
+		if ((*it)->connectedInterface) {
+				if ((*it)->connectedInterface->hostBlock->blockId == destBlockId) {
+					return (*it);
+				}
+		}
+	}
+	return NULL;
 }
 
 

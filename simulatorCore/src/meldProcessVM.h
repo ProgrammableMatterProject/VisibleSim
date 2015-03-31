@@ -25,6 +25,8 @@ namespace MeldProcess {
 
 //class BuildingBlock;
 
+class MeldProcessVM;
+
 class MeldProcessVM {
 
 protected:
@@ -48,6 +50,8 @@ protected:
 	uint64_t currentLocalDate; // fastest mode
 	bool hasWork; // fastest mode
 	bool polling; // fastest mode
+	
+	static map<int,MeldProcessVM*> vmMap;
 
 public:
 
@@ -86,6 +90,9 @@ public:
 	void handleDeterministicMode(VMCommand &command);
    	void handleCommand(VMCommand &command);
    	
+   	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
+   	void setPolling(bool b) {polling = b; }
+   	
 	inline static bool isInDebuggingMode() { return debugging; };
 	static void setConfiguration(string v, string p, bool d);
 	static void createServer(int p);
@@ -93,6 +100,12 @@ public:
 	static void checkForReceivedCommands();
 	static void waitForOneCommand();
 	
+	static bool dateHasBeenReachedByAll(uint64_t date);
+	static bool equilibrium();
+	static int broadcastDebugCommand(DebbuggerVMCommand &c);
+	static int sendCommand(int id, VMCommand &c);
+	static void closeAllSockets();
+	static MeldProcessVM* getMeldProcessVMById(int id);
 	
 };
 
@@ -103,52 +116,7 @@ public:
 	inline void waitForOneVMCommand() { MeldProcessVM::waitForOneCommand(); };
 	
 	/*
-	setVMConfiguration(vmPath, programPath, debugging);
-	createVMServer(port);
-	if(debugging) {
-		createDebugger();
-	}
-		deleteDebugger();
-	deleteVMServer();
-	* 
-	* 
-	* 
-	/*
-	 * 
-	 		
-	TiXmlNode *node = xmlDoc->FirstChild("vm");
-	if (node) {		
-		TiXmlElement* vmElement = node->ToElement();
-		const char *attr = vmElement->Attribute("serverport");
-		if (attr) {
-			port = atoi(attr);
-		}
-		attr = vmElement->Attribute("vmPath");
-		if (attr) {
-			vmPath = string(attr);
-		}	
-		attr = vmElement->Attribute("programPath");
-		if (attr) {
-         if (programPath == "") {
-            programPath = string(attr);
-         } else {
-            cerr << "Warning: meld program provided in the command line and in the xml file" << endl;
-            cerr << "Warning: meld program provided in the xml file is ignored" << endl;
-         }
-		}
-		attr = vmElement->Attribute("debugging");
-		if (attr) {
-			if ((strcmp(attr, "True") == 0) ||(strcmp(attr, "true") == 0) ) {
-					if (!testMode) {
-                  debugging = true;
-               }
-			}
-		}
-	}
-   
-   if (programPath == "")
-      help();
-      
+	    
 	Sends directly (not scheduled) a message to all the active VMs of the world.
 	Returns to how many nodes the message has been sent.
 
@@ -158,106 +126,7 @@ public:
 	//bool equilibrium();
 	//void killAllVMs();
 	//void closeAllSockets();
-	
-	bool BlinkyBlocksWorld::dateHasBeenReachedByAll(uint64_t date) {
-		static uint64_t minReallyReached = 0;
-		uint64_t min, min2;
-		int alive = 0, hasNoWork = 0;
-		if (date < minReallyReached) {
-			return true;
-		}
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			BlinkyBlocksBlockCode *bc = (BlinkyBlocksBlockCode*) bb->blockCode;
-			if (bb->getState() < BlinkyBlocksBlock::ALIVE) {
-				continue;
-			}
-			alive++;
-			if (!bc->hasWork || bc->polling) {
-				hasNoWork++;
-				if (alive == 1) {
-					min2 = bc->currentLocalDate;
-				} else if (bc->currentLocalDate < min2) {
-					min2 = bc->currentLocalDate;
-				}
-			} else {
-				if ((alive - 1) == hasNoWork) {
-					min = bc->currentLocalDate;
-				} else if (bc->currentLocalDate < min) {
-					min = bc->currentLocalDate;
-				}
-				if (min < min2) {
-					min2 = min;
-				}
-			}
-		}
-		if (alive==hasNoWork) {
-			return true;
-		}
-		minReallyReached = min2;
-		return (date < min);
-	}
 
-	
-	void BlinkyBlocksWorld::killAllVMs() {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			bb->killVM();
-		}
-	}*/
-	/*
-   void BlinkyBlocksWorld::closeAllSockets() {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-         if(bb->vm != NULL) {
-            bb->vm->socket->close();
-            bb->vm->socket.reset();
-         }
-		}
-	}
-	
-		int BlinkyBlocksWorld::broadcastDebugCommand(DebbuggerVMCommand &c) {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		int aliveBlocks = 0;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
-			// Send id & set deterministic mode if necessary
-			bbc->init();
-			aliveBlocks += bb->sendCommand(c);
-		}
-		return aliveBlocks;
-	}
-
-	int BlinkyBlocksWorld::sendCommand(int id, VMCommand &c) {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
-      BlinkyBlocksBlockCode* bbc = (BlinkyBlocksBlockCode*) bb->blockCode;
-		bbc->init();
-      return bb->sendCommand(c);
-	} 
-	
-
-	bool BlinkyBlocksWorld::equilibrium() {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-				it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			BlinkyBlocksBlockCode *bc = (BlinkyBlocksBlockCode*) bb->blockCode;
-			if (bb->getState() < BlinkyBlocksBlock::ALIVE) {
-				continue;
-			}
-			if (bc->hasWork) {
-				return false;
-			}
-		}
-		return true;
-	}*/
+	*/
 }
 #endif /* MELDPROCESS_VM_H */

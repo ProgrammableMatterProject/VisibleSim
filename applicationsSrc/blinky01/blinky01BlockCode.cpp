@@ -12,6 +12,8 @@
 #include "network.h"
 
 #include "blinky01BlockCode.h"
+#include "blinkyBlocksBlock.h"
+
 #include "meldProcessEvents.h"
 #include "meldProcessDebugger.h"
 
@@ -19,7 +21,7 @@
 
 using namespace std;
 using namespace MeldProcess;
-//using namespace BlinkyBlocks;
+using namespace BlinkyBlocks;
 using boost::asio::ip::tcp;
 
 Blinky01BlockCode::Blinky01BlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
@@ -64,7 +66,7 @@ void Blinky01BlockCode::init() {
 void Blinky01BlockCode::startup() {
 	stringstream info;
 	
-	currentLocalDate = MeldProcess::getScheduler()->now();
+	vm->setCurrentLocalDate(MeldProcess::getScheduler()->now());
 	info << "  Starting Blinky01BlockCode in block " << hostBlock->blockId;
 	MeldProcess::getScheduler()->trace(info.str(),hostBlock->blockId);
 	init();
@@ -73,15 +75,11 @@ void Blinky01BlockCode::startup() {
 void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 	stringstream info;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
-	//BlinkyBlocksVM *vm = bb->vm;
 	assert(vm != NULL);
 	info.str("");
 	
 	OUTPUT << bb->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now() << " process event " << pev->getEventName() << "(" << pev->eventType << ")" << ", random number : " << pev->randomNumber << endl;
 
-#ifdef TEST_DETER
-	cout << bb->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now() << " process event " << pev->getEventName() << "(" << pev->eventType << ")" << ", random number : " << pev->randomNumber << endl;
-#endif
 	switch (pev->eventType) {
 		case EVENT_STOP:
 			{
@@ -99,17 +97,17 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_ADD_NEIGHBOR:
 			{
-			AddNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMAddNeighborEvent>(pev))->target,
-				(boost::static_pointer_cast<VMAddNeighborEvent>(pev))->face);
-			sendCommand(command);
-			info << "Add neighbor "<< (boost::static_pointer_cast<VMAddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<VMAddNeighborEvent>(pev))->face));
+			AddNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<AddNeighborEvent>(pev))->target,
+				(boost::static_pointer_cast<AddNeighborEvent>(pev))->face);
+				sendCommand(command);
+				info << "Add neighbor "<< (boost::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<AddNeighborEvent>(pev))->face));
 			}
 			break;
 		case EVENT_REMOVE_NEIGHBOR:
 			{
-			RemoveNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMRemoveNeighborEvent>(pev))->face);
+			RemoveNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
 			sendCommand(command);
-			info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<VMAddNeighborEvent>(pev))->face));
+			info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<RemoveNeighborEvent>(pev))->face));
 			}
 			break;
 		case EVENT_TAP:
@@ -121,12 +119,9 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_SET_COLOR:
 			{
-			Vecteur color = (boost::static_pointer_cast<VMSetColorEvent>(pev))->color;
+			Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
 			bb->setColor(color);
-#ifdef TEST_DETER
-			cout << bb->blockId << " SET_COLOR_EVENT" << endl;
-#endif
-			info << "set color "<< color << endl;
+			info << "set color "<< color;
 			}
 			break;
 		case EVENT_SEND_MESSAGE:
@@ -143,23 +138,20 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			ReceiveMessageVMCommand *command = (ReceiveMessageVMCommand*) (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message.get();
 			command->setTimestamp(MeldProcess::getScheduler()->now());
 			sendCommand(*command);
-#ifdef TEST_DETER
-			cout << "message received from " << command->sourceInterface->hostBlock->blockId << endl;
-#endif
 			info << "message received at face " << NeighborDirection::getString(bb->getDirection(command->sourceInterface->connectedInterface)) << " from " << command->sourceInterface->hostBlock->blockId;
 			}
 			break;
 		case EVENT_ACCEL:
 			{
-			AccelVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMAccelEvent>(pev))->x, (boost::static_pointer_cast<VMAccelEvent>(pev))->y,
-			(boost::static_pointer_cast<VMAccelEvent>(pev))->z);
+			AccelVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<AccelEvent>(pev))->x, (boost::static_pointer_cast<AccelEvent>(pev))->y,
+			(boost::static_pointer_cast<AccelEvent>(pev))->z);
 			sendCommand(command);
 			info << "accel";
 			}
 			break;
 		case EVENT_SHAKE:
 			{
-			ShakeVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<VMShakeEvent>(pev))->force);
+			ShakeVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<ShakeEvent>(pev))->force);
 			sendCommand(command);
 			info << "shake";
 			}
@@ -174,7 +166,7 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_END_POLL: 
 			{
-			polling = false;
+			vm->setPolling(false);
 			EndPollVMCommand command(outBuffer, bb->blockId);
 			sendCommand(command);
 			info << "Polling time period ended" << endl;

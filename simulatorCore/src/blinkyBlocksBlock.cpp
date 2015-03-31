@@ -13,6 +13,7 @@
 #include "blinkyBlocksEvents.h"
 #include "trace.h"
 #include "clock.h"
+#include "meldProcessEvents.h"
 
 using namespace std;
 
@@ -93,6 +94,7 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlo
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
 	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
 	clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC1K_CRC, blockId);
+	//clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC32K_EXT, blockId);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {
@@ -131,38 +133,41 @@ NeighborDirection::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface
 
 void BlinkyBlocksBlock::tap(uint64_t date) {
 	OUTPUT << "tap scheduled" << endl;
-	//getScheduler()->scheduleLock(new VMTapEvent(date, this));
+	getScheduler()->scheduleLock(new TapEvent(date, this));
 }
 
 void BlinkyBlocksBlock::accel(uint64_t date, int x, int y, int z) {
-	//getScheduler()->scheduleLock(new VMAccelEvent(date, this, x, y, z));
+	getScheduler()->scheduleLock(new AccelEvent(date, this, x, y, z));
 }
 
 void BlinkyBlocksBlock::shake(uint64_t date, int f) {
-	//getScheduler()->scheduleLock(new VMShakeEvent(getScheduler()->now(), this, f));
+	getScheduler()->scheduleLock(new ShakeEvent(getScheduler()->now(), this, f));
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 	OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;
-	//getScheduler()->scheduleLock(new VMAddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
+	//int test = NeighborDirection::getOpposite(getDirection(ni));
+	//cout << "test" << endl;
+	
+	getScheduler()->scheduleLock(new AddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
 	OUTPUT << "Simulator: "<< blockId << " remove neighbor on " << NeighborDirection::getString(getDirection(ni)) << endl;
-	//getScheduler()->scheduleLock(new VMRemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
+	getScheduler()->scheduleLock(new RemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
 }
 
 void BlinkyBlocksBlock::stop(uint64_t date, State s) {
 	OUTPUT << "Simulator: stop scheduled" << endl;
-	/*lock();
+	lock();
 	state = s;
 	if (s == STOPPED) {
 		// patch en attendant l'objet 3D qui modelise un BB stopped
-		color = Vecteur(0.1, 0.1, 0.1, 0.5);
+		color = Color(0.1, 0.1, 0.1, 0.5);
 	}
 	unlock();
 	getWorld()->updateGlData(this);
-	getScheduler()->scheduleLock(new VMStopEvent(getScheduler()->now(), this));*/
+	getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
 }
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {

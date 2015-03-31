@@ -7,18 +7,19 @@
 
 void CommandLine::help() {
    cerr << "VisibleSim options:" << endl;
-   cerr << "\t -f <name>\tprogram file (meld for instance)" << endl;
+   cerr << "\t -f \t\tfull screen" << endl;
+   cerr << "\t -p <name>\tprogram file (Meld for instance) (Meld in only supported on Blinky Blocks for now)" << endl;
    cerr << "\t -D \t\tdebugging mode (used in Meld only)" << endl;
    cerr << "\t -c <name>\txml configuration file" << endl;
-   cerr << "\t -r \t\trun realtime mode on startup" << endl;
-   cerr << "\t -R \t\trun fastest mode on startup" << endl;
-   cerr << "\t -t \t\tterminal only (no graphic)" << endl;
-   cerr << "\t -i \t\tprint world informations (size, diameter, centers etc.)" << endl;
+   //cerr << "\t -r \t\trun realtime mode on startup" << endl;
+   //cerr << "\t -R \t\trun fastest mode on startup" << endl;
+   //cerr << "\t -t \t\tterminal only (no graphic)" << endl;
+   //cerr << "\t -i \t\tprint world informations (size, diameter, centers etc.)" << endl;
    /*cerr << "\t -g <topology code> <n or d>\t\t generate a random configuration: random 2d " << 
    TOPOLOGY_RANDOM_2D << ", random 3d " << TOPOLOGY_RANDOM_3D << ", line " << TOPOLOGY_LINE <<
    	", grid " << TOPOLOGY_GRID << ", torus " << TOPOLOGY_TORUS <<", cube" << TOPOLOGY_CUBE << endl;
    */
-   cerr << "\t -t \t\tterminal mode " << endl;
+   //cerr << "\t -s <length>\tgrid side lentgh (square or cubic grid)" << endl; 
    cerr << "\t -h \t\thelp" << endl;
    exit(EXIT_SUCCESS);
 }
@@ -40,7 +41,7 @@ void CommandLine::read(int argc, char *argv[]) {
    argc--;
    while ( (argc > 0) && (argv[0][0] == '-')) {
       switch(argv[0][1]) {
-         case 'f':   {
+         case 'p':   {
             //if (programPath != "")
             //   help();
             if (argc < 1) { 
@@ -54,7 +55,8 @@ void CommandLine::read(int argc, char *argv[]) {
          case 'D': {
             meldDebugger = true;
          }
-         case 'r': {
+         break;
+         /*case 'r': {
             schedulerMode = SCHEDULER_MODE_REALTIME;
          }
          break;
@@ -75,7 +77,7 @@ void CommandLine::read(int argc, char *argv[]) {
 			topologyParameter = atoi(argv[1]);
 			argc--;
 			argv++;
-		 }
+		 }*/
          break;
          case 'c': {
             // Configuration file, already managed in Simulator constructor
@@ -89,7 +91,7 @@ void CommandLine::read(int argc, char *argv[]) {
             break;
          }
          break;
-         case 't': {
+         /*case 't': {
 			 terminalOnly = true;
 		 }
 		 break;
@@ -98,12 +100,21 @@ void CommandLine::read(int argc, char *argv[]) {
 		 }
 		 break;
           // TODO: grid size
-         /*case 's': {
+         case 's': {
 			argc--;
 			argv++;
-			size = atoi(argv[1]);
+			if (argc < 1) {
+				cerr << "Provide a grid size after -s" << endl;
+				help();
+			}
+			gridSize = atoi(argv[1]);
+		 }*/
+         break;
+         case 'f' : {
+			//fullScreen = true;
+			GlutContext::setFullScreenMode(true);
 		 }
-         break;*/
+		 break;
          default:
             help();
       }

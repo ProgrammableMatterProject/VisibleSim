@@ -107,6 +107,14 @@ uint64_t Scheduler::now() {
 	return(currentDate);
 }
 
+bool Scheduler::scheduleLock(Event *ev) {
+	bool ret;
+	lock();
+	ret = schedule(ev);
+	unlock();
+	return ret;
+}
+
 void Scheduler::trace(string message,int id,const Color &color) {
 	mutex_trace.lock();
 	OUTPUT.precision(6);
@@ -114,7 +122,6 @@ void Scheduler::trace(string message,int id,const Color &color) {
 	GlutContext::addTrace(message,id,color);
 	mutex_trace.unlock();
 }
-
 
 void Scheduler::lock() {
 	mutex_schedule.lock();
