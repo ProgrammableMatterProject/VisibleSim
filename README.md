@@ -38,33 +38,35 @@ sudo apt-get install libglew-dev
 
  2. make
 
-## Application examples
+## Applications
+
+### Application examples
 
 Application examples are available in `applicationsSrc/` folder. For instance, in `bbCycle`, blocks
 change their color every two seconds using their own local clock. Since local clocks drift apart,
 the color change are very quickly desynchronized.
 
-## Implementing a new application
+### Implementing a new application
 
 To implement a new application, add a folder in `applicationsSrc/`, program the application (see
 Application examples and the documentations available in `doc/`), add the folder name in `SUBDIR` 
 macro in `applicationsSrc/Makefile`.
 
-## Running an application
+### Running an application
 
 VisibleSim supports c++ application and Meld appplication (currently, only BlinkyBlocks environment 
 supports Meld programming). Regardless of the type of application you want to run, you must press 
 '<shift>-r' (real-time mode) or '<shift>-R' (fastest mode) in the simulator window to launch the 
 simulation.
 
-### Running a c++ application
+#### Running a c++ application
 
 To execute an application named `myApp`, compile it with `make` in the root folder, `cd` into
 `applicationsBin/myApp`, create an appropriate xml configuration file (see other configuration
 files in `applicationsBin/` folders, and run `./myApp -c configuration.xml`. By default, `config.xml`
 is loaded, but you can provide another configuration file with `-c` option.
 
-### Running a Meld application
+#### Running a Meld application
 
 To execute meld programs on VisibleSim, ensure that `blinky01` application was compiled (`blinky01` 
 had belong to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the root folder 
