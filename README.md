@@ -4,6 +4,8 @@ VisibleSim
 Private version of VisibleSim and its applications. VisibleSim is a general simulator for modular 
 robots.
 
+## Installation
+
 Dependencies:
  - Boost C++ Libraries >= 1.47.0
  - GLUT
@@ -11,7 +13,7 @@ Dependencies:
 
 **NOTE: video card drivers have to be correctly installed. Otherwise, VisibleSim crashes when moving the mouse on the simulated modules.**
 
-## Mac Installation
+### Mac Installation
 
  1. Install dependencies:
 
@@ -21,10 +23,10 @@ brew install freeglut
 brew install glew
 ```
 
- 2. Uncomment mac-specific `GLOBAL_LIBS` in `BlockSimulator-MT2/Makefile`
+ 2. Uncomment mac-specific `GLOBAL_LIBS` in `Makefile`
  3. make
 
-## Ubuntu Installation
+### Ubuntu Installation
 
  1. Intall dependencies:
 
