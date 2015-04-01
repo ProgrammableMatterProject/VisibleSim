@@ -69,14 +69,18 @@ is loaded, but you can provide another configuration file with `-c` option.
 
 #### Running a Meld application
 
-To execute meld programs on VisibleSim, ensure that `blinky01` application was compiled (`blinky01` 
-had belong to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the root folder 
-was performed), `cd` into `applicationsBin/blinky01/` and run
+To execute meld programs on VisibleSim, ensure that `blinky01` application is compiled (`blinky01` 
+had belong to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the repository 
+root folder was performed) and that Meld vm `applicationsBin/blinky01/meld/meld/meld-bbsim` is 
+compiled (`cd` into `applicationsBin/blinky01/meld/meld/` and  run `make`). Then, `cd` into
+`applicationsBin/blinky01/` and run:
 
 ```
 ./compile-meld.sh program.meld // to compile your Meld program into program.m
 ./blinky01 -p program.m -c configuration.xml // to run your meld program 
 ```
+
+Not tested Meld program examples are available in `applicationsBin/blinky01/meld/programs`.
 
 If you want to use the debugger, run the simulator with `-D` option
 (`./blinky01 -p program.m -c configuration.xml -D`). The simulator window should appear and the 
