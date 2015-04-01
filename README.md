@@ -54,9 +54,10 @@ macro in `applicationsSrc/Makefile`.
 
 ### Running an application
 
-VisibleSim supports c++ application and Meld appplication (currently, only BlinkyBlocks environment 
-supports Meld programming). Regardless of the type of application you want to run, you must press 
-'<shift>-r' (real-time mode) or '<shift>-R' (fastest mode) in the simulator window to launch the 
+VisibleSim supports both c++ applications and Meld appplications (currently, only Blinky Block
+environment supports Meld programming). Regardless of the type of application you want to run, you 
+must press '<kbd>SHIFT</kbd> + <kbd>r</kbd>' (real-time mode) or '<kbd>SHIFT</kbd> + 
+<kbd>R</kbd>' (fastest mode) in the simulator window to launch the 
 simulation.
 
 #### Running a c++ application
@@ -85,6 +86,6 @@ SIMULATION DEBUGGING MODE -- type help for options
 >
 ```
 
-**NOTE: you must press '<shift>-r' or '<shift>-R' in the simulator window before you can start running commands from the console.**
+**NOTE: you must press '<kbd>SHIFT</kbd> + <kbd>r</kbd>' or '<kbd>SHIFT</kbd> + <kbd>R</kbd>' in the simulator window before you can start running commands from the console.**
 
-After pressing '<shift>-r' or <shift-R> in the simulation window, typing `run` in the console should start your program.
+After pressing '<kbd>SHIFT</kbd> + <kbd>r</kbd>' or '<kbd>SHIFT</kbd> + <kbd>R</kbd>' in the simulation window, typing `run` in the console should start your program.
