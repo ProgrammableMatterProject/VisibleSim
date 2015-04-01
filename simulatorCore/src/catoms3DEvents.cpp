@@ -9,11 +9,9 @@
 #include "catoms3DScheduler.h"
 #include "catoms3DWorld.h"
 
-const int ANIMATION_DELAY=40000;
+const int ANIMATION_DELAY=100000;
 const int COM_DELAY=2000;
-const int ANGULAR_STEP=12;
 
-const double EPS=1E-5;
 namespace Catoms3D {
 
 //===========================================================================================================
@@ -22,12 +20,10 @@ namespace Catoms3D {
 //
 //===========================================================================================================
 
-MotionStartEvent::MotionStartEvent(uint64_t t, Catoms3DBlock *block,const Catoms3DBlock *pivotBlock, int s): BlockEvent(t,block) {
+MotionStartEvent::MotionStartEvent(uint64_t t, Catoms3DBlock *block,const Rotations &r): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_START;
-	pivot.set(pivotBlock->ptrGlBlock->position[0],pivotBlock->ptrGlBlock->position[1],pivotBlock->ptrGlBlock->position[2]);
-	angle = 60;
-    sens = s;
+	rot = r;
 }
 
 MotionStartEvent::MotionStartEvent(MotionStartEvent *ev) : BlockEvent(ev) {
@@ -41,10 +37,11 @@ MotionStartEvent::~MotionStartEvent() {
 void MotionStartEvent::consume() {
 	EVENT_CONSUME_INFO();
 	Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
-	Catoms3DBlock *rb = (Catoms3DBlock *)concernedBlock;
-    Catoms3DWorld::getWorld()->disconnectBlock(rb);
-    rb->setColor(DARKGREY);
-	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,pivot,angle,sens));
+	Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
+    Catoms3DWorld::getWorld()->disconnectBlock(catom);
+    catom->setColor(DARKGREY);
+	rot.init(catom->ptrGlBlock->mat);
+	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,catom, rot));
 }
 
 const string MotionStartEvent::getEventName() {
@@ -57,13 +54,11 @@ const string MotionStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStepEvent::MotionStepEvent(uint64_t t, Catoms3DBlock *block,const Vecteur &p,double angle2goal,int s): BlockEvent(t,block) {
+MotionStepEvent::MotionStepEvent(uint64_t t, Catoms3DBlock *block,const Rotations &r): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STEP;
 
-    pivot = p;
-    angle = angle2goal;
-    sens = s;
+    rot=r;
 }
 
 MotionStepEvent::MotionStepEvent(MotionStepEvent *ev) : BlockEvent(ev) {
@@ -76,26 +71,18 @@ MotionStepEvent::~MotionStepEvent() {
 
 void MotionStepEvent::consume() {
 	EVENT_CONSUME_INFO();
-	Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
-
+	Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
 	Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
 
-/*    Matrice roty;
-    if (angle<ANGULAR_STEP) {
-        roty.setRotationY(-sens*angle);
-        Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
-        Vecteur BC = roty*BA;
-        Vecteur pos = pivot+BC;
-        Catoms3DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle-angle*sens);
-        scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
-	} else {
-        roty.setRotationY(-sens*ANGULAR_STEP);
-        Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
-        Vecteur BC = roty*BA;
-        Vecteur pos = pivot+BC;
-        Catoms3DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle-ANGULAR_STEP*sens);
-        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-ANGULAR_STEP,sens));
-	}*/
+    Matrice mat;
+    bool rotationEnd=rot.nextStep(mat);
+
+    getWorld()->updateGlData(catom,mat);
+    if (rotationEnd) {
+        scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, catom, rot));
+    } else {
+        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, catom, rot));
+    }
 }
 
 const string MotionStepEvent::getEventName() {
@@ -108,9 +95,10 @@ const string MotionStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStopEvent::MotionStopEvent(uint64_t t, Catoms3DBlock *block): BlockEvent(t,block) {
+MotionStopEvent::MotionStopEvent(uint64_t t, Catoms3DBlock *block,const Rotations& r): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STOP;
+	rot = r;
 }
 
 MotionStopEvent::MotionStopEvent(MotionStepEvent *ev) : BlockEvent(ev) {
@@ -123,24 +111,26 @@ MotionStopEvent::~MotionStopEvent() {
 
 void MotionStopEvent::consume() {
 	EVENT_CONSUME_INFO();
-	Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
-    rb->setColor(YELLOW);
+	Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
+    catom->setColor(YELLOW);
 
+    Cell3DPosition position;
+    short orientation;
 /* Transformer les coordonnées GL en coordonnées grille*/
-/*
-    Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
-    Vecteur worldPos = Vecteur(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
-    Cell3DPosition gridPos = wrld->worldToGridPosition(worldPos);
-    rb->setPosition(gridPos);
-	wrld->setGridPtr(gridPos.pt[0],gridPos.pt[1],gridPos.pt[2],rb);
+    rot.getFinalPositionAndOrientation(position,orientation);
 
+    Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
+
+    catom->setPositionAndOrientation(position,orientation);
+
+	wrld->setGridPtr(position,catom);
 	stringstream info;
     info.str("");
-    info << "connect Block " << rb->blockId;
-    getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
-	wrld->connectBlock(rb);
+    info << "connect Block " << catom->blockId;
+    getScheduler()->trace(info.str(),catom->blockId,LIGHTBLUE);
+	wrld->connectBlock(catom);
     Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
-    scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));*/
+    scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, catom));
 }
 
 const string MotionStopEvent::getEventName() {
@@ -176,5 +166,101 @@ const string MotionEndEvent::getEventName() {
 	return("MotionEnd Event");
 }
 
+//===========================================================================================================
+//
+//          Rotations  (class)
+//
+//===========================================================================================================
+
+Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vecteur &ax1,double ang1,const Vecteur &ax2,double ang2):angle1(ang1),angle2(ang2) {
+    Vecteur A,B;
+    A.set(mobile->getGlBlock()->position,3);
+    B.set(fixe->getGlBlock()->position,3);
+    Vecteur u = B-A;
+    matTBA.setTranslation(u);
+    matTAB.setTranslation(-u);
+    axe1 = ax1.normer();
+    axe2 = ax2.normer();
+
+    Matrice mr,mr_1;
+    mr.setRotation(angle1,axe1);
+    mr_1.setRotation(-angle1,axe1);
+    matTBC= matTBA*mr;
+    matTBC= mr_1*matTBC;
+    matTBC.inverse(matTCB);
+
+    mr.setRotation(2*angle1,axe1);
+    axe2 = mr*ax2;
+    axe2 = axe2.normer();
+    OUTPUT << "axe2=" << axe2 << endl;
+}
+
+bool Rotations::nextStep(Matrice &m) {
+    if (firstRotation) {
+        step++;
+        double angle=angle1*step/nbRotationSteps;
+        OUTPUT << "step=" << step << "   angle=" << angle << endl;
+        // TRT-1R
+        Matrice mr;
+        mr.setRotation(angle,axe1);
+        m = matTAB*mr;
+        m = mr*m;
+        m = matTBA*m;
+        m = initialMatrix * m;
+        if (step==nbRotationSteps) {
+            firstRotation=false;
+            firstStepMatrix = m;
+            step=0;
+
+            Vecteur p(0,0,0,1);
+            OUTPUT << "intermed=" << m * p << endl;
+        }
+    } else {
+        step++;
+        double angle=angle2*step/nbRotationSteps;
+        // TRT-1R
+        Matrice mr;
+        mr.setRotation(angle,axe2);
+        m = matTCB*mr;
+        m = mr*m;
+        m = matTBC*m;
+        m = firstStepMatrix * m;
+        if (step>=nbRotationSteps) {
+            step=nbRotationSteps;
+            Vecteur p(0,0,0,1),q;
+            q = m * p;
+            OUTPUT << "final=" << q << endl;
+
+            return true;
+        }
+    }
+    return false;
+}
+
+void Rotations::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
+    Matrice mr1,mr2,m;
+    Matrice mr;
+    mr.setRotation(angle1,axe1);
+    m = matTAB*mr;
+    m = mr*m;
+    m = matTBA*m;
+    firstStepMatrix = initialMatrix * m;
+
+    mr.setRotation(angle2,axe2);
+    m = matTCB*mr;
+    m = mr*m;
+    m = matTBC*m;
+    m = firstStepMatrix * m;
+
+    Vecteur p(0,0,0,1),q;
+    q = m * p;
+
+    OUTPUT << "final=" << q << endl;
+    position = getWorld()->worldToGridPosition(q);
+
+    OUTPUT << "final grid=" << position << endl;
+
+    orientation=Catoms3DBlock::getOrientationFromMatrix(m);
+}
 
 } // Catoms3D namespace

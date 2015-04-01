@@ -17,10 +17,17 @@ using namespace std;
 //! \namespace Catoms3D
 namespace Catoms3D {
 
+const float M_SQRT2_2=(float)(sqrt(2.0)/2.0);
+
 const float tabOrientationAngles[12][3] = { {0,0,0}, {-90.0f,0,90.0f}, {-45.0f,45.0,-90.0f},
 {-135.0f,45.0f,90}, {135.0f,45.0f,-90.0f}, {45.0f,45.0f,90.0f},
 {180.0f,0,0}, {270.0f,0,0}, {135.0f,-45.0f,90.0f},
 {45.0f,-45.0f,-90.0f}, {-45.0f,-45.0f,90.0f}, {-135.0f,-45.0f,-90.0f} };
+
+const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_2},
+{-0.5,0.5,M_SQRT2_2},{-0.5,-0.5,M_SQRT2_2},{0.5,-0.5,M_SQRT2_2},
+{-1,0,0}, {0,-1,0}, {-0.5,-0.5,-M_SQRT2_2},
+{0.5,-0.5,M_SQRT2_2},{0.5,0.5,M_SQRT2_2},{-0.5,0.5,M_SQRT2_2}};
 
 Catoms3DBlock::Catoms3DBlock(int bId, Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) : BaseSimulator::BuildingBlock(bId) {
 	OUTPUT << "Catoms3DBlock constructor" << endl;
@@ -37,20 +44,46 @@ Catoms3DBlock::~Catoms3DBlock() {
 	OUTPUT << "Catoms3DBlock destructor " << blockId << endl;
 }
 
-void Catoms3DBlock::setPosition(const Cell3DPosition &p) {
-	position=p;
-	getWorld()->updateGlData(this,p);
-}
-
 void Catoms3DBlock::setColor(const Color &c) {
 	color = c;
 	getWorld()->updateGlData(this,c);
 }
 
-void Catoms3DBlock::setOrientation(short code) {
+void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code) {
     orientationCode = code;
 
-    getWorld()->updateGlData(this,tabOrientationAngles[code][0],tabOrientationAngles[code][1],tabOrientationAngles[code][2]);
+	Matrice M1,M2,M3,M;
+	M1.setRotationZ(tabOrientationAngles[code][0]);
+    M2.setRotationY(tabOrientationAngles[code][1]);
+    M3.setRotationX(tabOrientationAngles[code][2]);
+    M = M2*M1;
+    M1 = M3*M;
+    M2.setTranslation(getWorld()->gridToWorldPosition(p));
+    M = M2*M1;
+    OUTPUT << M << endl;
+    getWorld()->updateGlData(this,M);
+}
+
+short Catoms3DBlock::getOrientationFromMatrix(const Matrice &mat) {
+    Vecteur x(1.0,0.0,0.0,0.0); // vecteur X
+    Vecteur v;
+    //p = mat*x;
+    Matrice mat_1;
+    mat.inverse(mat_1);
+
+    short current=-1;
+    double ps,psmax=-1;
+    for (int i=0; i<12; i++) {
+        x.set(tabConnectorPositions[i],3);
+        v = mat*x;
+        OUTPUT << "connector #" << i << ":" << v << endl;
+        if (v[0]>psmax) {
+            current=i;
+            psmax=v[0];
+        }
+    }
+
+    return current;
 }
 
 int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {

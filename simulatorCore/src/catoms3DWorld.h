@@ -98,7 +98,7 @@ public:
 	virtual void updateGlData(Catoms3DBlock*blc,const Color &color);
 	virtual void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
 	virtual void updateGlData(Catoms3DBlock*blc, const Vecteur &position);
-	virtual void updateGlData(Catoms3DBlock*blc, float theta, float phi,float psi);
+	virtual void updateGlData(Catoms3DBlock*blc, const Matrice &mat);
 	virtual void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };

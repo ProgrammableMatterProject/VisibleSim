@@ -48,6 +48,12 @@ class Vecteur
     \param w : w=0 for a vector (default), w=1 for a point
 */
   inline void set(double x,double y,double z,double w=0.0) { pt[0]=x; pt[1]=y; pt[2]=z; pt[3]=w; };
+/**
+    \brief Set method, initialize the vector from an array of float
+    \param tab : tab of coordinates
+    \param s : size of tab
+*/
+  void set(const float *tab,short s);
   void setMin(double x,double y,double z) { if (x<pt[0]) pt[0]=x; if (y<pt[1]) pt[1]=y; if (z<pt[2]) pt[2]=z; };
   void setMax(double x,double y,double z) { if (x>pt[0]) pt[0]=x; if (y>pt[1]) pt[1]=y; if (z>pt[2]) pt[2]=z; };
 /**

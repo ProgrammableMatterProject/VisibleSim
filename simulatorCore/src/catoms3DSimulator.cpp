@@ -125,6 +125,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	if (nodeConfig) {
 		Vecteur target;
 		float az=0,ele=60,dist=1000,angle=50;
+		double def_near=10.0,def_far=1500.0;
 		TiXmlElement* lightElement = nodeConfig->ToElement();
 		const char *attr=lightElement->Attribute("target");
 		if (attr) {
@@ -148,8 +149,15 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 		if (attr) {
 			angle = atof(attr);
 		}
-		float farplane=2.0*dist*tan(angle*M_PI/180.0);
-		world->getCamera()->setLightParameters(target,az,ele,dist,angle,10.0,farplane);
+		attr=lightElement->Attribute("near");
+		if (attr) {
+			def_near = atof(attr);
+		}
+		attr=lightElement->Attribute("far");
+		if (attr) {
+			def_far = atof(attr);
+		}
+		world->getCamera()->setLightParameters(target,az,ele,dist,angle,def_near,def_far);
 
 	}
 

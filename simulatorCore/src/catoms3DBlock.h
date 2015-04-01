@@ -43,12 +43,13 @@ public:
 	inline Catoms3DGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
-	void setPosition(const Cell3DPosition&p);
-	void setOrientation(short code);
+	void setPositionAndOrientation(const Cell3DPosition&p,short code);
 	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 	inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[d]; }
 
 	int getDirection(P2PNetworkInterface*);
+
+	static short getOrientationFromMatrix(const Matrice &mat);
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb);

@@ -54,7 +54,7 @@ Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
 	blockSize[0]=1.0;
 	blockSize[1]=5.0;
 	blockSize[2]=1.0;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Drepere2.obj");
+	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Drepere3.obj");
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
@@ -107,8 +107,7 @@ void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuilding
 	Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
 	tabGlBlocks.push_back(glBlock);
 	catom->setGlBlock(glBlock);
-	catom->setPosition(pos);
-	catom->setOrientation(orientation);
+	catom->setPositionAndOrientation(pos,orientation);
 	catom->setColor(color);
 	setGridPtr(pos,catom);
     glBlock->setPosition(gridToWorldPosition(pos));
@@ -391,12 +390,14 @@ void Catoms3DWorld::deleteBlock(Catoms3DBlock *bb) {
 	delete bb->ptrGlBlock;
 }
 
+/**
+  * \brief Draw catoms and axes
+*/
 void Catoms3DWorld::glDraw() {
 
 	glPushMatrix();
-// offset half a sphere
-	glTranslatef(0.5f*blockSize[0],0.5f*blockSize[1],0.5f*blockSize[2]);
 	glDisable(GL_TEXTURE_2D);
+// draw catoms
 	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 	lock();
 	while (ic!=tabGlBlocks.end()) {
@@ -406,7 +407,7 @@ void Catoms3DWorld::glDraw() {
 	unlock();
 	glPopMatrix();
 
-
+// material for the grid walls
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
     gray[]={0.2f,0.2f,0.2f,1.0f};
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
@@ -416,12 +417,13 @@ void Catoms3DWorld::glDraw() {
     glPushMatrix();
     enableTexture(true);
     glBindTexture(GL_TEXTURE_2D,idTextureGrid);
+    glTranslatef(0,0,blockSize[2]*(0.5-M_SQRT2_2));
     glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT2_2);
     glBegin(GL_QUADS);
     // bottom
         glNormal3f(0,0,1.0f);
         glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
+        glVertex3f(0.0f,0.0f,-0.0f);
         glTexCoord2f(0.5f*gridSize[0],0);
         glVertex3f(1.0f,0.0f,0.0f);
         glTexCoord2f(0.5f*gridSize[0],0.5f*gridSize[1]);
@@ -439,13 +441,10 @@ void Catoms3DWorld::glDraw() {
         glTexCoord2f(0,0.5f*gridSize[1]);
         glVertex3f(1.0f,0.0f,1.0f);
     glEnd();
-    glPopMatrix();
-	// draw hexa
-	glPushMatrix();
+    // draw hexa
     glBindTexture(GL_TEXTURE_2D,idTextureHexa);
-    glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT2_2);
     glBegin(GL_QUADS);
-// left
+    // left
         glNormal3f(1.0f,0,0);
         glTexCoord2f(0,0);
         glVertex3f(0.0f,0.0f,0.0f);
@@ -489,14 +488,12 @@ void Catoms3DWorld::glDraw() {
 	glPopMatrix();
 	// draw the axes
 	glPushMatrix();
-		glTranslatef(0.f,0.f,5.f);
 		objRepere->glDraw();
 	glPopMatrix();
 }
 
 void Catoms3DWorld::glDrawId() {
 	glPushMatrix();
-	glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
 	glDisable(GL_TEXTURE_2D);
 	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 	int n=1;
@@ -511,7 +508,6 @@ void Catoms3DWorld::glDrawId() {
 
 void Catoms3DWorld::glDrawIdByMaterial() {
 	glPushMatrix();
-	glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
 
 	glDisable(GL_TEXTURE_2D);
 	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
@@ -564,26 +560,26 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Cell3DPosition &positi
 	}
 }
 
-void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, float theta, float phi, float psi) {
+void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrice &mat) {
 	Catoms3DGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
 		lock();
-		//cout << "update pos:" << position << endl;
-		glblc->setAngles(theta,phi,psi);
+		glblc->mat = mat;
 		unlock();
 	}
 }
 
 Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
 	Cell3DPosition res;
+	static const double round=0.5;
 
-    res.pt[2] = short(pos[2]/(M_SQRT2_2*blockSize[2]));
-    if (res.pt[2]%2) {
-        res.pt[0] = short(pos[0]/blockSize[0]);
-        res.pt[1] = short(pos[1]/blockSize[1]);
+    res.pt[2] = short(pos[2]/(M_SQRT2_2*blockSize[2])-0.5+round);
+    if (res.pt[2]%2==0) {
+        res.pt[0] = short(pos[0]/blockSize[0]-0.5+round);
+        res.pt[1] = short(pos[1]/blockSize[1]-0.5+round);
     } else {
-        res.pt[0] = short(pos[0]/blockSize[0]-0.5);
-        res.pt[1] = short(pos[1]/blockSize[1]-0.5);
+        res.pt[0] = short(pos[0]/blockSize[0]-1.0+round);
+        res.pt[1] = short(pos[1]/blockSize[1]-1.0+round);
     }
 	return res;
 }
@@ -591,13 +587,13 @@ Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
 Vecteur Catoms3DWorld::gridToWorldPosition(const Cell3DPosition &pos) {
 	Vecteur res;
 
-    res.pt[2] = M_SQRT2_2*pos[2]*blockSize[2];
-    if (pos[2]%2) {
+    res.pt[2] = M_SQRT2_2*(pos[2]+0.5)*blockSize[2];
+    if (pos[2]%2==0) {
         res.pt[1] = (pos[1]+0.5)*blockSize[1];
         res.pt[0] = (pos[0]+0.5)*blockSize[0];
     } else {
-        res.pt[1] = pos[1]*blockSize[1];
-        res.pt[0] = pos[0]*blockSize[0];
+        res.pt[1] = (pos[1]+1.0)*blockSize[1];
+        res.pt[0] = (pos[0]+1.0)*blockSize[0];
     }
 //    OUTPUT << "world :"<< res << endl;
     return res;

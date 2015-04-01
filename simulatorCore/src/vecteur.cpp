@@ -106,3 +106,13 @@ void Vecteur::setLength(double l)
   pt[2]*=d;
   pt[3]=0;
 }
+
+void Vecteur::set(const float *tab,short s) {
+    short i;
+    for (i=0; i<s; i++) {
+        pt[i]=tab[i];
+    }
+    for (i=s; i<4; i++) {
+        pt[i]=0.0;
+    }
+};
