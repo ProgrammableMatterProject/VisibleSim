@@ -14,7 +14,7 @@
 
 namespace Catoms3D {
 
-const int nbRotationSteps=20;
+const int nbRotationSteps=5;
 
 class Rotations {
 public :

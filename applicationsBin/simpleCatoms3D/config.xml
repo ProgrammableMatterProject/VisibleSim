@@ -4,9 +4,9 @@
 	<spotlight target="25,25,0" directionSpherical="-35,40,150" angle="30"/>
 
 	<blockList color="128,128,128" blocksize="10,10,10">
-		<block position="1,1,0" orientation="0" color="255,255,64"/>
+		<block position="1,1,1" orientation="0" color="255,255,64"/>
 <!-- 0->(0-6,5-4)->11 -->
-		<block position="2,1,0" orientation="0" color="255,64,255"/>
+		<block position="2,1,1" orientation="2" color="255,64,255"/>
 <!-- 0->(0-6,2-3)->8  -->
 <!--		<block position="1,0,1" orientation="11" color="64,255,255"/> -->
 <!-- 0->(7-1,4-3)->2  -->

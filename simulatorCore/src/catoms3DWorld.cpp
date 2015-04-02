@@ -164,14 +164,21 @@ void Catoms3DWorld::disconnectBlock(Catoms3DBlock *block) {
  * \brief Connect the block placed on the cell at position pos
 */
 void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
-    Catoms3DBlock *ptrBlock = getGridPtr(pos);
+    Catoms3DBlock *catom = getGridPtr(pos);
 
-	if (ptrBlock) {
-		OUTPUT << "link block " << ptrBlock->blockId << endl;
+	if (catom) {
+		OUTPUT << "link catom " << catom->blockId << endl;
 
 		Cell3DPosition neighborPos;
 		Catoms3DBlock* neighborBlock;
 
+        for (int i=0; i<12; i++) {
+            if (catom->getNeighborPos(i,neighborPos) && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
+                catom->getInterface(i)->connect(neighborBlock->getInterface(pos));
+			    OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #" << neighborBlock->blockId << endl;
+            }
+        }
+/*
         OUTPUT << "X AXIS" << endl;
 		neighborPos.set(pos[0]+1,pos[1],pos[2]);
 		if (pos[0]<gridSize[0]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
@@ -339,7 +346,9 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
                 (ptrBlock)->getInterface(10)->connect(NULL);
             }
         }
-	}
+	*/
+    }
+
 }
 
 /**
@@ -587,6 +596,7 @@ Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
 Vecteur Catoms3DWorld::gridToWorldPosition(const Cell3DPosition &pos) {
 	Vecteur res;
 
+    res.pt[3] = 1.0;
     res.pt[2] = M_SQRT2_2*(pos[2]+0.5)*blockSize[2];
     if (pos[2]%2==0) {
         res.pt[1] = (pos[1]+0.5)*blockSize[1];

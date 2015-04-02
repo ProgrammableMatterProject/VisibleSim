@@ -27,14 +27,14 @@ protected:
 	boost::interprocess::interprocess_mutex mutex_vm;
 
 public:
-	Catoms3DGlBlock *ptrGlBlock;
+	Catoms3DGlBlock *ptrGlBlock; //!< ptr to the GL object
 	Color color; //!< color of the block
 	Cell3DPosition position; //!< position of the block in the grid of cells;
-	short orientationCode; //! number of the connector that is along the x axis.
+	short orientationCode; //!< number of the connector that is along the x axis.
     Catoms3DBlockCode *(*buildNewBlockCode)(Catoms3DBlock*);
 /**
     \brief Constructor
-    \param bId : id of the block
+    \param bId: id of the block
     \param catoms3DBlockCodeBuildingFunction : code block function
 */
 	Catoms3DBlock(int bId, Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*));
@@ -43,9 +43,21 @@ public:
 	inline Catoms3DGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
-	void setPositionAndOrientation(const Cell3DPosition&p,short code);
-	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
-	inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[d]; }
+	void setPositionAndOrientation(const Cell3DPosition &p,short code);
+/**
+    \brief Get the interface from the neighbor position in the grid
+    \param pos: position of the cell (if in the grid)
+    \return return interface if it exists one connected, NULL otherwise
+*/
+	P2PNetworkInterface *getInterface(const Cell3DPosition &pos);
+	inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[d]; };
+/**
+    \brief Get the position of the gridcell in the direction of the given connector
+    \param connectorId: id of connector (0..11)
+    \param pos: position of the cell (if in the grid)
+    \return return true if the cell is in the grid, false otherwise.
+*/
+	bool getNeighborPos(short connectorId,Cell3DPosition &pos);
 
 	int getDirection(P2PNetworkInterface*);
 

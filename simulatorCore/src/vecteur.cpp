@@ -107,12 +107,12 @@ void Vecteur::setLength(double l)
   pt[3]=0;
 }
 
-void Vecteur::set(const float *tab,short s) {
+void Vecteur::set(const float *tab,short s,float extra) {
     short i;
     for (i=0; i<s; i++) {
         pt[i]=tab[i];
     }
     for (i=s; i<4; i++) {
-        pt[i]=0.0;
+        pt[i]=extra;
     }
 };

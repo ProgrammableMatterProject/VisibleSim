@@ -173,26 +173,39 @@ const string MotionEndEvent::getEventName() {
 //===========================================================================================================
 
 Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vecteur &ax1,double ang1,const Vecteur &ax2,double ang2):angle1(ang1),angle2(ang2) {
-    Vecteur A,B;
-    A.set(mobile->getGlBlock()->position,3);
-    B.set(fixe->getGlBlock()->position,3);
-    Vecteur u = B-A;
-    matTBA.setTranslation(u);
-    matTAB.setTranslation(-u);
-    axe1 = ax1.normer();
+    Matrice MA = mobile->getGlBlock()->mat;
+    Matrice MB = fixe->getGlBlock()->mat;
+    Matrice MA_1;
+
+    // we calculate AB translation in A referentiel
+    MA.inverse(MA_1);
+    Matrice m = MA_1*MB;
+    Vecteur AB = m*Vecteur(0,0,0,1);
+    matTAB.setTranslation(AB);
+    matTBA.setTranslation(-AB);
+
+    // we write rotation R1 axes in A referentiel
+    axe1 = m*ax1;
+    axe1 = axe1.normer();
     axe2 = ax2.normer();
 
-    Matrice mr,mr_1;
+    Matrice mr;
     mr.setRotation(angle1,axe1);
-    mr_1.setRotation(-angle1,axe1);
-    matTBC= matTBA*mr;
-    matTBC= mr_1*matTBC;
-    matTBC.inverse(matTCB);
+    firstStepMatrix = matTBA*mr;
+    firstStepMatrix = mr*firstStepMatrix;
+    firstStepMatrix  = matTAB*firstStepMatrix;
+    firstStepMatrix  = MA*firstStepMatrix;
 
-    mr.setRotation(2*angle1,axe1);
-    axe2 = mr*ax2;
+    // we calculate AC=firstStep*AB translation in A referentiel
+    firstStepMatrix.inverse(MA_1);
+    m = MA_1*MB;
+    AB = m*Vecteur(0,0,0,1);
+    matTCB.setTranslation(AB);
+    matTBC.setTranslation(-AB);
+
+    // we write rotation R2 axes in new firstStep A referentiel
+    axe2 = m*ax2;
     axe2 = axe2.normer();
-    OUTPUT << "axe2=" << axe2 << endl;
 }
 
 bool Rotations::nextStep(Matrice &m) {
@@ -203,17 +216,14 @@ bool Rotations::nextStep(Matrice &m) {
         // TRT-1R
         Matrice mr;
         mr.setRotation(angle,axe1);
-        m = matTAB*mr;
+        m = matTBA*mr;
         m = mr*m;
-        m = matTBA*m;
+        m  = matTAB*m;
         m = initialMatrix * m;
         if (step==nbRotationSteps) {
             firstRotation=false;
             firstStepMatrix = m;
             step=0;
-
-            Vecteur p(0,0,0,1);
-            OUTPUT << "intermed=" << m * p << endl;
         }
     } else {
         step++;
@@ -221,16 +231,12 @@ bool Rotations::nextStep(Matrice &m) {
         // TRT-1R
         Matrice mr;
         mr.setRotation(angle,axe2);
-        m = matTCB*mr;
+        m = matTBC*mr;
         m = mr*m;
-        m = matTBC*m;
+        m = matTCB*m;
         m = firstStepMatrix * m;
         if (step>=nbRotationSteps) {
             step=nbRotationSteps;
-            Vecteur p(0,0,0,1),q;
-            q = m * p;
-            OUTPUT << "final=" << q << endl;
-
             return true;
         }
     }
@@ -238,26 +244,23 @@ bool Rotations::nextStep(Matrice &m) {
 }
 
 void Rotations::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
-    Matrice mr1,mr2,m;
-    Matrice mr;
+    Matrice mr,m;
     mr.setRotation(angle1,axe1);
-    m = matTAB*mr;
+    m = matTBA*mr;
     m = mr*m;
-    m = matTBA*m;
-    firstStepMatrix = initialMatrix * m;
+    m = matTAB*m;
+    firstStepMatrix = initialMatrix*m;
 
     mr.setRotation(angle2,axe2);
-    m = matTCB*mr;
+    m = matTBC*mr;
     m = mr*m;
-    m = matTBC*m;
+    m = matTCB*m;
     m = firstStepMatrix * m;
 
-    Vecteur p(0,0,0,1),q;
-    q = m * p;
+    Vecteur p(0,0,0,1),q = m * p;
 
     OUTPUT << "final=" << q << endl;
     position = getWorld()->worldToGridPosition(q);
-
     OUTPUT << "final grid=" << position << endl;
 
     orientation=Catoms3DBlock::getOrientationFromMatrix(m);

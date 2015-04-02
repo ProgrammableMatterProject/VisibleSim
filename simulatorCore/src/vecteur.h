@@ -53,7 +53,7 @@ class Vecteur
     \param tab : tab of coordinates
     \param s : size of tab
 */
-  void set(const float *tab,short s);
+  void set(const float *tab,short s,float extra=0.0f);
   void setMin(double x,double y,double z) { if (x<pt[0]) pt[0]=x; if (y<pt[1]) pt[1]=y; if (z<pt[2]) pt[2]=z; };
   void setMax(double x,double y,double z) { if (x>pt[0]) pt[0]=x; if (y>pt[1]) pt[1]=y; if (z>pt[2]) pt[2]=z; };
 /**
