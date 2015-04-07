@@ -31,7 +31,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	Color getColor(uint64_t time);
 	
-	void sendClockToNeighbors (P2PNetworkInterface *except);	
+	void sendClockToNeighbors (P2PNetworkInterface *except, int hop);	
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 };
 
@@ -39,7 +39,7 @@ class SynchroMessage : public Message {
 public:
 	uint64_t time;
 	int hop;
-	SynchroMessage(uint64_t t);
+	SynchroMessage(uint64_t t, int hop);
 	~SynchroMessage();
 };
 
