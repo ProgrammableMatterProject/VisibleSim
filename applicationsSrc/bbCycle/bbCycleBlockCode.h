@@ -38,7 +38,8 @@ public:
 class SynchroMessage : public Message {
 public:
 	uint64_t time;
-	SynchroMessage(uint64_t &t);
+	int hop;
+	SynchroMessage(uint64_t t);
 	~SynchroMessage();
 };
 

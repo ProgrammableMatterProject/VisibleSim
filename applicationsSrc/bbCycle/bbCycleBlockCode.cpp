@@ -37,6 +37,7 @@ void BbCycleBlockCode::init() {
 	while (time<SIMULATION_DURATION_USEC) {
 		uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
 		Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
+		received=false;
 		if (bb->blockId==1) //The master send the clock to its neighbors
 			sendClockToNeighbors(NULL);
 		BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
@@ -76,7 +77,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					SynchroMessage_ptr recvMessage->sourceInterface->hostBlock->blockId;
 					if (!received){
 						received=true;
-						bb->setTime((recvMessage->time)+6000); //How do I change the time ?
+						bb->setTime((recvMessage->time)+6000*(recvMessage->hop); //How do I change the time ?
 						block2Answer=recvInterface;
 						sendClockToNeighbors(block2Answer);
 						}
@@ -111,7 +112,7 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept){
 	for (int i=0; i<6 ; i++) {
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){
-			uint64_t message = bb-> getTime();
+			SynchroMessage *message = new SynchroMessage(bb->getTime());
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
 		}
 	}
