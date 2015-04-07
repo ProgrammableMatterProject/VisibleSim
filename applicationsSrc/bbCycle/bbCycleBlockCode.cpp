@@ -68,7 +68,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_NI_RECEIVE:
 			{
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; //How to access the message ? I don't understand how it works
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 			switch(message->id){
 				case SYNC_MSG_ID : 
