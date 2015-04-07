@@ -39,6 +39,7 @@ uint64_t Clock::getTime() {
 	}
 }
 
+
 LinearDriftClock::LinearDriftClock(Clock::ClockType clockType, int seed) {
 	double accuracyPercentage = 0;
 	double maxDrift = 0;
