@@ -23,7 +23,7 @@ class SyncMessage : public Message {
 	
 public :
 	SyncMessage(uint64_t t, int r) { type = SYNC_MSG_ID; time = t; round = r; };
-	SyncMessage(SyncMessage *m) { time = m->time; round = m->round; } ;
+	SyncMessage(SyncMessage *m) { type = m->type; time = m->time; round = m->round; } ;
 	~SyncMessage() {};
 
 	uint64_t getTime() {return time; };

@@ -13,6 +13,7 @@
 #include <boost/random.hpp>
 #include "color.h"
 #include "network.h"
+#include <vector>
 
 class msrSyncBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 private:
@@ -20,6 +21,8 @@ private:
 	float a;
 	float b;
 	int round;
+	vector<pair<uint64_t,uint64_t> > syncPoints;
+	vector<uint64_t> error;
 	
 public:
 	msrSyncBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);

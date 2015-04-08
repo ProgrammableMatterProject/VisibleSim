@@ -27,6 +27,8 @@ using namespace BlinkyBlocks;
 #define SYNC_PERIOD (10*1000*1000)
 #define COM_DELAY (6*1000*1000)
 
+#define LIMIT_NUM_ROUNDS 10
+
 msrSyncBlockCode::msrSyncBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
 	a = 1;
 	b = 0;
@@ -41,7 +43,6 @@ msrSyncBlockCode::~msrSyncBlockCode() {
 
 void msrSyncBlockCode::init() {
 	//BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
-	stringstream info;
 	
 	/*uint64_t time = 0;
 	while (time<SIMULATION_DURATION_USEC) {
@@ -53,7 +54,6 @@ void msrSyncBlockCode::init() {
 	
 #ifdef SYNCHRONIZATION
 	if(hostBlock->blockId == 1) { // Time leader
-		round = 1;
 		BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(BaseSimulator::getScheduler()->now(),hostBlock));
 	}
 #endif
@@ -64,6 +64,7 @@ void msrSyncBlockCode::startup() {
 	//BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
 	info << "  Starting msrSyncBlockCode in block " << hostBlock->blockId;
+	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
 	init();
 }
 
@@ -84,28 +85,55 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_MSRSYNC:
 			{
-				//BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(BaseSimulator::getScheduler()->now,hostBlock));
+				round++;
+				info << "MASTER sync " << round;
 				synchronize(NULL);
-				BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(hostBlock->getTime()+SYNC_PERIOD,hostBlock));
+				
+				// schedule the next sync round
+				if (round < LIMIT_NUM_ROUNDS) {
+					uint64_t nextSync = hostBlock->getSchedulerTimeForLocalTime(hostBlock->getTime()+SYNC_PERIOD);
+					//cout << nextSync << " " << BaseSimulator::getScheduler()->now() << endl;
+					// or based on global time now ? BaseSimulator::getScheduler()->now()+SYNC_PERIOD
+					BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(nextSync,hostBlock));
+				}
 			}
 			break;
 		case EVENT_NI_RECEIVE:
 			{
 			MessagePtr message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
-			switch(message->id) {
+			switch(message->type) {
 				case SYNC_MSG_ID : {
 					SyncMessagePtr recvMessage = boost::static_pointer_cast<SyncMessage>(message);
-					uint64_t esimatedTime = recvMessage->getTime() + COM_DELAY;
-					if (recvMessage->getRound() > round) { 
-						// estimatedTime
+					uint64_t globalTime = recvMessage->getTime() + COM_DELAY;
+					info << "sync msg " << recvMessage->getRound();
+					//cout << "@" << hostBlock->blockId << ": " << getTime() << "/" << globalTime << endl;
+					error.push_back(abs(getTime()-globalTime));
+					if (recvMessage->getRound() > round) {
+						round = recvMessage->getRound();
+						// global time (hardware)
+						uint64_t localTime = hostBlock->getTime();
+						// window of 5 last measures
+						syncPoints.push_back(make_pair(localTime,globalTime));
+						if (syncPoints.size() > 5) {
+							syncPoints.erase(syncPoints.begin());
+						}
 						adjust();
 						synchronize(recvInterface);
+					}
+					
+					if (round == LIMIT_NUM_ROUNDS) {
+						// display error vector
+						cout << "@" << hostBlock->blockId << " error: ";
+						for (vector<uint64_t>::iterator it = error.begin() ; it != error.end(); it++){
+							cout << *it << " ";
+						}
+						cout << endl;
 					}
 				}
 				break;
 				default: 
-					ERRPUT << "*** ERROR *** : unknown message" << endl;
+					ERRPUT << "*** ERROR *** : unknown message" << message->id << endl;
 			}
 			}
 			break;
@@ -139,7 +167,39 @@ void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception) {
 }
 
 void msrSyncBlockCode::adjust() {
+	// Linear regression (same as in hardware bb)
 	// https://github.com/claytronics/oldbb/blob/master/build/src-bobby/system/clock.bb
+	// x: local time
+	// y: global time
+	double xAvg = 0, yAvg = 0;
+	double sum1 = 0, sum2 = 0;
+	
+	if (syncPoints.size() == 0) {
+		a = 1;
+		return;
+	}
+	
+	if (syncPoints.size() == 1) {
+		a = syncPoints.begin()->second / syncPoints.begin()->first;
+		//a = 1;
+		return;
+	}
+	
+	for (vector<pair<uint64_t,uint64_t> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
+		xAvg += it->first;
+		yAvg += it->second;
+	}
+	
+	xAvg = xAvg/syncPoints.size();
+	yAvg = yAvg/syncPoints.size();
+	for (vector<pair<uint64_t,uint64_t> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
+        sum1 += (it->first - xAvg) * (it->second - yAvg);
+		sum2 += powf(it->first - xAvg,2);
+	}
+
+	a = sum1/sum2;
+	cout << "@" << hostBlock->blockId << " a: " << a << endl;
+	// b ?
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* msrSyncBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
