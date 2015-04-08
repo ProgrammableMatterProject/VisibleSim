@@ -22,6 +22,7 @@ brew install boost --with-mpi --without-single
 brew install freeglut
 brew install glew
 ```
+
  2. make
 
 **NOTE: VisibleSim uses boost::interprocess::interprocess_semaphore. Unfortunately, its implementation in Boost 1.56 is buggy on MacOS 10.9.5. VisibleSim compiles but throws an exception at runtime saying the function is not implemented. Boost 1.56 actually implementes interprocess_semaphore using POSIX unnamed semaphores, which are not implemented in MacOS 10.9.5. To fix that bug, edit `/usr/local/include/boost/interprocess/sync/interprocess_semaphore.hpp` and comment the following lines to make Boost use SPIN semaphore (see the official ticket [boost1.56-ticket] for more details):**
