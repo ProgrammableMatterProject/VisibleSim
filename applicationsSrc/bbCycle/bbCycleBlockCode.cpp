@@ -53,7 +53,7 @@ void BbCycleBlockCode::startup() {
 
 void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	stringstream info;
-	Messageptr message;
+	MessagePtr message;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	info.str("");
 	
@@ -74,10 +74,10 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			switch(message->id){
 				case SYNC_MSG_ID : 
 					{
-					SynchroMessage_ptr recvMessage->sourceInterface->hostBlock->blockId;
+					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
 						received=true;
-						bb->setTime((recvMessage->time)+6000*(recvMessage->hop); //How do I change the time ?
+						bb->setTime((recvMessage->time)+6000*(recvMessage->hop)); //How do I change the time ?
 						block2Answer=recvInterface;
 						sendClockToNeighbors(block2Answer,recvMessage->hop++);
 						}
