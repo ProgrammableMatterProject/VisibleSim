@@ -34,7 +34,7 @@ brew install glew
 ### Ubuntu Installation
 
 1. Intall dependencies:
-``` 
+```
 sudo apt-get install libboost-all-dev
 sudo apt-get install freeglut3-dev
 sudo apt-get install libglew-dev
