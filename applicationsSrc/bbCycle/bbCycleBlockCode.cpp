@@ -77,7 +77,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
 						received=true;
-						bb->setTime((recvMessage->time)+6000*(recvMessage->hop)); //How do I change the time ?
+						->currentDate = ((recvMessage->time)+6000*(recvMessage->hop)); //How do I change the time ?
 						block2Answer=recvInterface;
 						sendClockToNeighbors(block2Answer,recvMessage->hop++);
 						}
