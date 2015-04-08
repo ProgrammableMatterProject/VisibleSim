@@ -22,9 +22,16 @@ brew install boost --with-mpi --without-single
 brew install freeglut
 brew install glew
 ```
-
  2. Uncomment mac-specific `GLOBAL_LIBS` in `Makefile`
  3. make
+
+**NOTE: VisibleSim uses boost::interprocess::interprocess_semaphore. Unfortunately, its implementation in Boost 1.56 is buggy on MacOS 10.9.5. VisibleSim compiles but throws an exception at runtime saying the function is not implemented. Boost 1.56 actually implementes interprocess_semaphore using POSIX unnamed semaphores, which are not implemented in MacOS 10.9.5. To fix that bug, edit `/usr/local/include/boost/interprocess/sync/interprocess_semaphore.hpp` and comment the following lines to make Boost use SPIN semaphore (see the official ticket [boost1.56-ticket] for more details):**
+ ```
+#if !defined(BOOST_INTERPROCESS_FORCE_GENERIC_EMULATION) && \
+   (defined(BOOST_INTERPROCESS_POSIX_PROCESS_SHARED) && defined(BOOST_INTERPROCESS_POSIX_NAMED_SEMAPHORES))
+   #include <boost/interprocess/sync/posix/semaphore.hpp>
+   #define BOOST_INTERPROCESS_USE_POSIX
+```
 
 ### Ubuntu Installation
 
@@ -93,3 +100,6 @@ SIMULATION DEBUGGING MODE -- type help for options
 **NOTE: you must press '<kbd>SHIFT</kbd> + <kbd>r</kbd>' or '<kbd>SHIFT</kbd> + <kbd>R</kbd>' in the simulator window before you can start running commands from the console.**
 
 After pressing '<kbd>SHIFT</kbd> + <kbd>r</kbd>' or '<kbd>SHIFT</kbd> + <kbd>R</kbd>' in the simulation window, typing `run` in the console should start your program.
+
+
+[boost1.56-ticket]:https://svn.boost.org/trac/boost/ticket/11154
