@@ -59,7 +59,7 @@ LinearDriftClock::LinearDriftClock(Clock::ClockType clockType, int seed) {
 }
 
 uint64_t LinearDriftClock::getTimeMS() {
-	return getTimeMS()/1000;
+	return getTimeUS()/1000;
 }
 
 uint64_t LinearDriftClock::getTimeUS() {
