@@ -25,9 +25,12 @@ using namespace BlinkyBlocks;
 
 #define SYNCHRONIZATION
 #define SYNC_PERIOD (10*1000*1000)
-#define COM_DELAY (6*1000*1000)
+#define COM_DELAY (6*1000)
 
 #define LIMIT_NUM_ROUNDS 10
+
+//#define PRINT_NODE_INFO
+#define INFO_NODE_ID 2
 
 msrSyncBlockCode::msrSyncBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
 	a = 1;
@@ -87,8 +90,10 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 			{
 				round++;
 				info << "MASTER sync " << round;
-				synchronize(NULL);
-				
+#ifdef PRINT_NODE_INFO
+				cout << "MASTER SYNC " << getTime() << endl;
+#endif
+				synchronize(NULL,getTime());
 				// schedule the next sync round
 				if (round < LIMIT_NUM_ROUNDS) {
 					uint64_t nextSync = hostBlock->getSchedulerTimeForLocalTime(hostBlock->getTime()+SYNC_PERIOD);
@@ -105,30 +110,45 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 			switch(message->type) {
 				case SYNC_MSG_ID : {
 					SyncMessagePtr recvMessage = boost::static_pointer_cast<SyncMessage>(message);
-					uint64_t globalTime = recvMessage->getTime() + COM_DELAY;
 					info << "sync msg " << recvMessage->getRound();
 					//cout << "@" << hostBlock->blockId << ": " << getTime() << "/" << globalTime << endl;
-					error.push_back(abs(getTime()-globalTime));
 					if (recvMessage->getRound() > round) {
 						round = recvMessage->getRound();
-						// global time (hardware)
+						uint64_t globalTime = recvMessage->getTime() + COM_DELAY;
 						uint64_t localTime = hostBlock->getTime();
 						// window of 5 last measures
 						syncPoints.push_back(make_pair(localTime,globalTime));
+#ifdef PRINT_NODE_INFO
+						if (hostBlock->blockId == INFO_NODE_ID) {
+							cout << "Reception time: " << BaseSimulator::getScheduler()->now()/1000 << endl;
+							cout << "a: " << a << endl;
+							cout << "estimation: " << getTime()/1000 << "(" << hostBlock->getTime()/1000 << ")" << ", reception: " << recvMessage->getTime()/1000 << ", => " << globalTime/1000 << endl; 
+						}
+#endif
+						error.push_back(abs(((double)getTime()-(double)globalTime)/1000));
 						if (syncPoints.size() > 5) {
 							syncPoints.erase(syncPoints.begin());
 						}
 						adjust();
-						synchronize(recvInterface);
+#ifdef PRINT_NODE_INFO
+						if (hostBlock->blockId == INFO_NODE_ID) {
+							cout << "@" << hostBlock->blockId << " a: " << a << endl;
+						}
+#endif
+						synchronize(recvInterface, globalTime);
 					}
 					
 					if (round == LIMIT_NUM_ROUNDS) {
 						// display error vector
-						cout << "@" << hostBlock->blockId << " error: ";
-						for (vector<uint64_t>::iterator it = error.begin() ; it != error.end(); it++){
-							cout << *it << " ";
+#ifdef PRINT_NODE_INFO
+						if (hostBlock->blockId == INFO_NODE_ID) {
+							cout << "@" << hostBlock->blockId << " error: ";
+							for (vector<uint64_t>::iterator it = error.begin() ; it != error.end(); it++){
+								cout << *it << " ";
+							}
+							cout << endl;
 						}
-						cout << endl;
+#endif
 					}
 				}
 				break;
@@ -142,7 +162,9 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		}
 		
-		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		if (info.str() != "") {
+			BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		}
 }
 
 
@@ -153,14 +175,14 @@ Color msrSyncBlockCode::getColor(uint64_t time) {
 }
 
 uint64_t msrSyncBlockCode::getTime() {
-	return a*hostBlock->getTime() + b;
+	return a*(double)hostBlock->getTime() + b;
 }
 
-void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception) {
+void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t globalTime) {
 	list <P2PNetworkInterface*>::iterator it;
 	for (it = hostBlock->getP2PNetworkInterfaceList().begin(); it !=hostBlock->getP2PNetworkInterfaceList().end(); it++) {
 		if ((*it)->connectedInterface && (*it != exception)) {
-			SyncMessage *message = new SyncMessage(getTime(),round);
+			SyncMessage *message = new SyncMessage(globalTime,round);
             BaseSimulator::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(), message,*it));
 		}
 	}
@@ -197,8 +219,7 @@ void msrSyncBlockCode::adjust() {
 		sum2 += powf(it->first - xAvg,2);
 	}
 
-	a = sum1/sum2;
-	cout << "@" << hostBlock->blockId << " a: " << a << endl;
+	a = sum1/sum2;	
 	// b ?
 }
 

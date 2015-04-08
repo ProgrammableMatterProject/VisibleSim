@@ -34,7 +34,7 @@ public:
 	Color getColor(uint64_t time);
 	
 	uint64_t getTime(); // estimated global time
-	void synchronize(P2PNetworkInterface *exception);
+	void synchronize(P2PNetworkInterface *exception, uint64_t globalTime);
 	void adjust();
 	
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
