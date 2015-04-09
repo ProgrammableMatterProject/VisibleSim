@@ -32,7 +32,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	Color getColor(uint64_t time);
 	
-	void sendClockToNeighbors (P2PNetworkInterface *except, int hop);	
+	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, uint64_t clock);	
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 };
 

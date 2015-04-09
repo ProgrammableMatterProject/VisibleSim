@@ -33,21 +33,26 @@ void BbCycleBlockCode::init() {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	stringstream info;
 	
-	uint64_t time = 0, iter=0;
-	while (iter<SIMULATION_DURATION_USEC) {
+	uint64_t time = 0;
+	while (time<SIMULATION_DURATION_USEC) {
 		uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
-		Color c = getColor(iter/COLOR_CHANGE_PERIOD_USEC);
-		received=false; //We synchronize the blocks on each loop
-		if (bb->blockId==3) //The master send the clock to its neighbors
-			sendClockToNeighbors(NULL,1);
-		BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
-		time += COLOR_CHANGE_PERIOD_USEC + delay;
-		iter += COLOR_CHANGE_PERIOD_USEC;
+		uint64_t syncTime = globalTime + delay;
+		block2Answer=NULL;
+		Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
+		received=false; 
+		if (bb->blockId==1){ 
+			received=true;
+			sendClockToNeighbors(NULL,1,bb->getTime());
+		}
+		BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(syncTime,bb,c));
+		time += COLOR_CHANGE_PERIOD_USEC;
+		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
 	}
 }
 
 void BbCycleBlockCode::startup() {
 	stringstream info;
+	delay=0;
 	info << "  Starting BbCycleBlockCode in block " << hostBlock->blockId;
 	init();
 }
@@ -78,10 +83,12 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
 						received=true;
-						delay = bb->getTime() - ((recvMessage->time) - 6000*(recvMessage->nbhop)); //How do I change the time ?
+						//delay = bb->getTime() - (recvMessage->time) + 6000*(recvMessage->nbhop); //How do I change the time ?
+						delay = 10000000*(recvMessage->nbhop);
 						block2Answer=recvInterface;
-						sendClockToNeighbors(block2Answer,recvMessage->nbhop);
 						recvMessage->nbhop++;
+						sendClockToNeighbors(block2Answer,recvMessage->nbhop,recvMessage->time);
+						info<<"synchronized"<< delay << endl;
 						}
 					}
 					break;
@@ -89,7 +96,6 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					break;
 				}
 			}
-			break;
 		default:
 			ERRPUT << "*** ERROR *** : unknown local event" << endl;
 			break;
@@ -109,14 +115,14 @@ BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyB
 }
 
 
-void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop){
+void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, uint64_t clock){
 	P2PNetworkInterface * p2p;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
 	for (int i=0; i<6 ; i++) {
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){
-			SynchroMessage *message = new SynchroMessage(bb->getTime(), hop);
+			SynchroMessage *message = new SynchroMessage(clock, hop);
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
 		}
 	}
