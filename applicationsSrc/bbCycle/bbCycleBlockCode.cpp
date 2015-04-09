@@ -33,15 +33,16 @@ void BbCycleBlockCode::init() {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	stringstream info;
 	
-	uint64_t time = 0;
-	while (time<SIMULATION_DURATION_USEC) {
+	uint64_t time = 0, iter=0;
+	while (iter<SIMULATION_DURATION_USEC) {
 		uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
-		Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
+		Color c = getColor(iter/COLOR_CHANGE_PERIOD_USEC);
 		received=false; //We synchronize the blocks on each loop
-		if (bb->blockId==1) //The master send the clock to its neighbors
+		if (bb->blockId==3) //The master send the clock to its neighbors
 			sendClockToNeighbors(NULL,1);
 		BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
-		time += COLOR_CHANGE_PERIOD_USEC;
+		time += COLOR_CHANGE_PERIOD_USEC + delay;
+		iter += COLOR_CHANGE_PERIOD_USEC;
 	}
 }
 
@@ -77,11 +78,14 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
 						received=true;
-						->currentDate = ((recvMessage->time)+6000*(recvMessage->hop)); //How do I change the time ?
+						delay = bb->getTime() - ((recvMessage->time) - 6000*(recvMessage->nbhop)); //How do I change the time ?
 						block2Answer=recvInterface;
-						sendClockToNeighbors(block2Answer,recvMessage->hop++);
+						sendClockToNeighbors(block2Answer,recvMessage->nbhop);
+						recvMessage->nbhop++;
 						}
 					}
+					break;
+				default:
 					break;
 				}
 			}
@@ -118,4 +122,11 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int
 	}
 }
 
+SynchroMessage::SynchroMessage(uint64_t t, int hop) :Message(){
+	id = SYNC_MSG_ID;
+	time = t;
+	nbhop = hop;
+}
 
+SynchroMessage::~SynchroMessage(){
+}

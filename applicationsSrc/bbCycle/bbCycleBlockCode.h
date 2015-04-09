@@ -21,6 +21,7 @@ typedef boost::shared_ptr<SynchroMessage> SynchroMessage_ptr;
 class BbCycleBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
 	bool received;
+	uint64_t delay;
 
 public:
 	BbCycleBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
@@ -38,7 +39,7 @@ public:
 class SynchroMessage : public Message {
 public:
 	uint64_t time;
-	int hop;
+	int nbhop;
 	SynchroMessage(uint64_t t, int hop);
 	~SynchroMessage();
 };
