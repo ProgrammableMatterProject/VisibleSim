@@ -1,0 +1,18 @@
+#ifndef __COORDINATE_H__
+#define __COORDINATE_H__
+
+#include "block.bbh"
+
+//give coordinates to all the blocks and each blocks share their coordinates to each other, the block with the ID id will be the origin with the coordinate (0, 0, 0)
+//the msgHandler donefunc will be the handler executed when a virtual neighbor receives a data from sendDataToVirtualNeighbor function
+void  initCoordination(uint16_t id, MsgHandler donefunc);
+
+//check if a virtual neighbor exist somewhere, if yes return 1 and if no return 0
+byte checkVirtualNeighbor(PRef p); 
+
+//send a data to a virtual neighbor
+void sendDataToVirtualNeighbor(PRef p, byte *data, byte size);
+
+#endif
+
+

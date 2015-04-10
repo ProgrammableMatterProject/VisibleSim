@@ -1,0 +1,45 @@
+#ifndef __HARDWARETIME_H__
+#define __HARDWARETIME_H__
+
+#include "defs.bbh"
+#include "handler.bbh"
+
+// with 1.024 khz clk, 1 tick = .977 ms
+// 32-bit so overflow in 48.545 days
+threadtype typedef uint32_t Time;
+
+threadtype typedef uint8_t	 Flag;
+#define ACTIVE			1
+#define INACTIVE		0
+
+//Timeout Datastructure
+threadtype typedef struct _timeout { struct _timeout * next; Time calltime; GenericHandler callback; Flag state; byte arg;} Timeout;
+
+threadextern Timeout * thisTimeout;						// GLOBAL VAR - use it with timeout-based callbacks.
+													// This will point to the timeout that triggered the callback, in case you want to reference additional data.
+
+
+threadtype typedef struct _timer { struct _timer * next; Timeout t;	Time period; Flag state; } Timer;
+
+void delayMS(int);									// BLOCKING WAIT.  will delay for 0-31767 ms.  Helper function - _delay_ms only handles ~14 ms delays
+
+Time getTime(void);								// returns current time of type time.  0 - 2^32 ms.  Overflow in a month or two.
+
+void checkTimeout(void);							// checks timeouts, triggering a callback if now >= calltime.  Triggering a timeout inherently deregisters it.
+int registerTimeout(Timeout *);						// registers a timeout.  state of next timeout pointer is not preserved.  1 on success, 0 on failure.
+int deregisterTimeout(Timeout *);					// removes the first timer instance matching both calltime and callback.  1 on success, 0 on failure
+int deregisterTimeoutByHandler(GenericHandler);		// removes the first timer instance with matching callback as handler.  1 on success, 0 on failure
+
+void checkTimer(void);								// checks timers, re-registering a timeout if timeout is INACTIVE and timer is ACTIVE, else no effect.
+int registerTimer(Timer *);							// registers a timer.  Returns 1 on success.  Side effect: timer is set to ACTIVE
+int deregisterTimer(Timer *);						// deregisters first timer instance matching argument pointer.  Side effect: timer is set to INACTIVE
+int clearTimer(Timer *);                               // deregisters both timer and timeout, preventing any scheduled timeouts from occurring.  Timer is set to INACTIVE
+
+#define enableTimer(x)	(x.state = ACTIVE)			// Takes a timer and sets it to ACTIVE.  Timeout will re-register at next system tick after last scheduled timeout is called.
+#define disableTimer(x) (x.state = INACTIVE)		// Takes a timer and sets it to INACTIVE.  Last scheduled timeout will still trigger.  Call DeregisterTimeout to completely disable.
+													
+void initTime(void);								// initializes timer and timeout variables
+
+extern void blockTick(void);
+
+#endif

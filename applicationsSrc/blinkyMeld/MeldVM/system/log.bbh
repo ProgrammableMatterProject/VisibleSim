@@ -1,0 +1,65 @@
+#ifndef __LOG_H__
+#define __LOG_H__
+
+#include <stdint.h>
+#include "serial.bbh"
+
+threadextern PRef toHost;
+
+//////////////////// PUBLIC FUNCTIONS //////////////////////
+// format of a log message: [0]    <LOG_MSG> 
+//                          [1]    <LOG_DATA>
+//                          [2-3]  <block id (2 bytes)>
+//                          [4]    <message # (1 byte)> 
+//                          [5]    <fragment # (1 byte)>
+//                          [6]    <if fragment # = 1, number of fragments. else data>
+//                          [7-16] <log data: 10 bytes>
+// 
+// Send a log message containing the string passed as argument to the host
+// NOTE: a string longer than 10 bytes will require 2 chunks to be sent!
+// usage example: char s[10];
+//                snprintf(s, 150*sizeof(char), "It works!");
+//                printDebug(s);
+byte printDebug(char*s);
+
+// To use in case block does not have a path to host yet
+// Blocks message sending until it knows how to communicate with host
+byte blockingPrintDebug(char *s);
+//
+////////////////// END PUBLIC FUNCTIONS ////////////////////
+
+//////////////////// SYSTEM FUNCTIONS /////////////////////
+//
+// Called by initBlock (block.bb) upon block startup
+// Sets block to orange and wait while the block has not received a path to host msg
+// Once the block knows how to send messages to the host, the user program starts
+void initLogDebug(void);
+
+// Sends a log message of any to port p and with s bytes of data d
+byte sendLogChunk(PRef p, byte *d, byte s);
+
+// Same as sendLogChunk but allows us to specify the message handler
+byte sendCmdChunk(PRef p, byte *d, byte s, MsgHandler mh);
+
+// Handler for log commands, to be specified as handler in sendCmdChunk(x)
+void commandHandler(void);
+
+// Detect type of log message and execute the corresponding callback
+byte handleLogMessage(void);
+
+// Checks if port p is connected to host
+// Returns 1 if true, 0 otherwise
+byte isHostPort(PRef p);
+
+// Send a message to host containing the line and file number of a triggered assert
+void reportAssert(byte fn, int ln);
+
+// Sends a message to host saying that this block ran out of memory while trying to 
+// allocate a chunk to send a message on port failurePort
+void reportLoggerOutOfMemory(PRef failurePort);
+
+//////////////////// SYSTEM FUNCTIONS ////////////////////
+#endif
+
+//byte printDebug(char *s, ...);
+//byte blockingPrintDebug(char *s, ...);

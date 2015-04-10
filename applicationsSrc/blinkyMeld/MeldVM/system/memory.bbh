@@ -1,0 +1,133 @@
+// memory.h
+//
+// Define all Memory Management protocols
+
+#ifndef _MEMORY_H_
+#define _MEMORY_H_
+
+#include "defs.bbh"
+#include <stdio.h>
+#include "handler.bbh"
+#include "../hw-api/hwMemory.h"
+
+// Use this to define variables in EEPROM space
+//
+//  example:  color EEMEM nv_lastcolor;  -> creates a variable of size color in EEPROM
+//  Then you can store/restore using the address of your variable.
+#ifndef BBSIM
+#define EEMEM __attribute__((section(".eeprom")))
+#else
+threaddef #define EEMEM 
+#endif
+
+
+/*
+    EEPROM Usage example:
+
+    In your code:
+    
+    #include "memory.bbh"
+    
+    typedef struct _meh 
+    {
+        char data[10];
+        uint8_t setting;
+    } some_struct;
+    
+    // EEPROM data
+    uint8_t EEMEM nv_data;
+    some_struct EEMEM nv_mystruct;
+
+    // SRAM data
+    uint8_t data;
+    some_struct mystruct;
+
+    void myinit()
+    {
+        restore(&data, &nv_data, sizeof(uint8_t);
+        restore(&mystruct, &nv_mystruct, sizeof(some_struct));
+    }
+
+    void mymain()
+    {
+    
+        if(something worth remarking on)
+        {
+            store(&nv_data, &data, sizeof(uint8_t));
+        }
+    }
+*/
+
+threadtype typedef struct _blockConf {     uint16_t UID;     uint8_t  conf;     uint8_t  accel_thresh; } blockConf;
+
+threaddef #define DATA_SIZE 17
+
+// chunk status defs (common)
+#define CHUNK_USED     0x80
+#define CHUNK_FREE     0x00
+
+#define MSG_RESP_ACK		0x08
+#define MSG_RESP_NACK		0x10
+#define MSG_RESP_NOREPLY	0x18
+#define MSG_RESP_SENDING	0x00
+
+// chunk status defs (receiving)
+#define CHUNK_FILLING  0x40
+#define CHUNK_FILLED   0x00
+#define CHUNK_ODD      0x20
+#define CHUNK_EVEN     0x00
+
+// chunk status flag functions
+#define chunkInUse(x)  ((x->status >> 7) & 0x1)
+#define chunkFilling(x) ((x->status >> 6) & 0x1)
+#define chunkParity(x)  ((x->status >> 5) & 0x1)
+#define chunkResponseType(x) ((x->status) & 0x18)
+#define setChunkResponse(x,y) (x->status = (x->status & 0xE7) | (y & 0x18))
+#define faceNum(x)      (x->status & 0x7)
+
+// chunk status set functions
+#define setParityFromByte(x)    ((x & 0x1) << 5)
+
+threadtype typedef struct _chunk {byte data[DATA_SIZE]; byte status; struct _chunk*  next;	byte handler[POINTER_SIZE]; GenericHandler callback; } Chunk;
+//THIS IS CORRECT APPROACH: threadtype typedef struct _chunk {byte data[DATA_SIZE]; byte status; struct _chunk*  next;	union { byte asbytes[POINTER_SIZE]; MsgHandler* asPtr} handler; GenericHandler callback; } Chunk;
+/* status byte definition
+   COMMON
+    [7]   used (1) / unused (0)
+   SENDING
+    [6:3] unused
+    [2:0] sending on face 0bxxx
+   RECEIVING
+    [6]   currently filling (1) / completely filled (0)
+    [5]   receiving odd (1) / even (0) parity chunk
+    [4:3] unused
+    [2:0] received from face 0bxxx
+*/
+
+// sets-up memory
+void initializeMemory(void);
+
+// loops through and frees all connected chunks in list
+void freeChunk(Chunk *);
+
+// check memory consistency
+void _checkMemoryConsistency(byte cfn, int cln);
+
+//#define getSystemRXChunk() _getSystemRXChunk(FILENUM, __LINE__)
+//Chunk* _getSystemRXChunk(byte f, int l);
+//#define getSystemTXChunk() _getSystemTXChunk(FILENUM, __LINE__)
+//Chunk* _getSystemTXChunk(byte f, int l);
+
+// finds next free chunk of memory
+// returns: pointer-mem available, null-out of memory
+Chunk* getSystemRXChunk(void);
+
+// gets a chunk allocated for this port's system messages
+// returns: pointer-mem available, null-out of memory
+Chunk* getSystemTXChunk(void);
+
+// gets a free chunk of memory if enough for receiving
+// returns: pointer-mem available, null-out of memory
+// Chunk* getSendChunk(void);
+
+#endif
+

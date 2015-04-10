@@ -1,0 +1,125 @@
+#ifndef	__HANDLER_H__
+#define __HANDLER_H__
+
+#include "defs.bbh"
+#include <stdlib.h>
+
+// Handler Type Declaration
+threadtype typedef void(*GenericHandler)(void);
+
+// message handler (access to the chunk which invoked this handler
+//     available via the global chunk* thisChunk)
+// anything can be done in this handler but must guarantee execution
+//      takes no longer than (5?) ms
+// data must be deep copied if later access is required
+// inputs:  none
+// outputs: 0 - handler error
+//          non-zero - handler success (status can be defined later)
+//              (ie. 1 - success, no reply sent; 2 - success, reply sent)
+threadtype typedef byte(*MsgHandler)(void);
+
+
+threaddef #define NUM_HANDLERS	32		// could be larger, but using 32-bit var for flagging
+threadtype typedef byte 		Event;			// ensure events are unsigned and variable length can store NUM_HANDLERS
+threadtype typedef uint64_t 	HandleMask;	// must exceed or match NUM_HANDLERS
+
+// Reserved Handler Values for defined system behavior and events
+enum {
+
+SYSTEM_INIT,					// 0 	called once on startup
+SYSTEM_MAIN,					// 1	called once per service tick
+SYSTEM_SLEEP,					// 2	ALT: SYSTEM_SUSPEND: called before going to sleep
+SYSTEM_WAKE,					// 3	ALT: SYSTEM_RESUME:	called after returning from sleep
+SYSTEM_DIE,						// 4	called before total power failure - save your state! (TBD if this rev can detect/implement)
+SYSTEM_ERROR,					// 5	called on system errors (probably fatal stuff - my guess is default to a full reset)
+
+SYSTEM_SOFT_UART_UPDATE,		
+SYSTEM_SOFT_UART1_UPDATE,		
+SYSTEM_PACKET_TX_COMPLETE,		// 8	[integral functionality - may go elsewhere] called when a packet has been sent and waiting on ACK (probably instantiate a timeout)
+
+SYSTEM_PACKET_RECEIVED,			// 9	[integral functionality - may go elsewhere] called when a reserved system packet has been received
+
+SYSTEM_TIMEOUT_CALLBACK,		// 10	[integral functionality - may go elsewhere] called when a timer is due for its callback
+
+EVENT_ACCEL_CHANGE,				// 11	SUPERCEDES other ACCEL events if registered; called on a scheduled accelerometer update (configurable Hz)
+EVENT_ACCEL_TAP,				// 12	called on unscheduled accelerometer update, tap detected
+EVENT_ACCEL_SHAKE,				// 13	called on unscheduled accelerometer update, shake detected
+EVENT_ACCEL_ORIENTATION_CHANGE,	// 14	called on unscheduled accelerometer update, orientation change
+
+EVENT_LED_CHANGE,				// 15	[integral functionality - may go elsewhere] called when LED value needs to be modified during playback
+EVENT_LED_TRANSITION,			// 16	called when an LED color transition is completed
+
+EVENT_SOUND_CHANGE,				// 17	[integral functionality - may go elsewhere] called when a sound needs to be modified during playback
+EVENT_SOUND_COMPLETE,			// 18	called when a sound event has completed
+
+EVENT_NEIGHBOR_CHANGE,			// 19	called on any change in neighbor status
+
+EVENT_PACKET_RECEIVED,			// 20	called when a user packet has been received
+
+EVENT_COMMAND_RECEIVED,			// 21	called when a log command has been received
+
+USER_EVENT_0,					// 22
+USER_EVENT_1,					// 23
+USER_EVENT_2,					// 24
+USER_EVENT_3,					// 25
+USER_EVENT_4,					// 26
+USER_EVENT_5,					// 27
+USER_EVENT_6,					// 28
+USER_EVENT_7,					// 29
+USER_EVENT_8,					// 30
+USER_EVENT_9,					// 31
+};
+
+
+// Other behavior handled in various ISRs
+/*
+
+RXCIE0-5			:	byte received in hardware uart buffer -> check for ack / escape, push data into chunk, increment storage var
+						flag SYSTEM_ACK_RECEIVED if necessary
+						flag SYSTEM_PACKET_RX_COMPLETE if necessary, move to alternate buffer (RX_COMPLETE must clear/reallocate new buffer)
+				
+TXCIE0-5			:	byte transmit buffer free -> push packet byte (if available) into hardware uart buffer, decrement var
+						flag SYSTEM_PACKET_TX_COMPLETE if necessary
+
+softuart			:	check if rx/tx bits have/need to happen, record/twiddle as necessary
+						byte received/transmit as per hardware uart ISRs
+
+RTC					:	increment global time, ~1ms units (0 -> time block most recently gained power)
+
+Tx_OVF				:	overflow is configured to trigger when nearest-in-time callback/timeout is needed
+
+PCx_INT	6x			:	pin change interrupt - one possible way to altert system of new neighbors
+
+PCx_INT	+ TWIx		:	accelerometer interrupt + i2c byte push/pull routine
+
+DMAC + EVENT + DAC	:	do the DAC using DMA from some sort of memory space
+
+*/
+
+
+void executeHandlers(void);
+//TriggerHandler
+//	will trigger a callback for a valid event and valid handler
+//  execution will occur during the CURRENT or NEXT handler scan
+// 	returns 1 on success, 0 on failure
+int triggerHandler(Event);
+// RegisterHandler
+// will register a callback for a valid event with currently NULL callback.
+// must unregister a valid handler before re-registering.
+// returns 1 on success, 0 on failure.
+int registerHandler(Event, GenericHandler);
+// UnregisterHandler
+// will unregister a valid callback for a valid event, setting it to NULL.
+// must unregister a valid handler before re-registering.
+// returns 1 on success, 0 on failure.
+int unregisterHandler(Event);
+
+// CallHandler
+// Will call a handler registered to a given system event, if non-NULL
+void callHandler(Event);
+
+//initHandlers
+//clears handler array before processing
+void initHandlers(void);
+
+#endif
