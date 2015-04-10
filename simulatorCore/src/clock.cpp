@@ -1,6 +1,13 @@
 #include "clock.h"
 #include "scheduler.h"
 
+namespace BaseSimulator {
+
+Clock::Clock(ClockType clockType, BuildingBlock *b) {
+	hostBlock = b;
+	setClockProperties(clockType);
+}
+	
 void Clock::setClockProperties(ClockType clockType) {
 	switch (clockType) {
 		case XMEGA_RTC_OSC1K_ULPRC:
@@ -39,23 +46,19 @@ uint64_t Clock::getTime() {
 	}
 }
 
-
-LinearDriftClock::LinearDriftClock(Clock::ClockType clockType, int seed) {
+LinearDriftClock::LinearDriftClock(Clock::ClockType clockType, BuildingBlock *b) : Clock(clockType,b) {
 	double accuracyPercentage = 0;
-	double maxDrift = 0;
-	double minDrift = 0;
-	
-	setClockProperties(clockType);
+	double maxA = 0;
+	double minA = 0;
 	
 	accuracyPercentage = (float)accuracy/pow(10,6); // ppm to %
-	maxDrift = 1 + accuracyPercentage;
-	minDrift = 1 - accuracyPercentage;
+	maxA = 1 + accuracyPercentage;
+	minA = 1 - accuracyPercentage;
 	
 	startTime = BaseSimulator::getScheduler()->now();
-	generator =  boost::rand48(seed);
-	driftFactor = (generator()/(double)RAND_MAX)*(maxDrift-minDrift) + minDrift;
-	
-	lastLocalTimeRead = 0;
+	generator =  boost::rand48(hostBlock->blockId);
+	a = (generator()/(double)RAND_MAX)*(maxA-minA) + minA;
+	b = 0;
 }
 
 uint64_t LinearDriftClock::getTimeMS() {
@@ -65,27 +68,14 @@ uint64_t LinearDriftClock::getTimeMS() {
 uint64_t LinearDriftClock::getTimeUS() {
 	double localTime = 0;
 	double realTime = (double)BaseSimulator::getScheduler()->now();
-
+	double noise = 0;
 	
-	/* see how to add a random offset
-	 * double accuracyPercentage = (float)accuracy/pow(10,-6); // ppm to %
-	 * int sign = 1;
-	 * if (generator()%2) {
-		sign = -1;
-	}*/
-	
-	/*do {
-		//double offset = sign * generator() % ;
-		double offset = 0;
-		localTime = (driftFactor*realTime+offset) - startTime;
-	} while ((abs(localTime/realTime-1) > accuracyPercentage) && (localTime < lastLocalTimeRead));
-	lastLocalTimeRead = localTime;
-	*/
-	
-	localTime = driftFactor*(realTime-startTime);
-	return localTime;
+	localTime = a*(realTime-startTime) + b + noise;
+	return max((uint64_t)0,(uint64_t)localTime);
 }
 	
 uint64_t LinearDriftClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
-	return (double)localTime/driftFactor + startTime;
+	double noise = 0;
+	return ((double)localTime - b - noise)/a + startTime;
+}
 }

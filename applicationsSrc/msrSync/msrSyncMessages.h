@@ -22,8 +22,8 @@ class SyncMessage : public Message {
 	int round;
 	
 public :
-	SyncMessage(uint64_t t, int r) { type = SYNC_MSG_ID; time = t; round = r; };
-	SyncMessage(SyncMessage *m) { type = m->type; time = m->time; round = m->round; } ;
+	SyncMessage(uint64_t t, int r) : Message() { type = SYNC_MSG_ID; time = t; round = r; };
+	SyncMessage(SyncMessage *m) : Message() { type = m->type; time = m->time; round = m->round; } ;
 	~SyncMessage() {};
 
 	uint64_t getTime() {return time; };

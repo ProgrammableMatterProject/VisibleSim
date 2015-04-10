@@ -8,6 +8,7 @@
 #ifndef CLOCK_H_
 #define CLOCK_H_
 
+#include "buildingBlock.h"
 #include <stdint.h>
 #include <iostream> 
 #include <boost/random.hpp>
@@ -18,7 +19,9 @@ using namespace std;
  * Abstract class clock
  * Simuate RTC (Real-Time Counter) behaviour
  */
-
+namespace BaseSimulator {
+	class BuildingBlock;
+	
 class Clock {
 public:
 	/**
@@ -37,7 +40,8 @@ public:
 	 */ 
 	uint64_t getTime();
 	virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime) = 0;
-		
+	
+	Clock(ClockType clockType, BuildingBlock *b);
 	virtual ~Clock() {};
 
 private:
@@ -48,6 +52,7 @@ protected:
 	uint64_t startTime; // block's clock starts to count only when they boot
 	Accuracy accuracy;
 	Resolution resolution;
+	BuildingBlock *hostBlock;
 	
 	void setClockProperties(ClockType clockType);
 	virtual uint64_t getTimeMS() = 0;
@@ -60,14 +65,15 @@ private:
 	uint64_t getTimeUS();
 	
 public:
-	double driftFactor;
-	uint64_t lastLocalTimeRead;
+	double a;
+	double b;
+	double sigma;
 	boost::rand48 generator;
-	
-	LinearDriftClock(Clock::ClockType clockType, int seed);
+
+	LinearDriftClock(Clock::ClockType clockType, BuildingBlock *b);
 	~LinearDriftClock() {};
 	
 	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
 };
-
+}
 #endif // CLOCK_H_
