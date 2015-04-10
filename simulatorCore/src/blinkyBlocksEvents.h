@@ -13,20 +13,6 @@
 #include "network.h"
 
 namespace BlinkyBlocks {
-//===========================================================================================================
-//
-//          RequestClockEvent  (class)
-//
-//===========================================================================================================
-/*class RequestClockEvent : public BlockEvent {
-        RequestClockEvent
-	RequestClockEvent(RequestClockEvent *ev);
-        ~RequestClockEvent();
-        void consumeBlockEvent();
-	void consume();
-        const virtual string getEventName();
-}*/
-
 
 } // BlinkyBlocks namespace
 
