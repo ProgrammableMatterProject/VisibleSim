@@ -21,6 +21,8 @@ typedef boost::shared_ptr<SynchroMessage> SynchroMessage_ptr;
 class BbCycleBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
 	bool received;
+	bool cycle;
+	uint64_t delay;
 
 public:
 	BbCycleBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
@@ -31,14 +33,14 @@ public:
 	void processLocalEvent(EventPtr pev);
 	Color getColor(uint64_t time);
 	
-	void sendClockToNeighbors (P2PNetworkInterface *except, int hop);	
+	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, uint64_t clock);	
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 };
 
 class SynchroMessage : public Message {
 public:
 	uint64_t time;
-	int hop;
+	int nbhop;
 	SynchroMessage(uint64_t t, int hop);
 	~SynchroMessage();
 };

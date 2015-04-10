@@ -12,12 +12,13 @@
 #include "scheduler.h"
 #include "network.h"
 #include "bbCycleBlockCode.h"
-
+#include "bbCycleEvents.h"
 #include "trace.h"
 
 using namespace std;
 using namespace BlinkyBlocks;
 
+#define SYNC_PERIOD (3*1000*1000)
 #define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
 #define SIMULATION_DURATION_USEC (10*60*1000*1000)
 
@@ -33,20 +34,23 @@ void BbCycleBlockCode::init() {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	stringstream info;
 	
-	uint64_t time = 0;
-	while (time<SIMULATION_DURATION_USEC) {
-		uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
-		Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
-		received=false; //We synchronize the blocks on each loop
-		if (bb->blockId==1) //The master send the clock to its neighbors
-			sendClockToNeighbors(NULL,1);
-		BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
-		time += COLOR_CHANGE_PERIOD_USEC;
+	Color c = PINK;
+	BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(COLOR_CHANGE_PERIOD_USEC,bb,c));
+	block2Answer=NULL;
+	received=false;
+	cycle=true;
+	if(hostBlock->blockId==1){
+		received=true;
+		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now(),hostBlock));	
+		cycle=false;
+		info << "This block is the Master Block" << endl;
 	}
+	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 void BbCycleBlockCode::startup() {
 	stringstream info;
+	delay=0;
 	info << "  Starting BbCycleBlockCode in block " << hostBlock->blockId;
 	init();
 }
@@ -65,11 +69,21 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
 			bb->setColor(color);
 			info << "set color "<< color << endl;
+			if (cycle){
+				color = BLUE;
+				cycle = false;
+			}
+			else{
+				color = RED;
+				cycle = true;
+			}
+			BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC,bb,color));
+			info << "Setcolor scheduled" << endl;
 			}
 			break;
 		case EVENT_NI_RECEIVE:
 			{
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; //How to access the message ? I don't understand how it works
+			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 			switch(message->id){
 				case SYNC_MSG_ID : 
@@ -77,13 +91,25 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
 						received=true;
-						->currentDate = ((recvMessage->time)+6000*(recvMessage->hop)); //How do I change the time ?
+						delay += bb->getTime() - (recvMessage->time) + 6000*(recvMessage->nbhop); 
 						block2Answer=recvInterface;
-						sendClockToNeighbors(block2Answer,recvMessage->hop++);
+						recvMessage->nbhop++;
+						sendClockToNeighbors(block2Answer,recvMessage->nbhop,recvMessage->time);
+						info<<"synchronized"<< delay << endl;
 						}
 					}
 					break;
+				default:
+					break;
 				}
+			}
+		case EVENT_SYNC:
+			{
+			received=true;
+			sendClockToNeighbors(NULL,1,bb->getTime());
+			uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
+			//BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
+			info << "scheduled synchro" << endl;
 			}
 			break;
 		default:
@@ -94,28 +120,28 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 }
 
 
-Color BbCycleBlockCode::getColor(uint64_t time) {
-	Color colors[6] = {RED,GREEN,YELLOW,BLUE,GREY,PINK};
-	int c = time%6;
-	return colors[c];
-}
-
 BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
 	return(new BbCycleBlockCode(host));
 }
 
-
-void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop){
+void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, uint64_t clock){
 	P2PNetworkInterface * p2p;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
 	for (int i=0; i<6 ; i++) {
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){
-			SynchroMessage *message = new SynchroMessage(bb->getTime(), hop);
+			SynchroMessage *message = new SynchroMessage(clock, hop);
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
 		}
 	}
 }
 
+SynchroMessage::SynchroMessage(uint64_t t, int hop) :Message(){
+	id = SYNC_MSG_ID;
+	time = t;
+	nbhop = hop;
+}
 
+SynchroMessage::~SynchroMessage(){
+}
