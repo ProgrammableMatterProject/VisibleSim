@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <iostream> 
 #include <boost/random.hpp>
+#include <list>
 
 using namespace std;
 
@@ -38,10 +39,11 @@ public:
 	/**
 	 * returns the current local time for the concerned block
 	 */ 
+	uint64_t getTime(uint64_t simTime);
 	uint64_t getTime();
 	virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime) = 0;
 	
-	Clock(ClockType clockType, BuildingBlock *b);
+	Clock(ClockType clockType, BuildingBlock *h);
 	virtual ~Clock() {};
 
 private:
@@ -53,24 +55,40 @@ protected:
 	Accuracy accuracy;
 	Resolution resolution;
 	BuildingBlock *hostBlock;
+	ClockType type;
 	
-	void setClockProperties(ClockType clockType);
-	virtual uint64_t getTimeMS() = 0;
-	virtual uint64_t getTimeUS() = 0;
+	virtual void setClockProperties(ClockType clockType);
+	virtual uint64_t getTimeMS(uint64_t simTime) = 0;
+	virtual uint64_t getTimeUS(uint64_t simTime) = 0;
+};
+ 
+class ReferencePoint {
+public:
+  uint64_t local;
+  uint64_t simulation;
+
+  ReferencePoint(uint64_t l, uint64_t s) {local = l; simulation = s;}
+  ReferencePoint(const ReferencePoint &p) {local = p.local; simulation = p.simulation;}
+  ~ReferencePoint() {};
 };
 
 class LinearDriftClock: public Clock {
 private:
-	uint64_t getTimeMS();
-	uint64_t getTimeUS();
-	
-public:
+	uint64_t getTimeMS(uint64_t simTime);
+	uint64_t getTimeUS(uint64_t simTime);
+
+protected:	
 	double a;
 	double b;
 	double sigma;
 	boost::rand48 generator;
+	list<ReferencePoint> referencePoints;
 
-	LinearDriftClock(Clock::ClockType clockType, BuildingBlock *b);
+	void cleanReferencePoints();
+        void setClockProperties(ClockType clockType);
+public:
+
+	LinearDriftClock(Clock::ClockType clockType, BuildingBlock *h);
 	~LinearDriftClock() {};
 	
 	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
