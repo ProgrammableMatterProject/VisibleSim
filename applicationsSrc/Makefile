@@ -1,7 +1,7 @@
 #SUBDIRS = flavio01 blinky01 blinky02 smartBlocks1 leader_election coloration\
 #          coloration_v2
 
-SUBDIRS = blinky01 bbCycle sbReconf smartBlocks1 robot02 reconfCatoms2D
+SUBDIRS = blinky01 bbCycle sbReconf smartBlocks1 robot02 reconfCatoms2D msrSync
 #noneCatoms2D
 
 .PHONY: subdirs $(SUBDIRS)

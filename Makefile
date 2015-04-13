@@ -7,15 +7,18 @@
 #
 # two versions are proposed for each, you have to choose
 
-#for macOSX
-#GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lboost_thread-mt  -lboost_system-mt" 
+OS = $(shell uname -s)
 
-#for linux
+ifeq ($(OS),Darwin)
+#MacOS
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lboost_thread-mt  -lboost_system-mt"
+else
+#Linux, Solaris, ...
 GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lpthread -lGLEW -lGL -lGLU -lglut -lboost_thread -lboost_system"
+endif
 
 #for debug version
 GLOBAL_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES"
-
 # You can add those constant definitions to get a more verbose output
 # -DDEBUG_EVENTS          :  trace creation and destruction of all events
 # -DDEBUG_CONSUME_EVENTS  : trace the consomption of all events
@@ -37,9 +40,6 @@ GLOBAL_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES
 SUBDIRS = simulatorCore/src applicationsSrc
 
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
-
-
-
 
 .PHONY: subdirs $(SUBDIRS)
 

@@ -33,8 +33,7 @@ Scheduler::Scheduler() {
 	}
 
 	currentDate = 0;
-	maximumDate = 60000000;
-
+	maximumDate = 60000000; // no time limitation by default
 	eventsMapSize = 0;
 	largestEventsMapSize = 0;
 }
