@@ -8,7 +8,8 @@
 #include <iostream>
 #include <sstream>
 #include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp> 
+#include <boost/shared_ptr.hpp>
+#include <stdio.h> 
 #include "scheduler.h"
 #include "network.h"
 #include "bbCycleBlockCode.h"
@@ -18,8 +19,8 @@
 using namespace std;
 using namespace BlinkyBlocks;
 
-#define SYNC_PERIOD (3*1000*1000)
-#define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
+#define SYNC_PERIOD (1*1000*1000)
+#define COLOR_CHANGE_PERIOD_USEC (2.3*1000*1000)
 #define SIMULATION_DURATION_USEC (10*60*1000*1000)
 
 BbCycleBlockCode::BbCycleBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
@@ -42,7 +43,6 @@ void BbCycleBlockCode::init() {
 	if(hostBlock->blockId==1){
 		received=true;
 		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now(),hostBlock));	
-		cycle=false;
 		info << "This block is the Master Block" << endl;
 	}
 	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
@@ -77,8 +77,9 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 				color = RED;
 				cycle = true;
 			}
-			BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC,bb,color));
+			BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
 			info << "Setcolor scheduled" << endl;
+			received=false;
 			}
 			break;
 		case EVENT_NI_RECEIVE:
@@ -90,12 +91,15 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					{
 					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
-						received=true;
-						delay += bb->getTime() - (recvMessage->time) + 6000*(recvMessage->nbhop); 
+						received=true; 	
+						if (recvMessage->time > bb->getTime()-6000*recvMessage->nbhop)
+							delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;
+						else if (recvMessage->time < bb->getTime())
+							delay = 666; 
 						block2Answer=recvInterface;
 						recvMessage->nbhop++;
 						sendClockToNeighbors(block2Answer,recvMessage->nbhop,recvMessage->time);
-						info<<"synchronized"<< delay << endl;
+						info<<"synchronized"<< bb->getTime() << " /  " << recvMessage->time << endl;
 						}
 					}
 					break;
@@ -103,12 +107,13 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					break;
 				}
 			}
+			break;
 		case EVENT_SYNC:
 			{
 			received=true;
 			sendClockToNeighbors(NULL,1,bb->getTime());
 			uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
-			//BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
+			BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
 			info << "scheduled synchro" << endl;
 			}
 			break;

@@ -8,7 +8,7 @@
 #ifndef BBCYCLEBLOCKCODE_H_
 #define BBCYCLEBLOCKCODE_H_
 
-#define SYNC_MSG_ID	9001
+#define SYNC_MSG_ID	9002
 
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksSimulator.h"
@@ -22,7 +22,7 @@ class BbCycleBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
 	bool received;
 	bool cycle;
-	uint64_t delay;
+	int64_t delay;
 
 public:
 	BbCycleBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
