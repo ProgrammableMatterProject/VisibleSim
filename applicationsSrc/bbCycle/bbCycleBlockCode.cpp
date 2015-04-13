@@ -52,7 +52,7 @@ void BbCycleBlockCode::startup() {
 
 void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	stringstream info;
-	Messageptr message;
+	MessagePtr message;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	info.str("");
 	
@@ -73,7 +73,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			switch(message->id){
 				case SYNC_MSG_ID : 
 					{
-					SynchroMessage_ptr recvMessage->sourceInterface->hostBlock->blockId;
+					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
 						received=true;
 						bb->setTime((recvMessage->time)+6000); //How do I change the time ?
@@ -111,7 +111,7 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept){
 	for (int i=0; i<6 ; i++) {
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){
-			uint64_t message = bb-> getTime();
+			uint64_t message = bb->getTime();
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
 		}
 	}
