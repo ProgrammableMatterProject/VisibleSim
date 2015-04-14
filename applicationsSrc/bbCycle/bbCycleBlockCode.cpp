@@ -42,7 +42,7 @@ void BbCycleBlockCode::init() {
 	cycle=true;
 	if(hostBlock->blockId==1){
 		received=true;
-		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now(),hostBlock));	
+		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now()+SYNC_PERIOD,hostBlock));	
 		info << "This block is the Master Block" << endl;
 	}
 	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
@@ -91,15 +91,17 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 					{
 					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
 					if (!received){
-						received=true; 	
+						received=true;
+						block2Answer=recvInterface;
+						sendClockToNeighbors(block2Answer,recvMessage->nbhop+1,recvMessage->time); 	
 						if (recvMessage->time > bb->getTime()-6000*recvMessage->nbhop)
 							delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;
-						else if (recvMessage->time < bb->getTime())
-							delay = 666; 
-						block2Answer=recvInterface;
-						recvMessage->nbhop++;
-						sendClockToNeighbors(block2Answer,recvMessage->nbhop,recvMessage->time);
-						info<<"synchronized"<< bb->getTime() << " /  " << recvMessage->time << endl;
+						else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
+							info << bb->getTime() << " paused for " << bb->getTime()-recvMessage->time << endl;
+							BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+							bb->clock->pause((bb->getTime()-recvMessage->time),BlinkyBlocks::getScheduler()->now()); 
+						}
+						info<<"synchronized"<< bb->getTime() << " /  " << recvMessage->time+6000*recvMessage->nbhop << endl;
 						}
 					}
 					break;

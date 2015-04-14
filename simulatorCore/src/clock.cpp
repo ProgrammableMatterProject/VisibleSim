@@ -89,3 +89,10 @@ uint64_t LinearDriftClock::getTimeUS() {
 uint64_t LinearDriftClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
 	return (double)localTime/driftFactor + startTime;
 }
+
+void Clock::pause(uint64_t delay, uint64_t start){
+	while (BaseSimulator::getScheduler()->now() < start+delay){
+		if(BaseSimulator::getScheduler()->now() > start+delay)
+			break;
+	}
+}

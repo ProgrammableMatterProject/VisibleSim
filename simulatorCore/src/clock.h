@@ -36,6 +36,7 @@ public:
 	 * returns the current local time for the concerned block
 	 */ 
 	uint64_t getTime();
+	void pause(uint64_t delay, uint64_t start);
 	virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime) = 0;
 		
 	virtual ~Clock() {};
