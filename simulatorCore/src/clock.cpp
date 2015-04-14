@@ -214,8 +214,5 @@ namespace BaseSimulator {
 }
 
 void Clock::pause(uint64_t delay, uint64_t start){
-	while (BaseSimulator::getScheduler()->now() < start+delay){
-		if(BaseSimulator::getScheduler()->now() > start+delay)
-			break;
-	}
+	while (BaseSimulator::getScheduler()->now() < start+delay){}
 }
