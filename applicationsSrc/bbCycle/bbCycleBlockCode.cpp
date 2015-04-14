@@ -137,8 +137,7 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int
 	
 	for (int i=0; i<6 ; i++) {
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
-		if (p2p->connectedInterface && p2p!=p2pExcept){
-			uint64_t message = bb->getTime();
+		if (p2p->connectedInterface && p2p!=p2pExcept){	
 			SynchroMessage *message = new SynchroMessage(clock, hop);
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
 		}
