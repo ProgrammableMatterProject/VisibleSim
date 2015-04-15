@@ -19,8 +19,8 @@
 using namespace std;
 using namespace BlinkyBlocks;
 
-#define SYNC_PERIOD (0.5*1000*1000)
-#define COLOR_CHANGE_PERIOD_USEC (2.3*1000*1000)
+#define SYNC_PERIOD (1*1000*1000)
+#define COLOR_CHANGE_PERIOD_USEC (1*1000*1000)
 #define SIMULATION_DURATION_USEC (10*60*1000*1000)
 
 BbCycleBlockCode::BbCycleBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
@@ -33,18 +33,16 @@ BbCycleBlockCode::~BbCycleBlockCode() {
 
 void BbCycleBlockCode::init() {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
-	stringstream info;
-	
+	stringstream info;	
 	Color c = PINK;
-	BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(COLOR_CHANGE_PERIOD_USEC,bb,c));
 	block2Answer=NULL;
-	received[500]={false};
 	cycle=true;
 	if(hostBlock->blockId==1){
 		idMessage=0;	
 		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now()+SYNC_PERIOD,hostBlock));	
 		info << "This block is the Master Block" << endl;
 	}
+	BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(COLOR_CHANGE_PERIOD_USEC,bb,c));
 	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
