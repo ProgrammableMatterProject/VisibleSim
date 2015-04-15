@@ -20,7 +20,7 @@ typedef boost::shared_ptr<SynchroMessage> SynchroMessage_ptr;
 
 class BbCycleBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
-	bool received[100];
+	bool received[500];
 	bool cycle;
 	int64_t delay;
 	int idMessage;
