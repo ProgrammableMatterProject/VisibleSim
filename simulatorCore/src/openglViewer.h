@@ -26,6 +26,7 @@ class GlutContext {
 	static int keyboardModifier;
 	public :
     static GlutSlidingMainWindow *mainWindow;
+    static GlutSlidingDebugWindow *debugWindow;
     static GlutPopupWindow *popup;
     static GlutPopupMenuWindow *popupMenu;
     static GlutHelpWindow *helpWindow;

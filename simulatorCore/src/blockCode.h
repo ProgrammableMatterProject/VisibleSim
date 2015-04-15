@@ -27,6 +27,8 @@ public:
 
 	virtual void processLocalEvent(EventPtr pev) = 0;
 	virtual void startup() = 0;
+
+	virtual bool getAttribute(const string &att,ostringstream &sout) { sout << "no debugging"; return false; };
 };
 
 } // BaseSimulator namespace

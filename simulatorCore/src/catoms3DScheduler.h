@@ -24,7 +24,6 @@ namespace Catoms3D {
 class Catoms3DScheduler : public BaseSimulator::Scheduler {
 protected:
 	boost::thread *schedulerThread;
-	int schedulerMode;
 
 	Catoms3DScheduler();
 	virtual ~Catoms3DScheduler();

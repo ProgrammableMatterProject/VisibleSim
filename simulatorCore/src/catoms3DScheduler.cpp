@@ -44,7 +44,6 @@ void Catoms3DScheduler::deleteScheduler() {
 }
 
 void *Catoms3DScheduler::startPaused(/*void *param*/) {
-	bool mustStop;
 	uint64_t systemCurrentTime, systemCurrentTimeMax;
 
 	//usleep(1000000);
@@ -57,13 +56,13 @@ void *Catoms3DScheduler::startPaused(/*void *param*/) {
 	multimap<uint64_t, EventPtr>::iterator first;
 	EventPtr pev;
 
+    debugDate = maximumDate;
+
 	systemStartTime = (glutGet(GLUT_ELAPSED_TIME))*1000;
 	cout << "\033[1;33m" << "Scheduler : start order received " << systemStartTime << "\033[0m" << endl;
 
 	switch (schedulerMode) {
 	case SCHEDULER_MODE_FASTEST:
-
-
 		while ( (!eventsMap.empty() ) && currentDate < maximumDate) {
 //JUSTE POUR DEBUG
 //~ cout << endl << "Contenu du scheduler :" << endl;
@@ -82,41 +81,36 @@ void *Catoms3DScheduler::startPaused(/*void *param*/) {
 			eventsMapSize--;
 	    }
 		break;
-	case SCHEDULER_MODE_REALTIME:
+        case SCHEDULER_MODE_REALTIME:
+            cout << "Realtime mode scheduler\n";
+            while(!eventsMap.empty()) {
+                //gettimeofday(&heureGlobaleActuelle,NULL);
+                systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
+                systemCurrentTimeMax = systemCurrentTime - systemStartTime;
+                //ev = *(listeEvenements.begin());
+                first=eventsMap.begin();
+                pev = (*first).second;
+                while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
+                    if (pev->date>=debugDate) {
+                        schedulerMode=SCHEDULER_MODE_DEBUG;
+                    } else {
+                        first=eventsMap.begin();
+                        pev = (*first).second;
 
-		cout << "Realtime mode scheduler\n";
-		mustStop = false;
-	    while(!mustStop && !eventsMap.empty()) {
-	      //gettimeofday(&heureGlobaleActuelle,NULL);
-	    	systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
-	    	systemCurrentTimeMax = systemCurrentTime - systemStartTime;
-	      //ev = *(listeEvenements.begin());
-	    	first=eventsMap.begin();
-	    	pev = (*first).second;
-	    	while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
-	    		first=eventsMap.begin();
-	    		pev = (*first).second;
-
-			  /* traitement du mouvement des objets physiques*/
-			  //Physics::update(ev->heureEvenement);
-	    		currentDate = pev->date;
-	    		//lock();
-	    		pev->consume();
-	    		//unlock();
-	    		//pev->nbRef--;
-
-	    		//listeEvenements.pop_front();
-	    		eventsMap.erase(first);
-	    		eventsMapSize--;
-	    		//	    	  ev = *(listeEvenements.begin());
-	    		//first=eventsMap.begin();
-	    		//pev = (*first).second;
-	      }
-	    	systemCurrentTime = systemCurrentTimeMax;
-	      if (!eventsMap.empty()) {
-	        //ev = *(listeEvenements.begin());
-	        first=eventsMap.begin();
-	        pev = (*first).second;
+                    /* traitement du mouvement des objets physiques*/
+                    //Physics::update(ev->heureEvenement);
+                        currentDate = pev->date;
+                        pev->consume();
+                        eventsMap.erase(first);
+                        eventsMapSize--;
+                    }
+                }
+                // empty the list of events
+                systemCurrentTime = systemCurrentTimeMax;
+                if (!eventsMap.empty()) {
+                    //ev = *(listeEvenements.begin());
+                    first=eventsMap.begin();
+                    pev = (*first).second;
 
 	        /*
 	        dureeAttente = ev->heureEvenement - heureActuelle;
@@ -127,14 +121,13 @@ void *Catoms3DScheduler::startPaused(/*void *param*/) {
 #ifdef WIN32
 			Sleep(5);
 #else
-	        usleep(5000);
+                    usleep(5000);
 #endif
-	      }
-	    }
-
-		break;
-	default:
-		cout << "ERROR : Scheduler mode not recognized !!" << endl;
+                }
+            }
+            break;
+        default:
+            cout << "ERROR : Scheduler mode not recognized !!" << endl;
 	}
 
 	systemStopTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
@@ -153,12 +146,12 @@ void *Catoms3DScheduler::startPaused(/*void *param*/) {
 	cout << "Events(s) left in memory before destroying Scheduler : " << Event::getNbLivingEvents() << endl;
 	cout << "Message(s) left in memory before destroying Scheduler : " << Message::getNbMessages() << endl;
 
-	return(NULL);}
+	return(NULL);
+}
 
 void Catoms3DScheduler::start(int mode) {
 	Catoms3DScheduler* sbs = (Catoms3DScheduler*)scheduler;
 	sbs->schedulerMode = mode;
 	sbs->sem_schedulerStart->post();
 }
-
 } // Catoms3D namespace

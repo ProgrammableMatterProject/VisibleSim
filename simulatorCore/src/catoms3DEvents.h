@@ -14,7 +14,7 @@
 
 namespace Catoms3D {
 
-const int nbRotationSteps=5;
+const int nbRotationSteps=100;
 
 class Rotations {
 public :
@@ -51,11 +51,14 @@ public :
 protected :
     bool firstRotation;
     short step;
-    Matrice initialMatrix,firstStepMatrix,matTBA,matTAB,matTBC,matTCB;
+    Matrice initialMatrix,firstStepMatrix;//,matTBA,matTAB,matTBC,matTCB;
+    Vecteur AB,AD,CB;
     Vecteur axe1;
     Vecteur axe2;
     double angle1;
     double angle2;
+    static const double angleArticulation=6.46237535743;
+    static const double coefRayonCourbure=1.00639465274;
 };
 
 //===========================================================================================================

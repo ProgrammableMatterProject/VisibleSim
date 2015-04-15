@@ -21,12 +21,14 @@ using namespace std;
 
 #define SCHEDULER_MODE_FASTEST		1
 #define SCHEDULER_MODE_REALTIME		2
+#define SCHEDULER_MODE_DEBUG		3
 
 namespace BaseSimulator {
 
 class Scheduler {
 protected:
 	static Scheduler *scheduler;
+	int schedulerMode;
 
 	uint64_t currentDate;
 	uint64_t maximumDate;
@@ -38,6 +40,8 @@ protected:
 	Scheduler();
 	virtual ~Scheduler();
 
+	uint64_t debugDate;
+
 public:
 	enum State {NOTREADY = 0, NOTSTARTED = 1, ENDED = 2, PAUSED = 3, RUNNING = 4};
 	State state;
@@ -47,14 +51,13 @@ public:
 	}
 	static void deleteScheduler() {
 		delete(scheduler);
-		// Modif Ben
 		scheduler=NULL;
-		// End Modif
 	}
 	void setMaximumDate(uint64_t tmax) { maximumDate=tmax; };
 	void printInfo() {
 		cout << "I'm a Scheduler" << endl;
 	}
+	int getMode() { return schedulerMode; };
 
 	virtual bool schedule(Event *ev);
 	uint64_t now();
@@ -67,7 +70,9 @@ public:
 	virtual void start(int) {};
 
 	// stop for good
-	virtual void stop(uint64_t date) {};
+	virtual void stop(uint64_t date);
+	virtual void restart();
+	virtual bool debug(const string &command,int &id,string &result);
 
 	inline void setState (State s) { state = s; };
 	inline State getState () { return state; };

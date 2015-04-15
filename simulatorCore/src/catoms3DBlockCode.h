@@ -10,6 +10,7 @@
 
 #include "blockCode.h"
 #include "catoms3DBlock.h"
+#include <ostream>
 
 namespace Catoms3D {
 
@@ -17,13 +18,14 @@ class Catoms3DBlock;
 
 class Catoms3DBlockCode : public BaseSimulator::BlockCode {
 public:
-	
+
 	Catoms3DBlockCode(Catoms3DBlock *host);
 	virtual ~Catoms3DBlockCode();
 
 	Catoms3DBlockCode* buildNewBlockCode(Catoms3DBlock *host);
 	virtual void processLocalEvent(EventPtr pev) = 0;
 
+    virtual bool getAttribute(const string &att,ostringstream &sout);
 };
 
 }

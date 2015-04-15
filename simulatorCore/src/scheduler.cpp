@@ -124,4 +124,49 @@ void Scheduler::unlock() {
 	mutex_schedule.unlock();
 }
 
+void Scheduler::stop(uint64_t date) {
+    debugDate=date;
+    schedulerMode = SCHEDULER_MODE_DEBUG;
+}
+
+void Scheduler::restart() {
+    schedulerMode = SCHEDULER_MODE_REALTIME;
+    currentDate=debugDate;
+}
+
+bool Scheduler::debug(const string &command,int &id,string &result) {
+    static int currentId=1;
+    ostringstream sout;
+    sout.str("");
+    if (command=="run") {
+        restart();
+        return false;
+    }
+    if (command=="step") {
+        debugDate = now();
+        restart();
+        return false;
+    }
+    if (command.substr(0,3)=="get") {
+// command get@id:attribute
+        size_t found = command.find(":");
+        if (command.at(3)=='@') {
+            if (found!=string::npos) {
+                int idc=atoi(command.substr(4,found-4).c_str());
+                if (idc>0 && idc<getWorld()->getNbBlocks()) {
+                    currentId=idc;
+                } else {
+                    sout << "Erreur bad blockId, use @" << currentId <<" instead.\n";
+                }
+            }
+        }
+        getWorld()->getBlockById(currentId)->getAttribute(command.substr(found+1),sout);
+        //sout << "@" << currentId << ":" << sout.str();
+        result = sout.str();
+        id = currentId;
+    }
+    return true;
+}
+
+
 } // BaseSimulator namespace

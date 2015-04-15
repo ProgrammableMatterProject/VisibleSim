@@ -32,7 +32,7 @@ protected:
 
 	World();
 	virtual ~World();
-	
+
 public:
 	static World* getWorld() {
 		assert(world != NULL);
@@ -51,7 +51,7 @@ public:
 	inline GlBlock* setSelectedBlock(int n) { return (selectedBlock=(n>=0)?tabGlBlocks[n]:NULL); };
 	virtual void setSelectedFace(int n) {};
 	inline GlBlock* getBlockByNum(int n) { return tabGlBlocks[n]; };
-
+    inline int getNbBlocks() { return buildingBlocksMap.size(); };
 	void lock();
 	void unlock();
 	virtual void glDraw() {};

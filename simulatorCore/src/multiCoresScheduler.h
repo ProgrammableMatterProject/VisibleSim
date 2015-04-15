@@ -118,7 +118,7 @@ protected:
 	udp::endpoint VMEndpoint;
 	tcp::socket socket2;
 	tcp::acceptor *acceptor;
-	int schedulerMode;
+	//int schedulerMode;
 
 public:
 	static void createScheduler();

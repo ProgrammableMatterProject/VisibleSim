@@ -30,6 +30,7 @@ bool GlutContext::fullScreenMode=false;
 bool GlutContext::saveScreenMode=false;
 bool GlutContext::mustSaveImage=false;
 GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
+GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
 GlutPopupWindow *GlutContext::popup=NULL;
 GlutPopupMenuWindow *GlutContext::popupMenu=NULL;
 GlutHelpWindow *GlutContext::helpWindow=NULL;
@@ -75,12 +76,14 @@ void GlutContext::init(int argc, char **argv) {
 	glutKeyboardFunc(keyboardFunc);
 	glutIdleFunc(idleFunc);
 
-	mainWindow = new GlutSlidingMainWindow(screenWidth-40,50,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
+	mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
+	debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga");
 	popup = new GlutPopupWindow(NULL,0,0,40,30);
 }
 
 void GlutContext::deleteContext() {
 	delete mainWindow;
+	delete debugWindow;
 	delete popup;
 	delete popupMenu;
 }
@@ -109,7 +112,8 @@ void GlutContext::reshapeFunc(int w,int h) {
 	// camera intrinsic parameters
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	mainWindow->reshapeFunc(w,h);
+	mainWindow->reshapeFunc(w-40,60,40,h-60);
+	debugWindow->reshapeFunc(w-40,60,40,h-60);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -121,6 +125,7 @@ void GlutContext::motionFunc(int x,int y) {
 		popup->show(false);
 	}
 	if (mainWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
+	if (debugWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
 	if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
 		Camera* camera=getWorld()->getCamera();
 		camera->mouseMove(x,y);
@@ -145,6 +150,10 @@ void GlutContext::passiveMotionFunc(int x,int y) {
 		glutPostRedisplay();
 		return;
 	}
+	if (debugWindow->passiveMotionFunc(x,screenHeight - y)) {
+		glutPostRedisplay();
+		return;
+	}
 	lastMotionTime = glutGet(GLUT_ELAPSED_TIME);
 	lastMousePos[0]=x;
 	lastMousePos[1]=y;
@@ -157,6 +166,10 @@ void GlutContext::passiveMotionFunc(int x,int y) {
 // - x,y : coordonnée du curseur dans la fenêtre
 void GlutContext::mouseFunc(int button,int state,int x,int y) {
 	if (mainWindow->mouseFunc(button,state,x,screenHeight - y)>0) {
+		glutPostRedisplay();
+		return;
+	}
+	if (debugWindow->mouseFunc(button,state,x,screenHeight - y)>0) {
 		glutPostRedisplay();
 		return;
 	}
@@ -234,51 +247,56 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
 {
   //  static int modeScheduler;
 	Camera* camera=getWorld()->getCamera();
+// si une interface a le focus
+    if (debugWindow->keyFunc(c)) {
 
-	switch(c)
-    { case 27 : case 'q' : case 'Q' : // quit
-			glutLeaveMainLoop();
-      break;
-      case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-      case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
-      case '+' : camera->mouseZoom(0.5); break;
-      case '-' : camera->mouseZoom(-0.5); break;
-	//  case 'l' : showLinks = !showLinks; break;
-      case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
-      //case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
-     case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
-	  case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
-	  case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
-	  case 'z' : {
-		  World *world = BaseSimulator::getWorld();
-		  GlBlock *slct=world->getSelectedBlock();
-		  if (slct) {
-			  world->getCamera()->setTarget(slct->getPosition());
-		  }
-	  }
-	  break;
-	  case 'w' : case 'W' :
-          fullScreenMode = !fullScreenMode;
-          if (fullScreenMode) {
-        	  glutFullScreen();
-          } else {
-              glutReshapeWindow(initialScreenWidth,initialScreenHeight);
-              glutPositionWindow(0,0);
+    } else {
+
+        switch(c)
+        { case 27 : case 'q' : case 'Q' : // quit
+                glutLeaveMainLoop();
+          break;
+          case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+          case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
+          case '+' : camera->mouseZoom(0.5); break;
+          case '-' : camera->mouseZoom(-0.5); break;
+        //  case 'l' : showLinks = !showLinks; break;
+          case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
+          //case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
+          case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
+          case 'd' : getScheduler()->stop(getScheduler()->now()); break;
+          case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
+          case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
+          case 'z' : {
+              World *world = BaseSimulator::getWorld();
+              GlBlock *slct=world->getSelectedBlock();
+              if (slct) {
+                  world->getCamera()->setTarget(slct->getPosition());
+              }
           }
-      break;
-	  case 'h' :
-		  if (!helpWindow) {
-			  BaseSimulator::getWorld()->createHelpWindow();
-		  }
-		  helpWindow->showHide();
-	  break;
-	  case 's' : saveScreenMode=!saveScreenMode;
-	  break;
-	  case 'S' : saveScreen("capture.ppm");
-	  break;
+          break;
+          case 'w' : case 'W' :
+              fullScreenMode = !fullScreenMode;
+              if (fullScreenMode) {
+                  glutFullScreen();
+              } else {
+                  glutReshapeWindow(initialScreenWidth,initialScreenHeight);
+                  glutPositionWindow(0,0);
+              }
+          break;
+          case 'h' :
+              if (!helpWindow) {
+                  BaseSimulator::getWorld()->createHelpWindow();
+              }
+              helpWindow->showHide();
+          break;
+          case 's' : saveScreenMode=!saveScreenMode;
+          break;
+          case 'S' : saveScreen("capture.ppm");
+          break;
+        }
     }
-
-  glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 
@@ -346,6 +364,7 @@ void GlutContext::drawFunc(void) {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	mainWindow->glDraw();
+	debugWindow->glDraw();
 	popup->glDraw();
 	if (popupMenu) popupMenu->glDraw();
 	if (helpWindow) helpWindow->glDraw();

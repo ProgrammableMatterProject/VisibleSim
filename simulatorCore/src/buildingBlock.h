@@ -46,15 +46,15 @@ protected:
 	list<P2PNetworkInterface*> P2PNetworkInterfaceList;
 
 	list<EventPtr> localEventsList;
-	
+
 	/* Graphical interface and Scheduler can access to the state of
 	 * block. The scheduler only read the state, usually read on int
 	 * can be considered as atomic but it depends on the platform
 	 * architecture. We can also use atomic type (c++11, or boost 1.53)
 	 */
 	boost::interprocess::interprocess_mutex mutex_state;
-	
-public:	
+
+public:
 	// alive state must be associated to a number >= 2
 	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3};
 	int blockId;
@@ -76,12 +76,12 @@ public:
 	void processLocalEvent();
 
 	virtual void updateGlData() {};
-	
+
 	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
-	
+
 	virtual void stop() {};
-	
+	virtual bool getAttribute(const string &att,ostringstream &sout);
 	/* No guarantee that state value will remind the same, it just avoids
 	 * date race condition.
 	 */
@@ -89,8 +89,8 @@ public:
 	inline void unlock() { mutex_state.unlock(); }
 	inline State getState() { lock(); State s = state; unlock(); return s; }
 	inline void setState(State s) { lock(); state = s; unlock();}
-	
-	/* For Blinky Block determinism version */	
+
+	/* For Blinky Block determinism version */
 	int getNextRandomNumber();
 };
 
