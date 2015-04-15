@@ -38,10 +38,10 @@ void BbCycleBlockCode::init() {
 	Color c = PINK;
 	BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(COLOR_CHANGE_PERIOD_USEC,bb,c));
 	block2Answer=NULL;
-	received=false;
+	received[100]={false};
 	cycle=true;
 	if(hostBlock->blockId==1){
-		received=true;
+		idMessage=0;	
 		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now()+SYNC_PERIOD,hostBlock));	
 		info << "This block is the Master Block" << endl;
 	}
@@ -79,7 +79,6 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			}
 			BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
 			info << "Setcolor scheduled" << endl;
-			received=false;
 			}
 			break;
 		case EVENT_NI_RECEIVE:
@@ -87,24 +86,29 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 			switch(message->id){
-				case SYNC_MSG_ID : 
+				case SYNC_MSG_ID: 
 					{
 					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
-					if (!received){
-						received=true;
+					if (!received[recvMessage->idSync]){
+						received[recvMessage->idSync]=true;
 						block2Answer=recvInterface;
-						sendClockToNeighbors(block2Answer,recvMessage->nbhop+1,recvMessage->time); 	
-						if (recvMessage->time > bb->getTime()-6000*recvMessage->nbhop)
-							delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;
-						else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
-							info << bb->getTime() << " paused for " << bb->getTime()-recvMessage->time << endl;
+						sendClockToNeighbors(block2Answer,recvMessage->nbhop+1,recvMessage->time,recvMessage->idSync); 	
+						//if ((recvMessage->time + 6000*recvMessage->nbhop) >= bb->getTime())
+
+						delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop; 
+
+
+						/*else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
+							info << "Paused for : " << ((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop))-BlinkyBlocks::getScheduler()->now()) << endl;
 							BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
-							bb->clock->pause((bb->getTime()-recvMessage->time),BlinkyBlocks::getScheduler()->now()); 
-						}
-						info<<"synchronized"<< bb->getTime() << " /  " << recvMessage->time+6000*recvMessage->nbhop << endl;
+							while (bb->getTime() > recvMessage->time+6000*recvMessage->nbhop);
+							//while(BlinkyBlocks::getScheduler()->now() < (bb->getTime()-(recvMessage->time + 60000*recvMessage->nbhop)));
+							//bb->pauseClock((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop)),BlinkyBlocks::getScheduler()->now()); 
+						}*/
+						info<<"synchronized with delay : "<< delay << endl;
 						}
 					}
-					break;
+					break;					
 				default:
 					break;
 				}
@@ -112,8 +116,9 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_SYNC:
 			{
-			received=true;
-			sendClockToNeighbors(NULL,1,bb->getTime());
+			received[idMessage]=true;
+			sendClockToNeighbors(NULL,1,bb->getTime(),idMessage);
+			idMessage++;
 			uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
 			BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
 			info << "scheduled synchro" << endl;
@@ -131,21 +136,22 @@ BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyB
 	return(new BbCycleBlockCode(host));
 }
 
-void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, uint64_t clock){
+void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, uint64_t clock, int id){
 	P2PNetworkInterface * p2p;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
 	for (int i=0; i<6 ; i++) {
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){	
-			SynchroMessage *message = new SynchroMessage(clock, hop);
+			SynchroMessage *message = new SynchroMessage(clock, hop, id);
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
 		}
 	}
 }
 
-SynchroMessage::SynchroMessage(uint64_t t, int hop) :Message(){
+SynchroMessage::SynchroMessage(uint64_t t, int hop, int ids) :Message(){
 	id = SYNC_MSG_ID;
+	idSync=ids;
 	time = t;
 	nbhop = hop;
 }

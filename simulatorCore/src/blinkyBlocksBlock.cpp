@@ -101,6 +101,11 @@ BlinkyBlocksBlock::~BlinkyBlocksBlock() {
 	OUTPUT << "BlinkyBlocksBlock destructor " << blockId << endl;
 }
 
+void BlinkyBlocksBlock::pauseClock(uint64_t delay, uint64_t start){
+	//while(BaseSimulator::getScheduler()->now()<delay+start){
+	
+}
+
 void BlinkyBlocksBlock::setPosition(const Vecteur &p) {
 	position=p;
 	getWorld()->updateGlData(this);

@@ -40,8 +40,7 @@ public:
 	 * returns the current local time for the concerned block
 	 */ 
 	uint64_t getTime(uint64_t simTime);
-	uint64_t getTime();
-	void pause(uint64_t delay, uint64_t start); 
+	uint64_t getTime(); 
 	virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime) = 0;
 	
 	Clock(ClockType clockType, BuildingBlock *h);
