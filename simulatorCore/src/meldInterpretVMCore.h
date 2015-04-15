@@ -3,7 +3,100 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "meldInterpretVM.h"
+#include <sys/types.h>
+#include <sys/timeb.h>
+
+
+/******************************************************************************
+Definitions of all the data structures and types used by the VM.
+*******************************************************************************/
+
+/* allocation for tuples */
+#define ALLOC_TUPLE(x) malloc(x)
+#define FREE_TUPLE(x) free(x)
+
+/* Meld Types */
+typedef void* tuple_t;
+typedef short tuple_type;
+typedef int32_t meld_int;
+typedef double meld_float;
+typedef unsigned long int Register;
+typedef uint8_t byte;
+typedef uint16_t NodeID;
+typedef uint16_t Uid;
+typedef uint32_t Time;
+
+/* Meld Structures */
+typedef struct _tuple_entry tuple_entry;
+typedef struct _tuple_queue { tuple_entry *head; tuple_entry *tail; unsigned char length;} tuple_queue;
+class record_type{
+public:
+      int count;
+      tuple_queue *agg_queue = NULL;
+      record_type(int i){
+            count = i;
+      }
+      record_type(tuple_queue *q){
+            agg_queue = q;
+      }
+      operator int () const{
+            return count;
+      }
+      operator tuple_queue* () const{
+            return agg_queue;
+      }
+};
+/*typedef union {
+      int count;
+      tuple_queue *agg_queue;
+} record_type;*/
+struct _tuple_entry { struct _tuple_entry *next; record_type records; void *tuple;};
+typedef struct _tuple_pentry { Time priority; struct _tuple_pentry *next; record_type records; void *tuple; NodeID rt;} tuple_pentry;
+typedef struct {struct _tuple_pentry *queue;} tuple_pqueue;
+enum portReferences { DOWN, NORTH, EAST, SOUTH, WEST, UP, NUM_PORTS };
+
+#ifdef BBSIM
+typedef Block Node;
+#else
+typedef int Node;
+#endif
+
+#define POINTER_SIZE sizeof(char*)
+#define TUPLES tuples
+#define OLDTUPLES oldTuples
+#define EVAL_HOST (&blockId)
+#define PERSISTENT_INITIAL 2
+#define PERSISTENT persistent
+#define PROVED proved
+#define PUSH_NEW_TUPLE(tuple) (enqueueNewTuple(tuple, (record_type)1))
+#define TERMINATE_CURRENT() /* NOT IMPLEMENTED FOR BBs */
+
+#define VACANT 0
+
+/******************************************************************************
+@Description: api.h contains useful macros for casting or dereferencing
+meld values.
+*******************************************************************************/
+
+typedef Register meld_value;
+
+#define NODE_FORMAT "%u"
+
+#define MELD_INT(x)   (*(meld_int *)(x))
+#define MELD_FLOAT(x) (*(meld_float *)(x))
+#define MELD_NODE(x)  (*(Node **)(x))
+#define MELD_NODE_ID(x) (*(NodeID *)(x))
+#define MELD_SET(x) (*(Set **)(x))
+#define MELD_LIST(x)  (*(List **)(x))
+#define MELD_PTR(x)	  (*(void **)(x))
+#define MELD_BOOL(x)  (*(unsigned char*)(x))
+
+#define MELD_CONVERT_INT(x)   (*(Register *)(meld_int *)&(x))
+#define MELD_CONVERT_FLOAT(x) (*(Register *)(meld_float *)&(x))
+#define MELD_CONVERT_LIST(x)  ((Register)(x))
+
+#define MELD_CONVERT_REG_TO_PTR(x)   ((void *)(Register)(x))
+#define MELD_CONVERT_PTR_TO_REG(x)   ((Register)(void *)(x))
 
 /******************************************************************************
 @Description: core.h contains all the constants, external function headers, and
@@ -392,7 +485,7 @@ instructions.
 #define RULE_INCLPRED_ID(x, f) (*(unsigned char *)(RULE_DESCRIPTOR(x) + 4 + 1*(f)))
 
 /* Returns if a predicate is stratified or not */
-#define TYPE_IS_STRATIFIED(x) (TYPE_STRATIFICATION_ROUND(x) > 0)M
+#define TYPE_IS_STRATIFIED(x) (TYPE_STRATIFICATION_ROUND(x) > 0)
 
 /* Alternative way of getting name string for type x */
 #define TYPE_NAME(x)       (tuple_names[x])
@@ -505,6 +598,8 @@ instructions.
 #define TYPE_SETCOLOR 2
 #define TYPE_SETCOLOR2 7
 
+namespace MeldInterpret{
+
 class MeldInterpretVMCore {
 
 public:
@@ -515,10 +610,9 @@ public:
 	tuple_type TYPE_NEIGHBOR;
 	tuple_type TYPE_VACANT;
 	tuple_type TYPE_TAP;
-	MeldInterpretVM *VM;
 
 public:
-	MeldInterpretVMCore(MeldInterpretVM *VM);
+	MeldInterpretVMCore();
 	~MeldInterpretVMCore();
 
 	/* ************* EXTERN DECLARATIONS  ************* */
@@ -531,19 +625,15 @@ public:
 	char *rule_names[];
 	unsigned char *arguments;
 
-	inline void setColorWrapper (byte color){
-            VM->setColorWrapper(color);
-	}
-	inline void setLEDWrapper (byte r, byte g, byte b, byte intensity){
-            VM->setLEDWrapper(r, g, b, intensity);
-	}
+	inline void setColorWrapper (byte color);
+	inline void setLEDWrapper (byte r, byte g, byte b, byte intensity);
 	NodeID getBlockId (void);
 	void print_newTuples (void);
 	void print_newStratTuples (void);
 
 	/* ************* TUPLE HANDLING FUNCTIONS  ************* */
 
-	static inline tuple_t
+	/*static Why static again ?*/ inline tuple_t
 	tuple_alloc(tuple_type type)
 	{
 	#ifdef TUPLE_ALLOC_CHECKS
@@ -570,7 +660,8 @@ public:
 	void tuple_do_handle(tuple_type type,	void *tuple, int isNew, Register *reg);
 	void tuple_print(tuple_t tuple, FILE *fp);
 
-	static inline void tuple_dump(void *tuple)
+	//static inline void tuple_dump(void *tuple) Why static ?
+	inline void tuple_dump(void *tuple)
 	{
 		tuple_print(tuple, stderr);
 		fprintf(stderr, "\n");
@@ -613,6 +704,8 @@ public:
 	tuple_pentry *p_dequeue(tuple_pqueue *q);
 	void p_enqueue(tuple_pqueue *q, meld_int priority, tuple_t tuple, NodeID rt, record_type isNew);
 	int queue_length (tuple_queue *queue);
+
+};
 
 }
 

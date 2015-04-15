@@ -9,13 +9,16 @@
 class BlinkyMeldBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 private:
 	MeldInterpretVM *vm;
+	BlinkyBlocksBlock *bb;
 
 public:
 	BlinkyMeldBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 	~BlinkyMeldBlockCode();
 
-	void startup();
+      void startup();
 	void init();
+	void processLocalEvent(EventPtr pev);
+	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 };
 

@@ -12,7 +12,7 @@
 #include "color.h"
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksGlBlock.h"
-#include <boost/asio.hpp> 
+#include <boost/asio.hpp>
 #include <stdexcept>
 
 namespace BlinkyBlocks {
@@ -49,13 +49,13 @@ public:
 
 	/* schedule the appropriate event for this action */
 	void tap(uint64_t date);
-	void accel(uint64_t date, int x, int y, int z);	
+	void accel(uint64_t date, int x, int y, int z);
 	void shake(uint64_t date, int f);
-	
+
 	void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
-	void removeNeighbor(P2PNetworkInterface *ni);	
+	void removeNeighbor(P2PNetworkInterface *ni);
 	void stop(uint64_t date, State s);
-	
+
 };
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);

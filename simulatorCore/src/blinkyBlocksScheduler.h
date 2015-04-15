@@ -19,6 +19,7 @@
 
 #include "cppScheduler.h"
 #include "meldProcessScheduler.h"
+#include "meldInterpretScheduler.h"
 #include "simulator.h"
 
 using namespace boost;
@@ -27,24 +28,30 @@ namespace BlinkyBlocks {
 
 inline void createScheduler() {
 	switch(BaseSimulator::Simulator::getType()) {
+            case BaseSimulator::Simulator::MELDINTERPRET:
+                  MeldInterpret::MeldInterpretScheduler::createScheduler();
+            break;
 		case BaseSimulator::Simulator::MELDPROCESS:
 			MeldProcess::MeldProcessScheduler::createScheduler();
 		break;
 		case BaseSimulator::Simulator::CPP:
 			cppScheduler::CppScheduler::createScheduler();
-		break;		
+		break;
 	}
-	
+
 }
 
 inline void deleteScheduler() {
 	switch(BaseSimulator::Simulator::getType()) {
+            case BaseSimulator::Simulator::MELDINTERPRET:
+                  MeldInterpret::MeldInterpretScheduler::deleteScheduler();
+            break;
 		case BaseSimulator::Simulator::MELDPROCESS:
 			MeldProcess::MeldProcessScheduler::deleteScheduler();
 		break;
 		case BaseSimulator::Simulator::CPP:
 			cppScheduler::CppScheduler::deleteScheduler();
-		break;		
+		break;
 	}
 }
 

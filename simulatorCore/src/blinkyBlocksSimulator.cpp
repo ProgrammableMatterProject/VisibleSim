@@ -18,11 +18,11 @@ BlinkyBlocksBlockCode*(* BlinkyBlocksSimulator::buildNewBlockCode)(BlinkyBlocksB
 
 BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
-	
+
 	int currentID = 1;
 	BlinkyBlocksWorld *world = NULL;
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
-	
+
 	TiXmlNode *node = xmlDoc->FirstChild("world");
 	if (node) {
 		TiXmlElement* worldElement = node->ToElement();
@@ -57,7 +57,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 		ERRPUT << "ERROR : NO world in XML file" << endl;
 		exit(1);
 	}
-		
+
 	createScheduler();
 
 	// loading the camera parameters
@@ -198,7 +198,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	} else { // end if(nodeBlock)
 		ERRPUT << "no Block List" << endl;
 	}
-	
+
 	// loading the scenario
 	TiXmlNode *nodeScenario = node->FirstChild("scenario");
 	if (nodeScenario) {
@@ -282,7 +282,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 
 	//getScheduler()->sem_schedulerStart->post();
 	getScheduler()->setState(Scheduler::NOTSTARTED);
-	
+
 	GlutContext::mainLoop();
 
 }

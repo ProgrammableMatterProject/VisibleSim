@@ -25,29 +25,29 @@ extern Simulator *simulator;
 
 class Simulator {
 public:
-	enum Type {CPP = 0, MELDPROCESS = 1};
+	enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
 	static Simulator* getSimulator() {
 		assert(simulator != NULL);
 		return(simulator);
 	}
-	
+
 	inline static void setType (Type t) { type = t; };
 	inline static Type getType () { return type; };
 	inline CommandLine& getCmdLine() { return cmdLine; }
-		
+
 	virtual void printInfo() { cout << "I'm a Simulator" << endl; }
 
 protected:
 	static Type type;
-	
+
 	static Simulator *simulator;
 	static Scheduler *scheduler;
 
 	TiXmlDocument *xmlDoc;
 	TiXmlNode* xmlWorldNode;
-	
+
 	CommandLine cmdLine;
-	
+
 	Simulator(int argc, char *argv[]);
 	virtual ~Simulator();
 };

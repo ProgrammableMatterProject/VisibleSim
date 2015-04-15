@@ -1,17 +1,23 @@
 #include "meldInterpretVM.h"
 #include "meldInterpretVMCore.h"
 #include "meldInterpretEvents.h"
-#include <sys/timeb.h>
+#include "meldInterpretMessages.h"
+#include "blinkyBlocksBlock.h"
 
-using namespace BlinkyBlocks;
+namespace MeldInterpret{
 
-class MeldInterpretVM {
+map<int, MeldInterpretVM*> MeldInterpretVM::vmMap;
+const unsigned char* MeldInterpretVM::meld_prog;
+bool MeldInterpretVM::configured = false;
+bool MeldInterpretVM::debugging = false;
 
-	MeldInterpretVM(BlinkyBlocksBlock *b){
+
+	MeldInterpretVM::MeldInterpretVM(BlinkyBlocks::BlinkyBlocksBlock *b){
 		vm_init();
 		host = b;
 		blockId = (NodeID)b->blockId;
-		core = new MeldInterpretVMCore(this);
+		hasWork = true;
+		currentLocalDate = myGetTime();
 		//block initialization
 		//setColor(0);
 		setLED(128,0,128,32);
@@ -23,25 +29,24 @@ class MeldInterpretVM {
 		numNeighbors = getNeighborCount();
 		enqueue_count(numNeighbors, 1);
 
-		int i;
-		for (i = 0; i < NUM_PORTS; i++) {
+		for (int i = 0; i < NUM_PORTS; i++) {
 			neighbors[i] = get_neighbor_ID(i);
 
 			enqueue_face(neighbors[i], i, 1);
 		}
+		vmMap.insert(std::pair<int, MeldInterpretVM*>(blockId,this));
 	}
 
-	~MeldInterpretVM(){
-		core->~MeldInterpretVMCore();
+	MeldInterpretVM::~MeldInterpretVM(){
 	}
 
-	Time myGetTime(){
+	Time MeldInterpretVM::myGetTime(){
 	   return (Time)host->getTime();
 	}
 
 
 	/* Gets ID of neighbor on face 'face' */
-	static inline NodeID get_neighbor_ID(int face){
+	inline NodeID MeldInterpretVM::get_neighbor_ID(int face){
 	  if (face == UP)
 	    return up();
 	  else if (face == DOWN)
@@ -61,32 +66,32 @@ class MeldInterpretVM {
 	}
 
 	/* Enqueue a tuple for execution */
-	void enqueueNewTuple(tuple_t tuple, record_type isNew){
+	void MeldInterpretVM::enqueueNewTuple(tuple_t tuple, record_type isNew){
 	  assert (TUPLE_TYPE(tuple) < NUM_TYPES);
 
 	  if (TYPE_IS_STRATIFIED(TUPLE_TYPE(tuple))) {
-	    core->p_enqueue(newStratTuples, TYPE_STRATIFICATION_ROUND(TUPLE_TYPE(tuple)), tuple, 0, isNew);
+	    p_enqueue(newStratTuples, TYPE_STRATIFICATION_ROUND(TUPLE_TYPE(tuple)), tuple, 0, isNew);
 	  }
 	  else {
-	    core->queue_enqueue(newTuples, tuple, isNew);
+	    queue_enqueue(newTuples, tuple, isNew);
 	  }
 	}
 
 	/* Enqueue a neighbor or vacant tuple */
-	void enqueue_face(NodeID neighbor, meld_int face, int isNew){
+	void MeldInterpretVM::enqueue_face(NodeID neighbor, meld_int face, int isNew){
 	  tuple_t tuple = NULL;
 
 	  if (neighbor <= 0) {
 	     if(TYPE_VACANT == -1) /* no such predicate in the program */
 		return;
-	     tuple = core->tuple_alloc(TYPE_VACANT);
+	     tuple = tuple_alloc(TYPE_VACANT);
 	     SET_TUPLE_FIELD(tuple, 0, &face);
 	  }
 	  else {
 	     if(TYPE_NEIGHBOR == -1) /* no such predicate in the program */
 		return;
 
-	     tuple = core->tuple_alloc(TYPE_NEIGHBOR);
+	     tuple = tuple_alloc(TYPE_NEIGHBOR);
 	     SET_TUPLE_FIELD(tuple, 0, &neighbor);
 	     SET_TUPLE_FIELD(tuple, 1, &face);
 	  }
@@ -95,11 +100,11 @@ class MeldInterpretVM {
 	}
 
 	/* Enqueue a neighborCount tuple */
-	static void enqueue_count(meld_int count, int isNew){
+	void MeldInterpretVM::enqueue_count(meld_int count, int isNew){
 	   if(TYPE_NEIGHBORCOUNT == -1) /* no such predicate in the program */
 	      return;
 
-	  tuple_t tuple = core->tuple_alloc(TYPE_NEIGHBORCOUNT);
+	  tuple_t tuple = tuple_alloc(TYPE_NEIGHBORCOUNT);
 
 	  SET_TUPLE_FIELD(tuple, 0, &count);
 
@@ -107,28 +112,28 @@ class MeldInterpretVM {
 	}
 
 	/* Enqueue a tap tuple */
-	static void enqueue_tap(void) {
+	void MeldInterpretVM::enqueue_tap(void) {
 	   if(TYPE_TAP == -1) /* no such predicate in the program */
 	      return;
 
-	  tuple_t tuple = core->tuple_alloc(TYPE_TAP);
+	  tuple_t tuple = tuple_alloc(TYPE_TAP);
 
 	  enqueueNewTuple(tuple, (record_type) 1);
 
 	}
 
 	/* Enqueue init tuple, triggers derivation of RULE 0, which derives axioms */
-	static void enqueue_init(void) {
+	void MeldInterpretVM::enqueue_init(void) {
 	  if(TYPE_INIT == -1)
 	    return;
 
-	  tuple_t tuple = core->tuple_alloc(TYPE_INIT);
+	  tuple_t tuple = tuple_alloc(TYPE_INIT);
 	  enqueueNewTuple(tuple, (record_type) 1);
 	}
 
 	/* Saves the ID of useful types */
-	static void init_all_consts(void) {
-	  core->init_consts();
+	void MeldInterpretVM::init_all_consts(void) {
+	  init_consts();
 
 	  tuple_type i;
 
@@ -147,25 +152,25 @@ class MeldInterpretVM {
 
 
 	/* The VM's main function */
-	void processOneRule(void) {
+	void MeldInterpretVM::processOneRule(void) {
 	  // processing new facts and updating axioms
 	    // loop for new facts to process
 		while(1){
 			//If there are new tuples
-		    if(!core->queue_is_empty(newTuples)) {
+		    if(!queue_is_empty(newTuples)) {
 		      int isNew = 0;
-		      tuple_t tuple = core->queue_dequeue(newTuples, &isNew);
-		      core->tuple_handle(tuple, isNew, reg);
+		      tuple_t tuple = queue_dequeue(newTuples, &isNew);
+		      tuple_handle(tuple, isNew, reg);
 			//Else if there are new delayed tuple it's priority is inferior at the time
-		    } else if (!core->p_empty(delayedTuples) && core->p_peek(delayedTuples)->priority <= myGetTime()) {
-		      tuple_pentry *entry = core->p_dequeue(delayedTuples);
+		    } else if (!p_empty(delayedTuples) && p_peek(delayedTuples)->priority <= myGetTime()) {
+		      tuple_pentry *entry = p_dequeue(delayedTuples);
 
 		      tuple_send(entry->tuple, entry->rt, 0, entry->records.count);
 		      free(entry);
 			//Else if there are new stratified tuple
-		    } else if (!(core->p_empty(newStratTuples))) {
-		      tuple_pentry *entry = core->p_dequeue(newStratTuples);
-		      core->tuple_handle(entry->tuple, entry->records.count, reg);
+		    } else if (!(p_empty(newStratTuples))) {
+		      tuple_pentry *entry = p_dequeue(newStratTuples);
+		      tuple_handle(entry->tuple, entry->records.count, reg);
 
 		      free(entry);
 			//Else if there are no tuple to process
@@ -173,7 +178,7 @@ class MeldInterpretVM {
 				/* If all tuples have been processed
 				* update rule state and process them if they are ready */
 				waiting = 0;
-				for (i = 0; i < NUM_RULES; ++i) {
+				for (int i = 0; i < NUM_RULES; ++i) {
 					//If a rule has all its predicate (considered ACTIVE)
 					if (updateRuleState(i)) {
 
@@ -186,11 +191,11 @@ class MeldInterpretVM {
 						if (!RULE_ISPERSISTENT(i)) {
 
 							/* Trigger execution */
-							core->process_bytecode (NULL, RULE_START(i), 1, NOT_LINEAR, reg, processState);
+							process_bytecode (NULL, RULE_START(i), 1, NOT_LINEAR, reg, processState);
 
 							/* After one rule is executed we set the VM on waiting until next call of scheduler*/
 							waiting = 1;
-							i == NUM_RULES;
+							i = NUM_RULES;
 						}
 					}
 					/* else: Rule not ready yet, set status to not waiting until new fact appear */
@@ -201,7 +206,7 @@ class MeldInterpretVM {
 				//delayMS(30);
 		    }
 
-		    core->updateAccel();
+		    //updateAccel();
 
 		    // update axioms based upon any changes
 		    int newNumNeighbors = getNeighborCount();
@@ -212,7 +217,7 @@ class MeldInterpretVM {
 		      enqueue_count(numNeighbors, 1);
 		    }
 
-		    for (i = 0; i < NUM_PORTS; i++) {
+		    for (int i = 0; i < NUM_PORTS; i++) {
 			      NodeID neighbor = get_neighbor_ID(i);
 
 			      if (neighbor == neighbors[i])
@@ -225,10 +230,10 @@ class MeldInterpretVM {
 			       * This may need to be reviewed,
 			       * I am not sure what LM is supposed to do with received tuples
 			       */
-			      while(!core->queue_is_empty(&(receivedTuples[i]))) {
-				 tuple_t tuple = core->queue_dequeue(&receivedTuples[i], NULL);
+			      while(!queue_is_empty(&(receivedTuples[i]))) {
+				 tuple_t tuple = queue_dequeue(&receivedTuples[i], NULL);
 				 printf("--%d--\tDelete received ", blockId);
-				 core->tuple_print(tuple, stdout);
+				 tuple_print(tuple, stdout);
 				 printf("\n");
 				 enqueueNewTuple(tuple, (record_type) -1);
 			      }
@@ -239,18 +244,18 @@ class MeldInterpretVM {
 		}
 	}
 
-	bool isWaiting(){
+	bool MeldInterpretVM::isWaiting(){
 		return waiting > 0;
 	}
 
 
-	void userRegistration(void) {
+	/*void MeldInterpretVM::userRegistration(void) {
 	  registerHandler(SYSTEM_MAIN, (GenericHandler)&meldMain);
 	  registerHandler(EVENT_ACCEL_TAP, (GenericHandler)&enqueue_tap);
-	}
+	}*/
 
 	/* Receive a tuple and enqueue it to both receivedTuples and newTuples */
-	void receive_tuple(int isNew, tuple_t tpl, byte face) {
+	void MeldInterpretVM::receive_tuple(int isNew, tuple_t tpl, byte face) {
 	  tuple_t rcvdTuple = (tuple_t)tpl;
 	  tuple_t tuple;
 	  tuple_type type = TUPLE_TYPE(rcvdTuple);
@@ -261,15 +266,13 @@ class MeldInterpretVM {
 	     if(isNew > 0) {
 		tuple = malloc(tuple_size);
 		memcpy(tuple, rcvdTuple, tuple_size);
-		core->queue_enqueue(queue, tuple, (record_type)isNew);
+		queue_enqueue(queue, tuple, (record_type)isNew);
 	     } else {
 		// delete tuple from queue because it must invalidate some other tuple
 		tuple_entry **current;
-		for (current = &queue->head;
-		    *current != NULL;
-		    current = &(*current)->next) {
+		for (current = &queue->head; *current != NULL; current = &(*current)->next) {
 		  if(memcmp((*current)->tuple, rcvdTuple, tuple_size) == 0) {
-		     FREE_TUPLE(core->queue_dequeue_pos(queue, current));
+		     FREE_TUPLE(queue_dequeue_pos(queue, current));
 		     break;
 		  }
 		}
@@ -281,22 +284,12 @@ class MeldInterpretVM {
 	  enqueueNewTuple(tuple, (record_type)isNew);
 	}
 
-	/* Received tuple is a retraction fact */
-	void receive_tuple_delete(void) {
-	  receive_tuple(-1);
-	}
-
-	/* Received tuple is a normal fact */
-	void receive_tuple_add(void) {
-	  receive_tuple(1);
-	}
-
 	/* Sends a tuple to Block of ID rt, with or without delay */
-	void tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew) {
+	void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew) {
 	  assert (TUPLE_TYPE(tuple) < NUM_TYPES);
 
 	  if (delay > 0) {
-	    core->p_enqueue(delayedTuples, myGetTime() + delay, tuple, rt, (record_type) isNew);
+	    p_enqueue(delayedTuples, myGetTime() + delay, tuple, rt, (record_type) isNew);
 	    return;
 	  }
 
@@ -323,7 +316,7 @@ class MeldInterpretVM {
 
 	    if (face != -1) {
 
-            MessagePtr *ptr;
+            MessagePtr ptr;
             assert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= 17);
 
 	      if (isNew > 0) {
@@ -349,7 +342,7 @@ class MeldInterpretVM {
 
 	/* Check if rule of ID rid is ready to be derived */
 	/* Returns 1 if true, 0 otherwise */
-	byte updateRuleState(byte rid) {
+	byte MeldInterpretVM::updateRuleState(byte rid) {
 	  int i;
 	  /* A rule is ready if all included predicates are present in the database */
 	  for (i = 0; i < RULE_NUM_INCLPREDS(rid); ++i) {
@@ -362,30 +355,30 @@ class MeldInterpretVM {
 	}
 
 	/* Simply calls tuple_do_handle located in core.c to handle tuple  */
-	void tuple_handle(tuple_t tuple, int isNew, Register *registers) {
+	void MeldInterpretVM::tuple_handle(tuple_t tuple, int isNew, Register *registers) {
 	  tuple_type type = TUPLE_TYPE(tuple);
 	  assert (type < NUM_TYPES);
 
-	  core->tuple_do_handle(type, tuple, isNew, registers);
+	  tuple_do_handle(type, tuple, isNew, registers);
 	}
 
 	/* Used to get blockId from core.c */
-	NodeID getBlockId (void) { return blockId; }
+	NodeID MeldInterpretVM::getBlockId (void) { return blockId; }
 
 	/* VM initialization routine */
-	void vm_init(void) {
+	void MeldInterpretVM::vm_init(void) {
 
 	  fprintf(stderr, "In VM_init\n");
 
 	  init_all_consts();
-	  core->init_fields();
+	  init_fields();
 
 	}
 
 	/* Called upon block init (block.bb)
 	 * to ensure that data structures are allocated before
 	 * VM start in case other blocks send us tuples - Would seg fault otherwise */
-	void vm_alloc(void) {
+	void MeldInterpretVM::vm_alloc(void) {
 
 	  // init stuff
 	  tuples = calloc(NUM_TYPES, sizeof(tuple_queue));
@@ -403,7 +396,7 @@ class MeldInterpretVM {
 
 	}
 
-    byte getNeighborCount() {
+    byte MeldInterpretVM::getNeighborCount() {
         uint8_t count, i;
 
         for(count = 0, i = 0; i < NUM_PORTS; ++i) {
@@ -415,34 +408,115 @@ class MeldInterpretVM {
     }
 
 // simple functions to access geographic neighbors
-    Uid down(void) {
+    Uid MeldInterpretVM::down(void) {
         return neighbors[DOWN];
     }
-    Uid up(void) {
+    Uid MeldInterpretVM::up(void) {
         return neighbors[UP];
     }
-    Uid north(void) {
+    Uid MeldInterpretVM::north(void) {
         return neighbors[NORTH];
     }
-    Uid south(void) {
+    Uid MeldInterpretVM::south(void) {
         return neighbors[SOUTH];
     }
-    Uid east(void) {
+    Uid MeldInterpretVM::east(void) {
         return neighbors[EAST];
     }
-    Uid west(void) {
+    Uid MeldInterpretVM::west(void) {
         return neighbors[WEST];
     }
 
-    NodeID getGUID(){
+    NodeID MeldInterpretVM::getGUID(){
       return blockId;
     }
 
-      inline void setColor(Color color){
+      inline void MeldInterpretVM::setColor(Color color){
             setLED(color[0]*255, color[1]*255, color[2]*255, color[3]*255);
       }
-      inline void setLED(byte r, byte g, byte b, byte intensity){
-            BaseSimulator::getScheduler()->schedule(new SetColorEvent(BaseSimulator::getScheduler()->now(), VM->host, (float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
+      inline void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){
+            BaseSimulator::getScheduler()->schedule(new SetColorEvent(BaseSimulator::getScheduler()->now(), host , (float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
+      }
+
+      static bool MeldInterpretVM::dateHasBeenReachedByAll(uint64_t date) {
+		static uint64_t minReallyReached = 0;
+		uint64_t min, min2;
+		int alive = 0, hasNoWork = 0;
+
+		if (date < minReallyReached) {
+			return true;
+		}
+
+		map<int, MeldInterpretVM*>::iterator it;
+		for(it = vmMap.begin(); it != vmMap.end(); it++) {
+			MeldInterpretVM *vm = it->second;
+			BuildingBlock *buildb = vm->host;
+			if (buildb->getState() < BuildingBlock::ALIVE) {
+				continue;
+			}
+			alive++;
+			if (!vm->hasWork || vm->polling) {
+				hasNoWork++;
+				if (alive == 1) {
+					min2 = vm->currentLocalDate;
+				} else if (vm->currentLocalDate < min2) {
+					min2 = vm->currentLocalDate;
+				}
+			} else {
+				if ((alive - 1) == hasNoWork) {
+					min = vm->currentLocalDate;
+				} else if (vm->currentLocalDate < min) {
+					min = vm->currentLocalDate;
+				}
+				if (min < min2) {
+					min2 = min;
+				}
+			}
+		}
+		if (alive==hasNoWork) {
+			return true;
+		}
+		minReallyReached = min2;
+		return (date < min);
+	}
+
+
+      static bool MeldInterpretVM::equilibrium() {
+		map<int, MeldInterpretVM*>::iterator it;
+		for(it = vmMap.begin(); it != vmMap.end(); it++) {
+			MeldProcessVM *vm = it->second;
+			BuildingBlock *buildb = vm->host;
+			if (buildb->getState() < BuildingBlock::ALIVE) {
+				continue;
+			}
+			if (vm->hasWork) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+      static void MeldInterpretVM::setConfiguration(string path, bool d){
+            debug = d;
+            if(!configured){
+                  readProgram(programPath);
+            }
+            configured = true;
+      }
+
+      static void MeldInterpretVM::readProgram(string path){
+            ifstream in(path.c_str(), ios::in | ios::binary | ios::ate);
+            stringstream sstr;
+            sstr << in.rdbuf();
+            meld_prog = (const unsigned char*) sstr.str().c_str();
+      }
+
+      void MeldInterpretVM::setColor(byte color){
+            host->setColor((int) color);
+      }
+
+      void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){
+            host->setColor(new Color((float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
       }
 
 }

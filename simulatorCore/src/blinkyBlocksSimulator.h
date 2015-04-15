@@ -35,7 +35,7 @@ public:
 		assert(simulator != NULL);
 		return((BlinkyBlocksSimulator*)simulator);
 	}
-   
+
    void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 

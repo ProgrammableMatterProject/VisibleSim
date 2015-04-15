@@ -70,6 +70,16 @@
 		<Unit filename="../../simulatorCore/src/interface.h" />
 		<Unit filename="../../simulatorCore/src/matrice44.cpp" />
 		<Unit filename="../../simulatorCore/src/matrice44.h" />
+		<Unit filename="../../simulatorCore/src/meldInterpretEvents.cpp" />
+		<Unit filename="../../simulatorCore/src/meldInterpretEvents.h" />
+		<Unit filename="../../simulatorCore/src/meldInterpretMessages.cpp" />
+		<Unit filename="../../simulatorCore/src/meldInterpretMessages.h" />
+		<Unit filename="../../simulatorCore/src/meldInterpretScheduler.cpp" />
+		<Unit filename="../../simulatorCore/src/meldInterpretScheduler.h" />
+		<Unit filename="../../simulatorCore/src/meldInterpretVM.cpp" />
+		<Unit filename="../../simulatorCore/src/meldInterpretVM.h" />
+		<Unit filename="../../simulatorCore/src/meldInterpretVMCore.cpp" />
+		<Unit filename="../../simulatorCore/src/meldInterpretVMCore.h" />
 		<Unit filename="../../simulatorCore/src/network.cpp" />
 		<Unit filename="../../simulatorCore/src/network.h" />
 		<Unit filename="../../simulatorCore/src/objLoader.cpp" />
@@ -96,16 +106,6 @@
 		<Unit filename="blinkyMeld.cpp" />
 		<Unit filename="blinkyMeldBlockCode.cpp" />
 		<Unit filename="blinkyMeldBlockCode.h" />
-		<Unit filename="meldInterpretEvents.cpp" />
-		<Unit filename="meldInterpretEvents.h" />
-		<Unit filename="meldInterpretMessages.cpp" />
-		<Unit filename="meldInterpretMessages.h" />
-		<Unit filename="meldInterpretScheduler.cpp" />
-		<Unit filename="meldInterpretScheduler.h" />
-		<Unit filename="meldInterpretVM.cpp" />
-		<Unit filename="meldInterpretVM.h" />
-		<Unit filename="meldInterpretVMCore.cpp" />
-		<Unit filename="meldInterpretVMCore.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

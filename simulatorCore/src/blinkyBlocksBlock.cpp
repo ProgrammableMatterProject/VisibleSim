@@ -14,6 +14,7 @@
 #include "trace.h"
 #include "clock.h"
 #include "meldProcessEvents.h"
+#include "meldInterpretEvents.h"
 
 using namespace std;
 
@@ -145,7 +146,7 @@ void BlinkyBlocksBlock::shake(uint64_t date, int f) {
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
-	OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;	
+	OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;
 	getScheduler()->scheduleLock(new AddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
 }
 
@@ -164,7 +165,11 @@ void BlinkyBlocksBlock::stop(uint64_t date, State s) {
 	}
 	unlock();
 	getWorld()->updateGlData(this);
-	getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
+	if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
+            getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
+	} else if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
+            getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
+	}
 }
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {
