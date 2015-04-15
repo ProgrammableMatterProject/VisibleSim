@@ -95,7 +95,6 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 
 						delay = recvMessage->time - bb->getTime() + 1500*recvMessage->nbhop; //+ 6000*recvMessage->nbhop; 
 
-
 						/*else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
 							info << "Paused for : " << ((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop))-BlinkyBlocks::getScheduler()->now()) << endl;
 							BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
@@ -128,7 +127,6 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 		}
 		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
 }
-
 
 BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
 	return(new BbCycleBlockCode(host));
