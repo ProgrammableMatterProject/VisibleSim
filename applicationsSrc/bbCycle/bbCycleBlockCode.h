@@ -44,6 +44,7 @@ public:
 	uint64_t time;
 	int nbhop;
 	SynchroMessage(uint64_t t, int hop, int id);
+	unsigned int size() { return(17); }
 	~SynchroMessage();
 };
 

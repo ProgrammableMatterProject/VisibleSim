@@ -19,8 +19,8 @@
 using namespace std;
 using namespace BlinkyBlocks;
 
-#define SYNC_PERIOD (1*1000*1000)
-#define COLOR_CHANGE_PERIOD_USEC (1*1000*1000)
+#define SYNC_PERIOD (2*1000*1000)
+#define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
 #define SIMULATION_DURATION_USEC (10*60*1000*1000)
 
 BbCycleBlockCode::BbCycleBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
@@ -93,7 +93,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 						sendClockToNeighbors(block2Answer,recvMessage->nbhop+1,recvMessage->time,recvMessage->idSync); 	
 						//if ((recvMessage->time + 6000*recvMessage->nbhop) >= bb->getTime())
 
-						delay = recvMessage->time - bb->getTime() + 1500*recvMessage->nbhop; //+ 6000*recvMessage->nbhop; 
+						delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;  
 
 						/*else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
 							info << "Paused for : " << ((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop))-BlinkyBlocks::getScheduler()->now()) << endl;
