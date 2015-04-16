@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/timeb.h>
 
@@ -617,7 +618,7 @@ public:
 
 	/* ************* EXTERN DECLARATIONS  ************* */
 
-	const unsigned char meld_prog[];
+	unsigned char *meld_prog;
 	typedef Register (*extern_funct_type)();
 	extern_funct_type extern_functs[];
 	int extern_functs_args[];
@@ -625,11 +626,17 @@ public:
 	char *rule_names[];
 	unsigned char *arguments;
 
-	inline void setColorWrapper (byte color);
-	inline void setLEDWrapper (byte r, byte g, byte b, byte intensity);
 	NodeID getBlockId (void);
 	void print_newTuples (void);
 	void print_newStratTuples (void);
+      inline void setColorWrapper(byte color){
+            setColor(color);
+      }
+      inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
+      setLED(r, g, b, intensity);
+      }
+      virtual void setColor(byte color);
+      virtual void setLED(byte r, byte g, byte b, byte intensity);
 
 	/* ************* TUPLE HANDLING FUNCTIONS  ************* */
 
@@ -676,6 +683,61 @@ public:
 	void facts_dump(void);
 	void print_program_info(void);
 	char* arg2String(tuple_t tuple, byte index);
+
+
+      /* ************* LOW LEVEL INSTRUCTION FUNCTION ************* */
+      inline byte val_is_float(const byte x);
+      inline byte val_is_int(const byte x);
+      inline byte val_is_field(const byte x);
+      void * eval_field (tuple_t tuple, const unsigned char **pc);
+      void * eval_reg(const unsigned char value, const unsigned char **pc, Register *reg);
+      void * eval_int (const unsigned char **pc);
+      void * eval_float (const unsigned char **pc);
+      void moveTupleToReg (const unsigned char reg_index, tuple_t tuple, Register *reg);
+      void execute_addtuple (const unsigned char *pc, Register *reg, int isNew);
+      void execute_send_delay (const unsigned char *pc, Register *reg, int isNew);
+      void execute_alloc (const unsigned char *pc, Register *reg);
+      void execute_update (const unsigned char *pc, Register *reg);
+      void execute_send (const unsigned char *pc, Register *reg, int isNew);
+      void execute_call1 (const unsigned char *pc, Register *reg);
+      void execute_run_action0 (tuple_t action_tuple, tuple_type type, int isNew);
+      void execute_remove (const unsigned char *pc, Register *reg, int isNew);
+      void execute_mvintfield (const unsigned char *pc, Register *reg);
+      void execute_mvintreg (const unsigned char *pc, Register *reg);
+      void execute_mvfloatreg (const unsigned char *pc, Register *reg);
+      void execute_mvfloatfield (const unsigned char *pc, Register *reg);
+      void execute_mvfieldreg (const unsigned char *pc, Register *reg);
+      void execute_mvregfield (const unsigned char *pc, Register *reg);
+      void execute_mvhostfield (const unsigned char *pc, Register *reg);
+      void execute_mvhostreg (const unsigned char *pc, Register *reg);
+      void execute_mvregreg (const unsigned char *pc, Register *reg);
+      void execute_not (const unsigned char *pc, Register *reg);
+      void execute_boolor (const unsigned char *pc, Register *reg);
+      void execute_boolequal (const unsigned char *pc, Register *reg);
+      void execute_boolnotequal (const unsigned char *pc, Register *reg);
+      void execute_addrequal (const unsigned char *pc, Register *reg);
+      void execute_addrnotequal (const unsigned char *pc, Register *reg);
+      void execute_intequal (const unsigned char *pc, Register *reg);
+      void execute_intnotequal (const unsigned char *pc, Register *reg);
+      void execute_intgreater (const unsigned char *pc, Register *reg);
+      void execute_intgreaterequal (const unsigned char *pc, Register *reg);
+      void execute_intlesser (const unsigned char *pc, Register *reg);
+      void execute_intlesserequal (const unsigned char *pc, Register *reg);
+      void execute_intmul (const unsigned char *pc, Register *reg);
+      void execute_intdiv (const unsigned char *pc, Register *reg);
+      void execute_intmod (const unsigned char *pc, Register *reg);
+      void execute_intplus (const unsigned char *pc, Register *reg);
+      void execute_intminus (const unsigned char *pc, Register *reg);
+      void execute_floatplus (const unsigned char *pc, Register *reg);
+      void execute_floatminus (const unsigned char *pc, Register *reg);
+      void execute_floatmul (const unsigned char *pc, Register *reg);
+      void execute_floatdiv (const unsigned char *pc, Register *reg);
+      void execute_floatequal (const unsigned char *pc, Register *reg);
+      void execute_floatnotequal (const unsigned char *pc, Register *reg);
+      void execute_floatlesser (const unsigned char *pc, Register *reg);
+      void execute_floatlesserequal (const unsigned char *pc, Register *reg);
+      void execute_floatgreater (const unsigned char *pc, Register *reg);
+      void execute_floatgreaterequal (const unsigned char *pc, Register *reg);
 
 	/* ************* QUEUE MANAGEMENT PROTOTYPES ************* */
 

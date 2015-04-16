@@ -74,9 +74,9 @@ const string VMStopEvent::getEventName() {
 //
 //===========================================================================================================
 
-VMSendMessageEvent::VMSendMessageEvent(uint64_t t, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni):BlockEvent(t, conBlock) {
+VMSendMessageEvent::VMSendMessageEvent(uint64_t t, BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni):BlockEvent(t, conBlock) {
 	eventType = EVENT_SEND_MESSAGE;
-	message = MessagePtr(mes);
+	message = mes;
 	sourceInterface = ni;
 	randomNumber = conBlock->getNextRandomNumber();
 	EVENT_CONSTRUCTOR_INFO();
@@ -109,15 +109,15 @@ const string VMSendMessageEvent::getEventName() {
 //
 //===========================================================================================================
 
-VMHandleDebugCommandEvent::VMHandleDebugCommandEvent(uint64_t t, BuildingBlock *conBlock, DebbuggerVMCommand *c): BlockEvent(t, conBlock) {
+VMHandleDebugCommandEvent::VMHandleDebugCommandEvent(uint64_t t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_HANDLE_DEBUG_COMMAND;
-	command = c;
+	//command = c;
 }
 
 VMHandleDebugCommandEvent::VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev) : BlockEvent(ev) {
 	EVENT_CONSTRUCTOR_INFO();
-	command = ev->command;
+	//command = ev->command;
 }
 
 VMHandleDebugCommandEvent::~VMHandleDebugCommandEvent() {
@@ -244,7 +244,7 @@ AddTupleEvent::~AddTupleEvent() {
 
 void AddTupleEvent::consumeBlockEvent() {
 	EVENT_CONSUME_INFO();
-	concernedBlock->VM->receive_tuple(1, t);
+	concernedBlock->VM->receive_tuple(1, tuple, interface);
 }
 
 const string AddTupleEvent::getEventName() {
@@ -274,9 +274,11 @@ RemoveTupleEvent::~RemoveTupleEvent() {
 
 void RemoveTupleEvent::consumeBlockEvent() {
 	EVENT_CONSUME_INFO();
-	concernedBlock->VM->receive_tuple(-1, tuple, );
+	concernedBlock->VM->receive_tuple(-1, tuple, interface);
 }
 
 const string RemoveTupleEvent::getEventName() {
 	return("Remove Tuple Event");
+}
+
 }

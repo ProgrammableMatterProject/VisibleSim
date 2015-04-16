@@ -32,9 +32,11 @@
 #define ADD_TUPLE_MSG_ID      0x20
 #define REMOVE_TUPLE_MSG_ID      0x21
 
+namespace MeldInterpret{
+
 class AddTupleMessage : public Message{
 public:
-      tuple_t t;
+      tuple_t tuple;
 
       AddTupleMessage(tuple_t tpl);
       unsigned int size();
@@ -43,13 +45,14 @@ public:
 
 class RemoveTupleMessage : public Message{
 public:
-      tuple_t t;
+      tuple_t tuple;
 
       RemoveTupleMessage(tuple_t tpl);
       unsigned int size();
       string getMessageName();
 };
 
+}
 
 
 #endif // MELDINTERPMESSAGES_H_

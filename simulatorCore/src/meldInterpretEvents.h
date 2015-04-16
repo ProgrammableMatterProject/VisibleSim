@@ -8,7 +8,7 @@
 //We'll see later for a debugger
 //#include "meldProcessDebugger.h"
 
-namespace BlinkyBlocks {
+namespace MeldInterpret {
 
 //===========================================================================================================
 //
@@ -56,7 +56,7 @@ public:
 	MessagePtr message;
 	P2PNetworkInterface *sourceInterface;
 
-	VMSendMessageEvent(uint64_t, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni);
+	VMSendMessageEvent(uint64_t, BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni);
 	VMSendMessageEvent(VMSendMessageEvent *ev);
 	~VMSendMessageEvent();
 	void consumeBlockEvent();
@@ -72,9 +72,8 @@ public:
 class VMHandleDebugCommandEvent : public BlockEvent {
 
 public:
-	DebbuggerVMCommand *command;
 
-	VMHandleDebugCommandEvent(uint64_t, BuildingBlock *conBlock, DebbuggerVMCommand *c);
+	VMHandleDebugCommandEvent(uint64_t, BuildingBlock *conBlock);
 	VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev);
 	~VMHandleDebugCommandEvent();
 	void consumeBlockEvent();
@@ -170,7 +169,7 @@ public:
 };
 
 
-} // BlinkyBlocks namespace
+} // MeldInterpret namespace
 
 
 #endif /* MELDINTERPEVENTS_H_ */

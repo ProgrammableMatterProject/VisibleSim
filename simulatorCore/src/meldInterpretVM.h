@@ -60,7 +60,7 @@ class MeldInterpretVM : public MeldInterpretVMCore{
 		uint64_t currentLocalDate;
 		static bool debugging;
 		static bool configured;
-		bool hasWork;
+		bool hasWork, polling;
       public:
             static map<int, MeldInterpretVM*> vmMap;
             static const unsigned char* meld_prog;
@@ -102,14 +102,14 @@ class MeldInterpretVM : public MeldInterpretVMCore{
             Uid south(void);
             Uid east(void);
             Uid west(void);
-            inline void setColorWrapper(byte color){
+            void setColor(Color color);
+            void setLED(byte r, byte g, byte b, byte intensity);
+            inline void setColorWrapper(Color color){
                   setColor(color);
             }
 		inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
                   setLED(r, g, b, intensity);
 		}
-            void setColor(byte color);
-            void setLED(byte r, byte g, byte b, byte intensity);
             NodeID getGUID();
 };
 

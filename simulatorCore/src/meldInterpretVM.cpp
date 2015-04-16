@@ -2,6 +2,8 @@
 #include "meldInterpretVMCore.h"
 #include "meldInterpretEvents.h"
 #include "meldInterpretMessages.h"
+#include "meldInterpretScheduler.h"
+#include "events.h"
 #include "blinkyBlocksBlock.h"
 
 namespace MeldInterpret{
@@ -17,6 +19,7 @@ bool MeldInterpretVM::debugging = false;
 		host = b;
 		blockId = (NodeID)b->blockId;
 		hasWork = true;
+		polling = false;
 		currentLocalDate = myGetTime();
 		//block initialization
 		//setColor(0);
@@ -316,21 +319,21 @@ bool MeldInterpretVM::debugging = false;
 
 	    if (face != -1) {
 
-            MessagePtr ptr;
             assert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= 17);
+            MessagePtr ptr;
 
 	      if (isNew > 0) {
-                  ptr = new AddTupleMessage(tuple);
+                  ptr = MessagePtr(new AddTupleMessage(tuple));
 	      }
 	      else {
-                  ptr = new RemoveTupleMessage(tuple);
+                  ptr = MessagePtr(new RemoveTupleMessage(tuple));
 	      }
 
-            p2p = host->getP2PNetworkInterfaceByDestBlockId(neighbors[face]);
+            P2PNetworkInterface *p2p = host->getP2PNetworkInterfaceByDestBlockId(neighbors[face]);
             /*Prepare message*/
             ptr->sourceInterface = p2p;
             ptr->destinationInterface  = p2p->connectedInterface;
-            BaseSimulator::getScheduler()->schedule(new VMSendMessageEvent(BaseSimulator::getScheduler()->now(), host, msg, p2p));
+            MeldInterpret::getScheduler()->schedule(new VMSendMessageEvent(MeldInterpret::getScheduler()->now(), host, ptr, p2p));
 	    }
 	    else {
 	      /* This may happen when you delete a block in the simulator */
@@ -381,10 +384,10 @@ bool MeldInterpretVM::debugging = false;
 	void MeldInterpretVM::vm_alloc(void) {
 
 	  // init stuff
-	  tuples = calloc(NUM_TYPES, sizeof(tuple_queue));
-	  newTuples = calloc(1, sizeof(tuple_queue));
-	  newStratTuples = calloc(1, sizeof(tuple_pqueue));
-	  delayedTuples = calloc(1, sizeof(tuple_pqueue));
+	  tuples = (tuple_queue*)calloc(NUM_TYPES, sizeof(tuple_queue));
+	  newTuples = (tuple_queue*)calloc(1, sizeof(tuple_queue));
+	  newStratTuples = (tuple_pqueue*)calloc(1, sizeof(tuple_pqueue));
+	  delayedTuples = (tuple_pqueue*)calloc(1, sizeof(tuple_pqueue));
 
 	  assert(tuples!=NULL);
 	  assert(newTuples!=NULL);
@@ -434,11 +437,11 @@ bool MeldInterpretVM::debugging = false;
       inline void MeldInterpretVM::setColor(Color color){
             setLED(color[0]*255, color[1]*255, color[2]*255, color[3]*255);
       }
-      inline void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){
+      void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){
             BaseSimulator::getScheduler()->schedule(new SetColorEvent(BaseSimulator::getScheduler()->now(), host , (float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
       }
 
-      static bool MeldInterpretVM::dateHasBeenReachedByAll(uint64_t date) {
+      bool MeldInterpretVM::dateHasBeenReachedByAll(uint64_t date) {
 		static uint64_t minReallyReached = 0;
 		uint64_t min, min2;
 		int alive = 0, hasNoWork = 0;
@@ -481,10 +484,10 @@ bool MeldInterpretVM::debugging = false;
 	}
 
 
-      static bool MeldInterpretVM::equilibrium() {
+      bool MeldInterpretVM::equilibrium() {
 		map<int, MeldInterpretVM*>::iterator it;
 		for(it = vmMap.begin(); it != vmMap.end(); it++) {
-			MeldProcessVM *vm = it->second;
+			MeldInterpretVM *vm = it->second;
 			BuildingBlock *buildb = vm->host;
 			if (buildb->getState() < BuildingBlock::ALIVE) {
 				continue;
@@ -496,27 +499,19 @@ bool MeldInterpretVM::debugging = false;
 		return true;
 	}
 
-      static void MeldInterpretVM::setConfiguration(string path, bool d){
-            debug = d;
+      void MeldInterpretVM::setConfiguration(string path, bool d){
+            debugging = d;
             if(!configured){
-                  readProgram(programPath);
+                  readProgram(path);
             }
             configured = true;
       }
 
-      static void MeldInterpretVM::readProgram(string path){
+      void MeldInterpretVM::readProgram(string path){
             ifstream in(path.c_str(), ios::in | ios::binary | ios::ate);
             stringstream sstr;
             sstr << in.rdbuf();
             meld_prog = (const unsigned char*) sstr.str().c_str();
-      }
-
-      void MeldInterpretVM::setColor(byte color){
-            host->setColor((int) color);
-      }
-
-      void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){
-            host->setColor(new Color((float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
       }
 
 }

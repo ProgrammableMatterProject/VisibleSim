@@ -1,4 +1,4 @@
-#include "MeldInterpretVMCore.h"
+#include "meldInterpretVMCore.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -26,30 +26,31 @@ execution.
 /* #define DEBUG_ALLOCS */
 #define inline
 
-class MeldInterpretVMCore {
+namespace MeldInterpret{
 
-    MeldInterpretVMCore(MeldInterpretVM * hostVM) {
-        VM = hostVM;
-        unsigned char *arguments = NULL;
+    MeldInterpretVMCore::MeldInterpretVMCore() {
+            arguments = NULL;
+            meld_prog = NULL;
 
-        /* Init will always be predicate 0 */
-        tuple_type TYPE_INIT = 0;
-        /* Initialize unknown type IDs */
-        tuple_type TYPE_EDGE = -1;
-        tuple_type TYPE_TERMINATE = -1;
-        tuple_type TYPE_NEIGHBORCOUNT = -1;
-        tuple_type TYPE_NEIGHBOR = -1;
-        tuple_type TYPE_VACANT = -1;
-        tuple_type TYPE_TAP = -1;
+            /* Init will always be predicate 0 */
+            TYPE_INIT = 0;
+            /* Initialize unknown type IDs */
+            TYPE_EDGE = -1;
+            TYPE_TERMINATE = -1;
+            TYPE_NEIGHBORCOUNT = -1;
+            TYPE_NEIGHBOR = -1;
+            TYPE_VACANT = -1;
+            TYPE_TAP = -1;
+
     }
 
-    inline byte val_is_float(const byte x) {
+    inline byte MeldInterpretVMCore::val_is_float(const byte x) {
         return x == 0x00;
     }
-    inline byte val_is_int(const byte x) {
+    inline byte MeldInterpretVMCore::val_is_int(const byte x) {
         return x == 0x01;
     }
-    inline byte val_is_field(const byte x) {
+    inline byte MeldInterpretVMCore::val_is_field(const byte x) {
         return x == 0x02;
     }
 
@@ -60,7 +61,7 @@ class MeldInterpretVMCore {
      * Also increment pc past the field.
      */
     inline
-    void* eval_field (tuple_t tuple, const unsigned char **pc) {
+    void* MeldInterpretVMCore::eval_field (tuple_t tuple, const unsigned char **pc) {
         const unsigned char field_num = VAL_FIELD_NUM(*pc);
         (*pc) += 2;
 
@@ -70,7 +71,7 @@ class MeldInterpretVMCore {
      * and increment pc past the reg byte.
      */
     inline
-    void* eval_reg(const unsigned char value, const unsigned char **pc, Register *reg) {
+    void* MeldInterpretVMCore::eval_reg(const unsigned char value, const unsigned char **pc, Register *reg) {
         ++(*pc);
         return &(reg)[VAL_REG(value)];
     }
@@ -79,7 +80,7 @@ class MeldInterpretVMCore {
      * and increment it past the int.
      */
     inline
-    void* eval_int (const unsigned char **pc) {
+    void* MeldInterpretVMCore::eval_int (const unsigned char **pc) {
         void *ret = (void *)(*pc);
         *pc += sizeof(meld_int);
 
@@ -90,7 +91,7 @@ class MeldInterpretVMCore {
      * and increment it past the float.
      */
     inline
-    void* eval_float (const unsigned char **pc) {
+    void* MeldInterpretVMCore::eval_float (const unsigned char **pc) {
         void *ret = (void *)(*pc);
         *pc += sizeof(meld_float);
 
@@ -99,7 +100,7 @@ class MeldInterpretVMCore {
 
     /* Set value of register number 'reg_index' as a pointer to tuple 'tuple' */
     inline
-    void moveTupleToReg (const unsigned char reg_index, tuple_t tuple, Register *reg) {
+    void MeldInterpretVMCore::moveTupleToReg (const unsigned char reg_index, tuple_t tuple, Register *reg) {
         Register *dst = &(reg)[VAL_REG(reg_index)];
         *dst = (Register)tuple;
 
@@ -113,7 +114,7 @@ class MeldInterpretVMCore {
 
     /* Allocates a new tuple of type 'type' and set its type byte */
     inline void
-    execute_alloc (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_alloc (const unsigned char *pc, Register *reg) {
         ++pc;
         tuple_type type = FETCH(pc++);
         byte reg_index = FETCH(pc);
@@ -135,8 +136,7 @@ class MeldInterpretVMCore {
      * or enqueue it for retraction
      */
     inline void
-    execute_addtuple (const unsigned char *pc,
-                      Register *reg, int isNew) {
+    MeldInterpretVMCore::execute_addtuple (const unsigned char *pc, Register *reg, int isNew) {
         ++pc;
 
         byte reg_index = FETCH(pc);
@@ -153,14 +153,14 @@ class MeldInterpretVMCore {
 
 #endif
 
-        VM->enqueueNewTuple((tuple_t)MELD_CONVERT_REG_TO_PTR(tuple_reg), (record_type) isNew);
+        enqueueNewTuple((tuple_t)MELD_CONVERT_REG_TO_PTR(tuple_reg), (record_type) isNew);
     }
 
     /* Only used to notify user that a linear tuple has been updated
      * instead of removed during rule derivation.
      */
     inline void
-    execute_update (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_update (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg_index = FETCH(pc);
@@ -180,7 +180,7 @@ class MeldInterpretVMCore {
      * NO DELAY!
      */
     inline void
-    execute_send (const unsigned char *pc, Register *reg, int isNew) {
+    MeldInterpretVMCore::execute_send (const unsigned char *pc, Register *reg, int isNew) {
         ++pc;
         Register send_reg = reg[SEND_MSG(pc)];
         NodeID send_rt = reg[SEND_RT(pc)];
@@ -198,7 +198,7 @@ class MeldInterpretVMCore {
      * which is useless when using BB as nodeID's are not pointers.
      */
     inline void
-    execute_call1 (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_call1 (const unsigned char *pc, Register *reg) {
         ++pc;
         byte functionID = FETCH(pc++);
         byte dst_index = FETCH(pc++);
@@ -229,8 +229,7 @@ class MeldInterpretVMCore {
 
     /* Similar to send, but with a delay */
     inline void
-    execute_send_delay (const unsigned char *pc,
-                        Register *reg, int isNew) {
+    MeldInterpretVMCore::execute_send_delay (const unsigned char *pc, Register *reg, int isNew) {
         ++pc;
 
         const byte tpl = SEND_MSG(pc);
@@ -256,8 +255,7 @@ class MeldInterpretVMCore {
      * If there are matches, process the inside of the ITER with all matches sequentially.
      */
     int
-    execute_iter (const unsigned char *pc,
-                  Register *reg, int isNew, int isLinear) {
+    MeldInterpretVMCore::execute_iter (const unsigned char *pc, Register *reg, int isNew, int isLinear) {
         const unsigned char *inner_jump = pc + ITER_INNER_JUMP(pc);
         const tuple_type type = ITER_TYPE(pc);
         int i, k, length;
@@ -367,7 +365,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_run_action0 (tuple_t action_tuple, tuple_type type, int isNew) {
+    MeldInterpretVMCore::execute_run_action0 (tuple_t action_tuple, tuple_type type, int isNew) {
         switch (type) {
         case TYPE_SETCOLOR:
             if (isNew > 0) {
@@ -409,7 +407,7 @@ class MeldInterpretVMCore {
 
     /* Run an action onto the block */
     inline void
-    execute_run_action (const unsigned char *pc,
+    MeldInterpretVMCore::execute_run_action (const unsigned char *pc,
                         Register *reg, int isNew) {
         ++pc;
 
@@ -421,7 +419,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_remove (const unsigned char *pc, Register *reg, int isNew) {
+    MeldInterpretVMCore::execute_remove (const unsigned char *pc, Register *reg, int isNew) {
         if (isNew > 0) {
             ++pc;
             int reg_remove = REMOVE_REG(pc);
@@ -442,7 +440,7 @@ class MeldInterpretVMCore {
 
     /* Moves an int to a tuple field */
     inline void
-    execute_mvintfield (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvintfield (const unsigned char *pc, Register *reg) {
         ++pc;
 
         Register *src = eval_int (&pc);
@@ -467,7 +465,7 @@ class MeldInterpretVMCore {
 
     /* Moves pointer to an int to a register */
     inline void
-    execute_mvintreg (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvintreg (const unsigned char *pc, Register *reg) {
         ++pc;
 
         Register *src = eval_int (&pc);
@@ -484,7 +482,7 @@ class MeldInterpretVMCore {
 
     /* Moves pointer to a float to a register */
     inline void
-    execute_mvfloatreg (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvfloatreg (const unsigned char *pc, Register *reg) {
         ++pc;
 
         Register *src = eval_float (&pc);
@@ -502,7 +500,7 @@ class MeldInterpretVMCore {
 
     /* Moves pointer to a float to a tuple field */
     inline void
-    execute_mvfloatfield (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvfloatfield (const unsigned char *pc, Register *reg) {
         ++pc;
 
         Register *src = eval_float (&pc);
@@ -527,7 +525,7 @@ class MeldInterpretVMCore {
 
     /* Moves pointer to a tuple field to a register */
     inline void
-    execute_mvfieldreg (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvfieldreg (const unsigned char *pc, Register *reg) {
         ++pc;
         byte field_reg = FETCH(pc+1);
         byte field_num = FETCH(pc);
@@ -551,7 +549,7 @@ class MeldInterpretVMCore {
 
     /* Moves value pointed at by a register to a field */
     inline void
-    execute_mvregfield (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvregfield (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg_index = FETCH(pc);
@@ -576,7 +574,7 @@ class MeldInterpretVMCore {
 
     /* Moves content of a tuple field to another */
     inline void
-    execute_mvfieldfield (const unsigned char *pc,
+    MeldInterpretVMCore::execute_mvfieldfield (const unsigned char *pc,
                           Register *reg) {
         ++pc;
         byte src_field_reg = FETCH(pc+1);
@@ -607,7 +605,7 @@ class MeldInterpretVMCore {
 
     /* Moves blockId to a tuple field */
     inline void
-    execute_mvhostfield (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvhostfield (const unsigned char *pc, Register *reg) {
         ++pc;
 
         Register *src = (void*)EVAL_HOST;
@@ -631,7 +629,7 @@ class MeldInterpretVMCore {
 
     /* Moves blockId to a register */
     inline void
-    execute_mvhostreg (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvhostreg (const unsigned char *pc, Register *reg) {
         ++pc;
 
         Register *src = (void*)EVAL_HOST;
@@ -651,7 +649,7 @@ class MeldInterpretVMCore {
 
     /* Moves content of a reg to another */
     inline void
-    execute_mvregreg (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_mvregreg (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte src_reg_index = FETCH(pc);
@@ -674,7 +672,7 @@ class MeldInterpretVMCore {
 
     /* Perform boolean NOT operation */
     inline void
-    execute_not (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_not (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -696,7 +694,7 @@ class MeldInterpretVMCore {
 
     /* Perform boolean OR operation */
     inline void
-    execute_boolor (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_boolor (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -716,7 +714,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_boolequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_boolequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -736,7 +734,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_boolnotequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_boolnotequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -757,7 +755,7 @@ class MeldInterpretVMCore {
 
     /* Compares two blockId and store the result to 'dest' */
     inline void
-    execute_addrequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_addrequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -776,7 +774,7 @@ class MeldInterpretVMCore {
 
     /* Compares two blockId and store the result to 'dest' */
     inline void
-    execute_addrnotequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_addrnotequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -795,7 +793,7 @@ class MeldInterpretVMCore {
 
     /* Same with and int... */
     inline void
-    execute_intequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -813,7 +811,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intnotequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intnotequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -831,7 +829,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intgreater (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intgreater (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -849,7 +847,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intgreaterequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intgreaterequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -867,7 +865,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intlesser (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intlesser (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -885,7 +883,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intlesserequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intlesserequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -903,7 +901,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intmul (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intmul (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -921,7 +919,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intdiv (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intdiv (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -939,7 +937,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intmod (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intmod (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -957,7 +955,7 @@ class MeldInterpretVMCore {
 
     }
     inline void
-    execute_intplus (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intplus (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -975,7 +973,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_intminus (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_intminus (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -993,7 +991,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatplus (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatplus (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1011,7 +1009,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatminus (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatminus (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1029,7 +1027,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatmul (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatmul (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1047,7 +1045,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatdiv (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatdiv (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1065,7 +1063,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1083,7 +1081,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatnotequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatnotequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1101,7 +1099,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatlesser (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatlesser (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1119,7 +1117,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatlesserequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatlesserequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1137,7 +1135,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatgreater (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatgreater (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1155,7 +1153,7 @@ class MeldInterpretVMCore {
     }
 
     inline void
-    execute_floatgreaterequal (const unsigned char *pc, Register *reg) {
+    MeldInterpretVMCore::execute_floatgreaterequal (const unsigned char *pc, Register *reg) {
         ++pc;
 
         byte reg1 = FETCH(pc);
@@ -1177,7 +1175,7 @@ class MeldInterpretVMCore {
     /* ************* QUEUE MANAGEMENT FUNCTIONS ************* */
 
     int
-    queue_length (tuple_queue *queue) {
+    MeldInterpretVMCore::queue_length (tuple_queue *queue) {
         int i;
         tuple_entry *entry = queue->head;
 
@@ -1187,12 +1185,12 @@ class MeldInterpretVMCore {
     }
 
     bool
-    queue_is_empty(tuple_queue *queue) {
+    MeldInterpretVMCore::queue_is_empty(tuple_queue *queue) {
         return queue->head == NULL;
     }
 
     void
-    queue_push_tuple(tuple_queue *queue, tuple_entry *entry) {
+    MeldInterpretVMCore::queue_push_tuple(tuple_queue *queue, tuple_entry *entry) {
         if(queue->head == NULL)
             queue->head = queue->tail = entry;
         else {
@@ -1202,7 +1200,7 @@ class MeldInterpretVMCore {
     }
 
     tuple_t
-    queue_pop_tuple(tuple_queue *queue) {
+    MeldInterpretVMCore::queue_pop_tuple(tuple_queue *queue) {
         tuple_entry *entry = NULL;
 
         if (queue->head) {
@@ -1217,7 +1215,7 @@ class MeldInterpretVMCore {
     }
 
     tuple_t
-    queue_dequeue_pos(tuple_queue *queue, tuple_entry **pos) {
+    MeldInterpretVMCore::queue_dequeue_pos(tuple_queue *queue, tuple_entry **pos) {
         tuple_entry *entry = *pos;
         tuple_entry *next = (*pos)->next;
         queue ->length--;
@@ -1238,7 +1236,7 @@ class MeldInterpretVMCore {
     }
 
     tuple_entry*
-    queue_enqueue(tuple_queue *queue, tuple_t tuple, record_type isNew) {
+    MeldInterpretVMCore::queue_enqueue(tuple_queue *queue, tuple_t tuple, record_type isNew) {
         tuple_entry *entry = malloc(sizeof(tuple_entry));
 
         entry->tuple = tuple;
@@ -1252,7 +1250,7 @@ class MeldInterpretVMCore {
     }
 
     tuple_t
-    queue_dequeue(tuple_queue *queue, int *isNew) {
+    MeldInterpretVMCore::queue_dequeue(tuple_queue *queue, int *isNew) {
         tuple_entry *entry = queue_pop_tuple(queue);
         queue ->length--;
 
@@ -1267,7 +1265,7 @@ class MeldInterpretVMCore {
     }
 
     tuple_pentry*
-    p_dequeue(tuple_pqueue *q) {
+    MeldInterpretVMCore::p_dequeue(tuple_pqueue *q) {
         tuple_pentry *ret = q->queue;
 
         if(q->queue != NULL)
@@ -1277,7 +1275,7 @@ class MeldInterpretVMCore {
     }
 
     void
-    p_enqueue(tuple_pqueue *queue, meld_int priority, tuple_t tuple,
+    MeldInterpretVMCore::p_enqueue(tuple_pqueue *queue, meld_int priority, tuple_t tuple,
               NodeID rt, record_type isNew) {
         tuple_pentry *entry = malloc(sizeof(tuple_pentry));
 
@@ -1300,7 +1298,7 @@ class MeldInterpretVMCore {
 
     static int type;
     void
-    init_fields(void) {
+    MeldInterpretVMCore::init_fields(void) {
         size_t total = 2*NUM_TYPES;
         int i, j;
 
@@ -1362,7 +1360,7 @@ class MeldInterpretVMCore {
     }
 
     /* Get TYPE id for uselful types */
-    void init_consts(void) {
+    void MeldInterpretVMCore::init_consts(void) {
         tuple_type i;
         for (i = 0; i < NUM_TYPES; i++) {
             if(strcmp(TYPE_NAME(i), "edge") == 0)
@@ -1375,7 +1373,7 @@ class MeldInterpretVMCore {
     /* ************* AGGREGATE RELATED FUNCTIONS ************* */
 
     static inline
-    bool aggregate_accumulate(int agg_type, void *acc, void *obj, int count) {
+    bool MeldInterpretVMCore::aggregate_accumulate(int agg_type, void *acc, void *obj, int count) {
         switch (agg_type) {
         case AGG_SET_UNION_INT:
         case AGG_SET_UNION_FLOAT:
@@ -1432,7 +1430,7 @@ class MeldInterpretVMCore {
     }
 
     static inline bool
-    aggregate_changed(int agg_type, void *v1, void *v2) {
+    MeldInterpretVMCore::aggregate_changed(int agg_type, void *v1, void *v2) {
         switch(agg_type) {
         case AGG_FIRST:
             return false;
@@ -1465,7 +1463,7 @@ class MeldInterpretVMCore {
     }
 
     static inline void
-    aggregate_seed(int agg_type, void *acc, void *start, int count, size_t size) {
+    MeldInterpretVMCore::aggregate_seed(int agg_type, void *acc, void *start, int count, size_t size) {
         switch(agg_type) {
         case AGG_FIRST:
             memcpy(acc, start, size);
@@ -1497,7 +1495,7 @@ class MeldInterpretVMCore {
     }
 
     static inline void
-    aggregate_free(tuple_t tuple, unsigned char field_aggregate, unsigned char type_aggregate) {
+    MeldInterpretVMCore::aggregate_free(tuple_t tuple, unsigned char field_aggregate, unsigned char type_aggregate) {
         switch(type_aggregate) {
         case AGG_FIRST:
         case AGG_MIN_INT:
@@ -1523,7 +1521,7 @@ class MeldInterpretVMCore {
     }
 
     static inline
-    void aggregate_recalc(tuple_entry *agg, Register *reg,
+    void MeldInterpretVMCore::aggregate_recalc(tuple_entry *agg, Register *reg,
                           bool first_run) {
         tuple_type type = TUPLE_TYPE(agg->tuple);
 
@@ -1581,7 +1579,7 @@ class MeldInterpretVMCore {
      * -> Iterate through the database and find corresponding tuple, dequeue and
      * process it with a isNew of -1 to perform retraction, and free both tuples.
      */
-    void tuple_do_handle(tuple_type type, tuple_t tuple, int isNew, Register *reg) {
+    void MeldInterpretVMCore::tuple_do_handle(tuple_type type, tuple_t tuple, int isNew, Register *reg) {
         if(type == TYPE_TERMINATE) {
             FREE_TUPLE(tuple);
             TERMINATE_CURRENT();
@@ -1783,7 +1781,7 @@ class MeldInterpretVMCore {
 #ifdef LOG_DEBUG
 #define MAX_NAME_SIZE 30
     void
-    print_bytecode(const unsigned char *pc) {
+    MeldInterpretVMCore::print_bytecode(const unsigned char *pc) {
         char  s[MAX_NAME_SIZE];
 
         snprintf(s, MAX_NAME_SIZE*sizeof(char), "%u", (unsigned) pc - (unsigned) meld_prog);
@@ -1976,7 +1974,7 @@ class MeldInterpretVMCore {
     }
 #endif
 
-    int process_bytecode (tuple_t tuple, const unsigned char *pc, int isNew, int isLinear, Register *reg, byte state) {
+    int MeldInterpretVMCore::process_bytecode (tuple_t tuple, const unsigned char *pc, int isNew, int isLinear, Register *reg, byte state) {
 #ifdef DEBUG_INSTRS
 
 #ifdef BBSIM
@@ -2528,7 +2526,7 @@ eval_loop:
 #define MAX_STRING_SIZE 200
     /* Prints a tuple */
     void
-    tuple_print(tuple_t tuple, FILE *fp) {
+    MeldInterpretVMCore::tuple_print(tuple_t tuple, FILE *fp) {
         unsigned char tuple_type = TUPLE_TYPE(tuple);
         int j;
         char str[MAX_STRING_SIZE];
@@ -2583,7 +2581,7 @@ eval_loop:
     }
 
     /* Prints the content of the whole database */
-    void facts_dump(void) {
+    void MeldInterpretVMCore::facts_dump(void) {
         int i;
         char str[MAX_STRING_SIZE];
         char tmp[MAX_STRING_SIZE];
@@ -2643,7 +2641,7 @@ eval_loop:
      * looks like it should.
      */
     void
-    print_program_info(void) {
+    MeldInterpretVMCore::print_program_info(void) {
         int i;
         char s[MAX_STRING_SIZE];
         char tmp[MAX_STRING_SIZE];
@@ -2693,7 +2691,7 @@ eval_loop:
      * and numberOfNeighborCount == 1 are two conditions which must always be true
      */
     void
-    databaseConsistencyChecker() {
+    MeldInterpretVMCore::databaseConsistencyChecker() {
         int i;
         byte neighborTCount = 0;
         byte vacantTCount = 0;
@@ -2727,4 +2725,6 @@ eval_loop:
             }
         }
     }
+}
+
 }

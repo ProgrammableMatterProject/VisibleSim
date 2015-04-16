@@ -51,7 +51,7 @@ void MeldInterpretScheduler::SemWaitOrReadDebugMessage() {
     if (MeldInterpretVM::isInDebuggingMode()) {
         while(!sem_schedulerStart->try_wait()) {
             //waitForOneVMCommand();
-            checkForReceivedVMCommands();
+            //checkForReceivedVMCommands();
             usleep(10000);
         }
     } else {
@@ -86,7 +86,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     schedulerMode = SCHEDULER_MODE_FASTEST;
 #endif
     state = RUNNING;
-    checkForReceivedVMCommands();
+    //checkForReceivedVMCommands();
     uint64_t systemStartTime, systemStopTime;
     multimap<uint64_t, EventPtr>::iterator first, tmp;
     EventPtr pev;
@@ -96,7 +96,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     switch (schedulerMode) {
     case SCHEDULER_MODE_FASTEST:
         OUTPUT << "fastest mode scheduler\n" << endl;
-        MeldInterpretDebugger::print("Simulation starts in deterministic mode");
+        //MeldInterpretDebugger::print("Simulation starts in deterministic mode");
         while (state != ENDED) {
             do {
                 while (!eventsMap.empty()) {
@@ -112,7 +112,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                             break;
                         }
                         unlock();
-                        waitForOneVMCommand();
+                        //waitForOneVMCommand();
                     } while (true);
                     currentDate = pev->date;
                     pev->consume();
@@ -121,32 +121,32 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                     unlock();
                     if (state == PAUSED) {
                         if (MeldInterpretVM::isInDebuggingMode()) {
-                            getDebugger()->handleBreakAtTimeReached(currentDate);
+                            //getDebugger()->handleBreakAtTimeReached(currentDate);
                         } else {
                             sem_schedulerStart->wait();
                         }
                         setState(RUNNING);
                     }
-                    checkForReceivedVMCommands();
+                    //checkForReceivedVMCommands();
                 }
-                checkForReceivedVMCommands();
+                //checkForReceivedVMCommands();
             } while (!MeldInterpretVM::equilibrium() || !eventsMap.empty());
 
             if(hasProcessed) {
                 hasProcessed = false;
                 ostringstream s;
                 s << "Equilibrium reached at "<< now() << "us ...";
-                MeldInterpretDebugger::print(s.str(), false);
+                //MeldInterpretDebugger::print(s.str(), false);
                 /*if (BaseSimulator::getSimulator()->testMode) {
                 BlinkyBlocks::getWorld()->dump();
                 stop(0);
                 return 0;
                 }*/
                 if (MeldInterpretVM::isInDebuggingMode()) {
-                    getDebugger()->handlePauseRequest();
+                    //getDebugger()->handlePauseRequest();
                 }
             }
-            checkForReceivedVMCommands();
+            //checkForReceivedVMCommands();
             usleep(5000);
         }
 #ifdef TEST_DETER
@@ -157,12 +157,12 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 
     case SCHEDULER_MODE_REALTIME:
         OUTPUT << "Realtime mode scheduler\n" << endl;
-        MeldInterpretDebugger::print("Simulation starts in real time mode");
+        //MeldInterpretDebugger::print("Simulation starts in real time mode");
         while (state != ENDED) {
             systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
             systemCurrentTimeMax = systemCurrentTime - systemStartTime;
             currentDate = systemCurrentTimeMax;
-            checkForReceivedVMCommands();
+            //checkForReceivedVMCommands();
             while (true) {
                 // Lock from here, to be sure that the element
                 // is not destroyed in another thread
@@ -185,7 +185,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 eventsMapSize--;
                 unlock();
                 //cout << "check to send" << endl;
-                checkForReceivedVMCommands();
+                //checkForReceivedVMCommands();
                 //cout << "ok" << endl;
             }
             if (state == PAUSED) {
@@ -231,7 +231,7 @@ void MeldInterpretScheduler::start(int mode) {
 }
 
 void MeldInterpretScheduler::pause(uint64_t date) {
-    getScheduler()->scheduleLock(new VMDebugPauseSimEvent(date));
+    //getScheduler()->scheduleLock(new VMDebugPauseSimEvent(date));
 }
 
 void MeldInterpretScheduler::unPause() {
