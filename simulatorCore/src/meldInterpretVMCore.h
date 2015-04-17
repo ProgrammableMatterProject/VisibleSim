@@ -428,7 +428,7 @@ instructions.
 #define TUPLE_TYPE(x)   (*(TYPE_FIELD_TYPE *)(x))
 /* Returns a pointer to argument at offset (off) of a tuple */
 #define TUPLE_FIELD(x,off)					\
-  ((void *)(((unsigned char*)(x)) + TYPE_FIELD_SIZE + (off)))
+      ((Register *)(((unsigned char*)(x)) + TYPE_FIELD_SIZE + (off)))
 
 /* ************* BYTE CODE FILE PARSING ************* */
 
@@ -494,7 +494,7 @@ instructions.
 #define TYPE_ARG_TYPE(x, f) ((unsigned char)(*TYPE_ARG_DESC(x, f)))
 
 /* Returns total size of predicate x */
-#define TYPE_SIZE(x)       (arguments[(x) * 2 + 1])
+#define TYPE_SIZE(x)       ((size_t)arguments[(x) * 2 + 1])
 /* Returns address of arguments of type x in arguments array */
 #define TYPE_ARGS(x)       (arguments + arguments[(x) * 2])
 
@@ -618,13 +618,14 @@ public:
 
 	/* ************* EXTERN DECLARATIONS  ************* */
 
-	unsigned char *meld_prog;
+	static const unsigned char *meld_prog;
 	typedef Register (*extern_funct_type)();
 	extern_funct_type extern_functs[];
 	int extern_functs_args[];
 	char *tuple_names[];
 	char *rule_names[];
 	unsigned char *arguments;
+	NodeID blockId;
 
 	NodeID getBlockId (void);
 	void print_newTuples (void);
@@ -639,6 +640,19 @@ public:
       virtual void setLED(byte r, byte g, byte b, byte intensity);
 
 	/* ************* TUPLE HANDLING FUNCTIONS  ************* */
+
+      /* Queue for tuples to send with delay */
+      tuple_pqueue *delayedTuples;
+      /* Contains a queueu for each type, this is essentially the database */
+      tuple_queue *tuples;
+      /* Where stratified tuples are enqueued for execution  */
+      tuple_pqueue *newStratTuples;
+      /* Where non-stratified tuples are enqueued for execution */
+      tuple_queue *newTuples;
+      /* Received tuples are enqueued both to a normal queue
+       * and to this one. Tuples store in this one will be used to remove
+       * remove tuples from the database.*/
+      tuple_queue receivedTuples[NUM_PORTS];
 
 	/*static Why static again ?*/ inline tuple_t
 	tuple_alloc(tuple_type type)
@@ -690,6 +704,9 @@ public:
       inline byte val_is_int(const byte x);
       inline byte val_is_field(const byte x);
       void * eval_field (tuple_t tuple, const unsigned char **pc);
+      int execute_iter (const unsigned char *pc, Register *reg, int isNew, int isLinear);
+      inline void execute_run_action (const unsigned char *pc, Register *reg, int isNew);
+
       void * eval_reg(const unsigned char value, const unsigned char **pc, Register *reg);
       void * eval_int (const unsigned char **pc);
       void * eval_float (const unsigned char **pc);
@@ -707,6 +724,7 @@ public:
       void execute_mvfloatreg (const unsigned char *pc, Register *reg);
       void execute_mvfloatfield (const unsigned char *pc, Register *reg);
       void execute_mvfieldreg (const unsigned char *pc, Register *reg);
+      void execute_mvfieldfield (const unsigned char *pc, Register *reg);
       void execute_mvregfield (const unsigned char *pc, Register *reg);
       void execute_mvhostfield (const unsigned char *pc, Register *reg);
       void execute_mvhostreg (const unsigned char *pc, Register *reg);
@@ -738,9 +756,18 @@ public:
       void execute_floatlesserequal (const unsigned char *pc, Register *reg);
       void execute_floatgreater (const unsigned char *pc, Register *reg);
       void execute_floatgreaterequal (const unsigned char *pc, Register *reg);
+      bool aggregate_accumulate(int agg_type, void *acc, void *obj, int count);
+      bool aggregate_changed(int agg_type, void *v1, void *v2);
+      void aggregate_seed(int agg_type, void *acc, void *start, int count, size_t size);
+      void aggregate_free(tuple_t tuple, unsigned char field_aggregate, unsigned char type_aggregate);
+      void aggregate_recalc(tuple_entry *agg, Register *reg, bool first_run);
+      void databaseConsistencyChecker();
+
+
 
 	/* ************* QUEUE MANAGEMENT PROTOTYPES ************* */
 
+      virtual void enqueueNewTuple(tuple_t tuple, record_type isNew);
 	tuple_entry* queue_enqueue(tuple_queue *queue, tuple_t tuple, record_type isNew);
 	bool queue_is_empty(tuple_queue *queue);
 	tuple_t queue_dequeue(tuple_queue *queue, int *isNew);

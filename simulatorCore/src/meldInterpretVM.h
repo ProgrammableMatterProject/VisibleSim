@@ -37,18 +37,7 @@ class MeldInterpretVM;
 
 class MeldInterpretVM : public MeldInterpretVMCore{
 	private:
-		/* Queue for tuples to send with delay */
-		tuple_pqueue *delayedTuples;
-		/* Contains a queueu for each type, this is essentially the database */
-		tuple_queue *tuples;
-		/* Where stratified tuples are enqueued for execution  */
-		tuple_pqueue *newStratTuples;
-		/* Where non-stratified tuples are enqueued for execution */
-		tuple_queue *newTuples;
-		/* Received tuples are enqueued both to a normal queue
-		 * and to this one. Tuples store in this one will be used to remove
-		 * remove tuples from the database.*/
-		tuple_queue receivedTuples[NUM_PORTS];
+
 		/* This block's ID */
 		NodeID blockId;
 		/* An array of 32 registers (pointers) */

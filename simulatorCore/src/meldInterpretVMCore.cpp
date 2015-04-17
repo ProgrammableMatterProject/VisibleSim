@@ -28,6 +28,8 @@ execution.
 
 namespace MeldInterpret{
 
+      //const unsigned char* MeldInterpretVMCore::meld_prog;
+
     MeldInterpretVMCore::MeldInterpretVMCore() {
             arguments = NULL;
             meld_prog = NULL;
@@ -118,7 +120,7 @@ namespace MeldInterpret{
         ++pc;
         tuple_type type = FETCH(pc++);
         byte reg_index = FETCH(pc);
-        tuple_t *dst = eval_reg (reg_index, &pc, reg);
+        tuple_t *dst = (void**)eval_reg (reg_index, &pc, reg);
         *dst = ALLOC_TUPLE(TYPE_SIZE(type));
 
 #if defined(DEBUG_INSTRS) || defined(DEBUG_ALLOCS)
@@ -202,10 +204,10 @@ namespace MeldInterpret{
         ++pc;
         byte functionID = FETCH(pc++);
         byte dst_index = FETCH(pc++);
-        Register *dst = eval_reg (dst_index, &pc, reg);
+        Register *dst = (Register*)eval_reg (dst_index, &pc, reg);
 
         byte arg1_index = FETCH(pc);
-        Register *arg1 = eval_reg (arg1_index, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (arg1_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
         if (functionID == 0x1f)
@@ -237,7 +239,7 @@ namespace MeldInterpret{
         Register send_reg = reg[tpl];
         NodeID send_rt = reg[dst];
         pc += 2;
-        meld_int *delay = eval_int(&pc);
+        meld_int *delay = (meld_int*)eval_int(&pc);
 
 #ifdef DEBUG_INSTRS
         printf("--%d--\t SEND reg %d TO reg %d(%d) WITH DELAY %dms\n",
@@ -268,7 +270,7 @@ namespace MeldInterpret{
         tuple_entry *entry = TUPLES[type].head;
 
         length = queue_length(&TUPLES[ITER_TYPE(pc)]);
-        list = malloc(sizeof(tuple_t) * length);
+        list = (void**)malloc(sizeof(tuple_t) * length);
 
         for (i = 0; i < length; i++) {
             int j = random() % (i+1);
@@ -311,15 +313,15 @@ namespace MeldInterpret{
 
                 if (val_is_int (value_type)) {
                     tmppc += 2;
-                    val = eval_int(&tmppc);
+                    val = (Register *)eval_int(&tmppc);
                 } else if (val_is_float (value_type)) {
                     tmppc += 2;
-                    val = eval_float(&tmppc);
+                    val = (Register *)eval_float(&tmppc);
                 } else if (val_is_field (value_type)) {
                     tmppc += 2;
                     byte reg_index = FETCH(tmppc+1);
                     tuple_t tpl = (tuple_t)reg[reg_index];
-                    val = eval_field(tpl, &tmppc);
+                    val = (Register *)eval_field(tpl, &tmppc);
                 }  else {
                     /* Don't know what to do */
                     fprintf (stderr, "Type %d not supported yet - don't know what to do.\n", fieldtype);
@@ -407,8 +409,7 @@ namespace MeldInterpret{
 
     /* Run an action onto the block */
     inline void
-    MeldInterpretVMCore::execute_run_action (const unsigned char *pc,
-                        Register *reg, int isNew) {
+    MeldInterpretVMCore::execute_run_action (const unsigned char *pc, Register *reg, int isNew) {
         ++pc;
 
         byte reg_index = FETCH(pc);
@@ -443,14 +444,14 @@ namespace MeldInterpret{
     MeldInterpretVMCore::execute_mvintfield (const unsigned char *pc, Register *reg) {
         ++pc;
 
-        Register *src = eval_int (&pc);
+        Register *src = (Register*)eval_int (&pc);
         byte reg_index = FETCH(pc+1);
         byte field_num = FETCH(pc);
 
         tuple_t dst_tuple = (tuple_t)reg[reg_index];
         tuple_type type = TUPLE_TYPE(dst_tuple);
 
-        Register *dst = eval_field (dst_tuple, &pc);
+        Register *dst = (Register*)eval_field (dst_tuple, &pc);
 
 
 #ifdef DEBUG_INSTRS
@@ -468,9 +469,9 @@ namespace MeldInterpret{
     MeldInterpretVMCore::execute_mvintreg (const unsigned char *pc, Register *reg) {
         ++pc;
 
-        Register *src = eval_int (&pc);
+        Register *src = (Register*)eval_int (&pc);
         byte reg_index = FETCH(pc);
-        Register *dst = eval_reg (reg_index, &pc, reg);
+        Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE INT %d TO reg %d\n",
@@ -485,9 +486,9 @@ namespace MeldInterpret{
     MeldInterpretVMCore::execute_mvfloatreg (const unsigned char *pc, Register *reg) {
         ++pc;
 
-        Register *src = eval_float (&pc);
+        Register *src = (Register*)eval_float (&pc);
         byte reg_index = FETCH(pc);
-        Register *dst = eval_reg (reg_index, &pc, reg);
+        Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE FLOAT %f TO reg %d\n",
@@ -503,14 +504,14 @@ namespace MeldInterpret{
     MeldInterpretVMCore::execute_mvfloatfield (const unsigned char *pc, Register *reg) {
         ++pc;
 
-        Register *src = eval_float (&pc);
+        Register *src = (Register*)eval_float (&pc);
         byte reg_index = FETCH(pc+1);
         byte field_num = FETCH(pc);
 
         tuple_t dst_tuple = (tuple_t)reg[reg_index];
         tuple_type type = TUPLE_TYPE(dst_tuple);
 
-        Register *dst = eval_field (dst_tuple, &pc);
+        Register *dst = (Register*)eval_field (dst_tuple, &pc);
 
 
 #ifdef DEBUG_INSTRS
@@ -531,10 +532,10 @@ namespace MeldInterpret{
         byte field_num = FETCH(pc);
 
         tuple_t tpl = (tuple_t)reg[field_reg];
-        Register *src = eval_field (tpl, &pc);
+        Register *src = (Register*)eval_field (tpl, &pc);
 
         byte reg_index = FETCH(pc);
-        Register *dst = eval_reg (reg_index, &pc, reg);
+        Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE FIELD %d.%d TO reg %d\n",
@@ -553,14 +554,14 @@ namespace MeldInterpret{
         ++pc;
 
         byte reg_index = FETCH(pc);
-        Register *src = eval_reg (reg_index, &pc, reg);
+        Register *src = (Register*)eval_reg (reg_index, &pc, reg);
 
         byte field_reg = FETCH(pc+1);
         byte field_num = FETCH(pc);
 
         tuple_t field_tpl = (tuple_t)reg[field_reg];
         tuple_type type = TUPLE_TYPE(field_tpl);
-        Register *dst = eval_field (field_tpl, &pc);
+        Register *dst = (Register*)eval_field (field_tpl, &pc);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE REG %d TO FIELD %d.%d\n",
@@ -574,21 +575,20 @@ namespace MeldInterpret{
 
     /* Moves content of a tuple field to another */
     inline void
-    MeldInterpretVMCore::execute_mvfieldfield (const unsigned char *pc,
-                          Register *reg) {
+    MeldInterpretVMCore::execute_mvfieldfield (const unsigned char *pc, Register *reg) {
         ++pc;
         byte src_field_reg = FETCH(pc+1);
         byte src_field_num = FETCH(pc);
 
         tuple_t src_field_tpl = (tuple_t)reg[src_field_reg];
-        Register *src = eval_field (src_field_tpl, &pc);
+        Register *src = (Register*)eval_field (src_field_tpl, &pc);
 
         byte dst_field_reg = FETCH(pc+1);
         byte dst_field_num = FETCH(pc);
 
         tuple_t dst_field_tpl = (tuple_t)reg[dst_field_reg];
         tuple_type type = TUPLE_TYPE(dst_field_tpl);
-        Register *dst = eval_field (dst_field_tpl, &pc);
+        Register *dst = (Register*)eval_field (dst_field_tpl, &pc);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE FIELD %d.%d TO FIELD %d.%d\n",
@@ -608,14 +608,14 @@ namespace MeldInterpret{
     MeldInterpretVMCore::execute_mvhostfield (const unsigned char *pc, Register *reg) {
         ++pc;
 
-        Register *src = (void*)EVAL_HOST;
+        Register *src = (Register*)EVAL_HOST;
 
         byte field_reg = FETCH(pc+1);
         byte field_num = FETCH(pc);
 
         tuple_t field_tpl = (tuple_t)reg[field_reg];
         tuple_type type = TUPLE_TYPE(field_tpl);
-        Register *dst = eval_field (field_tpl, &pc);
+        Register *dst = (Register*)eval_field (field_tpl, &pc);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE HOST TO FIELD %d.%d\n",
@@ -632,10 +632,10 @@ namespace MeldInterpret{
     MeldInterpretVMCore::execute_mvhostreg (const unsigned char *pc, Register *reg) {
         ++pc;
 
-        Register *src = (void*)EVAL_HOST;
+        Register *src = (Register*)EVAL_HOST;
 
         byte reg_index = FETCH(pc);
-        Register *dst = eval_reg (reg_index, &pc, reg);
+        Register *dst = (Register*)eval_reg (reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE HOST TO reg %d\n",
@@ -653,10 +653,10 @@ namespace MeldInterpret{
         ++pc;
 
         byte src_reg_index = FETCH(pc);
-        Register *src = eval_reg (src_reg_index, &pc, reg);
+        Register *src = (Register*)eval_reg (src_reg_index, &pc, reg);
 
         byte dst_reg_index = FETCH(pc);
-        Register *dst = eval_reg (dst_reg_index, &pc, reg);
+        Register *dst = (Register*)eval_reg (dst_reg_index, &pc, reg);
 
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t MOVE REG %d TO REG %d\n",
@@ -678,8 +678,8 @@ namespace MeldInterpret{
         byte reg1 = FETCH(pc);
         byte reg2 = FETCH(pc+1);
 
-        Register *arg = eval_reg (reg1, &pc, reg);
-        Register *dest = eval_reg (reg2, &pc, reg);
+        Register *arg = (Register*)eval_reg (reg1, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg2, &pc, reg);
 
         if (MELD_BOOL(arg) > 0)
             *dest = 0;
@@ -701,9 +701,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
 
         *dest = (MELD_BOOL(arg1) | MELD_BOOL(arg2));
 
@@ -721,9 +721,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
 
         *dest = (MELD_BOOL(arg1) == MELD_BOOL(arg2));
 
@@ -741,9 +741,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
 
         *dest = (MELD_BOOL(arg1) != MELD_BOOL(arg2));
 
@@ -762,9 +762,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_NODE_ID(arg1) == MELD_NODE_ID(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t ADDR reg %d EQUAL reg %d TO reg %d\n",
@@ -781,9 +781,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_NODE_ID(arg1) != MELD_NODE_ID(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t ADDR reg %d NOTEQUAL reg %d TO reg %d\n",
@@ -800,9 +800,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) == MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d EQUAL reg %d TO reg %d\n",
@@ -818,9 +818,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) != MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d NOTEQUAL reg %d TO reg %d\n",
@@ -836,9 +836,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) > MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d GREATER THAN reg %d TO reg %d\n",
@@ -854,9 +854,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) >= MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d GREATER/EQUAL THAN reg %d TO reg %d\n",
@@ -872,9 +872,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) < MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d LESSER THAN reg %d TO reg %d\n",
@@ -890,9 +890,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) <= MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d LESSER/EQUAL THAN reg %d TO reg %d\n",
@@ -908,9 +908,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) * MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d MULTIPLIED BY reg %d TO reg %d\n",
@@ -926,9 +926,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) / MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d DIVIDED BY reg %d TO reg %d\n",
@@ -944,9 +944,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) % MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d MOD reg %d TO reg %d\n",
@@ -962,9 +962,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) + MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d PLUS reg %d TO reg %d\n",
@@ -980,9 +980,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_INT(arg1) - MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d MINUS reg %d TO reg %d\n",
@@ -998,9 +998,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) + MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d PLUS reg %d TO reg %d\n",
@@ -1016,9 +1016,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) - MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d MINUS reg %d TO reg %d\n",
@@ -1034,9 +1034,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) * MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d MULTIPLIED BY reg %d TO reg %d\n",
@@ -1052,9 +1052,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) / MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d DIVIDED BY reg %d TO reg %d\n",
@@ -1070,9 +1070,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) == MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d EQUAL reg %d TO reg %d\n",
@@ -1088,9 +1088,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) != MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d NOT EQUAL reg %d TO reg %d\n",
@@ -1106,9 +1106,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) < MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d LESSER THAN reg %d TO reg %d\n",
@@ -1124,9 +1124,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) <= MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d LESSER/EQUAL THAN reg %d TO reg %d\n",
@@ -1142,9 +1142,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) > MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d GREATER THAN reg %d TO reg %d\n",
@@ -1160,9 +1160,9 @@ namespace MeldInterpret{
         byte reg2 = FETCH(pc+1);
         byte reg3 = FETCH(pc+2);
 
-        Register *arg1 = eval_reg (reg1, &pc, reg);
-        Register *arg2 = eval_reg (reg2, &pc, reg);
-        Register *dest = eval_reg (reg3, &pc, reg);
+        Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
+        Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
+        Register *dest = (Register*)eval_reg (reg3, &pc, reg);
         *dest = (MELD_FLOAT(arg1) >= MELD_FLOAT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t FLOAT reg %d GREATER/EQUAL THAN reg %d TO reg %d\n",
@@ -1237,7 +1237,7 @@ namespace MeldInterpret{
 
     tuple_entry*
     MeldInterpretVMCore::queue_enqueue(tuple_queue *queue, tuple_t tuple, record_type isNew) {
-        tuple_entry *entry = malloc(sizeof(tuple_entry));
+        tuple_entry *entry = (tuple_entry*)malloc(sizeof(tuple_entry));
 
         entry->tuple = tuple;
         entry->records = isNew;
@@ -1251,7 +1251,7 @@ namespace MeldInterpret{
 
     tuple_t
     MeldInterpretVMCore::queue_dequeue(tuple_queue *queue, int *isNew) {
-        tuple_entry *entry = queue_pop_tuple(queue);
+        tuple_entry *entry = (tuple_entry*)queue_pop_tuple(queue);
         queue ->length--;
 
         tuple_t tuple = entry->tuple;
@@ -1277,7 +1277,7 @@ namespace MeldInterpret{
     void
     MeldInterpretVMCore::p_enqueue(tuple_pqueue *queue, meld_int priority, tuple_t tuple,
               NodeID rt, record_type isNew) {
-        tuple_pentry *entry = malloc(sizeof(tuple_pentry));
+        tuple_pentry *entry = (tuple_pentry*)malloc(sizeof(tuple_pentry));
 
         entry->tuple = tuple;
         entry->records = isNew;
@@ -1305,7 +1305,7 @@ namespace MeldInterpret{
         for(i = 0; i < NUM_TYPES; ++i)
             total += TYPE_NUMARGS(i) * 2;
 
-        arguments = malloc(total);
+        arguments = (unsigned char*)malloc(total);
         unsigned char *start = arguments + 2*NUM_TYPES;
         unsigned char offset, size;
 
@@ -1372,7 +1372,7 @@ namespace MeldInterpret{
 
     /* ************* AGGREGATE RELATED FUNCTIONS ************* */
 
-    static inline
+    inline
     bool MeldInterpretVMCore::aggregate_accumulate(int agg_type, void *acc, void *obj, int count) {
         switch (agg_type) {
         case AGG_SET_UNION_INT:
@@ -1429,7 +1429,7 @@ namespace MeldInterpret{
         while(1);
     }
 
-    static inline bool
+    inline bool
     MeldInterpretVMCore::aggregate_changed(int agg_type, void *v1, void *v2) {
         switch(agg_type) {
         case AGG_FIRST:
@@ -1462,7 +1462,7 @@ namespace MeldInterpret{
         while(1);
     }
 
-    static inline void
+    inline void
     MeldInterpretVMCore::aggregate_seed(int agg_type, void *acc, void *start, int count, size_t size) {
         switch(agg_type) {
         case AGG_FIRST:
@@ -1494,7 +1494,7 @@ namespace MeldInterpret{
         while(1);
     }
 
-    static inline void
+    inline void
     MeldInterpretVMCore::aggregate_free(tuple_t tuple, unsigned char field_aggregate, unsigned char type_aggregate) {
         switch(type_aggregate) {
         case AGG_FIRST:
@@ -1520,9 +1520,8 @@ namespace MeldInterpret{
         }
     }
 
-    static inline
-    void MeldInterpretVMCore::aggregate_recalc(tuple_entry *agg, Register *reg,
-                          bool first_run) {
+    inline
+    void MeldInterpretVMCore::aggregate_recalc(tuple_entry *agg, Register *reg, bool first_run) {
         tuple_type type = TUPLE_TYPE(agg->tuple);
 
         tuple_entry *cur;
@@ -1766,7 +1765,7 @@ namespace MeldInterpret{
         memcpy(tuple_cpy, tuple, TYPE_SIZE(type));
 
         /* create aggregate queue */
-        tuple_queue *agg_queue = malloc(sizeof(tuple_queue));
+        tuple_queue *agg_queue = (tuple_queue*)malloc(sizeof(tuple_queue));
 
         queue_init(agg_queue);
 
@@ -2396,7 +2395,7 @@ eval_loop:
                 byte *base = (byte*)pc;
                 ++pc;
                 byte reg_index = FETCH(pc);
-                Register *if_reg = eval_reg (reg_index, &pc, reg);
+                Register *if_reg = (Register*)eval_reg (reg_index, &pc, reg);
 
                 if (!(unsigned char)(*if_reg)) {
 #ifdef DEBUG_INSTRS
@@ -2468,7 +2467,7 @@ eval_loop:
                 byte *base = (byte*)pc;
                 ++pc;
                 byte reg_index = FETCH(pc);
-                Register *if_reg = eval_reg (reg_index, &pc, reg);
+                Register *if_reg = (Register*)eval_reg (reg_index, &pc, reg);
 
                 /* If false, jump to else */
                 if (!(unsigned char)(*if_reg)) {
