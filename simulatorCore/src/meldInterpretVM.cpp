@@ -1,10 +1,8 @@
 #include "meldInterpretVM.h"
-#include "meldInterpretVMCore.h"
 #include "meldInterpretEvents.h"
 #include "meldInterpretMessages.h"
 #include "meldInterpretScheduler.h"
 #include "events.h"
-#include "blinkyBlocksBlock.h"
 
 namespace MeldInterpret{
 
@@ -20,6 +18,7 @@ bool MeldInterpretVM::debugging = false;
 		blockId = (NodeID)b->blockId;
 		hasWork = true;
 		polling = false;
+		deterministicSet = false;
 		currentLocalDate = myGetTime();
 		//block initialization
 		//setColor(0);
@@ -365,9 +364,6 @@ bool MeldInterpretVM::debugging = false;
 	  tuple_do_handle(type, tuple, isNew, registers);
 	}
 
-	/* Used to get blockId from core.c */
-	NodeID MeldInterpretVM::getBlockId (void) { return blockId; }
-
 	/* VM initialization routine */
 	void MeldInterpretVM::vm_init(void) {
 
@@ -434,7 +430,7 @@ bool MeldInterpretVM::debugging = false;
       return blockId;
     }
 
-      inline void MeldInterpretVM::setColor(Color color){
+      void MeldInterpretVM::setColor(Color color){
             setLED(color[0]*255, color[1]*255, color[2]*255, color[3]*255);
       }
       void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){

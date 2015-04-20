@@ -43,16 +43,17 @@ class MeldInterpretVM : public MeldInterpretVMCore{
 		/* An array of 32 registers (pointers) */
 		Register reg[32];
 
-		NodeID neighbors[6];
 		int numNeighbors;
 		int waiting;
 		uint64_t currentLocalDate;
 		static bool debugging;
 		static bool configured;
-		bool hasWork, polling;
+
       public:
             static map<int, MeldInterpretVM*> vmMap;
             static const unsigned char* meld_prog;
+            bool hasWork, polling, deterministicSet;
+            NodeID neighbors[6];
 
 	public:
             BlinkyBlocks::BlinkyBlocksBlock *host;
@@ -81,7 +82,6 @@ class MeldInterpretVM : public MeldInterpretVMCore{
 		void free_chunk();
 		void tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew);
 		void tuple_handle(tuple_t tuple, int isNew, Register *registers);
-		NodeID getBlockId();
 		void vm_init();
 		void vm_alloc();
 		byte getNeighborCount();

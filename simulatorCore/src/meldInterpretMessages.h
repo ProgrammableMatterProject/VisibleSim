@@ -2,6 +2,7 @@
 #define MELDINTERPMESSAGES_H_
 
 #include "network.h"
+#include "meldInterpretVMCore.h"
 
 /* This is the definition of message type as extracted from the oldVM, they may stay unused */
 

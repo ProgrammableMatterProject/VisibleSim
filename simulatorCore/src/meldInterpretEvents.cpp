@@ -9,7 +9,7 @@
 #include "meldInterpretScheduler.h"
 #include "meldInterpretVM.h"
 
-namespace meldInterpret{
+namespace MeldInterpret{
 
 //===========================================================================================================
 //
@@ -229,12 +229,12 @@ const string ComputePredicateEvent::getEventName() {
 
 AddTupleEvent::AddTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t tpl, byte ni): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_COMPUTE_PREDICATE;
+	eventType = EVENT_ADD_TUPLE;
 	tuple = tpl;
 	interface = ni;
 }
 
-AddTupleEvent::AddTupleEvent(ComputePredicateEvent *ev) : BlockEvent(ev) {
+AddTupleEvent::AddTupleEvent(AddTupleEvent *ev) : BlockEvent(ev) {
 	EVENT_CONSTRUCTOR_INFO();
 }
 
@@ -244,7 +244,7 @@ AddTupleEvent::~AddTupleEvent() {
 
 void AddTupleEvent::consumeBlockEvent() {
 	EVENT_CONSUME_INFO();
-	concernedBlock->VM->receive_tuple(1, tuple, interface);
+	concernedBlock->scheduleLocalEvent(EventPtr(new AddTupleEvent(this)));
 }
 
 const string AddTupleEvent::getEventName() {
@@ -259,7 +259,7 @@ const string AddTupleEvent::getEventName() {
 
 RemoveTupleEvent::RemoveTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t tpl, byte ni): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_COMPUTE_PREDICATE;
+	eventType = EVENT_REMOVE_TUPLE;
 	tuple = tpl;
 	interface = ni;
 }
@@ -274,7 +274,7 @@ RemoveTupleEvent::~RemoveTupleEvent() {
 
 void RemoveTupleEvent::consumeBlockEvent() {
 	EVENT_CONSUME_INFO();
-	concernedBlock->VM->receive_tuple(-1, tuple, interface);
+	concernedBlock->scheduleLocalEvent(EventPtr(new RemoveTupleEvent(this)));
 }
 
 const string RemoveTupleEvent::getEventName() {

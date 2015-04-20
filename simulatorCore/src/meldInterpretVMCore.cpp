@@ -1,10 +1,7 @@
-#include "meldInterpretVMCore.h"
-
-#include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include "meldInterpretVM.h"
-#include <stdio.h>
+#include "meldInterpretVMCore.h"
+#include "blinkyBlocksBlock.h"
 
 #ifdef LOG_DEBUG
 // not compiling ...
@@ -28,11 +25,10 @@ execution.
 
 namespace MeldInterpret{
 
-      //const unsigned char* MeldInterpretVMCore::meld_prog;
+      unsigned char * MeldInterpretVMCore::arguments = NULL;
+      const unsigned char * MeldInterpretVMCore::meld_prog = NULL;
 
-    MeldInterpretVMCore::MeldInterpretVMCore() {
-            arguments = NULL;
-            meld_prog = NULL;
+    MeldInterpretVMCore::MeldInterpretVMCore(){
 
             /* Init will always be predicate 0 */
             TYPE_INIT = 0;
@@ -43,8 +39,25 @@ namespace MeldInterpret{
             TYPE_NEIGHBOR = -1;
             TYPE_VACANT = -1;
             TYPE_TAP = -1;
-
     }
+
+    MeldInterpretVMCore::~MeldInterpretVMCore(){
+          return;
+    }
+
+    NodeID MeldInterpretVMCore::getBlockId (void) { return blockId; }
+
+      void MeldInterpretVMCore::setColorWrapper(byte color){
+            setColor(color);
+      }
+      void MeldInterpretVMCore::setLEDWrapper(byte r, byte g, byte b, byte intensity){
+            setLED(r, g, b, intensity);
+      }
+
+      void MeldInterpretVMCore::setColor(byte color){
+      }
+      void MeldInterpretVMCore::setLED(byte r, byte g, byte b, byte intensity){
+      }
 
     inline byte MeldInterpretVMCore::val_is_float(const byte x) {
         return x == 0x00;
@@ -2726,4 +2739,3 @@ eval_loop:
     }
 }
 
-}

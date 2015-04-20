@@ -2,6 +2,7 @@
 #define MELDINTERPEVENTS_H_
 
 #include "buildingBlock.h"
+#include "meldInterpretVMCore.h"
 #include "events.h"
 #include "network.h"
 
@@ -19,7 +20,7 @@ namespace MeldInterpret {
 class VMSetIdEvent : public BlockEvent {
 public:
 
-	VMSetIdEvent(uint64_t, BuildingBlock *conBlock);
+	VMSetIdEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
 	VMSetIdEvent(VMSetIdEvent *ev);
 	~VMSetIdEvent();
 	void consumeBlockEvent() {};
@@ -36,7 +37,7 @@ public:
 class VMStopEvent : public BlockEvent {
 public:
 
-	VMStopEvent(uint64_t, BuildingBlock *conBlock);
+	VMStopEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
 	VMStopEvent(VMStopEvent *ev);
 	~VMStopEvent();
 	void consumeBlockEvent() {};
@@ -56,7 +57,7 @@ public:
 	MessagePtr message;
 	P2PNetworkInterface *sourceInterface;
 
-	VMSendMessageEvent(uint64_t, BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni);
+	VMSendMessageEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni);
 	VMSendMessageEvent(VMSendMessageEvent *ev);
 	~VMSendMessageEvent();
 	void consumeBlockEvent();
@@ -73,7 +74,7 @@ class VMHandleDebugCommandEvent : public BlockEvent {
 
 public:
 
-	VMHandleDebugCommandEvent(uint64_t, BuildingBlock *conBlock);
+	VMHandleDebugCommandEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
 	VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev);
 	~VMHandleDebugCommandEvent();
 	void consumeBlockEvent();
@@ -106,7 +107,7 @@ public:
 class VMEndPollEvent : public BlockEvent {
 public:
 
-	VMEndPollEvent(uint64_t, BuildingBlock *conBlock);
+	VMEndPollEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
 	VMEndPollEvent(VMEndPollEvent *ev);
 	~VMEndPollEvent();
 	void consumeBlockEvent();

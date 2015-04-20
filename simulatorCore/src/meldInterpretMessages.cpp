@@ -1,12 +1,15 @@
 #include "meldInterpretMessages.h"
 #include "meldInterpretVM.h"
 
+
+namespace MeldInterpret{
+
 AddTupleMessage::AddTupleMessage(tuple_t tpl) : Message(){
       tuple = tpl;
       type = ADD_TUPLE_MSG_ID;
 }
 
-int AddTupleMessage::size(){
+unsigned int AddTupleMessage::size(){
       return TYPE_SIZE(TUPLE_TYPE(tuple));
 }
 
@@ -20,7 +23,7 @@ RemoveTupleMessage::RemoveTupleMessage(tuple_t tpl) : Message(){
       type = REMOVE_TUPLE_MSG_ID;
 }
 
-int RemoveTupleMessage::size(){
+unsigned int RemoveTupleMessage::size(){
       return TYPE_SIZE(TUPLE_TYPE(tuple));
 }
 
@@ -28,3 +31,4 @@ string RemoveTupleMessage::getMessageName(){
       return "Remove Tuple Message";
 }
 
+}

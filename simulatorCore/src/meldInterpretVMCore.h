@@ -1,5 +1,5 @@
-#ifndef __MELDINTERPVMCORE_H_
-#define __MELDINTERPVMCORE_H_
+#ifndef MELDINTERPVMCORE_H_
+#define MELDINTERPVMCORE_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -494,9 +494,9 @@ instructions.
 #define TYPE_ARG_TYPE(x, f) ((unsigned char)(*TYPE_ARG_DESC(x, f)))
 
 /* Returns total size of predicate x */
-#define TYPE_SIZE(x)       ((size_t)arguments[(x) * 2 + 1])
+#define TYPE_SIZE(x)       ((size_t)MeldInterpretVMCore::arguments[(x) * 2 + 1])
 /* Returns address of arguments of type x in arguments array */
-#define TYPE_ARGS(x)       (arguments + arguments[(x) * 2])
+#define TYPE_ARGS(x)       (MeldInterpretVMCore::arguments + MeldInterpretVMCore::arguments[(x) * 2])
 
 /* Returns argument (type?) number f of type x */
 #define TYPE_ARG(x, f)     (TYPE_ARGS(x)+2*(f))
@@ -614,30 +614,27 @@ public:
 
 public:
 	MeldInterpretVMCore();
-	~MeldInterpretVMCore();
+      ~MeldInterpretVMCore();
 
 	/* ************* EXTERN DECLARATIONS  ************* */
 
-	static const unsigned char *meld_prog;
+	static const unsigned char * meld_prog;
 	typedef Register (*extern_funct_type)();
 	extern_funct_type extern_functs[];
 	int extern_functs_args[];
 	char *tuple_names[];
 	char *rule_names[];
-	unsigned char *arguments;
+	static unsigned char * arguments;
 	NodeID blockId;
 
-	NodeID getBlockId (void);
-	void print_newTuples (void);
-	void print_newStratTuples (void);
-      inline void setColorWrapper(byte color){
-            setColor(color);
-      }
-      inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
-      setLED(r, g, b, intensity);
-      }
-      virtual void setColor(byte color);
-      virtual void setLED(byte r, byte g, byte b, byte intensity);
+	void print_newTuples ();
+	void print_newStratTuples ();
+      void setColorWrapper(byte color);
+      void setLEDWrapper(byte r, byte g, byte b, byte intensity);
+      NodeID getBlockId();
+      void setColor(byte color);
+      void setLED(byte r, byte g, byte b, byte intensity);
+
 
 	/* ************* TUPLE HANDLING FUNCTIONS  ************* */
 
@@ -676,8 +673,8 @@ public:
 		return tuple;
 	}
 
-	void tuple_handle(tuple_t tuple, int isNew, Register *reg);
-	void tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew);
+	virtual void tuple_handle(tuple_t tuple, int isNew, Register *reg) = 0;
+	virtual void tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew) = 0;
 	void tuple_do_handle(tuple_type type,	void *tuple, int isNew, Register *reg);
 	void tuple_print(tuple_t tuple, FILE *fp);
 
@@ -700,13 +697,12 @@ public:
 
 
       /* ************* LOW LEVEL INSTRUCTION FUNCTION ************* */
-      inline byte val_is_float(const byte x);
-      inline byte val_is_int(const byte x);
-      inline byte val_is_field(const byte x);
+      byte val_is_float(const byte x);
+      byte val_is_int(const byte x);
+      byte val_is_field(const byte x);
       void * eval_field (tuple_t tuple, const unsigned char **pc);
       int execute_iter (const unsigned char *pc, Register *reg, int isNew, int isLinear);
-      inline void execute_run_action (const unsigned char *pc, Register *reg, int isNew);
-
+      void execute_run_action (const unsigned char *pc, Register *reg, int isNew);
       void * eval_reg(const unsigned char value, const unsigned char **pc, Register *reg);
       void * eval_int (const unsigned char **pc);
       void * eval_float (const unsigned char **pc);
@@ -767,7 +763,7 @@ public:
 
 	/* ************* QUEUE MANAGEMENT PROTOTYPES ************* */
 
-      virtual void enqueueNewTuple(tuple_t tuple, record_type isNew);
+      virtual void enqueueNewTuple(tuple_t tuple, record_type isNew) = 0;
 	tuple_entry* queue_enqueue(tuple_queue *queue, tuple_t tuple, record_type isNew);
 	bool queue_is_empty(tuple_queue *queue);
 	tuple_t queue_dequeue(tuple_queue *queue, int *isNew);
@@ -798,5 +794,4 @@ public:
 
 }
 
-#endif /* __MELDINTERPVMCORE_H_ */
-
+#endif /* MELDINTERPVMCORE_H_ */

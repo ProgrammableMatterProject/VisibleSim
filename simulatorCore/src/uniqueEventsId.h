@@ -36,6 +36,9 @@
 #define EVENT_EXPECTED_COMPUTATION_PAUSE			1062
 #define EVENT_EFFECTIVE_COMPUTATION_PAUSE			1063
 #define EVENT_END_POLL								1064
+#define EVENT_COMPUTE_PREDICATE                             1065
+#define EVENT_ADD_TUPLE                                     1066
+#define EVENT_REMOVE_TUPLE                                  1067
 
 // General
 #define EVENT_ADD_NEIGHBOR							1052
