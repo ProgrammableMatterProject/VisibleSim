@@ -6,6 +6,7 @@
 	
 	<blockList color="0,255,0" size="1,1,1" blocksize="40,40,41" >
 
+		<block position="5,5,4"/>
 		<block position="5,5,5"/>
 		<block position="5,5,6"/>
 		<block position="5,5,7"/>

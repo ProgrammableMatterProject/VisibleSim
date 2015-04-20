@@ -79,6 +79,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			info << "Setcolor scheduled" << endl;
 			}
 			break;
+		//case EVENT_PLAY_NOTE:
 		case EVENT_NI_RECEIVE:
 			{
 			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
