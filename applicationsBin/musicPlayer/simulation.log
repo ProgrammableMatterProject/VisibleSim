@@ -1,0 +1,7 @@
+[1;33mStarting Blinky Blocks simulation (main) ...[0m
+[1;34mSimulator constructor[0m
+[1;34m  config.xml successfully loaded [0m
+[1;34mBlinkyBlocksSimulator constructor[0m
+grid size : 10 x 10 x 10
+World constructor
+[1;31mBlinkyBlocksWorld constructor[0m
