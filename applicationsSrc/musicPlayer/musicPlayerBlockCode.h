@@ -14,8 +14,10 @@
 #include "blinkyBlocksSimulator.h"
 #include <boost/random.hpp>
 #include "color.h"
+#include <vector>
 
 class SynchroMessage;
+class Note;
 typedef boost::shared_ptr<SynchroMessage> SynchroMessage_ptr;
 
 class MusicPlayerBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
@@ -24,6 +26,7 @@ class MusicPlayerBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	bool cycle;
 	int64_t delay;
 	int idMessage;
+	std::vector<Note> toPlay;
 
 public:
 	MusicPlayerBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
@@ -33,7 +36,7 @@ public:
 	void init();
 	void processLocalEvent(EventPtr pev);
 	Color getColor(uint64_t time);
-	
+	std::vector<Note> Score();	
 	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, uint64_t clock, int id);	
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 };
@@ -49,8 +52,11 @@ public:
 };
 
 class Note {
+public:
 	int startTime;
 	unsigned int frequency;
 	unsigned int duration;
-}
+	Note(int sTime, unsigned int freq, unsigned int time);
+	~Note();
+};
 #endif /* BBCYCLEBLOCKCODE_H_ */

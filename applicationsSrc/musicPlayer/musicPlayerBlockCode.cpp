@@ -15,6 +15,7 @@
 #include "musicPlayerBlockCode.h"
 #include "musicPlayerEvents.h"
 #include "trace.h"
+#include <vector>
 
 using namespace std;
 using namespace BlinkyBlocks;
@@ -28,17 +29,19 @@ MusicPlayerBlockCode::MusicPlayerBlockCode(BlinkyBlocksBlock *host): BlinkyBlock
 }
 
 MusicPlayerBlockCode::~MusicPlayerBlockCode() {
-	OUTPUT << "BbCycleBlockCode destructor" << endl;
+	OUTPUT << "musicPlayerBlockCode destructor" << endl;
 }
 
 void MusicPlayerBlockCode::init() {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
-	stringstream info;	
+	stringstream info;
+	std::vector<Note> song(Score());
 	Color c = PINK;
 	block2Answer=NULL;
 	cycle=true;
 	if(hostBlock->blockId==1){
-		idMessage=0;	
+		idMessage=0;
+		BlinkyBlocks::getScheduler()->schedule(new SpreadSongEvent(BlinkyBlocks::getScheduler()->now(),hostBlock));	
 		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now()+SYNC_PERIOD,hostBlock));	
 		info << "This block is the Master Block" << endl;
 	}
@@ -49,7 +52,7 @@ void MusicPlayerBlockCode::init() {
 void MusicPlayerBlockCode::startup() {
 	stringstream info;
 	delay=0;
-	info << "  Starting BbCycleBlockCode in block " << hostBlock->blockId;
+	info << "  Starting MusicPlayerBlockCode in block " << hostBlock->blockId;
 	init();
 }
 
@@ -79,7 +82,11 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			info << "Setcolor scheduled" << endl;
 			}
 			break;
-		//case EVENT_PLAY_NOTE:
+		case EVENT_SPREAD_SONG:
+			{
+				
+			}
+			break;
 		case EVENT_NI_RECEIVE:
 			{
 			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
@@ -136,6 +143,22 @@ void MusicPlayerBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept,
 	}
 }
 
+void MusicPlayerBlockCode::sendSongToNeighbors (P2PNetworkInterface *p2pExcept){
+	P2PNetworkInterface * p2p;
+	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
+
+
+}
+
+std::vector<Note> MusicPlayerBlockCode::Score(){ //We can take a midi file and break it down or just fill the score manually
+	std::vector<Note> score;
+	score.push_back(Note(1000,523.25,2000));
+	score.push_back(Note(2500,523.25,3500));
+	score.push_back(Note(4000,587.33,5000));
+	score.push_back(Note(5500,659.26,6500)); 
+	return score;
+}
+
 SynchroMessage::SynchroMessage(uint64_t t, int hop, int ids) :Message(){
 	id = SYNC_MSG_ID;
 	idSync=ids;
@@ -145,3 +168,11 @@ SynchroMessage::SynchroMessage(uint64_t t, int hop, int ids) :Message(){
 
 SynchroMessage::~SynchroMessage(){
 }
+
+Note::Note(int sTime, unsigned int freq, unsigned int time){
+	startTime=sTime;
+	frequency=freq;
+	duration=time;
+}
+
+Note::~Note(){}
