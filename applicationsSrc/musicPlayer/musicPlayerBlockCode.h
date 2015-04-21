@@ -9,6 +9,7 @@
 #define MUSICPLAYERBLOCKCODE_H_
 
 #define SYNC_MSG_ID	9002
+#define SCORE_MSG_ID	9009
 
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksSimulator.h"
@@ -17,8 +18,10 @@
 #include <vector>
 
 class SynchroMessage;
+class ScoreMessage;
 class Note;
 typedef boost::shared_ptr<SynchroMessage> SynchroMessage_ptr;
+typedef boost::shared_ptr<ScoreMessage> ScoreMessage_ptr;
 
 class MusicPlayerBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
@@ -38,6 +41,7 @@ public:
 	Color getColor(uint64_t time);
 	std::vector<Note> Score();	
 	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, uint64_t clock, int id);	
+	void sendSongToNeighbors (P2PNetworkInterface *except, std::vector<Note> score);
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 };
 
@@ -49,6 +53,13 @@ public:
 	SynchroMessage(uint64_t t, int hop, int id);
 	unsigned int size() { return(17); }
 	~SynchroMessage();
+};
+
+class ScoreMessage : public Message {
+public:
+	std::vector<Note> score;
+	ScoreMessage(std::vector<Note> song);
+	~ScoreMessage();
 };
 
 class Note {
