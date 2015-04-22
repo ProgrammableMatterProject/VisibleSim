@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{amsmath}
+
+\title{VisibleSim Manual}
+\author{Julien Bourgeois, Benoît Piranda, Thadeu Knychala Tucci, André Naz}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+VisibleSim is a general discrete event simulator (DES) for modular robot systems.
+
+\section{Installation}
+
+\section{User applications in VisibleSim}
+
+\subsection{Examples of applications}
+
+\subsection{Implementing a new application}
+
+\subsection{Running an application}
+\subsubsection{C++ application}
+\subsubsection{Meld application}
+\subsubsection{Command line arguments}
+
+\section{Embedded debugger}
+
+\section{Local clock Simulation}
+
+VisibleSim supports local clock simulation. We present here the programming API and the clock model.
+
+\subsection{Programming API}
+
+\subsection{Clock model}
+
+\cite{allan1987time} proposes a general model for oscillators:
+\begin{equation}
+x(t) = x_0 + y_0t + \frac{1}{2}Dt^2 + \epsilon(t)
+\end{equation}
+where $t$ is the simulation time (ie. real-time), $x(t)$ is the local time, $x_0$ is the time offset, $y_0$ is the frequency offset, $D$ is the frequency drift and $\epsilon(t)$ is the random noise. $\epsilon(t)$ is not deterministic. \cite{ma2007understanding} assume that $\epsilon(t)$ follows a Gaussian distribution $\mathcal{N}(0,\sigma^2)$. \cite{ring2010clock} explanes how to enhance DES with efficient local clock simulation.
+
+\bibliographystyle{plain}
+\bibliography{manual}
+
+\end{document}
