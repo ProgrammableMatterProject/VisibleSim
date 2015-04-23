@@ -27,6 +27,7 @@ class MusicPlayerBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
 	bool received[1000];
 	bool b[6];
+	int rootInterface;
 	int64_t delay;
 	int idMessage;
 	std::vector<Note> toPlay;

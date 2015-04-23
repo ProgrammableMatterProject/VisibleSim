@@ -144,22 +144,26 @@ void MusicPlayerBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept,
 void MusicPlayerBlockCode::sendSongToNeighbors (P2PNetworkInterface *p2pExcept, std::vector<Note> score){
 	P2PNetworkInterface * p2p;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
+	stringstream info;
 	bool sent=false;
-
+	ScoreMessage *message = new ScoreMessage(score);
+	
 	for (int i=0; i<6; i++){
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
-		if (p2p->connectedInterface && p2p!=p2pExcept && !b[i]){
-			ScoreMessage *message = new ScoreMessage(score);
+
+		if (p2p->connectedInterface && p2p!=p2pExcept && !b[i] && !sent){
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
 			sent=true;
 			b[i]=true;
-			break;
+		}
+
+		if(p2p==p2pExcept){
+			rootInterface=i;
+			b[i]=true;
 		}
 	}
-		if (!sent){
-			ScoreMessage *message = new ScoreMessage(score);
-			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2pExcept));
-		}	
+	if(!sent)
+		BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, bb->getInterface(NeighborDirection::Direction(rootInterface))));
 }
 
 std::vector<Note> MusicPlayerBlockCode::Score(){ //We can take a midi file and break it down or just fill the score manually
@@ -174,8 +178,6 @@ std::vector<Note> MusicPlayerBlockCode::Score(){ //We can take a midi file and b
 	score.push_back(Note(1000,573.25,2000));
 	score.push_back(Note(1000,583.25,2000));
 	score.push_back(Note(1000,593.25,2000));
-	score.push_back(Note(1000,5003.25,2000));
-	score.push_back(Note(2500,5200.25,3500));
 	score.push_back(Note(4000,587.33,5000));
 	score.push_back(Note(5500,659.26,6500)); 
 	return score;
