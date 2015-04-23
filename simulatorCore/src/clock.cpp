@@ -7,7 +7,10 @@ namespace BaseSimulator {
   Clock::Clock(ClockType clockType, BuildingBlock *h) {
     hostBlock = h;
     type = clockType;
-    Clock::setClockProperties(clockType);
+    setClockProperties(clockType);
+
+    x0 = BaseSimulator::getScheduler()->now();
+    generator =  boost::rand48(hostBlock->blockId);
   }
 	
   void Clock::setClockProperties(ClockType clockType) {
@@ -15,14 +18,37 @@ namespace BaseSimulator {
     case XMEGA_RTC_OSC1K_ULPRC:
       resolution = RESOLUTION_1MS;
       accuracy = ACCURACY_320000PPM;
+      D=0;
+      y0=1;
+      cerr << "warning XMEGA_RTC_OSC1K_ULPRC oscillator not supported yet!" << endl;
       break;
     case XMEGA_RTC_OSC1K_CRC:
+      {
       resolution = RESOLUTION_1MS;
       accuracy = ACCURACY_10000PPM;
+      
+      // D, y0, x0, errorSD
+      double mean[3] = { -1.179717*pow(10,-11), 0.9922277, 2080.197};
+      double sd[3] = {3.060884*pow(10,-12), 0.001851285, 294.832};
+      double v[3];
+      
+      for (int i = 0; i < 3; i++) {
+	boost::mt19937 uGenerator(hostBlock->blockId);
+	boost::normal_distribution<double> normalDist(mean[i],sd[i]);
+	boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > generator(uGenerator, normalDist);
+	v[i] = generator();
+      }
+      D = v[0];
+      y0 = v[1];
+      sigma = v[2];
+      }
       break;
     case XMEGA_RTC_OSC32K_EXT:
       resolution = RESOLUTION_1MS;
       accuracy = ACCURACY_100PPM;
+      D=0;
+      y0=1;
+      cerr << "warning  XMEGA_RTC_OSC32K_EXT oscillator not supported yet!" << endl;
       break;
     default:
       cerr << "Undefined clock resolution" << endl;
@@ -52,57 +78,11 @@ namespace BaseSimulator {
     }
   }
   
-  LinearDriftClock::LinearDriftClock(Clock::ClockType clockType, BuildingBlock *h) : Clock(clockType,h) {
-    double accuracyPercentage = 0;
-    double maxA = 0;
-    double minA = 0;
-  
-    accuracyPercentage = (float)accuracy/pow(10,6); // ppm to %
-    maxA = 1 + accuracyPercentage;
-    minA = 1 - accuracyPercentage;
-    
-    startTime = BaseSimulator::getScheduler()->now();
-    generator =  boost::rand48(hostBlock->blockId);
-    a = (generator()/(double)RAND_MAX)*(maxA-minA) + minA;
-    b = (double) startTime * a;
-	
-    setClockProperties(clockType);
-  }
-  
-  void LinearDriftClock::setClockProperties(Clock::ClockType clockType) {
-    switch (clockType) {
-    case Clock::XMEGA_RTC_OSC1K_CRC: {
-      double mean = 0; //1.06605 * pow(10,10);
-      double variance = 0;//3.60608 * pow(10,20);
-      boost::mt19937 uGenerator(hostBlock->blockId);
-      boost::normal_distribution<double> normalDist(mean,sqrt(variance));
-      boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > generator(uGenerator, normalDist);
-      
-      double sigma2 = 0;
-      do {
-	sigma2 =  generator();
-      } while (sigma2 < 0);
-      sigma = sqrt(sigma2);
-    }
-      break;
-    case Clock::XMEGA_RTC_OSC1K_ULPRC:
-      cerr << "Noise variation not defined for clock XMEGA_RTC_OSC1K_ULPRC" << endl;
-      sigma = 0; 
-      break;
-    case Clock::XMEGA_RTC_OSC32K_EXT:
-      cerr <<  "Noise variation not defined for clock XMEGA_RTC_OSC32K_EXT" << endl;
-      sigma = 0;
-      break;
-    default:
-      cerr << "Undefined clock resolution" << endl;
-    }
-  }
-
-  uint64_t LinearDriftClock::getTimeMS(uint64_t simTime) {
+  uint64_t Clock::getTimeMS(uint64_t simTime) {
     return getTimeUS(simTime)/1000;
   }
 
-  uint64_t LinearDriftClock::getTimeUS(uint64_t simTime) {
+  uint64_t Clock::getTimeUS(uint64_t simTime) {
     double localTime = 0;
     double noise = 0;
 
@@ -130,15 +110,9 @@ namespace BaseSimulator {
 	
     noise = generator();
 
-    localTime = a*((double)simTime) + b + noise;
+    localTime = (1.0/2.0)*D*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise;
     localTime = max(minL,localTime);
     localTime = min(maxL,localTime);
-
-    //do {
-    //  noise = generator();
-    //  localTime = a*(simulationTime-startTime) + b + noise;
-    //  cout << localTime << endl;
-    //} while (! ((localTime <= minL) && (localTime >= maxL)));
 
     ReferencePoint p = ReferencePoint((uint64_t)localTime,simTime); 
     if (it == referencePoints.end()) {
@@ -150,7 +124,7 @@ namespace BaseSimulator {
     return (uint64_t)localTime;
   }
   
-  uint64_t LinearDriftClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+  uint64_t Clock::getSchedulerTimeForLocalTime(uint64_t localTime) {
     double noise = 0;
     double simTime = 0;
 
@@ -179,8 +153,24 @@ namespace BaseSimulator {
     }
   
     noise = generator();
-  
-    simTime = ((double)localTime - b - noise)/a; 
+
+    double delta =  pow(y0,2) - 4 * (1.0/2.0)*D * (x0+noise-(double)localTime);
+    if (delta > 0) {
+      double s1 = (-y0 + sqrt(delta)) / D;
+      double s2 = (-y0 - sqrt(delta)) / D;
+      // we take the value closest to localTime
+      if (abs(s1-localTime) < abs(s2-localTime)) {
+	simTime = s1;
+      } else {
+	simTime = s2;
+      }
+    } else if (delta == 0) {
+      simTime = -y0 / D;
+    } else {
+      cerr << "delta should be positive!" << endl;
+      simTime = minL;
+    }
+
     simTime = max(minL,simTime);
     simTime = min(maxL,simTime);
 
@@ -194,7 +184,7 @@ namespace BaseSimulator {
     return (uint64_t) simTime;
   }
   
-  void LinearDriftClock::cleanReferencePoints() {
+  void Clock::cleanReferencePoints() {
     uint64_t simTime = getScheduler()->now();
 
     for (list<ReferencePoint>::iterator it = referencePoints.begin();

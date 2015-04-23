@@ -93,8 +93,7 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlo
 	}
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
 	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
-	clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC1K_CRC, this);
-	//clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC32K_EXT, blockId);
+	clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {
