@@ -9,7 +9,7 @@
 #define MUSICPLAYERBLOCKCODE_H_
 
 #define SYNC_MSG_ID	9002
-#define SCORE_MSG_ID	9009
+#define SCORE_MSG_ID	9001
 
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksSimulator.h"
@@ -26,7 +26,7 @@ typedef boost::shared_ptr<ScoreMessage> ScoreMessage_ptr;
 class MusicPlayerBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
 	bool received[1000];
-	bool cycle;
+	bool b[6];
 	int64_t delay;
 	int idMessage;
 	std::vector<Note> toPlay;

@@ -35,6 +35,7 @@ MusicPlayerBlockCode::~MusicPlayerBlockCode() {
 void MusicPlayerBlockCode::init() {
 	stringstream info;
 	block2Answer=NULL;
+	b[6]={false};
 	if(hostBlock->blockId==1){
 		idMessage=0;
 		std::vector<Note> song(Score());
@@ -143,20 +144,38 @@ void MusicPlayerBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept,
 void MusicPlayerBlockCode::sendSongToNeighbors (P2PNetworkInterface *p2pExcept, std::vector<Note> score){
 	P2PNetworkInterface * p2p;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
-	
+	bool sent=false;
+
 	for (int i=0; i<6; i++){
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
-		if (p2p->connectedInterface && p2p!=p2pExcept){
+		if (p2p->connectedInterface && p2p!=p2pExcept && !b[i]){
 			ScoreMessage *message = new ScoreMessage(score);
 			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
+			sent=true;
+			b[i]=true;
+			break;
 		}
-	}	
+	}
+		if (!sent){
+			ScoreMessage *message = new ScoreMessage(score);
+			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2pExcept));
+		}	
 }
 
 std::vector<Note> MusicPlayerBlockCode::Score(){ //We can take a midi file and break it down or just fill the score manually
 	std::vector<Note> score;
+	score.push_back(Note(1000,503.25,2000));
+	score.push_back(Note(1000,513.25,2000));
 	score.push_back(Note(1000,523.25,2000));
-	score.push_back(Note(2500,523.25,3500));
+	score.push_back(Note(1000,533.25,2000));
+	score.push_back(Note(1000,543.25,2000));
+	score.push_back(Note(1000,553.25,2000));
+	score.push_back(Note(1000,563.25,2000));
+	score.push_back(Note(1000,573.25,2000));
+	score.push_back(Note(1000,583.25,2000));
+	score.push_back(Note(1000,593.25,2000));
+	score.push_back(Note(1000,5003.25,2000));
+	score.push_back(Note(2500,5200.25,3500));
 	score.push_back(Note(4000,587.33,5000));
 	score.push_back(Note(5500,659.26,6500)); 
 	return score;
@@ -172,6 +191,7 @@ SynchroMessage::SynchroMessage(uint64_t t, int hop, int ids) :Message(){
 SynchroMessage::~SynchroMessage(){}
 
 ScoreMessage::ScoreMessage(std::vector<Note> song) :Message(){
+	id = SCORE_MSG_ID;
 	score=song;
 }
 
