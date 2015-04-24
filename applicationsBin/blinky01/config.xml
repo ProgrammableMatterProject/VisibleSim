@@ -1,11 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
 
-<!-- to disable debugging mode
-<vm serverport="5000" vmPath="/home/ubuntu/Bureau/CMU/meld/meld" programPath="/home/ubuntu/Bureau/CMU/meld/examples/ends.m"  />
-<vm serverport="5000" vmPath="/home/ubuntu/Bureau/CMU/meld/meld" programPath="/home/ubuntu/Bureau/CMU/meld/examples/ends.m" debugging="True" />
-<vm serverport="5000" vmPath="VMEmulator" programPath="ends.m" debugging="True" />
--->
-<vm serverport="5000" vmPath="/home/andre/Bureau/git-repositories/meld/meld-bbsim" programPath="./rainbow.m" debugging="False" />
+<vm serverport="5000" vmPath="./meld/meld/meld-bbsim" programPath="./rainbow.m" debugging="False" />
 
 <world gridsize="10,10,10" windowSize="1800,900">
 	<camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
@@ -32,13 +27,6 @@
 		<block position="5,8,5"/> 
 		
 	</blockList>
-	<scenario autostart="True">
-		<event type="tap" time="1.0" id="4" />
-		<event type="debug" open="true" />
-		<event type="selectBlock" time="1.2" id="2" />	
-		<event type="addBlock" time="5.0" position="5,5,4" />
-		<event type="selectBlock" time="5.2" /> <!-- unselect -->		
-	</scenario>
 </world>
 
 

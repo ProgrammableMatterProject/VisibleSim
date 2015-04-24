@@ -1,0 +1,16 @@
+DETERMINISM = -DSIMD
+
+#to remove depricated char* warnings
+NOSTRINGWARN = -Wno-write-strings
+
+CFLAGS += $(DETERMINISM)
+
+CXX = g++
+
+ifeq (-DSIMD, $(DETERMINISM))
+	SRCS += vm/determinism.cpp
+endif
+
+-include Makefile.common
+
+# DO NOT DELETE

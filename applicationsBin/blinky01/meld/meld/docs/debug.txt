@@ -1,0 +1,29 @@
+To enable meld development, especially on the blinkyblocks, we are
+developing a debugger which will help debug the system, both under
+simulation and on the real hardware.  This is an initial spec for the
+simulator version.
+
+Commands we would like to support:
+
+<block>: a block id
+<range>: <block>-<block>
+<fact>: the name of a fact
+
+Dump [<block>|<range>] [<fact>]
+     dump the state of the system
+     if <block> is specified, limit it to the specified block or range of blocks
+     if <fact> is specified, limit it to a particular fact
+
+breakpoint [<block>] [<fact>] [<action>] [<sense>]
+     stop execution when 
+     + <fact>: <fact> is proven
+     + -<fact>: when <fact> is retracted (or deleted if linear)
+     + <action>: an action is taken.  Action can be sendmsg, setcolor
+     + <sense>: a sense fact is instantied, e.g., tap, getmsg, neighbor
+
+continue [<block>]
+     continue execution of system or a particular block
+ 
+
+
+

@@ -1,0 +1,3680 @@
+
+api/api.hpp,190
+#define API_H_API_H_2,15
+namespace api {api12,160
+    typedef uint64_t message_type;message_type14,252
+    static const size_t MAXLENGTH = 512 / sizeof(message_type);MAXLENGTH15,287
+
+api/mpi.cpp,438
+namespace api {api8,82
+    boost::mpi::communicator *world;world9,98
+    void send_message(const db::node::node_id id, message_type *msg) {send_message12,168
+    void poll(sched::base *sched) {poll22,496
+    message_type *create_message(const db::simple_tuple *tuple) {create_message42,1323
+    bool on_current_process(const db::node::node_id id) {on_current_process51,1609
+    void init(int argc, char **argv) {init55,1736
+
+api/mpi.hpp,109
+#define API_H_API_H_2,15
+namespace api {api12,160
+    typedef uint64_t message_type;message_type14,252
+
+benchs/instrument.sh,24
+do_run ()do_run21,327
+
+benchs/lib/common.sh,90
+time_run ()time_run4,23
+time_run_n ()time_run_n9,63
+do_time_mpi ()do_time_mpi31,416
+
+benchs/Makefile,0
+
+benchs/mix.sh,0
+
+benchs/mix_even.sh,24
+do_run ()do_run13,173
+
+benchs/mpi.sh,0
+
+benchs/mpi_even.sh,24
+do_run ()do_run23,285
+
+benchs/threads.sh,38
+do_time_sched ()do_time_sched20,365
+
+benchs/threads_even.sh,24
+do_run ()do_run23,293
+
+client/index.html,0
+
+client/springy.js,4732
+var Graph = function() {Graph28,1150
+var Node = function(id, data) {Node32,1194
+var Edge = function(id, source, target, data) {Edge37,1300
+Graph.prototype.reset = function () {Graph.reset44,1468
+Graph.prototype.addNode = function(node) {Graph.addNode56,1676
+Graph.prototype.addEdge = function(edge) {Graph.addEdge67,1868
+Graph.prototype.newNode = function(data) {Graph.newNode97,2555
+Graph.prototype.getNode = function(id) {Graph.getNode103,2684
+Graph.prototype.newEdge = function(source, target, data) {Graph.newEdge107,2754
+Graph.prototype.getEdges = function(node1, node2) {Graph.getEdges114,2953
+Graph.prototype.removeNode = function(node) {Graph.removeNode124,3249
+Graph.prototype.detachNode = function(node) {Graph.detachNode140,3586
+Graph.prototype.removeEdge = function(edge) {Graph.removeEdge152,3877
+Graph.prototype.merge = function(data) {Graph.merge185,4650
+Graph.prototype.filterNodes = function(fn) {Graph.filterNodes206,5217
+Graph.prototype.filterEdges = function(fn) {Graph.filterEdges215,5388
+Graph.prototype.addGraphListener = function(obj) {Graph.addGraphListener225,5560
+Graph.prototype.notify = function() {Graph.notify229,5647
+Layout.ForceDirected = function(graph, stiffness, repulsion, damping) {Layout.ForceDirected237,5792
+Layout.ForceDirected.prototype.point = function(node) {Layout.ForceDirected.point249,6256
+Layout.ForceDirected.prototype.spring = function(edge) {Layout.ForceDirected.spring258,6571
+Layout.ForceDirected.prototype.eachNode = function(callback) {Layout.ForceDirected.eachNode295,7787
+Layout.ForceDirected.prototype.eachEdge = function(callback) {Layout.ForceDirected.eachEdge303,8002
+Layout.ForceDirected.prototype.eachSpring = function(callback) {Layout.ForceDirected.eachSpring311,8211
+Layout.ForceDirected.prototype.applyCoulombsLaw = function() {Layout.ForceDirected.applyCoulombsLaw320,8390
+Layout.ForceDirected.prototype.applyHookesLaw = function() {Layout.ForceDirected.applyHookesLaw337,8986
+Layout.ForceDirected.prototype.attractToCentre = function() {Layout.ForceDirected.attractToCentre349,9455
+Layout.ForceDirected.prototype.updateVelocity = function(timestep) {Layout.ForceDirected.updateVelocity357,9671
+Layout.ForceDirected.prototype.updatePosition = function(timestep) {Layout.ForceDirected.updatePosition366,9995
+Layout.ForceDirected.prototype.totalEnergy = function(timestep) {Layout.ForceDirected.totalEnergy375,10316
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }; // stolen from coffeescript, thanks jashkenas! ;-)__bind385,10544
+Layout.ForceDirected.prototype.start = function(interval, render, done) {Layout.ForceDirected.start398,10999
+Layout.ForceDirected.prototype.stop = function () {Layout.ForceDirected.stop443,11967
+Layout.ForceDirected.prototype.addAnimation = function (done, step) {Layout.ForceDirected.addAnimation449,12076
+Layout.ForceDirected.prototype.nearest = function(pos) {Layout.ForceDirected.nearest455,12264
+	var min = {node: null, point: null, distance: null};Layout.ForceDirected.var.min.node456,12321
+	var min = {node: null, point: null, distance: null};Layout.ForceDirected.var.min.point456,12321
+	var min = {node: null, point: null, distance: null};Layout.ForceDirected.var.min.distance456,12321
+Layout.ForceDirected.prototype.getBoundingBox = function() {Layout.ForceDirected.getBoundingBox471,12681
+Vector = function(x, y) {Vector497,13292
+Vector.random = function() {Vector.random502,13348
+Vector.prototype.add = function(v2) {Vector.add506,13461
+Vector.prototype.subtract = function(v2) {Vector.subtract510,13553
+Vector.prototype.multiply = function(n) {Vector.multiply514,13650
+Vector.prototype.divide = function(n) {Vector.divide518,13740
+Vector.prototype.magnitude = function() {Vector.magnitude522,13875
+Vector.prototype.normal = function() {Vector.normal526,13971
+Vector.prototype.normalise = function() {Vector.normalise530,14051
+Vector.prototype.angle = function () {Vector.angle534,14136
+Layout.ForceDirected.Point = function(position, mass) {Layout.ForceDirected.Point539,14224
+Layout.ForceDirected.Point.prototype.applyForce = function(force) {Layout.ForceDirected.Point.applyForce546,14424
+Layout.ForceDirected.Spring = function(point1, point2, length, k) {Layout.ForceDirected.Spring551,14550
+function Renderer(interval, layout, clear, drawEdge, drawNode) {Renderer568,15259
+Renderer.prototype.graphChanged = function(e) {Renderer.graphChanged578,15496
+Renderer.prototype.start = function() {Renderer.start582,15563
+Renderer.prototype.stop = function () {Renderer.stop598,15875
+Renderer.prototype.addAnimation = function (done, step) {Renderer.addAnimation604,15953
+
+client/springyui.js,1131
+jQuery.fn.springyUpdate = function () {jQuery.fn.springyUpdate31,1166
+jQuery.fn.message = function (from, to, content) {jQuery.fn.message37,1316
+	var targetBB = {bottomleft: new Vector(-2, -2), topright: new Vector(2, 2)};jQuery.fn.springy.targetBB.bottomleft111,3171
+	toScreen = function(p) {toScreen128,3743
+	fromScreen = function(s) {fromScreen135,4022
+	Node.prototype.getWidth = function() {Node222,6198
+	Node.prototype.getWidth = function() {Node.getWidth222,6198
+	Node.prototype.getHeight = function() {Node.getHeight238,6582
+	function intersect_line_line(p1, p2, p3, p4) {jQuery.fn.springy.intersect_line_line414,11315
+		var tl = {x: p3.x, y: p3.y};jQuery.fn.springy.intersect_line_box.tl.x433,11863
+		var tr = {x: p3.x + w, y: p3.y};intersect_line_box.tr.x434,11894
+		var bl = {x: p3.x, y: p3.y + h};intersect_line_box.bl.x435,11929
+		var br = {x: p3.x + w, y: p3.y + h};intersect_line_box.br.x436,11964
+	function intersect_line_box(p1, p2, p3, w, h) {jQuery.fn.springy.intersect_line_box432,11814
+jQuery.fn.springy = function(params, node_selected, node_dblclicked) {jQuery.fn.springy93,2616
+
+client/ui.js,0
+
+conf.hpp,264
+#define CONF_HPPCONF_HPP3,18
+#define TRIE_MATCHING TRIE_MATCHING20,499
+#define USE_RULE_COUNTING USE_RULE_COUNTING35,878
+#define MARK_OWNED_NODESMARK_OWNED_NODES46,1147
+#define USE_SIMUSE_SIM52,1234
+const bool USE_ALLOCATOR = true;USE_ALLOCATOR55,1297
+
+db/agg_configuration.cpp,1428
+namespace dbdb8,105
+agg_configuration::add_to_set(vm::tuple *tpl, const ref_count many)add_to_set12,126
+agg_configuration::test(vm::tuple *tpl, const field_num agg_field) consttest41,747
+agg_configuration::matches_first_int_arg(const int_val val) constmatches_first_int_arg61,1139
+agg_configuration::generate_max_int(const field_num field) constgenerate_max_int79,1477
+agg_configuration::generate_min_int(const field_num field) constgenerate_min_int104,2017
+agg_configuration::generate_sum_int(const field_num field) constgenerate_sum_int128,2557
+agg_configuration::generate_sum_float(const field_num field) constgenerate_sum_float149,3025
+agg_configuration::generate_first(void) constgenerate_first171,3513
+agg_configuration::generate_max_float(const field_num field) constgenerate_max_float185,3741
+agg_configuration::generate_min_float(const field_num field) constgenerate_min_float209,4291
+agg_configuration::generate_sum_list_float(const field_num field) constgenerate_sum_list_float233,4841
+agg_configuration::do_generate(const aggregate_type typ, const field_num field)do_generate282,6178
+agg_configuration::generate(const aggregate_type typ, const field_num field,generate311,6905
+agg_configuration::~agg_configuration(void)~agg_configuration344,7713
+agg_configuration::print(ostream& cout) constprint349,7767
+operator<<(ostream& cout, const agg_configuration& conf)operator <<360,7951
+
+db/agg_configuration.hpp,710
+#define DB_AGG_CONFIGURATION_HPPDB_AGG_CONFIGURATION_HPP3,34
+namespace dbdb13,207
+class agg_configuration: public mem::baseagg_configuration16,226
+   typedef tuple_trie::iterator iterator;iterator20,283
+   typedef tuple_trie::const_iterator const_iterator;const_iterator21,325
+   bool changed;changed23,380
+   vm::tuple *corresponds;corresponds24,397
+   tuple_trie vals;vals37,915
+   inline bool has_changed(void) const { return changed; }has_changed51,1241
+   inline bool is_empty(void) const { return vals.empty(); }is_empty52,1300
+   inline size_t size(void) const { return vals.size(); }size53,1361
+   explicit agg_configuration(const vm::predicate *_pred):agg_configuration59,1543
+
+db/database.cpp,604
+namespace dbdb12,213
+database::database(const string& filename, create_node_fn _create_fn, vm::all *_all):database15,229
+database::~database(void)~database57,1365
+database::find_node(const node::node_id id) constfind_node64,1498
+database::create_node_id(const db::node::node_id id)create_node_id85,2106
+database::create_node(void)create_node105,2520
+database::print_db(ostream& cout) constprint_db126,2883
+database::dump_db(ostream& cout) constdump_db137,3069
+database::print(ostream& cout) constprint149,3248
+ostream& operator<<(ostream& cout, const database& db)operator <<163,3499
+
+db/database.hpp,1619
+#define DATABASE_HPPDATABASE_HPP3,22
+namespace dbdb20,363
+class databasedatabase23,379
+           mem::allocator< std::pair<const node::node_id, node::node_id> > > map_translate;map_translate30,556
+           mem::allocator< std::pair<const node::node_id, node*> > > map_nodes;map_nodes33,727
+   typedef boost::function3<node*, node::node_id, node::node_id, vm::all *> create_node_fn;create_node_fn34,807
+   vm::all *all;all38,910
+   create_node_fn create_fn;create_fn39,927
+   map_nodes nodes;nodes41,960
+   map_translate translation;translation42,980
+   node::node_id original_max_node_id;original_max_node_id43,1010
+   node::node_id max_node_id;max_node_id44,1049
+   node::node_id max_translated_id;max_translated_id45,1079
+	utils::spinlock mtx;mtx47,1116
+   static const size_t node_size = sizeof(node::node_id) * 2;node_size53,1204
+   size_t nodes_total;nodes_total54,1266
+   map_nodes::const_iterator nodes_begin(void) const { return nodes.begin(); }nodes_begin56,1293
+   map_nodes::const_iterator nodes_end(void) const { return nodes.end(); }nodes_end57,1372
+   map_nodes::iterator get_node_iterator(const node::node_id id) { return nodes.find(id); }get_node_iterator58,1447
+   size_t num_nodes(void) const { return nodes.size(); }num_nodes60,1543
+   node::node_id max_id(void) const { return max_node_id; }max_id61,1600
+   node::node_id static_max_id(void) const { return original_max_node_id; }static_max_id62,1660
+class database_error : public std::runtime_error {database_error80,2142
+    explicit database_error(const std::string& msg) :database_error82,2202
+
+db/edge_set.hpp,140
+#define DB_EDGE_SET_HPPDB_EDGE_SET_HPP3,25
+namespace dbdb11,148
+               mem::allocator<vm::node_val> > edge_set;edge_set22,415
+
+db/neighbor_agg_configuration.cpp,300
+namespace dbdb6,68
+neighbor_agg_configuration::add_to_set(vm::tuple *tuple, const vm::ref_count count)add_to_set10,92
+neighbor_agg_configuration::all_present(void) constall_present43,833
+neighbor_agg_configuration::do_generate(const aggregate_type typ, const field_num num)do_generate60,1177
+
+db/neighbor_agg_configuration.hpp,470
+#define DB_NEIGHBOR_AGG_CONFIGURATION_HPPDB_NEIGHBOR_AGG_CONFIGURATION_HPP3,43
+namespace dbdb9,174
+class neighbor_agg_configuration: public agg_configurationneighbor_agg_configuration12,190
+   edge_set sent;sent17,294
+   edge_set target;target19,319
+   explicit neighbor_agg_configuration(const vm::predicate *_pred, const edge_set& _target):neighbor_agg_configuration31,588
+   virtual ~neighbor_agg_configuration(void) {}~neighbor_agg_configuration36,740
+
+db/neighbor_tuple_aggregate.cpp,107
+namespace dbdb5,90
+neighbor_tuple_aggregate::create_configuration(void) constcreate_configuration9,128
+
+db/neighbor_tuple_aggregate.hpp,347
+#define DB_NEIGHBOR_TUPLE_AGGREGATE_HPPDB_NEIGHBOR_TUPLE_AGGREGATE_HPP3,41
+namespace dbdb8,144
+class neighbor_tuple_aggregate: public tuple_aggregateneighbor_tuple_aggregate11,160
+   edge_set neighbors;neighbors15,230
+   explicit neighbor_tuple_aggregate(const vm::predicate *_pred, const edge_set& _neis):neighbor_tuple_aggregate25,394
+
+db/node.cpp,1439
+namespace dbdb15,245
+node::get_storage(const predicate* pred)get_storage19,273
+node::add_tuple(vm::tuple *tpl, ref_count many)add_tuple33,600
+node::delete_tuple(vm::tuple *tuple, ref_count many)delete_tuple53,1097
+node::add_agg_tuple(vm::tuple *tuple, const ref_count many)add_agg_tuple62,1307
+node::remove_agg_tuple(vm::tuple *tuple, const ref_count many)remove_agg_tuple91,2175
+node::end_iteration(void)end_iteration97,2300
+node::match_predicate(const predicate_id id, tuple_vector& vec) constmatch_predicate117,2665
+node::match_predicate(const predicate_id id, const match& m, tuple_vector& vec) constmatch_predicate130,2920
+node::delete_all(const predicate*)delete_all143,3194
+node::delete_by_leaf(const predicate *pred, tuple_trie_leaf *leaf)delete_by_leaf149,3257
+node::delete_by_index(const predicate *pred, const match& m)delete_by_index157,3402
+node::count_total(const predicate_id id) constcount_total172,3712
+node::assert_end(void) constassert_end185,3936
+node::node(const node_id _id, const node_id _trans, vm::all *_all):node195,4111
+node::~node(void)~node200,4264
+node::dump(ostream& cout) constdump209,4515
+typedef pair<string, tuple_trie*> str_trie;str_trie221,4723
+trie_comparer(const str_trie& p1, const str_trie& p2)trie_comparer224,4787
+node::print(ostream& cout) constprint230,4880
+node::init(void)init265,5651
+operator<<(ostream& cout, const node& node)operator <<275,5876
+
+db/node.hpp,1362
+#define NODE_HPPNODE_HPP3,18
+namespace sched { class base; class mpi_handler; }sched28,493
+namespace process { class process; class machine; }process29,544
+namespace db {db31,597
+class node: public mem::basenode33,613
+   typedef vm::node_val node_id;node_id37,656
+   typedef trie::delete_info delete_info;delete_info39,693
+   vm::all *all;all43,751
+	node_id id;id47,782
+   node_id translation;translation48,795
+                                 tuple_trie*> > > simple_tuple_map;simple_tuple_map53,980
+                                 tuple_aggregate*> > > aggregate_map;aggregate_map58,1246
+   simple_tuple_map tuples;tuples61,1337
+   aggregate_map aggs;aggs64,1400
+                  edge_map; edge_map71,1728
+   edge_map edge_info;edge_info73,1761
+   sched::base *owner;owner82,1985
+   inline node_id get_id(void) const { return id; }get_id86,2024
+   inline node_id get_translated_id(void) const { return translation; }get_translated_id87,2076
+   inline void set_owner(sched::base *_owner) { owner = _owner; }set_owner89,2149
+   inline sched::base *get_owner(void) const { return owner; }get_owner90,2215
+   const edge_set& get_edge_set(const vm::predicate_id id) const {get_edge_set99,2586
+   virtual void assert_end_iteration(void) const {}assert_end_iteration109,2968
+	vm::rule_matcher matcher;matcher120,3335
+
+db/trie.cpp,3511
+namespace dbdb13,200
+trie_hash::count_refs(void) constcount_refs22,444
+trie_node::count_refs(void) constcount_refs39,715
+trie_node::get_by_int(const int_val val) constget_by_int64,1171
+trie_node::get_by_float(const float_val val) constget_by_float89,1616
+trie_node::get_by_node(const node_val val) constget_by_node114,2069
+trie_node::match(const tuple_field& field, const field_type& typ,match139,2518
+#define HASH_LIST(HASH_LIST158,3149
+#undef HASH_LISTHASH_LIST166,3534
+#define MATCH_LIST(MATCH_LIST194,4163
+trie_node::insert(const tuple_field& field, const field_type& type, val_stack& vals, type_stack& typs)insert225,5337
+#define INSERT_LIST(INSERT_LIST231,5507
+#undef INSERT_LISTINSERT_LIST253,6406
+trie_node::convert_hash(const field_type& type)convert_hash297,7381
+trie_node::~trie_node(void)~trie_node333,8285
+trie_hash::get_int(const int_val& val) constget_int338,8329
+trie_hash::get_float(const float_val& val) constget_float345,8484
+trie_hash::get_node(const node_val& val) constget_node352,8645
+trie_hash::get_uint(const uint_val& val) constget_uint359,8803
+trie_hash::insert_int(const int_val& val, trie_node *node)insert_int366,8951
+trie_hash::insert_uint(const uint_val& val, trie_node *node)insert_uint385,9341
+trie_hash::insert_float(const float_val& val, trie_node *node)insert_float404,9732
+trie_hash::insert_node(const node_val& val, trie_node *node)insert_node422,10100
+trie_hash::expand(void)expand440,10465
+trie_hash::trie_hash(const vm::field_type& _type, trie_node *_parent):trie_hash475,11488
+trie_hash::~trie_hash(void)~trie_hash483,11773
+trie::delete_path(trie_node *node)delete_path490,11949
+trie::delete_branch(trie_node *node)delete_branch544,13120
+trie::sanity_check(void) constsanity_check607,14369
+trie::check_insert(void *data, const ref_count many, val_stack& vals, type_stack& typs, bool& found)check_insert614,14517
+trie::commit_delete(trie_node *node, ref_count many)commit_delete735,17593
+trie::delete_by_leaf(trie_leaf *leaf)delete_by_leaf750,18020
+trie::inner_delete_by_leaf(trie_leaf *leaf, const ref_count count)inner_delete_by_leaf761,18275
+trie::delete_by_index(const match& m)delete_by_index823,19557
+trie::wipeout(void)wipeout874,20716
+trie::trie(void):trie881,20810
+trie::~trie(void)~trie890,20950
+tuple_trie::check_insert(vm::tuple *tpl, const ref_count many, bool& found)check_insert896,20998
+tuple_trie::insert_tuple(vm::tuple *tpl, const ref_count many)insert_tuple916,21535
+tuple_trie::delete_tuple(vm::tuple *tpl, const ref_count many)delete_tuple951,22177
+tuple_trie::print(ostream& cout) constprint978,22753
+tuple_trie::dump(ostream& cout) constdump1012,23361
+tuple_trie::match_predicate(tuple_vector& vec) constmatch_predicate1035,23744
+struct continuation_frame {continuation_frame1045,23914
+   match_val_stack vals_stack;vals_stack1046,23942
+   match_type_stack typs_stack;typs_stack1047,23973
+   trie_node *next_node;next_node1048,24005
+typedef utils::stack<continuation_frame> continuation_stack;continuation_stack1051,24034
+tuple_trie::match_predicate(const match& m, tuple_vector& vec) constmatch_predicate1054,24101
+#define ADD_ALT(ADD_ALT1088,24914
+#define MATCH_LIST_TYPE(MATCH_LIST_TYPE1224,29072
+#undef MATCH_LIST_TYPEMATCH_LIST_TYPE1237,29601
+agg_trie_leaf::~agg_trie_leaf(void)~agg_trie_leaf1294,30716
+agg_trie::find_configuration(vm::tuple *tpl)find_configuration1301,30805
+agg_trie::erase(agg_trie_iterator& it)erase1325,31399
+
+db/trie.hpp,7215
+#define DB_TRIE_HPPDB_TRIE_HPP3,21
+namespace dbdb17,272
+typedef std::list<simple_tuple*, mem::allocator<simple_tuple*> > simple_tuple_list;simple_tuple_list24,349
+typedef std::vector<tuple_trie_leaf*, mem::allocator<tuple_trie_leaf*> > tuple_vector;tuple_vector25,433
+class trie_node: public mem::basetrie_node27,521
+   trie_node *parent;parent33,593
+   trie_node *next;next34,615
+   trie_node *prev;prev35,635
+   trie_node *child;child36,655
+   vm::tuple_field data;data38,677
+   bool hashed;hashed40,706
+   trie_node **bucket;bucket41,722
+   inline bool is_hashed(void) const { return hashed; }is_hashed49,958
+   inline trie_hash* get_hash(void) const { return (trie_hash*)child; }get_hash50,1014
+   inline bool is_leaf(void) const { return (vm::ptr_val)child & 0x1; }is_leaf51,1086
+   inline trie_node* get_next(void) const { return next; }get_next53,1159
+   inline trie_node* get_child(void) const { return (trie_node*)((vm::ptr_val)child & (~(vm::ptr_val)(0x1))); }get_child54,1218
+   inline trie_node* get_parent(void) const { return parent; }get_parent55,1330
+   inline trie_leaf* get_leaf(void) constget_leaf57,1394
+   inline void set_leaf(trie_leaf *leaf)set_leaf62,1489
+   explicit trie_node(const vm::tuple_field& _data):trie_node73,1862
+   explicit trie_node(void): // no datatrie_node85,2158
+class trie_hash: public mem::basetrie_hash99,2447
+   const vm::field_type type;type108,2614
+   trie_node *parent;parent110,2648
+   trie_node **buckets;buckets111,2670
+   size_t num_buckets;num_buckets112,2694
+   size_t total;total113,2717
+   inline size_t hash_item(const size_t item) const { return item & (num_buckets-1); }hash_item115,2738
+class trie_leaf: public mem::basetrie_leaf140,3447
+   trie_leaf *prev;prev151,3675
+   trie_leaf *next;next152,3695
+   trie_node *node;node153,3715
+   explicit trie_leaf(void)trie_leaf163,3908
+   virtual ~trie_leaf(void)~trie_leaf167,3950
+class tuple_trie_leaf: public trie_leaftuple_trie_leaf172,3992
+   simple_tuple* tpl;tpl181,4165
+	inline vm::tuple *get_underlying_tuple(void) const { return tpl->get_tuple(); }get_underlying_tuple187,4236
+   inline simple_tuple *get_tuple(void) const { return tpl; }get_tuple189,4319
+   virtual inline size_t get_count(void) const { return tpl->get_count(); }get_count191,4385
+   virtual inline void add_count(const vm::ref_count many) { tpl->add_count(many); }add_count193,4465
+   virtual inline bool to_delete(void) const { return tpl->reached_zero(); }to_delete195,4554
+   explicit tuple_trie_leaf(simple_tuple *_tpl):tuple_trie_leaf197,4635
+   virtual ~tuple_trie_leaf(void)~tuple_trie_leaf203,4733
+class tuple_trie_iterator: public mem::basetuple_trie_iterator209,4815
+   tuple_trie_leaf *current_leaf;current_leaf213,4874
+   inline tuple_trie_leaf* get_leaf(void) constget_leaf219,4961
+   inline simple_tuple* operator*(void) constoperator *224,5050
+   inline bool operator==(const tuple_trie_iterator& it) constoperator ==231,5193
+   inline bool operator!=(const tuple_trie_iterator& it) const { return !operator==(it); }operator !=236,5316
+   inline tuple_trie_iterator& operator++(void)operator ++238,5411
+   inline tuple_trie_iterator operator++(int)operator ++244,5552
+   explicit tuple_trie_iterator(tuple_trie_leaf *first_leaf):tuple_trie_iterator251,5698
+   explicit tuple_trie_iterator(void): // end iteratortuple_trie_iterator256,5805
+class trietrie262,5899
+   typedef trie_node node;node266,5927
+   node *root;root268,5958
+   int number_of_references;number_of_references269,5973
+   trie_leaf *first_leaf;first_leaf270,6002
+   trie_leaf *last_leaf;last_leaf271,6028
+   inline void basic_invariants(void)basic_invariants273,6057
+   class delete_infodelete_info305,6989
+      trie *tr;tr309,7028
+      bool to_del;to_del310,7044
+      trie_node *tr_node;tr_node311,7063
+      vm::ref_count many;many312,7089
+      inline bool to_delete(void) const { return to_del; }to_delete316,7128
+      void operator()(void)operator ()318,7188
+      explicit delete_info(trie *_tr,delete_info323,7282
+      explicit delete_info(const bool):delete_info331,7508
+   inline bool empty(void) const { return number_of_references == 0; }empty337,7607
+   inline size_t size(void) const { return number_of_references; }size338,7678
+class tuple_trie: public trie, public mem::basetuple_trie350,7977
+   const vm::predicate *pred;pred354,8040
+   virtual trie_leaf* create_leaf(void *data, const vm::ref_count many)create_leaf356,8074
+   typedef tuple_trie_iterator iterator;iterator367,8349
+   typedef tuple_trie_iterator const_iterator;const_iterator368,8390
+   inline const_iterator begin(void) const { return iterator((tuple_trie_leaf*)first_leaf); }begin380,8839
+   inline const_iterator end(void) const { return iterator(); }end381,8933
+   inline iterator begin(void) { return iterator((tuple_trie_leaf*)first_leaf); }begin383,9001
+   inline iterator end(void) { return iterator(); }end384,9083
+   explicit tuple_trie(const vm::predicate *_pred): trie(), pred(_pred) { basic_invariants(); }tuple_trie393,9332
+   virtual ~tuple_trie(void) {}~tuple_trie395,9432
+class agg_trie_leaf: public trie_leafagg_trie_leaf400,9494
+   agg_configuration *conf;conf409,9665
+   inline void set_conf(agg_configuration* _conf) { conf = _conf; }set_conf415,9740
+   inline agg_configuration *get_conf(void) const { return conf; }get_conf417,9812
+   virtual inline size_t get_count(void) const { return 1; }get_count419,9883
+   virtual inline void add_count(const vm::ref_count) { }add_count421,9948
+   virtual inline bool to_delete(void) const { return false; }to_delete423,10010
+   explicit agg_trie_leaf(agg_configuration *_conf):agg_trie_leaf425,10077
+class agg_trie_iterator: public mem::baseagg_trie_iterator434,10218
+   agg_trie_leaf *current_leaf;current_leaf440,10305
+   inline agg_configuration* operator*(void) constoperator *446,10388
+   inline bool operator==(const agg_trie_iterator& it) constoperator ==453,10535
+   inline bool operator!=(const agg_trie_iterator& it) const { return !operator==(it); }operator !=458,10656
+   inline agg_trie_iterator& operator++(void)operator ++460,10749
+   inline agg_trie_iterator operator++(int)operator ++466,10886
+   explicit agg_trie_iterator(agg_trie_leaf *first_leaf):agg_trie_iterator473,11028
+   explicit agg_trie_iterator(void): // end iteratoragg_trie_iterator478,11131
+class agg_trie: public trie, public mem::baseagg_trie484,11223
+   virtual trie_leaf* create_leaf(void *, const vm::ref_count)create_leaf488,11284
+   typedef agg_trie_iterator iterator;iterator497,11437
+   typedef agg_trie_iterator const_iterator;const_iterator498,11476
+   inline const_iterator begin(void) const { return iterator((agg_trie_leaf*)first_leaf); }begin504,11631
+   inline const_iterator end(void) const { return iterator(); }end505,11723
+   inline iterator begin(void) { return iterator((agg_trie_leaf*)first_leaf); }begin507,11791
+   inline iterator end(void) { return iterator(); }end508,11871
+   explicit agg_trie(void) {}agg_trie512,11964
+   virtual ~agg_trie(void) {}~agg_trie514,11998
+
+db/tuple.cpp,392
+namespace dbdb11,154
+simple_tuple::pack(byte *buf, const size_t buf_size, int *pos) constpack15,175
+simple_tuple::unpack(byte *buf, const size_t buf_size, int *pos, vm::program *prog)unpack23,363
+simple_tuple::~simple_tuple(void)~simple_tuple34,644
+simple_tuple::print(ostream& cout) constprint40,739
+ostream& operator<<(ostream& cout, const simple_tuple& tuple)operator <<50,887
+
+db/tuple.hpp,2508
+#define DB_TUPLE_HPPDB_TUPLE_HPP3,22
+namespace dbdb20,361
+class simple_tuple: public mem::basesimple_tuple23,380
+  void serialize(Archive & ar, const unsigned int version) {serialize30,501
+   vm::tuple *data;data34,582
+   vm::ref_count count;count35,602
+	bool to_delete;to_delete37,695
+   bool generated_this_run;generated_this_run39,808
+   bool is_final_aggregate;is_final_aggregate41,872
+   inline vm::tuple* get_tuple(void) const { return data; }get_tuple47,940
+   inline vm::strat_level get_strat_level(void) constget_strat_level49,1004
+	inline const vm::predicate* get_predicate(void) constget_predicate54,1131
+   inline vm::predicate_id get_predicate_id(void) constget_predicate_id59,1235
+   inline void set_generated_run(const bool v)set_generated_run64,1348
+   inline bool get_generated_run(void) constget_generated_run69,1436
+   inline bool must_be_deleted(void) constmust_be_deleted74,1525
+   inline void will_delete(void)will_delete79,1606
+   inline void will_not_delete(void)will_not_delete84,1675
+   inline bool can_be_consumed(void) constcan_be_consumed89,1746
+   inline bool is_aggregate(void) constis_aggregate94,1848
+   inline void set_as_aggregate(void)set_as_aggregate99,1932
+   inline vm::ref_count get_count(void) const { return count; }get_count106,2051
+   inline bool reached_zero(void) const { return get_count() == 0; }reached_zero108,2119
+   inline void inc_count(const vm::ref_count& inc) { assert(inc > 0); count += inc; }inc_count110,2189
+   inline void dec_count(const vm::ref_count& inc) { assert(inc > 0); count -= inc; }dec_count112,2276
+   inline void add_count(const vm::ref_count& inc) { count += inc; }add_count114,2366
+   inline size_t storage_size(void) conststorage_size116,2439
+   static simple_tuple* create_new(vm::tuple *tuple) { return new simple_tuple(tuple, 1); }create_new125,2702
+   static simple_tuple* remove_new(vm::tuple *tuple) { return new simple_tuple(tuple, -1); }remove_new127,2795
+   static void wipeout(simple_tuple *stpl) { delete stpl->get_tuple(); delete stpl; }wipeout129,2892
+   explicit simple_tuple(vm::tuple *_tuple, const vm::ref_count _count):simple_tuple131,2979
+   explicit simple_tuple(void): // for serialization purposessimple_tuple137,3177
+typedef std::list<simple_tuple*, mem::allocator<simple_tuple*> > simple_tuple_list;simple_tuple_list148,3424
+typedef std::vector<simple_tuple*, mem::allocator<simple_tuple*> > simple_tuple_vector;simple_tuple_vector149,3508
+
+db/tuple_aggregate.cpp,562
+namespace dbdb8,123
+tuple_aggregate::create_configuration(void) constcreate_configuration12,161
+tuple_aggregate::add_to_set(vm::tuple *tpl, const ref_count many)add_to_set18,277
+tuple_aggregate::generate(void)generate36,655
+tuple_aggregate::no_changes(void) constno_changes64,1218
+tuple_aggregate::delete_by_index(const match& m)delete_by_index80,1480
+tuple_aggregate::~tuple_aggregate(void)~tuple_aggregate85,1562
+tuple_aggregate::print(ostream& cout) constprint90,1612
+operator<<(ostream& cout, const tuple_aggregate& agg)operator <<105,1909
+
+db/tuple_aggregate.hpp,383
+#define DB_TUPLE_AGGREGATE_HPPDB_TUPLE_AGGREGATE_HPP3,32
+namespace dbdb13,215
+class tuple_aggregate: public mem::basetuple_aggregate16,231
+   const vm::predicate *pred;pred19,284
+   agg_trie vals;vals23,328
+   inline bool empty(void) const { return vals.empty(); }empty40,651
+   explicit tuple_aggregate(const vm::predicate *_pred): pred(_pred) {}tuple_aggregate44,757
+
+docs/Makefile,0
+
+docs/manual.tex,550
+\section{Introduction}Introduction18,282
+\section{Meld Program Structure}Meld Program Structure36,1436
+\subsection{Header}Header41,1651
+\subsection{Constants}Constants65,2715
+\subsection{Expressions}Expressions76,3048
+\subsection{Node Instantiation}Node Instantiation298,14182
+\subsection{Distribution Constraints}Distribution Constraints308,15223
+\subsection{How Are Rules Applied}How Are Rules Applied320,16338
+\section{How It All Fits Together: The Quick-Sort Algorithm}How It All Fits Together The Quick Sort Algorithm330,17912
+
+docs/vm.tex,185
+\section{Directories}Directories20,290
+\subsection{mem}mem78,5253
+\subsection{Rule Matcher}Rule Matcher158,10646
+\section{How rules are executed}How rules are executed164,10979
+
+docs/vm_format.tex,0
+
+examples/oddeven.m,0
+
+external/core.cpp,155
+namespace vmvm13,217
+namespace externalexternal15,232
+node_priority(EXTERNAL_ARG(id))EXTERNAL_ARG19,263
+cpu_id(EXTERNAL_ARG(id))EXTERNAL_ARG28,376
+
+external/core.hpp,106
+#define EXTERNAL_CORE_HPPEXTERNAL_CORE_HPP3,27
+namespace vmvm9,129
+namespace externalexternal12,148
+
+external/lists.cpp,898
+namespace vmvm15,277
+namespace externalexternal17,292
+intlistlength(EXTERNAL_ARG(ls))EXTERNAL_ARG21,326
+has_value(const int_list *_l, int_val v)has_value36,559
+intlistdiff(EXTERNAL_ARG(ls1), EXTERNAL_ARG(ls2))EXTERNAL_ARG52,790
+intlistnth(EXTERNAL_ARG(ls), EXTERNAL_ARG(v))EXTERNAL_ARG75,1204
+nodelistremove(EXTERNAL_ARG(ls), EXTERNAL_ARG(n))EXTERNAL_ARG99,1553
+intlistsub(EXTERNAL_ARG(p), EXTERNAL_ARG(a), EXTERNAL_ARG(b))EXTERNAL_ARG122,1937
+intlistappend(EXTERNAL_ARG(ls1), EXTERNAL_ARG(ls2))EXTERNAL_ARG151,2458
+str2intlist(EXTERNAL_ARG(str))EXTERNAL_ARG177,2955
+nodelistlength(EXTERNAL_ARG(ls))EXTERNAL_ARG202,3442
+nodelistcount(EXTERNAL_ARG(ls), EXTERNAL_ARG(el))EXTERNAL_ARG218,3673
+nodelistappend(EXTERNAL_ARG(ls1), EXTERNAL_ARG(ls2))EXTERNAL_ARG236,3985
+nodelistreverse(EXTERNAL_ARG(ls))EXTERNAL_ARG262,4496
+nodelistlast(EXTERNAL_ARG(ls))EXTERNAL_ARG279,4827
+
+external/lists.hpp,108
+#define EXTERNAL_LISTS_HPPEXTERNAL_LISTS_HPP3,28
+namespace vmvm9,131
+namespace externalexternal12,150
+
+external/math.cpp,582
+namespace vmvm10,124
+namespace externalexternal12,139
+sigmoid(EXTERNAL_ARG(x))EXTERNAL_ARG16,173
+normalize(EXTERNAL_ARG(x))EXTERNAL_ARG26,306
+damp(EXTERNAL_ARG(ls1), EXTERNAL_ARG(ls2), EXTERNAL_ARG(fact))EXTERNAL_ARG69,1254
+divide(EXTERNAL_ARG(ls1), EXTERNAL_ARG(ls2))EXTERNAL_ARG103,2132
+convolve(EXTERNAL_ARG(bin_fact), EXTERNAL_ARG(ls))EXTERNAL_ARG126,2672
+addfloatlists(EXTERNAL_ARG(ls1), EXTERNAL_ARG(ls2))EXTERNAL_ARG161,3566
+residual(EXTERNAL_ARG(l1), EXTERNAL_ARG(l2))EXTERNAL_ARG184,4115
+intpower(EXTERNAL_ARG(n1), EXTERNAL_ARG(n2))EXTERNAL_ARG207,4633
+
+external/math.hpp,106
+#define EXTERNAL_MATH_HPPEXTERNAL_MATH_HPP3,27
+namespace vmvm9,129
+namespace externalexternal12,148
+
+external/others.cpp,232
+namespace vmvm15,235
+namespace externalexternal18,251
+count_number_words(ifstream& fp)count_number_words22,295
+filecountwords(EXTERNAL_ARG(dirname), EXTERNAL_ARG(filenum))EXTERNAL_ARG35,441
+#define BUF_SIZE BUF_SIZE49,765
+
+external/others.hpp,109
+#define EXTERNAL_OTHERS_HPPEXTERNAL_OTHERS_HPP3,29
+namespace vmvm7,86
+namespace externalexternal10,102
+
+external/strings.cpp,124
+namespace vmvm7,83
+namespace externalexternal10,100
+concatenate(EXTERNAL_ARG(s1), EXTERNAL_ARG(s2))EXTERNAL_ARG17,180
+
+external/strings.hpp,110
+#define EXTERNAL_STRING_HPPEXTERNAL_STRING_HPP3,29
+namespace vmvm9,133
+namespace externalexternal12,150
+
+external/utils.cpp,494
+namespace vmvm6,89
+namespace externalexternal8,104
+randint(EXTERNAL_ARG(x))EXTERNAL_ARG16,205
+str2float(EXTERNAL_ARG(x))EXTERNAL_ARG26,360
+str2int(EXTERNAL_ARG(x))EXTERNAL_ARG39,526
+truncate(EXTERNAL_ARG(x), EXTERNAL_ARG(many))EXTERNAL_ARG52,685
+float2int(EXTERNAL_ARG(x))EXTERNAL_ARG64,865
+int2str(EXTERNAL_ARG(x))EXTERNAL_ARG74,963
+float2str(EXTERNAL_ARG(x))EXTERNAL_ARG84,1097
+wastetime(EXTERNAL_ARG(x))EXTERNAL_ARG94,1235
+node2int(EXTERNAL_ARG(x))EXTERNAL_ARG104,1330
+
+external/utils.hpp,108
+#define EXTERNAL_UTILS_HPPEXTERNAL_UTILS_HPP3,28
+namespace vmvm9,131
+namespace externalexternal11,146
+
+interface.cpp,662
+size_t num_threads = 0;num_threads22,392
+bool show_database = false;show_database23,416
+bool dump_database = false;dump_database24,444
+bool time_execution = false;time_execution25,472
+bool memory_statistics = false;memory_statistics26,501
+num_cpus_available(void)num_cpus_available29,555
+match_serial(const char *name, char *arg, const scheduler_type type)match_serial35,655
+fail_sched(char* sched)fail_sched49,940
+parse_sched(char *sched)parse_sched57,1069
+help_schedulers(void)help_schedulers76,1469
+finish(void)finish86,1846
+run_program(int argc, char **argv, const char *program, const vm::machine_arguments& margs)run_program92,1898
+
+interface.hpp,41
+#define INTERFACE_HPPINTERFACE_HPP3,23
+
+Makefile,899
+OS = $(shell uname -s)OS2,1
+INCLUDE_DIRS = -I.INCLUDE_DIRS4,25
+LIBRARY_DIRS =LIBRARY_DIRS5,44
+PROFILING = #-pgPROFILING26,770
+OPTIMIZATIONS = -O0OPTIMIZATIONS27,787
+ARCH = -march=x86-64ARCH28,807
+DEBUG = -gDEBUG29,828
+WARNINGS = -Wall -Wextra #-WerrorWARNINGS30,839
+C0X = -std=c++0xC0X31,873
+UILIBRARIES = #-lwebsocketpp -ljson_spiritUILIBRARIES32,890
+CFLAGS = $(ARCH) $(PROFILING) $(OPTIMIZATIONS) $(WARNINGS) $(DEBUG) $(INCLUDE_DIRS) $(COX)CFLAGS34,934
+LIBRARIES = -pthread -lm -lreadline -lboost_thread-mt -lboost_system-mt \LIBRARIES35,1025
+CXX = g++CXX41,1253
+GCC_MINOR    := $(shell $(CXX) -v 2>&1 | \GCC_MINOR43,1264
+CXXFLAGS = $(CFLAGS)CXXFLAGS53,1482
+LDFLAGS = $(PROFILING) $(LIBRARY_DIRS) $(LIBRARIES)LDFLAGS54,1503
+COMPILE = $(CXX) $(CXXFLAGS) $(OBJS)COMPILE55,1555
+SRCS = utils/utils.cpp \SRCS57,1593
+OBJS = $(patsubst %.cpp,%.o,$(SRCS))OBJS99,2547
+
+meld.cpp,215
+static char *program = NULL;program16,265
+static char *progname = NULL;progname17,294
+help(void)help20,337
+read_arguments(int argc, char **argv)read_arguments37,896
+main(int argc, char **argv)main105,2285
+
+mem/allocator.hpp,1455
+#define MEM_ALLOCATOR_HPPMEM_ALLOCATOR_HPP3,27
+namespace memmem14,219
+class allocatorallocator18,255
+   typedef T value_type;value_type22,285
+   typedef value_type* pointer;pointer23,310
+   typedef const value_type* const_pointer;const_pointer24,342
+   typedef value_type& reference;reference25,386
+   typedef const value_type& const_reference;const_reference26,420
+   typedef std::size_t size_type;size_type27,466
+   typedef std::ptrdiff_t difference_type;difference_type28,500
+   struct rebind {rebind33,584
+      typedef allocator<U> other;other34,603
+   inline explicit allocator(void) {}allocator39,659
+   inline ~allocator(void) {}~allocator40,697
+	inline allocator(allocator const&) {}allocator42,728
+   inline allocator(allocator<U> const&) {}allocator45,796
+   inline pointer address(reference r) { return &r; }address47,844
+   inline const_pointer address(const_reference r) { return &r; }address48,898
+   inline pointer allocate(size_type cnt,allocate50,968
+   inline void deallocate(pointer p, size_type cnt)deallocate56,1159
+   inline size_type max_size() const {max_size61,1275
+   inline void construct(pointer p, const T& t) { new (p) T(t); }construct65,1387
+   inline void destroy(pointer p) { p->~T(); }destroy66,1453
+   inline bool operator==(allocator const&) { return true; }operator ==68,1504
+   inline bool operator!=(allocator const& a) { return !operator==(a); }operator !=69,1565
+
+mem/base.hpp,316
+#define MEM_BASE_HPPMEM_BASE_HPP3,22
+namespace memmem10,121
+class basebase13,138
+   static inline void* operator new(size_t sz)operator new17,163
+   static inline void operator delete(void *ptr, size_t sz)operator delete22,267
+   virtual ~base(void) {}~base27,384
+#define MEM_METHODS(MEM_METHODS30,414
+
+mem/center.cpp,150
+namespace memmem11,173
+center::allocate(size_t cnt, size_t sz)allocate15,196
+center::deallocate(void *p, size_t cnt, size_t sz)deallocate37,577
+
+mem/center.hpp,94
+#define MEM_CENTER_HPPMEM_CENTER_HPP3,24
+namespace memmem9,119
+class centercenter12,136
+
+mem/chunk.hpp,454
+#define MEM_CHUNK_HPPMEM_CHUNK_HPP3,23
+namespace memmem7,71
+class chunkchunk12,110
+   chunk *next_chunk;next_chunk18,169
+   unsigned char *cur;cur20,195
+   unsigned char *bottom;bottom21,218
+   unsigned char *top;top22,244
+   inline void set_next(chunk *ptr)set_next26,283
+   inline void* allocate(const size_t size)allocate31,357
+   explicit chunk(const size_t size, const size_t num_elems):chunk43,556
+   ~chunk(void)~chunk55,827
+
+mem/chunkgroup.hpp,742
+#define MEM_CHUNKGROUP_HPPMEM_CHUNKGROUP_HPP3,28
+namespace memmem9,101
+class chunkgroupchunkgroup12,118
+   struct mem_node {mem_node16,147
+      struct mem_node *next;next17,168
+   const size_t size;size20,204
+   chunk *first_chunk;first_chunk21,226
+   chunk *new_chunk; // chunk with readily usable objectsnew_chunk22,249
+   mem_node *free_objs; // list of freed objectsfree_objs23,307
+   static const size_t INITIAL_NUM_ELEMS = 64;INITIAL_NUM_ELEMS25,360
+   size_t num_elems_per_chunk;num_elems_per_chunk26,407
+   inline void* allocate(void)allocate30,451
+   inline void deallocate(void* ptr)deallocate62,1356
+   explicit chunkgroup(const size_t _size):chunkgroup70,1518
+   ~chunkgroup(void)~chunkgroup77,1699
+
+mem/pool.hpp,519
+#define MEM_POOL_HPPMEM_POOL_HPP3,22
+namespace memmem13,181
+class poolpool16,198
+   static const size_t ATOM_SIZE = 4;ATOM_SIZE20,224
+   typedef std::tr1::unordered_map<size_t, chunkgroup*> chunk_map;chunk_map22,266
+   chunk_map chunks;chunks24,334
+   chunkgroup *get_group(const size_t size)get_group26,359
+   inline void* allocate(const size_t size)allocate46,737
+   inline void deallocate(void *ptr, const size_t size)deallocate51,837
+   explicit pool(void)pool56,954
+   ~pool(void)~pool60,991
+
+mem/stat.cpp,334
+namespace memmem7,78
+register_allocation(const size_t cnt, const size_t size)register_allocation16,208
+register_deallocation(const size_t cnt, const size_t size)register_deallocation22,307
+get_memory_in_use(void)get_memory_in_use28,410
+register_malloc(void)register_malloc34,469
+get_num_mallocs(void)get_num_mallocs40,521
+
+mem/stat.hpp,62
+#define MEM_STAT_HPPMEM_STAT_HPP3,22
+namespace memmem7,65
+
+mem/thread.cpp,381
+unordered_set<void*> mem_set;mem_set13,194
+namespace memmem16,232
+static pthread_key_t pool_key;pool_key21,277
+cleanup_memsystem(void)cleanup_memsystem25,350
+init(void)init31,424
+create_pool(void)create_pool40,561
+delete_pool(void)delete_pool49,698
+ensure_pool(void)ensure_pool58,816
+get_pool(void)get_pool65,892
+cleanup(const size_t num_threads)cleanup78,1061
+
+mem/thread.hpp,68
+#define MEM_THREAD_HPPMEM_THREAD_HPP3,24
+namespace memmem11,130
+
+mock-simulator/Makefile,0
+
+mock-simulator/simulator.cpp,3023
+#define CREATE_N_NODES CREATE_N_NODES13,187
+#define RUN_NODE RUN_NODE14,212
+#define NODE_RUN NODE_RUN15,231
+#define STOP STOP16,250
+#define ADD_NEIGHBOR ADD_NEIGHBOR17,265
+#define REMOVE_NEIGHBOR REMOVE_NEIGHBOR18,288
+#define TAP TAP19,314
+#define SET_COLOR SET_COLOR20,328
+#define USE_THREADS USE_THREADS21,348
+#define SEND_MESSAGE SEND_MESSAGE22,370
+#define RECEIVE_MESSAGE RECEIVE_MESSAGE23,394
+#define ACCEL ACCEL24,421
+#define SHAKE SHAKE25,438
+typedef uint64_t message_type;message_type30,515
+const int max_length = 512 / sizeof(message_type);max_length31,546
+static struct sockaddr_in servaddr, cliaddr;servaddr32,597
+static struct sockaddr_in servaddr, cliaddr;cliaddr32,597
+static socklen_t clilen;clilen33,642
+static int listenfd, connfd;listenfd34,667
+static int listenfd, connfd;connfd34,667
+static vector<bool> active_nodes; // bitmap for active nodesactive_nodes39,750
+static vector<int> top_neighbors, bottom_neighbors;top_neighbors40,811
+static vector<int> top_neighbors, bottom_neighbors;bottom_neighbors40,811
+static vector<int> west_neighbors, east_neighbors;west_neighbors41,863
+static vector<int> west_neighbors, east_neighbors;east_neighbors41,863
+static vector<int> north_neighbors, south_neighbors;north_neighbors42,914
+static vector<int> north_neighbors, south_neighbors;south_neighbors42,914
+static vector<int> pqueue; // nodes scheduled for computationpqueue43,967
+static vector<int> timestamps; // timestamp of each nodetimestamps44,1029
+static vector<int> nexttimestamps; // what the next timestamp should benexttimestamps45,1086
+enum face_t {face_t48,1186
+   BOTTOM = 0,BOTTOM49,1200
+   NORTH = 1,NORTH50,1215
+   EAST = 2,EAST51,1229
+   WEST = 3,WEST52,1242
+   SOUTH = 4,SOUTH53,1255
+   TOP = 5TOP54,1269
+get_neighbors_at(const face_t face)get_neighbors_at58,1304
+set_neighbor(const int in, const face_t side, const int out)set_neighbor73,1674
+get_neighbor(const int node, const face_t side)get_neighbor80,1826
+get_next_node(void)get_next_node87,1968
+write_to_socket(int sock, message_type *data)write_to_socket121,2647
+write_create_n_nodes(int sock, const int n)write_create_n_nodes128,2857
+write_run_node(int sock, int node)write_run_node166,4086
+write_use_threads(int sock)write_use_threads184,4484
+activate_node(int no, int ts = 0)activate_node198,4670
+handle_data(message_type *data, int sock)handle_data209,4903
+force_read(int sock)force_read274,7587
+write_stop(int sock)write_stop292,8022
+write_add_neighbor(int sock, int in, int out, face_t side)write_add_neighbor304,8186
+write_remove_neighbor(int sock, int in, face_t side)write_remove_neighbor322,8588
+write_tap(int sock, int node)write_tap339,8954
+write_accel(int sock, int node, int f)write_accel353,9209
+write_shake(int sock, int node, int x, int y, int z)write_shake368,9492
+is_data_available(int sock)is_data_available385,9849
+intHandler(int dummy = 0)intHandler400,10121
+main(int argc, char **argv)main409,10253
+
+mpi/Makefile,0
+
+mpi/test.cpp,43
+int main(int argc, char* argv[])main4,38
+
+mpi/tutorial.cpp,46
+int main(int argc, char *argv[]) {main9,155
+
+predicates.cpp,40
+main(int argc, char **argv)main11,114
+
+print.cpp,40
+main(int argc, char **argv)main11,114
+
+process/machine.cpp,914
+namespace processprocess27,554
+machine::run_action(sched::base *sched, node* node, vm::tuple *tpl, const bool from_other)run_action31,580
+machine::route_self(sched::base *sched, node *node, simple_tuple *stpl, const uint_val delay)route_self77,1712
+machine::route(const node* from, sched::base *sched_caller, const node::node_id id, simple_tuple* stpl, const uint_val delay)route89,2031
+machine::deactivate_signals(void)deactivate_signals133,3726
+machine::set_timer(void)set_timer145,3914
+machine::slice_function(void)slice_function160,4221
+machine::execute_const_code(void)execute_const_code197,4848
+machine::init_thread(sched::base *sched)init_thread208,5029
+machine::start(void)start217,5188
+get_creation_function(const scheduler_type sched_type)get_creation_function274,6829
+machine::machine(const string& file, const size_t th,machine288,7158
+machine::~machine(void)~machine318,8290
+
+process/machine.hpp,778
+#define PROCESS_MACHINE_HPPPROCESS_MACHINE_HPP3,29
+namespace processprocess21,413
+class machinemachine24,434
+   vm::all *all;all28,460
+   const std::string filename;filename29,477
+   const sched::scheduler_type sched_type;sched_type30,508
+   boost::thread *alarm_thread;alarm_thread32,552
+   statistics::slice_set slices;slices33,584
+   sched::scheduler_type get_sched_type(void) const { return sched_type; }get_sched_type42,749
+   sched::base *get_scheduler(const vm::process_id id) { return this->all->ALL_THREADS[id]; }get_scheduler44,825
+   vm::all *get_all(void) const { return this->all; }get_all46,920
+class machine_error : public std::runtime_error {machine_error61,1512
+    explicit machine_error(const std::string& msg) :machine_error63,1571
+
+process/work.hpp,1727
+#define PROCESS_WORK_HPPPROCESS_WORK_HPP3,26
+namespace processprocess8,104
+typedef utils::byte work_modifier;work_modifier11,128
+namespace modsmods13,164
+class node_work /* XXX: make it forbidden to do new/delete */node_work23,353
+   db::simple_tuple *tuple;tuple29,458
+   work_modifier mod;mod30,486
+   inline vm::tuple* get_underlying_tuple(void) const { return get_tuple()->get_tuple(); }get_underlying_tuple34,524
+   inline db::simple_tuple* get_tuple(void) const { return tuple; }get_tuple35,615
+   inline vm::strat_level get_strat_level(void) const { return tuple->get_strat_level(); }get_strat_level36,683
+   inline bool force_aggregate(void) const { return mod & mods::FORCE_AGGREGATE; }force_aggregate37,774
+   inline bool locally_generated(void) const { return mod & mods::LOCAL_TUPLE; }locally_generated38,857
+   explicit node_work(db::simple_tuple *_tuple, const work_modifier _mod):node_work40,942
+   explicit node_work(db::simple_tuple *_tuple):node_work45,1062
+   explicit node_work(void):node_work50,1165
+   ~node_work(void) {}~node_work55,1246
+class work: public node_workwork59,1274
+   db::node *node;node63,1318
+   bool use_rules;use_rules64,1337
+   inline bool using_rules(void) const { return use_rules; }using_rules68,1372
+   inline db::node* get_node(void) const { return node; }get_node70,1434
+   void copy_from_node(db::node *_node, node_work& w)copy_from_node72,1496
+   void set_work_with_rules(db::node *_node)set_work_with_rules79,1623
+   explicit work(db::node *_node, db::simple_tuple *_tuple,work85,1726
+   explicit work(db::node *_node, db::simple_tuple *_tuple):work92,1882
+   explicit work(void):work97,2012
+   ~work(void) {}~work102,2095
+
+prolog/splash_bp.pl,33
+doSplashBP :-doSplashBP77,1716
+
+queue/bounded_pqueue.hpp,2979
+#define QUEUE_BOUNDED_PQUEUE_HPPQUEUE_BOUNDED_PQUEUE_HPP3,34
+namespace queuequeue15,335
+class queue_tree_node: public mem::basequeue_tree_node19,427
+   typedef queue_tree_node<C, A> tree_node;tree_node22,477
+   A counter;counter24,525
+   tree_node *parent, *left, *right;parent25,539
+   tree_node *parent, *left, *right;left25,539
+   tree_node *parent, *left, *right;right25,539
+   C bin;bin26,576
+   void delete_all(void)delete_all28,590
+   inline bool is_leaf(void) const { return right == NULL; }is_leaf38,764
+   explicit queue_tree_node(void):queue_tree_node40,829
+   ~queue_tree_node(void)~queue_tree_node48,952
+class bounded_pqueuebounded_pqueue55,1060
+   typedef queue_tree_node<C, A> tree_node;tree_node59,1096
+	typedef std::vector<tree_node*> leaves_vector;leaves_vector60,1140
+   leaves_vector leaves;leaves61,1188
+   tree_node *root;root62,1213
+   A total;total64,1237
+   size_t range;range65,1249
+   tree_node* build_tree(const size_t height, const size_t prio)build_tree67,1270
+   void push_queue(unsafe_linear_queue_count<T>& q, const size_t prio)push_queue82,1709
+   inline size_t size(void) const { return total; }size104,2188
+   inline bool empty(void) const { return total == 0; }empty106,2244
+   void push(const T item, const size_t prio)push108,2304
+	void top_list(std::list<T, Alloc>& vec)top_list126,2745
+	T top(void)top158,3278
+   T pop(void)pop174,3504
+   void splice(simple_linear_pqueue<T>& other)splice199,3939
+	class const_iteratorconst_iterator212,4241
+		const leaves_vector *leaves;leaves216,4279
+		bool is_end;is_end217,4310
+		size_t cur_pos;cur_pos218,4325
+		bool started_cur;started_cur219,4343
+		typename C::const_iterator sub;sub220,4363
+		inline void advance(void)advance222,4400
+		inline T operator*(void) { return *sub; }operator *249,4967
+		inline void operator++(void)operator ++251,5014
+		inline bool operator==(const const_iterator& it) constoperator ==259,5100
+		inline bool operator!=(const const_iterator& it) constoperator !=264,5199
+		explicit const_iterator(const leaves_vector& v):const_iterator269,5294
+		explicit const_iterator(): is_end(true) {}const_iterator275,5432
+	inline const_iterator begin(void) const { return const_iterator(leaves); }begin279,5486
+	inline const_iterator end(void) const { return const_iterator(); }end280,5562
+   explicit bounded_pqueue(const size_t _range):bounded_pqueue282,5631
+   ~bounded_pqueue(void)~bounded_pqueue297,5981
+struct safe_bounded_pqueuesafe_bounded_pqueue310,6165
+   typedef bounded_pqueue<T, push_safe_linear_queue<T>, utils::atomic<size_t> > type;type312,6194
+struct unsafe_bounded_pqueueunsafe_bounded_pqueue316,6306
+   typedef bounded_pqueue<T, unsafe_linear_queue<T>, size_t> type;type318,6337
+struct intrusive_unsafe_double_bounded_pqueueintrusive_unsafe_double_bounded_pqueue322,6430
+	typedef bounded_pqueue<T, intrusive_unsafe_double_queue<T>, size_t> type;type324,6478
+
+queue/heap_implementation.hpp,862
+#define QUEUE_HEAP_IMPLEMENTATION_HPPQUEUE_HEAP_IMPLEMENTATION_HPP3,39
+	HEAP_INT_ASC,HEAP_INT_ASC6,93
+	HEAP_INT_DESC,HEAP_INT_DESC7,108
+	HEAP_FLOAT_ASC,HEAP_FLOAT_ASC8,124
+	HEAP_FLOAT_DESCHEAP_FLOAT_DESC9,141
+} heap_type;heap_type10,158
+	int int_priority;int_priority13,188
+	float float_priority;float_priority14,207
+} heap_priority;heap_priority15,230
+#define HEAP_DEFINE_DATA HEAP_DEFINE_DATA17,248
+#define HEAP_DEFINE_EMPTY	HEAP_DEFINE_EMPTY21,374
+#define HEAP_DEFINE_SIZE HEAP_DEFINE_SIZE27,486
+#define HEAP_DEFINE_UTILS	HEAP_DEFINE_UTILS33,645
+#define HEAP_DEFINE_PRINT	HEAP_DEFINE_PRINT53,1197
+#define HEAP_DEFINE_HEAPIFYUP	HEAP_DEFINE_HEAPIFYUP65,1549
+#define HEAP_DEFINE_MIN_VALUE	HEAP_DEFINE_MIN_VALUE82,2143
+#define HEAP_SET_INDEX(HEAP_SET_INDEX89,2333
+#define HEAP_DEFINE_HEAPIFYDOWN	HEAP_DEFINE_HEAPIFYDOWN94,2468
+
+queue/intrusive.hpp,635
+#define QUEUE_INTRUSIVE_HPPQUEUE_INTRUSIVE_HPP3,29
+#define DECLARE_DOUBLE_QUEUE_NODE(DECLARE_DOUBLE_QUEUE_NODE7,79
+#define DEFINE_PRIORITY_NODE(DEFINE_PRIORITY_NODE13,247
+#define INIT_PRIORITY_NODE(INIT_PRIORITY_NODE21,604
+#define INIT_DOUBLE_QUEUE_NODE(INIT_DOUBLE_QUEUE_NODE24,698
+#define __INTRUSIVE_NEXT(__INTRUSIVE_NEXT27,812
+#define __INTRUSIVE_PREV(__INTRUSIVE_PREV28,870
+#define __INTRUSIVE_IN_QUEUE(__INTRUSIVE_IN_QUEUE29,928
+#define __INTRUSIVE_IN_PRIORITY_QUEUE(__INTRUSIVE_IN_PRIORITY_QUEUE30,994
+#define __INTRUSIVE_PRIORITY(__INTRUSIVE_PRIORITY31,1078
+#define __INTRUSIVE_POS(__INTRUSIVE_POS32,1144
+
+queue/intrusive_implementation.hpp,954
+#define QUEUE_INTRUSIVE_IMPLEMENTATION_HPPQUEUE_INTRUSIVE_IMPLEMENTATION_HPP3,44
+#define QUEUE_DEFINE_INTRUSIVE_DOUBLE_DATA(QUEUE_DEFINE_INTRUSIVE_DOUBLE_DATA9,168
+#define QUEUE_DEFINE_INTRUSIVE_CONSTRUCTOR(QUEUE_DEFINE_INTRUSIVE_CONSTRUCTOR15,338
+#define QUEUE_DEFINE_INTRUSIVE_IN_QUEUE(QUEUE_DEFINE_INTRUSIVE_IN_QUEUE21,496
+#define QUEUE_DEFINE_INTRUSIVE_DOUBLE_EMPTY(QUEUE_DEFINE_INTRUSIVE_DOUBLE_EMPTY27,667
+#define QUEUE_DEFINE_INTRUSIVE_DOUBLE_POP_IF_NOT_EMPTY(QUEUE_DEFINE_INTRUSIVE_DOUBLE_POP_IF_NOT_EMPTY30,777
+#define QUEUE_DEFINE_INTRUSIVE_DOUBLE_POP(QUEUE_DEFINE_INTRUSIVE_DOUBLE_POP52,1548
+#define QUEUE_DEFINE_INTRUSIVE_DOUBLE_OPS(QUEUE_DEFINE_INTRUSIVE_DOUBLE_OPS75,2358
+#define QUEUE_DEFINE_INTRUSIVE_MOVE_UP(QUEUE_DEFINE_INTRUSIVE_MOVE_UP119,3798
+#define QUEUE_DEFINE_INTRUSIVE_REMOVE(QUEUE_DEFINE_INTRUSIVE_REMOVE151,4750
+#define QUEUE_DEFINE_INTRUSIVE_CONST_ITERATOR(QUEUE_DEFINE_INTRUSIVE_CONST_ITERATOR172,5400
+
+queue/iterators.hpp,236
+#define QUEUE_ITERATORS_HPPQUEUE_ITERATORS_HPP3,29
+#define QUEUE_DEFINE_LINEAR_CONST_ITERATOR_CLASS(QUEUE_DEFINE_LINEAR_CONST_ITERATOR_CLASS5,58
+#define QUEUE_DEFINE_LINEAR_CONST_ITERATOR(QUEUE_DEFINE_LINEAR_CONST_ITERATOR39,1057
+
+queue/macros.hpp,527
+#define QUEUE_MACROS_HPPQUEUE_MACROS_HPP3,26
+#define QUEUE_INCREMENT_TOTAL(QUEUE_INCREMENT_TOTAL7,73
+#define QUEUE_INCREMENT_TOTAL_N(QUEUE_INCREMENT_TOTAL_N8,113
+#define QUEUE_DECREMENT_TOTAL(QUEUE_DECREMENT_TOTAL9,161
+#define QUEUE_DEFINE_TOTAL_SIZE(QUEUE_DEFINE_TOTAL_SIZE10,201
+#define QUEUE_DEFINE_TOTAL(QUEUE_DEFINE_TOTAL11,284
+#define QUEUE_DEFINE_TOTAL_SERIAL(QUEUE_DEFINE_TOTAL_SERIAL12,341
+#define QUEUE_ZERO_TOTAL(QUEUE_ZERO_TOTAL13,390
+#define QUEUE_ASSERT_TOTAL_ZERO(QUEUE_ASSERT_TOTAL_ZERO14,427
+
+queue/node.hpp,387
+#define QUEUE_NODE_HPPQUEUE_NODE_HPP3,24
+namespace queuequeue7,73
+class queue_node: public mem::basequeue_node11,114
+   T data;data16,190
+   volatile queue_node *next;next17,201
+class unsafe_queue_node: public mem::baseunsafe_queue_node22,294
+   virtual size_t mem_size(void) const { return 8; }mem_size27,384
+   T data;data29,438
+   unsafe_queue_node *next;next30,449
+
+queue/safe_complex_pqueue.hpp,1793
+#define QUEUE_SAFE_COMPLEX_PQUEUE_HPPQUEUE_SAFE_COMPLEX_PQUEUE_HPP3,39
+namespace queuequeue10,197
+class intrusive_safe_complex_pqueueintrusive_safe_complex_pqueue14,236
+	typedef T* heap_object;heap_object18,285
+	heap_type typ;typ20,311
+   static const bool debug = false;debug21,327
+#define HEAP_GET_PRIORITY(HEAP_GET_PRIORITY23,364
+#define HEAP_GET_POS(HEAP_GET_POS25,538
+#define HEAP_COMPARE(HEAP_COMPARE26,585
+	HEAP_DEFINE_UTILS;HEAP_DEFINE_UTILS28,698
+	HEAP_DEFINE_HEAPIFYUP;HEAP_DEFINE_HEAPIFYUP30,720
+	HEAP_DEFINE_HEAPIFYDOWN;HEAP_DEFINE_HEAPIFYDOWN32,746
+	HEAP_DEFINE_DATA;HEAP_DEFINE_DATA34,774
+	void do_insert(heap_object node, const heap_priority prio)do_insert36,795
+	heap_object do_pop(void)do_pop47,1103
+	void do_remove(heap_object obj)do_remove65,1424
+	HEAP_DEFINE_EMPTY;HEAP_DEFINE_EMPTY92,1918
+   HEAP_DEFINE_SIZE;HEAP_DEFINE_SIZE93,1938
+	static inline bool in_queue(heap_object node)in_queue95,1961
+	void insert(heap_object node, const heap_priority prio)insert100,2064
+	heap_priority min_value(void) constmin_value105,2154
+	heap_object pop(void)pop110,2244
+	void remove(heap_object obj)remove115,2294
+	void move_node(heap_object node, const heap_priority new_prio)move_node120,2350
+	void set_type(const heap_type _typ)set_type126,2469
+	void assert_heap(void)assert_heap131,2527
+	void print(std::ostream& out)print146,2865
+	intrusive_safe_complex_pqueue(void) {}intrusive_safe_complex_pqueue158,3083
+	intrusive_safe_complex_pqueue(const heap_type _typ): typ(_typ) {}intrusive_safe_complex_pqueue160,3124
+	~intrusive_safe_complex_pqueue(void)~intrusive_safe_complex_pqueue162,3193
+#undef HEAP_GET_POSHEAP_GET_POS168,3266
+#undef HEAP_GET_PRIORITYHEAP_GET_PRIORITY169,3286
+#undef HEAP_COMPAREHEAP_COMPARE170,3311
+
+queue/safe_double_queue.hpp,616
+#define QUEUE_SAFE_DOUBLE_QUEUE_HPPQUEUE_SAFE_DOUBLE_QUEUE_HPP3,37
+namespace queuequeue10,199
+class intrusive_safe_double_queueintrusive_safe_double_queue14,240
+	utils::spinlock mtx;mtx20,326
+   inline bool pop_if_not_empty(node_type& data)pop_if_not_empty29,496
+   inline bool pop(node_type& data)pop39,709
+   inline void push_tail(node_type data)push_tail49,896
+	inline void push_head(node_type data)push_head56,1023
+   inline void move_up(node_type node)move_up65,1192
+	inline void remove(node_type node)remove72,1326
+   ~intrusive_safe_double_queue(void)~intrusive_safe_double_queue81,1521
+
+queue/safe_general_pqueue.hpp,880
+#define QUEUE_SAFE_GENERAL_PQUEUE_HPPQUEUE_SAFE_GENERAL_PQUEUE_HPP3,39
+namespace queuequeue8,130
+class general_pqueuegeneral_pqueue12,177
+   mutable boost::mutex delay_mtx;delay_mtx16,210
+   struct queue_item {queue_item18,246
+      T item;item19,269
+      P priority;priority20,283
+      queue_item(const T _item, const P _prio): item(_item), priority(_prio) {}queue_item22,302
+   struct queue_item_comparator {queue_item_comparator25,389
+      bool operator() (const queue_item& a, const queue_item& b) {operator ()26,423
+   std::priority_queue<queue_item, std::vector<queue_item>, queue_item_comparator> data;data31,546
+   inline void push(T item, P priority)push35,645
+   inline size_t size(void) constsize44,811
+   inline bool empty(void) constempty49,882
+   inline P top_priority(void) consttop_priority54,953
+   inline T pop(void)pop63,1104
+
+queue/safe_linear_queue.hpp,1957
+#define QUEUE_SAFE_QUEUE_HPPQUEUE_SAFE_QUEUE_HPP3,30
+namespace queuequeue15,301
+class special_queue_node: public mem::basespecial_queue_node20,396
+   T data;data25,488
+   utils::atomic_ref<special_queue_node*> next;next26,499
+class push_safe_linear_queuepush_safe_linear_queue32,659
+   typedef queue_node<T> node;node36,703
+   typedef special_queue_node<T> special_node;special_node37,734
+   BOOST_STATIC_ASSERT(sizeof(special_node) == sizeof(node));sizeof39,785
+   volatile node *head;head41,851
+   utils::atomic_ref<special_node*> tail;tail42,875
+   inline void push_node(special_node *new_node)push_node46,946
+   inline void splice_headtail(special_node* qhead, special_node* qtail)splice_headtail70,1553
+   inline bool empty(void) constempty93,2139
+	inline const_iterator begin(void) constbegin100,2281
+	inline const_iterator end(void) constend102,2369
+   inline void push(T el)push105,2446
+	inline T top(void)top115,2629
+   inline T pop(void)pop124,2761
+	inline void pop_list(std::list<T, Alloc>& vec)pop_list147,3181
+   inline void splice(unsafe_linear_queue_count<T>& q)splice164,3493
+   inline void splice(unsafe_linear_queue<T>& q)splice177,3793
+   explicit push_safe_linear_queue(void):push_safe_linear_queue189,4053
+   virtual ~push_safe_linear_queue(void)~push_safe_linear_queue198,4243
+class safe_linear_queuesafe_linear_queue208,4427
+   typedef queue_node<T> node;node212,4466
+   volatile node *head;head214,4501
+   volatile node *tail;tail215,4525
+	utils::spinlock mtx;mtx217,4550
+   inline void push_node(node *new_node)push_node221,4598
+   inline bool empty(void) const { return head == tail; }empty237,4880
+   inline bool pop_if_not_empty(T& data)pop_if_not_empty239,4942
+   inline bool pop(T& data)pop275,5657
+   inline void push(T data)push308,6236
+   explicit safe_linear_queue(void):safe_linear_queue320,6454
+   ~safe_linear_queue(void)~safe_linear_queue331,6638
+
+queue/safe_simple_pqueue.hpp,2007
+#define QUEUE_SAFE_SIMPLE_PQUEUE_HPPQUEUE_SAFE_SIMPLE_PQUEUE_HPP3,38
+namespace queuequeue9,139
+class heap_queueheap_queue13,177
+	heap_type typ;typ17,206
+	class heap_objectheap_object19,224
+		heap_priority val;val22,255
+		T data;data23,276
+		int pos;pos24,286
+	HEAP_DEFINE_UTILS;HEAP_DEFINE_UTILS27,303
+#define HEAP_GET_PRIORITY(HEAP_GET_PRIORITY29,325
+#define HEAP_COMPARE(HEAP_COMPARE30,456
+#define HEAP_GET_POS(HEAP_GET_POS31,568
+	HEAP_DEFINE_HEAPIFYUP;HEAP_DEFINE_HEAPIFYUP33,605
+	HEAP_DEFINE_HEAPIFYDOWN;HEAP_DEFINE_HEAPIFYDOWN35,631
+	HEAP_DEFINE_DATA;HEAP_DEFINE_DATA37,659
+	HEAP_DEFINE_EMPTY;HEAP_DEFINE_EMPTY41,689
+	class const_iteratorconst_iterator43,711
+		size_t cur_pos;cur_pos46,746
+		mutable bool end;end47,764
+		const heap_vector *vec;vec48,784
+		inline T operator*(void)operator *52,825
+		operator=(const const_iterator& it)operator =58,920
+		inline void operator++(void)operator ++65,1028
+		operator==(const const_iterator& it) constoperator ==71,1098
+		operator!=(const const_iterator& it) constoperator !=85,1325
+		explicit const_iterator(const heap_vector* v): cur_pos(0), end(false), vec(v) {}const_iterator90,1408
+		explicit const_iterator(void): end(true), vec(NULL)const_iterator92,1494
+	inline const_iterator begin(void) constbegin96,1559
+	inline const_iterator end(void) constend98,1635
+	void insert(T el, const heap_priority prio)insert101,1706
+	void remove(T val, const heap_priority prio)remove113,1911
+	void remove_by_index(const size_t index)remove_by_index157,2728
+   void clear(void)clear171,2974
+	HEAP_DEFINE_MIN_VALUE;HEAP_DEFINE_MIN_VALUE176,3026
+	T pop(void)pop178,3052
+	HEAP_DEFINE_PRINT;HEAP_DEFINE_PRINT190,3228
+	void set_type(const heap_type _typ)set_type192,3249
+	explicit heap_queue(void) {}heap_queue197,3308
+	~heap_queue(void) {}~heap_queue198,3338
+#undef HEAP_GET_POSHEAP_GET_POS201,3364
+#undef HEAP_GET_PRIORITYHEAP_GET_PRIORITY202,3384
+#undef HEAP_COMPAREHEAP_COMPARE203,3409
+
+queue/simple_linear_pqueue.hpp,723
+#define QUEUE_SIMPLE_LINEAR_PQUEUE_HPPQUEUE_SIMPLE_LINEAR_PQUEUE_HPP3,40
+namespace queuequeue10,182
+class simple_linear_pqueuesimple_linear_pqueue14,220
+   typedef unsafe_linear_queue_count<T> queue;queue18,262
+   std::vector<queue> queues;queues20,313
+   size_t total;total21,343
+   inline bool empty(void) const { return total == 0; }empty25,376
+   inline size_t size(void) const { return total; }size26,432
+   inline queue& get_queue(const size_t prio)get_queue28,488
+   void push(const T item, const size_t prio)push34,611
+   void clear(void)clear44,782
+   explicit simple_linear_pqueue(const size_t range):simple_linear_pqueue54,953
+   ~simple_linear_pqueue(void)~simple_linear_pqueue60,1064
+
+queue/unsafe_double_queue.hpp,581
+#define QUEUE_UNSAFE_DOUBLE_QUEUE_HPPQUEUE_UNSAFE_DOUBLE_QUEUE_HPP3,39
+namespace queuequeue7,125
+class intrusive_unsafe_double_queueintrusive_unsafe_double_queue11,163
+   inline bool pop_if_not_empty(node_type& data)pop_if_not_empty27,500
+   inline bool pop(node_type& data)pop32,615
+   inline void push(node_type data)push37,704
+	inline void push_head(node_type data)push_head42,779
+   inline void move_up(node_type node)move_up47,853
+	inline void remove(node_type node)remove52,939
+   ~intrusive_unsafe_double_queue(void)~intrusive_unsafe_double_queue59,1093
+
+queue/unsafe_linear_queue.hpp,1760
+#define QUEUE_UNSAFE_LINEAR_QUEUE_HPPQUEUE_UNSAFE_LINEAR_QUEUE_HPP3,39
+namespace queuequeue11,181
+#define QUEUE_DEFINE_LINEAR_BASE_DATA(QUEUE_DEFINE_LINEAR_BASE_DATA14,200
+#define QUEUE_DEFINE_LINEAR_DATA(QUEUE_DEFINE_LINEAR_DATA18,317
+#define QUEUE_DEFINE_LINEAR_DESTRUCTOR(QUEUE_DEFINE_LINEAR_DESTRUCTOR22,424
+#define QUEUE_DEFINE_LINEAR_CONSTRUCTOR(QUEUE_DEFINE_LINEAR_CONSTRUCTOR27,545
+#define QUEUE_DEFINE_LINEAR_CLEAR(QUEUE_DEFINE_LINEAR_CLEAR30,615
+#define QUEUE_DEFINE_LINEAR_EMPTY(QUEUE_DEFINE_LINEAR_EMPTY36,754
+#define QUEUE_DEFINE_LINEAR_PUSH_NODE(QUEUE_DEFINE_LINEAR_PUSH_NODE42,895
+#define QUEUE_DEFINE_LINEAR_POP_NODE(QUEUE_DEFINE_LINEAR_POP_NODE60,1418
+#define QUEUE_DEFINE_LINEAR_POP_LIST(QUEUE_DEFINE_LINEAR_POP_LIST79,1920
+#define QUEUE_DEFINE_LINEAR_TOP_NODE(QUEUE_DEFINE_LINEAR_TOP_NODE88,2154
+class unsafe_linear_queueunsafe_linear_queue94,2312
+   inline void clear(void)clear106,2512
+   inline void push(T el)push112,2606
+   inline T pop(void)pop118,2710
+	inline void pop_list(std::list<T, Alloc>& vec)pop_list125,2828
+	inline T top(void)top131,2942
+   explicit unsafe_linear_queue(void):unsafe_linear_queue136,3006
+   virtual ~unsafe_linear_queue(void)~unsafe_linear_queue142,3119
+class unsafe_linear_queue_countunsafe_linear_queue_count152,3331
+   size_t total;total157,3411
+   inline size_t size(void) constsize163,3506
+   inline void push(T el)push168,3574
+	inline T top(void)top174,3663
+   inline T pop(void)pop179,3727
+	inline void pop_list(std::list<T, Alloc>& vec)pop_list186,3829
+   inline void clear(void)clear192,3937
+   explicit unsafe_linear_queue_count(void):unsafe_linear_queue_count200,4055
+   ~unsafe_linear_queue_count(void)~unsafe_linear_queue_count205,4156
+
+runtime/list.hpp,2620
+#define LIST_HPPLIST_HPP2,17
+namespace runtimeruntime18,267
+class cons: public mem::basecons22,310
+   typedef cons* list_ptr;list_ptr26,353
+   typedef list_ptr ptr;ptr27,380
+   list_ptr tail;tail33,447
+   const T head;head34,465
+   utils::atomic<size_t> refs;refs36,486
+   inline void set_tail(list_ptr t)set_tail38,521
+   const T get_head(void) const { return head; }get_head48,655
+   list_ptr get_tail(void) const { return tail; }get_tail49,704
+   inline void inc_refs(void)inc_refs51,758
+   inline void dec_refs(void)dec_refs56,815
+   inline bool zero_refs(void) const { return refs == 0; }zero_refs64,938
+   inline void destroy(void)destroy66,1001
+   typedef void (*print_function)(std::ostream&, const T);print_function74,1154
+   void print(std::ostream& cout, const bool first, print_function print) constprint76,1214
+   static inline list_ptr null_list(void) { return (list_ptr)0; }null_list91,1517
+   static inline bool is_null(const list_ptr ls) { return ls == null_list(); }is_null93,1587
+   static inline void dec_refs(list_ptr ls)dec_refs95,1670
+   static inline void inc_refs(list_ptr ls)inc_refs101,1775
+	size_t size_list(const list_ptr ptr, const size_t elem_size)size_list108,1897
+	void pack(const list_ptr ptr, utils::byte *buf, const size_t buf_size, int *pos)pack114,2051
+	list_ptr unpack(utils::byte *buf, const size_t buf_size, int *pos)unpack134,2554
+   list_ptr copy(list_ptr ptr)copy164,3175
+	void print(std::ostream& cout, list_ptr ls, print_function print)print184,3618
+	bool equal(const list_ptr l1, const list_ptr l2)equal193,3809
+	size_t length(const list_ptr ls)length209,4238
+	T get(const list_ptr ls, const size_t pos, const T def)get218,4393
+	inline void stl_list(std::list<T>& ls)stl_list229,4618
+	std::list<T> stl_list(const list_ptr ls)stl_list238,4765
+   explicit cons(list_ptr _tail, const T _head):cons249,4904
+typedef cons<vm::int_val> int_list;int_list256,5017
+typedef cons<vm::float_val> float_list;float_list257,5053
+typedef cons<vm::node_val> node_list;node_list258,5093
+typedef std::stack<vm::float_val, std::deque<vm::float_val, mem::allocator<vm::float_val> > > stack_float_list;stack_float_list259,5131
+typedef std::stack<vm::int_val, std::deque<vm::int_val, mem::allocator<vm::int_val> > > stack_int_list;stack_int_list260,5243
+typedef std::stack<vm::node_val, std::deque<vm::node_val, mem::allocator<vm::node_val> > > stack_node_list;stack_node_list261,5347
+from_stack_to_list(TStack& stk)from_stack_to_list265,5514
+from_stack_to_reverse_list(TStack& stk)from_stack_to_reverse_list279,5754
+
+runtime/string.hpp,799
+#define RUNTIME_STRING_HPPRUNTIME_STRING_HPP3,28
+namespace runtimeruntime17,237
+class rstring: public mem::baserstring20,258
+	typedef rstring* rstring_ptr;rstring_ptr24,302
+   typedef rstring_ptr ptr;ptr25,333
+	const std::string content;content31,398
+	utils::atomic<size_t> refs;refs32,426
+	explicit rstring(const std::string& _content, const size_t _refs):rstring34,457
+	inline void inc_refs(void)inc_refs41,576
+	inline void dec_refs(void)dec_refs46,622
+	inline void destroy(void)destroy54,726
+	inline bool zero_refs(void) constzero_refs60,803
+	inline std::string get_content(void) constget_content65,866
+	static rstring_ptr make_default_string(const std::string& str)make_default_string72,965
+	static rstring_ptr make_string(const std::string& str)make_string77,1067
+
+sched/base.cpp,633
+namespace schedsched18,334
+pthread_key_t sched_key;sched_key23,379
+cleanup_sched_key(void)cleanup_sched_key27,446
+init(void)init33,521
+base::do_tuple_add(node *node, vm::tuple *tuple, const ref_count count)do_tuple_add42,660
+base::do_agg_tuple_add(node *node, vm::tuple *tuple, const ref_count count)do_agg_tuple_add68,1432
+base::do_work(db::node *node)do_work122,3000
+base::do_loop(void)do_loop182,4510
+base::loop(void)loop193,4657
+base::get_scheduler(void)get_scheduler210,4931
+base::start(void)start217,5046
+base::~base(void)~base227,5205
+base::base(const vm::process_id _id, vm::all *_all):base232,5244
+
+sched/base.hpp,2484
+#define SCHED_BASE_HPPSCHED_BASE_HPP2,23
+namespace process {process22,439
+namespace schedsched26,479
+class basebase31,531
+   const vm::process_id id;id35,559
+   boost::thread *thread;thread36,587
+   vm::state state;state37,613
+   size_t iteration;iteration39,637
+   mutable utils::atomic<size_t> processed_facts;processed_facts42,685
+   mutable utils::atomic<size_t> sent_facts;sent_facts43,735
+   mutable statistics::sched_state ins_state;ins_state44,780
+#define ins_active ins_active46,830
+#define ins_idle ins_idle47,884
+#define ins_sched ins_sched48,934
+#define ins_round ins_round49,986
+#define ins_activeins_active53,1046
+#define ins_idleins_idle54,1065
+#define ins_schedins_sched55,1082
+#define ins_roundins_round56,1100
+   inline void node_iteration(db::node *node)node_iteration68,1394
+   inline bool leader_thread(void) const { return get_id() == 0; }leader_thread82,1670
+   virtual void init_node(db::node *node)init_node84,1738
+   inline void new_work_self(db::node *node, db::simple_tuple *stpl, const process::work_modifier mod = process::mods::NOTHING)new_work_self93,2053
+   inline void new_work_agg(db::node *node, db::simple_tuple *stpl)new_work_agg100,2355
+   virtual void new_work_delay(sched::base *, const db::node *, process::work&, const vm::uint_val)new_work_delay109,2717
+   virtual void set_node_priority(db::node *, const double) { }set_node_priority120,3043
+	virtual void add_node_priority(db::node *, const double) { }add_node_priority121,3107
+   virtual void add_node_priority_other(db::node *, const double) { }add_node_priority_other122,3169
+   virtual void set_node_priority_other(db::node *, const double) { }set_node_priority_other123,3239
+   virtual void schedule_next(db::node *) { }schedule_next124,3309
+	virtual db::simple_tuple_vector gather_active_tuples(db::node *, const vm::predicate_id) { return db::simple_tuple_vector(); }gather_active_tuples127,3389
+   virtual void gather_next_tuples(db::node *, db::simple_tuple_list&) { }gather_next_tuples128,3517
+   virtual void finish_work(db::node *)finish_work135,3713
+   inline bool end_iteration(void)end_iteration145,3924
+   inline vm::process_id get_id(void) const { return id; }get_id153,4086
+   inline size_t num_iterations(void) const { return iteration; }num_iterations155,4149
+	inline void join(void) { thread->join(); }join157,4216
+   virtual void write_slice(statistics::slice& sl) constwrite_slice161,4285
+
+sched/common.cpp,229
+namespace schedsched10,147
+assert_static_nodes_end_iteration(const process_id id, vm::all *all)assert_static_nodes_end_iteration15,186
+assert_static_nodes_end(const process_id id, vm::all *all)assert_static_nodes_end27,574
+
+sched/common.hpp,358
+#define SCHED_COMMON_HPPSCHED_COMMON_HPP3,26
+namespace schedsched8,98
+inline void assert_static_nodes_end_iteration(const vm::process_id, vm::all *) {}assert_static_nodes_end_iteration12,131
+inline void assert_static_nodes_end(const vm::process_id, vm::all *) {}assert_static_nodes_end13,213
+#define iterate_static_nodes(iterate_static_nodes19,435
+
+sched/mpi.cpp,957
+namespace sched {sched26,584
+    class mpi {mpi27,602
+            boost::mpi::environment env;env29,635
+            boost::mpi::communicator world;world30,676
+            void init(const size_t) {init33,737
+            void new_agg(work& w) {}new_agg37,803
+            void new_work(const node *, work& new_work) {}new_work39,841
+            void assert_end(void) const {}assert_end41,901
+            void assert_end_iteration(void) const {}assert_end_iteration43,945
+            node *get_work(void) {}get_work45,999
+            bool terminate_iteration(void) {}terminate_iteration47,1036
+            void generate_aggs(void) {}generate_aggs49,1083
+            simple_tuple_vector gather_active_tuples(db::node *node, const vm::predicate_id pred) {}gather_active_tuples51,1124
+            void gather_next_tuples(db::node *node, simple_tuple_list& ls) {}gather_next_tuples53,1226
+int main(int argc, char *argv[]) {main57,1314
+
+sched/mpi.hpp,1937
+#define MPI_HPPMPI_HPP8,106
+namespace schedsched23,407
+class mpi_sched: public sched::basempi_sched26,426
+	typedef uint64_t message_type;message_type30,477
+	static const size_t MAXLENGTH = 512 / sizeof(sim_sched::message_type);MAXLENGTH31,509
+	sim_node *current_node;current_node33,582
+	boost::asio::ip::tcp::socket *socket;socket34,607
+      process::work work;work37,667
+      size_t timestamp;timestamp38,693
+      sim_node *src;src39,717
+   } work_info;work_info40,738
+	std::list<work_info> tmp_work;tmp_work43,834
+   queue::general_pqueue<work_info, utils::unix_timestamp> delay_queue;delay_queue46,916
+	static vm::predicate *neighbor_pred;neighbor_pred48,989
+	static vm::predicate *tap_pred;tap_pred49,1027
+	static vm::predicate *neighbor_count_pred;neighbor_count_pred50,1060
+	static vm::predicate *accel_pred;accel_pred51,1104
+	static vm::predicate *shake_pred;shake_pred52,1139
+	static vm::predicate *vacant_pred;vacant_pred53,1174
+	static bool thread_mode;thread_mode54,1210
+	static bool stop_all;stop_all55,1236
+   static utils::unix_timestamp start_time;start_time57,1296
+   static bool all_instantiated;all_instantiated58,1340
+	static queue::push_safe_linear_queue<message_type*> socket_messages;socket_messages59,1373
+	bool slave;slave60,1443
+	static int PORT;PORT94,3148
+   virtual void new_work_other(base *, process::work&)new_work_other100,3369
+   virtual void new_work_remote(process::remote *, const db::node::node_id, message *)new_work_remote106,3478
+   virtual void end(void) {}end118,3851
+   static db::node* create_node(const db::node::node_id id, const db::node::node_id trans, vm::all *all)create_node121,3927
+   sim_sched *find_scheduler(const db::node *) { return this; }find_scheduler128,4184
+   explicit sim_sched(vm::all *all):sim_sched130,4252
+	explicit sim_sched(vm::all *all, const vm::process_id id, sim_node *_node):sim_sched138,4384
+
+sched/nodes/in_queue.hpp,633
+#define SCHED_NODES_IN_QUEUE_HPPSCHED_NODES_IN_QUEUE_HPP3,34
+namespace schedsched9,142
+class in_queue_node: public db::nodein_queue_node12,161
+   volatile bool i_am_on_queue;i_am_on_queue16,215
+   inline void set_in_queue(const bool val)set_in_queue20,260
+   inline bool in_queue(void) constin_queue26,381
+   virtual void assert_end(void) constassert_end31,456
+   virtual void assert_end_iteration(void) constassert_end_iteration37,563
+   explicit in_queue_node(const db::node::node_id _id, const db::node::node_id _trans, vm::all *all):in_queue_node43,690
+   virtual ~in_queue_node(void) { }~in_queue_node48,860
+
+sched/nodes/serial.hpp,955
+#define SCHED_NODES_SERIAL_HPPSCHED_NODES_SERIAL_HPP3,32
+namespace schedsched14,310
+class serial_node: public in_queue_nodeserial_node17,330
+	typedef queue::unsafe_bounded_pqueue<db::simple_tuple*>::type queue_type;	queue_type23,425
+   queue_type queue;queue24,501
+	typedef queue_type::const_iterator queue_iterator;queue_iterator26,523
+	inline queue_iterator begin(void) const { return queue.begin(); }begin28,577
+	inline queue_iterator end(void) const { return queue.end(); }end29,644
+   inline void add_work(db::simple_tuple *stpl)add_work31,711
+   inline bool has_work(void) const { return !queue.empty(); }has_work36,822
+   virtual void assert_end(void) constassert_end38,886
+   virtual void assert_end_iteration(void) constassert_end_iteration44,998
+   explicit serial_node(const db::node::node_id _id, const db::node::node_id _trans, vm::all *all):serial_node50,1130
+   virtual ~serial_node(void) { }~serial_node56,1350
+
+sched/nodes/sim.hpp,2761
+#define SCHED_NODES_SIM_HPPSCHED_NODES_SIM_HPP3,29
+namespace schedsched15,340
+enum face_t {face_t18,360
+   INVALID_FACE = -1,INVALID_FACE19,374
+   BOTTOM = 0,BOTTOM20,396
+   NORTH = 1,NORTH21,411
+   EAST = 2,EAST22,425
+   WEST = 3,WEST23,438
+   SOUTH = 4,SOUTH24,451
+   TOP = 5TOP25,465
+inline face_t& operator++(face_t &f)operator ++28,480
+inline face_t operator++(face_t& f, int) {operator ++34,570
+class sim_node: public db::nodesim_node39,637
+   vm::node_val top;top42,680
+   vm::node_val bottom;bottom43,701
+   vm::node_val east;east44,725
+   vm::node_val west;west45,747
+   vm::node_val north;north46,769
+   vm::node_val south;south47,792
+   queue::general_pqueue<process::work, utils::unix_timestamp> delay_queue;delay_queue49,816
+   bool instantiated_flag;instantiated_flag51,893
+   size_t neighbor_count;neighbor_count52,920
+   static const vm::node_val NO_NEIGHBOR = (vm::node_val)-1;NO_NEIGHBOR56,956
+   static const face_t INITIAL_FACE = BOTTOM;INITIAL_FACE58,1018
+   static const face_t FINAL_FACE = TOP;FINAL_FACE59,1064
+   void add_delay_work(process::work& work, const vm::uint_val milliseconds)add_delay_work61,1106
+   inline bool delayed_available(void) constdelayed_available66,1263
+   inline void add_delayed_tuples(db::simple_tuple_list& ls)add_delayed_tuples77,1518
+   vm::node_val *get_node_at_face(const face_t face) {get_node_at_face92,1947
+   face_t get_face(const vm::node_val node) {get_face104,2280
+   vm::deterministic_timestamp timestamp;timestamp115,2614
+	queue::heap_queue<db::simple_tuple*> tuple_pqueue; // for deterministic computationtuple_pqueue116,2656
+	queue::heap_queue<db::simple_tuple*> rtuple_pqueue; // same as before but with retraction factsrtuple_pqueue117,2741
+	queue::push_safe_linear_queue<db::simple_tuple*> pending; // for threaded computationpending118,2838
+	inline bool has_work(void) const { return !tuple_pqueue.empty(); }has_work120,2926
+   inline void get_tuples_until_timestamp(db::simple_tuple_list& ls, const size_t until)get_tuples_until_timestamp122,2995
+   virtual void assert_end(void) constassert_end145,3632
+   virtual void assert_end_iteration(void) constassert_end_iteration150,3709
+   inline bool has_been_instantiated(void) consthas_been_instantiated155,3796
+   inline void set_instantiated(const bool flag)set_instantiated160,3888
+   inline void inc_neighbor_count(void)inc_neighbor_count165,3980
+   inline void dec_neighbor_count(void)dec_neighbor_count170,4055
+   inline size_t get_neighbor_count(void) constget_neighbor_count175,4130
+   explicit sim_node(const db::node::node_id _id, const db::node::node_id _trans, vm::all *all):sim_node180,4218
+   virtual ~sim_node(void) { }~sim_node192,4653
+
+sched/nodes/thread.hpp,764
+#define SCHED_NODES_THREAD_HPPSCHED_NODES_THREAD_HPP3,32
+namespace schedsched13,269
+class thread_node: public in_queue_nodethread_node16,288
+	utils::spinlock spin;spin20,343
+	typedef queue::safe_bounded_pqueue<db::simple_tuple*>::type queue_type;queue_type22,368
+	queue_type queue;queue23,441
+   inline void add_work(db::simple_tuple *stpl)add_work25,464
+   virtual inline bool has_work(void) const { return !queue.empty(); }has_work30,575
+   virtual void assert_end(void) constassert_end32,650
+   virtual void assert_end_iteration(void) constassert_end_iteration38,765
+   explicit thread_node(const db::node::node_id _id, const db::node::node_id _trans, vm::all *all):thread_node44,900
+   virtual ~thread_node(void) { }~thread_node49,1091
+
+sched/nodes/thread_intrusive.hpp,2000
+#define SCHED_NODES_THREAD_INTRUSIVE_HPPSCHED_NODES_THREAD_INTRUSIVE_HPP3,42
+namespace schedsched15,346
+class thread_intrusive_node: public thread_nodethread_intrusive_node18,365
+   heap_priority priority_level;priority_level25,525
+   bool moving_around;moving_around29,569
+	typedef queue::heap_queue<db::simple_tuple*> prio_tuples_queue;prio_tuples_queue31,594
+	prio_tuples_queue prioritized_tuples;prioritized_tuples32,659
+	heap_priority get_min_value(void) const { return prioritized_tuples.min_value(); }get_min_value34,699
+	virtual bool has_prio_work(void) const { return !prioritized_tuples.empty(); }has_prio_work36,785
+	virtual bool has_normal_work(void) const { return thread_node::has_work(); }has_normal_work37,865
+	virtual bool has_work(void) const { return thread_node::has_work() || !prioritized_tuples.empty(); }has_work38,943
+	inline heap_priority get_priority_level(void) { return priority_level; }get_priority_level40,1046
+	inline vm::int_val get_int_priority_level(void) { return priority_level.int_priority; }get_int_priority_level41,1120
+	inline vm::float_val get_float_priority_level(void) { return priority_level.float_priority; }get_float_priority_level42,1209
+	inline void set_priority_level(const heap_priority level) { priority_level = level; }set_priority_level43,1304
+   inline void set_int_priority_level(const vm::int_val level) { priority_level.int_priority = level; }set_int_priority_level44,1391
+   inline void set_float_priority_level(const vm::float_val level) { priority_level.float_priority = level; }set_float_priority_level45,1495
+	inline bool has_priority_level(void) const {has_priority_level46,1605
+	bool has_been_prioritized;has_been_prioritized59,1972
+   bool has_been_touched;has_been_touched60,2000
+   explicit thread_intrusive_node(const db::node::node_id _id, const db::node::node_id _trans, vm::all *all):thread_intrusive_node62,2027
+   virtual ~thread_intrusive_node(void) {}~thread_intrusive_node73,2405
+
+sched/nodes/unsafe_static.hpp,782
+#define SCHED_NODES_UNSAFE_STATIC_HPPSCHED_NODES_UNSAFE_STATIC_HPP3,39
+namespace schedsched12,253
+class unsafe_static_node: public in_queue_nodeunsafe_static_node16,332
+	queue::unsafe_bounded_pqueue<process::node_work>::type queue;queue20,394
+   inline void add_work(process::node_work& new_work)add_work24,473
+   inline bool has_work(void) const { return !queue.empty(); }has_work29,597
+   inline process::node_work get_work(void)get_work31,664
+   virtual void assert_end(void) constassert_end36,748
+   virtual void assert_end_iteration(void) constassert_end_iteration42,863
+   explicit unsafe_static_node(const db::node::node_id _id, const db::node::node_id _trans):unsafe_static_node48,998
+   virtual ~unsafe_static_node(void) { }~unsafe_static_node53,1177
+
+sched/serial.cpp,699
+namespace schedsched12,217
+serial_local::new_agg(work& w)new_agg16,241
+serial_local::new_work(const node *, work& new_work)new_work22,312
+serial_local::assert_end(void) constassert_end35,582
+serial_local::assert_end_iteration(void) constassert_end_iteration42,696
+serial_local::get_work(void)get_work51,919
+serial_local::terminate_iteration(void)terminate_iteration80,1528
+serial_local::generate_aggs(void)generate_aggs88,1621
+serial_local::init(const size_t)init94,1692
+serial_local::gather_active_tuples(db::node *node, const vm::predicate_id pred)gather_active_tuples114,2273
+serial_local::gather_next_tuples(db::node *node, simple_tuple_list& ls)gather_next_tuples133,2729
+
+sched/serial.hpp,808
+#define SCHED_SERIAL_HPPSCHED_SERIAL_HPP3,26
+namespace schedsched10,185
+class serial_local: public sched::baseserial_local13,207
+	serial_node *current_node;current_node17,261
+	queue::intrusive_unsafe_double_queue<serial_node> queue_nodes;queue_nodes18,289
+   inline bool has_work(void) const { return !queue_nodes.empty(); }has_work22,368
+   virtual void new_work_other(sched::base *, process::work&)new_work_other33,689
+   virtual void end(void) {}end44,1030
+   static db::node* create_node(const db::node::node_id id, const db::node::node_id trans, vm::all *all)create_node47,1106
+   serial_local *find_scheduler(const db::node *) { return this; }find_scheduler52,1303
+   explicit serial_local(vm::all *all):serial_local54,1374
+   virtual ~serial_local(void) {}~serial_local60,1480
+
+sched/sim.cpp,3581
+static const int TIME_TO_INSTANTIATE = 500;TIME_TO_INSTANTIATE20,422
+#define CREATE_N_NODES CREATE_N_NODES22,467
+#define RUN_NODE RUN_NODE23,492
+#define NODE_RUN NODE_RUN24,511
+#define STOP STOP25,530
+#define ADD_NEIGHBOR ADD_NEIGHBOR26,545
+#define REMOVE_NEIGHBOR REMOVE_NEIGHBOR27,568
+#define TAP TAP28,594
+#define SET_COLOR SET_COLOR29,608
+#define USE_THREADS USE_THREADS30,628
+#define SEND_MESSAGE SEND_MESSAGE31,650
+#define RECEIVE_MESSAGE RECEIVE_MESSAGE32,674
+#define ACCEL ACCEL33,701
+#define SHAKE SHAKE34,718
+namespace schedsched39,787
+queue::push_safe_linear_queue<sim_sched::message_type*> sim_sched::socket_messages;socket_messages53,1264
+sim_sched::~sim_sched(void)~sim_sched57,1372
+sim_sched::init(const size_t num_threads)init66,1476
+sim_sched::new_work_delay(sched::base *target, const db::node *_src, work& new_work, const uint_val delay)new_work_delay142,3592
+sim_sched::new_work(const node *_src, work& new_work)new_work157,4071
+sim_sched::send_pending_messages(void)send_pending_messages185,4804
+sim_sched::add_received_tuple(sim_node *no, size_t ts, db::simple_tuple *stpl)add_received_tuple195,5059
+sim_sched::add_neighbor(const size_t ts, sim_node *no, const node_val out, const face_t face, const int count)add_neighbor210,5400
+sim_sched::add_neighbor_count(const size_t ts, sim_node *no, const size_t total, const int count)add_neighbor_count225,5789
+sim_sched::add_vacant(const size_t ts, sim_node *no, const face_t face, const int count)add_vacant239,6131
+sim_sched::instantiate_all_nodes(void)instantiate_all_nodes253,6460
+sim_sched::send_send_message(const work_info& info, const deterministic_timestamp ts)send_send_message279,7211
+sim_sched::handle_deterministic_computation(void)handle_deterministic_computation307,8168
+sim_sched::handle_create_n_nodes(deterministic_timestamp ts, size_t n, node::node_id start_id)handle_create_n_nodes348,9270
+sim_sched::handle_run_node(const deterministic_timestamp ts, const db::node::node_id node)handle_run_node373,10121
+sim_sched::handle_receive_message(const deterministic_timestamp ts, db::node::node_id node,handle_receive_message394,10688
+sim_sched::handle_add_neighbor(const deterministic_timestamp ts, const db::node::node_id in,handle_add_neighbor422,11613
+sim_sched::handle_remove_neighbor(const deterministic_timestamp ts,handle_remove_neighbor460,12952
+sim_sched::handle_tap(const deterministic_timestamp ts, const db::node::node_id node)handle_tap489,13899
+sim_sched::handle_accel(const deterministic_timestamp ts, const db::node::node_id node,handle_accel504,14306
+sim_sched::handle_shake(const deterministic_timestamp ts, const db::node::node_id node,handle_shake522,14775
+sim_sched::check_delayed_queue(void)check_delayed_queue542,15356
+sim_sched::master_get_work(void)master_get_work560,15861
+sim_sched::get_work(void)get_work657,18858
+sim_sched::set_color(db::node *n, const int r, const int g, const int b)set_color672,19095
+sim_sched::schedule_new_message(message_type *data)schedule_new_message690,19513
+sim_sched::new_agg(work& w)new_agg701,19744
+sim_sched::generate_aggs(void)generate_aggs707,19812
+sim_sched::terminate_iteration(void)terminate_iteration713,19880
+sim_sched::assert_end(void) constassert_end721,19963
+sim_sched::assert_end_iteration(void) constassert_end_iteration727,20050
+sim_sched::gather_active_tuples(db::node *node, const vm::predicate_id pred)gather_active_tuples733,20170
+sim_sched::gather_next_tuples(db::node *node, simple_tuple_list& ls)gather_next_tuples739,20288
+
+sched/sim.hpp,1941
+#define SCHED_SIM_HPPSCHED_SIM_HPP3,23
+namespace schedsched13,205
+class sim_sched: public sched::basesim_sched16,224
+	typedef uint64_t message_type;message_type20,275
+	static const size_t MAXLENGTH = 512 / sizeof(sim_sched::message_type);MAXLENGTH21,307
+	sim_node *current_node;current_node23,380
+	boost::asio::ip::tcp::socket *socket;socket24,405
+      process::work work;work27,465
+      size_t timestamp;timestamp28,491
+      sim_node *src;src29,515
+   } work_info;work_info30,536
+	std::list<work_info> tmp_work;tmp_work33,632
+   queue::general_pqueue<work_info, utils::unix_timestamp> delay_queue;delay_queue36,714
+	static vm::predicate *neighbor_pred;neighbor_pred38,787
+	static vm::predicate *tap_pred;tap_pred39,825
+	static vm::predicate *neighbor_count_pred;neighbor_count_pred40,858
+	static vm::predicate *accel_pred;accel_pred41,902
+	static vm::predicate *shake_pred;shake_pred42,937
+	static vm::predicate *vacant_pred;vacant_pred43,972
+	static bool thread_mode;thread_mode44,1008
+	static bool stop_all;stop_all45,1034
+   static utils::unix_timestamp start_time;start_time47,1094
+   static bool all_instantiated;all_instantiated48,1138
+	static queue::push_safe_linear_queue<message_type*> socket_messages;socket_messages49,1171
+	bool slave;slave50,1241
+	static int PORT;PORT84,2946
+   virtual void new_work_other(base *, process::work&)new_work_other90,3167
+   virtual void new_work_remote(process::remote *, const db::node::node_id, message *)new_work_remote96,3276
+   virtual void end(void) {}end108,3649
+   static db::node* create_node(const db::node::node_id id, const db::node::node_id trans, vm::all *all)create_node111,3725
+   sim_sched *find_scheduler(const db::node *) { return this; }find_scheduler118,3982
+   explicit sim_sched(vm::all *all):sim_sched120,4050
+	explicit sim_sched(vm::all *all, const vm::process_id id, sim_node *_node):sim_sched128,4182
+
+sched/sim_tcp.cpp,3583
+static const int TIME_TO_INSTANTIATE = 500;TIME_TO_INSTANTIATE19,421
+#define CREATE_ONE_NODE CREATE_ONE_NODE22,493
+#define RUN_NODE RUN_NODE23,519
+#define NODE_RUN NODE_RUN24,538
+#define STOP STOP25,557
+#define ADD_NEIGHBOR ADD_NEIGHBOR26,572
+#define REMOVE_NEIGHBOR REMOVE_NEIGHBOR27,595
+#define TAP TAP28,621
+#define SET_COLOR SET_COLOR29,635
+#define USE_THREADS USE_THREADS30,655
+#define SEND_MESSAGE SEND_MESSAGE31,677
+#define RECEIVE_MESSAGE RECEIVE_MESSAGE32,701
+#define ACCEL ACCEL33,728
+#define SHAKE SHAKE34,745
+namespace schedsched39,814
+queue::push_safe_linear_queue<sim_sched::message_type*> sim_sched::socket_messages;socket_messages54,1333
+sim_sched::~sim_sched(void)~sim_sched58,1440
+sim_sched::init(const size_t num_threads)init67,1537
+sim_sched::new_work_delay(sched::base *target, const db::node *_src, work& new_work, const uint_val delay)new_work_delay143,3637
+sim_sched::new_work(const node *_src, work& new_work)new_work155,3973
+sim_sched::send_pending_messages(void)send_pending_messages181,4632
+sim_sched::add_received_tuple(sim_node *no, size_t ts, db::simple_tuple *stpl)add_received_tuple191,4887
+sim_sched::add_neighbor(const size_t ts, sim_node *no, const node_val out, const face_t face, const int count)add_neighbor204,5166
+sim_sched::add_neighbor_count(const size_t ts, sim_node *no, const size_t total, const int count)add_neighbor_count219,5547
+sim_sched::add_vacant(const size_t ts, sim_node *no, const face_t face, const int count)add_vacant233,5889
+sim_sched::instantiate_one_node(void)instantiate_one_node248,6259
+sim_sched::send_send_message(const work_info& info, const deterministic_timestamp ts)send_send_message276,7193
+sim_sched::handle_deterministic_computation(void)handle_deterministic_computation304,8150
+sim_sched::handle_create_one_node(deterministic_timestamp ts, size_t n, node::node_id start_id)handle_create_one_node346,9348
+sim_sched::handle_run_node(const deterministic_timestamp ts, const db::node::node_id node)handle_run_node369,10055
+sim_sched::handle_receive_message(const deterministic_timestamp ts, db::node::node_id node,handle_receive_message390,10622
+sim_sched::handle_add_neighbor(const deterministic_timestamp ts, const db::node::node_id in,handle_add_neighbor418,11547
+sim_sched::handle_remove_neighbor(const deterministic_timestamp ts,handle_remove_neighbor456,12886
+sim_sched::handle_tap(const deterministic_timestamp ts, const db::node::node_id node)handle_tap485,13833
+sim_sched::handle_accel(const deterministic_timestamp ts, const db::node::node_id node,handle_accel500,14240
+sim_sched::handle_shake(const deterministic_timestamp ts, const db::node::node_id node,handle_shake518,14709
+sim_sched::check_delayed_queue(void)check_delayed_queue538,15290
+sim_sched::master_get_work(void)master_get_work556,15795
+sim_sched::get_work(void)get_work655,18712
+sim_sched::set_color(db::node *n, const int r, const int g, const int b)set_color661,18777
+sim_sched::schedule_new_message(message_type *data)schedule_new_message679,19187
+sim_sched::new_agg(work& w)new_agg686,19352
+sim_sched::generate_aggs(void)generate_aggs692,19420
+sim_sched::terminate_iteration(void)terminate_iteration698,19487
+sim_sched::assert_end(void) constassert_end706,19569
+sim_sched::assert_end_iteration(void) constassert_end_iteration712,19656
+sim_sched::gather_active_tuples(db::node *node, const vm::predicate_id pred)gather_active_tuples718,19775
+sim_sched::gather_next_tuples(db::node *node, simple_tuple_list& ls)gather_next_tuples724,19892
+
+sched/thread/assert.cpp,447
+namespace schedsched14,222
+static mutex mtx;mtx19,264
+static vector<size_t> total;total20,282
+assert_thread_iteration(const size_t iteration)assert_thread_iteration25,382
+assert_thread_push_work(void)assert_thread_push_work38,613
+assert_thread_pop_work(void)assert_thread_pop_work44,664
+assert_thread_disable_work_count(void)assert_thread_disable_work_count50,714
+assert_thread_end_iteration(void)assert_thread_end_iteration56,793
+
+sched/thread/assert.hpp,88
+#define SCHED_THREAD_ASSERT_HPPSCHED_THREAD_ASSERT_HPP3,33
+namespace schedsched5,66
+
+sched/thread/state.hpp,204
+#define SCHED_THREAD_STATE_HPPSCHED_THREAD_STATE_HPP3,32
+namespace schedsched5,64
+enum thread_state {thread_state8,86
+   THREAD_ACTIVE,THREAD_ACTIVE9,106
+   THREAD_INACTIVETHREAD_INACTIVE10,124
+
+sched/thread/steal_set.hpp,508
+#define SCHED_THREAD_STEAL_SET_HPPSCHED_THREAD_STEAL_SET_HPP3,36
+namespace schedsched9,162
+class steal_set: public mem::basesteal_set12,184
+	queue::push_safe_linear_queue<sched::base*> requests;requests16,233
+   inline bool empty(void) const { return requests.empty(); }empty22,331
+   inline sched::base *pop(void)pop24,397
+   inline void push(sched::base *sc)push31,504
+   inline void clear(void)clear36,580
+   explicit steal_set(void)steal_set42,659
+   ~steal_set(void)~steal_set46,701
+
+sched/thread/termination_barrier.hpp,953
+#define SCHED_THREAD_TERMINATION_BARRIER_HPPSCHED_THREAD_TERMINATION_BARRIER_HPP3,46
+namespace schedsched9,173
+class termination_barriertermination_barrier12,195
+   utils::atomic<size_t> active_threads;active_threads16,236
+   const size_t num_threads;num_threads17,277
+   volatile bool done;done19,310
+   inline void reset(void) { done = false; }reset23,349
+   inline void set_done(void) { done = true; }set_done24,394
+   inline void is_active(void)is_active26,445
+   inline void is_inactive(void)is_inactive32,558
+   inline size_t num_active(void) const { return active_threads; }num_active39,693
+   inline bool all_finished(void) const { return done; }all_finished41,764
+   inline bool zero_active_threads(void) const { return active_threads == 0; }zero_active_threads45,971
+   explicit termination_barrier(const size_t _num_threads):termination_barrier47,1054
+   ~termination_barrier(void) {}~termination_barrier52,1203
+
+sched/thread/threaded.cpp,99
+namespace schedsched8,107
+threaded::init_barriers(const size_t num_threads)init_barriers17,316
+
+sched/thread/threaded.hpp,1840
+#define SCHED_THREAD_THREADED_HPPSCHED_THREAD_THREADED_HPP3,35
+namespace schedsched19,438
+class threadedthreaded22,457
+   volatile thread_state tstate;tstate26,489
+   static termination_barrier *term_barrier;term_barrier30,541
+   static utils::tree_barrier *thread_barrier;thread_barrier31,586
+	utils::spinlock lock;lock33,637
+   static volatile size_t round_state;round_state35,662
+   size_t thread_round_state;thread_round_state36,701
+   static utils::atomic<size_t> total_in_agg;total_in_agg37,731
+   static inline void add_thread(sched::base *add, vm::all *all)add_thread39,781
+#define threads_synchronize(threads_synchronize45,977
+   inline void set_active(void)set_active49,1090
+   inline void set_inactive(void)set_inactive56,1240
+   inline void set_active_if_inactive(void)set_active_if_inactive63,1394
+   static inline size_t num_active(void) { return term_barrier->num_active(); }num_active72,1580
+   inline bool is_inactive(void) const { return tstate == THREAD_INACTIVE; }is_inactive74,1664
+   inline bool is_active(void) const { return tstate == THREAD_ACTIVE; }is_active75,1741
+   static inline void reset_barrier(void) { term_barrier->reset(); }reset_barrier77,1818
+   inline bool all_threads_finished(void) constall_threads_finished79,1891
+   explicit threaded(void): tstate(THREAD_ACTIVE),threaded86,2008
+   virtual ~threaded(void)~threaded91,2101
+#define DEFINE_START_FUNCTION(DEFINE_START_FUNCTION97,2183
+#define BUSY_LOOP_MAKE_INACTIVE(BUSY_LOOP_MAKE_INACTIVE106,2581
+#define BUSY_LOOP_CHECK_TERMINATION_THREADS(BUSY_LOOP_CHECK_TERMINATION_THREADS116,2939
+#define MAKE_OTHER_ACTIVE(MAKE_OTHER_ACTIVE122,3148
+#define START_ROUND(START_ROUND131,3431
+#define GET_NEXT(GET_NEXT138,3624
+#define DO_END_ROUND(DO_END_ROUND139,3663
+#define END_ROUND(END_ROUND170,5377
+
+sched/thread/tri_barrier.hpp,308
+#define SCHED_THREAD_TRI_BARRIER_HPPSCHED_THREAD_TRI_BARRIER_HPP3,38
+namespace schedsched7,105
+class tri_barriertri_barrier10,124
+   utils::atomic<size_t> total;total14,157
+   THREAD_LOCAL thread_round_state;thread_round_state16,193
+   explicit tri_barrier(const size_t _total):tri_barrier20,245
+
+sched/types.hpp,341
+#define SCHED_TYPES_HPPSCHED_TYPES_HPP3,25
+namespace schedsched5,50
+enum scheduler_type {scheduler_type8,72
+   SCHED_UNKNOWN,SCHED_UNKNOWN9,94
+   SCHED_SERIAL,SCHED_SERIAL10,112
+    SCHED_SERIAL_UI,SCHED_SERIAL_UI11,129
+    SCHED_SIMSCHED_SIM12,150
+inline bool is_serial_sched(const scheduler_type type)is_serial_sched15,168
+
+scripts/check_coloring.py,542
+import syssys3,19
+from lib_db import read_dbread_db4,30
+db = read_db(sys.stdin.readlines())db6,58
+neighbors = {}neighbors8,95
+def add_neighbor(src, dst):add_neighbor10,111
+def print_neighbors():print_neighbors30,473
+colors = {}colors42,730
+	checked = Falsechecked45,789
+		name = d['name']name47,822
+			checked = Truechecked49,863
+			args = d['args']args50,881
+			color = int(args[0])color51,901
+				older = colors[node]older56,993
+					edges = neighbors[node]edges62,1124
+							other = colors[edge]other65,1188
+
+scripts/count_db_total.py,339
+import syssys5,87
+from lib_db import read_dbread_db6,98
+predicate = sys.argv[1]predicate12,249
+position = int(sys.argv[2])position13,273
+db = read_db(sys.stdin.readlines())db15,302
+total = 0total16,338
+                name = d['name']name20,406
+                        total = total + int(d['args'][position-1])total22,475
+
+scripts/csv_benchmarks.py,1006
+import syssys12,227
+import csvcsv13,238
+import osos14,249
+import errnoerrno15,259
+def print_results():print_results18,295
+def lookup_serial_result(name):lookup_serial_result25,543
+def my_round(time):my_round29,627
+def make_speedup(time, serial):make_speedup32,676
+def make_efficiency(time, serial, cpu):make_efficiency35,746
+def write_header(writer):write_header38,839
+def write_time_file(file, bench, bench_data):write_time_file41,924
+def write_speedup_file(file, bench, bench_data):write_speedup_file55,1420
+def write_efficiency_file(file, bench, bench_data):write_efficiency_file75,2094
+def write_mix_speedup_file(file, bench, bench_data):write_mix_speedup_file95,2805
+def write_speedup_files():write_speedup_files117,3666
+def write_time_files():write_time_files121,3817
+def write_efficiency_files():write_efficiency_files125,3953
+def write_mix_speedup_files():write_mix_speedup_files129,4113
+dir = str(sys.argv[1])dir141,4465
+file = str(sys.argv[2])file142,4488
+
+scripts/csv_step.py,365
+import syssys9,230
+import csvcsv10,241
+import rere11,252
+in_file = str(sys.argv[1])in_file18,392
+out_file = str(sys.argv[2])out_file19,419
+def parse_bench_size(bench):parse_bench_size21,448
+def write_header(w):write_header31,665
+def output_bench_data(size, serial, w, bench_data):output_bench_data34,738
+def output_file(outfile):output_file41,959
+
+scripts/duplicate_neural_network.py,317
+import csvcsv3,19
+import syssys4,30
+input = sys.argv[1]input10,163
+output = sys.argv[2]output11,183
+size = int(sys.argv[3])size12,204
+reader = csv.reader(open(input, 'rb'), delimiter=',')reader14,229
+writer = csv.writer(open(output, 'wb'), delimiter=',')writer15,283
+	train = row[1:size+1]train18,358
+
+scripts/generate_binary_tree.py,234
+import syssys3,19
+from lib import write_edgewrite_edge4,30
+from lib import get_idget_id5,57
+from lib import set_weightset_weight6,80
+def generate_tree(root, levels):generate_tree8,108
+levels = int(sys.argv[1])levels29,559
+
+scripts/generate_chain.py,187
+import syssys3,19
+from lib import write_edgewrite_edge5,31
+from lib import set_weightset_weight6,58
+previous = 0previous18,318
+	new = inew20,368
+	previous = newprevious22,404
+
+scripts/generate_cycle.py,187
+import syssys3,19
+from lib import write_edgewrite_edge5,31
+from lib import set_weightset_weight6,58
+previous = 0previous19,319
+	new = inew21,369
+	previous = newprevious23,405
+
+scripts/generate_grid.py,367
+import syssys3,19
+from lib import write_edgewrite_edge5,31
+from lib import set_weightset_weight6,58
+arg = sys.argv[1]arg18,317
+lenvec = arg.split('@', 2)lenvec19,335
+   width = int(lenvec[0])width22,384
+   height = int(lenvec[1])height23,410
+   width = int(lenvec[0])width25,443
+   height = widthheight26,469
+def write_line(line):write_line28,488
+
+scripts/generate_heat_chain.py,914
+import syssys3,19
+from lib import write_dedgewwrite_dedgew5,31
+drop_type = ''drop_type11,211
+drop_constant = 0drop_constant12,226
+nodes = int(sys.argv[1])nodes16,290
+	drop_type = sys.argv[2]drop_type19,339
+		drop_part = drop_type[8:]drop_part21,397
+		drop_constant = float(drop_part)drop_constant22,425
+		drop_type = 'constant'drop_type23,460
+	drop_type = 'linear'drop_type25,491
+	drop_constant = 1.0 / float(nodes)drop_constant29,614
+	drop_type = 'constant'drop_type30,650
+previous = 0previous32,675
+	weight = 1.0weight35,717
+		new = i new37,758
+		weight = weight - drop_constantweight40,832
+			weight = 0.0 # keep it above 0.0weight42,885
+		previous = newprevious43,921
+	base = float(nodes) * float(nodes)base45,969
+		new = inew48,1056
+		inverse = nodes - previousinverse52,1168
+		weight = float(inverse * inverse) / baseweight53,1197
+		previous = neprevious55,1278
+
+scripts/generate_heat_grid.py,1334
+import syssys5,112
+from lib import write_dedgew, write_edgewwrite_dedgew7,124
+from lib import write_dedgew, write_edgewwrite_edgew7,124
+WRITE_COORDS = TrueWRITE_COORDS9,167
+ONE_PER_THREAD = FalseONE_PER_THREAD10,187
+side = int(sys.argv[1])side18,440
+outerside = int(sys.argv[2])outerside19,464
+outerweight = float(sys.argv[3])outerweight20,493
+innerweight = float(sys.argv[4])innerweight21,526
+transitionweight = float(sys.argv[5])transitionweight22,559
+insideheat = float(sys.argv[6])insideheat23,597
+outsideheat = float(sys.argv[7])outsideheat24,629
+	numthreads = int(sys.argv[8])numthreads26,684
+	numthreads = 1numthreads28,721
+def inside_outer(row, col):inside_outer32,768
+def write_weights(id, otherid, isouter, isotherouter):write_weights42,1013
+def write_heat(id, heat):write_heat54,1410
+def write_coord(id, row, col):write_coord57,1489
+def write_inner(id):write_inner60,1592
+def do_node(row, col):do_node63,1649
+def do_weights(row, col):do_weights75,1893
+def divisible_by(x, y):divisible_by98,2549
+def do_range(startrow, endrow, startcol, endcol):do_range101,2593
+def do_blocks(thread):do_blocks106,2740
+		quarter = side / 4quarter131,3407
+		half = side / 2half132,3428
+		fifth = side / 5fifth144,3864
+		half = side / 2half145,3883
+		quarter = side / 4quarter162,4422
+
+scripts/generate_neural_network.py,718
+INPUT_BASE = 0INPUT_BASE3,19
+HIDDEN_BASE = 100HIDDEN_BASE4,34
+OUTPUT_BASE = 200OUTPUT_BASE5,52
+import syssys7,71
+import csvcsv8,82
+num_input = int(sys.argv[1])num_input14,241
+num_hidden = int(sys.argv[2])num_hidden15,270
+num_output = int(sys.argv[3])num_output16,300
+file = sys.argv[4]file22,446
+bias_input = str(INPUT_BASE + num_input)bias_input44,969
+bias_hidden = str(HIDDEN_BASE + num_hidden)bias_hidden49,1103
+	MAX_READ = int(sys.argv[5])MAX_READ83,2198
+	MAX_READ = 500MAX_READ85,2233
+reader = csv.reader(open(file, 'rb'), delimiter=',')reader87,2250
+count = 0count88,2303
+      val = row[i]val91,2362
+      val = row[num_input + o]val95,2515
+   count = count + 1count101,2828
+
+scripts/generate_no_comm.py,57
+import syssys3,19
+total = int(sys.argv[1])total9,116
+
+scripts/generate_powergrid.py,393
+import syssys5,53
+import randomrandom6,64
+import osos7,78
+numsinks = int(sys.argv[1])numsinks13,197
+numsources = int(sys.argv[2])numsources14,225
+		source = numsinks + sourceasource18,320
+	source = numsinks + sourceasource22,444
+def generate_sink():generate_sink26,563
+def generate_source_capacity():generate_source_capacity38,819
+	source = numsinks + sourceasource48,1035
+
+scripts/generate_pyramid.py,194
+import syssys3,19
+from lib import write_edgewrite_edge6,60
+from lib import set_weightset_weight7,87
+def write_pyramid(depth, z):write_pyramid20,350
+depth = int(sys.argv[1])depth29,523
+
+scripts/generate_random_graph.py,121
+import syssys3,19
+import randomrandom4,30
+def list_has(list, x):list_has7,63
+total = int(sys.argv[1])total18,256
+
+scripts/generate_random_shortest_path.py,723
+import syssys5,95
+import randomrandom6,106
+total = int(sys.argv[1])total12,226
+SIZE_PATH = int(float(total) / 2.0)SIZE_PATH13,251
+links = []links15,288
+def add_link(src, dst):add_link17,300
+nodes = [1, 2, 3, 4]nodes21,383
+last = 3last24,434
+	last = last + 1last36,601
+total_links = int(total * random.uniform(1.5, 3.0))total_links40,656
+	node1 = random.randint(1, last)node142,740
+	node2 = random.randint(1, last)node243,773
+todest = random.randint(3, max(3, total/10))todest52,925
+	node = random.randint(1, last)node55,989
+		todest = todest - 1todest57,1036
+	idx = random.randint(0, len(links)-1)idx68,1238
+	item = links[idx]item69,1277
+	distance = random.randint(1, 10)distance71,1316
+
+scripts/generate_shortest_path.py,683
+import syssys3,19
+import randomrandom4,30
+def list_has(list, x):list_has6,45
+def hash_has(hash, x):hash_has13,140
+def has_link(hash, k, v):has_link20,227
+def add_link(hash, k, v):add_link27,331
+def generate_weight():generate_weight35,452
+all_pairs = Falseall_pairs42,615
+total = int(sys.argv[1])total48,722
+	source = random.randint(0, total-1)source53,809
+	dest = sourcedest54,846
+		dest = random.randint(0, total-1)dest56,886
+alllinks = {}alllinks64,1049
+	links = random.randint(1, int(total*0.75))links67,1090
+		link = random.randint(1, total - 1)link69,1158
+			link = (link + 1) % (total - 1)link71,1215
+		weight = generate_weight()weight78,1400
+
+scripts/generate_two_shortest_path.py,58
+import syssys5,95
+total = int(sys.argv[1])total11,220
+
+scripts/heat_color.py,1285
+import syssys5,89
+import mathmath6,100
+import cairocairo7,112
+from lib_db import read_dbread_db8,125
+db = read_db(sys.stdin.readlines())db14,246
+def read_heat_node(data):read_heat_node16,283
+def read_coord(data):read_coord23,406
+def read_inner(data):read_inner32,576
+heats = {}heats39,686
+coords = {}coords40,697
+inners = {}inners41,709
+maxheat = 0maxheat43,722
+maxx = 0maxx44,734
+maxy = 0maxy45,743
+lowestxinner = Nonelowestxinner46,752
+lowestyinner = Nonelowestyinner47,772
+highestxinner = Nonehighestxinner48,792
+highestyinner = Nonehighestyinner49,813
+	heat = read_heat_node(data)heat51,868
+		maxheat = heatmaxheat53,917
+	coord = read_coord(data)coord54,934
+		maxx = xmaxx57,990
+		maxy = ymaxy59,1015
+	inner = read_inner(data)inner60,1026
+			lowestxinner = xlowestxinner64,1132
+			lowestyinner = ylowestyinner66,1199
+			highestxinner = xhighestxinner68,1268
+			highestyinner = yhighestyinner70,1338
+SCALE = 20SCALE74,1402
+WIDTH = maxx * SCALEWIDTH75,1413
+HEIGHT = maxy * SCALEHEIGHT76,1434
+surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)surface77,1456
+ctx = cairo.Context(surface)ctx78,1521
+	heat = heats[node]heat81,1590
+	inner = inners[node]inner83,1626
+	ratio = heat / maxheatratio84,1648
+
+scripts/heat_count_color.py,1401
+import syssys5,91
+import mathmath6,102
+import cairocairo7,114
+from lib_db import read_dbread_db8,127
+db = read_db(sys.stdin.readlines())db14,240
+def read_count_node(data):read_count_node16,277
+def read_coord(data):read_coord23,400
+def read_inner(data):read_inner32,570
+counts = {}counts39,680
+coords = {}coords40,692
+inners = {}inners41,704
+maxcount = 0maxcount43,717
+totalcount = 0totalcount44,730
+maxx = 0maxx45,745
+maxy = 0maxy46,754
+lowestxinner = Nonelowestxinner47,763
+lowestyinner = Nonelowestyinner48,783
+highestxinner = Nonehighestxinner49,803
+highestyinner = Nonehighestyinner50,824
+	total = read_count_node(data)total52,879
+		maxcount = totalmaxcount54,932
+	totalcount = totalcount + totaltotalcount55,951
+	coord = read_coord(data)coord56,984
+		maxx = xmaxx59,1040
+		maxy = ymaxy61,1065
+	inner = read_inner(data)inner62,1076
+			lowestxinner = xlowestxinner66,1182
+			lowestyinner = ylowestyinner68,1249
+			highestxinner = xhighestxinner70,1318
+			highestyinner = yhighestyinner72,1388
+SCALE = 20SCALE76,1454
+WIDTH = maxx * SCALEWIDTH77,1465
+HEIGHT = maxy * SCALEHEIGHT78,1486
+surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)surface79,1508
+ctx = cairo.Context(surface)ctx80,1573
+	count = counts[node]count83,1642
+	inner = inners[node]inner85,1680
+	ratio = float(count) / float(maxcount)ratio86,1702
+
+scripts/lib.py,321
+import syssys2,1
+weight = Noneweight4,13
+counter = 0counter5,27
+def get_id():get_id7,40
+def set_weight(new):set_weight12,114
+def write_edge(a, b):write_edge16,165
+def write_edgew(a, b, w):write_edgew23,332
+def write_dedgew(a, b, w):write_dedgew26,452
+def simple_write_edge(a, b):simple_write_edge30,524
+
+scripts/lib_csv.py,536
+import rere2,1
+import osos3,11
+import errnoerrno4,21
+data = {}data6,35
+CPUS = [1, 2, 4, 6, 8, 10, 12, 14, 16]CPUS7,45
+def mkdir_p(path):mkdir_p9,85
+def get_sched_name(sched):get_sched_name17,256
+def get_sched_threads(sched):get_sched_threads32,576
+def build_results(vec):build_results46,947
+def add_result(name, sched, threads, result):add_result61,1218
+def read_csv_file(file):read_csv_file78,1678
+def natural_dict_sort(dic):natural_dict_sort92,2065
+def lookup_serial_result(name):lookup_serial_result97,2309
+
+scripts/lib_db.py,89
+def parse_tuple(data):parse_tuple7,108
+def read_db(lines, only = None):read_db18,530
+
+scripts/plots/active_inactive.py,1420
+import syssys4,20
+import cairocairo5,31
+import randomrandom6,44
+import mathmath7,58
+def is_number(s):is_number9,71
+fp = open(sys.argv[1], 'r')fp20,246
+lines = fp.readlines()[1:]lines22,275
+maxqueue = 0maxqueue23,302
+numcolumns = 0numcolumns24,315
+timetotal = len(lines)timetotal35,532
+WIDTH = min(400, 1 * timetotal)WIDTH37,556
+HEIGHT = 64 * numcolumnsHEIGHT38,588
+surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)surface39,613
+ctx = cairo.Context(surface)ctx40,678
+heightdivision = HEIGHT/numcolumnsheightdivision45,782
+	height = (i + 1) * heightdivisionheight47,847
+widthgap = 10widthgap52,960
+widthavailable = WIDTH - widthgapwidthavailable53,974
+widthdivision = widthavailable/float(timetotal)widthdivision54,1008
+currentwidth = widthgap / 2.0currentwidth55,1056
+time = 0time56,1086
+	line = line.rstrip('\n')line58,1114
+	vec = line.split(' ')[1:]vec59,1140
+	thrnum = 0thrnum60,1167
+	gap = heightdivision / 3.0gap61,1179
+	startwidth = int(widthgap/2.0 + widthdivision * time)startwidth62,1207
+	endwidth = startwidth + int(widthdivision)endwidth63,1262
+	startwidth = currentwidthstartwidth64,1306
+	widthlength = endwidth - startwidthwidthlength65,1333
+	currentwidth = endwidthcurrentwidth66,1370
+			v = int(thr)v75,1583
+				ratio = float(thr) /float(maxqueue)ratio79,1654
+		thrnum = thrnum + 1thrnum86,1879
+	time = time + 1time87,1901
+
+scripts/plots/common.sh,0
+
+scripts/plots/dir_plot_base.sh,42
+build_cool_name ()build_cool_name22,365
+
+scripts/plots/dir_plot_efficiency.sh,0
+
+scripts/plots/dir_plot_speedup.sh,0
+
+scripts/plots/find_bigger_value.sh,0
+
+scripts/plots/find_smaller_value.sh,0
+
+scripts/plots/lines.sh,0
+
+scripts/plots/plot_dir.sh,68
+plot_part ()plot_part13,171
+try_plot_part ()try_plot_part39,522
+
+scripts/plots/plot_efficiency.sh,0
+
+scripts/plots/plot_instrumentation.sh,0
+
+scripts/plots/plot_mix_speedup.sh,0
+
+scripts/plots/plot_quantity.sh,0
+
+scripts/plots/plot_scaled.sh,0
+
+scripts/plots/plot_speedup.sh,0
+
+scripts/plots/state_totals.py,931
+import syssys13,243
+import csvcsv14,254
+file = sys.argv[1]file20,360
+f = open(file, 'rb')f22,380
+active = {}active23,401
+idle = {}idle24,413
+sched = {}sched25,423
+round = {}round26,434
+comm = {}comm27,445
+def setup_data(num_threads):setup_data29,456
+def add_active(thread):add_active36,616
+def add_idle(thread):add_idle39,692
+def add_sched(thread):add_sched42,762
+def add_round(thread):add_round45,835
+def add_comm(thread):add_comm48,908
+def get_info(name, data):get_info51,978
+first = Truefirst57,1103
+num_threads = 0num_threads58,1116
+   vec = line.split(' ')vec60,1147
+      num_threads = len(vec)-2num_threads62,1193
+      first = Falsefirst64,1254
+   vec = vec[1:] # skip timestampvec66,1289
+      state = vec[i]state68,1356
+outputfile = file + ".total"outputfile87,1703
+writer = csv.writer(open(outputfile, 'wb'), delimiter=' ')writer88,1732
+header = ['type']header91,1807
+
+scripts/transform_letter_data.py,224
+import csvcsv3,19
+import syssys4,30
+input = sys.argv[1]input10,141
+reader = csv.reader(open(input, 'rb'), delimiter=',')reader11,161
+	END = sys.argv[2]END14,239
+	END = 'J'END16,264
+	letter = row[0]letter19,295
+
+scripts/transform_pagerank.py,182
+import syssys8,164
+from lib import simple_write_edgesimple_write_edge9,175
+file = sys.argv[1]file15,292
+f = open(file, 'rb')f16,311
+def write_inout(i, o):write_inout18,333
+
+server.cpp,629
+static char *progname = NULL;progname24,440
+static int port = 0;port25,470
+help(void)help28,504
+read_arguments(int argc, char **argv)read_arguments39,717
+show_inter_help(void)show_inter_help80,1428
+show_version(void)show_version92,1736
+	COMMAND_EXIT,COMMAND_EXIT108,2045
+	COMMAND_VERSION,COMMAND_VERSION109,2060
+	COMMAND_HELP,COMMAND_HELP110,2078
+	COMMAND_STATUS,COMMAND_STATUS111,2093
+	COMMAND_NONECOMMAND_NONE112,2110
+} command_type;command_type113,2124
+static vector<string> command_args;command_args115,2141
+parse_command(string cmd)parse_command118,2198
+main(int argc, char **argv)main152,2757
+
+stat/slice.cpp,543
+namespace statisticsstatistics10,121
+slice::print_state(csv_line& csv) constprint_state14,150
+slice::print_work_queue(csv_line& csv) constprint_work_queue34,533
+slice::print_processed_facts(csv_line& csv) constprint_processed_facts40,629
+slice::print_sent_facts(csv_line& csv) constprint_sent_facts46,735
+slice::print_stolen_nodes(csv_line& csv) constprint_stolen_nodes52,831
+slice::print_steal_requests(csv_line& csv) constprint_steal_requests58,931
+slice::print_priority_queue(csv_line& csv) constprint_priority_queue64,1035
+
+stat/slice.hpp,491
+#define STAT_SLICE_HPPSTAT_SLICE_HPP3,24
+namespace statisticsstatistics10,124
+class sliceslice13,148
+   sched_state state;state17,173
+   size_t work_queue;work_queue18,195
+   size_t processed_facts;processed_facts19,217
+   size_t sent_facts;sent_facts20,244
+   size_t stolen_nodes;stolen_nodes21,266
+   size_t steal_requests;steal_requests22,290
+   size_t priority_queue;priority_queue23,316
+   explicit slice(void):slice33,710
+   virtual ~slice(void) {}~slice44,912
+
+stat/slice_set.cpp,1182
+namespace statisticsstatistics16,268
+write_header(ofstream& out, const string& header, vm::all *all)write_header20,304
+slice_set::write_general(const string& file, const string& title,write_general35,567
+slice_set::write_state(const string& file, vm::all *all) constwrite_state65,1425
+slice_set::write_work_queue(const string& file, vm::all *all) constwrite_work_queue71,1568
+slice_set::write_processed_facts(const string& file, vm::all *all) constwrite_processed_facts77,1730
+slice_set::write_sent_facts(const string& file, vm::all *all) constwrite_sent_facts83,1912
+slice_set::write_stolen_nodes(const string& file, vm::all *all) constwrite_stolen_nodes89,2074
+slice_set::write_steal_requests(const string& file, vm::all *all) constwrite_steal_requests95,2244
+slice_set::write_priority_queue(const string& file, vm::all *all) constwrite_priority_queue101,2422
+slice_set::write(const string& file, const scheduler_type type, vm::all *all) constwrite107,2600
+slice_set::beat_thread(const process_id id, slice& sl, vm::all *all)beat_thread118,2895
+slice_set::beat(vm::all *all)beat124,3027
+slice_set::slice_set(const size_t num_threads):slice_set137,3232
+
+stat/slice_set.hpp,433
+#define STAT_SLICE_SETSTAT_SLICE_SET3,24
+namespace statisticsstatistics16,251
+class slice_setslice_set19,278
+   size_t num_slices;num_slices23,309
+   typedef std::list<slice> list_slices;list_slices25,335
+   typedef list_slices::const_iterator iter;iter26,376
+   typedef std::vector<list_slices> vector_slices;vector_slices28,425
+   vector_slices slices;slices30,480
+   virtual ~slice_set(void) {}~slice_set54,1356
+
+stat/stat.cpp,226
+namespace statisticsstatistics8,70
+static string debug_file_name;debug_file_name12,129
+set_stat_file(const string& file)set_stat_file15,166
+get_stat_file(void)get_stat_file22,267
+stat_enabled(void)stat_enabled29,351
+
+stat/stat.hpp,295
+#define STAT_STAT_HPPSTAT_STAT_HPP3,23
+namespace statisticsstatistics9,86
+enum sched_statesched_state12,110
+   NOW_ACTIVE,NOW_ACTIVE14,129
+   NOW_IDLE,NOW_IDLE15,144
+   NOW_SCHED,NOW_SCHED16,157
+   NOW_ROUNDNOW_ROUND17,171
+const unsigned int SLICE_PERIOD = 15;SLICE_PERIOD21,258
+
+tests/#test.sh#,238
+do_exit ()do_exit16,274
+run_diff ()run_diff22,307
+do_serial ()do_serial40,579
+do_mpi () {do_mpi48,686
+do_test ()do_test55,791
+run_serial_n ()run_serial_n64,909
+run_test_n ()run_test_n75,1078
+loop_sched ()loop_sched89,1412
+
+tests/code/all_pairs1.m,0
+
+tests/code/all_pairs2.m,0
+
+tests/code/bp1.m,0
+
+tests/code/dfs.m,0
+
+tests/code/linear-comp1.m,0
+
+tests/code/linear-delete.m,0
+
+tests/code/linear-keep1.m,0
+
+tests/code/linear-keep2.m,0
+
+tests/code/linear-ref-use.m,0
+
+tests/code/linear-repeat.m,0
+
+tests/code/mfp.m,0
+
+tests/code/mwst.m,0
+
+tests/code/neural_network1.m,0
+
+tests/code/pagerank-linear-sync.m,0
+
+tests/code/pagerank1.m,0
+
+tests/code/pagerank2.m,0
+
+tests/code/right_connectivity1.m,0
+
+tests/code/shortest_path1.m,0
+
+tests/code/shortest_path2.m,0
+
+tests/code/visit.m,0
+
+tests/Makefile,26
+VM = ../meld -d -fVM2,1
+
+tests/number_nodes.sh,0
+
+tests/test.sh,238
+do_exit ()do_exit16,274
+run_diff ()run_diff22,307
+do_serial ()do_serial40,579
+do_mpi () {do_mpi48,686
+do_test ()do_test55,791
+run_serial_n ()run_serial_n64,909
+run_test_n ()run_test_n75,1078
+loop_sched ()loop_sched89,1412
+
+tests/test_all.sh,0
+
+tests/test_linear.sh,26
+run_test ()run_test5,23
+
+ui/client.cpp,120
+namespace uiui11,118
+client::client(connection_ptr _conn):client15,148
+client::is_alive(void) constis_alive22,271
+
+ui/client.hpp,421
+#define UI_CLIENT_HPPUI_CLIENT_HPP3,23
+namespace uiui14,179
+class clientclient19,210
+      typedef websocketpp::server::connection_ptr connection_ptr;connection_ptr23,275
+      connection_ptr conn;conn25,342
+      vm::all *all;all27,370
+      utils::atomic<int> counter;counter29,391
+      volatile bool done;done30,425
+      boost::thread *th;th31,451
+      utils::atomic<size_t> cunits;cunits32,476
+
+ui/macros.hpp,285
+#define UI_MACROS_HPPUI_MACROS_HPP3,23
+#define UI_ADD_FIELD(UI_ADD_FIELD5,46
+#define UI_ADD_ELEM(UI_ADD_ELEM7,113
+#define UI_ADD_NODE_FIELD(UI_ADD_NODE_FIELD9,163
+#define UI_ADD_TUPLE_FIELD(UI_ADD_TUPLE_FIELD11,254
+#define UI_YES UI_YES13,341
+#define UI_NIL UI_NIL14,369
+
+ui/manager.cpp,2974
+namespace uiui28,524
+manager *man;man31,541
+static pthread_key_t client_key;client_key33,556
+cleanup_keys(void)cleanup_keys36,602
+init(void)init42,673
+manager::print_clients(void) constprint_clients53,837
+manager::cleanup(void)cleanup77,1386
+manager::manager(void):manager90,1661
+manager::~manager(void)~manager95,1722
+#define ADD_FIELD(ADD_FIELD102,1877
+#define DECLARE_JSON(DECLARE_JSON104,1945
+#define ADD_NODE_FIELD(ADD_NODE_FIELD108,2078
+#define ADD_TUPLE_FIELD(ADD_TUPLE_FIELD110,2151
+#define SEND_JSON(SEND_JSON113,2225
+#define SEND_CLIENT_JSON(SEND_CLIENT_JSON115,2290
+#define SEND_CURRENT_CLIENT(SEND_CURRENT_CLIENT123,2519
+manager::on_open(connection_ptr conn)on_open129,2772
+manager::on_close(connection_ptr conn)on_close138,2924
+get_field_from_obj(Object& obj, const string& field)get_field_from_obj152,3138
+is_obj(Value& v)is_obj165,3369
+is_string(Value& v)is_string171,3440
+is_int(Value& v)is_int177,3514
+static inline bool is_not_alnum(char c)is_not_alnum182,3566
+bool file_is_valid(const std::string &str)file_is_valid187,3634
+valid_temp_file(string& file)valid_temp_file193,3764
+delete_temp_file(const string& file)delete_temp_file207,4051
+manager::start_file(const string& file, client *cl, bool temp)start_file215,4153
+manager::get_client(connection_ptr conn)get_client245,4735
+manager::on_message(connection_ptr conn, message_ptr msg)on_message254,4908
+manager::wait_for_next(void)wait_for_next352,7550
+manager::wait_for_done(void)wait_for_done371,7851
+manager::event_program_running(void)event_program_running382,8017
+manager::event_program_stopped(void)event_program_stopped394,8241
+manager::event_database(db::database *db)event_database402,8349
+manager::event_program(vm::program *pgrm)event_program412,8499
+manager::event_persistent_derivation(const db::node *n, const vm::tuple *tpl)event_persistent_derivation429,8801
+manager::event_linear_derivation(const db::node *n, const vm::tuple *tpl)event_linear_derivation440,9001
+manager::event_tuple_send(const db::node *from, const db::node *to, const vm::tuple *tpl)event_tuple_send451,9194
+manager::event_linear_consumption(const db::node *node, const vm::tuple *tpl)event_linear_consumption463,9458
+manager::event_step_done(const db::node *n)event_step_done474,9659
+manager::event_step_start(const db::node *n)event_step_start485,9799
+manager::event_program_termination(void)event_program_termination495,9933
+manager::event_set_color(const db::node *n, const int r, const int g, const int b)event_set_color503,10050
+manager::event_set_edge_label(const vm::node_val from, const vm::node_val to, const string& label)event_set_edge_label516,10281
+manager::event_rule_start(const db::node *who, const vm::rule *rule)event_rule_start528,10539
+manager::event_rule_applied(const db::node *who, const vm::rule *rule)event_rule_applied539,10744
+manager::event_new_node(const db::node *node)event_new_node550,10953
+
+ui/manager.hpp,3078
+#define UI_MANAGER_HPPUI_MANAGER_HPP3,24
+#define TEMPORARY_CODE_DIRECTORY TEMPORARY_CODE_DIRECTORY21,336
+namespace dbdb23,381
+namespace vmvm29,427
+namespace uiui35,473
+	EVENT_PROGRAM_START,EVENT_PROGRAM_START40,519
+	EVENT_UNKNOWNEVENT_UNKNOWN41,541
+} event_type;event_type42,556
+class manager: public websocketpp::server::handlermanager44,571
+      typedef websocketpp::server::connection_ptr connection_ptr;connection_ptr48,637
+      typedef websocketpp::message::data_ptr message_ptr;message_ptr49,703
+      typedef std::map<connection_ptr, client *> client_list;client_list51,762
+      std::vector<client*> cleanup_list;cleanup_list53,825
+      client_list clients;clients54,866
+      mutable boost::mutex client_mtx;client_mtx55,893
+      utils::atomic<size_t> clients_served;clients_served56,932
+      vm::all *all;all58,977
+      void set_all(vm::all *_all) { all = _all; }set_all68,1176
+		bool no_clients(void) const { return num_clients() == 0; }no_clients94,2317
+      size_t num_clients(void) const { return clients.size(); }num_clients95,2378
+#define LOG_RUN(LOG_RUN105,2550
+#define LOG_PROGRAM_RUNNING(LOG_PROGRAM_RUNNING106,2614
+#define LOG_PROGRAM_STOPPED(LOG_PROGRAM_STOPPED107,2677
+#define LOG_DATABASE(LOG_DATABASE108,2740
+#define LOG_PROGRAM(LOG_PROGRAM109,2794
+#define LOG_PERSISTENT_DERIVATION(LOG_PERSISTENT_DERIVATION110,2850
+#define LOG_LINEAR_DERIVATION(LOG_LINEAR_DERIVATION111,2943
+#define LOG_TUPLE_SEND(LOG_TUPLE_SEND112,3028
+#define LOG_LINEAR_CONSUMPTION(LOG_LINEAR_CONSUMPTION113,3107
+#define LOG_STEP_DONE(LOG_STEP_DONE114,3194
+#define LOG_STEP_START(LOG_STEP_START115,3253
+#define LOG_PROGRAM_TERMINATION(LOG_PROGRAM_TERMINATION116,3314
+#define LOG_SET_COLOR(LOG_SET_COLOR117,3385
+#define LOG_SET_EDGE_LABEL(LOG_SET_EDGE_LABEL118,3462
+#define LOG_RULE_APPLIED(LOG_RULE_APPLIED119,3553
+#define LOG_RULE_START(LOG_RULE_START120,3630
+#define LOG_NEW_NODE(LOG_NEW_NODE121,3703
+#define WAIT_FOR_NEXT(WAIT_FOR_NEXT122,3760
+#define WAIT_FOR_DONE(WAIT_FOR_DONE123,3837
+#define LOG_PROGRAM_RUNNING(LOG_PROGRAM_RUNNING125,3892
+#define LOG_PROGRAM_STOPPED(LOG_PROGRAM_STOPPED126,3922
+#define LOG_DATABASE(LOG_DATABASE127,3952
+#define LOG_PROGRAM(LOG_PROGRAM128,3977
+#define LOG_LINEAR_CONSUMPTION(LOG_LINEAR_CONSUMPTION129,4003
+#define LOG_PERSISTENT_DERIVATION(LOG_PERSISTENT_DERIVATION130,4045
+#define LOG_LINEAR_DERIVATION(LOG_LINEAR_DERIVATION131,4090
+#define LOG_TUPLE_SEND(LOG_TUPLE_SEND132,4131
+#define LOG_LINEAR_DERIVATION(LOG_LINEAR_DERIVATION133,4169
+#define LOG_STEP_DONE(LOG_STEP_DONE134,4210
+#define LOG_STEP_START(LOG_STEP_START135,4238
+#define LOG_PROGRAM_TERMINATION(LOG_PROGRAM_TERMINATION136,4267
+#define LOG_SET_COLOR(LOG_SET_COLOR137,4301
+#define LOG_SET_EDGE_LABEL(LOG_SET_EDGE_LABEL138,4338
+#define LOG_RULE_APPLIED(LOG_RULE_APPLIED139,4382
+#define LOG_RULE_START(LOG_RULE_START140,4419
+#define LOG_NEW_NODE(LOG_NEW_NODE141,4454
+#define WAIT_FOR_NEXT(WAIT_FOR_NEXT142,4481
+#define WAIT_FOR_DONE(WAIT_FOR_DONE143,4511
+
+utils/atomic.hpp,1574
+#define UTILS_ATOMIC_HPPUTILS_ATOMIC_HPP3,26
+namespace utilsutils7,72
+class atomicatomic11,113
+   volatile T elem;elem15,141
+   inline T fetch_and_add(const T plus) { return __sync_fetch_and_add(&elem, plus); }fetch_and_add18,209
+   inline T fetch_and_sub(const T sub) { return __sync_fetch_and_sub(&elem, sub); }fetch_and_sub21,347
+   inline T add_and_fetch(const T plus) { return __sync_add_and_fetch(&elem, plus); }add_and_fetch24,476
+   inline T sub_and_fetch(const T sub) { return __sync_sub_and_fetch(&elem, sub); }sub_and_fetch27,611
+   inline T operator++ () {operator ++32,744
+   inline T operator++ (int) {operator ++37,846
+   inline T operator-- () {operator --42,950
+   inline T operator-- (int) {operator --47,1052
+   atomic & operator+=(const T val) {operator +=52,1132
+   atomic& operator-=(const T val) {operator -=57,1225
+   inline void operator=(const T val)operator =62,1317
+   operator T() const { return elem; }operator T67,1387
+   atomic(const T _elem): elem(_elem) {}atomic69,1430
+   ~atomic(void) {}~atomic71,1475
+class atomic_refatomic_ref75,1518
+   volatile T ref;ref79,1550
+   inline void operator=(volatile T val)operator =83,1585
+   inline T get(void) const { return (T)ref; }get88,1657
+   inline operator T() const { return get(); }operator T90,1708
+   inline bool compare_test_set(T comp, T new_val)compare_test_set92,1759
+   inline T compare_and_set(T comp, T new_val)compare_and_set97,1888
+   atomic_ref(T _ref): ref(_ref) {}atomic_ref102,2016
+   ~atomic_ref(void) {}~atomic_ref104,2056
+
+utils/csv_line.hpp,533
+#define UTIL_CSV_LINE_HPPUTIL_CSV_LINE_HPP3,27
+namespace utilsutils9,110
+class csv_linecsv_line12,129
+   std::vector<std::string> data;data16,159
+   bool is_header;is_header17,193
+   void print(std::ostream& out) constprint21,228
+   void reset(void)reset33,527
+   void set_header(void)set_header39,606
+   void add(const std::string& str)add44,669
+   operator<<(const std::string& str)operator <<50,759
+   explicit csv_line(void): is_header(false) {}csv_line56,847
+   virtual ~csv_line(void) {}~csv_line58,899
+
+utils/fs.cpp,159
+namespace utilsutils11,130
+file_print_and_remove(const string& filename)file_print_and_remove15,154
+file_exists(const string& filename)file_exists28,396
+
+utils/fs.hpp,66
+#define UTILS_FS_HPPUTILS_FS_HPP3,22
+namespace utilsutils7,63
+
+utils/interval.hpp,486
+#define UTILS_INTERVAL_HPPUTILS_INTERVAL_HPP3,28
+namespace utilsutils7,76
+class intervalinterval11,117
+   T min_val;min_val15,147
+   T max_val;max_val16,161
+   const bool between(const T& val) constbetween20,191
+   void update(const T& val)update25,294
+   void print(std::ostream& cout) constprint33,438
+   explicit interval(const T& _min_val, const T& _max_val):interval38,548
+std::ostream& operator<<(std::ostream& cout, const interval<T>& inter)operator <<44,683
+
+utils/macros.hpp,170
+#define UTILS_MACROS_HPPUTILS_MACROS_HPP3,26
+#define CONCAT_IMPL(CONCAT_IMPL5,52
+#define MACRO_CONCAT(MACRO_CONCAT6,85
+#define CALL_MEMBER_FN(CALL_MEMBER_FN7,130
+
+utils/random.hpp,301
+#define UTILS_RANDOM_HPPUTILS_RANDOM_HPP3,26
+namespace utilsutils9,120
+class randgenrandgen12,142
+   boost::mt19937 state;state16,171
+   unsigned operator()(unsigned i) {operator ()20,212
+   explicit randgen(void) {}randgen25,325
+shuffle_vector(T& vec, randgen& gen)shuffle_vector30,382
+
+utils/serialization.hpp,288
+#define UTILS_SERIALIZATION_HPPUTILS_SERIALIZATION_HPP3,33
+namespace utilsutils10,135
+void pack(void *data, const size_t size, byte *buf, const size_t buf_size, int* pos)pack14,176
+void unpack(byte *buf, const size_t buf_size, int *pos, void *data, const size_t size)unpack23,419
+
+utils/simple_barrier.hpp,373
+#define UTILS_SIMPLE_BARRIER_HPPUTILS_SIMPLE_BARRIER_HPP3,34
+namespace utilsutils7,97
+class simple_barriersimple_barrier10,116
+   utils::atomic<size_t> cnt;cnt14,152
+   const size_t save;save15,182
+   volatile bool done;done16,204
+   inline void reset(void)reset20,243
+   inline void wait(void)wait26,322
+   explicit barrier(const size_t x):barrier36,467
+
+utils/spinlock.hpp,472
+#define UTILS_SPINLOCK_HPPUTILS_SPINLOCK_HPP3,28
+namespace utilsutils8,142
+class spinlockspinlock11,161
+   volatile unsigned int data;data15,191
+   inline bool is_locked(void) const { return data != 0; }is_locked17,226
+   inline bool try_lock(void)try_lock21,301
+   inline void unlock(void)unlock31,523
+   inline void lock(void)lock49,970
+   typedef boost::lock_guard<spinlock> scoped_lock;scoped_lock57,1108
+   explicit spinlock(void):spinlock59,1164
+
+utils/stack.hpp,432
+#define UTILS_STACK_HPPUTILS_STACK_HPP3,25
+namespace utilsutils11,143
+class stack: public std::stack<T, std::vector<T, mem::allocator<T> > >stack16,281
+   typedef std::vector<T, mem::allocator<T> > container_type;container_type20,366
+   inline void reserve(const size_t defsize)reserve22,432
+   explicit stack(const size_t defsize, container_type vec = container_type()):stack27,536
+   explicit stack(void)stack33,695
+
+utils/time.hpp,998
+#define UTILS_TIME_HPPUTILS_TIME_HPP3,24
+namespace utilsutils8,99
+class execution_timeexecution_time11,118
+   boost::posix_time::time_duration dur;dur15,154
+   boost::posix_time::ptime before;before16,195
+   class scopescope20,244
+      execution_time& t;t24,283
+      explicit scope(execution_time& _t): t(_t) { t.start(); }scope28,333
+      ~scope(void) { t.stop(); }~scope30,403
+   void start(void) { before = boost::posix_time::microsec_clock::local_time(); }start33,446
+   void stop(void)stop35,532
+   inline size_t milliseconds(void) const { return dur.total_milliseconds(); }milliseconds40,638
+   void print(std::ostream& cout) const { cout << milliseconds() << "ms"; }print42,721
+   explicit execution_time(void) {}execution_time44,801
+   ~execution_time(void) {}   ~execution_time46,841
+operator<<(std::ostream& cout, const execution_time& t)operator <<51,904
+typedef uint64_t unix_timestamp;unix_timestamp57,999
+get_timestamp(void)get_timestamp60,1055
+
+utils/tree_barrier.hpp,1030
+#define UTILS_TREE_BARRIER_HPPUTILS_TREE_BARRIER_HPP3,32
+namespace utilsutils10,140
+class tree_barriertree_barrier13,159
+   class inner_nodeinner_node17,190
+      tree_barrier *outer;outer21,234
+      inner_node *parent;parent22,261
+      size_t count;count23,287
+      utils::atomic<size_t> children_count;children_count24,307
+      bool thread_sense;thread_sense25,351
+      const size_t id;id26,376
+      void set_count(const size_t n)set_count30,424
+      inline void wait(void)wait36,533
+      explicit inner_node(tree_barrier *tb, inner_node *_parent, const size_t _count, const size_t _id):inner_node60,1112
+   const size_t size;size73,1452
+   const size_t radix;radix74,1474
+   size_t num_nodes;num_nodes75,1497
+   inner_node **node;node76,1518
+   volatile bool sense;   sense78,1544
+   bool build(inner_node *parent, const size_t depth)build80,1575
+   inline void wait(const size_t id)wait110,2286
+   explicit tree_barrier(size_t s, const size_t _radix = 2):tree_barrier115,2361
+
+utils/types.cpp,122
+namespace utilsutils8,72
+void print_byte(byte b)print_byte11,91
+void print_uint64_t(uint64_t u)print_uint64_t19,224
+
+utils/types.hpp,111
+#define UTILS_TYPES_HPPUTILS_TYPES_HPP3,25
+namespace utilsutils7,71
+typedef unsigned char byte;byte10,93
+
+utils/utils.cpp,123
+namespace utilsutils12,197
+number_cpus(void)number_cpus18,266
+random_unsigned(const size_t lim)random_unsigned24,345
+
+utils/utils.hpp,304
+#define UTILS_UTILS_HPPUTILS_UTILS_HPP3,25
+namespace utilsutils7,70
+std::string to_string(const T& obj)to_string13,138
+bool from_string(T& t, from_string21,251
+T upper_log2(const T n)upper_log230,427
+T next_power2(const T val)next_power250,676
+T power(const T base, const T exp)power61,806
+
+version.hpp,121
+#define VERSION_HPPVERSION_HPP3,21
+#define MAJOR_VERSION MAJOR_VERSION5,42
+#define MINOR_VERSION MINOR_VERSION6,66
+
+vm/all.hpp,1191
+#define VM_ALL_HPPVM_ALL_HPP3,20
+#define MAX_CONSTS MAX_CONSTS8,92
+namespace db {db11,138
+namespace process {process15,175
+namespace sched {sched20,233
+namespace vmvm24,267
+typedef std::vector<std::string> machine_arguments;machine_arguments27,283
+class allall30,371
+	tuple_field consts[MAX_CONSTS];consts34,396
+   vm::program *PROGRAM;PROGRAM38,443
+   db::database *DATABASE;DATABASE40,472
+   process::machine *MACHINE;MACHINE41,499
+   size_t NUM_THREADS;NUM_THREADS42,529
+   size_t NUM_NODES_PER_PROCESS;NUM_NODES_PER_PROCESS43,552
+	machine_arguments ARGUMENTS;ARGUMENTS44,585
+   static const double TASK_STEALING_FACTOR = 0.2;TASK_STEALING_FACTOR45,615
+   std::vector<sched::base*> ALL_THREADS; /* schedulers */ALL_THREADS46,666
+   inline void set_const(const const_id& id, const tuple_field d) { consts[id] = d; }set_const48,726
+#define define_get_const(define_get_const50,813
+#undef define_get_constdefine_get_const61,1525
+#define define_set_const(define_set_const63,1551
+#undef define_set_constdefine_set_const71,2020
+	inline runtime::rstring::ptr get_argument(const argument_id id)get_argument73,2045
+   explicit all(void) {}all79,2209
+
+vm/defs.hpp,1242
+#define DEFS_HPPDEFS_HPP3,18
+namespace vm {vm8,76
+typedef unsigned short field_num;field_num10,92
+typedef uint32_t uint_val;uint_val11,126
+typedef int32_t int_val;int_val12,153
+typedef float float_val;float_val13,178
+typedef unsigned long int ptr_val;ptr_val14,203
+typedef uint32_t node_val;node_val15,238
+typedef uint32_t worker_val;worker_val16,265
+typedef bool bool_val;bool_val17,294
+typedef unsigned char predicate_id;predicate_id18,317
+typedef unsigned short process_id;process_id19,353
+typedef short ref_count;ref_count20,388
+typedef unsigned char byte_code_el;byte_code_el21,413
+typedef byte_code_el* byte_code;byte_code22,449
+typedef uint32_t code_size_t;code_size_t23,482
+typedef code_size_t code_offset_t;code_offset_t24,512
+typedef byte_code pcounter;pcounter25,547
+typedef size_t strat_level;strat_level26,575
+typedef size_t argument_id;argument_id27,603
+typedef uint_val const_id;const_id28,631
+typedef uint32_t rule_id;rule_id29,658
+static const ptr_val null_ptr_val = 0;null_ptr_val31,685
+	int_val int_field;int_field34,741
+	float_val float_field;float_field35,761
+	node_val node_field;node_field36,785
+	ptr_val ptr_field;ptr_field37,807
+} tuple_field;tuple_field38,827
+
+vm/exec.cpp,5815
+namespace vmvm19,323
+enum return_type {return_type22,342
+   RETURN_OK,RETURN_OK23,361
+   RETURN_SELECT,RETURN_SELECT24,375
+   RETURN_NEXT,RETURN_NEXT25,393
+   RETURN_LINEAR,RETURN_LINEAR26,409
+   RETURN_DERIVED,RETURN_DERIVED27,427
+	RETURN_END_LINEAR,RETURN_END_LINEAR28,446
+   RETURN_NO_RETURNRETURN_NO_RETURN29,466
+get_node_val(pcounter& m, state& state)get_node_val35,567
+get_node_val(const pcounter& m, state& state)get_node_val47,776
+move_to_reg(const pcounter& m, state& state,move_to_reg54,890
+move_to_field(pcounter m, state& state, const instr_val& from)move_to_field96,2679
+move_to_const(pcounter m, state& state, const instr_val& from)move_to_const237,7565
+execute_move(const pcounter& pc, state& state)execute_move280,8678
+execute_alloc(const pcounter& pc, state& state)execute_alloc295,9109
+execute_send_self(tuple *tuple, state& state)execute_send_self303,9293
+execute_send(const pcounter& pc, state& state)execute_send349,10879
+execute_send_delay(const pcounter& pc, state& state)execute_send_delay380,11762
+bool_val get_op_function<bool_val>(const instr_val& val, pcounter& m, state& state)get_op_function410,12698
+float_val get_op_function<float_val>(const instr_val& val, pcounter& m, state& state)get_op_function425,13143
+int_val get_op_function<int_val>(const instr_val& val, pcounter& m, state& state)get_op_function450,13902
+node_val get_op_function<node_val>(const instr_val& val, pcounter& m, state& state)get_op_function476,14619
+ptr_val get_op_function<ptr_val>(const instr_val& val, pcounter& m, state& state)get_op_function501,15381
+int_list* get_op_function<int_list*>(const instr_val& val, pcounter& m, state& state)get_op_function517,15829
+float_list* get_op_function<float_list*>(const instr_val& val, pcounter& m, state& state)get_op_function541,16542
+node_list* get_op_function<node_list*>(const instr_val& val, pcounter& m, state& state)get_op_function565,17243
+rstring::ptr get_op_function<rstring::ptr>(const instr_val& val, pcounter& m, state& state)get_op_function583,17778
+void set_op_function<bool_val>(const pcounter& m, const instr_val& dest,set_op_function624,18844
+void set_op_function<int_val>(const pcounter& m, const instr_val& dest,set_op_function638,19221
+void set_op_function<float_val>(const pcounter& m, const instr_val& dest,set_op_function653,19655
+void set_op_function<node_val>(const pcounter& m, const instr_val& dest,set_op_function668,20099
+void set_op_function<int_list*>(const pcounter& m, const instr_val& dest,set_op_function683,20538
+void set_op_function<float_list*>(const pcounter& m, const instr_val& dest,set_op_function698,20991
+void set_op_function<node_list*>(const pcounter& m, const instr_val& dest,set_op_function713,21454
+execute_op(const pcounter& pc, state& state)execute_op728,21919
+#define implement_operation(implement_operation736,22147
+#undef implement_operationimplement_operation772,24469
+execute_not(pcounter& pc, state& state)execute_not776,24518
+do_match(const tuple *tuple, const field_num& field, const instr_val& val,do_match807,25355
+do_matches(pcounter pc, const tuple *tuple, const state& state)do_matches852,27145
+build_match_object(match& m, pcounter pc, state& state, const predicate *pred)build_match_object874,27616
+	ITER_DB,ITER_DB911,28624
+	ITER_QUEUE,ITER_QUEUE912,28634
+	ITER_LOCALITER_LOCAL913,28647
+} iter_type_t;iter_type_t914,28659
+typedef pair<iter_type_t, void*> iter_object;iter_object916,28675
+class tuple_sortertuple_sorter918,28722
+	const predicate *pred;pred921,28752
+	const field_num field;field922,28776
+	static inline tuple *get_tuple(const iter_object& l)get_tuple924,28802
+	inline bool operator()(const iter_object& l1, const iter_object& l2)operator ()938,29111
+	explicit tuple_sorter(const field_num _field, const predicate *_pred):tuple_sorter960,29686
+execute_iter(pcounter pc, const utils::byte options, const utils::byte options_arguments,execute_iter966,29821
+#define PUSH_CURRENT_STATE(PUSH_CURRENT_STATE978,30243
+#define POP_STATE(POP_STATE988,30672
+execute_move_nil(pcounter& pc, state& state)execute_move_nil1274,38311
+execute_cons(pcounter pc, state& state)execute_cons1290,38750
+#define implement_cons(implement_cons1297,38948
+#undef implement_consimplement_cons1312,39690
+execute_test_nil(pcounter pc, state& state)execute_test_nil1316,39734
+execute_tail(pcounter& pc, state& state)execute_tail1329,40043
+#define implement_tail(implement_tail1335,40202
+#undef implement_tailimplement_tail1348,40747
+execute_head(pcounter& pc, state& state)execute_head1352,40791
+#define implement_head(implement_head1358,40950
+#undef implement_headimplement_head1371,41528
+execute_float(pcounter& pc, state& state)execute_float1375,41572
+execute_select(pcounter pc, state& state)execute_select1386,41884
+execute_colocated(pcounter pc, state& state)execute_colocated1401,42341
+execute_delete(const pcounter pc, state& state)execute_delete1419,42923
+read_call_arg(argument& arg, const field_type type, pcounter& m, state& state)read_call_arg1460,44180
+execute_remove(pcounter pc, state& state)execute_remove1508,45543
+execute_call(pcounter pc, state& state)execute_call1553,46683
+execute_rule(const pcounter& pc, state& state)execute_rule1635,48900
+execute_rule_done(const pcounter& pc, state& state)execute_rule_done1652,49241
+execute_new_node(const pcounter& pc, state& state)execute_new_node1671,49574
+execute_new_axioms(pcounter pc, state& state)execute_new_axioms1683,49828
+execute(pcounter pc, state& state)execute1751,51873
+do_execute(byte_code code, state& state)do_execute1950,56895
+execute_bytecode(byte_code code, state& state)execute_bytecode1959,57055
+execute_rule(const rule_id rule_id, state& state)execute_rule1983,57513
+
+vm/exec.hpp,334
+#define VM_EXEC_HPPVM_EXEC_HPP3,21
+namespace vmvm12,154
+   EXECUTION_OK,EXECUTION_OK16,188
+   EXECUTION_CONSUMEDEXECUTION_CONSUMED17,205
+} execution_return;execution_return18,227
+class vm_exec_error : public std::runtime_error {vm_exec_error23,345
+    explicit vm_exec_error(const std::string& msg) :vm_exec_error25,404
+
+vm/external.cpp,1320
+namespace vmvm17,328
+typedef unordered_map<external_function_id, external_function*> hash_external_type;hash_external_type22,374
+static hash_external_type hash_external;hash_external26,554
+external_function::set_arg_type(const size_t arg, const field_type typ)set_arg_type30,647
+external_function::external_function(external_function_ptr _ptr,external_function37,775
+external_function::~external_function(void)~external_function47,1038
+register_external_function(external_function *ex)register_external_function53,1126
+lookup_external_function(const external_function_id id)lookup_external_function60,1271
+external0(external_function_ptr ptr, const field_type ret)external070,1458
+external1(external_function_ptr ptr, const field_type ret, const field_type arg1)external176,1601
+external2(external_function_ptr ptr, const field_type ret, const field_type arg1, const field_type arg2)external286,1832
+external3(external_function_ptr ptr, const field_type ret, const field_type arg1,external397,2115
+cleanup_externals(void)cleanup_externals110,2432
+init_external_functions(void)init_external_functions117,2604
+#define EXTERN(EXTERN119,2636
+#define EXTERNAL0(EXTERNAL0120,2698
+#define EXTERNAL1(EXTERNAL1121,2756
+#define EXTERNAL2(EXTERNAL2122,2826
+#define EXTERNAL3(EXTERNAL3123,2908
+
+vm/external.hpp,1911
+#define VM_EXTERNAL_HPPVM_EXTERNAL_HPP3,25
+namespace vmvm9,125
+typedef size_t external_function_id;external_function_id14,183
+typedef tuple_field argument;argument16,221
+typedef argument (*external_function_ptr0)();external_function_ptr017,251
+typedef argument (*external_function_ptr1)(argument);external_function_ptr118,297
+typedef argument (*external_function_ptr2)(argument,argument);external_function_ptr219,351
+typedef argument (*external_function_ptr3)(argument, argument, argument);external_function_ptr320,414
+typedef external_function_ptr0 external_function_ptr;external_function_ptr21,488
+#define EXTERNAL_ARG(EXTERNAL_ARG23,543
+#define DECLARE_INT(DECLARE_INT24,596
+#define DECLARE_NODE(DECLARE_NODE25,663
+#define DECLARE_FLOAT(DECLARE_FLOAT26,733
+#define DECLARE_INT_LIST(DECLARE_INT_LIST27,806
+#define DECLARE_FLOAT_LIST(DECLARE_FLOAT_LIST28,892
+#define DECLARE_NODE_LIST(DECLARE_NODE_LIST29,984
+#define DECLARE_STRING(DECLARE_STRING30,1073
+#define RETURN_PTR(RETURN_PTR31,1162
+#define RETURN_INT(RETURN_INT32,1247
+#define RETURN_FLOAT(RETURN_FLOAT33,1321
+#define RETURN_NODE(RETURN_NODE34,1399
+#define RETURN_INT_LIST(RETURN_INT_LIST35,1475
+#define RETURN_FLOAT_LIST(RETURN_FLOAT_LIST36,1516
+#define RETURN_NODE_LIST(RETURN_NODE_LIST37,1559
+#define RETURN_STRING(RETURN_STRING38,1601
+class external_functionexternal_function40,1641
+   const size_t num_args;num_args44,1680
+   external_function_ptr ptr;ptr45,1706
+   field_type ret;ret46,1736
+   field_type *spec;spec47,1755
+   inline size_t get_num_args(void) const { return num_args; }get_num_args51,1792
+   inline field_type get_return_type(void) const { return ret; }get_return_type53,1859
+   inline field_type get_arg_type(const size_t i) const { return spec[i]; }get_arg_type54,1924
+   inline external_function_ptr get_fun_ptr(void) const { return ptr; }get_fun_ptr56,2004
+
+vm/instr.cpp,1078
+namespace vm {vm11,172
+namespace instr {instr13,191
+op_string(const instr_op op)op_string16,220
+reg_string(const reg_num num)reg_string51,1594
+val_string(const instr_val v, pcounter *pm, const program *prog)val_string57,1684
+instrs_print_until_return_select(byte_code code, const int tabcount, const program* prog, ostream& cout)instrs_print_until_return_select115,3329
+instrs_print_until_end_linear(byte_code code, const int tabcount, const program* prog, ostream& cout)instrs_print_until_end_linear129,3659
+instrs_print_until(byte_code code, byte_code until, const int tabcount, const program* prog, ostream& cout)instrs_print_until143,3995
+print_tab(const int tabcount)print_tab155,4252
+instr_print(pcounter pc, const bool recurse, const int tabcount, const program *prog, ostream& cout)instr_print162,4353
+instr_print_simple(pcounter pc, const int tabcount, const program *prog, ostream& cout)instr_print_simple435,13358
+instrs_print(byte_code code, const code_size_t len, const int tabcount, const program* prog, ostream& cout)instrs_print441,13518
+
+vm/instr.hpp,17588
+#define INSTR_HPPINSTR_HPP3,19
+namespace vm {vm13,175
+typedef unsigned char instr_val;instr_val15,191
+typedef unsigned char reg_num;reg_num16,224
+const size_t MAGIC_SIZE = sizeof(uint64_t);MAGIC_SIZE18,256
+const uint32_t MAGIC1 = 0x646c656d;MAGIC119,300
+const uint32_t MAGIC2 = 0x6c696620;MAGIC220,336
+namespace instr {instr22,373
+const size_t field_size = 2;field_size24,392
+const size_t iter_match_size = 2;iter_match_size25,421
+const size_t val_size = 1;val_size26,455
+const size_t int_size = sizeof(int_val);int_size27,482
+const size_t uint_size = sizeof(int_val);uint_size28,523
+const size_t float_size = sizeof(float_val);float_size29,565
+const size_t node_size = sizeof(node_val);node_size30,610
+const size_t string_size = sizeof(int_val);string_size31,653
+const size_t argument_size = 1;argument_size32,697
+const size_t reg_size = 0;reg_size33,729
+const size_t host_size = 0;host_size34,756
+const size_t nil_size = 0;nil_size35,784
+const size_t tuple_size = 0;tuple_size36,811
+const size_t index_size = 1;index_size37,840
+const size_t jump_size = 4;jump_size38,869
+const size_t SEND_BASE           = 3;SEND_BASE40,898
+const size_t OP_BASE             = 5;OP_BASE41,936
+const size_t MOVE_BASE           = 3;MOVE_BASE42,974
+const size_t ITER_BASE           = 8;ITER_BASE43,1012
+const size_t ALLOC_BASE          = 3;ALLOC_BASE44,1050
+const size_t CALL_BASE           = 4;CALL_BASE45,1088
+const size_t IF_BASE             = 2 + jump_size;IF_BASE46,1126
+const size_t MOVE_NIL_BASE       = 2;MOVE_NIL_BASE47,1176
+const size_t TEST_NIL_BASE       = 3;TEST_NIL_BASE48,1214
+const size_t CONS_BASE           = 5;CONS_BASE49,1252
+const size_t HEAD_BASE           = 4;HEAD_BASE50,1290
+const size_t TAIL_BASE           = 4;TAIL_BASE51,1328
+const size_t NOT_BASE            = 3;NOT_BASE52,1366
+const size_t RETURN_BASE         = 1;RETURN_BASE53,1404
+const size_t NEXT_BASE           = 1;NEXT_BASE54,1442
+const size_t FLOAT_BASE          = 3;FLOAT_BASE55,1480
+const size_t SELECT_BASE         = 9;SELECT_BASE56,1518
+const size_t RETURN_SELECT_BASE  = 5;RETURN_SELECT_BASE57,1556
+const size_t COLOCATED_BASE      = 4;COLOCATED_BASE58,1594
+const size_t DELETE_BASE         = 3;DELETE_BASE59,1632
+const size_t REMOVE_BASE         = 2;REMOVE_BASE60,1670
+const size_t RETURN_LINEAR_BASE  = 1;RETURN_LINEAR_BASE61,1708
+const size_t RETURN_DERIVED_BASE = 1;RETURN_DERIVED_BASE62,1746
+const size_t RESET_LINEAR_BASE   = 1 + jump_size;RESET_LINEAR_BASE63,1784
+const size_t END_LINEAR_BASE     = 1;END_LINEAR_BASE64,1834
+const size_t RULE_BASE           = 1 + uint_size;RULE_BASE65,1872
+const size_t RULE_DONE_BASE      = 1;RULE_DONE_BASE66,1922
+const size_t NEW_NODE_BASE       = 2;NEW_NODE_BASE67,1960
+const size_t NEW_AXIOMS_BASE     = 1 + jump_size;NEW_AXIOMS_BASE68,1998
+const size_t SEND_DELAY_BASE     = 3 + uint_size;SEND_DELAY_BASE69,2048
+enum instr_type {instr_type71,2099
+   RETURN_INSTR	      =  0x00,RETURN_INSTR72,2117
+   NEXT_INSTR		      =  0x01,NEXT_INSTR73,2148
+   ELSE_INSTR 		      =  0x02,ELSE_INSTR74,2178
+   TEST_NIL_INSTR	      =  0x03,TEST_NIL_INSTR75,2209
+   CONS_INSTR		      =  0x04,CONS_INSTR76,2242
+   HEAD_INSTR		      =  0x05,HEAD_INSTR77,2272
+   TAIL_INSTR		      =  0x06,TAIL_INSTR78,2302
+   NOT_INSTR		      =  0x07,NOT_INSTR79,2332
+   SEND_INSTR 		      =  0x08,SEND_INSTR80,2361
+   FLOAT_INSTR          =  0x09,FLOAT_INSTR81,2392
+   SELECT_INSTR         =  0x0A,SELECT_INSTR82,2425
+   RETURN_SELECT_INSTR  =  0x0B,RETURN_SELECT_INSTR83,2458
+   COLOCATED_INSTR      =  0x0C,COLOCATED_INSTR84,2491
+   DELETE_INSTR         =  0x0D,DELETE_INSTR85,2524
+   RESET_LINEAR_INSTR   =  0x0E,RESET_LINEAR_INSTR86,2557
+   END_LINEAR_INSTR     =  0x0F,END_LINEAR_INSTR87,2590
+   RULE_INSTR           =  0x10,RULE_INSTR88,2623
+   RULE_DONE_INSTR      =  0x11,RULE_DONE_INSTR89,2656
+   NEW_NODE_INSTR       =  0x13,NEW_NODE_INSTR90,2689
+   NEW_AXIOMS_INSTR     =  0x14,NEW_AXIOMS_INSTR91,2722
+   SEND_DELAY_INSTR     =  0x15,SEND_DELAY_INSTR92,2755
+   CALL_INSTR		      =  0x20,CALL_INSTR93,2788
+   MOVE_INSTR		      =  0x30,MOVE_INSTR94,2818
+   ALLOC_INSTR		      =  0x40,ALLOC_INSTR95,2848
+   IF_INSTR 		      =  0x60,IF_INSTR96,2879
+   MOVE_NIL_INSTR	      =  0x70,MOVE_NIL_INSTR97,2908
+   REMOVE_INSTR 	      =  0x80,REMOVE_INSTR98,2941
+   ITER_INSTR		      =  0xA0,ITER_INSTR99,2973
+   OP_INSTR			      =  0xC0,OP_INSTR100,3003
+   RETURN_LINEAR_INSTR  =  0xD0,RETURN_LINEAR_INSTR101,3032
+   RETURN_DERIVED_INSTR =  0xF0RETURN_DERIVED_INSTR102,3065
+enum instr_op {instr_op105,3101
+   OP_NEQF       = 0x0,OP_NEQF106,3117
+   OP_NEQI       = 0x1,OP_NEQI107,3141
+   OP_EQF        = 0x2,OP_EQF108,3165
+   OP_EQI        = 0x3,OP_EQI109,3189
+   OP_LESSF      = 0x4,OP_LESSF110,3213
+   OP_LESSI      = 0x5,OP_LESSI111,3237
+   OP_LESSEQF    = 0x6,OP_LESSEQF112,3261
+   OP_LESSEQI    = 0x7,OP_LESSEQI113,3285
+   OP_GREATERF   = 0x8,OP_GREATERF114,3309
+   OP_GREATERI   = 0x9,OP_GREATERI115,3333
+   OP_GREATEREQF = 0xa,OP_GREATEREQF116,3357
+   OP_GREATEREQI = 0xb,OP_GREATEREQI117,3381
+   OP_MODF       = 0xc,OP_MODF118,3405
+   OP_MODI       = 0xd,OP_MODI119,3429
+   OP_PLUSF      = 0xe,OP_PLUSF120,3453
+   OP_PLUSI      = 0xf,OP_PLUSI121,3477
+   OP_MINUSF     = 0x10,OP_MINUSF122,3501
+   OP_MINUSI     = 0x11,OP_MINUSI123,3526
+   OP_TIMESF     = 0x12,OP_TIMESF124,3551
+   OP_TIMESI     = 0x13,OP_TIMESI125,3576
+   OP_DIVF       = 0x14,OP_DIVF126,3601
+   OP_DIVI       = 0x15,OP_DIVI127,3626
+   OP_NEQA       = 0x16,OP_NEQA128,3651
+   OP_EQA        = 0x17,OP_EQA129,3676
+   OP_GREATERA   = 0x18,OP_GREATERA130,3701
+   OP_ORB        = 0x19OP_ORB131,3726
+class malformed_instr_error : public std::runtime_error {malformed_instr_error136,3797
+    explicit malformed_instr_error(const std::string& msg) :malformed_instr_error138,3864
+inline instr_type fetch(pcounter pc) { return (instr_type)*pc; }fetch143,3969
+inline bool val_is_reg(const instr_val x) { return x & 0x20; }val_is_reg147,4064
+inline bool val_is_tuple(const instr_val x) { return x == 0x1f; }val_is_tuple148,4127
+inline bool val_is_float(const instr_val x) { return x == 0x00; }val_is_float149,4193
+inline bool val_is_int(const instr_val x) { return x == 0x01; }val_is_int150,4259
+inline bool val_is_field(const instr_val x) { return x == 0x02; }val_is_field151,4323
+inline bool val_is_host(const instr_val x) { return x == 0x03; }val_is_host152,4389
+inline bool val_is_nil(const instr_val x) { return x == 0x04; }val_is_nil153,4454
+inline bool val_is_node(const instr_val x) { return x == 0x05; }val_is_node154,4518
+inline bool val_is_string(const instr_val x) { return x == 0x06; }val_is_string155,4583
+inline bool val_is_arg(const instr_val x) { return x == 0x07; }val_is_arg156,4650
+inline bool val_is_const(const instr_val x) { return x == 0x08; }val_is_const157,4714
+inline int_val pcounter_int(const pcounter pc) { return *(int_val *)pc; }pcounter_int159,4781
+inline code_size_t pcounter_code_size(const pcounter pc) { return *(code_size_t *)pc; }pcounter_code_size160,4855
+inline float_val pcounter_float(const pcounter pc) { return *(float_val *)pc; }pcounter_float161,4943
+inline node_val pcounter_node(const pcounter pc) { return *(node_val *)pc; }pcounter_node162,5023
+inline uint_val pcounter_uint(const pcounter pc) { return *(uint_val *)pc; }pcounter_uint163,5100
+inline argument_id pcounter_argument_id(const pcounter pc) { return (argument_id)*pc; }pcounter_argument_id164,5177
+inline const_id pcounter_const_id(const pcounter pc) { return pcounter_uint(pc); }pcounter_const_id165,5265
+inline reg_num val_reg(const instr_val x) { return x & 0x1f; }val_reg167,5349
+inline field_num val_field_num(const pcounter x) { return *x & 0xff; }val_field_num168,5412
+inline reg_num val_field_reg(const pcounter x) { return *(x + 1) & 0x1f; }val_field_reg169,5483
+inline void pcounter_move_field(pcounter *pc) { *pc = *pc + field_size; }pcounter_move_field171,5559
+inline void pcounter_move_int(pcounter *pc) { *pc = *pc + int_size; }pcounter_move_int172,5633
+inline void pcounter_move_float(pcounter *pc) { *pc = *pc + float_size; }pcounter_move_float173,5703
+inline void pcounter_move_match(pcounter *pc) { *pc = *pc + iter_match_size; }pcounter_move_match174,5777
+inline void pcounter_move_node(pcounter *pc) { *pc = *pc + node_size; }pcounter_move_node175,5856
+inline void pcounter_move_uint(pcounter *pc) { *pc = *pc + uint_size; }pcounter_move_uint176,5928
+inline void pcounter_move_argument_id(pcounter *pc) { *pc = *pc + argument_size; }pcounter_move_argument_id177,6000
+inline void pcounter_move_const_id(pcounter *pc) { pcounter_move_uint(pc); }pcounter_move_const_id178,6083
+inline code_offset_t jump_get(pcounter x, size_t off) { return pcounter_code_size(x + off); }jump_get183,6207
+inline reg_num reg_get(pcounter x, size_t off) { return (reg_num)(*(x + off) & 0x1f); }reg_get185,6302
+inline instr_val val_get(pcounter x, size_t off) { return (instr_val)(*(x + off) & 0x3f); }val_get186,6390
+inline predicate_id predicate_get(pcounter x, size_t off) { return (predicate_id)(*(x + off) & 0x7f); }predicate_get187,6482
+inline utils::byte byte_get(pcounter x, size_t off) { return *(utils::byte*)(x + off); }byte_get188,6586
+inline field_num field_num_get(pcounter x, size_t off) { return (field_num)*(x + off); }field_num_get189,6675
+inline reg_num if_reg(pcounter pc) { return reg_get(pc, 1); }if_reg193,6794
+inline code_offset_t if_jump(pcounter pc) { return jump_get(pc, 2); }if_jump194,6856
+inline reg_num send_msg(pcounter pc) { return reg_get(pc, 1); }send_msg198,6946
+inline reg_num send_dest(pcounter pc) { return reg_get(pc, 2); }send_dest199,7010
+inline instr_val float_op(pcounter pc) { return val_get(pc, 1); }float_op203,7096
+inline instr_val float_dest(pcounter pc) { return val_get(pc, 2); }float_dest204,7162
+inline instr_val op_arg1(pcounter pc) { return val_get(pc, 1); }op_arg1208,7253
+inline instr_val op_arg2(pcounter pc) { return val_get(pc, 2); }op_arg2209,7318
+inline instr_val op_dest(pcounter pc) { return val_get(pc, 3); }op_dest210,7383
+inline instr_op op_op(pcounter pc) { return (instr_op)(*(pc + 4) & 0x1f); }op_op211,7448
+inline instr_val move_from(pcounter pc) { return val_get(pc, 1); }move_from215,7544
+inline instr_val move_to(pcounter pc) { return val_get(pc, 2); }move_to216,7611
+typedef pcounter iter_match;iter_match220,7706
+inline predicate_id iter_predicate(pcounter pc) { return predicate_get(pc, 1); }iter_predicate222,7736
+inline utils::byte iter_options(pcounter pc) { return byte_get(pc, 2); }iter_options223,7817
+inline utils::byte iter_options_argument(pcounter pc) { return byte_get(pc, 3); }iter_options_argument224,7890
+inline code_offset_t iter_jump(pcounter pc) { return jump_get(pc, 4); }iter_jump225,7972
+inline bool iter_match_end(iter_match m) { return (*(m + 1) & 0xc0) == 0x40; }iter_match_end226,8044
+inline bool iter_match_none(iter_match m) { return (*(m + 1) & 0xc0) == 0xc0; }iter_match_none227,8123
+inline instr_val iter_match_val(iter_match m) { return val_get((pcounter)m, 1); }iter_match_val228,8203
+inline field_num iter_match_field(iter_match m) { return (field_num)*m; }iter_match_field229,8285
+inline bool iter_options_random(const utils::byte b) { return b & 0x01; }iter_options_random231,8360
+inline bool iter_options_min(const utils::byte b) { return b & 0x04; }iter_options_min232,8434
+inline field_num iter_options_min_arg(const utils::byte b) { return (field_num)b; }iter_options_min_arg233,8505
+inline bool iter_options_to_delete(const utils::byte b) { return b & 0x02; }iter_options_to_delete234,8589
+inline predicate_id alloc_predicate(pcounter pc) { return predicate_get(pc, 1); }alloc_predicate238,8692
+inline reg_num alloc_reg(pcounter pc) { return reg_get(pc, 2); }alloc_reg239,8774
+inline external_function_id call_extern_id(pcounter pc) { return (external_function_id)byte_get(pc, 1); }call_extern_id243,8852
+inline size_t call_num_args(pcounter pc) { return (size_t)byte_get(pc, 2); }call_num_args244,8958
+inline reg_num call_dest(pcounter pc) { return reg_get(pc, 3); }call_dest245,9035
+inline instr_val call_val(pcounter pc) { return val_get(pc, 0); }call_val246,9100
+inline instr_val move_nil_dest(pcounter pc) { return val_get(pc, 1); }move_nil_dest250,9190
+inline instr_val test_nil_op(pcounter pc) { return val_get(pc, 1); }test_nil_op254,9285
+inline instr_val test_nil_dest(pcounter pc) { return val_get(pc, 2); }test_nil_dest255,9354
+inline field_type get_list_type(pcounter pc, size_t off) {get_list_type259,9452
+inline field_type cons_type(pcounter pc) { return get_list_type(pc, 1); }cons_type268,9684
+inline instr_val cons_head(pcounter pc) { return val_get(pc, 2); }cons_head269,9758
+inline instr_val cons_tail(pcounter pc) { return val_get(pc, 3); }cons_tail270,9825
+inline instr_val cons_dest(pcounter pc) { return val_get(pc, 4); }cons_dest271,9892
+inline field_type head_type(pcounter pc) { return get_list_type(pc, 1); }head_type275,9982
+inline instr_val head_cons(pcounter pc) { return val_get(pc, 2); }head_cons276,10056
+inline instr_val head_dest(pcounter pc) { return val_get(pc, 3); }head_dest277,10123
+inline field_type tail_type(pcounter pc) { return get_list_type(pc, 1); }tail_type281,10213
+inline instr_val tail_cons(pcounter pc) { return val_get(pc, 2); }tail_cons282,10287
+inline instr_val tail_dest(pcounter pc) { return val_get(pc, 3); }tail_dest283,10354
+inline instr_val not_op(pcounter pc) { return val_get(pc, 1); }not_op287,10440
+inline instr_val not_dest(pcounter pc) { return val_get(pc, 2); }not_dest288,10504
+inline code_size_t select_size(pcounter pc) { return pcounter_code_size(pc + 1); }select_size292,10597
+inline size_t select_hash_size(pcounter pc) { return (size_t)pcounter_code_size(pc + 1 + sizeof(code_size_t)); }select_hash_size293,10680
+inline pcounter select_hash_start(pcounter pc) { return pc + SELECT_BASE; }select_hash_start294,10793
+inline code_offset_t select_hash(pcounter hash_start, const node_val val) { return pcounter_code_size(hash_start + sizeof(code_size_t)*val); }select_hash295,10869
+inline pcounter select_hash_code(pcounter hash_start, const size_t hash_size, const code_offset_t hashed) {select_hash_code296,11012
+inline code_size_t return_select_jump(pcounter pc) { return pcounter_code_size(pc + 1); }return_select_jump302,11211
+inline instr_val colocated_first(const pcounter pc) { return val_get(pc, 1); }colocated_first306,11330
+inline instr_val colocated_second(const pcounter pc) { return val_get(pc, 2); }colocated_second307,11409
+inline reg_num colocated_dest(const pcounter pc) { return reg_get(pc, 3); }colocated_dest308,11489
+inline predicate_id delete_predicate(const pcounter pc) { return predicate_get(pc, 1); }delete_predicate312,11590
+inline size_t delete_num_args(pcounter pc) { return (size_t)byte_get(pc, 2); }delete_num_args313,11679
+inline instr_val delete_val(pcounter pc) { return val_get(pc, index_size); }delete_val314,11758
+inline field_num delete_index(pcounter pc) { return field_num_get(pc, 0); }delete_index315,11835
+inline reg_num remove_source(const pcounter pc) { return reg_get(pc, 1); }remove_source319,11926
+inline code_offset_t reset_linear_jump(const pcounter pc) { return jump_get(pc, 1); }reset_linear_jump323,12022
+inline size_t rule_get_id(const pcounter pc) { return pcounter_uint(pc + 1); }rule_get_id326,12123
+inline reg_num new_node_reg(const pcounter pc) { return reg_get(pc, 1); }new_node_reg329,12218
+inline code_offset_t new_axioms_jump(const pcounter pc) { return jump_get(pc, 1); }new_axioms_jump333,12311
+inline reg_num send_delay_msg(pcounter pc) { return reg_get(pc, 1); }send_delay_msg337,12421
+inline reg_num send_delay_dest(pcounter pc) { return reg_get(pc, 2); }send_delay_dest338,12491
+inline uint_val send_delay_time(pcounter pc) { return pcounter_uint(pc + 3); }send_delay_time339,12562
+enum instr_argument_type {instr_argument_type343,12666
+   ARGUMENT_ANYTHING,ARGUMENT_ANYTHING344,12693
+   ARGUMENT_ANYTHING_NOT_NIL,ARGUMENT_ANYTHING_NOT_NIL345,12715
+   ARGUMENT_INT,ARGUMENT_INT346,12745
+   ARGUMENT_WRITABLE,ARGUMENT_WRITABLE347,12762
+   ARGUMENT_LIST,ARGUMENT_LIST348,12784
+   ARGUMENT_NON_LIST,ARGUMENT_NON_LIST349,12802
+   ARGUMENT_BOOL,ARGUMENT_BOOL350,12824
+   ARGUMENT_NODEARGUMENT_NODE351,12842
+#define STATIC_INLINE STATIC_INLINE358,12977
+#define STATIC_INLINESTATIC_INLINE360,13019
+STATIC_INLINE size_t arg_size<ARGUMENT_ANYTHING>(const instr_val v)arg_size364,13061
+STATIC_INLINE size_t arg_size<ARGUMENT_ANYTHING_NOT_NIL>(const instr_val v)arg_size393,13772
+size_t arg_size<ARGUMENT_INT>(const instr_val v)arg_size422,14458
+STATIC_INLINE size_t arg_size<ARGUMENT_WRITABLE>(const instr_val v)arg_size437,14791
+STATIC_INLINE size_t arg_size<ARGUMENT_LIST>(const instr_val v)arg_size450,15099
+STATIC_INLINE size_t arg_size<ARGUMENT_NON_LIST>(const instr_val v)arg_size463,15403
+STATIC_INLINE size_t arg_size<ARGUMENT_BOOL>(const instr_val v)arg_size488,16007
+STATIC_INLINE size_t arg_size<ARGUMENT_NODE>(const instr_val v)arg_size501,16307
+iter_matches_size(pcounter pc)iter_matches_size518,16711
+instr_call_args_size(pcounter arg, size_t num)instr_call_args_size540,17122
+instr_delete_args_size(pcounter arg, size_t num)instr_delete_args_size555,17399
+advance(pcounter pc)advance570,17695
+
+vm/match.hpp,1439
+#define VM_MATCH_HPPVM_MATCH_HPP3,22
+namespace vmvm15,231
+struct match_field {match_field18,247
+   bool exact;exact19,268
+   field_type type;type20,283
+typedef utils::stack<vm::tuple_field> val_stack;val_stack23,307
+typedef utils::stack<vm::field_type> type_stack;type_stack24,356
+typedef utils::stack<match_field> match_type_stack;match_type_stack25,405
+typedef val_stack match_val_stack;match_val_stack26,457
+class match: public mem::basematch28,493
+   bool any_exact;any_exact32,538
+   std::vector<match_field, mem::allocator<match_field> > types;types33,557
+   std::vector<tuple_field, mem::allocator<tuple_field> > vals;vals34,622
+   inline void set_any_all(const predicate *pred) {set_any_all36,690
+   inline size_t size(void) const { return types.size(); }size47,925
+   inline bool has_any_exact(void) const { return any_exact; }has_any_exact49,988
+   inline void get_val_stack(match_val_stack& stk) const {get_val_stack51,1055
+   inline void get_type_stack(match_type_stack& stk) const {get_type_stack56,1196
+   inline void match_int(const field_num& num, const int_val val) {match_int61,1338
+   inline void match_float(const field_num& num, const float_val val) {match_float69,1572
+   inline void match_node(const field_num& num, const node_val val) {match_node77,1814
+   inline void print(std::ostream& cout) const {print85,2052
+   explicit match(const predicate *pred):match98,2596
+
+vm/predicate.cpp,1152
+namespace vm {vm11,159
+#define PRED_AGG PRED_AGG13,175
+#define PRED_ROUTE PRED_ROUTE14,197
+#define PRED_REVERSE_ROUTE PRED_REVERSE_ROUTE15,221
+#define PRED_LINEAR PRED_LINEAR16,253
+#define PRED_ACTION PRED_ACTION17,278
+#define PRED_REUSED PRED_REUSED18,303
+#define PRED_AGG_LOCAL PRED_AGG_LOCAL19,328
+#define PRED_AGG_REMOTE PRED_AGG_REMOTE20,356
+#define PRED_AGG_REMOTE_AND_SELF PRED_AGG_REMOTE_AND_SELF21,385
+#define PRED_AGG_IMMEDIATE PRED_AGG_IMMEDIATE22,423
+#define PRED_AGG_UNSAFE PRED_AGG_UNSAFE23,455
+predicate::make_predicate_from_buf(byte *buf, code_size_t *code_size, const predicate_id id)make_predicate_from_buf26,496
+predicate::build_field_info(void)build_field_info104,2740
+predicate::build_aggregate_info(vm::program *prog)build_aggregate_info123,3113
+predicate::cache_info(vm::program *prog)cache_info135,3396
+predicate::predicate(void)predicate142,3521
+predicate::~predicate(void)~predicate148,3592
+predicate::print_simple(ostream& cout) constprint_simple154,3650
+predicate::print(ostream& cout) constprint177,4099
+ostream& operator<<(ostream& cout, const predicate& pred)operator <<228,5378
+
+vm/predicate.hpp,4540
+#define PREDICATE_HPPPREDICATE_HPP3,23
+namespace vm {vm13,178
+const size_t PRED_DESCRIPTOR_BASE_SIZE = 4;PRED_DESCRIPTOR_BASE_SIZE15,194
+const size_t PRED_ARGS_MAX = 32;PRED_ARGS_MAX16,238
+const size_t PRED_NAME_SIZE_MAX = 32;PRED_NAME_SIZE_MAX17,271
+const size_t PRED_AGG_INFO_MAX = 32;PRED_AGG_INFO_MAX18,309
+   NO_GLOBAL_PRIORITY,NO_GLOBAL_PRIORITY23,378
+   PRIORITY_ASC,PRIORITY_ASC24,401
+   PRIORITY_DESCPRIORITY_DESC25,418
+} priority_type;priority_type26,435
+class predicate {predicate28,453
+  void serialize(Archive & ar, const unsigned int version) {serialize34,577
+   static predicate_id current_id;current_id45,798
+   predicate_id id;id47,837
+   std::string name;name48,857
+   strat_level level;level49,878
+   std::vector<field_type> types;types51,904
+   std::vector<size_t> fields_size;fields_size52,938
+   std::vector<size_t> fields_offset;fields_offset53,974
+   size_t tuple_size;tuple_size55,1016
+      field_num field;field58,1062
+      aggregate_type type;type59,1085
+      aggregate_safeness safeness;safeness60,1112
+      strat_level local_level;local_level61,1147
+      predicate_id remote_pred_id;remote_pred_id62,1178
+      predicate *remote_pred;remote_pred63,1213
+   } aggregate_info;aggregate_info64,1243
+   aggregate_info *agg_info;agg_info66,1268
+   bool is_route;is_route68,1301
+   bool is_linear;is_linear69,1319
+   bool is_reverse_route;is_reverse_route70,1338
+   bool is_action;is_action71,1364
+   bool is_reused;is_reused72,1383
+   priority_type global_prio;global_prio73,1402
+   field_num priority_argument;priority_argument74,1432
+   std::vector<rule_id> affected_rules;affected_rules76,1465
+   typedef std::vector<rule_id>::const_iterator rule_iterator;rule_iterator88,1697
+   inline rule_iterator begin_rules(void) constbegin_rules90,1761
+   inline rule_iterator end_rules(void) constend_rules95,1857
+   inline bool is_aggregate(void) const { return agg_info != NULL; }is_aggregate100,1952
+   inline aggregate_safeness get_agg_safeness(void) const { return agg_info->safeness; }get_agg_safeness102,2025
+   inline bool is_unsafe_agg(void) const { return get_agg_safeness() == AGG_UNSAFE || get_agg_safeness() == AGG_IMMEDIATE; }is_unsafe_agg103,2114
+   inline const predicate *get_remote_pred(void) const { return agg_info->remote_pred; }get_remote_pred104,2239
+   strat_level get_agg_strat_level(void) const { return agg_info->local_level; }get_agg_strat_level105,2328
+   inline bool is_route_pred(void) const { return is_route || is_reverse_route; }is_route_pred107,2413
+	inline bool is_reverse_route_pred(void) const { return is_reverse_route; }is_reverse_route_pred109,2496
+   inline bool is_linear_pred(void) const { return is_linear; }is_linear_pred111,2573
+	inline bool is_persistent_pred(void) const { return !is_linear_pred(); }is_persistent_pred112,2637
+   inline bool is_action_pred(void) const { return is_action; }is_action_pred114,2712
+   inline bool is_reused_pred(void) const { return is_reused; }is_reused_pred116,2777
+   inline field_num get_aggregate_field(void) const { return agg_info->field; }get_aggregate_field118,2845
+   inline aggregate_type get_aggregate_type(void) const { return agg_info->type; }get_aggregate_type119,2925
+   inline predicate_id get_id(void) const { return id; }get_id121,3012
+   inline size_t num_fields(void) const { return types.size(); }num_fields123,3073
+   inline field_type get_field_type(const field_num field) const { return types[field]; }get_field_type125,3142
+   inline size_t get_field_size(const field_num field) const { return fields_size[field]; }get_field_size126,3232
+   inline std::string get_name(void) const { return name; }get_name128,3328
+   inline size_t get_size(void) const { return tuple_size; }get_size130,3392
+   inline strat_level get_strat_level(void) const { return level; }get_strat_level132,3457
+	void set_global_priority(priority_type _type, const field_num field) { global_prio = _type; priority_argument = field;}set_global_priority137,3609
+	bool is_global_priority(void) const { return global_prio != NO_GLOBAL_PRIORITY; }is_global_priority138,3730
+   field_num get_priority_argument(void) const { return priority_argument; }get_priority_argument139,3813
+	inline bool is_global_priority_asc(void) const { return global_prio == PRIORITY_ASC; }is_global_priority_asc140,3890
+	inline bool is_global_priority_desc(void) const { return global_prio == PRIORITY_DESC; }is_global_priority_desc141,3978
+
+vm/program.cpp,1101
+namespace vm {vm22,411
+static const size_t PREDICATE_DESCRIPTOR_SIZE = sizeof(code_size_t) +PREDICATE_DESCRIPTOR_SIZE24,427
+#define READ_CODE(READ_CODE31,815
+#define SEEK_CODE(SEEK_CODE35,923
+program::program(const string& _filename):program44,1182
+program::~program(void)~program281,7438
+program::get_predicate(const predicate_id& id) constget_predicate295,7694
+program::get_route_predicate(const size_t& i) constget_route_predicate305,7857
+program::print_predicate_code(ostream& out, predicate* p) constprint_predicate_code313,7993
+program::print_bytecode(ostream& out) constprint_bytecode322,8270
+program::print_bytecode_by_predicate(ostream& out, const string& name) constprint_bytecode_by_predicate347,8788
+program::print_predicates(ostream& cout) constprint_predicates359,9067
+program::get_predicate_by_name(const string& name) constget_predicate_by_name372,9356
+program::get_init_predicate(void) constget_init_predicate385,9622
+program::get_edge_predicate(void) constget_edge_predicate402,10030
+program::new_tuple(const predicate_id& id) constnew_tuple408,10123
+
+vm/program.hpp,3288
+#define PROGRAM_HPPPROGRAM_HPP3,21
+namespace vm {vm19,310
+class programprogram30,657
+   const std::string filename;filename34,683
+	size_t num_args;num_args35,714
+   size_t number_rules;number_rules36,732
+   std::vector<rule *> rules;rules38,757
+   std::vector<predicate*> predicates;predicates40,791
+   std::vector<byte_code> code;code42,833
+   std::vector<code_size_t> code_size;code_size43,865
+	code_size_t const_code_size;const_code_size45,905
+	byte_code const_code;const_code46,935
+	std::vector<field_type> const_types;const_types47,958
+   std::vector<predicate*> route_predicates;route_predicates49,1000
+   bool safe;safe51,1049
+   mutable predicate *init;init53,1064
+	typedef std::vector<runtime::rstring::ptr> string_store;string_store55,1093
+	string_store default_strings;default_strings57,1153
+	predicate *priority_pred;priority_pred59,1186
+   strat_level priority_strat_level;priority_strat_level60,1213
+   field_type priority_type;priority_type61,1250
+   vm::priority_type priority_order;priority_order62,1279
+   heap_priority initial_priority;initial_priority63,1316
+   static strat_level MAX_STRAT_LEVEL;MAX_STRAT_LEVEL69,1428
+   inline size_t num_rules(void) const { return number_rules; }num_rules71,1468
+	inline size_t num_args_needed(void) const { return num_args; }num_args_needed72,1532
+   inline std::string get_name(void) const { return filename; }get_name74,1597
+   inline rule *get_rule(const rule_id id) const {get_rule76,1662
+	inline predicate *get_priority_predicate(void) const { return priority_pred; }get_priority_predicate81,1776
+	inline field_num get_priority_argument(void) const { return priority_pred->get_priority_argument(); }get_priority_argument82,1856
+   inline field_type get_priority_type(void) const { return priority_type; }get_priority_type83,1959
+   inline strat_level get_priority_strat_level(void) const { return priority_strat_level; }get_priority_strat_level84,2036
+	inline bool is_priority_asc(void) const { return priority_order == PRIORITY_ASC; }is_priority_asc85,2128
+	inline bool is_priority_desc(void) const { return priority_order == PRIORITY_DESC; }is_priority_desc86,2212
+	inline bool has_global_priority(void) const { return priority_pred != NULL; }has_global_priority87,2298
+   inline heap_priority get_initial_priority(void) const { return initial_priority; }get_initial_priority89,2378
+   byte_code get_predicate_bytecode(const predicate_id id) const {get_predicate_bytecode104,2923
+	inline byte_code get_const_bytecode(void) const { return const_code; }get_const_bytecode108,3055
+	inline field_type get_const_type(const const_id& id) const { return const_types[id]; }get_const_type109,3127
+   size_t num_predicates(void) const { return predicates.size(); }num_predicates111,3219
+   size_t num_route_predicates(void) const { return route_predicates.size(); }num_route_predicates112,3286
+	inline runtime::rstring::ptr get_default_string(const size_t i) constget_default_string114,3366
+   inline bool is_safe(void) const { return safe; }is_safe122,3570
+class load_file_error : public std::runtime_error {load_file_error129,3694
+    explicit load_file_error(const std::string& filename, const std::string& reason) :load_file_error131,3755
+
+vm/rule.cpp,97
+namespace vmvm8,95
+rule::print(ostream& out, const vm::program *const prog) constprint12,117
+
+vm/rule.hpp,1537
+#define VM_RULE_HPPVM_RULE_HPP3,21
+namespace vmvm13,170
+class rulerule16,186
+      rule_id id;id20,212
+      const std::string str;str21,230
+      byte_code code;code22,259
+		code_size_t code_size;code_size23,281
+		typedef std::vector<predicate*> predicate_vector;predicate_vector24,306
+      predicate_vector predicates;predicates25,358
+      bool is_persistent;is_persistent26,393
+      inline rule_id get_id(void) const { return id; }get_id32,498
+		inline const std::string get_string(void) const { return str; }get_string33,553
+      inline void add_predicate(predicate *p) { predicates.push_back(p); }add_predicate35,620
+      inline void set_bytecode(code_size_t _size, byte_code _code) {set_bytecode36,695
+		inline byte_code get_bytecode(void) const { return code; }get_bytecode41,810
+		inline size_t num_predicates(void) const { return predicates.size(); }num_predicates42,871
+      inline void set_as_persistent(void) { is_persistent = true; }set_as_persistent44,945
+      inline bool as_persistent(void) const { return is_persistent; }as_persistent45,1013
+		typedef predicate_vector::const_iterator predicate_iterator;predicate_iterator47,1084
+		inline predicate_iterator begin_predicates(void) const { return predicates.begin(); }begin_predicates48,1147
+		inline predicate_iterator end_predicates(void) const { return predicates.end(); }end_predicates49,1235
+      explicit rule(const rule_id _id, const std::string& _str):rule51,1320
+		~rule(void) { delete []code; }~rule54,1440
+
+vm/rule_matcher.cpp,508
+namespace vmvm13,172
+rule_matcher::register_predicate_availability(const predicate *pred)register_predicate_availability19,219
+rule_matcher::register_predicate_unavailability(const predicate *pred)register_predicate_unavailability39,719
+rule_matcher::register_tuple(tuple *tpl, const ref_count count, const bool is_new)register_tuple61,1287
+rule_matcher::deregister_tuple(tuple *tpl, const ref_count count)deregister_tuple81,1770
+rule_matcher::rule_matcher(vm::program *prog)rule_matcher101,2196
+
+vm/rule_matcher.hpp,1347
+#define VM_RULE_MATCHER_HPPVM_RULE_MATCHER_HPP3,29
+namespace vmvm11,145
+class rule_matcherrule_matcher14,161
+   class rule_matcher_objrule_matcher_obj19,218
+         size_t total_have;total_have22,263
+         size_t total_needed;total_needed23,291
+         bool ignore;ignore24,321
+	typedef std::vector<rule_matcher_obj> rule_vector;rule_vector27,350
+   rule_vector rules; /* availability statistics per rule */rules29,403
+   std::vector<ref_count> predicate_count; /* number of tuples per predicate */predicate_count30,464
+	typedef std::set<rule_id, std::less<rule_id>, mem::allocator<rule_id> > set_rules;set_rules32,545
+	set_rules active_rules; /* rules that *may* be derivable */active_rules33,629
+	set_rules dropped_rules; /* any dropped rule */dropped_rules34,690
+	void clear_dropped_rules(void)clear_dropped_rules49,1168
+	typedef set_rules::const_iterator rule_iterator;rule_iterator54,1232
+	rule_iterator begin_active_rules(void) const { return active_rules.begin(); }begin_active_rules56,1284
+	rule_iterator end_active_rules(void) const { return active_rules.end(); }end_active_rules57,1363
+	rule_iterator begin_dropped_rules(void) const { return dropped_rules.begin(); }begin_dropped_rules58,1438
+	rule_iterator end_dropped_rules(void) const { return dropped_rules.end(); }end_dropped_rules59,1519
+
+vm/state.cpp,2497
+namespace vmvm14,215
+state::linear_tuple_can_be_used(db::tuple_trie_leaf *leaf) constlinear_tuple_can_be_used18,236
+state::using_new_linear_tuple(db::tuple_trie_leaf *leaf)using_new_linear_tuple36,615
+state::no_longer_using_linear_tuple(db::tuple_trie_leaf *leaf)no_longer_using_linear_tuple56,1064
+state::purge_runtime_objects(void)purge_runtime_objects74,1414
+#define PURGE_OBJ(PURGE_OBJ76,1451
+#define PURGE_LIST(PURGE_LIST84,1695
+#undef PURGE_LISTPURGE_LIST90,1812
+#undef PURGE_OBJPURGE_OBJ94,1855
+state::unmark_generated_tuples(void)unmark_generated_tuples98,1880
+state::cleanup(void)cleanup112,2165
+state::copy_reg2const(const reg_num& reg_from, const const_id& cid)copy_reg2const119,2255
+state::setup(vm::tuple *tpl, db::node *n, const ref_count count)setup136,2768
+state::mark_predicate_to_run(const predicate *pred)mark_predicate_to_run162,3395
+state::mark_predicate_rules(const predicate *pred)mark_predicate_rules171,3583
+state::mark_predicate_to_run(const predicate *pred)mark_predicate_to_run185,3904
+state::check_if_rule_predicate_activated(vm::rule *rule)check_if_rule_predicate_activated192,4036
+state::mark_active_rules(void)mark_active_rules208,4324
+state::add_fact_to_node(vm::tuple *tpl, vm::ref_count count)add_fact_to_node253,5333
+tuple_for_assertion(db::simple_tuple *stpl)tuple_for_assertion259,5455
+state::search_for_negative_tuple_partial_agg(db::simple_tuple *stpl)search_for_negative_tuple_partial_agg266,5639
+state::search_for_negative_tuple_normal(db::simple_tuple *stpl)search_for_negative_tuple_normal290,6249
+state::search_for_negative_tuple_full_agg(db::simple_tuple *stpl)search_for_negative_tuple_full_agg314,6850
+state::do_persistent_tuples(void)do_persistent_tuples336,7397
+state::mark_rules_using_local_tuples(db::simple_tuple_list& ls)mark_rules_using_local_tuples411,10019
+state::process_consumed_local_tuples(void)process_consumed_local_tuples451,10963
+state::add_to_aggregate(db::simple_tuple *stpl)add_to_aggregate473,11421
+state::process_persistent_tuple(db::simple_tuple *stpl, vm::tuple *tpl)process_persistent_tuple498,12081
+state::process_others(void)process_others545,13444
+state::start_matching(void)start_matching559,13723
+state::run_node(db::node *no)run_node569,13961
+state::init_core_statistics(void)init_core_statistics655,15972
+state::state(sched::base *_sched, vm::all *_all):state679,16700
+state::state(vm::all *_all):state696,17142
+state::~state(void)~state709,17372
+
+vm/state.hpp,4963
+#define VM_STATE_HPPVM_STATE_HPP3,22
+namespace sched {sched18,315
+namespace vm {vm22,349
+typedef size_t deterministic_timestamp;deterministic_timestamp24,366
+class statestate26,407
+   static const size_t NUM_REGS = 32;NUM_REGS30,434
+   typedef tuple_field reg;reg31,472
+   reg regs[NUM_REGS];regs32,500
+   db::tuple_trie_leaf *saved_leafs[NUM_REGS];saved_leafs33,523
+	db::simple_tuple *saved_stuples[NUM_REGS];saved_stuples34,570
+	bool is_leaf[NUM_REGS];is_leaf35,614
+	std::list<runtime::float_list*, mem::allocator<runtime::float_list*> > free_float_list;free_float_list37,641
+   std::list<runtime::int_list*, mem::allocator<runtime::int_list*> > free_int_list;free_int_list38,730
+   std::list<runtime::node_list*, mem::allocator<runtime::node_list*> > free_node_list;free_node_list39,815
+	std::list<runtime::rstring::ptr, mem::allocator<runtime::rstring::ptr> > free_rstring;free_rstring40,903
+   typedef std::pair<db::tuple_trie_leaf *, vm::ref_count> pair_linear;pair_linear42,995
+   typedef std::list<pair_linear> list_linear;list_linear43,1067
+	bool *rules;rules46,1158
+	bool *predicates;predicates47,1172
+	queue::heap_queue<vm::rule_id> rule_queue;rule_queue48,1191
+	std::vector<vm::predicate*> predicates_to_check;predicates_to_check50,1261
+   vm::tuple *tuple;tuple64,1696
+   db::tuple_trie_leaf *tuple_leaf;tuple_leaf65,1717
+	db::simple_tuple *tuple_queue;tuple_queue66,1753
+   db::node *node;node67,1785
+   ref_count count;count68,1804
+   sched::base *sched;sched69,1824
+   bool is_linear;is_linear70,1847
+   list_linear used_linear_tuples;used_linear_tuples71,1866
+	utils::randgen randgen;randgen72,1901
+   size_t current_rule;current_rule73,1926
+	bool print_instrs;print_instrs75,1968
+   bool use_local_tuples;use_local_tuples77,1995
+   db::simple_tuple_list local_tuples; // current available tuples not yet in the databaselocal_tuples78,2021
+	db::simple_tuple_list generated_tuples; // tuples generated while running the rulegenerated_tuples79,2112
+	db::simple_tuple_list generated_persistent_tuples; // persistent tuples while running the rulegenerated_persistent_tuples80,2196
+	db::simple_tuple_vector generated_other_level; // tuples for later computation (another stratification level or time delay)generated_other_level81,2292
+	std::list< std::pair<vm::predicate*, db::tuple_trie_leaf*> > leaves_for_deletion;leaves_for_deletion84,2578
+	vm::strat_level current_level;current_level85,2661
+   bool persistent_only; // we are running one persistent tuple (not a rule)persistent_only86,2693
+   vm::all *all;all87,2770
+   size_t stat_rules_ok;stat_rules_ok90,2811
+   size_t stat_rules_failed;stat_rules_failed91,2836
+   size_t stat_db_hits;stat_db_hits92,2865
+   size_t stat_tuples_used;stat_tuples_used93,2889
+   size_t stat_if_tests;stat_if_tests94,2917
+	size_t stat_if_failed;stat_if_failed95,2942
+	size_t stat_instructions_executed;stat_instructions_executed96,2966
+	size_t stat_moves_executed;stat_moves_executed97,3002
+	size_t stat_ops_executed;stat_ops_executed98,3031
+   size_t *stat_predicate_proven;stat_predicate_proven99,3058
+   size_t *stat_predicate_applications;stat_predicate_applications100,3092
+   size_t *stat_predicate_success;stat_predicate_success101,3132
+	bool stat_inside_rule;stat_inside_rule103,3168
+	size_t stat_rules_activated;stat_rules_activated104,3192
+#define define_get(define_get107,3233
+#undef define_getdefine_get122,4117
+#define define_set(define_set124,4136
+#undef define_setdefine_set138,4953
+   inline void set_nil(const reg_num& num) { set_ptr(num, null_ptr_val); }set_nil140,4975
+   inline void set_leaf(const reg_num& num, db::tuple_trie_leaf* leaf) { is_leaf[num] = true; saved_leafs[num] = leaf; }set_leaf142,5054
+   inline db::tuple_trie_leaf* get_leaf(const reg_num& num) const { return saved_leafs[num]; }get_leaf143,5175
+	inline void set_tuple_queue(const reg_num& num, db::simple_tuple *stpl) { is_leaf[num] = false; saved_stuples[num] = stpl; }set_tuple_queue144,5270
+	inline db::simple_tuple* get_tuple_queue(const reg_num& num) const { return saved_stuples[num]; }get_tuple_queue145,5396
+	inline bool is_it_a_leaf(const reg_num& num) const { return is_leaf[num]; }is_it_a_leaf146,5495
+   inline void copy_reg(const reg_num& reg_from, const reg_num& reg_to) {copy_reg148,5576
+   inline void add_float_list(runtime::float_list *ls) { free_float_list.push_back(ls); }add_float_list154,5752
+   inline void add_int_list(runtime::int_list *ls) { free_int_list.push_back(ls); }add_int_list155,5842
+   inline void add_node_list(runtime::node_list *ls) { free_node_list.push_back(ls); }add_node_list156,5926
+	inline void add_string(runtime::rstring::ptr str) { free_rstring.push_back(str); }add_string157,6013
+   inline void add_generated_tuple(db::simple_tuple *tpl) { tpl->set_generated_run(true); generated_tuples.push_back(tpl); }add_generated_tuple158,6097
+
+vm/tuple.cpp,1093
+namespace vmvm16,288
+tuple::tuple(const predicate* _pred):tuple19,307
+tuple::tuple(void):tuple26,530
+tuple::field_equal(const tuple& other, const field_num i) constfield_equal32,588
+tuple::operator==(const tuple& other) constoperator ==69,1641
+tuple::copy_field(tuple *ret, const field_num i) constcopy_field82,1887
+tuple::copy(void) constcopy109,2637
+tuple::copy_except(const field_num field) constcopy_except122,2837
+print_int(ostream& out, const int_val val)print_int137,3104
+print_float(ostream& out, const float_val val)print_float143,3186
+print_node(ostream& out, const node_val node)print_node149,3272
+tuple::print(ostream& cout) constprint155,3351
+tuple::~tuple(void)~tuple199,4463
+tuple::get_storage_size(void) constget_storage_size215,4920
+tuple::pack(byte *buf, const size_t buf_size, int *pos) constpack244,5769
+tuple::load(byte *buf, const size_t buf_size, int *pos)load286,7142
+tuple::unpack(byte *buf, const size_t buf_size, int *pos, vm::program *prog)unpack324,8322
+ostream& operator<<(ostream& cout, const tuple& tuple)operator <<338,8619
+
+vm/tuple.hpp,1766
+#define VM_TUPLE_HPPVM_TUPLE_HPP2,21
+namespace vmvm18,291
+  class tuple: public mem::basetuple21,307
+    void serialize(Archive & ar, const unsigned int version) {serialize27,430
+    predicate* pred;pred32,536
+    tuple_field *fields;fields33,557
+#define define_set(define_set45,774
+    inline void set_nil(const field_num& field) { set_ptr(field, null_ptr_val); }set_nil58,1679
+    inline void set_field(const field_num& field, tuple_field& f) { fields[field] = f; }set_field59,1761
+#undef define_setdefine_set60,1850
+    size_t num_fields(void) const { return pred->num_fields(); }num_fields62,1869
+    std::string pred_name(void) const { return pred->get_name(); }pred_name64,1935
+    inline const predicate* get_predicate(void) const { return pred; }get_predicate66,2003
+    inline predicate_id get_predicate_id(void) const { return pred->get_id(); }get_predicate_id68,2075
+    field_type get_field_type(const field_num& field) const { return pred->get_field_type(field); }get_field_type77,2394
+    tuple_field get_field(const field_num& field) const { return fields[field]; }get_field79,2495
+#define define_get(define_get81,2581
+#undef define_getdefine_get94,3332
+    inline bool is_persistent(void) const { return pred->is_persistent_pred(); }is_persistent96,3351
+    inline bool is_aggregate(void) const { return pred->is_aggregate(); }is_aggregate97,3432
+    inline bool is_linear(void) const { return pred->is_linear_pred(); }is_linear98,3506
+    inline bool is_action(void) const { return pred->is_action_pred(); }is_action99,3579
+    inline bool is_reused(void) const { return pred->is_reused_pred(); }is_reused100,3652
+  typedef std::list<tuple*, mem::allocator<vm::tuple*> > tuple_list;tuple_list115,4045
+
+vm/types.cpp,214
+namespace vm {vm13,181
+field_type_size(field_type type)field_type_size16,207
+field_type_string(field_type type)field_type_string42,807
+aggregate_type_string(aggregate_type type)aggregate_type_string62,1428
+
+vm/types.hpp,1385
+#define TYPES_HPPTYPES_HPP2,18
+namespace vm {vm8,96
+enum field_type {field_type10,115
+   FIELD_INT = 0x0,FIELD_INT11,133
+   FIELD_FLOAT = 0x1,FIELD_FLOAT12,153
+   FIELD_NODE = 0x2,FIELD_NODE13,175
+   FIELD_LIST_INT = 0x3,FIELD_LIST_INT14,196
+   FIELD_LIST_FLOAT = 0x4,FIELD_LIST_FLOAT15,221
+   FIELD_LIST_NODE = 0x5,FIELD_LIST_NODE16,248
+   FIELD_WORKER = 0x6,FIELD_WORKER17,274
+	FIELD_STRING = 0x9FIELD_STRING18,297
+enum aggregate_type {aggregate_type21,321
+   AGG_FIRST = 1,AGG_FIRST22,343
+   AGG_MAX_INT = 2,AGG_MAX_INT23,361
+   AGG_MIN_INT = 3,AGG_MIN_INT24,381
+   AGG_SUM_INT = 4,AGG_SUM_INT25,401
+   AGG_MAX_FLOAT = 5,AGG_MAX_FLOAT26,421
+   AGG_MIN_FLOAT = 6,AGG_MIN_FLOAT27,443
+   AGG_SUM_FLOAT = 7,AGG_SUM_FLOAT28,465
+   AGG_SUM_LIST_FLOAT = 11AGG_SUM_LIST_FLOAT29,487
+enum aggregate_safeness {aggregate_safeness32,518
+   AGG_LOCALLY_GENERATED = 1,AGG_LOCALLY_GENERATED33,544
+   AGG_NEIGHBORHOOD = 2,AGG_NEIGHBORHOOD34,574
+   AGG_NEIGHBORHOOD_AND_SELF = 3,AGG_NEIGHBORHOOD_AND_SELF35,599
+   AGG_IMMEDIATE = 4,AGG_IMMEDIATE36,633
+   AGG_UNSAFE = 5AGG_UNSAFE37,655
+inline bool aggregate_safeness_uses_neighborhood(const aggregate_safeness safeness)aggregate_safeness_uses_neighborhood44,823
+class type_error : public std::runtime_error {type_error49,993
+    explicit type_error(const std::string& msg) :type_error51,1049

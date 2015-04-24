@@ -17,7 +17,7 @@
 
 #include "glBlock.h"
 #include "blockCode.h"
-
+#include "clock.h"
 
 class Event;
 typedef boost::shared_ptr<Event> EventPtr;
@@ -25,6 +25,7 @@ typedef boost::shared_ptr<Event> EventPtr;
 using namespace std;
 
 class P2PNetworkInterface;
+//class Clock;
 
 namespace BaseSimulator {
 
@@ -60,6 +61,7 @@ public:
 	int blockId;
 	BlockCode *blockCode;
 	State state;
+	Clock *clock;
 	boost::rand48 generator;
 
 	BuildingBlock(int bId);
@@ -67,6 +69,7 @@ public:
 
 	unsigned int getNextP2PInterfaceLocalId();
 
+	list<P2PNetworkInterface*>& getP2PNetworkInterfaceList() {return P2PNetworkInterfaceList;}
 	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int destBlockId);
 	bool addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock);
 	bool addP2PNetworkInterfaceAndConnectTo(int destBlockId);
@@ -79,7 +82,6 @@ public:
 	
 	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
-	
 	virtual void stop() {};
 	
 	/* No guarantee that state value will remind the same, it just avoids
@@ -92,6 +94,10 @@ public:
 	
 	/* For Blinky Block determinism version */	
 	int getNextRandomNumber();
+	
+	uint64_t getTime();
+	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+	
 };
 
 } // BaseSimulator namespace

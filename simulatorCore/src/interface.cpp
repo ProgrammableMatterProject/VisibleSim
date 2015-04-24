@@ -155,8 +155,11 @@ void GlutSlidingMainWindow::glDraw() {
 		glEnd();
 		char str[256];
 		uint64_t t = BaseSimulator::getScheduler()->now();
-		sprintf(str,"Current time : %d:%d",int(t/1000),int((t%1000)));
-
+		if (t < 10*1000*1000) { //10sec
+			sprintf(str,"Current time : %d:%d ms",int(t/1000),int((t%1000))); // ms
+		} else {
+			sprintf(str,"Current time : %d:%d s",int(t/1000000),int((t%1000000)/10000)); // s
+		}
 		glColor3f(1.0,1.0,0.0);
 		drawString(42.0,h-20.0,str);
 		glColor3f(1.0,1.0,1.0);

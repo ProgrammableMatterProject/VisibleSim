@@ -1,0 +1,4 @@
+
+- Some constraints must be pushed into the ITER instruction
+	- do not use if for simple int comparisons and stuff like that
+	- it would be cool do put list matching code on the ITER instruction... someday

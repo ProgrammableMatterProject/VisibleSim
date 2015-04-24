@@ -16,6 +16,7 @@
 #include "buildingBlock.h"
 #include "uniqueEventsId.h"
 #include "network.h"
+#include "color.h"
 
 using namespace std;
 
@@ -203,5 +204,115 @@ public:
 	void consume();
 	const virtual string getEventName();
 };
+
+
+//===========================================================================================================
+//
+//          SetColorEvent  (class)
+//
+//===========================================================================================================
+
+class SetColorEvent : public BlockEvent {
+public:
+	Color color;
+
+	SetColorEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, float r, float g, float b, float a);
+	SetColorEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, Color &c);
+	SetColorEvent(SetColorEvent *ev);
+	~SetColorEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+
+//===========================================================================================================
+//
+//          AddNeighborEvent  (class)
+//
+//===========================================================================================================
+
+class AddNeighborEvent : public BlockEvent {
+public:
+	uint64_t face;
+	uint64_t target;
+	
+	AddNeighborEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f, uint64_t ta);
+	AddNeighborEvent(AddNeighborEvent *ev);
+	~AddNeighborEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+//===========================================================================================================
+//
+//          RemoveNeighborEvent  (class)
+//
+//===========================================================================================================
+
+class RemoveNeighborEvent : public BlockEvent {
+public:
+	uint64_t face;
+	
+	RemoveNeighborEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
+	RemoveNeighborEvent(RemoveNeighborEvent *ev);
+	~RemoveNeighborEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+//===========================================================================================================
+//
+//          TapEvent  (class)
+//
+//===========================================================================================================
+
+class TapEvent : public BlockEvent {
+public:
+
+	TapEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	TapEvent(TapEvent *ev);
+	~TapEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+
+//===========================================================================================================
+//
+//          AccelEvent  (class)
+//
+//===========================================================================================================
+
+class AccelEvent : public BlockEvent {
+public:
+	uint64_t x;
+	uint64_t y;
+	uint64_t z;
+	
+	AccelEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz);
+	AccelEvent(AccelEvent *ev);
+	~AccelEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+//===========================================================================================================
+//
+//          ShakeEvent  (class)
+//
+//===========================================================================================================
+
+class ShakeEvent : public BlockEvent {
+public:
+	uint64_t force;
+	
+	ShakeEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
+	ShakeEvent(ShakeEvent *ev);
+	~ShakeEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+
 
 #endif /* EVENTS_H_ */

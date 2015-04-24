@@ -41,6 +41,7 @@ protected:
 public:
 	enum State {NOTREADY = 0, NOTSTARTED = 1, ENDED = 2, PAUSED = 3, RUNNING = 4};
 	State state;
+	
 	static Scheduler* getScheduler() {
 		assert(scheduler != NULL);
 		return(scheduler);
@@ -52,12 +53,13 @@ public:
 		// End Modif
 	}
 	void setMaximumDate(uint64_t tmax) { maximumDate=tmax; };
-	void printInfo() {
-		cout << "I'm a Scheduler" << endl;
-	}
+	void printInfo() {cout << "I'm a Scheduler" << endl;}
 
 	virtual bool schedule(Event *ev);
+	virtual bool scheduleLock(Event *ev);
+	
 	uint64_t now();
+	
 	virtual void trace(string message,int id=-1,const Color &color=WHITE);
 	void removeEventsToBlock(BuildingBlock *bb);
 
@@ -67,10 +69,13 @@ public:
 	virtual void start(int) {};
 
 	// stop for good
-	virtual void stop(uint64_t date) {};
+	virtual void stop(uint64_t date){setState(ENDED);};
 
 	inline void setState (State s) { state = s; };
 	inline State getState () { return state; };
+	
+	virtual void waitForSchedulerEnd() {};
+	
 	inline int getNbreMessages() { return Event::getNextId(); };
 };
 

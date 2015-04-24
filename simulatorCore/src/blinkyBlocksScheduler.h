@@ -1,8 +1,8 @@
 /*
- * blinkyBlocksScheduler.h
+ * BlinkyBlocksScheduler.h
  *
- *  Created on: 23 mars 2013
- *      Author: dom
+ *  Created on: 12 janvier 2014
+ *      Author: Benoît
  */
 
 #ifndef BLINKYBLOCKSSCHEDULER_H_
@@ -17,75 +17,38 @@
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "trace.h"
 
+#include "cppScheduler.h"
+#include "meldProcessScheduler.h"
+#include "simulator.h"
+
 using namespace boost;
 
 namespace BlinkyBlocks {
 
-class BlinkyBlocksScheduler : public BaseSimulator::Scheduler {
-protected:	
-	boost::thread *schedulerThread;
-	int schedulerMode;
-	
-	BlinkyBlocksScheduler();
-	virtual ~BlinkyBlocksScheduler();
-	void* startPaused(/*void *param */);
-	
-public:
-	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
-	
-	static void createScheduler();
-	static void deleteScheduler();
-	static BlinkyBlocksScheduler* getScheduler() {
-		assert(scheduler != NULL);
-		return((BlinkyBlocksScheduler*)scheduler);
-	}
-
-	void printInfo() {
-		OUTPUT << "I'm a BlinkyBlocksScheduler" << endl;
-	}
-	
-	void start(int mode);
-
-	void waitForSchedulerEnd() {
-		schedulerThread->join();
-	}
-		
-	// stop for good
-	void stop(uint64_t date);	
-	void pause(uint64_t date);
-	void unPause();
-		
-	// NOT TESTED
-	bool isPaused() {
-		bool r = sem_schedulerStart->try_wait();
-		if (r) {
-			sem_schedulerStart->post();
-		}
-		return !r;
-	}
-	
-	/* In the scheduler thread, schedule function is called. In the
-	 * other thread scheduleLock should be called to not interfer
-	 * with the scheduler thread.
-	 */
-	bool schedule(Event *ev);
-	bool scheduleLock(Event *ev);
-	
-	void SemWaitOrReadDebugMessage();
-	
-	inline int getMode() { return schedulerMode; }
-		
-};
-
 inline void createScheduler() {
-	BlinkyBlocksScheduler::createScheduler();
+	switch(BaseSimulator::Simulator::getType()) {
+		case BaseSimulator::Simulator::MELDPROCESS:
+			MeldProcess::MeldProcessScheduler::createScheduler();
+		break;
+		case BaseSimulator::Simulator::CPP:
+			cppScheduler::CppScheduler::createScheduler();
+		break;		
+	}
+	
 }
 
 inline void deleteScheduler() {
-	BlinkyBlocksScheduler::deleteScheduler();
+	switch(BaseSimulator::Simulator::getType()) {
+		case BaseSimulator::Simulator::MELDPROCESS:
+			MeldProcess::MeldProcessScheduler::deleteScheduler();
+		break;
+		case BaseSimulator::Simulator::CPP:
+			cppScheduler::CppScheduler::deleteScheduler();
+		break;		
+	}
 }
 
-inline BlinkyBlocksScheduler* getScheduler() { return(BlinkyBlocksScheduler::getScheduler()); }
+inline BaseSimulator::Scheduler* getScheduler() { return (BaseSimulator::getScheduler()); }
 
 } // BlinkyBlocks namespace
 

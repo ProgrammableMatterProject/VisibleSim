@@ -53,7 +53,7 @@ public:
 		return((BlinkyBlocksBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Vecteur &pos, const Vecteur &col);
+	virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Vecteur &pos, const Color &col);
 	void deleteBlock(BlinkyBlocksBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 
@@ -75,19 +75,8 @@ public:
 	void shakeBlock(uint64_t date, int bId, int f);	
 	void stopBlock(uint64_t date, int bId);
 	
-	/* Sends directly (not scheduled) a message to all the active VMs of the world.
-	 * Returns to how many nodes the message has been sent.
-	 */
-	int broadcastDebugCommand(DebbuggerVMCommand &c);
-	int sendCommand(int id, VMCommand &c);
-	
-	bool dateHasBeenReachedByAll(uint64_t date);
-	bool equilibrium();
-	
-	void killAllVMs();
 	void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
-   void closeAllSockets();
-   
+
    // Prints information about the blocks
    void dump();
    

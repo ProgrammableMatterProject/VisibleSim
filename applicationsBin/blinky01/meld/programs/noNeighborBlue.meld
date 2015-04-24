@@ -1,0 +1,6 @@
+type vacant(node, int).
+type tap(node).
+type neighbor(node, node, int).
+type neighborCount(node, int).
+
+neighborCount(A, 0) -o setColor2(A, 5).
