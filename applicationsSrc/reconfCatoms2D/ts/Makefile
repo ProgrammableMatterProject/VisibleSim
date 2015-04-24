@@ -5,7 +5,7 @@ LDFLAGS =
 INCLUDES = 
 CC = g++
 
-SRCS = tuple.cpp \
+SRCS = 	tuple.cpp \
 	tupleSpace.cpp \
 	localTupleSpace.cpp
 
@@ -23,7 +23,7 @@ libTS.a: $(OBJS)
 	ar rcs $@ $^
 
 test: $(OUT) test.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) -L. -lTS
 
 .PHONY: clean realclean
 clean:
