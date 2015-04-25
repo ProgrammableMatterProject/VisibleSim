@@ -100,18 +100,24 @@ Figure \ref{fig:parameter-distribution} shows the distribution of the parameter 
 
 \subsection{Clock simulation in DES}
 
-\cite{ring2010clock} explains how to enhance DES with efficient local clock simulation. There are two major problems.
-
-Firstly, for a given simulation and a given block $i$, $t$ and $x_i(t)$ are strongly associated: the simulation time $t$ should always represent the same local time $x_i(t)$ and vice versa.
-
-Secondly points in time that are close in time need to be consistent:
+\cite{ring2010clock} explains how to enhance DES with efficient local clock simulation. For a given simulation and a given block $i$, Points in time need to be consistent:
 
 \begin{equation}
-t_2 \geq t_1 \implies x(t_2) \geq x(t_1)
-\label{eq:consistency}
+t_2 < t_1 \iff x^i(t_2) \leq x^i(t_1)
+\label{eq:consistency-lessthan}
 \end{equation}
 
-For example, if we consider that $t_2 = t_1 + 1$, $D > 0$, $y_0 > 0$, $\epsilon(t_1) > 0$ and $\epsilon(t_2) < 0$, then $x(t_2) < x(t_1)$ which is inconsistent.
+\begin{equation}
+t_2 = t_1 \iff x^i(t_2) = x^i(t_1)
+\label{eq:consistency-equalto}
+\end{equation}
+
+\begin{equation}
+t_2 > t_1 \iff x^i(t_2) \geq x^i(t_1)
+\label{eq:consistency-greaterthan}
+\end{equation}
+
+Consistency equations \eqref{eq:consistency-lessthan} \eqref{eq:consistency-equalto} \eqref{eq:consistency-greaterthan} are obvious but not trivial to ensure when considering noise simulation. For example, if we consider that $t_2 = t_1 + 1$, $D > 0$, $y_0 > 0$, $\epsilon(t_1) > 0$ and $\epsilon(t_2) < 0$, then $x(t_2) < x(t_1)$ which is inconsistent.
 
 \cite{ring2010clock} proposes to use a caching strategy by storing the last calculated simulation times and local times. These reference points are then used to ensure time consistency. We use that approach in VisibleSim.
 
