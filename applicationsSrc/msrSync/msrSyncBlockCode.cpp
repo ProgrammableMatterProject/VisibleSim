@@ -29,8 +29,8 @@ using namespace BlinkyBlocks;
 
 #define LIMIT_NUM_ROUNDS 10
 
-//#define PRINT_NODE_INFO
-#define INFO_NODE_ID 2
+#define PRINT_NODE_INFO
+#define INFO_NODE_ID 200
 
 msrSyncBlockCode::msrSyncBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
   a = 1;
@@ -91,7 +91,7 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
       round++;
       info << "MASTER sync " << round;
 #ifdef PRINT_NODE_INFO
-      cout << "MASTER SYNC " << getTime() << endl;
+      // cout << "MASTER SYNC " << getTime() << endl;
 #endif
       synchronize(NULL,getTime());
       // schedule the next sync round
@@ -136,19 +136,19 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 	  }
 #endif
 	  synchronize(recvInterface, globalTime);
-	}
-					
-	if (round == LIMIT_NUM_ROUNDS) {
-	  // display error vector
+	  
+	  if (round == LIMIT_NUM_ROUNDS) {
+	    // display error vector
 #ifdef PRINT_NODE_INFO
-	  if (hostBlock->blockId == INFO_NODE_ID) {
+	    // if (hostBlock->blockId == INFO_NODE_ID) {
 	    cout << "@" << hostBlock->blockId << " error: ";
 	    for (vector<uint64_t>::iterator it = error.begin() ; it != error.end(); it++){
 	      cout << *it << " ";
 	    }
 	    cout << endl;
-	  }
+	    // }
 #endif
+	  }
 	}
       }
 	break;
