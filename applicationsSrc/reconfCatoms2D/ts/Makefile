@@ -1,6 +1,6 @@
 
 WARNINGS = -Wall -Wextra
-CCFLAGS = $(WARNINGS)
+CCFLAGS = $(WARNINGS) -std=c++11
 LDFLAGS =
 INCLUDES = 
 CC = g++

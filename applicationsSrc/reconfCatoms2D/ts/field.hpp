@@ -1,5 +1,5 @@
 #ifndef FIELD_H_
-#define FIELD_D_
+#define FIELD_H_
 
 
 template <typename T> 
@@ -8,6 +8,7 @@ protected:
   T value;
 public:
   Field(T v) { value = v; }
+  Field(const Field &f) {value = f.value;}
   T get() const {return value;}
   void set(const T& v) {value=v;}  
 };
