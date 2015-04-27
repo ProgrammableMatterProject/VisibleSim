@@ -1,6 +1,6 @@
 
 WARNINGS = -Wall -Wextra
-CCFLAGS = $(WARNINGS) -std=c++11
+CCFLAGS = $(WARNINGS) -std=c++1y
 LDFLAGS =
 INCLUDES = 
 CC = g++
@@ -22,8 +22,8 @@ all: $(TARGETS)
 libTS.a: $(OBJS)
 	ar rcs $@ $^
 
-test: $(OUT) test.o
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) -L. -lTS
+test: test.o $(OUT)
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@ -L. -lTS
 
 .PHONY: clean realclean
 clean:
