@@ -1,0 +1,3 @@
+Example:
+
+compile-from-directory code $PWD/progs/pagerank_grid_10_25.meld
