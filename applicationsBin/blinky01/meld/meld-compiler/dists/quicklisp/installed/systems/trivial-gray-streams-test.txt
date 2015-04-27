@@ -1,1 +1,0 @@
-dists/quicklisp/software/trivial-gray-streams-20140826-git/trivial-gray-streams-test.asd

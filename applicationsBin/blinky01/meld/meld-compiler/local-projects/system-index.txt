@@ -1,2 +1,0 @@
-cl-meld/cl-meld.asd
-cl-meld2/cl-meld.asd
