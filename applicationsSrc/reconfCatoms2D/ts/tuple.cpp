@@ -19,12 +19,7 @@ const std::type_info& Tuple::getType(size_t index) {
 }
 
 void Tuple::print() {
-  cout << "Tuple: ";
-  for (unsigned i = 0; i < fields.size(); i++) {
-    cout << getType(i).name() << " ";
-    cout << " ";
-  }
-  cout << endl;
+  cout << *this << endl;
 }
 
 void Tuple::concatenate(Tuple &t) {
@@ -60,4 +55,29 @@ void Tuple::erase(size_t index) {
     return;
   }
   fields.erase(fields.begin()+index);
+}
+
+bool Tuple::operator==(const Tuple& rhs) const {
+  return this->equal(rhs);
+}
+
+bool Tuple::operator!=(const Tuple& rhs) const {
+  return !this->equal(rhs);
+} 
+
+std::ostream& operator<<(std::ostream& os, const Tuple &t) {
+  vector<Field>::const_iterator it;
+  os << "(";
+  for (it = t.fields.begin(); it != t.fields.end(); ++it) {
+    os << *it;
+    if (it+1 != t.fields.end()) {
+      os << ",";
+    }
+  }
+  os << ")";
+  return os;
+}
+
+int Tuple::hash() const{
+  return 5;
 }

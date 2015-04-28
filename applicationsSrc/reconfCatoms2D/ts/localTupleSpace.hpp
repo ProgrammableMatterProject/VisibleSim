@@ -6,14 +6,15 @@
 
 class LocalTupleSpace {
 private:
-  std::map<int,Tuple> tuples;
+  std::multimap<int,Tuple*> tuples;
 
 public:
   LocalTupleSpace();
   ~LocalTupleSpace();
 
-  void out(Tuple t);
-  Tuple in(Tuple p);
+  void out(Tuple *t);
+  Tuple* in(const Tuple &q);
+  Tuple* inp(const Tuple &q);
 };
 
 #endif

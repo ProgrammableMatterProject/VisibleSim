@@ -8,8 +8,9 @@ public:
   TupleSpace();
   ~TupleSpace();
 
-  virtual void out(Tuple t) = 0;
-  virtual Tuple in(Tuple p) = 0;
+  virtual void out(Tuple *t) = 0;
+  virtual Tuple* in(const Tuple &q) = 0;
+  virtual Tuple* inp(const Tuple &q) = 0;
 };
 
 #endif

@@ -3,7 +3,6 @@
 
 #include "field.hpp"
 #include <vector>
-
 #include <iostream>
 
 class Tuple {
@@ -34,14 +33,13 @@ public:
   bool equal(const Tuple &t) const;
 
   void print();
+
+  bool operator==(const Tuple& rhs) const;
+  bool operator!=(const Tuple& rhs) const;
+  friend std::ostream& operator<<(std::ostream& os, const Tuple &t);
+  
+  int hash() const;
+
 };
-
-inline bool operator==(const Tuple& lhs, const Tuple& rhs) {
-  return lhs.equal(rhs); 
-} 
-
-inline bool operator!=(const Tuple& lhs, const Tuple& rhs) {
-  return !lhs.equal(rhs); 
-} 
 
 #endif

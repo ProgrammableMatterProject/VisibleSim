@@ -22,6 +22,11 @@ public:
   
   bool operator ==(const Test &t) const {
     return a == t.a;
+  }    
+  
+  friend std::ostream& operator<<(std::ostream& os, const Test &t) {
+    os << t.a;
+    return os;
   }
   
 };
@@ -61,7 +66,7 @@ int main(void) {
   if (test1 == test2) { cout << "ok test1 == test2" << endl;}
 
   Tuple t4(5, Test(),3);
-  Tuple t3(TYPE(int),TYPE(double),3);
+  Tuple t3(TYPE(int),TYPE(Test),3);
   
   t4.print();
   t3.print();
@@ -83,4 +88,18 @@ int main(void) {
   //cout << t1.get<string>(3) << endl;
   //t1.set(3,string("debut"));
   //cout << t1.get<string>(3) << endl;
+
+  LocalTupleSpace tuples;
+
+  tuples.out(new Tuple(string("aaa"), 5, 12.5));
+
+  Tuple query(string("aaa"), TYPE(int), 12.5);
+  
+  Tuple *res = tuples.inp(query);
+  assert(res != NULL);
+  cout << *res << endl;
+
+  res = tuples.inp(query);
+  assert(res == NULL);
+
 }

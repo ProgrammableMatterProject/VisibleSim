@@ -18,7 +18,9 @@ private:
     virtual base* clone() const = 0;
     virtual const std::type_info& getType() const = 0;
     virtual bool equal(base* b) const = 0;
-    virtual bool match(base *b) const = 0;
+    virtual bool match(base *b) const = 0; 
+    
+    virtual std::ostream& output(std::ostream& os) const = 0;
   };
 
   template <typename T>
@@ -48,6 +50,11 @@ private:
       }
       return equal(b);
     }
+    
+    std::ostream& output(std::ostream& os) const{
+      os << getType().name() << "=" << value_;
+      return os;
+    }
   };
   base* ptr_;
 
@@ -71,6 +78,9 @@ public:
   bool equal(const Field &rhs) const {return this->ptr_->equal(rhs.ptr_);}
   bool match(const Field &rhs) const {return this->ptr_->match(rhs.ptr_);}
 
+  friend std::ostream& operator<<(std::ostream& os, const Field &f) { 
+    return f.ptr_->output(os);
+  }
 };
 
 inline bool operator==(const Field& lhs, const Field& rhs) { return lhs.equal(rhs);}
