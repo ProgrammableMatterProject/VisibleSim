@@ -6,6 +6,7 @@ INCLUDES =
 CC = g++
 
 SRCS = 	tuple.cpp \
+	type.cpp \
 	tupleSpace.cpp \
 	localTupleSpace.cpp
 

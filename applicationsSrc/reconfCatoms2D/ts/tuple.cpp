@@ -32,8 +32,20 @@ void Tuple::concatenate(Tuple &t) {
 }
 
 bool Tuple::match(const Tuple &t) const {
-  //return fields == t.fields;
-  return true;
+  vector<Field>::const_iterator it1;
+  vector<Field>::const_iterator it2;
+  bool res = true;
+
+  if (size() != t.size()) {
+    return false;
+  }
+
+  int i = 0;
+  for (it1 = fields.begin(), it2 = t.fields.begin(); it1 != fields.end(), it2 != t.fields.end(); ++it1, ++it2) {
+    res = res && it1->match(*it2);
+    i++;
+  }
+  return res;
 }
 
 bool Tuple::equal(const Tuple &t) const {

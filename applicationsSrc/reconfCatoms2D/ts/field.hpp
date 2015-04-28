@@ -4,6 +4,9 @@
 #include <typeinfo>
 #include <utility>
 #include <algorithm>
+#include "type.hpp"
+#include <iostream>
+
 // inspired from:
 // http://stackoverflow.com/questions/13461869/c-push-multiple-types-onto-vector
 
@@ -13,8 +16,9 @@ private:
   struct base {
     virtual ~base() {}
     virtual base* clone() const = 0;
-    virtual const std::type_info& getType() = 0;
-    virtual bool equal(base* b) = 0;
+    virtual const std::type_info& getType() const = 0;
+    virtual bool equal(base* b) const = 0;
+    virtual bool match(base *b) const = 0;
   };
 
   template <typename T>
@@ -24,11 +28,25 @@ private:
     
     T value_;
 
-    const std::type_info& getType() {return typeid(value_);}
+    const std::type_info& getType() const {return typeid(value_);}
 
-    bool equal (base *b) { 
+    bool equal (base *b) const { 
       if (getType() != b->getType() ) {return false;}
       return dynamic_cast<data<T>&>(*b).value_ == value_;
+    }
+
+    bool match (base *b) const {
+      if (IS_FORMAL(*this)) {
+	const Type &t1 = (const Type&) value_;
+	const Type &t2 = Type(b->getType());
+        return t1 == t2;
+      }
+      if (IS_FORMAL(*b)) {
+	const Type &t1 = dynamic_cast<data<Type>&>(*b).value_;
+	const Type t2 = Type(getType());
+	return t1 == t2;
+      }
+      return equal(b);
     }
   };
   base* ptr_;
@@ -47,10 +65,11 @@ public:
   void swap(Field& other) { std::swap(ptr_, other.ptr_); }
 
   template <typename T>
-  T& get() {return dynamic_cast<data<T>&>(*this->ptr_).value_;}
-  const std::type_info& getType() { return ptr_->getType();}
+  T& get() const {return dynamic_cast<data<T>&>(*this->ptr_).value_;}
+  const std::type_info& getType() const { return ptr_->getType();}
   
   bool equal(const Field &rhs) const {return this->ptr_->equal(rhs.ptr_);}
+  bool match(const Field &rhs) const {return this->ptr_->match(rhs.ptr_);}
 
 };
 
