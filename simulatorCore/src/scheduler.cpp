@@ -10,6 +10,7 @@
 #include "assert.h"
 #include "scheduler.h"
 #include "trace.h"
+#include "stdint.h"
 
 using namespace std;
 
@@ -33,7 +34,7 @@ Scheduler::Scheduler() {
 	}
 
 	currentDate = 0;
-	maximumDate = UINT64_MAX; // no time limitation by default
+	maximumDate = UINT_MAX; // no time limitation by default
 	eventsMapSize = 0;
 	largestEventsMapSize = 0;
 }
