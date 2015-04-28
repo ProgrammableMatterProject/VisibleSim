@@ -363,7 +363,7 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
 
 
 void RobotBlocksWorld::loadTextures(const string &str) {
-	string path = str+"//texture_plane.tga";
+	string path = str+"/texture_plane.tga";
 	int lx,ly;
 	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
