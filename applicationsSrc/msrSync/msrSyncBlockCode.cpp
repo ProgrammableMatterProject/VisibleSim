@@ -16,25 +16,28 @@
 #include "configStat.h"
 
 #include "trace.h"
+#include <fstream>
 
 using namespace std;
 using namespace BlinkyBlocks;
 
 #define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
-#define SIMULATION_DURATION_USEC (10*60*1000*1000)
+#define SIMULATION_DURATION_USEC ((uint64_t)1*60*60*1000*1000)
 
 #define SYNCHRONIZATION
-#define SYNC_PERIOD (10*1000*1000)
-#define COM_DELAY (6*1000)
+#define SYNC_PERIOD_US ((uint64_t)10*1000*1000)
+#define COM_DELAY_US ((uint64_t)6*1000)
 
-#define LIMIT_NUM_ROUNDS 10
+#define LIMIT_NUM_ROUNDS (SIMULATION_DURATION_USEC/SYNC_PERIOD_US)
 
-#define PRINT_NODE_INFO
+//#define PRINT_NODE_INFO
 #define INFO_NODE_ID 200
 
+#define PRINT_DATA_2_FILE
+
 msrSyncBlockCode::msrSyncBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
-  a = 1;
-  b = 0;
+  y0 = 1;
+  x0 = 0;
   round = 0;
 	
   OUTPUT << "msrSyncBlockCode constructor" << endl;
@@ -45,7 +48,7 @@ msrSyncBlockCode::~msrSyncBlockCode() {
 }
 
 void msrSyncBlockCode::init() {
-  //BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
+  BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
   /*uint64_t time = 0;
     while (time<SIMULATION_DURATION_USEC) {
@@ -54,7 +57,12 @@ void msrSyncBlockCode::init() {
     BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
     time += COLOR_CHANGE_PERIOD_USEC;
     }*/
-	
+  // empty the file if it exists
+  ofstream file;
+  string name = "data/"+to_string(bb->blockId)+".dat";
+  file.open(name.c_str());
+  file.close();
+
 #ifdef SYNCHRONIZATION
   if(hostBlock->blockId == 1) { // Time leader
     BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(BaseSimulator::getScheduler()->now(),hostBlock));
@@ -69,6 +77,7 @@ void msrSyncBlockCode::startup() {
   info << "  Starting msrSyncBlockCode in block " << hostBlock->blockId;
   BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
   init();
+
 }
 
 void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
@@ -96,7 +105,7 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
       synchronize(NULL,getTime());
       // schedule the next sync round
       if (round < LIMIT_NUM_ROUNDS) {
-	uint64_t nextSync = hostBlock->getSchedulerTimeForLocalTime(hostBlock->getTime()+SYNC_PERIOD);
+	uint64_t nextSync = hostBlock->getSchedulerTimeForLocalTime(hostBlock->getTime()+SYNC_PERIOD_US);
 	//cout << nextSync << " " << BaseSimulator::getScheduler()->now() << endl;
 	// or based on global time now ? BaseSimulator::getScheduler()->now()+SYNC_PERIOD
 	BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(nextSync,hostBlock));
@@ -114,17 +123,26 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 	//cout << "@" << hostBlock->blockId << ": " << getTime() << "/" << globalTime << endl;
 	if (recvMessage->getRound() > round) {
 	  round = recvMessage->getRound();
-	  uint64_t globalTime = recvMessage->getTime() + COM_DELAY;
+	  uint64_t globalTime = recvMessage->getTime() + COM_DELAY_US;
 	  uint64_t localTime = hostBlock->getTime();
 	  // window of 5 last measures
 	  syncPoints.push_back(make_pair(localTime,globalTime));
 #ifdef PRINT_NODE_INFO
 	  if (hostBlock->blockId == INFO_NODE_ID) {
 	    cout << "Reception time: " << BaseSimulator::getScheduler()->now()/1000 << endl;
-	    cout << "a: " << a << endl;
+	    cout <<  "x0= " << x0 << ", y0= " << y0 << endl;
 	    cout << "estimation: " << getTime()/1000 << "(" << hostBlock->getTime()/1000 << ")" << ", reception: " << recvMessage->getTime()/1000 << ", => " << globalTime/1000 << endl; 
 	  }
 #endif
+#ifdef PRINT_DATA_2_FILE
+	  uint64_t realTime = BaseSimulator::getScheduler()->now();
+	  ofstream file;
+	  string name = "data/"+to_string(bb->blockId)+".dat";
+	  file.open(name.c_str(), fstream::app);
+	  file << realTime << " " << globalTime << " " << localTime << " " << getTime() << endl;
+	  file.close();
+#endif
+
 	  error.push_back(abs(((double)getTime()-(double)globalTime)/1000));
 	  if (syncPoints.size() > 5) {
 	    syncPoints.erase(syncPoints.begin());
@@ -132,7 +150,7 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 	  adjust();
 #ifdef PRINT_NODE_INFO
 	  if (hostBlock->blockId == INFO_NODE_ID) {
-	    cout << "@" << hostBlock->blockId << " a: " << a << endl;
+	    cout << "@" << hostBlock->blockId << " x0= " << x0 << ", y0= " << y0 << endl;
 	  }
 #endif
 	  synchronize(recvInterface, globalTime);
@@ -175,7 +193,7 @@ Color msrSyncBlockCode::getColor(uint64_t time) {
 }
 
 uint64_t msrSyncBlockCode::getTime() {
-  return a*(double)hostBlock->getTime() + b;
+  return y0*(double)hostBlock->getTime() + x0;
 }
 
 void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t globalTime) {
@@ -197,15 +215,15 @@ void msrSyncBlockCode::adjust() {
   double sum1 = 0, sum2 = 0;
   
   if (syncPoints.size() == 0) {
-    a = 1;
+    y0 = 1;
     return;
   }
 	
   if (syncPoints.size() == 1) {
     if (syncPoints.begin()->first != 0) {
-      a = syncPoints.begin()->second / syncPoints.begin()->first;
+      y0 = syncPoints.begin()->second / syncPoints.begin()->first;
     } else {
-      a = 1;
+      y0 = 1;
     }
     //A = 1;
     return;
@@ -223,8 +241,8 @@ void msrSyncBlockCode::adjust() {
     sum2 += pow(it->first - xAvg,2);
   }
 
-  a = sum1/sum2;
-  // b ?
+  y0 = sum1/sum2;
+  x0 = yAvg - y0 * xAvg;
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* msrSyncBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
