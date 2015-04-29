@@ -22,7 +22,7 @@ using namespace std;
 using namespace BlinkyBlocks;
 
 #define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
-#define SIMULATION_DURATION_USEC ((uint64_t)1*60*60*1000*1000)
+#define SIMULATION_DURATION_USEC ((uint64_t)24*60*60*1000*1000)
 
 #define SYNCHRONIZATION
 #define SYNC_PERIOD_US ((uint64_t)10*1000*1000)
