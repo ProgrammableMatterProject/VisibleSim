@@ -15,7 +15,7 @@ set title "Clock drift (real-time - local-time) versus real-time"
 set xlabel "Real-time (hours)"
 set ylabel "Drift (minutes)"
 
-plot for [i=2:14] filename(i) using ($1/1000/1000/60/60):(($1-$3)/1000/1000/60/60) with lines title sprintf("%d", i)
+plot for [i=2:14] filename(i) using ($1/1000/1000/60/60):(($1-$3)/1000/1000/60) with lines title sprintf("%d", i)
 
 #plot for [i=2:14] filename(i) using ($1/1000/1000/60/60):(($1-$3)/1000/1000/60) with lines title sprintf("%d", i)
 
