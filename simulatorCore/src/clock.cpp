@@ -117,8 +117,9 @@ namespace BaseSimulator {
 	break; //sorted list
       }
     }
-	
-    noise = generator();
+
+    // TODO: noise ?
+    //noise = generator();
 
     localTime = (1.0/2.0)*D*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise;
     localTime = max(minL,localTime);
@@ -162,7 +163,8 @@ namespace BaseSimulator {
       }
     }
   
-    noise = generator();
+    // TODO: noise ?
+    //noise = generator();
 
     double delta =  pow(y0,2) - 4 * (1.0/2.0)*D * (x0+noise-(double)localTime);
     if (delta > 0) {

@@ -31,7 +31,7 @@ using namespace BlinkyBlocks;
 #define LIMIT_NUM_ROUNDS (SIMULATION_DURATION_USEC/SYNC_PERIOD_US)
 
 //#define PRINT_NODE_INFO
-#define INFO_NODE_ID 200
+//#define INFO_NODE_ID 200
 
 #define PRINT_DATA_2_FILE
 
