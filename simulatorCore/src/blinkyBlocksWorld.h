@@ -18,11 +18,16 @@
 #include <blinkyBlocksScenario.h>
 #include <vector>
 
+#include "grid3D.h"
+
 namespace BlinkyBlocks {
 
 class BlinkyBlocksWorld : BaseSimulator::World {
 protected:
-	int gridSize[3];
+  Grid3D<BuildingBlock*> *grid;
+  
+int gridSize[3];
+  
 	BlinkyBlocksBlock **gridPtrBlocks;
 	GLfloat blockSize[3];
 	Camera *camera;
@@ -31,6 +36,7 @@ protected:
 	GLushort numSelectedFace;
 	GLuint numSelectedBlock;
 	GLint menuId;
+	
 	vector<ScenarioEvent*> tabEvents;
 
 	BlinkyBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]);

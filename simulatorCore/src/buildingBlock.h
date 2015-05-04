@@ -25,7 +25,6 @@ typedef boost::shared_ptr<Event> EventPtr;
 using namespace std;
 
 class P2PNetworkInterface;
-//class Clock;
 
 namespace BaseSimulator {
 
@@ -82,6 +81,7 @@ public:
 	
 	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
+	
 	virtual void stop() {};
 	
 	/* No guarantee that state value will remind the same, it just avoids
