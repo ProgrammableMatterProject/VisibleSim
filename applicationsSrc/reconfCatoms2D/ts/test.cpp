@@ -5,6 +5,7 @@
 #include "tuple.hpp"
 #include "field.hpp"
 #include "namedTuple.hpp"
+#include "contextTuple.hpp"
 #include <assert.h>
 #include "type.hpp"
 
@@ -102,4 +103,6 @@ int main(void) {
   res = tuples.inp(query);
   assert(res == NULL);
 
+  ContextTuple ctuple(Coordinate(2,5), string("test"));
+  cout << ctuple << endl;
 }
