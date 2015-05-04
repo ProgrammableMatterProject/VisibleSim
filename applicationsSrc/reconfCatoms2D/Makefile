@@ -5,7 +5,7 @@ OUT = catom2D1
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
-INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES) 
+INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES) -I./ts
 #-I/usr/local/include -I/opt/local/include
 
 #for macOSX
@@ -13,11 +13,11 @@ INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 #for linux
 #LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimMultiCores -lm -L/usr/X11/lib -lboost_thread  -lglut -lpthread
 
-LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
+LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib -L./ts -lTS
 
-SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a
+SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a ts/libTS.a
 
-CCFLAGS = $(GLOBAL_CCFLAGS)
+CCFLAGS = $(GLOBAL_CCFLAGS) -std=c++1y
 CC = g++
 
 .PHONY: clean all
@@ -27,7 +27,7 @@ CC = g++
 
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-	
+
 all: $(OUT) 
 
 autoinstall: $(OUT) 

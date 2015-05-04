@@ -12,6 +12,9 @@
 #include "catoms2DSimulator.h"
 #include "catoms2DScheduler.h"
 #include "catoms2DBlock.h"
+#include "localTupleSpace.hpp"
+#include "tuple.hpp"
+#include "contextTuple.hpp"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
    
@@ -22,6 +25,7 @@ public:
 
 	Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
 	~Catoms2D1BlockCode ();
+	LocalTupleSpace localTuples;
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
@@ -30,6 +34,8 @@ public:
 	
 	void updateBorder();
 	bool canMove();
+
+	void out(Tuple *t);
 
 	static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };
