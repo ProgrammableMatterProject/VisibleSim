@@ -25,6 +25,7 @@ public:
 
 	Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
 	~Catoms2D1BlockCode ();
+	Coordinate position;
 	LocalTupleSpace localTuples;
 
 	void startup();
@@ -35,7 +36,8 @@ public:
 	void updateBorder();
 	bool canMove();
 
-	void out(Tuple *t);
+	void out(ContextTuple *t);
+	Coordinate getPosition(P2PNetworkInterface *recv_it, Coordinate c);
 
 	static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };

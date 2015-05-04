@@ -74,7 +74,6 @@ void Catoms2D1BlockCode::startup() {
     startMotion(ROTATE_LEFT,world->getBlockById(3));
   }
 		
-  
   if (catom2D->blockId == 1) {
     cout << "Catom2D 1 receiving the target map..." << endl;
     int i = 0;
@@ -108,6 +107,26 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   case EVENT_NI_RECEIVE: {
     message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
     P2PNetworkInterface * recv_interface = message->destinationInterface;
+    switch(message->type) {
+    case GEO_TUPLE_MSG: {
+      GeoMessage_ptr m = boost::static_pointer_cast<GeoMessage>(message); 
+      cout << "geo" << endl;
+      // update my position
+      Coordinate p = getPosition(recv_interface, m->getLast());
+      // check correctness of the position
+    
+      // 
+      if (p != position) {
+	//cout << "wrong position computation?" << endl;
+	position = p;
+	cout << "position " << p << endl;
+      }
+      if (m->getSource() == m->getDestination()) {
+	cout << "msg had a safe trip!" << endl;
+      }
+      break;
+    }
+    }
   }
     break;
   case EVENT_MOTION_END: {
@@ -119,15 +138,58 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
 }
 
-void Catoms2D1BlockCode::out(Tuple *t) {
+// TS
+void Catoms2D1BlockCode::out(ContextTuple *t) {
   cout << "insert tuple: " << *t << endl;
 }
+
+// Geo-routing
+//void Catoms2D1BlockCode::forward(Tuple *t) {
+//}
 
 void Catoms2D1BlockCode::startMotion(int direction, Catoms2DBlock *pivot) {
   scheduler->schedule(new MotionStartEvent(scheduler->now(),catom2D,pivot,direction));
 }
 
-
 Catoms2D::Catoms2DBlockCode* Catoms2D1BlockCode::buildNewBlockCode(Catoms2DBlock *host) {
   return(new Catoms2D1BlockCode(host));
+}
+
+Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *recv_it, Coordinate c) {
+  Coordinate p = c;
+  
+  switch(catom2D->getDirection(recv_it)) {
+  case NeighborDirection::BottomLeft:
+    p.y++;
+    if (p.y%2 == 0) {
+      p.x++;
+    }
+    break;
+  case NeighborDirection::Left:
+    p.x++;
+    break;
+  case NeighborDirection::TopLeft:
+    p.y--;    
+    if (p.y%2 == 0) {
+      p.x++;
+    }
+    break;
+  case NeighborDirection::TopRight:
+    p.y--;
+    if (p.y%2 == 1) {
+      p.x--;
+    }
+    break;
+  case NeighborDirection::Right:
+    p.x--;
+    break;
+  case NeighborDirection::BottomRight:
+    p.y++; 
+    if (p.y%2 == 1) {
+      p.x--;
+    }
+    break;
+  }
+  
+  return p;
 }
