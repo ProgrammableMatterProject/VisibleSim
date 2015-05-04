@@ -23,6 +23,10 @@ using namespace Catoms2D;
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
   scheduler = Catoms2D::getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
+  connectedToHost = false;
+  waiting = 0;
+  toHost = NULL;
+  positionKnown = false;
 }
 
 Catoms2D1BlockCode::~Catoms2D1BlockCode() {
@@ -50,14 +54,14 @@ void Catoms2D1BlockCode::startup() {
   int *gridSize = world->getGridSize();
   info << "Starting ";
   scheduler->trace(info.str(),hostBlock->blockId);
-	
+  
   //updateBorder();
   /*if (canMove()) {
     catom2D->setColor(RED);
     } else {
     catom2D->setColor(GREEN);
     }*/
-  catom2D->setColor(DARKGREY);
+  //catom2D->setColor(DARKGREY);
 	
   /*if (catom2D->blockId == 10) {
     cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
@@ -69,13 +73,21 @@ void Catoms2D1BlockCode::startup() {
     startMotion(ROTATE_LEFT,world->getBlockById(7));
     }*/
 	
-  if (catom2D->blockId == 4) {
+  /*if (catom2D->blockId == 4) {
     cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
     startMotion(ROTATE_LEFT,world->getBlockById(3));
-  }
+    }*/
 		
   if (catom2D->blockId == 1) {
-    cout << "Catom2D 1 receiving the target map..." << endl;
+    connectedToHost = true;
+    toHost = NULL;
+  }
+  
+  if(connectedToHost) {
+    position = Coordinate(0,0);
+    positionKnown = true;
+    buildMap();
+    /*cout << "Catom2D 1 receiving the target map..." << endl;
     int i = 0;
     for (int iy = 0; iy < gridSize[2]; iy++) {
       for (int ix = 0; ix < gridSize[0]; ix++) {
@@ -92,7 +104,7 @@ void Catoms2D1BlockCode::startup() {
 	  //Tuple *res = tuples.inp(query);
 	}
       }
-    }
+      }*/
   }
 }
 
@@ -108,6 +120,32 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
     P2PNetworkInterface * recv_interface = message->destinationInterface;
     switch(message->type) {
+    case GO_MAP_MSG: {
+      GoMapMessage_ptr m = boost::static_pointer_cast<GoMapMessage>(message);
+      if (!positionKnown) {
+	toHost = recv_interface;
+	position  = getPosition(toHost, m->getLast());
+	cout << "@" << catom2D->blockId <<  " position " << position << endl;
+	positionKnown = true;
+	buildMap();
+	if (!waiting) {
+	  mapBuilt();
+	}
+      }
+    }
+      break;
+    case BACK_MAP_MSG: {
+      BackMapMessage_ptr m = boost::static_pointer_cast<BackMapMessage>(message);
+      waiting--;
+      if (!waiting) {
+	if (!connectedToHost) {
+	  mapBuilt();
+	} else {
+	  cout << "propagate target map" << endl;
+	}
+      }
+      }
+      break;
     case GEO_TUPLE_MSG: {
       GeoMessage_ptr m = boost::static_pointer_cast<GeoMessage>(message); 
       cout << "geo" << endl;
@@ -116,16 +154,19 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       // check correctness of the position
     
       // 
-      if (p != position) {
+      /*if (p != position) {
 	//cout << "wrong position computation?" << endl;
 	position = p;
 	cout << "position " << p << endl;
-      }
+	}*/
+
       if (m->getSource() == m->getDestination()) {
 	cout << "msg had a safe trip!" << endl;
       }
-      break;
     }
+      break;
+    default:
+      cerr << "unknown message type" << endl;
     }
   }
     break;
@@ -192,4 +233,22 @@ Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *recv_it, Coordin
   }
   
   return p;
+}
+
+void Catoms2D1BlockCode::buildMap() {
+  P2PNetworkInterface *p2p;
+  for (int i=0; i<6; i++) {
+    p2p = catom2D->getInterface((NeighborDirection::Direction)i);
+    if( (p2p == toHost) || !p2p->connectedInterface) {
+      continue;
+    }
+    GoMapMessage * msg = new GoMapMessage(position);
+    scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, p2p));
+    waiting++;
+  }
+}
+
+void Catoms2D1BlockCode::mapBuilt() {
+  BackMapMessage * msg = new BackMapMessage();
+  scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, toHost));
 }

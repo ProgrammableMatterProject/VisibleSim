@@ -78,10 +78,13 @@ static void swap(int* a, int* b)
 
 void World::generateIds(int n, int* ids) {
 	int a = 0, b = 0;
-	struct timespec t;
 	
-	clock_gettime(CLOCK_REALTIME, &t);
-	boost::rand48 generator = boost::rand48(t.tv_nsec);
+	//struct timespec t;
+	//clock_gettime(CLOCK_REALTIME, &t);
+	// not implemented in macos
+	//boost::rand48 generator = boost::rand48(t.tv_nsec);
+	
+	boost::rand48 generator = boost::rand48(time(NULL));
 	
 	for (int i = 0; i < n; i++) {
 		ids[i] = i+1;

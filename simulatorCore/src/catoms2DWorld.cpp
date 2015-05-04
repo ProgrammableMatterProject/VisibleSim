@@ -651,10 +651,13 @@ void Catoms2DWorld::generateRandom(int n) {
 	int id = 0;
 	int *ids = NULL;
 
-	struct timespec t;
-	clock_gettime(CLOCK_REALTIME, &t);
-	boost::rand48 generator = boost::rand48(t.tv_nsec);
-	
+	//struct timespec t;
+	//clock_gettime(CLOCK_REALTIME, &t);
+	//boost::rand48 generator = boost::rand48(t.tv_nsec);
+	// not implemented in mac os
+
+	boost::rand48 generator = boost::rand48(time(NULL));
+
 	ids = (int*) malloc(n*sizeof(int));
 	generateIds(n,ids);
 	

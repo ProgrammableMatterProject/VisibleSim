@@ -25,8 +25,19 @@ public:
 
 	Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
 	~Catoms2D1BlockCode ();
+	// Map construction
+	bool connectedToHost;
+	bool positionKnown;
 	Coordinate position;
+       	Coordinate getPosition(P2PNetworkInterface *recv_it, Coordinate c);
+	int waiting;
+	P2PNetworkInterface *toHost;
+	void buildMap();
+	void mapBuilt();
+
+	// Tuple space
 	LocalTupleSpace localTuples;
+	void out(ContextTuple *t);
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
@@ -35,9 +46,6 @@ public:
 	
 	void updateBorder();
 	bool canMove();
-
-	void out(ContextTuple *t);
-	Coordinate getPosition(P2PNetworkInterface *recv_it, Coordinate c);
 
 	static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };
