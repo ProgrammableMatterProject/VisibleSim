@@ -142,9 +142,9 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  // Link to PC host simulation:
 	  //out(new ContextTuple(Coordinate(2,2), string("target"))); 
-	  out(new ContextTuple(Coordinate(1,3), string("target")));
+	  //out(new ContextTuple(Coordinate(1,3), string("target")));
 	  //out(new ContextTuple(Coordinate(1,2), string("target")));
-	  /*Catoms2DWorld *world = Catoms2DWorld::getWorld();
+	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	  int *gridSize = world->getGridSize();
 	  for (int iy = 0; iy < gridSize[2]; iy++) {
 	    for (int ix = 0; ix < gridSize[0]; ix++) {
@@ -160,7 +160,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		//Tuple *res = tuples.inp(query);
 	      }
 	    }
-	    }*/
+	  }
 	}
       }
     }
@@ -180,7 +180,8 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	// message is not arrived
 	P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
 	// !(m->isInPerimeterMode() && m->getPerimeterStart() == getPosition(next))
-	if(next != NULL) {
+	if ((!m->isInPerimeterMode() && (next!= NULL)) || 
+	    ((next!=NULL) && m->isInPerimeterMode() && (distance(position, m->getDestination()) < distance(m->getPerimeterStart(),m->getDestination())))) {
 	  if (m->isInPerimeterMode()) {
 	    m->setGreedyMode();
 	  }
@@ -214,7 +215,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	  }
 	}
       }
-      getchar();
+      //getchar();
     }
       break;
     default:
