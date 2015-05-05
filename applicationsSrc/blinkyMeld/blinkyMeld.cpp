@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
 
 	OUTPUT << "\033[1;33m" << "Starting Blinky Blocks simulation (main) ..." << "\033[0m" << endl;
 
+      BaseSimulator::Simulator::setType(BaseSimulator::Simulator::MELDINTERPRET);
 	createSimulator(argc, argv, BlinkyMeldBlockCode::buildNewBlockCode);
 
 	{

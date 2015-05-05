@@ -123,6 +123,7 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 				}
 			}
 		}
+		OUTPUT << "Loading" << programPath << " with MeldInterpretVM" << endl;
             MeldInterpret::MeldInterpretVM::setConfiguration(programPath, debugging);
             if(debugging){
                   //Don't know what to do yet

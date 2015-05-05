@@ -205,6 +205,7 @@ ComputePredicateEvent::ComputePredicateEvent(uint64_t t, BuildingBlock *conBlock
 }
 
 ComputePredicateEvent::ComputePredicateEvent(ComputePredicateEvent *ev) : BlockEvent(ev) {
+      eventType = EVENT_COMPUTE_PREDICATE;
 	EVENT_CONSTRUCTOR_INFO();
 }
 
@@ -235,6 +236,9 @@ AddTupleEvent::AddTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t tpl, b
 }
 
 AddTupleEvent::AddTupleEvent(AddTupleEvent *ev) : BlockEvent(ev) {
+      eventType = EVENT_ADD_TUPLE;
+      tuple = ev->tuple;
+      interface = ev->interface;
 	EVENT_CONSTRUCTOR_INFO();
 }
 
@@ -265,6 +269,9 @@ RemoveTupleEvent::RemoveTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t 
 }
 
 RemoveTupleEvent::RemoveTupleEvent(RemoveTupleEvent *ev) : BlockEvent(ev) {
+      eventType = EVENT_REMOVE_TUPLE;
+      tuple = ev->tuple;
+      interface = ev->interface;
 	EVENT_CONSTRUCTOR_INFO();
 }
 

@@ -78,8 +78,6 @@
 		<Unit filename="../../simulatorCore/src/meldInterpretScheduler.h" />
 		<Unit filename="../../simulatorCore/src/meldInterpretVM.cpp" />
 		<Unit filename="../../simulatorCore/src/meldInterpretVM.h" />
-		<Unit filename="../../simulatorCore/src/meldInterpretVMCore.cpp" />
-		<Unit filename="../../simulatorCore/src/meldInterpretVMCore.h" />
 		<Unit filename="../../simulatorCore/src/network.cpp" />
 		<Unit filename="../../simulatorCore/src/network.h" />
 		<Unit filename="../../simulatorCore/src/objLoader.cpp" />

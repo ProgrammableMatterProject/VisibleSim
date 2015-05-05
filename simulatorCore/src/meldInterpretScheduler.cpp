@@ -60,8 +60,7 @@ void MeldInterpretScheduler::SemWaitOrReadDebugMessage() {
 }
 
 void *MeldInterpretScheduler::startPaused(/*void *param*/) {
-
-    uint64_t systemCurrentTime, systemCurrentTimeMax, pausedTime;
+      uint64_t systemCurrentTime, systemCurrentTimeMax, pausedTime;
     pausedTime = 0;
     int seed = 500;
     srand (seed);
@@ -159,6 +158,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
         OUTPUT << "Realtime mode scheduler\n" << endl;
         //MeldInterpretDebugger::print("Simulation starts in real time mode");
         while (state != ENDED) {
+            //OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
             systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
             systemCurrentTimeMax = systemCurrentTime - systemStartTime;
             currentDate = systemCurrentTimeMax;
@@ -170,6 +170,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 // it).
                 lock();
                 if (eventsMap.empty()) {
+                  //OUTPUT << "Event map is empty " <<__LINE__ << " " << __FILE__ << endl;
                     unlock();
                     break;
                 }

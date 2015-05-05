@@ -7,7 +7,7 @@
 #include "blinkyMeldBlockCode.h"
 #include "meldInterpretEvents.h"
 #include "meldInterpretMessages.h"
-#include "meldInterpretVMCore.h"
+#include "meldInterpretVM.h"
 
 #include "trace.h"
 
@@ -32,6 +32,13 @@ void BlinkyMeldBlockCode::init() {
 	stringstream info;
 
 	if((vm != NULL)) {
+            for (int i = 0; i < NUM_PORTS; i++) {
+			vm->neighbors[i] = vm->get_neighbor_ID(i);
+			OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
+
+			vm->enqueue_face(vm->neighbors[i], i, 1);
+		}
+
 		if((MeldInterpret::getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
 			/*vm->deterministicSet = true;
 			SetDeterministicModeVMCommand determinismCommand(c, bb->blockId);
@@ -66,7 +73,6 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 	stringstream info;
 	assert(vm != NULL);
 	info.str("");
-
 	OUTPUT << bb->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now() << " process event " << pev->getEventName() << "(" << pev->eventType << ")" << ", random number : " << pev->randomNumber << endl;
 
 #ifdef TEST_DETER
@@ -80,6 +86,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
                         //Add another compute event on condition
                         //if...
                         if(vm->isWaiting()){
+                              OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
                               BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                         }
 		      }
@@ -182,9 +189,13 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			break;
             case EVENT_ADD_TUPLE:
                         this->vm->receive_tuple(1, boost::static_pointer_cast<AddTupleEvent>(pev)->tuple, boost::static_pointer_cast<AddTupleEvent>(pev)->interface);
+                        OUTPUT << __FILE__ << " " << __LINE__ << endl;
+                        BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
+                        OUTPUT << __FILE__ << " " << __LINE__ << endl;
                   break;
             case EVENT_REMOVE_TUPLE:
-                        this->vm->receive_tuple(-1, boost::static_pointer_cast<AddTupleEvent>(pev)->tuple, boost::static_pointer_cast<AddTupleEvent>(pev)->interface);
+                        this->vm->receive_tuple(-1, boost::static_pointer_cast<RemoveTupleEvent>(pev)->tuple, boost::static_pointer_cast<RemoveTupleEvent>(pev)->interface);
+                        BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                   break;
 		default:
 			ERRPUT << "*** ERROR *** : unknown local event" << endl;

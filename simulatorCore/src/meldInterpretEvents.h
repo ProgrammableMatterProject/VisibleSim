@@ -2,7 +2,7 @@
 #define MELDINTERPEVENTS_H_
 
 #include "buildingBlock.h"
-#include "meldInterpretVMCore.h"
+#include "meldInterpretVM.h"
 #include "events.h"
 #include "network.h"
 

@@ -40,5 +40,7 @@ const Color DARKGREY(0.25,0.25,0.25);
 const Color ORANGE(1.0,0.64706,0.0);
 const Color DARKORANGE(1.0,0.549,0.0);
 
+const Color Colors[9] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK};
+
 
 #endif // COLOR_H_

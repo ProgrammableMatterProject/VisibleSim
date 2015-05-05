@@ -5,7 +5,6 @@
 #include "meldInterpretVM.h"
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksSimulator.h"
-#include "meldInterpretVM.h"
 #include <boost/random.hpp>
 
 class BlinkyMeldBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
