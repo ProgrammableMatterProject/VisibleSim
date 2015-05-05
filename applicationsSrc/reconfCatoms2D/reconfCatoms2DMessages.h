@@ -124,14 +124,18 @@ class GeoMessage : public Message {
   Coordinate getSource() {return source; };
   Coordinate getDestination() {return destination; };
   Coordinate getLast() {return last;};
+  
   mode_t getMode() {return mode;};
   bool isInPerimeterMode() {return mode == mode_t::PERIMETER;};
-  Coordinate getPermieterStart() {return perimeterStart;};
-  ContextTuple getContextTuple() {return tuple;};
+  Coordinate getPerimeterStart() {return perimeterStart;};
+  void setGreedyMode() {mode = mode_t::GREEDY;};
+  void setPerimeterMode(Coordinate p) {mode = mode_t::PERIMETER; perimeterStart = p;}
+
+  ContextTuple getTuple() {return tuple;};
   data_mode_t getDataMode() {return dataMode;};
   
-  uint getHops() { return hops; };
-  unsigned int size() { return 17;};
+  uint getHops() {return hops;};
+  unsigned int size() {return 17;};
 };
 
 #endif // RECONFCATOMS2DMESSAGES_H_
