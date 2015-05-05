@@ -42,3 +42,7 @@ Tuple* LocalTupleSpace::inp(const Tuple &q) {
   }
   return res;
 }
+
+size_t LocalTupleSpace::size() const {
+  return tuples.size();
+}

@@ -15,6 +15,7 @@ public:
   void out(Tuple *t);
   Tuple* in(const Tuple &q);
   Tuple* inp(const Tuple &q);
+  size_t size() const;
 };
 
 #endif

@@ -15,6 +15,7 @@
 #include "localTupleSpace.hpp"
 #include "tuple.hpp"
 #include "contextTuple.hpp"
+#include "reconfCatoms2DMessages.h"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  private:
@@ -38,6 +39,11 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   void buildMap();
   void mapBuilt(P2PNetworkInterface *d);
 
+  // Geo routing
+  int distance(Coordinate p1, Coordinate p2);
+  P2PNetworkInterface* getClosestInterface(Coordinate dest);
+  void forward(GeoMessage_ptr m, P2PNetworkInterface *p2p);
+  
   // Tuple space
   LocalTupleSpace localTuples;
   void out(ContextTuple *t);

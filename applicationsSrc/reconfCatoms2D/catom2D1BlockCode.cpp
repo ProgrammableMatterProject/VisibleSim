@@ -20,8 +20,9 @@
 using namespace std;
 using namespace Catoms2D;
 
-#define MAP_DEBUG
-#define TUPLE_DEBUG
+//#define MAP_DEBUG
+#define GEO_ROUTING_DEBUG
+//#define TUPLE_DEBUG
 
 Coordinate Catoms2D1BlockCode::ccth;
 
@@ -148,8 +149,11 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	  for (int iy = 0; iy < gridSize[2]; iy++) {
 	    for (int ix = 0; ix < gridSize[0]; ix++) {
 	      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-		cout << "(" << ix << " " << iy << ")" << endl;
-		out(new ContextTuple(Coordinate(ix,iy), string("target")));
+		Coordinate t(ix,iy);
+		t.x -= ccth.x;
+		t.y -= ccth.y;
+		cout << "(" << t.x << " " << t.y << ")" << endl;
+		out(new ContextTuple(Coordinate(t.x,t.y), string("target")));
 	    //localTuples.out(Tuple(string("target"), ix, iy));
 	    //tuples.out(new Tuple(string("aaa"), 5, 12.5));
 	    //Tuple query(string("aaa"), TYPE(int), 12.5);  
@@ -163,20 +167,26 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       break;
     case GEO_TUPLE_MSG: {
       GeoMessage_ptr m = boost::static_pointer_cast<GeoMessage>(message); 
-      cout << "geo" << endl;
-      // update my position
-      //Coordinate p = getPosition(recv_interface, m->getLast());
-      // check correctness of the position
-    
-      // 
-      /*if (p != position) {
-	//cout << "wrong position computation?" << endl;
-	position = p;
-	cout << "position " << p << endl;
-	}*/
-
-      if (m->getSource() == m->getDestination()) {
+#ifdef GEO_ROUTING_DEBUG
+      cout << "Geo message: " << m->getSource() << " -> ... ->  " << m->getLast() << " -> ... -> " << position << " -> ... -> " <<  m->getDestination() <<  endl;
+#endif
+      if (position == m->getDestination()) {
+	// message well arrived
+#ifdef GEO_ROUTING_DEBUG
 	cout << "msg had a safe trip!" << endl;
+#endif
+      } else {
+	// message is not arrived
+	P2PNetworkInterface *next = getClosestInterface(m->getDestination());
+	if (next != NULL) {
+#ifdef GEO_ROUTING_DEBUG
+	  cout << "Greedy forwarding to " << getPosition(next) << endl;
+#endif
+	  forward(m,next);
+	} else {
+	  // should enter/stay in perimeter mode
+	  cout << "perimeter mode" << endl;
+	} 
       }
     }
       break;
@@ -196,12 +206,49 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 
 // TS
 void Catoms2D1BlockCode::out(ContextTuple *t) {
+
+#ifdef TUPLE_DEBUG
   cout << "insert tuple: " << *t << endl;
+#endif
+
+  P2PNetworkInterface *p2p = getClosestInterface(t->getLocation());
+  if (p2p == NULL) {
+    // tuple should be stored locally
+#ifdef TUPLE_DEBUG
+    cout << "locally" << endl;
+#endif
+  } else {
+    // tuple should be stored remotely
+#ifdef TUPLE_DEBUG
+    cout << "remotely" << endl;
+#endif
+    //(Coordinate s, Coordinate d, ContextTuple &t, data_mode_t dm
+    GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
+  scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, p2p));
+  }
 }
 
 // Geo-routing
-//void Catoms2D1BlockCode::forward(Tuple *t) {
-//}
+P2PNetworkInterface* Catoms2D1BlockCode::getClosestInterface(Coordinate dest) {
+  P2PNetworkInterface *closest = NULL;
+  int minDistance = distance(position,dest);
+  for (int i = 0; i<6; i++) {
+    P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
+    if(!it->connectedInterface) {
+      continue;
+    }
+    int d = distance(getPosition(it), dest);
+    if (d < minDistance) {
+      closest = it;
+    }
+  }
+  return closest;
+}
+
+void Catoms2D1BlockCode::forward(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
+  GeoMessage * msg = new GeoMessage(m.get());
+  scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, p2p));
+}
 
 void Catoms2D1BlockCode::startMotion(int direction, Catoms2DBlock *pivot) {
   scheduler->schedule(new MotionStartEvent(scheduler->now(),catom2D,pivot,direction));
@@ -271,6 +318,10 @@ void Catoms2D1BlockCode::setPosition(Coordinate p) {
   position = p;
   localTuples.out(new ContextTuple(position, string("map")));
   positionKnown = true;
+}
+
+int Catoms2D1BlockCode::distance(Coordinate p1, Coordinate p2) {
+  return abs(p2.x - p1.x) +  abs(p2.y - p1.y); 
 }
 
 //bool legalMove(int sens, 

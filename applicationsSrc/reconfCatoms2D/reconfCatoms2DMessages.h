@@ -67,22 +67,22 @@ class GeoMessage;
 typedef boost::shared_ptr<GeoMessage> GeoMessage_ptr;
 
 class GeoMessage : public Message {
+ public:
+    enum data_mode_t {STORE = 0, QUERY, ANSWER};
+    enum mode_t {GREEDY = 0, PERIMETER};
  protected:  
   // routing information (header)
-  enum mode_t {GREEDY = 0, PERIMETER};
   Coordinate source;
   Coordinate last;
   Coordinate destination;
-  mode_t mode; 
+  mode_t mode;
   Coordinate perimeterStart;
   int hops;
 
   // data information (payload)
-  enum data_mode_t {STORE = 0, QUERY, ANSWER};
   ContextTuple tuple;  
   data_mode_t dataMode;
  public :
-
  GeoMessage(Coordinate s, Coordinate d, ContextTuple &t, data_mode_t dm) : Message(), tuple(t) { 
     type = GEO_TUPLE_MSG;
     source = s;
