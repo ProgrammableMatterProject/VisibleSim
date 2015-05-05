@@ -17,37 +17,40 @@
 #include "contextTuple.hpp"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
-   
-public:
+ private:
+  static Coordinate ccth;
+ public:
 
-	Catoms2D::Catoms2DScheduler *scheduler;
-	Catoms2D::Catoms2DBlock *catom2D;
+  Catoms2D::Catoms2DScheduler *scheduler;
+  Catoms2D::Catoms2DBlock *catom2D;
 
-	Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
-	~Catoms2D1BlockCode ();
-	// Map construction
-	bool connectedToHost;
-	bool positionKnown;
-	Coordinate position;
-       	Coordinate getPosition(P2PNetworkInterface *recv_it, Coordinate c);
-	int waiting;
-	P2PNetworkInterface *toHost;
-	void buildMap();
-	void mapBuilt();
+  Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
+  ~Catoms2D1BlockCode ();
+  // Map construction
+  bool connectedToHost;
+  bool positionKnown;
+  Coordinate position;
+  //Coordinate getPosition(P2PNetworkInterface *recv_it, Coordinate c);
+  Coordinate getPosition(P2PNetworkInterface *it);
+  void setPosition(Coordinate p);
+  int waiting;
+  P2PNetworkInterface *toHost;
+  void buildMap();
+  void mapBuilt(P2PNetworkInterface *d);
 
-	// Tuple space
-	LocalTupleSpace localTuples;
-	void out(ContextTuple *t);
+  // Tuple space
+  LocalTupleSpace localTuples;
+  void out(ContextTuple *t);
 
-	void startup();
-	void processLocalEvent(EventPtr pev);
+  void startup();
+  void processLocalEvent(EventPtr pev);
 	
-	void startMotion(int direction, Catoms2D::Catoms2DBlock *pivot);
+  void startMotion(int direction, Catoms2D::Catoms2DBlock *pivot);
 	
-	void updateBorder();
-	bool canMove();
+  void updateBorder();
+  bool canMove();
 
-	static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
+  static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };
 
 #endif /* CATOM2DBLOCKCODE_H_ */

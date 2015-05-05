@@ -26,22 +26,22 @@ typedef boost::shared_ptr<GoMapMessage> GoMapMessage_ptr;
 
 class GoMapMessage : public Message {
  protected:
-  Coordinate last;
+  Coordinate position;
  public:
   
 
- GoMapMessage(Coordinate l) : Message() { 
+ GoMapMessage(Coordinate p) : Message() { 
     type = GO_MAP_MSG;
-    last = l;
+    position = p;
   };
 
  GoMapMessage(GoMapMessage *m) : Message() { 
     type = m->type;
-    last = m->last;
+    position = m->position;
   };
   
   ~GoMapMessage() {};
-  Coordinate getLast() {return last;};
+  Coordinate getPosition() {return position;};
   unsigned int size() { return 17;};
 };
 

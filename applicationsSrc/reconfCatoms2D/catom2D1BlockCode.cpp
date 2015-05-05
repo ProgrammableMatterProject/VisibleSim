@@ -20,6 +20,11 @@
 using namespace std;
 using namespace Catoms2D;
 
+#define MAP_DEBUG
+#define TUPLE_DEBUG
+
+Coordinate Catoms2D1BlockCode::ccth;
+
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
   scheduler = Catoms2D::getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
@@ -50,8 +55,6 @@ bool Catoms2D1BlockCode::canMove() {
 
 void Catoms2D1BlockCode::startup() {
   stringstream info;
-  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-  int *gridSize = world->getGridSize();
   info << "Starting ";
   scheduler->trace(info.str(),hostBlock->blockId);
   
@@ -84,27 +87,11 @@ void Catoms2D1BlockCode::startup() {
   }
   
   if(connectedToHost) {
-    position = Coordinate(0,0);
-    positionKnown = true;
+    Coordinate c = Coordinate(0,0);
+    setPosition(c);
+    ccth.x = catom2D->position[0];
+    ccth.y = catom2D->position[2];
     buildMap();
-    /*cout << "Catom2D 1 receiving the target map..." << endl;
-    int i = 0;
-    for (int iy = 0; iy < gridSize[2]; iy++) {
-      for (int ix = 0; ix < gridSize[0]; ix++) {
-	if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-	  cout << "(" << ix << " " << iy << ")" << endl;
-	  if (i == 0) {
-	    localTuples.out(new ContextTuple(Coordinate(ix,iy), string("map")));
-	    //localTuples.out(new Tuple(string("coordinate"), ix, iy));
-	  }
-	  out(new ContextTuple(Coordinate(ix,iy), string("target")));
-	  //localTuples.out(Tuple(string("target"), ix, iy));
-	  //tuples.out(new Tuple(string("aaa"), 5, 12.5));
-	  //Tuple query(string("aaa"), TYPE(int), 12.5);  
-	  //Tuple *res = tuples.inp(query);
-	}
-      }
-      }*/
   }
 }
 
@@ -124,33 +111,61 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       GoMapMessage_ptr m = boost::static_pointer_cast<GoMapMessage>(message);
       if (!positionKnown) {
 	toHost = recv_interface;
-	position  = getPosition(toHost, m->getLast());
-	cout << "@" << catom2D->blockId <<  " position " << position << endl;
-	positionKnown = true;
+	Coordinate c = m->getPosition(); //getPosition(toHost, m->getLast());
+	setPosition(c);
+	#ifdef MAP_DEBUG
+	Coordinate real;
+	real.x = catom2D->position[0];
+	real.y = catom2D->position[2];
+	real.x -= ccth.x;
+	real.y -= ccth.y;
+	cout << "@" << catom2D->blockId <<  " position " << position << " vs " << real << endl;
+	#endif
+	waiting = 0;
 	buildMap();
-	if (!waiting) {
-	  mapBuilt();
+	if (waiting==0) {
+	  mapBuilt(toHost);
 	}
+      } else {
+	mapBuilt(recv_interface);
       }
     }
       break;
     case BACK_MAP_MSG: {
       BackMapMessage_ptr m = boost::static_pointer_cast<BackMapMessage>(message);
       waiting--;
+#ifdef MAP_DEBUG
+      //cout << "@" << catom2D->blockId <<  " back msg " << waiting << endl;
+#endif
       if (!waiting) {
 	if (!connectedToHost) {
-	  mapBuilt();
+	  mapBuilt(toHost);
 	} else {
-	  cout << "propagate target map" << endl;
+	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
+	  // Link to PC host simulation:
+	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+	  int *gridSize = world->getGridSize();
+	  for (int iy = 0; iy < gridSize[2]; iy++) {
+	    for (int ix = 0; ix < gridSize[0]; ix++) {
+	      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
+		cout << "(" << ix << " " << iy << ")" << endl;
+		out(new ContextTuple(Coordinate(ix,iy), string("target")));
+	    //localTuples.out(Tuple(string("target"), ix, iy));
+	    //tuples.out(new Tuple(string("aaa"), 5, 12.5));
+	    //Tuple query(string("aaa"), TYPE(int), 12.5);  
+	    //Tuple *res = tuples.inp(query);
+	      }
+	    }
+	  }
 	}
       }
-      }
+    }
       break;
     case GEO_TUPLE_MSG: {
       GeoMessage_ptr m = boost::static_pointer_cast<GeoMessage>(message); 
       cout << "geo" << endl;
       // update my position
-      Coordinate p = getPosition(recv_interface, m->getLast());
+      //Coordinate p = getPosition(recv_interface, m->getLast());
       // check correctness of the position
     
       // 
@@ -196,44 +211,43 @@ Catoms2D::Catoms2DBlockCode* Catoms2D1BlockCode::buildNewBlockCode(Catoms2DBlock
   return(new Catoms2D1BlockCode(host));
 }
 
-Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *recv_it, Coordinate c) {
-  Coordinate p = c;
-  
-  switch(catom2D->getDirection(recv_it)) {
+Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *it) {
+  Coordinate p = position;
+  switch(catom2D->getDirection(it)) {
   case NeighborDirection::BottomLeft:
-    p.y++;
     if (p.y%2 == 0) {
-      p.x++;
+      p.x--;
     }
+    p.y--;
     break;
   case NeighborDirection::Left:
-    p.x++;
-    break;
-  case NeighborDirection::TopLeft:
-    p.y--;    
-    if (p.y%2 == 0) {
-      p.x++;
-    }
-    break;
-  case NeighborDirection::TopRight:
-    p.y--;
-    if (p.y%2 == 1) {
-      p.x--;
-    }
-    break;
-  case NeighborDirection::Right:
     p.x--;
     break;
-  case NeighborDirection::BottomRight:
-    p.y++; 
-    if (p.y%2 == 1) {
+  case NeighborDirection::TopLeft:    
+    if (p.y%2 == 0) {
       p.x--;
     }
+    p.y++;
+    break;
+  case NeighborDirection::TopRight:
+    if (p.y%2 == 1) {
+      p.x++;
+    }
+    p.y++;
+    break;
+  case NeighborDirection::Right:
+    p.x++;
+    break;
+  case NeighborDirection::BottomRight: 
+    if (p.y%2 == 1) {
+      p.x++;
+    }
+    p.y--;
     break;
   }
-  
   return p;
 }
+
 
 void Catoms2D1BlockCode::buildMap() {
   P2PNetworkInterface *p2p;
@@ -242,13 +256,21 @@ void Catoms2D1BlockCode::buildMap() {
     if( (p2p == toHost) || !p2p->connectedInterface) {
       continue;
     }
-    GoMapMessage * msg = new GoMapMessage(position);
+    GoMapMessage * msg = new GoMapMessage(getPosition(p2p));
     scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, p2p));
     waiting++;
   }
 }
 
-void Catoms2D1BlockCode::mapBuilt() {
+void Catoms2D1BlockCode::mapBuilt(P2PNetworkInterface *d) {
   BackMapMessage * msg = new BackMapMessage();
-  scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, toHost));
+  scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, d));
 }
+
+void Catoms2D1BlockCode::setPosition(Coordinate p) {
+  position = p;
+  localTuples.out(new ContextTuple(position, string("map")));
+  positionKnown = true;
+}
+
+//bool legalMove(int sens, 
