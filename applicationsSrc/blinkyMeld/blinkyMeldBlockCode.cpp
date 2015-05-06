@@ -32,12 +32,14 @@ void BlinkyMeldBlockCode::init() {
 	stringstream info;
 
 	if((vm != NULL)) {
+
             for (int i = 0; i < NUM_PORTS; i++) {
 			vm->neighbors[i] = vm->get_neighbor_ID(i);
 			OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
 
 			vm->enqueue_face(vm->neighbors[i], i, 1);
 		}
+
 
 		if((MeldInterpret::getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
 			/*vm->deterministicSet = true;
@@ -147,10 +149,10 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			      MessagePtr mes = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
                         switch(mes->type){
                         case ADD_TUPLE_MSG_ID:
-                              BlinkyBlocks::getScheduler()->schedule(new AddTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, boost::static_pointer_cast<AddTupleMessage>(mes)->tuple, boost::static_pointer_cast<AddTupleMessage>(mes)->destinationInterface->localId));
+                              BlinkyBlocks::getScheduler()->schedule(new AddTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, boost::static_pointer_cast<AddTupleMessage>(mes)->tuple, bb->getDirection(mes->sourceInterface->connectedInterface)));
                               break;
                         case REMOVE_TUPLE_MSG_ID:
-                              BlinkyBlocks::getScheduler()->schedule(new RemoveTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, boost::static_pointer_cast<RemoveTupleMessage>(mes)->tuple, boost::static_pointer_cast<RemoveTupleMessage>(mes)->destinationInterface->localId));
+                              BlinkyBlocks::getScheduler()->schedule(new RemoveTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, boost::static_pointer_cast<RemoveTupleMessage>(mes)->tuple, bb->getDirection(mes->sourceInterface->connectedInterface)));
                               break;
                         }
 #ifdef TEST_DETER
@@ -188,13 +190,12 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			}
 			break;
             case EVENT_ADD_TUPLE:
-                        this->vm->receive_tuple(1, boost::static_pointer_cast<AddTupleEvent>(pev)->tuple, boost::static_pointer_cast<AddTupleEvent>(pev)->interface);
-                        OUTPUT << __FILE__ << " " << __LINE__ << endl;
+                        this->vm->receive_tuple(1, boost::static_pointer_cast<AddTupleEvent>(pev)->tuple, boost::static_pointer_cast<AddTupleEvent>(pev)->face);
                         BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                         OUTPUT << __FILE__ << " " << __LINE__ << endl;
                   break;
             case EVENT_REMOVE_TUPLE:
-                        this->vm->receive_tuple(-1, boost::static_pointer_cast<RemoveTupleEvent>(pev)->tuple, boost::static_pointer_cast<RemoveTupleEvent>(pev)->interface);
+                        this->vm->receive_tuple(-1, boost::static_pointer_cast<RemoveTupleEvent>(pev)->tuple, boost::static_pointer_cast<RemoveTupleEvent>(pev)->face);
                         BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                   break;
 		default:

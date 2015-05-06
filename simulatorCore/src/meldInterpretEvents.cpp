@@ -228,17 +228,17 @@ const string ComputePredicateEvent::getEventName() {
 //
 //===========================================================================================================
 
-AddTupleEvent::AddTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t tpl, byte ni): BlockEvent(t, conBlock) {
+AddTupleEvent::AddTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t tpl, byte f): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_ADD_TUPLE;
 	tuple = tpl;
-	interface = ni;
+	face = f;
 }
 
 AddTupleEvent::AddTupleEvent(AddTupleEvent *ev) : BlockEvent(ev) {
       eventType = EVENT_ADD_TUPLE;
       tuple = ev->tuple;
-      interface = ev->interface;
+      face = ev->face;
 	EVENT_CONSTRUCTOR_INFO();
 }
 
@@ -261,17 +261,17 @@ const string AddTupleEvent::getEventName() {
 //
 //===========================================================================================================
 
-RemoveTupleEvent::RemoveTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t tpl, byte ni): BlockEvent(t, conBlock) {
+RemoveTupleEvent::RemoveTupleEvent(uint64_t t, BuildingBlock *conBlock, tuple_t tpl, byte f): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_REMOVE_TUPLE;
 	tuple = tpl;
-	interface = ni;
+	face = f;
 }
 
 RemoveTupleEvent::RemoveTupleEvent(RemoveTupleEvent *ev) : BlockEvent(ev) {
       eventType = EVENT_REMOVE_TUPLE;
       tuple = ev->tuple;
-      interface = ev->interface;
+      face = ev->face;
 	EVENT_CONSTRUCTOR_INFO();
 }
 

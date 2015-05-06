@@ -141,9 +141,9 @@ public:
 class AddTupleEvent : public BlockEvent {
 public:
 	tuple_t tuple;
-	byte interface;
+	byte face;
 
-	AddTupleEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte ni);
+	AddTupleEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
 	AddTupleEvent(AddTupleEvent *ev);
 	~AddTupleEvent();
 	void consumeBlockEvent();
@@ -160,9 +160,9 @@ public:
 class RemoveTupleEvent : public BlockEvent {
 public:
 	tuple_t tuple;
-	byte interface;
+	byte face;
 
-	RemoveTupleEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte ni);
+	RemoveTupleEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
 	RemoveTupleEvent(RemoveTupleEvent *ev);
 	~RemoveTupleEvent();
 	void consumeBlockEvent();

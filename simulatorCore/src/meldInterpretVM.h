@@ -38,7 +38,7 @@ typedef uint32_t Time;
 /* Meld Structures */
 
 typedef struct _tuple_entry tuple_entry;
-typedef struct _tuple_queue { tuple_entry *head = NULL; tuple_entry *tail = NULL; unsigned char length;} tuple_queue;
+typedef struct _tuple_queue { tuple_entry *head = NULL; tuple_entry *tail = NULL; unsigned char length ;} tuple_queue;
 
 class record_type{
 public:
@@ -611,7 +611,7 @@ instructions.
 typedef Register (*extern_funct_type)();
 
 /******************************************************************************
-@Description: MeldInterpVM is the VM's main file, it initializes the VM,
+@Description: MeldInterpretVM is the VM's main file, it initializes the VM,
 introduces and updates axioms, sends tuples to other blocks, and triggers
 the execution of all tuples and rules through the scheduler loop.
 *******************************************************************************/
@@ -711,7 +711,7 @@ class MeldInterpretVM {
 
             /* Queue for tuples to send with delay */
             tuple_pqueue *delayedTuples;
-            /* Contains a queueu for each type, this is essentially the database */
+            /* Contains a queue for each type, this is essentially the database */
             tuple_queue *tuples;
             /* Where stratified tuples are enqueued for execution  */
             tuple_pqueue *newStratTuples;
