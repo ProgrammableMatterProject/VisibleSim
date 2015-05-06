@@ -144,7 +144,8 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	} else {
 	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  // Link to PC host simulation:
-	  out(new ContextTuple(Coordinate(2,2), string("target"))); 
+	  out(new ContextTuple(Coordinate(2,5), string("target"))); 
+	  //out(new ContextTuple(Coordinate(2,2), string("target"))); 
 	  //out(new ContextTuple(Coordinate(1,3), string("target")));
 	  //out(new ContextTuple(Coordinate(1,2), string("target")));
 	  /*Catoms2DWorld *world = Catoms2DWorld::getWorld();
@@ -212,17 +213,25 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	  } else {
 	    int d1 = distance(position, m->getDestination());
 	    int d2 = distance(m->getPerimeterStart(),m->getDestination());
-	      
 	    if (d1 < d2) {
 	      // leave PERIMETER mode
 	      m->setGreedyMode();
 	      P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
 	      if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
-		cout << "Greedy forward to " << getPosition(next) << endl;
+		cout << "Greedy (leave perimeter) forward to " << getPosition(next) << endl;
 #endif
 		forward(m,next);
-	      }
+	      } /*else {
+		// perimeter mode
+		m->setPerimeterMode(position);
+		// find interface
+		next = getNextCounterClockWiseInterface(m->getDestination());
+		forward(m,next);
+#ifdef GEO_ROUTING_DEBUG
+		cout << "Perimeter (new same node it leaves) forward to " << getPosition(next) << endl;
+#endif
+}*/
 	    } else {
 	      // an incident edge hit/cut the segment 
 	      // (destination;point enter in perimeter mode)
