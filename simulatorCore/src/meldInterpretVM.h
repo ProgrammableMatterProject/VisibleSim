@@ -64,11 +64,8 @@ typedef struct {struct _tuple_pentry *queue;} tuple_pqueue;
 
 enum portReferences { DOWN, NORTH, EAST, SOUTH, WEST, UP, NUM_PORTS };
 
-#ifdef BBSIM
-typedef Block Node;
-#else
 typedef int Node;
-#endif
+
 
 #define POINTER_SIZE sizeof(char*)
 #define TUPLES tuples

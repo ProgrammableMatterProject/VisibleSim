@@ -14,52 +14,57 @@ namespace MeldInterpret{
 
 const unsigned char meld_prog_load[] = {
 /* NUMBER OF PREDICATES */
-0xa,
+0xc,
 /* NUMBER OF RULES */
 0x1,
 /* OFFSETS TO PREDICATE DESCRIPTORS */
-0x18, 0,
-0x1e, 0,
-0x25, 0,
-0x2d, 0,
-0x34, 0,
-0x3b, 0,
-0x41, 0,
-0x48, 0,
-0x4f, 0,
-0x57, 0,
+0x1c, 0,
+0x22, 0,
+0x29, 0,
+0x31, 0,
+0x38, 0,
+0x3f, 0,
+0x45, 0,
+0x4c, 0,
+0x53, 0,
+0x5a, 0,
+0x61, 0,
+0x68, 0,
 /* OFFSETS TO RULE DESCRIPTORS */
-0x5e, 0,
+0x6f, 0,
 /* PREDICATE DESCRIPTORS */
-0x63, 0, 0x4, 0, 0, 0,
-0x64, 0, 0x12, 0, 0x1, 0x1, 0,
-0x65, 0, 0x22, 0, 0, 0x2, 0x2, 0,
-0x14, 0x1, 0x3, 0x20, 0x1, 0x1, 0,
-0x60, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0x98, 0x1, 0x2, 0, 0x1, 0,
-0xab, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0xe3, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0xe, 0x2, 0x2, 0, 0x1, 0x2, 0x2, 0,
-0xa7, 0x2, 0x2, 0, 0x1, 0x1, 0,
+0x74, 0, 0x4, 0, 0, 0,
+0x75, 0, 0x12, 0, 0x1, 0x1, 0,
+0x76, 0, 0x22, 0, 0, 0x2, 0x2, 0,
+0xf7, 0, 0x3, 0x20, 0x1, 0x1, 0,
+0xa3, 0x1, 0x22, 0, 0, 0x1, 0x2,
+0xb7, 0x1, 0x2, 0, 0x1, 0,
+0xca, 0x1, 0x22, 0, 0, 0x1, 0x2,
+0xde, 0x1, 0x22, 0, 0, 0x1, 0x2,
+0xf2, 0x1, 0x2, 0, 0x1, 0x1, 0,
+0x12, 0x2, 0x22, 0, 0, 0x1, 0x2,
+0x3e, 0x2, 0x22, 0, 0, 0x1, 0x2,
+0x77, 0x2, 0x22, 0, 0, 0x1, 0x2,
 /* RULE DESCRIPTORS */
-0xc7, 0x2, 0, 0x1, 0,
+0xb0, 0x2, 0, 0x1, 0,
 /* PREDICATE BYTECODE */
 /* Predicate 0: */0,
 /* Predicate 1: */0,
-/* Predicate 2: */0x10, 0x1, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x4, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x3, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x6, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x4, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x25, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0x5, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x7, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x5, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x29, 0, 0, 0, 0, 0x11, 0x40, 0x8, 0x2, 0x28, 0, 0x2, 0x21, 0, 0x1, 0x1, 0x2, 0x22, 0, 0, 0x3, 0x8, 0x2, 0x3, 0x1, 0,
-/* Predicate 3: */0x10, 0x5, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x2, 0x1, 0x1, 0x15, 0, 0, 0, 0x29, 0, 0, 0, 0, 0x11, 0x40, 0x8, 0x2, 0x28, 0, 0x2, 0x21, 0, 0, 0x1, 0x2, 0x22, 0, 0x1, 0x3, 0x8, 0x2, 0x3, 0x1, 0x10, 0xa, 0, 0, 0, 0x11, 0x40, 0x1, 0x1, 0x22, 0, 0, 0x2, 0x1f, 0, 0, 0, 0, 0x3, 0x7d, 0x2, 0x3, 0x2, 0x26, 0x2, 0, 0x1, 0x79, 0x1, 0,
-/* Predicate 4: */0x10, 0x8, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x22, 0x1, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x3, 0x26, 0x3, 0, 0x2, 0x78, 0x2, 0x1, 0,
-/* Predicate 5: */0x10, 0x6, 0, 0, 0, 0x11, 0x40, 0x3, 0, 0x1e, 0, 0, 0, 0, 0, 0, 0x78, 0, 0,
-/* Predicate 6: */0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x22, 0x1, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x3, 0x26, 0x3, 0, 0x2, 0x78, 0x2, 0x1, 0,
-/* Predicate 7: */0x10, 0x7, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x25, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0x1, 0x1, 0, 0x2, 0x78, 0x2, 0x1, 0,
-/* Predicate 8: */0x10, 0x7, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x7, 0x1, 0, 0x19, 0, 0, 0, 0x25, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0x1, 0, 0, 0x2, 0x78, 0x2, 0x1, 0x10, 0x8, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x4, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x22, 0x1, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x3, 0x26, 0x3, 0, 0x2, 0x78, 0x2, 0x1, 0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x6, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x22, 0x1, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x3, 0x26, 0x3, 0, 0x2, 0x78, 0x2, 0x1, 0,
-/* Predicate 9: */0x10, 0x2, 0, 0, 0, 0x22, 0, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0xc, 0, 0, 0, 0x11, 0x40, 0x5, 0x1, 0x78, 0x1, 0,
+/* Predicate 2: */0x10, 0x4, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x4, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x6, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x6, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x7, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x25, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0x5, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x7, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0,
+/* Predicate 3: */0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x9, 0x1, 0x1, 0x15, 0, 0, 0, 0x26, 0, 0, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0, 0, 0, 0x2, 0x22, 0, 0x1, 0x3, 0x8, 0x2, 0x3, 0x1, 0x10, 0xa, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0xa, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0x1, 0x4, 0x8, 0x3, 0x4, 0x1, 0x10, 0xb, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0xb, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0x1, 0x4, 0x8, 0x3, 0x4, 0x1, 0x10, 0xc, 0, 0, 0, 0x11, 0x40, 0x1, 0x1, 0x21, 0, 0, 0, 0x1, 0x79, 0x1, 0,
+/* Predicate 4: */0x10, 0x2, 0, 0, 0, 0x11, 0x40, 0xa, 0x1, 0x28, 0, 0x1, 0x22, 0, 0, 0x2, 0x8, 0x1, 0x2, 0,
+/* Predicate 5: */0x10, 0x8, 0, 0, 0, 0x11, 0x40, 0x3, 0, 0x1e, 0, 0, 0, 0, 0, 0, 0x78, 0, 0,
+/* Predicate 6: */0x10, 0x1, 0, 0, 0, 0x11, 0x40, 0xb, 0x1, 0x28, 0, 0x1, 0x22, 0, 0, 0x2, 0x8, 0x1, 0x2, 0,
+/* Predicate 7: */0x10, 0x3, 0, 0, 0, 0x11, 0x40, 0x9, 0x1, 0x28, 0, 0x1, 0x22, 0, 0, 0x2, 0x8, 0x1, 0x2, 0,
+/* Predicate 8: */0x10, 0x5, 0, 0, 0, 0x22, 0, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0xc, 0, 0, 0, 0x11, 0x40, 0x5, 0x1, 0x78, 0x1, 0,
+/* Predicate 9: */0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x26, 0, 0, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0, 0x1, 0, 0x2, 0x22, 0, 0, 0x3, 0x8, 0x2, 0x3, 0x1, 0,
+/* Predicate 10: */0x10, 0xa, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0, 0x4, 0x8, 0x3, 0x4, 0x1, 0,
+/* Predicate 11: */0x10, 0xb, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0, 0x4, 0x8, 0x3, 0x4, 0x1, 0,
 /* RULE BYTECODE */
 /* Rule 0: */0x10, 0, 0, 0, 0, 0x5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x1, 0x15, 0, 0, 0, 0x24, 0, 0, 0, 0, 0x11, 0x80, 0, 0x23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xf0, 0x1, 0, };
-
 const unsigned char* MeldInterpretVM::meld_prog = meld_prog_load;
 
-char* tuple_names_load[] = {"_init", "setcolor2", "neighbor", "level", "bottomNeighbor", "noBottomNeighbor", "topNeighbor", "sideNeighbor", "neighbor-level", "vacant", };
+char* tuple_names_load[] = {"_init", "setcolor2", "neighbor", "level", "bottomNeighbor", "noBottomNeighbor", "topNeighbor", "sideNeighbor", "vacant", "___robhgieNedis", "___robhgieNmottob", "___robhgieNpot", };
 char** MeldInterpretVM::tuple_names = tuple_names_load;
 char* rule_names_load[] = {"_init -o node-axioms.", };
 char** MeldInterpretVM::rule_names = rule_names_load;
@@ -125,9 +130,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	/* Print the content of the newTuples queue */
       void MeldInterpretVM::print_newTuples(void)
       {
-            #ifdef BBSIM
-            pthread_mutex_lock(&(printMutex));
-            #endif
             fprintf(stderr, "\x1b[34m--%d--\tContent of queue newTuples: \n", blockId);
             tuple_entry *tupleEntry;
             for (tupleEntry = newTuples->head; tupleEntry != NULL; tupleEntry = tupleEntry->next) {
@@ -135,17 +137,11 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                   fprintf(stderr, " -- isNew = %d\n", tupleEntry->records.count);
             }
             fprintf(stderr, "\x1b[0m");
-            #ifdef BBSIM
-            pthread_mutex_unlock(&(printMutex));
-            #endif
       }
 
       /* Prints the content of the newStartTuples queue */
       void MeldInterpretVM::print_newStratTuples(void)
       {
-            #ifdef BBSIM
-            pthread_mutex_lock(&(printMutex));
-            #endif
             fprintf(stderr, "\x1b[34m--%d--\tContent of queue newStratTuples: \n",
             blockId);
             if (newStratTuples) {
@@ -156,9 +152,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                   }
             }
             fprintf(stderr, "\x1b[0m");
-            #ifdef BBSIM
-            pthread_mutex_unlock(&(printMutex));
-            #endif
       }
 
 
@@ -184,7 +177,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 
 	/* Enqueue a tuple for execution */
       void MeldInterpretVM::enqueueNewTuple(tuple_t tuple, record_type isNew){
-            OUTPUT << __FILE__ << " " << __LINE__ << endl;
+            OUTPUT << __LINE__ << " Block " << blockId << " enqueue tuple of type " << TYPE_NAME(TUPLE_TYPE(tuple)) << " new " << (int)isNew << endl;
             myassert (TUPLE_TYPE(tuple) < NUM_TYPES);
 
             if (TYPE_IS_STRATIFIED(TUPLE_TYPE(tuple))) {
@@ -272,98 +265,93 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 
 	/* The VM's main function */
 	void MeldInterpretVM::processOneRule(void) {
-	  // processing new facts and updating axioms
-	    // loop for new facts to process
-		//while(1){
-			//If there are new tuples
-                  OUTPUT << "Processing One Rule " << endl;
-		    if(!queue_is_empty(newTuples)) {
-		      int isNew = 0;
-		      print_newTuples();
-		      tuple_t tuple = queue_dequeue(newTuples, &isNew);
-		      tuple_handle(tuple, isNew, reg);
-			//Else if there are new delayed tuple available
-		    } else if (!p_empty(delayedTuples) && p_peek(delayedTuples)->priority <= myGetTime()) {
-		      tuple_pentry *entry = p_dequeue(delayedTuples);
+            // processing new facts and updating axioms
 
-		      tuple_send(entry->tuple, entry->rt, 0, entry->records.count);
-		      free(entry);
-			//Else if there are new stratified tuple
-		    } else if (!(p_empty(newStratTuples))) {
-		      tuple_pentry *entry = p_dequeue(newStratTuples);
-		      tuple_handle(entry->tuple, entry->records.count, reg);
+            waiting = 0;
+            OUTPUT << "Processing One Rule " << endl;
+            //If there are new tuples
+            if(!queue_is_empty(newTuples)) {
+                  int isNew = 0;
+                  print_newTuples();
+                  tuple_t tuple = queue_dequeue(newTuples, &isNew);
+                  tuple_handle(tuple, isNew, reg);
+                  waiting = 1;
+            //Else if there are new delayed tuple available
+            } else if (!p_empty(delayedTuples) && p_peek(delayedTuples)->priority <= myGetTime()) {
+                  tuple_pentry *entry = p_dequeue(delayedTuples);
 
-		      free(entry);
-			//Else if there are no tuple to process
-		    } else {
-		          //OUTPUT << "DEBUGGING " << __LINE__ << " " << __FILE__ << endl;
-				/* If all tuples have been processed
-				* update rule state and process them if they are ready */
-				waiting = 0;
-				for (int i = 0; i < NUM_RULES; ++i) {
-					//If a rule has all its predicate (considered ACTIVE)
-					if (updateRuleState(i)) {
-						/* Set state byte used by DEBUG */
-						byte processState = PROCESS_RULE | (i << 4);
+                  tuple_send(entry->tuple, entry->rt, 0, entry->records.count);
+                  free(entry);
+                  waiting = 1;
+            //Else if there are new stratified tuple
+            } else if (!(p_empty(newStratTuples))) {
+                  tuple_pentry *entry = p_dequeue(newStratTuples);
+                  tuple_handle(entry->tuple, entry->records.count, reg);
 
-						/* Don't process persistent rules (which is useless)
-						* as they all have only a RETURN instruction.
-						*/
-						if (!RULE_ISPERSISTENT(i)) {
+                  free(entry);
+                  //Else if there are no tuple to process
+                  waiting = 1;
+            } else {
+                  //OUTPUT << "DEBUGGING " << __LINE__ << " " << __FILE__ << endl;
+                  /* If all tuples have been processed
+                  * update rule state and process them if they are ready */
+                  for (int i = 0; i < NUM_RULES; ++i) {
+                        //If a rule has all its predicate (considered ACTIVE)
+                        if (updateRuleState(i)) {
+                              waiting = 1;
+                              /* Set state byte used by DEBUG */
+                              byte processState = PROCESS_RULE | (i << 4);
+                              /* Don't process persistent rules (which is useless)
+                              * as they all have only a RETURN instruction.
+                              */
+                              if (!RULE_ISPERSISTENT(i)) {
+                                    /* Trigger execution */
+                                    process_bytecode (NULL, RULE_START(i), 1, NOT_LINEAR, reg, processState);
 
-							/* Trigger execution */
-							process_bytecode (NULL, RULE_START(i), 1, NOT_LINEAR, reg, processState);
+                                    /* After one rule is executed we set the VM on waiting until next call of scheduler*/
+                                    i = NUM_RULES;
+                              }
+                        }
+                  /* else: Rule not ready yet, set status to not waiting until new fact appear */
+                  }
+            }
 
-							/* After one rule is executed we set the VM on waiting until next call of scheduler*/
-							waiting = 1;
-							i = NUM_RULES;
-						}
-					}
-					/* else: Rule not ready yet, set status to not waiting until new fact appear */
-				}
+            //updateAccel();
 
-				// if we've processed everything, sleep for the sake of letting other blocks run in the simulator
-				// Not necessary with VisibleSim integration ?
-				//delayMS(30);
-		    }
+            // update axioms based upon any changes
+            int newNumNeighbors = getNeighborCount();
+            if (newNumNeighbors != numNeighbors) {
+                  enqueue_count(numNeighbors, -1);
+                  numNeighbors = newNumNeighbors;
+                  waiting = 1;
+                  enqueue_count(numNeighbors, 1);
+            }
 
-		    //updateAccel();
+            for (int i = 0; i < NUM_PORTS; i++) {
+                  NodeID neighbor = get_neighbor_ID(i);
 
-		    // update axioms based upon any changes
-		    int newNumNeighbors = getNeighborCount();
-		    if (newNumNeighbors != numNeighbors) {
-		      enqueue_count(numNeighbors, -1);
-		      numNeighbors = newNumNeighbors;
-			waiting = 1;
-		      enqueue_count(numNeighbors, 1);
-		    }
-		    OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
+                  if (neighbor == neighbors[i])
+                  continue;
 
-		    for (int i = 0; i < NUM_PORTS; i++) {
-			      NodeID neighbor = get_neighbor_ID(i);
+                  waiting = 1;
+                  enqueue_face(neighbors[i], i, -1);
 
-			      if (neighbor == neighbors[i])
-				continue;
+                  /* Delete received tuples from database
+                  * This may need to be reviewed,
+                  * I am not sure what LM is supposed to do with received tuples
+                  */
+                  while(!queue_is_empty(&(receivedTuples[i]))) {
+                        tuple_t tuple = queue_dequeue(&receivedTuples[i], NULL);
+                        printf("--%d--\tDelete received ", blockId);
+                        tuple_print(tuple, stdout);
+                        printf("\n");
+                        enqueueNewTuple(tuple, (record_type) -1);
+                  }
 
-				waiting = 1;
-			      enqueue_face(neighbors[i], i, -1);
-
-			      /* Delete received tuples from database
-			       * This may need to be reviewed,
-			       * I am not sure what LM is supposed to do with received tuples
-			       */
-			      while(!queue_is_empty(&(receivedTuples[i]))) {
-				 tuple_t tuple = queue_dequeue(&receivedTuples[i], NULL);
-				 printf("--%d--\tDelete received ", blockId);
-				 tuple_print(tuple, stdout);
-				 printf("\n");
-				 enqueueNewTuple(tuple, (record_type) -1);
-			      }
-
-			      neighbors[i] = neighbor;
-			      enqueue_face(neighbors[i], i, 1);
-		    }
-		    OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
+                  neighbors[i] = neighbor;
+                  enqueue_face(neighbors[i], i, 1);
+            }
+            OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 	}
 
 	bool MeldInterpretVM::isWaiting(){
@@ -485,7 +473,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	void MeldInterpretVM::tuple_handle(tuple_t tuple, int isNew, Register *registers) {
 	  tuple_type type = TUPLE_TYPE(tuple);
 	  myassert (type < NUM_TYPES);
-            OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 	  tuple_do_handle(type, tuple, isNew, registers);
             OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 	}
@@ -2165,27 +2152,22 @@ unsigned char * MeldInterpretVM::arguments = NULL;
      * process it with a isNew of -1 to perform retraction, and free both tuples.
      */
     void MeldInterpretVM::tuple_do_handle(tuple_type type, tuple_t tuple, int isNew, Register *reg) {
+        OUTPUT << __LINE__ << " tuple_do_handle()" << endl;
         if(type == TYPE_TERMINATE) {
             FREE_TUPLE(tuple);
             TERMINATE_CURRENT();
             return;
         }
 
-#ifdef BBSIM
         if (isNew == 1) {
-            pthread_mutex_lock(&(printMutex));
             fprintf(stderr, "\x1b[1;32m--%d--\tExecuting tuple ", getBlockId());
             tuple_print (tuple, stderr);
             fprintf(stderr, "\x1b[0m\n");
-            pthread_mutex_unlock(&(printMutex));
         } else if (isNew == -1) {
-            pthread_mutex_lock(&(printMutex));
             fprintf(stderr, "\x1b[1;31m--%d--\tDeleting tuple ", getBlockId());
             tuple_print (tuple, stderr);
             fprintf(stderr, "\x1b[0m\n");
-            pthread_mutex_unlock(&(printMutex));
         }
-#endif
 
         if (TYPE_IS_ACTION(type)) {
             if(isNew > 0)
@@ -2564,6 +2546,8 @@ unsigned char * MeldInterpretVM::arguments = NULL;
         /*     pthread_mutex_unlock(&(printMutex)); */
         /*   } */
         /* #else */
+
+        OUTPUT << __LINE__ << " process_bytecode()" << endl;
 
         if (PROCESS_TYPE(state) == PROCESS_TUPLE)
             printf ("\n--%d--\tPROCESS TUPLE %s -- isNew = %d\n", getBlockId(), tuple_names[TUPLE_TYPE(tuple)], isNew);

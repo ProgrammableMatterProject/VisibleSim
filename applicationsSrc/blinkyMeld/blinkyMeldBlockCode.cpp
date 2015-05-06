@@ -83,13 +83,16 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
 		case EVENT_COMPUTE_PREDICATE:
 		      {
+                        info << " Consume a compute event" << endl;
                         //Call the VM function to process one rule
                         vm->processOneRule();
                         //Add another compute event on condition
                         //if...
                         if(vm->isWaiting()){
-                              OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
+                              info << " Schedule a compute event" << endl;
                               BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
+                        } else {
+                              info << " Block is no longer waiting" << endl;
                         }
 		      }
 			break;
