@@ -16,12 +16,15 @@
 
 #include "reconfCatoms2DMessages.h"
 #include "reconfCatoms2DEvents.h"
+#include "angle.h"
+#include <float.h>
 
 using namespace std;
 using namespace Catoms2D;
 
 //#define MAP_DEBUG
 #define GEO_ROUTING_DEBUG
+//#define ANGLE_DEBUG
 //#define TUPLE_DEBUG
 
 Coordinate Catoms2D1BlockCode::ccth;
@@ -141,10 +144,10 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	} else {
 	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  // Link to PC host simulation:
-	  //out(new ContextTuple(Coordinate(2,2), string("target"))); 
+	  out(new ContextTuple(Coordinate(2,2), string("target"))); 
 	  //out(new ContextTuple(Coordinate(1,3), string("target")));
 	  //out(new ContextTuple(Coordinate(1,2), string("target")));
-	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+	  /*Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	  int *gridSize = world->getGridSize();
 	  for (int iy = 0; iy < gridSize[2]; iy++) {
 	    for (int ix = 0; ix < gridSize[0]; ix++) {
@@ -160,7 +163,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		//Tuple *res = tuples.inp(query);
 	      }
 	    }
-	  }
+	    }*/
 	}
       }
     }
@@ -178,44 +181,99 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 #endif
       } else {
 	// message is not arrived
-	P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
-	// !(m->isInPerimeterMode() && m->getPerimeterStart() == getPosition(next))
-	if ((!m->isInPerimeterMode() && (next!= NULL)) || 
-	    ((next!=NULL) && m->isInPerimeterMode() && (distance(position, m->getDestination()) < distance(m->getPerimeterStart(),m->getDestination())))) {
-	  if (m->isInPerimeterMode()) {
-	    m->setGreedyMode();
-	  }
-	  forward(m,next);
+	switch (m->getMode()) {
+	case GeoMessage::mode_t::GREEDY:
+	  {
+	    P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
+	    if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
-	  cout << "Greedy forward to " << getPosition(next) << endl;
+	      cout << "Greedy forward to " << getPosition(next) << endl;
 #endif
-	}
-	else {
-	  // should enter/stay in perimeter mode
-	  if (m->isInPerimeterMode()) {
-	    if (m->getPerimeterStart() == position) {
-	      // packet has made a complete tour
-#ifdef GEO_ROUTING_DEBUG
-	      cout << "tuple " << m->getTuple() << " complete tour (" << position << ")" << endl;
-#endif
-	    } else {
-	      next = getNextCounterClockWiseInterface(recv_interface);      
 	      forward(m,next);
-#ifdef GEO_ROUTING_DEBUG
-	      cout << "Perimeter forward to " << getPosition(next) << endl;
+	    } else {
+	      // perimeter mode
+	      m->setPerimeterMode(position);
+	      // find interface
+	      next = getNextCounterClockWiseInterface(m->getDestination());
+	      forward(m,next);
+ #ifdef GEO_ROUTING_DEBUG
+	  cout << "Perimeter (new) forward to " << getPosition(next) << endl;
 #endif
 	    }
+	  }
+	  break;
+	case GeoMessage::mode_t::PERIMETER: {
+	  if (m->getPerimeterStart() == position) {
+	    // packet has made a complete tour
+	    cout << "packet has made a complete tour (" 
+		 << m->getTuple() 
+		 << ")"
+		 << endl;
 	  } else {
-	    m->setPerimeterMode(position);
-	    next = getNextCounterClockWiseInterface(recv_interface);
-	    forward(m,next);
+	    int d1 = distance(position, m->getDestination());
+	    int d2 = distance(m->getPerimeterStart(),m->getDestination());
+	      
+	    if (d1 < d2) {
+	      // leave PERIMETER mode
+	      m->setGreedyMode();
+	      P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
+	      if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
-	    cout << "Perimeter (new) forward to " << getPosition(next) << endl;
+		cout << "Greedy forward to " << getPosition(next) << endl;
 #endif
+		forward(m,next);
+	      }
+	    } else {
+	      // an incident edge hit/cut the segment 
+	      // (destination;point enter in perimeter mode)
+	      Segment s(m->getDestination(),m->getPerimeterStart()); 
+	      P2PNetworkInterface *p2p = getIntersectInterface(s,NULL);
+	      if ((p2p != NULL) && (getPosition(p2p) != m->getPerimeterStart())) {
+		Coordinate p = getPosition(p2p);
+		P2PNetworkInterface *next = getNextCounterClockWiseInterface(p);
+		forward(m,next);
+#ifdef GEO_ROUTING_DEBUG
+		cout << "Perimeter (new face?) forward to " << getPosition(next) << endl;
+#endif
+	      } else {
+		P2PNetworkInterface *next = getNextCounterClockWiseInterface(recv_interface);
+		forward(m,next);
+#ifdef GEO_ROUTING_DEBUG
+		cout << "Perimeter (same face) forward to " << getPosition(next) << endl;
+#endif
+	      }
+	    }
 	  }
 	}
+	  break;
+	default:
+	  cerr << "unknown mode" << endl;
+	}
+
+	/*
+	  }
+	  else {
+	  // should enter/stay in perimeter mode
+	  if (m->isInPerimeterMode()) {
+	  else {
+	  next = getNextCounterClockWiseInterface(recv_interface);      
+	  forward(m,next);
+	  #ifdef GEO_ROUTING_DEBUG
+	  cout << "Perimeter forward to " << getPosition(next) << endl;
+	  #endif
+	  }
+	  } else {
+	  m->setPerimeterMode(position);
+	  next = getNextCounterClockWiseInterface(recv_interface);
+	  forward(m,next);
+	  #ifdef GEO_ROUTING_DEBUG
+	  cout << "Perimeter (new) forward to " << getPosition(next) << endl;
+	  #endif
+	  }
+	  }
+	  }*/
+	getchar();
       }
-      //getchar();
     }
       break;
     default:
@@ -271,6 +329,42 @@ P2PNetworkInterface* Catoms2D1BlockCode::getClosestInterface(Coordinate dest, P2
     }
   }
   return closest;
+}
+
+P2PNetworkInterface* Catoms2D1BlockCode::getIntersectInterface(Segment &s, P2PNetworkInterface *ignore) {
+  for (int i = 0; i < 6; i++) {
+    P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
+    Coordinate pdir = getPosition(it);
+    if (ignore == it) {
+      continue;
+    }
+    Segment seg = Segment(position,pdir);
+    if(seg.intersect(s)) {
+      return it;
+    }
+  }
+  return NULL;
+}
+
+P2PNetworkInterface* Catoms2D1BlockCode::getNextCounterClockWiseInterface(Coordinate a) {
+  double angles[6] = {0,0,0,0,0,0};
+  int minI = 0;
+  for (int i=0; i < 6; i++) {
+    P2PNetworkInterface *p2p = catom2D->getInterface((NeighborDirection::Direction)i);
+    if (p2p->connectedInterface == NULL) {
+      angles[i] = DBL_MAX;
+      continue;
+    }
+    Coordinate c = getPosition(p2p);
+    angles[i] = ccwAngle(c,position,a);
+#ifdef DEBUG_ANGLE
+    cout << c << " " << angles[i] << endl;
+#endif
+    if (angles[i] < angles[minI]) {
+      minI = i;
+    }
+  }
+  return catom2D->getInterface((NeighborDirection::Direction)minI);
 }
 
 P2PNetworkInterface* Catoms2D1BlockCode::getNextCounterClockWiseInterface(P2PNetworkInterface *recv) {

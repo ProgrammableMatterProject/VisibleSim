@@ -16,6 +16,7 @@
 #include "tuple.hpp"
 #include "contextTuple.hpp"
 #include "reconfCatoms2DMessages.h"
+#include "segment.h"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  private:
@@ -43,7 +44,9 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   int distance(Coordinate p1, Coordinate p2);
   P2PNetworkInterface* getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore);
   P2PNetworkInterface* getNextClockWiseInterface(P2PNetworkInterface *recv); 
-  P2PNetworkInterface* getNextCounterClockWiseInterface(P2PNetworkInterface *recv); 
+  P2PNetworkInterface* getNextCounterClockWiseInterface(P2PNetworkInterface *recv);
+  P2PNetworkInterface* getNextCounterClockWiseInterface(Coordinate a);
+  P2PNetworkInterface* getIntersectInterface(Segment &s, P2PNetworkInterface *ignore);
   void forward(GeoMessage_ptr m, P2PNetworkInterface *p2p);
   
   // Tuple space

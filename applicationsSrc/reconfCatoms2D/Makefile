@@ -1,4 +1,4 @@
-SRCS = catom2D1.cpp catom2D1BlockCode.cpp
+SRCS = segment.cpp catom2D1.cpp catom2D1BlockCode.cpp
 
 OUT = catom2D1
 
