@@ -212,17 +212,18 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		 << endl;
 	  } else {
 	    int d1 = distance(position, m->getDestination());
-	    int d2 = distance(m->getPerimeterStart(),m->getDestination());
-	    if (d1 < d2) {
+	    int d2 = distance(m->getPerimeterStart(),m->getDestination()); 
+	    P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
+	    if ((d1 < d2) && (next != NULL)) {
 	      // leave PERIMETER mode
 	      m->setGreedyMode();
-	      P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
-	      if(next != NULL) {
+	     
+	      //if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
 		cout << "Greedy (leave perimeter) forward to " << getPosition(next) << endl;
 #endif
 		forward(m,next);
-	      } /*else {
+		/* } else {
 		// perimeter mode
 		m->setPerimeterMode(position);
 		// find interface
