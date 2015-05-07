@@ -77,6 +77,7 @@ class GeoMessage : public Message {
   Coordinate destination;
   mode_t mode;
   Coordinate perimeterStart;
+  int firstEdge;
   int hops;
 
   // data information (payload)
@@ -93,9 +94,10 @@ class GeoMessage : public Message {
     hops = 0;
     tuple = t;
     dataMode = dm;
+    firstEdge = 0;
   };
 
- GeoMessage(Coordinate s, Coordinate d, Coordinate l, mode_t m, Coordinate p, int h, ContextTuple &t, data_mode_t dm) : Message(), tuple(t) { 
+ GeoMessage(Coordinate s, Coordinate d, Coordinate l, mode_t m, Coordinate p, int h, ContextTuple &t, data_mode_t dm, int e0) : Message(), tuple(t) { 
     type = GEO_TUPLE_MSG;
     source = s;
     destination = d;
@@ -105,6 +107,7 @@ class GeoMessage : public Message {
     hops = h;
     tuple = t;
     dataMode = dm;
+    firstEdge = e0;
   };
 
  GeoMessage(GeoMessage *m) : Message(), tuple(m->tuple) { 
@@ -117,6 +120,7 @@ class GeoMessage : public Message {
     hops = m->hops;
     tuple = m->tuple;
     dataMode = m->dataMode;
+    firstEdge = m->firstEdge;
   };
   
   ~GeoMessage() {};
@@ -130,10 +134,12 @@ class GeoMessage : public Message {
   Coordinate getPerimeterStart() {return perimeterStart;};
   void setGreedyMode() {mode = mode_t::GREEDY;};
   void setPerimeterMode(Coordinate p) {mode = mode_t::PERIMETER; perimeterStart = p;}
+  
+  void setFirstEdge(int e0) {firstEdge = e0;}
+  int getFirstEdge() {return firstEdge;}
 
   ContextTuple getTuple() {return tuple;};
   data_mode_t getDataMode() {return dataMode;};
-  
   uint getHops() {return hops;};
   unsigned int size() {return 17;};
 };

@@ -23,7 +23,8 @@ using namespace std;
 using namespace Catoms2D;
 
 //#define MAP_DEBUG
-#define GEO_ROUTING_DEBUG
+//#define GEO_ROUTING_DEBUG
+#define GEO_ROUTING_TEST
 //#define ANGLE_DEBUG
 //#define TUPLE_DEBUG
 
@@ -144,7 +145,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	} else {
 	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  // Link to PC host simulation:
-	  out(new ContextTuple(Coordinate(2,5), string("target"))); 
+	  //out(new ContextTuple(Coordinate(2,5), string("target"))); 
 	  //out(new ContextTuple(Coordinate(2,2), string("target"))); 
 	  //out(new ContextTuple(Coordinate(1,3), string("target")));
 	  //out(new ContextTuple(Coordinate(1,2), string("target")));
@@ -165,6 +166,29 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	      }
 	    }
 	    }*/
+#ifdef GEO_ROUTING_TEST
+	  // send a packet to everybody
+	  //out(new ContextTuple(Coordinate(4,1), string("testGeoRouting")));
+	  
+	  //out(new ContextTuple(Coordinate(2,5), string("testGeoRouting")));
+	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+	  int *gridSize = world->getGridSize();
+	  for (int iy = 0; iy < gridSize[2]; iy++) {
+	    for (int ix = 0; ix < gridSize[0]; ix++) {
+	      if (world->getGridPtr(ix,0,iy)) {
+		Coordinate t(ix,iy);
+		t.x -= ccth.x;
+		t.y -= ccth.y;
+		//cout << "(" << t.x << " " << t.y << ")" << endl;
+		out(new ContextTuple(Coordinate(t.x,t.y), string("testGeoRouting")));
+		//localTuples.out(Tuple(string("target"), ix, iy));
+		//tuples.out(new Tuple(string("aaa"), 5, 12.5));
+		//Tuple query(string("aaa"), TYPE(int), 12.5);  
+		//Tuple *res = tuples.inp(query);
+	      }
+	    }
+	    }
+#endif
 	}
       }
     }
@@ -177,8 +201,9 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 #endif
       if (position == m->getDestination()) {
 	// message well arrived
+	cout << "msg had a safe trip! " << m->getDestination() << endl;
 #ifdef GEO_ROUTING_DEBUG
-	cout << "msg had a safe trip!" << endl;
+	//cout << "msg had a safe trip!" << endl;
 #endif
       } else {
 	// message is not arrived
@@ -196,21 +221,24 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	      m->setPerimeterMode(position);
 	      // find interface
 	      next = getNextCounterClockWiseInterface(m->getDestination());
+	      m->setFirstEdge(catom2D->getDirection(next));
 	      forward(m,next);
  #ifdef GEO_ROUTING_DEBUG
 	  cout << "Perimeter (new) forward to " << getPosition(next) << endl;
 #endif
+	  //cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
 	    }
 	  }
 	  break;
 	case GeoMessage::mode_t::PERIMETER: {
-	  if (m->getPerimeterStart() == position) {
+	  /*if (m->getPerimeterStart() == position) {
 	    // packet has made a complete tour
 	    cout << "packet has made a complete tour (" 
 		 << m->getTuple() 
 		 << ")"
 		 << endl;
-	  } else {
+		 } else {*/
+
 	    int d1 = distance(position, m->getDestination());
 	    int d2 = distance(m->getPerimeterStart(),m->getDestination()); 
 	    P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
@@ -234,55 +262,43 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 #endif
 }*/
 	    } else {
-	      // an incident edge hit/cut the segment 
+	      // check if an incident edge hit/cut the segment 
 	      // (destination;point enter in perimeter mode)
 	      Segment s(m->getDestination(),m->getPerimeterStart()); 
 	      P2PNetworkInterface *p2p = getIntersectInterface(s,NULL);
-	      if ((p2p != NULL) && (getPosition(p2p) != m->getPerimeterStart())) {
+	      // cout << m->getPerimeterStart() << " vs " << getPosition(p2p) << endl; 
+	      if ((p2p != NULL) && (position != m->getPerimeterStart()) && (getPosition(p2p) != m->getPerimeterStart())) {
 		Coordinate p = getPosition(p2p);
 		P2PNetworkInterface *next = getNextCounterClockWiseInterface(p);
+		m->setFirstEdge(catom2D->getDirection(next));
 		forward(m,next);
 #ifdef GEO_ROUTING_DEBUG
 		cout << "Perimeter (new face?) forward to " << getPosition(next) << endl;
 #endif
 	      } else {
+		
 		P2PNetworkInterface *next = getNextCounterClockWiseInterface(recv_interface);
-		forward(m,next);
+		//	cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
+		if ((m->getPerimeterStart() == position) && (catom2D->getDirection(next) == m->getFirstEdge())) {
+	    // packet has made a complete tour
+	    cout << "packet has made a complete tour (" 
+		 << m->getTuple() 
+		 << ")"
+		 << endl;	
+		} else {
+		  forward(m,next);
 #ifdef GEO_ROUTING_DEBUG
-		cout << "Perimeter (same face) forward to " << getPosition(next) << endl;
+		  cout << "Perimeter (same face) forward to " << getPosition(next) << endl;
 #endif
+		}
 	      }
 	    }
-	  }
 	}
 	  break;
 	default:
 	  cerr << "unknown mode" << endl;
 	}
-
-	/*
-	  }
-	  else {
-	  // should enter/stay in perimeter mode
-	  if (m->isInPerimeterMode()) {
-	  else {
-	  next = getNextCounterClockWiseInterface(recv_interface);      
-	  forward(m,next);
-	  #ifdef GEO_ROUTING_DEBUG
-	  cout << "Perimeter forward to " << getPosition(next) << endl;
-	  #endif
-	  }
-	  } else {
-	  m->setPerimeterMode(position);
-	  next = getNextCounterClockWiseInterface(recv_interface);
-	  forward(m,next);
-	  #ifdef GEO_ROUTING_DEBUG
-	  cout << "Perimeter (new) forward to " << getPosition(next) << endl;
-	  #endif
-	  }
-	  }
-	  }*/
-	getchar();
+	//getchar();
       }
     }
       break;
@@ -344,10 +360,10 @@ P2PNetworkInterface* Catoms2D1BlockCode::getClosestInterface(Coordinate dest, P2
 P2PNetworkInterface* Catoms2D1BlockCode::getIntersectInterface(Segment &s, P2PNetworkInterface *ignore) {
   for (int i = 0; i < 6; i++) {
     P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
-    Coordinate pdir = getPosition(it);
-    if (ignore == it) {
+    if ((ignore == it) || (it->connectedInterface == NULL)) {
       continue;
     }
+    Coordinate pdir = getPosition(it);
     Segment seg = Segment(position,pdir);
     if(seg.intersect(s)) {
       return it;
