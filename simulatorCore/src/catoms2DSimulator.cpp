@@ -177,9 +177,9 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[], Catoms2DBlockCode *
              world->setBlocksSize(blockSize);
 		}
 
-//	world->generateRandom(100);
+	world->generateRandom(100);
 	
-//	#if 0
+		#if 0
 	/* Reading a catoms */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
 		Vecteur position;
@@ -223,7 +223,7 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[], Catoms2DBlockCode *
 			world->addBlock(currentID++,Catoms2DSimulator::buildNewBlockCode,position,color,master);
 			block = block->NextSibling("block");
 		} // end while (block)
-//		#endif
+					#endif
 /*
 		block = nodeBlock->FirstChild("blocksLine");
 		int line,plane;

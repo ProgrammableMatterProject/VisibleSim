@@ -23,12 +23,13 @@ using namespace std;
 using namespace Catoms2D;
 
 //#define MAP_DEBUG
-//#define GEO_ROUTING_DEBUG
+#define GEO_ROUTING_DEBUG
 #define GEO_ROUTING_TEST
 //#define ANGLE_DEBUG
 //#define TUPLE_DEBUG
 
 Coordinate Catoms2D1BlockCode::ccth;
+bool Catoms2D1BlockCode::isConnected = false;
 
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
   scheduler = Catoms2D::getScheduler();
@@ -90,12 +91,21 @@ void Catoms2D1BlockCode::startup() {
     connectedToHost = true;
     toHost = NULL;
   }
+
+  
+  /*if(!isConnected && (catom2D->position[2] == 3)){
+    cout << "@" << catom2D->blockId << " is connected to host" << endl;
+    isConnected = true;
+    connectedToHost = true;
+    toHost = NULL;
+    }*/
   
   if(connectedToHost) {
     Coordinate c = Coordinate(0,0);
     setPosition(c);
     ccth.x = catom2D->position[0];
     ccth.y = catom2D->position[2];
+    catom2D->setColor(RED);
     buildMap();
   }
 }
@@ -115,14 +125,16 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	toHost = recv_interface;
 	Coordinate c = m->getPosition(); //getPosition(toHost, m->getLast());
 	setPosition(c);
-#ifdef MAP_DEBUG
-	Coordinate real;
-	real.x = catom2D->position[0];
-	real.y = catom2D->position[2];
-	real.x -= ccth.x;
-	real.y -= ccth.y;
-	cout << "@" << catom2D->blockId <<  " position " << position << " vs " << real << endl;
-#endif
+	//#ifdef MAP_DEBUG
+	Coordinate p;
+	p.x = catom2D->position[0];
+	p.y = catom2D->position[2];
+	Coordinate real =  real2Virtual(p,ccth);
+	cout << "@" << catom2D->blockId <<  " position " << position << " vs " << real << "(diff: " << position.x - real.x << "," <<  position.y - real.y << ")" << endl;
+	if( real != position) { // not relevant (odd/even line of the leader)  
+	  catom2D->setColor(BLUE);
+	}
+	//#endif
 	waiting = 0;
 	buildMap();
 	if (waiting==0) {
@@ -168,19 +180,19 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	    }*/
 #ifdef GEO_ROUTING_TEST
 	  // send a packet to everybody
-	  //out(new ContextTuple(Coordinate(4,1), string("testGeoRouting")));
-	  
+	  //out(new ContextTuple(Coordinate(2,-3), string("testGeoRouting")));
+	  getchar();
 	  //out(new ContextTuple(Coordinate(2,5), string("testGeoRouting")));
 	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	  int *gridSize = world->getGridSize();
 	  for (int iy = 0; iy < gridSize[2]; iy++) {
 	    for (int ix = 0; ix < gridSize[0]; ix++) {
-	      if (world->getGridPtr(ix,0,iy)) {
-		Coordinate t(ix,iy);
-		t.x -= ccth.x;
-		t.y -= ccth.y;
-		//cout << "(" << t.x << " " << t.y << ")" << endl;
-		out(new ContextTuple(Coordinate(t.x,t.y), string("testGeoRouting")));
+	      Catoms2DBlock* c = world->getGridPtr(ix,0,iy);
+	      if (c != NULL) {
+		Coordinate real(ix,iy);
+		Coordinate t =  real2Virtual(real,ccth);
+		cout << "to @" << c->blockId << " " <<  real << " " << t << endl;
+		out(new ContextTuple(t, string("testGeoRouting")));
 		//localTuples.out(Tuple(string("target"), ix, iy));
 		//tuples.out(new Tuple(string("aaa"), 5, 12.5));
 		//Tuple query(string("aaa"), TYPE(int), 12.5);  
@@ -280,11 +292,20 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		P2PNetworkInterface *next = getNextCounterClockWiseInterface(recv_interface);
 		//	cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
 		if ((m->getPerimeterStart() == position) && (catom2D->getDirection(next) == m->getFirstEdge())) {
+		  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+		  Catoms2DBlock *c = world->getGridPtr(m->getDestination().getX()+ccth.x,0,m->getDestination().getY()+ccth.y);
+		    c->setColor(GREEN);
+		  int i = c->blockId;
 	    // packet has made a complete tour
-	    cout << "packet has made a complete tour (" 
-		 << m->getTuple() 
+	    cout << "packet has made a complete tour (s="
+		 << m->getSource()
+		 << ", d="
+		 << m->getDestination()
+	      << "(" << i << ")"
+		 << ", p="
+		 << position
 		 << ")"
-		 << endl;	
+		 << endl;
 		} else {
 		  forward(m,next);
 #ifdef GEO_ROUTING_DEBUG
@@ -436,7 +457,7 @@ Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *it) {
   Coordinate p = position;
   switch(catom2D->getDirection(it)) {
   case NeighborDirection::BottomLeft:
-    if (p.y%2 == 0) {
+    if ((abs(p.y)%2) == 0) {
       p.x--;
     }
     p.y--;
@@ -445,13 +466,13 @@ Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *it) {
     p.x--;
     break;
   case NeighborDirection::TopLeft:    
-    if (p.y%2 == 0) {
+    if ((abs(p.y)%2) == 0) {
       p.x--;
     }
     p.y++;
     break;
   case NeighborDirection::TopRight:
-    if (p.y%2 == 1) {
+    if ((abs(p.y)%2) == 1) {
       p.x++;
     }
     p.y++;
@@ -460,7 +481,7 @@ Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *it) {
     p.x++;
     break;
   case NeighborDirection::BottomRight: 
-    if (p.y%2 == 1) {
+    if ((abs(p.y)%2) == 1) {
       p.x++;
     }
     p.y--;
@@ -496,6 +517,21 @@ void Catoms2D1BlockCode::setPosition(Coordinate p) {
 
 int Catoms2D1BlockCode::distance(Coordinate p1, Coordinate p2) {
   return abs(p2.x - p1.x) +  abs(p2.y - p1.y); 
+}
+
+Coordinate Catoms2D1BlockCode::real2Virtual(Coordinate p, Coordinate o) {
+  Coordinate real = p;
+
+  real.x -= o.x;
+  real.y -= o.y;
+  
+  if ( (o.y%2) == 1) {
+    if ((p.y%2) == 0) {
+      real.x--;
+    }
+  }
+
+  return real;
 }
 
 //bool legalMove(int sens, 

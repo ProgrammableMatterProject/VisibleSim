@@ -21,6 +21,7 @@
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  private:
   static Coordinate ccth;
+  static bool isConnected;
  public:
 
   Catoms2D::Catoms2DScheduler *scheduler;
@@ -60,7 +61,8 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
 	
   void updateBorder();
   bool canMove();
-
+  Coordinate real2Virtual(Coordinate p, Coordinate o);
+  
   static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };
 
