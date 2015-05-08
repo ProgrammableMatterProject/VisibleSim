@@ -91,6 +91,7 @@ public:
 	virtual void connectBlock(Catoms2DBlock *block);
 	
 	void generateRandom(int n);
+	void extractConfig();
 };
 
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {

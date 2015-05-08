@@ -1,4 +1,5 @@
 
+
 /*
  * robotBlockWorld.cpp
  *
@@ -734,6 +735,26 @@ void Catoms2DWorld::generateRandom(int n) {
 	}
 	cout << "random world built" << endl;
 }
-
+  
+  void Catoms2DWorld::extractConfig() {
+    ofstream file;
+    file.open ("random.xml");
+    //file << toStringXmlFormat() << endl;
+    string s;
+    map<int, BaseSimulator::BuildingBlock*>::iterator it;
+    // <block position="4,5,6"/>
+    for(it = buildingBlocksMap.begin(); 
+	it != buildingBlocksMap.end(); it++) {
+      Catoms2DBlock* c = (Catoms2DBlock*) it->second;
+      //s += bb->toStringXmlFormat() + "\n" ;
+      file << "<block position=\"" 
+	   << c->position[0]
+	   << "," 
+	   << c->position[2] 
+	   <<  "\"/>"
+	   << endl;
+    }
+    file.close();
+  }
 } // RobotBlock namespace
 

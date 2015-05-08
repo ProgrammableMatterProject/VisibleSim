@@ -20,7 +20,7 @@ Catoms2DBlockCode*(* Catoms2DSimulator::buildNewBlockCode)(Catoms2DBlock*)=NULL;
 
 void Catoms2DSimulator::help() {
    cerr << "VisibleSim:" << endl;
-	cerr << "Robot01" << endl;
+   cerr << "Robot01" << endl;
    exit(EXIT_SUCCESS);
 }
 
@@ -176,10 +176,11 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[], Catoms2DBlockCode *
              OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
              world->setBlocksSize(blockSize);
 		}
-
-	world->generateRandom(100);
 	
-		#if 0
+	world->generateRandom(100);
+		world->extractConfig();
+
+#if 0
 	/* Reading a catoms */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
 		Vecteur position;

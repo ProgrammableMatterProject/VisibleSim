@@ -36,12 +36,15 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   //Coordinate getPosition(P2PNetworkInterface *recv_it, Coordinate c);
   Coordinate getPosition(P2PNetworkInterface *it);
   void setPosition(Coordinate p);
+  Coordinate real2Virtual(Coordinate p, Coordinate o);
+  Coordinate virtual2Real(Coordinate p, Coordinate o);
   int waiting;
   P2PNetworkInterface *toHost;
   void buildMap();
   void mapBuilt(P2PNetworkInterface *d);
 
   // Geo routing
+  bool geoTest;
   int distance(Coordinate p1, Coordinate p2);
   P2PNetworkInterface* getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore);
   P2PNetworkInterface* getNextClockWiseInterface(P2PNetworkInterface *recv); 
@@ -61,7 +64,6 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
 	
   void updateBorder();
   bool canMove();
-  Coordinate real2Virtual(Coordinate p, Coordinate o);
   
   static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };
