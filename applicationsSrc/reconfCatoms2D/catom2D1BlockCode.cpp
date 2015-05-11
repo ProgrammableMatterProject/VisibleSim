@@ -22,6 +22,8 @@
 using namespace std;
 using namespace Catoms2D;
 
+#define VIRTUAL_COORDINATES
+
 //#define MAP_DEBUG
 #define GEO_ROUTING_DEBUG
 #define GEO_ROUTING_TEST
@@ -102,17 +104,18 @@ void Catoms2D1BlockCode::startup() {
     }
   
   if(connectedToHost) {
-    
+#ifdef VIRTUAL_COORDINATES  
     // virtual coordinate
-    /*Coordinate c = Coordinate(0,0);
+    Coordinate c = Coordinate(0,0);
     ccth.x = catom2D->position[0];
-    ccth.y = catom2D->position[2];*/
-    
+    ccth.y = catom2D->position[2];
+#endif
+#ifdef REAL_COORDINATES
     // real coordinate
     Coordinate c(catom2D->position[0], catom2D->position[2]);
     ccth.x = 0;
     ccth.y = 0;
-
+#endif
     setPosition(c);
     catom2D->setColor(RED);
     buildMap();
