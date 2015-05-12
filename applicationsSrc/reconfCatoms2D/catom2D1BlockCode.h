@@ -51,12 +51,16 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   P2PNetworkInterface* getNextCounterClockWiseInterface(P2PNetworkInterface *recv);
   P2PNetworkInterface* getNextCounterClockWiseInterface(Coordinate a);
   P2PNetworkInterface* getIntersectInterface(Segment &s, P2PNetworkInterface *ignore);
+  
+  void send(GeoMessage *m);
   void forward(GeoMessage_ptr m, P2PNetworkInterface *p2p);
+  void forward(GeoMessage *m, P2PNetworkInterface *p2p);
   
   // Tuple space
   LocalTupleSpace localTuples;
   void out(ContextTuple *t);
-
+  void in(ContextTuple *t);
+  
   void startup();
   void processLocalEvent(EventPtr pev);
 	

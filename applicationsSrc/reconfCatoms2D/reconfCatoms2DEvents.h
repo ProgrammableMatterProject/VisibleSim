@@ -8,30 +8,30 @@
 #ifndef RECONFCATOMS2DEVENTS_H_
 #define RECONFCATOMS2DEVENTS_H_
 
-#define EVENT_MSRSYNC	15000
+#define EVENT_TRY_TO_MOVE 15000
 
 #include "events.h"
 #include <boost/shared_ptr.hpp>
 
-class MsrSyncEvent : public BlockEvent {
-public:
+class TryToMoveEvent : public BlockEvent {
+ public:
 
-	MsrSyncEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
-		eventType = EVENT_MSRSYNC;
-		randomNumber = conBlock->getNextRandomNumber();
-	}
+ TryToMoveEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+    eventType = EVENT_TRY_TO_MOVE;
+    randomNumber = conBlock->getNextRandomNumber();
+  }
 	
-	MsrSyncEvent(MsrSyncEvent *ev) : BlockEvent(ev) {
-		randomNumber = ev->randomNumber;
-	}
+ TryToMoveEvent(TryToMoveEvent *ev) : BlockEvent(ev) {
+    randomNumber = ev->randomNumber;
+  }
 	
-	~MsrSyncEvent() {};
+  ~TryToMoveEvent() {};
 	
-	void consumeBlockEvent() {
-		concernedBlock->scheduleLocalEvent(EventPtr(new MsrSyncEvent(this)));
-	}
+  void consumeBlockEvent() {
+    concernedBlock->scheduleLocalEvent(EventPtr(new TryToMoveEvent(this)));
+  }
 	
-	const string getEventName() { return "MSR SYNC EVENTS"; }
+  const string getEventName() { return "TRY_TO_MOVE EVENT"; }
 };
 
 #endif // RECONFCATOMS2DEVENTS_H_

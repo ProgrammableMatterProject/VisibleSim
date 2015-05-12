@@ -66,36 +66,7 @@ void Catoms2D1BlockCode::startup() {
   stringstream info;
   info << "Starting ";
   scheduler->trace(info.str(),hostBlock->blockId);
-  
-  //updateBorder();
-  /*if (canMove()) {
-    catom2D->setColor(RED);
-    } else {
-    catom2D->setColor(GREEN);
-    }*/
-  //catom2D->setColor(DARKGREY);
-	
-  /*if (catom2D->blockId == 10) {
-    cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
-    startMotion(ROTATE_LEFT,world->getBlockById(8));
-    }
-	
-    if (catom2D->blockId == 8) {
-    cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
-    startMotion(ROTATE_LEFT,world->getBlockById(7));
-    }*/
-	
-  /*if (catom2D->blockId == 4) {
-    cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
-    startMotion(ROTATE_LEFT,world->getBlockById(3));
-    }*/
-		
-  /*if (catom2D->blockId == 1) {
-    connectedToHost = true;
-    toHost = NULL;
-    }*/
-
-  
+   
   if(!isConnected && (catom2D->position[2] == 0)){
     cout << "@" << catom2D->blockId << " is connected to host" << endl;
     isConnected = true;
@@ -340,7 +311,6 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		cout << "Perimeter (new face?) forward to " << getPosition(next) << endl;
 #endif
 	      } else {
-		
 		P2PNetworkInterface *next = getNextCounterClockWiseInterface(recv_interface);
 		//	cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
 		if ((m->getPerimeterStart() == position) && (catom2D->getDirection(next) == m->getFirstEdge())) {
@@ -381,6 +351,13 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     }
   }
     break;
+  case EVENT_TRY_TO_MOVE: {
+    // identify a free target position
+    // 
+    //in(new ContextTuple(, string("testGeoRouting")));
+    
+  }
+    break;
   case EVENT_MOTION_END: {
     cout << "motion end" << endl;
     cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
@@ -392,29 +369,63 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 
 // TS
 void Catoms2D1BlockCode::out(ContextTuple *t) {
-
 #ifdef TUPLE_DEBUG
   cout << "insert tuple: " << *t << endl;
 #endif
-
-  P2PNetworkInterface *p2p = getClosestInterface(t->getLocation(),NULL);
-  if (p2p == NULL) {
-    // tuple should be stored locally
-#ifdef TUPLE_DEBUG
-    cout << "locally" << endl;
-#endif
+ // tuple should maybe stored locally
+  if (t->getLocation() == position) {
+    localTuples.out(t);
   } else {
-    // tuple should be stored remotely
+    // or remotely, send the tuple
+    GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
+    send(msg);
+  }
+}
+
+void Catoms2D1BlockCode::in(ContextTuple *t) {
+#ifdef TUPLE_DEBUG
+  cout << "insert tuple: " << *t << endl;
+#endif
+  // tuple is maybe stored locally
+  if (t->getLocation() == position) {
+    //localTuples.in(t);
+  } else {
+  // tuple is maybe be stored remotely
 #ifdef TUPLE_DEBUG
     cout << "remotely" << endl;
 #endif
-    //(Coordinate s, Coordinate d, ContextTuple &t, data_mode_t dm
     GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
-    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now()+2000000, msg, p2p));
+    send(msg);
   }
 }
 
 // Geo-routing
+void Catoms2D1BlockCode::send(GeoMessage *m) {
+  P2PNetworkInterface *next = getClosestInterface(m->getDestination(), m->destinationInterface);
+  if(next != NULL) {
+#ifdef GEO_ROUTING_DEBUG
+    cout << "Greedy forward to " << getPosition(next) << endl;
+#endif
+    forward(m,next);
+  } else {
+    // perimeter mode
+    m->setPerimeterMode(position);
+    // find interface
+    next = getNextCounterClockWiseInterface(m->getDestination());
+    m->setFirstEdge(catom2D->getDirection(next));
+    forward(m,next);
+  }
+}
+
+void Catoms2D1BlockCode::forward(GeoMessage *m, P2PNetworkInterface *p2p) {
+  scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), m, p2p));
+}
+
+void Catoms2D1BlockCode::forward(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
+  GeoMessage * msg = new GeoMessage(m.get());
+  forward(msg,p2p);
+}
+
 P2PNetworkInterface* Catoms2D1BlockCode::getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore) {
   P2PNetworkInterface *closest = NULL;
   int minDistance = distance(position,dest);
@@ -493,11 +504,7 @@ P2PNetworkInterface* Catoms2D1BlockCode::getNextClockWiseInterface(P2PNetworkInt
   return next;
 }      
 
-void Catoms2D1BlockCode::forward(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
-  GeoMessage * msg = new GeoMessage(m.get());
-  scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, p2p));
-}
-
+// Motion
 void Catoms2D1BlockCode::startMotion(int direction, Catoms2DBlock *pivot) {
   scheduler->schedule(new MotionStartEvent(scheduler->now(),catom2D,pivot,direction));
 }
