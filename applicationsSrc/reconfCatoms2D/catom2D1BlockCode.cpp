@@ -94,12 +94,11 @@ void Catoms2D1BlockCode::startup() {
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
-  MessagePtr message;
+
   stringstream info;
-  
   switch (pev->eventType) {
   case EVENT_NI_RECEIVE: {
-    message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+    MessagePtr message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
     P2PNetworkInterface * recv_interface = message->destinationInterface;
     switch(message->type) {
     case GO_MAP_MSG: {
@@ -214,6 +213,8 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       if (position == m->getDestination()) {
 	// message well arrived
 	cout << "msg had a safe trip! " << m->getDestination() << endl;
+
+	handleGeoMessage(m);
 #ifdef GEO_ROUTING_DEBUG
 	//cout << "msg had a safe trip!" << endl;
 #endif
@@ -324,11 +325,14 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		 << m->getSource()
 		 << ", d="
 		 << m->getDestination()
-	      << "(" << i << ")"
+		 << "(" << i << ")"
 		 << ", p="
 		 << position
 		 << ")"
 		 << endl;
+	    
+	    handleGeoMessage(m);
+
 		} else {
 		  forward(m,next);
 #ifdef GEO_ROUTING_DEBUG
@@ -358,6 +362,15 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     
   }
     break;
+  case  EVENT_TUPLE_QUERY_RESPONSE: {
+    ContextTuple *tuple = (boost::static_pointer_cast<TupleQueryResponseEvent>(pev))->getTuple();
+    if (tuple == NULL) {
+      cout << "not found" << endl;
+    } else  {
+      cout << "found: " << tuple << endl;
+    }
+  }
+    break;
   case EVENT_MOTION_END: {
     cout << "motion end" << endl;
     cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
@@ -368,13 +381,44 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 }
 
 // TS
+void Catoms2D1BlockCode::handleGeoMessage(GeoMessage_ptr m) {
+  //{STORE = 0, QUERY, ANSWER};
+  switch(m->getDataMode()) {
+  case GeoMessage::STORE: {
+    localOut(new ContextTuple(m->getTuple()));
+  }
+    break;
+  case GeoMessage::QUERY:
+    {
+      ContextTuple q = m->getTuple();
+      ContextTuple *r = localInp(&q);
+      GeoMessage * msg = new GeoMessage(position,m->getSource(),*r,GeoMessage::ANSWER);
+      send(msg);
+    }
+    break;
+  case GeoMessage::ANSWER: {
+    ContextTuple *r = new ContextTuple(m->getTuple());
+    scheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,r));
+  }
+    break;
+  }
+}
+
+void Catoms2D1BlockCode::localOut(ContextTuple *t) {
+  localTuples.out(t);
+}
+
+ContextTuple* Catoms2D1BlockCode::localInp(ContextTuple *t) {
+  return (ContextTuple*) localTuples.in(t);
+}
+
 void Catoms2D1BlockCode::out(ContextTuple *t) {
 #ifdef TUPLE_DEBUG
   cout << "insert tuple: " << *t << endl;
 #endif
  // tuple should maybe stored locally
   if (t->getLocation() == position) {
-    localTuples.out(t);
+    localOut(t);
   } else {
     // or remotely, send the tuple
     GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
@@ -382,20 +426,27 @@ void Catoms2D1BlockCode::out(ContextTuple *t) {
   }
 }
 
-void Catoms2D1BlockCode::in(ContextTuple *t) {
+void Catoms2D1BlockCode::inp(ContextTuple *t) {
 #ifdef TUPLE_DEBUG
   cout << "insert tuple: " << *t << endl;
 #endif
-  // tuple is maybe stored locally
-  if (t->getLocation() == position) {
-    //localTuples.in(t);
+  // first try locally
+  ContextTuple *r  = localInp(t);
+  if (r != NULL) {
+    scheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,r));
   } else {
-  // tuple is maybe be stored remotely
+    // tuple is maybe stored locally
+    if (t->getLocation() == position) {
+      // no such tuple
+      scheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,NULL));
+    } else {
+      // tuple is maybe be stored remotely
 #ifdef TUPLE_DEBUG
-    cout << "remotely" << endl;
+      cout << "remotely" << endl;
 #endif
-    GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
-    send(msg);
+      GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
+      send(msg);
+    }
   }
 }
 

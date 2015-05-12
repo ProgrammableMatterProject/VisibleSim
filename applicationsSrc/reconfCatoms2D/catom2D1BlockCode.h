@@ -55,12 +55,15 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   void send(GeoMessage *m);
   void forward(GeoMessage_ptr m, P2PNetworkInterface *p2p);
   void forward(GeoMessage *m, P2PNetworkInterface *p2p);
+  void handleGeoMessage(GeoMessage_ptr m);
   
   // Tuple space
   LocalTupleSpace localTuples;
+  void localOut(ContextTuple *t);
+  ContextTuple* localInp(ContextTuple *t);
   void out(ContextTuple *t);
-  void in(ContextTuple *t);
-  
+  void inp(ContextTuple *t);
+
   void startup();
   void processLocalEvent(EventPtr pev);
 	
