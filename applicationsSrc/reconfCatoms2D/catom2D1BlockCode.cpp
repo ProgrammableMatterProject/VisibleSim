@@ -25,10 +25,15 @@ using namespace Catoms2D;
 #define VIRTUAL_COORDINATES
 
 //#define MAP_DEBUG
-#define GEO_ROUTING_DEBUG
-#define GEO_ROUTING_TEST
+
+//#define GEO_ROUTING_DEBUG
+//#define GEO_ROUTING_TEST
+//#define TEST_GEO_ROUTING_ALL_TO_ALL
+//#define TEST_GEO_ROUTING_ONE_TO_ONE
+
 //#define ANGLE_DEBUG
 //#define TUPLE_DEBUG
+#define GHT_TEST
 
 Coordinate Catoms2D1BlockCode::ccth;
 bool Catoms2D1BlockCode::isConnected = false;
@@ -118,14 +123,14 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	}
 	#endif
 #ifdef GEO_ROUTING_TEST
-	#if 0
-	Coordinate src(13,0);
-	Coordinate dest(11,8);
-	cout << src << " " << position << endl;
+	#ifdef TEST_GEO_ROUTING_ONE_TO_ONE
+	Coordinate src(5,1);
+	Coordinate dest(5,4);
+	cout << "@" << catom2D->blockId << " " << position << endl;
 	if (position == src) {
 	  catom2D->setColor(BLUE);
 	  cout << "sending from " << src << " to " << dest << endl;
-	  out(new ContextTuple(dest, string("testGeoR2")));
+	  out(new ContextTuple(dest, string("testGeoRoutingOneToOne")));
 	}
 	if (position == dest) {
 	  catom2D->setColor(GREEN);
@@ -176,7 +181,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	    }
 	    }*/
 #ifdef GEO_ROUTING_TEST
-	  #if 1
+	  #ifdef TEST_GEO_ROUTING_ALL_TO_ALL
 	  // send a packet to everybody
 	  //out(new ContextTuple(Coordinate(2,-3), string("testGeoRouting")));
 	  //getchar();
@@ -219,7 +224,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	//cout << "msg had a safe trip!" << endl;
 #endif
 #ifdef GEO_ROUTING_TEST
-	#if 1
+	#ifdef TEST_GEO_ROUTING_ALL_TO_ALL
 	if (!geoTest && (m->getTuple().getName() == string("testGeoRouting"))) {
 	  geoTest = true;
 	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
@@ -275,10 +280,17 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		 << ")"
 		 << endl;
 		 } else {*/
-	    int d1 = distance(position, m->getDestination());
-	    int d2 = distance(m->getPerimeterStart(),m->getDestination()); 
-	    P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
-	    if ((next != NULL) && ((d1 < d2) || (getPosition(next) == m->getDestination()))) {
+	P2PNetworkInterface *next = getNextCounterClockWiseInterface(recv_interface);
+	if (next == NULL) {
+	break; // next is NULL only if the catom is not connected to any other.
+      }
+	int d1 = distance(getPosition(next), m->getDestination());
+	int d2 = distance(m->getPerimeterStart(),m->getDestination());
+	
+#ifdef GEO_ROUTING_DEBUG
+	    cout << "perimeter leave?: " << d1 << "vs" << d2 << endl;
+#endif
+	    if ((d1 < d2) || (getPosition(next) == m->getDestination())) {
 	      // leave PERIMETER mode
 	      m->setGreedyMode();
 	     
@@ -303,6 +315,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	      Segment s(m->getDestination(),m->getPerimeterStart()); 
 	      P2PNetworkInterface *p2p = getIntersectInterface(s,NULL);
 	      // cout << m->getPerimeterStart() << " vs " << getPosition(p2p) << endl; 
+	      
 	      if ((p2p != NULL) && (position != m->getPerimeterStart()) && (getPosition(p2p) != m->getPerimeterStart())) {
 		Coordinate p = getPosition(p2p);
 		P2PNetworkInterface *next = getNextCounterClockWiseInterface(p);
@@ -316,21 +329,29 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		//	cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
 		if ((m->getPerimeterStart() == position) && (catom2D->getDirection(next) == m->getFirstEdge())) {
 		  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-		  Coordinate p = virtual2Real(m->getDestination(),ccth);
-		  Catoms2DBlock *c = world->getGridPtr(p.getX(),0,p.getY());
-		  c->setColor(GREEN);
-		  int i = c->blockId;
+		  Coordinate s = virtual2Real(m->getSource(),ccth);
+		  Coordinate d = virtual2Real(m->getDestination(),ccth);
+		  Catoms2DBlock *cs = world->getGridPtr(s.getX(),0,s.getY());
+		  Catoms2DBlock *cd = world->getGridPtr(d.getX(),0,d.getY());
+		  cs->setColor(BLUE); 
+		  cd->setColor(GREEN);
+		  int ids = cd->blockId;
+		  int idd = cd->blockId;
 	    // packet has made a complete tour
 	    cout << "packet has made a complete tour (s="
 		 << m->getSource()
+		 << "=>" << s
+		 << "(id=" << ids << ")"
 		 << ", d="
 		 << m->getDestination()
-		 << "(" << i << ")"
+		 << "=>" << d
+		 << "(id=" << idd << ")"
 		 << ", p="
 		 << position
+		 << "=>" <<  virtual2Real(position,ccth)
 		 << ")"
 		 << endl;
-	    
+	     getchar();
 	    handleGeoMessage(m);
 
 		} else {
@@ -465,6 +486,9 @@ void Catoms2D1BlockCode::send(GeoMessage *m) {
     next = getNextCounterClockWiseInterface(m->getDestination());
     m->setFirstEdge(catom2D->getDirection(next));
     forward(m,next);
+#ifdef GEO_ROUTING_DEBUG
+	  cout << "Perimeter (new) forward to " << getPosition(next) << endl;
+#endif
   }
 }
 
@@ -551,7 +575,6 @@ P2PNetworkInterface* Catoms2D1BlockCode::getNextClockWiseInterface(P2PNetworkInt
     }
     next = catom2D->getInterface((NeighborDirection::Direction)d);
   } while (next->connectedInterface == NULL);
-  cout << "next interface: " << d << endl;
   return next;
 }      
 

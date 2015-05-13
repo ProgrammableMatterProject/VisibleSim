@@ -177,10 +177,10 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[], Catoms2DBlockCode *
              world->setBlocksSize(blockSize);
 		}
 	
-	world->generateRandom(100);
-		world->extractConfig();
+	//world->generateRandom(100);
+	//world->extractConfig();
 
-#if 0
+#if 1
 	/* Reading a catoms */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
 		Vecteur position;
