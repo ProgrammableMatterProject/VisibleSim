@@ -22,18 +22,19 @@
 using namespace std;
 using namespace Catoms2D;
 
-#define VIRTUAL_COORDINATES
-
+//#define VIRTUAL_COORDINATES
+#define REAL_COORDINATES
 //#define MAP_DEBUG
 
-//#define GEO_ROUTING_DEBUG
+#define GEO_ROUTING_DEBUG
 //#define GEO_ROUTING_TEST
 //#define TEST_GEO_ROUTING_ALL_TO_ALL
 //#define TEST_GEO_ROUTING_ONE_TO_ONE
 
 //#define ANGLE_DEBUG
-//#define TUPLE_DEBUG
-#define GHT_TEST
+#define TUPLE_DEBUG
+//#define SEND_TARGET_TUPLES
+#define TEST_GHT
 
 Coordinate Catoms2D1BlockCode::ccth;
 bool Catoms2D1BlockCode::isConnected = false;
@@ -71,8 +72,13 @@ void Catoms2D1BlockCode::startup() {
   stringstream info;
   info << "Starting ";
   scheduler->trace(info.str(),hostBlock->blockId);
-   
-  if(!isConnected && (catom2D->position[2] == 0)){
+
+#ifdef TEST_GHT
+  if(!isConnected 
+     && (catom2D->position[2] == 0) && (catom2D->position[0] == 9)){
+#else
+    if(!isConnected && (catom2D->position[2] == 0)){
+#endif
     cout << "@" << catom2D->blockId << " is connected to host" << endl;
     isConnected = true;
     connectedToHost = true;
@@ -159,11 +165,12 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	} else {
 	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  // Link to PC host simulation:
-	  //out(new ContextTuple(Coordinate(2,5), string("target"))); 
-	  //out(new ContextTuple(Coordinate(2,2), string("target"))); 
-	  //out(new ContextTuple(Coordinate(1,3), string("target")));
-	  //out(new ContextTuple(Coordinate(1,2), string("target")));
-	  /*Catoms2DWorld *world = Catoms2DWorld::getWorld();
+#ifdef TEST_GHT
+	  out(new ContextTuple(Coordinate(6,0), string("target")));
+#endif
+
+#ifdef SEND_TARGET_TUPLES
+	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	  int *gridSize = world->getGridSize();
 	  for (int iy = 0; iy < gridSize[2]; iy++) {
 	    for (int ix = 0; ix < gridSize[0]; ix++) {
@@ -179,7 +186,9 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		//Tuple *res = tuples.inp(query);
 	      }
 	    }
-	    }*/
+	    }
+#endif
+
 #ifdef GEO_ROUTING_TEST
 	  #ifdef TEST_GEO_ROUTING_ALL_TO_ALL
 	  // send a packet to everybody
@@ -331,12 +340,21 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		  Catoms2DWorld *world = Catoms2DWorld::getWorld();
 		  Coordinate s = virtual2Real(m->getSource(),ccth);
 		  Coordinate d = virtual2Real(m->getDestination(),ccth);
+		  cout << "source:" << m->getSource() << " " << s << endl;
+		  cout << "dest:" << m->getDestination() << " " << d << endl;
 		  Catoms2DBlock *cs = world->getGridPtr(s.getX(),0,s.getY());
 		  Catoms2DBlock *cd = world->getGridPtr(d.getX(),0,d.getY());
-		  cs->setColor(BLUE); 
-		  cd->setColor(GREEN);
-		  int ids = cd->blockId;
-		  int idd = cd->blockId;
+		  cs->setColor(RED);
+		  int ids = cs->blockId;
+		  int idd = -1;
+		  
+		  catom2D->setColor(BLUE);
+
+		  if (cd != NULL) {
+		    cd->setColor(GREEN);
+		    idd = cd->blockId;
+		  }
+		  
 	    // packet has made a complete tour
 	    cout << "packet has made a complete tour (s="
 		 << m->getSource()
@@ -349,7 +367,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		 << ", p="
 		 << position
 		 << "=>" <<  virtual2Real(position,ccth)
-		 << ")"
+		 <<  "(id=" << catom2D->blockId << ")"
 		 << endl;
 	     getchar();
 	    handleGeoMessage(m);
