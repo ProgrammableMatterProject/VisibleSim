@@ -21,6 +21,16 @@ BlinkyMeldBlockCode::BlinkyMeldBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksB
 	hasWork = true; // mode fastest
 	polling = false; // mode fastest
 	currentLocalDate = 0; // mode fastest
+	/*bb = (BlinkyBlocksBlock*) hostBlock;
+
+      if((vm != NULL)) {
+            for (int i = 0; i < NUM_PORTS; i++) {
+			vm->neighbors[i] = vm->get_neighbor_ID(i);
+			OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
+
+			vm->enqueue_face(vm->neighbors[i], i, 1);
+		}
+      }*/
 }
 
 BlinkyMeldBlockCode::~BlinkyMeldBlockCode() {
@@ -28,17 +38,20 @@ BlinkyMeldBlockCode::~BlinkyMeldBlockCode() {
 }
 
 void BlinkyMeldBlockCode::init() {
-	bb = (BlinkyBlocksBlock*) hostBlock;
 	stringstream info;
 
 	if((vm != NULL)) {
-
+                  bb = (BlinkyBlocksBlock*) hostBlock;
             for (int i = 0; i < NUM_PORTS; i++) {
 			vm->neighbors[i] = vm->get_neighbor_ID(i);
 			OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
 
 			vm->enqueue_face(vm->neighbors[i], i, 1);
 		}
+            //block initialization
+		//setColor(0);
+		//vm->setLED(128,0,128,32);
+            BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 
 
 		if((MeldInterpret::getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
@@ -83,13 +96,12 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
 		case EVENT_COMPUTE_PREDICATE:
 		      {
-                        info << " Consume a compute event" << endl;
+
                         //Call the VM function to process one rule
                         vm->processOneRule();
                         //Add another compute event on condition
                         //if...
                         if(vm->isWaiting()){
-                              info << " Schedule a compute event" << endl;
                               BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                         } else {
                               info << " Block is no longer waiting" << endl;
@@ -128,6 +140,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_SET_COLOR:
 			{
+                        bb->getTime();
 			      //Called by the VM, no need to enqueue things
                         Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
                         bb->setColor(color);

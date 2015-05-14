@@ -60,6 +60,7 @@ void MeldInterpretScheduler::SemWaitOrReadDebugMessage() {
 }
 
 void *MeldInterpretScheduler::startPaused(/*void *param*/) {
+
       uint64_t systemCurrentTime, systemCurrentTimeMax, pausedTime;
     pausedTime = 0;
     int seed = 500;
@@ -98,36 +99,38 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
         //MeldInterpretDebugger::print("Simulation starts in deterministic mode");
         while (state != ENDED) {
             do {
-                while (!eventsMap.empty()) {
-                    hasProcessed = true;
-                    do {
-                        lock();
-                        first = eventsMap.begin();
-                        pev = (*first).second;
-                        if (pev->date == now()) {
-                            break;
-                        }
-                        if (MeldInterpretVM::dateHasBeenReachedByAll(pev->date)) {
-                            break;
-                        }
+                  while (!eventsMap.empty()) {
+                        hasProcessed = true;
+                        do {
+                              lock();
+                              first = eventsMap.begin();
+                              pev = (*first).second;
+                              if (pev->date == now()) {
+                                    break;
+                              }
+                              if (MeldInterpretVM::dateHasBeenReachedByAll(pev->date)) {
+                                    break;
+                              }
+                              unlock();
+                              //waitForOneVMCommand();
+                        } while (true);
+                        currentDate = pev->date;
+                        OUTPUT << "Processing " << pev->getEventName() << endl;
+                        pev->consume();
+                        eventsMap.erase(first);
+                        eventsMapSize--;
                         unlock();
-                        //waitForOneVMCommand();
-                    } while (true);
-                    currentDate = pev->date;
-                    pev->consume();
-                    eventsMap.erase(first);
-                    eventsMapSize--;
-                    unlock();
-                    if (state == PAUSED) {
-                        if (MeldInterpretVM::isInDebuggingMode()) {
-                            //getDebugger()->handleBreakAtTimeReached(currentDate);
-                        } else {
-                            sem_schedulerStart->wait();
+                        if (state == PAUSED) {
+                              if (MeldInterpretVM::isInDebuggingMode()) {
+                              //getDebugger()->handleBreakAtTimeReached(currentDate);
+                              } else {
+                                    sem_schedulerStart->wait();
+                              }
+                              setState(RUNNING);
                         }
-                        setState(RUNNING);
-                    }
-                    //checkForReceivedVMCommands();
-                }
+                        //checkForReceivedVMCommands();
+                  }
+                  OUTPUT << "EventMap is empty" << endl;
                 //checkForReceivedVMCommands();
             } while (!MeldInterpretVM::equilibrium() || !eventsMap.empty());
 
@@ -294,6 +297,7 @@ bool MeldInterpretScheduler::schedule(Event *ev) {
             }
             eventsMap.insert(it, pair<uint64_t, EventPtr>(pev->date,pev));
         } else {
+              OUTPUT << "Date is not greater than 0" << endl;
             eventsMap.insert(pair<uint64_t, EventPtr>(pev->date,pev));
         }
         break;

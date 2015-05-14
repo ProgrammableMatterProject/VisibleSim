@@ -14,57 +14,52 @@ namespace MeldInterpret{
 
 const unsigned char meld_prog_load[] = {
 /* NUMBER OF PREDICATES */
-0xc,
+0xa,
 /* NUMBER OF RULES */
 0x1,
 /* OFFSETS TO PREDICATE DESCRIPTORS */
-0x1c, 0,
-0x22, 0,
-0x29, 0,
-0x31, 0,
-0x38, 0,
-0x3f, 0,
-0x45, 0,
-0x4c, 0,
-0x53, 0,
-0x5a, 0,
-0x61, 0,
-0x68, 0,
+0x18, 0,
+0x1e, 0,
+0x25, 0,
+0x2d, 0,
+0x34, 0,
+0x3b, 0,
+0x41, 0,
+0x48, 0,
+0x4f, 0,
+0x57, 0,
 /* OFFSETS TO RULE DESCRIPTORS */
-0x6f, 0,
+0x5e, 0,
 /* PREDICATE DESCRIPTORS */
-0x74, 0, 0x4, 0, 0, 0,
-0x75, 0, 0x12, 0, 0x1, 0x1, 0,
-0x76, 0, 0x22, 0, 0, 0x2, 0x2, 0,
-0xf7, 0, 0x3, 0x20, 0x1, 0x1, 0,
-0xa3, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0xb7, 0x1, 0x2, 0, 0x1, 0,
-0xca, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0xde, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0xf2, 0x1, 0x2, 0, 0x1, 0x1, 0,
-0x12, 0x2, 0x22, 0, 0, 0x1, 0x2,
-0x3e, 0x2, 0x22, 0, 0, 0x1, 0x2,
-0x77, 0x2, 0x22, 0, 0, 0x1, 0x2,
+0x63, 0, 0x4, 0, 0, 0,
+0x64, 0, 0x12, 0, 0x1, 0x1, 0,
+0x65, 0, 0x22, 0, 0, 0x2, 0x2, 0,
+0x14, 0x1, 0x3, 0x20, 0x1, 0x1, 0,
+0x53, 0x1, 0x22, 0, 0, 0x1, 0x2,
+0x8b, 0x1, 0x2, 0, 0x1, 0,
+0x9e, 0x1, 0x22, 0, 0, 0x1, 0x2,
+0xd6, 0x1, 0x22, 0, 0, 0x1, 0x2,
+0x1, 0x2, 0x2, 0, 0x1, 0x2, 0x2, 0,
+0x9a, 0x2, 0x2, 0, 0x1, 0x1, 0,
 /* RULE DESCRIPTORS */
-0xb0, 0x2, 0, 0x1, 0,
+0xba, 0x2, 0, 0x1, 0,
 /* PREDICATE BYTECODE */
 /* Predicate 0: */0,
 /* Predicate 1: */0,
-/* Predicate 2: */0x10, 0x4, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x4, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x6, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x6, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x7, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x25, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0x5, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x7, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0,
-/* Predicate 3: */0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x9, 0x1, 0x1, 0x15, 0, 0, 0, 0x26, 0, 0, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0, 0, 0, 0x2, 0x22, 0, 0x1, 0x3, 0x8, 0x2, 0x3, 0x1, 0x10, 0xa, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0xa, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0x1, 0x4, 0x8, 0x3, 0x4, 0x1, 0x10, 0xb, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0xb, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0x1, 0x4, 0x8, 0x3, 0x4, 0x1, 0x10, 0xc, 0, 0, 0, 0x11, 0x40, 0x1, 0x1, 0x21, 0, 0, 0, 0x1, 0x79, 0x1, 0,
-/* Predicate 4: */0x10, 0x2, 0, 0, 0, 0x11, 0x40, 0xa, 0x1, 0x28, 0, 0x1, 0x22, 0, 0, 0x2, 0x8, 0x1, 0x2, 0,
-/* Predicate 5: */0x10, 0x8, 0, 0, 0, 0x11, 0x40, 0x3, 0, 0x1e, 0, 0, 0, 0, 0, 0, 0x78, 0, 0,
-/* Predicate 6: */0x10, 0x1, 0, 0, 0, 0x11, 0x40, 0xb, 0x1, 0x28, 0, 0x1, 0x22, 0, 0, 0x2, 0x8, 0x1, 0x2, 0,
-/* Predicate 7: */0x10, 0x3, 0, 0, 0, 0x11, 0x40, 0x9, 0x1, 0x28, 0, 0x1, 0x22, 0, 0, 0x2, 0x8, 0x1, 0x2, 0,
-/* Predicate 8: */0x10, 0x5, 0, 0, 0, 0x22, 0, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0xc, 0, 0, 0, 0x11, 0x40, 0x5, 0x1, 0x78, 0x1, 0,
-/* Predicate 9: */0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x26, 0, 0, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0, 0x1, 0, 0x2, 0x22, 0, 0, 0x3, 0x8, 0x2, 0x3, 0x1, 0,
-/* Predicate 10: */0x10, 0xa, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0, 0x4, 0x8, 0x3, 0x4, 0x1, 0,
-/* Predicate 11: */0x10, 0xb, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x33, 0, 0, 0, 0, 0x11, 0x22, 0, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x22, 0, 0, 0x4, 0x8, 0x3, 0x4, 0x1, 0,
+/* Predicate 2: */0x10, 0x2, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x4, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x3, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x6, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x4, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x25, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0x5, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x7, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x5, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x29, 0, 0, 0, 0, 0x11, 0x40, 0x8, 0x2, 0x28, 0, 0x2, 0x21, 0, 0x1, 0x1, 0x2, 0x22, 0, 0, 0x3, 0x8, 0x2, 0x3, 0x1, 0,
+/* Predicate 3: */0x10, 0x5, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x2, 0x1, 0x1, 0x15, 0, 0, 0, 0x29, 0, 0, 0, 0, 0x11, 0x40, 0x8, 0x2, 0x28, 0, 0x2, 0x21, 0, 0, 0x1, 0x2, 0x22, 0, 0x1, 0x3, 0x8, 0x2, 0x3, 0x1, 0x10, 0xa, 0, 0, 0, 0x11, 0x40, 0x1, 0x1, 0x21, 0, 0, 0, 0x1, 0x79, 0x1, 0,
+/* Predicate 4: */0x10, 0x8, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0,
+/* Predicate 5: */0x10, 0x6, 0, 0, 0, 0x11, 0x40, 0x3, 0, 0x1e, 0, 0, 0, 0, 0, 0, 0x78, 0, 0,
+/* Predicate 6: */0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0,
+/* Predicate 7: */0x10, 0x7, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x25, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0x1, 0x1, 0, 0x2, 0x78, 0x2, 0x1, 0,
+/* Predicate 8: */0x10, 0x7, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x7, 0x1, 0, 0x19, 0, 0, 0, 0x25, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0x1, 0, 0, 0x2, 0x78, 0x2, 0x1, 0x10, 0x8, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x4, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x6, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0,
+/* Predicate 9: */0x10, 0x1, 0, 0, 0, 0x22, 0, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0xc, 0, 0, 0, 0x11, 0x40, 0x5, 0x1, 0x78, 0x1, 0,
 /* RULE BYTECODE */
 /* Rule 0: */0x10, 0, 0, 0, 0, 0x5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x1, 0x15, 0, 0, 0, 0x24, 0, 0, 0, 0, 0x11, 0x80, 0, 0x23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xf0, 0x1, 0, };
+
 const unsigned char* MeldInterpretVM::meld_prog = meld_prog_load;
 
-char* tuple_names_load[] = {"_init", "setcolor2", "neighbor", "level", "bottomNeighbor", "noBottomNeighbor", "topNeighbor", "sideNeighbor", "vacant", "___robhgieNedis", "___robhgieNmottob", "___robhgieNpot", };
+char* tuple_names_load[] = {"_init", "setcolor2", "neighbor", "level", "bottomNeighbor", "noBottomNeighbor", "topNeighbor", "sideNeighbor", "neighbor-level", "vacant", };
 char** MeldInterpretVM::tuple_names = tuple_names_load;
 char* rule_names_load[] = {"_init -o node-axioms.", };
 char** MeldInterpretVM::rule_names = rule_names_load;
@@ -76,7 +71,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 
 
 	MeldInterpretVM::MeldInterpretVM(BlinkyBlocks::BlinkyBlocksBlock *b){
-	      OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
             /* Init will always be predicate 0 */
             TYPE_INIT = 0;
             /* Initialize unknown type IDs */
@@ -98,10 +92,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 		polling = false;
 		deterministicSet = false;
 		firstStart = true;
-		currentLocalDate = myGetTime();
-		//block initialization
-		//setColor(0);
-		setLED(128,0,128,32);
+		currentLocalDate = 0;
 
 		/* Enqueue init to derive the program's axioms */
 		enqueue_init();
@@ -110,14 +101,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 		numNeighbors = getNeighborCount();
 		enqueue_count(numNeighbors, 1);
 
-		/*for (int i = 0; i < NUM_PORTS; i++) {
-			neighbors[i] = get_neighbor_ID(i);
-			OUTPUT << "Adding neighbor " << neighbors[i] << " on face " << i << endl;
-
-			enqueue_face(neighbors[i], i, 1);
-		}*/
 		vmMap.insert(std::pair<int, MeldInterpretVM*>(blockId,this));
-		BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), host));
 	}
 
 	MeldInterpretVM::~MeldInterpretVM(){
@@ -177,7 +161,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 
 	/* Enqueue a tuple for execution */
       void MeldInterpretVM::enqueueNewTuple(tuple_t tuple, record_type isNew){
-            OUTPUT << __LINE__ << " Block " << blockId << " enqueue tuple of type " << TYPE_NAME(TUPLE_TYPE(tuple)) << " new " << (int)isNew << endl;
             myassert (TUPLE_TYPE(tuple) < NUM_TYPES);
 
             if (TYPE_IS_STRATIFIED(TUPLE_TYPE(tuple))) {
@@ -268,11 +251,10 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             // processing new facts and updating axioms
 
             waiting = 0;
-            OUTPUT << "Processing One Rule " << endl;
             //If there are new tuples
             if(!queue_is_empty(newTuples)) {
                   int isNew = 0;
-                  print_newTuples();
+                  //print_newTuples();
                   tuple_t tuple = queue_dequeue(newTuples, &isNew);
                   tuple_handle(tuple, isNew, reg);
                   waiting = 1;
@@ -292,7 +274,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                   //Else if there are no tuple to process
                   waiting = 1;
             } else {
-                  //OUTPUT << "DEBUGGING " << __LINE__ << " " << __FILE__ << endl;
                   /* If all tuples have been processed
                   * update rule state and process them if they are ready */
                   for (int i = 0; i < NUM_RULES; ++i) {
@@ -351,7 +332,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                   neighbors[i] = neighbor;
                   enqueue_face(neighbors[i], i, 1);
             }
-            OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 	}
 
 	bool MeldInterpretVM::isWaiting(){
@@ -372,7 +352,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             size_t tuple_size = TYPE_SIZE(type);
 
             if(!TYPE_IS_LINEAR(type) && !TYPE_IS_ACTION(type)) {
-                  OUTPUT << __FILE__ << " " << __LINE__ << endl;
                   //tuple_queue *queue = receivedTuples + face;
                   tuple_queue *queue = &(receivedTuples[face]);
                   if(isNew > 0) {
@@ -390,12 +369,10 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                         }
                   }
             }
-            OUTPUT << __FILE__ << " " << __LINE__ << endl;
 
             tuple = malloc(tuple_size);
             memcpy(tuple, rcvdTuple, tuple_size);
             enqueueNewTuple(tuple, (record_type)isNew);
-            OUTPUT << __FILE__ << " " << __LINE__ << endl;
 	}
 
 	/* Sends a tuple to Block of ID rt, with or without delay */
@@ -412,7 +389,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	    enqueueNewTuple(tuple, (record_type) isNew);
 	  }
 	  else {
-            OUTPUT << "target block is " << target << endl;
 	    int face = -1;
 
 	    if (target == up())
@@ -428,6 +404,8 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	    else if (target == south())
 	      face = SOUTH;
 
+OUTPUT << __LINE__ << " send tuple " << TYPE_NAME(TUPLE_TYPE(tuple)) << " on node " << (int)rt << " at face " << BlinkyBlocks::NeighborDirection::getString(face) << endl;
+
 	    if (face != -1) {
 
             myassert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= 17);
@@ -438,11 +416,9 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	      else {
                   ptr = (MessagePtr)(new RemoveTupleMessage(tuple));
 	      }
-            P2PNetworkInterface *p2p = host->getP2PNetworkInterfaceByDestBlockId(neighbors[face]);
+            P2PNetworkInterface *p2p = host->getP2PNetworkInterfaceByDestBlockId(get_neighbor_ID(face));
             /*Prepare message*/
             ptr->sourceInterface = p2p;
-            OUTPUT << p2p->globalId << " interface number " << endl;
-            OUTPUT << p2p->connectedInterface->globalId << " connected interface" << endl;
             if(p2p->connectedInterface != NULL)
                   ptr->destinationInterface  = p2p->connectedInterface;
             MeldInterpret::getScheduler()->schedule(new VMSendMessageEvent(MeldInterpret::getScheduler()->now(), host, ptr, p2p));
@@ -474,7 +450,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	  tuple_type type = TUPLE_TYPE(tuple);
 	  myassert (type < NUM_TYPES);
 	  tuple_do_handle(type, tuple, isNew, registers);
-            OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 	}
 
 	/* VM initialization routine */
@@ -525,7 +500,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
         uint8_t count, i;
 
         for(count = 0, i = 0; i < NUM_PORTS; ++i) {
-            if(neighbors[i] != VACANT) {
+            if(get_neighbor_ID(i) != VACANT) {
                 count++;
             }
         }
@@ -676,10 +651,8 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 
                   }
             }
-            meld_prog
+            meld_prog*/
 
-            OUTPUT << "Reading meld program" << endl;
-            OUTPUT << "123 " << meld_prog[0] << "456" << endl;*/
       }
 
 
@@ -760,7 +733,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
         tuple_type type = FETCH(pc++);
         byte reg_index = FETCH(pc);
         tuple_t *dst = (void**)eval_reg (reg_index, &pc, reg);
-        OUTPUT << __FILE__ << " : " << __LINE__ << endl;
         *dst = ALLOC_TUPLE(TYPE_SIZE(type));
 #if defined(DEBUG_INSTRS) || defined(DEBUG_ALLOCS)
         {
@@ -815,11 +787,8 @@ unsigned char * MeldInterpretVM::arguments = NULL;
      */
     inline void MeldInterpretVM::execute_send (const unsigned char *pc, Register *reg, int isNew) {
         ++pc;
-        OUTPUT << __FILE__ << " : " << __LINE__ << endl;
         Register send_reg = reg[SEND_MSG(pc)];
-        OUTPUT << __FILE__ << " : " << __LINE__ << endl;
         NodeID send_rt = reg[SEND_RT(pc)];
-        OUTPUT << " Execute_send() target : " << send_rt << endl;
 
 #ifdef DEBUG_INSTRS
         printf("--%d--\t SEND reg %d TO reg %d\n",
@@ -827,7 +796,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 #endif
 
         tuple_send((tuple_t)MELD_CONVERT_REG_TO_PTR(send_reg), send_rt, 0, isNew);
-        OUTPUT << __FILE__ << " : " << __LINE__ << endl;
     }
 
     /* Call an external function with one argument.
@@ -913,10 +881,10 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             entry = entry->next;
         }
 
-/*#ifdef DEBUG_INSTRS
+#ifdef DEBUG_INSTRS
         printf("--%d--\t ITER %s len=%d TO reg %d\n",
                getBlockId(), tuple_names[type], length, reg_store_index);
-#endif*/
+#endif
 
         if(length == 0) {
             /* no need to execute any further code, just jump! */
@@ -964,10 +932,10 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                 matched = matched && (memcmp(field, val, type_size) == 0);
             }
 
-/*#ifdef DEBUG_INSTRS
+#ifdef DEBUG_INSTRS
             printf("--%d--\t MATCHED: %d | length: %d\n", getBlockId(),
                    matched, length);
-#endif*/
+#endif
 
             if (matched) {
                 /* We've got a match! */
@@ -986,7 +954,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                     return ret;
                 }
                 if(ret == RET_RET) {
-                  OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
                     free(list);
                     return ret;
                 }
@@ -1776,7 +1743,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 
     void MeldInterpretVM::queue_push_tuple(tuple_queue *queue, tuple_entry *entry) {
         if(queue->head == NULL){
-            //OUTPUT << "entry tuple type " << (int)TUPLE_TYPE(entry->tuple) << endl;
             queue->head = entry;
             queue->tail = entry;
         }
@@ -1784,7 +1750,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             queue->tail->next = entry;
             queue->tail = entry;
         }
-        print_newTuples();
     }
 
     tuple_t MeldInterpretVM::queue_pop_tuple(tuple_queue *_queue) {
@@ -2152,13 +2117,13 @@ unsigned char * MeldInterpretVM::arguments = NULL;
      * process it with a isNew of -1 to perform retraction, and free both tuples.
      */
     void MeldInterpretVM::tuple_do_handle(tuple_type type, tuple_t tuple, int isNew, Register *reg) {
-        OUTPUT << __LINE__ << " tuple_do_handle()" << endl;
         if(type == TYPE_TERMINATE) {
             FREE_TUPLE(tuple);
             TERMINATE_CURRENT();
             return;
         }
 
+#ifdef DEBUG_INSTRS
         if (isNew == 1) {
             fprintf(stderr, "\x1b[1;32m--%d--\tExecuting tuple ", getBlockId());
             tuple_print (tuple, stderr);
@@ -2168,6 +2133,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             tuple_print (tuple, stderr);
             fprintf(stderr, "\x1b[0m\n");
         }
+#endif
 
         if (TYPE_IS_ACTION(type)) {
             if(isNew > 0)
@@ -2181,7 +2147,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             tuple_queue *queue = &TUPLES[type];
             tuple_entry** current;
             tuple_entry* cur;
-            OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 
             for (current = &queue->head; *current != NULL; current = &(*current)->next) {
                   cur = *current;
@@ -2193,8 +2158,9 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                               if (!TYPE_IS_LINEAR(type))
                                     process_bytecode(tuple, TYPE_START(TUPLE_TYPE(tuple)), isNew,
                                     NOT_LINEAR, reg, PROCESS_TUPLE);
-                              OUTPUT << tuple_names[2] << endl;
+#ifdef DEBUG_INSTRS
                               fprintf(stdout, "\x1b[1;32m--%d--\tDelete Iter success for  %s\x1b[0m\n", getBlockId(), tuple_names[type]);
+#endif
                               FREE_TUPLE(queue_dequeue_pos(queue, current));
                               /* Also free retraction fact */
                               FREE_TUPLE(tuple);
@@ -2208,19 +2174,18 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                         return;
                         }
                   }
-                  OUTPUT << __FILE__ << " " << __LINE__ << endl;
             }
-            OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 
             // if deleting, return
             if (isNew <= 0) {
+#ifdef DEBUG_INSTRS
                 fprintf(stdout, "\x1b[1;31m--%d--\tDelete Iter failure for %s\x1b[0m\n", getBlockId(), tuple_names[type]);
+#endif
                 FREE_TUPLE(tuple);
                 return;
             }
 
             queue_enqueue(queue, tuple, (record_type) isNew);
-            OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
 
             process_bytecode(tuple, TYPE_START(TUPLE_TYPE(tuple)), isNew, TYPE_IS_LINEAR(TUPLE_TYPE(tuple)), reg, PROCESS_TUPLE);
             return;
@@ -2244,13 +2209,11 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             if(memcmp(start, tuple, sizeBegin))
                 continue;
 
-            OUTPUT << __FILE__ << " : " << __LINE__ << endl;
             size_t sizeOffset = sizeBegin + TYPE_ARG_SIZE(type, field_aggregate);
              size_t sizeEnd = TYPE_SIZE(type) - sizeOffset;
 
              if (memcmp(start + sizeOffset, (char*)tuple + sizeOffset, sizeEnd))
              continue;
-            OUTPUT << __FILE__ << " : " << __LINE__ << endl;
             tuple_queue *agg_queue = cur->records.agg_queue;
 
             /* AGG_FIRST aggregate optimization */
@@ -2291,10 +2254,11 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                             aggregate_recalc(cur, reg, false);
                     } else
                         aggregate_recalc(cur, reg, false);
-
+#ifdef DEBUG_INSTRS
                     fprintf(stdout,
                             "\x1b[1;32m--%d--\tAgg delete Iter success for %s\x1b[0m\n",
                             getBlockId(), tuple_names[type]);
+#endif
 
                     FREE_TUPLE(tuple);
                     return;
@@ -2303,9 +2267,11 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 
             // if deleting, return
             if (isNew <= 0) {
+#ifdef DEBUG_INSTRS
                 fprintf(stdout,
                         "\x1b[1;32m--%d--\tAgg delete Iter failure for %s\x1b[0m\n",
                         getBlockId(), tuple_names[type]);
+#endif
 
                 FREE_TUPLE(tuple);
                 return;
@@ -2547,7 +2513,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
         /*   } */
         /* #else */
 
-        OUTPUT << __LINE__ << " process_bytecode()" << endl;
 
         if (PROCESS_TYPE(state) == PROCESS_TUPLE)
             printf ("\n--%d--\tPROCESS TUPLE %s -- isNew = %d\n", getBlockId(), tuple_names[TUPLE_TYPE(tuple)], isNew);
@@ -2582,7 +2547,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 #endif
 #endif
 
-            //OUTPUT << __FILE__ << " : " << __LINE__ << " instr = " << (int)(*(const unsigned char*)pc) << endl;
             switch (*(const unsigned char*)pc) {
             case RETURN_INSTR: {	/* 0x0 */
 #ifdef DEBUG_INSTRS
@@ -2696,7 +2660,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             }
 
             case MVINTREG_INSTR: {	/* 0x1f */
-                  OUTPUT << __FILE__ << " " << __LINE__ << endl;
                 const byte *npc = pc + MVINTREG_BASE;
                 execute_mvintreg (pc, reg);
                 pc = npc;
@@ -3086,7 +3049,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             }
 
             default:
-                  OUTPUT << __FILE__ << " : " << __LINE__ << " pc = " << (int)(*(const unsigned char*)pc) << endl;
                 printf ("--%d--\t "
                         "INSTRUCTION NOT IMPLEMENTED YET: %#x %#x %#x %#x %#x\n",
                         getBlockId(),
