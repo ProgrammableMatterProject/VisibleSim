@@ -25,11 +25,11 @@ typedef boost::shared_ptr<Event> EventPtr;
 using namespace std;
 
 class P2PNetworkInterface;
-//class Clock;
 
 namespace BaseSimulator {
 
 class BlockCode;
+class Clock;
 
 //===========================================================================================================
 //

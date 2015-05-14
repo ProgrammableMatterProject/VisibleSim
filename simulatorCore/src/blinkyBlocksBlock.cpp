@@ -92,14 +92,18 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlo
 		tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
 		tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
 	}
+	clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
 	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
-	clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC1K_CRC, blockId);
-	//clock = new LinearDriftClock(Clock::XMEGA_RTC_OSC32K_EXT, blockId);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {
 	OUTPUT << "BlinkyBlocksBlock destructor " << blockId << endl;
+}
+
+void BlinkyBlocksBlock::pauseClock(uint64_t delay, uint64_t start){
+	//while(BaseSimulator::getScheduler()->now()<delay+start){
+	
 }
 
 void BlinkyBlocksBlock::setPosition(const Vecteur &p) {
