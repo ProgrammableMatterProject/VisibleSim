@@ -19,15 +19,15 @@ typedef boost::shared_ptr<SyncMessage> SyncMessagePtr;
 
 class SyncMessage : public Message {
 	uint64_t time;
-	int round;
+	uint round;
 	
 public :
-	SyncMessage(uint64_t t, int r) : Message() { type = SYNC_MSG_ID; time = t; round = r; };
+	SyncMessage(uint64_t t, uint r) : Message() { type = SYNC_MSG_ID; time = t; round = r; };
 	SyncMessage(SyncMessage *m) : Message() { type = m->type; time = m->time; round = m->round; } ;
 	~SyncMessage() {};
 
 	uint64_t getTime() {return time; };
-	int getRound() { return round; };
+	uint getRound() { return round; };
 	unsigned int size() { return 17;};
 };
 

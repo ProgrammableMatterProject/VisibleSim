@@ -17,10 +17,10 @@
 
 class msrSyncBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 private:
-	// globalTime = a * localTime + b
-	float a;
-	float b;
-	int round;
+	// globalTime = y0 * localTime + x0
+        float y0; // frequency drift
+	float x0; // time offset
+	uint round;
 	vector<pair<uint64_t,uint64_t> > syncPoints;
 	vector<uint64_t> error;
 	

@@ -2,15 +2,16 @@
 #include "scheduler.h"
 #include <limits>
 
+//#define CLOCK_DEBUG
+
 namespace BaseSimulator {
 
   Clock::Clock(ClockType clockType, BuildingBlock *h) {
     hostBlock = h;
     type = clockType;
-    setClockProperties(clockType);
-
     x0 = BaseSimulator::getScheduler()->now();
     generator =  boost::rand48(hostBlock->blockId);
+    setClockProperties(clockType);
   }
 	
   void Clock::setClockProperties(ClockType clockType) {
@@ -27,11 +28,17 @@ namespace BaseSimulator {
       resolution = RESOLUTION_1MS;
       accuracy = ACCURACY_10000PPM;
       
-      // D, y0, x0, errorSD
-      double mean[3] = { -1.179717*pow(10,-11), 0.9922277, 2080.197};
-      double sd[3] = {3.060884*pow(10,-12), 0.001851285, 294.832};
+      // D, y0, errorSD
+      // us:
+      double mean[3] = { -1.179717*pow(10,-14), 0.9922277, 2080197};
+      double sd[3] = {3.060884*pow(10,-15), 0.001851285, 294832};
       double v[3];
-      
+
+      // ms:
+      //double mean[3] = { -1.179717*pow(10,-11), 0.9922277, 2080.197};
+      //double sd[3] = {3.060884*pow(10,-12), 0.001851285, 294.832};
+      //double v[3];
+
       for (int i = 0; i < 3; i++) {
 	boost::mt19937 uGenerator(hostBlock->blockId);
 	boost::normal_distribution<double> normalDist(mean[i],sd[i]);
@@ -41,6 +48,9 @@ namespace BaseSimulator {
       D = v[0];
       y0 = v[1];
       sigma = v[2];
+#ifdef CLOCK_DEBUG
+      cout << "@" << hostBlock->blockId << ": D=" << D << ", y0=" << y0 << ", sigma=" << sigma << endl;
+#endif   
       }
       break;
     case XMEGA_RTC_OSC32K_EXT:
@@ -107,8 +117,9 @@ namespace BaseSimulator {
 	break; //sorted list
       }
     }
-	
-    noise = generator();
+
+    // TODO: noise ?
+    //noise = generator();
 
     localTime = (1.0/2.0)*D*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise;
     localTime = max(minL,localTime);
@@ -152,7 +163,8 @@ namespace BaseSimulator {
       }
     }
   
-    noise = generator();
+    // TODO: noise ?
+    //noise = generator();
 
     double delta =  pow(y0,2) - 4 * (1.0/2.0)*D * (x0+noise-(double)localTime);
     if (delta > 0) {
