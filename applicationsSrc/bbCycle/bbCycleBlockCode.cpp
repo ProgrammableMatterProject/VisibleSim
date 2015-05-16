@@ -21,7 +21,6 @@ using namespace BlinkyBlocks;
 
 #define SYNC_PERIOD (2*1000*1000)
 #define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
-#define SIMULATION_DURATION_USEC (10*60*1000*1000)
 
 BbCycleBlockCode::BbCycleBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
 	OUTPUT << "BbCycleBlockCode constructor" << endl;

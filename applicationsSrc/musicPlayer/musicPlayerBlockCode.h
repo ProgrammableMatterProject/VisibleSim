@@ -27,6 +27,8 @@ class MusicPlayerBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;
 	bool received[1000];
 	bool b[6];
+	bool assigned;
+	bool back;
 	int rootInterface;
 	int64_t delay;
 	int idMessage;
@@ -65,10 +67,10 @@ public:
 
 class Note {
 public:
-	int startTime;
-	unsigned int frequency;
-	unsigned int duration;
-	Note(int sTime, unsigned int freq, unsigned int time);
+	float frequency;
+	float startTime;
+	int timeDiv;
+	Note(float freq, float time, int div);
 	~Note();
 };
 #endif /* BBCYCLEBLOCKCODE_H_ */

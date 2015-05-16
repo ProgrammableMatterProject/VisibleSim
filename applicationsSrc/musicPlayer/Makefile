@@ -13,7 +13,7 @@ INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 #for linux
 #LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimMultiCores -lm -L/usr/X11/lib -lboost_thread  -lglut -lpthread
 
-LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
+LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib -lsfml-audio -lsfml-system
 
 SIMULATORLIB = ../../simulatorCore/lib/libsimBlinkyBlocks.a
 
