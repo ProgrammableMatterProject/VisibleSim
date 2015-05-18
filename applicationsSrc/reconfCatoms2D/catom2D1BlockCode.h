@@ -17,11 +17,10 @@
 #include "contextTuple.hpp"
 #include "reconfCatoms2DMessages.h"
 #include "segment.h"
+#include "map.h"
+#include "angle.h"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
- private:
-  static Coordinate ccth;
-  static bool isConnected;
  public:
 
   Catoms2D::Catoms2DScheduler *scheduler;
@@ -29,28 +28,15 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
 
   Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
   ~Catoms2D1BlockCode ();
-  // Map construction
-  bool connectedToHost;
-  bool positionKnown;
-  Coordinate position;
-  //Coordinate getPosition(P2PNetworkInterface *recv_it, Coordinate c);
-  Coordinate getPosition(P2PNetworkInterface *it);
-  void setPosition(Coordinate p);
-  Coordinate real2Virtual(Coordinate p, Coordinate o);
-  Coordinate virtual2Real(Coordinate p, Coordinate o);
-  int waiting;
-  P2PNetworkInterface *toHost;
-  void buildMap();
-  void mapBuilt(P2PNetworkInterface *d);
+
+  // Distributed map construction
+  Map map;
 
   // Geo routing
+  //GSRP gsrp;
+  Angle angle;
+
   bool geoTest;
-  int distance(Coordinate p1, Coordinate p2);
-  P2PNetworkInterface* getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore);
-  P2PNetworkInterface* getNextClockWiseInterface(P2PNetworkInterface *recv); 
-  P2PNetworkInterface* getNextCounterClockWiseInterface(P2PNetworkInterface *recv);
-  P2PNetworkInterface* getNextCounterClockWiseInterface(Coordinate a);
-  P2PNetworkInterface* getIntersectInterface(Segment &s, P2PNetworkInterface *ignore);
   
   void send(GeoMessage *m);
   void forward(GeoMessage_ptr m, P2PNetworkInterface *p2p);

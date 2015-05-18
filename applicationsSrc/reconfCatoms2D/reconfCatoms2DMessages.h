@@ -13,54 +13,7 @@
 #include "tuple.hpp"
 #include "contextTuple.hpp"
 
-
-#define GO_MAP_MSG 15000
-#define BACK_MAP_MSG 15001
 #define GEO_TUPLE_MSG 15002
-
-
-// MAP CONSTRUCTION
-
-class GoMapMessage;
-typedef boost::shared_ptr<GoMapMessage> GoMapMessage_ptr;
-
-class GoMapMessage : public Message {
- protected:
-  Coordinate position;
- public:
-  
-
- GoMapMessage(Coordinate p) : Message() { 
-    type = GO_MAP_MSG;
-    position = p;
-  };
-
- GoMapMessage(GoMapMessage *m) : Message() { 
-    type = m->type;
-    position = m->position;
-  };
-  
-  ~GoMapMessage() {};
-  Coordinate getPosition() {return position;};
-  unsigned int size() { return 17;};
-};
-
-class BackMapMessage;
-typedef boost::shared_ptr<BackMapMessage> BackMapMessage_ptr;
-
-class BackMapMessage : public Message {
- public:
- BackMapMessage() : Message() { 
-    type = BACK_MAP_MSG;
-  };
-
- BackMapMessage(BackMapMessage *m) : Message() { 
-    type = m->type;
-  };
-  
-  ~BackMapMessage() {};
-  unsigned int size() { return 17;};
-};
 
 // GEO MESSAGE
 class GeoMessage;

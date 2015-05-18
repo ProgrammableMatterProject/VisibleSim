@@ -4,6 +4,7 @@
 //http://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 
 using namespace std;
+using namespace Catoms2D;
 
 Segment::Segment(Coordinate p1, Coordinate p2) {
   e1 = p1;
@@ -80,4 +81,19 @@ bool Segment::intersect(Segment &s) const
   if (o4 == 0 && onSegment(p2, q1, q2)) return true;
  
   return false; // Doesn't fall in any of the above cases
+}
+
+P2PNetworkInterface* Segment::getIntersectInterface(Catoms2D::Catoms2DBlock *catom2D, Map &map, P2PNetworkInterface *ignore) const {
+  for (int i = 0; i < 6; i++) {
+    P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
+    if ((ignore == it) || (it->connectedInterface == NULL)) {
+      continue;
+    }
+    Coordinate pdir = map.getPosition(it);
+    Segment seg = Segment(map.getPosition(),pdir);
+    if(intersect(seg)) {
+      return it;
+    }
+  }
+  return NULL;
 }

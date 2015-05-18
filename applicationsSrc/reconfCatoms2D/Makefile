@@ -1,4 +1,4 @@
-SRCS = segment.cpp catom2D1.cpp catom2D1BlockCode.cpp
+SRCS = angle.cpp map.cpp segment.cpp catom2D1.cpp catom2D1BlockCode.cpp
 
 OUT = catom2D1
 

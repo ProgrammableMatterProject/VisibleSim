@@ -16,15 +16,10 @@
 
 #include "reconfCatoms2DMessages.h"
 #include "reconfCatoms2DEvents.h"
-#include "angle.h"
 #include <float.h>
 
 using namespace std;
 using namespace Catoms2D;
-
-//#define VIRTUAL_COORDINATES
-#define REAL_COORDINATES
-//#define MAP_DEBUG
 
 #define GEO_ROUTING_DEBUG
 //#define GEO_ROUTING_TEST
@@ -32,25 +27,17 @@ using namespace Catoms2D;
 //#define TEST_GEO_ROUTING_ONE_TO_ONE
 
 //#define ANGLE_DEBUG
-#define TUPLE_DEBUG
+//#define TUPLE_DEBUG
 //#define SEND_TARGET_TUPLES
-#define TEST_GHT
+//#define TEST_GHT
 
-Coordinate Catoms2D1BlockCode::ccth;
-bool Catoms2D1BlockCode::isConnected = false;
-
-Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
+Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host), map(host), angle(host,map) {
   scheduler = Catoms2D::getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
-  connectedToHost = false;
-  waiting = 0;
-  toHost = NULL;
-  positionKnown = false;
   geoTest = false;
 }
 
-Catoms2D1BlockCode::~Catoms2D1BlockCode() {
-}
+Catoms2D1BlockCode::~Catoms2D1BlockCode() {}
 
 void Catoms2D1BlockCode::updateBorder() {
   for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {
@@ -73,35 +60,11 @@ void Catoms2D1BlockCode::startup() {
   info << "Starting ";
   scheduler->trace(info.str(),hostBlock->blockId);
 
-#ifdef TEST_GHT
-  if(!isConnected 
-     && (catom2D->position[2] == 0) && (catom2D->position[0] == 9)){
-#else
-    if(!isConnected && (catom2D->position[2] == 0)){
-#endif
-    cout << "@" << catom2D->blockId << " is connected to host" << endl;
-    isConnected = true;
-    connectedToHost = true;
-    toHost = NULL;
-    }
-  
-  if(connectedToHost) {
-#ifdef VIRTUAL_COORDINATES  
-    // virtual coordinate
-    Coordinate c = Coordinate(0,0);
-    ccth.x = catom2D->position[0];
-    ccth.y = catom2D->position[2];
-#endif
-#ifdef REAL_COORDINATES
-    // real coordinate
-    Coordinate c(catom2D->position[0], catom2D->position[2]);
-    ccth.x = 0;
-    ccth.y = 0;
-#endif
-    setPosition(c);
-    catom2D->setColor(RED);
-    buildMap();
+  if (!map.isConnected && (catom2D->position[2] == 0)) {
+    map.connectToHost();
   }
+  
+  updateBorder();
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
@@ -112,89 +75,23 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
     P2PNetworkInterface * recv_interface = message->destinationInterface;
     switch(message->type) {
-    case GO_MAP_MSG: {
-      GoMapMessage_ptr m = boost::static_pointer_cast<GoMapMessage>(message);
-      if (!positionKnown) {
-	toHost = recv_interface;
-	Coordinate c = m->getPosition(); //getPosition(toHost, m->getLast());
-	setPosition(c);
-	#ifdef MAP_DEBUG
-	Coordinate p;
-	p.x = catom2D->position[0];
-	p.y = catom2D->position[2];
-	Coordinate real =  real2Virtual(p,ccth);
-	cout << "@" << catom2D->blockId <<  " position " << position << " vs " << real << "(diff: " << position.x - real.x << "," <<  position.y - real.y << ")" << endl;
-	if( real != position) { // not relevant (odd/even line of the leader)  
-	  catom2D->setColor(BLUE);
-	}
-	#endif
-#ifdef GEO_ROUTING_TEST
-	#ifdef TEST_GEO_ROUTING_ONE_TO_ONE
-	Coordinate src(5,1);
-	Coordinate dest(5,4);
-	cout << "@" << catom2D->blockId << " " << position << endl;
-	if (position == src) {
-	  catom2D->setColor(BLUE);
-	  cout << "sending from " << src << " to " << dest << endl;
-	  out(new ContextTuple(dest, string("testGeoRoutingOneToOne")));
-	}
-	if (position == dest) {
-	  catom2D->setColor(GREEN);
-	}
-	#endif
-#endif
-	waiting = 0;
-	buildMap();
-	if (waiting==0) {
-	  mapBuilt(toHost);
-	}
-      } else {
-	mapBuilt(recv_interface);
-      }
-    }
-      break;
-    case BACK_MAP_MSG: {
-      BackMapMessage_ptr m = boost::static_pointer_cast<BackMapMessage>(message);
-      waiting--;
-#ifdef MAP_DEBUG
-      //cout << "@" << catom2D->blockId <<  " back msg " << waiting << endl;
-#endif
-      if (!waiting) {
-	if (!connectedToHost) {
-	  mapBuilt(toHost);
-	} else {
+    case GO_MAP_MSG:
+    case BACK_MAP_MSG:
+      {
+	bool finished = map.handleMessage(message);
+	if (finished) {
+	  localTuples.out(new ContextTuple(map.getPosition(), string("map")));
+	  if (map.connectedToHost) {
 	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  // Link to PC host simulation:
+	  
 #ifdef TEST_GHT
 	  out(new ContextTuple(Coordinate(6,0), string("target")));
 #endif
 
-#ifdef SEND_TARGET_TUPLES
-	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-	  int *gridSize = world->getGridSize();
-	  for (int iy = 0; iy < gridSize[2]; iy++) {
-	    for (int ix = 0; ix < gridSize[0]; ix++) {
-	      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-		Coordinate t(ix,iy);
-		t.x -= ccth.x;
-		t.y -= ccth.y;
-		cout << "(" << t.x << " " << t.y << ")" << endl;
-		out(new ContextTuple(Coordinate(t.x,t.y), string("target")));
-		//localTuples.out(Tuple(string("target"), ix, iy));
-		//tuples.out(new Tuple(string("aaa"), 5, 12.5));
-		//Tuple query(string("aaa"), TYPE(int), 12.5);  
-		//Tuple *res = tuples.inp(query);
-	      }
-	    }
-	    }
-#endif
-
 #ifdef GEO_ROUTING_TEST
-	  #ifdef TEST_GEO_ROUTING_ALL_TO_ALL
+#ifdef TEST_GEO_ROUTING_ALL_TO_ALL
 	  // send a packet to everybody
-	  //out(new ContextTuple(Coordinate(2,-3), string("testGeoRouting")));
-	  //getchar();
-	  //out(new ContextTuple(Coordinate(2,5), string("testGeoRouting")));
 	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	  int *gridSize = world->getGridSize();
 	  for (int iy = 0; iy < gridSize[2]; iy++) {
@@ -205,26 +102,41 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		Coordinate t =  real2Virtual(real,ccth);
 		cout << "to @" << c->blockId << " " <<  real << " " << t << endl;
 		out(new ContextTuple(t, string("testGeoRouting")));
+	      }
+	    }
+	  }
+#endif
+#endif
+#ifdef SEND_TARGET_TUPLES
+	  /*  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+	      int *gridSize = world->getGridSize();
+	      for (int iy = 0; iy < gridSize[2]; iy++) {
+	      for (int ix = 0; ix < gridSize[0]; ix++) {
+	      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
+		Coordinate t(ix,iy);
+		t.x -= ccth.x;
+		t.y -= ccth.y;
+		cout << "(" << t.x << " " << t.y << ")" << endl;
+		out(new ContextTuple(Coordinate(t.x,t.y), string("target")));
 		//localTuples.out(Tuple(string("target"), ix, iy));
 		//tuples.out(new Tuple(string("aaa"), 5, 12.5));
 		//Tuple query(string("aaa"), TYPE(int), 12.5);  
 		//Tuple *res = tuples.inp(query);
-	      }
-	    }
-	    }
-	  #endif
+		}
+		}
+		}*/
 #endif
+	  }
 	}
       }
-    }
       break;
     case GEO_TUPLE_MSG: {
       GeoMessage_ptr m = boost::static_pointer_cast<GeoMessage>(message); 
 #ifdef GEO_ROUTING_DEBUG
       // cout << "Geo message: " << m->getSource() << " -> ... ->  " << m->getLast() << " -> ... -> " << position << " -> ... -> " <<  m->getDestination() <<  endl;
-      cout << "Geo message: s=" << m->getSource() << " d=" << m->getDestination() << " l=" << getPosition(recv_interface) << " p=" <<  position << " (" << catom2D->blockId << ")" << endl;
+      cout << "Geo message: s=" << m->getSource() << " d=" << m->getDestination() << " l=" << map.getPosition(recv_interface) << " p=" <<  map.getPosition() << " (" << catom2D->blockId << ")" << endl;
 #endif
-      if (position == m->getDestination()) {
+      if (map.getPosition() == m->getDestination()) {
 	// message well arrived
 	cout << "msg had a safe trip! " << m->getDestination() << endl;
 
@@ -243,7 +155,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	      Catoms2DBlock* c = world->getGridPtr(ix,0,iy);
 	      if (c != NULL) {
 		Coordinate real(ix,iy);
-		Coordinate t =  real2Virtual(real,ccth);
+		Coordinate t =  map.real2Virtual(real);
 		cout << "to @" << c->blockId << " " <<  real << " " << t << endl;
 		out(new ContextTuple(t, string("testGeoRouting")));
 		//localTuples.out(Tuple(string("target"), ix, iy));
@@ -261,21 +173,21 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	switch (m->getMode()) {
 	case GeoMessage::mode_t::GREEDY:
 	  {
-	    P2PNetworkInterface *next = getClosestInterface(m->getDestination(), recv_interface);
+	    P2PNetworkInterface *next = map.getClosestInterface(m->getDestination(), recv_interface);
 	    if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
-	      cout << "Greedy forward to " << getPosition(next) << endl;
+	      cout << "Greedy forward to " << map.getPosition(next) << endl;
 #endif
 	      forward(m,next);
 	    } else {
 	      // perimeter mode
-	      m->setPerimeterMode(position);
+	      m->setPerimeterMode(map.getPosition());
 	      // find interface
-	      next = getNextCounterClockWiseInterface(m->getDestination());
+	      next = angle.getNextCounterClockWiseInterface(m->getDestination());
 	      m->setFirstEdge(catom2D->getDirection(next));
 	      forward(m,next);
  #ifdef GEO_ROUTING_DEBUG
-	  cout << "Perimeter (new) forward to " << getPosition(next) << endl;
+	  cout << "Perimeter (new) forward to " << map.getPosition(next) << endl;
 #endif
 	  //cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
 	    }
@@ -289,57 +201,47 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		 << ")"
 		 << endl;
 		 } else {*/
-	P2PNetworkInterface *next = getNextCounterClockWiseInterface(recv_interface);
+	P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(recv_interface);
 	if (next == NULL) {
 	break; // next is NULL only if the catom is not connected to any other.
       }
-	int d1 = distance(getPosition(next), m->getDestination());
-	int d2 = distance(m->getPerimeterStart(),m->getDestination());
+	int d1 = map.distance(map.getPosition(next), m->getDestination());
+	int d2 = map.distance(m->getPerimeterStart(),m->getDestination());
 	
 #ifdef GEO_ROUTING_DEBUG
 	    cout << "perimeter leave?: " << d1 << "vs" << d2 << endl;
 #endif
-	    if ((d1 < d2) || (getPosition(next) == m->getDestination())) {
+	    if ((d1 < d2) || (map.getPosition(next) == m->getDestination())) {
 	      // leave PERIMETER mode
 	      m->setGreedyMode();
 	     
 	      //if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
-		cout << "Greedy (leave perimeter) forward to " << getPosition(next) << endl;
+		cout << "Greedy (leave perimeter) forward to " << map.getPosition(next) << endl;
 #endif
 		forward(m,next);
-		/* } else {
-		// perimeter mode
-		m->setPerimeterMode(position);
-		// find interface
-		next = getNextCounterClockWiseInterface(m->getDestination());
-		forward(m,next);
-#ifdef GEO_ROUTING_DEBUG
-		cout << "Perimeter (new same node it leaves) forward to " << getPosition(next) << endl;
-#endif
-}*/
 	    } else {
 	      // check if an incident edge hit/cut the segment 
 	      // (destination;point enter in perimeter mode)
 	      Segment s(m->getDestination(),m->getPerimeterStart()); 
-	      P2PNetworkInterface *p2p = getIntersectInterface(s,NULL);
+	      P2PNetworkInterface *p2p = s.getIntersectInterface(catom2D,map,NULL);
 	      // cout << m->getPerimeterStart() << " vs " << getPosition(p2p) << endl; 
 	      
-	      if ((p2p != NULL) && (position != m->getPerimeterStart()) && (getPosition(p2p) != m->getPerimeterStart())) {
-		Coordinate p = getPosition(p2p);
-		P2PNetworkInterface *next = getNextCounterClockWiseInterface(p);
+	      if ((p2p != NULL) && (map.getPosition() != m->getPerimeterStart()) && (map.getPosition(p2p) != m->getPerimeterStart())) {
+		Coordinate p = map.getPosition(p2p);
+		P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(p);
 		m->setFirstEdge(catom2D->getDirection(next));
 		forward(m,next);
 #ifdef GEO_ROUTING_DEBUG
-		cout << "Perimeter (new face?) forward to " << getPosition(next) << endl;
+		cout << "Perimeter (new face?) forward to " << map.getPosition(next) << endl;
 #endif
 	      } else {
-		P2PNetworkInterface *next = getNextCounterClockWiseInterface(recv_interface);
+		P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(recv_interface);
 		//	cout << next << " " <<  catom2D->getDirection(next) << " " << m->getFirstEdge() << endl;
-		if ((m->getPerimeterStart() == position) && (catom2D->getDirection(next) == m->getFirstEdge())) {
+		if ((m->getPerimeterStart() == map.getPosition()) && (catom2D->getDirection(next) == m->getFirstEdge())) {
 		  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-		  Coordinate s = virtual2Real(m->getSource(),ccth);
-		  Coordinate d = virtual2Real(m->getDestination(),ccth);
+		  Coordinate s = map.virtual2Real(m->getSource());
+		  Coordinate d = map.virtual2Real(m->getDestination());
 		  cout << "source:" << m->getSource() << " " << s << endl;
 		  cout << "dest:" << m->getDestination() << " " << d << endl;
 		  Catoms2DBlock *cs = world->getGridPtr(s.getX(),0,s.getY());
@@ -365,17 +267,17 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		 << "=>" << d
 		 << "(id=" << idd << ")"
 		 << ", p="
-		 << position
-		 << "=>" <<  virtual2Real(position,ccth)
+		 << map.getPosition()
+		 << "=>" <<  map.virtual2Real(map.getPosition())
 		 <<  "(id=" << catom2D->blockId << ")"
 		 << endl;
-	     getchar();
+	    //getchar();
 	    handleGeoMessage(m);
 
 		} else {
 		  forward(m,next);
 #ifdef GEO_ROUTING_DEBUG
-		  cout << "Perimeter (same face) forward to " << getPosition(next) << endl;
+		  cout << "Perimeter (same face) forward to " << map.getPosition(next) << endl;
 #endif
 		}
 	      }
@@ -431,7 +333,7 @@ void Catoms2D1BlockCode::handleGeoMessage(GeoMessage_ptr m) {
     {
       ContextTuple q = m->getTuple();
       ContextTuple *r = localInp(&q);
-      GeoMessage * msg = new GeoMessage(position,m->getSource(),*r,GeoMessage::ANSWER);
+      GeoMessage * msg = new GeoMessage(map.getPosition(),m->getSource(),*r,GeoMessage::ANSWER);
       send(msg);
     }
     break;
@@ -456,11 +358,11 @@ void Catoms2D1BlockCode::out(ContextTuple *t) {
   cout << "insert tuple: " << *t << endl;
 #endif
  // tuple should maybe stored locally
-  if (t->getLocation() == position) {
+  if (t->getLocation() == map.getPosition()) {
     localOut(t);
   } else {
     // or remotely, send the tuple
-    GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
+    GeoMessage * msg = new GeoMessage(map.getPosition(),t->getLocation(),*t,GeoMessage::STORE);
     send(msg);
   }
 }
@@ -475,7 +377,7 @@ void Catoms2D1BlockCode::inp(ContextTuple *t) {
     scheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,r));
   } else {
     // tuple is maybe stored locally
-    if (t->getLocation() == position) {
+    if (t->getLocation() == map.getPosition()) {
       // no such tuple
       scheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,NULL));
     } else {
@@ -483,7 +385,7 @@ void Catoms2D1BlockCode::inp(ContextTuple *t) {
 #ifdef TUPLE_DEBUG
       cout << "remotely" << endl;
 #endif
-      GeoMessage * msg = new GeoMessage(position,t->getLocation(),*t,GeoMessage::STORE);
+      GeoMessage * msg = new GeoMessage(map.getPosition(),t->getLocation(),*t,GeoMessage::STORE);
       send(msg);
     }
   }
@@ -491,21 +393,21 @@ void Catoms2D1BlockCode::inp(ContextTuple *t) {
 
 // Geo-routing
 void Catoms2D1BlockCode::send(GeoMessage *m) {
-  P2PNetworkInterface *next = getClosestInterface(m->getDestination(), m->destinationInterface);
+  P2PNetworkInterface *next = map.getClosestInterface(m->getDestination(), m->destinationInterface);
   if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
-    cout << "Greedy forward to " << getPosition(next) << endl;
+    cout << "Greedy forward to " << map.getPosition(next) << endl;
 #endif
     forward(m,next);
   } else {
     // perimeter mode
-    m->setPerimeterMode(position);
+    m->setPerimeterMode(map.getPosition());
     // find interface
-    next = getNextCounterClockWiseInterface(m->getDestination());
+    next = angle.getNextCounterClockWiseInterface(m->getDestination());
     m->setFirstEdge(catom2D->getDirection(next));
     forward(m,next);
 #ifdef GEO_ROUTING_DEBUG
-	  cout << "Perimeter (new) forward to " << getPosition(next) << endl;
+    cout << "Perimeter (new) forward to " << map.getPosition(next) << endl;
 #endif
   }
 }
@@ -519,82 +421,6 @@ void Catoms2D1BlockCode::forward(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
   forward(msg,p2p);
 }
 
-P2PNetworkInterface* Catoms2D1BlockCode::getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore) {
-  P2PNetworkInterface *closest = NULL;
-  int minDistance = distance(position,dest);
-  for (int i = 0; i<6; i++) {
-    P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
-    if((it == ignore) || !it->connectedInterface) {
-      continue;
-    }
-    int d = distance(getPosition(it), dest);
-    if (d < minDistance) {
-      closest = it;
-    }
-  }
-  return closest;
-}
-
-P2PNetworkInterface* Catoms2D1BlockCode::getIntersectInterface(Segment &s, P2PNetworkInterface *ignore) {
-  for (int i = 0; i < 6; i++) {
-    P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
-    if ((ignore == it) || (it->connectedInterface == NULL)) {
-      continue;
-    }
-    Coordinate pdir = getPosition(it);
-    Segment seg = Segment(position,pdir);
-    if(seg.intersect(s)) {
-      return it;
-    }
-  }
-  return NULL;
-}
-
-P2PNetworkInterface* Catoms2D1BlockCode::getNextCounterClockWiseInterface(Coordinate a) {
-  double angles[6] = {0,0,0,0,0,0};
-  int minI = 0;
-  for (int i=0; i < 6; i++) {
-    P2PNetworkInterface *p2p = catom2D->getInterface((NeighborDirection::Direction)i);
-    if (p2p->connectedInterface == NULL) {
-      angles[i] = DBL_MAX;
-      continue;
-    }
-    Coordinate c = getPosition(p2p);
-    angles[i] = ccwAngle(c,position,a);
-#ifdef DEBUG_ANGLE
-    cout << c << " " << angles[i] << endl;
-#endif
-    if (angles[i] < angles[minI]) {
-      minI = i;
-    }
-  }
-  return catom2D->getInterface((NeighborDirection::Direction)minI);
-}
-
-P2PNetworkInterface* Catoms2D1BlockCode::getNextCounterClockWiseInterface(P2PNetworkInterface *recv) {
-  int d = catom2D->getDirection(recv);
-  P2PNetworkInterface *next = NULL;
-  do {
-    d = (d+1)%6;
-    next = catom2D->getInterface((NeighborDirection::Direction)d);
-  } while (next->connectedInterface == NULL);
-  return next;
-}
-
-P2PNetworkInterface* Catoms2D1BlockCode::getNextClockWiseInterface(P2PNetworkInterface *recv) {
-  int d = catom2D->getDirection(recv);
-  P2PNetworkInterface *next = NULL;
-  cout << "arrival interface: " << d << endl;
-  do {
-    if (d == 0) { 
-      d=5; 
-    } else { 
-      d--;
-    }
-    next = catom2D->getInterface((NeighborDirection::Direction)d);
-  } while (next->connectedInterface == NULL);
-  return next;
-}      
 
 // Motion
 void Catoms2D1BlockCode::startMotion(int direction, Catoms2DBlock *pivot) {
@@ -605,100 +431,3 @@ Catoms2D::Catoms2DBlockCode* Catoms2D1BlockCode::buildNewBlockCode(Catoms2DBlock
   return(new Catoms2D1BlockCode(host));
 }
 
-Coordinate Catoms2D1BlockCode::getPosition(P2PNetworkInterface *it) {
-  Coordinate p = position;
-  switch(catom2D->getDirection(it)) {
-  case NeighborDirection::BottomLeft:
-    if ((abs(p.y)%2) == 0) {
-      p.x--;
-    }
-    p.y--;
-    break;
-  case NeighborDirection::Left:
-    p.x--;
-    break;
-  case NeighborDirection::TopLeft:    
-    if ((abs(p.y)%2) == 0) {
-      p.x--;
-    }
-    p.y++;
-    break;
-  case NeighborDirection::TopRight:
-    if ((abs(p.y)%2) == 1) {
-      p.x++;
-    }
-    p.y++;
-    break;
-  case NeighborDirection::Right:
-    p.x++;
-    break;
-  case NeighborDirection::BottomRight: 
-    if ((abs(p.y)%2) == 1) {
-      p.x++;
-    }
-    p.y--;
-    break;
-  }
-  return p;
-}
-
-
-void Catoms2D1BlockCode::buildMap() {
-  P2PNetworkInterface *p2p;
-  for (int i=0; i<6; i++) {
-    p2p = catom2D->getInterface((NeighborDirection::Direction)i);
-    if( (p2p == toHost) || !p2p->connectedInterface) {
-      continue;
-    }
-    GoMapMessage * msg = new GoMapMessage(getPosition(p2p));
-    scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, p2p));
-    waiting++;
-  }
-}
-
-void Catoms2D1BlockCode::mapBuilt(P2PNetworkInterface *d) {
-  BackMapMessage * msg = new BackMapMessage();
-  scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, d));
-}
-
-void Catoms2D1BlockCode::setPosition(Coordinate p) {
-  position = p;
-  localTuples.out(new ContextTuple(position, string("map")));
-  positionKnown = true;
-}
-
-int Catoms2D1BlockCode::distance(Coordinate p1, Coordinate p2) {
-  return abs(p2.x - p1.x) +  abs(p2.y - p1.y); 
-}
-
-Coordinate Catoms2D1BlockCode::real2Virtual(Coordinate p, Coordinate o) {
-  Coordinate real = p;
-
-  real.x -= o.x;
-  real.y -= o.y;
-  
-  if ( (o.y%2) == 1) {
-    if ((p.y%2) == 0) {
-      real.x--;
-    }
-  }
-
-  return real;
-}
-
-Coordinate Catoms2D1BlockCode::virtual2Real(Coordinate p, Coordinate o) {
-  Coordinate real = p;
-  
-  real.x += o.x;
-  real.y += o.y;
-
-   if ( (o.y%2) == 1) {
-    if ((p.y%2) == 0) {
-      real.x++;
-    }
-  }
-
-   return real;
-}
-
-//bool legalMove(int sens, 

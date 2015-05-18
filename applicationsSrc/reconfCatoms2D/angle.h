@@ -3,29 +3,26 @@
 
 #include <math.h>
 #include "coordinate.hpp"
+#include "network.h"
+#include "map.h"
+#include "catoms2DBlock.h"
 
 #define PI 3.14159265
-// counterwise clock angle abc
-double ccwAngle(Coordinate &a, Coordinate &b, Coordinate &c) {
-  Coordinate v1;
-  Coordinate v2;
-  
-  v1.x = a.x - b.x;
-  v1.y = a.y - b.y;
-  
-  v2.x = c.x - b.x;
-  v2.y = c.y - b.y;
 
-  int dot = v1.x*v2.x + v1.y*v2.y;      // dot product
-  int det = v1.x*v2.y - v1.y*v2.x;      // determinant
-  double angle = atan2(det, dot) * 180 / PI;
+class Angle {
+ public:
+  Catoms2D::Catoms2DBlock *catom2D;
+  Map &map;
 
-  if (det < 0) {
-    return -angle;
-  }
-  else {
-    return 360-angle;
-  }
-}
+  Angle(Catoms2D::Catoms2DBlock *host, Map &m);
+  Angle(Angle const &a);
+  ~Angle();
+
+  // counterwise clock angle abc
+  double ccwAngle(Coordinate &a, Coordinate &b, Coordinate &c) const;
+  P2PNetworkInterface* getNextClockWiseInterface(P2PNetworkInterface *recv); 
+  P2PNetworkInterface* getNextCounterClockWiseInterface(P2PNetworkInterface *recv);
+  P2PNetworkInterface* getNextCounterClockWiseInterface(Coordinate a);
+};
 
 #endif
