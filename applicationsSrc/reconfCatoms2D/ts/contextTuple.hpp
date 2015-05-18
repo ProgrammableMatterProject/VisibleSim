@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include "coordinate.hpp"
+#include "../coordinate.h"
 
 typedef uint64_t Time;
 

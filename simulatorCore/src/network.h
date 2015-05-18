@@ -80,7 +80,9 @@ public:
 
 	P2PNetworkInterface(BaseSimulator::BuildingBlock *b);
 	~P2PNetworkInterface();
-
+	
+	void send(Message *m);
+	
 	bool addToOutgoingBuffer(MessagePtr msg);
 	void send();
 	void connect(P2PNetworkInterface *ni);

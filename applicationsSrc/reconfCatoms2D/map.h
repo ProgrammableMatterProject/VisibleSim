@@ -23,7 +23,6 @@ class Map {
   static bool isConnected;  
 
   Catoms2D::Catoms2DBlock* catom2D;
-  Catoms2D::Catoms2DScheduler *scheduler;
   bool connectedToHost;
   bool positionKnown;
   Coordinate position;

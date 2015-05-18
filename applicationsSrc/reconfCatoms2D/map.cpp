@@ -18,7 +18,6 @@ Map::Map(Catoms2DBlock* host) {
   toHost = NULL;
   positionKnown = false;
   catom2D = host;
-  scheduler = Catoms2D::getScheduler();
 }
 
 Map::Map(const Map &m) {
@@ -133,14 +132,14 @@ void Map::buildMap() {
       continue;
     }
     GoMapMessage * msg = new GoMapMessage(getPosition(p2p));
-    scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, p2p));
+    p2p->send(msg);
     waiting++;
   }
 }
 
 void Map::mapBuilt(P2PNetworkInterface *d) {
   BackMapMessage * msg = new BackMapMessage();
-  scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), msg, d));
+  d.send(msg);
 }
 
 void Map::setPosition(Coordinate p) {
