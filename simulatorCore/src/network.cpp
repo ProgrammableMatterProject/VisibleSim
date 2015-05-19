@@ -151,5 +151,5 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
 }
 
 void P2PNetworkInterface::send(Message *m) {
-  getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now(), m, this));
+  getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now(), m, this));
 }

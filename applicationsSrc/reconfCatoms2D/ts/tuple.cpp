@@ -4,7 +4,7 @@
 using namespace std;
 
 Tuple::Tuple(const Tuple& t) {
-  cout << "tuple (&t)" << endl;
+  name = t.name;
   fields = t.fields;
 }
 
@@ -22,7 +22,7 @@ void Tuple::print() {
   cout << *this << endl;
 }
 
-void Tuple::concatenate(Tuple &t) {
+void Tuple::concatenate(const Tuple &t) {
   fields.insert(fields.end(), t.fields.begin(), t.fields.end());
 }
 
@@ -30,7 +30,11 @@ bool Tuple::match(const Tuple &t) const {
   vector<Field>::const_iterator it1;
   vector<Field>::const_iterator it2;
   bool res = true;
-
+  
+  if (name != t.name) {
+    return false;
+  }
+  
   if (size() != t.size()) {
     return false;
   }
@@ -44,9 +48,14 @@ bool Tuple::match(const Tuple &t) const {
 }
 
 bool Tuple::equal(const Tuple &t) const {
+  if (name != t.name) {
+    return false;
+  }
+
   if (size() != t.size()) {
     return false;
   }
+  
   return fields == t.fields;
 }
 
@@ -68,6 +77,7 @@ bool Tuple::operator!=(const Tuple& rhs) const {
 std::ostream& operator<<(std::ostream& os, const Tuple &t) {
   vector<Field>::const_iterator it;
   os << "(";
+  os << t.name << ",";
   for (it = t.fields.begin(); it != t.fields.end(); ++it) {
     os << *it;
     if (it+1 != t.fields.end()) {
@@ -78,6 +88,7 @@ std::ostream& operator<<(std::ostream& os, const Tuple &t) {
   return os;
 }
 
-int Tuple::hash() const{
-  return 5;
+size_t Tuple::hash() const{
+  std::hash<std::string> hash_function;
+  return hash_function(name);
 }

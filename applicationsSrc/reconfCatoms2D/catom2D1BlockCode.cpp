@@ -22,8 +22,8 @@ using namespace std;
 using namespace Catoms2D;
 
 #define GEO_ROUTING_DEBUG
-//#define GEO_ROUTING_TEST
-//#define TEST_GEO_ROUTING_ALL_TO_ALL
+#define GEO_ROUTING_TEST
+#define TEST_GEO_ROUTING_ALL_TO_ALL
 //#define TEST_GEO_ROUTING_ONE_TO_ONE
 
 //#define ANGLE_DEBUG
@@ -31,7 +31,7 @@ using namespace Catoms2D;
 //#define SEND_TARGET_TUPLES
 //#define TEST_GHT
 
-Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host), map(host), angle(host,map), gprs(host,map,angle),  {
+Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host), map(host), gpsr(host,map), ctuples(gpsr,map) {
   scheduler = Catoms2D::getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
   geoTest = false;
@@ -80,13 +80,12 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       {
 	bool finished = map.handleMessage(message);
 	if (finished) {
-	  localTuples.out(new ContextTuple(map.getPosition(), string("map")));
+	  ctuples.out(ContextTuple(string("map"), map.getPosition()));
 	  if (map.connectedToHost) {
 	  cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
-	  // Link to PC host simulation:
-	  
+	  // Link to PC host simulation:	  
 #ifdef TEST_GHT
-	  out(new ContextTuple(Coordinate(6,0), string("target")));
+	  //out(new ContextTuple(Coordinate(6,0), string("target")));
 #endif
 
 #ifdef GEO_ROUTING_TEST
@@ -99,14 +98,15 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	      Catoms2DBlock* c = world->getGridPtr(ix,0,iy);
 	      if (c != NULL) {
 		Coordinate real(ix,iy);
-		Coordinate t =  real2Virtual(real,ccth);
+		Coordinate t =  map.real2Virtual(real);
 		cout << "to @" << c->blockId << " " <<  real << " " << t << endl;
-		out(new ContextTuple(t, string("testGeoRouting")));
+		ctuples.out(ContextTuple(string("testGeoRouting"),t));
 	      }
 	    }
 	  }
 #endif
 #endif
+
 #ifdef SEND_TARGET_TUPLES
 	  /*  Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	      int *gridSize = world->getGridSize();
@@ -131,9 +131,13 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       }
       break;
     case GPSR_PACKET: {
-      Message *m =  handleGPSRPacket(message);
+      Message *m =  gpsr.handleGPSRPacket(message);
       if (m != NULL) {
-	
+	switch(m->type) {
+	case CTUPLES_MSG:
+	  ctuples.handleCTuplesMessage((CTuplesMessage*)m);
+	  break;
+	}
       }
     }
       break;
@@ -150,12 +154,12 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
     break;
   case  EVENT_TUPLE_QUERY_RESPONSE: {
-    ContextTuple *tuple = (boost::static_pointer_cast<TupleQueryResponseEvent>(pev))->getTuple();
+    /*ContextTuple *tuple = (boost::static_pointer_cast<TupleQueryResponseEvent>(pev))->getTuple();
     if (tuple == NULL) {
       cout << "not found" << endl;
     } else  {
       cout << "found: " << tuple << endl;
-    }
+      }*/
   }
     break;
   case EVENT_MOTION_END: {

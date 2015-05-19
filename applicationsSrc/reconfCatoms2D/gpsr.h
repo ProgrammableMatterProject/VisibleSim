@@ -1,8 +1,10 @@
 #ifndef GPRS_HPP
 #define GPRS_HPP
 
-#include "buildingBlock.hpp"
+#include "catoms2DBlock.h"
 #include "network.h"
+#include "map.h"
+#include "angle.h"
 
 #define GPSR_PACKET 15002
 
@@ -68,7 +70,7 @@ class GPSRPacket : public Message {
   };
   
   ~GPSRPacket() {
-    delete data;
+    //delete data;
   };
 
   Coordinate getSource() {return source; };
@@ -86,6 +88,7 @@ class GPSRPacket : public Message {
 
   uint getHops() {return hops;};
   unsigned int size() {return 17;};
+  Message *getData() {return data;};
 };
 
 #endif

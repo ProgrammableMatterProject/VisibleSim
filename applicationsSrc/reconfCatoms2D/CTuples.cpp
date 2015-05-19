@@ -1,62 +1,75 @@
 #include "CTuples.h"
-#include "gsrp.h"
+#include "gpsr.h"
 
 CTuples::CTuples(GPSR &g, Map &m): gpsr(g), map(m) {}
 
-CTuples::CTuples(CTuples const &c) {}
+CTuples::CTuples(CTuples const &c): gpsr(c.gpsr), map(c.map){}
 
 CTuples::~CTuples() {}
 
-void CTuples::handleCTuplesMessage(CTuplesMessage_ptr m) {
+void CTuples::handleCTuplesMessage(CTuplesMessage *m) {
   switch(m->getMode()) {
   case CTuplesMessage::OUT: {
-    localOut(new ContextTuple(m->getTuple()));
+    localOut(m->getCTuple());
   }
     break;
   case CTuplesMessage::IN:
+  case CTuplesMessage::INP:
+  case CTuplesMessage::READ:
+  case CTuplesMessage::READP:
     {
-      ContextTuple q = m->getTuple();
-      ContextTuple *r = localInp(&q);
-      gpsr.send(map.getPosition(),m->getSource(),*r,GeoMessage::ANSWER);
+      //ContextTuple q = m->getTuple();
+      //ContextTuple *r = localInp(&q);
+      //gpsr.send(map.getPosition(),m->getSource(),*r,GeoMessage::ANSWER);
       
     }
     break;
   case CTuplesMessage::ANSWER: {
-    ContextTuple *r = new ContextTuple(m->getTuple());
-    getScheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,r));
+    //ContextTuple *r = new ContextTuple(m->getTuple());
+    //getScheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,r));
   }
     break;
-  }
+    }
 }
 
-void Catoms2D1BlockCode::localOut(ContextTuple *t) {
-  localTuples.out(t);
+void CTuples::localOut(CTuple t) {
+  cout << map.position << " stores " << t << endl; 
+  localCTuples.out(new CTuple(t));
 }
 
-ContextTuple* Catoms2D1BlockCode::localInp(ContextTuple *t) {
-  return (ContextTuple*) localTuples.in(t);
+CTuple* CTuples::localInp(CTuple t) {
+  return NULL;
+  //return (ContextTuple*) localTuples.in(t);
 }
 
-void Catoms2D1BlockCode::out(ContextTuple *t) {
+void CTuples::out(Tuple t) {
+  out(CTuple(t));
+}
+
+void CTuples::out(ContextTuple t) {
+  out(CTuple(t));
+}
+
+void CTuples::out(CTuple t) {
 #ifdef TUPLE_DEBUG
-  cout << "insert tuple: " << *t << endl;
+  cout << "insert tuple: " << t << endl;
 #endif
- // tuple should maybe stored locally
-  if (t->getLocation() == map.getPosition()) {
+  // tuple should maybe stored locally
+  if (t.getPosition() == map.getPosition()) {
     localOut(t);
   } else {
     // or remotely, send the tuple
-    GeoMessage * msg = new GeoMessage(map.getPosition(),t->getLocation(),*t,GeoMessage::STORE);
-    send(msg);
+    CTuplesMessage *msg = new CTuplesMessage(CTuplesMessage::OUT,t);
+    gpsr.send(map.getPosition(),t.getPosition(),msg);
   }
 }
 
-void Catoms2D1BlockCode::inp(ContextTuple *t) {
+void CTuples::inp(CTuple t) {
 #ifdef TUPLE_DEBUG
-  cout << "insert tuple: " << *t << endl;
+  cout << "query tuple: " << *t << endl;
 #endif
   // first try locally
-  ContextTuple *r  = localInp(t);
+  /* ContextTuple *r  = localInp(t);
   if (r != NULL) {
     scheduler->schedule(new TupleQueryResponseEvent(scheduler->now(),catom2D,r));
   } else {
@@ -72,5 +85,5 @@ void Catoms2D1BlockCode::inp(ContextTuple *t) {
       GeoMessage * msg = new GeoMessage(map.getPosition(),t->getLocation(),*t,GeoMessage::STORE);
       send(msg);
     }
-  }
+    }*/
 }

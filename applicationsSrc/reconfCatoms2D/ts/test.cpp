@@ -2,12 +2,16 @@
 #include <string>
 #include <typeinfo>
 #include "localTupleSpace.hpp"
+#include "localCTupleSpace.hpp"
 #include "tuple.hpp"
 #include "field.hpp"
 #include "namedTuple.hpp"
 #include "contextTuple.hpp"
 #include <assert.h>
 #include "type.hpp"
+#include "CTuple.hpp"
+#include "../coordinate.h"
+#include "../rectangle.h"
 
 using namespace std;
 
@@ -48,13 +52,19 @@ int main(void) {
   cout << "TS implementation test" << endl;
   Tuple t1(string("test"), 1, 3);
   Tuple t2 = t1;
+
+  cout << "t1: " << t1 << endl;
+  cout << "t2: " << t2 << endl;
   assert(t1 == t2);
   if (t1 == t2) { cout << "t1 == t2" << endl; }
   
   t1.add(string("fin"));
+  
+  cout << "t1: " << t1 << endl;
+  cout << "t2: " << t2 << endl;
   assert(t1 != t2);
   if (t1 != t2) { cout << "t1 != t2" << endl; }
-  t1.erase(3);
+  t1.erase(2);
   assert(t1 == t2);
   if (t1 == t2) { cout << "t1 == t2" << endl; }
   t1.print();
@@ -66,8 +76,8 @@ int main(void) {
 
   if (test1 == test2) { cout << "ok test1 == test2" << endl;}
 
-  Tuple t4(5, Test(),3);
-  Tuple t3(TYPE(int),TYPE(Test),3);
+  Tuple t4(string("test2"), 5, Test(),3);
+  Tuple t3(string("test2"), TYPE(int),TYPE(Test),3);
   
   t4.print();
   t3.print();
@@ -103,6 +113,34 @@ int main(void) {
   res = tuples.inp(query);
   assert(res == NULL);
 
-  ContextTuple ctuple(Coordinate(2,5), string("test"));
+  ContextTuple ctuple(string("test"), Coordinate(2,5));
   cout << ctuple << endl;
+  // CTuple: name; position;
+  // query: name; position?; 
+  
+  cout << ctuple.getPosition() << endl;
+  
+  Coordinate pbl(3,2);
+  Coordinate ptr(10,8);
+  Rectangle r(pbl,ptr);
+  CTuple::setBounds(r);
+
+  CTuple ctuple2(ContextTuple(string("map"),Coordinate(3,8)));
+  cout << ctuple2 << endl; 
+  CTuple ctuple3(Tuple(string("map"),Coordinate(3,9)));
+  cout << ctuple3 << endl;
+  CTuple ctuple4(Tuple(string("test"),Coordinate(3,9)));
+  cout << ctuple4 << endl;
+  CTuple ctuple5(Tuple(string("maptest"),Coordinate(3,9)));
+  cout << ctuple5 << endl;
+
+  LocalCTupleSpace ctuples;
+  ctuples.out(&ctuple2);
+  ctuples.out(&ctuple3);
+
+  CTuple queryct1 = CTuple(Tuple(string("map"),TYPE(Coordinate)));
+  CTuple *ct1 = ctuples.inp(queryct1);
+  cout << *ct1 << endl;
+  CTuple *ct2 = ctuples.inp(queryct1);
+  cout << *ct2 << endl;
 }

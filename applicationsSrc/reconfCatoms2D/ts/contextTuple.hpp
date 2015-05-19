@@ -5,26 +5,22 @@
 #include <iostream>
 #include "../coordinate.h"
 
-typedef uint64_t Time;
+//typedef uint64_t Time;
 
 class ContextTuple : public Tuple {
 public:
   template<typename ... Types>
-  ContextTuple(Coordinate c, std::string n, Types ... fs) : Tuple(c,0,n,fs...) {};
-
-  template<typename ... Types>
-  ContextTuple(Coordinate c, Time t, std::string n, Types ... fs) : Tuple(c,t,n,fs...) {};
+  ContextTuple(std::string n, Coordinate c, Types ... fs) : Tuple(n,c,fs...) {};
 
   // unable to call Tuple(t), runtime error. 
   ContextTuple(const ContextTuple& t) : Tuple() {
+    name = t.name;
     fields = t.fields;
   };
 
   ~ContextTuple() {}
 
-  Coordinate getLocation() {return get<Coordinate>(0);}; 
-  Time getTime() {return get<Time>(1);};
-  std::string getName() {return get<std::string>(2);};
+  virtual Coordinate getPosition() const {return get<Coordinate>(0);};
   
 };
 

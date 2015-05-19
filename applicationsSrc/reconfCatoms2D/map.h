@@ -14,7 +14,7 @@
 #include "catoms2DBlock.h"
 #include "network.h"
 #include <boost/shared_ptr.hpp>
-#include "coordinate.hpp"
+#include "coordinate.h"
 
 class Map {
  public:  

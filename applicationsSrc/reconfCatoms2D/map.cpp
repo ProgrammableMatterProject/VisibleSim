@@ -139,7 +139,7 @@ void Map::buildMap() {
 
 void Map::mapBuilt(P2PNetworkInterface *d) {
   BackMapMessage * msg = new BackMapMessage();
-  d.send(msg);
+  d->send(msg);
 }
 
 void Map::setPosition(Coordinate p) {

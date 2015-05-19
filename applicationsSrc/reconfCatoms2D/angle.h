@@ -2,7 +2,7 @@
 #define ANGLE_H_
 
 #include <math.h>
-#include "coordinate.hpp"
+#include "coordinate.h"
 #include "network.h"
 #include "map.h"
 #include "catoms2DBlock.h"

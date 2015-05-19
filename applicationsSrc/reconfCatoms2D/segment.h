@@ -1,7 +1,7 @@
 #ifndef SEGMENT_H_
 #define SEGMENT_H_
 
-#include "coordinate.hpp"
+#include "coordinate.h"
 #include "catoms2DBlock.h"
 #include "network.h"
 #include "map.h"

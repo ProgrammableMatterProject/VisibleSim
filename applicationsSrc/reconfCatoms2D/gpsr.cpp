@@ -1,14 +1,20 @@
 #include "gpsr.h"
 #include "catoms2DBlock.h"
+#include "segment.h"
+#include "catoms2DWorld.h"
+
+#define GEO_ROUTING_DEBUG
+
+using namespace Catoms2D;
 
 GPSR::GPSR(Catoms2D::Catoms2DBlock *host, Map &m): catom2D(host), map(m), angle(catom2D, map) {}
 
 GPSR::GPSR(GPSR const &g): catom2D(g.catom2D), map(g.map), angle(g.angle) {}
 
-~GPSR::GPSR() {}
+GPSR::~GPSR() {}
 
 void GPSR::send(Coordinate s, Coordinate d, Message *msg) {
-  GeoPacket *m = new GeoPacket(s,d,msg);
+  GPSRPacket *m = new GPSRPacket(s,d,msg);
   P2PNetworkInterface *next = map.getClosestInterface(m->getDestination(), m->destinationInterface);
   if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
@@ -28,17 +34,19 @@ void GPSR::send(Coordinate s, Coordinate d, Message *msg) {
   }
 }
 
-void GPSR::send(GeoMessage *m, P2PNetworkInterface *p2p) {
+void GPSR::send(GPSRPacket *m, P2PNetworkInterface *p2p) {
   p2p->send(m);
 }
 
-void GPSR::send(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
-  GeoMessage * msg = new GeoMessage(m.get());
-  forward(msg,p2p);
+void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
+  GPSRPacket *msg = new GPSRPacket(m.get());
+  send(msg,p2p);
 }
 
  Message* GPSR::handleGPSRPacket(MessagePtr msg) {
-  GeoPacket_ptr m = boost::static_pointer_cast<GeoPacket>(msg);
+  GPSRPacket_ptr m = boost::static_pointer_cast<GPSRPacket>(msg);
+  P2PNetworkInterface *recv_interface = msg->destinationInterface;
+
 #ifdef GEO_ROUTING_DEBUG
   cout << "Geo message: s=" << m->getSource() << " d=" << m->getDestination() << " l=" << map.getPosition(recv_interface) << " p=" <<  map.getPosition() << " (" << catom2D->blockId << ")" << endl;
 #endif
@@ -51,21 +59,21 @@ void GPSR::send(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
   } else {
     // message is not arrived
     switch (m->getMode()) {
-    case GeoMessage::mode_t::GREEDY:
+    case GPSRPacket::mode_t::GREEDY:
       {
 	P2PNetworkInterface *next = map.getClosestInterface(m->getDestination(), recv_interface);
 	if(next != NULL) {
 #ifdef GEO_ROUTING_DEBUG
 	  cout << "Greedy forward to " << map.getPosition(next) << endl;
 #endif
-	  forward(m,next);
+	  send(m,next);
 	} else {
 	  // perimeter mode
 	  m->setPerimeterMode(map.getPosition());
 	  // find interface
 	  next = angle.getNextCounterClockWiseInterface(m->getDestination());
 	  m->setFirstEdge(catom2D->getDirection(next));
-	  forward(m,next);
+	  send(m,next);
 #ifdef GEO_ROUTING_DEBUG
 	  cout << "Perimeter (new) forward to " << map.getPosition(next) << endl;
 #endif
@@ -73,7 +81,7 @@ void GPSR::send(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
 	}
       }
       break;
-    case GeoMessage::mode_t::PERIMETER: {
+    case GPSRPacket::mode_t::PERIMETER: {
       P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(recv_interface);
       if (next == NULL) {
 	break; // next is NULL only if the catom is not connected to any other.
@@ -92,7 +100,7 @@ void GPSR::send(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
 #ifdef GEO_ROUTING_DEBUG
 	cout << "Greedy (leave perimeter) forward to " << map.getPosition(next) << endl;
 #endif
-	forward(m,next);
+	send(m,next);
       } else {
 	// check if an incident edge hit/cut the segment 
 	// (destination;point enter in perimeter mode)
@@ -104,7 +112,7 @@ void GPSR::send(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
 	  Coordinate p = map.getPosition(p2p);
 	  P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(p);
 	  m->setFirstEdge(catom2D->getDirection(next));
-	  forward(m,next);
+	  send(m,next);
 #ifdef GEO_ROUTING_DEBUG
 	  cout << "Perimeter (new face?) forward to " << map.getPosition(next) << endl;
 #endif
@@ -145,7 +153,7 @@ void GPSR::send(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
 		 << endl;
 	    return m->getData();
 	  } else {
-	    forward(m,next);
+	    send(m,next);
 #ifdef GEO_ROUTING_DEBUG
 	    cout << "Perimeter (same face) forward to " << map.getPosition(next) << endl;
 #endif
@@ -155,4 +163,5 @@ void GPSR::send(GeoMessage_ptr m, P2PNetworkInterface *p2p) {
     }
     }
   }
+return NULL;
 }

@@ -3,18 +3,18 @@
 
 #include "gpsr.h"
 #include "map.h"
-#include "tuple.hpp"
-#include "localTupleSpace.hpp"
+#include "CTuple.hpp"
+#include "localCTupleSpace.hpp"
 
-#define CTUPLES_MESSAGE 15003
+#define CTUPLES_MSG 15003
 class CTuplesMessage;
 typedef boost::shared_ptr<CTuplesMessage> CTuplesMessage_ptr;
 
 class CTuples {
  private:
-  LocalTupleSpace tuples;
-  void localOut(Tuple *t);
-  Tuple* localInp(Tuple *t);
+  LocalCTupleSpace localCTuples;
+  void localOut(CTuple t);
+  CTuple* localInp(CTuple t);
 
   GPSR &gpsr;
   Map &map;
@@ -24,18 +24,21 @@ class CTuples {
   CTuples(const CTuples &c);
   ~CTuples();
 
-  void handleCTuplesMessage(CTuplesMessage_ptr m);
+  void handleCTuplesMessage(CTuplesMessage* m);
 
   // drop off a tuple
-  void out(Tuple *t);
+  void out(Tuple t);
+  void out(ContextTuple t);
+  void out(CTuple t);
 
   // withdraw a tuple (blocking)
-  Tuple* in(Tuple *t);
+  //CTuple* in(CTuple *t);
+  
+  
+  // withdraw a tuple (non blocking)
+  void inp(CTuple t);
   
   /*
-  // withdraw a tuple (non blocking)
-  Tuple* inp(Tuple *t);
-  
   // read a tuple (blocking)
   Tuple* read(Tuple *t);
 
@@ -48,25 +51,23 @@ class CTuplesMessage : public Message {
   enum mode_t {OUT = 0, IN, INP, READ, READP, ANSWER};
  protected:  
   // data information (payload)
-  Tuple tuple;
+  CTuple ctuple;
   mode_t mode;
   
- public :
- CTuplesMessage(mode_t m, Tuple t) : Message() { 
-    type = CTUPLES_MESSAGE;
+ public:
+ CTuplesMessage(mode_t m, CTuple ct) : Message(), ctuple(ct) { 
+    type = CTUPLES_MSG;
     mode = m;
-    tuple = t;
   };
 
-  CTuplesMessage(CTuplesMessage *m) : Message() { 
-    type = m->type; 
+ CTuplesMessage(CTuplesMessage *m) : Message(), ctuple(m->ctuple) { 
+    type = m->type;
     mode = m->mode;
-    tuple = m->tuple;
   };
   
   ~CTuplesMessage() {};
 
-  Tuple getTuple() {return tuple;};
+  CTuple getCTuple() {return ctuple;};
   mode_t getMode() {return mode;};
 };
 

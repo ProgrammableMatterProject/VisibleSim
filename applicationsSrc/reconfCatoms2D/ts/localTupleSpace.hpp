@@ -6,7 +6,7 @@
 
 class LocalTupleSpace {
 private:
-  std::multimap<int,Tuple*> tuples;
+  std::multimap<size_t,Tuple*> tuples;
 
 public:
   LocalTupleSpace();

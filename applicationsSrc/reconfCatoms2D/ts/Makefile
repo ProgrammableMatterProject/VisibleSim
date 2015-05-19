@@ -8,7 +8,9 @@ CC = g++
 SRCS = 	tuple.cpp \
 	type.cpp \
 	tupleSpace.cpp \
-	localTupleSpace.cpp
+	localTupleSpace.cpp \
+	CTuple.cpp \
+	localCTupleSpace.cpp
 
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
 

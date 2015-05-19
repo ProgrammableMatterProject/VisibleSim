@@ -15,10 +15,12 @@
 #include "localTupleSpace.hpp"
 #include "tuple.hpp"
 #include "contextTuple.hpp"
+#include "CTuple.hpp"
 #include "reconfCatoms2DMessages.h"
 #include "segment.h"
 #include "map.h"
-#include "angle.h"
+#include "gpsr.h"
+#include "CTuples.h"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  public:
@@ -33,8 +35,7 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   Map map;
 
   // Geo routing
-  GSRP gsrp;
-  Angle angle;
+  GPSR gpsr;
 
   CTuples ctuples;
   

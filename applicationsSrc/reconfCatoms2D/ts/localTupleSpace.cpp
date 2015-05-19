@@ -8,8 +8,8 @@ LocalTupleSpace::LocalTupleSpace() {}
 LocalTupleSpace::~LocalTupleSpace() {}
 
 void LocalTupleSpace::out(Tuple* t) {
-  int key = t->hash();
-  tuples.insert(pair<int,Tuple*>(key,t));
+  size_t key = t->hash();
+  tuples.insert(pair<size_t,Tuple*>(key,t));
 }
 
 Tuple* LocalTupleSpace::in(const Tuple &q) {
@@ -26,14 +26,14 @@ Tuple* LocalTupleSpace::in(const Tuple &q) {
 
 
 Tuple* LocalTupleSpace::inp(const Tuple &q) {
-  int key = q.hash();
+  size_t key = q.hash();
   Tuple *res = NULL; 
 
   //multimap<int, Tuple*>::iterator it = tuples.find(key);
-  pair <multimap<int,Tuple*>::iterator, multimap<int,Tuple*>::iterator> range;
+  pair <multimap<size_t,Tuple*>::iterator, multimap<size_t,Tuple*>::iterator> range;
   range = tuples.equal_range(key);
 
-  for (multimap<int,Tuple*>::iterator it=range.first; it!=range.second; ++it) {
+  for (multimap<size_t,Tuple*>::iterator it=range.first; it!=range.second; ++it) {
     res = it->second;
     if (res->match(q)) { // check matching to circumvent collisions
       tuples.erase(it);
