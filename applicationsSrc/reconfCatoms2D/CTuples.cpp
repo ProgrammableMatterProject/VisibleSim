@@ -7,7 +7,8 @@ CTuples::CTuples(CTuples const &c): gpsr(c.gpsr), map(c.map){}
 
 CTuples::~CTuples() {}
 
-void CTuples::handleCTuplesMessage(CTuplesMessage *m) {
+void CTuples::handleCTuplesMessage(MessagePtr msg) {
+  CTuplesMessage_ptr m = boost::static_pointer_cast<CTuplesMessage>(msg);
   switch(m->getMode()) {
   case CTuplesMessage::OUT: {
     localOut(m->getCTuple());

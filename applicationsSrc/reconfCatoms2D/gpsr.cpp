@@ -3,7 +3,7 @@
 #include "segment.h"
 #include "catoms2DWorld.h"
 
-#define GEO_ROUTING_DEBUG
+//#define GEO_ROUTING_DEBUG
 
 using namespace Catoms2D;
 
@@ -43,7 +43,7 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
   send(msg,p2p);
 }
 
- Message* GPSR::handleGPSRPacket(MessagePtr msg) {
+ MessagePtr GPSR::handleGPSRPacket(MessagePtr msg) {
   GPSRPacket_ptr m = boost::static_pointer_cast<GPSRPacket>(msg);
   P2PNetworkInterface *recv_interface = msg->destinationInterface;
 

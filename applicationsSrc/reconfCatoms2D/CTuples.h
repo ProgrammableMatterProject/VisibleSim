@@ -24,7 +24,7 @@ class CTuples {
   CTuples(const CTuples &c);
   ~CTuples();
 
-  void handleCTuplesMessage(CTuplesMessage* m);
+  void handleCTuplesMessage(MessagePtr msg);
 
   // drop off a tuple
   void out(Tuple t);

@@ -26,7 +26,7 @@ class GPSR {
   GPSR(GPSR const &g);
   ~GPSR();
   void send(Coordinate s, Coordinate d, Message *msg);
-  Message* handleGPSRPacket(MessagePtr m);
+  MessagePtr handleGPSRPacket(MessagePtr m);
 };
 
 class GPSRPacket : public Message {
@@ -43,7 +43,7 @@ class GPSRPacket : public Message {
   int hops;
 
   // data information (payload)
-  Message *data;
+  MessagePtr data;
  public :
  GPSRPacket(Coordinate s, Coordinate d, Message *da) : Message() { 
     type = GPSR_PACKET;
@@ -54,7 +54,7 @@ class GPSRPacket : public Message {
     perimeterStart = Coordinate();
     hops = 0;
     firstEdge = 0;
-    data = da;
+    data = MessagePtr(da);
   };
 
     GPSRPacket(GPSRPacket *m) : Message() { 
@@ -70,7 +70,7 @@ class GPSRPacket : public Message {
   };
   
   ~GPSRPacket() {
-    //delete data;
+    data.reset();
   };
 
   Coordinate getSource() {return source; };
@@ -88,7 +88,7 @@ class GPSRPacket : public Message {
 
   uint getHops() {return hops;};
   unsigned int size() {return 17;};
-  Message *getData() {return data;};
+  MessagePtr getData() {return data;};
 };
 
 #endif

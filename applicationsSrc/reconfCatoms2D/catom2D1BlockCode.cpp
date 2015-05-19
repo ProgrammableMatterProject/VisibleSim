@@ -131,11 +131,11 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       }
       break;
     case GPSR_PACKET: {
-      Message *m =  gpsr.handleGPSRPacket(message);
+      MessagePtr m =  gpsr.handleGPSRPacket(message);
       if (m != NULL) {
 	switch(m->type) {
 	case CTUPLES_MSG:
-	  ctuples.handleCTuplesMessage((CTuplesMessage*)m);
+	  ctuples.handleCTuplesMessage(m);
 	  break;
 	}
       }
