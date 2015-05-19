@@ -25,12 +25,11 @@ class SmartBlocksBlock : public BaseSimulator::BuildingBlock {
 public:
 	Color color; // color of the block
 	Vecteur position; // position of the block;
-	bool wellPlaced,_isBorder;
+	bool wellPlaced,_isBorder,_isTrain,_isSingle;
 	SmartBlocksBlockCode *(*buildNewBlockCode)(SmartBlocksBlock*);
 
 	SmartBlocksBlock(int bId, SmartBlocksBlockCode *(*SmartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock *));
 	~SmartBlocksBlock();
-
 	inline SmartBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(SmartBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);

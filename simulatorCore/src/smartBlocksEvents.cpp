@@ -131,7 +131,8 @@ void MotionStopEvent::consume() {
     int ix = int(rb->position.pt[0]),
         iy = int(rb->position.pt[1]);
 	wrld->setGridPtr(ix,iy,rb);
-/*	stringstream info;
+/*
+	stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);*/

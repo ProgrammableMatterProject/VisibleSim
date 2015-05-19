@@ -1,8 +1,8 @@
 #include "smartBlocksCapabilities.h"
 #include <algorithm>
 
-const bool truthTable[9][5]={ {1,0,0,0,0}, {0,0,0,0,1}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,1,0}, {0,0,0,1,1}, {1,1,1,1,1} };
-//const bool truthTable0[9][4]={ {1,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,1,0,0}, {0,0,0,0}, {1,0,0,0}, {0,1,0,0}, {0,1,0,0}, {1,1,1,1} };
+const bool truthTable[9][5]={ {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,1}, {1,0,0,0,0}, {0,0,0,1,0}, {0,0,0,1,0}, {1,1,1,1,1} };
+//const bool truthTable0[9][5]={{1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,1,0,0,0}, {0,1,0,0,0}, {1,1,1,1,0} };
 const short gainTable[9][4]={ {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,1,0,0}, {1,0,0,0}, {0,0,0,0}, {0,0,0,0} };
 const short rotDir[4][4]={ {0,1,2,3},{1,2,3,0},{2,3,0,1},{3,0,1,2} };
 namespace SmartBlocks {
@@ -10,20 +10,22 @@ namespace SmartBlocks {
 Capability::Capability(const string& sid) {
 
 	name = sid;
-	cout << "new capability : " << name << endl;
+	OUTPUT << "New capability : " << name << endl;
 	linkNextPos=linkPrevPos=NULL;
+	singleMotionDir=NULL;
 	isHead = false;
 	isEnd = false;
 	prevDir.set(0,0);
 }
 
 Capability::Capability(const string& sid,const Capability*ref,int n):name(sid) {
-	cout << "new capability  : " << name << endl;
+	OUTPUT << "new capability  : " << name << endl;
 
 	linkNextPos=linkPrevPos=NULL;
 	isHead = ref->isHead;
 	isEnd = ref->isEnd;
 	isAngle = ref->isAngle;
+	singleMotionDir=NULL;
 	switch (n) {
 		case 1 : case 2 : case 3 : { // rotation around Z axis
 			ValidationMatrix tmp,tmp2;
@@ -41,7 +43,11 @@ Capability::Capability(const string& sid,const Capability*ref,int n):name(sid) {
 				linkNextPos = NULL;
 			}
 			prevDir = ref->prevDir.rotateZ(n);
-			cout << "prevDir =" << prevDir << endl;
+			if (ref->singleMotionDir) {
+				singleMotionDir = new PointCel(ref->singleMotionDir->rotateZ(n));
+			} else {
+				singleMotionDir = NULL;
+			}
 			// copy the tabMotion vector with rotation
 			vector <Motion*>::const_iterator cm = ref->tabMotions.begin();
 			Motion *nm;
@@ -94,8 +100,9 @@ ostream& operator<<(ostream& f,const Capability &c) {
 	f << "Capability:" << c.name << endl;
 	f << "States condition: " << endl;
 	f << c.validationMatrix;
-/*	f << "From : " << c.initRelPos << endl;
-	f << "To : " << c.finalRelPos << endl;*/
+	if (c.linkNextPos!=NULL) f << "next: " << *(c.linkNextPos) << endl;
+	if (c.linkPrevPos!=NULL) f << "prev: " << *(c.linkPrevPos) << endl;
+	if (c.singleMotionDir!=NULL) f << "sMD: " << *(c.singleMotionDir) << endl;
   return f;
 }
 
@@ -147,6 +154,14 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 				currentCapa->prevDir.y+=1;
 				cout << "prevDir =" << currentCapa->prevDir << endl;
 			}
+			str_c = matrixElem->Attribute("singleMotionDir");
+			if (str_c) {
+				currentCapa->singleMotionDir = new PointCel(str_c);
+				currentCapa->singleMotionDir->x+=1;
+				currentCapa->singleMotionDir->y+=1;
+            } else {
+				currentCapa->singleMotionDir = NULL;
+			}
 			str_c = matrixElem->Attribute("linkNextPos");
 			if (str_c) {
 				currentCapa->linkNextPos=new PointCel(str_c);
@@ -181,7 +196,6 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 				}
 			}
 		}
-
 		matrixElem = capaElem->FirstChildElement("motions");
 		if (!matrixElem) {
 			cerr << "erreur <motions>" << endl;
@@ -190,6 +204,7 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 			TiXmlElement *motionElem = matrixElem->FirstChildElement("motion");
 			Motion *currentMotion=NULL;
 			while (motionElem) {
+                cout << "motion" << endl;
 				currentMotion = new Motion();
 				str_c = motionElem->Attribute("objPath");
 				if (str_c) {
@@ -213,13 +228,22 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 						i++;
 					}
 				}
+
+				cout << "time" << endl;
 				str_c = motionElem->Attribute("time");
+				cout << str_c << endl;
 				if (str_c) {
 					currentMotion->time = atof(str_c);
 				} else {
 					currentMotion->time = 0.0;
 				}
-				currentMotion->vect.fromString(motionElem->Attribute("vect"),PointCel(-1,-1));
+				cout << "time=" << currentMotion->time << endl;
+				str_c = motionElem->Attribute("vect");
+				if (str_c) {
+                    cout << "vect=" << str_c << endl;
+                    currentMotion->vect.fromString(string(str_c),PointCel(-1,-1));
+                }
+                cout << "unlockpath" << endl;
 
 				str_c = motionElem->Attribute("unlockPath");
 				if (str_c) {
@@ -242,6 +266,7 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 						i++;
 					}
 				}
+				        cout << "fin unlockpath" << endl;
 				currentCapa->tabMotions.push_back(currentMotion);
 				motionElem = motionElem->NextSiblingElement("motion");
 			}
@@ -251,7 +276,7 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 
 		// create rotated clones
 		char strNum[32];
-		cout << *currentCapa << endl;
+		OUTPUT << *currentCapa << endl;
 		for (int i=0; i<3; i++) {
 			sprintf(strNum,"%s.%0d",currentCapa->name.c_str(),i+1);
 			tabCapabilities.push_back(new Capability(strNum,currentCapa,i+1));
@@ -295,43 +320,54 @@ vector <Validation*> *SmartBlocksCapabilities::validateDirection(const PresenceM
 	vector<Validation*> *tabValid = new vector<Validation*>();
 	int g;
 	bool zl,th,te;
-	OUTPUT << pm;
+	//OUTPUT << pm;
 	//OUTPUT << ltm;
 	while (it!=tabCapabilities.end()) {
         if ((*it)->validationMatrix.validate(pm,truthTable) ) {
-//			OUTPUT << "valid :" << (*it)->name << endl;
-			int d = dir((*it)->linkPrevPos);
-//			if (d!=-1) OUTPUT << "tab["<<d<<"]=" << tab[d] << endl;
-//			OUTPUT << "prevDir=" << (*it)->prevDir << endl;
-			if ((*it)->prevDir.isZero() || d==-1 || tab[d].isZero() || (*it)->prevDir==tab[d]) {
-                if (ltm.get(0,0)==fullCell && (*it)->linkPrevPos &&
-                    (ltm.get(*(*it)->linkPrevPos)==emptyCell)) {
-                } else {
-                    if (d==-1 || tab[d].isZero()) {
-                        g=0;
+// ----------------------------------------------------------------
+// 2 cases : center cell is single or not
+            if (pm.get(0,0)==singleCell && (*it)->singleMotionDir) {
+//                OUTPUT << "valid :" << (*it)->name << endl;
+//                OUTPUT << "tab[4]=" << tab[4] << ", singleMotionDir = " << *(*it)->singleMotionDir << endl;
+                if (tab[4]==*(*it)->singleMotionDir) {
+                    Validation *v = new Validation(*it,20,false);
+                    tabValid->push_back(v);
+                }
+            } else {
+                int d = (*it)->linkPrevPos?dir((*it)->linkPrevPos):-1;
+//                    OUTPUT << "valid :" << (*it)->name << endl;
+//                    if (d!=-1) OUTPUT << "tab["<<d<<"]=" << tab[d] << endl;
+//                    OUTPUT << "prevDir=" << (*it)->prevDir << endl;
+                if ((*it)->prevDir.isZero() || d==-1 || tab[d].isZero() || (*it)->prevDir==tab[d]) {
+                    if (ltm.get(0,0)==fullCell && (*it)->linkPrevPos &&
+                        (ltm.get(*(*it)->linkPrevPos)==emptyCell)) {
                     } else {
-                        g=10;
-                    }
-                    if ((*it)->isEnd) {
-                        g+=2*(ltm.get(0,0)==emptyCell);
-                        g+=2*((*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell);
-                        if ((*it)->isHead) g=0;
-                        //OUTPUT << "end g=" << g << " " << (*it)->name <<endl;
-                    } else {
-                        th = (*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell && pm.get(*(*it)->linkPrevPos)==emptyCell;
-                        te = (*it)->linkNextPos && ltm.get(*(*it)->linkNextPos)==emptyCell;
-                        g+=3*(!(*it)->isHead && !(*it)->isEnd && (th||te) && !(th&&te));
-                        //g+=(!(*it)->isHead && !(*it)->isEnd && (th||te) );
-                        g+=3*(!(*it)->isHead && !(*it)->isEnd && (ltm.get(*(*it)->linkPrevPos)==fullCell || ltm.get(*(*it)->linkNextPos)==emptyCell));
-                        g+=2*((*it)->isHead && th);
-                        g+=((*it)->isHead);
- //                       OUTPUT << th << "," << te << ":";
-                    }
-//                    OUTPUT << "g=" << g << endl;
-                    if (g>0 || ((*it)->isEnd && (*it)->isHead)) {
-                        zl = ltm.get(0,0)==emptyCell && (*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell;
-                        Validation *v = new Validation(*it,g,zl);
-                        tabValid->push_back(v);
+                        if (d==-1 || tab[d].isZero()) {
+                            g=0;
+                        } else {
+                            g=10;
+                        }
+                        if ((*it)->isEnd) {
+                            g+=2*(ltm.get(0,0)==emptyCell);
+                            g+=2*((*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell);
+                            if ((*it)->isHead) g=0;
+                            //OUTPUT << "end g=" << g << " " << (*it)->name <<endl;
+                        } else {
+                            th = (*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell && pm.get(*(*it)->linkPrevPos)==emptyCell;
+                            te = (*it)->linkNextPos && ltm.get(*(*it)->linkNextPos)==emptyCell;
+                            g+=3*(!(*it)->isHead && !(*it)->isEnd && (th||te) && !(th&&te));
+                            //g+=(!(*it)->isHead && !(*it)->isEnd && (th||te) );
+                            g+=3*(!(*it)->isHead && !(*it)->isEnd && (ltm.get(*(*it)->linkPrevPos)==fullCell || ltm.get(*(*it)->linkNextPos)==emptyCell));
+                            g+=2*((*it)->isHead && th);
+                            g+=((*it)->isHead);
+     //                       OUTPUT << th << "," << te << ":";
+                        }
+    //                    OUTPUT << "g=" << g << endl;
+                        if (g>0 || ((*it)->isEnd && (*it)->isHead)) {
+                            zl = ltm.get(0,0)==emptyCell && (*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell;
+                            Validation *v = new Validation(*it,g,zl);
+                            tabValid->push_back(v);
+                        }
                     }
                 }
             }
@@ -399,7 +435,7 @@ vector <Validation*> *SmartBlocksCapabilities::validateToTarget(const PresenceMa
 	vector<Validation*> *tabValid = new vector<Validation*>();
 
 	while (it!=tabCapabilities.end()) {
-//OUTPUT << (*it)->validationMatrix;
+//OUTPUT << (*it)->name << "\n" << (*it)->validationMatrix;
 		if ((*it)->validationMatrix.validate(pm,truthTable0)) {
 //OUTPUT << "valid :" << *(*it)->linkNextPos << endl;
 			if (((*it)->linkNextPos->x==0 || (*it)->linkNextPos->x == dirToO.x) && ((*it)->linkNextPos->y == 0 || (*it)->linkNextPos->y == dirToO.y)) {
@@ -444,6 +480,9 @@ void ValidationMatrix::fromString(const char *str) {
 			break;
 		case '5' :
 			grid[i]=filledState;
+			break;
+		case '4' :
+			grid[i]=singleState;
 			break;
 		case '6' :
 			grid[i]=emptiedState;
@@ -504,7 +543,7 @@ bool ValidationMatrix::validate(const PresenceMatrix &pm,const bool tt[9][5]) {
 	const states *vmg=grid;
 	const presence *pmg=pm.grid;
 	while (n--) {
-//		OUTPUT << "TruthTable[" << *vmg << "][" << *pmg << "]" << endl;
+		//OUTPUT << "TruthTable[" << *vmg << "][" << *pmg << "]" << "=" << tt[*vmg][*pmg] << endl;
 		if (!tt[*vmg][*pmg]) {
 			return false;
 		}

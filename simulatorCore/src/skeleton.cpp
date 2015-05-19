@@ -17,7 +17,7 @@ void Skeleton::add(Skeleton *child) {
 double Skeleton::potentiel(const Vecteur &pos) {
     double d2 = distance2(pos);
 
-    double sum=(d2<0)?0.0:exp(blobbiness*(d2/radius2-1));
+    double sum=exp(blobbiness*(d2/radius2-1));
     vector <Skeleton*>::const_iterator ci=children.begin();
     while (ci!=children.end()) {
         sum+=(*ci)->potentiel(pos);
@@ -30,7 +30,11 @@ double SkelPoint::distance2(const Vecteur &pos) {
     return (pos-ptA).norme2();
 }
 
-/* TODO */
 double SkelLine::distance2(const Vecteur &pos) {
-    return -1.0;
+    Vecteur AM = pos-ptA;
+    double AMAB = AM*AB;
+    if (AMAB<0) return AM.norme2();
+    AMAB=(AMAB*AMAB)/AB2;
+    if (AMAB>AB2) return (pos-ptB).norme2();
+    return AM.norme2()-AMAB;
 }

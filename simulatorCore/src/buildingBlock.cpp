@@ -97,7 +97,10 @@ P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlo
 
 P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(int destBlockId) {
 	list <P2PNetworkInterface*>::const_iterator niIt=P2PNetworkInterfaceList.begin();
-	while (niIt!=P2PNetworkInterfaceList.end() && (*niIt)->connectedInterface->hostBlock->blockId != destBlockId) niIt++;
+	while (niIt!=P2PNetworkInterfaceList.end() && (*niIt)->connectedInterface->hostBlock->blockId != destBlockId) {
+        OUTPUT << (*niIt)->connectedInterface->hostBlock->blockId << endl;
+        niIt++;
+    }
 	return (niIt==P2PNetworkInterfaceList.end())?NULL:(*niIt);
 }
 

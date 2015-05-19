@@ -364,28 +364,28 @@ void GlutSlidingDebugWindow::glDraw() {
 	GlutWindow::glDraw();
 }
 
-int GlutSlidingDebugWindow::mouseFunc(int button,int state,int mx,int my)
-{ int n = GlutWindow::mouseFunc(button,state,mx,my);
-  switch (n) {
-	  case ID_SD_BUTTON_OPEN :
-		  openingLevel++;
-		  x-=400;
-		  w+=400;
-		  buttonOpen->activate(false);
-		  buttonClose->activate(true);
-	  break;
-	  case ID_SD_BUTTON_CLOSE :
-		  openingLevel--;
-		  x+=400;
-		  w-=400;
-		  buttonOpen->activate(true);
-		  buttonClose->activate(false);
-	  break;
-	  case ID_SD_INPUT :
-            input->hasFocus=(getScheduler()->getMode()==SCHEDULER_MODE_DEBUG);
-	  break;
-  }
-  return n;
+int GlutSlidingDebugWindow::mouseFunc(int button,int state,int mx,int my) {
+    int n = GlutWindow::mouseFunc(button,state,mx,my);
+    switch (n) {
+          case ID_SD_BUTTON_OPEN :
+              openingLevel++;
+              x-=400;
+              w+=400;
+              buttonOpen->activate(false);
+              buttonClose->activate(true);
+          break;
+          case ID_SD_BUTTON_CLOSE :
+              openingLevel--;
+              x+=400;
+              w-=400;
+              buttonOpen->activate(true);
+              buttonClose->activate(false);
+          break;
+          case ID_SD_INPUT :
+                input->hasFocus=(getScheduler()->getMode()==SCHEDULER_MODE_DEBUG);
+          break;
+    }
+    return n;
 }
 
 int GlutSlidingDebugWindow::keyFunc(int charcode) {

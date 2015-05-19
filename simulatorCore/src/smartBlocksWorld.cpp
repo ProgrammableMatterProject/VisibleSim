@@ -145,8 +145,9 @@ void SmartBlocksWorld::getPresenceMatrix(const PointCel &pos,PresenceMatrix &pm)
         gpm = pm.grid+(iy*3+ix0);
         grb = tabPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1)*gridSize[0]);
         for (ix=ix0; ix<ix1; ix++) {
-            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?((*grb)->wellPlaced?wellPlacedBorderCell:borderCell):fullCell):emptyCell;
-//            *gpm++ = (*grb)?(((*grb)->_isBorder)?trainCell:fullCell):emptyCell;
+//            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?(((*grb)->wellPlaced||!isTrain(ix+pos.x-1,iy+pos.y-1))?wellPlacedBorderCell:borderCell):fullCell):emptyCell;
+//            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?((*grb)->wellPlaced?wellPlacedBorderCell:borderCell):fullCell):emptyCell;
+            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?(isSingle(ix+pos.x-1,iy+pos.y-1)?singleCell:borderCell):fullCell):emptyCell;
             grb++;
         }
     }
@@ -174,7 +175,8 @@ void SmartBlocksWorld::getPresenceMatrix0(const PointCel &pos,PresenceMatrix &pm
 }
 
 bool SmartBlocksWorld::isBorder(int x,int y) {
-    SmartBlocksBlock **grb;
+    SmartBlocksBlock **grb=tabPtrBlocks+x+y*gridSize[0];
+    //if ((*grb)->_isBorder) return true;
     int ix0 = (x<1)?1-x:0,
         ix1 = (x>gridSize[0]-2)?gridSize[0]-x+1:3,
         iy0 = (y<1)?1-y:0,
@@ -189,6 +191,11 @@ bool SmartBlocksWorld::isBorder(int x,int y) {
         }
     }
     return false;
+}
+
+bool SmartBlocksWorld::isSingle(int x,int y) {
+    SmartBlocksBlock **grb=tabPtrBlocks+x+y*gridSize[0];
+    return (*grb)->_isSingle;
 }
 
 void SmartBlocksWorld::glDraw() {
