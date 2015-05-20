@@ -63,6 +63,9 @@ void Catoms2D1BlockCode::startup() {
 
   if (!map.isConnected && (catom2D->position[2] == 0)) {
     map.connectToHost();
+#ifdef MAP_DEBUG
+    catom2D->setColor(RED);
+#endif
   }
   
   //updateBorder();
@@ -148,10 +151,10 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	    if (t != NULL) {
 	      reconfiguration.setState(Reconfiguration::WELL_PLACED);
 	      catom2D->setColor(GREEN);
-	      //delete t;
+	      delete t;
 	    }
 	}
-	    break;
+	  break;
 	}
       }
     }

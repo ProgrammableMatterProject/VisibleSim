@@ -23,10 +23,10 @@ CTuple* LocalCTupleSpace::inp(CTuple &q) {
     res = it->second;
     if (res->match(q)) { // check matching to circumvent collisions
       ctuples.erase(it);
-      break;
+      return res;
     }
   }
-  return res;
+  return NULL;
 }
 
 size_t LocalCTupleSpace::size() const {
