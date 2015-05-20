@@ -21,6 +21,7 @@
 #include "map.h"
 #include "gpsr.h"
 #include "CTuples.h"
+#include "reconfiguration.h"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  public:
@@ -37,8 +38,12 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   // Geo routing
   GPSR gpsr;
 
+  // CTuples system
   CTuples ctuples;
   
+  // Reconfiguration
+  Reconfiguration reconfiguration;
+
   bool geoTest;
   
   void startup();

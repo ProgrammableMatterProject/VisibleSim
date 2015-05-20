@@ -119,11 +119,11 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
 	} else {
 	  P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(recv_interface);
 	  if ((m->getPerimeterStart() == map.getPosition()) && (catom2D->getDirection(next) == m->getFirstEdge())) {
+
+#ifdef GEO_ROUTING_DEBUG
 	    Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	    Coordinate s = map.virtual2Real(m->getSource());
 	    Coordinate d = map.virtual2Real(m->getDestination());
-	    cout << "source:" << m->getSource() << " " << s << endl;
-	    cout << "dest:" << m->getDestination() << " " << d << endl;
 	    Catoms2DBlock *cs = world->getGridPtr(s.getX(),0,s.getY());
 	    Catoms2DBlock *cd = world->getGridPtr(d.getX(),0,d.getY());
 	    cs->setColor(RED);
@@ -136,7 +136,6 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
 	      cd->setColor(GREEN);
 	      idd = cd->blockId;
 	    }
-		  
 	    // packet has made a complete tour
 	    cout << "packet has made a complete tour (s="
 		 << m->getSource()
@@ -151,6 +150,7 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
 		 << "=>" <<  map.virtual2Real(map.getPosition())
 		 <<  "(id=" << catom2D->blockId << ")"
 		 << endl;
+#endif
 	    return m->getData();
 	  } else {
 	    send(m,next);

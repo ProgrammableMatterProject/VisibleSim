@@ -14,7 +14,6 @@ class CTuples {
  private:
   LocalCTupleSpace localCTuples;
   void localOut(CTuple t);
-  CTuple* localInp(CTuple t);
 
   GPSR &gpsr;
   Map &map;
@@ -37,6 +36,7 @@ class CTuples {
   
   // withdraw a tuple (non blocking)
   void inp(CTuple t);
+  CTuple* localInp(CTuple t);
   
   /*
   // read a tuple (blocking)

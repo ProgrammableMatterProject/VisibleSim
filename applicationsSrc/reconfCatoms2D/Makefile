@@ -1,4 +1,4 @@
-SRCS = CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp
+SRCS = reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp
 
 OUT = catom2D1
 
@@ -21,6 +21,9 @@ CCFLAGS = $(GLOBAL_CCFLAGS) -std=c++1y
 CC = g++
 
 .PHONY: clean all
+
+ts/libTS.a:
+	$(MAKE) -C ts
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
@@ -50,3 +53,4 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)
+	$(MAKE) -C ts realclean

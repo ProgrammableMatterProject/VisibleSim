@@ -39,8 +39,7 @@ void CTuples::localOut(CTuple t) {
 }
 
 CTuple* CTuples::localInp(CTuple t) {
-  return NULL;
-  //return (ContextTuple*) localTuples.in(t);
+  return localCTuples.inp(t);
 }
 
 void CTuples::out(Tuple t) {

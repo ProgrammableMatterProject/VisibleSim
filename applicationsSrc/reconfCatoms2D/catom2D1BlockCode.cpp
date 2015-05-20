@@ -21,15 +21,16 @@
 using namespace std;
 using namespace Catoms2D;
 
-#define GEO_ROUTING_DEBUG
-#define GEO_ROUTING_TEST
-#define TEST_GEO_ROUTING_ALL_TO_ALL
+//#define GEO_ROUTING_DEBUG
+//#define GEO_ROUTING_TEST
+//#define TEST_GEO_ROUTING_ALL_TO_ALL
 //#define TEST_GEO_ROUTING_ONE_TO_ONE
 
 //#define ANGLE_DEBUG
 //#define TUPLE_DEBUG
-//#define SEND_TARGET_TUPLES
 //#define TEST_GHT
+
+#define SEND_TARGET_TUPLES
 
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host), map(host), gpsr(host,map), ctuples(gpsr,map) {
   scheduler = Catoms2D::getScheduler();
@@ -64,7 +65,7 @@ void Catoms2D1BlockCode::startup() {
     map.connectToHost();
   }
   
-  updateBorder();
+  //updateBorder();
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
@@ -99,7 +100,11 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	      if (c != NULL) {
 		Coordinate real(ix,iy);
 		Coordinate t =  map.real2Virtual(real);
-		cout << "to @" << c->blockId << " " <<  real << " " << t << endl;
+		cout << "@" << catom2D->blockId
+		     << " (" << map.position << ")"
+		     << " sends \"testGeoRouting\" tuple to @" 
+		     << c->blockId << " (" <<  real << "=>" << t << ")" 
+		     << endl;
 		ctuples.out(ContextTuple(string("testGeoRouting"),t));
 	      }
 	    }
@@ -108,23 +113,26 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 #endif
 
 #ifdef SEND_TARGET_TUPLES
-	  /*  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-	      int *gridSize = world->getGridSize();
-	      for (int iy = 0; iy < gridSize[2]; iy++) {
-	      for (int ix = 0; ix < gridSize[0]; ix++) {
+	  Coordinate pmin(INT_MAX,INT_MAX);
+	  Coordinate pmax(INT_MIN,INT_MIN);
+	  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+	  int *gridSize = world->getGridSize();
+	  for (int iy = 0; iy < gridSize[2]; iy++) {
+	    for (int ix = 0; ix < gridSize[0]; ix++) {
 	      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-		Coordinate t(ix,iy);
-		t.x -= ccth.x;
-		t.y -= ccth.y;
-		cout << "(" << t.x << " " << t.y << ")" << endl;
-		out(new ContextTuple(Coordinate(t.x,t.y), string("target")));
-		//localTuples.out(Tuple(string("target"), ix, iy));
-		//tuples.out(new Tuple(string("aaa"), 5, 12.5));
-		//Tuple query(string("aaa"), TYPE(int), 12.5);  
-		//Tuple *res = tuples.inp(query);
-		}
-		}
-		}*/
+		pmin.x = min(pmin.x, ix);
+		pmin.y = min(pmin.y, iy);
+		pmax.x = max(pmax.x, ix);
+		pmax.y = max(pmax.y, iy);
+		Coordinate real(ix,iy);
+		Coordinate t =  map.real2Virtual(real);
+		cout << "target: (" << t.x << " " << t.y << ")" << endl;
+		ctuples.out(ContextTuple(string("target"),t));
+	      }
+	    }
+	  }
+	  Rectangle bounds(pmin,pmax);
+	  CTuple::setBounds(bounds);
 #endif
 	  }
 	}
@@ -134,9 +142,16 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       MessagePtr m =  gpsr.handleGPSRPacket(message);
       if (m != NULL) {
 	switch(m->type) {
-	case CTUPLES_MSG:
-	  ctuples.handleCTuplesMessage(m);
-	  break;
+	case CTUPLES_MSG: {
+	    ctuples.handleCTuplesMessage(m);
+	    CTuple *t = ctuples.localInp(Tuple(string("target"), map.getPosition()));
+	    if (t != NULL) {
+	      reconfiguration.setState(Reconfiguration::WELL_PLACED);
+	      catom2D->setColor(GREEN);
+	      //delete t;
+	    }
+	}
+	    break;
 	}
       }
     }
@@ -150,7 +165,6 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     // identify a free target position
     // 
     //in(new ContextTuple(, string("testGeoRouting")));
-    
   }
     break;
   case  EVENT_TUPLE_QUERY_RESPONSE: {

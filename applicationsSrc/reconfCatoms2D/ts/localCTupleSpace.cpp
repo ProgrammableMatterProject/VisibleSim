@@ -15,8 +15,7 @@ void LocalCTupleSpace::out(CTuple* t) {
 CTuple* LocalCTupleSpace::inp(CTuple &q) {
   size_t key = q.getTuple().hash();
   CTuple *res = NULL; 
-
-  //multimap<int, Tuple*>::iterator it = tuples.find(key);
+  
   pair <multimap<size_t,CTuple*>::iterator, multimap<size_t,CTuple*>::iterator> range;
   range = ctuples.equal_range(key);
 
