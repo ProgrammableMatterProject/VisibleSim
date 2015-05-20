@@ -135,12 +135,13 @@ int main(void) {
   cout << ctuple5 << endl;
 
   LocalCTupleSpace ctuples;
-  ctuples.out(&ctuple2);
-  ctuples.out(&ctuple3);
+  ctuples.out(new CTuple(ctuple2));
+  ctuples.out(new CTuple(ctuple3));
 
   CTuple queryct1 = CTuple(Tuple(string("map"),TYPE(Coordinate)));
   CTuple *ct1 = ctuples.inp(queryct1);
   cout << *ct1 << endl;
+  delete ct1;
   CTuple *ct2 = ctuples.inp(queryct1);
   cout << *ct2 << endl;
 }
