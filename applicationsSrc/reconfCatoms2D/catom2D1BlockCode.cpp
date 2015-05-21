@@ -67,7 +67,7 @@ void Catoms2D1BlockCode::startup() {
     catom2D->setColor(RED);
 #endif
   }
-  
+  catom2D->setColor(RED);
   //updateBorder();
 }
 

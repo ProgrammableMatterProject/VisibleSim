@@ -76,6 +76,10 @@ P2PNetworkInterface::~P2PNetworkInterface() {
 #endif
 }
 
+void P2PNetworkInterface::send(Message *m) {
+  getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now(), m, this));
+}
+
 bool P2PNetworkInterface::addToOutgoingBuffer(MessagePtr msg) {
 	stringstream info;
 
@@ -148,8 +152,4 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
 		connectedInterface->connectedInterface = NULL;
 	}
 	connectedInterface = ni;
-}
-
-void P2PNetworkInterface::send(Message *m) {
-  getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now(), m, this));
 }
