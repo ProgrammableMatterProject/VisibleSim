@@ -159,6 +159,9 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 
 					if(nbOfEnd == 0){
 						myColor = ORANGE;
+						info.str("");
+						info << "Number of messags : " << scheduler->getNbreMessages();
+						scheduler->trace(info.str(),0,RED);
 						robotBlock->setColor(myColor);
 					}
 
