@@ -36,17 +36,21 @@ typedef boost::shared_ptr<Message> MessagePtr;
 
 class Message {
 protected:
-	static unsigned int nextId;
-	static unsigned int nbMessages;
+	static uint64_t nextId;
+	//static unsigned int nextId;
+	static uint64_t nbMessages;
+	//static unsigned int nbMessages;
 public:
-	unsigned int id;
+    uint64_t id;
+	//unsigned int id;
 	unsigned int type;
 	P2PNetworkInterface *sourceInterface, *destinationInterface;
 
 	Message();
 	virtual ~Message();
 
-	static unsigned int getNbMessages();
+//	static unsigned int getNbMessages();
+	static uint64_t getNbMessages();
 	virtual string getMessageName();
 
 	virtual unsigned int size() { return(4); }

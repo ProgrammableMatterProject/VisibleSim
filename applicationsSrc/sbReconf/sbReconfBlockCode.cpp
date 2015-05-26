@@ -95,11 +95,6 @@ void SbReconfBlockCode::startup() {
 		scheduler->trace(info.str(),block->blockId);
 #endif
 	}
-
-	wrl->addStat(0,0);
-    wrl->addStat(1,0);
-    wrl->addStat(2,0);
-    wrl->printStats();
 }
 
 /** Prepare unlock table for next unlock action **/
@@ -132,7 +127,7 @@ void SbReconfBlockCode::printRules() {
         std::reverse_iterator<vector<Validation*>::iterator> rev_until (possibleRules->begin());
         std::reverse_iterator<vector<Validation*>::iterator> rev_from (possibleRules->end());
         while (rev_from!=rev_until) {
-            info  << "/" << (*rev_from)->gain << (*rev_from)->capa->name;
+            info  << "/" <<(*rev_from)->isZeroDistance << ","<< (*rev_from)->gain << (*rev_from)->capa->name;
             rev_from++;
         }
     }
@@ -368,6 +363,12 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 							scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 							setRulesColor();
+
+                            wrl->addStat(0,0);
+                            wrl->addStat(1,0);
+                            wrl->addStat(2,0);
+                            wrl->printStats();
+
 							//block->setDisplayedValue(-1);
 						}
 						tabSteps[1] = true;
@@ -449,7 +450,9 @@ printRules();
                             } else {
                                 // si le block était le block de départ de la recherche (_isEnd)
                                 if (_isEnd) {
+#ifdef verbose
                                     OUTPUT << "le block de départ de la recherche " << endl;
+#endif // verbose
                                     _previous = getBorderPreviousNeightbor(NULL);
                                     _next = getBorderNextNeightbor();
                                     block->setDisplayedValue(0);
@@ -495,7 +498,9 @@ printRules();
                         } else {
                             // si pas de rule de tete : on demande un retour en arriere
                             if (_isEnd || _next==NULL) {
+#ifdef verbose
                                 OUTPUT << "le block de départ de la recherche 2" << endl;
+#endif // verbose
                                 setRulesColor();
 /**
 On peut envoyer un message searchHeadBack particulier qui demande d'ometre le block courant car il est un isthme !
@@ -928,27 +933,20 @@ on le renvoie au sender
 							block2Answer=NULL;
 						} else {
 							setRulesColor();
-							//block->setDisplayedValue(_nbreWellPlacedBlocks);
-
+#ifdef verbose
                             OUTPUT << _pm << endl;
+#endif
+
                             if (block->_isSingle)  {
+#ifdef verbose
                                 OUTPUT << "isSingle" << endl;
+#endif
                                 _next=NULL;
                                 _previous = getBorderSinglePrevious();
                             } else {
                                 _next = getBorderNextNeightborNoWellPlaced();
                                 _previous = getBorderPreviousNeightborNoWellPlaced(_next);
                             }
-                            info.str("");
-                            info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                                 << " _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1);
-                            scheduler->trace(info.str(),hostBlock->blockId);
-
-                            /*if (((SmartBlocksBlock*)(_previous->connectedInterface->hostBlock))->wellPlaced) {
-                                P2PNetworkInterface *tmp = _previous;
-                                _previous = _next;
-                                _next = tmp;
-                            }*/
 #ifdef verbose
                             info.str("");
                             info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
@@ -962,12 +960,6 @@ on le renvoie au sender
                             if (_nbreWellPlacedBlocks!=_nbreGoalCells) {
 
                                 if (possibleRules && possibleRules->back()) {
-                                    /*if (!possibleRules->back()->capa->isHead) {
-                                        _previous = block->getP2PNetworkInterfaceByRelPos(*possibleRules->back()->capa->linkPrevPos);
-                                    }
-                                    if (possibleRules->back()->capa->linkNextPos) {
-                                        _next = block->getP2PNetworkInterfaceByRelPos(*possibleRules->back()->capa->linkNextPos);
-                                    }*/
 #ifdef verbose
                                     info.str("");
                                     info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
@@ -1179,7 +1171,6 @@ on test d'abord si c'est un isthme avant de faire tout déplacement
         }
     }
 
-
     if (possibleRules) {
 /** Si il existe une règle de corps, on propage **/
 // il faut que la règle courante soit ni tete ni queue
@@ -1190,12 +1181,12 @@ on test d'abord si c'est un isthme avant de faire tout déplacement
 //        if (possibleRules->empty()) OUTPUT << _pm << endl;
     }
 
-    if (possibleRules && !possibleRules->empty()) {
+    if (!block->_isSingle && possibleRules && !possibleRules->empty()) {
         Capability *capa = possibleRules->back()->capa;
         block->setDisplayedValue(block->blockId);
         // send searchEndTrainMessage
         PointCel np = *capa->linkNextPos;
-        _next = block->getP2PNetworkInterfaceByRelPos(np);
+        _next = block->getP2PNetworkInterfaceByRelPos(np); //
         _motionDir = capa->tabMotions[0]->vect;
 #ifdef verbose
         info.str("");
@@ -1641,22 +1632,27 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced() {
 }
 
 P2PNetworkInterface *SbReconfBlockCode::getBorderSinglePrevious() {
-    NeighborDirection dir;
+    NeighborDirection dir,dirStop;
 
     if (_motionDir.x==0) {
         if (_motionDir.y==1) {
             dir = West;
+            dirStop = North;
         } else {
             dir = East;
+            dirStop = South;
         }
     } else {
         if (_motionDir.x==1) {
             dir = North;
+            dirStop = East;
         } else {
             dir = South;
+            dirStop = West;
         }
     }
-    return block->getInterface(dir);
+    P2PNetworkInterface *stop = block->getInterface(dirStop);
+    return (stop && stop->connectedInterface && !((SmartBlocksBlock*)(stop->connectedInterface->hostBlock))->wellPlaced)?stop:block->getInterface(dir);
 }
 
 
@@ -1748,12 +1744,13 @@ il faut aussi interdir <-XB0 ou B est un bord
         voisin2 = (posGrid.x<lx-2 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
         voisin3 = (posGrid.x<lx-2 && posGrid.y>1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
     }
+#ifdef verbose
     if (support && support->_isTrain) OUTPUT << "ISTHME SUPPORT("<< support->blockId <<")=TRAIN" << endl;
     if (supportDiag && supportDiag->_isTrain) OUTPUT << "ISTHME SUPPORT_DIAG("<< supportDiag->blockId <<")=TRAIN" << endl;
 	if (voisin && voisin->_isTrain) OUTPUT << "ISTHME VOISIN("<< voisin->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
 	if (voisin2 && voisin2->_isTrain) OUTPUT << "ISTHME VOISIN2("<< voisin2->blockId <<")=TRAIN" << endl;
 	if (voisin3 && voisin3->_isTrain) OUTPUT << "ISTHME VOISIN3("<< voisin3->blockId <<")=TRAIN" << endl;
-
+#endif
 	return (support && support->_isTrain) ||
            (supportDiag && supportDiag->_isTrain) ||
            (voisin && voisin->_isTrain) ||
@@ -1796,6 +1793,8 @@ void SbReconfBlockCode::createBorder() {
 				scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 			} else _next=NULL;
+
+            // recherche une règle pour lequel il est distance 0
 
 			if (possibleRules->back()->isZeroDistance) {
 				// send searchHeadMessage
@@ -2053,7 +2052,9 @@ void SbReconfBlockCode::singleMotion(SmartBlocks::Motion *currentMotion,SmartBlo
 //------------------------------------
     if (capa->isEnd && capa->isHead) {
         block->_isSingle=true;
+#ifdef verbose
         OUTPUT << block->blockId << " is single" << endl;
+#endif // verbose
     }
     if (currentMotion->PathToBlock.empty()) {
 #ifdef verbose

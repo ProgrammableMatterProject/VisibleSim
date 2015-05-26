@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc,char **argv) {
     int initSquareLx=41,initSquareLy=41,
         conveyorBlocks=500,armLength=15;
-    int maxTimeSimulation=30,iAngle=0;
+    int maxTimeSimulation=3000,iAngle=0;
     double angle=M_PI/6.0;
 
     if (argc>1) {

@@ -14,8 +14,10 @@ using namespace std;
 #include "network.h"
 #include "trace.h"
 
-unsigned int Message::nextId = 0;
-unsigned int Message::nbMessages = 0;
+//unsigned int Message::nextId = 0;
+//unsigned int Message::nbMessages = 0;
+uint64_t Message::nextId = 0;
+uint64_t Message::nbMessages = 0;
 
 unsigned int P2PNetworkInterface::nextId = 0;
 unsigned int P2PNetworkInterface::defaultDataRate=1000000;
@@ -38,7 +40,7 @@ Message::~Message() {
 	nbMessages--;
 }
 
-unsigned int Message::getNbMessages() {
+uint64_t Message::getNbMessages() {
 	return(nbMessages);
 }
 

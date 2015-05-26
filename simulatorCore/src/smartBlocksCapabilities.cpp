@@ -1,7 +1,7 @@
 #include "smartBlocksCapabilities.h"
 #include <algorithm>
 
-const bool truthTable[9][5]={ {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,1}, {1,0,0,0,0}, {0,0,0,1,0}, {0,0,0,1,0}, {1,1,1,1,1} };
+const bool truthTable[9][5]={ {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,1}, {1,0,0,0,0}, {0,0,0,1,0}, {0,0,0,1,1}, {1,1,1,1,1} };
 //const bool truthTable0[9][5]={{1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,1,0,0,0}, {0,1,0,0,0}, {1,1,1,1,0} };
 const short gainTable[9][4]={ {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,1,0,0}, {1,0,0,0}, {0,0,0,0}, {0,0,0,0} };
 const short rotDir[4][4]={ {0,1,2,3},{1,2,3,0},{2,3,0,1},{3,0,1,2} };
@@ -204,7 +204,6 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 			TiXmlElement *motionElem = matrixElem->FirstChildElement("motion");
 			Motion *currentMotion=NULL;
 			while (motionElem) {
-                cout << "motion" << endl;
 				currentMotion = new Motion();
 				str_c = motionElem->Attribute("objPath");
 				if (str_c) {
@@ -229,7 +228,6 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 					}
 				}
 
-				cout << "time" << endl;
 				str_c = motionElem->Attribute("time");
 				cout << str_c << endl;
 				if (str_c) {
@@ -330,7 +328,7 @@ vector <Validation*> *SmartBlocksCapabilities::validateDirection(const PresenceM
 //                OUTPUT << "valid :" << (*it)->name << endl;
 //                OUTPUT << "tab[4]=" << tab[4] << ", singleMotionDir = " << *(*it)->singleMotionDir << endl;
                 if (tab[4]==*(*it)->singleMotionDir) {
-                    Validation *v = new Validation(*it,20,false);
+                    Validation *v = new Validation(*it,50,false);
                     tabValid->push_back(v);
                 }
             } else {
@@ -364,8 +362,16 @@ vector <Validation*> *SmartBlocksCapabilities::validateDirection(const PresenceM
                         }
     //                    OUTPUT << "g=" << g << endl;
                         if (g>0 || ((*it)->isEnd && (*it)->isHead)) {
-                            zl = ltm.get(0,0)==emptyCell && (*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell;
-                            Validation *v = new Validation(*it,g,zl);
+                        // zl : indique si le bloc est à distance 0 de Cf
+                            zl = pm.get(0,0)!=singleCell && ltm.get(0,0)==emptyCell && (*it)->linkPrevPos && ltm.get(*(*it)->linkPrevPos)==fullCell;
+     /*                       OUTPUT << "empty(0,0)" << ltm.get(0,0) <<endl;
+                            if ((*it)->linkPrevPos) {
+                                OUTPUT << "full" << *((*it)->linkPrevPos) << ":" << ltm.get(*(*it)->linkPrevPos) << endl;
+                            } else  {
+                                OUTPUT << "full no" << endl;
+                            }*/
+                            // si on est 0 distance alors on a un bonus de 100
+                            Validation *v = new Validation(*it,g+100*zl,zl);
                             tabValid->push_back(v);
                         }
                     }
