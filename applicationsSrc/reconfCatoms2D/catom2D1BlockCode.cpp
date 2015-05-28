@@ -16,6 +16,7 @@
 
 #include "reconfCatoms2DMessages.h"
 #include "reconfCatoms2DEvents.h"
+#include "centralizedReconfiguration.h"
 #include <float.h>
 
 using namespace std;
@@ -29,6 +30,8 @@ using namespace Catoms2D;
 //#define ANGLE_DEBUG
 //#define TUPLE_DEBUG
 //#define TEST_GHT
+
+#define CENTRALIZED_COMP
 
 #define SEND_TARGET_TUPLES
 
@@ -61,6 +64,11 @@ void Catoms2D1BlockCode::startup() {
   info << "Starting ";
   scheduler->trace(info.str(),hostBlock->blockId);
 
+#ifdef CENTRALIZED_COMP
+  if (catom2D->blockId == 1) {
+    centralized_reconfiguration();
+  }
+#else
   if (!map.isConnected && (catom2D->position[2] == 0)) {
     map.connectToHost();
 #ifdef MAP_DEBUG
@@ -69,6 +77,7 @@ void Catoms2D1BlockCode::startup() {
   }
   catom2D->setColor(RED);
   //updateBorder();
+#endif
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
