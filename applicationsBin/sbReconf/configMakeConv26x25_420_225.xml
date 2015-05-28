@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="84,80" windowSize="1800,900" maxSimulationTime="40mn">
+<world gridSize="84,80" windowSize="1800,900" maxSimulationTime="30mn">
 <camera target="1050,1000,0" directionSpherical="0,38,2433" angle="50"/>
 <spotlight target="1050,1000,0" directionSpherical="-30,50,2900" angle="45"/>
 <blockList color="0,255,0" blocksize="25.0,25.0,11.0">
@@ -142,12 +142,23 @@
       7 4 8
       7 0 8
     </states>
-    <this linkPrevPos="0,1"/>
+    <this linkPrevPos="0,1" linkPrevDir="-1,0"/>
     <motions>
       <motion objPath="X" vect="-1,0"/>
     </motions>
   </capability>
 
+<capability name="end_Train_spe2" end="1">
+    <states>
+      8 8 8
+      7 4 0
+      3 7 8
+    </states>
+    <this linkPrevPos="0,1" linkPrevDir="-1,0"/>
+    <motions>
+      <motion objPath="X" vect="-1,0"/>
+    </motions>
+  </capability>
 
 <capability name="spe1" head="1" end="1">
     <states>

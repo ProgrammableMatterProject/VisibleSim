@@ -9,8 +9,8 @@
 #include "smartBlocksScheduler.h"
 #include "smartBlocksWorld.h"
 
-const int ANIMATION_DELAY=20000;
-const int COM_DELAY=2000;
+const int ANIMATION_DELAY=20000; // 20ms x 5
+const int COM_DELAY=2000; // 2ms
 
 const double EPS=1E-5;
 namespace SmartBlocks {
