@@ -152,8 +152,15 @@ Coordinate Map::getPosition() {
 }
 
 Coordinate Map::real2Virtual(Coordinate p) {
+  return real2Virtual(ccth,p);
+}
+
+Coordinate Map::virtual2Real(Coordinate p) {
+  return virtual2Real(ccth,p);
+}
+
+Coordinate Map::real2Virtual(Coordinate o, Coordinate p) {
   Coordinate real = p;
-  Coordinate o = ccth;
   real.x -= o.x;
   real.y -= o.y;
   
@@ -166,19 +173,17 @@ Coordinate Map::real2Virtual(Coordinate p) {
   return real;
 }
 
-Coordinate Map::virtual2Real(Coordinate p) {
-  Coordinate real = p;
-  Coordinate o = ccth;
-
-  real.x += o.x;
-  real.y += o.y;
+Coordinate Map::virtual2Real(Coordinate o, Coordinate p) {
+  Coordinate vir = p;
+  vir.x += o.x;
+  vir.y += o.y;
   
   if ( (o.y%2) == 1) {
     if ((p.y%2) == 0) {
-      real.x++;
+      vir.x++;
     }
   }
-  return real;
+  return vir;
 }
 
 Coordinate Map::getPosition(P2PNetworkInterface *it) {

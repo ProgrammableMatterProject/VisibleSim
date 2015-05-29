@@ -40,6 +40,8 @@ class Map {
   Coordinate getPosition();
   Coordinate real2Virtual(Coordinate p);
   Coordinate virtual2Real(Coordinate p);
+  static Coordinate real2Virtual(Coordinate o, Coordinate p);
+  static Coordinate virtual2Real(Coordinate o, Coordinate p);
 
   void buildMap();
   void mapBuilt(P2PNetworkInterface *d);

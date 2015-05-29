@@ -20,7 +20,7 @@
 
 namespace Catoms2D {
 
-class Catoms2DWorld : BaseSimulator::World {
+class Catoms2DWorld : public BaseSimulator::World {
 protected:
 	int gridSize[3];
 	Catoms2DBlock **gridPtrBlocks;

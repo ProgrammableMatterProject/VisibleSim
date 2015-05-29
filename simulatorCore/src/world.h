@@ -48,7 +48,11 @@ public:
 	map<int, BuildingBlock*>& getMap() {
 		return buildingBlocksMap;
 	}
-	
+
+	int getSize() {
+	  return buildingBlocksMap.size();
+	}
+
 	void printInfo() {
 		OUTPUT << "I'm a World" << endl;
 	}
