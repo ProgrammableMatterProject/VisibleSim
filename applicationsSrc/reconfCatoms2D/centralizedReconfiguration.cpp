@@ -90,6 +90,14 @@ void centralized_reconfiguration() {
   bfs = Tree::bfs(seed->blockId,gradient,world->getSize());
 
   while (!isOver()) {
+    // algorithm moving condition of catom c1:
+    // FALSE:
+    // c1 gradient will be lower in the destination cell.
+    // none of the gradient of c1's neighbors will change (ie gradient is lower or equal to c1).
+    
+    // physical moving condition
+    // move CW around i connector: i+1 and i+2 should be free
+    // move CCW around i connector: i-1 and i-2 should be free
     
   }
   /*Coordinate targetBottomLeft = getTargetBottomLeft();

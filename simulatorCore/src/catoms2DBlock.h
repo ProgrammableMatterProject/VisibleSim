@@ -12,6 +12,7 @@
 #include "catoms2DBlockCode.h"
 #include "catoms2DGlBlock.h"
 #include "catoms2DCapabilities.h"
+#include "catoms2DEvents.h"
 #include <boost/asio.hpp>
 #include <stdexcept>
 
@@ -53,6 +54,11 @@ public:
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
 	int nbNeighbors();
 	int nbConsecutiveNeighbors();
+
+	// Motion
+	bool canMove(Catoms2DBlock *pivot, direction_t direction);
+        void startMove(Catoms2DBlock *pivot, direction_t direction, uint64_t t);
+	void startMove(Catoms2DBlock *pivot, direction_t direction);
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb);
