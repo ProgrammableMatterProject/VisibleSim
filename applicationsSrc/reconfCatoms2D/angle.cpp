@@ -1,4 +1,5 @@
 #include "angle.h"
+#include <cfloat>
 
 using namespace Catoms2D;
 
