@@ -17,6 +17,7 @@ class Catoms2DMove {
 
   direction_t getDirection();
   Catoms2DBlock* getPivot();
+
 };
 
 }

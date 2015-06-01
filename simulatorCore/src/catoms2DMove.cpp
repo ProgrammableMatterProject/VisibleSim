@@ -21,5 +21,4 @@ namespace Catoms2D {
   Catoms2DBlock* Catoms2DMove::getPivot() {
     return pivot;
   }
-
 }

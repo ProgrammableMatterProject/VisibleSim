@@ -42,6 +42,7 @@ class Map {
   Coordinate virtual2Real(Coordinate p);
   static Coordinate real2Virtual(Coordinate o, Coordinate p);
   static Coordinate virtual2Real(Coordinate o, Coordinate p);
+  static Coordinate getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PNetworkInterface *it);
 
   void buildMap();
   void mapBuilt(P2PNetworkInterface *d);

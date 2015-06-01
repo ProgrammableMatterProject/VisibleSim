@@ -15,12 +15,12 @@ using namespace Catoms2D;
 
 int main(int argc, char **argv) {
 
-	createSimulator(argc, argv, Catoms2D1BlockCode::buildNewBlockCode);
-	Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
-	getSimulator()->printInfo();
-	scheduler->printInfo();
-	BaseSimulator::getWorld()->printInfo();
-	deleteSimulator();
-
-	return(0);
+  createSimulator(argc, argv, Catoms2D1BlockCode::buildNewBlockCode);
+  Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
+  getSimulator()->printInfo();
+  scheduler->printInfo();
+  BaseSimulator::getWorld()->printInfo();
+  deleteSimulator();
+  
+  return(0);
 }

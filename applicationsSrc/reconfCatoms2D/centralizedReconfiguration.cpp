@@ -4,13 +4,15 @@
 #include "catoms2DWorld.h"
 #include "coordinate.h"
 #include "catoms2DMove.h"
+#include "map.h"
 
 using namespace std;
 using namespace Catoms2D;
 
 #define COLOR_DEBUG
 #define ROTATION_DIRECTION Catoms2DMove::ROTATE_CW
-#define OTHER_DIRECTION Catoms2DMove::ROTATE_CCW
+
+enum state_t {IN_SHAPE = 0, OUT_SHAPE = 1, WELL_PLACED = 2};
 
 static Coordinate getMapBottomRight() {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
@@ -129,11 +131,52 @@ static Catoms2DMove* nextMove(Catoms2DBlock  *c) {
   }
 }
 
+static void do_move(Catoms2DBlock* c, Catoms2DMove &m) {
+  if (!c->canMove(m)) {
+    cerr << "error illegal move" << endl;
+    return;
+  }
+  
+}
+
+static Coordinate getPosition(Catoms2DBlock* c, Catoms2DMove &m) {
+  P2PNetworkInterface *p2p = c->getP2PNetworkInterfaceByBlockRef(m.getPivot());
+  Coordinate position(m.getPivot()->position[0], m.getPivot()->position[2]);
+  
+  if(m.getDirection() == Catoms2DMove::ROTATE_CCW) {
+    p2p = nextInterface(m.getPivot(),Catoms2DMove::ROTATE_CW,p2p);
+  } else if (m.getDirection() == Catoms2DMove::ROTATE_CW) {
+    p2p = nextInterface(m.getPivot(),Catoms2DMove::ROTATE_CCW,p2p);
+  }
+  return Map::getPosition(m.getPivot(),position,p2p);
+}
+
+static bool isInTarget(Coordinate &p) { 
+  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+  return (world->getTargetGrid(p.x,0,p.y) == fullCell);
+}
+
+static bool canMove(Catoms2DBlock *c, int gradient[]) {
+  // can algorithmically move (gradient higher or equal than all neighbors)
+  int id1 = c->blockId;
+  for (int i = 0; i < 6; i++) {
+    P2PNetworkInterface *p2p = c->getInterface((NeighborDirection::Direction)i);
+    if (p2p->connectedInterface) {
+      int id2 = p2p->connectedInterface->hostBlock->blockId;
+      if (gradient[id1] < gradient[id2]) {
+	return false;
+      }
+    }
+  }
+  return true;
+}
+
 void centralized_reconfiguration() {
   cout << "centralized reconfiguration" << endl;
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
   Catoms2DBlock *seed = NULL;
-  int gradient[world->getSize()];
+  int gradient[world->getSize()+1];
+  state_t states[world->getSize()+1];
   Tree *bfs = NULL;
   
   Coordinate mapBottomRight = getMapBottomRight();
@@ -141,17 +184,41 @@ void centralized_reconfiguration() {
 #ifdef COLOR_DEBUG
   seed->setColor(RED);
 #endif
+  
+  /*for (int i = 0; i < (world->getSize()+1); i++) {
+    gradient[i] = 0;
+    if (
+    states[i] = 
+    }*/
   bfs = Tree::bfs(seed->blockId,gradient,world->getSize());
 
   while (!isOver()) {
     // algorithm moving condition of catom c1:
-    // FALSE:
+    // FALSE ???:
     // c1 gradient will be lower in the destination cell.
     // none of the gradient of c1's neighbors will change (ie gradient is lower or equal to c1).
     
     // physical moving condition
     // move CW around i connector: i+1 and i+2 should be free
     // move CCW around i connector: i-1 and i-2 should be free
+    Catoms2DWorld *world = Catoms2DWorld::getWorld();
+    Catoms2DBlock  *c;
+
+    map<int, BuildingBlock*>::iterator it;
+    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
+      c = (Catoms2DBlock*) it->second;
+      if (canMove(c,gradient)) {
+	Coordinate p1(c->position[0], c->position[2]);
+	Catoms2DMove *move = nextMove(c);
+	if (move != NULL) {
+	  Coordinate p2 = getPosition(c,*move);
+	  if (isInTarget(p2)) {
+	    do_move(c,*move);
+	  }
+	  delete move;
+	}
+      }
+    }
     
   }
   /*Coordinate targetBottomLeft = getTargetBottomLeft();

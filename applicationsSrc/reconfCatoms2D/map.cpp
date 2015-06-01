@@ -186,8 +186,8 @@ Coordinate Map::virtual2Real(Coordinate o, Coordinate p) {
   return vir;
 }
 
-Coordinate Map::getPosition(P2PNetworkInterface *it) {
-  Coordinate p = position;
+Coordinate Map::getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PNetworkInterface *it) {
+
   switch(catom2D->getDirection(it)) {
   case NeighborDirection::BottomLeft:
     if ((abs(p.y)%2) == 0) {
@@ -221,6 +221,10 @@ Coordinate Map::getPosition(P2PNetworkInterface *it) {
     break;
   }
   return p;
+}
+
+Coordinate Map::getPosition(P2PNetworkInterface *it) {
+  return getPosition(catom2D, position, it);
 }
 
 P2PNetworkInterface* Map::getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore) {
