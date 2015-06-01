@@ -3,11 +3,14 @@
 #include "bfs.h"
 #include "catoms2DWorld.h"
 #include "coordinate.h"
+#include "catoms2DMove.h"
 
 using namespace std;
 using namespace Catoms2D;
 
 #define COLOR_DEBUG
+#define ROTATION_DIRECTION Catoms2DMove::ROTATE_CW
+#define OTHER_DIRECTION Catoms2DMove::ROTATE_CCW
 
 static Coordinate getMapBottomRight() {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
@@ -69,15 +72,62 @@ static bool isOver() {
   return true;
 }
 
-#define CLOCKWISE 1
-#define COUNTERCLOCKWISE 2
-static void move(Catoms2DBlock  *c, int sens) {
-  
+static P2PNetworkInterface* 
+nextInterface(Catoms2DBlock *c, Catoms2DMove::direction_t d, P2PNetworkInterface *p2p) {
+  int p2pDirection = c->getDirection(p2p);
+
+  if (d == Catoms2DMove::ROTATE_CW) {
+    if (p2pDirection == NeighborDirection::BottomRight) {
+      p2pDirection = NeighborDirection::Right;
+    } else {
+	 p2pDirection++;
+    }
+  } else if (d == Catoms2DMove::ROTATE_CCW) {
+    if (p2pDirection == NeighborDirection::Right) {
+      p2pDirection = NeighborDirection::BottomRight;
+    } else {
+      p2pDirection--;
+    }
+  }
+  return c->getInterface((NeighborDirection::Direction)p2pDirection);
 }
 
-/*static Catoms2DMove nextMove(Catoms2DBlock  *c) {
-  return Move(NULL,
-  }*/
+static Catoms2DMove* nextMove(Catoms2DBlock  *c) {
+  P2PNetworkInterface *p1 = NULL, *p2 = NULL;
+  Catoms2DBlock  *pivot;
+  int i = 0;
+  
+  // pick-up a neighbor of c
+  for (i = 0; i < 6; i++) {
+    p1 = c->getInterface((NeighborDirection::Direction)i);
+    if (!p1->connectedInterface) {
+      break;
+    }
+  }
+  
+  if ((i == 5) && !p1) {
+    return NULL;
+  }
+
+  p2 = p1;
+  while (true) {
+    if (ROTATION_DIRECTION == Catoms2DMove::ROTATE_CCW) {
+      p2 = nextInterface(c, Catoms2DMove::ROTATE_CW, p2);
+    } else if (ROTATION_DIRECTION == Catoms2DMove::ROTATE_CW) {
+      p2 = nextInterface(c, Catoms2DMove::ROTATE_CCW, p2);
+    }
+    if (p2->connectedInterface) {
+      pivot = (Catoms2DBlock*)p2->connectedInterface->hostBlock;
+      Catoms2DMove m(pivot,ROTATION_DIRECTION);
+      if (c->canMove(m)) {
+	return new Catoms2DMove(m);
+      }
+    }
+    if (p1 == p2) {
+      return NULL;
+    }
+  }
+}
 
 void centralized_reconfiguration() {
   cout << "centralized reconfiguration" << endl;

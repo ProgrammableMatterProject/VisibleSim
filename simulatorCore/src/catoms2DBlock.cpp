@@ -163,7 +163,45 @@ bool Catoms2DBlock::canMove(Catoms2DMove &m) {
   // pivot is a neighbor (physically connected)
   // move CW around i connector: i+1 and i+2 should be free
   // move CCW around i connector: i-1 and i-2 should be free
-  return true;
+
+  Catoms2DMove::direction_t direction = m.getDirection();
+  Catoms2DBlock *pivot = m.getPivot();
+
+  if ((direction != Catoms2DMove::ROTATE_CW) && 
+      (direction != Catoms2DMove::ROTATE_CCW)) {
+    return false;
+  }
+  
+  P2PNetworkInterface *p2p = getP2PNetworkInterfaceByBlockRef(pivot);
+  
+  if (p2p == NULL) {
+    return false;
+  }
+
+  int p2pDirection = getDirection(p2p);
+
+  bool res = true;
+  
+  for (int i = 0; i < 2; i++) {
+     if (direction == Catoms2DMove::ROTATE_CW) {
+       if (p2pDirection == NeighborDirection::BottomRight) {
+	 p2pDirection = NeighborDirection::Right;
+       } else {
+	 p2pDirection++;
+      }
+     } else if (direction == Catoms2DMove::ROTATE_CCW) {
+	 if (p2pDirection == NeighborDirection::Right) {
+	   p2pDirection = NeighborDirection::BottomRight;
+	 } else {
+	   p2pDirection--;
+	 }
+     }
+     if (getInterface((NeighborDirection::Direction)p2pDirection)->connectedInterface == NULL) {
+       res = false;
+     }
+  }
+  
+  return res;
 }
 
 void Catoms2DBlock::startMove(Catoms2DMove &m, uint64_t t) {
