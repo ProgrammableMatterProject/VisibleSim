@@ -10,11 +10,9 @@
 
 //#include "catoms2DBlock.h"
 #include "events.h"
+#include "catoms2DMove.h"
 
 namespace Catoms2D {
-
-  class Catoms2DBlock;
-  enum direction_t {ROTATE_CCW = -1, ROTATE_CW = 1};
 
   //===========================================================================================================
   //
@@ -27,7 +25,7 @@ namespace Catoms2D {
     double angle;
     int sens;
   public:
-    MotionStartEvent(uint64_t, Catoms2DBlock *block,const Catoms2DBlock *pivotBlock,int sens);
+    MotionStartEvent(uint64_t, Catoms2DBlock *block, Catoms2DMove &m);
     MotionStartEvent(MotionStartEvent *ev);
     ~MotionStartEvent();
     void consumeBlockEvent() {};

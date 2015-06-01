@@ -22,12 +22,13 @@ namespace Catoms2D {
   //
   //===========================================================================================================
 
-  MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block,const Catoms2DBlock *pivotBlock, int s): BlockEvent(t,block) {
+  MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block, Catoms2DMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_START;
-    pivot.set(pivotBlock->ptrGlBlock->position[0],pivotBlock->ptrGlBlock->position[1],pivotBlock->ptrGlBlock->position[2]);
+    
+    pivot.set(m.getPivot()->ptrGlBlock->position[0],m.getPivot()->ptrGlBlock->position[1],m.getPivot()->ptrGlBlock->position[2]);
     angle = 60;
-    sens = s;
+    sens = m.getDirection();
   }
 
   MotionStartEvent::MotionStartEvent(MotionStartEvent *ev) : BlockEvent(ev) {

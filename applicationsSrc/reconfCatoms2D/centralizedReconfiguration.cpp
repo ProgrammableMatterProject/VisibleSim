@@ -72,8 +72,12 @@ static bool isOver() {
 #define CLOCKWISE 1
 #define COUNTERCLOCKWISE 2
 static void move(Catoms2DBlock  *c, int sens) {
-
+  
 }
+
+/*static Catoms2DMove nextMove(Catoms2DBlock  *c) {
+  return Move(NULL,
+  }*/
 
 void centralized_reconfiguration() {
   cout << "centralized reconfiguration" << endl;

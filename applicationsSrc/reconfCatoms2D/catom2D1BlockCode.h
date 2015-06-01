@@ -49,8 +49,6 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   void startup();
   void processLocalEvent(EventPtr pev);
 	
-  void startMotion(int direction, Catoms2D::Catoms2DBlock *pivot);
-	
   void updateBorder();
   bool canMove();
   

@@ -158,7 +158,7 @@ int Catoms2DBlock::nbConsecutiveNeighbors() {
 }
 
 // Motion
-bool Catoms2DBlock::canMove(Catoms2DBlock *pivot, direction_t direction) {  
+bool Catoms2DBlock::canMove(Catoms2DMove &m) {  
   // physical moving condition
   // pivot is a neighbor (physically connected)
   // move CW around i connector: i+1 and i+2 should be free
@@ -166,12 +166,12 @@ bool Catoms2DBlock::canMove(Catoms2DBlock *pivot, direction_t direction) {
   return true;
 }
 
-void Catoms2DBlock::startMove(Catoms2DBlock *pivot, direction_t direction, uint64_t t) {
-  getScheduler()->schedule(new MotionStartEvent(t,this,pivot,direction));
+void Catoms2DBlock::startMove(Catoms2DMove &m, uint64_t t) {
+  getScheduler()->schedule(new MotionStartEvent(t,this,m));
 }
 
-void Catoms2DBlock::startMove(Catoms2DBlock *pivot, direction_t direction) {
-  startMove(pivot,direction,getScheduler()->now());
+void Catoms2DBlock::startMove(Catoms2DMove &m) {
+  startMove(m,getScheduler()->now());
 }
 
 }

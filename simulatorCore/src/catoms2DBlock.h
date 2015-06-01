@@ -56,9 +56,9 @@ public:
 	int nbConsecutiveNeighbors();
 
 	// Motion
-	bool canMove(Catoms2DBlock *pivot, direction_t direction);
-        void startMove(Catoms2DBlock *pivot, direction_t direction, uint64_t t);
-	void startMove(Catoms2DBlock *pivot, direction_t direction);
+	bool canMove(Catoms2DMove &m);
+        void startMove(Catoms2DMove &m, uint64_t t);
+	void startMove(Catoms2DMove &m);
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb);
