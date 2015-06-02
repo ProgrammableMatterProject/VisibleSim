@@ -85,6 +85,7 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			{
 			int SAMPLES;
 			int sleepDuration;
+			bb->setColor(RED);
 			switch(toPlay[0].timeDiv) {
 				case 2:
 				SAMPLES=SAMPLES_H;
@@ -132,7 +133,8 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			Sound.setBuffer(buffer);
 			Sound.play();
 			info<<"note played"<<endl;
-			sf::sleep(sf::milliseconds(sleepDuration));//We wait for the note to end 
+			sf::sleep(sf::milliseconds(sleepDuration));//We wait for the note to end
+			bb->setColor(GREEN);
 			Sound.resetBuffer();
 			}
 			break;

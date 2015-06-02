@@ -34,11 +34,7 @@ Scheduler::Scheduler() {
 	}
 
 	currentDate = 0;
-<<<<<<< HEAD
 	maximumDate = UINT_MAX ; // no time limitation by default
-=======
-	maximumDate = UINT_MAX; // no time limitation by default
->>>>>>> 6547cf7cbede6236b15b6fb49caa38be291f6d06
 	eventsMapSize = 0;
 	largestEventsMapSize = 0;
 }
