@@ -7,7 +7,7 @@ class Catoms2DBlock;
 
 class Catoms2DMove {
  public:
-  enum direction_t {ROTATE_CCW = -1, ROTATE_CW = 1};
+  enum direction_t {ROTATE_CW = -1, ROTATE_CCW = 1};
   Catoms2DBlock *pivot;
   direction_t direction;
 

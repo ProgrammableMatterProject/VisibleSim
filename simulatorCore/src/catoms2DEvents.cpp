@@ -140,6 +140,7 @@ namespace Catoms2D {
     cout << "------------------------------------------"<<endl;
     rb->setPosition(gridPos);
     wrld->setGridPtr(gridPos.pt[0],gridPos.pt[1],gridPos.pt[2],rb);
+    
 
     stringstream info;
     info.str("");

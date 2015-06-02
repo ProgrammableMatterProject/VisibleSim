@@ -67,6 +67,8 @@ void Catoms2D1BlockCode::startup() {
 #ifdef CENTRALIZED_COMP
   if (catom2D->blockId == 1) {
     centralized_reconfiguration();
+    //Catoms2DMove mv(Catoms2DWorld::getWorld()->getBlockById(5),Catoms2DMove::ROTATE_CW);
+    //catom2D->startMove(mv);
   }
 #else
   if (!map.isConnected && (catom2D->position[2] == 0)) {
