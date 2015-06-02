@@ -18,7 +18,9 @@ Tree* Tree::bfs(int source, int dist[], int size) {
   for(int i = 0; i < size; i++) {
     visited[i] = false;
   }
-		
+
+  dist[source] = 0;
+
   // Create a queue for BFS
   list<TreeNode *> queue;
 		
@@ -28,7 +30,7 @@ Tree* Tree::bfs(int source, int dist[], int size) {
  
   // 'i' will be used to get all adjacent vertices of a vertex
   list<int>::iterator i;
- 
+
   TreeNode *s = NULL;
   while(!queue.empty())
     {

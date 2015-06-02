@@ -99,10 +99,19 @@ namespace Catoms2D {
     if( !given_interface) {
       return NeighborDirection::Direction(0);
     }
+
+    /*
     for( int i(0); i < MAX_NB_NEIGHBORS; ++i) {
       if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
     }
-    return NeighborDirection::Direction(0);
+    return NeighborDirection::Direction(0);*/
+    // hack:
+
+    for( int i(0); i < MAX_NB_NEIGHBORS; ++i) {
+      if (getInterface(NeighborDirection::Direction(i)) == given_interface) {
+	return NeighborDirection::Direction(i);
+      }
+    }
   }
 
   std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {

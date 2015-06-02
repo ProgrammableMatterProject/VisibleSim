@@ -273,7 +273,9 @@ void centralized_reconfiguration() {
 	    updateGradient(c,gradient);
 	    cout << " done" << endl;
 	    getchar();
-	  }
+	  } /*else {
+	    cout << "hors figure ?" << endl;
+	    }*/
 	  delete mv;
 	} else { cout << " move == NULL" << endl;}
       }
