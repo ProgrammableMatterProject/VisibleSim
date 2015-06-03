@@ -13,7 +13,14 @@ using namespace Catoms2D;
 #define ROTATION_DIRECTION Catoms2DMove::ROTATE_CW
 #define UNDEFINED_GRADIENT -1
 
+//#define STRATEGY_ONE
+//#define STRATEGY_TWO
+#define STRATEGY_THREE
+
+#define STRATEGY_TRHEE
 enum state_t {IN_SHAPE = 0, OUT_SHAPE = 1, WELL_PLACED = 2};
+
+static int moves = 0;
 
 static Coordinate getMapBottomRight() {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
@@ -214,6 +221,7 @@ static void move(Catoms2DBlock* c, Catoms2DMove &m) {
   world->updateGlData(c,world->gridToWorldPosition(c->position),c->angle);
   // connect
   world->connectBlock(c);
+  moves++;
 }
 
 static void updateGradient(Catoms2DBlock *c, int gradient[]) {
@@ -234,8 +242,6 @@ static void updateGradient(Catoms2DBlock *c, int gradient[]) {
   gradient[id1] = minGradient + 1;
 }
 
-//#define STRATEGY_ONE
-#define STRATEGY_TWO
 static bool pivotShouldMoveBefore(Catoms2DBlock *c, Catoms2DMove &mv,
 				  int gradient[]) {
   Coordinate p1(c->position[0], c->position[2]);
@@ -278,7 +284,6 @@ void centralized_reconfiguration() {
   int gradient[world->getSize()+1];
   //state_t states[world->getSize()+1];
   Tree *bfs = NULL;
-  int moves = 0;
 
   Coordinate mapBottomRight = getMapBottomRight();
   seed = world->getGridPtr(mapBottomRight.x,0,mapBottomRight.y);
@@ -305,7 +310,7 @@ void centralized_reconfiguration() {
     // move CCW around i connector: i-1 and i-2 should be free
     Catoms2DWorld *world = Catoms2DWorld::getWorld();
     Catoms2DBlock  *c;
-
+#if defined(STRATEGY_ONE) || defined (STRATEGY_TWO)
     map<int, BuildingBlock*>::iterator it;
     for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
@@ -328,7 +333,6 @@ void centralized_reconfiguration() {
 	    cout << c->blockId << " is moving from " << p1 << " to " 
 		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection() << "..."; 
 	    move(c,*mv);
-	    moves++;
 	    //cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
@@ -341,44 +345,50 @@ void centralized_reconfiguration() {
 	}// else { cout << " move == NULL" << endl;}
       }
     }
-  }
-  cout << "reconfiguration over in " << moves << " moves." << endl;
-  /*Coordinate targetBottomLeft = getTargetBottomLeft();
-  Coordinate 
-  Coordinate trTargetBottomLeft = Map::real2Virtual(*/
+#elif defined(STRATEGY_THREE) 
+    Coordinate best(INT_MAX,INT_MIN);
+    map<int, BuildingBlock*>::iterator it;
+    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
+      
+      c = (Catoms2DBlock*) it->second;
+      if (c == seed) {
+	continue;
+      }
 
-
-  /* Current map:
-     int *gridSize = world->getGridSize();
-     for (int iy = 0; iy < gridSize[2]; iy++) {
-     for (int ix = 0; ix < gridSize[0]; ix++) {
-     Catoms2DBlock* c = world->getGridPtr(ix,0,iy);
-     if (c != NULL) {
-	
-     }
-     }
-     }*/
-
-  /* Target map:
-  Coordinate pmin(INT_MAX,INT_MAX);
-  Coordinate pmax(INT_MIN,INT_MIN);
-  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-  int *gridSize = world->getGridSize();
-  for (int iy = 0; iy < gridSize[2]; iy++) {
-    for (int ix = 0; ix < gridSize[0]; ix++) {
-      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-	pmin.x = min(pmin.x, ix);
-	pmin.y = min(pmin.y, iy);
-	pmax.x = max(pmax.x, ix);
-	pmax.y = max(pmax.y, iy);
-	Coordinate real(ix,iy);
-	Coordinate t =  map.real2Virtual(real);
-	cout << "target: (" << t.x << " " << t.y << ")" << endl;
-	ctuples.out(ContextTuple(string("target"),t));
+      if (canMove(c,gradient)) {
+	Coordinate p1(c->position[0], c->position[2]);	  	
+	Catoms2DMove *mv = nextMove(c);
+	if (mv != NULL) {
+	  Coordinate p2 = getPosition(c,*mv);
+	  if (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2))) {
+	    if (p1.y > best.y) {
+	      best = p1;
+	    } else if (p1.y == best.y) {
+	      if (p1.x < best.x) {
+		best = p1;
+	      }
+	    }
+	  }
+	  delete mv;
+	}
       }
     }
+    cout << "best: " << best << endl;
+    c = world->getGridPtr(best.x,0,best.y);
+    Catoms2DMove *mv = nextMove(c);
+    if (mv == NULL) { cout << "mv null" << endl;} 
+    Coordinate p1(c->position[0], c->position[2]); 
+    Coordinate p2 = getPosition(c,*mv);	
+    cout << c->blockId << " is moving from " << p1 << " to " 
+	 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection() << "..."; 
+    // mv should not be null (tested above)
+    move(c,*mv);
+    gradient[c->blockId] = UNDEFINED_GRADIENT;
+    updateGradient(c,gradient);	  
+    cout << " done"; //<< endl;
+    getchar();
+    delete mv;
+#endif
   }
-  Rectangle bounds(pmin,pmax);
-  CTuple::setBounds(bounds);
-  */
+  cout << "reconfiguration over in " << moves << " moves." << endl;
 }
