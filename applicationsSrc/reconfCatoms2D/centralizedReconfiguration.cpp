@@ -97,6 +97,40 @@ nextInterface(Catoms2DBlock *c, Catoms2DMove::direction_t d, P2PNetworkInterface
   return c->getInterface((NeighborDirection::Direction)p2pDirection);
 }
 
+static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+  P2PNetworkInterface *p1 = NULL, *p2 = NULL;
+  
+  if (c->nbNeighbors() == 0) {
+    return NULL;
+  }
+
+  // pick-up a neighbor of c
+  for (int i = 0; i < 6; i++) {
+    p1 = c->getInterface((NeighborDirection::Direction)i);
+    if (p1->connectedInterface) {
+      break;
+    }
+  }
+
+  if (c->nbNeighbors() == 1) {
+    return p1;
+  }
+  
+  p2 = p1;
+  while (true) {
+    if (d == Catoms2DMove::ROTATE_CCW) {
+      p2 = nextInterface(c, Catoms2DMove::ROTATE_CW, p2);
+    } else if (d == Catoms2DMove::ROTATE_CW) {
+      p2 = nextInterface(c, Catoms2DMove::ROTATE_CCW, p2);
+    }
+
+    if (!p2->connectedInterface) {
+      return p1;
+    }
+    p1 = p2;
+  }
+}
+
 static Catoms2DMove* nextMove(Catoms2DBlock  *c) {
   P2PNetworkInterface *p1 = NULL, *p2 = NULL;
   Catoms2DBlock  *pivot;
@@ -247,14 +281,9 @@ static bool pivotShouldMoveBefore(Catoms2DBlock *c, Catoms2DMove &mv,
 #if defined(STRATEGY_ONE)	
 	psmb = psmb && (pivotP1.y <= p1.y);
 #elif defined(STRATEGY_TWO)
-	if (pivotP1.y == p1.y) {
-	  psmb = psmb && (pivotP1.x >= p1.x);
-	} else if (p2.y - p1.y > 0) { // c will move in a higer position
-	  psmb = psmb && (pivotP1.y >= p1.y); 
-	} else if (p2.y - p1.y < 0) { // lower position
-	  psmb = psmb && (pivotP1.y <= p1.y);
-	} else { // (p2.y - p1.y == 0) same height position
-	  cerr << "IMPOSSIBLE" << endl;
+	if (mv.getPivot() == 
+	    lastNeighborInDirection(c,ROTATION_DIRECTION)->hostBlock) {
+	  psmb = true;
 	}
 #endif
     }
