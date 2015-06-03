@@ -132,46 +132,14 @@ static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, Catoms2DMo
 }
 
 static Catoms2DMove* nextMove(Catoms2DBlock  *c) {
-  P2PNetworkInterface *p1 = NULL, *p2 = NULL;
-  Catoms2DBlock  *pivot;
-  int i = 0;
-  
-  // pick-up a neighbor of c
-  for (i = 0; i < 6; i++) {
-    p1 = c->getInterface((NeighborDirection::Direction)i);
-    if (p1->connectedInterface) {
-      break;
-    }
+  P2PNetworkInterface *p2p = lastNeighborInDirection(c,ROTATION_DIRECTION);
+  Catoms2DBlock* pivot = (Catoms2DBlock*)p2p->connectedInterface->hostBlock;
+  Catoms2DMove m(pivot,ROTATION_DIRECTION);
+  if (c->canMove(m)) {
+    cout << c->blockId << " can move arround " << pivot->blockId << endl;
+    return new Catoms2DMove(m);
   }
-  
-  if ((i == 5) && !p1->connectedInterface) {
-    return NULL;
-  }
-
-  p2 = p1;
-  cout << "p1 dir: " << c->getDirection(p2) << endl;
-  while (true) {
-    if (ROTATION_DIRECTION == Catoms2DMove::ROTATE_CCW) {
-      p2 = nextInterface(c, Catoms2DMove::ROTATE_CW, p2);
-    } else if (ROTATION_DIRECTION == Catoms2DMove::ROTATE_CW) {
-      p2 = nextInterface(c, Catoms2DMove::ROTATE_CCW, p2);
-    }
-    
-    cout << "p2 dir: " << c->getDirection(p2) << endl;
-    if (p2->connectedInterface) {
-      cout << "connected p2 dir: " << c->getDirection(p2) << endl;
-      pivot = (Catoms2DBlock*)p2->connectedInterface->hostBlock;
-      Catoms2DMove m(pivot,ROTATION_DIRECTION);
-      if (c->canMove(m)) {
-	cout << c->blockId << " can move arround " << pivot->blockId << endl;
-	return new Catoms2DMove(m);
-      }
-      cout << "can't move" << endl;
-    }
-    if (p1 == p2) {
-      return NULL;
-    }
-  }
+  return NULL;
 }
 
 static Coordinate getPosition(Catoms2DBlock* c, Catoms2DMove &m) {
