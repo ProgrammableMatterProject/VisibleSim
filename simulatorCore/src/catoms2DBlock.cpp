@@ -95,23 +95,58 @@ namespace Catoms2D {
     getWorld()->updateGlData(this,Vecteur(ptrGlBlock->position[0],ptrGlBlock->position[1],ptrGlBlock->position[2]),ptrGlBlock->angle);
   }
 
-  NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *given_interface) {
-    if( !given_interface) {
+  NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
+    if (!p2p) {
       return NeighborDirection::Direction(0);
     }
 
-    /*
-    for( int i(0); i < MAX_NB_NEIGHBORS; ++i) {
-      if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
-    }
-    return NeighborDirection::Direction(0);*/
-    // hack:
-
-    for( int i(0); i < MAX_NB_NEIGHBORS; ++i) {
-      if (getInterface(NeighborDirection::Direction(i)) == given_interface) {
+    for (int i = 0; i < MAX_NB_NEIGHBORS; ++i) {
+      if (getInterface(NeighborDirection::Direction(i)) == p2p) {
 	return NeighborDirection::Direction(i);
       }
     }
+    return NeighborDirection::Direction(0);
+  }
+  
+  Vecteur Catoms2DBlock::getPosition(NeighborDirection::Direction d) {
+    Vecteur p = position;
+
+    switch(d) {
+    case NeighborDirection::BottomLeft:
+      if ((abs((int)p[2])%2) == 0) {
+	p.pt[0]--;
+      }
+      p.pt[2]--;
+      break;
+    case NeighborDirection::Left:
+      p.pt[0]--;
+      break;
+    case NeighborDirection::TopLeft:    
+      if ((abs((int)p[2])%2) == 0) {
+	p.pt[0]--;
+      }
+      p.pt[2]++;
+      break;
+    case NeighborDirection::TopRight:
+      if ((abs((int)p[2])%2) == 1) {
+	p.pt[0]++;
+      }
+      p.pt[2]++;
+      break;
+    case NeighborDirection::Right:
+      p.pt[0]++;
+      break;
+    case NeighborDirection::BottomRight: 
+      if ((abs((int)p[2])%2) == 1) {
+	p.pt[0]++;
+      }
+      p.pt[2]--;
+      break;
+    }
+    return p;
+  }
+  Vecteur Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
+    return getPosition(getDirection(p2p));
   }
 
   std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {
@@ -209,7 +244,9 @@ namespace Catoms2D {
 	  p2pDirection--;
 	}
       }
-      if (getInterface((NeighborDirection::Direction)p2pDirection)->connectedInterface != NULL) {
+      P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)p2pDirection);
+      Vecteur p = getPosition((NeighborDirection::Direction)p2pDirection);
+      if (p2p->connectedInterface || (p[2] < 0)) {
 	//cout << "somebody is connected there" << endl;
 	res = false;
       }

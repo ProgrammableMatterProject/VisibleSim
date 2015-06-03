@@ -152,7 +152,16 @@ static bool isInTarget(Coordinate &p) {
   return (world->getTargetGrid(p.x,0,p.y) == fullCell);
 }
 
+#define CONSECUTIVE_NEIGHBORS
+//#define GRADIENT
 static bool canMove(Catoms2DBlock *c, int gradient[]) {
+#ifdef CONSECUTIVE_NEIGHBORS
+  // on the border (r)
+  int nbNeighbors = c->nbNeighbors();
+  int nbConsecutiveNeighbors = c->nbConsecutiveNeighbors();
+  bool r = (nbNeighbors <= 4) && (nbConsecutiveNeighbors == nbNeighbors);
+  return r;
+#elif defined(GRADIENT)
   // can algorithmically move (gradient higher or equal than all neighbors)
   int id1 = c->blockId; 
 
@@ -175,6 +184,7 @@ static bool canMove(Catoms2DBlock *c, int gradient[]) {
     }
   }
   return true;
+#endif
 }
 
 static void move(Catoms2DBlock* c, Catoms2DMove &m) {
@@ -215,6 +225,43 @@ static void updateGradient(Catoms2DBlock *c, int gradient[]) {
   gradient[id1] = minGradient + 1;
 }
 
+//#define STRATEGY_ONE
+#define STRATEGY_TWO
+static bool pivotShouldMoveBefore(Catoms2DBlock *c, Catoms2DMove &mv,
+				  int gradient[]) {
+  Coordinate p1(c->position[0], c->position[2]);
+  Coordinate p2 = getPosition(c,mv);
+  
+  bool pcm = canMove(mv.getPivot(),gradient);
+  bool psmb = false;
+
+  if (pcm) {
+    Coordinate pivotP1(mv.getPivot()->position[0],
+		       mv.getPivot()->position[2]);
+    Catoms2DMove *pivotMv = nextMove(mv.getPivot());
+    
+    if (pivotMv != NULL) {
+	Coordinate pivotP2 = getPosition(mv.getPivot(),*pivotMv);
+	psmb = (!isInTarget(pivotP1) || 
+		(isInTarget(pivotP1) && isInTarget(pivotP2)));
+#if defined(STRATEGY_ONE)	
+	psmb = psmb && (pivotP1.y <= p1.y);
+#elif defined(STRATEGY_TWO)
+	if (pivotP1.y == p1.y) {
+	  psmb = psmb && (pivotP1.x >= p1.x);
+	} else if (p2.y - p1.y > 0) { // c will move in a higer position
+	  psmb = psmb && (pivotP1.y >= p1.y); 
+	} else if (p2.y - p1.y < 0) { // lower position
+	  psmb = psmb && (pivotP1.y <= p1.y);
+	} else { // (p2.y - p1.y == 0) same height position
+	  cerr << "IMPOSSIBLE" << endl;
+	}
+#endif
+    }
+  }
+  return psmb;
+}
+
 void centralized_reconfiguration() {
   cout << "centralized reconfiguration" << endl;
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
@@ -222,7 +269,8 @@ void centralized_reconfiguration() {
   int gradient[world->getSize()+1];
   //state_t states[world->getSize()+1];
   Tree *bfs = NULL;
-  
+  int moves = 0;
+
   Coordinate mapBottomRight = getMapBottomRight();
   seed = world->getGridPtr(mapBottomRight.x,0,mapBottomRight.y);
 #ifdef COLOR_DEBUG
@@ -264,10 +312,15 @@ void centralized_reconfiguration() {
 	Catoms2DMove *mv = nextMove(c);
 	if (mv != NULL) {
 	  Coordinate p2 = getPosition(c,*mv);
-	  if (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2))) {
+
+	  bool psmb = pivotShouldMoveBefore(c,*mv,gradient);
+
+	  if (!psmb && 
+	      (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2)))) {
 	    cout << c->blockId << " is moving from " << p1 << " to " 
 		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection() << "..."; 
 	    move(c,*mv);
+	    moves++;
 	    cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
@@ -281,7 +334,7 @@ void centralized_reconfiguration() {
       }
     }
   }
-  cout << "reconfiguration is over" << endl;
+  cout << "reconfiguration over in " << moves << " moves." << endl;
   /*Coordinate targetBottomLeft = getTargetBottomLeft();
   Coordinate 
   Coordinate trTargetBottomLeft = Map::real2Virtual(*/

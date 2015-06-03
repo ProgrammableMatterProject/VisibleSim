@@ -50,8 +50,10 @@ public:
 	void setColor(const Color &);
 	void setPosition(const Vecteur &p);
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
-	
-	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
+	Vecteur getPosition(NeighborDirection::Direction d);
+	Vecteur getPosition(P2PNetworkInterface *p2p);
+
+	NeighborDirection::Direction getDirection(P2PNetworkInterface* p2p);
 	int nbNeighbors();
 	int nbConsecutiveNeighbors();
 
