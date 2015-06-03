@@ -78,8 +78,6 @@ static bool isOver() {
 static P2PNetworkInterface* 
 nextInterface(Catoms2DBlock *c, Catoms2DMove::direction_t d, P2PNetworkInterface *p2p) {
   int p2pDirection = c->getDirection(p2p);
-  cout << "next: ";
-  cout << "i: " << p2pDirection;
   if (d == Catoms2DMove::ROTATE_CCW) {
     if (p2pDirection == NeighborDirection::BottomRight) {
       p2pDirection = NeighborDirection::Right;
@@ -93,11 +91,10 @@ nextInterface(Catoms2DBlock *c, Catoms2DMove::direction_t d, P2PNetworkInterface
       p2pDirection--;
     }
   }
-  cout << "n: " << p2pDirection << endl;
   return c->getInterface((NeighborDirection::Direction)p2pDirection);
 }
 
-static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
   P2PNetworkInterface *p1 = NULL, *p2 = NULL;
   
   if (c->nbNeighbors() == 0) {
@@ -118,12 +115,7 @@ static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, Catoms2DMo
   
   p2 = p1;
   while (true) {
-    if (d == Catoms2DMove::ROTATE_CCW) {
-      p2 = nextInterface(c, Catoms2DMove::ROTATE_CW, p2);
-    } else if (d == Catoms2DMove::ROTATE_CW) {
-      p2 = nextInterface(c, Catoms2DMove::ROTATE_CCW, p2);
-    }
-
+      p2 = nextInterface(c, d, p2);
     if (!p2->connectedInterface) {
       return p1;
     }
@@ -131,12 +123,27 @@ static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, Catoms2DMo
   }
 }
 
+static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+  Catoms2DMove::direction_t d2 = Catoms2DMove::ROTATE_CW; // default
+  // the last one is the first one in the opposite direction
+  if (d == Catoms2DMove::ROTATE_CCW) {
+    d2 = Catoms2DMove::ROTATE_CW;
+  } else if (d == Catoms2DMove::ROTATE_CW) {
+    d2 = Catoms2DMove::ROTATE_CCW;
+  }
+  return extremeNeighborInDirection(c,d2);
+}
+
+static P2PNetworkInterface *firstNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+  return extremeNeighborInDirection(c,d);
+}
+
 static Catoms2DMove* nextMove(Catoms2DBlock  *c) {
   P2PNetworkInterface *p2p = lastNeighborInDirection(c,ROTATION_DIRECTION);
   Catoms2DBlock* pivot = (Catoms2DBlock*)p2p->connectedInterface->hostBlock;
   Catoms2DMove m(pivot,ROTATION_DIRECTION);
   if (c->canMove(m)) {
-    cout << c->blockId << " can move arround " << pivot->blockId << endl;
+    //cout << c->blockId << " can move arround " << pivot->blockId << endl;
     return new Catoms2DMove(m);
   }
   return NULL;
@@ -247,11 +254,16 @@ static bool pivotShouldMoveBefore(Catoms2DBlock *c, Catoms2DMove &mv,
 	psmb = (!isInTarget(pivotP1) || 
 		(isInTarget(pivotP1) && isInTarget(pivotP2)));
 #if defined(STRATEGY_ONE)	
-	psmb = psmb && (pivotP1.y <= p1.y);
+	//psmb = psmb && (pivotP1.y <= p1.y);
+	if (mv.getPivot() != 
+	    firstNeighborInDirection(c,ROTATION_DIRECTION)->connectedInterface->hostBlock) {
+	  psmb = false;
+	  }
+
 #elif defined(STRATEGY_TWO)
-	if (mv.getPivot() == 
-	    lastNeighborInDirection(c,ROTATION_DIRECTION)->hostBlock) {
-	  psmb = true;
+	if (mv.getPivot() != 
+	    lastNeighborInDirection(c,ROTATION_DIRECTION)->connectedInterface->hostBlock) {
+	  psmb = false;
 	}
 #endif
     }
@@ -311,23 +323,22 @@ void centralized_reconfiguration() {
 	  Coordinate p2 = getPosition(c,*mv);
 
 	  bool psmb = pivotShouldMoveBefore(c,*mv,gradient);
-
 	  if (!psmb && 
 	      (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2)))) {
 	    cout << c->blockId << " is moving from " << p1 << " to " 
 		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection() << "..."; 
 	    move(c,*mv);
 	    moves++;
-	    cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
+	    //cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
-	    cout << " done" << endl;
+	    cout << " done"; //<< endl;
 	    getchar();
 	  } /*else {
 	    cout << "hors figure ?" << endl;
 	    }*/
 	  delete mv;
-	} else { cout << " move == NULL" << endl;}
+	}// else { cout << " move == NULL" << endl;}
       }
     }
   }
