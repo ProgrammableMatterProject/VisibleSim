@@ -13,9 +13,13 @@ using namespace Catoms2D;
 #define ROTATION_DIRECTION Catoms2DMove::ROTATE_CW
 #define UNDEFINED_GRADIENT -1
 
+#define CONSECUTIVE_NEIGHBORS
+#define NB_MAX_CONSECUTIVE_NEIGHBORS_TO_MOVE 3
+//#define GRADIENT
+
 //#define STRATEGY_ONE
-//#define STRATEGY_TWO
-#define STRATEGY_THREE
+#define STRATEGY_TWO
+//#define STRATEGY_THREE
 
 #define STRATEGY_TRHEE
 enum state_t {IN_SHAPE = 0, OUT_SHAPE = 1, WELL_PLACED = 2};
@@ -168,14 +172,13 @@ static bool isInTarget(Coordinate &p) {
   return (world->getTargetGrid(p.x,0,p.y) == fullCell);
 }
 
-#define CONSECUTIVE_NEIGHBORS
-//#define GRADIENT
 static bool canMove(Catoms2DBlock *c, int gradient[]) {
 #ifdef CONSECUTIVE_NEIGHBORS
   // on the border (r)
   int nbNeighbors = c->nbNeighbors();
   int nbConsecutiveNeighbors = c->nbConsecutiveNeighbors();
-  bool r = (nbNeighbors <= 4) && (nbConsecutiveNeighbors == nbNeighbors);
+  bool r = (nbNeighbors <= NB_MAX_CONSECUTIVE_NEIGHBORS_TO_MOVE) &&
+    (nbConsecutiveNeighbors == nbNeighbors);
   return r;
 #elif defined(GRADIENT)
   // can algorithmically move (gradient higher or equal than all neighbors)
