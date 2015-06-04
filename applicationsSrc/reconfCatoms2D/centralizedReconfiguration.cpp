@@ -366,7 +366,8 @@ void centralized_reconfiguration() {
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
 	    cout << " done"; //<< endl;
-	    getchar();
+	    //getchar();
+	    //sleep(1);
 	  } /*else {
 	    cout << "hors figure ?" << endl;
 	    }*/
