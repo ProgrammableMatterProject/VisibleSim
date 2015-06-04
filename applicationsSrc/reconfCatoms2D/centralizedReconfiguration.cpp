@@ -275,7 +275,7 @@ static bool pivotShouldMoveBefore(Catoms2DBlock *c, Catoms2DMove &mv,
     if (pivotMv != NULL) {
 	Coordinate pivotP2 = getPosition(mv.getPivot(),*pivotMv);
 	psmb = (!isInTarget(pivotP1) || 
-		(isInTarget(pivotP1) && isInTarget(pivotP2)));
+		(isInTarget(pivotP1) && isInTarget(pivotP2) && (p2.y <= p1.y)));
 #if defined(STRATEGY_ONE)	
 	//psmb = psmb && (pivotP1.y <= p1.y);
 	if (mv.getPivot() != 
@@ -320,7 +320,7 @@ void centralized_reconfiguration() {
     Coordinate p(c->position[0],c->position[2]);
     if (isInTarget(p)) {
       states[c->blockId] = IN_SHAPE;
-     } else {
+    } else {
       states[c->blockId] = OUT_SHAPE;
     }
   }
@@ -348,24 +348,33 @@ void centralized_reconfiguration() {
 	continue;
       }
 
+      Coordinate p1(c->position[0], c->position[2]);
+#ifdef COLOR_DEBUG
+      if (isInTarget(p1)) {
+	c->setColor(GREEN);
+      } else {
+	c->setColor(GREY);
+      }
+#endif
+
       if (canMove(c,gradient)) {
 	//cout << "c satisfies gradient condition" << endl;
 	//cout << "@" << c->blockId << " can physically move" << endl;
-	Coordinate p1(c->position[0], c->position[2]);
 	Catoms2DMove *mv = nextMove(c);
 	if (mv != NULL) {
 	  Coordinate p2 = getPosition(c,*mv);
 
 	  bool psmb = pivotShouldMoveBefore(c,*mv,gradient);
+
 	  if (!psmb && 
-	      (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2)))) {
+	      (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
 	    cout << c->blockId << " is moving from " << p1 << " to " 
-		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection() << "..."; 
+		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection(); 
 	    move(c,*mv);
 	    //cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
-	    cout << " done"; //<< endl;
+	    cout << " done" << endl;
 	    //getchar();
 	    //sleep(1);
 	  } /*else {
