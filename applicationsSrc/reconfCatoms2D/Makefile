@@ -31,13 +31,13 @@ ts/libTS.a:
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
-all: $(OUT) 
+all: $(OUT) generator
 
-autoinstall: $(OUT) 
-	cp $(OUT)  $(APPDIR)
+autoinstall: $(OUT) generator 
+	cp $(OUT) $(APPDIR)
+	cp generator $(APPDIR)
 
 $(APPDIR)/$(OUT): $(OUT)
-
 
 #autoinstall: $(OUT) VMEmulator $(APPDIR)/$(OUT)
 #	echo toto
@@ -48,6 +48,8 @@ $(APPDIR)/$(OUT): $(OUT)
 $(OUT): $(SIMULATORLIB) $(OBJS) 
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
+generator: configGenerator.cpp
+	$(CC) -o $@ $^
 
 -include $(DEPS)
 
