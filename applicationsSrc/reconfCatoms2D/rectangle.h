@@ -28,6 +28,22 @@ class Rectangle {
   Coordinate getPTopRight() const {
     return pTopRight;
   }
+  
+  Coordinate getPBottomRight() const {
+    return Coordinate(pTopRight.x,pBottomLeft.y);
+  }
+
+  Coordinate getPTopLeft() const {
+    return Coordinate(pBottomLeft.x,pTopRight.y);
+  }
+
+  int getWidth() const {
+    return (pTopRight.x - pBottomLeft.x) + 1;
+  }
+
+  int getHeight() const {
+    return (pTopRight.y - pBottomLeft.y) + 1;
+  }
 
   bool contains(Coordinate p) const {
     return (p.getX() >= pBottomLeft.getX()) &&
