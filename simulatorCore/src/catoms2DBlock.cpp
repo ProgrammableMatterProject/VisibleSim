@@ -230,7 +230,7 @@ namespace Catoms2D {
 
     bool res = true;
   
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
       if (direction == Catoms2DMove::ROTATE_CW) {
 	if (p2pDirection == NeighborDirection::BottomRight) {
 	  p2pDirection = NeighborDirection::Right;
