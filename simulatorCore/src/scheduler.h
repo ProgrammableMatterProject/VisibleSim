@@ -13,7 +13,10 @@
 #include <map>
 #include <inttypes.h>
 #include <assert.h>
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "events.h"
 #include "openglViewer.h"
 
@@ -29,6 +32,8 @@ class Scheduler {
 protected:
 	static Scheduler *scheduler;
 	int schedulerMode;
+	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
+	boost::thread *schedulerThread;
 
 	uint64_t currentDate;
 	uint64_t maximumDate;
@@ -77,6 +82,10 @@ public:
 	inline void setState (State s) { state = s; };
 	inline State getState () { return state; };
 	inline int getNbreMessages() { return Event::getNextId(); };
+
+	inline void waitForSchedulerEnd() {
+			schedulerThread->join();
+    }
 };
 
 inline void deleteScheduler() {

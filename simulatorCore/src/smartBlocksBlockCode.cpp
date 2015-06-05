@@ -13,11 +13,11 @@ using namespace std;
 namespace SmartBlocks {
 
 SmartBlocksBlockCode::SmartBlocksBlockCode(SmartBlocksBlock *host):BlockCode(host) {
-	cout << "SmartBlocksBlockCode constructor" << endl;
+	OUTPUT << "SmartBlocksBlockCode constructor" << endl;
 }
 
 SmartBlocksBlockCode::~SmartBlocksBlockCode() {
-	cout << "SmartBlocksBlockCode destructor" << endl;
+	OUTPUT << "SmartBlocksBlockCode destructor" << endl;
 }
 /*
 SmartBlocksBlockCode* SmartBlocksBlockCode::buildNewBlockCode(SmartBlocksBlock *host) {

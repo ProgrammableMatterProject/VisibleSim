@@ -31,18 +31,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 		int largeur = atoi(str.substr(0,pos).c_str());
 		int hauteur = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
 		cout << "grid size : " << largeur << " x " << hauteur << endl;
-
-		const char *attr=worldElement->Attribute("windowSize");
-		if (attr) {
-			str=attr;
-			int pos = str.find_first_of(',');
-			GlutContext::initialScreenWidth = atoi(str.substr(0,pos).c_str());
-			GlutContext::initialScreenHeight = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
-			GlutContext::screenWidth = GlutContext::initialScreenWidth;
-			GlutContext::screenHeight = GlutContext::initialScreenHeight;
-		}
-
-		attr=worldElement->Attribute("maxSimulationTime");
+		const char *attr=worldElement->Attribute("maxSimulationTime");
 		if (attr) {
 			str=attr;
 			uint64_t t = atoi(attr);
@@ -56,6 +45,15 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 			}
 			getScheduler()->setMaximumDate(t);
 		}
+		attr=worldElement->Attribute("windowSize");
+		if (attr) {
+			str=attr;
+			int pos = str.find_first_of(',');
+			GlutContext::initialScreenWidth = atoi(str.substr(0,pos).c_str());
+			GlutContext::initialScreenHeight = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
+			GlutContext::screenWidth = GlutContext::initialScreenWidth;
+			GlutContext::screenHeight = GlutContext::initialScreenHeight;
+		}
 		createWorld(largeur,hauteur,argc,argv);
 		world = getWorld();
 		world->loadTextures("../../simulatorCore/smartBlocksTextures");
@@ -63,7 +61,6 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 		cerr << "ERROR : NO world in XML file" << endl;
 		exit(1);
 	}
-
 	TiXmlNode *nodeConfig = node->FirstChild("camera");
 	if (nodeConfig) {
 		TiXmlElement* cameraElement = nodeConfig->ToElement();
@@ -235,6 +232,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 	} else // end if(nodeBlock)
 	{ cerr << "no Block List" << endl;
 	}
+
 	TiXmlNode *nodeGrid = node->FirstChild("targetGrid");
  	if (nodeGrid) {
  		TiXmlNode *block = nodeGrid->FirstChild("targetLine");
@@ -262,6 +260,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 	if (nodeCapa) {
         world->setCapabilities(new SmartBlocksCapabilities(nodeCapa));
     }
+
  	world->linkBlocks();
 
 	GlutContext::mainLoop();

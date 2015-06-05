@@ -12,6 +12,7 @@
 #include "trace.h"
 #include "blinkyBlocksDebugger.h"
 
+
 //===========================================================================================================
 //
 //          GlutContext  (class)
@@ -36,6 +37,7 @@ GlutPopupMenuWindow *GlutContext::popupMenu=NULL;
 GlutHelpWindow *GlutContext::helpWindow=NULL;
 
 void GlutContext::init(int argc, char **argv) {
+#ifdef GLUT
 	glutInit(&argc,argv);
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
@@ -79,13 +81,16 @@ void GlutContext::init(int argc, char **argv) {
 	mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
 	debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga");
 	popup = new GlutPopupWindow(NULL,0,0,40,30);
+#endif
 }
 
 void GlutContext::deleteContext() {
-	delete mainWindow;
+#ifdef GLUT
+    delete mainWindow;
 	delete debugWindow;
 	delete popup;
-	delete popupMenu;
+	//delete popupMenu;
+#endif
 }
 
 void *GlutContext::lanceScheduler(void *param) {
@@ -99,7 +104,6 @@ void *GlutContext::lanceScheduler(void *param) {
 // - width  : largeur (x) de la zone de visualisation
 // - height : hauteur (y) de la zone de visualisation
 void GlutContext::reshapeFunc(int w,int h) {
-
  	screenWidth=w;
 	screenHeight=h;
 	Camera* camera=getWorld()->getCamera();
@@ -262,11 +266,11 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
           case '-' : camera->mouseZoom(-0.5); break;
         //  case 'l' : showLinks = !showLinks; break;
           case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
-          //case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
-          case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
+//          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
+          //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
           case 'd' : getScheduler()->stop(getScheduler()->now()); break;
           case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
-          case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
+          //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
           case 'z' : {
               World *world = BaseSimulator::getWorld();
               GlBlock *slct=world->getSelectedBlock();
@@ -459,13 +463,33 @@ int GlutContext::processHits(GLint hits, GLuint *buffer) {
 }
 
 void GlutContext::mainLoop() {
+#ifdef GLUT
 	glutMainLoop();
+#else
+    cout << "r+[ENTER] to run simulation" << endl;
+    sleep(2);
+    char c='r';
+    cin >> c;
+    Scheduler *s = getScheduler();
+    if (c=='r') {
+        cout << "Run simulation..." << endl;
+        cout.flush();
+
+        sleep(2);
+        s->start(SCHEDULER_MODE_FASTEST);
+        s->waitForSchedulerEnd();
+    }
+#endif
 	getScheduler()->stop(BaseSimulator::getScheduler()->now());
-	deleteContext();
+
+    sleep(2);
+    deleteContext();
 }
 
 void GlutContext::addTrace(const string &message,int id,const Color &color) {
+#ifdef GLUT
 	if (mainWindow) mainWindow->addTrace(id,message,color);
+#endif
 }
 
 bool GlutContext::saveScreen(char *title) {

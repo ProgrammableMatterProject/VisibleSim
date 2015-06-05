@@ -30,16 +30,21 @@ SmartBlocksWorld::SmartBlocksWorld(int gw,int gh,int argc, char *argv[]):World()
 		ptr++;
 	}
 
-	GlutContext::init(argc,argv);
-	idTextureFloor=0;
-	idTextureDigits=0;
 	blockSize[0]=25.0;
 	blockSize[1]=25.0;
 	blockSize[2]=11.0;
 	targetGrid=new presence[gw*gh];
 	memset(targetGrid,0,gw*gh*sizeof(presence));
+	GlutContext::init(argc,argv);
+	idTextureFloor=0;
+	idTextureDigits=0;
+#ifdef GLUT
 	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+#else
+    objBlock=NULL;
+    objRepere=NULL;
+#endif
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
 	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
 	camera->setTarget(Vecteur(0,0,1.0));

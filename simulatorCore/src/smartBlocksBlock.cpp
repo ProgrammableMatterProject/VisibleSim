@@ -18,7 +18,7 @@ static const GLfloat tabColors[12][4]={{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.
 
 
 SmartBlocksBlock::SmartBlocksBlock(int bId, SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*)) : BaseSimulator::BuildingBlock(bId) {
-  cout << "SmartBlocksBlock constructor" << endl;
+  OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
   buildNewBlockCode = smartBlocksBlockCodeBuildingFunction;
   blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
   for (int i=North; i<=West; i++) {
@@ -30,7 +30,7 @@ SmartBlocksBlock::~SmartBlocksBlock() {
   for (int i=North; i<=West; i++) {
     delete tabInterfaces[i];
   }
-  cout << "SmartBlocksBlock destructor :" << blockId << endl;
+  OUTPUT << "SmartBlocksBlock #" << blockId << " destructor" << endl;
 }
 
 void SmartBlocksBlock::setPosition(const Vecteur &p) {

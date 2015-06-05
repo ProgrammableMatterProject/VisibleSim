@@ -33,7 +33,7 @@ void BlinkyBlocksSimulator::help() {
 
 BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
-	
+
 	int port = 34000; // default port (if not defined in xml file)
 	string vmPath;
 	string programPath;
@@ -43,9 +43,9 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	int currentID = 1;
 	BlinkyBlocksWorld *world = NULL;
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
-   
+
 	testMode = false;
-   
+
    /* Reading the command line */
    argv++;
    argc--;
@@ -89,9 +89,9 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
    }
 
 	/* reading the xml file */
-	/* VM part */	
+	/* VM part */
 	TiXmlNode *node = xmlDoc->FirstChild("vm");
-	if (node) {		
+	if (node) {
 		TiXmlElement* vmElement = node->ToElement();
 		const char *attr = vmElement->Attribute("serverport");
 		if (attr) {
@@ -100,7 +100,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 		attr = vmElement->Attribute("vmPath");
 		if (attr) {
 			vmPath = string(attr);
-		}	
+		}
 		attr = vmElement->Attribute("programPath");
 		if (attr) {
          if (programPath == "") {
@@ -119,10 +119,10 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 			}
 		}
 	}
-   
+
    if (programPath == "")
       help();
-	
+
 	node = xmlDoc->FirstChild("world");
 	if (node) {
 		TiXmlElement* worldElement = node->ToElement();
@@ -157,14 +157,14 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 		ERRPUT << "ERROR : NO world in XML file" << endl;
 		exit(1);
 	}
-		
+
 	createScheduler();
 	setVMConfiguration(vmPath, programPath, debugging);
 	createVMServer(port);
 	if(debugging) {
 		createDebugger();
 	}
-	
+
 	// loading the camera parameters
 	TiXmlNode *nodeConfig = node->FirstChild("camera");
 	if (nodeConfig) {
@@ -302,7 +302,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	} else { // end if(nodeBlock)
 		ERRPUT << "no Block List" << endl;
 	}
-	
+
 	// loading the scenario
 	TiXmlNode *nodeScenario = node->FirstChild("scenario");
 	if (nodeScenario) {

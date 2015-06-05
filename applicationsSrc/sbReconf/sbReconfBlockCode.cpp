@@ -28,13 +28,13 @@ using namespace SmartBlocks;
 const int time_offset=100;
 
 SbReconfBlockCode::SbReconfBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
-	cout << "SbReconfBlockCode constructor" << endl;
+	OUTPUT << "SbReconfBlockCode constructor" << endl;
 	scheduler = SmartBlocks::getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
 SbReconfBlockCode::~SbReconfBlockCode() {
-	cout << "SbReconfBlockCode destructor" << endl;
+	OUTPUT << "SbReconfBlockCode destructor" << endl;
 	delete [] targetGrid;
 	delete [] unlockPathTab;
 }
@@ -43,12 +43,13 @@ void SbReconfBlockCode::startup() {
 	stringstream info;
 	block = (SmartBlocksBlock*)(hostBlock);
 	wrl = SmartBlocksWorld::getWorld();
-	info << "Starting ";
+	OUTPUT << "Starting " << block->blockId << endl;
 
 	nbreOfWaitedAnswers=0;
     block2Answer = NULL;
     _next = NULL;
     _previous = NULL;
+    _numPrev = -1;
 	block->_isBorder=false;
 	block->_isTrain=false;
 	block->_isSingle=false;
@@ -536,6 +537,8 @@ on le renvoie au sender
 					info.str("");
 					info << "rec. SearchEndTrainMessage("<< recvMessage->num <<") from " << sourceId;
 					scheduler->trace(info.str(),hostBlock->blockId);
+
+                    OUTPUT << "isSingle : " << block->_isSingle << endl;
 #endif // verbose
 					if (!tabSteps[1]) {
 						tabMemorisedMessages[3] = message;
@@ -557,6 +560,7 @@ on le renvoie au sender
 					info << "rec. TrainReadyMessage(" << recvMessage->queueFound << ") from " << sourceId;
 					scheduler->trace(info.str(),hostBlock->blockId);
 #endif
+
 					if (recvMessage->queueFound) {
 #ifdef verbose
 					    info.str("");
@@ -586,12 +590,17 @@ on le renvoie au sender
                         applyRules();
 						Capability *capa = possibleRules->back()->capa;
 						if (capa && !capa->isHead) {
-							// il faut chercher une règle de queue dans le bloc courant.
+							// il faut chercher une règle de queue dans le bloc courant qui ne forme pas d'isthme
 							while (!possibleRules->empty() && !possibleRules->back()->capa->isEnd) {
 								possibleRules->pop_back();
 							}
-							if (!possibleRules->empty()) {
-                                TrainReadyMessage *message = new TrainReadyMessage(true);
+							bool test=!possibleRules->empty();
+							if (test && !block->_isSingle) {
+                                capa = possibleRules->back()->capa;
+                                test &= !testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
+							}
+							if (test) {
+							    TrainReadyMessage *message = new TrainReadyMessage(true);
 								scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
 								info.str("");
@@ -935,6 +944,7 @@ on le renvoie au sender
 							setRulesColor();
 #ifdef verbose
                             OUTPUT << _pm << endl;
+                            OUTPUT << block->blockId << "._numPrev =" << _numPrev << endl;
 #endif
 
                             if (block->_isSingle)  {
@@ -944,9 +954,15 @@ on le renvoie au sender
                                 _next=NULL;
                                 _previous = getBorderSinglePrevious();
                             } else {
-                                _next = getBorderNextNeightborNoWellPlaced();
-                                _previous = getBorderPreviousNeightborNoWellPlaced(_next);
+                                if (_numPrev!=-1 && (_previous = getBorderNeighborById(_numPrev))!=NULL) {
+                                    _next = getBorderNextNeightborNoWellPlaced(_previous);
+                                } else {
+                                    _next = getBorderNextNeightborNoWellPlaced(NULL);
+                                    _previous = getBorderPreviousNeightborNoWellPlaced(_next);
+                                }
                             }
+                            _numPrev = (_previous?_previous->connectedInterface->hostBlock->blockId:-1);
+
 #ifdef verbose
                             info.str("");
                             info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
@@ -1146,7 +1162,9 @@ on test d'abord si c'est un isthme avant de faire tout déplacement
     if (possibleRules && !possibleRules->empty()) {
         Capability *capa = possibleRules->back()->capa;
         bool test = testIsthmus(capa->linkPrevPos->x,capa->linkPrevPos->y);
-        //OUTPUT << "TEST ISTHMUS :" << test << endl;
+        if (capa->isEnd && !capa->isHead && !block->_isSingle) {
+            test = test || testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
+        }
 
         if (test) {
 #ifdef verbose
@@ -1607,17 +1625,27 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightbor() {
 	return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
 }
 
-P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced() {
+P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNetworkInterface *prev) {
 	static int border[8][2] = {{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1},{-1,0},{-1,1}};
 //    OUTPUT << "getBorderNextNeightbor()" << endl;
 //    OUTPUT << _pm;
 
-    // on recherche une cellule vide
     int i=0;
-    while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
-        i++;
+    NeighborDirection dir;
+    if (prev) {
+    // cherche la direction de prev
+        dir=North;
+        i=4;
+        while (i-- && block->getInterface(dir)!=prev) {
+            dir=NeighborDirection((int(dir)+1)%4);
+        }
+    } else {
+        // on recherche une cellule vide
+        while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+            i++;
+        }
+        dir=NeighborDirection((i/2+1)%4);
     }
-    NeighborDirection dir=NeighborDirection((i/2+1)%4);
 //    OUTPUT << i << "," << dir << endl;
 
     i=3;
@@ -1653,6 +1681,21 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderSinglePrevious() {
     }
     P2PNetworkInterface *stop = block->getInterface(dirStop);
     return (stop && stop->connectedInterface && !((SmartBlocksBlock*)(stop->connectedInterface->hostBlock))->wellPlaced)?stop:block->getInterface(dir);
+}
+
+
+P2PNetworkInterface *SbReconfBlockCode::getBorderNeighborById(int id) {
+    P2PNetworkInterface *p2p;
+    int i=4;
+    bool found=false;
+    while (i-- && !found) {
+        p2p=block->getInterface(SmartBlocks::NeighborDirection(i));
+        if (p2p->connectedInterface) {
+//            OUTPUT << i << " : " << p2p->connectedInterface->hostBlock->blockId << endl;
+            found=p2p->connectedInterface->hostBlock->blockId==id;
+        }
+    }
+    return found?p2p:NULL;
 }
 
 
@@ -1722,34 +1765,34 @@ il faut aussi interdir <-XB0 ou B est un bord
 		support = (posGrid.x>0)?wrl->getGridPtr(posGrid.x-1,posGrid.y):NULL;
 		supportDiag = (posGrid.x>0 && posGrid.y>0)?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
         voisin = (posGrid.y>0 && wrl->getGridPtr(posGrid.x,posGrid.y-1))?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
-        voisin2 = (posGrid.x>1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
-        voisin3 = (posGrid.x<1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
+        voisin2 = (posGrid.x>=1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
+        voisin3 = (posGrid.x<lx-1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
 	} else if (dy==-1) {
 		support = (posGrid.x<lx-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y):NULL;
 		supportDiag = (posGrid.x<lx-1 && posGrid.y<ly-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
         voisin = (posGrid.y<ly-1 && wrl->getGridPtr(posGrid.x,posGrid.y+1))?wrl->getGridPtr(posGrid.x,posGrid.y+1):NULL;
-        voisin2 = (posGrid.x>1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
-        voisin3 = (posGrid.x<1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
+        voisin2 = (posGrid.x>=1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
+        voisin3 = (posGrid.x<lx-1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
 	} else if (dx==1) {
 		support = (posGrid.y<ly-1)?wrl->getGridPtr(posGrid.x,posGrid.y+1):NULL;
-		supportDiag = (posGrid.y<ly-1 && posGrid.x>0)?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
-        voisin = (posGrid.x>0 && wrl->getGridPtr(posGrid.x-1,posGrid.y))?wrl->getGridPtr(posGrid.x-1,posGrid.y):NULL;
-        voisin2 = (posGrid.x>1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
-        voisin3 = (posGrid.x<1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
+		supportDiag = (posGrid.y<ly-1 && posGrid.x>=1)?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
+        voisin = (posGrid.x>=1 && wrl->getGridPtr(posGrid.x-1,posGrid.y))?wrl->getGridPtr(posGrid.x-1,posGrid.y):NULL;
+        voisin2 = (posGrid.x>=1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
+        voisin3 = (posGrid.x<1 && posGrid.y>=1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
     } else {
 	// dx==-1
         support = (posGrid.y>0)?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
         supportDiag = (posGrid.y>0 && posGrid.x<lx-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
         voisin = (posGrid.x<lx-1 && wrl->getGridPtr(posGrid.x+1,posGrid.y))?wrl->getGridPtr(posGrid.x+1,posGrid.y):NULL;
         voisin2 = (posGrid.x<lx-2 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
-        voisin3 = (posGrid.x<lx-2 && posGrid.y>1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
+        voisin3 = (posGrid.x<lx-2 && posGrid.y>=1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
     }
 #ifdef verbose
-    if (support && support->_isTrain) OUTPUT << "ISTHME SUPPORT("<< support->blockId <<")=TRAIN" << endl;
-    if (supportDiag && supportDiag->_isTrain) OUTPUT << "ISTHME SUPPORT_DIAG("<< supportDiag->blockId <<")=TRAIN" << endl;
+    if (support && support->_isTrain) OUTPUT << block->blockId << posGrid << " ISTHME SUPPORT("<< support->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
+    if (supportDiag && supportDiag->_isTrain) OUTPUT << "ISTHME SUPPORT_DIAG("<< supportDiag->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
 	if (voisin && voisin->_isTrain) OUTPUT << "ISTHME VOISIN("<< voisin->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
-	if (voisin2 && voisin2->_isTrain) OUTPUT << "ISTHME VOISIN2("<< voisin2->blockId <<")=TRAIN" << endl;
-	if (voisin3 && voisin3->_isTrain) OUTPUT << "ISTHME VOISIN3("<< voisin3->blockId <<")=TRAIN" << endl;
+	if (voisin2 && voisin2->_isTrain) OUTPUT << "ISTHME VOISIN2("<< voisin2->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
+	if (voisin3 && voisin3->_isTrain) OUTPUT << "ISTHME VOISIN3("<< voisin3->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
 #endif
 	return (support && support->_isTrain) ||
            (supportDiag && supportDiag->_isTrain) ||
@@ -1757,6 +1800,38 @@ il faut aussi interdir <-XB0 ou B est un bord
            (voisin2 && voisin2->_isTrain) ||
            (voisin3 && voisin3->_isTrain);
 }
+
+bool SbReconfBlockCode::testIsthmusTail(int dx,int dy) {
+	int lx,ly;
+	wrl->getGridSize(lx,ly);
+
+/*
+il faut aussi interdir <-XB0
+*/
+    SmartBlocksBlock *support_1,*support_2;
+    bool isthmus=false;
+	// recherche la présence d'isthme de niveau 1
+	if (dy==1) {
+		support_1 = (posGrid.x>=1)?wrl->getGridPtr(posGrid.x-1,posGrid.y):NULL;
+		support_2 = (posGrid.x>=2)?wrl->getGridPtr(posGrid.x-2,posGrid.y):NULL;
+	} else if (dy==-1) {
+		support_1 = (posGrid.x<lx-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y):NULL;
+		support_2 = (posGrid.x<lx-2)?wrl->getGridPtr(posGrid.x+2,posGrid.y):NULL;
+	} else if (dx==1) {
+		support_1 = (posGrid.y<ly-1)?wrl->getGridPtr(posGrid.x,posGrid.y+1):NULL;
+		support_2 = (posGrid.y<ly-2)?wrl->getGridPtr(posGrid.x,posGrid.y+2):NULL;
+    } else {
+	// dx==-1
+        support_1 = (posGrid.y>=1)?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
+        support_2 = (posGrid.y>=2)?wrl->getGridPtr(posGrid.x,posGrid.y-2):NULL;
+    }
+	isthmus = support_1!=NULL && support_2==NULL;
+#ifdef verbose
+    if (isthmus) OUTPUT << block->blockId << posGrid << " ISTHME QUEUE dx,dy=" << dx << "," << dy << endl;
+#endif
+	return (isthmus);
+}
+
 
 void SbReconfBlockCode::createBorder() {
 	wrl->getPresenceMatrix(posGrid,_pm);

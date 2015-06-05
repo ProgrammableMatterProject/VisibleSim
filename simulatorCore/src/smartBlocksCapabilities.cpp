@@ -152,7 +152,7 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 				currentCapa->prevDir.set(str_c);
 				currentCapa->prevDir.x+=1;
 				currentCapa->prevDir.y+=1;
-				cout << "prevDir =" << currentCapa->prevDir << endl;
+//				cout << "prevDir =" << currentCapa->prevDir << endl;
 			}
 			str_c = matrixElem->Attribute("singleMotionDir");
 			if (str_c) {
@@ -229,19 +229,15 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 				}
 
 				str_c = motionElem->Attribute("time");
-				cout << str_c << endl;
 				if (str_c) {
 					currentMotion->time = atof(str_c);
 				} else {
 					currentMotion->time = 0.0;
 				}
-				cout << "time=" << currentMotion->time << endl;
 				str_c = motionElem->Attribute("vect");
 				if (str_c) {
-                    cout << "vect=" << str_c << endl;
                     currentMotion->vect.fromString(string(str_c),PointCel(-1,-1));
                 }
-                cout << "unlockpath" << endl;
 
 				str_c = motionElem->Attribute("unlockPath");
 				if (str_c) {
@@ -264,7 +260,6 @@ SmartBlocksCapabilities::SmartBlocksCapabilities(TiXmlNode *node) {
 						i++;
 					}
 				}
-				        cout << "fin unlockpath" << endl;
 				currentCapa->tabMotions.push_back(currentMotion);
 				motionElem = motionElem->NextSiblingElement("motion");
 			}

@@ -108,11 +108,13 @@ uint64_t Scheduler::now() {
 }
 
 void Scheduler::trace(string message,int id,const Color &color) {
+#ifdef GLUT
 	mutex_trace.lock();
-	OUTPUT.precision(6);
-	OUTPUT << fixed << (double)(currentDate)/1000000 << " #" << id << ": " << message << endl;
 	GlutContext::addTrace(message,id,color);
 	mutex_trace.unlock();
+#endif
+    OUTPUT.precision(6);
+	OUTPUT << fixed << (double)(currentDate)/1000000 << " #" << id << ": " << message << endl;
 }
 
 

@@ -16,6 +16,8 @@
 #include "glBlock.h"
 #include "interface.h"
 
+#define GLUT
+
 class GlutContext;
 //===========================================================================================================
 //
@@ -57,5 +59,4 @@ private :
 	static bool saveScreen(char *title);
 	static void *lanceScheduler(void *param);
 };
-
 #endif
