@@ -166,25 +166,37 @@ namespace Catoms2D {
     }
   }
 
-  int Catoms2DBlock::nbNeighbors() {
+  int Catoms2DBlock::nbNeighbors(bool groundIsNeighbor) {
     int cnt = 0;
-    for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {
-      if (tabInterfaces[i]->connectedInterface) 
+    for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {   
+      Vecteur p = getPosition((NeighborDirection::Direction)i);
+      if(getInterface((NeighborDirection::Direction)i)->connectedInterface) {
 	cnt++;
+      } else if (groundIsNeighbor && (p[2]<0)) {
+	cnt++;
+      }
     }
     return cnt;
   }
 
-  int Catoms2DBlock::nbConsecutiveNeighbors() {
+  int Catoms2DBlock::nbConsecutiveNeighbors(bool groundIsNeighbor) {
     int empty = -1;
     int m = 0;
     int cnt = 0;
-    for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
-      if(tabInterfaces[i]->connectedInterface == NULL) {
+    for(int i = 0; i < MAX_NB_NEIGHBORS; i++) { 
+
+      Vecteur p = getPosition((NeighborDirection::Direction)i);
+      if (groundIsNeighbor && (p[2] < 0)) {
+	continue;
+      }
+
+      if(getInterface((NeighborDirection::Direction)i)->connectedInterface == 
+	 NULL) {
 	empty = i;
 	break;
       }
     }
+    
     if (empty == -1) {
       return MAX_NB_NEIGHBORS;
     }
@@ -192,7 +204,12 @@ namespace Catoms2D {
 	
     for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
       int j = (empty+i)%MAX_NB_NEIGHBORS;
-      if(tabInterfaces[j]->connectedInterface) {
+      Vecteur p = getPosition((NeighborDirection::Direction)j);
+      if (groundIsNeighbor && (p[2] < 0)) {
+	cnt++;
+      }
+
+      else if(getInterface((NeighborDirection::Direction)j)->connectedInterface) {
 	cnt++;
       } else {
 	m = max(m,cnt);
@@ -203,12 +220,18 @@ namespace Catoms2D {
     return m;
   }
 
+  bool Catoms2DBlock::isBlocked() {
+    int n = nbNeighbors(true);
+    int nc = nbConsecutiveNeighbors(true);
+    return (!((n == nc) && (nc <= 3))); 
+  }
+  
   // Motion
   bool Catoms2DBlock::canMove(Catoms2DMove &m) {  
     // physical moving condition
     // pivot is a neighbor (physically connected)
-    // move CW around i connector: i+1 and i+2 should be free
-    // move CCW around i connector: i-1 and i-2 should be free
+    // move CW around i connector: i+1, i+2 and i+3 should be free
+    // move CCW around i connector: i-1, i-2 and i-3 should be free
 
     Catoms2DMove::direction_t direction = m.getDirection();
     Catoms2DBlock *pivot = m.getPivot();

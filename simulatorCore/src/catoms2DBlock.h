@@ -54,10 +54,11 @@ public:
 	Vecteur getPosition(P2PNetworkInterface *p2p);
 
 	NeighborDirection::Direction getDirection(P2PNetworkInterface* p2p);
-	int nbNeighbors();
-	int nbConsecutiveNeighbors();
+	int nbNeighbors(bool groundIsNeighbor = false);
+	int nbConsecutiveNeighbors(bool groundIsNeighbor = false);
 
 	// Motion
+	bool isBlocked();
 	bool canMove(Catoms2DMove &m);
         void startMove(Catoms2DMove &m, uint64_t t);
 	void startMove(Catoms2DMove &m);

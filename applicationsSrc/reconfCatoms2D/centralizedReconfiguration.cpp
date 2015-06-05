@@ -347,16 +347,13 @@ void centralized_reconfiguration() {
       if (c == seed) {
 	continue;
       }
-
-      Coordinate p1(c->position[0], c->position[2]);
-#ifdef COLOR_DEBUG
-      if (isInTarget(p1)) {
-	c->setColor(GREEN);
-      } else {
-	c->setColor(GREY);
+      
+      if (c->isBlocked()) {
+	continue;
       }
-#endif
-
+      
+      Coordinate p1(c->position[0], c->position[2]);
+      
       if (canMove(c,gradient)) {
 	//cout << "c satisfies gradient condition" << endl;
 	//cout << "@" << c->blockId << " can physically move" << endl;
@@ -375,6 +372,14 @@ void centralized_reconfiguration() {
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
 	    cout << " done" << endl;
+	    Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
+	    //if (!c->canMove(counterMV)) {
+	    if (c->isBlocked()) {
+	      c->setColor(BLUE);
+	      mv->getPivot()->setColor(YELLOW);
+	      cout << "illegal move!" << endl;
+	      getchar();
+	    }
 	    //getchar();
 	    //sleep(1);
 	  } /*else {
@@ -383,6 +388,14 @@ void centralized_reconfiguration() {
 	  delete mv;
 	}// else { cout << " move == NULL" << endl;}
       }
+#ifdef COLOR_DEBUG
+      p1 = Coordinate(c->position[0], c->position[2]);
+      if (isInTarget(p1)) {
+	c->setColor(GREEN);
+      } else {
+	c->setColor(GREY);
+      }
+#endif
     }
 #elif defined(STRATEGY_THREE) 
     Coordinate best(INT_MAX,INT_MIN);
