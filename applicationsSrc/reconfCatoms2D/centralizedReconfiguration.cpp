@@ -24,13 +24,15 @@ using namespace Catoms2D;
  * 3: highest catom moves first
  * 4: node OUT_SHAPE on the perimeter closer from the node IN_SHAPE that has
  *    the lowest neighbor cell to fill.
+ * 5: move only around pivot that won't turns around a pivot with a smaller gradient
  **/
 
 
 //#Define STRATEGY_ONE
-#define STRATEGY_TWO
+//#define STRATEGY_TWO
 //#define STRATEGY_THREE
 //#define STRATEGY_FOUR
+#define STRATEGY_FIVE
 
 #define STRATEGY_TRHEE
 enum state_t {IN_SHAPE = 0, OUT_SHAPE = 1, WELL_PLACED = 2};
@@ -289,6 +291,20 @@ static bool pivotShouldMoveBefore(Catoms2DBlock *c, Catoms2DMove &mv,
 	  psmb = false;
 	}
 #endif
+
+#if defined(STRATEGY_FIVE)
+	int nbNeighbors = c->nbNeighbors();
+	int nbNeighborsPivot = mv.getPivot()->nbNeighbors();
+	if (nbNeighbors < nbNeighborsPivot) {
+	  psmb = false;
+	} else if (nbNeighbors == nbNeighborsPivot) {
+	  int idPivot = mv.getPivot()->blockId;
+	  int idPivotPivot = pivotMv->getPivot()->blockId;
+	  if (gradient[idPivotPivot] > gradient[idPivot]) {
+	    psmb = false;
+	  }
+	}
+#endif
     }
   }
   return psmb;
@@ -339,7 +355,7 @@ void centralized_reconfiguration() {
     // move CCW around i connector: i-1 and i-2 should be free
     Catoms2DWorld *world = Catoms2DWorld::getWorld();
     Catoms2DBlock *c;
-#if defined(STRATEGY_ONE) || defined (STRATEGY_TWO)
+#if defined(STRATEGY_ONE) || defined (STRATEGY_TWO) || defined(STRATEGY_FIVE)
     map<int, BuildingBlock*>::iterator it;
     for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
@@ -378,9 +394,9 @@ void centralized_reconfiguration() {
 	      c->setColor(BLUE);
 	      mv->getPivot()->setColor(YELLOW);
 	      cout << "illegal move!" << endl;
-	      getchar();
+	      //getchar();
 	    }
-	    //getchar();
+	    getchar();
 	    //sleep(1);
 	  } /*else {
 	    cout << "hors figure ?" << endl;
