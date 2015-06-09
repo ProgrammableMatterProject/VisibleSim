@@ -500,9 +500,9 @@ instructions.
 #define TYPE_ARG_TYPE(x, f) ((unsigned char)(*TYPE_ARG_DESC(x, f)))
 
 /* Returns total size of predicate x */
-#define TYPE_SIZE(x)       ((size_t)MeldInterpretVM::arguments[(x) * 2 + 1])
+#define TYPE_SIZE(x)       ((size_t)arguments[(x) * 2 + 1])
 /* Returns address of arguments of type x in arguments array */
-#define TYPE_ARGS(x)       (MeldInterpretVM::arguments + MeldInterpretVM::arguments[(x) * 2])
+#define TYPE_ARGS(x)       (arguments + arguments[(x) * 2])
 
 /* Returns argument (type?) number f of type x */
 #define TYPE_ARG(x, f)     (TYPE_ARGS(x)+2*(f))
@@ -627,7 +627,6 @@ class MeldInterpretVM {
 
 		int numNeighbors;
 		int waiting;
-		uint64_t currentLocalDate;
 		static bool debugging;
 		static bool configured;
 		bool firstStart;
@@ -638,6 +637,7 @@ class MeldInterpretVM {
             static char **tuple_names;
             static char **rule_names;
 
+            uint64_t currentLocalDate;
             bool hasWork, polling, deterministicSet;
             NodeID neighbors[6];
             tuple_type TYPE_INIT;
@@ -656,11 +656,11 @@ class MeldInterpretVM {
 		~MeldInterpretVM();
 		void processOneRule();
 		bool isWaiting();
-		static bool dateHasBeenReachedByAll(uint64_t date);
 		static bool equilibrium();
 		inline static bool isInDebuggingMode() { return debugging; };
 		static void setConfiguration(string path, bool d);
 		static void readProgram(string path);
+		static int characterCount(string in, char character);
 
 		byte updateRuleState(byte rid);
 		Time myGetTime();

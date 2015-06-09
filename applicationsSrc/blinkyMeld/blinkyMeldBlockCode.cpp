@@ -21,19 +21,22 @@ BlinkyMeldBlockCode::BlinkyMeldBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksB
 	hasWork = true; // mode fastest
 	polling = false; // mode fastest
 	currentLocalDate = 0; // mode fastest
-	/*bb = (BlinkyBlocksBlock*) hostBlock;
+	bb = (BlinkyBlocksBlock*) hostBlock;
 
       if((vm != NULL)) {
             for (int i = 0; i < NUM_PORTS; i++) {
 			vm->neighbors[i] = vm->get_neighbor_ID(i);
-			OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
+			//OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
 
 			vm->enqueue_face(vm->neighbors[i], i, 1);
 		}
-      }*/
+            BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
+
+      }
 }
 
 BlinkyMeldBlockCode::~BlinkyMeldBlockCode() {
+      delete vm;
 	OUTPUT << "BlinkyMeldBlockCode destructor" << endl;
 }
 
@@ -41,22 +44,21 @@ void BlinkyMeldBlockCode::init() {
 	stringstream info;
 
 	if((vm != NULL)) {
-                  bb = (BlinkyBlocksBlock*) hostBlock;
+            /*bb = (BlinkyBlocksBlock*) hostBlock;
             for (int i = 0; i < NUM_PORTS; i++) {
 			vm->neighbors[i] = vm->get_neighbor_ID(i);
 			OUTPUT << "Adding neighbor " << vm->neighbors[i] << " on face " << i << endl;
 
 			vm->enqueue_face(vm->neighbors[i], i, 1);
-		}
+		}*/
             //block initialization
 		//setColor(0);
 		//vm->setLED(128,0,128,32);
-            BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-
+            //BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 
 		if((MeldInterpret::getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
-			/*vm->deterministicSet = true;
-			SetDeterministicModeVMCommand determinismCommand(c, bb->blockId);
+			vm->deterministicSet = true;
+			/*SetDeterministicModeVMCommand determinismCommand(c, bb->blockId);
 			vm->sendCommand(determinismCommand);*/
 			info << "deterministic mode set";
 			BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
@@ -103,9 +105,9 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
                         //if...
                         if(vm->isWaiting()){
                               BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-                        } else {
-                              info << " Block is no longer waiting" << endl;
                         }
+                        //else info << " Block is no longer waiting";
+                        //info << "Compute predicate event";
 		      }
 			break;
 		case EVENT_STOP:
@@ -121,20 +123,23 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			      unsigned int face = (boost::static_pointer_cast<AddNeighborEvent>(pev))->face;
                         vm->neighbors[face] = (boost::static_pointer_cast<AddNeighborEvent>(pev))->target;
                         vm->enqueue_face(vm->neighbors[face], face, 1);
+                        BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                         info << "Add neighbor "<< (boost::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<AddNeighborEvent>(pev))->face));
 			}
 			break;
 		case EVENT_REMOVE_NEIGHBOR:
 			{
 			      unsigned int face = (boost::static_pointer_cast<AddNeighborEvent>(pev))->face;
-                        vm->enqueue_face(vm->neighbors[face], face, -1);
                         vm->neighbors[face] = 0;
+                        vm->enqueue_face(vm->neighbors[face], face, -1);
+                        BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                         info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite(face));
 			}
 			break;
 		case EVENT_TAP:
 			{
 			      vm->enqueue_tap();
+                        BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
                         info << "tapped";
 			}
 			break;
@@ -147,7 +152,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 #ifdef TEST_DETER
                         cout << bb->blockId << " SET_COLOR_EVENT" << endl;
 #endif
-                        info << "set color "<< color << endl;
+                        info << "set color "<< color;
 			}
 			break;
 
@@ -157,7 +162,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
                         MessagePtr message = (boost::static_pointer_cast<VMSendMessageEvent>(pev))->message;
                         P2PNetworkInterface *interface = (boost::static_pointer_cast<VMSendMessageEvent>(pev))->sourceInterface;
                         BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(), message, interface));
-                        info << "sends a message at face " << NeighborDirection::getString(bb->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
+                        //info << "sends a message at face " << NeighborDirection::getString(bb->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
 			}
 			break;
 		case EVENT_RECEIVE_MESSAGE: /*EVENT_NI_RECEIVE: */
@@ -174,7 +179,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 #ifdef TEST_DETER
                         cout << "message received from " << command->sourceInterface->hostBlock->blockId << endl;
 #endif
-                        info << "message received at face " << NeighborDirection::getString(bb->getDirection(mes->sourceInterface->connectedInterface)) << " from " << mes->sourceInterface->hostBlock->blockId;
+                        //info << "message received at face " << NeighborDirection::getString(bb->getDirection(mes->sourceInterface->connectedInterface)) << " from " << mes->sourceInterface->hostBlock->blockId;
 			}
 			break;
 		case EVENT_ACCEL:
@@ -202,23 +207,26 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
                         polling = false;
                         /*Not written yet
                           Need to check what this is for*/
-                        info << "Polling time period ended" << endl;
+                        info << "Polling time period ended";
 			}
 			break;
             case EVENT_ADD_TUPLE:
                         this->vm->receive_tuple(1, boost::static_pointer_cast<AddTupleEvent>(pev)->tuple, boost::static_pointer_cast<AddTupleEvent>(pev)->face);
                         BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-                        OUTPUT << __FILE__ << " " << __LINE__ << endl;
+                        //info << "Adding tuple";
                   break;
             case EVENT_REMOVE_TUPLE:
                         this->vm->receive_tuple(-1, boost::static_pointer_cast<RemoveTupleEvent>(pev)->tuple, boost::static_pointer_cast<RemoveTupleEvent>(pev)->face);
                         BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
+                        //info << "Removing tuple";
                   break;
 		default:
-			ERRPUT << "*** ERROR *** : unknown local event" << endl;
+			ERRPUT << "*** ERROR *** : unknown local event";
 			break;
 		}
-		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		if(info.str() != "") {
+                        BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		}
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* BlinkyMeldBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {

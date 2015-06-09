@@ -4,13 +4,14 @@
 
 namespace MeldInterpret{
 
-AddTupleMessage::AddTupleMessage(tuple_t tpl) : Message(){
+AddTupleMessage::AddTupleMessage(tuple_t tpl, unsigned int s) : Message(){
       tuple = tpl;
+      messageSize = s;
       type = ADD_TUPLE_MSG_ID;
 }
 
 unsigned int AddTupleMessage::size(){
-      return TYPE_SIZE(TUPLE_TYPE(tuple));
+      return messageSize;
 }
 
 string AddTupleMessage::getMessageName(){
@@ -18,13 +19,14 @@ string AddTupleMessage::getMessageName(){
 }
 
 
-RemoveTupleMessage::RemoveTupleMessage(tuple_t tpl) : Message(){
+RemoveTupleMessage::RemoveTupleMessage(tuple_t tpl, unsigned int s) : Message(){
       tuple = tpl;
+      messageSize = s;
       type = REMOVE_TUPLE_MSG_ID;
 }
 
 unsigned int RemoveTupleMessage::size(){
-      return TYPE_SIZE(TUPLE_TYPE(tuple));
+      return messageSize;
 }
 
 string RemoveTupleMessage::getMessageName(){

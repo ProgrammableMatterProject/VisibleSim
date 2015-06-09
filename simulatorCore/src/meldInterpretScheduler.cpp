@@ -101,21 +101,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
             do {
                   while (!eventsMap.empty()) {
                         hasProcessed = true;
-                        do {
-                              lock();
-                              first = eventsMap.begin();
-                              pev = (*first).second;
-                              if (pev->date == now()) {
-                                    break;
-                              }
-                              if (MeldInterpretVM::dateHasBeenReachedByAll(pev->date)) {
-                                    break;
-                              }
-                              unlock();
-                              //waitForOneVMCommand();
-                        } while (true);
+                        lock();
+                        first = eventsMap.begin();
+                        pev = (*first).second;
                         currentDate = pev->date;
-                        OUTPUT << "Processing " << pev->getEventName() << endl;
                         pev->consume();
                         eventsMap.erase(first);
                         eventsMapSize--;
@@ -161,7 +150,6 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
         OUTPUT << "Realtime mode scheduler\n" << endl;
         //MeldInterpretDebugger::print("Simulation starts in real time mode");
         while (state != ENDED) {
-            //OUTPUT << "DEBUGGING " <<__LINE__ << " " << __FILE__ << endl;
             systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
             systemCurrentTimeMax = systemCurrentTime - systemStartTime;
             currentDate = systemCurrentTimeMax;
@@ -173,7 +161,6 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 // it).
                 lock();
                 if (eventsMap.empty()) {
-                  //OUTPUT << "Event map is empty " <<__LINE__ << " " << __FILE__ << endl;
                     unlock();
                     break;
                 }
@@ -297,7 +284,6 @@ bool MeldInterpretScheduler::schedule(Event *ev) {
             }
             eventsMap.insert(it, pair<uint64_t, EventPtr>(pev->date,pev));
         } else {
-              OUTPUT << "Date is not greater than 0" << endl;
             eventsMap.insert(pair<uint64_t, EventPtr>(pev->date,pev));
         }
         break;

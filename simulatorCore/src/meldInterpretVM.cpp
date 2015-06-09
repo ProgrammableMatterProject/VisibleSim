@@ -5,59 +5,14 @@
 #include <iostream>
 #include "meldInterpretVM.h"
 
-#define DEBUG_INSTRS
+//#define DEBUG_INSTRS
 //#define LOG_DEBUG
 #define myassert(e)	((e) ? (void)0 : __myassert(__FILE__, __LINE__,#e))
 
 
 namespace MeldInterpret{
 
-const unsigned char meld_prog_load[] = {
-/* NUMBER OF PREDICATES */
-0xa,
-/* NUMBER OF RULES */
-0x1,
-/* OFFSETS TO PREDICATE DESCRIPTORS */
-0x18, 0,
-0x1e, 0,
-0x25, 0,
-0x2d, 0,
-0x34, 0,
-0x3b, 0,
-0x41, 0,
-0x48, 0,
-0x4f, 0,
-0x57, 0,
-/* OFFSETS TO RULE DESCRIPTORS */
-0x5e, 0,
-/* PREDICATE DESCRIPTORS */
-0x63, 0, 0x4, 0, 0, 0,
-0x64, 0, 0x12, 0, 0x1, 0x1, 0,
-0x65, 0, 0x22, 0, 0, 0x2, 0x2, 0,
-0x14, 0x1, 0x3, 0x20, 0x1, 0x1, 0,
-0x53, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0x8b, 0x1, 0x2, 0, 0x1, 0,
-0x9e, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0xd6, 0x1, 0x22, 0, 0, 0x1, 0x2,
-0x1, 0x2, 0x2, 0, 0x1, 0x2, 0x2, 0,
-0x9a, 0x2, 0x2, 0, 0x1, 0x1, 0,
-/* RULE DESCRIPTORS */
-0xba, 0x2, 0, 0x1, 0,
-/* PREDICATE BYTECODE */
-/* Predicate 0: */0,
-/* Predicate 1: */0,
-/* Predicate 2: */0x10, 0x2, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x4, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x3, 0, 0, 0, 0x22, 0x1, 0, 0x2, 0x1f, 0, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x6, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x4, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x25, 0, 0, 0, 0x22, 0x1, 0, 0x1, 0x1f, 0x5, 0, 0, 0, 0x2, 0x3c, 0x1, 0x2, 0x1, 0x60, 0x1, 0x11, 0, 0, 0, 0x11, 0x40, 0x7, 0x1, 0x25, 0, 0, 0, 0x1, 0x78, 0x1, 0x10, 0x5, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x3, 0x1, 0x1, 0x15, 0, 0, 0, 0x29, 0, 0, 0, 0, 0x11, 0x40, 0x8, 0x2, 0x28, 0, 0x2, 0x21, 0, 0x1, 0x1, 0x2, 0x22, 0, 0, 0x3, 0x8, 0x2, 0x3, 0x1, 0,
-/* Predicate 3: */0x10, 0x5, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x2, 0x1, 0x1, 0x15, 0, 0, 0, 0x29, 0, 0, 0, 0, 0x11, 0x40, 0x8, 0x2, 0x28, 0, 0x2, 0x21, 0, 0, 0x1, 0x2, 0x22, 0, 0x1, 0x3, 0x8, 0x2, 0x3, 0x1, 0x10, 0xa, 0, 0, 0, 0x11, 0x40, 0x1, 0x1, 0x21, 0, 0, 0, 0x1, 0x79, 0x1, 0,
-/* Predicate 4: */0x10, 0x8, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0,
-/* Predicate 5: */0x10, 0x6, 0, 0, 0, 0x11, 0x40, 0x3, 0, 0x1e, 0, 0, 0, 0, 0, 0, 0x78, 0, 0,
-/* Predicate 6: */0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0x1, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0,
-/* Predicate 7: */0x10, 0x7, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x8, 0x1, 0, 0x19, 0, 0, 0, 0x25, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0x1, 0x1, 0, 0x2, 0x78, 0x2, 0x1, 0,
-/* Predicate 8: */0x10, 0x7, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x7, 0x1, 0, 0x19, 0, 0, 0, 0x25, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x40, 0x3, 0x2, 0x21, 0x1, 0, 0, 0x2, 0x78, 0x2, 0x1, 0x10, 0x8, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x4, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3d, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0x10, 0x9, 0, 0, 0, 0x2, 0, 0, 0, 0, 0, 0, 0, 0, 0x6, 0x1, 0, 0x19, 0, 0, 0, 0x32, 0, 0, 0, 0x1, 0, 0x2, 0, 0, 0x11, 0x22, 0x1, 0, 0x3, 0x1f, 0x1, 0, 0, 0, 0x4, 0x3a, 0x3, 0x4, 0x2, 0x40, 0x3, 0x3, 0x26, 0x2, 0, 0x3, 0x78, 0x3, 0x1, 0,
-/* Predicate 9: */0x10, 0x1, 0, 0, 0, 0x22, 0, 0, 0x2, 0x1f, 0x5, 0, 0, 0, 0x3, 0x3b, 0x2, 0x3, 0x1, 0x60, 0x1, 0xc, 0, 0, 0, 0x11, 0x40, 0x5, 0x1, 0x78, 0x1, 0,
-/* RULE BYTECODE */
-/* Rule 0: */0x10, 0, 0, 0, 0, 0x5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x1, 0x15, 0, 0, 0, 0x24, 0, 0, 0, 0, 0x11, 0x80, 0, 0x23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xf0, 0x1, 0, };
-
-const unsigned char* MeldInterpretVM::meld_prog = meld_prog_load;
+const unsigned char* MeldInterpretVM::meld_prog;
 
 char* tuple_names_load[] = {"_init", "setcolor2", "neighbor", "level", "bottomNeighbor", "noBottomNeighbor", "topNeighbor", "sideNeighbor", "neighbor-level", "vacant", };
 char** MeldInterpretVM::tuple_names = tuple_names_load;
@@ -105,6 +60,24 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	}
 
 	MeldInterpretVM::~MeldInterpretVM(){
+            /*for (int i = 0; i < NUM_TYPES; i++) {
+                  if (TUPLES[i].head == NULL)
+                        continue;
+
+                  tuple_entry *tupleEntry = TUPLES[i].head;
+                  tuple_entry *tupleNextEntry;
+                  while (tupleEntry != NULL) {
+                        tupleNextEntry = tupleEntry->next;
+                        free(tupleEntry);
+                        tupleEntry = tupleNextEntry;
+                  }
+            }*/
+            free(delayedTuples);
+            free(tuples);
+            free(newStratTuples);
+            free(newTuples);
+            //free(receivedTuples);
+            //free(arguments);
 	}
 
 	Time MeldInterpretVM::myGetTime(){
@@ -350,6 +323,8 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             tuple_t tuple;
             tuple_type type = TUPLE_TYPE(rcvdTuple);
             size_t tuple_size = TYPE_SIZE(type);
+            tuple_print(rcvdTuple, stderr);
+            printf("\n", stderr);
 
             if(!TYPE_IS_LINEAR(type) && !TYPE_IS_ACTION(type)) {
                   //tuple_queue *queue = receivedTuples + face;
@@ -404,17 +379,16 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	    else if (target == south())
 	      face = SOUTH;
 
-OUTPUT << __LINE__ << " send tuple " << TYPE_NAME(TUPLE_TYPE(tuple)) << " on node " << (int)rt << " at face " << BlinkyBlocks::NeighborDirection::getString(face) << endl;
 
 	    if (face != -1) {
 
             myassert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= 17);
             MessagePtr ptr;
 	      if (isNew > 0) {
-                  ptr = (MessagePtr)(new AddTupleMessage(tuple));
+                  ptr = (MessagePtr)(new AddTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
 	      }
 	      else {
-                  ptr = (MessagePtr)(new RemoveTupleMessage(tuple));
+                  ptr = (MessagePtr)(new RemoveTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
 	      }
             P2PNetworkInterface *p2p = host->getP2PNetworkInterfaceByDestBlockId(get_neighbor_ID(face));
             /*Prepare message*/
@@ -553,48 +527,6 @@ OUTPUT << __LINE__ << " send tuple " << TYPE_NAME(TUPLE_TYPE(tuple)) << " on nod
             BaseSimulator::getScheduler()->schedule(new SetColorEvent(BaseSimulator::getScheduler()->now(), host , (float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
       }
 
-      bool MeldInterpretVM::dateHasBeenReachedByAll(uint64_t date) {
-		static uint64_t minReallyReached = 0;
-		uint64_t min, min2;
-		int alive = 0, hasNoWork = 0;
-
-		if (date < minReallyReached) {
-			return true;
-		}
-
-		map<int, MeldInterpretVM*>::iterator it;
-		for(it = vmMap.begin(); it != vmMap.end(); it++) {
-			MeldInterpretVM *vm = it->second;
-			BuildingBlock *buildb = vm->host;
-			if (buildb->getState() < BuildingBlock::ALIVE) {
-				continue;
-			}
-			alive++;
-			if (!vm->hasWork || vm->polling) {
-				hasNoWork++;
-				if (alive == 1) {
-					min2 = vm->currentLocalDate;
-				} else if (vm->currentLocalDate < min2) {
-					min2 = vm->currentLocalDate;
-				}
-			} else {
-				if ((alive - 1) == hasNoWork) {
-					min = vm->currentLocalDate;
-				} else if (vm->currentLocalDate < min) {
-					min = vm->currentLocalDate;
-				}
-				if (min < min2) {
-					min2 = min;
-				}
-			}
-		}
-		if (alive==hasNoWork) {
-			return true;
-		}
-		minReallyReached = min2;
-		return (date < min);
-	}
-
 
       bool MeldInterpretVM::equilibrium() {
 		map<int, MeldInterpretVM*>::iterator it;
@@ -620,39 +552,72 @@ OUTPUT << __LINE__ << " send tuple " << TYPE_NAME(TUPLE_TYPE(tuple)) << " on nod
       }
 
       void MeldInterpretVM::readProgram(string path){
-            /*Starting with an array of byte, no need for this yet
+            ifstream ifs(path.c_str(), ios::in);
+            stringstream strStream;
+            strStream << ifs.rdbuf();//read the file
+            string content = strStream.str();//convert stream to string
 
-            ifstream ifs(path.c_str(), ios::binary|ios::ate);
-            ifstream::pos_type pos = ifs.tellg();
+            //Separate the different variable value in several string
+            int pos = content.find("{");
+            string progString = content.substr(pos, content.find("}") - pos);
+            pos = content.find("{", pos);
+            string tupleString = content.substr(pos, content.find("}"));
+            pos = content.find("{", pos);
+            string ruleString = content.substr(pos, content.find("}"));
 
-            std::vector<unsigned char>  result(pos);
-
-            ifs.seekg(0, ios::beg);
-            ifs.read((unsigned char*)result[0], pos);
-            const unsigned char * content = reinterpret_cast<unsigned char*>(result.data());
-
-            for(int i = 0; i < pos ; i++){
-                  int j = 0;
-                  bool readingProg = false, readingTuple = false, readingRule = false;
-                  if(content[i] == "{" && !readingProg && !readingTuple && !readingRule) readingProg = true;
-                  if(content[i] == "{" && readingProg && !readingTuple && !readingRule) readingTuple = true;
-                  if(content[i] == "{" && readingProg && readingTuple && !readingRule) readingRule = true;
-                  while(content[i] != "}" && readingProg && !readingTuple && !readingRule){
-                        //Reading meld_prog
-
+            //Reading meld_prog
+            int byteCount = characterCount(progString, ',');
+            unsigned char* outProg = (unsigned char*)malloc((byteCount + 1)*sizeof(unsigned char));
+            int movingCursor = 0;
+            int valByte = 0;
+            int leftCursor = 0;
+            int rightCursor = 0;
+            int x = (int)'0';
+            int multi = 1;
+            for(int i = 0; i <= byteCount; i++){
+                  leftCursor = rightCursor;
+                  rightCursor = progString.find(',', leftCursor + 1);
+                  movingCursor = rightCursor - 1;
+                  //read the value between the ','
+                  for(; movingCursor >= leftCursor; movingCursor--){
+                        x = (int)'0';
+                        //Test if character is not part of a byte
+                        while(x <= ((int)'9')){ //Test for 0-9
+                              if((int)(progString[movingCursor]) == x ) break;
+                              x++;
+                        }
+                        if(x <= (int)'9'){
+                              valByte += ((((int)(progString[movingCursor])) - (int)'0')* multi);
+                              multi = multi * 16;
+                              continue;
+                        }
+                        x = (int)'a';
+                        while(x <= (int)'f'){ //Test for a-f
+                              if((int)(progString[movingCursor]) == x ) break;
+                              x++;
+                        }
+                        if(x <= (int)'f'){
+                              valByte += ((((int)(progString[movingCursor]) + 10) - (int)'a')* multi);
+                              multi = multi * 16;
+                              continue;
+                        }
+                        if((int)'0' < x && x > (int)'9' && (int)'a' < x && x > (int)'f') break; //if value is not hexadecimal
                   }
-                  while(content[i] != "}" && readingProg && readingTuple && !readingRule){
-                        //Reading tuple_names
-
-                  }
-                  while(content[i] != "}" && readingProg && readingTuple && readingRule){
-                        //Reading rule_names
-
-
-                  }
+                  outProg[i] = (unsigned char)valByte;
+                  valByte = 0;
+                  multi = 1;
             }
-            meld_prog*/
+            meld_prog = outProg;
+            OUTPUT << "Program has been loaded" << endl;
+      }
 
+      int MeldInterpretVM::characterCount(string in, char character){
+            int nFind = -1;
+            int nCount = 0;
+            while( -1 != ( nFind = in.find( character, nFind + 1 ))){
+                  nCount++;
+            }
+            return nCount;
       }
 
 
@@ -887,6 +852,7 @@ OUTPUT << __LINE__ << " send tuple " << TYPE_NAME(TUPLE_TYPE(tuple)) << " on nod
 #endif
 
         if(length == 0) {
+            free(list);
             /* no need to execute any further code, just jump! */
             return RET_NO_RET;
         }
@@ -1513,8 +1479,7 @@ OUTPUT << __LINE__ << " send tuple " << TYPE_NAME(TUPLE_TYPE(tuple)) << " on nod
         Register *arg1 = (Register*)eval_reg (reg1, &pc, reg);
         Register *arg2 = (Register*)eval_reg (reg2, &pc, reg);
         Register *dest = (Register*)eval_reg (reg3, &pc, reg);
-        if(MELD_INT(arg2) != 0) *dest = (MELD_INT(arg1) % MELD_INT(arg2));
-        else *dest = 0;
+        *dest = (MELD_INT(arg1) % MELD_INT(arg2));
 #ifdef DEBUG_INSTRS
         printf ("--%d--\t INT reg %d MOD reg %d TO reg %d\n", getBlockId(), reg1, reg2, reg3);
 #endif

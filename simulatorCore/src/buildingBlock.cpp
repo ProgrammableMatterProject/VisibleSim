@@ -38,6 +38,7 @@ BuildingBlock::BuildingBlock(int bId) {
 }
 
 BuildingBlock::~BuildingBlock() {
+      delete blockCode;
 	OUTPUT << "BuildingBlock destructor" << endl;
 	if (clock != NULL) {
 		delete clock;

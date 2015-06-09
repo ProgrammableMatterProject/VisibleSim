@@ -38,8 +38,9 @@ namespace MeldInterpret{
 class AddTupleMessage : public Message{
 public:
       tuple_t tuple;
+      unsigned int messageSize;
 
-      AddTupleMessage(tuple_t tpl);
+      AddTupleMessage(tuple_t tpl, unsigned int s);
       unsigned int size();
       string getMessageName();
 };
@@ -47,8 +48,9 @@ public:
 class RemoveTupleMessage : public Message{
 public:
       tuple_t tuple;
+      unsigned int messageSize;
 
-      RemoveTupleMessage(tuple_t tpl);
+      RemoveTupleMessage(tuple_t tpl, unsigned int s);
       unsigned int size();
       string getMessageName();
 };

@@ -99,7 +99,7 @@ void P2PNetworkInterface::send() {
 	stringstream info;
 	uint64_t transmissionDuration;
 	double rate;
-	
+
 	if (!connectedInterface) {
 		info << "*** WARNING *** [block " << hostBlock->blockId << ",interface " << globalId <<"] : trying to send a Message but no interface connected";
 		BaseSimulator::getScheduler()->trace(info.str());
@@ -114,7 +114,7 @@ void P2PNetworkInterface::send() {
 
 	msg = outgoingQueue.front();
 	outgoingQueue.pop_front();
-	
+
 	rate = dataRate - dataRateVariability + (generator()/(double)RAND_MAX) * 2 * dataRateVariability;
 	transmissionDuration = (msg->size()*8000000ULL)/rate;
 	messageBeingTransmitted = msg;
