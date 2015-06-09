@@ -612,20 +612,13 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             char** outTuple = (char**)malloc((countingTuple + 1)*sizeof(char*));
             pos = tupleString.find("\"") + 1;
             int i = 0;
-
             while(i < countingTuple){
-                  OUTPUT << "copying string content for index " << i << endl;
                   outTuple[i] = strdup(tupleString.substr(pos, tupleString.find("\"", pos) - pos).c_str());
                   pos = tupleString.find("\"", pos) + 1; //goes to the end of the string and jump the "
                   pos = tupleString.find("\"", pos) + 1; // goes to the next string and jump the "
-                  OUTPUT << "Value in outTuple at index " << i << " is " << outTuple[i] << endl;
                   i++;
             }
             tuple_names = outTuple;
-            OUTPUT << endl;
-            for(int f = 0; f < countingTuple; f++){
-                  OUTPUT << "Value in tuples names at index " << f << " is " << tuple_names[f] << endl;
-            }
 
             OUTPUT << "Program has been loaded" << endl;
       }
