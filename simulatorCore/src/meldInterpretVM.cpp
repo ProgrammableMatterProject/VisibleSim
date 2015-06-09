@@ -13,9 +13,7 @@
 namespace MeldInterpret{
 
 const unsigned char* MeldInterpretVM::meld_prog;
-
-char* tuple_names_load[] = {"_init", "setcolor2", "neighbor", "level", "bottomNeighbor", "noBottomNeighbor", "topNeighbor", "sideNeighbor", "neighbor-level", "vacant", };
-char** MeldInterpretVM::tuple_names = tuple_names_load;
+char** MeldInterpretVM::tuple_names;
 char* rule_names_load[] = {"_init -o node-axioms.", };
 char** MeldInterpretVM::rule_names = rule_names_load;
 
@@ -546,9 +544,9 @@ unsigned char * MeldInterpretVM::arguments = NULL;
       void MeldInterpretVM::setConfiguration(string path, bool d){
             debugging = d;
             if(!configured){
+                  configured = true;
                   readProgram(path);
             }
-            configured = true;
       }
 
       void MeldInterpretVM::readProgram(string path){
@@ -560,10 +558,10 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             //Separate the different variable value in several string
             int pos = content.find("{");
             string progString = content.substr(pos, content.find("}") - pos);
-            pos = content.find("{", pos);
-            string tupleString = content.substr(pos, content.find("}"));
-            pos = content.find("{", pos);
-            string ruleString = content.substr(pos, content.find("}"));
+            pos = content.find("{", content.find("}", pos));
+            string tupleString = content.substr(pos, content.find("}", pos) - pos);
+            pos = content.find("{", content.find("}", pos));
+            string ruleString = content.substr(pos, content.find("}", pos) - pos);
 
             //Reading meld_prog
             int byteCount = characterCount(progString, ',');
@@ -608,6 +606,27 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                   multi = 1;
             }
             meld_prog = outProg;
+
+            //Reading tuple_names
+            int countingTuple = characterCount(tupleString, ',');
+            char** outTuple = (char**)malloc((countingTuple + 1)*sizeof(char*));
+            pos = tupleString.find("\"") + 1;
+            int i = 0;
+
+            while(i < countingTuple){
+                  OUTPUT << "copying string content for index " << i << endl;
+                  outTuple[i] = strdup(tupleString.substr(pos, tupleString.find("\"", pos) - pos).c_str());
+                  pos = tupleString.find("\"", pos) + 1; //goes to the end of the string and jump the "
+                  pos = tupleString.find("\"", pos) + 1; // goes to the next string and jump the "
+                  OUTPUT << "Value in outTuple at index " << i << " is " << outTuple[i] << endl;
+                  i++;
+            }
+            tuple_names = outTuple;
+            OUTPUT << endl;
+            for(int f = 0; f < countingTuple; f++){
+                  OUTPUT << "Value in tuples names at index " << f << " is " << tuple_names[f] << endl;
+            }
+
             OUTPUT << "Program has been loaded" << endl;
       }
 
