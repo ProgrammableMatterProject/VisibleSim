@@ -3,6 +3,9 @@
  *
  *  Created on: 30 mars 2015
  *      Author: Vincent
+ *
+ * 	This code was our first code, and poorly organized (sorry about that)
+ *	it demonstrate the diffusion of the map and how to stored in the master but without consideration of memory
  */
 
 #include <iostream>
@@ -12,7 +15,7 @@
 #include "robotBlocksEvents.h"
 #include <boost/shared_ptr.hpp>
 
-const int COM_DELAY=1000000;
+const int COM_DELAY=1200000;
 
 using namespace std;
 using namespace RobotBlocks;
@@ -40,6 +43,7 @@ void Robot02BlockCode::startup() {
 	nbOfEnd = 0;
     nbOfFrame = 0; 
     lockEnd = false;
+    //Initialization of variables 
 
 	if(robotBlock->isMaster) {
 
@@ -48,9 +52,12 @@ void Robot02BlockCode::startup() {
         info << "(Master Block at " << robotBlock->position[0] << "," << robotBlock->position[1] << "," << robotBlock->position[2] << ")";
         scheduler->trace(info.str(),robotBlock->blockId,YELLOW);
 
-        recieved = true;
         int c = 0;
+        recieved = true;
         SendGoMapMessage(NULL,robotBlock->blockId,c,c,c);
+
+        //The master initialize the mapping
+
 	}else{
 		recieved = false;
     	scheduler->trace(info.str(),robotBlock->blockId,BLUE);
@@ -87,6 +94,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 						myColor = BLUE;
 						robotBlock->setColor(myColor);
 	        			recieved = true;
+	        			//Now we received the message
 
 						GoMapMessage_ptr recvMessage = boost::static_pointer_cast<GoMapMessage>(message);
 						info.str("");
@@ -95,6 +103,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 						tab[nbOfFrame][1] = recvMessage->x;
 						tab[nbOfFrame][2] = recvMessage->y;
 						tab[nbOfFrame][3] = recvMessage->z;
+						//Save the data in a array
 
 						pmid = recvInterface;
 						nbOfFrame++;
@@ -102,6 +111,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 		        		info << " recu : " << pmid->connectedInterface->hostBlock->blockId << " MAP : " << tab[0][1] << "," << tab[0][2] << "," << tab[0][3] << " FRAME " << nbOfFrame;
 		        		scheduler->trace(info.str(),hostBlock->blockId);
 	        			SendGoMapMessage(recvInterface, tab[0][0],tab[0][1],tab[0][2],tab[0][3]);
+	        			//Send back information with same modification
 
 	        		}else{
 	        			info.str("");
@@ -123,6 +133,8 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 						tab[nbOfFrame][2] = recvMessage->y;
 						tab[nbOfFrame][3] = recvMessage->z;
 
+						//Store in "buffer"
+
 						nbOfFrame++;
 						info.str("");
 						info << "FRAME from " << recvMessage->mid << " : " << recvMessage->x << "," << recvMessage->y << "," << recvMessage->z << "!" << nbOfFrame;
@@ -140,6 +152,8 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 							tab[id][1] = recvMessage->y;
 							tab[id][2] = recvMessage->z;
 
+							// save the data
+
 							info.str("");
 							info << "RECU " << id << " : " << tab[id][0] << "," << tab[id][1] << "," << tab[id][2];
 							scheduler->trace(info.str(),hostBlock->blockId);
@@ -153,16 +167,18 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 				case END_MAP_MSG_ID:
 
 					nbOfEnd--;
+					// We received the equivalent of an ACK
 					info.str("");
 					info << "END MAP MSG : " << nbOfEnd << " FROM " << message->sourceInterface->hostBlock->blockId;
 					scheduler->trace(info.str(),hostBlock->blockId);
 
 					if(nbOfEnd == 0){
+
 						myColor = ORANGE;
 						info.str("");
-						info << "Number of messags : " << scheduler->getNbreMessages();
 						scheduler->trace(info.str(),0,RED);
 						robotBlock->setColor(myColor);
+
 					}
 
 				break;
@@ -253,6 +269,8 @@ void Robot02BlockCode::SendGoMapMessage(P2PNetworkInterface *p2pExcept, int &mid
 	stringstream info;
 
 	int mid = mid_;
+
+	//This for was really reduced in map04
 
 	for(int i = 0; i < 6; i++){
 

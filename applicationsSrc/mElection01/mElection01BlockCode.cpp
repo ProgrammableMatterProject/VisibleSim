@@ -3,6 +3,9 @@
  *
  *  Created on: may 22 2015
  *      Author: Vincent
+ *
+ * New system of election of the master
+ * but still in development and really bugged for the moment
  */
 
 #include <iostream>

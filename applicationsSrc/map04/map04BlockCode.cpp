@@ -3,6 +3,9 @@
  *
  *  Created on: may 22 2015
  *      Author: Vincent
+ *
+ * New version of the map02 prgram, with consideration of memory
+ * not yet finished
  */
 
 #include <iostream>
@@ -47,9 +50,11 @@ void Map04BlockCode::startup() {
         x = 0;
         y = 0;
         z = 0;
+        //got a variable x,y,z in each block who depend of the master
 
         toMaster = NULL;
         reachMaster = 1;
+        // I am the master so i can reach the master 
 
         SendGoMap(NULL,x,y,z);
 
@@ -57,6 +62,7 @@ void Map04BlockCode::startup() {
 
 		received = 0;
         reachMaster = 0;
+        // I am not in the map
 
 	}
 }
@@ -97,6 +103,7 @@ void Map04BlockCode::processLocalEvent(EventPtr pev) {
 						x = recvMessage->x;
 						y = recvMessage->y;
 						z = recvMessage->z;
+						//save the coordinate
 
 						info.str("");
 						info << "go map received" << recvMessage->blockId << ":" << x << "," << y << "," << z;
@@ -128,6 +135,7 @@ void Map04BlockCode::processLocalEvent(EventPtr pev) {
 
 						if(buffer_c < SIZE){
 
+							// the SIZE of the buffer is definied in the .h
 							buffer[buffer_c][0] = recvMessage->blockId;
 							buffer[buffer_c][1] = recvMessage->x;
 							buffer[buffer_c][2] = recvMessage->y;
@@ -211,6 +219,8 @@ void Map04BlockCode::SendGoMap(P2PNetworkInterface *except, int &x_, int &y_, in
 			else if(i == 3){x = x-1;}
 			else if(i == 4){y = y+1;}
 			else if(i == 5){y = y-1;}
+
+			//same modificaiton than map02 but with less code
 
 			info << "send go map message";
 			GoMap *message = new GoMap(robotBlock->blockId, x, y, z);
