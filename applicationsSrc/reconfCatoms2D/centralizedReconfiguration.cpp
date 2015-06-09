@@ -28,14 +28,18 @@ using namespace Catoms2D;
  **/
 
 
-//#Define STRATEGY_ONE
-//#define STRATEGY_TWO
+//#define STRATEGY_ONE
+#define STRATEGY_TWO
 //#define STRATEGY_THREE
 //#define STRATEGY_FOUR
-#define STRATEGY_FIVE
+//#define STRATEGY_FIVE
+//#define STRATEGY_SIX
 
-#define STRATEGY_TRHEE
+#ifdef STRATEGY_SIX
+enum state_t {MOVING = 0, UNMOVING = 1, STABLE = 2};
+#else
 enum state_t {IN_SHAPE = 0, OUT_SHAPE = 1, WELL_PLACED = 2};
+#endif
 
 static int moves = 0;
 
@@ -323,10 +327,18 @@ void centralized_reconfiguration() {
 #ifdef COLOR_DEBUG
   seed->setColor(RED);
 #endif
+
+#ifdef STRATEGY_SIX
+  states[seed->blockId] = STABLE;
+#endif
   
   for (int i = 0; i < (world->getSize()+1); i++) {
     gradient[i] = UNDEFINED_GRADIENT;
+#ifdef STRATEGY_SIX
+    states[i] = UNMOVING;
+#else
     states[i] = OUT_SHAPE;
+#endif
     //Catoms2DBlock *c = (Catoms2DBlock*) world->getBlockById(i);
   }
 
@@ -334,11 +346,13 @@ void centralized_reconfiguration() {
   for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
     Catoms2DBlock *c = (Catoms2DBlock*) it->second;
     Coordinate p(c->position[0],c->position[2]);
+#ifndef STRATEGY_SIX
     if (isInTarget(p)) {
       states[c->blockId] = IN_SHAPE;
     } else {
       states[c->blockId] = OUT_SHAPE;
     }
+#endif
   }
   
   
@@ -355,8 +369,9 @@ void centralized_reconfiguration() {
     // move CCW around i connector: i-1 and i-2 should be free
     Catoms2DWorld *world = Catoms2DWorld::getWorld();
     Catoms2DBlock *c;
+
 #if defined(STRATEGY_ONE) || defined (STRATEGY_TWO) || defined(STRATEGY_FIVE)
-    map<int, BuildingBlock*>::iterator it;
+     map<int, BuildingBlock*>::iterator it;
     for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
       c = (Catoms2DBlock*) it->second;
@@ -365,7 +380,25 @@ void centralized_reconfiguration() {
       }
       
       if (c->isBlocked()) {
+	c->setColor(GREY);
 	continue;
+      } else {
+	c->setColor(RED);
+      }
+    }
+
+    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
+
+      c = (Catoms2DBlock*) it->second;
+      if (c == seed) {
+	continue;
+      }
+      
+      if (c->isBlocked()) {
+	c->setColor(GREY);
+	continue;
+      } else {
+	c->setColor(RED);
       }
       
       Coordinate p1(c->position[0], c->position[2]);
@@ -391,8 +424,8 @@ void centralized_reconfiguration() {
 	    Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
 	    //if (!c->canMove(counterMV)) {
 	    if (c->isBlocked()) {
-	      c->setColor(BLUE);
-	      mv->getPivot()->setColor(YELLOW);
+	      //c->setColor(BLUE);
+	      //mv->getPivot()->setColor(YELLOW);
 	      cout << "illegal move!" << endl;
 	      //getchar();
 	    }
@@ -407,9 +440,9 @@ void centralized_reconfiguration() {
 #ifdef COLOR_DEBUG
       p1 = Coordinate(c->position[0], c->position[2]);
       if (isInTarget(p1)) {
-	c->setColor(GREEN);
+	//c->setColor(GREEN);
       } else {
-	c->setColor(GREY);
+	//c->setColor(GREY);
       }
 #endif
     }
@@ -512,6 +545,82 @@ void centralized_reconfiguration() {
       }
       }*/
     getchar();
+#elif defined(STRATEGY_SIX)
+ map<int, BuildingBlock*>::iterator it;
+    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
+
+      c = (Catoms2DBlock*) it->second;
+      int id = c->blockId;
+
+      if (states[id] == STABLE) {
+	continue;
+      }
+
+      if(!c->isBlocked) {
+	states[id] = MOVING;
+      } else {
+	states[id] = UNMOVING;
+      }
+    }
+
+    map<int, BuildingBlock*>::iterator it;
+    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {  
+      
+      c = (Catoms2DBlock*) it->second;
+      int id = c->blockId;
+
+      //for (int i = 0; i < 6; i++) {
+      //	P2PNetworkInterface *p2p = c->getInterface((NeighborDirection)i);
+      //if (p2p->connectedInterface) {
+	  
+      //	}
+      //}
+
+      Coordinate p1(c->position[0], c->position[2]);
+      
+      if (canMove(c,gradient)) {
+	//cout << "c satisfies gradient condition" << endl;
+	//cout << "@" << c->blockId << " can physically move" << endl;
+	Catoms2DMove *mv = nextMove(c);
+	if (mv != NULL) {
+	  Coordinate p2 = getPosition(c,*mv);
+
+	  bool psmb = pivotShouldMoveBefore(c,*mv,gradient);
+
+	  if (!psmb && 
+	      (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
+	    cout << c->blockId << " is moving from " << p1 << " to " 
+		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection(); 
+	    move(c,*mv);
+	    //cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
+	    gradient[c->blockId] = UNDEFINED_GRADIENT;
+	    updateGradient(c,gradient);
+	    cout << " done" << endl;
+	    Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
+	    //if (!c->canMove(counterMV)) {
+	    if (c->isBlocked()) {
+	      c->setColor(BLUE);
+	      mv->getPivot()->setColor(YELLOW);
+	      cout << "illegal move!" << endl;
+	      //getchar();
+	    }
+	    getchar();
+	    //sleep(1);
+	  } /*else {
+	    cout << "hors figure ?" << endl;
+	    }*/
+	  delete mv;
+	}// else { cout << " move == NULL" << endl;}
+      }
+#ifdef COLOR_DEBUG
+      p1 = Coordinate(c->position[0], c->position[2]);
+      if (isInTarget(p1)) {
+	c->setColor(GREEN);
+      } else {
+	c->setColor(GREY);
+      }
+#endif
+    }
 #endif
   }
   cout << "reconfiguration over in " << moves << " moves." << endl;
