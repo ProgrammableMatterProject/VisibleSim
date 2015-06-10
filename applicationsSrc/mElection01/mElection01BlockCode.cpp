@@ -38,12 +38,13 @@ RobotBlocks::RobotBlocksBlockCode* MElection01BlockCode::buildNewBlockCode(Robot
 void MElection01BlockCode::startup() {
 	stringstream info;
 
-	nbOfWaitStart = 0;
+	nbOfWaitDiffusion = 0;
 	bestId = robotBlock->blockId;
 	AmIMaster = 0;
 	lock = 0;
+	DoIBroadcast = 1;
 
-	SendStartMaster();
+	StartIdDiffusion(bestId);
 
 	if(robotBlock->isMaster) {
 
@@ -78,130 +79,43 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 
 			switch(message->id){
 
-				case START_MASTER_ID:{
+				case ID_DUFFUSION:{
 
-					StartMaster_ptr recvMessage = boost::static_pointer_cast<StartMaster>(message);
-
-					if(recvMessage->blockId < bestId){
-
-						bestId = recvMessage->blockId;
-
-						info.str("");
-						info << recvMessage->blockId;
-						scheduler->trace(info.str(),robotBlock->blockId,LIGHTBLUE);
-						SendStartAckMaster(recvInterface);
-
-					}else{
-
-						SendStartNAckMaster(recvInterface);
-
-						if(countNeighbors(recvInterface) == 0){
-
-							SendAskNeighbor(robotBlock->blockId);
-
-						}
-
-					}
-					
-
-				}break;
-
-				case START_ACK_ID:
-
-					robotBlock->setColor(GREEN);
-					nbOfWaitStart--;
-					if(nbOfWaitStart == 0){
-						SendAskNeighbor(robotBlock->blockId);
-					}
-					
-				break;
-
-				case START_NACK_ID:
-
-					robotBlock->setColor(RED);
-					nbOfWaitStart--;
-
-					if(nbOfWaitStart == 0){
-
-						SendAskNeighbor(robotBlock->blockId);
-
-					}
-
-				break;
-
-				case ASK_NEIGHBOR:{
-
-					AskNeighbor_ptr recvMessage = boost::static_pointer_cast<AskNeighbor>(message);
-					info.str("");
-
-					if(recvMessage->applicantId < bestId){
-
-						lock = 0;
-
-					}
-
-					if(recvMessage->applicantId <= bestId){
-
-						bestId = recvMessage->applicantId;
-						info << "diffusion : " << bestId << " lock " << lock;
-
-						if(countNeighbors(recvInterface) > 0 && lock == 0){
-
-							answer = recvInterface;
-							SendAskNeighbor(bestId);
-
-						}
-						if(countNeighbors(recvInterface) == 0 && lock == 0){
-
-							SendAnswerNeighbor(recvInterface,bestId);
-
-						}
-
-						robotBlock->setColor(LIGHTBLUE);
-
-					}else{
-
-						info << "DROP : " << recvMessage->applicantId;
-						robotBlock->setColor(ORANGE);
-
-					}
-
-					if(bestId == recvMessage->applicantId){
-
-						lock++;
-
-						if(lock > 1){
-							
-							SendAnswerNeighbor(recvInterface,bestId);
-
-						}
-
-					}
-
-					scheduler->trace(info.str(),robotBlock->blockId,GREEN);
-
-				}break;
-
-				case ANSWER_NEIGHBOR:{
-
-					AnswerNeighbor_ptr recvMessage = boost::static_pointer_cast<AnswerNeighbor>(message);
+					IdDiffusion_ptr recvMessage = boost::static_pointer_cast<IdDiffusion>(message);
 					stringstream info;
 					info.str("");
 
-					if(bestId == recvMessage->applicantId){
-						lock--;
-						info << "same id : " << lock;
+					if(recvMessage->idBlock < bestId){
+
+						bestId = recvMessage->idBlock;
+						SendIdAck(recvInterface);
+
+						info << "New Best ID : " << bestId;
+						scheduler->trace(info.str(),robotBlock->blockId);
+
+					}else{
+
+						SendIdNAck(recvInterface);
 
 					}
 
-					scheduler->trace(info.str(),robotBlock->blockId,RED);
+				}break;
 
-					if(bestId == recvMessage->applicantId && lock == 0){
+				case ID_ACK:{
 
-						SendAnswerNeighbor(answer, bestId);
+					robotBlock->setColor(GREEN);
+					nbOfWaitDiffusion--;
 
-					}
+				}break;
 
+				case ID_NACK:{
+
+					robotBlock->setColor(RED);
+					nbOfWaitDiffusion--;
+					
+					DoIBroadcast = 0;
+
+					
 
 				}break;
 
@@ -215,133 +129,99 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-void MElection01BlockCode::SendAskNeighbor(int &applicantId_){
+void MElection01BlockCode::StartIdDiffusion(int &idBlock_){
 
-	P2PNetworkInterface *p2p;
 	stringstream info;
-
-	for (int i = 0; i < 6; ++i){
-
-		p2p = robotBlock->getInterface((RobotBlocks::NeighborDirection::Direction)i);
-		if(p2p -> connectedInterface && p2p != answer){
-
-			AskNeighbor *message = new AskNeighbor(applicantId_);
-			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
-			AmIMaster++;
-
-		}
-
-	}
-	
-}
-
-void MElection01BlockCode::SendStartMaster(){
-
 	P2PNetworkInterface *p2p;
-	stringstream info;
-	for (int i = 0; i < 6; ++i){
-		
+
+	info.str("");
+
+	for (int i = 0; i < 6; ++i)
+	{
+
 		p2p = robotBlock->getInterface((RobotBlocks::NeighborDirection::Direction)i);
 
 		if(p2p->connectedInterface){
 
-			StartMaster *message = new StartMaster(robotBlock->blockId);
+			IdDiffusion *message = new IdDiffusion(idBlock_);
 			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
-
-			nbOfWaitStart++;
-			info.str("");
-			info << "send a start message : " << nbOfWaitStart;
-			scheduler->trace(info.str(),robotBlock->blockId,BLUE);
+			nbOfWaitDiffusion++;
 
 		}
+
 	}
+
+	info << "broadcast a diffusion message NB : " << nbOfWaitDiffusion;
+	scheduler->trace(info.str(),robotBlock->blockId,LIGHTBLUE);
 
 }
 
-void MElection01BlockCode::SendAnswerNeighbor(P2PNetworkInterface *send, int &applicantId_){
+void MElection01BlockCode::SendIdAck(P2PNetworkInterface *send){
 
 	stringstream info;
 	info.str("");
-	
+
 	if(send->connectedInterface){
-		info << "send answer";
-		AnswerNeighbor *message = new AnswerNeighbor(applicantId_);
+
+		IdAck *message = new IdAck();
 		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, send));
 
 	}
 
-	scheduler->trace(info.str(),robotBlock->blockId,PINK);
+	info << "send ACK";
+	scheduler->trace(info.str(),robotBlock->blockId,GREEN);
 
 }
 
-void MElection01BlockCode::SendStartAckMaster(P2PNetworkInterface *send){
+void MElection01BlockCode::SendIdNAck(P2PNetworkInterface *send){
+
+	stringstream info;
+	info.str("");
 
 	if(send->connectedInterface){
 
-		StartAckMaster *message = new StartAckMaster();
+		IdNAck *message = new IdNAck();
 		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, send));
 
 	}
 
-}
-
-void MElection01BlockCode::SendStartNAckMaster(P2PNetworkInterface *send){
-
-	if(send->connectedInterface){
-
-		StartNAckMaster *message = new StartNAckMaster();
-		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, send));
-
-	}
+	info << "send NACK";
+	scheduler->trace(info.str(),robotBlock->blockId,RED);
 
 }
 
-int MElection01BlockCode::countNeighbors(P2PNetworkInterface *except){
+int MElection01BlockCode::CountNeighbor(P2PNetworkInterface *except){
 
 	P2PNetworkInterface *p2p;
+	int nb = 0;
 
-	int c = 0;
 	for (int i = 0; i < 6; ++i)
 	{
 		p2p = robotBlock->getInterface((RobotBlocks::NeighborDirection::Direction)i);
-		if(p2p -> connectedInterface && p2p != except){
-			c++;
+		if(p2p->connectedInterface && p2p != except){
+			nb++;
 		}
 	}
 
-	return c;
+	return nb;
 
 }
 
-AnswerNeighbor::AnswerNeighbor(int &applicantId_):Message(){
+IdDiffusion::IdDiffusion(int &idBlock_){
 
-	id = ANSWER_NEIGHBOR;
-	applicantId = applicantId_;
+	id = ID_DUFFUSION;
+	idBlock = idBlock_;
 
-}AnswerNeighbor::~AnswerNeighbor(){}
+}IdDiffusion::~IdDiffusion(){}
 
-AskNeighbor::AskNeighbor(int &applicantId_):Message(){
+IdAck::IdAck(){
 
-	id = ASK_NEIGHBOR;
-	applicantId = applicantId_;
+	id = ID_ACK;
 
-}AskNeighbor::~AskNeighbor(){}
+}IdAck::~IdAck(){}
 
-StartMaster::StartMaster(int &blockId_):Message(){
+IdNAck::IdNAck(){
 
-	id = START_MASTER_ID;
-	blockId = blockId_;
+	id = ID_NACK;
 
-}StartMaster::~StartMaster(){}
-
-StartAckMaster::StartAckMaster():Message(){
-
-	id = START_ACK_ID;
-
-}StartAckMaster::~StartAckMaster(){}
-
-StartNAckMaster::StartNAckMaster():Message(){
-
-	id = START_NACK_ID;
-
-}StartNAckMaster::~StartNAckMaster(){}
+}IdNAck::~IdNAck(){}
