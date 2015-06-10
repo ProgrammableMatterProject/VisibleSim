@@ -382,10 +382,24 @@ void centralized_reconfiguration() {
       if (c->isBlocked()) {
 	c->setColor(GREY);
 	continue;
-      } else {
-	c->setColor(RED);
+      } else {	
+	if (c->nbNeighbors() <= 1) {
+	  c->setColor(RED);
+	} else {
+	  // check distance
+	  P2PNetworkInterface *p = lastNeighborInDirection(c,Catoms2DMove::ROTATE_CW);
+	  Catoms2DBlock *c1 = (Catoms2DBlock*) p->connectedInterface->hostBlock;
+	  if (c1->isBlocked()) {
+	    c->setColor(RED);
+	  } else {
+	    c->setColor(GREY);
+	  }
+	  
+	}
       }
     }
+
+    getchar();
 
     for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
@@ -397,10 +411,8 @@ void centralized_reconfiguration() {
       if (c->isBlocked()) {
 	c->setColor(GREY);
 	continue;
-      } else {
-	c->setColor(RED);
       }
-      
+
       Coordinate p1(c->position[0], c->position[2]);
       
       if (canMove(c,gradient)) {
