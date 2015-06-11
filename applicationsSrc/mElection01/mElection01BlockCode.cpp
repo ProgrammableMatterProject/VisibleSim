@@ -103,18 +103,25 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 
 				case ID_ACK:{
 
-					robotBlock->setColor(GREEN);
 					nbOfWaitDiffusion--;
+					if(nbOfWaitDiffusion == 0){
+
+						TellToNeighbors(bestId);
+
+					}
 
 				}break;
 
 				case ID_NACK:{
 
-					robotBlock->setColor(RED);
+					DoIBroadcast = 0;
 					nbOfWaitDiffusion--;
 					
-					DoIBroadcast = 0;
+					if(nbOfWaitDiffusion == 0){
 
+						TellToNeighbors(bestId);
+
+					}
 					
 
 				}break;
@@ -127,6 +134,20 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 		break;
 
 	}
+}
+
+void MElection01BlockCode::TellToNeighbors(int &bestId_){
+
+	if(DoIBroadcast == 1){
+
+		robotBlock->setColor(GREEN);
+
+	}else{
+
+		robotBlock->setColor(RED);
+
+	}
+
 }
 
 void MElection01BlockCode::StartIdDiffusion(int &idBlock_){

@@ -53,6 +53,7 @@ public:
 	void SendIdAck(P2PNetworkInterface *send);
 	void SendIdNAck(P2PNetworkInterface *send);
 	int CountNeighbor(P2PNetworkInterface *except);
+	void TellToNeighbors(int &bestId_);
 
 };
 
