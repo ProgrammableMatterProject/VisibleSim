@@ -27,7 +27,7 @@
 		<blocksLine plane="0" line=" 4" values="0011110000"/>
 		<blocksline plane="1" line=" 4" values="0011110000"/>
 		<blocksLine plane="0" line=" 3" values="0011000000"/>
-		<block position="3,5,2" color="255,0,0" master="true"/>;
+		<block position="6,4,7" color="255,0,0" master="true"/>;
 	</blockList>
 
 	<capabilities>

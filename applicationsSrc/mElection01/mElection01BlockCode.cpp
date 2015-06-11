@@ -1,7 +1,7 @@
 /*
  * MElection01BlockCode.cpp
  *
- *  Created on: may 22 2015
+ *  Created on: june 11 2015
  *      Author: Vincent
  *
  * New system of election of the master
@@ -42,7 +42,8 @@ void MElection01BlockCode::startup() {
 	bestId = robotBlock->blockId;
 	AmIMaster = 0;
 	lock = 0;
-	DoIBroadcast = 1;
+	PMaster = 1;
+	NbOfValidation = 0;
 
 	StartIdDiffusion(bestId);
 
@@ -114,7 +115,7 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 
 				case ID_NACK:{
 
-					DoIBroadcast = 0;
+					PMaster = 0;
 					nbOfWaitDiffusion--;
 					
 					if(nbOfWaitDiffusion == 0){
@@ -123,6 +124,81 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 
 					}
 					
+
+				}break;
+
+				case ID_BROADCAST:{
+
+					BroadcastID_ptr recvMessage = boost::static_pointer_cast<BroadcastID>(message);
+
+					if(recvMessage->bestId < bestId){
+
+						lock = 0;
+						NbOfValidation = 0;
+						bestId = recvMessage->bestId;
+
+					}
+
+					if(!lock){
+
+						lock = 1;
+						stringstream info;
+						info.str("");
+
+						info << "received " << recvMessage->bestId;
+						scheduler->trace(info.str(),robotBlock->blockId,BLUE);
+
+
+						if(recvMessage->bestId <= bestId){
+
+							SendBroadcastID(recvInterface, bestId);
+							answer = recvInterface;
+
+						}
+
+					}else{
+
+						if(bestId == recvMessage->bestId){
+							SendAnswerBroadcast(recvInterface, bestId);
+						}
+
+					}
+
+
+				}break;
+
+				case ID_BROADCAST_ANSWER:{
+
+					AnswerBroadcast_ptr recvMessage = boost::static_pointer_cast<AnswerBroadcast>(message);
+					stringstream info;
+					info.str("");
+
+					if(recvMessage->bestId == bestId){
+
+						NbOfValidation--;
+						info << "Nb of Validation : " << NbOfValidation;
+						scheduler -> trace(info.str(),robotBlock->blockId,PINK);
+
+					}
+
+					if((robotBlock->blockId != bestId) && NbOfValidation == 0){
+
+						// I'm a normal block BTW
+						robotBlock->setColor(LIGHTGREEN);
+						SendAnswerBroadcast(answer, bestId);
+
+					}
+
+					if((robotBlock->blockId == bestId) && NbOfValidation == 0){
+
+						info.str("");
+
+						info << "i'm the master";
+
+						scheduler->trace(info.str(),robotBlock->blockId,BLUE);
+						robotBlock->setColor(RED);
+
+					}
 
 				}break;
 
@@ -136,17 +212,78 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
+void MElection01BlockCode::SendAnswerBroadcast(P2PNetworkInterface *send, int &bestId_){
+
+	stringstream info;
+	info.str("");
+
+	if(send->connectedInterface){
+
+		info << "send answer broadcast " << bestId_;
+		AnswerBroadcast *message = new AnswerBroadcast(bestId_);
+		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, send));
+
+	}else{
+
+		//Path broken
+
+	}
+
+	scheduler->trace(info.str(),robotBlock->blockId,PINK);
+
+}
+
 void MElection01BlockCode::TellToNeighbors(int &bestId_){
 
-	if(DoIBroadcast == 1){
+	if(PMaster == 1){
 
 		robotBlock->setColor(GREEN);
+		if(bestId_ == robotBlock->blockId){
+
+			SendBroadcastID(NULL,bestId_);
+
+		}
+
 
 	}else{
 
 		robotBlock->setColor(RED);
 
 	}
+
+}
+
+void MElection01BlockCode::SendBroadcastID(P2PNetworkInterface *except, int &bestId_){
+
+	stringstream info;
+	P2PNetworkInterface *p2p;
+
+	info.str("");
+	robotBlock->setColor(ORANGE);
+
+	for (int i = 0; i < 6; ++i)
+	{
+
+		p2p = robotBlock->getInterface((RobotBlocks::NeighborDirection::Direction)i);
+		if(p2p->connectedInterface && p2p != except){
+
+			BroadcastID *message = new BroadcastID(bestId_);
+			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
+			NbOfValidation++;
+
+		}
+
+	}
+
+	if(NbOfValidation == 0){
+
+		SendAnswerBroadcast(except,bestId);
+		robotBlock->setColor(LIGHTGREEN);
+
+	}
+
+	info << "BroadcastID : " << bestId_;
+	scheduler->trace(info.str(),robotBlock->blockId,ORANGE);
 
 }
 
@@ -246,3 +383,15 @@ IdNAck::IdNAck(){
 	id = ID_NACK;
 
 }IdNAck::~IdNAck(){}
+BroadcastID::BroadcastID(int &bestId_){
+
+	id = ID_BROADCAST;
+	bestId = bestId_;
+
+}BroadcastID::~BroadcastID(){}
+AnswerBroadcast::AnswerBroadcast(int &bestId_){
+
+	id = ID_BROADCAST_ANSWER;
+	bestId = bestId_;
+
+}AnswerBroadcast::~AnswerBroadcast(){}

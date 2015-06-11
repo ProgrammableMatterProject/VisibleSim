@@ -1,7 +1,7 @@
 /*
- * Map04BlockCode.h
+ * MElection01BlockCode.h
  *
- *  Created on: may 22 2015
+ *  Created on: june 11 2015
  *      Author: Vincent
  */
 
@@ -12,8 +12,8 @@
 #define ID_ACK				        11
 #define ID_NACK				        12
 
-#define ASK_NEIGHBOR				20
-#define ANSWER_NEIGHBOR				21
+#define ID_BROADCAST				30
+#define ID_BROADCAST_ANSWER			31
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
@@ -26,15 +26,19 @@ class IdAck;
 typedef boost::shared_ptr<IdAck> IdAck_ptr;
 class IdNAck;
 typedef boost::shared_ptr<IdNAck> IdNAck_ptr;
-
+class BroadcastID;
+typedef boost::shared_ptr<BroadcastID> BroadcastID_ptr;
+class AnswerBroadcast;
+typedef boost::shared_ptr<AnswerBroadcast> AnswerBroadcast_ptr;
 
 class MElection01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 
 	int nbOfWaitDiffusion;
+	int NbOfValidation;
 	int bestId;
 	int AmIMaster;
-	int lock;
-	bool DoIBroadcast;
+	bool lock;
+	bool PMaster;
 	P2PNetworkInterface *answer;
     
 public:
@@ -54,6 +58,8 @@ public:
 	void SendIdNAck(P2PNetworkInterface *send);
 	int CountNeighbor(P2PNetworkInterface *except);
 	void TellToNeighbors(int &bestId_);
+	void SendBroadcastID(P2PNetworkInterface *except, int &bestId_);
+	void SendAnswerBroadcast(P2PNetworkInterface *send, int &bestId_);
 
 };
 
@@ -79,6 +85,24 @@ public:
 
 	IdNAck();
 	~IdNAck();
+
+};
+
+class BroadcastID : public Message{
+public:
+
+	int bestId;
+	BroadcastID(int &bestId_);
+	~BroadcastID();
+
+};
+
+class AnswerBroadcast : public Message{
+public:
+
+	int bestId;
+	AnswerBroadcast(int &bestId_);
+	~AnswerBroadcast();
 
 };
 
