@@ -14,7 +14,6 @@ private:
 	BlinkyBlocks::BlinkyBlocksBlock *bb;
 	uint64_t currentLocalDate; // fastest mode
 
-
 public:
 	BlinkyMeldBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 	~BlinkyMeldBlockCode();

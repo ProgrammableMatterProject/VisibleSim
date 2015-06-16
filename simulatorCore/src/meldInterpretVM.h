@@ -851,7 +851,7 @@ class MeldInterpretVM {
             }
 
             tuple_pentry *p_dequeue(tuple_pqueue *q);
-            void p_enqueue(tuple_pqueue *q, meld_int priority, tuple_t tuple, NodeID rt, record_type isNew);
+            void p_enqueue(tuple_pqueue *q, Time priority, tuple_t tuple, NodeID rt, record_type isNew);
             int queue_length (tuple_queue *queue);
 };
 

@@ -104,7 +104,10 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
                         //Add another compute event on condition
                         //if...
                         if(vm->isWaiting()){
-                              BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
+			  // random delay before recomputing a predicate
+			  // between 0.1 ms and 1ms
+			  int delay = (bb->getNextRandomNumber() % (1000 - 100 +1 )) + 100;
+			  BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now()+delay, bb));
                         }
                         //else info << " Block is no longer waiting";
                         //info << "Compute predicate event";

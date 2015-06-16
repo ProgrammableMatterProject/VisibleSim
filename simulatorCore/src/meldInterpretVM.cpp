@@ -79,7 +79,8 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	}
 
 	Time MeldInterpretVM::myGetTime(){
-	   return (Time)host->getTime();
+	  // simulator time is in us while the unit in the vm is ms.
+	  return (Time)(host->getTime()/1000);
 	}
 
 	/* Print the content of the newTuples queue */
@@ -220,8 +221,8 @@ unsigned char * MeldInterpretVM::arguments = NULL;
 	/* The VM's main function */
 	void MeldInterpretVM::processOneRule(void) {
             // processing new facts and updating axioms
-
             waiting = 0;
+
             //If there are new tuples
             if(!queue_is_empty(newTuples)) {
                   int isNew = 0;
@@ -245,6 +246,10 @@ unsigned char * MeldInterpretVM::arguments = NULL;
                   //Else if there are no tuple to process
                   waiting = 1;
             } else {
+
+	      if (!p_empty(delayedTuples)) {
+		waiting = 1;
+	      }
                   /* If all tuples have been processed
                   * update rule state and process them if they are ready */
                   for (int i = 0; i < NUM_RULES; ++i) {
@@ -1804,7 +1809,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
         return ret;
     }
 
-    void MeldInterpretVM::p_enqueue(tuple_pqueue *queue, meld_int priority, tuple_t tuple,
+    void MeldInterpretVM::p_enqueue(tuple_pqueue *queue, Time priority, tuple_t tuple,
               NodeID rt, record_type isNew) {
         tuple_pentry *entry = (tuple_pentry*)malloc(sizeof(tuple_pentry));
 
