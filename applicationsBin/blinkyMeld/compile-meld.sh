@@ -1,12 +1,15 @@
 #!/bin/sh
 
+usage(){
+    echo "Usage: $0 <path-to-meld-file>"
+    echo "Example: $0 meld/programs/rainbow.meld"
+    exit 1
+}
+
+[ $# -eq 0 ] && usage
+
 name="$(basename $1 .meld)"
 echo "$name"
-
-#sbcl --eval "(load \"meld/meld-compiler/setup\")" \
-#     --eval "(ql:quickload \"cl-meld\")" \
-#     --eval "(cl-meld:meld-compile \"$1\" \"$name\")" \
-#     --eval "(quit)"
 
 compile_file=`mktemp -t compileXXXX`
 sbcl --eval "(load \"meld/meld-compiler/setup\")" \
@@ -27,15 +30,34 @@ if [ ! -f $name.m ]; then
     exit 1
 fi
 
+if grep -q "WARNING" $compile_file; then
+   echo "Compiler returned warnings!"
+   read -p "Continue? y/n " yn
+   if [ "$yn" != "y" ]; then
+      rm -f $compile_file
+      exit 1
+   fi
+fi
+
 rm -f $compile_file
 echo "Compilation done!"
 
-(
-cd meld/LMParser
-make
-)
+if [ ! -f meld/LMParser/LMParser ]; then
+   echo "Compiling LMParser ..."
+   (
+       cd meld/LMParser/
+       make
+   )
+   echo "Done."
+fi
 
-meld/LMParser $name.m
+echo "Generating .bb file"
+meld/LMParser/LMParser $name.m
 
-echo "Parsing done!"
+if [ $? != 0 ]; then
+   echo "Failed to parse byte-code file $name.m"
+   exit 1
+fi
+
+echo "Done."
 
