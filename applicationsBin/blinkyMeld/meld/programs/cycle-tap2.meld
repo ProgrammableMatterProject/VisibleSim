@@ -1,0 +1,11 @@
+type vacant(node, int).
+type linear tap(node).
+type route neighbor(node, node, int).
+type neighborCount(node, int).
+
+type linear color (node, int).
+
+color(X, 0).
+!setColor2(X, 0).
+
+color(X, N), tap(X) -o color(X, (N+1) % 8), setColor2(X, N).

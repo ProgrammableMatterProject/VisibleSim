@@ -1,0 +1,28 @@
+type route neighbor(node, node, int).
+type neighborCount(node, int).
+type linear tap(node).
+
+type color(node, max int).
+type ending(node).
+type middle(node).
+type nearEnding(node).
+
+const red = 0.
+const green = 3.
+const blue = 5.
+
+!neighborCount(X, C),
+C > 1
+   -o !color(X, green),
+      !middle(X).
+
+!neighborCount(X, 1)
+   -o !ending(X), !color(X, red).
+
+!neighbor(X, Y, _),
+!ending(Y),
+!middle(X)
+   -o !nearEnding(X), !color(X, blue).
+
+!color(X, C) -o !setColor2(X, C).
+
