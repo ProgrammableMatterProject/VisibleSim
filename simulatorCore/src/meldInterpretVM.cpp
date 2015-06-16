@@ -780,16 +780,20 @@ unsigned char * MeldInterpretVM::arguments = NULL;
      * which is useless when using BB as nodeID's are not pointers.
      */
     inline void MeldInterpretVM::execute_call1 (const unsigned char *pc, Register *reg) {
-        ++pc;
-        byte functionID = FETCH(pc++);
-        byte dst_index = FETCH(pc++);
-        Register *dst = (Register*)eval_reg (dst_index, &pc, reg);
-
-        byte arg1_index = FETCH(pc);
-        Register *arg1 = (Register*)eval_reg (arg1_index, &pc, reg);
-
+      ++pc;
+      byte functionID = FETCH(pc++);
+      
+      byte dst_index = FETCH(pc);
+      Register *dst = (Register*)eval_reg (dst_index, &pc, reg);
+      
+      byte return_type = FETCH(pc++);
+      byte garbage_collected = FETCH(pc++);
+      
+      byte arg1_index = FETCH(pc);
+      Register *arg1 = (Register*)eval_reg (arg1_index, &pc, reg);
+  
 #ifdef DEBUG_INSTRS
-        if (functionID == 0x1f)
+        if (functionID == NODE2INT_FUNC)
             /* No need to do anything for this function since VM is already *
              * considering node args as NodeID's, which are int's           */
             printf("--%d--\t CALL1 node2int/%d TO reg %d = (reg %d)\n",
@@ -798,16 +802,20 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             printf("--%d--\t CALL1 (some func)/%d TO reg %d = (reg %d)\n",
                    getBlockId(), arg1_index, dst_index, arg1_index);
 #endif
-
-        if (functionID != 0x1f)
-            fprintf(stderr, "--%d--\t Error: call to function not implemented yet!\n",
-                    getBlockId());
-
-        /* Do nothing for now since no function are currectly implemented */
-        (void)arg1;
-        (void)dst;
+	if (functionID == NODE2INT_FUNC) {
+	  *dst = MELD_NODE_ID(arg1);
+	} else {
+	  fprintf(stderr, "--%d--\t Error: call to function not implemented yet!\n",
+		  getBlockId());
+	}
+	
+	/* Do nothing for now since no function are currently implemented */
+	(void)arg1;
+	(void)dst;
+	(void)return_type;
+	(void)garbage_collected;
     }
-
+  
     /* Similar to send, but with a delay */
     inline void MeldInterpretVM::execute_send_delay (const unsigned char *pc, Register *reg, int isNew) {
         ++pc;

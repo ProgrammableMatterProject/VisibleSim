@@ -603,8 +603,6 @@ instructions.
 /* ************* EXTERN FUNCTION IDs ************* */
 #define NODE2INT_FUNC 0x1c
 
-
-
 typedef Register (*extern_funct_type)();
 
 /******************************************************************************

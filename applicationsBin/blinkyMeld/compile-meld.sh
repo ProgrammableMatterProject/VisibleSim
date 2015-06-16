@@ -9,7 +9,10 @@ usage(){
 [ $# -eq 0 ] && usage
 
 name="$(basename $1 .meld)"
+output="program.bb"
+
 echo "$name"
+rm -f $output
 
 compile_file=`mktemp -t compileXXXX`
 sbcl --eval "(load \"meld/meld-compiler/setup\")" \
@@ -60,7 +63,7 @@ if [ $? != 0 ]; then
 fi
 
 rm -f $name.m
-mv $name.bb program.bb
+mv $name.bb $output
 
 echo "Done."
 
