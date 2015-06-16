@@ -1,0 +1,21 @@
+#!/usr/bin/env sbcl --noinform --control-stack-size 128 --dynamic-space-size 2048 --noprint --script
+
+(defvar *params* (rest sb-ext:*posix-argv*))
+
+(when (null *params*)
+ 	(format t "Usage: compile-file <file1 output1> <file2 output2> ...~%")
+	(quit))
+
+(format t "==> Launching the Lisp system...~%")
+(format t "==> Loading CL-Meld...~%")
+#-quicklisp
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
+
+(ql:quickload "cl-meld" :verbose t)
+
+(let ((ls (loop for (in . (out . nil)) on *params* by #'cddr
+								collect (list in out))))
+	(sb-ext:quit :unix-status (if (cl-meld:meld-compile-list ls) 0 1)))
