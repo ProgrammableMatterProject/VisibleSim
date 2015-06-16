@@ -60,6 +60,7 @@ if [ $? != 0 ]; then
 fi
 
 rm -f $name.m
+mv $name.bb program.bb
 
 echo "Done."
 
