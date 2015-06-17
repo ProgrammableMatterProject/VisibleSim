@@ -3059,7 +3059,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
         char str[MAX_STRING_SIZE];
         char tmp[MAX_STRING_SIZE];
 
-        sprintf(str,"%s(", TYPE_NAME(tuple_type));
+        sprintf(str,"@%d: %s(", getBlockId(), TYPE_NAME(tuple_type));
 
         for(j = 0; j < TYPE_NUMARGS(tuple_type); ++j) {
             void *field = GET_TUPLE_FIELD(tuple, j);

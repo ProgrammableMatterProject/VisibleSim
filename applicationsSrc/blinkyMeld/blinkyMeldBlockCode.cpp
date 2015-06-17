@@ -98,7 +98,6 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
 		case EVENT_COMPUTE_PREDICATE:
 		      {
-
                         //Call the VM function to process one rule
                         vm->processOneRule();
                         //Add another compute event on condition
