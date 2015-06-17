@@ -694,8 +694,8 @@ class MeldInterpretVM {
                   setLED(r, g, b, intensity);
 		}
             NodeID getGUID();
-            extern_funct_type extern_functs[];
-            int extern_functs_args[];
+            extern_funct_type *extern_functs;
+            int *extern_functs_args;
             static unsigned char * arguments;
 
             void print_newTuples ();
