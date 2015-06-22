@@ -17,29 +17,7 @@ using namespace Catoms2D;
 #define NB_MAX_CONSECUTIVE_NEIGHBORS_TO_MOVE 3
 //#define GRADIENT
 
-/**
- * Strategy:
- * 1: let clockwise pivot moves first
- * 2: let counter-clockwise pivot moves first
- * 3: highest catom moves first
- * 4: node OUT_SHAPE on the perimeter closer from the node IN_SHAPE that has
- *    the lowest neighbor cell to fill.
- * 5: move only around pivot that won't turns around a pivot with a smaller gradient
- **/
-
-
-//#define STRATEGY_ONE
-#define STRATEGY_TWO
-//#define STRATEGY_THREE
-//#define STRATEGY_FOUR
-//#define STRATEGY_FIVE
-//#define STRATEGY_SIX
-
-#ifdef STRATEGY_SIX
-enum state_t {MOVING = 0, UNMOVING = 1, STABLE = 2};
-#else
-enum state_t {IN_SHAPE = 0, OUT_SHAPE = 1, WELL_PLACED = 2};
-#endif
+enum state_t {MOVING = 0, UNMOVING = 1, STABLE = 2, UNKNOWN = 3};
 
 static int moves = 0;
 
@@ -88,6 +66,19 @@ static Coordinate getTargetBottomLeft() {
   return p;
 }
 
+static bool isNeighbor(Catoms2DBlock *c,Coordinate p) {
+  
+  // test all neighbors cell
+  for (int i = 0; i < 6; i++) {
+    Vecteur v = c->getPosition((NeighborDirection::Direction)i);
+    Coordinate ci(v[0],v[2]);
+    if (ci == p) {
+      return true;
+    }
+  }
+  return false;
+}
+
 static bool isOver() {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
   int *gridSize = world->getGridSize();
@@ -129,10 +120,27 @@ static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2
     return NULL;
   }
 
-  // pick-up a neighbor of c
+  int cn = c->nbConsecutiveNeighbors();
+  
+  // pick-up a neighbor of c in the longest sequence of consecutive neighbors
   for (int i = 0; i < 6; i++) {
+    int n = 0;
+    
     p1 = c->getInterface((NeighborDirection::Direction)i);
-    if (p1->connectedInterface) {
+    if (!p1->connectedInterface) {
+      continue;
+    }
+    n = 1;
+    p2 = p1;
+    
+    while (n != cn) {
+      p2 = nextInterface(c,d,p2);
+      if(!p2->connectedInterface) {
+	break;
+      }
+      n++;
+    }
+    if (n == cn) {
       break;
     }
   }
@@ -169,9 +177,24 @@ static P2PNetworkInterface *firstNeighborInDirection(Catoms2DBlock *c, Catoms2DM
   return extremeNeighborInDirection(c,d);
 }
 
+static P2PNetworkInterface* previousInterfacePerimeter(Catoms2DBlock  *c) {
+   return firstNeighborInDirection(c,ROTATION_DIRECTION);
+}
+
+static P2PNetworkInterface* nextInterfacePerimeter(Catoms2DBlock  *c) {
+   return lastNeighborInDirection(c,ROTATION_DIRECTION);
+}
+
+static Catoms2DBlock* nextCatomPerimeter(Catoms2DBlock  *c) {
+  return (Catoms2DBlock*)nextInterfacePerimeter(c)->connectedInterface->hostBlock;
+}
+
+static Catoms2DBlock* previousCatomPerimeter(Catoms2DBlock  *c) {
+  return (Catoms2DBlock*)previousInterfacePerimeter(c)->connectedInterface->hostBlock;
+}
+
 static Catoms2DMove* nextMove(Catoms2DBlock  *c) {
-  P2PNetworkInterface *p2p = lastNeighborInDirection(c,ROTATION_DIRECTION);
-  Catoms2DBlock* pivot = (Catoms2DBlock*)p2p->connectedInterface->hostBlock;
+  Catoms2DBlock* pivot = nextCatomPerimeter(c);
   Catoms2DMove m(pivot,ROTATION_DIRECTION);
   if (c->canMove(m)) {
     //cout << c->blockId << " can move arround " << pivot->blockId << endl;
@@ -190,6 +213,32 @@ static Coordinate getPosition(Catoms2DBlock* c, Catoms2DMove &m) {
 static bool isInTarget(Coordinate &p) { 
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
   return (world->getTargetGrid(p.x,0,p.y) == fullCell);
+}
+
+static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
+  Coordinate g = getPosition(c,m);
+  Catoms2DBlock *next = m.getPivot();
+  int i = 0;
+  while (isNeighbor(next,g)) {
+    i++;
+    
+    if (states[next->blockId] == UNKNOWN) {
+      cerr << "initialization error!" << endl;
+    }
+
+    if (states[next->blockId] == MOVING) {
+      cout << c->blockId << " can't move because of " << next->blockId << endl;
+      return false;
+    }
+
+    if (i == 4) {
+      cout << c->blockId << " can't because i == 4 " << next->blockId << endl;
+      return false;
+    }
+
+    next = nextCatomPerimeter(next);
+  }
+  return true; 
 }
 
 static bool canMove(Catoms2DBlock *c, int gradient[]) {
@@ -265,55 +314,6 @@ static void updateGradient(Catoms2DBlock *c, int gradient[]) {
   gradient[id1] = minGradient + 1;
 }
 
-static bool pivotShouldMoveBefore(Catoms2DBlock *c, Catoms2DMove &mv,
-				  int gradient[]) {
-  Coordinate p1(c->position[0], c->position[2]);
-  Coordinate p2 = getPosition(c,mv);
-  
-  bool pcm = canMove(mv.getPivot(),gradient);
-  bool psmb = false;
-
-  if (pcm) {
-    Coordinate pivotP1(mv.getPivot()->position[0],
-		       mv.getPivot()->position[2]);
-    Catoms2DMove *pivotMv = nextMove(mv.getPivot());
-    
-    if (pivotMv != NULL) {
-	Coordinate pivotP2 = getPosition(mv.getPivot(),*pivotMv);
-	psmb = (!isInTarget(pivotP1) || 
-		(isInTarget(pivotP1) && isInTarget(pivotP2) && (p2.y <= p1.y)));
-#if defined(STRATEGY_ONE)	
-	//psmb = psmb && (pivotP1.y <= p1.y);
-	if (mv.getPivot() != 
-	    firstNeighborInDirection(c,ROTATION_DIRECTION)->connectedInterface->hostBlock) {
-	  psmb = false;
-	  }
-
-#elif defined(STRATEGY_TWO)
-	if (mv.getPivot() != 
-	    lastNeighborInDirection(c,ROTATION_DIRECTION)->connectedInterface->hostBlock) {
-	  psmb = false;
-	}
-#endif
-
-#if defined(STRATEGY_FIVE)
-	int nbNeighbors = c->nbNeighbors();
-	int nbNeighborsPivot = mv.getPivot()->nbNeighbors();
-	if (nbNeighbors < nbNeighborsPivot) {
-	  psmb = false;
-	} else if (nbNeighbors == nbNeighborsPivot) {
-	  int idPivot = mv.getPivot()->blockId;
-	  int idPivotPivot = pivotMv->getPivot()->blockId;
-	  if (gradient[idPivotPivot] > gradient[idPivot]) {
-	    psmb = false;
-	  }
-	}
-#endif
-    }
-  }
-  return psmb;
-}
-
 void centralized_reconfiguration() {
   cout << "centralized reconfiguration" << endl;
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
@@ -328,36 +328,17 @@ void centralized_reconfiguration() {
   seed->setColor(RED);
 #endif
 
-#ifdef STRATEGY_SIX
-  states[seed->blockId] = STABLE;
-#endif
-  
   for (int i = 0; i < (world->getSize()+1); i++) {
     gradient[i] = UNDEFINED_GRADIENT;
-#ifdef STRATEGY_SIX
-    states[i] = UNMOVING;
-#else
-    states[i] = OUT_SHAPE;
-#endif
+    states[i] = UNKNOWN;
     //Catoms2DBlock *c = (Catoms2DBlock*) world->getBlockById(i);
   }
-
-  map<int, BuildingBlock*>::iterator it;
-  for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
-    Catoms2DBlock *c = (Catoms2DBlock*) it->second;
-    Coordinate p(c->position[0],c->position[2]);
-#ifndef STRATEGY_SIX
-    if (isInTarget(p)) {
-      states[c->blockId] = IN_SHAPE;
-    } else {
-      states[c->blockId] = OUT_SHAPE;
-    }
-#endif
-  }
-  
+  states[seed->blockId] = STABLE;
   
   bfs = Tree::bfs(seed->blockId,gradient,world->getSize());
-
+  
+  //enum state_t {MOVING = 0, UNMOVING = 1, STABLE = 2, UNKNOWN = 3};
+  
   while (!isOver()) {
     // algorithm moving condition of catom c1:
     // FALSE ???:
@@ -370,31 +351,37 @@ void centralized_reconfiguration() {
     Catoms2DWorld *world = Catoms2DWorld::getWorld();
     Catoms2DBlock *c;
 
-#if defined(STRATEGY_ONE) || defined (STRATEGY_TWO) || defined(STRATEGY_FIVE)
-     map<int, BuildingBlock*>::iterator it;
+    map<int, BuildingBlock*>::iterator it;
     for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
       c = (Catoms2DBlock*) it->second;
-      if (c == seed) {
+
+      if (states[c->blockId] == STABLE) {
+	c->setColor(GREEN);
 	continue;
       }
       
       if (c->isBlocked()) {
 	c->setColor(GREY);
+	if (states[c->blockId] == MOVING) {
+	  cerr << "error: mv -> unmv" << endl;
+	}
+	states[c->blockId] = UNMOVING;
 	continue;
-      } else {	
-	if (c->nbNeighbors() <= 1) {
-	  c->setColor(RED);
-	} else {
-	  // check distance
-	  P2PNetworkInterface *p = lastNeighborInDirection(c,Catoms2DMove::ROTATE_CW);
-	  Catoms2DBlock *c1 = (Catoms2DBlock*) p->connectedInterface->hostBlock;
-	  if (c1->isBlocked()) {
-	    c->setColor(RED);
-	  } else {
-	    c->setColor(GREY);
+      } else {
+	if (canMove(c,gradient)) {
+	  Catoms2DMove *mv = nextMove(c);
+	  if (mv != NULL) {
+	    Coordinate p1(c->position[0], c->position[2]);
+	    Coordinate p2 = getPosition(c,*mv);
+	    if ((!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
+	      states[c->blockId] = MOVING;
+	      c->setColor(RED);
+	    } else {
+	      states[c->blockId] = STABLE;
+	      c->setColor(GREEN);
+	    }
 	  }
-	  
 	}
       }
     }
@@ -404,28 +391,28 @@ void centralized_reconfiguration() {
     for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
       c = (Catoms2DBlock*) it->second;
-      if (c == seed) {
+      
+      if (states[c->blockId] == STABLE) {
 	continue;
       }
       
       if (c->isBlocked()) {
-	c->setColor(GREY);
 	continue;
       }
 
-      Coordinate p1(c->position[0], c->position[2]);
-      
       if (canMove(c,gradient)) {
 	//cout << "c satisfies gradient condition" << endl;
 	//cout << "@" << c->blockId << " can physically move" << endl;
 	Catoms2DMove *mv = nextMove(c);
 	if (mv != NULL) {
+	  Coordinate p1(c->position[0], c->position[2]);
 	  Coordinate p2 = getPosition(c,*mv);
-
-	  bool psmb = pivotShouldMoveBefore(c,*mv,gradient);
-
-	  if (!psmb && 
-	      (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
+      
+	  if (!canMove(c,*mv,states)) {
+	    continue;
+	  }
+	  
+	  if ((!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
 	    cout << c->blockId << " is moving from " << p1 << " to " 
 		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection(); 
 	    move(c,*mv);
@@ -433,7 +420,8 @@ void centralized_reconfiguration() {
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
 	    cout << " done" << endl;
-	    Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
+	    
+	    //Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
 	    //if (!c->canMove(counterMV)) {
 	    if (c->isBlocked()) {
 	      //c->setColor(BLUE);
@@ -450,182 +438,7 @@ void centralized_reconfiguration() {
 	}// else { cout << " move == NULL" << endl;}
       }
 #ifdef COLOR_DEBUG
-      p1 = Coordinate(c->position[0], c->position[2]);
-      if (isInTarget(p1)) {
-	//c->setColor(GREEN);
-      } else {
-	//c->setColor(GREY);
-      }
-#endif
-    }
-#elif defined(STRATEGY_THREE) 
-    Coordinate best(INT_MAX,INT_MIN);
-    map<int, BuildingBlock*>::iterator it;
-    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
-      
-      c = (Catoms2DBlock*) it->second;
-      if (c == seed) {
-	continue;
-      }
-
-      if (canMove(c,gradient)) {
-	Coordinate p1(c->position[0], c->position[2]);	  	
-	Catoms2DMove *mv = nextMove(c);
-	if (mv != NULL) {
-	  Coordinate p2 = getPosition(c,*mv);
-	  if (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2))) {
-	    if (p1.y > best.y) {
-	      best = p1;
-	    } else if (p1.y == best.y) {
-	      if (p1.x < best.x) {
-		best = p1;
-	      }
-	    }
-	  }
-	  delete mv;
-	}
-      }
-    }
-    //cout << "best: " << best << endl;
-    c = world->getGridPtr(best.x,0,best.y);
-    Catoms2DMove *mv = nextMove(c);
-    if (mv == NULL) { cout << "mv null" << endl;} 
-    Coordinate p1(c->position[0], c->position[2]); 
-    Coordinate p2 = getPosition(c,*mv);	
-    cout << c->blockId << " is moving from " << p1 << " to " 
-	 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection() << "..."; 
-    // mv should not be null (tested above)
-    move(c,*mv);
-    gradient[c->blockId] = UNDEFINED_GRADIENT;
-    updateGradient(c,gradient);	  
-    cout << " done"; //<< endl;
-    getchar();
-    delete mv;
-#elif defined(STRATEGY_FOUR)
-    // 4: node OUT_SHAPE on the perimeter closer from the node IN_SHAPE that has
-    // lowest neighbor cell to fill.
-    Coordinate lowest(INT_MIN,INT_MAX);
-    cout << "computing lowest" << endl;
-    map<int, BuildingBlock*>::iterator it;
-    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
-      
-      c = (Catoms2DBlock*) it->second;
-      Coordinate p1 = Coordinate(c->position[0],c->position[2]);
-      if (states[c->blockId] != IN_SHAPE) {
-	continue;
-      }
-
-      for (int i = 0; i < 6; i++) {
-	P2PNetworkInterface *p2p = c->getInterface((NeighborDirection::Direction)i);
-	if (!p2p->connectedInterface) {
-	  Coordinate p2 = Map::getPosition(c,p1,p2p);
-	  if (isInTarget(p2)) {
-	    if (p2.y < lowest.y) {
-	      lowest = p2;
-	    } else if (p2.y == lowest.y) {
-	      if (p2.x > lowest.x) {
-		lowest = p2;
-	      }
-	    }
-	  }
-	}
-      }
-    }
-    // we found the lowest cell to fill
-    // now, we follow the perimeter to found the closest OUT_SHAPE catoms
-    // (reverse order than the rotation direction)
-    cout << lowest << endl;
-    //Catoms2DMove::direction_t d = reverseDirection(ROTATION_DIRECTION);
-    c = world->getGridPtr(lowest.x,0,lowest.y);
-    P2PNetworkInterface *p2p = firstNeighborInDirection(c,ROTATION_DIRECTION);
-    Catoms2DBlock *cc = (Catoms2DBlock*) p2p->connectedInterface->hostBlock;
-#ifdef COLOR_DEBUG
-    c->setColor(RED);
-    cc->setColor(GREEN);
-#endif
-    /*bool willFillTheCell = false;
-    while (!willFillTheCell) {
-      if (canMove(cc,gradient)) {
-	Coordinate p1(cc->position[0], cc->position[2]);	  	
-	Catoms2DMove *mv = nextMove(c);
-	if (mv != NULL) {
-	  Coordinate p2 = getPosition(c,*mv);
-	  if (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2))) {
-	    
-	  }
-	  delete mv;
-      }
-      }*/
-    getchar();
-#elif defined(STRATEGY_SIX)
- map<int, BuildingBlock*>::iterator it;
-    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
-
-      c = (Catoms2DBlock*) it->second;
-      int id = c->blockId;
-
-      if (states[id] == STABLE) {
-	continue;
-      }
-
-      if(!c->isBlocked) {
-	states[id] = MOVING;
-      } else {
-	states[id] = UNMOVING;
-      }
-    }
-
-    map<int, BuildingBlock*>::iterator it;
-    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {  
-      
-      c = (Catoms2DBlock*) it->second;
-      int id = c->blockId;
-
-      //for (int i = 0; i < 6; i++) {
-      //	P2PNetworkInterface *p2p = c->getInterface((NeighborDirection)i);
-      //if (p2p->connectedInterface) {
-	  
-      //	}
-      //}
-
-      Coordinate p1(c->position[0], c->position[2]);
-      
-      if (canMove(c,gradient)) {
-	//cout << "c satisfies gradient condition" << endl;
-	//cout << "@" << c->blockId << " can physically move" << endl;
-	Catoms2DMove *mv = nextMove(c);
-	if (mv != NULL) {
-	  Coordinate p2 = getPosition(c,*mv);
-
-	  bool psmb = pivotShouldMoveBefore(c,*mv,gradient);
-
-	  if (!psmb && 
-	      (!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
-	    cout << c->blockId << " is moving from " << p1 << " to " 
-		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection(); 
-	    move(c,*mv);
-	    //cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
-	    gradient[c->blockId] = UNDEFINED_GRADIENT;
-	    updateGradient(c,gradient);
-	    cout << " done" << endl;
-	    Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
-	    //if (!c->canMove(counterMV)) {
-	    if (c->isBlocked()) {
-	      c->setColor(BLUE);
-	      mv->getPivot()->setColor(YELLOW);
-	      cout << "illegal move!" << endl;
-	      //getchar();
-	    }
-	    getchar();
-	    //sleep(1);
-	  } /*else {
-	    cout << "hors figure ?" << endl;
-	    }*/
-	  delete mv;
-	}// else { cout << " move == NULL" << endl;}
-      }
-#ifdef COLOR_DEBUG
-      p1 = Coordinate(c->position[0], c->position[2]);
+      Coordinate p1 = Coordinate(c->position[0], c->position[2]);
       if (isInTarget(p1)) {
 	c->setColor(GREEN);
       } else {
@@ -633,7 +446,6 @@ void centralized_reconfiguration() {
       }
 #endif
     }
-#endif
   }
   cout << "reconfiguration over in " << moves << " moves." << endl;
 }
