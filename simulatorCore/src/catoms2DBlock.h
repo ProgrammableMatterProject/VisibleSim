@@ -22,7 +22,7 @@ namespace Catoms2D {
 
 class NeighborDirection {
 public:
-	enum Direction { Right = 0, TopRight = 1, TopLeft = 2, Left = 3, BottomLeft = 4, BottomRight = 5};
+	enum Direction {Right = 0, TopRight = 1, TopLeft = 2, Left = 3, BottomLeft = 4, BottomRight = 5};
 	static int getOpposite(int d);
 	static string getString(int d);
 };

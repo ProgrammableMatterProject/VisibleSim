@@ -215,15 +215,59 @@ static bool isInTarget(Coordinate &p) {
   return (world->getTargetGrid(p.x,0,p.y) == fullCell);
 }
 
+/*
+P2PNetworkInterface *nextPerimeterInterface2(Catoms2DBlock* c, Catoms2DBlock *ignore) {
+  // enum Direction {Right = 0, TopRight = 1, TopLeft = 2, Left = 3, BottomLeft = 4, BottomRight = 5};
+  NeighborDirection::Direction directions[] = {NeighborDirection::TopRight, NeighborDirection::Right, NeighborDirection::BottomRight, NeighborDirection::BottomLeft, NeighborDirection::Left, NeighborDirection::TopLeft};
+
+  for (int i = 0; i < 6; i++) {
+    P2PNetworkInterface *p = c->getInterface(directions[i]);
+    if (p->connectedInterface && (p->connectedInterface->hostBlock != ignore)) {
+      return p;
+    }
+  }
+  return NULL;
+}
+
+Catoms2DBlock *nextPerimeterNeighbor2(Catoms2DBlock* c, Catoms2DBlock *ignore) {
+  P2PNetworkInterface *p = nextPerimeterInterface2(c,ignore);
+  
+  if (p != NULL) {
+    return (Catoms2DBlock*) p->connectedInterface->hostBlock;
+  }
+  
+  p = nextPerimeterInterface2(c,NULL);
+  
+  if (p != NULL) {
+    return (Catoms2DBlock*) p->connectedInterface->hostBlock;
+  }
+
+  return NULL;
+  
+  }*/
+
 static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
   Coordinate g = getPosition(c,m);
   Catoms2DBlock *next = m.getPivot();
+  Catoms2DBlock *previous = c;
+  //int ids[5] = {-1,-1,-1,-1,-1};
   int i = 0;
+  
+  cout << "canMove " << c->blockId << " around " << next->blockId << "? ";
+
+  if (!isNeighbor(next,g)) {
+    cerr << "error pivot is not a neighbor" << endl;
+  }
+
   while (isNeighbor(next,g)) {
-    i++;
-    
+
+    if (previous != next) {
+      i++;
+    }
+
     if (states[next->blockId] == UNKNOWN) {
       cerr << "initialization error!" << endl;
+      return false;
     }
 
     if (states[next->blockId] == MOVING) {
@@ -235,9 +279,29 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
       cout << c->blockId << " can't because i == 4 " << next->blockId << endl;
       return false;
     }
-
+    
+    for (int i = 0; i < 6; i++) {
+      P2PNetworkInterface *p = next->getInterface((NeighborDirection::Direction)i);
+      if (p->connectedInterface) {
+	Catoms2DBlock *n = (Catoms2DBlock*)p->connectedInterface->hostBlock;
+	if ((n!=c) && (n != nextCatomPerimeter(next)) && (n != previousCatomPerimeter(next)) && isNeighbor(n,g) && (states[n->blockId] == MOVING)) {
+	  return false;
+	}
+      }
+    }
     next = nextCatomPerimeter(next);
+    
+    //Catoms2DBlock *tmp = next;
+    //next =  nextPerimeterNeighbor2(next,previous);
+    //previous = tmp;
+    
+    if (next == c) {
+      cerr << "next == c" << endl;
+      return true;
+    }
+    cout << ", next: " << next->blockId;
   }
+  cout << "ok" << endl;
   return true; 
 }
 
@@ -370,9 +434,14 @@ void centralized_reconfiguration() {
 	continue;
       } else {
 	if (canMove(c,gradient)) {
+	  Coordinate p1(c->position[0], c->position[2]);
 	  Catoms2DMove *mv = nextMove(c);
+
+	  if (mv == NULL && isInTarget(p1)) {
+	    states[c->blockId] = STABLE;
+	  }
+
 	  if (mv != NULL) {
-	    Coordinate p1(c->position[0], c->position[2]);
 	    Coordinate p2 = getPosition(c,*mv);
 	    if ((!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
 	      states[c->blockId] = MOVING;
