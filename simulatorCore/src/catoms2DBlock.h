@@ -56,6 +56,8 @@ public:
 	NeighborDirection::Direction getDirection(P2PNetworkInterface* p2p);
 	int nbNeighbors(bool groundIsNeighbor = false);
 	int nbConsecutiveNeighbors(bool groundIsNeighbor = false);
+	bool hasANeighbor(NeighborDirection::Direction n, bool groundIsNeighbor = false);
+	bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false);
 
 	// Motion
 	bool isBlocked();

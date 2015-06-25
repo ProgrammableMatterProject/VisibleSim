@@ -112,22 +112,22 @@ nextInterface(Catoms2DBlock *c, Catoms2DMove::direction_t d, P2PNetworkInterface
   }
   return c->getInterface((NeighborDirection::Direction)p2pDirection);
 }
-
+/*
 static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
   P2PNetworkInterface *p1 = NULL, *p2 = NULL;
   
-  if (c->nbNeighbors() == 0) {
+  if (c->nbNeighbors(false) == 0) {
     return NULL;
   }
 
-  int cn = c->nbConsecutiveNeighbors();
+  int cn = c->nbConsecutiveNeighbors(false);
   
   // pick-up a neighbor of c in the longest sequence of consecutive neighbors
   for (int i = 0; i < 6; i++) {
     int n = 0;
     
     p1 = c->getInterface((NeighborDirection::Direction)i);
-    if (!p1->connectedInterface) {
+    if (!c->hasANeighbor(p1,false)) {
       continue;
     }
     n = 1;
@@ -135,7 +135,7 @@ static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2
     
     while (n != cn) {
       p2 = nextInterface(c,d,p2);
-      if(!p2->connectedInterface) {
+      if(!c->hasANeighbor(p2,false)) {
 	break;
       }
       n++;
@@ -145,18 +145,68 @@ static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2
     }
   }
 
-  if (c->nbNeighbors() == 1) {
+  if (c->nbNeighbors(false) == 1) {
+    return p1;
+  }
+  
+  p2 = p1;
+  while (false) {
+    p2 = nextInterface(c, d, p2);
+    if (!c->hasANeighbor(p2,false)) {
+      return p1;
+    }
+    p1 = p2;
+  }
+  return NULL;
+  }*/
+
+static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+  P2PNetworkInterface *p1 = NULL, *p2 = NULL;
+  
+  if (c->nbNeighbors(true) == 0) {
+    return NULL;
+  }
+
+  int cn = c->nbConsecutiveNeighbors(true);
+  
+  // pick-up a neighbor of c in the longest sequence of consecutive neighbors
+  for (int i = 0; i < 6; i++) {
+    int n = 0;
+    
+    p1 = c->getInterface((NeighborDirection::Direction)i);
+    if (!c->hasANeighbor(p1,false)) {
+      continue;
+    }
+    n = 1;
+    p2 = p1;
+    
+    while (n != cn) {
+      p2 = nextInterface(c,d,p2);
+      if(!c->hasANeighbor(p2,true)) {
+	break;
+      }
+      n++;
+    }
+    if (n == cn) {
+      break;
+    }
+  }
+
+  if (c->nbNeighbors(true) == 1) {
     return p1;
   }
   
   p2 = p1;
   while (true) {
     p2 = nextInterface(c, d, p2);
-    if (!p2->connectedInterface) {
+    if (!c->hasANeighbor(p2,true)) {
       return p1;
     }
-    p1 = p2;
+    if (c->hasANeighbor(p2,false)) {
+      p1 = p2;
+    }
   }
+  return NULL;
 }
 
 static  Catoms2DMove::direction_t reverseDirection(Catoms2DMove::direction_t d) {
@@ -186,6 +236,9 @@ static P2PNetworkInterface* nextInterfacePerimeter(Catoms2DBlock  *c) {
 }
 
 static Catoms2DBlock* nextCatomPerimeter(Catoms2DBlock  *c) {
+  if (!nextInterfacePerimeter(c)->connectedInterface) {
+    cout << "NULL INTERFACE!" << endl;
+  }
   return (Catoms2DBlock*)nextInterfacePerimeter(c)->connectedInterface->hostBlock;
 }
 
@@ -250,6 +303,7 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
   Coordinate g = getPosition(c,m);
   Catoms2DBlock *next = m.getPivot();
   Catoms2DBlock *previous = c;
+  Catoms2DBlock *pre_previous = NULL; 
   //int ids[5] = {-1,-1,-1,-1,-1};
   int i = 0;
   
@@ -261,23 +315,29 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
 
   while (isNeighbor(next,g)) {
 
-    if (previous != next) {
+    if (pre_previous != next) {
       i++;
     }
 
     if (states[next->blockId] == UNKNOWN) {
-      cerr << "initialization error!" << endl;
+      cerr << ": initialization error!" << endl;
       return false;
     }
 
     if (states[next->blockId] == MOVING) {
-      cout << c->blockId << " can't move because of " << next->blockId << endl;
+      cout << ": " << c->blockId << " can't move because of " << next->blockId << endl;
       return false;
     }
 
     if (i == 4) {
-      cout << c->blockId << " can't because i == 4 " << next->blockId << endl;
+      cout << endl;
+      cout << previous->blockId << " " << next->blockId << endl;
+      cout << ": " << c->blockId << " can't because i == 4 " << next->blockId << endl;
       return false;
+    }
+
+    if (pre_previous == next) {
+      return true;
     }
     
     for (int i = 0; i < 6; i++) {
@@ -285,15 +345,18 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
       if (p->connectedInterface) {
 	Catoms2DBlock *n = (Catoms2DBlock*)p->connectedInterface->hostBlock;
 	if ((n!=c) && (n != nextCatomPerimeter(next)) && (n != previousCatomPerimeter(next)) && isNeighbor(n,g) && (states[n->blockId] == MOVING)) {
+	  cout << endl;
 	  return false;
 	}
       }
     }
+
+    Catoms2DBlock *tmp = next;
     next = nextCatomPerimeter(next);
-    
-    //Catoms2DBlock *tmp = next;
+    pre_previous = previous;
+    previous = tmp;
     //next =  nextPerimeterNeighbor2(next,previous);
-    //previous = tmp;
+ 
     
     if (next == c) {
       cerr << "next == c" << endl;
@@ -337,6 +400,51 @@ static bool canMove(Catoms2DBlock *c, int gradient[]) {
   }
   return true;
 #endif
+}
+
+static void updateState(state_t states[], int gradient[]) {
+  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+  Catoms2DBlock *c;
+  
+  map<int, BuildingBlock*>::iterator it;
+  for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
+    
+    c = (Catoms2DBlock*) it->second;
+    
+    if (states[c->blockId] == STABLE) {
+      c->setColor(GREEN);
+      continue;
+    }
+    
+    if (c->isBlocked()) {
+      c->setColor(GREY);
+      if (states[c->blockId] == MOVING) {
+	cerr << "error: mv -> unmv" << endl;
+      }
+      states[c->blockId] = UNMOVING;
+      continue;
+    } else {
+      if (canMove(c,gradient)) {
+	Coordinate p1(c->position[0], c->position[2]);
+	Catoms2DMove *mv = nextMove(c);
+	
+	if (mv == NULL && isInTarget(p1)) {
+	  states[c->blockId] = STABLE;
+	}
+	
+	if (mv != NULL) {
+	  Coordinate p2 = getPosition(c,*mv);
+	  if ((!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
+	      states[c->blockId] = MOVING;
+	      c->setColor(RED);
+	  } else {
+	    states[c->blockId] = STABLE;
+	    c->setColor(GREEN);
+	  }
+	}
+      }
+    }
+  }
 }
 
 static void move(Catoms2DBlock* c, Catoms2DMove &m) {
@@ -403,6 +511,7 @@ void centralized_reconfiguration() {
   
   //enum state_t {MOVING = 0, UNMOVING = 1, STABLE = 2, UNKNOWN = 3};
   
+  updateState(states,gradient);
   while (!isOver()) {
     // algorithm moving condition of catom c1:
     // FALSE ???:
@@ -416,47 +525,6 @@ void centralized_reconfiguration() {
     Catoms2DBlock *c;
 
     map<int, BuildingBlock*>::iterator it;
-    for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
-
-      c = (Catoms2DBlock*) it->second;
-
-      if (states[c->blockId] == STABLE) {
-	c->setColor(GREEN);
-	continue;
-      }
-      
-      if (c->isBlocked()) {
-	c->setColor(GREY);
-	if (states[c->blockId] == MOVING) {
-	  cerr << "error: mv -> unmv" << endl;
-	}
-	states[c->blockId] = UNMOVING;
-	continue;
-      } else {
-	if (canMove(c,gradient)) {
-	  Coordinate p1(c->position[0], c->position[2]);
-	  Catoms2DMove *mv = nextMove(c);
-
-	  if (mv == NULL && isInTarget(p1)) {
-	    states[c->blockId] = STABLE;
-	  }
-
-	  if (mv != NULL) {
-	    Coordinate p2 = getPosition(c,*mv);
-	    if ((!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
-	      states[c->blockId] = MOVING;
-	      c->setColor(RED);
-	    } else {
-	      states[c->blockId] = STABLE;
-	      c->setColor(GREEN);
-	    }
-	  }
-	}
-      }
-    }
-
-    getchar();
-
     for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
       c = (Catoms2DBlock*) it->second;
@@ -488,6 +556,7 @@ void centralized_reconfiguration() {
 	    //cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;
 	    updateGradient(c,gradient);
+	    updateState(states,gradient);
 	    cout << " done" << endl;
 	    
 	    //Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));

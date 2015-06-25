@@ -165,14 +165,25 @@ namespace Catoms2D {
       return tabInterfaces[((360+t)/60)%6];
     }
   }
+	
+  bool Catoms2DBlock::hasANeighbor(NeighborDirection::Direction n, bool groundIsNeighbor) {
+    return hasANeighbor(getInterface(n),groundIsNeighbor);
+  }
+	
+  bool Catoms2DBlock::hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor) {
+    Vecteur p = getPosition(p2p);
+    if(p2p->connectedInterface) {
+      return true;
+    } else if (groundIsNeighbor && (p[2]<0)) {
+      return true;
+    }
+    return false;
+  }
 
   int Catoms2DBlock::nbNeighbors(bool groundIsNeighbor) {
     int cnt = 0;
-    for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {   
-      Vecteur p = getPosition((NeighborDirection::Direction)i);
-      if(getInterface((NeighborDirection::Direction)i)->connectedInterface) {
-	cnt++;
-      } else if (groundIsNeighbor && (p[2]<0)) {
+    for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {
+      if (hasANeighbor((NeighborDirection::Direction)i, groundIsNeighbor)) {
 	cnt++;
       }
     }
@@ -184,14 +195,7 @@ namespace Catoms2D {
     int m = 0;
     int cnt = 0;
     for(int i = 0; i < MAX_NB_NEIGHBORS; i++) { 
-
-      Vecteur p = getPosition((NeighborDirection::Direction)i);
-      if (groundIsNeighbor && (p[2] < 0)) {
-	continue;
-      }
-
-      if(getInterface((NeighborDirection::Direction)i)->connectedInterface == 
-	 NULL) {
+      if (!hasANeighbor((NeighborDirection::Direction)i, groundIsNeighbor)) {
 	empty = i;
 	break;
       }
@@ -201,15 +205,9 @@ namespace Catoms2D {
       return MAX_NB_NEIGHBORS;
     }
 	
-	
     for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
       int j = (empty+i)%MAX_NB_NEIGHBORS;
-      Vecteur p = getPosition((NeighborDirection::Direction)j);
-      if (groundIsNeighbor && (p[2] < 0)) {
-	cnt++;
-      }
-
-      else if(getInterface((NeighborDirection::Direction)j)->connectedInterface) {
+      if (hasANeighbor((NeighborDirection::Direction)j, groundIsNeighbor)) {
 	cnt++;
       } else {
 	m = max(m,cnt);
