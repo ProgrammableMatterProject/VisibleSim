@@ -72,30 +72,21 @@ is loaded, but you can provide another configuration file with `-c` option.
 
 #### Running a Meld application
 
-To execute meld programs on VisibleSim, ensure that `blinky01` application is compiled (`blinky01` 
+To execute meld programs on VisibleSim, ensure that `blinky01` application is compiled (`blinkyMeld` 
 had belong to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the repository 
-root folder was performed) and that Meld vm `applicationsBin/blinky01/meld/meld/meld-bbsim` is 
-compiled (`cd` into `applicationsBin/blinky01/meld/meld/` and  run `make`). Then, `cd` into
-`applicationsBin/blinky01/` and run:
+root folder was performed). Then, `cd` into
+`applicationsBin/blinkyMeld/` and run:
 
 ```
-./compile-meld.sh program.meld // to compile your Meld program into program.m
-./blinky01 -p program.m -c configuration.xml // to run your meld program 
+./compile-meld.sh [path to your Meld program] // to compile your Meld program.
+./blinkyMeld -c configuration.xml // to run your Meld program .
 ```
 
-Not tested Meld program examples are available in `applicationsBin/blinky01/meld/programs`.
+Meld compiler require a large amount of memory the first time it is run. Run it several time in case of "Heap exhausted" error.
 
-If you want to use the debugger, run the simulator with `-D` option
-(`./blinky01 -p program.m -c configuration.xml -D`). The simulator window should appear and the 
-console should read:
-```
-SIMULATION DEBUGGING MODE -- type help for options
->
-```
+Press 'r' to run the simulation.
 
-**NOTE: you must press '<kbd>SHIFT</kbd> + <kbd>r</kbd>' or '<kbd>SHIFT</kbd> + <kbd>R</kbd>' in the simulator window before you can start running commands from the console.**
-
-After pressing '<kbd>SHIFT</kbd> + <kbd>r</kbd>' or '<kbd>SHIFT</kbd> + <kbd>R</kbd>' in the simulation window, typing `run` in the console should start your program.
+Meld program examples are available in `applicationsBin/blinkyMeld/meld/programs`. All programs were not tested.
 
 
 [boost1.56-ticket]:https://svn.boost.org/trac/boost/ticket/11154
