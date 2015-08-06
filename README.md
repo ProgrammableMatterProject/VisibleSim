@@ -82,9 +82,9 @@ root folder was performed). Then, `cd` into
 ./blinkyMeld -c configuration.xml // to run your Meld program .
 ```
 
-Meld compiler require a large amount of memory the first time it is run. Run it several time in case of "Heap exhausted" error.
+Meld compiler requires a large amount of memory the first time it is run. In case of "heap exhausted errors", run it multiple times until it succeeds.
 
-Press 'r' to run the simulation.
+Press '<kbd>r</kbd>' to run the simulation.
 
 Meld program examples are available in `applicationsBin/blinkyMeld/meld/programs`. All programs were not tested.
 
