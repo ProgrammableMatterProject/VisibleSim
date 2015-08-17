@@ -9,7 +9,8 @@
 #include "smartBlocksScheduler.h"
 #include "smartBlocksWorld.h"
 
-const int ANIMATION_DELAY=20000; // 20ms x 5
+//const int ANIMATION_DELAY=20000; // 20ms x 5
+const int ANIMATION_DELAY=100000; // 100ms
 const int COM_DELAY=2000; // 2ms
 
 const double EPS=1E-5;
@@ -87,13 +88,13 @@ void MotionStepEvent::consume() {
 	SmartBlocksWorld::getWorld()->updateGlData(rb);
     SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
 
+OUTPUT << rb->blockId << ":" << scheduler->now()<< endl;
     double v=(finalPosition-rb->position)*motionStep;
     if (v<EPS) {
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
 	} else {
         scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition,motionStep));
 	}
-	GlutContext::mustSaveImage=true;
 //	OUTPUT << "MotionStepEvent(" << concernedBlock->blockId << "," << rb->position << ")" << endl;
 }
 

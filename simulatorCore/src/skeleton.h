@@ -1,6 +1,7 @@
 #ifndef SQUELETON_H
 #define SQUELETON_H
 
+#include <trace.h>
 #include <vector>
 #include <vecteur.h>
 

@@ -32,8 +32,7 @@ void SimpleCatom3DBlockCode::startup() {
 	stringstream info;
 
 	info << "Starting ";
-	scheduler->trace(info.str(),hostBlock->blockId);
-	int n=0;
+	/*int n=0;
 	for (int i=0; i<12; i++) {
         if (catom->getInterface(i)->connectedInterface!=NULL) {
             n++;
@@ -53,7 +52,7 @@ void SimpleCatom3DBlockCode::startup() {
         case 10 : catom->setColor(GOLD); break;
         case 11 : catom->setColor(DARKORANGE); break;
         case 12 : catom->setColor(WHITE); break;
-	}
+	}*/
 
 	/* skeleton test */
 	Catoms3DWorld*wrl = Catoms3DWorld::getWorld();
@@ -61,6 +60,10 @@ void SimpleCatom3DBlockCode::startup() {
 	potentiel = wrl->getSkeletonPotentiel(pos);
 	catom->setColor(potentiel>1.0?YELLOW:DARKORANGE);
 
+	info << potentiel;
+	scheduler->trace(info.str(),hostBlock->blockId);
+
+/*
 	if (catom->blockId==1) {
         Vecteur position=wrl->gridToWorldPosition(Cell3DPosition(2,1,0));
         int id=1000000;
@@ -88,7 +91,7 @@ void SimpleCatom3DBlockCode::startup() {
         info << "MotionStartEvent(" << t << ") around #" << voisin->blockId;
         scheduler->trace(info.str(),catom->blockId,LIGHTGREY);
 #endif
-	}
+	}*/
 }
 
 void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {

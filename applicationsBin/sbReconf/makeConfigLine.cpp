@@ -10,7 +10,7 @@ using namespace std;
 
 int main(int argc,char **argv) {
     int line1Blocks=500,line2Blocks=450,armLength=15;
-    int maxTimeSimulation=3000,iAngle=90;
+    int maxTimeSimulation=30000,iAngle=90;
     double angle;
 
     if (argc>1) {
@@ -36,7 +36,7 @@ int main(int argc,char **argv) {
     }
 
 
-    int areaLx = 16+2*armLength,
+    int areaLx = 32+2*armLength,
         areaLy = areaLx;
     int cameraDist = 25.0*sqrt(areaLx*areaLx+areaLy*areaLy)/tan(50.0*M_PI/180.0);
     int srcDist = 25.0*sqrt(areaLx*areaLx+areaLy*areaLy)/tan(45.0*M_PI/180.0);

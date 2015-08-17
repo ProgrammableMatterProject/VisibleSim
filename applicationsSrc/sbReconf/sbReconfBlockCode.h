@@ -126,7 +126,7 @@ public:
 	bool testIsthmus(int dx,int dy);
 	bool testIsthmusTail(int dx,int dy);
 	P2PNetworkInterface *getBorderPreviousNeightbor(P2PNetworkInterface *next);
-	P2PNetworkInterface *getBorderNextNeightbor();
+	P2PNetworkInterface *getBorderNextNeightbor(P2PNetworkInterface *prev=NULL);
 	P2PNetworkInterface *getBorderPreviousNeightborNoWellPlaced(P2PNetworkInterface *next);
 	P2PNetworkInterface *getBorderNextNeightborNoWellPlaced(P2PNetworkInterface *prev);
 	P2PNetworkInterface *getBorderSinglePrevious();

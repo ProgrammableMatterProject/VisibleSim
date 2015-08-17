@@ -17,7 +17,8 @@ void Skeleton::add(Skeleton *child) {
 double Skeleton::potentiel(const Vecteur &pos) {
     double d2 = distance2(pos);
 
-    double sum=exp(blobbiness*(d2/radius2-1));
+    double sum=0;
+    if (d2>0) sum=exp(blobbiness*(d2/radius2-1));
     vector <Skeleton*>::const_iterator ci=children.begin();
     while (ci!=children.end()) {
         sum+=(*ci)->potentiel(pos);

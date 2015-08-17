@@ -466,19 +466,19 @@ void GlutContext::mainLoop() {
 #ifdef GLUT
 	glutMainLoop();
 #else
-    cout << "r+[ENTER] to run simulation" << endl;
+//    cout << "r+[ENTER] to run simulation" << endl;
     sleep(2);
-    char c='r';
-    cin >> c;
+/*    char c='r';
+    cin >> c;*/
     Scheduler *s = getScheduler();
-    if (c=='r') {
+//    if (c=='r') {
         cout << "Run simulation..." << endl;
         cout.flush();
 
-        sleep(2);
+//        sleep(2);
         s->start(SCHEDULER_MODE_FASTEST);
         s->waitForSchedulerEnd();
-    }
+//    }
 #endif
 	getScheduler()->stop(BaseSimulator::getScheduler()->now());
 
