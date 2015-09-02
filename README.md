@@ -72,21 +72,18 @@ is loaded, but you can provide another configuration file with `-c` option.
 
 #### Running a Meld application
 
-To execute meld programs on VisibleSim, ensure that `blinky01` application is compiled (`blinkyMeld` 
+Meld programs only run on Blinky Blocks for now. To execute a Meld program on VisibleSim, ensure that `blinkyMeld` application is compiled (`blinkyMeld` 
 had belong to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the repository 
 root folder was performed). Then, `cd` into
 `applicationsBin/blinkyMeld/` and run:
 
 ```
 ./compile-meld.sh [path to your Meld program] // to compile your Meld program.
-./blinkyMeld -c configuration.xml // to run your Meld program .
+./blinkyMeld -c configuration.xml // to run your Meld program.
 ```
-
-Meld compiler requires a large amount of memory the first time it is run. In case of "heap exhausted errors", run it multiple times until it succeeds.
 
 Press '<kbd>r</kbd>' to run the simulation.
 
 Meld program examples are available in `applicationsBin/blinkyMeld/meld/programs`. All programs were not tested.
-
 
 [boost1.56-ticket]:https://svn.boost.org/trac/boost/ticket/11154
