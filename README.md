@@ -59,8 +59,7 @@ macro in `applicationsSrc/Makefile`.
 
 VisibleSim supports both c++ applications and Meld appplications (currently, only Blinky Block
 environment supports Meld programming). Regardless of the type of application you want to run, you 
-must press '<kbd>SHIFT</kbd> + <kbd>r</kbd>' (real-time mode) or '<kbd>SHIFT</kbd> + 
-<kbd>R</kbd>' (fastest mode) in the simulator window to launch the 
+must press '<kbd>r</kbd>' (real-time mode) or '<kbd>R</kbd>' (fastest mode) in the simulator window to launch the 
 simulation.
 
 #### Running a c++ application
