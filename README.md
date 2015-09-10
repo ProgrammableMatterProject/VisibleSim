@@ -10,6 +10,7 @@ Dependencies:
  - Boost C++ Libraries >= 1.47.0
  - GLUT
  - GLEW
+ - SBCL - to compile Meld programs
 
 **NOTE: video card drivers have to be correctly installed. Otherwise, VisibleSim crashes when moving the mouse on the simulated modules.**
 
@@ -20,6 +21,7 @@ Dependencies:
 brew install boost --with-mpi --without-single
 brew install freeglut
 brew install glew
+brew install sbcl
 ```
 2\. make
 
@@ -38,6 +40,7 @@ brew install glew
 sudo apt-get install libboost-all-dev
 sudo apt-get install freeglut3-dev
 sudo apt-get install libglew-dev
+sudo apt-get install sbcl
 ```
 2\. make
 
