@@ -30,3 +30,5 @@
 # Temporary files
 *.depends
 *~
+*.swp
+*.log
