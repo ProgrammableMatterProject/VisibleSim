@@ -1,8 +1,8 @@
 /*
- * simpleCatom3DBlockCode.h
+ * csgCatoms3DBlockCode.h
  *
- *  Created on: 12 avril 2013
- *      Author: ben
+ *  Created on: 06 august 2015
+ *  Author: Thadeu
  */
 
 #ifndef SIMPLECATOM3DBLOCKCODE_H_
