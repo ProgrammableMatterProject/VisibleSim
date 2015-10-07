@@ -15,7 +15,7 @@ GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimCatoms3D -lsimCatoms2D
 #GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimSmartBlocks -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system"
 
 #for debug version
-GLOBAL_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES"
+GLOBAL_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES -std=c++11"
 
 # You can add those constant definitions to get a more verbose output
 # -DDEBUG_EVENTS          :  trace creation and destruction of all events

@@ -57,8 +57,8 @@ protected :
     Vecteur axe2;
     double angle1;
     double angle2;
-    static const double angleArticulation=6.46237535743;
-    static const double coefRayonCourbure=1.00639465274;
+    static constexpr double angleArticulation=6.46237535743;
+    static constexpr double coefRayonCourbure=1.00639465274;
 };
 
 //===========================================================================================================

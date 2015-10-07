@@ -22,8 +22,6 @@ using namespace std;
 namespace Catoms3D {
 
 const double M_SQRT3_2 = sqrt(3.0)/2.0;
-const double M_SQRT2_2 = sqrt(2.0)/2.0;
-
 /**
     \brief Constructor
     \param slx : grid size along x axis

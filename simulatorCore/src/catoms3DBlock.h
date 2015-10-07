@@ -19,6 +19,19 @@
 //! \namespace Catoms3D
 namespace Catoms3D {
 
+const float M_SQRT2_2 = sqrt(2.0)/2.0;
+
+const float tabOrientationAngles[12][3] = { {0,0,0}, {-90.0f,0,90.0f}, {-45.0f,45.0,-90.0f},
+{-135.0f,45.0f,90}, {135.0f,45.0f,-90.0f}, {45.0f,45.0f,90.0f},
+{180.0f,0,0}, {90.0f,0,180.0f}, {135.0f,-45.0f,90.0f},
+{45.0f,-45.0f,-90.0f}, {-45.0f,-45.0f,90.0f}, {-135.0f,-45.0f,-90.0f} };
+
+const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_2},
+{-0.5,0.5,M_SQRT2_2},{-0.5,-0.5,M_SQRT2_2},{0.5,-0.5,M_SQRT2_2},
+{-1,0,0}, {0,-1,0}, {-0.5,-0.5,-M_SQRT2_2},
+{0.5,-0.5,-M_SQRT2_2},{0.5,0.5,-M_SQRT2_2},{-0.5,0.5,-M_SQRT2_2}};
+
+
 class Catoms3DBlockCode;
 
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {

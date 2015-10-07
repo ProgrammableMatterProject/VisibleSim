@@ -17,6 +17,7 @@
 #include "catoms3DBlock.h"
 #include "scheduler.h"
 #include "events.h"
+#include "csg.h"
 
 class CSG_message;
 
