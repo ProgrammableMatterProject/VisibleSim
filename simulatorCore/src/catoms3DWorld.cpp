@@ -52,7 +52,7 @@ Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
 	blockSize[0]=1.0;
 	blockSize[1]=5.0;
 	blockSize[2]=1.0;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Drepere3.obj");
+	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Dsimple.obj");
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
@@ -547,6 +547,16 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Color &color) {
 	}
 }
 
+void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, bool visible) {
+	Catoms3DGlBlock *glblc = blc->getGlBlock();
+	if (glblc) {
+		lock();
+		//cout << "update pos:" << position << endl;
+		glblc->setVisible(visible);
+		unlock();
+	}
+}
+
 void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vecteur &position) {
 	Catoms3DGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
@@ -575,6 +585,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrice &mat) {
 		unlock();
 	}
 }
+
 
 Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
 	Cell3DPosition res;

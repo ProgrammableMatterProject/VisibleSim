@@ -56,6 +56,7 @@ public:
 	inline Catoms3DGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
+	void setVisible(bool visible);
 	void setPositionAndOrientation(const Cell3DPosition &p,short code);
 /**
     \brief Get the interface from the neighbor position in the grid

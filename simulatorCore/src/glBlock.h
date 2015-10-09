@@ -29,6 +29,7 @@ public :
 	virtual void setPosition(const Vecteur &p);
 	virtual void setColor(const Color &c);
 	virtual void setColor(const Vecteur &c);
+	virtual void setVisible(bool visible);
 	virtual void toggleHighlight();
 	virtual string getInfo();
 	virtual string getPopupInfo();

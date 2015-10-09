@@ -37,6 +37,10 @@ void Catoms3DBlock::setColor(const Color &c) {
 	getWorld()->updateGlData(this,c);
 }
 
+void Catoms3DBlock::setVisible(bool visible) {
+	getWorld()->updateGlData(this,visible);
+}
+
 void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code) {
     orientationCode = code;
     position = p;
