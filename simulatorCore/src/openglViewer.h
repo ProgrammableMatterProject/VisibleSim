@@ -39,6 +39,10 @@ class GlutContext {
 	static int lastMotionTime;
 	static int lastMousePos[2];
 	static bool mustSaveImage;
+// FPS counter
+    static int frameCount;
+    static int previousTime;
+    static float fps;
 //	bool showLinks;
 
 	static void init(int argc, char **argv);
@@ -58,5 +62,6 @@ private :
 	static int processHits(GLint hits, GLuint *buffer);
 	static bool saveScreen(char *title);
 	static void *lanceScheduler(void *param);
+	static void calculateFPS(void);
 };
 #endif

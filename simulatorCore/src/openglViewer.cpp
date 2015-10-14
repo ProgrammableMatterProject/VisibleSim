@@ -35,6 +35,9 @@ GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
 GlutPopupWindow *GlutContext::popup=NULL;
 GlutPopupMenuWindow *GlutContext::popupMenu=NULL;
 GlutHelpWindow *GlutContext::helpWindow=NULL;
+int GlutContext::frameCount = 0;
+int GlutContext::previousTime = 0;
+float GlutContext::fps = 0;
 
 void GlutContext::init(int argc, char **argv) {
 #ifdef GLUT
@@ -312,6 +315,7 @@ void GlutContext::idleFunc(void) {
 #else
 	  usleep(20000);
 #endif
+    calculateFPS();
 	if (saveScreenMode && mustSaveImage) {
 		static int num=0;
 		char title[16];
@@ -338,6 +342,21 @@ void GlutContext::idleFunc(void) {
 	if (mainWindow->hasSelectedBlock() || getScheduler()->state==Scheduler::RUNNING) {
 		glutPostRedisplay(); // for blinking
 	}
+}
+
+void GlutContext::calculateFPS(void) {
+    frameCount++;
+    int currentTime = glutGet(GLUT_ELAPSED_TIME);
+
+    //  Calculate time passed
+    int timeInterval = currentTime - previousTime;
+    if(timeInterval > 1000)
+    {
+        fps = frameCount / (timeInterval / 1000.0f);
+        cout << "FPS = " << fps << endl;
+        previousTime = currentTime;
+        frameCount = 0;
+    } 
 }
 
 void GlutContext::drawFunc(void) {

@@ -7,14 +7,13 @@
 
 #include <iostream>
 #include <sstream>
-#include "catoms3DWorld.h"
 #include "csgCatoms3DBlockCode.h"
 #include "catoms3DBlock.h"
 #include "scheduler.h"
 #include "events.h"
 #include <boost/shared_ptr.hpp>
 
-#define verbose 1
+#define MAX_SIZE 32
 
 using namespace std;
 using namespace Catoms3D;
@@ -33,18 +32,18 @@ void CsgCatoms3DBlockCode::createCSG() {
     CsgNode difference(node_t::bool_op , new BoolOperator(BoolOperator::bool_operator_t::bool_difference));
 
     CsgNode union1(node_t::bool_op, new BoolOperator(BoolOperator::bool_operator_t::bool_union));
-    CsgNode cube1(node_t::shape, new Cube(8, 8, 1));
+    CsgNode cube1(node_t::shape, new Cube(MAX_SIZE, MAX_SIZE, MAX_SIZE/8));
 
     CsgNode translate(node_t::transformation, 
-        new Transformation(Transformation::transformation_t::translate, 4, 4, 1));
-    CsgNode cylinder1(node_t::shape, new Cylinder(7, 4));
+        new Transformation(Transformation::transformation_t::translate, MAX_SIZE/2, MAX_SIZE/2, MAX_SIZE/8));
+    CsgNode cylinder1(node_t::shape, new Cylinder(MAX_SIZE, MAX_SIZE/2));
     translate.addChild(cylinder1);
 
     union1.addChild(cube1);
     union1.addChild(translate);
 
-    CsgNode translate2(node_t::transformation, new Transformation(Transformation::transformation_t::translate, 4, 4, 1));
-    CsgNode cylinder2(node_t::shape, new Cylinder(7, 1.5));
+    CsgNode translate2(node_t::transformation, new Transformation(Transformation::transformation_t::translate, MAX_SIZE/2, MAX_SIZE/2, MAX_SIZE/8));
+    CsgNode cylinder2(node_t::shape, new Cylinder(MAX_SIZE, MAX_SIZE/4));
     translate2.addChild(cylinder2);
 
     difference.addChild(union1);
@@ -115,7 +114,7 @@ void CsgCatoms3DBlockCode::sendCSGMessage() {
                 myPosition.pt[1] + Catoms3D::tabConnectorPositions[i][1],
                 myPosition.pt[2] + Catoms3D::tabConnectorPositions[i][2]);
             CSG_message *message = new CSG_message(csgTree, pos);
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 1000000, message, catom->getInterface(i)));
+            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, message, catom->getInterface(i)));
         }
     }
 }
