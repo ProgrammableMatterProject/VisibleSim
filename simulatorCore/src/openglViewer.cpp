@@ -353,7 +353,6 @@ void GlutContext::calculateFPS(void) {
     if(timeInterval > 1000)
     {
         fps = frameCount / (timeInterval / 1000.0f);
-        cout << "FPS = " << fps << endl;
         previousTime = currentTime;
         frameCount = 0;
     } 
