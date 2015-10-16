@@ -358,6 +358,12 @@ void GlutContext::calculateFPS(void) {
     } 
 }
 
+void GlutContext::showFPS(void) {
+    char fpsStr[50];
+    sprintf(fpsStr, "FPS = %4.2f", fps);
+    GlutWindow::drawString(50, 50, fpsStr);
+}
+
 void GlutContext::drawFunc(void) {
 	World *wrl = getWorld();
 	Camera*camera=wrl->getCamera();
@@ -390,7 +396,9 @@ void GlutContext::drawFunc(void) {
 	popup->glDraw();
 	if (popupMenu) popupMenu->glDraw();
 	if (helpWindow) helpWindow->glDraw();
-	glEnable(GL_DEPTH_TEST);
+    showFPS();
+
+    glEnable(GL_DEPTH_TEST);
 	glutSwapBuffers();
 }
 

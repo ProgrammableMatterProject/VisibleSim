@@ -63,5 +63,6 @@ private :
 	static bool saveScreen(char *title);
 	static void *lanceScheduler(void *param);
 	static void calculateFPS(void);
+	static void showFPS(void);
 };
 #endif
