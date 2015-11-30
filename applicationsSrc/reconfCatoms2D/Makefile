@@ -1,4 +1,4 @@
-SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp
+SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp gridUtils.cpp
 
 OUT = catom2D1
 

@@ -1,4 +1,4 @@
-SUBDIRS = reconfCatoms2D
+SUBDIRS = reconfCatoms2D sbReconf
 
 .PHONY: subdirs $(SUBDIRS)
 

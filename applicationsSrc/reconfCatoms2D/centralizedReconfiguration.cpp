@@ -17,7 +17,7 @@ using namespace Catoms2D;
 #define NB_MAX_CONSECUTIVE_NEIGHBORS_TO_MOVE 3
 //#define GRADIENT
 
-enum state_t {MOVING = 0, UNMOVING = 1, STABLE = 2, UNKNOWN = 3};
+enum state_t {MOVING = 0, UNMOVING = 1, STABLE = 2, HAS_TO_MOVE = 3, UNKNOWN = 4};
 
 static int moves = 0;
 
@@ -304,16 +304,105 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
   Catoms2DBlock *next = m.getPivot();
   Catoms2DBlock *previous = c;
   Catoms2DBlock *pre_previous = NULL; 
+  
   //int ids[5] = {-1,-1,-1,-1,-1};
   int i = 0;
   
   cout << "canMove " << c->blockId << " around " << next->blockId << "? ";
+  
 
   if (!isNeighbor(next,g)) {
     cerr << "error pivot is not a neighbor" << endl;
   }
+  
+   while (isNeighbor(next,g)) {
+	
+   //if (pre_previous != next) {
+      i++;
+   // }
 
-  while (isNeighbor(next,g)) {
+    if (states[next->blockId] == UNKNOWN) {
+      cerr << ": initialization error!" << endl;
+      return false;
+    }
+
+    if (states[next->blockId] == MOVING) {
+      cout << ": " << c->blockId << " can't move because of " << next->blockId << endl;
+      return false;
+    }
+
+    if (i == 4) {
+      cout << endl;
+      cout << previous->blockId << " " << next->blockId << endl;
+      cout << ": " << c->blockId << " can't because i == 4 " << next->blockId << endl;
+      //if (states[next->blockId] != MOVING) {
+	  cout << next->blockId  << " has to move!" << endl;
+	  states[next->blockId] = HAS_TO_MOVE;
+	  //}
+      return false;
+    }
+
+   
+   //Catoms2DBlock *n = NULL;
+   bool mustStop = true;
+   cout << endl << "neighbors of next (" << next->blockId << ")" << endl;
+   for (int i = 0; i < 6; i++) {
+      P2PNetworkInterface *p = next->getInterface((NeighborDirection::Direction)i);
+      if (p->connectedInterface) {
+		Catoms2DBlock *n = (Catoms2DBlock*)p->connectedInterface->hostBlock;
+		cout << " " << n->blockId;
+		if ((n != previous) && isNeighbor(n,g)) {
+			previous = next;
+			next = n;
+			mustStop = false;
+			cout << "selected neighbor: " << next->blockId << endl;
+			break;
+		}
+      }
+    }
+	cout << endl;
+    if (mustStop) {
+      cerr << "next == NULL" << endl;
+      return true;
+    }
+    cout << ", next: " << next->blockId;
+  }
+
+   /*int cnt = 0;
+   for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
+
+      neighbor = (Catoms2DBlock*) it->second;
+      
+      if (neighbor == c) {
+		continue;
+	  }
+
+	  if (isNeighbor(neighbor,g)) {
+		cnt++;
+		if (cnt  == 4) {
+			cout << endl;
+			cout << previous->blockId << " " << neighbor->blockId << endl;
+			cout << ": " << c->blockId << " can't because i == 4 " << neighbor->blockId << endl;
+			//if (states[next->blockId] != MOVING) {
+				cout << neighbor->blockId  << " has to move!" << endl;
+				states[neighbor->blockId] = HAS_TO_MOVE;
+			//}
+			return false;
+		}
+		
+		if (states[neighbor->blockId] == UNKNOWN) {
+			cerr << ": initialization error!" << endl;
+			return false;
+		}
+
+		if (states[neighbor->blockId] == MOVING) {
+			cout << ": " << c->blockId << " can't move because of " << neighbor->blockId << endl;
+			return false;
+		}
+	}
+   }*/
+ 	  /* while (isNeighbor(next,g)) {
+	
 
     if (pre_previous != next) {
       i++;
@@ -333,6 +422,10 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
       cout << endl;
       cout << previous->blockId << " " << next->blockId << endl;
       cout << ": " << c->blockId << " can't because i == 4 " << next->blockId << endl;
+      //if (states[next->blockId] != MOVING) {
+	  cout << next->blockId  << " has to move!" << endl;
+	  states[next->blockId] = HAS_TO_MOVE;
+	  //}
       return false;
     }
 
@@ -340,7 +433,7 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
       return true;
     }
     
-    for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 6; i++) {
       P2PNetworkInterface *p = next->getInterface((NeighborDirection::Direction)i);
       if (p->connectedInterface) {
 	Catoms2DBlock *n = (Catoms2DBlock*)p->connectedInterface->hostBlock;
@@ -349,7 +442,7 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
 	  return false;
 	}
       }
-    }
+    }*
 
     Catoms2DBlock *tmp = next;
     next = nextCatomPerimeter(next);
@@ -357,13 +450,12 @@ static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
     previous = tmp;
     //next =  nextPerimeterNeighbor2(next,previous);
  
-    
     if (next == c) {
       cerr << "next == c" << endl;
       return true;
     }
     cout << ", next: " << next->blockId;
-  }
+  }*/
   cout << "ok" << endl;
   return true; 
 }
@@ -416,10 +508,14 @@ static void updateState(state_t states[], int gradient[]) {
       continue;
     }
     
+    if (states[c->blockId] == HAS_TO_MOVE) {
+		c->setColor(ORANGE);
+	}
+    
     if (c->isBlocked()) {
       c->setColor(GREY);
       if (states[c->blockId] == MOVING) {
-	cerr << "error: mv -> unmv" << endl;
+		cerr << "error: mv -> unmv" << endl;
       }
       states[c->blockId] = UNMOVING;
       continue;
@@ -532,9 +628,9 @@ void centralized_reconfiguration() {
       if (states[c->blockId] == STABLE) {
 	continue;
       }
-      
+            
       if (c->isBlocked()) {
-	continue;
+		continue;
       }
 
       if (canMove(c,gradient)) {
@@ -549,9 +645,10 @@ void centralized_reconfiguration() {
 	    continue;
 	  }
 	  
-	  if ((!isInTarget(p1) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
+	  if ((!isInTarget(p1) || (states[c->blockId] == HAS_TO_MOVE) || (isInTarget(p1) && isInTarget(p2) && (p2.y <= p1.y)))) {
+	    states[c->blockId] = MOVING;
 	    cout << c->blockId << " is moving from " << p1 << " to " 
-		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection(); 
+		 << p2 << " using " << mv->getPivot()->blockId << " in direction " << mv->getDirection();
 	    move(c,*mv);
 	    //cout << c->blockId << " has " << c->nbNeighbors() << " neighbors" << endl; 
 	    gradient[c->blockId] = UNDEFINED_GRADIENT;

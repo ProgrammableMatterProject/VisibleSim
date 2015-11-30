@@ -16,11 +16,12 @@
 #include "tuple.hpp"
 #include "contextTuple.hpp"
 #include "CTuple.hpp"
-#include "reconfCatoms2DMessages.h"
+//#include "reconfCatoms2DMessages.h"
 #include "segment.h"
 #include "map.h"
 #include "gpsr.h"
 #include "CTuples.h"
+
 #include "reconfiguration.h"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
@@ -49,8 +50,8 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   void startup();
   void processLocalEvent(EventPtr pev);
 	
-  void updateBorder();
-  bool canMove();
+  //void updateBorder();
+  //bool canMove();
   
   static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };

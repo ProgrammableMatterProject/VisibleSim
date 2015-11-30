@@ -218,6 +218,35 @@ namespace Catoms2D {
     return m;
   }
 
+  int Catoms2DBlock::nbConsecutiveEmptyFaces(bool groundIsNeighbor) {
+    int notEmpty = -1;
+    int m = 0;
+    int cnt = 0;
+    for(int i = 0; i < MAX_NB_NEIGHBORS; i++) { 
+      if (hasANeighbor((NeighborDirection::Direction)i, groundIsNeighbor)) {
+		notEmpty = i;
+		break;
+      }
+    }
+    
+    if (notEmpty == -1) {
+      return 0;
+    }
+	
+    for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
+      int j = (notEmpty+i)%MAX_NB_NEIGHBORS;
+      if (!hasANeighbor((NeighborDirection::Direction)j, groundIsNeighbor)) {
+		cnt++;
+      } else {
+		m = max(m,cnt);
+		cnt = 0;
+      }
+    }
+    m = max(m,cnt);
+    return m;
+  }
+
+
   bool Catoms2DBlock::isBlocked() {
     int n = nbNeighbors(true);
     int nc = nbConsecutiveNeighbors(true);
