@@ -13,8 +13,6 @@
 #include "events.h"
 #include <boost/shared_ptr.hpp>
 
-#define MAX_SIZE 32
-
 using namespace std;
 using namespace Catoms3D;
 
@@ -28,34 +26,10 @@ CsgCatoms3DBlockCode::~CsgCatoms3DBlockCode() {
 	cout << "CsgCatoms3DBlockCode destructor" << endl;
 }
 
-void CsgCatoms3DBlockCode::createCSG() {
-    CsgNode difference(node_t::bool_op , new BoolOperator(BoolOperator::bool_operator_t::bool_difference));
-
-    CsgNode union1(node_t::bool_op, new BoolOperator(BoolOperator::bool_operator_t::bool_union));
-    CsgNode cube1(node_t::shape, new Cube(MAX_SIZE, MAX_SIZE, MAX_SIZE/8));
-
-    CsgNode translate(node_t::transformation, 
-        new Transformation(Transformation::transformation_t::translate, MAX_SIZE/2, MAX_SIZE/2, MAX_SIZE/8));
-    CsgNode cylinder1(node_t::shape, new Cylinder(MAX_SIZE, MAX_SIZE/2));
-    translate.addChild(cylinder1);
-
-    union1.addChild(cube1);
-    union1.addChild(translate);
-
-    CsgNode translate2(node_t::transformation, new Transformation(Transformation::transformation_t::translate, MAX_SIZE/2, MAX_SIZE/2, MAX_SIZE/8));
-    CsgNode cylinder2(node_t::shape, new Cylinder(MAX_SIZE, MAX_SIZE/4));
-    translate2.addChild(cylinder2);
-
-    difference.addChild(union1);
-    difference.addChild(translate2);
-
-    csgTree.addChild(difference);
-}
-
 void CsgCatoms3DBlockCode::startup() {
 	stringstream info;
 
-	info << "Starting ";
+	info << "Starting  ";
 
     Vecteur basePosition(4, 4, 4);
     info << "POSITION = " << catom->position << endl;
@@ -63,8 +37,8 @@ void CsgCatoms3DBlockCode::startup() {
     hasPosition = false;
 
 	if (catom->blockId==1) {
-        createCSG();
-        if (isInCSG())
+        csgUtils.readCSGFile("out.bc");
+        if (csgUtils.isInCSG(myPosition))
             catom->setColor(YELLOW);
         else 
             catom->setVisible(false);
@@ -88,10 +62,14 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 if (!hasPosition) {
                     catom->setColor(PINK);
                     CSG_message_ptr recv_message = boost::static_pointer_cast<CSG_message>(message);
-                    csgTree = recv_message->getCsgTree();
+
+                    char *csgBuffer = recv_message->getCsgBuffer();
+                    int csgBufferSize = recv_message->getCsgBufferSize();
+                    csgUtils.readCSGBuffer(csgBuffer, csgBufferSize);
+
                     myPosition = recv_message->getPosition();
-                    catom->setColor(isInCSG() ? YELLOW: PINK);
-                    if (isInCSG())
+                    //catom->setColor(isInCSG() ? YELLOW: PINK);
+                    if (csgUtils.isInCSG(myPosition))
                         catom->setColor(YELLOW);
                     else 
                         catom->setVisible(false);
@@ -113,71 +91,30 @@ void CsgCatoms3DBlockCode::sendCSGMessage() {
                 myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0], 
                 myPosition.pt[1] + Catoms3D::tabConnectorPositions[i][1],
                 myPosition.pt[2] + Catoms3D::tabConnectorPositions[i][2]);
-            CSG_message *message = new CSG_message(csgTree, pos);
+            CSG_message *message = new CSG_message(csgUtils.getCSGBuffer(), csgUtils.getCSGBufferSize(), pos);
             scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, message, catom->getInterface(i)));
         }
     }
 }
 
-bool CsgCatoms3DBlockCode::isInCSG() {
-    Vecteur v(0,0,0);
-    return isInCSG(csgTree, v);
-}
-
-bool CsgCatoms3DBlockCode::isInCSG(CsgNode &node, Vecteur basePosition) {
-    switch (node.getType())
-    {
-        case node_t::shape: {
-            Shape3D *shape = static_cast<Shape3D *>(node.getValue());
-            return shape->isInside(basePosition, myPosition);
-        } break;
-
-        case node_t::transformation: {
-            Transformation* t_op = static_cast<Transformation *>(node.getValue());
-            if (t_op->my_type == Transformation::transformation_t::translate) {
-                for (unsigned int i = 0; i < node.vchildren.size(); i++) {
-                    Vecteur transf_position(t_op->x, t_op->y, t_op->z);
-                    if (isInCSG(node.vchildren[i], transf_position))
-                        return true;
-                }
-                return false;
-            }
-        } break;
-
-        case node_t::bool_op: {
-            BoolOperator* b_op = static_cast<BoolOperator *>(node.getValue());
-            if (b_op->my_type == BoolOperator::bool_operator_t::bool_union) {
-                for (unsigned int i = 0; i < node.vchildren.size(); i++) {
-                    if (isInCSG(node.vchildren[i], basePosition))
-                        return true;
-                }
-            }
-            if (b_op->my_type == BoolOperator::bool_operator_t::bool_difference) {
-                if (node.vchildren.size() >= 1) {
-                    if (isInCSG(node.vchildren[0], basePosition)) {
-                        for (unsigned int i = 1; i < node.vchildren.size(); i++) {
-                            if (isInCSG(node.vchildren[i], basePosition))
-                                return false;
-                        }
-                        return true;
-                    }
-                }
-            }
-        } break;
-    }
-
-    return false;
-}
 
 Catoms3DBlockCode* CsgCatoms3DBlockCode::buildNewBlockCode(Catoms3DBlock *host) {
 	return(new CsgCatoms3DBlockCode(host));
 }
 
-CSG_message::CSG_message(CsgNode node, Vecteur pos) {
+CSG_message::CSG_message(char *_csgBuffer, int _csgBufferSize, Vecteur pos) {
 	id = CSG_MSG_ID;
-	csgTree = node;
+
+    csgBuffer = new char[_csgBufferSize];
+    memcpy(csgBuffer, _csgBuffer, _csgBufferSize);
+
+    csgBufferSize = _csgBufferSize;
+
     position = pos;
 }
 
 CSG_message::~CSG_message() {
+    delete[] csgBuffer;
 }
+
+
