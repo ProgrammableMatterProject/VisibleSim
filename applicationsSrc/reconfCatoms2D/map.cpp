@@ -3,6 +3,9 @@
 #include "tuple.hpp"
 #include "contextTuple.hpp"
 
+#include "catoms2DWorld.h"
+#include "vecteur.h"
+
 //#define VIRTUAL_COORDINATES
 #define REAL_COORDINATES
 //#define MAP_DEBUG
@@ -12,7 +15,7 @@ using namespace Catoms2D;
 Coordinate Map::ccth;
 bool Map::isConnected = false;
 
-Map::Map(Catoms2DBlock* host) {
+Map::Map(Catoms2DBlock* host): border(host) {
   connectedToHost = false;
   waiting = 0;
   toHost = NULL;
@@ -20,7 +23,7 @@ Map::Map(Catoms2DBlock* host) {
   catom2D = host;
 }
 
-Map::Map(const Map &m) {
+Map::Map(const Map &m): border(m.border) {
   connectedToHost = m.connectedToHost;
   waiting = m.waiting;
   toHost = m.toHost;
@@ -249,4 +252,32 @@ int Map::distance(Coordinate p1, Coordinate p2) {
 
 int Map::distance(Coordinate p2) {
   return distance(position,p2);
+}
+
+bool Map::areNeighbors(Coordinate p1, Coordinate p2) {
+  Vecteur pos1 = Vecteur(p1.x, 0, p1.y);
+  Vecteur pos2 = Vecteur(p2.x, 0, p2.y);
+  return Catoms2DWorld::getWorld()->areNeighborsGridPos(pos1,pos2);
+}
+
+bool Map::isInTarget(Coordinate p) { 
+  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+  return (world->getTargetGrid(p.x,0,p.y) == fullCell);
+}
+
+P2PNetworkInterface* Map::getOnBorderNeighborInterface(RelativeDirection::Direction d) {
+  return border.getInterface(d);
+}
+
+Catoms2DBlock* Map::getOnBorderNeighbor(Catoms2D::RelativeDirection::Direction d) {
+  P2PNetworkInterface* p2p = getOnBorderNeighborInterface(d);
+  if (!p2p->connectedInterface) {
+    cerr << "error: no catom connected on border interface..." << endl;
+    return NULL;
+  }
+  return (Catoms2DBlock*) p2p->connectedInterface->hostBlock;
+}
+
+Coordinate Map::getOnBorderNeighborCoordinate(RelativeDirection::Direction d) {
+  return getPosition(border.getInterface(d));
 }

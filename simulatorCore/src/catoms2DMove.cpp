@@ -2,7 +2,7 @@
 
 namespace Catoms2D {
 
-  Catoms2DMove::Catoms2DMove(Catoms2DBlock *p, direction_t d) {
+  Catoms2DMove::Catoms2DMove(Catoms2DBlock *p, RelativeDirection::Direction d) {
     pivot = p;
     direction = d;
   }
@@ -14,7 +14,7 @@ namespace Catoms2D {
 
   Catoms2DMove::~Catoms2DMove() { }
 
-  Catoms2DMove::direction_t Catoms2DMove::getDirection() {
+  RelativeDirection::Direction Catoms2DMove::getDirection() {
     return direction;
   }
 

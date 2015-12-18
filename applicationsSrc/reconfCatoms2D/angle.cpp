@@ -36,7 +36,23 @@ double Angle::ccwAngle(Coordinate &a, Coordinate &b, Coordinate &c) const {
   }
 }
 
-P2PNetworkInterface* Angle::getNextCounterClockWiseInterface(Coordinate a) {
+P2PNetworkInterface* Angle::getNextConnectedClockWiseInterface(P2PNetworkInterface *recv) {
+  P2PNetworkInterface *next = recv;
+  do {
+    next = getNextClockWiseInterface(next);
+  } while ((next->connectedInterface == NULL) && (next != recv));
+  return next;
+}
+
+P2PNetworkInterface* Angle::getNextConnectedCounterClockWiseInterface(P2PNetworkInterface *recv) {
+  P2PNetworkInterface *next = recv;
+  do {
+    next = getNextCounterClockWiseInterface(next);
+  } while ((next->connectedInterface == NULL) && (next != recv));
+  return next;
+}
+
+P2PNetworkInterface* Angle::getNextConnectedCounterClockWiseInterface(Coordinate a) {
   double angles[6] = {0,0,0,0,0,0};
   int minI = 0;
   for (int i=0; i < 6; i++) {
@@ -60,24 +76,19 @@ P2PNetworkInterface* Angle::getNextCounterClockWiseInterface(Coordinate a) {
 P2PNetworkInterface* Angle::getNextCounterClockWiseInterface(P2PNetworkInterface *recv) {
   int d = catom2D->getDirection(recv);
   P2PNetworkInterface *next = NULL;
-  do {
-    d = (d+1)%6;
-    next = catom2D->getInterface((NeighborDirection::Direction)d);
-  } while (next->connectedInterface == NULL);
+  d = (d+1)%6;
+  next = catom2D->getInterface((NeighborDirection::Direction)d);
   return next;
 }
 
 P2PNetworkInterface* Angle::getNextClockWiseInterface(P2PNetworkInterface *recv) {
   int d = catom2D->getDirection(recv);
   P2PNetworkInterface *next = NULL;
-  cout << "arrival interface: " << d << endl;
-  do {
-    if (d == 0) { 
-      d=5; 
-    } else { 
-      d--;
-    }
-    next = catom2D->getInterface((NeighborDirection::Direction)d);
-  } while (next->connectedInterface == NULL);
+  if (d == 0) { 
+    d=5; 
+  } else { 
+    d--;
+  }
+  next = catom2D->getInterface((NeighborDirection::Direction)d);
   return next;
 }

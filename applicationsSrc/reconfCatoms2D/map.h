@@ -15,6 +15,7 @@
 #include "network.h"
 #include <boost/shared_ptr.hpp>
 #include "coordinate.h"
+#include "border.h"
 
 class Map {
  public:  
@@ -28,6 +29,7 @@ class Map {
   Coordinate position;
   int waiting;
   P2PNetworkInterface *toHost;
+  Border border;
 
   Map(Catoms2D::Catoms2DBlock* host);
   Map(const Map &m);
@@ -50,6 +52,14 @@ class Map {
   P2PNetworkInterface* getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore);
   int distance(Coordinate p1, Coordinate p2);
   int distance(Coordinate p2);
+
+  static bool areNeighbors(Coordinate p1, Coordinate p2);
+  static bool isInTarget(Coordinate p);
+
+  Catoms2D::Catoms2DBlock* getOnBorderNeighbor(Catoms2D::RelativeDirection::Direction d);
+  P2PNetworkInterface* getOnBorderNeighborInterface(Catoms2D::RelativeDirection::Direction d);
+  Coordinate getOnBorderNeighborCoordinate(Catoms2D::RelativeDirection::Direction d);
+
 };
 
 // Messages

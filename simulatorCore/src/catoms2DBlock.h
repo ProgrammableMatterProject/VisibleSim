@@ -13,21 +13,15 @@
 #include "catoms2DGlBlock.h"
 #include "catoms2DCapabilities.h"
 #include "catoms2DEvents.h"
+#include "catoms2DDirection.h"
+//#include "catoms2DMove.h"
 #include <boost/asio.hpp>
 #include <stdexcept>
 
 namespace Catoms2D {
 
-#define MAX_NB_NEIGHBORS 6
-
-class NeighborDirection {
-public:
-	enum Direction {Right = 0, TopRight = 1, TopLeft = 2, Left = 3, BottomLeft = 4, BottomRight = 5};
-	static int getOpposite(int d);
-	static string getString(int d);
-};
-
 class Catoms2DBlockCode;
+class Catoms2DMove;
 
 class Catoms2DBlock : public BaseSimulator::BuildingBlock {
 	P2PNetworkInterface *tabInterfaces[6];
@@ -40,7 +34,7 @@ public:
 	Vecteur position; // position of the block;
 	bool isMaster;
 	int angle;
-
+	
 	Catoms2DBlockCode *(*buildNewBlockCode)(Catoms2DBlock*);
 	Catoms2DBlock(int bId, Catoms2DBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(Catoms2DBlock*));
 	~Catoms2DBlock();
@@ -49,6 +43,7 @@ public:
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
 	void setPosition(const Vecteur &p);
+
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
 	Vecteur getPosition(NeighborDirection::Direction d);
 	Vecteur getPosition(P2PNetworkInterface *p2p);
@@ -59,6 +54,9 @@ public:
 	int nbConsecutiveEmptyFaces(bool groundIsNeighbor = false);
 	bool hasANeighbor(NeighborDirection::Direction n, bool groundIsNeighbor = false);
 	bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false);
+
+	//inline direction_t getOpposite(direction_t d) { return (direction_t) (d * (-1));}  
+	P2PNetworkInterface* getNextInterface(RelativeDirection::Direction dir, P2PNetworkInterface *p2p, bool connected = false);
 
 	// Motion
 	bool isBlocked();

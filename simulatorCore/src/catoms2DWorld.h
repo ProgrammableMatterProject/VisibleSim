@@ -76,6 +76,9 @@ public:
 	Vecteur worldToGridPosition(Vecteur &pos);
 	Vecteur gridToWorldPosition(Vecteur &pos);
 
+	bool areNeighborsWorldPos(Vecteur &pos1, Vecteur &pos2);
+	bool areNeighborsGridPos(Vecteur &pos1, Vecteur &pos2);
+	
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();

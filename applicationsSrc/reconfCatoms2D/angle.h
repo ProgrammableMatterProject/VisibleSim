@@ -20,9 +20,13 @@ class Angle {
 
   // counterwise clock angle abc
   double ccwAngle(Coordinate &a, Coordinate &b, Coordinate &c) const;
+  P2PNetworkInterface* getNextConnectedClockWiseInterface(P2PNetworkInterface *recv); 
+  P2PNetworkInterface* getNextConnectedCounterClockWiseInterface(P2PNetworkInterface *recv);
+  P2PNetworkInterface* getNextConnectedCounterClockWiseInterface(Coordinate a); 
+
   P2PNetworkInterface* getNextClockWiseInterface(P2PNetworkInterface *recv); 
   P2PNetworkInterface* getNextCounterClockWiseInterface(P2PNetworkInterface *recv);
-  P2PNetworkInterface* getNextCounterClockWiseInterface(Coordinate a);
+
 };
 
 #endif

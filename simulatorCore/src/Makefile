@@ -21,7 +21,7 @@ ROBOTBLOCKS_SRCS = robotBlocksSimulator.cpp robotBlocksBlock.cpp robotBlocksBloc
 ROBOTBLOCKS_OBJS = $(ROBOTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 ROBOTBLOCKS_DEPS = $(ROBOTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
-CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DScheduler.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DCapabilities.cpp catoms2DEvents.cpp catoms2DMove.cpp
+CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DDirection.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DScheduler.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DCapabilities.cpp catoms2DEvents.cpp catoms2DMove.cpp
 CATOMS2D_OBJS = $(CATOMS2D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 CATOMS2D_DEPS = $(CATOMS2D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 

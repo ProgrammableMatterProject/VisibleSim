@@ -15,13 +15,21 @@
 class Reconfiguration {
     
 public:
-   enum state_t {UNKNOWN = -1, CANT_MOVE, CAN_MOVE, MOVING};
+  enum state_t {UNKNOWN = -1, GOAL, CANT_MOVE, CAN_MOVE, MOVING};
    
 private:
    state_t state;
    Catoms2D::Catoms2DBlock *catom;
    Map map;
-   bool canMove(); 
+
+   void init();
+   void tryToMove();
+
+   bool isFree(); 
+   bool isInTarget();
+   bool isOnBorder();
+
+   Catoms2D::Catoms2DMove* nextMove();
 
 public:
    
@@ -30,8 +38,6 @@ public:
    void handle(MessagePtr m);
    
    void start();
-   void tryToMove();
-   
    static bool isDone();
 };
 

@@ -25,7 +25,7 @@ void GPSR::send(Coordinate s, Coordinate d, Message *msg) {
     // perimeter mode
     m->setPerimeterMode(map.getPosition());
     // find interface
-    next = angle.getNextCounterClockWiseInterface(m->getDestination());
+    next = angle.getNextConnectedCounterClockWiseInterface(m->getDestination());
     m->setFirstEdge(catom2D->getDirection(next));
     send(m,next);
 #ifdef GEO_ROUTING_DEBUG
@@ -71,7 +71,7 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
 	  // perimeter mode
 	  m->setPerimeterMode(map.getPosition());
 	  // find interface
-	  next = angle.getNextCounterClockWiseInterface(m->getDestination());
+	  next = angle.getNextConnectedCounterClockWiseInterface(m->getDestination());
 	  m->setFirstEdge(catom2D->getDirection(next));
 	  send(m,next);
 #ifdef GEO_ROUTING_DEBUG
@@ -82,7 +82,7 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
       }
       break;
     case GPSRPacket::mode_t::PERIMETER: {
-      P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(recv_interface);
+      P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(recv_interface);
       if (next == NULL) {
 	break; // next is NULL only if the catom is not connected to any other.
       }
@@ -110,14 +110,14 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
 	      
 	if ((p2p != NULL) && (map.getPosition() != m->getPerimeterStart()) && (map.getPosition(p2p) != m->getPerimeterStart())) {
 	  Coordinate p = map.getPosition(p2p);
-	  P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(p);
+	  P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(p);
 	  m->setFirstEdge(catom2D->getDirection(next));
 	  send(m,next);
 #ifdef GEO_ROUTING_DEBUG
 	  cout << "Perimeter (new face?) forward to " << map.getPosition(next) << endl;
 #endif
 	} else {
-	  P2PNetworkInterface *next = angle.getNextCounterClockWiseInterface(recv_interface);
+	  P2PNetworkInterface *next = angle.getNextConnectedCounterClockWiseInterface(recv_interface);
 	  if ((m->getPerimeterStart() == map.getPosition()) && (catom2D->getDirection(next) == m->getFirstEdge())) {
 
 #ifdef GEO_ROUTING_DEBUG

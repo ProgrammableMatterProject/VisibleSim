@@ -19,8 +19,9 @@
 class ReconfigurationMsg;
 typedef boost::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
 
-//class ReconfigurationStartMsg;
-//typedef boost::shared_ptr<ReconfigurationStartMsg> ReconfigurationStartMsg_ptr;
+/*class ReconfigurationStartMsg;
+typedef boost::shared_ptr<ReconfigurationStartMsg> ReconfigurationStartMsg_ptr;
+*/
 
 class ReconfigurationStateQueryMsg;
 typedef boost::shared_ptr<ReconfigurationStateQueryMsg> ReconfigurationStateQueryMsg_ptr;

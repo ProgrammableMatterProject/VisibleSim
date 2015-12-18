@@ -4,13 +4,14 @@
 #include "catoms2DWorld.h"
 #include "coordinate.h"
 #include "catoms2DMove.h"
+#include "catoms2DDirection.h"
 #include "map.h"
 
 using namespace std;
 using namespace Catoms2D;
 
 #define COLOR_DEBUG
-#define ROTATION_DIRECTION Catoms2DMove::ROTATE_CW
+#define ROTATION_DIRECTION RelativeDirection::CW
 #define UNDEFINED_GRADIENT -1
 
 #define CONSECUTIVE_NEIGHBORS
@@ -95,15 +96,15 @@ static bool isOver() {
 }
 
 static P2PNetworkInterface* 
-nextInterface(Catoms2DBlock *c, Catoms2DMove::direction_t d, P2PNetworkInterface *p2p) {
+nextInterface(Catoms2DBlock *c, RelativeDirection::Direction d, P2PNetworkInterface *p2p) {
   int p2pDirection = c->getDirection(p2p);
-  if (d == Catoms2DMove::ROTATE_CCW) {
+  if (d == RelativeDirection::CCW) {
     if (p2pDirection == NeighborDirection::BottomRight) {
       p2pDirection = NeighborDirection::Right;
     } else {
       p2pDirection++;
     }
-  } else if (d == Catoms2DMove::ROTATE_CW) {
+  } else if (d == RelativeDirection::CW) {
     if (p2pDirection == NeighborDirection::Right) {
       p2pDirection = NeighborDirection::BottomRight;
     } else {
@@ -113,7 +114,7 @@ nextInterface(Catoms2DBlock *c, Catoms2DMove::direction_t d, P2PNetworkInterface
   return c->getInterface((NeighborDirection::Direction)p2pDirection);
 }
 /*
-static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, RelativeDirection::Direction d) {
   P2PNetworkInterface *p1 = NULL, *p2 = NULL;
   
   if (c->nbNeighbors(false) == 0) {
@@ -160,7 +161,7 @@ static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2
   return NULL;
   }*/
 
-static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, RelativeDirection::Direction d) {
   P2PNetworkInterface *p1 = NULL, *p2 = NULL;
   
   if (c->nbNeighbors(true) == 0) {
@@ -209,21 +210,21 @@ static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Catoms2
   return NULL;
 }
 
-static  Catoms2DMove::direction_t reverseDirection(Catoms2DMove::direction_t d) {
-  if (d == Catoms2DMove::ROTATE_CCW) {
-    return Catoms2DMove::ROTATE_CW;
-  } else if (d == Catoms2DMove::ROTATE_CW) {
-    return Catoms2DMove::ROTATE_CCW;
+static  RelativeDirection::Direction reverseDirection(RelativeDirection::Direction d) {
+  if (d == RelativeDirection::CCW) {
+    return RelativeDirection::CW;
+  } else if (d == RelativeDirection::CW) {
+    return RelativeDirection::CCW;
   }
-  return Catoms2DMove::ROTATE_CW; // default
+  return RelativeDirection::CW; // default
 }
 
-static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+static P2PNetworkInterface *lastNeighborInDirection(Catoms2DBlock *c, RelativeDirection::Direction d) {
   // the last one is the first one in the opposite direction
   return extremeNeighborInDirection(c,reverseDirection(d));
 }
 
-static P2PNetworkInterface *firstNeighborInDirection(Catoms2DBlock *c, Catoms2DMove::direction_t d) {
+static P2PNetworkInterface *firstNeighborInDirection(Catoms2DBlock *c, RelativeDirection::Direction d) {
   return extremeNeighborInDirection(c,d);
 }
 

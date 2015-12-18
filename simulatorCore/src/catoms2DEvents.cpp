@@ -8,6 +8,7 @@
 #include "catoms2DEvents.h"
 #include "catoms2DScheduler.h"
 #include "catoms2DWorld.h"
+#include "catoms2DMove.h"
 
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;

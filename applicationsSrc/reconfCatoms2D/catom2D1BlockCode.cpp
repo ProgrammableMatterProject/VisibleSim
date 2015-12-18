@@ -22,6 +22,8 @@
 using namespace std;
 using namespace Catoms2D;
 
+#define NEIGHBORING_TEST
+
 //#define GEO_ROUTING_DEBUG
 //#define GEO_ROUTING_TEST
 //#define TEST_GEO_ROUTING_ALL_TO_ALL
@@ -84,6 +86,26 @@ void Catoms2D1BlockCode::startup() {
   catom2D->setColor(RED);
   //updateBorder();
 #endif
+
+#ifdef NEIGHBORING_TEST
+  if (catom2D->blockId == 1) {
+    //Coordinate p1(0,0);
+    //Coordinate p2(1,0);
+    
+    //Coordinate p1(1,1);
+    //Coordinate p2(2,0);
+
+    Coordinate p1(1,1);
+    Coordinate p2(3,1);
+    cout << p1 << " " << p2 << " ";
+    if (Map::areNeighbors(p1,p2)) {
+      cout << "neighbor cells" << endl;
+    } else {
+      cout << "not neighbor cells" << endl;
+    }
+  }
+#endif
+
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {

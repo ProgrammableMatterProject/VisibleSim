@@ -511,6 +511,21 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
     return res;
   }
 
+  bool Catoms2DWorld::areNeighborsWorldPos(Vecteur &pos1, Vecteur &pos2) {
+    float distance = 0;
+    for (int i = 0; i < 3; i++) {
+      distance += powf(pos2[i] - pos1[i],2);
+    }
+    distance = sqrt(distance);
+    return (ceil(distance) == blockSize[0]);
+  }
+
+  bool Catoms2DWorld::areNeighborsGridPos(Vecteur &pos1, Vecteur &pos2) {
+    Vecteur wpos1 = gridToWorldPosition(pos1);
+    Vecteur wpos2 = gridToWorldPosition(pos2);
+    return areNeighborsWorldPos(wpos1,wpos2);
+  }
+  
   void Catoms2DWorld::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
       GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);

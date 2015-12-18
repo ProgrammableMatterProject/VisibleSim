@@ -22,7 +22,12 @@ public:
   bool operator !=(const Coordinate &c) const {
     return (x != c.x) || (y != c.y);
   }
-  
+
+  // just to be able to construct a set of coordinate objects
+  bool operator <(const Coordinate &c) const {
+    return ( x+y < c.x+c.y);
+  }
+
   friend std::ostream& operator<<(std::ostream& os, const Coordinate &c) {
     os << "(" << c.x << "," << c.y << ")";
     return os;
