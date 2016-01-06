@@ -41,23 +41,23 @@ bool Catoms3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
         } else {
             sout << "Error: neighbor[n],  0<=n<12" << endl;
         }
-        return sout;
+        return true;
     }
     if (att=="gridpos") {
         sout << catom->position << endl;
-        return sout;
+        return false;
     }
     if (att=="worldpos") {
         sout << catom->getGlBlock()->position[0] << "," << catom->getGlBlock()->position[1] << "," << catom->getGlBlock()->position[2] << endl;
-        return sout;
+        return false;
     }
     if (att=="orientationcode") {
         sout << catom->orientationCode << endl;
-        return sout;
+        return false;
     }
     if (att=="matrix") {
         sout << catom->getGlBlock()->mat << endl;
-        return sout;
+        return false;
     }
 
     sout << "attribute "<< att << " unknown!" << endl;
