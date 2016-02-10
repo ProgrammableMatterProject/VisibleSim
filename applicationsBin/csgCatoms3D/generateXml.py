@@ -4,7 +4,7 @@ def main(argv):
     try:
         x = int(argv[1])
 
-        print x
+        print(x)
         file = open("config.xml", "w")
         file.write('<?xml version="1.0" standalone="no" ?>\n\
 <world gridSize="%d, %d, %d">\n\

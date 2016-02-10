@@ -7,7 +7,7 @@ enum class Node_T : unsigned char
     Difference, Union, Translate, Rotate, Cube, Cylinder, Sphere, END
 };
 
-const float MAX_SIZE = 8;
+const float MAX_SIZE = 22;
 
 fstream myfile;
 

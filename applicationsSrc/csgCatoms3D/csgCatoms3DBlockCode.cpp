@@ -41,7 +41,8 @@ void CsgCatoms3DBlockCode::startup() {
         if (csgUtils.isInCSG(myPosition))
             catom->setColor(YELLOW);
         else 
-            catom->setVisible(false);
+            catom->setColor(PINK);
+            //catom->setVisible(false);
         myPosition = Vecteur(0, 0, 0);
         hasPosition = true;
 
@@ -72,7 +73,8 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     if (csgUtils.isInCSG(myPosition))
                         catom->setColor(YELLOW);
                     else 
-                        catom->setVisible(false);
+                        catom->setColor(PINK);
+                        //catom->setVisible(false);
                     hasPosition = true;
                     sendCSGMessage();
                 }
