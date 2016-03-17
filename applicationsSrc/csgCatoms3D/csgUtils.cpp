@@ -105,6 +105,13 @@ CsgNode CsgUtils::readCSGNode() {
             CsgNode node_cylinder(node_t::shape, new Cylinder(f1, f2));
             return node_cylinder;
         }
+        case Node_T::Sphere: {
+            float f1;
+            memcpy(&f1, csgBuffer + csgBufferPos, sizeof(float));
+            csgBufferPos += sizeof(float);
+            CsgNode node_sphere(node_t::shape, new Sphere(f1));
+            return node_sphere;
+        }
         case Node_T::END: {
             return CsgNode(node_t::null, NULL);
         }

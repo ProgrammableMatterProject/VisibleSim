@@ -18,6 +18,7 @@
 #include "scheduler.h"
 #include "events.h"
 #include "csgUtils.h"
+#include "stoyUtils.h"
 
 class CSG_message;
 
@@ -30,6 +31,7 @@ public:
     Vecteur myPosition; // has relative position from the master
     bool hasPosition; // already has his position
     CsgUtils csgUtils;
+    StoyUtils stoyUtils;
 
 	CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~CsgCatoms3DBlockCode();
@@ -47,12 +49,14 @@ class CSG_message : public Message {
     char *csgBuffer;
     int csgBufferSize;
     Vecteur position;
+    vector<Brick> bricks;
 public :
-	CSG_message(char *_csgBuffer, int _csgBufferSize, Vecteur position);
+	CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> bricks, Vecteur position);
 	~CSG_message();
 
 	char* getCsgBuffer() { return csgBuffer; };
 	int getCsgBufferSize() { return csgBufferSize; };
+	vector<Brick> getBricks() { return bricks; };
 	Vecteur getPosition() { return position; };
 };
 

@@ -7,7 +7,7 @@ enum class Node_T : unsigned char
     Difference, Union, Translate, Rotate, Cube, Cylinder, Sphere, END
 };
 
-const float MAX_SIZE = 22;
+const float MAX_SIZE = 20;
 
 fstream myfile;
 
@@ -20,7 +20,7 @@ void writeFloat(float f) {
 }
 
 void createMugByteCode() {
-    myfile.open("out.bc", ios::binary | ios::out);
+    myfile.open("mug.bc", ios::binary | ios::out);
 
     writeType(Node_T::Difference);
     writeType(Node_T::Union);
@@ -48,9 +48,36 @@ void createMugByteCode() {
     myfile.close();
 }
 
+void createCubeByteCode() {
+    myfile.open("cube.bc", ios::binary | ios::out);
+
+    writeType(Node_T::Cube);
+    writeFloat(MAX_SIZE);
+    writeFloat(MAX_SIZE);
+    writeFloat(MAX_SIZE);
+
+    myfile.close();
+}
+
+void createSphereByteCode() {
+    myfile.open("sphere.bc", ios::binary | ios::out);
+
+    writeType(Node_T::Translate);
+    writeFloat(MAX_SIZE/2);
+    writeFloat(MAX_SIZE/2);
+    writeFloat(MAX_SIZE/2);
+
+    writeType(Node_T::Sphere);
+    writeFloat(MAX_SIZE/2); // radius 
+
+    myfile.close();
+}
+
 
 int main() {
     createMugByteCode();
+    createCubeByteCode();
+    createSphereByteCode();
     return 0;
 }
 

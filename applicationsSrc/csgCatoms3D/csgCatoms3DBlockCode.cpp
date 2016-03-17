@@ -16,6 +16,9 @@
 using namespace std;
 using namespace Catoms3D;
 
+extern int difference;
+extern int total;
+
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "CsgCatoms3DBlockCode constructor" << endl;
 	scheduler = Catoms3D::getScheduler();
@@ -37,16 +40,21 @@ void CsgCatoms3DBlockCode::startup() {
     hasPosition = false;
 
 	if (catom->blockId==1) {
-        csgUtils.readCSGFile("out.bc");
-        if (csgUtils.isInCSG(myPosition))
+        csgUtils.readCSGFile("data/mug.bc");
+        stoyUtils.readStoyFile("data/mug-low.stoy");
+        //if (csgUtils.isInCSG(myPosition))
+        if (stoyUtils.isInside(myPosition))
             catom->setColor(YELLOW);
-        else 
-            catom->setColor(PINK);
-            //catom->setVisible(false);
+        else
+        //    catom->setColor(PINK);
+            catom->setVisible(false);
         myPosition = Vecteur(0, 0, 0);
         hasPosition = true;
-
         sendCSGMessage();
+        if (csgUtils.isInCSG(myPosition) != stoyUtils.isInside(myPosition))
+            difference++;
+        if (csgUtils.isInCSG(myPosition))
+            total++;
 	}
 }
 
@@ -67,14 +75,20 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     char *csgBuffer = recv_message->getCsgBuffer();
                     int csgBufferSize = recv_message->getCsgBufferSize();
                     csgUtils.readCSGBuffer(csgBuffer, csgBufferSize);
+                    stoyUtils.setBricks(recv_message->getBricks());
 
                     myPosition = recv_message->getPosition();
                     //catom->setColor(isInCSG() ? YELLOW: PINK);
-                    if (csgUtils.isInCSG(myPosition))
+                    //if (csgUtils.isInCSG(myPosition))
+                    if (stoyUtils.isInside(myPosition))
                         catom->setColor(YELLOW);
                     else 
-                        catom->setColor(PINK);
-                        //catom->setVisible(false);
+                        //catom->setColor(PINK);
+                        catom->setVisible(false);
+                    if (csgUtils.isInCSG(myPosition) != stoyUtils.isInside(myPosition))
+                        difference++;
+                    if (csgUtils.isInCSG(myPosition))
+                        total++;
                     hasPosition = true;
                     sendCSGMessage();
                 }
@@ -93,7 +107,7 @@ void CsgCatoms3DBlockCode::sendCSGMessage() {
                 myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0], 
                 myPosition.pt[1] + Catoms3D::tabConnectorPositions[i][1],
                 myPosition.pt[2] + Catoms3D::tabConnectorPositions[i][2]);
-            CSG_message *message = new CSG_message(csgUtils.getCSGBuffer(), csgUtils.getCSGBufferSize(), pos);
+            CSG_message *message = new CSG_message(csgUtils.getCSGBuffer(), csgUtils.getCSGBufferSize(), stoyUtils.getBricks(), pos);
             scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, message, catom->getInterface(i)));
         }
     }
@@ -104,7 +118,7 @@ Catoms3DBlockCode* CsgCatoms3DBlockCode::buildNewBlockCode(Catoms3DBlock *host) 
 	return(new CsgCatoms3DBlockCode(host));
 }
 
-CSG_message::CSG_message(char *_csgBuffer, int _csgBufferSize, Vecteur pos) {
+CSG_message::CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> _bricks, Vecteur pos) {
 	id = CSG_MSG_ID;
 
     csgBuffer = new char[_csgBufferSize];
@@ -112,6 +126,7 @@ CSG_message::CSG_message(char *_csgBuffer, int _csgBufferSize, Vecteur pos) {
 
     csgBufferSize = _csgBufferSize;
 
+    bricks = _bricks;
     position = pos;
 }
 
