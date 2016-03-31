@@ -1,4 +1,4 @@
-SRCS = csgCatoms3D.cpp csgCatoms3DBlockCode.cpp
+SRCS = csgCatoms3D.cpp csgCatoms3DBlockCode.cpp csgUtils.cpp stoyUtils.cpp
 
 OUT = csgCatoms3D
 

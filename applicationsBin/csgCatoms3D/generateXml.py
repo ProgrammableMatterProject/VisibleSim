@@ -4,13 +4,13 @@ def main(argv):
     try:
         x = int(argv[1])
 
-        print x
+        print(x)
         file = open("config.xml", "w")
         file.write('<?xml version="1.0" standalone="no" ?>\n\
 <world gridSize="%d, %d, %d">\n\
-    <camera target="50,50,10" directionSpherical="-20,30,100" angle="45" near="0.01" far="250.0" />\n\
-    <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="30" near="80.0" far="250.0"/>\n\
-    <blockList color="128,128,128" blocksize="10,10,10">\n\n' % (x+5, x+5, x+5))
+    <camera target="50,50,0" directionSpherical="-20,30,%d" angle="45" near="0.01" far="2500.0" />\n\
+    <spotlight target="50,50,0" directionSpherical="-35,40,1500" angle="30" near="80.0" far="2500.0"/>\n\
+    <blockList color="128,128,128" blocksize="10,10,10">\n\n' % (x+5, x+5, x+5, 100+x*10))
 	
         for i in range(x):
             for j in range(x):

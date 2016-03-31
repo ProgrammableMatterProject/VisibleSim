@@ -13,6 +13,9 @@
 using namespace std;
 using namespace Catoms3D;
 
+int difference = 0;
+int total = 0;
+
 int main(int argc, char **argv) {
 	cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
 
@@ -28,6 +31,8 @@ int main(int argc, char **argv) {
 	deleteSimulator();
 
 	cout << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
+    cout << "Difference = " << difference << endl;
+    cout << "Total = " << total << endl;
 
 	return(0);
 }

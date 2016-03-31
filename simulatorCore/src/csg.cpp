@@ -6,7 +6,8 @@ void Cube::print() {
 }
 
 bool Cube::isInside(Vecteur basePos, Vecteur p) {
-    if (center) {
+    //center
+    if (false) {
         if (fabs(p.pt[0] - basePos.pt[0]) < size_x/2 && fabs(p.pt[1] - basePos.pt[1]) < size_y/2 && fabs(p.pt[2] - basePos.pt[2]) < size_z/2)
             return true;
     }

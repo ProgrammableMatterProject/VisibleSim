@@ -11,7 +11,7 @@
 #include <vector>
 #include "vecteur.h"
 
-enum class node_t {bool_op, shape, transformation};
+enum class node_t {bool_op, shape, transformation, null};
 
 class Shape3D
 {
@@ -27,10 +27,8 @@ public:
     double size_x;
     double size_y;
     double size_z;
-    bool center;
 
-    Cube (double _size_x, double _size_y, double _size_z) : size_x(_size_x), size_y(_size_y), size_z(_size_z), center(false){};
-    Cube (double _size_x, double _size_y, double _size_z, bool _center) : size_x(_size_x), size_y(_size_y), size_z(_size_z), center(_center){};
+    Cube (double _size_x, double _size_y, double _size_z) : size_x(_size_x), size_y(_size_y), size_z(_size_z) {};
     virtual ~Cube() {};
 
     void print();

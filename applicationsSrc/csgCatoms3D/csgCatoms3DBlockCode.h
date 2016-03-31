@@ -5,8 +5,8 @@
  *  Author: Thadeu
  */
 
-#ifndef SIMPLECATOM3DBLOCKCODE_H_
-#define SIMPLECATOM3DBLOCKCODE_H_
+#ifndef CSGCATOMS3DBLOCKCODE_H_
+#define CSGCATOMS3DBLOCKCODE_H_
 
 #define CSG_MSG_ID	9001
 
@@ -17,7 +17,8 @@
 #include "catoms3DBlock.h"
 #include "scheduler.h"
 #include "events.h"
-#include "csg.h"
+#include "csgUtils.h"
+#include "stoyUtils.h"
 
 class CSG_message;
 
@@ -27,9 +28,10 @@ class CsgCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
 	Catoms3D::Catoms3DScheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
-    Vecteur myPosition;
-    bool hasPosition;
-    CsgNode csgTree;
+    Vecteur myPosition; // has relative position from the master
+    bool hasPosition; // already has his position
+    CsgUtils csgUtils;
+    StoyUtils stoyUtils;
 
 	CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~CsgCatoms3DBlockCode();
@@ -38,24 +40,25 @@ public:
 	void processLocalEvent(EventPtr pev);
     void createCSG();
     void sendCSGMessage();
-    bool isInCSG();
-    bool isInCSG(CsgNode &node, Vecteur basePosition);
 
 	static Catoms3D::Catoms3DBlockCode *buildNewBlockCode(Catoms3D::Catoms3DBlock *host);
 
 };
 
 class CSG_message : public Message {
-	CsgNode csgTree; //TODO check dangling pointer here
+    char *csgBuffer;
+    int csgBufferSize;
     Vecteur position;
-
+    vector<Brick> bricks;
 public :
-	CSG_message(CsgNode, Vecteur position);
+	CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> bricks, Vecteur position);
 	~CSG_message();
 
-	CsgNode getCsgTree() { return csgTree; };
+	char* getCsgBuffer() { return csgBuffer; };
+	int getCsgBufferSize() { return csgBufferSize; };
+	vector<Brick> getBricks() { return bricks; };
 	Vecteur getPosition() { return position; };
 };
 
 
-#endif /* SIMPLECATOM3DBLOCKCODE_H_ */
+#endif /* CSGCATOMS3DBLOCKCODE_H_ */

@@ -15,6 +15,7 @@ loading ../../simulatorCore/smartBlocksTextures/boutons_fg.tga
 loading ../../simulatorCore/smartBlocksTextures/boutons_fd.tga
 loading ../../simulatorCore/smartBlocksTextures/slider.tga
 loading ../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga
+Error : can't open ../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga
 loading ../../simulatorCore/smartBlocksTextures/boutons_fg.tga
 loading ../../simulatorCore/smartBlocksTextures/boutons_fd.tga
 loading ../../simulatorCore/smartBlocksTextures/slider.tga
