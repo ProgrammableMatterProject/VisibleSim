@@ -2,7 +2,7 @@
 #include <algorithm>
 
 const bool truthTable[9][5]={ {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,1}, {1,0,0,0,0}, {0,0,0,1,0}, {0,0,0,1,1}, {1,1,1,1,1} };
-//const bool truthTable0[9][5]={{1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,1,0,0,0}, {0,1,0,0,0}, {1,1,1,1,0} };
+const bool truthTable0[9][5]={{1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,1,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,1,0,0,0}, {0,1,0,0,0}, {1,1,1,1,0} };
 const short gainTable[9][4]={ {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,1,0,0}, {1,0,0,0}, {0,0,0,0}, {0,0,0,0} };
 const short rotDir[4][4]={ {0,1,2,3},{1,2,3,0},{2,3,0,1},{3,0,1,2} };
 namespace SmartBlocks {
@@ -430,7 +430,7 @@ vector <Validation*> *SmartBlocksCapabilities::validateMulti(const PresenceMatri
 	return tabValid;
 }
 */
-/*
+
 vector <Validation*> *SmartBlocksCapabilities::validateToTarget(const PresenceMatrix &pm,const PointCel &dirToO) {
 	vector<Capability*>::const_iterator it = tabCapabilities.begin();
 	vector<Validation*> *tabValid = new vector<Validation*>();
@@ -453,7 +453,7 @@ vector <Validation*> *SmartBlocksCapabilities::validateToTarget(const PresenceMa
 	//std::sort(tabValid->begin(),tabValid->end(),compare);
 	return tabValid;
 }
-*/
+
 
 /**************************************BPi************************************/
 /* ValidationMatrix                                                               */

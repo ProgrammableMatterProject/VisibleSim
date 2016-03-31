@@ -24,8 +24,8 @@ class Event;
 typedef boost::shared_ptr<Event> EventPtr;
 
 #ifdef DEBUG_EVENTS
-#define EVENT_CONSTRUCTOR_INFO()			(cout << getEventName() << " constructor (" << id << ")" << endl)
-#define EVENT_DESTRUCTOR_INFO()				(cout << getEventName() << " destructor (" << id << ")" << endl)
+#define EVENT_CONSTRUCTOR_INFO()			(OUTPUT << getEventName() << " constructor (" << id << ")" << endl)
+#define EVENT_DESTRUCTOR_INFO()				(OUTPUT << getEventName() << " destructor (" << id << ")" << endl)
 #else
 #define EVENT_CONSTRUCTOR_INFO()
 #define EVENT_DESTRUCTOR_INFO()
@@ -37,13 +37,11 @@ typedef boost::shared_ptr<Event> EventPtr;
 #define EVENT_CONSUME_INFO()
 #endif
 
-
 //===========================================================================================================
 //
 //          Event  (class)
 //
 //===========================================================================================================
-
 
 class Event {
 protected:
@@ -55,7 +53,7 @@ public:
 	uint64_t date;		// time at which the event will be processed. 0 means simulation start
 	int eventType;		// see the various types at the beginning of this file
 	int randomNumber;
-	
+
 	Event(uint64_t t);
 	Event(Event *ev);
 	virtual ~Event();
@@ -75,14 +73,14 @@ public:
 //===========================================================================================================
 
 class BlockEvent : public Event {
-	
+
 protected:
 	BaseSimulator::BuildingBlock *concernedBlock;
 	BlockEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock);
 	BlockEvent(BlockEvent *ev);
 	virtual ~BlockEvent();
 	virtual const string getEventName();
-	
+
 public:
 	BaseSimulator::BuildingBlock* getConcernedBlock() {return concernedBlock;};
 	virtual void consumeBlockEvent() = 0;

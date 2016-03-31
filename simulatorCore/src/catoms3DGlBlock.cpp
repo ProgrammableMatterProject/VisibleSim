@@ -25,11 +25,13 @@ void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 		c[3]=1.0;
 		ptrObj->setLightedColor(c);
 	} else {
+       // if (color[3]==0) { glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); }
 		ptrObj->setLightedColor(color);
 	}
 	glDisable(GL_CULL_FACE);
-	ptrObj->glDraw();
+	if (color[3]>0) ptrObj->glDraw();
 	glEnable(GL_CULL_FACE);
+	//glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     glPopMatrix();
 }
 

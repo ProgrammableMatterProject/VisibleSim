@@ -128,12 +128,10 @@ void BuildingBlock::processLocalEvent() {
 	pev = localEventsList.front();
 	localEventsList.pop_front();
 	blockCode->processLocalEvent(pev);
-
 	if (blockCode->availabilityDate < getScheduler()->now()) blockCode->availabilityDate = getScheduler()->now();
 	if (localEventsList.size() > 0) {
 		getScheduler()->schedule(new ProcessLocalEvent(blockCode->availabilityDate,this));
 	}
-
 }
 
 int BuildingBlock::getNextRandomNumber() {

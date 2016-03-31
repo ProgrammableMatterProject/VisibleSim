@@ -315,7 +315,7 @@ void GlutContext::idleFunc(void) {
 #else
 	  usleep(20000);
 #endif
-    calculateFPS();
+    //calculateFPS();
 	if (saveScreenMode && mustSaveImage) {
 		static int num=0;
 		char title[16];
@@ -355,7 +355,7 @@ void GlutContext::calculateFPS(void) {
         fps = frameCount / (timeInterval / 1000.0f);
         previousTime = currentTime;
         frameCount = 0;
-    } 
+    }
 }
 
 void GlutContext::showFPS(void) {
@@ -396,7 +396,7 @@ void GlutContext::drawFunc(void) {
 	popup->glDraw();
 	if (popupMenu) popupMenu->glDraw();
 	if (helpWindow) helpWindow->glDraw();
-    showFPS();
+    //showFPS();
 
     glEnable(GL_DEPTH_TEST);
 	glutSwapBuffers();

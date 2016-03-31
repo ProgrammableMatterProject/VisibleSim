@@ -23,11 +23,11 @@ CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp ca
 CATOMS2D_OBJS = $(CATOMS2D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 CATOMS2D_DEPS = $(CATOMS2D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
-CATOMS3D_SRCS = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DScheduler.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DCapabilities.cpp catoms3DEvents.cpp skeleton.cpp csg.cpp
+CATOMS3D_SRCS = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DScheduler.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DCapabilities.cpp catoms3DEvents.cpp skeleton.cpp csg.cpp catoms3DGeneric.cpp
 CATOMS3D_OBJS = $(CATOMS3D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 CATOMS3D_DEPS = $(CATOMS3D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
-SMARTBLOCKS_SRCS = smartBlocksSimulator.cpp smartBlocksBlock.cpp smartBlocksBlockCode.cpp smartBlocksScheduler.cpp smartBlocksWorld.cpp smartBlocksGlBlock.cpp smartBlocksCapabilities.cpp smartBlocksEvents.cpp skeleton.cpp 
+SMARTBLOCKS_SRCS = smartBlocksSimulator.cpp smartBlocksBlock.cpp smartBlocksBlockCode.cpp smartBlocksScheduler.cpp smartBlocksWorld.cpp smartBlocksGlBlock.cpp smartBlocksCapabilities.cpp smartBlocksEvents.cpp skeleton.cpp
 SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
@@ -36,7 +36,8 @@ SRCS = $(BASESIMULATOR_SRCS) $(MULTICORES_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOC
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
-OUT = libsimMultiCores.a libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
+#OUT = libsimMultiCores.a libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
+OUT = libsimCatom3D.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -63,8 +64,9 @@ CC = g++
 .cpp.o:
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
 
-all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
-
+#all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
+all: libsimCatoms3D.a
+	
 #$(OUT)
 
 #$(OUT): $(OBJS)
@@ -109,4 +111,3 @@ clean:
 
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-

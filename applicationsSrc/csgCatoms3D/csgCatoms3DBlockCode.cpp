@@ -13,7 +13,7 @@
 #include "events.h"
 #include <boost/shared_ptr.hpp>
 
-#define MAX_SIZE 32
+#define MAX_SIZE 24
 
 using namespace std;
 using namespace Catoms3D;
@@ -34,7 +34,7 @@ void CsgCatoms3DBlockCode::createCSG() {
     CsgNode union1(node_t::bool_op, new BoolOperator(BoolOperator::bool_operator_t::bool_union));
     CsgNode cube1(node_t::shape, new Cube(MAX_SIZE, MAX_SIZE, MAX_SIZE/8));
 
-    CsgNode translate(node_t::transformation, 
+    CsgNode translate(node_t::transformation,
         new Transformation(Transformation::transformation_t::translate, MAX_SIZE/2, MAX_SIZE/2, MAX_SIZE/8));
     CsgNode cylinder1(node_t::shape, new Cylinder(MAX_SIZE, MAX_SIZE/2));
     translate.addChild(cylinder1);
@@ -58,7 +58,7 @@ void CsgCatoms3DBlockCode::startup() {
 	info << "Starting ";
 
     Vecteur basePosition(4, 4, 4);
-    info << "POSITION = " << catom->position << endl;
+    info << "init position = " << catom->position;
 	scheduler->trace(info.str(),hostBlock->blockId);
     hasPosition = false;
 
@@ -66,8 +66,8 @@ void CsgCatoms3DBlockCode::startup() {
         createCSG();
         if (isInCSG())
             catom->setColor(YELLOW);
-        else 
-            catom->setVisible(false);
+        else
+            catom->setColor(PINK);
         myPosition = Vecteur(0, 0, 0);
         hasPosition = true;
 
@@ -90,11 +90,18 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     CSG_message_ptr recv_message = boost::static_pointer_cast<CSG_message>(message);
                     csgTree = recv_message->getCsgTree();
                     myPosition = recv_message->getPosition();
+                    info.str("");
+                    info << "pos/master = " << myPosition;
+
                     catom->setColor(isInCSG() ? YELLOW: PINK);
-                    if (isInCSG())
+                    if (isInCSG()) {
                         catom->setColor(YELLOW);
-                    else 
-                        catom->setVisible(false);
+                        info << " [IN]";
+                    } else {
+                        //catom->setVisible(false);
+                        info << " [OUT]";
+                    }
+                    scheduler->trace(info.str(),hostBlock->blockId);
                     hasPosition = true;
                     sendCSGMessage();
                 }
@@ -110,7 +117,7 @@ void CsgCatoms3DBlockCode::sendCSGMessage() {
     for (int i = 0; i < 12; i++) {
         if (catom->getInterface(i)->connectedInterface != NULL) {
             Vecteur pos(
-                myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0], 
+                myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0],
                 myPosition.pt[1] + Catoms3D::tabConnectorPositions[i][1],
                 myPosition.pt[2] + Catoms3D::tabConnectorPositions[i][2]);
             CSG_message *message = new CSG_message(csgTree, pos);

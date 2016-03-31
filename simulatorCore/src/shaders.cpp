@@ -109,6 +109,7 @@ void initShaders() {
 	  ERRPUT << "erreur affectation : textureEnable\n";
   }
 
+
   // texture pour le shadow mapping
   glGenFramebuffersEXT(1, &id_fb);	// identifiant pour la texture
   glGenTextures(1, &depth_tex);													// and a new texture used as a color buffer
@@ -128,7 +129,6 @@ void initShaders() {
   glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, color_rb);							// bind the depth renderbuffer
   glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,GL_RGBA,2048, 2048);	// get the data space for it
   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_RENDERBUFFER_EXT, color_rb); // bind it to the renderbuffer
-
 
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
