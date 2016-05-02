@@ -40,6 +40,7 @@ Scheduler::Scheduler() {
 }
 
 Scheduler::~Scheduler() {
+    removeKeywords();
 	OUTPUT << "Scheduler destructor" << endl;
 }
 
@@ -137,9 +138,22 @@ void Scheduler::restart() {
 }
 
 bool Scheduler::debug(const string &command,int &id,string &result) {
-    static int currentId=1;
     ostringstream sout;
     sout.str("");
+    if (command=="help") {
+        sout << "run\nstep\n";
+        sout << "get@id:attribute\nAttributes:\n";
+        vector<Keyword*>::const_iterator ci = tabKeywords.begin();
+        while (ci!=tabKeywords.end()) {
+            sout << (*ci)->id;
+            if ((*ci)->comment!="") sout << "// " << (*ci)->comment << "\n";
+            else sout << "\n";
+            ci++;
+        }
+
+        result = sout.str();
+        return false;
+    }
     if (command=="run") {
         restart();
         return false;
@@ -149,7 +163,7 @@ bool Scheduler::debug(const string &command,int &id,string &result) {
         restart();
         return false;
     }
-    if (command.substr(0,3)=="get") {
+/*    if (command.substr(0,3)=="get") {
 // command get@id:attribute
         size_t found = command.find(":");
         if (command.at(3)=='@') {
@@ -158,7 +172,7 @@ bool Scheduler::debug(const string &command,int &id,string &result) {
                 if (idc>0 && idc<getWorld()->getNbBlocks()) {
                     currentId=idc;
                 } else {
-                    sout << "Erreur bad blockId, use @" << currentId <<" instead.\n";
+                    sout << "Error: bad blockId, use @" << currentId <<" instead.\n";
                 }
             }
         }
@@ -166,7 +180,7 @@ bool Scheduler::debug(const string &command,int &id,string &result) {
         //sout << "@" << currentId << ":" << sout.str();
         result = sout.str();
         id = currentId;
-    }
+    }*/
     return true;
 }
 

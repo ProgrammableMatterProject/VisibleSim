@@ -318,8 +318,8 @@ void Catoms2DWorld::glDraw() {
 	glPopMatrix();
 
 
-	static const GLfloat white[]={1.0,1.0,1.0,1.0},
-			gray[]={0.6,0.6,0.6,1.0};
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},gray[]={0.2f,0.2f,0.2f,1.0f};
+
 	glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
 	glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
 	glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
@@ -327,75 +327,75 @@ void Catoms2DWorld::glDraw() {
 	glPushMatrix();
         enableTexture(true);
 		glBindTexture(GL_TEXTURE_2D,idTextureLines);
-		glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT3_2);
+		glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],blockSize[2]+(gridSize[2]-1)*blockSize[2]*M_SQRT3_2);
 		glBegin(GL_QUADS);
 		// bottom
 			glNormal3f(0,0,1.0f);
-			glTexCoord2f(0,0);
+			glTexCoord2f(1.0f,0.25f);
 			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(gridSize[0],0);
+			glTexCoord2f(1.0f,gridSize[0]+0.25f);
 			glVertex3f(1.0f,0.0f,0.0f);
-			glTexCoord2f(gridSize[0],gridSize[1]);
+			glTexCoord2f(0,gridSize[0]+0.25f);
 			glVertex3f(1.0,1.0,0.0f);
-			glTexCoord2f(0,gridSize[1]);
+			glTexCoord2f(0,0.25f);
 			glVertex3f(0.0,1.0,0.0f);
 		// top
 			glNormal3f(0,0,-1.0f);
-			glTexCoord2f(0,0);
+			glTexCoord2f(1.0f,0.25f);
 			glVertex3f(0.0f,0.0f,1.0f);
-			glTexCoord2f(0,gridSize[1]);
+			glTexCoord2f(0,0.25f);
 			glVertex3f(0.0,1.0,1.0f);
-			glTexCoord2f(gridSize[0],gridSize[1]);
+			glTexCoord2f(0,gridSize[0]+0.25f);
 			glVertex3f(1.0,1.0,1.0f);
-			glTexCoord2f(gridSize[0],0);
+			glTexCoord2f(1.0f,gridSize[0]+0.25f);
 			glVertex3f(1.0f,0.0f,1.0f);
 		// left
 			glNormal3f(1.0f,0,0);
-			glTexCoord2f(0,0);
+			glTexCoord2f(0,0.25f*M_SQRT3_2);
 			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(0,1.0f);
+			glTexCoord2f(1.0f,0.25f*M_SQRT3_2);
 			glVertex3f(0.0f,1.0f,0.0f);
-			glTexCoord2f(1.0f,1.0f);
+			glTexCoord2f(1.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
 			glVertex3f(0.0,1.0,1.0f);
-			glTexCoord2f(1.0f,0.0);
+			glTexCoord2f(0.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
 			glVertex3f(0.0,0.0,1.0f);
 		// right
 			glNormal3f(-1.0f,0,0);
-			glTexCoord2f(0,0);
+			glTexCoord2f(0,0.25f*M_SQRT3_2);
 			glVertex3f(1.0f,0.0f,0.0f);
-			glTexCoord2f(1.0f,0.0f);
+			glTexCoord2f(0.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
 			glVertex3f(1.0,0.0,1.0f);
-			glTexCoord2f(1.0f,1.0f);
+			glTexCoord2f(1.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
 			glVertex3f(1.0,1.0,1.0f);
-			glTexCoord2f(0,1.0f);
+			glTexCoord2f(1.0f,0.25f*M_SQRT3_2);
 			glVertex3f(1.0f,1.0f,0.0f);
 		glEnd();
     glPopMatrix();
 	// draw hexa
 	glPushMatrix();
 		glBindTexture(GL_TEXTURE_2D,idTextureHexa);
-		glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT3_2);
+		glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],blockSize[2]+(gridSize[2]-1)*blockSize[2]*M_SQRT3_2);
+		float h=((gridSize[2]-1)+1.0/M_SQRT3_2)/2.0;
         glBegin(GL_QUADS);
-
 		// back
 			glNormal3f(0,-1.0,0);
 			glTexCoord2f(0,0);
 			glVertex3f(0.0f,1.0f,0.0f);
 			glTexCoord2f(gridSize[0]/3.0f,0);
 			glVertex3f(1.0f,1.0f,0.0f);
-			glTexCoord2f(gridSize[0]/3.0f,gridSize[2]/2.0f);
+			glTexCoord2f(gridSize[0]/3.0f,h);
 			glVertex3f(1.0f,1.0,1.0f);
-			glTexCoord2f(0,gridSize[2]/2.0f);
+			glTexCoord2f(0,h);
 			glVertex3f(0.0,1.0,1.0f);
 		// front
 			glNormal3f(0,1.0,0);
 			glTexCoord2f(0,0);
 			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(0,gridSize[2]);
+			glTexCoord2f(0,h);
 			glVertex3f(0.0,0.0,1.0f);
-			glTexCoord2f(gridSize[0],gridSize[2]);
+			glTexCoord2f(gridSize[0]/3.0f,h);
 			glVertex3f(1.0f,0.0,1.0f);
-			glTexCoord2f(gridSize[0],0);
+			glTexCoord2f(gridSize[0]/3.0f,0);
 			glVertex3f(1.0f,0.0f,0.0f);
 		glEnd();
 	glPopMatrix();
@@ -408,7 +408,7 @@ void Catoms2DWorld::glDraw() {
 
 void Catoms2DWorld::glDrawId() {
 	glPushMatrix();
-	glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
+	glTranslatef(0.5*blockSize[0],0,0.5*blockSize[2]);
 	glDisable(GL_TEXTURE_2D);
 	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 	int n=1;

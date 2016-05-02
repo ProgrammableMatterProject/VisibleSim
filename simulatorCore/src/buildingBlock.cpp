@@ -142,8 +142,4 @@ int BuildingBlock::getNextRandomNumber() {
 	return x;
 }
 
-bool BuildingBlock::getAttribute(const string &str,ostringstream &sout) {
-    return blockCode->getAttribute(str,sout);
-}
-
 } // BaseSimulator namespace

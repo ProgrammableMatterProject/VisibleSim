@@ -22,7 +22,12 @@ Catoms3DBlockCode::~Catoms3DBlockCode() {
 	OUTPUT << "Catoms3DBlockCode destructor" << endl;
 }
 
-bool Catoms3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
+void Catoms3DBlockCode::addDebugAttributes(Scheduler *scheduler) {
+ /*   Catoms3DBlock *catom = (Catoms3DBlock*)(hostBlock);
+    scheduler->addKeyword(new KeywordT<short>("orientationCode",&catom->orientationCode,"orientation of the block"));*/
+}
+
+/*bool Catoms3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
 
     Catoms3DBlock *catom = (Catoms3DBlock*)(hostBlock);
 
@@ -63,5 +68,5 @@ bool Catoms3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
     sout << "attribute "<< att << " unknown!" << endl;
     return false;
 }
-
+*/
 }

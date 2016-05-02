@@ -15,11 +15,11 @@ BLINKYBLOCKS_SRCS = $(DEBUGGER) blinkyBlocksSimulator.cpp blinkyBlocksBlock.cpp 
 BLINKYBLOCKS_OBJS = $(BLINKYBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 BLINKYBLOCKS_DEPS = $(BLINKYBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
-ROBOTBLOCKS_SRCS = robotBlocksSimulator.cpp robotBlocksBlock.cpp robotBlocksBlockCode.cpp robotBlocksScheduler.cpp robotBlocksWorld.cpp robotBlocksGlBlock.cpp robotBlocksCapabilities.cpp robotBlocksEvents.cpp
+ROBOTBLOCKS_SRCS = robotBlocksSimulator.cpp robotBlocksBlock.cpp robotBlocksBlockCode.cpp robotBlocksScheduler.cpp robotBlocksWorld.cpp robotBlocksGlBlock.cpp robotBlocksCapabilities.cpp robotBlocksEvents.cpp robotBlocksGeneric.cpp
 ROBOTBLOCKS_OBJS = $(ROBOTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 ROBOTBLOCKS_DEPS = $(ROBOTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
-CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DScheduler.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DCapabilities.cpp catoms2DEvents.cpp
+CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DScheduler.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DCapabilities.cpp catoms2DEvents.cpp catoms2DGeneric.cpp
 CATOMS2D_OBJS = $(CATOMS2D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 CATOMS2D_DEPS = $(CATOMS2D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
@@ -36,8 +36,8 @@ SRCS = $(BASESIMULATOR_SRCS) $(MULTICORES_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOC
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
-#OUT = libsimMultiCores.a libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
-OUT = libsimCatom3D.a
+OUT = libsimMultiCores.a libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
+#OUT = libsimCatom3D.a libsimRobotBlocks.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -64,9 +64,9 @@ CC = g++
 .cpp.o:
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
 
-#all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
-all: libsimCatoms3D.a
-	
+all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
+#all: libsimCatoms3D.a libsimRobotBlocks.a
+
 #$(OUT)
 
 #$(OUT): $(OBJS)

@@ -106,7 +106,6 @@ bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
     realPos.pt[1]*=bs[1];
     realPos.pt[2]*=bs[2];
     realPos = ptrGlBlock->mat*realPos;
-
     if (realPos[2]<0) return false;
     pos = wrl->worldToGridPosition(realPos);
     return (pos[0]>=0 && pos[0]<gs[0] &&

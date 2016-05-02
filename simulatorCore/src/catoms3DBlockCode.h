@@ -11,6 +11,7 @@
 #include "blockCode.h"
 #include "catoms3DBlock.h"
 #include "network.h"
+#include "scheduler.h"
 #include <ostream>
 
 namespace Catoms3D {
@@ -26,8 +27,7 @@ public:
 	Catoms3DBlockCode* buildNewBlockCode(Catoms3DBlock *host);
 	virtual void processLocalEvent(EventPtr pev) = 0;
 
-    virtual bool getAttribute(const string &att,ostringstream &sout);
-
+    void addDebugAttributes(Scheduler* scheduler);
 };
 
 }

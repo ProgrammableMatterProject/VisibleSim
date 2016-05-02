@@ -28,12 +28,26 @@ using namespace std;
 
 namespace BaseSimulator {
 
+class Keyword {
+public :
+    string id;
+    string comment;
+    Keyword(string i,string c):id(i),comment(c) {};
+};
+
+template <typename T> class KeywordT:public Keyword {
+    T *ptrData;
+public:
+    KeywordT(string i,T *ptr,string comment=""):ptrData(ptr),Keyword(i,comment) {};
+};
+
 class Scheduler {
 protected:
 	static Scheduler *scheduler;
 	int schedulerMode;
 	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
 	boost::thread *schedulerThread;
+	vector <Keyword*> tabKeywords;
 
 	uint64_t currentDate;
 	uint64_t maximumDate;
@@ -55,7 +69,7 @@ public:
 		return(scheduler);
 	}
 	static void deleteScheduler() {
-		delete(scheduler);
+    	delete(scheduler);
 		scheduler=NULL;
 	}
 	void setMaximumDate(uint64_t tmax) { maximumDate=tmax; };
@@ -86,6 +100,17 @@ public:
 	inline void waitForSchedulerEnd() {
 			schedulerThread->join();
     }
+    void addKeyword(Keyword *kw) {
+        tabKeywords.push_back(kw);
+    }
+
+    void removeKeywords() {
+        vector<Keyword*>::const_iterator ci = tabKeywords.begin();
+        while (ci!=tabKeywords.end()) {
+            delete (*ci);
+        }
+        tabKeywords.clear();
+    }
 };
 
 inline void deleteScheduler() {
@@ -95,5 +120,42 @@ inline void deleteScheduler() {
 inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
 
 } // BaseSimulator namespace
+
+class ConsoleStream {
+    Scheduler *scheduler;
+    int blockId;
+    stringstream stream;
+    public :
+
+    ConsoleStream() { stream.str(""); };
+    void setInfo(Scheduler*s,int id) {
+        scheduler=s;
+        blockId=id;
+    }
+    void flush() {
+        scheduler->trace(stream.str(),blockId);
+        stream.str("");
+    };
+
+    ConsoleStream& operator<<(const char* value ) {
+        int l=strlen(value);
+        if (value[l-1]=='\n') {
+            string s(value);
+            s = s.substr(0,l-1);
+            stream << s;
+            flush();
+        } else {
+            stream << value;
+        }
+        return *this;
+    }
+
+    template<typename T>
+    ConsoleStream& operator<<( T const& value ) {
+        stream << value;
+        return *this;
+    }
+};
+
 
 #endif /* SCHEDULER_H_ */

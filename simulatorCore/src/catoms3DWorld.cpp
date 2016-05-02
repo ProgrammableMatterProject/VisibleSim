@@ -176,175 +176,7 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 			    OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #" << neighborBlock->blockId << endl;
             }
         }
-/*
-        OUTPUT << "X AXIS" << endl;
-		neighborPos.set(pos[0]+1,pos[1],pos[2]);
-		if (pos[0]<gridSize[0]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-			(ptrBlock)->getInterface(0)->connect(neighborBlock->getInterface(1));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-		} else {
-            (ptrBlock)->getInterface(0)->connect(NULL);
-        }
 
-		neighborPos.set(pos[0]-1,pos[1],pos[2]);
-		if (pos[0]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-			(ptrBlock)->getInterface(1)->connect(neighborBlock->getInterface(0));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-		} else {
-			(ptrBlock)->getInterface(1)->connect(NULL);
-		}
-
-		OUTPUT << "Y AXIS" << endl;
-		neighborPos.set(pos[0],pos[1]+1,pos[2]);
-		if (pos[1]<gridSize[1]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-			(ptrBlock)->getInterface(2)->connect(neighborBlock->getInterface(3));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-		} else {
-            (ptrBlock)->getInterface(2)->connect(NULL);
-        }
-
-        neighborPos.set(pos[0],pos[1]-1,pos[2]);
-		if (pos[1]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-			(ptrBlock)->getInterface(3)->connect(neighborBlock->getInterface(2));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-		} else {
-            (ptrBlock)->getInterface(3)->connect(NULL);
-        }
-
-// 2 cas, z pair / z impair
-        if (pos[2]%2==0) {
-
-            OUTPUT << "ZXY" << endl;
-            neighborPos.set(pos[0],pos[1],pos[2]+1);
-            if (pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(5)->connect(neighborBlock->getInterface(4));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(5)->connect(NULL);
-            }
-            neighborPos.set(pos[0]-1,pos[1]-1,pos[2]-1);
-            if (pos[0]>0 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(4)->connect(neighborBlock->getInterface(5));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(4)->connect(NULL);
-            }
-
-            OUTPUT << "Z-XY" << endl;
-            neighborPos.set(pos[0]-1,pos[1],pos[2]+1);
-            if (pos[0]>0 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(7)->connect(neighborBlock->getInterface(6));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(7)->connect(NULL);
-            }
-            neighborPos.set(pos[0],pos[1]-1,pos[2]-1);
-            if (pos[1]>0 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(6)->connect(neighborBlock->getInterface(7));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(6)->connect(NULL);
-            }
-
-            OUTPUT << "ZX-Y" << endl;
-            neighborPos.set(pos[0],pos[1]-1,pos[2]+1);
-            if (pos[1]>0 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(9)->connect(neighborBlock->getInterface(8));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(9)->connect(NULL);
-            }
-            neighborPos.set(pos[0]-1,pos[1],pos[2]-1);
-            if (pos[0]>0 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(8)->connect(neighborBlock->getInterface(9));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(8)->connect(NULL);
-            }
-
-            OUTPUT << "Z-X-Y" << endl;
-            neighborPos.set(pos[0]-1,pos[1]-1,pos[2]+1);
-            if (pos[0]>0 && pos[1]>0 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(11)->connect(neighborBlock->getInterface(10));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(11)->connect(NULL);
-            }
-            neighborPos.set(pos[0],pos[1],pos[2]-1);
-            if (pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(10)->connect(neighborBlock->getInterface(11));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(10)->connect(NULL);
-            }
-
-        } else {
-            OUTPUT << "ZXY" << endl;
-            neighborPos.set(pos[0]+1,pos[1]+1,pos[2]+1);
-            if (pos[0]<gridSize[0]-1 && pos[1]<gridSize[1]-1 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(5)->connect(neighborBlock->getInterface(4));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(5)->connect(NULL);
-            }
-            neighborPos.set(pos[0],pos[1],pos[2]-1);
-            if (pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(4)->connect(neighborBlock->getInterface(5));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(4)->connect(NULL);
-            }
-
-            OUTPUT << "Z-XY" << endl;
-            neighborPos.set(pos[0],pos[1]+1,pos[2]+1);
-            if (pos[1]<gridSize[1]-1 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(7)->connect(neighborBlock->getInterface(6));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(7)->connect(NULL);
-            }
-
-            neighborPos.set(pos[0]+1,pos[1],pos[2]-1);
-            if (pos[0]<gridSize[0]-1 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(6)->connect(neighborBlock->getInterface(7));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(6)->connect(NULL);
-            }
-
-            OUTPUT << "ZX-Y" << endl;
-            neighborPos.set(pos[0]+1,pos[1],pos[2]+1);
-            if (pos[0]<gridSize[0]-1 && pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(9)->connect(neighborBlock->getInterface(8));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(9)->connect(NULL);
-            }
-            neighborPos.set(pos[0],pos[1]+1,pos[2]-1);
-            if (pos[1]<gridSize[1]-1 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(8)->connect(neighborBlock->getInterface(9));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(8)->connect(NULL);
-            }
-
-            OUTPUT << "Z-X-Y" << endl;
-            neighborPos.set(pos[0],pos[1],pos[2]+1);
-            if (pos[2]<gridSize[2]-1 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(11)->connect(neighborBlock->getInterface(10));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(11)->connect(NULL);
-            }
-            neighborPos.set(pos[0]+1,pos[1]+1,pos[2]-1);
-            if (pos[0]<gridSize[0]-1 && pos[1]<gridSize[1]-1 && pos[2]>0 && (neighborBlock=getGridPtr(neighborPos))!=NULL) {
-                (ptrBlock)->getInterface(10)->connect(neighborBlock->getInterface(11));
-                OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << neighborBlock->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(10)->connect(NULL);
-            }
-        }
-	*/
     }
 
 }
@@ -589,15 +421,19 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrice &mat) {
 
 Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
 	Cell3DPosition res;
-	static const double round=0.5;
-
+	static const double round=0.05;
+    double v;
     res.pt[2] = short(pos[2]/(M_SQRT2_2*blockSize[2])-0.5+round);
     if (res.pt[2]%2==0) {
-        res.pt[0] = short(pos[0]/blockSize[0]-0.5+round);
-        res.pt[1] = short(pos[1]/blockSize[1]-0.5+round);
+        v = (pos[0]-blockSize[0])/blockSize[0]+0.5;
+        res.pt[0] = v<0?short(v-round):short(v+round);
+        v = (pos[1]-blockSize[1])/blockSize[1]+0.5;
+        res.pt[1] = v<0?short(v-round):short(v+round);
     } else {
-        res.pt[0] = short(pos[0]/blockSize[0]-1.0+round);
-        res.pt[1] = short(pos[1]/blockSize[1]-1.0+round);
+        v = (pos[0]-blockSize[0])/blockSize[0];
+        res.pt[0] = v<0?short(v-round):short(v+round);
+        v = (pos[1]-blockSize[1])/blockSize[1];
+        res.pt[1] = v<0?short(v-round):short(v+round);
     }
 	return res;
 }

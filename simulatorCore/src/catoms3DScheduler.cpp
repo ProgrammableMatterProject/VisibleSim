@@ -24,6 +24,7 @@ namespace Catoms3D {
 Catoms3DScheduler::Catoms3DScheduler() {
 	OUTPUT << "Catoms3DScheduler constructor" << endl;
 	state = NOTREADY;
+
 	sem_schedulerStart = new boost::interprocess::interprocess_semaphore(0);
 	schedulerMode = SCHEDULER_MODE_REALTIME;
 	schedulerThread = new thread(bind(&Catoms3DScheduler::startPaused, this));

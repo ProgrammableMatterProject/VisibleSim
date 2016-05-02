@@ -101,6 +101,10 @@ public:
 	bool addToOutgoingBuffer(MessagePtr msg);
 	void send();
 	void connect(P2PNetworkInterface *ni);
+
+    int getConnectedBlockId() {
+        return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:-1;
+	}
 	/*
 	void disconnect();
 	static void setDefaultDataRate(unsigned int rate) { defaultDataRate = rate; }

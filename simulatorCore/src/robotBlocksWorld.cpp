@@ -236,8 +236,8 @@ void RobotBlocksWorld::deleteBlock(RobotBlocksBlock *bb) {
 }
 
 void RobotBlocksWorld::glDraw() {
-	static const GLfloat white[]={1.0,1.0,1.0,1.0},
-			gray[]={0.6,0.6,0.6,1.0};
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+    gray[]={0.2f,0.2f,0.2f,1.0f};
 
 
 	glPushMatrix();
