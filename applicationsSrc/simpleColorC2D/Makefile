@@ -13,9 +13,9 @@ INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 #for linux
 #LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimMultiCores -lm -L/usr/X11/lib -lboost_thread  -lglut -lpthread
 
-LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib -lsimCatoms3D
+LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib -lsimCatoms2D
 
-SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms3D.a
+SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a
 
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
