@@ -4,6 +4,7 @@
 
 static const int SPINNING_TREE_MSG=1001;
 static const int ACK_SP_MSG=1002;
+static const int GO2B_MSG=1003;
 
 enum ConnectorStates { NotConnected=0, IsNotChild, IsChild, StateNotKnown };
 using namespace Catoms2D;
@@ -24,7 +25,7 @@ private:
     ConnectorStates tabChildren[nbreNeighborsMax];
     P2PNetworkInterface *parent; /// parent of the module
 
-    void initTabChildren();
+    void initModuleData();
 
 public :
 	ABCcenterCode(Catoms2DBlock *host):GenericCodeBlock(host) {};
@@ -33,6 +34,7 @@ public :
 	void startup();
 	void mySpinningTreeFunc(const MessageOf<uint16_t>*msg,P2PNetworkInterface *sender);
 	void myAckSPFunc(const MessageOf<ackData>*msg,P2PNetworkInterface *sender);
+	void myGo2BFunc(const MessageOf<uint8_t>*msg,P2PNetworkInterface *sender);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
@@ -43,4 +45,5 @@ public :
 };
 	void _mySpinningTreeFunc(GenericCodeBlock *,MessagePtr,P2PNetworkInterface *sender);
 	void _myAckSPFunc(GenericCodeBlock *,MessagePtr,P2PNetworkInterface *sender);
+	void _myGo2BFunc(GenericCodeBlock *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */

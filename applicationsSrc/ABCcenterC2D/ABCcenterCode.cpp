@@ -2,20 +2,17 @@
 
 Color tabColors[8]={RED,ORANGE,YELLOW,GREEN,CYAN,BLUE,MAGENTA,GREY};
 const int delayMin=100;
-const int delayDelta=1500;
+const int delayDelta=150;
 
 void ABCcenterCode::startup() {
 	addMessageEventFunc(SPINNING_TREE_MSG,_mySpinningTreeFunc);
 	addMessageEventFunc(ACK_SP_MSG,_myAckSPFunc);
+	addMessageEventFunc(GO2B_MSG,_myGo2BFunc);
 
 	console << "start\n";
     srand(time(NULL));
 /// initialisation of module code data
-    moduleDistance=UINT16_MAX; /// unknown;
-    currentDistanceMax=0;
-    parent = NULL;
-    initTabChildren();
-    electedChild=UINT8_MAX; /// unknown
+    initModuleData();
 
      console << "N:";
     for (size_t i=0; i<nbreNeighborsMax; i++) {
@@ -56,17 +53,15 @@ void ABCcenterCode::mySpinningTreeFunc(const MessageOf<uint16_t>*msg, P2PNetwork
     } else {
         ackData v(false,moduleDistance,0);
         sendMessage("ACK_0",new MessageOf<ackData>(ACK_SP_MSG,v),sender,delayMin,delayDelta);
-        tabChildren[module->getDirection(sender)]=IsNotChild;
 
         for (size_t i=0; i<nbreNeighborsMax; i++) {
             if (tabChildren[i]==StateNotKnown && module->getInterface(i)!=parent) nNK++;
-//            else if (tabChildren[i]==IsChild) nCh++;
         }
     }
-//    setColor(tabColors[distance%8]);
     console << "N:";
     for (size_t i=0; i<nbreNeighborsMax; i++) {
-        if (module->getInterface(i)==parent) console << "P ";
+        if (i==electedChild) console << "E ";
+        else if (module->getInterface(i)==parent) console << "P ";
         else console << tabChildren[i] << " ";
     }
     console << "\n";
@@ -74,10 +69,15 @@ void ABCcenterCode::mySpinningTreeFunc(const MessageOf<uint16_t>*msg, P2PNetwork
     if (nNK==0) {
         if (parent==NULL) {
 // initial sender
+            for (size_t i=0; i<nbreNeighborsMax; i++) {
+                if (tabChildren[i]!=NotConnected) {
+                    sendMessage("Go2B",new MessageOf<uint8_t>(GO2B_MSG,(uint8_t)(i==electedChild)),module->getInterface(i),delayMin,delayDelta);
+                }
+            }
+            initModuleData();
         } else {
             ackData v(true,moduleDistance,moduleDistance);
             sendMessage("ACK_1",new MessageOf<ackData>(ACK_SP_MSG,v),parent,delayMin,delayDelta);
-            setColor(PINK);
         }
     }
 
@@ -85,7 +85,7 @@ void ABCcenterCode::mySpinningTreeFunc(const MessageOf<uint16_t>*msg, P2PNetwork
 
 void ABCcenterCode::myAckSPFunc(const MessageOf<ackData>*msg,P2PNetworkInterface *sender) {
     ackData data = *msg->getData();
-    console << "receives ASP d=<" << data.toParent << "," << data.distance << "," << data.distanceMax << "> from " << sender->getConnectedBlockId() << " (" << module->getDirection(sender) << ")\n";
+    console << "receives ACK d=<" << data.toParent << "," << data.distance << "," << data.distanceMax << "> from " << sender->getConnectedBlockId() << " (" << module->getDirection(sender) << ")\n";
     uint8_t senderDirection = module->getDirection(sender);
     if (data.distanceMax>currentDistanceMax) {
         currentDistanceMax=data.distanceMax;
@@ -100,13 +100,19 @@ void ABCcenterCode::myAckSPFunc(const MessageOf<ackData>*msg,P2PNetworkInterface
     for (size_t i=0; i<nbreNeighborsMax; i++) {
         if (tabChildren[i]==StateNotKnown && module->getInterface(i)!=parent) nNK++;
     }
+    console << "nNK="<<nNK<<"\n";
     if (nNK==0) {
         if (parent==NULL) {
 // initial sender
+            for (size_t i=0; i<nbreNeighborsMax; i++) {
+                if (tabChildren[i]!=NotConnected) {
+                    sendMessage("Go2B",new MessageOf<uint8_t>(GO2B_MSG,(uint8_t)(i==electedChild)),module->getInterface(i),delayMin,delayDelta);
+                }
+            }
+            initModuleData();
         } else {
             ackData v(true,moduleDistance,currentDistanceMax);
             sendMessage("ACK_1",new MessageOf<ackData>(ACK_SP_MSG,v),parent,delayMin,delayDelta);
-            setColor(moduleDistance==currentDistanceMax?PINK:LIGHTGREEN);
         }
     }
 
@@ -119,10 +125,42 @@ void ABCcenterCode::myAckSPFunc(const MessageOf<ackData>*msg,P2PNetworkInterface
     console << "\n";
 }
 
-void ABCcenterCode::initTabChildren() {
+void ABCcenterCode::myGo2BFunc(const MessageOf<uint8_t>*msg,P2PNetworkInterface *sender) {
+    uint8_t data = *msg->getData();
+    console << "receives Go2B d=<" << (data?"T":"F") << "> from " << sender->getConnectedBlockId() << " (" << module->getDirection(sender) << ")\n";
+    if (data==0) {
+        for (size_t i=0; i<nbreNeighborsMax; i++) {
+            if (tabChildren[i]==IsChild) {
+                sendMessage("Go2B",new MessageOf<uint8_t>(GO2B_MSG,0),module->getInterface(i),delayMin,delayDelta);
+            }
+        }
+        setColor(DARKGREY);
+    } else {
+        for (size_t i=0; i<nbreNeighborsMax; i++) {
+            if (tabChildren[i]==IsChild) {
+                sendMessage("Go2B",new MessageOf<uint8_t>(GO2B_MSG,(uint8_t)(i==electedChild)),module->getInterface(i),delayMin,delayDelta);
+            }
+        }
+        // B found
+        if (electedChild==UINT8_MAX) {
+            setColor(GREEN);
+        } else {
+            setColor(GREY);
+        }
+    }
+    initModuleData();
+}
+
+
+void ABCcenterCode::initModuleData() {
     for (size_t i=0; i<nbreNeighborsMax; i++) {
         tabChildren[i]=(module->getInterface(i)->connectedInterface==NULL?NotConnected:StateNotKnown);
     }
+    moduleDistance=UINT16_MAX; /// unknown;
+    currentDistanceMax=0;
+    parent = NULL;
+    electedChild=UINT8_MAX; /// unknown
+
 }
 
 void _mySpinningTreeFunc(GenericCodeBlock *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
@@ -135,4 +173,10 @@ void _myAckSPFunc(GenericCodeBlock *codebloc,MessagePtr msg, P2PNetworkInterface
 	ABCcenterCode *cb = (ABCcenterCode*)codebloc;
 	MessageOf<ackData>*msgType = (MessageOf<ackData>*)msg.get();
 	cb->myAckSPFunc(msgType,sender);
+}
+
+void _myGo2BFunc(GenericCodeBlock *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	ABCcenterCode *cb = (ABCcenterCode*)codebloc;
+	MessageOf<uint8_t>*msgType = (MessageOf<uint8_t>*)msg.get();
+	cb->myGo2BFunc(msgType,sender);
 }
