@@ -10,21 +10,26 @@ void ABCcenterCode::startup() {
 
 	console << "start\n";
     srand(time(NULL));
-    // initialize children array
+/// initialisation of module code data
+    moduleDistance=UINT16_MAX; /// unknown;
+    currentDistanceMax=0;
+    parent = NULL;
     initTabChildren();
+    electedChild=UINT8_MAX; /// unknown
 
-    console << "N:";
+     console << "N:";
     for (size_t i=0; i<nbreNeighborsMax; i++) {
-        console << tabChildren[i] << " ";
+        if (i==electedChild) console << "E ";
+        else if (module->getInterface(i)==parent) console << "P ";
+        else console << tabChildren[i] << " ";
     }
     console << "\n";
 
 	if (module->blockId==1) { // master id is 1
         setColor(RED);
-        distance=0;
-        sendMessageToAllNeighbors("ATree",new MessageOf<int>(SPINNING_TREE_MSG,distance),delayMin,delayDelta,0);
+        moduleDistance=0; /// distance of the master
+        sendMessageToAllNeighbors("ATree",new MessageOf<int>(SPINNING_TREE_MSG,moduleDistance),delayMin,delayDelta,0);
 	} else {
-        distance=UINT16_MAX; // unknown
         setColor(LIGHTGREY);
 	}
 }
@@ -33,9 +38,10 @@ void ABCcenterCode::mySpinningTreeFunc(const MessageOf<uint16_t>*msg, P2PNetwork
     uint16_t d = *msg->getData()+1;
     console << "receives SP d=" << d << " from " << sender->getConnectedBlockId() << "\n";
     int nNK=0;
-    if (distance>d) {
+    if (moduleDistance>d) {
         console << "new distance=" << d << "\n";
-        distance = d;
+        moduleDistance = d;
+        currentDistanceMax = moduleDistance;
         parent = sender;
 
         P2PNetworkInterface *p2p;
@@ -43,12 +49,13 @@ void ABCcenterCode::mySpinningTreeFunc(const MessageOf<uint16_t>*msg, P2PNetwork
             p2p = module->getInterface(i);
             if (tabChildren[i]!=NotConnected && p2p!=parent) {
                 tabChildren[i]=StateNotKnown;
-                sendMessage("SP",new MessageOf<uint16_t>(SPINNING_TREE_MSG,distance),p2p,delayMin,delayDelta);
+                sendMessage("SP",new MessageOf<uint16_t>(SPINNING_TREE_MSG,moduleDistance),p2p,delayMin,delayDelta);
                 nNK++;
             }
         }
     } else {
-        sendMessage("ACK_0",new MessageOf<uint16_t>(ACK_SP_MSG,0),sender,delayMin,delayDelta);
+        ackData v(false,moduleDistance,0);
+        sendMessage("ACK_0",new MessageOf<ackData>(ACK_SP_MSG,v),sender,delayMin,delayDelta);
         tabChildren[module->getDirection(sender)]=IsNotChild;
 
         for (size_t i=0; i<nbreNeighborsMax; i++) {
@@ -65,37 +72,51 @@ void ABCcenterCode::mySpinningTreeFunc(const MessageOf<uint16_t>*msg, P2PNetwork
     console << "\n";
 
     if (nNK==0) {
-        sendMessage("ACK_1",new MessageOf<uint8_t>(ACK_SP_MSG,distance),parent,delayMin,delayDelta);
-//        setColor(nCh==0?PINK:tabColors[distance%8]);
+        if (parent==NULL) {
+// initial sender
+        } else {
+            ackData v(true,moduleDistance,moduleDistance);
+            sendMessage("ACK_1",new MessageOf<ackData>(ACK_SP_MSG,v),parent,delayMin,delayDelta);
+            setColor(PINK);
+        }
     }
 
 };
 
-void ABCcenterCode::myAckSPFunc(const MessageOf<uint16_t>*msg,P2PNetworkInterface *sender) {
-    uint16_t d = *msg->getData();
-    console << "receives ASP d=" << d << " from " << sender->getConnectedBlockId() << " (" << module->getDirection(sender) << ")\n";
-    if (d==0) {
-        tabChildren[module->getDirection(sender)]=IsNotChild;
+void ABCcenterCode::myAckSPFunc(const MessageOf<ackData>*msg,P2PNetworkInterface *sender) {
+    ackData data = *msg->getData();
+    console << "receives ASP d=<" << data.toParent << "," << data.distance << "," << data.distanceMax << "> from " << sender->getConnectedBlockId() << " (" << module->getDirection(sender) << ")\n";
+    uint8_t senderDirection = module->getDirection(sender);
+    if (data.distanceMax>currentDistanceMax) {
+        currentDistanceMax=data.distanceMax;
+        electedChild = senderDirection;
+    }
+    if (data.toParent==0) {
+        tabChildren[senderDirection]=(data.distance+1>=moduleDistance)?IsNotChild:StateNotKnown;
     } else {
-        tabChildren[module->getDirection(sender)]=(d>distance)?IsChild:StateNotKnown;
+        tabChildren[senderDirection]=(data.distance>moduleDistance)?IsChild:StateNotKnown;
     }
     int nNK=0;
     for (size_t i=0; i<nbreNeighborsMax; i++) {
         if (tabChildren[i]==StateNotKnown && module->getInterface(i)!=parent) nNK++;
-//        else if (tabChildren[i]==IsChild) nCh++;
     }
     if (nNK==0) {
-        sendMessage("ACK_1",new MessageOf<uint8_t>(ACK_SP_MSG,distance),parent,delayMin,delayDelta);
-//        setColor(nCh==0?PINK:tabColors[distance%8]);
+        if (parent==NULL) {
+// initial sender
+        } else {
+            ackData v(true,moduleDistance,currentDistanceMax);
+            sendMessage("ACK_1",new MessageOf<ackData>(ACK_SP_MSG,v),parent,delayMin,delayDelta);
+            setColor(moduleDistance==currentDistanceMax?PINK:LIGHTGREEN);
+        }
     }
 
     console << "N:";
     for (size_t i=0; i<nbreNeighborsMax; i++) {
-        if (module->getInterface(i)==parent) console << "P ";
+        if (i==electedChild) console << "E ";
+        else if (module->getInterface(i)==parent) console << "P ";
         else console << tabChildren[i] << " ";
     }
     console << "\n";
-
 }
 
 void ABCcenterCode::initTabChildren() {
@@ -112,6 +133,6 @@ void _mySpinningTreeFunc(GenericCodeBlock *codebloc,MessagePtr msg, P2PNetworkIn
 
 void _myAckSPFunc(GenericCodeBlock *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	ABCcenterCode *cb = (ABCcenterCode*)codebloc;
-	MessageOf<uint16_t>*msgType = (MessageOf<uint16_t>*)msg.get();
+	MessageOf<ackData>*msgType = (MessageOf<ackData>*)msg.get();
 	cb->myAckSPFunc(msgType,sender);
 }
