@@ -25,7 +25,7 @@ void Catoms3DSimulator::help() {
 }
 
 Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) : BaseSimulator::Simulator(argc, argv) {
-	OUTPUT << "\033[1;34m" << "Catoms3DSimulator constructor" << "\033[0m" << endl;
+//	OUTPUT << "\033[1;34m" << "Catoms3DSimulator constructor" << "\033[0m" << endl;
 
 	int currentID = 1;
 	Catoms3DWorld *world = NULL;

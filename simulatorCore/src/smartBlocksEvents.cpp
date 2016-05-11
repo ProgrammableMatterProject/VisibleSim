@@ -88,7 +88,7 @@ void MotionStepEvent::consume() {
 	SmartBlocksWorld::getWorld()->updateGlData(rb);
     SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
 
-OUTPUT << rb->blockId << ":" << scheduler->now()<< endl;
+// OUTPUT << rb->blockId << ":" << scheduler->now()<< endl;
     double v=(finalPosition-rb->position)*motionStep;
     if (v<EPS) {
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));

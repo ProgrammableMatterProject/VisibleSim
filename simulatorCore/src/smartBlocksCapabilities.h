@@ -117,7 +117,7 @@ public:
 	~SmartBlocksCapabilities();
 	vector <Validation*> *validateDirection(const PresenceMatrix &sm,const PresenceMatrix &ltm,SmartBlocks::PointCel dir[4]);
 //	vector <Validation*> *validateMulti(const PresenceMatrix &sm,const PresenceMatrix &ltm);
-//	vector <Validation*> *validateToTarget(const PresenceMatrix &sm,const PointCel &dirToO);
+	vector <Validation*> *validateToTarget(const PresenceMatrix &sm,const PointCel &dirToO);
 };
 
 }

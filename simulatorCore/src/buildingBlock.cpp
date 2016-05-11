@@ -128,12 +128,10 @@ void BuildingBlock::processLocalEvent() {
 	pev = localEventsList.front();
 	localEventsList.pop_front();
 	blockCode->processLocalEvent(pev);
-
 	if (blockCode->availabilityDate < getScheduler()->now()) blockCode->availabilityDate = getScheduler()->now();
 	if (localEventsList.size() > 0) {
 		getScheduler()->schedule(new ProcessLocalEvent(blockCode->availabilityDate,this));
 	}
-
 }
 
 int BuildingBlock::getNextRandomNumber() {
@@ -142,10 +140,6 @@ int BuildingBlock::getNextRandomNumber() {
 		x = generator();
 	} while (x <= 0);
 	return x;
-}
-
-bool BuildingBlock::getAttribute(const string &str,ostringstream &sout) {
-    return blockCode->getAttribute(str,sout);
 }
 
 } // BaseSimulator namespace

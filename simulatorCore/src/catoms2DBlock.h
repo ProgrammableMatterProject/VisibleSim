@@ -47,7 +47,7 @@ public:
 	void setPosition(const Vecteur &p);
 	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
-
+	inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[(NeighborDirection::Direction)d]; }
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
 };
 

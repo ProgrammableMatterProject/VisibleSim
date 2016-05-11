@@ -12,6 +12,7 @@
 
 #for linux
 GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system"
+#GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system"
 #GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimSmartBlocks -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system"
 
 #for debug version

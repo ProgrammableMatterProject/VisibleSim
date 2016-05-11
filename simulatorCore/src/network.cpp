@@ -48,6 +48,13 @@ string Message::getMessageName() {
 	return("generic message");
 }
 
+Message* Message::clone() {
+    Message* ptr = new Message();
+    ptr->sourceInterface = sourceInterface;
+    ptr->destinationInterface = destinationInterface;
+    ptr->type = type;
+    return ptr;
+}
 
 //===========================================================================================================
 //
@@ -111,17 +118,18 @@ void P2PNetworkInterface::send() {
 	}
 
 	msg = outgoingQueue.front();
-
 	outgoingQueue.pop_front();
-	transmissionDuration = (msg->size()*8000000ULL)/dataRate;
+//	transmissionDuration = (msg->size()*8000000ULL)/dataRate;
+    transmissionDuration = 20;
+
 
 	messageBeingTransmitted = msg;
 	messageBeingTransmitted->sourceInterface = this;
 	messageBeingTransmitted->destinationInterface = connectedInterface;
 
 	availabilityDate = BaseSimulator::getScheduler()->now()+transmissionDuration;
-	//info << "*** sending (interface " << localId << " of block " << hostBlock->blockId << ")";
-	//getScheduler()->trace(info.str());
+/*	info << "*** sending (interface " << localId << " of block " << hostBlock->blockId << ")";
+	getScheduler()->trace(info.str());*/
 
 	BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStopTransmittingEvent(BaseSimulator::getScheduler()->now()+transmissionDuration, this));
 }

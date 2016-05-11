@@ -35,7 +35,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 	TiXmlNode *node = xmlDoc->FirstChild("world");
 	if (node) {
 		TiXmlElement* worldElement = node->ToElement();
-		const char *attr= worldElement->Attribute("gridsize");
+		const char *attr= worldElement->Attribute("gridSize");
 		int lx,ly,lz;
 		if (attr) {
 			string str=attr;

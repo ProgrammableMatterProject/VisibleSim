@@ -1604,7 +1604,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderSinglePrevious() {
             dirStop = West;
         }
     }
-    P2PNetworkInterface *stop = block->getInterface(dirStop);
+//    P2PNetworkInterface *stop = block->getInterface(dirStop);
     //return (stop && stop->connectedInterface && !((SmartBlocksBlock*)(stop->connectedInterface->hostBlock))->wellPlaced)?stop:block->getInterface(dir);
 
     // a partir de cette position on cherche la derniere cellule pleine

@@ -81,7 +81,6 @@ public:
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
 
 	virtual void stop() {};
-	virtual bool getAttribute(const string &att,ostringstream &sout);
 	/* No guarantee that state value will remind the same, it just avoids
 	 * date race condition.
 	 */

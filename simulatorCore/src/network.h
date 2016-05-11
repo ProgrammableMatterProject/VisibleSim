@@ -54,6 +54,22 @@ public:
 	virtual string getMessageName();
 
 	virtual unsigned int size() { return(4); }
+	virtual Message* clone();
+};
+
+template <class T>
+class MessageOf:public Message {
+    T *ptrData;
+    public :
+    MessageOf(int t,const T &data):Message() { type=t; ptrData = new T(data);};
+    ~MessageOf() { delete ptrData; };
+    T* getData() const { return ptrData; };
+    virtual Message* clone() {
+        MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
+        ptr->sourceInterface = sourceInterface;
+        ptr->destinationInterface = destinationInterface;
+        return ptr;
+    }
 };
 
 //===========================================================================================================
@@ -85,6 +101,10 @@ public:
 	bool addToOutgoingBuffer(MessagePtr msg);
 	void send();
 	void connect(P2PNetworkInterface *ni);
+
+    int getConnectedBlockId() {
+        return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:-1;
+	}
 	/*
 	void disconnect();
 	static void setDefaultDataRate(unsigned int rate) { defaultDataRate = rate; }

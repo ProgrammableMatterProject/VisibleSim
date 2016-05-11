@@ -119,10 +119,10 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             Matrice m_1;
             voisin->getGlBlock()->mat.inverse(m_1);
-            //Rotations rotations(catom,voisin,m_1*Vecteur(-1,1,M_SQRT2),35.26,m_1*Vecteur(-1,-1, -M_SQRT2),35.26);
+            // Rotations rotations(catom,voisin,m_1*Vecteur(-1,1,M_SQRT2),35.26,m_1*Vecteur(-1,-1, -M_SQRT2),35.26);
             Rotations rotations(catom,voisin,m_1*Vecteur(-1,-1,0),45.0,m_1*Vecteur(0,0,1),45.0);
             uint64_t t = scheduler->now()+1002000;
-            //scheduler->schedule(new MotionStartEvent(t,catom,rotations));
+            // scheduler->schedule(new MotionStartEvent(t,catom,rotations));
         }
         break;
         case EVENT_NI_RECEIVE: {
