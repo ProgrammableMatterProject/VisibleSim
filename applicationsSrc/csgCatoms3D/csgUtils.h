@@ -17,16 +17,16 @@ class CsgUtils
 
 public:
     void createCSG(int MAX_SIZE);
-    void readCSGFile(string path_to_file);
+    void readFile(string path_to_file);
     void readCSGBuffer(char *csgBuffer, int csgBufferSize);
     CsgNode getCSGTree() { return csgTree; }
     char * getCSGBuffer() { return csgBuffer; }
     int getCSGBufferSize() { return csgBufferSize; }
-    bool isInCSG(Vecteur catomPosition);
+    bool isInside(Vecteur catomPosition);
 
 private:
     CsgNode readCSGNode();
-    bool isInCSG(CsgNode &node, Vecteur basePosition, Vecteur catomPosition);
+    bool isInside(CsgNode &node, Vecteur basePosition, Vecteur catomPosition);
 };
 
 #endif /* CSGUTILS_H_ */

@@ -11,8 +11,7 @@
 #GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lboost_thread-mt  -lboost_system-mt"
 
 #for linux
-GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system"
-#GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system -lboost_chrono"
 #GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimSmartBlocks -lpthread -lGL -lGLEW -lGLU -lglut -lboost_thread -lboost_system"
 
 #for debug version

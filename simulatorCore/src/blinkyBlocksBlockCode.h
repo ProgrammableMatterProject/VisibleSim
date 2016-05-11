@@ -25,9 +25,9 @@ public:
 	BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
 	virtual ~BlinkyBlocksBlockCode();
 
-	virtual void handleCommand(VMCommand &command) = 0;
-	virtual void handleDeterministicMode(VMCommand &command) = 0;
-	virtual void init() = 0;
+	virtual void handleCommand(VMCommand &command) {};
+	virtual void handleDeterministicMode(VMCommand &command) {} ;
+	virtual void init() {};
 	
 	inline uint64_t getCurrentLocalDate() { return currentLocalDate; }
 

@@ -24,7 +24,7 @@ void CsgUtils::createCSG(int MAX_SIZE) {
     csgTree.addChild(difference);
 }
 
-void CsgUtils::readCSGFile(string path_to_file) {
+void CsgUtils::readFile(string path_to_file) {
     fstream csgFile;
     csgFile.open(path_to_file, ios::binary | ios::in | ios::ate);
     csgBufferSize = csgFile.tellg();
@@ -121,12 +121,12 @@ CsgNode CsgUtils::readCSGNode() {
     }
 }
 
-bool CsgUtils::isInCSG(Vecteur catomPosition) {
+bool CsgUtils::isInside(Vecteur catomPosition) {
     Vecteur v(0,0,0);
-    return isInCSG(csgTree, v, catomPosition);
+    return isInside(csgTree, v, catomPosition);
 }
 
-bool CsgUtils::isInCSG(CsgNode &node, Vecteur basePosition, Vecteur catomPosition) {
+bool CsgUtils::isInside(CsgNode &node, Vecteur basePosition, Vecteur catomPosition) {
     switch (node.getType())
     {
         case node_t::shape: {
@@ -139,7 +139,7 @@ bool CsgUtils::isInCSG(CsgNode &node, Vecteur basePosition, Vecteur catomPositio
             if (t_op->my_type == Transformation::transformation_t::translate) {
                 for (unsigned int i = 0; i < node.vchildren.size(); i++) {
                     Vecteur transf_position(t_op->x, t_op->y, t_op->z);
-                    if (isInCSG(node.vchildren[i], transf_position, catomPosition))
+                    if (isInside(node.vchildren[i], transf_position, catomPosition))
                         return true;
                 }
                 return false;
@@ -150,15 +150,15 @@ bool CsgUtils::isInCSG(CsgNode &node, Vecteur basePosition, Vecteur catomPositio
             BoolOperator* b_op = static_cast<BoolOperator *>(node.getValue());
             if (b_op->my_type == BoolOperator::bool_operator_t::bool_union) {
                 for (unsigned int i = 0; i < node.vchildren.size(); i++) {
-                    if (isInCSG(node.vchildren[i], basePosition, catomPosition))
+                    if (isInside(node.vchildren[i], basePosition, catomPosition))
                         return true;
                 }
             }
             if (b_op->my_type == BoolOperator::bool_operator_t::bool_difference) {
                 if (node.vchildren.size() >= 1) {
-                    if (isInCSG(node.vchildren[0], basePosition, catomPosition)) {
+                    if (isInside(node.vchildren[0], basePosition, catomPosition)) {
                         for (unsigned int i = 1; i < node.vchildren.size(); i++) {
-                            if (isInCSG(node.vchildren[i], basePosition, catomPosition))
+                            if (isInside(node.vchildren[i], basePosition, catomPosition))
                                 return false;
                         }
                         return true;

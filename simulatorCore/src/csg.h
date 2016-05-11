@@ -78,7 +78,7 @@ public:
 class Transformation
 {
 public:
-    enum class transformation_t {translate, rotate};
+    enum class transformation_t {translate, rotate, scale};
     transformation_t my_type;
     double x, y, z;
 

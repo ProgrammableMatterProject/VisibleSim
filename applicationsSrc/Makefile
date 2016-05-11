@@ -1,8 +1,7 @@
 #SUBDIRS = flavio01 blinky01 blinky02 smartBlocks1 leader_election coloration\
 #          coloration_v2
 
-SUBDIRS = ABCcenterC2D
-#SUBDIRS = csgCatoms3D sbReconf
+SUBDIRS = sbReconf simpleCatoms3D csgCatoms3D coloration coloration_v2 sphereCatoms3D sphereBlinky ABCcenterC2D
 
 .PHONY: subdirs $(SUBDIRS)
 
@@ -23,3 +22,4 @@ clean:
 	@for dir in $(SUBDIRS); do \
 	$(MAKE) -C $$dir clean; \
 	done
+
