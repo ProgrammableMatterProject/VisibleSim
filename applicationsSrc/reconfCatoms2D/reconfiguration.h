@@ -20,7 +20,7 @@ public:
 private:
    state_t state;
    Catoms2D::Catoms2DBlock *catom;
-   Map map;
+   Map *map;
 
    void init();
    void tryToMove();
@@ -33,7 +33,7 @@ private:
 
 public:
    
-   Reconfiguration(Catoms2D::Catoms2DBlock *c, Map &m);
+   Reconfiguration(Catoms2D::Catoms2DBlock *c, Map *m);
    ~Reconfiguration();
    void handle(MessagePtr m);
    

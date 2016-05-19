@@ -25,7 +25,7 @@ using namespace Catoms2D;
 #define ROTATION_DIRECTION RelativeDirection::CW
 #define OPPOSITE_ROTATION_DIRECTION RelativeDirection::getOpposite(ROTATION_DIRECTION)
 
-Reconfiguration::Reconfiguration(Catoms2DBlock *c, Map &m): map(m) {
+Reconfiguration::Reconfiguration(Catoms2DBlock *c, Map *m): map(m) {
   catom = c;
   state = UNKNOWN;
   if (c->blockId == 1) {
@@ -54,7 +54,7 @@ void Reconfiguration::handle(MessagePtr m) {
     // Query goes through the perimeter of the concerned cell following the rotation direction
     // identify next neighbor modules on the perimeter of the concerned cell
     nextP2P = catom->getNextInterface(ROTATION_DIRECTION, recv, true);
-    nextCoordinate = map.getPosition(nextP2P);
+    nextCoordinate = map->getPosition(nextP2P);
     if (Map::areNeighbors(nextCoordinate,rsqm->cell)) {
       // forward to this next catom on the border of the queried cell 
     } else {
@@ -98,7 +98,7 @@ void Reconfiguration::tryToMove() {
 }
 
 bool Reconfiguration::isInTarget() {
-  return Map::isInTarget(map.getPosition());
+  return Map::isInTarget(map->getPosition());
 }
 
 bool Reconfiguration::isOnBorder() {
@@ -112,7 +112,7 @@ bool Reconfiguration::isFree() {
 
 Catoms2DMove* Reconfiguration::nextMove() {
   if (isFree()) {
-    Catoms2DBlock* pivot = map.getOnBorderNeighbor(ROTATION_DIRECTION);
+    Catoms2DBlock* pivot = map->getOnBorderNeighbor(ROTATION_DIRECTION);
     return new Catoms2DMove(pivot,ROTATION_DIRECTION);
   }
   return NULL;

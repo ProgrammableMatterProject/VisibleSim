@@ -1,25 +1,27 @@
 #ifndef CTUPLES_H_
 #define CTUPLES_H_
 
-#include "gpsr.h"
 #include "map.h"
 #include "CTuple.hpp"
+#include "catom2D1BlockCode.h"
 #include "localCTupleSpace.hpp"
 
 #define CTUPLES_MSG 15003
 class CTuplesMessage;
 typedef boost::shared_ptr<CTuplesMessage> CTuplesMessage_ptr;
 
+class Catoms2D1BlockCode;
+
 class CTuples {
  private:
   LocalCTupleSpace localCTuples;
   void localOut(CTuple t);
 
-  GPSR &gpsr;
-  Map &map;
-
+  Map *map;
+  Catoms2D1BlockCode *blockCode;
+  
  public:
-  CTuples(GPSR &g, Map &m);
+  CTuples(Catoms2D1BlockCode *bc);
   CTuples(const CTuples &c);
   ~CTuples();
 

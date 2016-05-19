@@ -19,10 +19,13 @@
 //#include "reconfCatoms2DMessages.h"
 #include "segment.h"
 #include "map.h"
-#include "gpsr.h"
 #include "CTuples.h"
+#include "landmarks.h"
 
 #include "reconfiguration.h"
+
+class CTuples;
+class Landmarks;
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  public:
@@ -34,16 +37,19 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   ~Catoms2D1BlockCode ();
 
   // Distributed map construction
-  Map map;
+  Map* map;
 
-  // Geo routing
-  GPSR gpsr;
+  // Geo-routing
+  //GPSR gpsr;
+  
+  //Landmark structure
+  Landmarks* landmarks;
 
   // CTuples system
-  CTuples ctuples;
+  CTuples* ctuples;
   
   // Reconfiguration
-  Reconfiguration reconfiguration;
+  Reconfiguration* reconfiguration;
 
   bool geoTest;
   

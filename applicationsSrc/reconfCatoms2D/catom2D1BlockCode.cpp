@@ -36,13 +36,21 @@ using namespace Catoms2D;
 //#define CENTRALIZED_COMP
 //#define SEND_TARGET_TUPLES
 
-Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host), map(host), gpsr(host,map), ctuples(gpsr,map), reconfiguration(host,map) {
+Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
   scheduler = Catoms2D::getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
   geoTest = false;
+  map = new Map(host);
+  landmarks = new Landmarks(this);
+  ctuples = new CTuples(this);
+  reconfiguration = new Reconfiguration(host,map);
 }
 
-Catoms2D1BlockCode::~Catoms2D1BlockCode() {}
+Catoms2D1BlockCode::~Catoms2D1BlockCode() {
+  delete reconfiguration;
+  delete ctuples;
+  delete map;
+}
 
 /*
 void Catoms2D1BlockCode::updateBorder() {
@@ -61,7 +69,7 @@ bool Catoms2D1BlockCode::canMove() {
   //int nbNeighbors = catom2D->nbNeighbors();
   //int nbConsecutiveNeighbors = catom2D->nbConsecutiveNeighbors();
   //return ((nbNeighbors == 1) || ((nbNeighbors == 2) && (nbConsecutiveNeighbors == 2)));
-  //return reconfiguration.canMove();
+  //return reconfiguration->canMove();
 }
 */
 
@@ -77,8 +85,8 @@ void Catoms2D1BlockCode::startup() {
     //catom2D->startMove(mv);
   }
 #else
-  if (!map.isConnected && (catom2D->position[2] == 0)) {
-    map.connectToHost();
+  if (!map->isConnected && (catom2D->position[2] == 0)) {
+    map->connectToHost();
 #ifdef MAP_DEBUG
     catom2D->setColor(RED);
 #endif
@@ -118,12 +126,12 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     switch(message->type) {
     case GO_MAP_MSG:
     case BACK_MAP_MSG: {
-      bool finished = map.handleMessage(message);
+      bool finished = map->handleMessage(message);
       if (finished) {
-	//ctuples.out(ContextTuple(string("map"), map.getPosition()));
-	reconfiguration.start();
+	//ctuples->out(ContextTuple(string("map"), map->getPosition()));
+	reconfiguration->start();
 
-	if (map.connectedToHost) {
+	if (map->connectedToHost) {
 	  //cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
 	  // Link to PC host simulation:	  
@@ -141,13 +149,13 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	      Catoms2DBlock* c = world->getGridPtr(ix,0,iy);
 	      if (c != NULL) {
 		Coordinate real(ix,iy);
-		Coordinate t =  map.real2Virtual(real);
+		Coordinate t =  map->real2Virtual(real);
 		cout << "@" << catom2D->blockId
-		     << " (" << map.position << ")"
+		     << " (" << map->position << ")"
 		     << " sends \"testGeoRouting\" tuple to @" 
 		     << c->blockId << " (" <<  real << "=>" << t << ")" 
 		     << endl;
-		ctuples.out(ContextTuple(string("testGeoRouting"),t));
+		ctuples->out(ContextTuple(string("testGeoRouting"),t));
 	      }
 	    }
 	  }
@@ -167,9 +175,9 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 		pmax.x = max(pmax.x, ix);
 		pmax.y = max(pmax.y, iy);
 		Coordinate real(ix,iy);
-		Coordinate t =  map.real2Virtual(real);
+		Coordinate t =  map->real2Virtual(real);
 		cout << "target: (" << t.x << " " << t.y << ")" << endl;
-		ctuples.out(ContextTuple(string("target"),t));
+		ctuples->out(ContextTuple(string("target"),t));
 	      }
 	    }
 	  }
@@ -181,18 +189,22 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     }
       break;
     case RECONFIGURATION_MSG: {
-      reconfiguration.handle(message);
+      reconfiguration->handle(message);
     }
       break;
-    case GPSR_PACKET: {
-      MessagePtr m =  gpsr.handleGPSRPacket(message);
+    case LANDMARK_BEACON_MSG : {
+      landmarks->handle(message);
+    }
+      break;
+      //case GPSR_PACKET: {
+      //MessagePtr m =  gpsr.handleGPSRPacket(message);
       /*if (m != NULL) {
 	switch(m->type) {
 	case CTUPLES_MSG: {
-	  ctuples.handleCTuplesMessage(m);
-	  CTuple *t = ctuples.localInp(Tuple(string("target"), map.getPosition()));
+	  ctuples->handleCTuplesMessage(m);
+	  CTuple *t = ctuples->localInp(Tuple(string("target"), map->getPosition()));
 	  if (t != NULL) {
-	    //reconfiguration.setState(Reconfiguration::WELL_PLACED);
+	    //reconfiguration->setState(Reconfiguration::WELL_PLACED);
 	    catom2D->setColor(GREEN);
 	    delete t;
 	  }
@@ -200,7 +212,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 	  break;
 	}
 	}*/
-    }
+      //}
       break;
     default:
       cerr << "unknown message type" << endl;
@@ -211,6 +223,10 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     // identify a free target position
     // 
     //in(new ContextTuple(, string("testGeoRouting")));
+  }
+    break;
+  case LANDMARK_BEACON_EVENT: {
+    landmarks->handle(pev);
   }
     break;
   case  EVENT_TUPLE_QUERY_RESPONSE: {

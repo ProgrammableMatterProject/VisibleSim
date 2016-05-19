@@ -1,9 +1,14 @@
 #include "CTuples.h"
-#include "gpsr.h"
+//#include "gpsr.h"
 
-CTuples::CTuples(GPSR &g, Map &m): gpsr(g), map(m) {}
+//using namespace Catoms2D;
 
-CTuples::CTuples(CTuples const &c): gpsr(c.gpsr), map(c.map){}
+CTuples::CTuples(Catoms2D1BlockCode *bc) {
+  blockCode = bc;
+  map = bc->map;
+}
+
+CTuples::CTuples(CTuples const &c): blockCode(c.blockCode), map(c.map) {}
 
 CTuples::~CTuples() {}
 
@@ -34,7 +39,7 @@ void CTuples::handleCTuplesMessage(MessagePtr msg) {
 }
 
 void CTuples::localOut(CTuple t) {
-  cout << map.position << " stores " << t << endl; 
+  cout << map->position << " stores " << t << endl; 
   localCTuples.out(new CTuple(t));
 }
 
@@ -55,12 +60,12 @@ void CTuples::out(CTuple t) {
   cout << "insert tuple: " << t << endl;
 #endif
   // tuple should maybe stored locally
-  if (t.getPosition() == map.getPosition()) {
+  if (t.getPosition() == map->getPosition()) {
     localOut(t);
   } else {
     // or remotely, send the tuple
     CTuplesMessage *msg = new CTuplesMessage(CTuplesMessage::OUT,t);
-    gpsr.send(map.getPosition(),t.getPosition(),msg);
+    //gpsr.send(map.getPosition(),t.getPosition(),msg);
   }
 }
 
