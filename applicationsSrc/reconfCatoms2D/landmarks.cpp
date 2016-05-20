@@ -1,6 +1,6 @@
 #include "landmarks.h"
 
-//#define LANDMARKS_DEBUG
+#define LANDMARKS_DEBUG
 
 /**** Landmark Class ****/
 #define PROBABILITY_LANDMARK 0.1
@@ -72,14 +72,6 @@ Landmarks::Landmarks(Catoms2D1BlockCode *bc) {
   landmark = new Landmark(bc->hostBlock->blockId);
   landmark->randomDraw();
   mustStop = false;
-
-  if (landmark->isLandmark) {
-#ifdef LANDMARKS_DEBUG
-    cout << bc->hostBlock->blockId << " is landmark!" << endl;
-#endif
-    BaseSimulator::Scheduler *scheduler =  BaseSimulator::getScheduler();
-    scheduleAdvertise(scheduler->now());
-  }
 }
 
 Landmarks::Landmarks(const Landmarks &l) {
@@ -90,6 +82,23 @@ Landmarks::Landmarks(const Landmarks &l) {
 
 Landmarks::~Landmarks() {
   delete landmark;
+}
+
+void Landmarks::start() {
+  if (landmark->isLandmark) {
+#ifdef LANDMARKS_DEBUG
+    cout << blockCode->hostBlock->blockId << " is landmark!" << endl;
+    ((Catoms2D::Catoms2DBlock*)blockCode->hostBlock)->setColor(RED);
+#endif
+    BaseSimulator::Scheduler *scheduler =  BaseSimulator::getScheduler();
+    scheduleAdvertise(scheduler->now());
+  }
+#ifdef LANDMARKS_DEBUG
+  else {
+    ((Catoms2D::Catoms2DBlock*)blockCode->hostBlock)->setColor(GREEN);
+  }
+#endif
+
 }
 
 void Landmarks::scheduleAdvertise(Time t) {
@@ -153,7 +162,14 @@ bool Landmarks::handle(MessagePtr message) {
       LandmarkEntry l(m->id,m->distance,m->position,0);
       bool isNew = update(l);
 
+#ifdef LANDMARKS_DEBUG
+      //cout << "@" << blockCode->hostBlock->blockId << ", message: landmark beacon" << endl;
+#endif
+
       if(isNew) {
+#ifdef LANDMARKS_DEBUG
+	printTable();
+#endif
 	// Broadcast message (distance+1)
 	l.distance++;
 	advertise(l,recv_interface);
@@ -161,6 +177,7 @@ bool Landmarks::handle(MessagePtr message) {
       return true;
     }
   default:
+    cerr << "@" << blockCode->hostBlock->blockId << " unknown landmark message" << endl;
     return false;
   }
 
@@ -175,7 +192,7 @@ void Landmarks::handle(EventPtr pev) {
 	LandmarkEntry l(blockCode->hostBlock->blockId, 1, blockCode->map->getPosition(), 0);
 	advertise(l,NULL);
 #ifdef LANDMARKS_DEBUG
-	cout << "@" << blockCode->hostBlock->blockId << ", t " << pev->date << ": periodic landmark beacon" << endl;
+	//cout << "@" << blockCode->hostBlock->blockId << ", t " << pev->date << ": periodic landmark beacon" << endl;
 #endif
 	// Reschedule the event (periodic for now)
 	// check list interface catoms2d
@@ -192,4 +209,15 @@ void Landmarks::handle(EventPtr pev) {
 
 void Landmarks::stop() {
   mustStop = true;
+}
+
+void Landmarks::printTable() {
+  BuildingBlock *block = blockCode->hostBlock;
+  cout << "@" << block->blockId << " Landmark Table :";
+  vector<LandmarkEntry>::iterator it;
+  for (it = landmarks.begin(); it < landmarks.end(); it++) {
+    cout << "(id:" << it->id << ",distance:" << it->distance << "), "; 
+  }
+  cout << endl;
+  
 }

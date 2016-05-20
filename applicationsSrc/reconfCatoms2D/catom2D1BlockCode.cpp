@@ -114,6 +114,8 @@ void Catoms2D1BlockCode::startup() {
   }
 #endif
 
+  landmarks->start();
+
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
@@ -226,6 +228,10 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
     break;
   case LANDMARK_BEACON_EVENT: {
+    uint64_t t = pev->date;
+    if (t > 5*LANDMARK_BEACON_PERIOD_SEC) {
+      landmarks->stop();
+    }
     landmarks->handle(pev);
   }
     break;

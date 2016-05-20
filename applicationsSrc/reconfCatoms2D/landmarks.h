@@ -64,12 +64,15 @@ class Landmarks {
   Landmarks(const Landmarks &l);
   ~Landmarks();
 
+  void start();
   bool handle(MessagePtr message);
   void scheduleAdvertise(Time t);
   void advertise(LandmarkEntry &l, P2PNetworkInterface *ignore);
   bool update(LandmarkEntry &l);
   void handle(EventPtr pev);
   void stop();
+
+  void printTable();
 };
 
 // Events
