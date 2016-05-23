@@ -47,7 +47,7 @@ void CsgCatoms3DBlockCode::generateBitmap() {
     int y = catom->position.pt[1];
     int z = catom->position.pt[2];
     int pos = x + y*side_size + z*side_size*side_size;
-    bitmap[pos] = csgUtils.isInside(myPosition);
+    bitmap[pos] = csgUtils.isInside(myPosition).isInside();
 }
 
 void CsgCatoms3DBlockCode::startup() {
@@ -62,17 +62,15 @@ void CsgCatoms3DBlockCode::startup() {
 
 	if (catom->blockId==1) {
         distance = 0;
-        csgUtils.readFile("data/sphere.bc");
-        stoyUtils.readFile("data/sphere-high.stoy");
+        csgUtils.readFile("data/mug-color.bc");
+//        stoyUtils.readFile("data/sphere-high.stoy");
         meshUtils.readFile("data/voiture.obj");
     //    bitmapUtils.readFile("data/sphere.bmp");
 
-    //    benchmark();
-    //    generateBitmap();
 
-        //if (bitmapUtils.isInside(catom->position, side_size)) {
-        if (meshUtils.isInside(myPosition)){
-            catom->setColor(YELLOW);
+        PositionInfo pi = csgUtils.isInside(myPosition);
+        if (pi.isInside()) {
+            catom->setColor(pi.getColor());
         }
         else
             catom->setVisible(false);
@@ -80,8 +78,6 @@ void CsgCatoms3DBlockCode::startup() {
         myPosition = Vecteur(0, 0, 0);
         hasPosition = true;
         sendCSGMessage();
-        //sendDistanceMessage();
-        //methodsDifference();
         
 	}
 }
@@ -110,13 +106,8 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 if (recv_message->getDistance() < distance) {
                     distance = recv_message->getDistance();
                     catom->setColor(listColors[distance%listColors.size()]);
-                    if (distance == 59)
-                        catom->setColor(PINK);
                     sendDistanceMessage();
 
-                }
-                if (catom->blockId == 27000) {
-                    cout << "dist = " << distance << endl;
                 }
             }
             case CSG_MSG_ID:
@@ -132,13 +123,11 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     bitmapUtils.setBitmap(recv_message->getBitmap());
 
                     myPosition = recv_message->getPosition();
-            //        benchmark();
-            //        methodsDifference();
-    //                generateBitmap();
 
-                    //if (bitmapUtils.isInside(catom->position, side_size)) {
-                    if (meshUtils.isInside(myPosition)){
-                        catom->setColor(YELLOW);
+                    PositionInfo pi = csgUtils.isInside(myPosition);
+                    //PositionInfo pi;
+                    if (pi.isInside()) {
+                        catom->setColor(pi.getColor());
                     }
                     else 
                         //catom->setColor(PINK);
@@ -155,7 +144,7 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
       break;
 	}
 }
-
+/*
 void CsgCatoms3DBlockCode::methodsDifference() {
     if (csgUtils.isInside(myPosition) != bitmapUtils.isInside(catom->position, side_size))
         difference_bitmap++;
@@ -217,7 +206,7 @@ void CsgCatoms3DBlockCode::calcMesh() {
 
     cout << std::chrono::duration_cast<std::chrono::nanoseconds>(end-begin).count()/MAX << endl;
 }
-
+*/
 void CsgCatoms3DBlockCode::sendDistanceMessage() {
     for (int i = 0; i < 12; i++) {
         if (catom->getInterface(i)->connectedInterface != NULL) {

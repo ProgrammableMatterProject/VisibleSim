@@ -23,7 +23,7 @@ CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp ca
 CATOMS2D_OBJS = $(CATOMS2D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 CATOMS2D_DEPS = $(CATOMS2D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
-CATOMS3D_SRCS = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DScheduler.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DCapabilities.cpp catoms3DEvents.cpp skeleton.cpp csg.cpp catoms3DGeneric.cpp
+CATOMS3D_SRCS = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DScheduler.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DCapabilities.cpp catoms3DEvents.cpp skeleton.cpp
 CATOMS3D_OBJS = $(CATOMS3D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 CATOMS3D_DEPS = $(CATOMS3D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
