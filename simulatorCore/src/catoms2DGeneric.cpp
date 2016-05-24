@@ -42,7 +42,7 @@ int GenericCodeBlock::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int ne
             while (j<nexcept && p2p!=tabExceptions[j]) j++;
             if (j==nexcept) {
                 t1 = scheduler->now() + t0 + (int)(((double)dt*rand())/RAND_MAX);
-                OUTPUT << module->blockId << " sends " << msg->type << " to " << p2p->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
+//                OUTPUT << module->blockId << " sends " << msg->type << " to " << p2p->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
                 Message* msg_clone = msg->clone();
                 scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg_clone, p2p));
                 n++;
@@ -73,7 +73,7 @@ int GenericCodeBlock::sendMessageToAllNeighbors(const char*msgString, Message*ms
             if (j==nexcept) {
                 t1 = scheduler->now() + t0 + (int)(((double)dt*rand())/RAND_MAX);
                 console << " sends " << msgString << " to " << p2p->getConnectedBlockId() << " at " << t1 << "\n";
-                OUTPUT << module->blockId << " sends " << msg->type << " to " << p2p->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
+//                OUTPUT << module->blockId << " sends " << msg->type << " to " << p2p->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
                 Message* msg_clone = msg->clone();
                 scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg_clone, p2p));
                 n++;

@@ -109,7 +109,6 @@ void initShaders() {
 	  ERRPUT << "erreur affectation : textureEnable\n";
   }
 
-
   // texture pour le shadow mapping
   glGenFramebuffersEXT(1, &id_fb);	// identifiant pour la texture
   glGenTextures(1, &depth_tex);													// and a new texture used as a color buffer

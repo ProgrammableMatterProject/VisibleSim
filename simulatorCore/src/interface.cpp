@@ -248,6 +248,22 @@ int GlutSlidingMainWindow::mouseFunc(int button,int state,int mx,int my)
   return n;
 }
 
+void GlutSlidingMainWindow::openClose() {
+    if (buttonOpen->isActivated()) {
+        openingLevel++;
+		x-=400;
+		w+=400;
+		buttonOpen->activate(false);
+		buttonClose->activate(true);
+	} else {
+        openingLevel--;
+		x+=400;
+		w-=400;
+        buttonOpen->activate(true);
+        buttonClose->activate(false);
+    }
+}
+
 void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
     int sz = 400*openingLevel;
     setGeometry(mx-sz,my,mw+sz,mh);

@@ -54,6 +54,7 @@ public :
 	virtual ~GlutButton() {};
 
 	inline void activate(bool v) { isActive=v; };
+	inline bool isActivated() { return isActive; };
 	int mouseFunc(int button,int state,int x,int y);
 	bool passiveMotionFunc(int mx,int my);
 	void glDraw();
@@ -109,9 +110,9 @@ public :
 	GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutSlidingMainWindow();
 
-	inline void open() { openingLevel++; };
-	inline void close() { openingLevel--; };
-
+/*	inline void open() { openingLevel++; };
+	inline void close() { openingLevel--; };*/
+    void openClose();
 	int mouseFunc(int button,int state,int mx,int my);
 	void reshapeFunc(int wx,int wy,int mw,int mh);
 	void glDraw();
@@ -132,9 +133,9 @@ public :
 	GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutSlidingDebugWindow();
 
-	inline void open() { openingLevel++; };
+/*	inline void open() { openingLevel++; };
 	inline void close() { openingLevel--; };
-
+*/
 	int mouseFunc(int button,int state,int mx,int my);
 	int keyFunc(int charcode);
 	void reshapeFunc(int wx,int wy,int mw,int mh);

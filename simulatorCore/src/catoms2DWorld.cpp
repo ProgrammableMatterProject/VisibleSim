@@ -304,7 +304,6 @@ void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
 }
 
 void Catoms2DWorld::glDraw() {
-
 	glPushMatrix();
 	glTranslatef(0.5*blockSize[0],0,0.5*blockSize[2]);
 	glDisable(GL_TEXTURE_2D);
@@ -316,7 +315,6 @@ void Catoms2DWorld::glDraw() {
 	}
 	unlock();
 	glPopMatrix();
-
 
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},gray[]={0.2f,0.2f,0.2f,1.0f};
 
