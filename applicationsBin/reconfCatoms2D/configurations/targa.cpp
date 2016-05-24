@@ -125,19 +125,33 @@ void Targa::read() {
   
   // Ownership moves out.
   buffer = pBuffer;
+
+  cout << "Width: " << width << endl;
+  cout << "Height: " << height << endl;
 }
 
 ostream& Targa::exportToVisibleSim(ostream &output) {
+
   int tx = width/2;
   int ty = height/2;
+  int tz = 0;
+  int size = 0;
+
+  //target(angle azimut,angle elevation, distance) 
+
+  int angleAzimut = 0;
+  int angleElevation = 25;
+  double coef = 115./100.;
+  int distance = max(width,height)*coef; 
   
   cerr << "exporting to VisibleSim..." << endl;
 
   // header
   output << "<world gridSize=\"" << width+1 << "," << height+1 << "\">" << endl;
-  output << "<camera target=\"" << tx <<"," << ty << ",0\" directionSpherical=\"5," << ty << "," << width << "\" angle=\"45\"/>" << endl;
-  output << "<spotlight target=\"" << tx << "," << ty << ",0\" directionSpherical=\"-45," << ty << "," << width << "\" angle=\"30\"/>" << endl;
 
+  output << "<camera target=\"" << tx <<"," << ty << "," << tz << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"45\"/>" << endl;
+  output << "<spotlight target=\"" << tx << "," << ty << "," << tz << "\" directionSpherical=\"" << angleAzimut << "," << angleElevation << "," << distance << "\" angle=\"30\"/>" << endl;
+  
   // module list
   output << "<blockList color=\"100,100,100\" blocksize=\"1,5,1\"> " << endl;
   for (int w = 0; w < width; w++) {
@@ -153,6 +167,7 @@ ostream& Targa::exportToVisibleSim(ostream &output) {
       int y = h;
       int x = w + (h%2);
       if (a != TRANSPARENT) {
+	size++;
 	Pixel p(r,g,b,a);
 	output << "<block position=\"" << x << "," << y << "\" "
 	       << "color=\"" << p << "\"/>" << endl;
@@ -162,6 +177,7 @@ ostream& Targa::exportToVisibleSim(ostream &output) {
   }
   output << "</blockList>" << endl;
   output << "</world>" << endl;
+  cout << size << " modules " << endl;
   return output;
 }
 
