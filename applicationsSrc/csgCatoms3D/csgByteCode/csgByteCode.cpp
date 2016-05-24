@@ -1,18 +1,18 @@
 #include <iostream>
 #include <fstream>
-#include "csg.h"
-
-enum class Node_T : unsigned char
-{
-    Difference, Union, Translate, Rotate, Cube, Cylinder, Sphere, END
-};
+#include "../csgUtils.h"
+#include "color.h"
 
 const float MAX_SIZE = 20;
 
 fstream myfile;
 
-void writeType(Node_T t) {
+void writeType(CSG_T t) {
     myfile.write((char *)&t, sizeof(char));
+}
+
+void writeChar(char c) {
+    myfile.write((char *)&c, sizeof(char));
 }
 
 void writeFloat(float f) {
@@ -22,28 +22,61 @@ void writeFloat(float f) {
 void createMugByteCode() {
     myfile.open("mug.bc", ios::binary | ios::out);
 
-    writeType(Node_T::Difference);
-    writeType(Node_T::Union);
-    writeType(Node_T::Cube);
+    writeType(CSG_T::Difference);
+    writeType(CSG_T::Union);
+    writeType(CSG_T::Cube);
     writeFloat(MAX_SIZE);
     writeFloat(MAX_SIZE);
     writeFloat(MAX_SIZE/8);
-    writeType(Node_T::Translate);
+    writeType(CSG_T::Translate);
     writeFloat(MAX_SIZE/2);
     writeFloat(MAX_SIZE/2);
     writeFloat(MAX_SIZE/8);
-    writeType(Node_T::Cylinder);
+    writeType(CSG_T::Cylinder);
     writeFloat(MAX_SIZE);
     writeFloat(MAX_SIZE/2);
-    writeType(Node_T::END);
-    writeType(Node_T::Translate);
+    writeType(CSG_T::END);
+    writeType(CSG_T::Translate);
     writeFloat(MAX_SIZE/2);
     writeFloat(MAX_SIZE/2);
     writeFloat(MAX_SIZE/8);
-    writeType(Node_T::Cylinder);
+    writeType(CSG_T::Cylinder);
     writeFloat(MAX_SIZE);
     writeFloat(MAX_SIZE/4);
-    writeType(Node_T::END);
+    writeType(CSG_T::END);
+
+    myfile.close();
+}
+
+void createMugColorByteCode() {
+    myfile.open("mug-color.bc", ios::binary | ios::out);
+
+    writeType(CSG_T::Difference);
+    writeType(CSG_T::Union);
+    writeType(CSG_T::Color);
+    writeChar(0);
+    writeChar(0);
+    writeChar(255);
+    writeType(CSG_T::Cube);
+    writeFloat(MAX_SIZE);
+    writeFloat(MAX_SIZE);
+    writeFloat(MAX_SIZE/8);
+    writeType(CSG_T::Translate);
+    writeFloat(MAX_SIZE/2);
+    writeFloat(MAX_SIZE/2);
+    writeFloat(MAX_SIZE/8);
+    writeType(CSG_T::Cylinder);
+    writeFloat(MAX_SIZE);
+    writeFloat(MAX_SIZE/2);
+    writeType(CSG_T::END);
+    writeType(CSG_T::Translate);
+    writeFloat(MAX_SIZE/2);
+    writeFloat(MAX_SIZE/2);
+    writeFloat(MAX_SIZE/8);
+    writeType(CSG_T::Cylinder);
+    writeFloat(MAX_SIZE);
+    writeFloat(MAX_SIZE/4);
+    writeType(CSG_T::END);
 
     myfile.close();
 }
@@ -51,7 +84,7 @@ void createMugByteCode() {
 void createCubeByteCode() {
     myfile.open("cube.bc", ios::binary | ios::out);
 
-    writeType(Node_T::Cube);
+    writeType(CSG_T::Cube);
     writeFloat(MAX_SIZE);
     writeFloat(MAX_SIZE);
     writeFloat(MAX_SIZE);
@@ -62,12 +95,12 @@ void createCubeByteCode() {
 void createSphereByteCode() {
     myfile.open("sphere.bc", ios::binary | ios::out);
 
-    writeType(Node_T::Translate);
+    writeType(CSG_T::Translate);
     writeFloat(MAX_SIZE/2);
     writeFloat(MAX_SIZE/2);
     writeFloat(MAX_SIZE/2);
 
-    writeType(Node_T::Sphere);
+    writeType(CSG_T::Sphere);
     writeFloat(MAX_SIZE/2); // radius 
 
     myfile.close();
@@ -76,6 +109,7 @@ void createSphereByteCode() {
 
 int main() {
     createMugByteCode();
+    createMugColorByteCode();
     createCubeByteCode();
     createSphereByteCode();
     return 0;

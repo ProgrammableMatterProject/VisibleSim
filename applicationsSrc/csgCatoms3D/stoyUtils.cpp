@@ -1,6 +1,6 @@
 #include "stoyUtils.h"
 
-void StoyUtils::readStoyFile(string path_to_file) {
+void StoyUtils::readFile(string path_to_file) {
     fstream stoyFile;
     stoyFile.open(path_to_file);
 

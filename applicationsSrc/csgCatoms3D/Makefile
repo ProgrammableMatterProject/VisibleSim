@@ -1,4 +1,4 @@
-SRCS = csgCatoms3D.cpp csgCatoms3DBlockCode.cpp csgUtils.cpp stoyUtils.cpp
+SRCS = csgCatoms3D.cpp csgCatoms3DBlockCode.cpp csg.cpp csgUtils.cpp stoyUtils.cpp meshUtils.cpp bitmapUtils.cpp mesh/geometrics.cpp mesh/obj_file.cpp mesh/polygon.cpp mesh/triangle.cpp mesh/world.cpp
 
 OUT = csgCatoms3D
 

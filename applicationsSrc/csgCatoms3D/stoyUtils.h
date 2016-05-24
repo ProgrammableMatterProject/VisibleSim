@@ -15,7 +15,7 @@ class StoyUtils
     vector<Brick> bricks;
 
 public:
-    void readStoyFile(string path_to_file);
+    void readFile(string path_to_file);
     bool isInside(Vecteur catomPosition);
 
     void setBricks(vector<Brick> b) { bricks = b; };

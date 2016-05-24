@@ -2,10 +2,23 @@
 #define CSGUTILS_H_
 
 #include "csg.h"
+#include "color.h"
 
-enum class Node_T : unsigned char
+enum class CSG_T : unsigned char
 {
-    Difference, Union, Translate, Rotate, Cube, Cylinder, Sphere, END
+    Difference = 0, Union, Translate, Scale, Rotate, Color, Cube, Cylinder, Sphere, END
+};
+
+class PositionInfo
+{
+public:
+    bool inside;
+    Color color;
+    PositionInfo() : inside(false) {};
+    PositionInfo(bool i) : inside(i) {};
+    PositionInfo(bool i, Color c) : inside(i), color(c) {};
+    bool isInside() { return inside; };
+    Color getColor() { return color; };
 };
 
 class CsgUtils
@@ -17,16 +30,16 @@ class CsgUtils
 
 public:
     void createCSG(int MAX_SIZE);
-    void readCSGFile(string path_to_file);
+    void readFile(string path_to_file);
     void readCSGBuffer(char *csgBuffer, int csgBufferSize);
     CsgNode getCSGTree() { return csgTree; }
     char * getCSGBuffer() { return csgBuffer; }
     int getCSGBufferSize() { return csgBufferSize; }
-    bool isInCSG(Vecteur catomPosition);
+    PositionInfo isInside(Vecteur catomPosition);
 
 private:
     CsgNode readCSGNode();
-    bool isInCSG(CsgNode &node, Vecteur basePosition, Vecteur catomPosition);
+    PositionInfo isInside(CsgNode &node, Vecteur basePosition, Color color, Vecteur catomPosition);
 };
 
 #endif /* CSGUTILS_H_ */

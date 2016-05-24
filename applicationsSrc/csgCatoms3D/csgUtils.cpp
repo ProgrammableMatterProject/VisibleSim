@@ -24,7 +24,7 @@ void CsgUtils::createCSG(int MAX_SIZE) {
     csgTree.addChild(difference);
 }
 
-void CsgUtils::readCSGFile(string path_to_file) {
+void CsgUtils::readFile(string path_to_file) {
     fstream csgFile;
     csgFile.open(path_to_file, ios::binary | ios::in | ios::ate);
     csgBufferSize = csgFile.tellg();
@@ -49,27 +49,27 @@ void CsgUtils::readCSGBuffer(char *_csgBuffer, int _csgBufferSize) {
 }
 
 CsgNode CsgUtils::readCSGNode() {
-    Node_T t;
-    memcpy(&t, csgBuffer + csgBufferPos, sizeof (Node_T));
-    csgBufferPos += sizeof (Node_T);
+    CSG_T t;
+    memcpy(&t, csgBuffer + csgBufferPos, sizeof (CSG_T));
+    csgBufferPos += sizeof (CSG_T);
     switch (t) {
-        case Node_T::Difference: {
+        case CSG_T::Difference: {
             CsgNode node_difference(node_t::bool_op , new BoolOperator(BoolOperator::bool_operator_t::bool_difference));
             CsgNode child;
-            while ((child = readCSGNode()).getType() != node_t::null) {
+            while ((child = readCSGNode()).getType() != node_t::end) {
                 node_difference.addChild(child);
             }
             return node_difference;
         }
-        case Node_T::Union: {
+        case CSG_T::Union: {
             CsgNode node_union(node_t::bool_op, new BoolOperator(BoolOperator::bool_operator_t::bool_union));
             CsgNode child;
-            while ((child = readCSGNode()).getType() != node_t::null) {
+            while ((child = readCSGNode()).getType() != node_t::end) {
                 node_union.addChild(child);
             }
             return node_union;
         }
-        case Node_T::Translate: {
+        case CSG_T::Translate: {
             float f1, f2, f3;
 
             memcpy(&f1, csgBuffer + csgBufferPos, sizeof(float));
@@ -85,7 +85,22 @@ CsgNode CsgUtils::readCSGNode() {
             node_transformation.addChild(child);
             return node_transformation;
         }
-        case Node_T::Cube: {
+        case CSG_T::Color: {
+            unsigned char c1, c2, c3;
+
+            memcpy(&c1, csgBuffer + csgBufferPos, sizeof(char));
+            csgBufferPos += sizeof(char);
+            memcpy(&c2, csgBuffer + csgBufferPos, sizeof(char));
+            csgBufferPos += sizeof(char);
+            memcpy(&c3, csgBuffer + csgBufferPos, sizeof(char));
+            csgBufferPos += sizeof(char);
+
+            CsgNode csg_color(node_t::color,  new NodeColor((int)c1, (int)c2, (int)c3, "thadeu"));
+            CsgNode child = readCSGNode();
+            csg_color.addChild(child);
+            return csg_color;
+        }
+        case CSG_T::Cube: {
             float f1, f2, f3;
             memcpy(&f1, csgBuffer + csgBufferPos, sizeof(float));
             csgBufferPos += sizeof(float);
@@ -96,7 +111,7 @@ CsgNode CsgUtils::readCSGNode() {
             CsgNode node_cube(node_t::shape, new Cube(f1, f2, f3));
             return node_cube;
         }
-        case Node_T::Cylinder: {
+        case CSG_T::Cylinder: {
             float f1, f2;
             memcpy(&f1, csgBuffer + csgBufferPos, sizeof(float));
             csgBufferPos += sizeof(float);
@@ -105,63 +120,83 @@ CsgNode CsgUtils::readCSGNode() {
             CsgNode node_cylinder(node_t::shape, new Cylinder(f1, f2));
             return node_cylinder;
         }
-        case Node_T::Sphere: {
+        case CSG_T::Sphere: {
             float f1;
             memcpy(&f1, csgBuffer + csgBufferPos, sizeof(float));
             csgBufferPos += sizeof(float);
             CsgNode node_sphere(node_t::shape, new Sphere(f1));
             return node_sphere;
         }
-        case Node_T::END: {
-            return CsgNode(node_t::null, NULL);
+        case CSG_T::END: {
+            return CsgNode(node_t::end, NULL);
         }
         default: {
-            return CsgNode(node_t::null, NULL);
+            return CsgNode(node_t::end, NULL);
         }
     }
 }
 
-bool CsgUtils::isInCSG(Vecteur catomPosition) {
+PositionInfo CsgUtils::isInside(Vecteur catomPosition) {
     Vecteur v(0,0,0);
-    return isInCSG(csgTree, v, catomPosition);
+    Color c(0,0,0);
+    return isInside(csgTree, v, c, catomPosition);
 }
 
-bool CsgUtils::isInCSG(CsgNode &node, Vecteur basePosition, Vecteur catomPosition) {
+PositionInfo CsgUtils::isInside(CsgNode &node, Vecteur basePosition, Color color, Vecteur catomPosition) {
     switch (node.getType())
     {
         case node_t::shape: {
             Shape3D *shape = static_cast<Shape3D *>(node.getValue());
-            return shape->isInside(basePosition, catomPosition);
+            bool inside = shape->isInside(basePosition, catomPosition);
+            return PositionInfo(inside, color);
+        } break;
+
+        case node_t::color: {
+            NodeColor* color_op = static_cast<NodeColor *>(node.getValue());
+            PositionInfo pi;
+            for (unsigned int i = 0; i < node.vchildren.size(); i++) {
+                Color new_color(color_op->r/255., color_op->g/255., color_op->b/255.);
+                pi = isInside(node.vchildren[i], basePosition, new_color, catomPosition);
+                if (pi.isInside())
+                    return pi;
+            }
+            return PositionInfo(false);
         } break;
 
         case node_t::transformation: {
             Transformation* t_op = static_cast<Transformation *>(node.getValue());
+            PositionInfo pi;
             if (t_op->my_type == Transformation::transformation_t::translate) {
                 for (unsigned int i = 0; i < node.vchildren.size(); i++) {
                     Vecteur transf_position(t_op->x, t_op->y, t_op->z);
-                    if (isInCSG(node.vchildren[i], transf_position, catomPosition))
-                        return true;
+                    pi = isInside(node.vchildren[i], transf_position, color, catomPosition);
+                    if (pi.isInside())
+                        return pi;
                 }
-                return false;
+                return PositionInfo(false);
             }
         } break;
 
         case node_t::bool_op: {
             BoolOperator* b_op = static_cast<BoolOperator *>(node.getValue());
+            PositionInfo pi;
             if (b_op->my_type == BoolOperator::bool_operator_t::bool_union) {
                 for (unsigned int i = 0; i < node.vchildren.size(); i++) {
-                    if (isInCSG(node.vchildren[i], basePosition, catomPosition))
-                        return true;
+                    pi = isInside(node.vchildren[i], basePosition, color, catomPosition);
+                    if (pi.isInside())
+                        return pi;
                 }
+                return PositionInfo(false);
             }
             if (b_op->my_type == BoolOperator::bool_operator_t::bool_difference) {
                 if (node.vchildren.size() >= 1) {
-                    if (isInCSG(node.vchildren[0], basePosition, catomPosition)) {
+                    pi = isInside(node.vchildren[0], basePosition, color, catomPosition);
+                    if (pi.isInside()) {
                         for (unsigned int i = 1; i < node.vchildren.size(); i++) {
-                            if (isInCSG(node.vchildren[i], basePosition, catomPosition))
-                                return false;
+                            if (isInside(node.vchildren[i], basePosition, color, catomPosition).isInside())
+                                return PositionInfo(false);
                         }
-                        return true;
+                        return pi;
                     }
                 }
             }
