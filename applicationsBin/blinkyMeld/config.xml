@@ -7,7 +7,7 @@
 -->
 <vm serverport="5000" vmPath="./meld/meld/meld-bbsim" programPath="./program.bb" debugging="False" />
 
-<world gridsize="10,10,10" windowSize="1800,900">
+<world gridSize="10,10,10" windowSize="1800,900">
 	<camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
 	<spotlight target="200,20,200" directionSpherical="45,60,500" angle="40"/>
 	
