@@ -23,8 +23,10 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	BlinkyBlocksWorld *world = NULL;
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
 
+    // PThy: Reading the command line may be needed at this time to enable debugging.
+    
 	TiXmlNode *node = xmlDoc->FirstChild("world");
-	if (node) {
+    if (node) {
 		TiXmlElement* worldElement = node->ToElement();
 		const char *attr= worldElement->Attribute("gridsize");
 		int lx,ly,lz;
@@ -59,6 +61,11 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	}
 
 	createScheduler();
+
+    // Pthy: Not sure if we should be keeping that debugging part, perhaps it has to be located somewhere else now that MeldInterpreter has been embedded into VSim
+//    if(debugging) {
+//		createDebugger();
+//	}
 
 	// loading the camera parameters
 	TiXmlNode *nodeConfig = node->FirstChild("camera");
