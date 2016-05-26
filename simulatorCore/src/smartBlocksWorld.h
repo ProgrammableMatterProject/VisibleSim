@@ -75,6 +75,7 @@ public:
 	inline void getGridSize(int &lx,int &ly) { lx = gridSize[0]; ly = gridSize[1]; }
 
 	bool isBorder(int x,int y);
+	bool isSingle(int x,int y);
 	int nbreWellPlacedBlock();
 	void createStats(int);
 	void addStat(int n,int v);

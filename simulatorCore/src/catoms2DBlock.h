@@ -43,8 +43,10 @@ public:
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
 	void setPosition(const Vecteur &p);
-
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
+    inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[(NeighborDirection::Direction)d]; }
+    P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
+
 	Vecteur getPosition(NeighborDirection::Direction d);
 	Vecteur getPosition(P2PNetworkInterface *p2p);
 
@@ -63,6 +65,7 @@ public:
 	bool canMove(Catoms2DMove &m);
         void startMove(Catoms2DMove &m, uint64_t t);
 	void startMove(Catoms2DMove &m);
+	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb);

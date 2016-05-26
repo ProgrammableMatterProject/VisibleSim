@@ -1,0 +1,115 @@
+[1;34mSimulator constructor[0m
+[1;34m  config.xml successfully loaded [0m
+[1;34mCatoms3DSimulator constructor[0m
+grid size : 5 x 5 x 6
+World constructor
+[1;31mCatoms3DWorld constructor[0m
+initShaders
+Compilation of the Vertex Program
+compilation OK
+Compilation of the Fragment Program
+compilation OK
+Shaders initialized.
+loading ../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga
+loading ../../simulatorCore/smartBlocksTextures/boutons_fg.tga
+loading ../../simulatorCore/smartBlocksTextures/boutons_fd.tga
+loading ../../simulatorCore/smartBlocksTextures/slider.tga
+loading ../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga
+Error : can't open ../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga
+loading ../../simulatorCore/smartBlocksTextures/boutons_fg.tga
+loading ../../simulatorCore/smartBlocksTextures/boutons_fd.tga
+loading ../../simulatorCore/smartBlocksTextures/slider.tga
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+Smoothing groups not managed !
+No 'lighted' texture in obj file :catom3D_picking.obj
+No 'lighted' texture in obj file :repereCatom3D.obj
+loading ../../simulatorCore/catoms3DTextures//hexa.tga
+loading ../../simulatorCore/catoms3DTextures//textureCarre.tga
+Scheduler constructor
+Catoms3DScheduler constructor
+new default color :(0.501961,0.501961,0.501961,1)
+blocksize =10,10,10
+new color :(0.501961,0.501961,0.501961,1)
+position : (1,1,1)
+orientation : 0
+BuildingBlock constructor (id:0)
+Catoms3DBlock constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+BlockCode constructor
+Catoms3DBlockCode constructor
+|1,0,0,20|
+|0,1,0,20|
+|0,0,1,10.6066|
+|0,0,0,1|
+
+new color :(0.501961,0.501961,0.501961,1)
+position : (2,1,1)
+orientation : 2
+BuildingBlock constructor (id:0)
+Catoms3DBlock constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+BlockCode constructor
+Catoms3DBlockCode constructor
+|0.5,0.5,0.707107,30|
+|-0.5,-0.5,0.707107,20|
+|0.707107,-0.707107,4.32978e-17,10.6066|
+|0,0,0,1|
+
+point position : (25,25,21,0)
+radius : 20
+blobbiness: -0.1
+point position : (25,25,0,0)
+point position : (25,25,21,0)
+radius : 15
+blobbiness: -0.1
+radius : 20
+blobbiness: -0.1
+link blocks
+link catom 1
+connection #1(0) to #2
+link catom 2
+connection #2(8) to #1
+0.000000 #1: Starting 3.23469
+0.000000 #2: Starting 3.23469
+I'm a Catoms3DSimulator
+I'm a Catoms3DScheduler
+I'm a World
+[1;34mCatoms3DSimulator destructor[0m
+[1;34mSimulator destructor[0m
+[1;31mCatoms3DScheduler destructor[0m
+Scheduler destructor
+Catoms3DWorld destructor
+Catoms3DBlock destructor 1
+BuildingBlock destructor
+Catoms3DBlock destructor 2
+BuildingBlock destructor
+World destructor

@@ -16,6 +16,8 @@
 #include "glBlock.h"
 #include "interface.h"
 
+#define GLUT
+
 class GlutContext;
 //===========================================================================================================
 //
@@ -26,6 +28,7 @@ class GlutContext {
 	static int keyboardModifier;
 	public :
     static GlutSlidingMainWindow *mainWindow;
+    static GlutSlidingDebugWindow *debugWindow;
     static GlutPopupWindow *popup;
     static GlutPopupMenuWindow *popupMenu;
     static GlutHelpWindow *helpWindow;
@@ -36,6 +39,10 @@ class GlutContext {
 	static int lastMotionTime;
 	static int lastMousePos[2];
 	static bool mustSaveImage;
+// FPS counter
+    static int frameCount;
+    static int previousTime;
+    static float fps;
 //	bool showLinks;
 
 	static void init(int argc, char **argv);
@@ -56,6 +63,7 @@ private :
 	static int processHits(GLint hits, GLuint *buffer);
 	static bool saveScreen(char *title);
 	static void *lanceScheduler(void *param);
+	static void calculateFPS(void);
+	static void showFPS(void);
 };
-
 #endif

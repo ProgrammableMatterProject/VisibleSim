@@ -9,9 +9,7 @@
 #define SMARTBLOCKSSCHEDULER_H_
 
 #include "scheduler.h"
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
+
 
 namespace SmartBlocks {
 
@@ -21,9 +19,6 @@ protected:
 	virtual ~SmartBlocksScheduler();
 	void* startPaused(/*void *param */);
 
-	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
-	boost::thread *schedulerThread;
-	int schedulerMode;
 public:
 	static void createScheduler();
 	static void deleteScheduler();
@@ -37,11 +32,7 @@ public:
 		cout << "I'm a SmartBlocksScheduler" << endl;
 	}
 
-	//MODIF NICO
-	inline void waitForSchedulerEnd() {
-			schedulerThread->join();
-		}
-	//FIN MODIF NICO
+
 };
 
 inline void createScheduler() {

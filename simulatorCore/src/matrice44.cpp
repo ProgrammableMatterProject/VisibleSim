@@ -98,6 +98,11 @@ double Matrice::determinant() const
 		   m[12]* det33(m[1],m[2],m[3],m[5],m[6],m[7],m[9],m[10],m[11]));
 }
 
+
+/**
+    * \brief calculate the inverse of the current matrix
+    \param result of the invertion of the current matrix
+*/
 void Matrice::inverse(Matrice &inv) const
 { double det = determinant();
   inv.m[0] = det33(m[5],m[6],m[7],m[9],m[10],m[11],m[13],m[14],m[15])/det;
@@ -275,5 +280,6 @@ void Matrice::fillArray(GLfloat *mat) {
 	int i;
 	for (i=0; i<16; i++) { mat[i]=GLfloat(m[i]); };
 }
+
 
 

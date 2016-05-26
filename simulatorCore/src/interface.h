@@ -38,7 +38,8 @@ protected :
 	virtual void glDraw();
 	virtual int mouseFunc(int button,int state,int mx,int my);
 	virtual bool passiveMotionFunc(int mx,int my);
-	virtual void reshapeFunc(int mw,int mh) {};
+	virtual int keyFunc(int charcode);
+	virtual void reshapeFunc(int wx,int wy,int mw,int mh) {};
 	static GLuint loadTexture(const char *titre,int &tw,int &th);
 	static unsigned char *lectureTarga(const char *titre, int& width, int& height ,bool retourner=false);
 	static GLfloat drawString(GLfloat x,GLfloat y,const char *str,void* mode=GLUT_BITMAP_8_BY_13,GLint height=13);
@@ -53,6 +54,7 @@ public :
 	virtual ~GlutButton() {};
 
 	inline void activate(bool v) { isActive=v; };
+	inline bool isActivated() { return isActive; };
 	int mouseFunc(int button,int state,int x,int y);
 	bool passiveMotionFunc(int mx,int my);
 	void glDraw();
@@ -81,8 +83,21 @@ public :
 	void setPosition(int pos) { dataPosition=pos; }
 	void glDraw();
 	int mouseFunc(int button,int state,int x,int y);
-protected :
 	void update();
+};
+
+class GlutInputWindow : public GlutWindow {
+    string text;
+    GlutWindow *server;
+public :
+    bool hasFocus;
+    GlutInputWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph);
+	virtual ~GlutInputWindow();
+
+	int keyFunc(int keycode);
+	int mouseFunc(int button,int state,int x,int y);
+	void glDraw();
+	string getTextAndClear();
 };
 
 class GlutSlidingMainWindow : public GlutWindow {
@@ -95,15 +110,36 @@ public :
 	GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutSlidingMainWindow();
 
-	inline void open() { openingLevel++; };
-	inline void close() { openingLevel--; };
-
+/*	inline void open() { openingLevel++; };
+	inline void close() { openingLevel--; };*/
+    void openClose();
 	int mouseFunc(int button,int state,int mx,int my);
-	void reshapeFunc(int mw,int mh);
+	void reshapeFunc(int wx,int wy,int mw,int mh);
 	void glDraw();
 	void addTrace(int id,const string &str,const Color &color);
 	void select(GlBlock *sb);
 	inline bool hasSelectedBlock()  { return selectedBlock!=NULL; };
+	inline bool isOpened() { return openingLevel!=0; }
+};
+
+class GlutSlidingDebugWindow : public GlutWindow {
+	int openingLevel;
+	int debugId;
+	GlutButton* buttonOpen, *buttonClose;
+	GlutSlider* slider;
+	GlutInputWindow* input;
+	vector <BlockDebugData*> tabDebug;
+public :
+	GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
+	virtual ~GlutSlidingDebugWindow();
+
+/*	inline void open() { openingLevel++; };
+	inline void close() { openingLevel--; };
+*/
+	int mouseFunc(int button,int state,int mx,int my);
+	int keyFunc(int charcode);
+	void reshapeFunc(int wx,int wy,int mw,int mh);
+	void glDraw();
 	inline bool isOpened() { return openingLevel!=0; }
 };
 

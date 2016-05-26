@@ -30,16 +30,21 @@ SmartBlocksWorld::SmartBlocksWorld(int gw,int gh,int argc, char *argv[]):World()
 		ptr++;
 	}
 
-	GlutContext::init(argc,argv);
-	idTextureFloor=0;
-	idTextureDigits=0;
 	blockSize[0]=25.0;
 	blockSize[1]=25.0;
 	blockSize[2]=11.0;
 	targetGrid=new presence[gw*gh];
 	memset(targetGrid,0,gw*gh*sizeof(presence));
+	GlutContext::init(argc,argv);
+	idTextureFloor=0;
+	idTextureDigits=0;
+#ifdef GLUT
 	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+#else
+    objBlock=NULL;
+    objRepere=NULL;
+#endif
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
 	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
 	camera->setTarget(Vecteur(0,0,1.0));
@@ -145,8 +150,9 @@ void SmartBlocksWorld::getPresenceMatrix(const PointCel &pos,PresenceMatrix &pm)
         gpm = pm.grid+(iy*3+ix0);
         grb = tabPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1)*gridSize[0]);
         for (ix=ix0; ix<ix1; ix++) {
-            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?((*grb)->wellPlaced?wellPlacedBorderCell:borderCell):fullCell):emptyCell;
-//            *gpm++ = (*grb)?(((*grb)->_isBorder)?trainCell:fullCell):emptyCell;
+//            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?(((*grb)->wellPlaced||!isTrain(ix+pos.x-1,iy+pos.y-1))?wellPlacedBorderCell:borderCell):fullCell):emptyCell;
+//            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?((*grb)->wellPlaced?wellPlacedBorderCell:borderCell):fullCell):emptyCell;
+            *gpm++ = (*grb)?((isBorder(ix+pos.x-1,iy+pos.y-1))?(isSingle(ix+pos.x-1,iy+pos.y-1)?singleCell:borderCell):fullCell):emptyCell;
             grb++;
         }
     }
@@ -174,7 +180,8 @@ void SmartBlocksWorld::getPresenceMatrix0(const PointCel &pos,PresenceMatrix &pm
 }
 
 bool SmartBlocksWorld::isBorder(int x,int y) {
-    SmartBlocksBlock **grb;
+    SmartBlocksBlock **grb=tabPtrBlocks+x+y*gridSize[0];
+    //if ((*grb)->_isBorder) return true;
     int ix0 = (x<1)?1-x:0,
         ix1 = (x>gridSize[0]-2)?gridSize[0]-x+1:3,
         iy0 = (y<1)?1-y:0,
@@ -189,6 +196,11 @@ bool SmartBlocksWorld::isBorder(int x,int y) {
         }
     }
     return false;
+}
+
+bool SmartBlocksWorld::isSingle(int x,int y) {
+    SmartBlocksBlock **grb=tabPtrBlocks+x+y*gridSize[0];
+    return (*grb)->_isSingle;
 }
 
 void SmartBlocksWorld::glDraw() {

@@ -13,7 +13,10 @@
 #include <map>
 #include <inttypes.h>
 #include <assert.h>
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "events.h"
 #include "openglViewer.h"
 
@@ -21,12 +24,30 @@ using namespace std;
 
 #define SCHEDULER_MODE_FASTEST		1
 #define SCHEDULER_MODE_REALTIME		2
+#define SCHEDULER_MODE_DEBUG		3
 
 namespace BaseSimulator {
+
+class Keyword {
+public :
+    string id;
+    string comment;
+    Keyword(string i,string c):id(i),comment(c) {};
+};
+
+template <typename T> class KeywordT:public Keyword {
+    T *ptrData;
+public:
+    KeywordT(string i,T *ptr,string comment=""):ptrData(ptr),Keyword(i,comment) {};
+};
 
 class Scheduler {
 protected:
 	static Scheduler *scheduler;
+	int schedulerMode;
+	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
+	boost::thread *schedulerThread;
+	vector <Keyword*> tabKeywords;
 
 	uint64_t currentDate;
 	uint64_t maximumDate;
@@ -38,6 +59,8 @@ protected:
 	Scheduler();
 	virtual ~Scheduler();
 
+	uint64_t debugDate;
+
 public:
 	enum State {NOTREADY = 0, NOTSTARTED = 1, ENDED = 2, PAUSED = 3, RUNNING = 4};
 	State state;
@@ -47,13 +70,14 @@ public:
 		return(scheduler);
 	}
 	static void deleteScheduler() {
-		delete(scheduler);
-		// Modif Ben
+    	delete(scheduler);
 		scheduler=NULL;
-		// End Modif
 	}
 	void setMaximumDate(uint64_t tmax) { maximumDate=tmax; };
-	void printInfo() {cout << "I'm a Scheduler" << endl;}
+	void printInfo() {
+		cout << "I'm a Scheduler" << endl;
+	}
+	int getMode() { return schedulerMode; };
 
 	virtual bool schedule(Event *ev);
 	virtual bool scheduleLock(Event *ev);
@@ -69,7 +93,9 @@ public:
 	virtual void start(int) {};
 
 	// stop for good
-	virtual void stop(uint64_t date){setState(ENDED);};
+	virtual void stop(uint64_t date);
+	virtual void restart();
+	virtual bool debug(const string &command,int &id,string &result);
 
 	inline void setState (State s) { state = s; };
 	inline State getState () { return state; };
@@ -77,6 +103,21 @@ public:
 	virtual void waitForSchedulerEnd() {};
 	
 	inline int getNbreMessages() { return Event::getNextId(); };
+
+	inline void waitForSchedulerEnd() {
+			schedulerThread->join();
+    }
+    void addKeyword(Keyword *kw) {
+        tabKeywords.push_back(kw);
+    }
+
+    void removeKeywords() {
+        vector<Keyword*>::const_iterator ci = tabKeywords.begin();
+        while (ci!=tabKeywords.end()) {
+            delete (*ci);
+        }
+        tabKeywords.clear();
+    }
 };
 
 inline void deleteScheduler() {
@@ -86,5 +127,42 @@ inline void deleteScheduler() {
 inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
 
 } // BaseSimulator namespace
+
+class ConsoleStream {
+    Scheduler *scheduler;
+    int blockId;
+    stringstream stream;
+    public :
+
+    ConsoleStream() { stream.str(""); };
+    void setInfo(Scheduler*s,int id) {
+        scheduler=s;
+        blockId=id;
+    }
+    void flush() {
+        scheduler->trace(stream.str(),blockId);
+        stream.str("");
+    };
+
+    ConsoleStream& operator<<(const char* value ) {
+        int l=strlen(value);
+        if (value[l-1]=='\n') {
+            string s(value);
+            s = s.substr(0,l-1);
+            stream << s;
+            flush();
+        } else {
+            stream << value;
+        }
+        return *this;
+    }
+
+    template<typename T>
+    ConsoleStream& operator<<( T const& value ) {
+        stream << value;
+        return *this;
+    }
+};
+
 
 #endif /* SCHEDULER_H_ */

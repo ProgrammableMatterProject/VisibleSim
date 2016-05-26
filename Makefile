@@ -10,19 +10,19 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks
 
 ifeq ($(OS),Darwin)
 #MacOS
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib  -lboost_thread-mt  -lboost_system-mt $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib  -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt $(VSIM_LIBS)"
 OSX_CCFLAGS = -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 else
 #Linux, Solaris, ...
-GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lpthread -lGLEW -lGL -lGLU -lglut -lboost_thread -lboost_system $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lpthread -lGLEW -lGL -lGLU -lglut -lboost_thread -lboost_system -lboost_chrono $(VSIM_LIBS)"
 endif
 
 #for debug version
-GLOBAL_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES $(OSX_CCFLAGS)"
+GLOBAL_CCFLAGS = "-g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES $(OSX_CCFLAGS)"
 # You can add those constant definitions to get a more verbose output
 # -DDEBUG_EVENTS          :  trace creation and destruction of all events
 # -DDEBUG_CONSUME_EVENTS  : trace the consomption of all events

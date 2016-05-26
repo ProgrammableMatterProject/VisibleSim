@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="5,5,6">
+	<camera target="25,20,10" directionSpherical="0,90,30" angle="45" near="0.01" far="1000.0"/>
+	<spotlight target="25,25,0" directionSpherical="-35,40,150" angle="30"/>
+
+	<blockList color="128,128,128" blocksize="10,10,10">
+		<block position="1,1,1" orientation="0" color="255,255,64"/>
+<!-- 0->(0-6,5-4)->11 -->
+		<block position="2,1,1" orientation="2" color="255,64,255"/>
+<!-- 0->(0-6,2-3)->8  -->
+<!--		<block position="1,0,1" orientation="11" color="64,255,255"/> -->
+<!-- 0->(7-1,4-3)->2  -->
+<!--		<block position="0,0,1" orientation="2" /> -->
+<!-- 0->(7-1,5-2)->9  -->
+<!--		<block position="1,0,1" orientation="9"  color="255,153,10"/> -->
+<!-- 0->(6-0,3-2)->3  -->
+<!--		<block position="0,1,1" orientation="3" /> -->
+<!-- 0->(6-0,4-5)->4  -->
+<!--		<block position="0,0,1" orientation="4" /> -->
+<!-- 0->(1-7,2-5)->10  -->
+<!--        <block position="1,1,1" orientation="10" /> -->
+<!-- 0->(1-7,3-4)->10  -->
+<!--        <block position="0,1,1" orientation="5" /> -->
+
+<!-- 10->(2-5,0-0)->6
+    <block position="0,0,0" orientation="0" color="255,0,0"/>
+<block position="0,1,0" orientation="0" color="255,255,0" />
+<block position="1,0,0" orientation="0"  color="128,255,0"/>
+<block position="0,0,1" orientation="0"  color="255,0,128"/>-->
+
+	</blockList>
+
+	<skeleton>
+        <skeleton_line posA="25,25,0" posB="25,25,21" blobbiness="-0.1" radius="15"/>
+        <skeleton_point pos="25,25,21" blobbiness="-0.1" radius="20"/>
+	</skeleton>
+</world>
+
+
+

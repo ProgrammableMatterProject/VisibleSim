@@ -25,7 +25,7 @@
 using namespace boost;
 
 namespace BlinkyBlocks {
-
+    
 inline void createScheduler() {
 	switch(BaseSimulator::Simulator::getType()) {
             case BaseSimulator::Simulator::MELDINTERPRET:

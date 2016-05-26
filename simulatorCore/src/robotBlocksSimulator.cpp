@@ -35,7 +35,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 	TiXmlNode *node = xmlDoc->FirstChild("world");
 	if (node) {
 		TiXmlElement* worldElement = node->ToElement();
-		const char *attr= worldElement->Attribute("gridsize");
+		const char *attr= worldElement->Attribute("gridSize");
 		int lx,ly,lz;
 		if (attr) {
 			string str=attr;
@@ -198,8 +198,8 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 			}
 			attr = element->Attribute("position");
 			if (attr) {
-        string str(attr);
-        int pos1 = str.find_first_of(','),
+                string str(attr);
+                int pos1 = str.find_first_of(','),
 				pos2 = str.find_last_of(',');
 				position.pt[0] = atof(str.substr(0,pos1).c_str());
 				position.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());

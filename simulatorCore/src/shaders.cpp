@@ -129,7 +129,6 @@ void initShaders() {
   glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,GL_RGBA,2048, 2048);	// get the data space for it
   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_RENDERBUFFER_EXT, color_rb); // bind it to the renderbuffer
 
-
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
   OUTPUT << "Shaders initialized." << endl;
@@ -208,7 +207,8 @@ void shadowedRenderingStep3(Camera *camera) {
 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle );
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, DARKGREY.rgba);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
 
 // activation du programme de shader
     if(useShaders && shadersProgram)

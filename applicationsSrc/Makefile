@@ -1,4 +1,4 @@
-SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection robot02 map02 map03 map04 mElection01 reconfCatoms2D
+SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection robot02 map02 map03 map04 mElection01 reconfCatoms2D csgCatoms3D ABCcenterC2D ABCcenterC3D csgCatoms3D sphereCatoms3D sphereBlinky 
 
 .PHONY: subdirs $(SUBDIRS)
 

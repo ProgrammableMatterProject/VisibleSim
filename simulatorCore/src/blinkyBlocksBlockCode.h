@@ -21,7 +21,9 @@ public:
 	BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
 	virtual ~BlinkyBlocksBlockCode();
 
-	virtual void init() = 0;
+	virtual void handleCommand(VMCommand &command) {};
+	virtual void handleDeterministicMode(VMCommand &command) {} ;
+	virtual void init() {};
 	
 	//static BlinkyBlocksBlockCode* buildNewBlockCode(BlinkyBlocksBlock *host);
 	virtual void processLocalEvent(EventPtr pev) = 0;

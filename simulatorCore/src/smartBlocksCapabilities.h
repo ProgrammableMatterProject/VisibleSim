@@ -40,8 +40,8 @@ public :
 	friend ostream& operator<<(ostream& f,const PointCel &pt);
 };
 
-enum states { emptyState=0, wellPlaceState=1, fullState=3, filledState=5, emptiedState=6, transitState=7, jockerState=8 };
-enum presence { emptyCell=0, fullCell=1, wallCell=2, borderCell=3, wellPlacedBorderCell=4};
+enum states { emptyState=0, wellPlaceState=1, fullState=3, singleState=4, filledState=5, emptiedState=6, transitState=7, jockerState=8 };
+enum presence { emptyCell=0, fullCell=1, wallCell=2, borderCell=3, singleCell=4};
 
 class PresenceMatrix {
 public :
@@ -91,7 +91,7 @@ public :
 	vector <Motion*> tabMotions;
 	bool isAngle;
 	vector <short> tabUnlockPath;
-	PointCel prevDir;
+	PointCel prevDir,*singleMotionDir;
 
 	Capability(const string& sid);
 	Capability(const string& sid,const Capability*ref,int n);
@@ -117,7 +117,7 @@ public:
 	~SmartBlocksCapabilities();
 	vector <Validation*> *validateDirection(const PresenceMatrix &sm,const PresenceMatrix &ltm,SmartBlocks::PointCel dir[4]);
 //	vector <Validation*> *validateMulti(const PresenceMatrix &sm,const PresenceMatrix &ltm);
-//	vector <Validation*> *validateToTarget(const PresenceMatrix &sm,const PointCel &dirToO);
+	vector <Validation*> *validateToTarget(const PresenceMatrix &sm,const PointCel &dirToO);
 };
 
 }
