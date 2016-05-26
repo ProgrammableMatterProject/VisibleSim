@@ -3238,7 +3238,7 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             }
 
             if (i == TYPE_NEIGHBORCOUNT) {
-                if (!tupleCount > 1) {
+                if (tupleCount <= 1) {
                     fprintf(stderr, "\x1b[1;32m--%d--\ttuple %s (type %d, size: %d), count = %d\x1b[0m\n", getBlockId(), tuple_names[i], i, (int)TYPE_SIZE(i), tupleCount);
                     /* *(char *)0 = 0; */
                 }

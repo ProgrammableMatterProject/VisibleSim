@@ -139,10 +139,10 @@ Simulator::~Simulator() {
 	//FIN MODIF NICO
 
 	if (getType() == MELDPROCESS) {
-		if(MeldProcess::MeldProcessVM::isInDebuggingMode) {
-			MeldProcess::deleteDebugger();
-		}
-	MeldProcess::deleteVMServer();
+            if(MeldProcess::MeldProcessVM::isInDebuggingMode()) {
+                MeldProcess::deleteDebugger();
+            }
+            MeldProcess::deleteVMServer();
 	}
 	else if (getType() == MELDINTERPRET){
             //Not sure if there is something to do, i think not
