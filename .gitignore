@@ -30,3 +30,4 @@
 # Temporary files
 *.depends
 *~
+.\#*
