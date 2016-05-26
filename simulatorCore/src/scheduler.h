@@ -100,8 +100,6 @@ public:
 	inline void setState (State s) { state = s; };
 	inline State getState () { return state; };
 	
-	virtual void waitForSchedulerEnd() {};
-	
 	inline int getNbreMessages() { return Event::getNextId(); };
 
 	inline void waitForSchedulerEnd() {
