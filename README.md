@@ -1,18 +1,11 @@
 VisibleSim
 ==================
 
-Private version of VisibleSim and its applications. VisibleSim is a general simulator for modular 
-robots.
-
-## Installation
-
 Dependencies:
  - Boost C++ Libraries >= 1.47.0
  - GLUT
  - GLEW
  - SBCL - to compile Meld programs
-
-**NOTE: video card drivers have to be correctly installed. Otherwise, VisibleSim crashes when moving the mouse on the simulated modules.**
 
 ### Mac Installation
 

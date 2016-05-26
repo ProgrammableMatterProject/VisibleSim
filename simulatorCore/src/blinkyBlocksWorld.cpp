@@ -20,7 +20,10 @@ using namespace std;
 
 namespace BlinkyBlocks {
 
-BlinkyBlocksWorld::BlinkyBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
+  BlinkyBlocksWorld::BlinkyBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
+
+    grid = new Grid3D<BuildingBlock*>(slx,sly,slz,NULL);
+    
 	OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
 	gridSize[0]=slx;
 	gridSize[1]=sly;
