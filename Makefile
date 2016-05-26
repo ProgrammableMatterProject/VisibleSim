@@ -9,12 +9,15 @@
 
 OS = $(shell uname -s)
 
+# VisibleSim local libraries
+VSIM_LIBS = -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks
+
 ifeq ($(OS),Darwin)
 #MacOS
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lboost_thread-mt  -lboost_system-mt"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib  -lboost_thread-mt  -lboost_system-mt $(VSIM_LIBS)"
 else
 #Linux, Solaris, ...
-GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks -lpthread -lGLEW -lGL -lGLU -lglut -lboost_thread -lboost_system"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lpthread -lGLEW -lGL -lGLU -lglut -lboost_thread -lboost_system $(VSIM_LIBS)"
 endif
 
 #for debug version
