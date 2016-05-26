@@ -16,7 +16,7 @@ using namespace RobotBlocks;
 int main(int argc, char **argv) {
 	cout << "\033[1;33m" << "Starting RobotBlocks simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulattor(argc, argv, Robot01BlockCode::buildNewBlockCode);
+	createSimulator(argc, argv, Robot01BlockCode::buildNewBlockCode);
 	RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
 	getSimulator()->printInfo();
 	scheduler->printInfo();

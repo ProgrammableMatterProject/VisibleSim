@@ -26,7 +26,7 @@ public:
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
-	virtual bool getAttribute(const string &att,ostringstream &sout);
+	/* virtual bool getAttribute(const string &att,ostringstream &sout); */
 
 	static Catoms3D::Catoms3DBlockCode *buildNewBlockCode(Catoms3D::Catoms3DBlock *host);
 
