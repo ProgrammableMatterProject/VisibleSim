@@ -69,4 +69,40 @@ void World::stopSimulation() {
 	}
 }
 
+static void swap(int* a, int* b)
+{
+ int temp = *a;
+ *a = *b;
+ *b = temp;
+}
+
+void World::generateIds(int n, int* ids) {
+	int a = 0, b = 0;
+	
+	//struct timespec t;
+	//clock_gettime(CLOCK_REALTIME, &t);
+	// not implemented in macos
+	//boost::rand48 generator = boost::rand48(t.tv_nsec);
+	
+	boost::rand48 generator = boost::rand48(time(NULL));
+	
+	for (int i = 0; i < n; i++) {
+		ids[i] = i+1;
+	}
+	
+	if (n==1) {
+		return;
+	}
+		
+	// randomly switch 2n times
+	for (int i = 0; i < n*2; i++) {
+		do {
+			a = generator() % n;
+			b = generator() % n;
+		} while ((a == b));
+		swap(&ids[a], &ids[b]);
+	}
+}
+
+
 } // BaseSimulator namespace

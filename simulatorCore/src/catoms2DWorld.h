@@ -20,7 +20,7 @@
 
 namespace Catoms2D {
 
-class Catoms2DWorld : BaseSimulator::World {
+class Catoms2DWorld : public BaseSimulator::World {
 protected:
 	int gridSize[3];
 	Catoms2DBlock **gridPtrBlocks;
@@ -76,6 +76,9 @@ public:
 	Vecteur worldToGridPosition(Vecteur &pos);
 	Vecteur gridToWorldPosition(Vecteur &pos);
 
+	bool areNeighborsWorldPos(Vecteur &pos1, Vecteur &pos2);
+	bool areNeighborsGridPos(Vecteur &pos1, Vecteur &pos2);
+	
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
@@ -89,6 +92,9 @@ public:
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(Catoms2DBlock *block);
 	virtual void connectBlock(Catoms2DBlock *block);
+	
+	void generateRandom(int n);
+	void extractConfig();
 };
 
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {

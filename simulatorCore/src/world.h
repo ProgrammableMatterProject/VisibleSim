@@ -48,7 +48,11 @@ public:
 	map<int, BuildingBlock*>& getMap() {
 		return buildingBlocksMap;
 	}
-	
+
+	int getSize() {
+	  return buildingBlocksMap.size();
+	}
+
 	void printInfo() {
 		OUTPUT << "I'm a World" << endl;
 	}
@@ -75,6 +79,8 @@ public:
 	virtual void shakeBlock(uint64_t date, int bId, int f) {};
 	/* Stop the block execution */
 	void stopSimulation();
+	
+	void generateIds(int n, int *ids);
 };
 
 inline void deleteWorld() {
