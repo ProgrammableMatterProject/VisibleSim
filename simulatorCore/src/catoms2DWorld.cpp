@@ -171,10 +171,10 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
     
     void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
         Catoms2DBlock *ptrBlock = getGridPtr(ix,iy,iz);
-        
+
         if (ptrBlock) {
             OUTPUT << "link block " << ptrBlock->blockId << endl;
-            
+
             OUTPUT << "X AXIS" << endl;
             if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy,iz)) {
                 (ptrBlock)->getInterface(NeighborDirection::Right)->connect(getGridPtr(ix+1,iy,iz)->getInterface(NeighborDirection::Left));
@@ -188,7 +188,7 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
             } else {
                 (ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
             }
-            
+
             OUTPUT << "Y AXIS - 1" << endl;
             if (iz%2 == 1) {
                 if (iz<gridSize[2]-1 && getGridPtr(ix,iy,iz+1)) {
@@ -217,42 +217,42 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
                     (ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(NULL);
                 }
             }
-        }
-        
-        
-        OUTPUT << "Y AXIS - 2" << endl;
-        if (iz%2 == 1) {
-            if (ix<gridSize[0]-1) {
-                // x+1
-                if (iz<gridSize[2]-1 && getGridPtr(ix+1,iy,iz+1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(getGridPtr(ix+1,iy,iz+1)->getInterface(NeighborDirection::BottomLeft));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz+1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(NULL);
+
+
+            OUTPUT << "Y AXIS - 2" << endl;
+            if (iz%2 == 1) {
+                if (ix<gridSize[0]-1) {
+                    // x+1
+                    if (iz<gridSize[2]-1 && getGridPtr(ix+1,iy,iz+1)) {
+                        (ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(getGridPtr(ix+1,iy,iz+1)->getInterface(NeighborDirection::BottomLeft));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz+1)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(NULL);
+                    }
+
+                    if (iz>0 && getGridPtr(ix+1,iy,iz-1)) {
+                        (ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(getGridPtr(ix+1,iy,iz-1)->getInterface(NeighborDirection::TopLeft));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz-1)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(NULL);
+                    }
                 }
-                
-                if (iz>0 && getGridPtr(ix+1,iy,iz-1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(getGridPtr(ix+1,iy,iz-1)->getInterface(NeighborDirection::TopLeft));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz-1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(NULL);
-                }
-            }
-        } else {
-            if (ix>0) {
-                // x-1
-                if (iz<gridSize[2]-1 && getGridPtr(ix-1,iy,iz+1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(getGridPtr(ix-1,iy,iz+1)->getInterface(NeighborDirection::BottomRight));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz+1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(NULL);
-                }
-                
-                if (iz>0 && getGridPtr(ix-1,iy,iz-1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(getGridPtr(ix-1,iy,iz-1)->getInterface(NeighborDirection::TopRight));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz-1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(NULL);
+            } else {
+                if (ix>0) {
+                    // x-1
+                    if (iz<gridSize[2]-1 && getGridPtr(ix-1,iy,iz+1)) {
+                        (ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(getGridPtr(ix-1,iy,iz+1)->getInterface(NeighborDirection::BottomRight));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz+1)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(NULL);
+                    }
+
+                    if (iz>0 && getGridPtr(ix-1,iy,iz-1)) {
+                        (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(getGridPtr(ix-1,iy,iz-1)->getInterface(NeighborDirection::TopRight));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz-1)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(NULL);
+                    }
                 }
             }
         }
