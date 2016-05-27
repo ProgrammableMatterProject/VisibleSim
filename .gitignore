@@ -35,25 +35,10 @@
 *.log
 
 # Application binary files
-
-applications*/ABCcenterC2D/ABCcenter
-applications*/bbCycle/bbCycle
-applications*/blinky01/blinky01
-applications*/blinkyMeld/blinkyMeld
-applications*/coloration_v2/coloration_v2
-applications*/coloration/coloration
-applications*/detection/detection
-applications*/map02/map02
-applications*/map03/map03
-applications*/map04/map04
-applications*/csgCatoms3D/csgCatoms3D
-applications*/leader_election/leader_election
-applications*/reconfCatoms2D/catom2D1
-applications*/reconfCatoms2D/generator
-applications*/sbReconf/sbReconf
-applications*/sphereCatoms3D/sphereCatoms3D
-applications*/smartBlocks1/smartblock1
-applications*/mElection01/mElection01
-applications*/robot02/robot02
-applications*/csgCatoms3D/csgCatoms3D
-applications*/reconfCatoms2D/ts/test
+## Exclude all files from applicationsSrc and applicationsBin sub-directories
+applications*/*
+## Except sub-directories of those
+!/**/
+## And files with extension
+!*.*
+## Hence, all extension-less files from these directories are ignored => No binaries
