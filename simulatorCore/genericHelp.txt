@@ -16,6 +16,6 @@ Mouse:
         [Ctrl]+<MRB> : context menu
             {Add block} add a block connected to the selected face
             {Delete block} delete the selected block
-            {Stop} stop the process of the selected block
+            {Tap} schedule a tap event for the selected block
             {Save} save the current configuration in the config file.
             {Cancel} close the menu
