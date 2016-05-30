@@ -136,11 +136,6 @@ NeighborDirection::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface
 	return NeighborDirection::Direction(0);
 }
 
-void BlinkyBlocksBlock::tap(uint64_t date) {
-	OUTPUT << "tap scheduled" << endl;
-	getScheduler()->scheduleLock(new TapEvent(date, this));
-}
-
 void BlinkyBlocksBlock::accel(uint64_t date, int x, int y, int z) {
 	getScheduler()->scheduleLock(new AccelEvent(date, this, x, y, z));
 }

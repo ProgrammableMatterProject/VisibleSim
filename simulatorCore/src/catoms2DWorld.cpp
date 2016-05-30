@@ -530,7 +530,7 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
             GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
             GlutContext::popupMenu->addButton(1,"../../simulatorCore/catoms2DTextures/menu_add.tga");
             GlutContext::popupMenu->addButton(2,"../../simulatorCore/catoms2DTextures/menu_del.tga");
-            GlutContext::popupMenu->addButton(3,"../../simulatorCore/catoms2DTextures/menu_stop.tga");
+            GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_tap.tga");
             GlutContext::popupMenu->addButton(4,"../../simulatorCore/catoms2DTextures/menu_save.tga");
             GlutContext::popupMenu->addButton(5,"../../simulatorCore/catoms2DTextures/menu_cancel.tga");
         }

@@ -83,7 +83,7 @@ public:
 	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
 	virtual void stop() {};
-	/* No guarantee that state value will remind the same, it just avoids
+	/* No guarantee that state value will remain the same, it just avoids
 	 * date race condition.
 	 */
 	inline void lock() { mutex_state.lock(); }
@@ -93,7 +93,11 @@ public:
 
 	/* For Blinky Block determinism version */
 	int getNextRandomNumber();
-	
+
+        /* When triggered from the simulation menu,
+           can be used as an interactive event for debug on all catom types */
+	void tap(uint64_t date);
+        
 	uint64_t getTime();
 	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
 	

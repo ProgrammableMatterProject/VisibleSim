@@ -104,5 +104,16 @@ void World::generateIds(int n, int* ids) {
 	}
 }
 
-
+/**
+ * Schedules a tap event for block with id bId, at time date.
+ *
+ * @param date 
+ * @param bId 
+ * @return 
+ */
+void World::tapBlock(uint64_t date, int bId) {
+    BuildingBlock *bb = getBlockById(bId);
+    bb->tap(date);
+}
+    
 } // BaseSimulator namespace

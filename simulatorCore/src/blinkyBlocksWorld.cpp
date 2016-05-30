@@ -358,7 +358,7 @@ void BlinkyBlocksWorld::createPopupMenu(int ix, int iy) {
 		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
 		GlutContext::popupMenu->addButton(1,"../../simulatorCore/blinkyBlocksTextures/menu_add.tga");
 		GlutContext::popupMenu->addButton(2,"../../simulatorCore/blinkyBlocksTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_stop.tga");
+		GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_tap.tga");
 		GlutContext::popupMenu->addButton(4,"../../simulatorCore/blinkyBlocksTextures/menu_save.tga");
 		GlutContext::popupMenu->addButton(5,"../../simulatorCore/blinkyBlocksTextures/menu_cancel.tga");
 	}
@@ -391,114 +391,116 @@ void BlinkyBlocksWorld::createPopupMenu(int ix, int iy) {
 	GlutContext::popupMenu->show(true);
 }
 
-void BlinkyBlocksWorld::menuChoice(int n) {
+    void BlinkyBlocksWorld::menuChoice(int n) {
 	switch (n) {
-		case 1 : {
-			BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-			OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-			Vecteur pos=bb->position;
-			switch (numSelectedFace) {
-				case NeighborDirection::Left :
-					pos.pt[0]--;
-					break;
-				case NeighborDirection::Right :
-					pos.pt[0]++;
-				break;
-				case NeighborDirection::Front :
-					pos.pt[1]--;
-					break;
-				case NeighborDirection::Back :
-					pos.pt[1]++;
-				break;
-				case NeighborDirection::Bottom :
-					pos.pt[2]--;
-					break;
-				case NeighborDirection::Top :
-					pos.pt[2]++;
-				break;
-			}
-			addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
-			linkBlocks();
-		} break;
-		case 2 : {
-			OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
-         BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-			deleteBlock(bb);
-		} break;
-		case 3 : {
-			BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-			stopBlock(getScheduler()->now(), bb->blockId);
-		} break;
+        case 1 : {
+            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+            OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
+            Vecteur pos=bb->position;
+            switch (numSelectedFace) {
+            case NeighborDirection::Left :
+                pos.pt[0]--;
+                break;
+            case NeighborDirection::Right :
+                pos.pt[0]++;
+                break;
+            case NeighborDirection::Front :
+                pos.pt[1]--;
+                break;
+            case NeighborDirection::Back :
+                pos.pt[1]++;
+                break;
+            case NeighborDirection::Bottom :
+                pos.pt[2]--;
+                break;
+            case NeighborDirection::Top :
+                pos.pt[2]++;
+                break;
+            }
+            addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
+            linkBlocks();
+        } break;
+        case 2 : {
+            OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
+            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+            deleteBlock(bb);
+        } break;
+        case 3 : {
+            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+            tapBlock(getScheduler()->now(), bb->blockId);
+        } break;
+        case 4:                 // Save current configuration
+            cerr << "NOT YET IMPLEMENTED" << endl;            
+            break;
 	}
 }
-
-void BlinkyBlocksWorld::setSelectedFace(int n) {
+    
+    void BlinkyBlocksWorld::setSelectedFace(int n) {
 	numSelectedBlock=n/6;
+        cerr << "Face n = " << n << " / " << numSelectedBlock << endl;
 	string name = objBlockForPicking->getObjMtlName(n%6);
-    if (name=="face_top") numSelectedFace=NeighborDirection::Top;
-    else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
-    else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
-    else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
-    else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
-    else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
-}
+        cerr << name << endl;
+        if (name=="face_top") numSelectedFace=NeighborDirection::Top;
+        else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
+        else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
+        else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
+        else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
+        else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
+    }
 
-	void BlinkyBlocksWorld::tapBlock(uint64_t date, int bId) {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
-		bb->tap(date);
-	}
+    void BlinkyBlocksWorld::accelBlock(uint64_t date, int bId, int x, int y, int z) {
+        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
+        bb->accel(date, x,y,z);
+    }
 
-	void BlinkyBlocksWorld::accelBlock(uint64_t date, int bId, int x, int y, int z) {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
-		bb->accel(date, x,y,z);
-	}
+    void BlinkyBlocksWorld::shakeBlock(uint64_t date, int bId, int f) {
+        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
+        bb->shake(date, f);
+    }
 
-	void BlinkyBlocksWorld::shakeBlock(uint64_t date, int bId, int f) {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
-		bb->shake(date, f);
-	}
+    /* We don't want this anymore, to be replaced by tap event from the simulation menu */
+    //
+    // void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
+    //     if (bId < 0) {
+    //         // Delete the block	without deleting the links
+    //         map<int, BaseSimulator::BuildingBlock*>::iterator it;
+    //         for(it = buildingBlocksMap.begin();
+    //             it != buildingBlocksMap.end(); it++) {
+    //             BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
+    //             if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
+    //                 bb->stop(date, BlinkyBlocksBlock::STOPPED);
+    //         }
+    //     } else {
+    //         // Delete all the links and then the block
+    //         BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
+    //         if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
+    //             // cut links between bb and others
+    //             for(int i=0; i<6; i++) {
+    //                 P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+    //                 if (bbi->connectedInterface) {
+    //                     //bb->removeNeighbor(bbi); //Useless
+    //                     bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
+    //                     bbi->connectedInterface->connectedInterface=NULL;
+    //                     bbi->connectedInterface=NULL;
+    //                 }
+    //             }
+    //             // free grid cell
+    //             int ix,iy,iz;
+    //             ix = int(bb->position.pt[0]);
+    //             iy = int(bb->position.pt[1]);
+    //             iz = int(bb->position.pt[2]);
+    //             setGridPtr(ix,iy,iz,NULL);
+    //             bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
+    //             linkBlocks();
+    //         }
+    //     }
+    // }
 
-	void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
-		if (bId < 0) {
-			// Delete the block	without deleting the links
-			map<int, BaseSimulator::BuildingBlock*>::iterator it;
-			for(it = buildingBlocksMap.begin();
-					it != buildingBlocksMap.end(); it++) {
-				BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-				if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
-					bb->stop(date, BlinkyBlocksBlock::STOPPED);
-			}
-		} else {
-			// Delete all the links and then the block
-			BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
-			if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
-				// cut links between bb and others
-				for(int i=0; i<6; i++) {
-					P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
-					if (bbi->connectedInterface) {
-						//bb->removeNeighbor(bbi); //Useless
-						bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-						bbi->connectedInterface->connectedInterface=NULL;
-						bbi->connectedInterface=NULL;
-					}
-				}
-				// free grid cell
-				int ix,iy,iz;
-				ix = int(bb->position.pt[0]);
-				iy = int(bb->position.pt[1]);
-				iz = int(bb->position.pt[2]);
-				setGridPtr(ix,iy,iz,NULL);
-				bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
-				linkBlocks();
-			}
-		}
-	}
-
-	void BlinkyBlocksWorld::createHelpWindow() {
-		if (GlutContext::helpWindow)
-			delete GlutContext::helpWindow;
-		GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/blinkyBlocksHelp.txt");
-	}
+    void BlinkyBlocksWorld::createHelpWindow() {
+        if (GlutContext::helpWindow)
+            delete GlutContext::helpWindow;
+        GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/blinkyBlocksHelp.txt");
+    }
 
    void BlinkyBlocksWorld::dump() {
       map<int, BaseSimulator::BuildingBlock*>::iterator it;

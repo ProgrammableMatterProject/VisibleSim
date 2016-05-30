@@ -48,7 +48,7 @@ public:
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
 
 	/* schedule the appropriate event for this action */
-	void tap(uint64_t date);
+	/* void tap(uint64_t date); Now a generic event in buildingBlock.cpp */
 	void accel(uint64_t date, int x, int y, int z);
 	void shake(uint64_t date, int f);
 

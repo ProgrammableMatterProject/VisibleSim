@@ -144,8 +144,13 @@ void BuildingBlock::processLocalEvent() {
 	if (localEventsList.size() > 0) {
 		getScheduler()->schedule(new ProcessLocalEvent(blockCode->availabilityDate,this));
 	}
+}        
+    
+void BuildingBlock::tap(uint64_t date) {
+	OUTPUT << "tap scheduled" << endl;
+	getScheduler()->scheduleLock(new TapEvent(date, this));
 }
-
+    
 int BuildingBlock::getNextRandomNumber() {
 	int x = 0;
 	do {

@@ -393,7 +393,7 @@ void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
 		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
 		GlutContext::popupMenu->addButton(1,"../../simulatorCore/robotBlocksTextures/menu_add.tga");
 		GlutContext::popupMenu->addButton(2,"../../simulatorCore/robotBlocksTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/robotBlocksTextures/menu_stop.tga");
+		GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_tap.tga");
 		GlutContext::popupMenu->addButton(4,"../../simulatorCore/robotBlocksTextures/menu_save.tga");
 		GlutContext::popupMenu->addButton(5,"../../simulatorCore/robotBlocksTextures/menu_cancel.tga");
 	}

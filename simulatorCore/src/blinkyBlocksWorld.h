@@ -76,7 +76,6 @@ public:
 	virtual void menuChoice(int n);
 	
 	/* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
-	void tapBlock(uint64_t date, int bId);
 	void accelBlock(uint64_t date, int bId, int x, int y, int z);
 	void shakeBlock(uint64_t date, int bId, int f);	
 	void stopBlock(uint64_t date, int bId);
