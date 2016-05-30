@@ -42,7 +42,7 @@ RobotBlocksWorld::RobotBlocksWorld(int slx,int sly,int slz, int argc, char *argv
 	blockSize[1]=39.0;
 	blockSize[2]=40.0;
 	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
-	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
+	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlockPicking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
 	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
