@@ -54,81 +54,42 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 	}
 
 	if (getType() == MELDPROCESS) {
-		TiXmlNode *node = xmlDoc->FirstChild("vm");
-		string vmPath;
+                string vmPath = cmdLine.getVMPath();
 		string programPath = cmdLine.getProgramPath();
-		int port = 0;
+		int vmPort = cmdLine.getVMPort();                
 		bool debugging = cmdLine.getMeldDebugger();
 
-		if (node) {
-			TiXmlElement* vmElement = node->ToElement();
-			const char *attr = vmElement->Attribute("serverport");
-			if (attr) {
-				port = atoi(attr);
-			} else {
-				cerr << "Error: no port define for the Meld VM" << endl;
-				exit(1);
-			}
-			attr = vmElement->Attribute("vmPath");
-			if (attr) {
-				vmPath = string(attr);
-			} else {
-				cerr << "Error: no port define for the Meld VM" << endl;
-				exit(1);
-			}
-			attr = vmElement->Attribute("programPath");
-			if (attr) {
-			 if (programPath == "") {
-				programPath = string(attr);
-			 } else {
-				cerr << "Warning: meld program provided in the command line and in the xml file" << endl;
-				cerr << "Warning: meld program provided in the xml file is ignored" << endl;
-			 }
-			}
-			attr = vmElement->Attribute("debugging");
-			if (attr) {
-				if ((strcmp(attr, "True") == 0) ||(strcmp(attr, "true") == 0) ) {
-					  debugging = true;
-				}
-			}
-		}
-
-
+                if (vmPath == "") {
+                    cerr << "error: no path defined for Meld VM" << endl;
+                    exit(1);
+                } else if (!vmPort) {
+                    cerr << "error: no port defined for Meld VM" << endl;
+                    exit(1);
+                } else if (programPath == "") {
+                    cerr << "error: no Meld program was provided" << endl;
+                    exit(1);
+                }
+                
 		MeldProcess::setVMConfiguration(vmPath, programPath, debugging);
-		MeldProcess::createVMServer(port);
+		MeldProcess::createVMServer(vmPort);
 		if(debugging) {
-			MeldProcess::createDebugger();
+                    MeldProcess::createDebugger();
 		}
-	}
-	else if(getType() == MELDINTERPRET){
-            TiXmlNode *node = xmlDoc->FirstChild("vm");
+	} else if(getType() == MELDINTERPRET) {
 		string programPath = cmdLine.getProgramPath();
 		bool debugging = cmdLine.getMeldDebugger();
 
-		if (node) {
-			TiXmlElement* vmElement = node->ToElement();
-			const char *attr = vmElement->Attribute("programPath");
-			if (attr) {
-			 if (programPath == "") {
-				programPath = string(attr);
-			 } else {
-				cerr << "Warning: meld program provided in the command line and in the xml file" << endl;
-				cerr << "Warning: meld program provided in the xml file is ignored" << endl;
-			 }
-			}
-			attr = vmElement->Attribute("debugging");
-			if (attr) {
-				if ((strcmp(attr, "True") == 0) ||(strcmp(attr, "true") == 0) ) {
-					  debugging = true;
-				}
-			}
-		}
-		OUTPUT << "Loading" << programPath << " with MeldInterpretVM" << endl;
-            MeldInterpret::MeldInterpretVM::setConfiguration(programPath, debugging);
-            if(debugging){
-                  //Don't know what to do yet
-            }
-	}
+                if (programPath == "") {
+                    cerr << "error: no Meld program was provided" << endl;
+                    exit(1);
+                }
+                OUTPUT << "Loading " << programPath << " with MeldInterpretVM" << endl;
+                MeldInterpret::MeldInterpretVM::setConfiguration(programPath, debugging);
+                if(debugging){
+                    //Don't know what to do yet
+                    cerr << "warning: MeldInterpreter debugging not implemented yet" << endl;
+                }
+        }
 
 }
 
