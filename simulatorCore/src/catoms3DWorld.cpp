@@ -454,14 +454,14 @@ Vecteur Catoms3DWorld::gridToWorldPosition(const Cell3DPosition &pos) {
     return res;
 }
 
-void Catoms3DWorld::createPopupMenu(int ix, int iy) {
+    void Catoms3DWorld::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
-		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-		GlutContext::popupMenu->addButton(1,"../../simulatorCore/catoms3DTextures/menu_add.tga");
-		GlutContext::popupMenu->addButton(2,"../../simulatorCore/catoms3DTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_tap.tga");
-		GlutContext::popupMenu->addButton(4,"../../simulatorCore/catoms3DTextures/menu_save.tga");
-		GlutContext::popupMenu->addButton(5,"../../simulatorCore/catoms3DTextures/menu_cancel.tga");
+            GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
+            GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
+            GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
+            GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
+            GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
+            GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
 	}
 	if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
 	// verify if add is possible for this face
