@@ -547,7 +547,7 @@ void Catoms3DWorld::setSelectedFace(int n) {
 void Catoms3DWorld::createHelpWindow() {
 	if (GlutContext::helpWindow)
 		delete GlutContext::helpWindow;
-	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/catoms3DHelp.txt");
+	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
 }
 /*
 void Catoms3DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {

@@ -619,7 +619,7 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
     void Catoms2DWorld::createHelpWindow() {
         if (GlutContext::helpWindow)
             delete GlutContext::helpWindow;
-        GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/catoms2DHelp.txt");
+        GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
     }
 
     void Catoms2DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {

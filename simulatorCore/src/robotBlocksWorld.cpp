@@ -477,7 +477,7 @@ void RobotBlocksWorld::setSelectedFace(int n) {
 void RobotBlocksWorld::createHelpWindow() {
 	if (GlutContext::helpWindow)
 		delete GlutContext::helpWindow;
-	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/robotBlocksHelp.txt");
+	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
 }
 
 void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {

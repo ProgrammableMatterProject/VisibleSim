@@ -1,0 +1,21 @@
+Interface Help 
+
+Keyboard:
+          [z]: center camera focus on the selected block
+      [w]/[W]: toggle full screen / window mode
+          [r]: start in realtime mode
+          [R]: start in fastest mode 
+          [h]: show/hide help window
+     	  [s]: enable/disable screen saving mode
+[q]/[Q]/[ESC]: quit
+
+Mouse:
+        <MLB>: change the point of view, tap on a selected block
+        <MRB>: change the focus point
+        [Ctrl]+<MLB> : select a block
+        [Ctrl]+<MRB> : context menu
+            {Add block} add a block connected to the selected face
+            {Delete block} delete the selected block
+            {Stop} stop the process of the selected block
+            {Save} save the current configuration in the config file.
+            {Cancel} close the menu
