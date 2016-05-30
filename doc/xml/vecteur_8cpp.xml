@@ -1,0 +1,372 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="vecteur_8cpp" kind="file" language="C++">
+    <compoundname>vecteur.cpp</compoundname>
+    <includes refid="vecteur_8h" local="yes">vecteur.h</includes>
+    <incdepgraph>
+      <node id="19523">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="19524" relation="include">
+        </childnode>
+        <childnode refid="19525" relation="include">
+        </childnode>
+        <childnode refid="19526" relation="include">
+        </childnode>
+        <childnode refid="19527" relation="include">
+        </childnode>
+      </node>
+      <node id="19526">
+        <label>cmath</label>
+      </node>
+      <node id="19527">
+        <label>memory.h</label>
+      </node>
+      <node id="19525">
+        <label>fstream</label>
+      </node>
+      <node id="19522">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp</label>
+        <link refid="vecteur.cpp"/>
+        <childnode refid="19523" relation="include">
+        </childnode>
+      </node>
+      <node id="19524">
+        <label>iostream</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="vecteur_8cpp_1ac5c5718aabc4c55cd536c854d7fcacfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>istream &amp;</type>
+        <definition>istream&amp; operator&gt;&gt;</definition>
+        <argsstring>(istream &amp;f, Vecteur &amp;p)</argsstring>
+        <name>operator&gt;&gt;</name>
+        <param>
+          <type>istream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="11" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="11" bodyend="14"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+      </memberdef>
+      <memberdef kind="function" id="vecteur_8cpp_1a121336728d99289f957739a9a842cdf9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Vecteur &amp;p)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="17" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="17" bodyend="20"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+      </memberdef>
+      <memberdef kind="function" id="vecteur_8cpp_1a4d79ead92d5f8b4140456c6a3dac0af8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator*</definition>
+        <argsstring>(double v, const Vecteur p)</argsstring>
+        <name>operator*</name>
+        <param>
+          <type>double</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="22" bodyend="29"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <referencedby refid="class_vecteur_1a088fefff60b16f1df7ea582126e71e4d" compoundref="vecteur_8h" startline="89" endline="89">Vecteur::operator==</referencedby>
+        <referencedby refid="class_vecteur_1a5abdc2b2dd5238f665ddf3bc52bbc0a6" compoundref="vecteur_8h" startline="109" endline="109">Vecteur::setPoint</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="vecteur_8cpp_1a4a373e02fe8c30a41877f0fbc0dbe457" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const double</type>
+        <definition>const double operator*</definition>
+        <argsstring>(const Vecteur p1, const Vecteur p2)</argsstring>
+        <name>operator*</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: first vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: second vector </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="31" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="31" bodyend="33"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+      </memberdef>
+      <memberdef kind="function" id="vecteur_8cpp_1a0a710f6215fb963c9a3edafe085114dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator+</definition>
+        <argsstring>(const Vecteur p1, const Vecteur p2)</argsstring>
+        <name>operator+</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="42" bodyend="49"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <referencedby refid="class_vecteur_1a088fefff60b16f1df7ea582126e71e4d" compoundref="vecteur_8h" startline="89" endline="89">Vecteur::operator==</referencedby>
+        <referencedby refid="class_vecteur_1a5abdc2b2dd5238f665ddf3bc52bbc0a6" compoundref="vecteur_8h" startline="109" endline="109">Vecteur::setPoint</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="vecteur_8cpp_1a082d295801f8019e941029bb34294423" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator-</definition>
+        <argsstring>(const Vecteur p1, const Vecteur p2)</argsstring>
+        <name>operator-</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="51" bodyend="58"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <referencedby refid="class_vecteur_1a088fefff60b16f1df7ea582126e71e4d" compoundref="vecteur_8h" startline="89" endline="89">Vecteur::operator==</referencedby>
+        <referencedby refid="class_vecteur_1a5abdc2b2dd5238f665ddf3bc52bbc0a6" compoundref="vecteur_8h" startline="109" endline="109">Vecteur::setPoint</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="vecteur_8cpp_1a801e2db45544967d76af137b6ee7c8ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator-</definition>
+        <argsstring>(const Vecteur p1)</argsstring>
+        <name>operator-</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p1</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="60" bodyend="67"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+      </memberdef>
+      <memberdef kind="function" id="vecteur_8cpp_1a4134be228bccd3a0b00d6ff0b715ae3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator^</definition>
+        <argsstring>(const Vecteur p1, const Vecteur p2)</argsstring>
+        <name>operator^</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: first vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: second vector </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" line="69" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="69" bodyend="76"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <referencedby refid="class_vecteur_1a088fefff60b16f1df7ea582126e71e4d" compoundref="vecteur_8h" startline="89" endline="89">Vecteur::operator==</referencedby>
+        <referencedby refid="class_vecteur_1a5abdc2b2dd5238f665ddf3bc52bbc0a6" compoundref="vecteur_8h" startline="109" endline="109">Vecteur::setPoint</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>3D homogeneous vector </para>    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="date"><para>29/01/2012 </para></simplesect>
+<simplesect kind="author"><para>Benoît Piranda </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="8"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vecteur_8h" kindref="compound">vecteur.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//<sp/>lecture<sp/>d&apos;un<sp/>vecteur<sp/>dans<sp/>un<sp/>flux</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="vecteur_8cpp_1ac5c5718aabc4c55cd536c854d7fcacfa" refkind="member"><highlight class="normal">istream&amp;<sp/><ref refid="vecteur_8cpp_1ac5c5718aabc4c55cd536c854d7fcacfa" kindref="member">operator&gt;&gt;</ref>(istream&amp;<sp/>f,<ref refid="class_vecteur" kindref="compound">Vecteur</ref>&amp;p)</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">{<sp/>f<sp/>&gt;&gt;<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>&gt;&gt;<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>&gt;&gt;<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/>écriture<sp/>d&apos;un<sp/>vecteur<sp/>dans<sp/>un<sp/>flux</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="vecteur_8cpp_1a121336728d99289f957739a9a842cdf9" refkind="member"><highlight class="normal">ostream&amp;<sp/><ref refid="vecteur_8cpp_1a121336728d99289f957739a9a842cdf9" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref>&amp;p)</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">{<sp/>f<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;(&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="vecteur_8h_1ad5c2a3119adcadf32cd932404c8d4574" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="vecteur_8cpp_1a4d79ead92d5f8b4140456c6a3dac0af8" kindref="member">operator *</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>v,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p)</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>r;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*v;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*v;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*v;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]<sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="vecteur_8h_1ad1521a9369f5501a99b4629b8531001a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="vecteur_8cpp_1a4d79ead92d5f8b4140456c6a3dac0af8" kindref="member">operator *</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p2)</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>+<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>+<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="class_vecteur_1ad08b89785a8a3baca62b8d20346b60c6" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vecteur_1ad08b89785a8a3baca62b8d20346b60c6" kindref="member">Vecteur::operator +=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;p)</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">{<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]+=p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0];</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]+=p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1];</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]+=p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]+=p.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3];</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="vecteur_8h_1a427e12228c3c977cc871a46ad80f37a5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_vecteur_1a427e12228c3c977cc871a46ad80f37a5" kindref="member">operator +</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p2)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">{<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>r;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]+p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0];</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]+p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1];</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]+p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]+p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3];</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="vecteur_8h_1a0bee873a82f80b30547b4e972197bbf0" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_vecteur_1a0bee873a82f80b30547b4e972197bbf0" kindref="member">operator -</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p2)</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">{<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>r;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]-p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0];</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]-p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1];</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]-p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]-p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3];</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="vecteur_8h_1a1ab51fe91a9796a4da41edfe4ce57b73" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_vecteur_1a0bee873a82f80b30547b4e972197bbf0" kindref="member">operator -</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p1)</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">{<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>r;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>-p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0];</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>-p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1];</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>-p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]<sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="vecteur_8h_1a59668ab608384de587a835cb630e52ef" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_vecteur_1a59668ab608384de587a835cb630e52ef" kindref="member">operator ^</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>p2)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal">{<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>r;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>-<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1];</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>-<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>-<sp/>p1.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*p2.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0];</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/>r.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[3]<sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="class_vecteur_1af5d29fed3edb7276c9da4950a7b3110b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_vecteur_1af5d29fed3edb7276c9da4950a7b3110b" kindref="member">Vecteur::normer</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="79"><highlight class="keyword"></highlight><highlight class="normal">{<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>r;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d=1.0/sqrt(<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/>r<sp/>=<sp/>d*(*this);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="class_vecteur_1afa6e8ccd9771f87419077954cf96677a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_vecteur_1afa6e8ccd9771f87419077954cf96677a" kindref="member">Vecteur::norme</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="87"><highlight class="keyword"></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sqrt(<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" kindref="member">Vecteur::norme2</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="91"><highlight class="keyword"></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2];</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="class_vecteur_1a06dacfa5fc434136436734c6078eded5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vecteur_1a06dacfa5fc434136436734c6078eded5" kindref="member">Vecteur::normer_interne</ref>()</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">{<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d=1.0/sqrt(<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/>pt[0]*=d;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/>pt[1]*=d;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>pt[2]*=d;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/>pt[3]=0;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="class_vecteur_1afdd21c25b0d60b68e097f0f40c0e4849" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vecteur_1afdd21c25b0d60b68e097f0f40c0e4849" kindref="member">Vecteur::setLength</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>l)</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">{<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d=l/sqrt(<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>+<sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]*<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/>pt[0]*=d;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/>pt[1]*=d;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/>pt[2]*=d;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/>pt[3]=0;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="class_vecteur_1a387acaa9d1bbb71a096a8d9484d124b3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vecteur_1a9847818b536abf81b1a82196d4846918" kindref="member">Vecteur::set</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*tab,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>s,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>extra)<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;s;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[i]=tab[i];</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=s;<sp/>i&lt;4;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[i]=extra;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">};</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp"/>
+  </compounddef>
+</doxygen>

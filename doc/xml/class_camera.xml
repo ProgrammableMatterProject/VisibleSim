@@ -1,0 +1,816 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_camera" kind="class" language="C++" prot="public">
+    <compoundname>Camera</compoundname>
+    <includes refid="camera_8h" local="no">camera.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_camera_1a5a6955071d11d1205f10e00439f9e534" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::phi</definition>
+        <argsstring></argsstring>
+        <name>phi</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1ab6b0614e3fd3d6cf593655030184db02" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::theta</definition>
+        <argsstring></argsstring>
+        <name>theta</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1a5a604086bca4b5ba67d5b07c033a985b" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::distance</definition>
+        <argsstring></argsstring>
+        <name>distance</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1ad0695ec092a00549a5a57dd386896c07" prot="private" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Camera::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1ac453247cf77b31a1cd2171924806461f" prot="private" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Camera::target</definition>
+        <argsstring></argsstring>
+        <name>target</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1a9e9f07697a8957999ef3a9d7e2b6e687" prot="private" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Camera::Xcam</definition>
+        <argsstring></argsstring>
+        <name>Xcam</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1a0adbbd305a368f4a6a8e063690d040d7" prot="private" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Camera::Ycam</definition>
+        <argsstring></argsstring>
+        <name>Ycam</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1a9bce38beb446da8c73ff35fbe4d0bd5b" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Camera::mouse[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>mouse</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1aa91722815159fc56b3e436546ee0b75a" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::sensibilityX</definition>
+        <argsstring></argsstring>
+        <name>sensibilityX</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1ada75a3e7afd1855289034e3d0aca8fc1" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::sensibilityY</definition>
+        <argsstring></argsstring>
+        <name>sensibilityY</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1af52b2f5ffaaf9a12fce46db19c00e3c1" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::w_h</definition>
+        <argsstring></argsstring>
+        <name>w_h</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1aa7e7e717a73a94ed7985b20f6092be7f" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::near_plane</definition>
+        <argsstring></argsstring>
+        <name>near_plane</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1aeb4af9300c28e17961c77971247947a7" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::far_plane</definition>
+        <argsstring></argsstring>
+        <name>far_plane</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1a34679b26b129f5fee07ce664f9b886d9" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Camera::angle</definition>
+        <argsstring></argsstring>
+        <name>angle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_camera_1ab5e3b6d460a8894b3846efc024623ace" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Camera::targetMotion</definition>
+        <argsstring></argsstring>
+        <name>targetMotion</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="52" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_camera_1a2acac692956489f3b291b41c0238d82d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_light_source" kindref="compound">LightSource</ref></type>
+        <definition>LightSource Camera::ls</definition>
+        <argsstring></argsstring>
+        <name>ls</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="54" bodyend="-1"/>
+        <referencedby refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" compoundref="camera_8cpp" startline="82" endline="93">setLightParameters</referencedby>
+        <referencedby refid="class_camera_1a232ea5d526f5ab404c88173bde2fc8fb" compoundref="camera_8cpp" startline="111" endline="118">mouseLightUp</referencedby>
+        <referencedby refid="class_camera_1af9569cd37406f292c0271ea86b4666ee" compoundref="camera_8cpp" startline="120" endline="129">mouseLightMove</referencedby>
+        <referencedby refid="class_camera_1a9a803bf1d5daed6b1111416ae9b7c476" compoundref="camera_8cpp" startline="131" endline="134">mouseLightZoom</referencedby>
+        <referencedby refid="shaders_8h_1a49ff67a56fb37eacb4551dd6933497b2" compoundref="shaders_8cpp" startline="137" endline="154">shadowedRenderingStep1</referencedby>
+        <referencedby refid="shaders_8h_1af9bd99e5de0905f53b874be82f95c890" compoundref="shaders_8cpp" startline="172" endline="234">shadowedRenderingStep3</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_camera_1a78e57277b569a12b634ee3f7ce4c603e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Camera::Camera</definition>
+        <argsstring>(double t, double p, double d, double SX=0.02, double SY=0.02)</argsstring>
+        <name>Camera</name>
+        <param>
+          <type>double</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>d</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>SX</declname>
+          <defval>0.02</defval>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>SY</declname>
+          <defval>0.02</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="17" bodyend="25"/>
+        <references refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" compoundref="camera_8cpp" startline="27" endline="38">updatePositionFromAngles</references>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a8e5c2a5f38ed6e0acecd9bb3e9ae1c99" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseDown</definition>
+        <argsstring>(int x, int y, bool tm=false)</argsstring>
+        <name>mouseDown</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>tm</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="40" bodyend="44"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a6486849c28c1fff783c36dabd3344436" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseUp</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>mouseUp</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="46" bodyend="57"/>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" compoundref="camera_8cpp" startline="27" endline="38">updatePositionFromAngles</references>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1ab0ded66af0a35f693f173007f24be44c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseMove</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>mouseMove</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="59" bodyend="71"/>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" compoundref="camera_8cpp" startline="27" endline="38">updatePositionFromAngles</references>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a8cb013647e06793c56e529c9c62b9371" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseZoom</definition>
+        <argsstring>(double pas)</argsstring>
+        <name>mouseZoom</name>
+        <param>
+          <type>double</type>
+          <declname>pas</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="73" bodyend="76"/>
+        <references refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" compoundref="camera_8cpp" startline="27" endline="38">updatePositionFromAngles</references>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1af1af6f6cde8769da4571cfbea78418ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseLightDown</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>mouseLightDown</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="106" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a232ea5d526f5ab404c88173bde2fc8fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseLightUp</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>mouseLightUp</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="62" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="111" bodyend="118"/>
+        <references refid="class_camera_1a2acac692956489f3b291b41c0238d82d" compoundref="camera_8h" startline="54">ls</references>
+        <references refid="class_light_source_1aadca4f2cb4d8244b2d01e72a698f8191" compoundref="camera_8h" startline="39">LightSource::theta</references>
+        <references refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" compoundref="camera_8h" startline="39">LightSource::phi</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" compoundref="camera_8cpp" startline="145" endline="166">LightSource::calcMatrices</references>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1af9569cd37406f292c0271ea86b4666ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseLightMove</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>mouseLightMove</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="120" bodyend="129"/>
+        <references refid="class_camera_1a2acac692956489f3b291b41c0238d82d" compoundref="camera_8h" startline="54">ls</references>
+        <references refid="class_light_source_1aadca4f2cb4d8244b2d01e72a698f8191" compoundref="camera_8h" startline="39">LightSource::theta</references>
+        <references refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" compoundref="camera_8h" startline="39">LightSource::phi</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" compoundref="camera_8cpp" startline="145" endline="166">LightSource::calcMatrices</references>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a9a803bf1d5daed6b1111416ae9b7c476" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::mouseLightZoom</definition>
+        <argsstring>(double pas)</argsstring>
+        <name>mouseLightZoom</name>
+        <param>
+          <type>double</type>
+          <declname>pas</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="131" bodyend="134"/>
+        <references refid="class_camera_1a2acac692956489f3b291b41c0238d82d" compoundref="camera_8h" startline="54">ls</references>
+        <references refid="class_light_source_1a54fe67c22b44ef6afa97283edc586225" compoundref="camera_8h" startline="39">LightSource::distance</references>
+        <references refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" compoundref="camera_8cpp" startline="145" endline="166">LightSource::calcMatrices</references>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a64744eab539145034be6abcda043290b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::updateIntrinsics</definition>
+        <argsstring>(double a, double rwh, double np, double fp)</argsstring>
+        <name>updateIntrinsics</name>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>rwh</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>np</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>fp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="99" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a22bff26f75dc96d779ae4f49de2da867" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::setW_H</definition>
+        <argsstring>(double r)</argsstring>
+        <name>setW_H</name>
+        <param>
+          <type>double</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="66" bodyend="66"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a4ec50716a3c77cf11a664e602511e55f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::setNearFar</definition>
+        <argsstring>(double n, double f)</argsstring>
+        <name>setNearFar</name>
+        <param>
+          <type>double</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="67" bodyend="67"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a13d88059aa510d8ac9aee7dc3adc84ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::setAngle</definition>
+        <argsstring>(double a)</argsstring>
+        <name>setAngle</name>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="68" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="68" bodyend="68"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a7724b4bf8bbf5423da7dcb4644ee7d80" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::setTarget</definition>
+        <argsstring>(const Vecteur &amp;p)</argsstring>
+        <name>setTarget</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="69" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="69" bodyend="69"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a621e8294a4e1a4e9f031630e0b7c55ab" compoundref="blinky_blocks_world_8cpp" startline="23" endline="56">BlinkyBlocks::BlinkyBlocksWorld::BlinkyBlocksWorld</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a59cf289a09444696c8739bc2d9194a0d" compoundref="catoms2_d_world_8cpp" startline="28" endline="60">Catoms2D::Catoms2DWorld::Catoms2DWorld</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1ab3e4a5869159eecfcfd5d6b143e590f2" compoundref="catoms3_d_world_8cpp" startline="33" endline="67">Catoms3D::Catoms3DWorld::Catoms3DWorld</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a43b61c929f575fb85492feddbc53750e" compoundref="robot_blocks_world_8cpp" startline="23" endline="55">RobotBlocks::RobotBlocksWorld::RobotBlocksWorld</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1ac6cc0d31fbabf06d3142207d0403c3a7" compoundref="smart_blocks_world_8cpp" startline="20" endline="56">SmartBlocks::SmartBlocksWorld::SmartBlocksWorld</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1af8eff8518d92273950368ede6fc4c800" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::setDirection</definition>
+        <argsstring>(double az, double ele)</argsstring>
+        <name>setDirection</name>
+        <param>
+          <type>double</type>
+          <declname>az</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>ele</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="70" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="70" bodyend="70"/>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a4e3d9d06d4cf59d5d49674bd3af57e61" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::setDistance</definition>
+        <argsstring>(double d)</argsstring>
+        <name>setDistance</name>
+        <param>
+          <type>double</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="71" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="71" bodyend="71"/>
+        <references refid="namespace_blinky_blocks_1af441bc9d1031530c3659d9529467aaeb" compoundref="blinky_blocks_block_8cpp" startline="179" endline="182">BlinkyBlocks::operator&lt;&lt;</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1ac4c7f5e91786f418464392df8c7a140e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::glLookAt</definition>
+        <argsstring>()</argsstring>
+        <name>glLookAt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="72" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="78" bodyend="80"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+        <referencedby refid="shaders_8h_1af9bd99e5de0905f53b874be82f95c890" compoundref="shaders_8cpp" startline="172" endline="234">shadowedRenderingStep3</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::setLightParameters</definition>
+        <argsstring>(const Vecteur &amp;t, double th, double ph, double d, double angle, double nearplane, double farplane)</argsstring>
+        <name>setLightParameters</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>th</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>ph</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>d</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>angle</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>nearplane</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>farplane</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="73" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="82" bodyend="93"/>
+        <references refid="class_camera_1a2acac692956489f3b291b41c0238d82d" compoundref="camera_8h" startline="54">ls</references>
+        <references refid="class_light_source_1a80f115bcdb70a6d87c5a31b6dfabf043" compoundref="camera_8h" startline="35">LightSource::target</references>
+        <references refid="class_light_source_1aadca4f2cb4d8244b2d01e72a698f8191" compoundref="camera_8h" startline="39">LightSource::theta</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" compoundref="camera_8h" startline="39">LightSource::phi</references>
+        <references refid="class_light_source_1a54fe67c22b44ef6afa97283edc586225" compoundref="camera_8h" startline="39">LightSource::distance</references>
+        <references refid="class_light_source_1aee8435898de039ce5c8fc56dfa4f08dc" compoundref="camera_8h" startline="37">LightSource::falloffAngle</references>
+        <references refid="class_light_source_1a2ccb22d67e544717af374db4a4326da6" compoundref="camera_8h" startline="37">LightSource::near_plane</references>
+        <references refid="class_light_source_1aa9192c3a67cd0589bc83d2983259d04c" compoundref="camera_8h" startline="37">LightSource::far_plane</references>
+        <references refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" compoundref="camera_8cpp" startline="145" endline="166">LightSource::calcMatrices</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a621e8294a4e1a4e9f031630e0b7c55ab" compoundref="blinky_blocks_world_8cpp" startline="23" endline="56">BlinkyBlocks::BlinkyBlocksWorld::BlinkyBlocksWorld</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a59cf289a09444696c8739bc2d9194a0d" compoundref="catoms2_d_world_8cpp" startline="28" endline="60">Catoms2D::Catoms2DWorld::Catoms2DWorld</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1ab3e4a5869159eecfcfd5d6b143e590f2" compoundref="catoms3_d_world_8cpp" startline="33" endline="67">Catoms3D::Catoms3DWorld::Catoms3DWorld</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a43b61c929f575fb85492feddbc53750e" compoundref="robot_blocks_world_8cpp" startline="23" endline="55">RobotBlocks::RobotBlocksWorld::RobotBlocksWorld</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1ac6cc0d31fbabf06d3142207d0403c3a7" compoundref="smart_blocks_world_8cpp" startline="20" endline="56">SmartBlocks::SmartBlocksWorld::SmartBlocksWorld</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_camera_1aaf55ae7f5f95e6c45332fb33b8db9fe5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::glProjection</definition>
+        <argsstring>()</argsstring>
+        <name>glProjection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="74" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="95" bodyend="97"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+        <referencedby refid="shaders_8h_1af9bd99e5de0905f53b874be82f95c890" compoundref="shaders_8cpp" startline="172" endline="234">shadowedRenderingStep3</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_camera_1a83d37ef0dca8248a1b80133cffdc36a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Camera &amp;c)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_camera" kindref="compound">Camera</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="76" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="175" bodyend="178"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Camera::updatePositionFromAngles</definition>
+        <argsstring>()</argsstring>
+        <name>updatePositionFromAngles</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="78" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="27" bodyend="38"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <references refid="class_vecteur_1a9847818b536abf81b1a82196d4846918" compoundref="vecteur_8h" startline="50" endline="50">Vecteur::set</references>
+        <references refid="class_vecteur_1a06dacfa5fc434136436734c6078eded5" compoundref="vecteur_8cpp" startline="94" endline="100">Vecteur::normer_interne</references>
+        <referencedby refid="class_camera_1a78e57277b569a12b634ee3f7ce4c603e" compoundref="camera_8cpp" startline="17" endline="25">Camera</referencedby>
+        <referencedby refid="class_camera_1a6486849c28c1fff783c36dabd3344436" compoundref="camera_8cpp" startline="46" endline="57">mouseUp</referencedby>
+        <referencedby refid="class_camera_1ab0ded66af0a35f693f173007f24be44c" compoundref="camera_8cpp" startline="59" endline="71">mouseMove</referencedby>
+        <referencedby refid="class_camera_1a8cb013647e06793c56e529c9c62b9371" compoundref="camera_8cpp" startline="73" endline="76">mouseZoom</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1524">
+        <label>Camera</label>
+        <link refid="class_camera"/>
+        <childnode refid="1525" relation="usage">
+          <edgelabel>ls</edgelabel>
+        </childnode>
+      </node>
+      <node id="1525">
+        <label>LightSource</label>
+        <link refid="class_light_source"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.h" bodystart="46" bodyend="79"/>
+    <listofallmembers>
+      <member refid="class_camera_1a34679b26b129f5fee07ce664f9b886d9" prot="private" virt="non-virtual"><scope>Camera</scope><name>angle</name></member>
+      <member refid="class_camera_1a78e57277b569a12b634ee3f7ce4c603e" prot="public" virt="non-virtual"><scope>Camera</scope><name>Camera</name></member>
+      <member refid="class_camera_1a5a604086bca4b5ba67d5b07c033a985b" prot="private" virt="non-virtual"><scope>Camera</scope><name>distance</name></member>
+      <member refid="class_camera_1aeb4af9300c28e17961c77971247947a7" prot="private" virt="non-virtual"><scope>Camera</scope><name>far_plane</name></member>
+      <member refid="class_camera_1ac4c7f5e91786f418464392df8c7a140e" prot="public" virt="non-virtual"><scope>Camera</scope><name>glLookAt</name></member>
+      <member refid="class_camera_1aaf55ae7f5f95e6c45332fb33b8db9fe5" prot="public" virt="non-virtual"><scope>Camera</scope><name>glProjection</name></member>
+      <member refid="class_camera_1a2acac692956489f3b291b41c0238d82d" prot="public" virt="non-virtual"><scope>Camera</scope><name>ls</name></member>
+      <member refid="class_camera_1a9bce38beb446da8c73ff35fbe4d0bd5b" prot="private" virt="non-virtual"><scope>Camera</scope><name>mouse</name></member>
+      <member refid="class_camera_1a8e5c2a5f38ed6e0acecd9bb3e9ae1c99" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseDown</name></member>
+      <member refid="class_camera_1af1af6f6cde8769da4571cfbea78418ce" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseLightDown</name></member>
+      <member refid="class_camera_1af9569cd37406f292c0271ea86b4666ee" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseLightMove</name></member>
+      <member refid="class_camera_1a232ea5d526f5ab404c88173bde2fc8fb" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseLightUp</name></member>
+      <member refid="class_camera_1a9a803bf1d5daed6b1111416ae9b7c476" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseLightZoom</name></member>
+      <member refid="class_camera_1ab0ded66af0a35f693f173007f24be44c" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseMove</name></member>
+      <member refid="class_camera_1a6486849c28c1fff783c36dabd3344436" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseUp</name></member>
+      <member refid="class_camera_1a8cb013647e06793c56e529c9c62b9371" prot="public" virt="non-virtual"><scope>Camera</scope><name>mouseZoom</name></member>
+      <member refid="class_camera_1aa7e7e717a73a94ed7985b20f6092be7f" prot="private" virt="non-virtual"><scope>Camera</scope><name>near_plane</name></member>
+      <member refid="class_camera_1a83d37ef0dca8248a1b80133cffdc36a4" prot="public" virt="non-virtual"><scope>Camera</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_camera_1a5a6955071d11d1205f10e00439f9e534" prot="private" virt="non-virtual"><scope>Camera</scope><name>phi</name></member>
+      <member refid="class_camera_1ad0695ec092a00549a5a57dd386896c07" prot="private" virt="non-virtual"><scope>Camera</scope><name>position</name></member>
+      <member refid="class_camera_1aa91722815159fc56b3e436546ee0b75a" prot="private" virt="non-virtual"><scope>Camera</scope><name>sensibilityX</name></member>
+      <member refid="class_camera_1ada75a3e7afd1855289034e3d0aca8fc1" prot="private" virt="non-virtual"><scope>Camera</scope><name>sensibilityY</name></member>
+      <member refid="class_camera_1a13d88059aa510d8ac9aee7dc3adc84ce" prot="public" virt="non-virtual"><scope>Camera</scope><name>setAngle</name></member>
+      <member refid="class_camera_1af8eff8518d92273950368ede6fc4c800" prot="public" virt="non-virtual"><scope>Camera</scope><name>setDirection</name></member>
+      <member refid="class_camera_1a4e3d9d06d4cf59d5d49674bd3af57e61" prot="public" virt="non-virtual"><scope>Camera</scope><name>setDistance</name></member>
+      <member refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" prot="public" virt="non-virtual"><scope>Camera</scope><name>setLightParameters</name></member>
+      <member refid="class_camera_1a4ec50716a3c77cf11a664e602511e55f" prot="public" virt="non-virtual"><scope>Camera</scope><name>setNearFar</name></member>
+      <member refid="class_camera_1a7724b4bf8bbf5423da7dcb4644ee7d80" prot="public" virt="non-virtual"><scope>Camera</scope><name>setTarget</name></member>
+      <member refid="class_camera_1a22bff26f75dc96d779ae4f49de2da867" prot="public" virt="non-virtual"><scope>Camera</scope><name>setW_H</name></member>
+      <member refid="class_camera_1ac453247cf77b31a1cd2171924806461f" prot="private" virt="non-virtual"><scope>Camera</scope><name>target</name></member>
+      <member refid="class_camera_1ab5e3b6d460a8894b3846efc024623ace" prot="private" virt="non-virtual"><scope>Camera</scope><name>targetMotion</name></member>
+      <member refid="class_camera_1ab6b0614e3fd3d6cf593655030184db02" prot="private" virt="non-virtual"><scope>Camera</scope><name>theta</name></member>
+      <member refid="class_camera_1a64744eab539145034be6abcda043290b" prot="public" virt="non-virtual"><scope>Camera</scope><name>updateIntrinsics</name></member>
+      <member refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" prot="protected" virt="non-virtual"><scope>Camera</scope><name>updatePositionFromAngles</name></member>
+      <member refid="class_camera_1af52b2f5ffaaf9a12fce46db19c00e3c1" prot="private" virt="non-virtual"><scope>Camera</scope><name>w_h</name></member>
+      <member refid="class_camera_1a9e9f07697a8957999ef3a9d7e2b6e687" prot="private" virt="non-virtual"><scope>Camera</scope><name>Xcam</name></member>
+      <member refid="class_camera_1a0adbbd305a368f4a6a8e063690d040d7" prot="private" virt="non-virtual"><scope>Camera</scope><name>Ycam</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

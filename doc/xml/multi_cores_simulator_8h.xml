@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="multi_cores_simulator_8h" kind="file" language="C++">
+    <compoundname>multiCoresSimulator.h</compoundname>
+    <includes refid="simulator_8h" local="yes">simulator.h</includes>
+    <includes refid="multi_cores_block_code_8h" local="yes">multiCoresBlockCode.h</includes>
+    <includes refid="multi_cores_scheduler_8h" local="yes">multiCoresScheduler.h</includes>
+    <includes refid="multi_cores_world_8h" local="yes">multiCoresWorld.h</includes>
+    <includes refid="multi_cores_events_8h" local="yes">multiCoresEvents.h</includes>
+    <includedby refid="multi_cores_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp</includedby>
+    <includedby refid="multi_cores_simulator_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.cpp</includedby>
+    <incdepgraph>
+      <node id="16320">
+        <label>list</label>
+      </node>
+      <node id="16344">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="16322" relation="include">
+        </childnode>
+        <childnode refid="16345" relation="include">
+        </childnode>
+        <childnode refid="16330" relation="include">
+        </childnode>
+        <childnode refid="16335" relation="include">
+        </childnode>
+        <childnode refid="16321" relation="include">
+        </childnode>
+        <childnode refid="16346" relation="include">
+        </childnode>
+      </node>
+      <node id="16330">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="16326" relation="include">
+        </childnode>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16325" relation="include">
+        </childnode>
+        <childnode refid="16331" relation="include">
+        </childnode>
+        <childnode refid="16332" relation="include">
+        </childnode>
+      </node>
+      <node id="16322">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="16323" relation="include">
+        </childnode>
+        <childnode refid="16324" relation="include">
+        </childnode>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16325" relation="include">
+        </childnode>
+        <childnode refid="16326" relation="include">
+        </childnode>
+        <childnode refid="16327" relation="include">
+        </childnode>
+        <childnode refid="16328" relation="include">
+        </childnode>
+        <childnode refid="16329" relation="include">
+        </childnode>
+        <childnode refid="16330" relation="include">
+        </childnode>
+        <childnode refid="16335" relation="include">
+        </childnode>
+      </node>
+      <node id="16332">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16325" relation="include">
+        </childnode>
+        <childnode refid="16333" relation="include">
+        </childnode>
+        <childnode refid="16334" relation="include">
+        </childnode>
+      </node>
+      <node id="16346">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="16347" relation="include">
+        </childnode>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16325" relation="include">
+        </childnode>
+        <childnode refid="16334" relation="include">
+        </childnode>
+        <childnode refid="16321" relation="include">
+        </childnode>
+        <childnode refid="16348" relation="include">
+        </childnode>
+        <childnode refid="16336" relation="include">
+        </childnode>
+      </node>
+      <node id="16317">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="16314">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="16310">
+        <label>assert.h</label>
+      </node>
+      <node id="16339">
+        <label>stdint.h</label>
+      </node>
+      <node id="16324">
+        <label>stdlib.h</label>
+      </node>
+      <node id="16318">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="16317" relation="include">
+        </childnode>
+        <childnode refid="16319" relation="include">
+        </childnode>
+        <childnode refid="16313" relation="include">
+        </childnode>
+        <childnode refid="16320" relation="include">
+        </childnode>
+        <childnode refid="16321" relation="include">
+        </childnode>
+        <childnode refid="16337" relation="include">
+        </childnode>
+        <childnode refid="16338" relation="include">
+        </childnode>
+      </node>
+      <node id="16357">
+        <label>multiCoresEvents.h</label>
+        <link refid="multi_cores_events_8h"/>
+        <childnode refid="16352" relation="include">
+        </childnode>
+        <childnode refid="16315" relation="include">
+        </childnode>
+        <childnode refid="16340" relation="include">
+        </childnode>
+      </node>
+      <node id="16333">
+        <label>cmath</label>
+      </node>
+      <node id="16316">
+        <label>string</label>
+      </node>
+      <node id="16326">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="16308">
+        <label>map</label>
+      </node>
+      <node id="16311">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="16302">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h</label>
+        <link refid="multiCoresSimulator.h"/>
+        <childnode refid="16303" relation="include">
+        </childnode>
+        <childnode refid="16351" relation="include">
+        </childnode>
+        <childnode refid="16353" relation="include">
+        </childnode>
+        <childnode refid="16356" relation="include">
+        </childnode>
+        <childnode refid="16357" relation="include">
+        </childnode>
+      </node>
+      <node id="16334">
+        <label>memory.h</label>
+      </node>
+      <node id="16321">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="16316" relation="include">
+        </childnode>
+        <childnode refid="16322" relation="include">
+        </childnode>
+        <childnode refid="16332" relation="include">
+        </childnode>
+        <childnode refid="16336" relation="include">
+        </childnode>
+      </node>
+      <node id="16325">
+        <label>fstream</label>
+      </node>
+      <node id="16337">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="16318" relation="include">
+        </childnode>
+        <childnode refid="16309" relation="include">
+        </childnode>
+      </node>
+      <node id="16329">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="16340">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="16335">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="16331" relation="include">
+        </childnode>
+        <childnode refid="16332" relation="include">
+        </childnode>
+        <childnode refid="16330" relation="include">
+        </childnode>
+      </node>
+      <node id="16327">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="16304">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="16355">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="16345">
+        <label>pthread.h</label>
+      </node>
+      <node id="16351">
+        <label>multiCoresBlockCode.h</label>
+        <link refid="multi_cores_block_code_8h"/>
+        <childnode refid="16337" relation="include">
+        </childnode>
+        <childnode refid="16352" relation="include">
+        </childnode>
+      </node>
+      <node id="16343">
+        <label>string.h</label>
+      </node>
+      <node id="16347">
+        <label>vector</label>
+      </node>
+      <node id="16353">
+        <label>multiCoresScheduler.h</label>
+        <link refid="multi_cores_scheduler_8h"/>
+        <childnode refid="16354" relation="include">
+        </childnode>
+        <childnode refid="16355" relation="include">
+        </childnode>
+        <childnode refid="16311" relation="include">
+        </childnode>
+        <childnode refid="16305" relation="include">
+        </childnode>
+        <childnode refid="16341" relation="include">
+        </childnode>
+      </node>
+      <node id="16341">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="16342" relation="include">
+        </childnode>
+        <childnode refid="16343" relation="include">
+        </childnode>
+        <childnode refid="16317" relation="include">
+        </childnode>
+        <childnode refid="16318" relation="include">
+        </childnode>
+      </node>
+      <node id="16307">
+        <label>sstream</label>
+      </node>
+      <node id="16356">
+        <label>multiCoresWorld.h</label>
+        <link refid="multi_cores_world_8h"/>
+        <childnode refid="16348" relation="include">
+        </childnode>
+        <childnode refid="16351" relation="include">
+        </childnode>
+      </node>
+      <node id="16350">
+        <label>commandLine.h</label>
+        <link refid="command_line_8h"/>
+        <childnode refid="16316" relation="include">
+        </childnode>
+      </node>
+      <node id="16303">
+        <label>simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="16304" relation="include">
+        </childnode>
+        <childnode refid="16305" relation="include">
+        </childnode>
+        <childnode refid="16348" relation="include">
+        </childnode>
+        <childnode refid="16350" relation="include">
+        </childnode>
+      </node>
+      <node id="16305">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16307" relation="include">
+        </childnode>
+        <childnode refid="16308" relation="include">
+        </childnode>
+        <childnode refid="16309" relation="include">
+        </childnode>
+        <childnode refid="16310" relation="include">
+        </childnode>
+        <childnode refid="16311" relation="include">
+        </childnode>
+        <childnode refid="16312" relation="include">
+        </childnode>
+        <childnode refid="16313" relation="include">
+        </childnode>
+        <childnode refid="16314" relation="include">
+        </childnode>
+        <childnode refid="16315" relation="include">
+        </childnode>
+        <childnode refid="16344" relation="include">
+        </childnode>
+      </node>
+      <node id="16331">
+        <label>math.h</label>
+      </node>
+      <node id="16336">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16325" relation="include">
+        </childnode>
+        <childnode refid="16333" relation="include">
+        </childnode>
+        <childnode refid="16334" relation="include">
+        </childnode>
+        <childnode refid="16322" relation="include">
+        </childnode>
+      </node>
+      <node id="16306">
+        <label>iostream</label>
+      </node>
+      <node id="16342">
+        <label>deque</label>
+      </node>
+      <node id="16312">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="16313">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="16349">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="16325" relation="include">
+        </childnode>
+      </node>
+      <node id="16315">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="16309" relation="include">
+        </childnode>
+        <childnode refid="16316" relation="include">
+        </childnode>
+        <childnode refid="16317" relation="include">
+        </childnode>
+        <childnode refid="16318" relation="include">
+        </childnode>
+        <childnode refid="16340" relation="include">
+        </childnode>
+        <childnode refid="16341" relation="include">
+        </childnode>
+        <childnode refid="16336" relation="include">
+        </childnode>
+      </node>
+      <node id="16354">
+        <label>set</label>
+      </node>
+      <node id="16319">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="16348">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16308" relation="include">
+        </childnode>
+        <childnode refid="16347" relation="include">
+        </childnode>
+        <childnode refid="16313" relation="include">
+        </childnode>
+        <childnode refid="16310" relation="include">
+        </childnode>
+        <childnode refid="16318" relation="include">
+        </childnode>
+        <childnode refid="16321" relation="include">
+        </childnode>
+        <childnode refid="16349" relation="include">
+        </childnode>
+      </node>
+      <node id="16328">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="16323">
+        <label>stdio.h</label>
+      </node>
+      <node id="16338">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="16318" relation="include">
+        </childnode>
+        <childnode refid="16339" relation="include">
+        </childnode>
+        <childnode refid="16306" relation="include">
+        </childnode>
+        <childnode refid="16319" relation="include">
+        </childnode>
+        <childnode refid="16320" relation="include">
+        </childnode>
+      </node>
+      <node id="16309">
+        <label>inttypes.h</label>
+      </node>
+      <node id="16352">
+        <label>multiCoresBlock.h</label>
+        <link refid="multi_cores_block_8h"/>
+        <childnode refid="16318" relation="include">
+        </childnode>
+        <childnode refid="16351" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="16358">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h</label>
+        <link refid="multiCoresSimulator.h"/>
+        <childnode refid="16359" relation="include">
+        </childnode>
+        <childnode refid="16360" relation="include">
+        </childnode>
+      </node>
+      <node id="16360">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.cpp</label>
+        <link refid="multi_cores_simulator_8cpp"/>
+      </node>
+      <node id="16359">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp</label>
+        <link refid="multi_cores_scheduler_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_multi_cores_1_1_multi_cores_simulator" prot="public">MultiCores::MultiCoresSimulator</innerclass>
+    <innernamespace refid="namespace_multi_cores">MultiCores</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>multiCoresSimulator.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>22<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>MULTICORESSIMULATOR_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MULTICORESSIMULATOR_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="simulator_8h" kindref="compound">simulator.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="multi_cores_block_code_8h" kindref="compound">multiCoresBlockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="multi_cores_scheduler_8h" kindref="compound">multiCoresScheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="multi_cores_world_8h" kindref="compound">multiCoresWorld.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="multi_cores_events_8h" kindref="compound">multiCoresEvents.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_multi_cores" kindref="compound">MultiCores</ref><sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="class_multi_cores_1_1_multi_cores_simulator" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_multi_cores_1_1_multi_cores_simulator" kindref="compound">MultiCoresSimulator</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_simulator" kindref="compound">BaseSimulator::Simulator</ref><sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_multi_cores_1_1_multi_cores_simulator" kindref="compound">MultiCoresSimulator</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[],<sp/><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref><sp/>*(*multiCoreBlockCodeBuildingFunction)(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref>*));</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="class_multi_cores_1_1_multi_cores_simulator" kindref="compound">MultiCoresSimulator</ref>();</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_multi_cores_1a8f8943c24469a390b0cbc059222f5c21" kindref="member">createSimulator</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[],<sp/><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref><sp/>*(*multiCoreBlockCodeBuildingFunction)(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref>*));</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_multi_cores_1a2780de0c14ab6380d4a73e62bfb365e4" kindref="member">deleteSimulator</ref>();</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="class_multi_cores_1_1_multi_cores_simulator_1ad9a8903801dc34e5a7609752d4f3accd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref><sp/>*(*buildNewBlockCode)(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref>*);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="class_multi_cores_1_1_multi_cores_simulator_1a4622794c621c76b39e7de3afd4211da9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_multi_cores_1_1_multi_cores_simulator" kindref="compound">MultiCoresSimulator</ref>*<sp/><ref refid="class_multi_cores_1_1_multi_cores_simulator_1a4622794c621c76b39e7de3afd4211da9" kindref="member">getSimulator</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(<ref refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" kindref="member">simulator</ref><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_multi_cores_1_1_multi_cores_simulator" kindref="compound">MultiCoresSimulator</ref>*)<ref refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" kindref="member">simulator</ref>);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="class_multi_cores_1_1_multi_cores_simulator_1a80c0f2d1d0498872bef5ca2634aa09b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_multi_cores_1_1_multi_cores_simulator_1a80c0f2d1d0498872bef5ca2634aa09b3" kindref="member">printInfo</ref>()<sp/>{<sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;I&apos;m<sp/>a<sp/>MultiCoresSimulator&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;<sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="namespace_multi_cores_1a8f8943c24469a390b0cbc059222f5c21" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_multi_cores_1a8f8943c24469a390b0cbc059222f5c21" kindref="member">createSimulator</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[],<sp/><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref><sp/>*(*multiCoreBlockCodeBuildingFunction)(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref>*))<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_multi_cores_1a8f8943c24469a390b0cbc059222f5c21" kindref="member">MultiCoresSimulator::createSimulator</ref>(argc,<sp/>argv,<sp/>multiCoreBlockCodeBuildingFunction);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44" refid="namespace_multi_cores_1a2780de0c14ab6380d4a73e62bfb365e4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_multi_cores_1a2780de0c14ab6380d4a73e62bfb365e4" kindref="member">deleteSimulator</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_multi_cores_1a2780de0c14ab6380d4a73e62bfb365e4" kindref="member">MultiCoresSimulator::deleteSimulator</ref>();</highlight></codeline>
+<codeline lineno="46"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="namespace_multi_cores_1aad39fb2573754263da0538c2db202c36" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_multi_cores_1_1_multi_cores_simulator" kindref="compound">MultiCoresSimulator</ref>*<sp/><ref refid="namespace_multi_cores_1aad39fb2573754263da0538c2db202c36" kindref="member">getSimulator</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(<ref refid="namespace_multi_cores_1aad39fb2573754263da0538c2db202c36" kindref="member">MultiCoresSimulator::getSimulator</ref>());<sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>MultiCores<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>MULTICORESSIMULATOR_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h"/>
+  </compounddef>
+</doxygen>

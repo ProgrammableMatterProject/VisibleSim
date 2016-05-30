@@ -1,0 +1,477 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_generic_code_block" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::GenericCodeBlock</compoundname>
+    <basecompoundref refid="class_catoms2_d_1_1_catoms2_d_block_code" prot="public" virt="non-virtual">Catoms2D::Catoms2DBlockCode</basecompoundref>
+    <includes refid="catoms2_d_generic_8h" local="no">catoms2DGeneric.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_catoms2_d_1_1_generic_code_block_1aea2a00f087398e97ce5e4f0f3b1cdb49" prot="protected" static="no" mutable="no">
+        <type>multimap&lt; int, <ref refid="namespace_catoms2_d_1a6b616c93da39318e4b14959d841e8bc9" kindref="member">eventFunc</ref> &gt;</type>
+        <definition>multimap&lt;int,eventFunc&gt; Catoms2D::GenericCodeBlock::eventFuncMap</definition>
+        <argsstring></argsstring>
+        <name>eventFuncMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a164965dd3b610e41ed7fc018388dd62e" compoundref="catoms2_d_generic_8cpp" startline="6" endline="8">addMessageEventFunc</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a10556e493f63c8b0f484813a2427aa12" compoundref="catoms2_d_generic_8cpp" startline="87" endline="103">processLocalEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_generic_code_block_1abb41163ebe7d1d56b71bbe73d8994a37" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_catoms2_d_1_1_catoms2_d_scheduler" kindref="compound">Catoms2DScheduler</ref> *</type>
+        <definition>Catoms2DScheduler* Catoms2D::GenericCodeBlock::scheduler</definition>
+        <argsstring></argsstring>
+        <name>scheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="23" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1ab6193e0a55b9bbb8614e26b60ef38110" compoundref="catoms2_d_generic_8cpp" startline="10" endline="15">sendMessage</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1af12700322ee80d11c8d80289f3f9af1e" compoundref="catoms2_d_generic_8cpp" startline="26" endline="54">sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_generic_code_block_1af32b6a0be86d1aa8764215142a3840f3" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref> *</type>
+        <definition>Catoms2DBlock* Catoms2D::GenericCodeBlock::module</definition>
+        <argsstring></argsstring>
+        <name>module</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="24" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1af12700322ee80d11c8d80289f3f9af1e" compoundref="catoms2_d_generic_8cpp" startline="26" endline="54">sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_generic_code_block_1a6ef8f4961d10a664422c9978dc2e3d5a" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_console_stream" kindref="compound">ConsoleStream</ref></type>
+        <definition>ConsoleStream Catoms2D::GenericCodeBlock::console</definition>
+        <argsstring></argsstring>
+        <name>console</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="25" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a50470643e57e2f1821691305948cd280" compoundref="catoms2_d_generic_8cpp" startline="17" endline="23">sendMessage</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a00b2b11727942dd873253f288df01645" compoundref="catoms2_d_generic_8cpp" startline="56" endline="85">sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1a95d9b06b1f9b0b946369bea29fe8d8cb" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::GenericCodeBlock::GenericCodeBlock</definition>
+        <argsstring>(Catoms2DBlock *host)</argsstring>
+        <name>GenericCodeBlock</name>
+        <param>
+          <type><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref> *</type>
+          <declname>host</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="27" bodyend="32"/>
+        <references refid="namespace_catoms2_d_1aa3804541c500b83ab15a584804225012" compoundref="catoms2_d_scheduler_8h" startline="65" endline="65">Catoms2D::getScheduler</references>
+        <references refid="class_base_simulator_1_1_block_code_1a31741e90aabcab37d2def57ab700332e" compoundref="block_code_8h" startline="24">BaseSimulator::BlockCode::hostBlock</references>
+        <references refid="class_console_stream_1aac6bf02318e6f33f210c7b4f5754e546" compoundref="scheduler_8h" startline="136" endline="139">ConsoleStream::setInfo</references>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">BaseSimulator::BuildingBlock::blockId</references>
+        <references refid="class_base_simulator_1_1_block_code_1af80f95d1e6a7dedf74a5300985709e74" compoundref="block_code_8h" startline="35" endline="35">BaseSimulator::BlockCode::addDebugAttributes</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1a4e8b50a3b80b3190249bc8da953c5a37" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::GenericCodeBlock::~GenericCodeBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~GenericCodeBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="33" bodyend="33"/>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1a10556e493f63c8b0f484813a2427aa12" compoundref="catoms2_d_generic_8cpp" startline="87" endline="103">processLocalEvent</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1a164965dd3b610e41ed7fc018388dd62e" compoundref="catoms2_d_generic_8cpp" startline="6" endline="8">addMessageEventFunc</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1af12700322ee80d11c8d80289f3f9af1e" compoundref="catoms2_d_generic_8cpp" startline="26" endline="54">sendMessageToAllNeighbors</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1ab6193e0a55b9bbb8614e26b60ef38110" compoundref="catoms2_d_generic_8cpp" startline="10" endline="15">sendMessage</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1a10556e493f63c8b0f484813a2427aa12" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Catoms2D::GenericCodeBlock::processLocalEvent</definition>
+        <argsstring>(EventPtr pev)</argsstring>
+        <name>processLocalEvent</name>
+        <reimplements refid="class_catoms2_d_1_1_catoms2_d_block_code_1a9e44dd7c827ee9ec9590a82565b42953">processLocalEvent</reimplements>
+        <param>
+          <type><ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref></type>
+          <declname>pev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp" bodystart="87" bodyend="103"/>
+        <references refid="unique_events_id_8h_1a5149addf71a0eaf7253ffbe3325d70da" compoundref="unique_events_id_8h" startline="15">EVENT_NI_RECEIVE</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1aea2a00f087398e97ce5e4f0f3b1cdb49" compoundref="catoms2_d_generic_8h" startline="22">eventFuncMap</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a4e8b50a3b80b3190249bc8da953c5a37" compoundref="catoms2_d_generic_8h" startline="33" endline="33">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1a164965dd3b610e41ed7fc018388dd62e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms2D::GenericCodeBlock::addMessageEventFunc</definition>
+        <argsstring>(int type, eventFunc)</argsstring>
+        <name>addMessageEventFunc</name>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_catoms2_d_1a6b616c93da39318e4b14959d841e8bc9" kindref="member">eventFunc</ref></type>
+          <defname>func</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp" bodystart="6" bodyend="8"/>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1aea2a00f087398e97ce5e4f0f3b1cdb49" compoundref="catoms2_d_generic_8h" startline="22">eventFuncMap</references>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a4e8b50a3b80b3190249bc8da953c5a37" compoundref="catoms2_d_generic_8h" startline="33" endline="33">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1af12700322ee80d11c8d80289f3f9af1e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Catoms2D::GenericCodeBlock::sendMessageToAllNeighbors</definition>
+        <argsstring>(Message *, int t0, int dt, int nexcept,...)</argsstring>
+        <name>sendMessageToAllNeighbors</name>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nexcept</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp" bodystart="26" bodyend="54"/>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1af32b6a0be86d1aa8764215142a3840f3" compoundref="catoms2_d_generic_8h" startline="24">module</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_block_1ad51059ce57eada00fbab6cb67a57fc2e" compoundref="catoms2_d_block_8cpp" startline="103" endline="113">Catoms2D::Catoms2DBlock::getInterface</references>
+        <references refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" compoundref="network_8h" startline="95">P2PNetworkInterface::connectedInterface</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1abb41163ebe7d1d56b71bbe73d8994a37" compoundref="catoms2_d_generic_8h" startline="23">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" compoundref="network_8cpp" startline="52" endline="58">Message::clone</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a4e8b50a3b80b3190249bc8da953c5a37" compoundref="catoms2_d_generic_8h" startline="33" endline="33">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1ab6193e0a55b9bbb8614e26b60ef38110" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Catoms2D::GenericCodeBlock::sendMessage</definition>
+        <argsstring>(Message *, P2PNetworkInterface *, int t0, int dt)</argsstring>
+        <name>sendMessage</name>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <defname>dest</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp" bodystart="10" bodyend="15"/>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1abb41163ebe7d1d56b71bbe73d8994a37" compoundref="catoms2_d_generic_8h" startline="23">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a4e8b50a3b80b3190249bc8da953c5a37" compoundref="catoms2_d_generic_8h" startline="33" endline="33">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1a00b2b11727942dd873253f288df01645" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Catoms2D::GenericCodeBlock::sendMessageToAllNeighbors</definition>
+        <argsstring>(const char *, Message *, int t0, int dt, int nexcept,...)</argsstring>
+        <name>sendMessageToAllNeighbors</name>
+        <param>
+          <type>const char *</type>
+          <defname>msgString</defname>
+        </param>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nexcept</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp" bodystart="56" bodyend="85"/>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1af32b6a0be86d1aa8764215142a3840f3" compoundref="catoms2_d_generic_8h" startline="24">module</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_block_1ad51059ce57eada00fbab6cb67a57fc2e" compoundref="catoms2_d_block_8cpp" startline="103" endline="113">Catoms2D::Catoms2DBlock::getInterface</references>
+        <references refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" compoundref="network_8h" startline="95">P2PNetworkInterface::connectedInterface</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1abb41163ebe7d1d56b71bbe73d8994a37" compoundref="catoms2_d_generic_8h" startline="23">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1a6ef8f4961d10a664422c9978dc2e3d5a" compoundref="catoms2_d_generic_8h" startline="25">console</references>
+        <references refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" compoundref="network_8h" startline="109" endline="111">P2PNetworkInterface::getConnectedBlockId</references>
+        <references refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" compoundref="network_8cpp" startline="52" endline="58">Message::clone</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1a50470643e57e2f1821691305948cd280" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Catoms2D::GenericCodeBlock::sendMessage</definition>
+        <argsstring>(const char *, Message *, P2PNetworkInterface *, int t0, int dt)</argsstring>
+        <name>sendMessage</name>
+        <param>
+          <type>const char *</type>
+          <defname>msgString</defname>
+        </param>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <defname>dest</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="40" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp" bodystart="17" bodyend="23"/>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1abb41163ebe7d1d56b71bbe73d8994a37" compoundref="catoms2_d_generic_8h" startline="23">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_catoms2_d_1_1_generic_code_block_1a6ef8f4961d10a664422c9978dc2e3d5a" compoundref="catoms2_d_generic_8h" startline="25">console</references>
+        <references refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" compoundref="network_8h" startline="109" endline="111">P2PNetworkInterface::getConnectedBlockId</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_generic_code_block_1af7c8692dab5f175eff9c3879ee5fff71" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms2D::GenericCodeBlock::setColor</definition>
+        <argsstring>(const Color &amp;c)</argsstring>
+        <name>setColor</name>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="42" bodyend="42"/>
+        <references refid="class_catoms2_d_1_1_catoms2_d_block_1ad0d2fcb189fbd915152c3c200da169c4" compoundref="catoms2_d_block_8cpp" startline="39" endline="42">Catoms2D::Catoms2DBlock::setColor</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1787">
+        <label>Catoms2D::GenericCodeBlock</label>
+        <link refid="class_catoms2_d_1_1_generic_code_block"/>
+        <childnode refid="1788" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1788">
+        <label>Catoms2D::Catoms2DBlockCode</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_block_code"/>
+        <childnode refid="1789" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1789">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1790">
+        <label>Catoms2D::GenericCodeBlock</label>
+        <link refid="class_catoms2_d_1_1_generic_code_block"/>
+        <childnode refid="1791" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1795" relation="usage">
+          <edgelabel>console</edgelabel>
+        </childnode>
+        <childnode refid="1796" relation="usage">
+          <edgelabel>module</edgelabel>
+        </childnode>
+        <childnode refid="1801" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="1799">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1798">
+        <label>Catoms2D::Catoms2DGlBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_gl_block"/>
+        <childnode refid="1799" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1795">
+        <label>ConsoleStream</label>
+        <link refid="class_console_stream"/>
+      </node>
+      <node id="1796">
+        <label>Catoms2D::Catoms2DBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_block"/>
+        <childnode refid="1793" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1797" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="1791" relation="usage">
+          <edgelabel>buildNewBlockCode</edgelabel>
+        </childnode>
+        <childnode refid="1798" relation="usage">
+          <edgelabel>ptrGlBlock</edgelabel>
+        </childnode>
+        <childnode refid="1800" relation="usage">
+          <edgelabel>color</edgelabel>
+        </childnode>
+      </node>
+      <node id="1797">
+        <label>Vecteur</label>
+        <link refid="class_vecteur"/>
+      </node>
+      <node id="1791">
+        <label>Catoms2D::Catoms2DBlockCode</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_block_code"/>
+        <childnode refid="1792" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1800">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="1792">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1793" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1793">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1794" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1792" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1802">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="1802" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="1794">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1793" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1801">
+        <label>Catoms2D::Catoms2DScheduler</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_scheduler"/>
+        <childnode refid="1802" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h" bodystart="20" bodyend="43"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_block_code_1af80f95d1e6a7dedf74a5300985709e74" prot="public" virt="virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>addDebugAttributes</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1a164965dd3b610e41ed7fc018388dd62e" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>addMessageEventFunc</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a9175e47cdc2641837778a041049337a4" prot="public" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>availabilityDate</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a618ac8e9707a9da6bfc70c57caed896c" prot="public" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>BlockCode</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_block_code_1ae3eae10832c0fc2a812e5209efbd4bc9" prot="public" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>buildNewBlockCode</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_block_code_1adc6c29d9f2f6298782d375c13cadd522" prot="public" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>Catoms2DBlockCode</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1a6ef8f4961d10a664422c9978dc2e3d5a" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>console</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1aea2a00f087398e97ce5e4f0f3b1cdb49" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>eventFuncMap</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1a95d9b06b1f9b0b946369bea29fe8d8cb" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>GenericCodeBlock</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a31741e90aabcab37d2def57ab700332e" prot="public" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>hostBlock</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1ac07b9798cc486160e3ec57356ac3960a" prot="public" virt="virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>init</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1af32b6a0be86d1aa8764215142a3840f3" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>module</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1a10556e493f63c8b0f484813a2427aa12" prot="protected" virt="virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>processLocalEvent</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1abb41163ebe7d1d56b71bbe73d8994a37" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>scheduler</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1ab6193e0a55b9bbb8614e26b60ef38110" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>sendMessage</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1a50470643e57e2f1821691305948cd280" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>sendMessage</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1af12700322ee80d11c8d80289f3f9af1e" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>sendMessageToAllNeighbors</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1a00b2b11727942dd873253f288df01645" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>sendMessageToAllNeighbors</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1af7c8692dab5f175eff9c3879ee5fff71" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>setColor</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a4522800d6069d71ece8c01db154038e1" prot="public" virt="pure-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>startup</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a0dd8a370319e10dc4aea44c96fa3b3cc" prot="public" virt="virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>~BlockCode</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_block_code_1aa4a52973addb774152ec49350f044d26" prot="public" virt="virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>~Catoms2DBlockCode</name></member>
+      <member refid="class_catoms2_d_1_1_generic_code_block_1a4e8b50a3b80b3190249bc8da953c5a37" prot="protected" virt="non-virtual"><scope>Catoms2D::GenericCodeBlock</scope><name>~GenericCodeBlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

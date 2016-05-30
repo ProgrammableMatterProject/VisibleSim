@@ -1,0 +1,916 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_glut_context" kind="class" language="C++" prot="public">
+    <compoundname>GlutContext</compoundname>
+    <includes refid="opengl_viewer_8h" local="no">openglViewer.h</includes>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_glut_context_1a8ab91833df273770989a06a455f101d3" prot="private" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::keyboardModifier</definition>
+        <argsstring></argsstring>
+        <name>keyboardModifier</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_glut_context_1a836c331d888caa86e7af09a4e334ad92" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_glut_sliding_main_window" kindref="compound">GlutSlidingMainWindow</ref> *</type>
+        <definition>GlutSlidingMainWindow * GlutContext::mainWindow</definition>
+        <argsstring></argsstring>
+        <name>mainWindow</name>
+        <initializer>=NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="30" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9e488f5f0bce0b15c03658b288a54db2" compoundref="blinky_blocks_world_8cpp" startline="171" endline="212">BlinkyBlocks::BlinkyBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a146188561792cc778d39ea79551ceb03" compoundref="catoms2_d_world_8cpp" startline="273" endline="308">Catoms2D::Catoms2DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a48f79ea5d219469b30bd99eddc083c2b" compoundref="catoms3_d_world_8cpp" startline="199" endline="230">Catoms3D::Catoms3DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" compoundref="opengl_viewer_8cpp" startline="42" endline="87">init</referencedby>
+        <referencedby refid="class_glut_context_1ad3770197f422ae0e7dc49406fbd2add6" compoundref="opengl_viewer_8cpp" startline="89" endline="96">deleteContext</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_glut_context_1a7824b09892fd1d2ede8a2bcfad0e8b87" compoundref="opengl_viewer_8cpp" startline="514" endline="518">addTrace</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a99e0958d82e7021d2d27b8f78f78bfd6" compoundref="robot_blocks_world_8cpp" startline="201" endline="236">RobotBlocks::RobotBlocksWorld::deleteBlock</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1a72e9544fc516983d92eff62ec8a6869b" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_glut_sliding_debug_window" kindref="compound">GlutSlidingDebugWindow</ref> *</type>
+        <definition>GlutSlidingDebugWindow * GlutContext::debugWindow</definition>
+        <argsstring></argsstring>
+        <name>debugWindow</name>
+        <initializer>=NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="31" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="31" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" compoundref="opengl_viewer_8cpp" startline="42" endline="87">init</referencedby>
+        <referencedby refid="class_glut_context_1ad3770197f422ae0e7dc49406fbd2add6" compoundref="opengl_viewer_8cpp" startline="89" endline="96">deleteContext</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1a1165fa1f653611c8d14daa03ba10c1d9" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_glut_popup_window" kindref="compound">GlutPopupWindow</ref> *</type>
+        <definition>GlutPopupWindow * GlutContext::popup</definition>
+        <argsstring></argsstring>
+        <name>popup</name>
+        <initializer>=NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="32" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" compoundref="opengl_viewer_8cpp" startline="42" endline="87">init</referencedby>
+        <referencedby refid="class_glut_context_1ad3770197f422ae0e7dc49406fbd2add6" compoundref="opengl_viewer_8cpp" startline="89" endline="96">deleteContext</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1ada4f585b18c1f0deeb9ba631edbe856b" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_glut_popup_menu_window" kindref="compound">GlutPopupMenuWindow</ref> *</type>
+        <definition>GlutPopupMenuWindow * GlutContext::popupMenu</definition>
+        <argsstring></argsstring>
+        <name>popupMenu</name>
+        <initializer>=NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a570ce281ed4d54a6bc204c84bd82bd78" compoundref="blinky_blocks_world_8cpp" startline="356" endline="392">BlinkyBlocks::BlinkyBlocksWorld::createPopupMenu</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a4649c3e9e6cf243200c4d335c2d7220e" compoundref="catoms2_d_world_8cpp" startline="528" endline="566">Catoms2D::Catoms2DWorld::createPopupMenu</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a45a9f8ba29910342cb3c3fcaad38bed9" compoundref="catoms3_d_world_8cpp" startline="457" endline="494">Catoms3D::Catoms3DWorld::createPopupMenu</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1aca55d9879d45a9cd240c683f1d8c4ff5" compoundref="robot_blocks_world_8cpp" startline="391" endline="427">RobotBlocks::RobotBlocksWorld::createPopupMenu</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1ac5cd0b9bea62564d438c96c90bc38ce1" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_glut_help_window" kindref="compound">GlutHelpWindow</ref> *</type>
+        <definition>GlutHelpWindow * GlutContext::helpWindow</definition>
+        <argsstring></argsstring>
+        <name>helpWindow</name>
+        <initializer>=NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="34" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ae1731a9cc52e7ca6e5f79f586f09dd30" compoundref="blinky_blocks_world_8cpp" startline="497" endline="501">BlinkyBlocks::BlinkyBlocksWorld::createHelpWindow</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a807304fa9126c55a4e30963bbd887bca" compoundref="catoms2_d_world_8cpp" startline="599" endline="603">Catoms2D::Catoms2DWorld::createHelpWindow</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a5dcc19c4f2980968b62b4c8f0e5c8885" compoundref="catoms3_d_world_8cpp" startline="547" endline="551">Catoms3D::Catoms3DWorld::createHelpWindow</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a259ab3243c5c5d8e6c0bca9200c0ec32" compoundref="robot_blocks_world_8cpp" startline="477" endline="481">RobotBlocks::RobotBlocksWorld::createHelpWindow</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1a2e53da196e3309de6f7096993e30e191" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::screenWidth</definition>
+        <argsstring></argsstring>
+        <name>screenWidth</name>
+        <initializer>= 1024</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="35" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" compoundref="opengl_viewer_8cpp" startline="42" endline="87">init</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1a62d021000546e50bbec62a6974183322" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::screenHeight</definition>
+        <argsstring></argsstring>
+        <name>screenHeight</name>
+        <initializer>= 800</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="35" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a570ce281ed4d54a6bc204c84bd82bd78" compoundref="blinky_blocks_world_8cpp" startline="356" endline="392">BlinkyBlocks::BlinkyBlocksWorld::createPopupMenu</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a4649c3e9e6cf243200c4d335c2d7220e" compoundref="catoms2_d_world_8cpp" startline="528" endline="566">Catoms2D::Catoms2DWorld::createPopupMenu</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a45a9f8ba29910342cb3c3fcaad38bed9" compoundref="catoms3_d_world_8cpp" startline="457" endline="494">Catoms3D::Catoms3DWorld::createPopupMenu</referencedby>
+        <referencedby refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" compoundref="opengl_viewer_8cpp" startline="42" endline="87">init</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1aca55d9879d45a9cd240c683f1d8c4ff5" compoundref="robot_blocks_world_8cpp" startline="391" endline="427">RobotBlocks::RobotBlocksWorld::createPopupMenu</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::initialScreenWidth</definition>
+        <argsstring></argsstring>
+        <name>initialScreenWidth</name>
+        <initializer>= 1024</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="36" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::initialScreenHeight</definition>
+        <argsstring></argsstring>
+        <name>initialScreenHeight</name>
+        <initializer>= 800</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="36" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1a5013a67b5455e827a475acc5f3fca973" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool GlutContext::fullScreenMode</definition>
+        <argsstring></argsstring>
+        <name>fullScreenMode</name>
+        <initializer>=false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="37" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" compoundref="opengl_viewer_8cpp" startline="42" endline="87">init</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+        <referencedby refid="class_glut_context_1a42f8db031b07c4a0b55d9a6ef70a321d" compoundref="opengl_viewer_8cpp" startline="549" endline="551">setFullScreenMode</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1ad6b12890dbf48fbd356792cf55bcbfc8" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool GlutContext::saveScreenMode</definition>
+        <argsstring></argsstring>
+        <name>saveScreenMode</name>
+        <initializer>=false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="38" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1a564ac47d7f2c17aa6d8e3d079629df40" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::lastMotionTime</definition>
+        <argsstring></argsstring>
+        <name>lastMotionTime</name>
+        <initializer>=0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="39" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1a1edb69dfa5ff9825c08b429a5a73d7fc" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::lastMousePos</definition>
+        <argsstring>[2]</argsstring>
+        <name>lastMousePos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="40" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="40" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1af603533c922f9392f38f7a599f1e6b17" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool GlutContext::mustSaveImage</definition>
+        <argsstring></argsstring>
+        <name>mustSaveImage</name>
+        <initializer>=false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="41" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1acc118654ac851a06f9e51b01ad255702" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::frameCount</definition>
+        <argsstring></argsstring>
+        <name>frameCount</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="43" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="43" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1af9e900770b0c58216e591c85bf742fad" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int GlutContext::previousTime</definition>
+        <argsstring></argsstring>
+        <name>previousTime</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="44" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_context_1ab89380620573505e50314559c26fe71f" prot="public" static="yes" mutable="no">
+        <type>float</type>
+        <definition>float GlutContext::fps</definition>
+        <argsstring></argsstring>
+        <name>fps</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="45" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="45" bodyend="-1"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::init</definition>
+        <argsstring>(int argc, char **argv)</argsstring>
+        <name>init</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char **</type>
+          <declname>argv</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="42" bodyend="87"/>
+        <references refid="class_glut_context_1a2e53da196e3309de6f7096993e30e191" compoundref="opengl_viewer_8h" startline="35">screenWidth</references>
+        <references refid="class_glut_context_1a62d021000546e50bbec62a6974183322" compoundref="opengl_viewer_8h" startline="35">screenHeight</references>
+        <references refid="class_glut_context_1a5013a67b5455e827a475acc5f3fca973" compoundref="opengl_viewer_8h" startline="37">fullScreenMode</references>
+        <references refid="shaders_8cpp_1a9f0fe0c105c553fe28c933db8169ef60" compoundref="shaders_8cpp" startline="84" endline="135">initShaders</references>
+        <references refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">reshapeFunc</references>
+        <references refid="class_glut_context_1a836c331d888caa86e7af09a4e334ad92" compoundref="opengl_viewer_8h" startline="30">mainWindow</references>
+        <references refid="class_glut_context_1a72e9544fc516983d92eff62ec8a6869b" compoundref="opengl_viewer_8h" startline="31">debugWindow</references>
+        <references refid="class_glut_context_1a1165fa1f653611c8d14daa03ba10c1d9" compoundref="opengl_viewer_8h" startline="32">popup</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a621e8294a4e1a4e9f031630e0b7c55ab" compoundref="blinky_blocks_world_8cpp" startline="23" endline="56">BlinkyBlocks::BlinkyBlocksWorld::BlinkyBlocksWorld</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a59cf289a09444696c8739bc2d9194a0d" compoundref="catoms2_d_world_8cpp" startline="28" endline="60">Catoms2D::Catoms2DWorld::Catoms2DWorld</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1ab3e4a5869159eecfcfd5d6b143e590f2" compoundref="catoms3_d_world_8cpp" startline="33" endline="67">Catoms3D::Catoms3DWorld::Catoms3DWorld</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a43b61c929f575fb85492feddbc53750e" compoundref="robot_blocks_world_8cpp" startline="23" endline="55">RobotBlocks::RobotBlocksWorld::RobotBlocksWorld</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1ac6cc0d31fbabf06d3142207d0403c3a7" compoundref="smart_blocks_world_8cpp" startline="20" endline="56">SmartBlocks::SmartBlocksWorld::SmartBlocksWorld</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1ad3770197f422ae0e7dc49406fbd2add6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::deleteContext</definition>
+        <argsstring>()</argsstring>
+        <name>deleteContext</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="89" bodyend="96"/>
+        <references refid="class_glut_context_1a836c331d888caa86e7af09a4e334ad92" compoundref="opengl_viewer_8h" startline="30">mainWindow</references>
+        <references refid="class_glut_context_1a72e9544fc516983d92eff62ec8a6869b" compoundref="opengl_viewer_8h" startline="31">debugWindow</references>
+        <references refid="class_glut_context_1a1165fa1f653611c8d14daa03ba10c1d9" compoundref="opengl_viewer_8h" startline="32">popup</references>
+        <references refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" compoundref="scheduler_8h" startline="125" endline="125">BaseSimulator::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a242f63f51209b7fda69f46832bb4cc94" compoundref="scheduler_8h" startline="93" endline="93">BaseSimulator::Scheduler::start</references>
+        <referencedby refid="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" compoundref="opengl_viewer_8cpp" startline="490" endline="512">mainLoop</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::mainLoop</definition>
+        <argsstring>(void)</argsstring>
+        <name>mainLoop</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="490" bodyend="512"/>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a242f63f51209b7fda69f46832bb4cc94" compoundref="scheduler_8h" startline="93" endline="93">BaseSimulator::Scheduler::start</references>
+        <references refid="scheduler_8h_1abf9fcbad9241517e70536eb685c6c799" compoundref="scheduler_8h" startline="25">SCHEDULER_MODE_FASTEST</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae5c9dca8c6477254e48703a77eec1693" compoundref="scheduler_8h" startline="105" endline="107">BaseSimulator::Scheduler::waitForSchedulerEnd</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a29d72be4ed6f925d6ea20a5584050d21" compoundref="scheduler_8cpp" startline="134" endline="137">BaseSimulator::Scheduler::stop</references>
+        <references refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" compoundref="scheduler_8h" startline="125" endline="125">BaseSimulator::getScheduler</references>
+        <references refid="class_glut_context_1ad3770197f422ae0e7dc49406fbd2add6" compoundref="opengl_viewer_8cpp" startline="89" endline="96">deleteContext</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a7824b09892fd1d2ede8a2bcfad0e8b87" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::addTrace</definition>
+        <argsstring>(const string &amp;str, int id, const Color &amp;color)</argsstring>
+        <name>addTrace</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="514" bodyend="518"/>
+        <references refid="class_glut_context_1a836c331d888caa86e7af09a4e334ad92" compoundref="opengl_viewer_8h" startline="30">mainWindow</references>
+        <references refid="class_glut_sliding_main_window_1a2bcada50d709b3dae884b7be1a495eb7" compoundref="interface_8cpp" startline="277" endline="285">GlutSlidingMainWindow::addTrace</references>
+        <references refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" compoundref="scheduler_8h" startline="125" endline="125">BaseSimulator::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <referencedby refid="class_base_simulator_1_1_scheduler_1af6601a5e1b70ff8ee02400b4657f6a22" compoundref="scheduler_8cpp" startline="116" endline="124">BaseSimulator::Scheduler::trace</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::reshapeFunc</definition>
+        <argsstring>(int w, int h)</argsstring>
+        <name>reshapeFunc</name>
+        <param>
+          <type>int</type>
+          <declname>w</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>h</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="52" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="108" bodyend="123"/>
+        <references refid="class_glut_context_1a2e53da196e3309de6f7096993e30e191" compoundref="opengl_viewer_8h" startline="35">screenWidth</references>
+        <references refid="class_glut_context_1a62d021000546e50bbec62a6974183322" compoundref="opengl_viewer_8h" startline="35">screenHeight</references>
+        <references refid="namespace_blinky_blocks_1aba3b7e8c9eec534ab90c0c7f9e98eef7" compoundref="blinky_blocks_world_8h" startline="99" endline="99">BlinkyBlocks::getWorld</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9031b8230147b5c085750c0007e035b3" compoundref="blinky_blocks_world_8h" startline="74" endline="74">BlinkyBlocks::BlinkyBlocksWorld::getCamera</references>
+        <references refid="class_camera_1a22bff26f75dc96d779ae4f49de2da867" compoundref="camera_8h" startline="66" endline="66">Camera::setW_H</references>
+        <references refid="class_camera_1aaf55ae7f5f95e6c45332fb33b8db9fe5" compoundref="camera_8cpp" startline="95" endline="97">Camera::glProjection</references>
+        <references refid="class_glut_context_1a836c331d888caa86e7af09a4e334ad92" compoundref="opengl_viewer_8h" startline="30">mainWindow</references>
+        <references refid="class_glut_sliding_main_window_1a5641b171a1ebec357a926d3756512796" compoundref="interface_8cpp" startline="270" endline="275">GlutSlidingMainWindow::reshapeFunc</references>
+        <references refid="class_glut_context_1a72e9544fc516983d92eff62ec8a6869b" compoundref="opengl_viewer_8h" startline="31">debugWindow</references>
+        <references refid="class_glut_sliding_debug_window_1a3ad23bc1f63e4b80e6f99b0c9428d305" compoundref="interface_8cpp" startline="433" endline="439">GlutSlidingDebugWindow::reshapeFunc</references>
+        <references refid="class_glut_context_1a1165fa1f653611c8d14daa03ba10c1d9" compoundref="opengl_viewer_8h" startline="32">popup</references>
+        <references refid="class_glut_popup_window_1ab5bd03cb03ec7aa3e7e2c4ae06ecc939" compoundref="interface_8h" startline="154" endline="154">GlutPopupWindow::isShown</references>
+        <references refid="class_glut_popup_window_1a8d53f00ef4b7cc08310cd96f49fe87e0" compoundref="interface_8h" startline="153" endline="153">GlutPopupWindow::show</references>
+        <references refid="class_glut_sliding_main_window_1a246e3c675354827faf8a49645ca7933d" compoundref="interface_8cpp" startline="233" endline="252">GlutSlidingMainWindow::mouseFunc</references>
+        <references refid="class_glut_sliding_debug_window_1a5b62eaf688d366f94bb7bcb6d48da36e" compoundref="interface_8cpp" startline="386" endline="408">GlutSlidingDebugWindow::mouseFunc</references>
+        <references refid="class_camera_1ab0ded66af0a35f693f173007f24be44c" compoundref="camera_8cpp" startline="59" endline="71">Camera::mouseMove</references>
+        <references refid="class_glut_context_1ac5cd0b9bea62564d438c96c90bc38ce1" compoundref="opengl_viewer_8h" startline="34">helpWindow</references>
+        <references refid="class_glut_window_1ab4599613b8b8d97944483b7e9a131d43" compoundref="interface_8cpp" startline="88" endline="95">GlutWindow::passiveMotionFunc</references>
+        <references refid="class_glut_context_1ada4f585b18c1f0deeb9ba631edbe856b" compoundref="opengl_viewer_8h" startline="33">popupMenu</references>
+        <references refid="class_glut_context_1a564ac47d7f2c17aa6d8e3d079629df40" compoundref="opengl_viewer_8h" startline="39">lastMotionTime</references>
+        <references refid="class_glut_context_1a1edb69dfa5ff9825c08b429a5a73d7fc" compoundref="opengl_viewer_8h" startline="40">lastMousePos</references>
+        <references refid="class_glut_popup_menu_window_1a56304a588d612fb551122f9275ac462c" compoundref="interface_8cpp" startline="690" endline="694">GlutPopupMenuWindow::mouseFunc</references>
+        <references refid="class_glut_popup_menu_window_1a086b6ad288058b9d0a26d2c028a498f8" compoundref="interface_8h" startline="166" endline="166">GlutPopupMenuWindow::show</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1af3ad77eb962c601443f51a63646cfc78" compoundref="blinky_blocks_world_8cpp" startline="394" endline="433">BlinkyBlocks::BlinkyBlocksWorld::menuChoice</references>
+        <references refid="class_glut_help_window_1aeed2634499d4a256e313375a380cb303" compoundref="interface_8cpp" startline="761" endline="770">GlutHelpWindow::mouseFunc</references>
+        <references refid="class_camera_1a8e5c2a5f38ed6e0acecd9bb3e9ae1c99" compoundref="camera_8cpp" startline="40" endline="44">Camera::mouseDown</references>
+        <references refid="namespace_base_simulator_1a2a1f7a0fc6c69525e369dc9226e1a23c" compoundref="world_8h" startline="90" endline="90">BaseSimulator::getWorld</references>
+        <references refid="class_base_simulator_1_1_world_1af73fe571b3678097db9be586e7c87c4a" compoundref="world_8h" startline="65" endline="65">BaseSimulator::World::getBlockByNum</references>
+        <references refid="class_base_simulator_1_1_world_1a15f8a1bc3563fe9e6a7004c3a56d1b28" compoundref="world_8h" startline="62" endline="62">BaseSimulator::World::getSelectedBlock</references>
+        <references refid="class_base_simulator_1_1_world_1a5eb197362605bcacb709bd4a80dbb783" compoundref="world_8h" startline="77" endline="77">BaseSimulator::World::tapBlock</references>
+        <references refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" compoundref="scheduler_8h" startline="125" endline="125">BaseSimulator::getScheduler</references>
+        <references refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" compoundref="gl_block_8h" startline="23">GlBlock::blockId</references>
+        <references refid="class_camera_1a6486849c28c1fff783c36dabd3344436" compoundref="camera_8cpp" startline="46" endline="57">Camera::mouseUp</references>
+        <references refid="class_camera_1a8cb013647e06793c56e529c9c62b9371" compoundref="camera_8cpp" startline="73" endline="76">Camera::mouseZoom</references>
+        <references refid="class_gl_block_1abbe6e6bfc4a1697ba7fc8722d830ed2f" compoundref="gl_block_8cpp" startline="53" endline="55">GlBlock::toggleHighlight</references>
+        <references refid="class_base_simulator_1_1_world_1a610ae24d624075d1b6b037713c4b2b07" compoundref="world_8h" startline="63" endline="63">BaseSimulator::World::setSelectedBlock</references>
+        <references refid="class_glut_sliding_main_window_1a7edb56824e53467b9a457fd0616ae316" compoundref="interface_8cpp" startline="287" endline="302">GlutSlidingMainWindow::select</references>
+        <references refid="class_base_simulator_1_1_world_1ae8e4e1a38466d7342c40e2da1f920ceb" compoundref="world_8h" startline="64" endline="64">BaseSimulator::World::setSelectedFace</references>
+        <references refid="class_base_simulator_1_1_world_1a7cf8e0a980022e9fc17d38d56441b812" compoundref="world_8h" startline="72" endline="72">BaseSimulator::World::createPopupMenu</references>
+        <references refid="class_glut_sliding_debug_window_1a40a48ece9d420089212ecb8b1ff165b0" compoundref="interface_8cpp" startline="410" endline="431">GlutSlidingDebugWindow::keyFunc</references>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a242f63f51209b7fda69f46832bb4cc94" compoundref="scheduler_8h" startline="93" endline="93">BaseSimulator::Scheduler::start</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a29d72be4ed6f925d6ea20a5584050d21" compoundref="scheduler_8cpp" startline="134" endline="137">BaseSimulator::Scheduler::stop</references>
+        <references refid="scheduler_8h_1abf9fcbad9241517e70536eb685c6c799" compoundref="scheduler_8h" startline="25">SCHEDULER_MODE_FASTEST</references>
+        <references refid="class_base_simulator_1_1_world_1a8b9742b60db56e41957946e3c1ae2472" compoundref="world_8h" startline="74" endline="74">BaseSimulator::World::getCamera</references>
+        <references refid="class_camera_1a7724b4bf8bbf5423da7dcb4644ee7d80" compoundref="camera_8h" startline="69" endline="69">Camera::setTarget</references>
+        <references refid="class_gl_block_1ac2f5755213e7bc106e83a7a8030fd048" compoundref="gl_block_8h" startline="36" endline="36">GlBlock::getPosition</references>
+        <references refid="class_glut_context_1a5013a67b5455e827a475acc5f3fca973" compoundref="opengl_viewer_8h" startline="37">fullScreenMode</references>
+        <references refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" compoundref="opengl_viewer_8h" startline="36">initialScreenWidth</references>
+        <references refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" compoundref="opengl_viewer_8h" startline="36">initialScreenHeight</references>
+        <references refid="class_base_simulator_1_1_world_1a92e98e08f49981219e87eb35eae9dd1b" compoundref="world_8h" startline="73" endline="73">BaseSimulator::World::createHelpWindow</references>
+        <references refid="class_glut_help_window_1aed8e1fada3ea2d5ece8133a46fbb1d2f" compoundref="interface_8h" startline="183" endline="183">GlutHelpWindow::showHide</references>
+        <references refid="class_glut_sliding_main_window_1a9fab7400c8c991b380269b91ecb877db" compoundref="interface_8cpp" startline="254" endline="268">GlutSlidingMainWindow::openClose</references>
+        <references refid="class_glut_context_1ad6b12890dbf48fbd356792cf55bcbfc8" compoundref="opengl_viewer_8h" startline="38">saveScreenMode</references>
+        <references refid="class_glut_context_1af603533c922f9392f38f7a599f1e6b17" compoundref="opengl_viewer_8h" startline="41">mustSaveImage</references>
+        <references refid="class_glut_popup_window_1a07775ea29153ac0d8cbab4f99f9692e3" compoundref="interface_8h" startline="155" endline="155">GlutPopupWindow::setCenterPosition</references>
+        <references refid="class_glut_popup_window_1aa365bd0cca6bef931311da3f9ee9eb18" compoundref="interface_8h" startline="156" endline="156">GlutPopupWindow::setInfo</references>
+        <references refid="class_gl_block_1a83b01f275e6f319bf5bd50116adfee15" compoundref="gl_block_8cpp" startline="64" endline="69">GlBlock::getPopupInfo</references>
+        <references refid="class_glut_sliding_main_window_1a3bc0dff790956034c75272a29098d63b" compoundref="interface_8h" startline="121" endline="121">GlutSlidingMainWindow::hasSelectedBlock</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a6aa4eb67b4af24f58d186b28fa5037e2" compoundref="scheduler_8h" startline="66">BaseSimulator::Scheduler::state</references>
+        <references refid="class_glut_context_1acc118654ac851a06f9e51b01ad255702" compoundref="opengl_viewer_8h" startline="43">frameCount</references>
+        <references refid="class_glut_context_1af9e900770b0c58216e591c85bf742fad" compoundref="opengl_viewer_8h" startline="44">previousTime</references>
+        <references refid="class_glut_context_1ab89380620573505e50314559c26fe71f" compoundref="opengl_viewer_8h" startline="45">fps</references>
+        <references refid="class_glut_window_1a24166cadde4ac575bdef40a62022835a" compoundref="interface_8cpp" startline="106" endline="118">GlutWindow::drawString</references>
+        <references refid="shaders_8cpp_1a49ff67a56fb37eacb4551dd6933497b2" compoundref="shaders_8cpp" startline="137" endline="154">shadowedRenderingStep1</references>
+        <references refid="class_base_simulator_1_1_world_1ae5a660da750b30b9f063010140bae5a9" compoundref="world_8h" startline="69" endline="69">BaseSimulator::World::glDraw</references>
+        <references refid="shaders_8cpp_1aa23ae66ab14f690bb86cdfa4bb191956" compoundref="shaders_8cpp" startline="156" endline="170">shadowedRenderingStep2</references>
+        <references refid="shaders_8cpp_1af9bd99e5de0905f53b874be82f95c890" compoundref="shaders_8cpp" startline="172" endline="234">shadowedRenderingStep3</references>
+        <references refid="shaders_8cpp_1a62d537ef26b63ed424b004964eeaf587" compoundref="shaders_8cpp" startline="236" endline="247">shadowedRenderingStep4</references>
+        <references refid="class_glut_sliding_main_window_1afae498a37f111f6b11d33ada96789775" compoundref="interface_8cpp" startline="143" endline="231">GlutSlidingMainWindow::glDraw</references>
+        <references refid="class_glut_sliding_debug_window_1adb2038038ae6a736f1a406c9e3c63728" compoundref="interface_8cpp" startline="327" endline="384">GlutSlidingDebugWindow::glDraw</references>
+        <references refid="class_glut_popup_window_1a221fd1a599e41f5ec67913006acd5e12" compoundref="interface_8cpp" startline="633" endline="650">GlutPopupWindow::glDraw</references>
+        <references refid="class_glut_popup_menu_window_1ae879fd9b5bc42b8bc3c6ba586623e7f1" compoundref="interface_8cpp" startline="672" endline="688">GlutPopupMenuWindow::glDraw</references>
+        <references refid="class_glut_help_window_1a78ba33923a0456c613d06efbe578a741" compoundref="interface_8cpp" startline="733" endline="759">GlutHelpWindow::glDraw</references>
+        <references refid="class_camera_1ac4c7f5e91786f418464392df8c7a140e" compoundref="camera_8cpp" startline="78" endline="80">Camera::glLookAt</references>
+        <references refid="class_base_simulator_1_1_world_1a3ee68797d8a2d77cf4260654c5d204eb" compoundref="world_8h" startline="70" endline="70">BaseSimulator::World::glDrawId</references>
+        <references refid="class_base_simulator_1_1_world_1a97f96d8faeb1a7ced226437e0cebf78e" compoundref="world_8h" startline="71" endline="71">BaseSimulator::World::glDrawIdByMaterial</references>
+        <referencedby refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" compoundref="opengl_viewer_8cpp" startline="42" endline="87">init</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a42f8db031b07c4a0b55d9a6ef70a321d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::setFullScreenMode</definition>
+        <argsstring>(bool b)</argsstring>
+        <name>setFullScreenMode</name>
+        <param>
+          <type>bool</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="549" bodyend="551"/>
+        <references refid="class_glut_context_1a5013a67b5455e827a475acc5f3fca973" compoundref="opengl_viewer_8h" startline="37">fullScreenMode</references>
+        <referencedby refid="class_command_line_1a1aa9581e68b84a283af934ccb8aeef3b" compoundref="command_line_8cpp" startline="27" endline="36">CommandLine::CommandLine</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_glut_context_1ae14a5d41931e4fcd1dd727840a0833ff" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::passiveMotionFunc</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>passiveMotionFunc</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="142" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a89c0f34f083b507fae3bdb4a723b224b" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::motionFunc</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>motionFunc</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="128" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a76faf95d3e1ed1c7b3892e88e4b981e8" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::mouseFunc</definition>
+        <argsstring>(int button, int state, int x, int y)</argsstring>
+        <name>mouseFunc</name>
+        <param>
+          <type>int</type>
+          <declname>button</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="173" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a5e994c9308c9ebc162f51e2228ec583d" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::keyboardFunc</definition>
+        <argsstring>(unsigned char c, int x, int y)</argsstring>
+        <name>keyboardFunc</name>
+        <param>
+          <type>unsigned char</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="252" bodyend="306"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1aa061b2709ae7c96110914c181590ff3c" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::drawFunc</definition>
+        <argsstring>(void)</argsstring>
+        <name>drawFunc</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="366" bodyend="402"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a588bce3378acd249ffb4735e0fbee96e" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::idleFunc</definition>
+        <argsstring>(void)</argsstring>
+        <name>idleFunc</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="311" bodyend="344"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a06f41d763d64045cbb154b89f11d6ffe" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int GlutContext::selectFunc</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>selectFunc</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="406" bodyend="433"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a49c4badc1d0219e6faba1abcc986a958" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int GlutContext::selectFaceFunc</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>selectFaceFunc</name>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="62" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="437" bodyend="464"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1afe01acf4fb69848e206f063edf7a2995" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int GlutContext::processHits</definition>
+        <argsstring>(GLint hits, GLuint *buffer)</argsstring>
+        <name>processHits</name>
+        <param>
+          <type>GLint</type>
+          <declname>hits</declname>
+        </param>
+        <param>
+          <type>GLuint *</type>
+          <declname>buffer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="469" bodyend="488"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a6849778e6b59c842126b9b27c9815630" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool GlutContext::saveScreen</definition>
+        <argsstring>(char *title)</argsstring>
+        <name>saveScreen</name>
+        <param>
+          <type>char *</type>
+          <declname>title</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="520" bodyend="547"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1aefaea4e2b5b1688574a67d928c4bc7a8" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * GlutContext::lanceScheduler</definition>
+        <argsstring>(void *param)</argsstring>
+        <name>lanceScheduler</name>
+        <param>
+          <type>void *</type>
+          <declname>param</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="98" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1af70a05971b6003f6b572c89cfaed313b" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::calculateFPS</definition>
+        <argsstring>(void)</argsstring>
+        <name>calculateFPS</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="346" bodyend="358"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_context_1a27388093130981d6eba8cec7d87db741" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutContext::showFPS</definition>
+        <argsstring>(void)</argsstring>
+        <name>showFPS</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp" bodystart="360" bodyend="364"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1821">
+        <label>GlutPopupWindow</label>
+        <link refid="class_glut_popup_window"/>
+        <childnode refid="1817" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1815">
+        <label>GlutContext</label>
+        <link refid="class_glut_context"/>
+        <childnode refid="1816" relation="usage">
+          <edgelabel>debugWindow</edgelabel>
+        </childnode>
+        <childnode refid="1818" relation="usage">
+          <edgelabel>mainWindow</edgelabel>
+        </childnode>
+        <childnode refid="1819" relation="usage">
+          <edgelabel>popupMenu</edgelabel>
+        </childnode>
+        <childnode refid="1820" relation="usage">
+          <edgelabel>helpWindow</edgelabel>
+        </childnode>
+        <childnode refid="1821" relation="usage">
+          <edgelabel>popup</edgelabel>
+        </childnode>
+      </node>
+      <node id="1818">
+        <label>GlutSlidingMainWindow</label>
+        <link refid="class_glut_sliding_main_window"/>
+        <childnode refid="1817" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1819">
+        <label>GlutPopupMenuWindow</label>
+        <link refid="class_glut_popup_menu_window"/>
+        <childnode refid="1817" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1817">
+        <label>GlutWindow</label>
+        <link refid="class_glut_window"/>
+      </node>
+      <node id="1816">
+        <label>GlutSlidingDebugWindow</label>
+        <link refid="class_glut_sliding_debug_window"/>
+        <childnode refid="1817" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1820">
+        <label>GlutHelpWindow</label>
+        <link refid="class_glut_help_window"/>
+        <childnode refid="1817" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h" bodystart="27" bodyend="68"/>
+    <listofallmembers>
+      <member refid="class_glut_context_1a7824b09892fd1d2ede8a2bcfad0e8b87" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>addTrace</name></member>
+      <member refid="class_glut_context_1af70a05971b6003f6b572c89cfaed313b" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>calculateFPS</name></member>
+      <member refid="class_glut_context_1a72e9544fc516983d92eff62ec8a6869b" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>debugWindow</name></member>
+      <member refid="class_glut_context_1ad3770197f422ae0e7dc49406fbd2add6" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>deleteContext</name></member>
+      <member refid="class_glut_context_1aa061b2709ae7c96110914c181590ff3c" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>drawFunc</name></member>
+      <member refid="class_glut_context_1ab89380620573505e50314559c26fe71f" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>fps</name></member>
+      <member refid="class_glut_context_1acc118654ac851a06f9e51b01ad255702" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>frameCount</name></member>
+      <member refid="class_glut_context_1a5013a67b5455e827a475acc5f3fca973" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>fullScreenMode</name></member>
+      <member refid="class_glut_context_1ac5cd0b9bea62564d438c96c90bc38ce1" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>helpWindow</name></member>
+      <member refid="class_glut_context_1a588bce3378acd249ffb4735e0fbee96e" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>idleFunc</name></member>
+      <member refid="class_glut_context_1af7c696b73b0ea2e3a46412c9528e0ee8" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>init</name></member>
+      <member refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>initialScreenHeight</name></member>
+      <member refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>initialScreenWidth</name></member>
+      <member refid="class_glut_context_1a5e994c9308c9ebc162f51e2228ec583d" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>keyboardFunc</name></member>
+      <member refid="class_glut_context_1a8ab91833df273770989a06a455f101d3" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>keyboardModifier</name></member>
+      <member refid="class_glut_context_1aefaea4e2b5b1688574a67d928c4bc7a8" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>lanceScheduler</name></member>
+      <member refid="class_glut_context_1a564ac47d7f2c17aa6d8e3d079629df40" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>lastMotionTime</name></member>
+      <member refid="class_glut_context_1a1edb69dfa5ff9825c08b429a5a73d7fc" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>lastMousePos</name></member>
+      <member refid="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>mainLoop</name></member>
+      <member refid="class_glut_context_1a836c331d888caa86e7af09a4e334ad92" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>mainWindow</name></member>
+      <member refid="class_glut_context_1a89c0f34f083b507fae3bdb4a723b224b" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>motionFunc</name></member>
+      <member refid="class_glut_context_1a76faf95d3e1ed1c7b3892e88e4b981e8" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>mouseFunc</name></member>
+      <member refid="class_glut_context_1af603533c922f9392f38f7a599f1e6b17" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>mustSaveImage</name></member>
+      <member refid="class_glut_context_1ae14a5d41931e4fcd1dd727840a0833ff" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>passiveMotionFunc</name></member>
+      <member refid="class_glut_context_1a1165fa1f653611c8d14daa03ba10c1d9" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>popup</name></member>
+      <member refid="class_glut_context_1ada4f585b18c1f0deeb9ba631edbe856b" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>popupMenu</name></member>
+      <member refid="class_glut_context_1af9e900770b0c58216e591c85bf742fad" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>previousTime</name></member>
+      <member refid="class_glut_context_1afe01acf4fb69848e206f063edf7a2995" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>processHits</name></member>
+      <member refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>reshapeFunc</name></member>
+      <member refid="class_glut_context_1a6849778e6b59c842126b9b27c9815630" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>saveScreen</name></member>
+      <member refid="class_glut_context_1ad6b12890dbf48fbd356792cf55bcbfc8" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>saveScreenMode</name></member>
+      <member refid="class_glut_context_1a62d021000546e50bbec62a6974183322" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>screenHeight</name></member>
+      <member refid="class_glut_context_1a2e53da196e3309de6f7096993e30e191" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>screenWidth</name></member>
+      <member refid="class_glut_context_1a49c4badc1d0219e6faba1abcc986a958" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>selectFaceFunc</name></member>
+      <member refid="class_glut_context_1a06f41d763d64045cbb154b89f11d6ffe" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>selectFunc</name></member>
+      <member refid="class_glut_context_1a42f8db031b07c4a0b55d9a6ef70a321d" prot="public" virt="non-virtual"><scope>GlutContext</scope><name>setFullScreenMode</name></member>
+      <member refid="class_glut_context_1a27388093130981d6eba8cec7d87db741" prot="private" virt="non-virtual"><scope>GlutContext</scope><name>showFPS</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

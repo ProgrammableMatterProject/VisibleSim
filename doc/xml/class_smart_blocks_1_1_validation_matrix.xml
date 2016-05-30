@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_smart_blocks_1_1_validation_matrix" kind="class" language="C++" prot="public">
+    <compoundname>SmartBlocks::ValidationMatrix</compoundname>
+    <includes refid="smart_blocks_capabilities_8h" local="no">smartBlocksCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_smart_blocks_1_1_validation_matrix_1ae0aae27b621443a7b3293d4b2aa3cc6c" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8" kindref="member">states</ref></type>
+        <definition>states SmartBlocks::ValidationMatrix::grid[9]</definition>
+        <argsstring>[9]</argsstring>
+        <name>grid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_validation_matrix_1a90c99bfd98cd99fe106de2313a80f772" compoundref="smart_blocks_capabilities_8cpp" startline="512" endline="523">fromRotationZ</referencedby>
+        <referencedby refid="namespace_smart_blocks_1ae7f21f61e6cef0797b1d128f90b9b6ba" compoundref="smart_blocks_capabilities_8cpp" startline="535" endline="540">SmartBlocks::operator&lt;&lt;</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1a6a4780a5131c649e57f9196eff279faa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SmartBlocks::ValidationMatrix::ValidationMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>ValidationMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="62" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="460" bodyend="462"/>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1ab1eb353d623ac933c50923552cbcb329" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::ValidationMatrix::fromString</definition>
+        <argsstring>(const char *str)</argsstring>
+        <name>fromString</name>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="465" bodyend="510"/>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8a9a0d3dceedacc6080631018c8452a82f" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::emptyState</references>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8a39c04c52e9247a39c5bc8c0b968da26c" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::wellPlaceState</references>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8a3f830c8f247603412a6125bfdf28b82a" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::fullState</references>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8a419ae9f5ba81e056f7e91bf5b39f7bed" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::filledState</references>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8ab2d0a2a44a474bd33e31d796b80c0dbd" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::singleState</references>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8abfe9238a76eb9cdc1cda1ce56c792709" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::emptiedState</references>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8af075242197d8fb70672571bdc2f26dc8" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::transitState</references>
+        <references refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8a1b29c3fc4c6a13df9efcde6aa95a4151" compoundref="smart_blocks_capabilities_8h" startline="43">SmartBlocks::jockerState</references>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1a90c99bfd98cd99fe106de2313a80f772" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::ValidationMatrix::fromRotationZ</definition>
+        <argsstring>(const ValidationMatrix &amp;, int)</argsstring>
+        <name>fromRotationZ</name>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <defname>mat</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <defname>n</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="512" bodyend="523"/>
+        <references refid="class_smart_blocks_1_1_validation_matrix_1ae0aae27b621443a7b3293d4b2aa3cc6c" compoundref="smart_blocks_capabilities_8h" startline="61">grid</references>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">SmartBlocks::Capability::Capability</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1a9ef2009d496633a8a367794d1723585f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::ValidationMatrix::set</definition>
+        <argsstring>(const PointCel &amp;pt, states v)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8" kindref="member">states</ref></type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="529" bodyend="532"/>
+        <references refid="class_smart_blocks_1_1_point_cel_1aa3c7172c8be8fc099200b0dd0812621b" compoundref="smart_blocks_capabilities_8h" startline="21">SmartBlocks::PointCel::x</references>
+        <references refid="class_smart_blocks_1_1_point_cel_1a0baa8a7663c2c79f63069f760039fa5e" compoundref="smart_blocks_capabilities_8h" startline="22">SmartBlocks::PointCel::y</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1a4231f82256aefc2bd89ccca5907a4309" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_smart_blocks_1ab070c9853e09d4bbd44f92071244ffc8" kindref="member">states</ref></type>
+        <definition>states SmartBlocks::ValidationMatrix::get</definition>
+        <argsstring>(const PointCel &amp;pt)</argsstring>
+        <name>get</name>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="68" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="525" bodyend="527"/>
+        <references refid="class_smart_blocks_1_1_point_cel_1aa3c7172c8be8fc099200b0dd0812621b" compoundref="smart_blocks_capabilities_8h" startline="21">SmartBlocks::PointCel::x</references>
+        <references refid="class_smart_blocks_1_1_point_cel_1a0baa8a7663c2c79f63069f760039fa5e" compoundref="smart_blocks_capabilities_8h" startline="22">SmartBlocks::PointCel::y</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1ae845a5d809d079d723503a0f61fc4c9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SmartBlocks::ValidationMatrix::validate</definition>
+        <argsstring>(const PresenceMatrix &amp;pm, const bool tt[9][5])</argsstring>
+        <name>validate</name>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>tt</declname>
+          <array>[9][5]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="70" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="542" bodyend="555"/>
+        <references refid="class_smart_blocks_1_1_presence_matrix_1a54e415298a4feed5876838742655be20" compoundref="smart_blocks_capabilities_8h" startline="48">SmartBlocks::PresenceMatrix::grid</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1adf56b9a50e8ae53d3d094ece430a6f6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SmartBlocks::ValidationMatrix::validateWithTarget</definition>
+        <argsstring>(const PresenceMatrix &amp;pm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateWithTarget</name>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="71" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="557" bodyend="574"/>
+        <references refid="class_smart_blocks_1_1_presence_matrix_1a54e415298a4feed5876838742655be20" compoundref="smart_blocks_capabilities_8h" startline="48">SmartBlocks::PresenceMatrix::grid</references>
+        <references refid="smart_blocks_capabilities_8cpp_1a90b250c1071b7d286fa62ae4f212dd2a" compoundref="smart_blocks_capabilities_8cpp" startline="4">truthTable</references>
+        <references refid="smart_blocks_capabilities_8cpp_1ad80b5f61e8c79a2735c9aee7c25b139e" compoundref="smart_blocks_capabilities_8cpp" startline="6">gainTable</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_validation_matrix_1ac7a3a80bed5de566cb25fba147ceb593" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SmartBlocks::ValidationMatrix::validateTrain</definition>
+        <argsstring>(const PresenceMatrix &amp;pm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateTrain</name>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="72" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_smart_blocks_1_1_validation_matrix_1abe0664b63ceba30db6aced7560fb582b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const ValidationMatrix &amp;sm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="69" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="535" bodyend="540"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="59" bodyend="73"/>
+    <listofallmembers>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1a90c99bfd98cd99fe106de2313a80f772" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>fromRotationZ</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1ab1eb353d623ac933c50923552cbcb329" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>fromString</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1a4231f82256aefc2bd89ccca5907a4309" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>get</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1ae0aae27b621443a7b3293d4b2aa3cc6c" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>grid</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1abe0664b63ceba30db6aced7560fb582b" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1a9ef2009d496633a8a367794d1723585f" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>set</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1ae845a5d809d079d723503a0f61fc4c9e" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>validate</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1ac7a3a80bed5de566cb25fba147ceb593" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>validateTrain</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1adf56b9a50e8ae53d3d094ece430a6f6e" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>validateWithTarget</name></member>
+      <member refid="class_smart_blocks_1_1_validation_matrix_1a6a4780a5131c649e57f9196eff279faa" prot="public" virt="non-virtual"><scope>SmartBlocks::ValidationMatrix</scope><name>ValidationMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

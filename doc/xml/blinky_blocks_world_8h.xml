@@ -1,0 +1,619 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="blinky_blocks_world_8h" kind="file" language="C++">
+    <compoundname>blinkyBlocksWorld.h</compoundname>
+    <includes refid="opengl_viewer_8h" local="yes">openglViewer.h</includes>
+    <includes refid="world_8h" local="yes">world.h</includes>
+    <includes refid="vecteur_8h" local="yes">vecteur.h</includes>
+    <includes refid="blinky_blocks_block_8h" local="yes">blinkyBlocksBlock.h</includes>
+    <includes refid="obj_loader_8h" local="yes">objLoader.h</includes>
+    <includes local="no">boost/asio.hpp</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includes refid="blinky_blocks_scenario_8h" local="no">blinkyBlocksScenario.h</includes>
+    <includes local="no">vector</includes>
+    <includes refid="grid3_d_8h" local="yes">grid3D.h</includes>
+    <includedby refid="blinky_blocks_block_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</includedby>
+    <includedby refid="blinky_blocks_simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</includedby>
+    <includedby refid="blinky_blocks_scenario_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</includedby>
+    <includedby refid="blinky_blocks_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</includedby>
+    <includedby refid="blinky_blocks_world_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</includedby>
+    <incdepgraph>
+      <node id="10816">
+        <label>list</label>
+      </node>
+      <node id="10787">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="10788" relation="include">
+        </childnode>
+        <childnode refid="10803" relation="include">
+        </childnode>
+        <childnode refid="10797" relation="include">
+        </childnode>
+        <childnode refid="10802" relation="include">
+        </childnode>
+        <childnode refid="10804" relation="include">
+        </childnode>
+        <childnode refid="10807" relation="include">
+        </childnode>
+      </node>
+      <node id="10797">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="10793" relation="include">
+        </childnode>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10792" relation="include">
+        </childnode>
+        <childnode refid="10798" relation="include">
+        </childnode>
+        <childnode refid="10799" relation="include">
+        </childnode>
+      </node>
+      <node id="10788">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="10789" relation="include">
+        </childnode>
+        <childnode refid="10790" relation="include">
+        </childnode>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10792" relation="include">
+        </childnode>
+        <childnode refid="10793" relation="include">
+        </childnode>
+        <childnode refid="10794" relation="include">
+        </childnode>
+        <childnode refid="10795" relation="include">
+        </childnode>
+        <childnode refid="10796" relation="include">
+        </childnode>
+        <childnode refid="10797" relation="include">
+        </childnode>
+        <childnode refid="10802" relation="include">
+        </childnode>
+      </node>
+      <node id="10799">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10792" relation="include">
+        </childnode>
+        <childnode refid="10800" relation="include">
+        </childnode>
+        <childnode refid="10801" relation="include">
+        </childnode>
+      </node>
+      <node id="10807">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="10808" relation="include">
+        </childnode>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10792" relation="include">
+        </childnode>
+        <childnode refid="10801" relation="include">
+        </childnode>
+        <childnode refid="10804" relation="include">
+        </childnode>
+        <childnode refid="10809" relation="include">
+        </childnode>
+        <childnode refid="10806" relation="include">
+        </childnode>
+      </node>
+      <node id="10814">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="10834">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="10812">
+        <label>assert.h</label>
+      </node>
+      <node id="10820">
+        <label>stdint.h</label>
+      </node>
+      <node id="10790">
+        <label>stdlib.h</label>
+      </node>
+      <node id="10813">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="10814" relation="include">
+        </childnode>
+        <childnode refid="10815" relation="include">
+        </childnode>
+        <childnode refid="10811" relation="include">
+        </childnode>
+        <childnode refid="10816" relation="include">
+        </childnode>
+        <childnode refid="10804" relation="include">
+        </childnode>
+        <childnode refid="10817" relation="include">
+        </childnode>
+        <childnode refid="10819" relation="include">
+        </childnode>
+      </node>
+      <node id="10800">
+        <label>cmath</label>
+      </node>
+      <node id="10828">
+        <label>stdexcept</label>
+      </node>
+      <node id="10786">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinkyBlocksWorld.h"/>
+        <childnode refid="10787" relation="include">
+        </childnode>
+        <childnode refid="10809" relation="include">
+        </childnode>
+        <childnode refid="10799" relation="include">
+        </childnode>
+        <childnode refid="10822" relation="include">
+        </childnode>
+        <childnode refid="10825" relation="include">
+        </childnode>
+        <childnode refid="10827" relation="include">
+        </childnode>
+        <childnode refid="10821" relation="include">
+        </childnode>
+        <childnode refid="10829" relation="include">
+        </childnode>
+        <childnode refid="10808" relation="include">
+        </childnode>
+        <childnode refid="10839" relation="include">
+        </childnode>
+      </node>
+      <node id="10805">
+        <label>string</label>
+      </node>
+      <node id="10793">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="10810">
+        <label>map</label>
+      </node>
+      <node id="10832">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="10804">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="10805" relation="include">
+        </childnode>
+        <childnode refid="10788" relation="include">
+        </childnode>
+        <childnode refid="10799" relation="include">
+        </childnode>
+        <childnode refid="10806" relation="include">
+        </childnode>
+      </node>
+      <node id="10801">
+        <label>memory.h</label>
+      </node>
+      <node id="10792">
+        <label>fstream</label>
+      </node>
+      <node id="10817">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="10813" relation="include">
+        </childnode>
+        <childnode refid="10818" relation="include">
+        </childnode>
+      </node>
+      <node id="10796">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="10836">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="10802">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="10798" relation="include">
+        </childnode>
+        <childnode refid="10799" relation="include">
+        </childnode>
+        <childnode refid="10797" relation="include">
+        </childnode>
+      </node>
+      <node id="10794">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="10827">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="10803">
+        <label>pthread.h</label>
+      </node>
+      <node id="10826">
+        <label>string.h</label>
+      </node>
+      <node id="10808">
+        <label>vector</label>
+      </node>
+      <node id="10837">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="10838" relation="include">
+        </childnode>
+        <childnode refid="10826" relation="include">
+        </childnode>
+        <childnode refid="10814" relation="include">
+        </childnode>
+        <childnode refid="10813" relation="include">
+        </childnode>
+      </node>
+      <node id="10831">
+        <label>sstream</label>
+      </node>
+      <node id="10830">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10831" relation="include">
+        </childnode>
+        <childnode refid="10810" relation="include">
+        </childnode>
+        <childnode refid="10818" relation="include">
+        </childnode>
+        <childnode refid="10812" relation="include">
+        </childnode>
+        <childnode refid="10832" relation="include">
+        </childnode>
+        <childnode refid="10833" relation="include">
+        </childnode>
+        <childnode refid="10811" relation="include">
+        </childnode>
+        <childnode refid="10834" relation="include">
+        </childnode>
+        <childnode refid="10835" relation="include">
+        </childnode>
+        <childnode refid="10787" relation="include">
+        </childnode>
+      </node>
+      <node id="10798">
+        <label>math.h</label>
+      </node>
+      <node id="10806">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10792" relation="include">
+        </childnode>
+        <childnode refid="10800" relation="include">
+        </childnode>
+        <childnode refid="10801" relation="include">
+        </childnode>
+        <childnode refid="10788" relation="include">
+        </childnode>
+      </node>
+      <node id="10840">
+        <label>grid.h</label>
+        <link refid="grid_8h"/>
+        <childnode refid="10808" relation="include">
+        </childnode>
+      </node>
+      <node id="10791">
+        <label>iostream</label>
+      </node>
+      <node id="10838">
+        <label>deque</label>
+      </node>
+      <node id="10829">
+        <label>blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="10799" relation="include">
+        </childnode>
+        <childnode refid="10786" relation="include">
+        </childnode>
+        <childnode refid="10830" relation="include">
+        </childnode>
+      </node>
+      <node id="10833">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="10811">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="10823">
+        <label>blinkyBlocksBlockCode.h</label>
+        <link refid="blinky_blocks_block_code_8h"/>
+        <childnode refid="10817" relation="include">
+        </childnode>
+        <childnode refid="10822" relation="include">
+        </childnode>
+      </node>
+      <node id="10822">
+        <label>blinkyBlocksBlock.h</label>
+        <link refid="blinky_blocks_block_8h"/>
+        <childnode refid="10813" relation="include">
+        </childnode>
+        <childnode refid="10806" relation="include">
+        </childnode>
+        <childnode refid="10823" relation="include">
+        </childnode>
+        <childnode refid="10824" relation="include">
+        </childnode>
+        <childnode refid="10827" relation="include">
+        </childnode>
+        <childnode refid="10828" relation="include">
+        </childnode>
+      </node>
+      <node id="10839">
+        <label>grid3D.h</label>
+        <link refid="grid3_d_8h"/>
+        <childnode refid="10840" relation="include">
+        </childnode>
+      </node>
+      <node id="10821">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="10792" relation="include">
+        </childnode>
+      </node>
+      <node id="10835">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="10818" relation="include">
+        </childnode>
+        <childnode refid="10805" relation="include">
+        </childnode>
+        <childnode refid="10814" relation="include">
+        </childnode>
+        <childnode refid="10813" relation="include">
+        </childnode>
+        <childnode refid="10836" relation="include">
+        </childnode>
+        <childnode refid="10837" relation="include">
+        </childnode>
+        <childnode refid="10806" relation="include">
+        </childnode>
+      </node>
+      <node id="10815">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="10809">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10810" relation="include">
+        </childnode>
+        <childnode refid="10808" relation="include">
+        </childnode>
+        <childnode refid="10811" relation="include">
+        </childnode>
+        <childnode refid="10812" relation="include">
+        </childnode>
+        <childnode refid="10813" relation="include">
+        </childnode>
+        <childnode refid="10804" relation="include">
+        </childnode>
+        <childnode refid="10821" relation="include">
+        </childnode>
+      </node>
+      <node id="10824">
+        <label>blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="10805" relation="include">
+        </childnode>
+        <childnode refid="10825" relation="include">
+        </childnode>
+        <childnode refid="10804" relation="include">
+        </childnode>
+      </node>
+      <node id="10795">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="10789">
+        <label>stdio.h</label>
+      </node>
+      <node id="10825">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="10787" relation="include">
+        </childnode>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10792" relation="include">
+        </childnode>
+        <childnode refid="10805" relation="include">
+        </childnode>
+        <childnode refid="10808" relation="include">
+        </childnode>
+        <childnode refid="10800" relation="include">
+        </childnode>
+        <childnode refid="10790" relation="include">
+        </childnode>
+        <childnode refid="10826" relation="include">
+        </childnode>
+      </node>
+      <node id="10819">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="10813" relation="include">
+        </childnode>
+        <childnode refid="10820" relation="include">
+        </childnode>
+        <childnode refid="10791" relation="include">
+        </childnode>
+        <childnode refid="10815" relation="include">
+        </childnode>
+        <childnode refid="10816" relation="include">
+        </childnode>
+      </node>
+      <node id="10818">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="10843">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="10842" relation="include">
+        </childnode>
+        <childnode refid="10844" relation="include">
+        </childnode>
+        <childnode refid="10845" relation="include">
+        </childnode>
+      </node>
+      <node id="10842">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="10845">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="10841">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinkyBlocksWorld.h"/>
+        <childnode refid="10842" relation="include">
+        </childnode>
+        <childnode refid="10843" relation="include">
+        </childnode>
+        <childnode refid="10846" relation="include">
+        </childnode>
+        <childnode refid="10844" relation="include">
+        </childnode>
+        <childnode refid="10847" relation="include">
+        </childnode>
+      </node>
+      <node id="10844">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="10846">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="10841" relation="include">
+        </childnode>
+      </node>
+      <node id="10847">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_blinky_blocks_1_1_blinky_blocks_world" prot="public">BlinkyBlocks::BlinkyBlocksWorld</innerclass>
+    <innernamespace refid="namespace_blinky_blocks">BlinkyBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>blinkyBlocksWorld.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>23<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>BLINKYBLOCKSWORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BLINKYBLOCKSWORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="opengl_viewer_8h" kindref="compound">openglViewer.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="world_8h" kindref="compound">world.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vecteur_8h" kindref="compound">vecteur.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="blinky_blocks_block_8h" kindref="compound">blinkyBlocksBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="obj_loader_8h" kindref="compound">objLoader.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/asio.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="blinky_blocks_scenario_8h" kindref="compound">blinkyBlocksScenario.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="grid3_d_8h" kindref="compound">grid3D.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_blinky_blocks" kindref="compound">BlinkyBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="class_blinky_blocks_1_1_blinky_blocks_world" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_blinky_blocks_1_1_blinky_blocks_world" kindref="compound">BlinkyBlocksWorld</ref><sp/>:<sp/><ref refid="class_base_simulator_1_1_world" kindref="compound">BaseSimulator::World</ref><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="27" refid="class_blinky_blocks_1_1_blinky_blocks_world_1aa5a92548e042bf5c4a12471dc40e251f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_grid3_d" kindref="compound">Grid3D&lt;BuildingBlock*&gt;</ref><sp/>*<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1aa5a92548e042bf5c4a12471dc40e251f" kindref="member">grid</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="29" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a6376595ad371468058e11c271b9bab17" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a6376595ad371468058e11c271b9bab17" kindref="member">gridSize</ref>[3];</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="31" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a26dd523c8a2be9425346a1207ec07d23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref><sp/>**<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a26dd523c8a2be9425346a1207ec07d23" kindref="member">gridPtrBlocks</ref>;</highlight></codeline>
+<codeline lineno="32" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a4a94ebf16961e6a15e88c46e8f09f4ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLfloat<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a4a94ebf16961e6a15e88c46e8f09f4ae" kindref="member">blockSize</ref>[3];</highlight></codeline>
+<codeline lineno="33" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a36af20770ce41857886f3a7e6af275fd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>*<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a36af20770ce41857886f3a7e6af275fd" kindref="member">camera</ref>;</highlight></codeline>
+<codeline lineno="34" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a20392b3fa030e0ad9af5826ae5257e75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref><sp/>*<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a0ab4552f732147a71536c8a088cc8e8e" kindref="member">objBlock</ref>,*<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9dcbd29f055678f7a498251df3e3ea32" kindref="member">objBlockForPicking</ref>,*<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a20392b3fa030e0ad9af5826ae5257e75" kindref="member">objRepere</ref>;</highlight></codeline>
+<codeline lineno="35" refid="class_blinky_blocks_1_1_blinky_blocks_world_1af75586718dfb7b2055f7af3bb282187b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1af75586718dfb7b2055f7af3bb282187b" kindref="member">idTextureWall</ref>;</highlight></codeline>
+<codeline lineno="36" refid="class_blinky_blocks_1_1_blinky_blocks_world_1aae71cc12220ea0ff21654a8a8146bcdd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLushort<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1aae71cc12220ea0ff21654a8a8146bcdd" kindref="member">numSelectedFace</ref>;</highlight></codeline>
+<codeline lineno="37" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a1d234364f3ae92d36df75467a959683e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a1d234364f3ae92d36df75467a959683e" kindref="member">numSelectedBlock</ref>;</highlight></codeline>
+<codeline lineno="38" refid="class_blinky_blocks_1_1_blinky_blocks_world_1aed00b861453935251bdc763c63ac99b7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLint<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1aed00b861453935251bdc763c63ac99b7" kindref="member">menuId</ref>;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="40" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a46714e9d0263d00c385f7e1d741bb7c6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>vector&lt;ScenarioEvent*&gt;<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a46714e9d0263d00c385f7e1d741bb7c6" kindref="member">tabEvents</ref>;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a621e8294a4e1a4e9f031630e0b7c55ab" kindref="member">BlinkyBlocksWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a1d06db4aefefe0e514882806fb8d4268" kindref="member">~BlinkyBlocksWorld</ref>();</highlight></codeline>
+<codeline lineno="44" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a892564a37e0b2233b8ac5cd77efea83f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>*<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a892564a37e0b2233b8ac5cd77efea83f" kindref="member">getGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]];<sp/>};</highlight></codeline>
+<codeline lineno="45" refid="class_blinky_blocks_1_1_blinky_blocks_world_1add7a87b55352988641a28d80bcd6251c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1add7a87b55352988641a28d80bcd6251c" kindref="member">setGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz,<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref><sp/>*ptr)<sp/>{<sp/>gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr;<sp/>};</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a70517842c832bb8eb193ea6e832b11b4" kindref="member">createWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a75ddcc726e47a3bebae60c0e71257446" kindref="member">deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="49" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a0eb20cd9fdcb3a4484ed37c58c70bd19" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world" kindref="compound">BlinkyBlocksWorld</ref>*<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a0eb20cd9fdcb3a4484ed37c58c70bd19" kindref="member">getWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(<ref refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" kindref="member">world</ref><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_blinky_blocks_1_1_blinky_blocks_world" kindref="compound">BlinkyBlocksWorld</ref>*)<ref refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" kindref="member">world</ref>);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a2a821c0ef70fc26c94dcb5cb35625e8c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a2a821c0ef70fc26c94dcb5cb35625e8c" kindref="member">printInfo</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;I&apos;m<sp/>a<sp/>BlinkyBlocksWorld&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a4989799ee6948cde17d49c9d9a61b04d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>*<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a4989799ee6948cde17d49c9d9a61b04d" kindref="member">getBlockById</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>*)World::getBlockById(bId));</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a926aa3271e6123c82e495591160777ac" kindref="member">addBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>blockId,<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref><sp/>*(*blinkyBlockCodeBuildingFunction)(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>*),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;col);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9e488f5f0bce0b15c03658b288a54db2" kindref="member">deleteBlock</ref>(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref><sp/>*bb);</highlight></codeline>
+<codeline lineno="64" refid="class_blinky_blocks_1_1_blinky_blocks_world_1aa56f345d6bd94da0d69cb8c46e4c3743" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1aa56f345d6bd94da0d69cb8c46e4c3743" kindref="member">setBlocksSize</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*siz)<sp/>{<sp/>blockSize[0]<sp/>=<sp/>siz[0];<sp/>blockSize[1]<sp/>=<sp/>siz[1];<sp/>blockSize[2]<sp/>=<sp/>siz[2];<sp/>};</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a05645dcac50ba018ef86373dafb9898b" kindref="member">linkBlocks</ref>();</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a435ee1614eddb849b581cf209cef5d8d" kindref="member">loadTextures</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;str);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1ae69a6e579fa7f2ccb4cbe2c198406a0b" kindref="member">glDraw</ref>();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1aed2eea03b499dea643b60412bf1c2743" kindref="member">glDrawId</ref>();</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a00c542388ed3f70f1f9df0eff007803f" kindref="member">glDrawIdByMaterial</ref>();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1ad3d443badc81faa0ccadaa7f940b5ccd" kindref="member">updateGlData</ref>(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>*blc);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a570ce281ed4d54a6bc204c84bd82bd78" kindref="member">createPopupMenu</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1ae1731a9cc52e7ca6e5f79f586f09dd30" kindref="member">createHelpWindow</ref>();</highlight></codeline>
+<codeline lineno="74" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9031b8230147b5c085750c0007e035b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>*<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9031b8230147b5c085750c0007e035b3" kindref="member">getCamera</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a36af20770ce41857886f3a7e6af275fd" kindref="member">camera</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1abd78d1268525a67dded1b79126f983ac" kindref="member">setSelectedFace</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1af3ad77eb962c601443f51a63646cfc78" kindref="member">menuChoice</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Sends<sp/>the<sp/>appropriate<sp/>message<sp/>(tap,<sp/>...)<sp/>to<sp/>the<sp/>VM<sp/>associated<sp/>to<sp/>bId<sp/>block<sp/>(through<sp/>the<sp/>scheduler)*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a2ae9f7e1a58fc175a2775a8ad7ed6cdd" kindref="member">tapBlock</ref>(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1adfd8fa59f00ca242528f3ef12165390f" kindref="member">accelBlock</ref>(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a6b640dfed0afd1712b44baa74d507e64" kindref="member">shakeBlock</ref>(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>f);<sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1ace14ff1fd6bb0898277faf3fd16971c7" kindref="member">stopBlock</ref>(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="84" refid="class_blinky_blocks_1_1_blinky_blocks_world_1a28b4d00db206f770fd9149c63bd59bfa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a28b4d00db206f770fd9149c63bd59bfa" kindref="member">addScenarioEvent</ref>(<ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref><sp/>*ev)<sp/>{<sp/>tabEvents.push_back(ev);<sp/>};</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Prints<sp/>information<sp/>about<sp/>the<sp/>blocks</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a6f31eb06159e0044da3058e4593bd436" kindref="member">dump</ref>();</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="namespace_blinky_blocks_1a5c80bccf81f07c600475f5eca9525de4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a70517842c832bb8eb193ea6e832b11b4" kindref="member">createWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[])<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a70517842c832bb8eb193ea6e832b11b4" kindref="member">BlinkyBlocksWorld::createWorld</ref>(slx,sly,slz,<sp/>argc,argv);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="namespace_blinky_blocks_1ab95b12df219acc38464745902c000696" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a75ddcc726e47a3bebae60c0e71257446" kindref="member">deleteWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a75ddcc726e47a3bebae60c0e71257446" kindref="member">BlinkyBlocksWorld::deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="namespace_blinky_blocks_1aba3b7e8c9eec534ab90c0c7f9e98eef7" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world" kindref="compound">BlinkyBlocksWorld</ref>*<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a0eb20cd9fdcb3a4484ed37c58c70bd19" kindref="member">getWorld</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(<ref refid="class_blinky_blocks_1_1_blinky_blocks_world_1a0eb20cd9fdcb3a4484ed37c58c70bd19" kindref="member">BlinkyBlocksWorld::getWorld</ref>());<sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>BlinkyBlocks<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BLINKYBLOCKSWORLD_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h"/>
+  </compounddef>
+</doxygen>

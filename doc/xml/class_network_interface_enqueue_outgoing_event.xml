@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_network_interface_enqueue_outgoing_event" kind="class" language="C++" prot="public">
+    <compoundname>NetworkInterfaceEnqueueOutgoingEvent</compoundname>
+    <basecompoundref refid="class_event" prot="public" virt="non-virtual">Event</basecompoundref>
+    <includes refid="events_8h" local="no">events.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" prot="public" static="no" mutable="no">
+        <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+        <definition>MessagePtr NetworkInterfaceEnqueueOutgoingEvent::message</definition>
+        <argsstring></argsstring>
+        <name>message</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="196" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="196" bodyend="-1"/>
+        <referencedby refid="class_network_interface_enqueue_outgoing_event_1a6791eb3c771a0e63580451e7248c4c91" compoundref="events_8cpp" startline="247" endline="252">NetworkInterfaceEnqueueOutgoingEvent</referencedby>
+        <referencedby refid="class_network_interface_enqueue_outgoing_event_1a5a43f7fa0c257b6e5cf500c53db17987" compoundref="events_8cpp" startline="261" endline="264">~NetworkInterfaceEnqueueOutgoingEvent</referencedby>
+        <referencedby refid="class_network_interface_enqueue_outgoing_event_1a7bcc6d5d1368ffa244b8610b8ca9b694" compoundref="events_8cpp" startline="266" endline="269">consume</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_network_interface_enqueue_outgoing_event_1abec9bcdede59cd649fa2370906b8ab23" prot="public" static="no" mutable="no">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface* NetworkInterfaceEnqueueOutgoingEvent::sourceInterface</definition>
+        <argsstring></argsstring>
+        <name>sourceInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="197" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="197" bodyend="-1"/>
+        <referencedby refid="class_network_interface_enqueue_outgoing_event_1a6791eb3c771a0e63580451e7248c4c91" compoundref="events_8cpp" startline="247" endline="252">NetworkInterfaceEnqueueOutgoingEvent</referencedby>
+        <referencedby refid="class_network_interface_enqueue_outgoing_event_1a7bcc6d5d1368ffa244b8610b8ca9b694" compoundref="events_8cpp" startline="266" endline="269">consume</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_network_interface_enqueue_outgoing_event_1a6791eb3c771a0e63580451e7248c4c91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>NetworkInterfaceEnqueueOutgoingEvent::NetworkInterfaceEnqueueOutgoingEvent</definition>
+        <argsstring>(uint64_t, Message *mes, P2PNetworkInterface *ni)</argsstring>
+        <name>NetworkInterfaceEnqueueOutgoingEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <declname>mes</declname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <declname>ni</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="199" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="247" bodyend="252"/>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1ab294016f82a7a8c43b1ee10c9bb40f00" compoundref="unique_events_id_8h" startline="16">EVENT_NI_ENQUEUE_OUTGOING_MESSAGE</references>
+        <references refid="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" compoundref="events_8h" startline="196">message</references>
+        <references refid="class_network_interface_enqueue_outgoing_event_1abec9bcdede59cd649fa2370906b8ab23" compoundref="events_8h" startline="197">sourceInterface</references>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_network_interface_enqueue_outgoing_event_1a98d2b7176e1e9e85d535feccae1653d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>NetworkInterfaceEnqueueOutgoingEvent::NetworkInterfaceEnqueueOutgoingEvent</definition>
+        <argsstring>(uint64_t, MessagePtr mes, P2PNetworkInterface *ni)</argsstring>
+        <name>NetworkInterfaceEnqueueOutgoingEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+          <declname>mes</declname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <declname>ni</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="200" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="254" bodyend="259"/>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1ab294016f82a7a8c43b1ee10c9bb40f00" compoundref="unique_events_id_8h" startline="16">EVENT_NI_ENQUEUE_OUTGOING_MESSAGE</references>
+        <references refid="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" compoundref="events_8h" startline="196">message</references>
+        <references refid="class_network_interface_enqueue_outgoing_event_1abec9bcdede59cd649fa2370906b8ab23" compoundref="events_8h" startline="197">sourceInterface</references>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_network_interface_enqueue_outgoing_event_1a5a43f7fa0c257b6e5cf500c53db17987" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>NetworkInterfaceEnqueueOutgoingEvent::~NetworkInterfaceEnqueueOutgoingEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~NetworkInterfaceEnqueueOutgoingEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="201" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="261" bodyend="264"/>
+        <references refid="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" compoundref="events_8h" startline="196">message</references>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_network_interface_enqueue_outgoing_event_1a7bcc6d5d1368ffa244b8610b8ca9b694" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void NetworkInterfaceEnqueueOutgoingEvent::consume</definition>
+        <argsstring>()</argsstring>
+        <name>consume</name>
+        <reimplements refid="class_event_1a3f4a0fa007ee754b139b0b6f688e86f3">consume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="202" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="266" bodyend="269"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_network_interface_enqueue_outgoing_event_1abec9bcdede59cd649fa2370906b8ab23" compoundref="events_8h" startline="197">sourceInterface</references>
+        <references refid="class_p2_p_network_interface_1aba195d9787f7ab292a164d7ad1af04fb" compoundref="network_8cpp" startline="92" endline="108">P2PNetworkInterface::addToOutgoingBuffer</references>
+        <references refid="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" compoundref="events_8h" startline="196">message</references>
+      </memberdef>
+      <memberdef kind="function" id="class_network_interface_enqueue_outgoing_event_1a5d6dfdadeb90d4df87a7fc683ff54db6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string NetworkInterfaceEnqueueOutgoingEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_event_1a0f07f046436bccc20c1cf507167e221a">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="203" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="271" bodyend="273"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2133">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2132">
+        <label>NetworkInterfaceEnqueueOutgoingEvent</label>
+        <link refid="class_network_interface_enqueue_outgoing_event"/>
+        <childnode refid="2133" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2135">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2134">
+        <label>NetworkInterfaceEnqueueOutgoingEvent</label>
+        <link refid="class_network_interface_enqueue_outgoing_event"/>
+        <childnode refid="2135" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2136" relation="usage">
+          <edgelabel>sourceInterface</edgelabel>
+        </childnode>
+      </node>
+      <node id="2136">
+        <label>P2PNetworkInterface</label>
+        <link refid="class_p2_p_network_interface"/>
+        <childnode refid="2136" relation="usage">
+          <edgelabel>connectedInterface</edgelabel>
+        </childnode>
+        <childnode refid="2137" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2139">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2137" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2137">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2138" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2139" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2138">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2137" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="194" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="194" bodyend="204"/>
+    <listofallmembers>
+      <member refid="class_network_interface_enqueue_outgoing_event_1a7bcc6d5d1368ffa244b8610b8ca9b694" prot="public" virt="virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>consume</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>eventType</name></member>
+      <member refid="class_event_1a3290dbf5e83cd7dca078dc73fb3a2461" prot="public" virt="virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_network_interface_enqueue_outgoing_event_1a5d6dfdadeb90d4df87a7fc683ff54db6" prot="public" virt="virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>id</name></member>
+      <member refid="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>message</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_network_interface_enqueue_outgoing_event_1a6791eb3c771a0e63580451e7248c4c91" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>NetworkInterfaceEnqueueOutgoingEvent</name></member>
+      <member refid="class_network_interface_enqueue_outgoing_event_1a98d2b7176e1e9e85d535feccae1653d4" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>NetworkInterfaceEnqueueOutgoingEvent</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>randomNumber</name></member>
+      <member refid="class_network_interface_enqueue_outgoing_event_1abec9bcdede59cd649fa2370906b8ab23" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>sourceInterface</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>~Event</name></member>
+      <member refid="class_network_interface_enqueue_outgoing_event_1a5a43f7fa0c257b6e5cf500c53db17987" prot="public" virt="non-virtual"><scope>NetworkInterfaceEnqueueOutgoingEvent</scope><name>~NetworkInterfaceEnqueueOutgoingEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

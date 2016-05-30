@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_robot_blocks_1_1_motion_step_event" kind="class" language="C++" prot="public">
+    <compoundname>RobotBlocks::MotionStepEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="robot_blocks_events_8h" local="no">robotBlocksEvents.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_robot_blocks_1_1_motion_step_event_1af26b113fef6eb1be705ff29ec8ab75bb" prot="private" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur RobotBlocks::MotionStepEvent::finalPosition</definition>
+        <argsstring></argsstring>
+        <name>finalPosition</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="40" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_robot_blocks_1_1_motion_step_event_1a2dd01ddff90d636bf2563450b436c1ab" prot="private" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur RobotBlocks::MotionStepEvent::motionStep</definition>
+        <argsstring></argsstring>
+        <name>motionStep</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="40" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_robot_blocks_1_1_motion_step_event_1a844e3bee28cca0e0afa100dc9284f119" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::MotionStepEvent::MotionStepEvent</definition>
+        <argsstring>(uint64_t, RobotBlocksBlock *block, const Vecteur &amp;fpos)</argsstring>
+        <name>MotionStepEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref> *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>fpos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp" bodystart="57" bodyend="63"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a9cc2f4c7f3ef9b84729b0ebe8903df05" compoundref="unique_events_id_8h" startline="56">EVENT_MOTION_STEP</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_vecteur_1afdd21c25b0d60b68e097f0f40c0e4849" compoundref="vecteur_8cpp" startline="102" endline="108">Vecteur::setLength</references>
+        <referencedby refid="class_robot_blocks_1_1_motion_step_event_1a19d30f66f161b076584a96bee4f8c986" compoundref="robot_blocks_events_8cpp" startline="81" endline="94">consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_motion_step_event_1af6f72dc6a7a5d6fec06ffabcd28bdf0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::MotionStepEvent::MotionStepEvent</definition>
+        <argsstring>(uint64_t, RobotBlocksBlock *block, const Vecteur &amp;fpos, const Vecteur &amp;step)</argsstring>
+        <name>MotionStepEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref> *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>fpos</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>step</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="43" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp" bodystart="65" bodyend="71"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a9cc2f4c7f3ef9b84729b0ebe8903df05" compoundref="unique_events_id_8h" startline="56">EVENT_MOTION_STEP</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_motion_step_event_1a05d273448969e7f254215bda8b819ef2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::MotionStepEvent::MotionStepEvent</definition>
+        <argsstring>(MotionStepEvent *ev)</argsstring>
+        <name>MotionStepEvent</name>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp" bodystart="73" bodyend="75"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_motion_step_event_1af3092fdb9a5874d16ae6964a95b50445" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::MotionStepEvent::~MotionStepEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~MotionStepEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="45" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp" bodystart="77" bodyend="79"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_motion_step_event_1a8843a0848756a67ed3fc22d830f5f912" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::MotionStepEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" bodystart="46" bodyend="46"/>
+        <references refid="class_robot_blocks_1_1_motion_start_event_1a1414e3f54a11874041b443ddfd23b1f7" compoundref="robot_blocks_events_8cpp" startline="38" endline="45">RobotBlocks::MotionStartEvent::consume</references>
+        <references refid="class_robot_blocks_1_1_motion_start_event_1a5bc23412d7120913c165e9bda2b19ab4" compoundref="robot_blocks_events_8cpp" startline="47" endline="49">RobotBlocks::MotionStartEvent::getEventName</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_motion_step_event_1a19d30f66f161b076584a96bee4f8c986" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::MotionStepEvent::consume</definition>
+        <argsstring>()</argsstring>
+        <name>consume</name>
+        <reimplements refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d">consume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp" bodystart="81" bodyend="94"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_robot_blocks_1_1_robot_blocks_block_1adac01e3e2ac72467d77fe2c257dfd0e4" compoundref="robot_blocks_block_8h" startline="37">RobotBlocks::RobotBlocksBlock::position</references>
+        <references refid="class_robot_blocks_1_1_robot_blocks_world_1a629154a7fd5584a2a25ba336163c1e86" compoundref="robot_blocks_world_8h" startline="44" endline="47">RobotBlocks::RobotBlocksWorld::getWorld</references>
+        <references refid="class_robot_blocks_1_1_robot_blocks_world_1ab130fbccabcc78107a61bbec5032896e" compoundref="robot_blocks_world_8cpp" startline="371" endline="380">RobotBlocks::RobotBlocksWorld::updateGlData</references>
+        <references refid="namespace_robot_blocks_1a6ec5d7cdcd5d30cd2ddfd04588dfa527" compoundref="robot_blocks_scheduler_8h" startline="65" endline="65">RobotBlocks::getScheduler</references>
+        <references refid="robot_blocks_events_8cpp_1afe01386a82fedc016455a43c20280a97" compoundref="robot_blocks_events_8cpp" startline="15">EPS</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="robot_blocks_events_8cpp_1ae299fa5bdefb0b9480c9bfae6b1bb0e2" compoundref="robot_blocks_events_8cpp" startline="12">ANIMATION_DELAY</references>
+        <references refid="class_robot_blocks_1_1_motion_step_event_1a844e3bee28cca0e0afa100dc9284f119" compoundref="robot_blocks_events_8cpp" startline="57" endline="63">MotionStepEvent</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_motion_step_event_1a1fb1982d588b07c6cccc77a4366e7471" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string RobotBlocks::MotionStepEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp" bodystart="96" bodyend="98"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2038">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2036">
+        <label>RobotBlocks::MotionStepEvent</label>
+        <link refid="class_robot_blocks_1_1_motion_step_event"/>
+        <childnode refid="2037" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2037">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2038" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2041">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2039">
+        <label>RobotBlocks::MotionStepEvent</label>
+        <link refid="class_robot_blocks_1_1_motion_step_event"/>
+        <childnode refid="2040" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2040">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2041" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2042" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2044">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2042" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2042">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2043" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2044" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2043">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2042" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h" bodystart="39" bodyend="49"/>
+    <listofallmembers>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1a19d30f66f161b076584a96bee4f8c986" prot="public" virt="virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>consume</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1a8843a0848756a67ed3fc22d830f5f912" prot="public" virt="virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>eventType</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1af26b113fef6eb1be705ff29ec8ab75bb" prot="private" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>finalPosition</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1a1fb1982d588b07c6cccc77a4366e7471" prot="public" virt="virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>id</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1a2dd01ddff90d636bf2563450b436c1ab" prot="private" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>motionStep</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1a844e3bee28cca0e0afa100dc9284f119" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>MotionStepEvent</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1af6f72dc6a7a5d6fec06ffabcd28bdf0c" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>MotionStepEvent</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1a05d273448969e7f254215bda8b819ef2" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>MotionStepEvent</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>randomNumber</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>~Event</name></member>
+      <member refid="class_robot_blocks_1_1_motion_step_event_1af3092fdb9a5874d16ae6964a95b50445" prot="public" virt="non-virtual"><scope>RobotBlocks::MotionStepEvent</scope><name>~MotionStepEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,475 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms3_d_1_1_rotations" kind="class" language="C++" prot="public">
+    <compoundname>Catoms3D::Rotations</compoundname>
+    <includes refid="catoms3_d_events_8h" local="no">catoms3DEvents.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a33f49a12dfa01805f8f022eff3207493" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Catoms3D::Rotations::firstRotation</definition>
+        <argsstring></argsstring>
+        <name>firstRotation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="52" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="52" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" compoundref="catoms3_d_events_8h" startline="32" endline="37">init</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1ae41b9405b4b5794885067be384251006" prot="protected" static="no" mutable="no">
+        <type>short</type>
+        <definition>short Catoms3D::Rotations::step</definition>
+        <argsstring></argsstring>
+        <name>step</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="53" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" compoundref="catoms3_d_events_8h" startline="32" endline="37">init</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1ac91da1a9939f52a9451623ed45dbf2da" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_matrice" kindref="compound">Matrice</ref></type>
+        <definition>Matrice Catoms3D::Rotations::initialMatrix</definition>
+        <argsstring></argsstring>
+        <name>initialMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="54" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" compoundref="catoms3_d_events_8h" startline="32" endline="37">init</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a686872246e2da8556736681625169a09" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_matrice" kindref="compound">Matrice</ref></type>
+        <definition>Matrice Catoms3D::Rotations::firstStepMatrix</definition>
+        <argsstring></argsstring>
+        <name>firstStepMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="54" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" compoundref="catoms3_d_events_8h" startline="32" endline="37">init</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1aee33a253e47ff830df71953f64d5b0c3" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Catoms3D::Rotations::AB</definition>
+        <argsstring></argsstring>
+        <name>AB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a5ff7a42bddb65f43f7a724ade7f40ce1" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Catoms3D::Rotations::AD</definition>
+        <argsstring></argsstring>
+        <name>AD</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Rotations</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1ae0897fdc4b0c81bb5f9c1b368da360e3" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Catoms3D::Rotations::CB</definition>
+        <argsstring></argsstring>
+        <name>CB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a7f56ca00534befb0571cb6256d8f4b42" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Catoms3D::Rotations::axe1</definition>
+        <argsstring></argsstring>
+        <name>axe1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a9ffea2c30dddf69dc2477a6f150b6ed1" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Catoms3D::Rotations::axe2</definition>
+        <argsstring></argsstring>
+        <name>axe2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="57" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a77463e1bf7b540e708790264ec5624e0" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Catoms3D::Rotations::angle1</definition>
+        <argsstring></argsstring>
+        <name>angle1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="58" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a1856ed5c771b94b3a9b720c6abd49223" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Catoms3D::Rotations::angle2</definition>
+        <argsstring></argsstring>
+        <name>angle2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="59" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a0f64ef4e69080e3573eb33e643b269b8" prot="protected" static="yes" mutable="no">
+        <type>constexpr double</type>
+        <definition>constexpr double Catoms3D::Rotations::angleArticulation</definition>
+        <argsstring></argsstring>
+        <name>angleArticulation</name>
+        <initializer>=6.46237535743</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_rotations_1a9c51868d0b7d0c02a516037344e8dc58" prot="protected" static="yes" mutable="no">
+        <type>constexpr double</type>
+        <definition>constexpr double Catoms3D::Rotations::coefRayonCourbure</definition>
+        <argsstring></argsstring>
+        <name>coefRayonCourbure</name>
+        <initializer>=1.00639465274</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::Rotations::Rotations</definition>
+        <argsstring>(Catoms3DBlock *mobile, Catoms3DBlock *fixe, const Vecteur &amp;ax1, double ang1, const Vecteur &amp;ax2, double ang2)</argsstring>
+        <name>Rotations</name>
+        <param>
+          <type><ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref> *</type>
+          <declname>mobile</declname>
+        </param>
+        <param>
+          <type><ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref> *</type>
+          <declname>fixe</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>ax1</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>ang1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>ax2</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>ang2</declname>
+        </param>
+        <briefdescription>
+<para>Create a couple of rotations. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: fixed pivot catom </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ax1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: rotation axe for the first rotation </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ang1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: rotation angle for the first rotation </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ax2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: rotation axe for the second rotation </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ang2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: rotation angle for the second rotation </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="175" bodyend="217"/>
+        <references refid="class_catoms3_d_1_1_catoms3_d_block_1afe1125c00a45edfa8e05363ea96a3687" compoundref="catoms3_d_block_8h" startline="56" endline="56">Catoms3D::Catoms3DBlock::getGlBlock</references>
+        <references refid="class_catoms3_d_1_1_catoms3_d_gl_block_1a57200a6e463be1f2745977175dd3d714" compoundref="catoms3_d_gl_block_8h" startline="21">Catoms3D::Catoms3DGlBlock::mat</references>
+        <references refid="class_matrice_1a2a3e43dbf203b548d2da12164c567538" compoundref="matrice44_8cpp" startline="106" endline="127">Matrice::inverse</references>
+        <references refid="class_catoms3_d_1_1_rotations_1aee33a253e47ff830df71953f64d5b0c3" compoundref="catoms3_d_events_8h" startline="55">AB</references>
+        <references refid="class_matrice_1a3ce3c791b77d8f16dbe476abdbe832f7" compoundref="matrice44_8h" startline="34" endline="34">Matrice::setTranslation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a7f56ca00534befb0571cb6256d8f4b42" compoundref="catoms3_d_events_8h" startline="56">axe1</references>
+        <references refid="class_vecteur_1af5d29fed3edb7276c9da4950a7b3110b" compoundref="vecteur_8cpp" startline="78" endline="84">Vecteur::normer</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a5ff7a42bddb65f43f7a724ade7f40ce1" compoundref="catoms3_d_events_8h" startline="55">AD</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a9ffea2c30dddf69dc2477a6f150b6ed1" compoundref="catoms3_d_events_8h" startline="57">axe2</references>
+        <references refid="class_matrice_1a7f6e530c59602a007fa727461f70d716" compoundref="matrice44_8cpp" startline="190" endline="209">Matrice::setRotation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a77463e1bf7b540e708790264ec5624e0" compoundref="catoms3_d_events_8h" startline="58">angle1</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a686872246e2da8556736681625169a09" compoundref="catoms3_d_events_8h" startline="54">firstStepMatrix</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ae0897fdc4b0c81bb5f9c1b368da360e3" compoundref="catoms3_d_events_8h" startline="55">CB</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_rotations_1a22edf50a016c10f371d4a13baaf7169a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::Rotations::Rotations</definition>
+        <argsstring>()</argsstring>
+        <name>Rotations</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Rotations::init</definition>
+        <argsstring>(const Matrice &amp;m)</argsstring>
+        <name>init</name>
+        <param>
+          <type>const <ref refid="class_matrice" kindref="compound">Matrice</ref> &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="32" bodyend="37"/>
+        <references refid="class_catoms3_d_1_1_rotations_1a33f49a12dfa01805f8f022eff3207493" compoundref="catoms3_d_events_8h" startline="52">firstRotation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ae41b9405b4b5794885067be384251006" compoundref="catoms3_d_events_8h" startline="53">step</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ac91da1a9939f52a9451623ed45dbf2da" compoundref="catoms3_d_events_8h" startline="54">initialMatrix</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a686872246e2da8556736681625169a09" compoundref="catoms3_d_events_8h" startline="54">firstStepMatrix</references>
+        <references refid="class_matrice_1a2d2c324a368494b995e3373e12e6a28c" compoundref="matrice44_8h" startline="28" endline="28">Matrice::identity</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">nextStep</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">getFinalPositionAndOrientation</references>
+        <referencedby refid="class_catoms3_d_1_1_motion_start_event_1ada7939add62235116670dbcc7a50bc18" compoundref="catoms3_d_events_8cpp" startline="37" endline="45">Catoms3D::MotionStartEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Catoms3D::Rotations::nextStep</definition>
+        <argsstring>(Matrice &amp;m)</argsstring>
+        <name>nextStep</name>
+        <param>
+          <type><ref refid="class_matrice" kindref="compound">Matrice</ref> &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Return current transformation matrix in m. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: result matrix Calculate transformation matrix for one more step of rotations </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: result matrix </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true at the end of the animation. </para></simplesect>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="219" bodyend="270"/>
+        <references refid="class_catoms3_d_1_1_rotations_1a33f49a12dfa01805f8f022eff3207493" compoundref="catoms3_d_events_8h" startline="52">firstRotation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ae41b9405b4b5794885067be384251006" compoundref="catoms3_d_events_8h" startline="53">step</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a77463e1bf7b540e708790264ec5624e0" compoundref="catoms3_d_events_8h" startline="58">angle1</references>
+        <references refid="namespace_catoms3_d_1ab9d2a49e5b3a6df8edef2fbb7eb5ea23" compoundref="catoms3_d_events_8h" startline="17">Catoms3D::nbRotationSteps</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_matrice_1a7f6e530c59602a007fa727461f70d716" compoundref="matrice44_8cpp" startline="190" endline="209">Matrice::setRotation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a7f56ca00534befb0571cb6256d8f4b42" compoundref="catoms3_d_events_8h" startline="56">axe1</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a9c51868d0b7d0c02a516037344e8dc58" compoundref="catoms3_d_events_8h" startline="61">coefRayonCourbure</references>
+        <references refid="class_matrice_1a3ce3c791b77d8f16dbe476abdbe832f7" compoundref="matrice44_8h" startline="34" endline="34">Matrice::setTranslation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1aee33a253e47ff830df71953f64d5b0c3" compoundref="catoms3_d_events_8h" startline="55">AB</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ac91da1a9939f52a9451623ed45dbf2da" compoundref="catoms3_d_events_8h" startline="54">initialMatrix</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a686872246e2da8556736681625169a09" compoundref="catoms3_d_events_8h" startline="54">firstStepMatrix</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a1856ed5c771b94b3a9b720c6abd49223" compoundref="catoms3_d_events_8h" startline="59">angle2</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a9ffea2c30dddf69dc2477a6f150b6ed1" compoundref="catoms3_d_events_8h" startline="57">axe2</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ae0897fdc4b0c81bb5f9c1b368da360e3" compoundref="catoms3_d_events_8h" startline="55">CB</references>
+        <referencedby refid="class_catoms3_d_1_1_motion_step_event_1ab44f28ee40cb242ca20bd6f564ad3c87" compoundref="catoms3_d_events_8cpp" startline="72" endline="86">Catoms3D::MotionStepEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" compoundref="catoms3_d_events_8h" startline="32" endline="37">init</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Rotations::getFinalPositionAndOrientation</definition>
+        <argsstring>(Cell3DPosition &amp;position, short &amp;orientation)</argsstring>
+        <name>getFinalPositionAndOrientation</name>
+        <param>
+          <type><ref refid="class_cell3_d_position" kindref="compound">Cell3DPosition</ref> &amp;</type>
+          <declname>position</declname>
+        </param>
+        <param>
+          <type>short &amp;</type>
+          <declname>orientation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="272" bodyend="298"/>
+        <references refid="class_matrice_1a7f6e530c59602a007fa727461f70d716" compoundref="matrice44_8cpp" startline="190" endline="209">Matrice::setRotation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a77463e1bf7b540e708790264ec5624e0" compoundref="catoms3_d_events_8h" startline="58">angle1</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a7f56ca00534befb0571cb6256d8f4b42" compoundref="catoms3_d_events_8h" startline="56">axe1</references>
+        <references refid="class_matrice_1a3ce3c791b77d8f16dbe476abdbe832f7" compoundref="matrice44_8h" startline="34" endline="34">Matrice::setTranslation</references>
+        <references refid="class_catoms3_d_1_1_rotations_1aee33a253e47ff830df71953f64d5b0c3" compoundref="catoms3_d_events_8h" startline="55">AB</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a686872246e2da8556736681625169a09" compoundref="catoms3_d_events_8h" startline="54">firstStepMatrix</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ac91da1a9939f52a9451623ed45dbf2da" compoundref="catoms3_d_events_8h" startline="54">initialMatrix</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a1856ed5c771b94b3a9b720c6abd49223" compoundref="catoms3_d_events_8h" startline="59">angle2</references>
+        <references refid="class_catoms3_d_1_1_rotations_1a9ffea2c30dddf69dc2477a6f150b6ed1" compoundref="catoms3_d_events_8h" startline="57">axe2</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ae0897fdc4b0c81bb5f9c1b368da360e3" compoundref="catoms3_d_events_8h" startline="55">CB</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="namespace_catoms3_d_1a45479e8ba07750a65246bbb15f5a513f" compoundref="catoms3_d_world_8h" startline="126" endline="126">Catoms3D::getWorld</references>
+        <references refid="class_catoms3_d_1_1_catoms3_d_world_1abc16705354324237fa7723ded03aa3c6" compoundref="catoms3_d_world_8cpp" startline="422" endline="439">Catoms3D::Catoms3DWorld::worldToGridPosition</references>
+        <references refid="class_catoms3_d_1_1_catoms3_d_block_1a5b51b62026ce3478ed5667a72c034847" compoundref="catoms3_d_block_8cpp" startline="60" endline="80">Catoms3D::Catoms3DBlock::getOrientationFromMatrix</references>
+        <referencedby refid="class_catoms3_d_1_1_motion_stop_event_1a01f55d7e6e08e9baf5c5fcf1a7750cb7" compoundref="catoms3_d_events_8cpp" startline="112" endline="134">Catoms3D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" compoundref="catoms3_d_events_8h" startline="32" endline="37">init</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2312">
+        <label>Matrice</label>
+        <link refid="class_matrice"/>
+      </node>
+      <node id="2311">
+        <label>Vecteur</label>
+        <link refid="class_vecteur"/>
+      </node>
+      <node id="2310">
+        <label>Catoms3D::Rotations</label>
+        <link refid="class_catoms3_d_1_1_rotations"/>
+        <childnode refid="2311" relation="usage">
+          <edgelabel>AB</edgelabel>
+          <edgelabel>AD</edgelabel>
+          <edgelabel>axe1</edgelabel>
+          <edgelabel>axe2</edgelabel>
+          <edgelabel>CB</edgelabel>
+        </childnode>
+        <childnode refid="2312" relation="usage">
+          <edgelabel>initialMatrix</edgelabel>
+          <edgelabel>firstStepMatrix</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="19" bodyend="62"/>
+    <listofallmembers>
+      <member refid="class_catoms3_d_1_1_rotations_1aee33a253e47ff830df71953f64d5b0c3" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>AB</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a5ff7a42bddb65f43f7a724ade7f40ce1" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>AD</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a77463e1bf7b540e708790264ec5624e0" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>angle1</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a1856ed5c771b94b3a9b720c6abd49223" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>angle2</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a0f64ef4e69080e3573eb33e643b269b8" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>angleArticulation</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a7f56ca00534befb0571cb6256d8f4b42" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>axe1</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a9ffea2c30dddf69dc2477a6f150b6ed1" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>axe2</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1ae0897fdc4b0c81bb5f9c1b368da360e3" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>CB</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a9c51868d0b7d0c02a516037344e8dc58" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>coefRayonCourbure</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a33f49a12dfa01805f8f022eff3207493" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>firstRotation</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a686872246e2da8556736681625169a09" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>firstStepMatrix</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" prot="public" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>getFinalPositionAndOrientation</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" prot="public" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>init</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1ac91da1a9939f52a9451623ed45dbf2da" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>initialMatrix</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" prot="public" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>nextStep</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" prot="public" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>Rotations</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1a22edf50a016c10f371d4a13baaf7169a" prot="public" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>Rotations</name></member>
+      <member refid="class_catoms3_d_1_1_rotations_1ae41b9405b4b5794885067be384251006" prot="protected" virt="non-virtual"><scope>Catoms3D::Rotations</scope><name>step</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

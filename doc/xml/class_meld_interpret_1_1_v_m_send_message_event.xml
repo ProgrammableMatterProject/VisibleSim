@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_meld_interpret_1_1_v_m_send_message_event" kind="class" language="C++" prot="public">
+    <compoundname>MeldInterpret::VMSendMessageEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="meld_interpret_events_8h" local="no">meldInterpretEvents.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_meld_interpret_1_1_v_m_send_message_event_1a23015c41f45edadcee44c448e8cbd91e" prot="public" static="no" mutable="no">
+        <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+        <definition>MessagePtr MeldInterpret::VMSendMessageEvent::message</definition>
+        <argsstring></argsstring>
+        <name>message</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" bodystart="57" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" compoundref="meld_interpret_events_8cpp" startline="77" endline="83">VMSendMessageEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1a3de691fccfcd060e86ecb0ebe192646d" compoundref="meld_interpret_events_8cpp" startline="92" endline="95">~VMSendMessageEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_meld_interpret_1_1_v_m_send_message_event_1ae0b8f9a4e3bda0928b0fd270682f34cc" prot="public" static="no" mutable="no">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface* MeldInterpret::VMSendMessageEvent::sourceInterface</definition>
+        <argsstring></argsstring>
+        <name>sourceInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" bodystart="58" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" compoundref="meld_interpret_events_8cpp" startline="77" endline="83">VMSendMessageEvent</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldInterpret::VMSendMessageEvent::VMSendMessageEvent</definition>
+        <argsstring>(uint64_t, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni)</argsstring>
+        <name>VMSendMessageEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+          <declname>conBlock</declname>
+        </param>
+        <param>
+          <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+          <declname>mes</declname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <declname>ni</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="77" bodyend="83"/>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a7584ea897f1c62cfc4eb09b15f134dd9" compoundref="unique_events_id_8h" startline="48">EVENT_SEND_MESSAGE</references>
+        <references refid="class_meld_interpret_1_1_v_m_send_message_event_1a23015c41f45edadcee44c448e8cbd91e" compoundref="meld_interpret_events_8h" startline="57">message</references>
+        <references refid="class_meld_interpret_1_1_v_m_send_message_event_1ae0b8f9a4e3bda0928b0fd270682f34cc" compoundref="meld_interpret_events_8h" startline="58">sourceInterface</references>
+        <references refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" compoundref="events_8h" startline="56">Event::randomNumber</references>
+        <references refid="class_base_simulator_1_1_building_block_1a24792d57532b46ad3af4b02c6a88360b" compoundref="building_block_8cpp" startline="149" endline="155">BaseSimulator::BuildingBlock::getNextRandomNumber</references>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1a99e819a69b45d2373c8d4969ecfff19d" compoundref="meld_interpret_events_8cpp" startline="97" endline="100">consumeBlockEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_send_message_event_1a432859bbb12a5046965084ee8f14aaa9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldInterpret::VMSendMessageEvent::VMSendMessageEvent</definition>
+        <argsstring>(VMSendMessageEvent *ev)</argsstring>
+        <name>VMSendMessageEvent</name>
+        <param>
+          <type><ref refid="class_meld_interpret_1_1_v_m_send_message_event" kindref="compound">VMSendMessageEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="85" bodyend="90"/>
+        <references refid="class_meld_interpret_1_1_v_m_send_message_event_1a23015c41f45edadcee44c448e8cbd91e" compoundref="meld_interpret_events_8h" startline="57">message</references>
+        <references refid="class_meld_interpret_1_1_v_m_send_message_event_1ae0b8f9a4e3bda0928b0fd270682f34cc" compoundref="meld_interpret_events_8h" startline="58">sourceInterface</references>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_send_message_event_1a3de691fccfcd060e86ecb0ebe192646d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldInterpret::VMSendMessageEvent::~VMSendMessageEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~VMSendMessageEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="62" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="92" bodyend="95"/>
+        <references refid="class_meld_interpret_1_1_v_m_send_message_event_1a23015c41f45edadcee44c448e8cbd91e" compoundref="meld_interpret_events_8h" startline="57">message</references>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_send_message_event_1a99e819a69b45d2373c8d4969ecfff19d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void MeldInterpret::VMSendMessageEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="97" bodyend="100"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" compoundref="building_block_8cpp" startline="120" endline="130">BaseSimulator::BuildingBlock::scheduleLocalEvent</references>
+        <references refid="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" compoundref="meld_interpret_events_8cpp" startline="77" endline="83">VMSendMessageEvent</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_send_message_event_1a0c7e50df691e24d05604018350bf4d40" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string MeldInterpret::VMSendMessageEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="102" bodyend="104"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2623">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2621">
+        <label>MeldInterpret::VMSendMessageEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_send_message_event"/>
+        <childnode refid="2622" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2622">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2623" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2626">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2624">
+        <label>MeldInterpret::VMSendMessageEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_send_message_event"/>
+        <childnode refid="2625" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2630" relation="usage">
+          <edgelabel>sourceInterface</edgelabel>
+        </childnode>
+      </node>
+      <node id="2625">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2626" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2627" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2630">
+        <label>P2PNetworkInterface</label>
+        <link refid="class_p2_p_network_interface"/>
+        <childnode refid="2630" relation="usage">
+          <edgelabel>connectedInterface</edgelabel>
+        </childnode>
+        <childnode refid="2627" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2629">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2627" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2627">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2628" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2629" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2628">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2627" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" bodystart="55" bodyend="65"/>
+    <listofallmembers>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" prot="public" virt="virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>consume</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_send_message_event_1a99e819a69b45d2373c8d4969ecfff19d" prot="public" virt="virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>eventType</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_send_message_event_1a0c7e50df691e24d05604018350bf4d40" prot="public" virt="virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>id</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_send_message_event_1a23015c41f45edadcee44c448e8cbd91e" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>message</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>randomNumber</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_send_message_event_1ae0b8f9a4e3bda0928b0fd270682f34cc" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>sourceInterface</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>VMSendMessageEvent</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_send_message_event_1a432859bbb12a5046965084ee8f14aaa9" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>VMSendMessageEvent</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>~Event</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_send_message_event_1a3de691fccfcd060e86ecb0ebe192646d" prot="public" virt="non-virtual"><scope>MeldInterpret::VMSendMessageEvent</scope><name>~VMSendMessageEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

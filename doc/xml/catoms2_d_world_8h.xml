@@ -1,0 +1,627 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="catoms2_d_world_8h" kind="file" language="C++">
+    <compoundname>catoms2DWorld.h</compoundname>
+    <includes refid="opengl_viewer_8h" local="yes">openglViewer.h</includes>
+    <includes refid="world_8h" local="yes">world.h</includes>
+    <includes refid="vecteur_8h" local="yes">vecteur.h</includes>
+    <includes refid="catoms2_d_block_8h" local="yes">catoms2DBlock.h</includes>
+    <includes refid="catoms2_d_capabilities_8h" local="yes">catoms2DCapabilities.h</includes>
+    <includes refid="obj_loader_8h" local="yes">objLoader.h</includes>
+    <includes local="no">boost/asio.hpp</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="catoms2_d_block_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.cpp</includedby>
+    <includedby refid="catoms2_d_simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.h</includedby>
+    <includedby refid="catoms2_d_events_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp</includedby>
+    <includedby refid="catoms2_d_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.cpp</includedby>
+    <includedby refid="catoms2_d_world_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.cpp</includedby>
+    <incdepgraph>
+      <node id="12584">
+        <label>list</label>
+      </node>
+      <node id="12555">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="12556" relation="include">
+        </childnode>
+        <childnode refid="12571" relation="include">
+        </childnode>
+        <childnode refid="12565" relation="include">
+        </childnode>
+        <childnode refid="12570" relation="include">
+        </childnode>
+        <childnode refid="12572" relation="include">
+        </childnode>
+        <childnode refid="12575" relation="include">
+        </childnode>
+      </node>
+      <node id="12565">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="12561" relation="include">
+        </childnode>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12560" relation="include">
+        </childnode>
+        <childnode refid="12566" relation="include">
+        </childnode>
+        <childnode refid="12567" relation="include">
+        </childnode>
+      </node>
+      <node id="12556">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="12557" relation="include">
+        </childnode>
+        <childnode refid="12558" relation="include">
+        </childnode>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12560" relation="include">
+        </childnode>
+        <childnode refid="12561" relation="include">
+        </childnode>
+        <childnode refid="12562" relation="include">
+        </childnode>
+        <childnode refid="12563" relation="include">
+        </childnode>
+        <childnode refid="12564" relation="include">
+        </childnode>
+        <childnode refid="12565" relation="include">
+        </childnode>
+        <childnode refid="12570" relation="include">
+        </childnode>
+      </node>
+      <node id="12567">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12560" relation="include">
+        </childnode>
+        <childnode refid="12568" relation="include">
+        </childnode>
+        <childnode refid="12569" relation="include">
+        </childnode>
+      </node>
+      <node id="12575">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="12576" relation="include">
+        </childnode>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12560" relation="include">
+        </childnode>
+        <childnode refid="12569" relation="include">
+        </childnode>
+        <childnode refid="12572" relation="include">
+        </childnode>
+        <childnode refid="12577" relation="include">
+        </childnode>
+        <childnode refid="12574" relation="include">
+        </childnode>
+      </node>
+      <node id="12582">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="12580">
+        <label>assert.h</label>
+      </node>
+      <node id="12554">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</label>
+        <link refid="catoms2DWorld.h"/>
+        <childnode refid="12555" relation="include">
+        </childnode>
+        <childnode refid="12577" relation="include">
+        </childnode>
+        <childnode refid="12567" relation="include">
+        </childnode>
+        <childnode refid="12590" relation="include">
+        </childnode>
+        <childnode refid="12595" relation="include">
+        </childnode>
+        <childnode refid="12593" relation="include">
+        </childnode>
+        <childnode refid="12605" relation="include">
+        </childnode>
+        <childnode refid="12589" relation="include">
+        </childnode>
+        <childnode refid="12576" relation="include">
+        </childnode>
+      </node>
+      <node id="12588">
+        <label>stdint.h</label>
+      </node>
+      <node id="12558">
+        <label>stdlib.h</label>
+      </node>
+      <node id="12581">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="12582" relation="include">
+        </childnode>
+        <childnode refid="12583" relation="include">
+        </childnode>
+        <childnode refid="12579" relation="include">
+        </childnode>
+        <childnode refid="12584" relation="include">
+        </childnode>
+        <childnode refid="12572" relation="include">
+        </childnode>
+        <childnode refid="12585" relation="include">
+        </childnode>
+        <childnode refid="12587" relation="include">
+        </childnode>
+      </node>
+      <node id="12604">
+        <label>catoms2DDirection.h</label>
+        <link refid="catoms2_d_direction_8h"/>
+        <childnode refid="12573" relation="include">
+        </childnode>
+      </node>
+      <node id="12568">
+        <label>cmath</label>
+      </node>
+      <node id="12606">
+        <label>stdexcept</label>
+      </node>
+      <node id="12592">
+        <label>catoms2DGlBlock.h</label>
+        <link refid="catoms2_d_gl_block_8h"/>
+        <childnode refid="12573" relation="include">
+        </childnode>
+        <childnode refid="12593" relation="include">
+        </childnode>
+        <childnode refid="12572" relation="include">
+        </childnode>
+        <childnode refid="12595" relation="include">
+        </childnode>
+      </node>
+      <node id="12573">
+        <label>string</label>
+      </node>
+      <node id="12561">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="12578">
+        <label>map</label>
+      </node>
+      <node id="12598">
+        <label>catoms2DEvents.h</label>
+        <link refid="catoms2_d_events_8h"/>
+        <childnode refid="12599" relation="include">
+        </childnode>
+        <childnode refid="12603" relation="include">
+        </childnode>
+      </node>
+      <node id="12572">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="12573" relation="include">
+        </childnode>
+        <childnode refid="12556" relation="include">
+        </childnode>
+        <childnode refid="12567" relation="include">
+        </childnode>
+        <childnode refid="12574" relation="include">
+        </childnode>
+      </node>
+      <node id="12569">
+        <label>memory.h</label>
+      </node>
+      <node id="12560">
+        <label>fstream</label>
+      </node>
+      <node id="12585">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="12581" relation="include">
+        </childnode>
+        <childnode refid="12586" relation="include">
+        </childnode>
+      </node>
+      <node id="12564">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="12600">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="12570">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="12566" relation="include">
+        </childnode>
+        <childnode refid="12567" relation="include">
+        </childnode>
+        <childnode refid="12565" relation="include">
+        </childnode>
+      </node>
+      <node id="12562">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="12591">
+        <label>catoms2DBlockCode.h</label>
+        <link refid="catoms2_d_block_code_8h"/>
+        <childnode refid="12585" relation="include">
+        </childnode>
+        <childnode refid="12590" relation="include">
+        </childnode>
+      </node>
+      <node id="12597">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="12605">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="12571">
+        <label>pthread.h</label>
+      </node>
+      <node id="12594">
+        <label>string.h</label>
+      </node>
+      <node id="12595">
+        <label>catoms2DCapabilities.h</label>
+        <link refid="catoms2_d_capabilities_8h"/>
+        <childnode refid="12576" relation="include">
+        </childnode>
+        <childnode refid="12596" relation="include">
+        </childnode>
+        <childnode refid="12567" relation="include">
+        </childnode>
+        <childnode refid="12589" relation="include">
+        </childnode>
+        <childnode refid="12573" relation="include">
+        </childnode>
+        <childnode refid="12597" relation="include">
+        </childnode>
+      </node>
+      <node id="12590">
+        <label>catoms2DBlock.h</label>
+        <link refid="catoms2_d_block_8h"/>
+        <childnode refid="12581" relation="include">
+        </childnode>
+        <childnode refid="12591" relation="include">
+        </childnode>
+        <childnode refid="12592" relation="include">
+        </childnode>
+        <childnode refid="12595" relation="include">
+        </childnode>
+        <childnode refid="12598" relation="include">
+        </childnode>
+        <childnode refid="12604" relation="include">
+        </childnode>
+        <childnode refid="12605" relation="include">
+        </childnode>
+        <childnode refid="12606" relation="include">
+        </childnode>
+      </node>
+      <node id="12603">
+        <label>catoms2DMove.h</label>
+        <link refid="catoms2_d_move_8h"/>
+        <childnode refid="12590" relation="include">
+        </childnode>
+        <childnode refid="12604" relation="include">
+        </childnode>
+      </node>
+      <node id="12576">
+        <label>vector</label>
+      </node>
+      <node id="12601">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="12602" relation="include">
+        </childnode>
+        <childnode refid="12594" relation="include">
+        </childnode>
+        <childnode refid="12582" relation="include">
+        </childnode>
+        <childnode refid="12581" relation="include">
+        </childnode>
+      </node>
+      <node id="12566">
+        <label>math.h</label>
+      </node>
+      <node id="12574">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12560" relation="include">
+        </childnode>
+        <childnode refid="12568" relation="include">
+        </childnode>
+        <childnode refid="12569" relation="include">
+        </childnode>
+        <childnode refid="12556" relation="include">
+        </childnode>
+      </node>
+      <node id="12559">
+        <label>iostream</label>
+      </node>
+      <node id="12602">
+        <label>deque</label>
+      </node>
+      <node id="12596">
+        <label>climits</label>
+      </node>
+      <node id="12579">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="12589">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="12560" relation="include">
+        </childnode>
+      </node>
+      <node id="12599">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="12586" relation="include">
+        </childnode>
+        <childnode refid="12573" relation="include">
+        </childnode>
+        <childnode refid="12582" relation="include">
+        </childnode>
+        <childnode refid="12581" relation="include">
+        </childnode>
+        <childnode refid="12600" relation="include">
+        </childnode>
+        <childnode refid="12601" relation="include">
+        </childnode>
+        <childnode refid="12574" relation="include">
+        </childnode>
+      </node>
+      <node id="12583">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="12577">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12578" relation="include">
+        </childnode>
+        <childnode refid="12576" relation="include">
+        </childnode>
+        <childnode refid="12579" relation="include">
+        </childnode>
+        <childnode refid="12580" relation="include">
+        </childnode>
+        <childnode refid="12581" relation="include">
+        </childnode>
+        <childnode refid="12572" relation="include">
+        </childnode>
+        <childnode refid="12589" relation="include">
+        </childnode>
+      </node>
+      <node id="12563">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="12557">
+        <label>stdio.h</label>
+      </node>
+      <node id="12593">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="12555" relation="include">
+        </childnode>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12560" relation="include">
+        </childnode>
+        <childnode refid="12573" relation="include">
+        </childnode>
+        <childnode refid="12576" relation="include">
+        </childnode>
+        <childnode refid="12568" relation="include">
+        </childnode>
+        <childnode refid="12558" relation="include">
+        </childnode>
+        <childnode refid="12594" relation="include">
+        </childnode>
+      </node>
+      <node id="12587">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="12581" relation="include">
+        </childnode>
+        <childnode refid="12588" relation="include">
+        </childnode>
+        <childnode refid="12559" relation="include">
+        </childnode>
+        <childnode refid="12583" relation="include">
+        </childnode>
+        <childnode refid="12584" relation="include">
+        </childnode>
+      </node>
+      <node id="12586">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="12607">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</label>
+        <link refid="catoms2DWorld.h"/>
+        <childnode refid="12608" relation="include">
+        </childnode>
+        <childnode refid="12609" relation="include">
+        </childnode>
+        <childnode refid="12615" relation="include">
+        </childnode>
+        <childnode refid="12612" relation="include">
+        </childnode>
+        <childnode refid="12614" relation="include">
+        </childnode>
+      </node>
+      <node id="12610">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h</label>
+        <link refid="catoms2_d_generic_8h"/>
+        <childnode refid="12611" relation="include">
+        </childnode>
+      </node>
+      <node id="12609">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.h</label>
+        <link refid="catoms2_d_simulator_8h"/>
+        <childnode refid="12608" relation="include">
+        </childnode>
+        <childnode refid="12610" relation="include">
+        </childnode>
+        <childnode refid="12612" relation="include">
+        </childnode>
+        <childnode refid="12613" relation="include">
+        </childnode>
+        <childnode refid="12614" relation="include">
+        </childnode>
+      </node>
+      <node id="12612">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.cpp</label>
+        <link refid="catoms2_d_scheduler_8cpp"/>
+      </node>
+      <node id="12615">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp</label>
+        <link refid="catoms2_d_events_8cpp"/>
+      </node>
+      <node id="12611">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp</label>
+        <link refid="catoms2_d_generic_8cpp"/>
+      </node>
+      <node id="12614">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.cpp</label>
+        <link refid="catoms2_d_world_8cpp"/>
+      </node>
+      <node id="12608">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.cpp</label>
+        <link refid="catoms2_d_block_8cpp"/>
+      </node>
+      <node id="12613">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.cpp</label>
+        <link refid="catoms2_d_simulator_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_catoms2_d_1_1_catoms2_d_world" prot="public">Catoms2D::Catoms2DWorld</innerclass>
+    <innernamespace refid="namespace_catoms2_d">Catoms2D</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>catoms2DWorld.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>CATOMS2DWORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CATOMS2DWORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="opengl_viewer_8h" kindref="compound">openglViewer.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="world_8h" kindref="compound">world.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vecteur_8h" kindref="compound">vecteur.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="catoms2_d_block_8h" kindref="compound">catoms2DBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="catoms2_d_capabilities_8h" kindref="compound">catoms2DCapabilities.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="obj_loader_8h" kindref="compound">objLoader.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/asio.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_catoms2_d" kindref="compound">Catoms2D</ref><sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="class_catoms2_d_1_1_catoms2_d_world" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_catoms2_d_1_1_catoms2_d_world" kindref="compound">Catoms2DWorld</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world" kindref="compound">BaseSimulator::World</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="25" refid="class_catoms2_d_1_1_catoms2_d_world_1a8c257a03dc12f8bf6236301b14593282" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a8c257a03dc12f8bf6236301b14593282" kindref="member">gridSize</ref>[3];</highlight></codeline>
+<codeline lineno="26" refid="class_catoms2_d_1_1_catoms2_d_world_1a88a6db9ba1dab713d117e6d47454579b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref><sp/>**<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a88a6db9ba1dab713d117e6d47454579b" kindref="member">gridPtrBlocks</ref>;</highlight></codeline>
+<codeline lineno="27" refid="class_catoms2_d_1_1_catoms2_d_world_1af2c3f79e770d0fc5b24f64f01f28e8fa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLfloat<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1af2c3f79e770d0fc5b24f64f01f28e8fa" kindref="member">blockSize</ref>[3];</highlight></codeline>
+<codeline lineno="28" refid="class_catoms2_d_1_1_catoms2_d_world_1a9d64f64fa6cfcad0677b1dda9f12a322" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a9d64f64fa6cfcad0677b1dda9f12a322" kindref="member">camera</ref>;</highlight></codeline>
+<codeline lineno="29" refid="class_catoms2_d_1_1_catoms2_d_world_1a98aba062e006771b4e8b85ac9b4bd312" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref><sp/>*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a102926a3feaa254097a25f5bc49ba539" kindref="member">objBlock</ref>,*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a5158801faf114b6e1f501da98ebdcd5e" kindref="member">objBlockForPicking</ref>,*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a98aba062e006771b4e8b85ac9b4bd312" kindref="member">objRepere</ref>;</highlight></codeline>
+<codeline lineno="30" refid="class_catoms2_d_1_1_catoms2_d_world_1a6d12438d30ce545c47854f171755ba21" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1abe856d7471fcee9b19a20967ee9080ce" kindref="member">idTextureHexa</ref>,<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a6d12438d30ce545c47854f171755ba21" kindref="member">idTextureLines</ref>;</highlight></codeline>
+<codeline lineno="31" refid="class_catoms2_d_1_1_catoms2_d_world_1aa1525b08bd86dbfc204c16fafe95cc1d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLushort<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1aa1525b08bd86dbfc204c16fafe95cc1d" kindref="member">numSelectedFace</ref>;</highlight></codeline>
+<codeline lineno="32" refid="class_catoms2_d_1_1_catoms2_d_world_1a4b2eb863786b7716c8aae0a2f3f33876" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a4b2eb863786b7716c8aae0a2f3f33876" kindref="member">numSelectedBlock</ref>;</highlight></codeline>
+<codeline lineno="33" refid="class_catoms2_d_1_1_catoms2_d_world_1ad409120a02c5210209b8f6499be2c17c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLint<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ad409120a02c5210209b8f6499be2c17c" kindref="member">menuId</ref>;</highlight></codeline>
+<codeline lineno="34" refid="class_catoms2_d_1_1_catoms2_d_world_1a6536711dad645fc7873d67a7279148d8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_catoms2_d_1aa58dc01671215a23f51d76e022e41af1" kindref="member">presence</ref><sp/>*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a6536711dad645fc7873d67a7279148d8" kindref="member">targetGrid</ref>;</highlight></codeline>
+<codeline lineno="35" refid="class_catoms2_d_1_1_catoms2_d_world_1ae44dfcdb9935c497a262d1d6b1503d15" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_capabilities" kindref="compound">Catoms2DCapabilities</ref><sp/>*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1ae44dfcdb9935c497a262d1d6b1503d15" kindref="member">capabilities</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a59cf289a09444696c8739bc2d9194a0d" kindref="member">Catoms2DWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a4e21cb62b49f1f3e7d6cc04e023f3a48" kindref="member">~Catoms2DWorld</ref>();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a5bbbdbc8592691d2828494a6d0fd1f18" kindref="member">linkBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a8c86b5e207baf2e3b09684c572b72288" kindref="member">createWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ab564473067499382e647595f0d351c42" kindref="member">deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="44" refid="class_catoms2_d_1_1_catoms2_d_world_1a90b5011fef8ef89caea6a2ab5bae953e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world" kindref="compound">Catoms2DWorld</ref>*<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a90b5011fef8ef89caea6a2ab5bae953e" kindref="member">getWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(<ref refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" kindref="member">world</ref><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_catoms2_d_1_1_catoms2_d_world" kindref="compound">Catoms2DWorld</ref>*)<ref refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" kindref="member">world</ref>);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_catoms2_d_1_1_catoms2_d_world_1abd199167fda00f66ce64125100c170b9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1abd199167fda00f66ce64125100c170b9" kindref="member">printInfo</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;I&apos;m<sp/>a<sp/>Catoms2DWorld&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_catoms2_d_1_1_catoms2_d_world_1ae37e7a6f45aa5280fc2eab7ba5f65a9e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ae37e7a6f45aa5280fc2eab7ba5f65a9e" kindref="member">getBlockById</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*)World::getBlockById(bId));</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a5649a288ebec492688e2f7980a3189d4" kindref="member">addBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>blockId,<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_block_code" kindref="compound">Catoms2DBlockCode</ref><sp/>*(*robotBlockCodeBuildingFunction)(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;col,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>master=</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a146188561792cc778d39ea79551ceb03" kindref="member">deleteBlock</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref><sp/>*bb);</highlight></codeline>
+<codeline lineno="59" refid="class_catoms2_d_1_1_catoms2_d_world_1ae2b458e5d8718e84a6505d6609190cf5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ae2b458e5d8718e84a6505d6609190cf5" kindref="member">setBlocksSize</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*siz)<sp/>{<sp/>blockSize[0]<sp/>=<sp/>siz[0];<sp/>blockSize[1]<sp/>=<sp/>siz[1];<sp/>blockSize[2]<sp/>=<sp/>siz[2];<sp/>};</highlight></codeline>
+<codeline lineno="60" refid="class_catoms2_d_1_1_catoms2_d_world_1a349d3594c0308f76f94ab6e5fe5eaf77" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a349d3594c0308f76f94ab6e5fe5eaf77" kindref="member">getBlocksSize</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1af2c3f79e770d0fc5b24f64f01f28e8fa" kindref="member">blockSize</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="class_catoms2_d_1_1_catoms2_d_world_1a7b063b77bcbbb8ab91cefe6c9a4c3c72" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a7b063b77bcbbb8ab91cefe6c9a4c3c72" kindref="member">setGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz,<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref><sp/>*ptr)<sp/>{<sp/>gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr;<sp/>};</highlight></codeline>
+<codeline lineno="63" refid="class_catoms2_d_1_1_catoms2_d_world_1a830c0144e294568380e272e0fd7e2b9a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a830c0144e294568380e272e0fd7e2b9a" kindref="member">getGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]];<sp/>};</highlight></codeline>
+<codeline lineno="64" refid="class_catoms2_d_1_1_catoms2_d_world_1a34c3bf8a43cf504b996e44e8c44b9e0d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a34c3bf8a43cf504b996e44e8c44b9e0d" kindref="member">getGridSize</ref>()<sp/>{</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a8c257a03dc12f8bf6236301b14593282" kindref="member">gridSize</ref>;}</highlight></codeline>
+<codeline lineno="65" refid="class_catoms2_d_1_1_catoms2_d_world_1a13433624870ad58acf17ce7ecf0c7789" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="namespace_catoms2_d_1aa58dc01671215a23f51d76e022e41af1" kindref="member">presence</ref><sp/>*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a13433624870ad58acf17ce7ecf0c7789" kindref="member">getTargetGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*gs)<sp/>{<sp/>memcpy(gs,gridSize,3*</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">));<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a6536711dad645fc7873d67a7279148d8" kindref="member">targetGrid</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="66" refid="class_catoms2_d_1_1_catoms2_d_world_1a0cef422694c93f7b32e78a4478f48582" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="namespace_catoms2_d_1aa58dc01671215a23f51d76e022e41af1" kindref="member">presence</ref><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a0cef422694c93f7b32e78a4478f48582" kindref="member">getTargetGrid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix];<sp/>};</highlight></codeline>
+<codeline lineno="67" refid="class_catoms2_d_1_1_catoms2_d_world_1a32b938c39d203fd59807a1186d02760c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a32b938c39d203fd59807a1186d02760c" kindref="member">setTargetGrid</ref>(<ref refid="namespace_catoms2_d_1aa58dc01671215a23f51d76e022e41af1" kindref="member">presence</ref><sp/>value,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz)<sp/>{<sp/>targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value;<sp/>};</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a9e5d74597f8f1b8c639caa5938d7360b" kindref="member">initTargetGrid</ref>();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="class_catoms2_d_1_1_catoms2_d_world_1a6992e00b902387f68843059e5c7f5155" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a6992e00b902387f68843059e5c7f5155" kindref="member">setCapabilities</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_capabilities" kindref="compound">Catoms2DCapabilities</ref><sp/>*capa)<sp/>{<sp/>capabilities=capa;<sp/>};</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ad7a814cc2eb410f4ae15294c2a316890" kindref="member">getPresenceMatrix</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;pos,<ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;pm);</highlight></codeline>
+<codeline lineno="72" refid="class_catoms2_d_1_1_catoms2_d_world_1a91bb78764a93a14b973c30e8e8588dc3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_capabilities" kindref="compound">Catoms2DCapabilities</ref>*<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a91bb78764a93a14b973c30e8e8588dc3" kindref="member">getCapabilities</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ae44dfcdb9935c497a262d1d6b1503d15" kindref="member">capabilities</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1aff7b7a030bf646fd4468785d4bd138e5" kindref="member">linkBlocks</ref>();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1afce9e698372a3e4759b7d5bbe94496ad" kindref="member">loadTextures</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;str);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a55af3fd7293559c79591428d49fcfcd0" kindref="member">worldToGridPosition</ref>(<ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a4cbcefe3e5e975669fff8370a35fd7d7" kindref="member">gridToWorldPosition</ref>(<ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a2ca8e57ee5132575cd4da3803dc05d8f" kindref="member">areNeighborsWorldPos</ref>(<ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos1,<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos2);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a228b4bf31bd9b63d881d46acb3eafb0c" kindref="member">areNeighborsGridPos</ref>(<ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos1,<sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos2);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a238872d89617dabeba689c8f258c0ad7" kindref="member">glDraw</ref>();</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1aa5f6957f161f9f117af3fd02ebed4839" kindref="member">glDrawId</ref>();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1aa1f97766714c805c3774b328fe440a59" kindref="member">glDrawIdByMaterial</ref>();</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a4eeeac6175556976e33ed3cdded4a314" kindref="member">updateGlData</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*blc);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a4eeeac6175556976e33ed3cdded4a314" kindref="member">updateGlData</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*blc,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;position);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a4eeeac6175556976e33ed3cdded4a314" kindref="member">updateGlData</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*blc,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;position,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>angle);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a4649c3e9e6cf243200c4d335c2d7220e" kindref="member">createPopupMenu</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a807304fa9126c55a4e30963bbd887bca" kindref="member">createHelpWindow</ref>();</highlight></codeline>
+<codeline lineno="90" refid="class_catoms2_d_1_1_catoms2_d_world_1a2505d81565a503fbf9c48484cfe18906" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>*<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a2505d81565a503fbf9c48484cfe18906" kindref="member">getCamera</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a9d64f64fa6cfcad0677b1dda9f12a322" kindref="member">camera</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ade9b02c4c4e020efdd6d90c04e56d595" kindref="member">setSelectedFace</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a3dfb3e1802753ce02fb92cf2beaeff06" kindref="member">menuChoice</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a279464337f346c7e066edbf372a43c2e" kindref="member">disconnectBlock</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref><sp/>*block);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a1ebad0184766474e148a9d444d886f2b" kindref="member">connectBlock</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref><sp/>*block);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1aafd4539f681e68be96ac795b07789600" kindref="member">generateRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a92d9a20be23ec2b9cfc4a2273defa7e4" kindref="member">extractConfig</ref>();</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="namespace_catoms2_d_1a1a1a7054f2d63dfa4bc038e1a410d8f3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a8c86b5e207baf2e3b09684c572b72288" kindref="member">createWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[])<sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a8c86b5e207baf2e3b09684c572b72288" kindref="member">Catoms2DWorld::createWorld</ref>(slx,sly,slz,<sp/>argc,argv);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="namespace_catoms2_d_1ab2a46aabc2a51cf10a55a086d8779b77" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ab564473067499382e647595f0d351c42" kindref="member">deleteWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1ab564473067499382e647595f0d351c42" kindref="member">Catoms2DWorld::deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="namespace_catoms2_d_1a418fdf12a45197038375f36d1cf69fe3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world" kindref="compound">Catoms2DWorld</ref>*<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_world_1a90b5011fef8ef89caea6a2ab5bae953e" kindref="member">getWorld</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(<ref refid="class_catoms2_d_1_1_catoms2_d_world_1a90b5011fef8ef89caea6a2ab5bae953e" kindref="member">Catoms2DWorld::getWorld</ref>());<sp/>}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>Catoms2D<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CATOMS2DWORLD_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h"/>
+  </compounddef>
+</doxygen>

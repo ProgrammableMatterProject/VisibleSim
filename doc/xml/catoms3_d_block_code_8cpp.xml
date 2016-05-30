@@ -1,0 +1,539 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="catoms3_d_block_code_8cpp" kind="file" language="C++">
+    <compoundname>catoms3DBlockCode.cpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes refid="catoms3_d_block_code_8h" local="yes">catoms3DBlockCode.h</includes>
+    <includes refid="network_8h" local="yes">network.h</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <incdepgraph>
+      <node id="12756">
+        <label>list</label>
+      </node>
+      <node id="12780">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="12759" relation="include">
+        </childnode>
+        <childnode refid="12781" relation="include">
+        </childnode>
+        <childnode refid="12767" relation="include">
+        </childnode>
+        <childnode refid="12772" relation="include">
+        </childnode>
+        <childnode refid="12757" relation="include">
+        </childnode>
+        <childnode refid="12782" relation="include">
+        </childnode>
+      </node>
+      <node id="12792">
+        <label>cell3DPosition.h</label>
+        <link refid="cell3_d_position_8h"/>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12762" relation="include">
+        </childnode>
+        <childnode refid="12770" relation="include">
+        </childnode>
+      </node>
+      <node id="12767">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="12763" relation="include">
+        </childnode>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12762" relation="include">
+        </childnode>
+        <childnode refid="12768" relation="include">
+        </childnode>
+        <childnode refid="12769" relation="include">
+        </childnode>
+      </node>
+      <node id="12759">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="12760" relation="include">
+        </childnode>
+        <childnode refid="12761" relation="include">
+        </childnode>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12762" relation="include">
+        </childnode>
+        <childnode refid="12763" relation="include">
+        </childnode>
+        <childnode refid="12764" relation="include">
+        </childnode>
+        <childnode refid="12765" relation="include">
+        </childnode>
+        <childnode refid="12766" relation="include">
+        </childnode>
+        <childnode refid="12767" relation="include">
+        </childnode>
+        <childnode refid="12772" relation="include">
+        </childnode>
+      </node>
+      <node id="12769">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12762" relation="include">
+        </childnode>
+        <childnode refid="12770" relation="include">
+        </childnode>
+        <childnode refid="12771" relation="include">
+        </childnode>
+      </node>
+      <node id="12782">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="12783" relation="include">
+        </childnode>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12762" relation="include">
+        </childnode>
+        <childnode refid="12771" relation="include">
+        </childnode>
+        <childnode refid="12757" relation="include">
+        </childnode>
+        <childnode refid="12784" relation="include">
+        </childnode>
+        <childnode refid="12773" relation="include">
+        </childnode>
+      </node>
+      <node id="12750">
+        <label>catoms3DBlockCode.h</label>
+        <link refid="catoms3_d_block_code_8h"/>
+        <childnode refid="12751" relation="include">
+        </childnode>
+        <childnode refid="12777" relation="include">
+        </childnode>
+        <childnode refid="12795" relation="include">
+        </childnode>
+        <childnode refid="12797" relation="include">
+        </childnode>
+        <childnode refid="12804" relation="include">
+        </childnode>
+      </node>
+      <node id="12753">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="12801">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="12786">
+        <label>assert.h</label>
+      </node>
+      <node id="12775">
+        <label>stdint.h</label>
+      </node>
+      <node id="12761">
+        <label>stdlib.h</label>
+      </node>
+      <node id="12752">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="12753" relation="include">
+        </childnode>
+        <childnode refid="12754" relation="include">
+        </childnode>
+        <childnode refid="12755" relation="include">
+        </childnode>
+        <childnode refid="12756" relation="include">
+        </childnode>
+        <childnode refid="12757" relation="include">
+        </childnode>
+        <childnode refid="12751" relation="include">
+        </childnode>
+        <childnode refid="12774" relation="include">
+        </childnode>
+      </node>
+      <node id="12778">
+        <label>catoms3DGlBlock.h</label>
+        <link refid="catoms3_d_gl_block_8h"/>
+        <childnode refid="12758" relation="include">
+        </childnode>
+        <childnode refid="12779" relation="include">
+        </childnode>
+        <childnode refid="12767" relation="include">
+        </childnode>
+        <childnode refid="12757" relation="include">
+        </childnode>
+        <childnode refid="12789" relation="include">
+        </childnode>
+      </node>
+      <node id="12770">
+        <label>cmath</label>
+      </node>
+      <node id="12794">
+        <label>stdexcept</label>
+      </node>
+      <node id="12758">
+        <label>string</label>
+      </node>
+      <node id="12763">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="12785">
+        <label>map</label>
+      </node>
+      <node id="12799">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="12771">
+        <label>memory.h</label>
+      </node>
+      <node id="12757">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="12758" relation="include">
+        </childnode>
+        <childnode refid="12759" relation="include">
+        </childnode>
+        <childnode refid="12769" relation="include">
+        </childnode>
+        <childnode refid="12773" relation="include">
+        </childnode>
+      </node>
+      <node id="12762">
+        <label>fstream</label>
+      </node>
+      <node id="12804">
+        <label>ostream</label>
+      </node>
+      <node id="12751">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="12752" relation="include">
+        </childnode>
+        <childnode refid="12776" relation="include">
+        </childnode>
+      </node>
+      <node id="12766">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="12803">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="12772">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="12768" relation="include">
+        </childnode>
+        <childnode refid="12769" relation="include">
+        </childnode>
+        <childnode refid="12767" relation="include">
+        </childnode>
+      </node>
+      <node id="12764">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="12791">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="12793">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="12789">
+        <label>catoms3DCapabilities.h</label>
+        <link refid="catoms3_d_capabilities_8h"/>
+        <childnode refid="12783" relation="include">
+        </childnode>
+        <childnode refid="12790" relation="include">
+        </childnode>
+        <childnode refid="12769" relation="include">
+        </childnode>
+        <childnode refid="12787" relation="include">
+        </childnode>
+        <childnode refid="12758" relation="include">
+        </childnode>
+        <childnode refid="12791" relation="include">
+        </childnode>
+      </node>
+      <node id="12781">
+        <label>pthread.h</label>
+      </node>
+      <node id="12788">
+        <label>string.h</label>
+      </node>
+      <node id="12783">
+        <label>vector</label>
+      </node>
+      <node id="12795">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="12796" relation="include">
+        </childnode>
+        <childnode refid="12788" relation="include">
+        </childnode>
+        <childnode refid="12753" relation="include">
+        </childnode>
+        <childnode refid="12752" relation="include">
+        </childnode>
+      </node>
+      <node id="12798">
+        <label>sstream</label>
+      </node>
+      <node id="12797">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12798" relation="include">
+        </childnode>
+        <childnode refid="12785" relation="include">
+        </childnode>
+        <childnode refid="12776" relation="include">
+        </childnode>
+        <childnode refid="12786" relation="include">
+        </childnode>
+        <childnode refid="12799" relation="include">
+        </childnode>
+        <childnode refid="12800" relation="include">
+        </childnode>
+        <childnode refid="12755" relation="include">
+        </childnode>
+        <childnode refid="12801" relation="include">
+        </childnode>
+        <childnode refid="12802" relation="include">
+        </childnode>
+        <childnode refid="12780" relation="include">
+        </childnode>
+      </node>
+      <node id="12768">
+        <label>math.h</label>
+      </node>
+      <node id="12773">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12762" relation="include">
+        </childnode>
+        <childnode refid="12770" relation="include">
+        </childnode>
+        <childnode refid="12771" relation="include">
+        </childnode>
+        <childnode refid="12759" relation="include">
+        </childnode>
+      </node>
+      <node id="12749">
+        <label>iostream</label>
+      </node>
+      <node id="12748">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3DBlockCode.cpp"/>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12750" relation="include">
+        </childnode>
+        <childnode refid="12795" relation="include">
+        </childnode>
+        <childnode refid="12787" relation="include">
+        </childnode>
+      </node>
+      <node id="12796">
+        <label>deque</label>
+      </node>
+      <node id="12790">
+        <label>climits</label>
+      </node>
+      <node id="12800">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="12777">
+        <label>catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="12752" relation="include">
+        </childnode>
+        <childnode refid="12750" relation="include">
+        </childnode>
+        <childnode refid="12778" relation="include">
+        </childnode>
+        <childnode refid="12792" relation="include">
+        </childnode>
+        <childnode refid="12793" relation="include">
+        </childnode>
+        <childnode refid="12794" relation="include">
+        </childnode>
+      </node>
+      <node id="12755">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="12787">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="12762" relation="include">
+        </childnode>
+      </node>
+      <node id="12802">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="12776" relation="include">
+        </childnode>
+        <childnode refid="12758" relation="include">
+        </childnode>
+        <childnode refid="12753" relation="include">
+        </childnode>
+        <childnode refid="12752" relation="include">
+        </childnode>
+        <childnode refid="12803" relation="include">
+        </childnode>
+        <childnode refid="12795" relation="include">
+        </childnode>
+        <childnode refid="12773" relation="include">
+        </childnode>
+      </node>
+      <node id="12754">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="12784">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12785" relation="include">
+        </childnode>
+        <childnode refid="12783" relation="include">
+        </childnode>
+        <childnode refid="12755" relation="include">
+        </childnode>
+        <childnode refid="12786" relation="include">
+        </childnode>
+        <childnode refid="12752" relation="include">
+        </childnode>
+        <childnode refid="12757" relation="include">
+        </childnode>
+        <childnode refid="12787" relation="include">
+        </childnode>
+      </node>
+      <node id="12765">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="12760">
+        <label>stdio.h</label>
+      </node>
+      <node id="12779">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="12780" relation="include">
+        </childnode>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12762" relation="include">
+        </childnode>
+        <childnode refid="12758" relation="include">
+        </childnode>
+        <childnode refid="12783" relation="include">
+        </childnode>
+        <childnode refid="12770" relation="include">
+        </childnode>
+        <childnode refid="12761" relation="include">
+        </childnode>
+        <childnode refid="12788" relation="include">
+        </childnode>
+      </node>
+      <node id="12774">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="12752" relation="include">
+        </childnode>
+        <childnode refid="12775" relation="include">
+        </childnode>
+        <childnode refid="12749" relation="include">
+        </childnode>
+        <childnode refid="12754" relation="include">
+        </childnode>
+        <childnode refid="12756" relation="include">
+        </childnode>
+      </node>
+      <node id="12776">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_catoms3_d">Catoms3D</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>catoms3DBlockCode.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="catoms3_d_block_code_8h" kindref="compound">catoms3DBlockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="network_8h" kindref="compound">network.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_catoms3_d" kindref="compound">Catoms3D</ref><sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="class_catoms3_d_1_1_catoms3_d_block_code_1ad0d1f35c6f725c775da2acfd9daf0ca6" refkind="member"><highlight class="normal">Catoms3DBlockCode::Catoms3DBlockCode(<ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref><sp/>*host):<ref refid="class_base_simulator_1_1_block_code" kindref="compound">BlockCode</ref>(host)<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Catoms3DBlockCode<sp/>constructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="class_catoms3_d_1_1_catoms3_d_block_code_1abf03a22d71a2634d96b295ed7eaa485b" refkind="member"><highlight class="normal"><ref refid="class_catoms3_d_1_1_catoms3_d_block_code_1abf03a22d71a2634d96b295ed7eaa485b" kindref="member">Catoms3DBlockCode::~Catoms3DBlockCode</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Catoms3DBlockCode<sp/>destructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="class_catoms3_d_1_1_catoms3_d_block_code_1aadc4b82429e73713605bfc3034455257" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms3_d_1_1_catoms3_d_block_code_1aadc4b82429e73713605bfc3034455257" kindref="member">Catoms3DBlockCode::addDebugAttributes</ref>(<ref refid="class_base_simulator_1_1_scheduler" kindref="compound">Scheduler</ref><sp/>*scheduler)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>Catoms3DBlock<sp/>*catom<sp/>=<sp/>(Catoms3DBlock*)(hostBlock);</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/><sp/><sp/><sp/>scheduler-&gt;addKeyword(new<sp/>KeywordT&lt;short&gt;(&quot;orientationCode&quot;,&amp;catom-&gt;orientationCode,&quot;orientation<sp/>of<sp/>the<sp/>block&quot;));*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">/*bool<sp/>Catoms3DBlockCode::getAttribute(const<sp/>string<sp/>&amp;att,ostringstream<sp/>&amp;sout)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"></highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/><sp/><sp/><sp/>Catoms3DBlock<sp/>*catom<sp/>=<sp/>(Catoms3DBlock*)(hostBlock);</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"></highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/><sp/><sp/><sp/>if<sp/>(att==&quot;blockId&quot;)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>catom-&gt;blockId<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>false;</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/><sp/><sp/><sp/>}<sp/>else<sp/>if<sp/>(att.substr(0,9)==&quot;neighbor[&quot;)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>n<sp/>=<sp/>atoi(att.substr(9,2).c_str());</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(n&gt;=0<sp/>&amp;&amp;<sp/>n&lt;12)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>P2PNetworkInterface<sp/>*p2p<sp/>=<sp/>catom-&gt;getInterface(n);</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(p2p-&gt;connectedInterface!=NULL)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>&quot;catom#&quot;<sp/>&lt;&lt;<sp/>p2p-&gt;connectedInterface-&gt;hostBlock-&gt;blockId<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>else<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>&quot;no<sp/>catom<sp/>linked.&quot;&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>else<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>&quot;Error:<sp/>neighbor[n],<sp/><sp/>0&lt;=n&lt;12&quot;<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>true;</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/><sp/><sp/><sp/>if<sp/>(att==&quot;gridpos&quot;)<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>catom-&gt;position<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>false;</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/><sp/><sp/><sp/>if<sp/>(att==&quot;worldpos&quot;)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>catom-&gt;getGlBlock()-&gt;position[0]<sp/>&lt;&lt;<sp/>&quot;,&quot;<sp/>&lt;&lt;<sp/>catom-&gt;getGlBlock()-&gt;position[1]<sp/>&lt;&lt;<sp/>&quot;,&quot;<sp/>&lt;&lt;<sp/>catom-&gt;getGlBlock()-&gt;position[2]<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>false;</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/><sp/><sp/><sp/>if<sp/>(att==&quot;orientationcode&quot;)<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>catom-&gt;orientationCode<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>false;</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/>if<sp/>(att==&quot;matrix&quot;)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>catom-&gt;getGlBlock()-&gt;mat<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>false;</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"></highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/><sp/><sp/><sp/>sout<sp/>&lt;&lt;<sp/>&quot;attribute<sp/>&quot;&lt;&lt;<sp/>att<sp/>&lt;&lt;<sp/>&quot;<sp/>unknown!&quot;<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/><sp/><sp/><sp/>return<sp/>false;</highlight></codeline>
+<codeline lineno="70"><highlight class="comment">}</highlight></codeline>
+<codeline lineno="71"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp"/>
+  </compounddef>
+</doxygen>

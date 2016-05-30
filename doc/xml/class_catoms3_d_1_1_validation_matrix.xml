@@ -1,0 +1,266 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms3_d_1_1_validation_matrix" kind="class" language="C++" prot="public">
+    <compoundname>Catoms3D::ValidationMatrix</compoundname>
+    <includes refid="catoms3_d_capabilities_8h" local="no">catoms3DCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_validation_matrix_1a1b0f20fa60559a3ff41b8f2796f8c4e0" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76" kindref="member">states</ref></type>
+        <definition>states Catoms3D::ValidationMatrix::grid[27]</definition>
+        <argsstring>[27]</argsstring>
+        <name>grid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_validation_matrix_1ac99a595d8c8968097a469a1b394ebaf2" compoundref="catoms3_d_capabilities_8cpp" startline="476" endline="487">fromRotationZ</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_validation_matrix_1aff2a846f913dc1bbc8faca7cafb46502" compoundref="catoms3_d_capabilities_8cpp" startline="489" endline="499">fromRotationY</referencedby>
+        <referencedby refid="namespace_catoms3_d_1af0e9ec940eca5020ea023768592cd81b" compoundref="catoms3_d_capabilities_8cpp" startline="511" endline="516">Catoms3D::operator&lt;&lt;</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1a87b79d8dbafac84bb64ed37dcdd26933" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::ValidationMatrix::ValidationMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>ValidationMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="426" bodyend="428"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1a45e870cef7a6697433dfbff853c18817" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::ValidationMatrix::fromString</definition>
+        <argsstring>(const char *str)</argsstring>
+        <name>fromString</name>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="431" bodyend="474"/>
+        <references refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76aa999f8ad370b1e0ebfd568b37c62508e" compoundref="catoms3_d_capabilities_8h" startline="41">Catoms3D::emptyState</references>
+        <references refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76a2994cd8a82568d670fcce8c3470c705b" compoundref="catoms3_d_capabilities_8h" startline="41">Catoms3D::fullState</references>
+        <references refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76a7722298012c8642acf811aaaf661a64f" compoundref="catoms3_d_capabilities_8h" startline="41">Catoms3D::filledState</references>
+        <references refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76ad5f1ca025f749e6eb9fdfd673689abc4" compoundref="catoms3_d_capabilities_8h" startline="41">Catoms3D::emptiedState</references>
+        <references refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76a8425070be9042bdbf259e95e3e8b79ec" compoundref="catoms3_d_capabilities_8h" startline="41">Catoms3D::transitState</references>
+        <references refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76a433b78ac6d5a3c05bc6091cfcd2baf74" compoundref="catoms3_d_capabilities_8h" startline="41">Catoms3D::jockerState</references>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1aff2a846f913dc1bbc8faca7cafb46502" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::ValidationMatrix::fromRotationY</definition>
+        <argsstring>(const ValidationMatrix &amp;, int)</argsstring>
+        <name>fromRotationY</name>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <defname>mat</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <defname>n</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="489" bodyend="499"/>
+        <references refid="class_catoms3_d_1_1_validation_matrix_1a1b0f20fa60559a3ff41b8f2796f8c4e0" compoundref="catoms3_d_capabilities_8h" startline="56">grid</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1ac99a595d8c8968097a469a1b394ebaf2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::ValidationMatrix::fromRotationZ</definition>
+        <argsstring>(const ValidationMatrix &amp;, int)</argsstring>
+        <name>fromRotationZ</name>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <defname>mat</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <defname>n</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="476" bodyend="487"/>
+        <references refid="class_catoms3_d_1_1_validation_matrix_1a1b0f20fa60559a3ff41b8f2796f8c4e0" compoundref="catoms3_d_capabilities_8h" startline="56">grid</references>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Catoms3D::Capability::Capability</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1aff3bf5c0d52b599224731b0fe0f1ddab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::ValidationMatrix::set</definition>
+        <argsstring>(const PointRel3D &amp;pt, states v)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76" kindref="member">states</ref></type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="505" bodyend="508"/>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1aeacde0f11f957522b01b032f24c42124" compoundref="catoms3_d_capabilities_8h" startline="21">Catoms3D::PointRel3D::x</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1a89209395bf28298bc1bfc8148f71106b" compoundref="catoms3_d_capabilities_8h" startline="22">Catoms3D::PointRel3D::y</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1a552772557d1655909e3e78d2f60afc9b" compoundref="catoms3_d_capabilities_8h" startline="23">Catoms3D::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1ab5a26309c9b72fada1041beef5e8db92" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_catoms3_d_1ac6c7a46d89e76e36bd606de56781ea76" kindref="member">states</ref></type>
+        <definition>states Catoms3D::ValidationMatrix::get</definition>
+        <argsstring>(const PointRel3D &amp;pt)</argsstring>
+        <name>get</name>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="501" bodyend="503"/>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1aeacde0f11f957522b01b032f24c42124" compoundref="catoms3_d_capabilities_8h" startline="21">Catoms3D::PointRel3D::x</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1a89209395bf28298bc1bfc8148f71106b" compoundref="catoms3_d_capabilities_8h" startline="22">Catoms3D::PointRel3D::y</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1a552772557d1655909e3e78d2f60afc9b" compoundref="catoms3_d_capabilities_8h" startline="23">Catoms3D::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1a99c77715c75469203b2f5b370260c564" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Catoms3D::ValidationMatrix::validate</definition>
+        <argsstring>(const PresenceMatrix &amp;pm)</argsstring>
+        <name>validate</name>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="518" bodyend="530"/>
+        <references refid="class_catoms3_d_1_1_presence_matrix_1a8999af37af3c2ae83edfaf28892b6298" compoundref="catoms3_d_capabilities_8h" startline="46">Catoms3D::PresenceMatrix::grid</references>
+        <references refid="catoms3_d_capabilities_8cpp_1a18d68ca0cb2f799f8a95a2858fd5939b" compoundref="catoms3_d_capabilities_8cpp" startline="5">truthTable</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1a7f45ce9b026b832387b05c4c52c34deb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Catoms3D::ValidationMatrix::validateWithTarget</definition>
+        <argsstring>(const PresenceMatrix &amp;pm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateWithTarget</name>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="532" bodyend="549"/>
+        <references refid="class_catoms3_d_1_1_presence_matrix_1a8999af37af3c2ae83edfaf28892b6298" compoundref="catoms3_d_capabilities_8h" startline="46">Catoms3D::PresenceMatrix::grid</references>
+        <references refid="catoms3_d_capabilities_8cpp_1a18d68ca0cb2f799f8a95a2858fd5939b" compoundref="catoms3_d_capabilities_8cpp" startline="5">truthTable</references>
+        <references refid="catoms3_d_capabilities_8cpp_1ad80b5f61e8c79a2735c9aee7c25b139e" compoundref="catoms3_d_capabilities_8cpp" startline="6">gainTable</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_validation_matrix_1a6b97463e69c268456cef624e3a6a1a65" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Catoms3D::ValidationMatrix::validateTrain</definition>
+        <argsstring>(const PresenceMatrix &amp;pm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateTrain</name>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="68" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_catoms3_d_1_1_validation_matrix_1abe0664b63ceba30db6aced7560fb582b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const ValidationMatrix &amp;sm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="511" bodyend="516"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="54" bodyend="69"/>
+    <listofallmembers>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1aff2a846f913dc1bbc8faca7cafb46502" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>fromRotationY</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1ac99a595d8c8968097a469a1b394ebaf2" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>fromRotationZ</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1a45e870cef7a6697433dfbff853c18817" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>fromString</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1ab5a26309c9b72fada1041beef5e8db92" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>get</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1a1b0f20fa60559a3ff41b8f2796f8c4e0" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>grid</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1abe0664b63ceba30db6aced7560fb582b" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1aff3bf5c0d52b599224731b0fe0f1ddab" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>set</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1a99c77715c75469203b2f5b370260c564" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>validate</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1a6b97463e69c268456cef624e3a6a1a65" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>validateTrain</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1a7f45ce9b026b832387b05c4c52c34deb" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>validateWithTarget</name></member>
+      <member refid="class_catoms3_d_1_1_validation_matrix_1a87b79d8dbafac84bb64ed37dcdd26933" prot="public" virt="non-virtual"><scope>Catoms3D::ValidationMatrix</scope><name>ValidationMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

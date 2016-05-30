@@ -1,0 +1,494 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="smart_blocks_events_8h" kind="file" language="C++">
+    <compoundname>smartBlocksEvents.h</compoundname>
+    <includes refid="smart_blocks_block_8h" local="yes">smartBlocksBlock.h</includes>
+    <includes refid="events_8h" local="yes">events.h</includes>
+    <includedby refid="smart_blocks_events_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</includedby>
+    <incdepgraph>
+      <node id="18817">
+        <label>list</label>
+      </node>
+      <node id="18843">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="18820" relation="include">
+        </childnode>
+        <childnode refid="18844" relation="include">
+        </childnode>
+        <childnode refid="18829" relation="include">
+        </childnode>
+        <childnode refid="18834" relation="include">
+        </childnode>
+        <childnode refid="18818" relation="include">
+        </childnode>
+        <childnode refid="18845" relation="include">
+        </childnode>
+      </node>
+      <node id="18829">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="18825" relation="include">
+        </childnode>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18824" relation="include">
+        </childnode>
+        <childnode refid="18830" relation="include">
+        </childnode>
+        <childnode refid="18831" relation="include">
+        </childnode>
+      </node>
+      <node id="18820">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="18821" relation="include">
+        </childnode>
+        <childnode refid="18822" relation="include">
+        </childnode>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18824" relation="include">
+        </childnode>
+        <childnode refid="18825" relation="include">
+        </childnode>
+        <childnode refid="18826" relation="include">
+        </childnode>
+        <childnode refid="18827" relation="include">
+        </childnode>
+        <childnode refid="18828" relation="include">
+        </childnode>
+        <childnode refid="18829" relation="include">
+        </childnode>
+        <childnode refid="18834" relation="include">
+        </childnode>
+      </node>
+      <node id="18831">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18824" relation="include">
+        </childnode>
+        <childnode refid="18832" relation="include">
+        </childnode>
+        <childnode refid="18833" relation="include">
+        </childnode>
+      </node>
+      <node id="18812">
+        <label>smartBlocksBlock.h</label>
+        <link refid="smart_blocks_block_8h"/>
+        <childnode refid="18813" relation="include">
+        </childnode>
+        <childnode refid="18840" relation="include">
+        </childnode>
+        <childnode refid="18841" relation="include">
+        </childnode>
+        <childnode refid="18852" relation="include">
+        </childnode>
+        <childnode refid="18855" relation="include">
+        </childnode>
+      </node>
+      <node id="18845">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="18846" relation="include">
+        </childnode>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18824" relation="include">
+        </childnode>
+        <childnode refid="18833" relation="include">
+        </childnode>
+        <childnode refid="18818" relation="include">
+        </childnode>
+        <childnode refid="18847" relation="include">
+        </childnode>
+        <childnode refid="18835" relation="include">
+        </childnode>
+      </node>
+      <node id="18814">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="18849">
+        <label>assert.h</label>
+      </node>
+      <node id="18839">
+        <label>stdint.h</label>
+      </node>
+      <node id="18822">
+        <label>stdlib.h</label>
+      </node>
+      <node id="18813">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="18814" relation="include">
+        </childnode>
+        <childnode refid="18815" relation="include">
+        </childnode>
+        <childnode refid="18816" relation="include">
+        </childnode>
+        <childnode refid="18817" relation="include">
+        </childnode>
+        <childnode refid="18818" relation="include">
+        </childnode>
+        <childnode refid="18836" relation="include">
+        </childnode>
+        <childnode refid="18838" relation="include">
+        </childnode>
+      </node>
+      <node id="18832">
+        <label>cmath</label>
+      </node>
+      <node id="18852">
+        <label>smartBlocksCapabilities.h</label>
+        <link refid="smart_blocks_capabilities_8h"/>
+        <childnode refid="18846" relation="include">
+        </childnode>
+        <childnode refid="18853" relation="include">
+        </childnode>
+        <childnode refid="18831" relation="include">
+        </childnode>
+        <childnode refid="18850" relation="include">
+        </childnode>
+        <childnode refid="18819" relation="include">
+        </childnode>
+        <childnode refid="18854" relation="include">
+        </childnode>
+      </node>
+      <node id="18819">
+        <label>string</label>
+      </node>
+      <node id="18825">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="18848">
+        <label>map</label>
+      </node>
+      <node id="18833">
+        <label>memory.h</label>
+      </node>
+      <node id="18818">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="18819" relation="include">
+        </childnode>
+        <childnode refid="18820" relation="include">
+        </childnode>
+        <childnode refid="18831" relation="include">
+        </childnode>
+        <childnode refid="18835" relation="include">
+        </childnode>
+      </node>
+      <node id="18824">
+        <label>fstream</label>
+      </node>
+      <node id="18836">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="18813" relation="include">
+        </childnode>
+        <childnode refid="18837" relation="include">
+        </childnode>
+      </node>
+      <node id="18811">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smartBlocksEvents.h"/>
+        <childnode refid="18812" relation="include">
+        </childnode>
+        <childnode refid="18857" relation="include">
+        </childnode>
+      </node>
+      <node id="18828">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="18858">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="18834">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="18830" relation="include">
+        </childnode>
+        <childnode refid="18831" relation="include">
+        </childnode>
+        <childnode refid="18829" relation="include">
+        </childnode>
+      </node>
+      <node id="18826">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="18854">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="18844">
+        <label>pthread.h</label>
+      </node>
+      <node id="18851">
+        <label>string.h</label>
+      </node>
+      <node id="18846">
+        <label>vector</label>
+      </node>
+      <node id="18840">
+        <label>smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="18836" relation="include">
+        </childnode>
+        <childnode refid="18812" relation="include">
+        </childnode>
+      </node>
+      <node id="18855">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="18856" relation="include">
+        </childnode>
+        <childnode refid="18851" relation="include">
+        </childnode>
+        <childnode refid="18814" relation="include">
+        </childnode>
+        <childnode refid="18813" relation="include">
+        </childnode>
+      </node>
+      <node id="18830">
+        <label>math.h</label>
+      </node>
+      <node id="18835">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18824" relation="include">
+        </childnode>
+        <childnode refid="18832" relation="include">
+        </childnode>
+        <childnode refid="18833" relation="include">
+        </childnode>
+        <childnode refid="18820" relation="include">
+        </childnode>
+      </node>
+      <node id="18823">
+        <label>iostream</label>
+      </node>
+      <node id="18856">
+        <label>deque</label>
+      </node>
+      <node id="18853">
+        <label>climits</label>
+      </node>
+      <node id="18816">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="18850">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="18824" relation="include">
+        </childnode>
+      </node>
+      <node id="18857">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="18837" relation="include">
+        </childnode>
+        <childnode refid="18819" relation="include">
+        </childnode>
+        <childnode refid="18814" relation="include">
+        </childnode>
+        <childnode refid="18813" relation="include">
+        </childnode>
+        <childnode refid="18858" relation="include">
+        </childnode>
+        <childnode refid="18855" relation="include">
+        </childnode>
+        <childnode refid="18835" relation="include">
+        </childnode>
+      </node>
+      <node id="18815">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="18847">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18848" relation="include">
+        </childnode>
+        <childnode refid="18846" relation="include">
+        </childnode>
+        <childnode refid="18816" relation="include">
+        </childnode>
+        <childnode refid="18849" relation="include">
+        </childnode>
+        <childnode refid="18813" relation="include">
+        </childnode>
+        <childnode refid="18818" relation="include">
+        </childnode>
+        <childnode refid="18850" relation="include">
+        </childnode>
+      </node>
+      <node id="18827">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="18821">
+        <label>stdio.h</label>
+      </node>
+      <node id="18842">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="18843" relation="include">
+        </childnode>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18824" relation="include">
+        </childnode>
+        <childnode refid="18819" relation="include">
+        </childnode>
+        <childnode refid="18846" relation="include">
+        </childnode>
+        <childnode refid="18832" relation="include">
+        </childnode>
+        <childnode refid="18822" relation="include">
+        </childnode>
+        <childnode refid="18851" relation="include">
+        </childnode>
+      </node>
+      <node id="18838">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="18813" relation="include">
+        </childnode>
+        <childnode refid="18839" relation="include">
+        </childnode>
+        <childnode refid="18823" relation="include">
+        </childnode>
+        <childnode refid="18815" relation="include">
+        </childnode>
+        <childnode refid="18817" relation="include">
+        </childnode>
+      </node>
+      <node id="18841">
+        <label>smartBlocksGlBlock.h</label>
+        <link refid="smart_blocks_gl_block_8h"/>
+        <childnode refid="18819" relation="include">
+        </childnode>
+        <childnode refid="18842" relation="include">
+        </childnode>
+        <childnode refid="18818" relation="include">
+        </childnode>
+      </node>
+      <node id="18837">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="18859">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smartBlocksEvents.h"/>
+        <childnode refid="18860" relation="include">
+        </childnode>
+      </node>
+      <node id="18860">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</label>
+        <link refid="smart_blocks_events_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_smart_blocks_1_1_motion_start_event" prot="public">SmartBlocks::MotionStartEvent</innerclass>
+    <innerclass refid="class_smart_blocks_1_1_motion_step_event" prot="public">SmartBlocks::MotionStepEvent</innerclass>
+    <innerclass refid="class_smart_blocks_1_1_motion_stop_event" prot="public">SmartBlocks::MotionStopEvent</innerclass>
+    <innerclass refid="class_smart_blocks_1_1_motion_end_event" prot="public">SmartBlocks::MotionEndEvent</innerclass>
+    <innernamespace refid="namespace_smart_blocks">SmartBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>smartBlocksEvents.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>2014<sp/>febrary<sp/>1st</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SMARTBLOCKSEVENTS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SMARTBLOCKSEVENTS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="smart_blocks_block_8h" kindref="compound">smartBlocksBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="events_8h" kindref="compound">events.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_smart_blocks" kindref="compound">SmartBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MotionStartEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="class_smart_blocks_1_1_motion_start_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_smart_blocks_1_1_motion_start_event" kindref="compound">MotionStartEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>finalPosition;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1a7d30902f3ec605b2b1a1d8aecf4da9bb" kindref="member">MotionStartEvent</ref>(uint64_t,<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref><sp/>*block,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;fpos);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1a7d30902f3ec605b2b1a1d8aecf4da9bb" kindref="member">MotionStartEvent</ref>(<ref refid="class_smart_blocks_1_1_motion_start_event" kindref="compound">MotionStartEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1ac02f34cf80ebd4e1a38c70b290c435c5" kindref="member">~MotionStartEvent</ref>();</highlight></codeline>
+<codeline lineno="28" refid="class_smart_blocks_1_1_motion_start_event_1acc2419da46dbbc4f9c22743c124a824b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1acc2419da46dbbc4f9c22743c124a824b" kindref="member">consumeBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1aef3dfa8f89f3e86693704853656e3005" kindref="member">consume</ref>();</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1a134976c5a83f5d113a5a486e682bff08" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MotionStepEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="class_smart_blocks_1_1_motion_step_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_smart_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>finalPosition,motionStep;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref>(uint64_t,<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref><sp/>*block,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;fpos);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref>(uint64_t,<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref><sp/>*block,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;fpos,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;step);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref>(<ref refid="class_smart_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_smart_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref>();</highlight></codeline>
+<codeline lineno="46" refid="class_smart_blocks_1_1_motion_step_event_1a5f2ad6a54b06741a5a5fa365b16e0dfa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_step_event_1a5f2ad6a54b06741a5a5fa365b16e0dfa" kindref="member">consumeBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1aef3dfa8f89f3e86693704853656e3005" kindref="member">consume</ref>();</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1a134976c5a83f5d113a5a486e682bff08" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MotionStopEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="class_smart_blocks_1_1_motion_stop_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_smart_blocks_1_1_motion_stop_event" kindref="compound">MotionStopEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>finalPosition;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_stop_event" kindref="compound">MotionStopEvent</ref>(uint64_t,<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref><sp/>*block,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;fpos);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_stop_event" kindref="compound">MotionStopEvent</ref>(<ref refid="class_smart_blocks_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_smart_blocks_1_1_motion_stop_event" kindref="compound">MotionStopEvent</ref>();</highlight></codeline>
+<codeline lineno="63" refid="class_smart_blocks_1_1_motion_stop_event_1a262f2f17a1ccf318bcd7f32c2f55acf6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_stop_event_1a262f2f17a1ccf318bcd7f32c2f55acf6" kindref="member">consumeBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1aef3dfa8f89f3e86693704853656e3005" kindref="member">consume</ref>();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1a134976c5a83f5d113a5a486e682bff08" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="66"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MotionEndEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_smart_blocks_1_1_motion_end_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_smart_blocks_1_1_motion_end_event" kindref="compound">MotionEndEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_end_event" kindref="compound">MotionEndEvent</ref>(uint64_t,<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref><sp/>*block);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_motion_end_event" kindref="compound">MotionEndEvent</ref>(<ref refid="class_smart_blocks_1_1_motion_end_event" kindref="compound">MotionEndEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_smart_blocks_1_1_motion_end_event" kindref="compound">MotionEndEvent</ref>();</highlight></codeline>
+<codeline lineno="79" refid="class_smart_blocks_1_1_motion_end_event_1af30e4cfc816c8af8ea01da669dd56016" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_end_event_1af30e4cfc816c8af8ea01da669dd56016" kindref="member">consumeBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1aef3dfa8f89f3e86693704853656e3005" kindref="member">consume</ref>();</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_motion_start_event_1a134976c5a83f5d113a5a486e682bff08" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ROBOTBLOCKSEVENTS_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,423 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_meld_process_1_1_meld_process_scheduler" kind="class" language="C++" prot="public">
+    <compoundname>MeldProcess::MeldProcessScheduler</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_scheduler" prot="public" virt="non-virtual">BaseSimulator::Scheduler</basecompoundref>
+    <includes refid="meld_process_scheduler_8h" local="no">meldProcessScheduler.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_meld_process_1_1_meld_process_scheduler_1a1e3889a8fbd10679f30f57e7b5a13492" prot="protected" static="no" mutable="no">
+        <type>boost::thread *</type>
+        <definition>boost::thread* MeldProcess::MeldProcessScheduler::schedulerThread</definition>
+        <argsstring></argsstring>
+        <name>schedulerThread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_meld_process_1_1_meld_process_scheduler_1aa22286a22dc5aa3728d48e3cecf42712" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MeldProcess::MeldProcessScheduler::schedulerMode</definition>
+        <argsstring></argsstring>
+        <name>schedulerMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="26" bodyend="-1"/>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1a7206526ac20e971d64d5e4a3bbb25565" compoundref="meld_process_scheduler_8cpp" startline="221" endline="229">start</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_meld_process_1_1_meld_process_scheduler_1afe2b5525368937b69e9bf7e0522741fc" prot="public" static="no" mutable="no">
+        <type>boost::interprocess::interprocess_semaphore *</type>
+        <definition>boost::interprocess::interprocess_semaphore* MeldProcess::MeldProcessScheduler::sem_schedulerStart</definition>
+        <argsstring></argsstring>
+        <name>sem_schedulerStart</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1a7206526ac20e971d64d5e4a3bbb25565" compoundref="meld_process_scheduler_8cpp" startline="221" endline="229">start</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1a787c5d9a9596f0515f1c8a3b4344db5b" compoundref="meld_process_scheduler_8cpp" startline="235" endline="241">unPause</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1aac696e91c046dfb9a5799a38ca6e0b91" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldProcess::MeldProcessScheduler::MeldProcessScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>MeldProcessScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="27" bodyend="33"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a068d3934692bbab5f85229820f86eb6b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>MeldProcess::MeldProcessScheduler::~MeldProcessScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>~MeldProcessScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="35" bodyend="39"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * MeldProcess::MeldProcessScheduler::startPaused</definition>
+        <argsstring>()</argsstring>
+        <name>startPaused</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="62" bodyend="219"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="scheduler_8h_1abf9fcbad9241517e70536eb685c6c799" compoundref="scheduler_8h" startline="25">SCHEDULER_MODE_FASTEST</references>
+        <references refid="namespace_meld_process_1a7358d26c5dfafb550597efedf32ab64e" compoundref="meld_process_v_m_8h" startline="115" endline="115">MeldProcess::checkForReceivedVMCommands</references>
+        <references refid="namespace_meld_process_1aa7edfff8a7dc1f75ba0762a936dd9f01" compoundref="meld_process_v_m_8h" startline="116" endline="116">MeldProcess::waitForOneVMCommand</references>
+        <references refid="namespace_meld_process_1a909781d4212cf825a8ed456c46e727ad" compoundref="meld_process_debugger_8h" startline="73" endline="73">MeldProcess::getDebugger</references>
+        <references refid="class_meld_process_1_1_meld_process_debugger_1a2c191ae614f56aaced833fa0345cb8af" compoundref="meld_process_debugger_8cpp" startline="81" endline="86">MeldProcess::MeldProcessDebugger::handleBreakAtTimeReached</references>
+        <references refid="class_meld_process_1_1_meld_process_debugger_1ac48b7b3b60bf543b593109216321be75" compoundref="meld_process_debugger_8cpp" startline="77" endline="79">MeldProcess::MeldProcessDebugger::handlePauseRequest</references>
+        <references refid="namespace_blinky_blocks_1aba3b7e8c9eec534ab90c0c7f9e98eef7" compoundref="blinky_blocks_world_8h" startline="99" endline="99">BlinkyBlocks::getWorld</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+        <references refid="class_event_1a98e8d962b67f768b9278481564f83ab1" compoundref="events_8cpp" startline="55" endline="57">Event::getNextId</references>
+        <references refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" compoundref="events_8cpp" startline="59" endline="61">Event::getNbLivingEvents</references>
+        <references refid="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" compoundref="network_8cpp" startline="44" endline="46">Message::getNbMessages</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a1e75b0513441aac21e1eba6fcfe2cf75" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="41" bodyend="43"/>
+        <referencedby refid="namespace_blinky_blocks_1ac102af21a67bb63072643278e99756f4" compoundref="blinky_blocks_scheduler_8h" startline="29" endline="42">BlinkyBlocks::createScheduler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a3edb6e5abe874dc4a3f9ce058473230b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="45" bodyend="47"/>
+        <referencedby refid="namespace_blinky_blocks_1aac09cf80b036c44ba801c48aab6a05be" compoundref="blinky_blocks_scheduler_8h" startline="44" endline="56">BlinkyBlocks::deleteScheduler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1aa10876acc79eeb945da0eb3272aa66ab" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_meld_process_1_1_meld_process_scheduler" kindref="compound">MeldProcessScheduler</ref> *</type>
+        <definition>static MeldProcessScheduler* MeldProcess::MeldProcessScheduler::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="37" bodyend="40"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a337f4f881971300b65a6a4f1f3a248ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::printInfo</definition>
+        <argsstring>()</argsstring>
+        <name>printInfo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="42" bodyend="44"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a7206526ac20e971d64d5e4a3bbb25565" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::start</definition>
+        <argsstring>(int mode)</argsstring>
+        <name>start</name>
+        <reimplements refid="class_base_simulator_1_1_scheduler_1a242f63f51209b7fda69f46832bb4cc94">start</reimplements>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="221" bodyend="229"/>
+        <references refid="class_meld_process_1_1_meld_process_scheduler_1aa22286a22dc5aa3728d48e3cecf42712" compoundref="meld_process_scheduler_8h" startline="26">schedulerMode</references>
+        <references refid="class_meld_process_1_1_meld_process_scheduler_1afe2b5525368937b69e9bf7e0522741fc" compoundref="meld_process_scheduler_8h" startline="33">sem_schedulerStart</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a6dadff32c15b956bf3f9902d5da82b4d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::waitForSchedulerEnd</definition>
+        <argsstring>()</argsstring>
+        <name>waitForSchedulerEnd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a5b6adb32d025c42dc69ec74a6f43061b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::stop</definition>
+        <argsstring>(uint64_t date)</argsstring>
+        <name>stop</name>
+        <reimplements refid="class_base_simulator_1_1_scheduler_1a29d72be4ed6f925d6ea20a5584050d21">stop</reimplements>
+        <param>
+          <type>uint64_t</type>
+          <declname>date</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="243" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1ac1a431d62d9d23f8d2872a52d1e1156d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::pause</definition>
+        <argsstring>(uint64_t date)</argsstring>
+        <name>pause</name>
+        <param>
+          <type>uint64_t</type>
+          <declname>date</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="231" bodyend="233"/>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a9d417c5bf3558a7344362b5c7076a56b" compoundref="scheduler_8cpp" startline="112" endline="114">BaseSimulator::Scheduler::scheduleLock</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1ac7d4845272cc367789936168a5d08aae" compoundref="meld_process_debugger_8cpp" startline="44" endline="56">MeldProcess::MeldProcessDebugger::pauseSim</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a787c5d9a9596f0515f1c8a3b4344db5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::unPause</definition>
+        <argsstring>()</argsstring>
+        <name>unPause</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="235" bodyend="241"/>
+        <references refid="class_meld_process_1_1_meld_process_scheduler_1afe2b5525368937b69e9bf7e0522741fc" compoundref="meld_process_scheduler_8h" startline="33">sem_schedulerStart</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1a62488b8136f3ee45c4b3a777a92dca75" compoundref="meld_process_debugger_8cpp" startline="58" endline="60">MeldProcess::MeldProcessDebugger::unPauseSim</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1ad2df69878caf829b95fe2558a4d9adc4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MeldProcess::MeldProcessScheduler::isPaused</definition>
+        <argsstring>()</argsstring>
+        <name>isPaused</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="58" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1af309c28022258227c6182d0955a8b458" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool MeldProcess::MeldProcessScheduler::schedule</definition>
+        <argsstring>(Event *ev)</argsstring>
+        <name>schedule</name>
+        <reimplements refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4">schedule</reimplements>
+        <param>
+          <type><ref refid="class_event" kindref="compound">Event</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="70" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="249" bodyend="307"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_event_1a08ba599a781bea8b678251fdb7290890" compoundref="events_8h" startline="53">Event::id</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+        <references refid="scheduler_8h_1abf9fcbad9241517e70536eb685c6c799" compoundref="scheduler_8h" startline="25">SCHEDULER_MODE_FASTEST</references>
+        <references refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" compoundref="trace_8h" startline="18">ERRPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1a4ce0fff31609d2d01c5a7efed80bb491" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool MeldProcess::MeldProcessScheduler::scheduleLock</definition>
+        <argsstring>(Event *ev)</argsstring>
+        <name>scheduleLock</name>
+        <reimplements refid="class_base_simulator_1_1_scheduler_1a9d417c5bf3558a7344362b5c7076a56b">scheduleLock</reimplements>
+        <param>
+          <type><ref refid="class_event" kindref="compound">Event</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="71" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="310" bodyend="316"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1ae16819afdf9fd4310859dc9f2c7f4a23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::MeldProcessScheduler::SemWaitOrReadDebugMessage</definition>
+        <argsstring>()</argsstring>
+        <name>SemWaitOrReadDebugMessage</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="73" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp" bodystart="50" bodyend="60"/>
+        <references refid="namespace_meld_process_1a7358d26c5dfafb550597efedf32ab64e" compoundref="meld_process_v_m_8h" startline="115" endline="115">MeldProcess::checkForReceivedVMCommands</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_meld_process_scheduler_1ac7db3200d6ee2b2c84138f92a27a99ff" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int MeldProcess::MeldProcessScheduler::getMode</definition>
+        <argsstring>()</argsstring>
+        <name>getMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="75" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="75" bodyend="75"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1902">
+        <label>MeldProcess::MeldProcessScheduler</label>
+        <link refid="class_meld_process_1_1_meld_process_scheduler"/>
+        <childnode refid="1903" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1903">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1904">
+        <label>MeldProcess::MeldProcessScheduler</label>
+        <link refid="class_meld_process_1_1_meld_process_scheduler"/>
+        <childnode refid="1905" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1905">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="1905" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="23" bodyend="77"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_scheduler_1ac1fba29a1baa8cb10850ea3482c77e7b" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>addKeyword</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a1e75b0513441aac21e1eba6fcfe2cf75" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>createScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1aba5efd9a72cb0aad8896d649399e418b" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>currentDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac3807abb2d5f62b5208da9b046c6101d" prot="public" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>debug</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac488bdbb9cfc8db34a3862a2aca81de1" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>debugDate</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a3edb6e5abe874dc4a3f9ce058473230b" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>deleteScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa61d0f40619e29d2a2deff9663c5b60b3" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>ENDED</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a64b5f64b90fcc6d61fa6f02b28229caf" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>eventsMap</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4d4384500eb203b3770a01e8aed4e2bc" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>eventsMapSize</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1ac7db3200d6ee2b2c84138f92a27a99ff" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>getMode</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1acc23d53cd67a3a90cd811a5fbf17107d" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>getNbreMessages</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1aa10876acc79eeb945da0eb3272aa66ab" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>getScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a6ea1a5506bfaa5e7a4873b76d6545d08" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>getState</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1ad2df69878caf829b95fe2558a4d9adc4" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>isPaused</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a34e7e2f65b63ea2fff50b2083e324cfc" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>largestEventsMapSize</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4d733428435018614ba07bfd12c9cbdb" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>lock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a71703934946c4fd3c9df7d0cfe8675a9" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>maximumDate</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1aac696e91c046dfb9a5799a38ca6e0b91" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>MeldProcessScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a03f3f940c6a87a05124fd1ee623bf7f8" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>mutex_schedule</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a02436c16d488003f947119e859a82ea1" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>mutex_trace</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa28ba7aad53862cc08b3f1e50e47c60cb" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>NOTREADY</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa5cee64df631489c6e8bd753e7d67bf05" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>NOTSTARTED</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>now</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1ac1a431d62d9d23f8d2872a52d1e1156d" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>pause</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa5bda1b17aeede9905ed346ce303cc562" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>PAUSED</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a337f4f881971300b65a6a4f1f3a248ac" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>printInfo</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a7f415c6da6d2f533407b173ad08a1bae" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>removeEventsToBlock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a75613ffc0ff20be96fee25cd60012879" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>removeKeywords</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a8046d5cb5c7f085ca848ddf368fd96b5" prot="public" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>restart</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aaa53d7d02469eabe0aeb8056c0777caf5" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>RUNNING</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1af309c28022258227c6182d0955a8b458" prot="public" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>schedule</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a4ce0fff31609d2d01c5a7efed80bb491" prot="public" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>scheduleLock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a39592d973751ef2e8cec4a086f100e7e" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>Scheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a887c2ae764fe364a8d5dcb738b284ee6" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>scheduler</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1aa22286a22dc5aa3728d48e3cecf42712" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>schedulerMode</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a1e3889a8fbd10679f30f57e7b5a13492" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>schedulerThread</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1afe2b5525368937b69e9bf7e0522741fc" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>sem_schedulerStart</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1ae16819afdf9fd4310859dc9f2c7f4a23" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>SemWaitOrReadDebugMessage</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1aca72617a32cf260ac6d09f43d024bb26" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>setMaximumDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4fb373ae5465372b61a53fa8e73a1e6c" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>setState</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a7206526ac20e971d64d5e4a3bbb25565" prot="public" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>start</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>startPaused</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a6aa4eb67b4af24f58d186b28fa5037e2" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>state</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067a" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>State</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a5b6adb32d025c42dc69ec74a6f43061b" prot="public" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>stop</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a5850b793fd4a94b06b499ac892a556f9" prot="protected" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>tabKeywords</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1af6601a5e1b70ff8ee02400b4657f6a22" prot="public" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>trace</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a398ea684955459c97fd9a15e541b8440" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>unlock</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a787c5d9a9596f0515f1c8a3b4344db5b" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>unPause</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a6dadff32c15b956bf3f9902d5da82b4d" prot="public" virt="non-virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>waitForSchedulerEnd</name></member>
+      <member refid="class_meld_process_1_1_meld_process_scheduler_1a068d3934692bbab5f85229820f86eb6b" prot="protected" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>~MeldProcessScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac11343e2de03e636df91f89e30fcd9b1" prot="protected" virt="virtual"><scope>MeldProcess::MeldProcessScheduler</scope><name>~Scheduler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

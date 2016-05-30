@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_vertex_array" kind="class" language="C++" prot="public">
+    <compoundname>VertexArray</compoundname>
+    <includes refid="vertex_array_8h" local="no">vertexArray.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_vertex_array_1abc0afa4680b7cc8a2fce36bd5ecc4bbe" prot="private" static="no" mutable="no">
+        <type>GLfloat *</type>
+        <definition>GLfloat* VertexArray::tabVertices</definition>
+        <argsstring></argsstring>
+        <name>tabVertices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="8" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vertex_array_1aebc30e800b62f81d2f54ec6e53ed704b" prot="private" static="no" mutable="no">
+        <type>GLfloat *</type>
+        <definition>GLfloat * VertexArray::tabNormals</definition>
+        <argsstring></argsstring>
+        <name>tabNormals</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="8" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vertex_array_1ae4d54733c111e0fd14b591e59889c0ff" prot="private" static="no" mutable="no">
+        <type>GLfloat *</type>
+        <definition>GLfloat * VertexArray::tabTexCoords</definition>
+        <argsstring></argsstring>
+        <name>tabTexCoords</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="8" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vertex_array_1a811f048638371050873459ef147cb2f0" prot="private" static="no" mutable="no">
+        <type>GLuint *</type>
+        <definition>GLuint* VertexArray::tabIndices</definition>
+        <argsstring></argsstring>
+        <name>tabIndices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="9" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vertex_array_1ae9f03e082afd8102251b6e4ce7d5d860" prot="private" static="no" mutable="no">
+        <type>GLuint</type>
+        <definition>GLuint VertexArray::nbrePts</definition>
+        <argsstring></argsstring>
+        <name>nbrePts</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="10" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vertex_array_1a73e1766a8b646fd1485483a96631f495" prot="private" static="no" mutable="no">
+        <type>GLuint</type>
+        <definition>GLuint VertexArray::nbreIndices</definition>
+        <argsstring></argsstring>
+        <name>nbreIndices</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="10" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_vertex_array_1ad50cd65c132d791c50459abd6e541764" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>VertexArray::VertexArray</definition>
+        <argsstring>(int np, int ni)</argsstring>
+        <name>VertexArray</name>
+        <param>
+          <type>int</type>
+          <declname>np</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ni</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="12" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp" bodystart="3" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vertex_array_1a82597eb9daba5ad66dd3cf898e159a95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>VertexArray::~VertexArray</definition>
+        <argsstring>()</argsstring>
+        <name>~VertexArray</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="13" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp" bodystart="12" bodyend="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vertex_array_1add89da6087c7d14771b99a3f4d621c67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void VertexArray::setPoint</definition>
+        <argsstring>(int n, GLfloat px, GLfloat py, GLfloat pz, GLfloat nx, GLfloat ny, GLfloat nz, GLfloat tx, GLfloat ty)</argsstring>
+        <name>setPoint</name>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>pz</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>nx</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>ny</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>nz</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>tx</declname>
+        </param>
+        <param>
+          <type>GLfloat</type>
+          <declname>ty</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="15" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp" bodystart="19" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vertex_array_1a79a9cc25ceb4e53215a0e09628ebaedd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void VertexArray::setIndicesTriangle</definition>
+        <argsstring>(int n, GLuint i1, GLuint i2, GLuint i3)</argsstring>
+        <name>setIndicesTriangle</name>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>GLuint</type>
+          <declname>i1</declname>
+        </param>
+        <param>
+          <type>GLuint</type>
+          <declname>i2</declname>
+        </param>
+        <param>
+          <type>GLuint</type>
+          <declname>i3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="16" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp" bodystart="33" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vertex_array_1a8fa8a59d9a7edf881efaee11458ba93a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void VertexArray::draw</definition>
+        <argsstring>()</argsstring>
+        <name>draw</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="17" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp" bodystart="40" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vertex_array_1a9100788a8b50fc2040217992db6c20e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void VertexArray::drawNormals</definition>
+        <argsstring>()</argsstring>
+        <name>drawNormals</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="18" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp" bodystart="53" bodyend="65"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" line="7" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h" bodystart="7" bodyend="19"/>
+    <listofallmembers>
+      <member refid="class_vertex_array_1a8fa8a59d9a7edf881efaee11458ba93a" prot="public" virt="non-virtual"><scope>VertexArray</scope><name>draw</name></member>
+      <member refid="class_vertex_array_1a9100788a8b50fc2040217992db6c20e4" prot="public" virt="non-virtual"><scope>VertexArray</scope><name>drawNormals</name></member>
+      <member refid="class_vertex_array_1a73e1766a8b646fd1485483a96631f495" prot="private" virt="non-virtual"><scope>VertexArray</scope><name>nbreIndices</name></member>
+      <member refid="class_vertex_array_1ae9f03e082afd8102251b6e4ce7d5d860" prot="private" virt="non-virtual"><scope>VertexArray</scope><name>nbrePts</name></member>
+      <member refid="class_vertex_array_1a79a9cc25ceb4e53215a0e09628ebaedd" prot="public" virt="non-virtual"><scope>VertexArray</scope><name>setIndicesTriangle</name></member>
+      <member refid="class_vertex_array_1add89da6087c7d14771b99a3f4d621c67" prot="public" virt="non-virtual"><scope>VertexArray</scope><name>setPoint</name></member>
+      <member refid="class_vertex_array_1a811f048638371050873459ef147cb2f0" prot="private" virt="non-virtual"><scope>VertexArray</scope><name>tabIndices</name></member>
+      <member refid="class_vertex_array_1aebc30e800b62f81d2f54ec6e53ed704b" prot="private" virt="non-virtual"><scope>VertexArray</scope><name>tabNormals</name></member>
+      <member refid="class_vertex_array_1ae4d54733c111e0fd14b591e59889c0ff" prot="private" virt="non-virtual"><scope>VertexArray</scope><name>tabTexCoords</name></member>
+      <member refid="class_vertex_array_1abc0afa4680b7cc8a2fce36bd5ecc4bbe" prot="private" virt="non-virtual"><scope>VertexArray</scope><name>tabVertices</name></member>
+      <member refid="class_vertex_array_1ad50cd65c132d791c50459abd6e541764" prot="public" virt="non-virtual"><scope>VertexArray</scope><name>VertexArray</name></member>
+      <member refid="class_vertex_array_1a82597eb9daba5ad66dd3cf898e159a95" prot="public" virt="non-virtual"><scope>VertexArray</scope><name>~VertexArray</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

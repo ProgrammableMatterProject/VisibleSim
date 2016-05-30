@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="vertex_array_8cpp" kind="file" language="C++">
+    <compoundname>vertexArray.cpp</compoundname>
+    <includes refid="vertex_array_8h" local="yes">vertexArray.h</includes>
+    <includes local="yes">stdio.h</includes>
+    <incdepgraph>
+      <node id="19692">
+        <label>vertexArray.h</label>
+        <link refid="vertex_array_8h"/>
+        <childnode refid="19693" relation="include">
+        </childnode>
+        <childnode refid="19694" relation="include">
+        </childnode>
+      </node>
+      <node id="19693">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="19694">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="19695">
+        <label>stdio.h</label>
+      </node>
+      <node id="19691">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp</label>
+        <link refid="vertexArray.cpp"/>
+        <childnode refid="19692" relation="include">
+        </childnode>
+        <childnode refid="19695" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vertex_array_8h" kindref="compound">vertexArray.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;stdio.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="class_vertex_array_1ad50cd65c132d791c50459abd6e541764" refkind="member"><highlight class="normal"><ref refid="class_vertex_array_1ad50cd65c132d791c50459abd6e541764" kindref="member">VertexArray::VertexArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>np,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nt)<sp/>{</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/>nbrePts=np;</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/>nbreIndices=nt*3;</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/>tabVertices<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>GLfloat[nbrePts*3];</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/>tabNormals<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>GLfloat[nbrePts*3];</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>tabTexCoords<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>GLfloat[nbrePts*2];</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>tabIndices<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>GLuint[nbreIndices];</highlight></codeline>
+<codeline lineno="10"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="class_vertex_array_1a82597eb9daba5ad66dd3cf898e159a95" refkind="member"><highlight class="normal"><ref refid="class_vertex_array_1a82597eb9daba5ad66dd3cf898e159a95" kindref="member">VertexArray::~VertexArray</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>[]<sp/>tabVertices;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>[]<sp/>tabNormals;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>[]<sp/>tabTexCoords;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>[]<sp/>tabIndices;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="class_vertex_array_1add89da6087c7d14771b99a3f4d621c67" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1add89da6087c7d14771b99a3f4d621c67" kindref="member">VertexArray::setPoint</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n,GLfloat<sp/>px,GLfloat<sp/>py,GLfloat<sp/>pz,GLfloat<sp/>nx,GLfloat<sp/>ny,GLfloat<sp/>nz,GLfloat<sp/>tx,GLfloat<sp/>ty)<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>GLfloat<sp/>*ptr=tabVertices+n*3;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr++=px;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr++=py;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr=pz;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>ptr<sp/>=<sp/>tabNormals+n*3;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr++=nx;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr++=ny;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr=nz;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>ptr<sp/>=<sp/>tabTexCoords+n*2;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr++=tx;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr=ty;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="class_vertex_array_1a79a9cc25ceb4e53215a0e09628ebaedd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1a79a9cc25ceb4e53215a0e09628ebaedd" kindref="member">VertexArray::setIndicesTriangle</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n,GLuint<sp/>i1,GLuint<sp/>i2,GLuint<sp/>i3)<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/>*ptr=tabIndices+n*3;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr++=i1;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr++=i2;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>*ptr=i3;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="class_vertex_array_1a8fa8a59d9a7edf881efaee11458ba93a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1a8fa8a59d9a7edf881efaee11458ba93a" kindref="member">VertexArray::draw</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>glEnableClientState(GL_NORMAL_ARRAY);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>glEnableClientState(GL_TEXTURE_COORD_ARRAY);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>glEnableClientState(GL_VERTEX_ARRAY);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>glNormalPointer(GL_FLOAT,<sp/>0,<sp/>tabNormals);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>glTexCoordPointer(2,<sp/>GL_FLOAT,<sp/>0,<sp/>tabTexCoords);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>glVertexPointer(3,<sp/>GL_FLOAT,<sp/>0,<sp/>tabVertices);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>glDrawElements(GL_TRIANGLES,<sp/>nbreIndices,GL_UNSIGNED_INT,tabIndices);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>glDisableClientState(GL_VERTEX_ARRAY);<sp/><sp/></highlight><highlight class="comment">//<sp/>disable<sp/>vertex<sp/>arrays</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>glDisableClientState(GL_TEXTURE_COORD_ARRAY);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>glDisableClientState(GL_NORMAL_ARRAY);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_vertex_array_1a9100788a8b50fc2040217992db6c20e4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1a9100788a8b50fc2040217992db6c20e4" kindref="member">VertexArray::drawNormals</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>glBegin(GL_LINES);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>nbrePts;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>GLfloat<sp/>*ptrPts<sp/>=<sp/>tabVertices;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>GLfloat<sp/>*ptrNorm<sp/>=<sp/>tabNormals;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(i--)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>glVertex3fv(ptrPts);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>glVertex3f(ptrPts[0]+ptrNorm[0]*10.0,ptrPts[1]+ptrNorm[1]*10.0,ptrPts[2]+ptrNorm[2]*10.0);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptrPts+=3;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptrNorm+=3;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>glEnd();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp"/>
+  </compounddef>
+</doxygen>

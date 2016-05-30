@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_square_matrix" kind="class" language="C++" prot="public">
+    <compoundname>SquareMatrix</compoundname>
+    <includes refid="config_stat_8h" local="no">configStat.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_square_matrix_1aea5128d136b85d7b2179419f7759a2f9" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SquareMatrix::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_square_matrix_1aecbe97c5aab22a514f9c95858b9c87e3" prot="private" static="no" mutable="no">
+        <type>int *</type>
+        <definition>int* SquareMatrix::distances</definition>
+        <argsstring></argsstring>
+        <name>distances</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_square_matrix_1ae7e2c6a3669c2597a376003ea334fe32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>SquareMatrix::SquareMatrix</definition>
+        <argsstring>(int s)</argsstring>
+        <name>SquareMatrix</name>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="23" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_square_matrix_1a2649bb7f63dad4ef768cfe7f82b43542" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>SquareMatrix::~SquareMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>~SquareMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="24" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_square_matrix_1a723a6af991ce6ffc5fbf0ffcaec136b0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int SquareMatrix::getSize</definition>
+        <argsstring>()</argsstring>
+        <name>getSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="26" bodyend="26"/>
+        <referencedby refid="class_config_stat_1a0443c65814f847e6a0f07c1aee91c3a5" compoundref="config_stat_8cpp" startline="63" endline="72">ConfigStat::compute</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_square_matrix_1a14b711eed56765facf0c3b78601cd904" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void SquareMatrix::set</definition>
+        <argsstring>(int i, int j, int v)</argsstring>
+        <name>set</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>j</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="27" bodyend="27"/>
+        <referencedby refid="class_config_stat_1a0443c65814f847e6a0f07c1aee91c3a5" compoundref="config_stat_8cpp" startline="63" endline="72">ConfigStat::compute</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_square_matrix_1ad6bedc00c64ec18749c7441c9e0f2669" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int SquareMatrix::get</definition>
+        <argsstring>(int i, int j)</argsstring>
+        <name>get</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>j</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="28" bodyend="28"/>
+        <referencedby refid="class_config_stat_1a0443c65814f847e6a0f07c1aee91c3a5" compoundref="config_stat_8cpp" startline="63" endline="72">ConfigStat::compute</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" line="18" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h" bodystart="18" bodyend="29"/>
+    <listofallmembers>
+      <member refid="class_square_matrix_1aecbe97c5aab22a514f9c95858b9c87e3" prot="private" virt="non-virtual"><scope>SquareMatrix</scope><name>distances</name></member>
+      <member refid="class_square_matrix_1ad6bedc00c64ec18749c7441c9e0f2669" prot="public" virt="non-virtual"><scope>SquareMatrix</scope><name>get</name></member>
+      <member refid="class_square_matrix_1a723a6af991ce6ffc5fbf0ffcaec136b0" prot="public" virt="non-virtual"><scope>SquareMatrix</scope><name>getSize</name></member>
+      <member refid="class_square_matrix_1a14b711eed56765facf0c3b78601cd904" prot="public" virt="non-virtual"><scope>SquareMatrix</scope><name>set</name></member>
+      <member refid="class_square_matrix_1aea5128d136b85d7b2179419f7759a2f9" prot="private" virt="non-virtual"><scope>SquareMatrix</scope><name>size</name></member>
+      <member refid="class_square_matrix_1ae7e2c6a3669c2597a376003ea334fe32" prot="public" virt="non-virtual"><scope>SquareMatrix</scope><name>SquareMatrix</name></member>
+      <member refid="class_square_matrix_1a2649bb7f63dad4ef768cfe7f82b43542" prot="public" virt="non-virtual"><scope>SquareMatrix</scope><name>~SquareMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

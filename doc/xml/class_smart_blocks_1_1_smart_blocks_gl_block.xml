@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_smart_blocks_1_1_smart_blocks_gl_block" kind="class" language="C++" prot="public">
+    <compoundname>SmartBlocks::SmartBlocksGlBlock</compoundname>
+    <basecompoundref refid="class_gl_block" prot="public" virt="non-virtual">GlBlock</basecompoundref>
+    <includes refid="smart_blocks_gl_block_8h" local="no">smartBlocksGlBlock.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_smart_blocks_1_1_smart_blocks_gl_block_1aa163c533cd96b8ec592dec7a91b78b11" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SmartBlocks::SmartBlocksGlBlock::displayedValue</definition>
+        <argsstring></argsstring>
+        <name>displayedValue</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="18" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" bodystart="18" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a297ffc03cd6716f635abeca93f459e07" compoundref="smart_blocks_gl_block_8cpp" startline="5" endline="7">SmartBlocksGlBlock</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aadff921119bdeccefc40e13b2a5e9b3f" compoundref="smart_blocks_gl_block_8cpp" startline="13" endline="63">glDraw</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_gl_block_1a297ffc03cd6716f635abeca93f459e07" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SmartBlocks::SmartBlocksGlBlock::SmartBlocksGlBlock</definition>
+        <argsstring>(int id)</argsstring>
+        <name>SmartBlocksGlBlock</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp" bodystart="5" bodyend="7"/>
+        <references refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aa163c533cd96b8ec592dec7a91b78b11" compoundref="smart_blocks_gl_block_8h" startline="18">displayedValue</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_gl_block_1a36b3efd1e1a52b421ca3c6f63043e7e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>SmartBlocks::SmartBlocksGlBlock::~SmartBlocksGlBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~SmartBlocksGlBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp" bodystart="9" bodyend="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_gl_block_1a021053786e27f174044b42fcd73e3f1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string SmartBlocks::SmartBlocksGlBlock::getInfo</definition>
+        <argsstring>()</argsstring>
+        <name>getInfo</name>
+        <reimplements refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7">getInfo</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp" bodystart="72" bodyend="74"/>
+        <references refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7" compoundref="gl_block_8cpp" startline="57" endline="62">GlBlock::getInfo</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_gl_block_1ad1795806c1eff84cf65424e7171d7408" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::SmartBlocksGlBlock::setDisplayedValue</definition>
+        <argsstring>(int n)</argsstring>
+        <name>setDisplayedValue</name>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" bodystart="24" bodyend="24"/>
+        <references refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aadff921119bdeccefc40e13b2a5e9b3f" compoundref="smart_blocks_gl_block_8cpp" startline="13" endline="63">glDraw</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a72517a4d3f17b8bdbe543eba47b75f47" compoundref="smart_blocks_gl_block_8cpp" startline="65" endline="70">glDrawId</references>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_block_1a0373fc2b5cc83151e3daf174e3e75fa7" compoundref="smart_blocks_block_8h" startline="38" endline="38">SmartBlocks::SmartBlocksBlock::setDisplayedValue</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_gl_block_1aadff921119bdeccefc40e13b2a5e9b3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::SmartBlocksGlBlock::glDraw</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj)</argsstring>
+        <name>glDraw</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp" bodystart="13" bodyend="63"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" compoundref="gl_block_8h" startline="19">GlBlock::isHighlighted</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">GlBlock::color</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1ac656199a96623b14bf5038632bbffd10" compoundref="obj_loader_8cpp" startline="326" endline="332">ObjLoader::ObjLoader::setLightedColor</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1ac92663308186d17dacb1e9337d3fe21a" compoundref="obj_loader_8cpp" startline="297" endline="304">ObjLoader::ObjLoader::glDraw</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aa163c533cd96b8ec592dec7a91b78b11" compoundref="smart_blocks_gl_block_8h" startline="18">displayedValue</references>
+        <references refid="namespace_smart_blocks_1a082eac088d3c41655abf3de6776c70b4" compoundref="smart_blocks_world_8h" startline="93" endline="93">SmartBlocks::getWorld</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1a97cbff3da1e96eae77e3d1a954f34a43" compoundref="smart_blocks_world_8h" startline="37">SmartBlocks::SmartBlocksWorld::idTextureDigits</references>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1ad1795806c1eff84cf65424e7171d7408" compoundref="smart_blocks_gl_block_8h" startline="24" endline="24">setDisplayedValue</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_gl_block_1a72517a4d3f17b8bdbe543eba47b75f47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::SmartBlocksGlBlock::glDrawId</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj)</argsstring>
+        <name>glDrawId</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp" bodystart="65" bodyend="70"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1ac92663308186d17dacb1e9337d3fe21a" compoundref="obj_loader_8cpp" startline="297" endline="304">ObjLoader::ObjLoader::glDraw</references>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1ad1795806c1eff84cf65424e7171d7408" compoundref="smart_blocks_gl_block_8h" startline="24" endline="24">setDisplayedValue</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2432">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="2431">
+        <label>SmartBlocks::SmartBlocksGlBlock</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_gl_block"/>
+        <childnode refid="2432" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2434">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="2433">
+        <label>SmartBlocks::SmartBlocksGlBlock</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_gl_block"/>
+        <childnode refid="2434" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" line="15" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h" bodystart="15" bodyend="27"/>
+    <listofallmembers>
+      <member refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>blockId</name></member>
+      <member refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>color</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aa163c533cd96b8ec592dec7a91b78b11" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>displayedValue</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a021053786e27f174044b42fcd73e3f1c" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>getInfo</name></member>
+      <member refid="class_gl_block_1a83b01f275e6f319bf5bd50116adfee15" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>getPopupInfo</name></member>
+      <member refid="class_gl_block_1ac2f5755213e7bc106e83a7a8030fd048" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>getPosition</name></member>
+      <member refid="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_gl_block_1a5c86ad67ac4b062166ecfa5fe7322766" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aadff921119bdeccefc40e13b2a5e9b3f" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>glDraw</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a72517a4d3f17b8bdbe543eba47b75f47" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>glDrawId</name></member>
+      <member refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>isHighlighted</name></member>
+      <member refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>position</name></member>
+      <member refid="class_gl_block_1abe931d185bd4851420e78ea92ec1aca2" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>setColor</name></member>
+      <member refid="class_gl_block_1a3a659956f3df7b81ed21ad16fa33b391" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>setColor</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_gl_block_1ad1795806c1eff84cf65424e7171d7408" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>setDisplayedValue</name></member>
+      <member refid="class_gl_block_1ae9849a64de0e8b6636314826d0e2f5ca" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>setPosition</name></member>
+      <member refid="class_gl_block_1ab03ba1da95352c4951b2bfe408ef04c3" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>setVisible</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a297ffc03cd6716f635abeca93f459e07" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>SmartBlocksGlBlock</name></member>
+      <member refid="class_gl_block_1abbe6e6bfc4a1697ba7fc8722d830ed2f" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>toggleHighlight</name></member>
+      <member refid="class_gl_block_1a2179d26fdfe814782897e57c3d77faa1" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>~GlBlock</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a36b3efd1e1a52b421ca3c6f63043e7e4" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksGlBlock</scope><name>~SmartBlocksGlBlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

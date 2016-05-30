@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_robot_blocks_1_1_presence_matrix" kind="class" language="C++" prot="public">
+    <compoundname>RobotBlocks::PresenceMatrix</compoundname>
+    <includes refid="robot_blocks_capabilities_8h" local="no">robotBlocksCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_robot_blocks_1_1_presence_matrix_1ac022be07fed7dad1eda648c0e6e3d679" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref></type>
+        <definition>presence RobotBlocks::PresenceMatrix::grid[27]</definition>
+        <argsstring>[27]</argsstring>
+        <name>grid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" bodystart="46" bodyend="-1"/>
+        <referencedby refid="class_robot_blocks_1_1_validation_matrix_1a099a261ed585ec744a2de3cd71b943e3" compoundref="robot_blocks_capabilities_8cpp" startline="518" endline="530">RobotBlocks::ValidationMatrix::validate</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_validation_matrix_1aef7f28638dcdd1abb1f4bef169189129" compoundref="robot_blocks_capabilities_8cpp" startline="532" endline="549">RobotBlocks::ValidationMatrix::validateWithTarget</referencedby>
+        <referencedby refid="namespace_robot_blocks_1a36a8b8ac50e5bb3d6bf19aba9774e574" compoundref="robot_blocks_capabilities_8cpp" startline="699" endline="704">RobotBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a09781af8d101b21b6f108240672d7ccd" compoundref="robot_blocks_world_8cpp" startline="483" endline="507">RobotBlocks::RobotBlocksWorld::getPresenceMatrix</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_robot_blocks_1_1_presence_matrix_1a378a685627e525d7d9a14330b62ddb7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::PresenceMatrix::PresenceMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>PresenceMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="670" bodyend="672"/>
+        <references refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aae5e0fc67709665b949c418d96639f45e" compoundref="robot_blocks_capabilities_8h" startline="42">RobotBlocks::emptyCell</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_presence_matrix_1ac7a4dcf425f48adaf32dce657f5294ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::PresenceMatrix::add</definition>
+        <argsstring>(presence v, const PointRel3D &amp;posAdd, const PointRel3D &amp;origine)</argsstring>
+        <name>add</name>
+        <param>
+          <type><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref></type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>posAdd</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>origine</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="674" bodyend="686"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_presence_matrix_1a718a41571551434fb740dcb14267715d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::PresenceMatrix::set</definition>
+        <argsstring>(const PointRel3D &amp;pt, presence v)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref></type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="692" bodyend="695"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_presence_matrix_1a5f62148d43093378925c657aceb37a27" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref></type>
+        <definition>presence RobotBlocks::PresenceMatrix::get</definition>
+        <argsstring>(const PointRel3D &amp;pt) const </argsstring>
+        <name>get</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="688" bodyend="690"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_capabilities_1ada2eae6e620968a36fa6ce6dd2c789e8" compoundref="robot_blocks_capabilities_8cpp" startline="393" endline="422">RobotBlocks::RobotBlocksCapabilities::validateMulti</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_robot_blocks_1_1_presence_matrix_1ae1723b2c3e58643cc99ca794bf23c525" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const PresenceMatrix &amp;sm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="699" bodyend="704"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" bodystart="44" bodyend="52"/>
+    <listofallmembers>
+      <member refid="class_robot_blocks_1_1_presence_matrix_1ac7a4dcf425f48adaf32dce657f5294ff" prot="public" virt="non-virtual"><scope>RobotBlocks::PresenceMatrix</scope><name>add</name></member>
+      <member refid="class_robot_blocks_1_1_presence_matrix_1a5f62148d43093378925c657aceb37a27" prot="public" virt="non-virtual"><scope>RobotBlocks::PresenceMatrix</scope><name>get</name></member>
+      <member refid="class_robot_blocks_1_1_presence_matrix_1ac022be07fed7dad1eda648c0e6e3d679" prot="public" virt="non-virtual"><scope>RobotBlocks::PresenceMatrix</scope><name>grid</name></member>
+      <member refid="class_robot_blocks_1_1_presence_matrix_1ae1723b2c3e58643cc99ca794bf23c525" prot="public" virt="non-virtual"><scope>RobotBlocks::PresenceMatrix</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_robot_blocks_1_1_presence_matrix_1a378a685627e525d7d9a14330b62ddb7c" prot="public" virt="non-virtual"><scope>RobotBlocks::PresenceMatrix</scope><name>PresenceMatrix</name></member>
+      <member refid="class_robot_blocks_1_1_presence_matrix_1a718a41571551434fb740dcb14267715d" prot="public" virt="non-virtual"><scope>RobotBlocks::PresenceMatrix</scope><name>set</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

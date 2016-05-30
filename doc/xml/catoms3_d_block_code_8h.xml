@@ -1,0 +1,589 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="catoms3_d_block_code_8h" kind="file" language="C++">
+    <compoundname>catoms3DBlockCode.h</compoundname>
+    <includes refid="block_code_8h" local="yes">blockCode.h</includes>
+    <includes refid="catoms3_d_block_8h" local="yes">catoms3DBlock.h</includes>
+    <includes refid="network_8h" local="yes">network.h</includes>
+    <includes refid="scheduler_8h" local="yes">scheduler.h</includes>
+    <includes local="no">ostream</includes>
+    <includedby refid="catoms3_d_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</includedby>
+    <includedby refid="catoms3_d_simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</includedby>
+    <includedby refid="catoms3_d_block_code_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</includedby>
+    <incdepgraph>
+      <node id="12812">
+        <label>list</label>
+      </node>
+      <node id="12837">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="12815" relation="include">
+        </childnode>
+        <childnode refid="12838" relation="include">
+        </childnode>
+        <childnode refid="12824" relation="include">
+        </childnode>
+        <childnode refid="12829" relation="include">
+        </childnode>
+        <childnode refid="12813" relation="include">
+        </childnode>
+        <childnode refid="12839" relation="include">
+        </childnode>
+      </node>
+      <node id="12849">
+        <label>cell3DPosition.h</label>
+        <link refid="cell3_d_position_8h"/>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12819" relation="include">
+        </childnode>
+        <childnode refid="12827" relation="include">
+        </childnode>
+      </node>
+      <node id="12824">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="12820" relation="include">
+        </childnode>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12819" relation="include">
+        </childnode>
+        <childnode refid="12825" relation="include">
+        </childnode>
+        <childnode refid="12826" relation="include">
+        </childnode>
+      </node>
+      <node id="12815">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="12816" relation="include">
+        </childnode>
+        <childnode refid="12817" relation="include">
+        </childnode>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12819" relation="include">
+        </childnode>
+        <childnode refid="12820" relation="include">
+        </childnode>
+        <childnode refid="12821" relation="include">
+        </childnode>
+        <childnode refid="12822" relation="include">
+        </childnode>
+        <childnode refid="12823" relation="include">
+        </childnode>
+        <childnode refid="12824" relation="include">
+        </childnode>
+        <childnode refid="12829" relation="include">
+        </childnode>
+      </node>
+      <node id="12826">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12819" relation="include">
+        </childnode>
+        <childnode refid="12827" relation="include">
+        </childnode>
+        <childnode refid="12828" relation="include">
+        </childnode>
+      </node>
+      <node id="12839">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="12840" relation="include">
+        </childnode>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12819" relation="include">
+        </childnode>
+        <childnode refid="12828" relation="include">
+        </childnode>
+        <childnode refid="12813" relation="include">
+        </childnode>
+        <childnode refid="12841" relation="include">
+        </childnode>
+        <childnode refid="12830" relation="include">
+        </childnode>
+      </node>
+      <node id="12806">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3DBlockCode.h"/>
+        <childnode refid="12807" relation="include">
+        </childnode>
+        <childnode refid="12834" relation="include">
+        </childnode>
+        <childnode refid="12852" relation="include">
+        </childnode>
+        <childnode refid="12854" relation="include">
+        </childnode>
+        <childnode refid="12861" relation="include">
+        </childnode>
+      </node>
+      <node id="12809">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="12858">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="12843">
+        <label>assert.h</label>
+      </node>
+      <node id="12832">
+        <label>stdint.h</label>
+      </node>
+      <node id="12817">
+        <label>stdlib.h</label>
+      </node>
+      <node id="12808">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="12809" relation="include">
+        </childnode>
+        <childnode refid="12810" relation="include">
+        </childnode>
+        <childnode refid="12811" relation="include">
+        </childnode>
+        <childnode refid="12812" relation="include">
+        </childnode>
+        <childnode refid="12813" relation="include">
+        </childnode>
+        <childnode refid="12807" relation="include">
+        </childnode>
+        <childnode refid="12831" relation="include">
+        </childnode>
+      </node>
+      <node id="12835">
+        <label>catoms3DGlBlock.h</label>
+        <link refid="catoms3_d_gl_block_8h"/>
+        <childnode refid="12814" relation="include">
+        </childnode>
+        <childnode refid="12836" relation="include">
+        </childnode>
+        <childnode refid="12824" relation="include">
+        </childnode>
+        <childnode refid="12813" relation="include">
+        </childnode>
+        <childnode refid="12846" relation="include">
+        </childnode>
+      </node>
+      <node id="12827">
+        <label>cmath</label>
+      </node>
+      <node id="12851">
+        <label>stdexcept</label>
+      </node>
+      <node id="12814">
+        <label>string</label>
+      </node>
+      <node id="12820">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="12842">
+        <label>map</label>
+      </node>
+      <node id="12856">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="12828">
+        <label>memory.h</label>
+      </node>
+      <node id="12813">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="12814" relation="include">
+        </childnode>
+        <childnode refid="12815" relation="include">
+        </childnode>
+        <childnode refid="12826" relation="include">
+        </childnode>
+        <childnode refid="12830" relation="include">
+        </childnode>
+      </node>
+      <node id="12819">
+        <label>fstream</label>
+      </node>
+      <node id="12861">
+        <label>ostream</label>
+      </node>
+      <node id="12807">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="12808" relation="include">
+        </childnode>
+        <childnode refid="12833" relation="include">
+        </childnode>
+      </node>
+      <node id="12823">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="12860">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="12829">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="12825" relation="include">
+        </childnode>
+        <childnode refid="12826" relation="include">
+        </childnode>
+        <childnode refid="12824" relation="include">
+        </childnode>
+      </node>
+      <node id="12821">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="12848">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="12850">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="12846">
+        <label>catoms3DCapabilities.h</label>
+        <link refid="catoms3_d_capabilities_8h"/>
+        <childnode refid="12840" relation="include">
+        </childnode>
+        <childnode refid="12847" relation="include">
+        </childnode>
+        <childnode refid="12826" relation="include">
+        </childnode>
+        <childnode refid="12844" relation="include">
+        </childnode>
+        <childnode refid="12814" relation="include">
+        </childnode>
+        <childnode refid="12848" relation="include">
+        </childnode>
+      </node>
+      <node id="12838">
+        <label>pthread.h</label>
+      </node>
+      <node id="12845">
+        <label>string.h</label>
+      </node>
+      <node id="12840">
+        <label>vector</label>
+      </node>
+      <node id="12852">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="12853" relation="include">
+        </childnode>
+        <childnode refid="12845" relation="include">
+        </childnode>
+        <childnode refid="12809" relation="include">
+        </childnode>
+        <childnode refid="12808" relation="include">
+        </childnode>
+      </node>
+      <node id="12855">
+        <label>sstream</label>
+      </node>
+      <node id="12854">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12855" relation="include">
+        </childnode>
+        <childnode refid="12842" relation="include">
+        </childnode>
+        <childnode refid="12833" relation="include">
+        </childnode>
+        <childnode refid="12843" relation="include">
+        </childnode>
+        <childnode refid="12856" relation="include">
+        </childnode>
+        <childnode refid="12857" relation="include">
+        </childnode>
+        <childnode refid="12811" relation="include">
+        </childnode>
+        <childnode refid="12858" relation="include">
+        </childnode>
+        <childnode refid="12859" relation="include">
+        </childnode>
+        <childnode refid="12837" relation="include">
+        </childnode>
+      </node>
+      <node id="12825">
+        <label>math.h</label>
+      </node>
+      <node id="12830">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12819" relation="include">
+        </childnode>
+        <childnode refid="12827" relation="include">
+        </childnode>
+        <childnode refid="12828" relation="include">
+        </childnode>
+        <childnode refid="12815" relation="include">
+        </childnode>
+      </node>
+      <node id="12818">
+        <label>iostream</label>
+      </node>
+      <node id="12853">
+        <label>deque</label>
+      </node>
+      <node id="12847">
+        <label>climits</label>
+      </node>
+      <node id="12857">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="12834">
+        <label>catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="12808" relation="include">
+        </childnode>
+        <childnode refid="12806" relation="include">
+        </childnode>
+        <childnode refid="12835" relation="include">
+        </childnode>
+        <childnode refid="12849" relation="include">
+        </childnode>
+        <childnode refid="12850" relation="include">
+        </childnode>
+        <childnode refid="12851" relation="include">
+        </childnode>
+      </node>
+      <node id="12811">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="12844">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="12819" relation="include">
+        </childnode>
+      </node>
+      <node id="12859">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="12833" relation="include">
+        </childnode>
+        <childnode refid="12814" relation="include">
+        </childnode>
+        <childnode refid="12809" relation="include">
+        </childnode>
+        <childnode refid="12808" relation="include">
+        </childnode>
+        <childnode refid="12860" relation="include">
+        </childnode>
+        <childnode refid="12852" relation="include">
+        </childnode>
+        <childnode refid="12830" relation="include">
+        </childnode>
+      </node>
+      <node id="12810">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="12841">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12842" relation="include">
+        </childnode>
+        <childnode refid="12840" relation="include">
+        </childnode>
+        <childnode refid="12811" relation="include">
+        </childnode>
+        <childnode refid="12843" relation="include">
+        </childnode>
+        <childnode refid="12808" relation="include">
+        </childnode>
+        <childnode refid="12813" relation="include">
+        </childnode>
+        <childnode refid="12844" relation="include">
+        </childnode>
+      </node>
+      <node id="12822">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="12816">
+        <label>stdio.h</label>
+      </node>
+      <node id="12836">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="12837" relation="include">
+        </childnode>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12819" relation="include">
+        </childnode>
+        <childnode refid="12814" relation="include">
+        </childnode>
+        <childnode refid="12840" relation="include">
+        </childnode>
+        <childnode refid="12827" relation="include">
+        </childnode>
+        <childnode refid="12817" relation="include">
+        </childnode>
+        <childnode refid="12845" relation="include">
+        </childnode>
+      </node>
+      <node id="12831">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="12808" relation="include">
+        </childnode>
+        <childnode refid="12832" relation="include">
+        </childnode>
+        <childnode refid="12818" relation="include">
+        </childnode>
+        <childnode refid="12810" relation="include">
+        </childnode>
+        <childnode refid="12812" relation="include">
+        </childnode>
+      </node>
+      <node id="12833">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="12862">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3DBlockCode.h"/>
+        <childnode refid="12863" relation="include">
+        </childnode>
+        <childnode refid="12866" relation="include">
+        </childnode>
+        <childnode refid="12873" relation="include">
+        </childnode>
+      </node>
+      <node id="12871">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</label>
+        <link refid="catoms3_d_scheduler_8h"/>
+        <childnode refid="12866" relation="include">
+        </childnode>
+        <childnode refid="12869" relation="include">
+        </childnode>
+        <childnode refid="12867" relation="include">
+        </childnode>
+        <childnode refid="12870" relation="include">
+        </childnode>
+      </node>
+      <node id="12872">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</label>
+        <link refid="catoms3_d_events_8h"/>
+        <childnode refid="12869" relation="include">
+        </childnode>
+      </node>
+      <node id="12868">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.cpp</label>
+        <link refid="catoms3_d_simulator_8cpp"/>
+      </node>
+      <node id="12864">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.cpp</label>
+        <link refid="catoms3_d_block_8cpp"/>
+      </node>
+      <node id="12869">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp</label>
+        <link refid="catoms3_d_events_8cpp"/>
+      </node>
+      <node id="12867">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp</label>
+        <link refid="catoms3_d_scheduler_8cpp"/>
+      </node>
+      <node id="12870">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.cpp</label>
+        <link refid="catoms3_d_world_8cpp"/>
+      </node>
+      <node id="12866">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</label>
+        <link refid="catoms3_d_simulator_8h"/>
+        <childnode refid="12864" relation="include">
+        </childnode>
+        <childnode refid="12867" relation="include">
+        </childnode>
+        <childnode refid="12868" relation="include">
+        </childnode>
+      </node>
+      <node id="12873">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3_d_block_code_8cpp"/>
+      </node>
+      <node id="12863">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="12864" relation="include">
+        </childnode>
+        <childnode refid="12862" relation="include">
+        </childnode>
+        <childnode refid="12865" relation="include">
+        </childnode>
+        <childnode refid="12871" relation="include">
+        </childnode>
+        <childnode refid="12872" relation="include">
+        </childnode>
+        <childnode refid="12870" relation="include">
+        </childnode>
+      </node>
+      <node id="12865">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</label>
+        <link refid="catoms3_d_world_8h"/>
+        <childnode refid="12864" relation="include">
+        </childnode>
+        <childnode refid="12866" relation="include">
+        </childnode>
+        <childnode refid="12869" relation="include">
+        </childnode>
+        <childnode refid="12867" relation="include">
+        </childnode>
+        <childnode refid="12870" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_catoms3_d_1_1_catoms3_d_block_code" prot="public">Catoms3D::Catoms3DBlockCode</innerclass>
+    <innernamespace refid="namespace_catoms3_d">Catoms3D</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>catoms3DBlockCode.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>CATOMS3DBLOCKCODE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CATOMS3DBLOCKCODE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="block_code_8h" kindref="compound">blockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="catoms3_d_block_8h" kindref="compound">catoms3DBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="network_8h" kindref="compound">network.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scheduler_8h" kindref="compound">scheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_catoms3_d" kindref="compound">Catoms3D</ref><sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Catoms3DBlock;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="class_catoms3_d_1_1_catoms3_d_block_code" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_catoms3_d_1_1_catoms3_d_block_code" kindref="compound">Catoms3DBlockCode</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_block_code" kindref="compound">BaseSimulator::BlockCode</ref><sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms3_d_1_1_catoms3_d_block_code_1ad0d1f35c6f725c775da2acfd9daf0ca6" kindref="member">Catoms3DBlockCode</ref>(<ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref><sp/>*host);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_catoms3_d_1_1_catoms3_d_block_code_1abf03a22d71a2634d96b295ed7eaa485b" kindref="member">~Catoms3DBlockCode</ref>();</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms3_d_1_1_catoms3_d_block_code" kindref="compound">Catoms3DBlockCode</ref>*<sp/><ref refid="class_catoms3_d_1_1_catoms3_d_block_code_1ad7bf3cd9e72d44f3ae29cf3582a463ae" kindref="member">buildNewBlockCode</ref>(<ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref><sp/>*host);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms3_d_1_1_catoms3_d_block_code_1a6c7768238fe393c880f8a8dece7232f7" kindref="member">processLocalEvent</ref>(<ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref><sp/>pev)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_catoms3_d_1_1_catoms3_d_block_code_1aadc4b82429e73713605bfc3034455257" kindref="member">addDebugAttributes</ref>(<ref refid="class_base_simulator_1_1_scheduler" kindref="compound">Scheduler</ref>*<sp/>scheduler);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CATOMS3DBLOCKCODE_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h"/>
+  </compounddef>
+</doxygen>

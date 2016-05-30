@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_accel_event" kind="class" language="C++" prot="public">
+    <compoundname>AccelEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="events_8h" local="no">events.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_accel_event_1afc0ae0edb636ede3ba2c753a13304535" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t AccelEvent::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="286" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="286" bodyend="-1"/>
+        <referencedby refid="class_accel_event_1acad69b420b7a7fd1378b035e4b94e9b8" compoundref="events_8cpp" startline="411" endline="417">AccelEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_accel_event_1a976ee9300dea0bb9a9c1d93522d3e3db" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t AccelEvent::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="287" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="287" bodyend="-1"/>
+        <referencedby refid="class_accel_event_1acad69b420b7a7fd1378b035e4b94e9b8" compoundref="events_8cpp" startline="411" endline="417">AccelEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_accel_event_1a054e93772809a3ba7f2d9c011a7e9cb8" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t AccelEvent::z</definition>
+        <argsstring></argsstring>
+        <name>z</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="288" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="288" bodyend="-1"/>
+        <referencedby refid="class_accel_event_1acad69b420b7a7fd1378b035e4b94e9b8" compoundref="events_8cpp" startline="411" endline="417">AccelEvent</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_accel_event_1acad69b420b7a7fd1378b035e4b94e9b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AccelEvent::AccelEvent</definition>
+        <argsstring>(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz)</argsstring>
+        <name>AccelEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+          <declname>conBlock</declname>
+        </param>
+        <param>
+          <type>uint64_t</type>
+          <declname>xx</declname>
+        </param>
+        <param>
+          <type>uint64_t</type>
+          <declname>yy</declname>
+        </param>
+        <param>
+          <type>uint64_t</type>
+          <declname>zz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="290" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="411" bodyend="417"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1ae6e2744c47b024d7d384288f9b4f7554" compoundref="unique_events_id_8h" startline="50">EVENT_ACCEL</references>
+        <references refid="class_accel_event_1afc0ae0edb636ede3ba2c753a13304535" compoundref="events_8h" startline="286">x</references>
+        <references refid="class_accel_event_1a976ee9300dea0bb9a9c1d93522d3e3db" compoundref="events_8h" startline="287">y</references>
+        <references refid="class_accel_event_1a054e93772809a3ba7f2d9c011a7e9cb8" compoundref="events_8h" startline="288">z</references>
+        <referencedby refid="class_accel_event_1afaeb3f70468c5fdbbb5d074d60cf1a7d" compoundref="events_8cpp" startline="430" endline="433">consumeBlockEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_accel_event_1ad277d1b0be403c449c22685b74581ab3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AccelEvent::AccelEvent</definition>
+        <argsstring>(AccelEvent *ev)</argsstring>
+        <name>AccelEvent</name>
+        <param>
+          <type><ref refid="class_accel_event" kindref="compound">AccelEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="291" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="419" bodyend="424"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_accel_event_1afc0ae0edb636ede3ba2c753a13304535" compoundref="events_8h" startline="286">x</references>
+        <references refid="class_accel_event_1a976ee9300dea0bb9a9c1d93522d3e3db" compoundref="events_8h" startline="287">y</references>
+        <references refid="class_accel_event_1a054e93772809a3ba7f2d9c011a7e9cb8" compoundref="events_8h" startline="288">z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_accel_event_1a7b741e51a71b56d7c8684b69316fbb24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AccelEvent::~AccelEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~AccelEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="292" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="426" bodyend="428"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_accel_event_1afaeb3f70468c5fdbbb5d074d60cf1a7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AccelEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="293" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="430" bodyend="433"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" compoundref="building_block_8cpp" startline="120" endline="130">BaseSimulator::BuildingBlock::scheduleLocalEvent</references>
+        <references refid="class_accel_event_1acad69b420b7a7fd1378b035e4b94e9b8" compoundref="events_8cpp" startline="411" endline="417">AccelEvent</references>
+      </memberdef>
+      <memberdef kind="function" id="class_accel_event_1a325316d3b95e49fca7a09a19b4a51a00" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string AccelEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="294" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="435" bodyend="437"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1362">
+        <label>AccelEvent</label>
+        <link refid="class_accel_event"/>
+        <childnode refid="1363" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1364">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="1363">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="1364" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1365">
+        <label>AccelEvent</label>
+        <link refid="class_accel_event"/>
+        <childnode refid="1366" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1367">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="1366">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="1367" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1368" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1370">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1368" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1368">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1369" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1370" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1369">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1368" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="284" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="284" bodyend="295"/>
+    <listofallmembers>
+      <member refid="class_accel_event_1acad69b420b7a7fd1378b035e4b94e9b8" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>AccelEvent</name></member>
+      <member refid="class_accel_event_1ad277d1b0be403c449c22685b74581ab3" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>AccelEvent</name></member>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>AccelEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>AccelEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>AccelEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" prot="public" virt="virtual"><scope>AccelEvent</scope><name>consume</name></member>
+      <member refid="class_accel_event_1afaeb3f70468c5fdbbb5d074d60cf1a7d" prot="public" virt="virtual"><scope>AccelEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>eventType</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>AccelEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_accel_event_1a325316d3b95e49fca7a09a19b4a51a00" prot="public" virt="virtual"><scope>AccelEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>id</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>AccelEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>AccelEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>randomNumber</name></member>
+      <member refid="class_accel_event_1afc0ae0edb636ede3ba2c753a13304535" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>x</name></member>
+      <member refid="class_accel_event_1a976ee9300dea0bb9a9c1d93522d3e3db" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>y</name></member>
+      <member refid="class_accel_event_1a054e93772809a3ba7f2d9c011a7e9cb8" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>z</name></member>
+      <member refid="class_accel_event_1a7b741e51a71b56d7c8684b69316fbb24" prot="public" virt="non-virtual"><scope>AccelEvent</scope><name>~AccelEvent</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>AccelEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>AccelEvent</scope><name>~Event</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

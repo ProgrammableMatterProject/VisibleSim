@@ -1,0 +1,698 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_event" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Event</compoundname>
+    <derivedcompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_code_end_simulation_event" prot="public" virt="non-virtual">CodeEndSimulationEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_interpret_1_1_v_m_debug_pause_sim_event" prot="public" virt="non-virtual">MeldInterpret::VMDebugPauseSimEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_v_m_debug_pause_sim_event" prot="public" virt="non-virtual">MeldProcess::VMDebugPauseSimEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_multi_cores_1_1_v_m_end_computation_event" prot="public" virt="non-virtual">MultiCores::VMEndComputationEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_multi_cores_1_1_v_m_start_computation_event" prot="public" virt="non-virtual">MultiCores::VMStartComputationEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_multi_cores_1_1_v_m_start_transmission_event" prot="public" virt="non-virtual">MultiCores::VMStartTransmissionEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_network_interface_enqueue_outgoing_event" prot="public" virt="non-virtual">NetworkInterfaceEnqueueOutgoingEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_network_interface_receive_event" prot="public" virt="non-virtual">NetworkInterfaceReceiveEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_network_interface_start_transmitting_event" prot="public" virt="non-virtual">NetworkInterfaceStartTransmittingEvent</derivedcompoundref>
+    <derivedcompoundref refid="class_network_interface_stop_transmitting_event" prot="public" virt="non-virtual">NetworkInterfaceStopTransmittingEvent</derivedcompoundref>
+    <includes refid="events_8h" local="no">events.h</includes>
+      <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int Event::nextId</definition>
+        <argsstring></argsstring>
+        <name>nextId</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" static="yes" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int Event::nbLivingEvents</definition>
+        <argsstring></argsstring>
+        <name>nbLivingEvents</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Event::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="53" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_scheduler_1a97c4e2a135d01937fa0778ebbb1e98d8" compoundref="meld_interpret_scheduler_8cpp" startline="242" endline="300">MeldInterpret::MeldInterpretScheduler::schedule</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1af309c28022258227c6182d0955a8b458" compoundref="meld_process_scheduler_8cpp" startline="249" endline="307">MeldProcess::MeldProcessScheduler::schedule</referencedby>
+        <referencedby refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t Event::date</definition>
+        <argsstring></argsstring>
+        <name>date</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="54" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_motion_end_event_1a33a64764f73e3ee43e01abffb966764f" compoundref="catoms2_d_events_8cpp" startline="178" endline="182">Catoms2D::MotionEndEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_end_event_1a4388abb7834a97c0c4ccc482719bb695" compoundref="catoms3_d_events_8cpp" startline="159" endline="163">Catoms3D::MotionEndEvent::consume</referencedby>
+        <referencedby refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" compoundref="events_8cpp" startline="36" endline="44">Event</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_end_event_1a1749488842c38df3d1d10df5bbdc5e21" compoundref="robot_blocks_events_8cpp" startline="163" endline="167">RobotBlocks::MotionEndEvent::consume</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_end_event_1a405766a0f99d7328b01486d576419bd1" compoundref="smart_blocks_events_8cpp" startline="168" endline="172">SmartBlocks::MotionEndEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Event::eventType</definition>
+        <argsstring></argsstring>
+        <name>eventType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1a9354c83fdd2f3e0352f535177036634a" compoundref="catoms2_d_events_8cpp" startline="26" endline="33">Catoms2D::MotionStartEvent::MotionStartEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_step_event_1a8b9d31613c4cdee5d217d904150c38f1" compoundref="catoms2_d_events_8cpp" startline="62" endline="69">Catoms2D::MotionStepEvent::MotionStepEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1afc350b824f429b6a2688a30c33d41a90" compoundref="catoms2_d_events_8cpp" startline="115" endline="118">Catoms2D::MotionStopEvent::MotionStopEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_end_event_1a1b7bf9f4a0b37da3c759fb848f2fec3a" compoundref="catoms2_d_events_8cpp" startline="165" endline="168">Catoms2D::MotionEndEvent::MotionEndEvent</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_start_event_1ada453ccd6631618b1f53267be84bbac7" compoundref="catoms3_d_events_8cpp" startline="23" endline="27">Catoms3D::MotionStartEvent::MotionStartEvent</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_step_event_1ae21efded4f282f152d3eab1b9429ada7" compoundref="catoms3_d_events_8cpp" startline="57" endline="62">Catoms3D::MotionStepEvent::MotionStepEvent</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_stop_event_1adab677637af55551919d52a35315bf91" compoundref="catoms3_d_events_8cpp" startline="98" endline="102">Catoms3D::MotionStopEvent::MotionStopEvent</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_end_event_1a40e16bd93da410b04f2f712b859474c0" compoundref="catoms3_d_events_8cpp" startline="146" endline="149">Catoms3D::MotionEndEvent::MotionEndEvent</referencedby>
+        <referencedby refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" compoundref="events_8cpp" startline="36" endline="44">Event</referencedby>
+        <referencedby refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" compoundref="events_8cpp" startline="69" endline="73">BlockEvent::BlockEvent</referencedby>
+        <referencedby refid="class_code_start_event_1abae175b5d0e5e334954fe268fd7ae15c" compoundref="events_8cpp" startline="94" endline="97">CodeStartEvent::CodeStartEvent</referencedby>
+        <referencedby refid="class_code_end_simulation_event_1ae2dc1b26ceebb77fd587204dc9cd3f47" compoundref="events_8cpp" startline="117" endline="120">CodeEndSimulationEvent::CodeEndSimulationEvent</referencedby>
+        <referencedby refid="class_process_local_event_1a1fbf9a23af1ba1e6aa17ce2543b858aa" compoundref="events_8cpp" startline="142" endline="145">ProcessLocalEvent::ProcessLocalEvent</referencedby>
+        <referencedby refid="class_network_interface_start_transmitting_event_1ae68ab958a343dedcc3ee873f18c8ddc7" compoundref="events_8cpp" startline="165" endline="169">NetworkInterfaceStartTransmittingEvent::NetworkInterfaceStartTransmittingEvent</referencedby>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1aac230d8936d1243a1299b9b71824e401" compoundref="events_8cpp" startline="189" endline="193">NetworkInterfaceStopTransmittingEvent::NetworkInterfaceStopTransmittingEvent</referencedby>
+        <referencedby refid="class_network_interface_receive_event_1a47ada31626fdebe3df6b8f644240cf0e" compoundref="events_8cpp" startline="221" endline="226">NetworkInterfaceReceiveEvent::NetworkInterfaceReceiveEvent</referencedby>
+        <referencedby refid="class_network_interface_enqueue_outgoing_event_1a6791eb3c771a0e63580451e7248c4c91" compoundref="events_8cpp" startline="247" endline="252">NetworkInterfaceEnqueueOutgoingEvent::NetworkInterfaceEnqueueOutgoingEvent</referencedby>
+        <referencedby refid="class_set_color_event_1a91cbed8f0371018d982d30cee4fb8d39" compoundref="events_8cpp" startline="282" endline="287">SetColorEvent::SetColorEvent</referencedby>
+        <referencedby refid="class_add_neighbor_event_1a187a6718ee1c90881033371aebe3e65c" compoundref="events_8cpp" startline="321" endline="326">AddNeighborEvent::AddNeighborEvent</referencedby>
+        <referencedby refid="class_remove_neighbor_event_1a2c91729489ae69b0d8972ebc16ed1a80" compoundref="events_8cpp" startline="353" endline="357">RemoveNeighborEvent::RemoveNeighborEvent</referencedby>
+        <referencedby refid="class_tap_event_1ad21bef9cc578fe60dea55c9488f69267" compoundref="events_8cpp" startline="383" endline="386">TapEvent::TapEvent</referencedby>
+        <referencedby refid="class_accel_event_1acad69b420b7a7fd1378b035e4b94e9b8" compoundref="events_8cpp" startline="411" endline="417">AccelEvent::AccelEvent</referencedby>
+        <referencedby refid="class_shake_event_1a710e24124df25f32395ecfe9a971d172" compoundref="events_8cpp" startline="445" endline="449">ShakeEvent::ShakeEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_set_id_event_1ad76b74d696367f1e56fb2931e9d734cb" compoundref="meld_interpret_events_8cpp" startline="20" endline="23">MeldInterpret::VMSetIdEvent::VMSetIdEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_stop_event_1a7f48040f8c3bbc9abee351ef21474314" compoundref="meld_interpret_events_8cpp" startline="48" endline="51">MeldInterpret::VMStopEvent::VMStopEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" compoundref="meld_interpret_events_8cpp" startline="77" endline="83">MeldInterpret::VMSendMessageEvent::VMSendMessageEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_handle_debug_command_event_1a5095a93d8fb0e73919d4e382944433ac" compoundref="meld_interpret_events_8cpp" startline="112" endline="116">MeldInterpret::VMHandleDebugCommandEvent::VMHandleDebugCommandEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_debug_pause_sim_event_1aa2a18c2db4639e10007dbb9d1de20509" compoundref="meld_interpret_events_8cpp" startline="142" endline="145">MeldInterpret::VMDebugPauseSimEvent::VMDebugPauseSimEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_end_poll_event_1a16cee1cc2ec225b8356eef79b0091641" compoundref="meld_interpret_events_8cpp" startline="172" endline="176">MeldInterpret::VMEndPollEvent::VMEndPollEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_compute_predicate_event_1ab7ed14a765b4246965326643021e63a6" compoundref="meld_interpret_events_8cpp" startline="202" endline="205">MeldInterpret::ComputePredicateEvent::ComputePredicateEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_add_tuple_event_1af47dda490921a05d6b5c4eae83a44c91" compoundref="meld_interpret_events_8cpp" startline="231" endline="236">MeldInterpret::AddTupleEvent::AddTupleEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_remove_tuple_event_1abaddbafaac08223373ee7e7277d1a5eb" compoundref="meld_interpret_events_8cpp" startline="264" endline="269">MeldInterpret::RemoveTupleEvent::RemoveTupleEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_set_id_event_1ab6052b1a2b837ee0771f722029dbd784" compoundref="meld_process_events_8cpp" startline="19" endline="22">MeldProcess::VMSetIdEvent::VMSetIdEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_stop_event_1a3ae6a8c57919bb3841297fe4babdd85e" compoundref="meld_process_events_8cpp" startline="47" endline="50">MeldProcess::VMStopEvent::VMStopEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_send_message_event_1a61e3ba44bccb78f1b7242948f60a38c3" compoundref="meld_process_events_8cpp" startline="76" endline="82">MeldProcess::VMSendMessageEvent::VMSendMessageEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_handle_debug_command_event_1ab62764b52501656002da4204643d42f8" compoundref="meld_process_events_8cpp" startline="111" endline="115">MeldProcess::VMHandleDebugCommandEvent::VMHandleDebugCommandEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_debug_pause_sim_event_1a65b9610fd0cfbb52f83789bbd309d926" compoundref="meld_process_events_8cpp" startline="141" endline="144">MeldProcess::VMDebugPauseSimEvent::VMDebugPauseSimEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_end_poll_event_1aa85f1898993c187aa7c9a9ef1ca56d33" compoundref="meld_process_events_8cpp" startline="171" endline="175">MeldProcess::VMEndPollEvent::VMEndPollEvent</referencedby>
+        <referencedby refid="class_multi_cores_1_1_v_m_start_computation_event_1a136444a11508cec96961aad1d62528b9" compoundref="multi_cores_events_8cpp" startline="18" endline="23">MultiCores::VMStartComputationEvent::VMStartComputationEvent</referencedby>
+        <referencedby refid="class_multi_cores_1_1_v_m_end_computation_event_1af7dac1d64aa8b042a4dc3b98758b17d1" compoundref="multi_cores_events_8cpp" startline="51" endline="55">MultiCores::VMEndComputationEvent::VMEndComputationEvent</referencedby>
+        <referencedby refid="class_multi_cores_1_1_v_m_start_transmission_event_1ace258caeedb4fcf7f6152f6fbd75321a" compoundref="multi_cores_events_8cpp" startline="83" endline="89">MultiCores::VMStartTransmissionEvent::VMStartTransmissionEvent</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_start_event_1ab4c2bf5f96bbf5015c51a22c67335a21" compoundref="robot_blocks_events_8cpp" startline="24" endline="28">RobotBlocks::MotionStartEvent::MotionStartEvent</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_step_event_1a844e3bee28cca0e0afa100dc9284f119" compoundref="robot_blocks_events_8cpp" startline="57" endline="63">RobotBlocks::MotionStepEvent::MotionStepEvent</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_stop_event_1a3b736d840a43749c3e05d34e94c69d0b" compoundref="robot_blocks_events_8cpp" startline="106" endline="110">RobotBlocks::MotionStopEvent::MotionStopEvent</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_end_event_1ac574e11992847117dc4e0ef88e603b91" compoundref="robot_blocks_events_8cpp" startline="150" endline="153">RobotBlocks::MotionEndEvent::MotionEndEvent</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_start_event_1a7d30902f3ec605b2b1a1d8aecf4da9bb" compoundref="smart_blocks_events_8cpp" startline="25" endline="29">SmartBlocks::MotionStartEvent::MotionStartEvent</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_step_event_1adca6bb6b9a48d5daa4854b45742c3d26" compoundref="smart_blocks_events_8cpp" startline="60" endline="66">SmartBlocks::MotionStepEvent::MotionStepEvent</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_stop_event_1a8692761fcc631274782c1fa8a8007995" compoundref="smart_blocks_events_8cpp" startline="111" endline="115">SmartBlocks::MotionStopEvent::MotionStopEvent</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_end_event_1ac1230d7440281b89a11fddb986a33342" compoundref="smart_blocks_events_8cpp" startline="155" endline="158">SmartBlocks::MotionEndEvent::MotionEndEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Event::randomNumber</definition>
+        <argsstring></argsstring>
+        <name>randomNumber</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="class_set_color_event_1a91cbed8f0371018d982d30cee4fb8d39" compoundref="events_8cpp" startline="282" endline="287">SetColorEvent::SetColorEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" compoundref="meld_interpret_events_8cpp" startline="77" endline="83">MeldInterpret::VMSendMessageEvent::VMSendMessageEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_end_poll_event_1a16cee1cc2ec225b8356eef79b0091641" compoundref="meld_interpret_events_8cpp" startline="172" endline="176">MeldInterpret::VMEndPollEvent::VMEndPollEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_send_message_event_1a61e3ba44bccb78f1b7242948f60a38c3" compoundref="meld_process_events_8cpp" startline="76" endline="82">MeldProcess::VMSendMessageEvent::VMSendMessageEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_end_poll_event_1aa85f1898993c187aa7c9a9ef1ca56d33" compoundref="meld_process_events_8cpp" startline="171" endline="175">MeldProcess::VMEndPollEvent::VMEndPollEvent</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Event::Event</definition>
+        <argsstring>(uint64_t t)</argsstring>
+        <name>Event</name>
+        <param>
+          <type>uint64_t</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="26" bodyend="34"/>
+        <references refid="unique_events_id_8h_1ab7ac99beb1e5d6cf7a02da77de5e0a5d" compoundref="unique_events_id_8h" startline="11">EVENT_GENERIC</references>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Event::Event</definition>
+        <argsstring>(Event *ev)</argsstring>
+        <name>Event</name>
+        <param>
+          <type><ref refid="class_event" kindref="compound">Event</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="36" bodyend="44"/>
+        <references refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" compoundref="events_8h" startline="54">date</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">eventType</references>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Event::~Event</definition>
+        <argsstring>()</argsstring>
+        <name>~Event</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="46" bodyend="49"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_event_1a3f4a0fa007ee754b139b0b6f688e86f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Event::consume</definition>
+        <argsstring>()=0</argsstring>
+        <name>consume</name>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_set_id_event_1aa4efdd8f132b54b429e262d9b3f2295b">consume</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_start_event_1aef3dfa8f89f3e86693704853656e3005">consume</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_start_event_1a1414e3f54a11874041b443ddfd23b1f7">consume</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_v_m_start_computation_event_1aae3d0a31d06e0b4d137263476938a257">consume</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_set_id_event_1a80e5bcc9532b346768814584c84e026a">consume</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_start_event_1abb8ae9875fd8899e5e9148f093fbfe43">consume</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_stop_event_1a19411a0370fa8783f8c33223f7461e56">consume</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_step_event_1a82504c53af271a81439d867c3e47182e">consume</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_step_event_1a19d30f66f161b076584a96bee4f8c986">consume</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_stop_event_1a350c58fb457b85dab84c1862523ea6cf">consume</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_v_m_end_computation_event_1ada98910c7651260157659129d00cc2cc">consume</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_step_event_1a42c0f70e21b3cd89c844f54bb88819c1">consume</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_stop_event_1a089637accbb54b2217e10f47e673487f">consume</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_stop_event_1afbc1d05e25023873071013b5d02bc1ad">consume</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_v_m_start_transmission_event_1a3e7a5492544612b7f4deab6cb3f55ea5">consume</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_stop_event_1a14611b19773548084c068d14dd893d99">consume</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_start_event_1ada7939add62235116670dbcc7a50bc18">consume</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_end_event_1a405766a0f99d7328b01486d576419bd1">consume</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_end_event_1a1749488842c38df3d1d10df5bbdc5e21">consume</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_end_event_1a33a64764f73e3ee43e01abffb966764f">consume</reimplementedby>
+        <reimplementedby refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d">consume</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_step_event_1ab44f28ee40cb242ca20bd6f564ad3c87">consume</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_debug_pause_sim_event_1a4a3b8bf2a5d1fe79d66132ba17742e70">consume</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_debug_pause_sim_event_1a22090b539b2856899f35dbec30efc0e4">consume</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_stop_event_1a01f55d7e6e08e9baf5c5fcf1a7750cb7">consume</reimplementedby>
+        <reimplementedby refid="class_code_end_simulation_event_1a43aa0aa9b9541a951d1ff6123c9a8690">consume</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_end_event_1a4388abb7834a97c0c4ccc482719bb695">consume</reimplementedby>
+        <reimplementedby refid="class_network_interface_start_transmitting_event_1ae655fd7426188271982972dc809eeafa">consume</reimplementedby>
+        <reimplementedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216">consume</reimplementedby>
+        <reimplementedby refid="class_network_interface_receive_event_1a27f20349cb9a0d84d95efb904f36e721">consume</reimplementedby>
+        <reimplementedby refid="class_network_interface_enqueue_outgoing_event_1a7bcc6d5d1368ffa244b8610b8ca9b694">consume</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="62" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_event_1a0f07f046436bccc20c1cf507167e221a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string Event::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_set_id_event_1a7f56db1b9a75395e683f7c19a03bbfa2">getEventName</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_start_event_1a134976c5a83f5d113a5a486e682bff08">getEventName</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_start_event_1a5bc23412d7120913c165e9bda2b19ab4">getEventName</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_v_m_start_computation_event_1af3930e82b13dab2c5319b980fa45dcba">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_set_id_event_1a745540125f26ad9845347a2da57f6fd4">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_start_event_1a38a3acbd5ca13a3b67ef8bc52f38b4f9">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_stop_event_1a0993dd5886ee08f4f5072aea03cf4a57">getEventName</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_step_event_1abb6f3ce8186d1a0f6cfe46a86758a62c">getEventName</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_step_event_1a1fb1982d588b07c6cccc77a4366e7471">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_stop_event_1a062383b466700fb8489e7aac10681421">getEventName</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_v_m_end_computation_event_1a1700bf788c0245c3f19ded016ad6d6cc">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_step_event_1a7356140cb1c80ffd4432ffd597cc63a0">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_send_message_event_1a0c7e50df691e24d05604018350bf4d40">getEventName</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_stop_event_1a1ebac39c1c34ba373f678d9cca5bbbb9">getEventName</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_stop_event_1a22ad37e62415cdb924c09717f885f13f">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_send_message_event_1a87c23b2c1398c8f24e44c838df6f6b26">getEventName</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_v_m_start_transmission_event_1a3001b3d47ac26dfc549ddb693009cccf">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_stop_event_1a68fb3c55560228fa4ef6dad5af386a9d">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_start_event_1a2b3a467671ebefcf84d1a4da5ce1e3f2">getEventName</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_motion_end_event_1acc55e7fa67b6d75c0a640cd81815e5ae">getEventName</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_motion_end_event_1a34675efeaa1e23e7a4b647129f31687a">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_handle_debug_command_event_1a6778bf916494c312b078e19c8a621da8">getEventName</reimplementedby>
+        <reimplementedby refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_handle_debug_command_event_1a2538bc5ddc3cb411d8959ddbc6639ada">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_motion_end_event_1a9b988be0c9a2074b7a0cb061c99f398e">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_step_event_1af751d3e95764d3545e09ef241f42160b">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_debug_pause_sim_event_1afca535ae0ddd76ed199d795bc3cd21fc">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_debug_pause_sim_event_1a66d1ec21a6ba3c6ae547cbfd1af28ee0">getEventName</reimplementedby>
+        <reimplementedby refid="class_code_start_event_1a539e04996f52594a8b6a843b993a85e6">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_stop_event_1af9364a9335948d1de4d349a994cd5a0e">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_v_m_end_poll_event_1a1dca784eaa83f03d750c103b92305fcf">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_v_m_end_poll_event_1a80f11a6e0717f32a47c030c423652434">getEventName</reimplementedby>
+        <reimplementedby refid="class_code_end_simulation_event_1ad8dc06fafbb2211a50f1b410bf073bbe">getEventName</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_motion_end_event_1a443d9f59de9b842ba2e3df9b9e7047d4">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_compute_predicate_event_1a9c6763e48a1ab383d691efe806403d6d">getEventName</reimplementedby>
+        <reimplementedby refid="class_process_local_event_1a01a927daec8af54afcde476ebf775e3b">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_add_tuple_event_1aa425d7d80548524e84748daa9996cb02">getEventName</reimplementedby>
+        <reimplementedby refid="class_network_interface_start_transmitting_event_1ab89dbdb9c45f4e8f74d27e2f0c15797d">getEventName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_remove_tuple_event_1a4e2fb8778bef861a6cca939441f19a20">getEventName</reimplementedby>
+        <reimplementedby refid="class_network_interface_stop_transmitting_event_1a5932d2da8f158a3404b43f4138fcb49f">getEventName</reimplementedby>
+        <reimplementedby refid="class_network_interface_receive_event_1ad3218f93f82bc93067b987163e329c5a">getEventName</reimplementedby>
+        <reimplementedby refid="class_network_interface_enqueue_outgoing_event_1a5d6dfdadeb90d4df87a7fc683ff54db6">getEventName</reimplementedby>
+        <reimplementedby refid="class_set_color_event_1af03da026a5a139df15747d6262909612">getEventName</reimplementedby>
+        <reimplementedby refid="class_add_neighbor_event_1afef439999490c54375fe107b585ee7dc">getEventName</reimplementedby>
+        <reimplementedby refid="class_remove_neighbor_event_1a7386be08d4ef748efbfdb94da14c8ca4">getEventName</reimplementedby>
+        <reimplementedby refid="class_tap_event_1abecff64d90187c99a064f2a293541960">getEventName</reimplementedby>
+        <reimplementedby refid="class_accel_event_1a325316d3b95e49fca7a09a19b4a51a00">getEventName</reimplementedby>
+        <reimplementedby refid="class_shake_event_1a1f8f7dfca41d60627d3e6423d7d40935">getEventName</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="51" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_event_1a3290dbf5e83cd7dca078dc73fb3a2461" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+        <definition>virtual BaseSimulator::BuildingBlock* Event::getConcernedBlock</definition>
+        <argsstring>()</argsstring>
+        <name>getConcernedBlock</name>
+        <reimplementedby refid="class_block_event_1a765f731149929db834bb955ac840c19f">getConcernedBlock</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="67" bodyend="67"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int Event::getNextId</definition>
+        <argsstring>()</argsstring>
+        <name>getNextId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="55" bodyend="57"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_scheduler_1a2d550292f04c7469ac4d09289214d060" compoundref="catoms2_d_scheduler_8cpp" startline="46" endline="156">Catoms2D::Catoms2DScheduler::startPaused</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a4c10d15d1facb044fa46a008240e8b75" compoundref="catoms3_d_scheduler_8cpp" startline="47" endline="151">Catoms3D::Catoms3DScheduler::startPaused</referencedby>
+        <referencedby refid="classcpp_scheduler_1_1_cpp_scheduler_1a8982dbad04f97509686a568f15076003" compoundref="cpp_scheduler_8cpp" startline="43" endline="150">cppScheduler::CppScheduler::startPaused</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_scheduler_1ac3f2838402b54e7c87496e4f1d80920c" compoundref="meld_interpret_scheduler_8cpp" startline="62" endline="212">MeldInterpret::MeldInterpretScheduler::startPaused</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" compoundref="meld_process_scheduler_8cpp" startline="62" endline="219">MeldProcess::MeldProcessScheduler::startPaused</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_scheduler_1afbb00dca1889d6db6842fbbcbc3c896f" compoundref="multi_cores_scheduler_8cpp" startline="51" endline="114">MultiCores::MultiCoresScheduler::startPaused</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_scheduler_1aaab1751772f13398074e847a975b7dfe" compoundref="robot_blocks_scheduler_8cpp" startline="46" endline="156">RobotBlocks::RobotBlocksScheduler::startPaused</referencedby>
+        <referencedby refid="class_base_simulator_1_1_scheduler_1acc23d53cd67a3a90cd811a5fbf17107d" compoundref="scheduler_8h" startline="103" endline="103">BaseSimulator::Scheduler::getNbreMessages</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_scheduler_1a63f44bb59965a3ae86761b040200feb8" compoundref="smart_blocks_scheduler_8cpp" startline="42" endline="148">SmartBlocks::SmartBlocksScheduler::startPaused</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int Event::getNbLivingEvents</definition>
+        <argsstring>()</argsstring>
+        <name>getNbLivingEvents</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="59" bodyend="61"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_scheduler_1a2d550292f04c7469ac4d09289214d060" compoundref="catoms2_d_scheduler_8cpp" startline="46" endline="156">Catoms2D::Catoms2DScheduler::startPaused</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a4c10d15d1facb044fa46a008240e8b75" compoundref="catoms3_d_scheduler_8cpp" startline="47" endline="151">Catoms3D::Catoms3DScheduler::startPaused</referencedby>
+        <referencedby refid="classcpp_scheduler_1_1_cpp_scheduler_1a8982dbad04f97509686a568f15076003" compoundref="cpp_scheduler_8cpp" startline="43" endline="150">cppScheduler::CppScheduler::startPaused</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_scheduler_1ac3f2838402b54e7c87496e4f1d80920c" compoundref="meld_interpret_scheduler_8cpp" startline="62" endline="212">MeldInterpret::MeldInterpretScheduler::startPaused</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" compoundref="meld_process_scheduler_8cpp" startline="62" endline="219">MeldProcess::MeldProcessScheduler::startPaused</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_scheduler_1afbb00dca1889d6db6842fbbcbc3c896f" compoundref="multi_cores_scheduler_8cpp" startline="51" endline="114">MultiCores::MultiCoresScheduler::startPaused</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_scheduler_1aaab1751772f13398074e847a975b7dfe" compoundref="robot_blocks_scheduler_8cpp" startline="46" endline="156">RobotBlocks::RobotBlocksScheduler::startPaused</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_scheduler_1a63f44bb59965a3ae86761b040200feb8" compoundref="smart_blocks_scheduler_8cpp" startline="42" endline="148">SmartBlocks::SmartBlocksScheduler::startPaused</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1741">
+        <label>MeldProcess::VMHandleDebugCommandEvent</label>
+        <link refid="class_meld_process_1_1_v_m_handle_debug_command_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1723">
+        <label>Catoms2D::MotionEndEvent</label>
+        <link refid="class_catoms2_d_1_1_motion_end_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1721">
+        <label>AccelEvent</label>
+        <link refid="class_accel_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1736">
+        <label>MeldInterpret::VMHandleDebugCommandEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_handle_debug_command_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1735">
+        <label>MeldInterpret::VMEndPollEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_end_poll_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1761">
+        <label>MultiCores::VMEndComputationEvent</label>
+        <link refid="class_multi_cores_1_1_v_m_end_computation_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1719">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="1752">
+        <label>ShakeEvent</label>
+        <link refid="class_shake_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1764">
+        <label>NetworkInterfaceEnqueueOutgoingEvent</label>
+        <link refid="class_network_interface_enqueue_outgoing_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1734">
+        <label>MeldInterpret::RemoveTupleEvent</label>
+        <link refid="class_meld_interpret_1_1_remove_tuple_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1722">
+        <label>AddNeighborEvent</label>
+        <link refid="class_add_neighbor_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1763">
+        <label>MultiCores::VMStartTransmissionEvent</label>
+        <link refid="class_multi_cores_1_1_v_m_start_transmission_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1744">
+        <label>MeldProcess::VMStopEvent</label>
+        <link refid="class_meld_process_1_1_v_m_stop_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1749">
+        <label>RobotBlocks::MotionStepEvent</label>
+        <link refid="class_robot_blocks_1_1_motion_step_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1729">
+        <label>Catoms3D::MotionStepEvent</label>
+        <link refid="class_catoms3_d_1_1_motion_step_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1767">
+        <label>NetworkInterfaceStopTransmittingEvent</label>
+        <link refid="class_network_interface_stop_transmitting_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1756">
+        <label>SmartBlocks::MotionStopEvent</label>
+        <link refid="class_smart_blocks_1_1_motion_stop_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1765">
+        <label>NetworkInterfaceReceiveEvent</label>
+        <link refid="class_network_interface_receive_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1724">
+        <label>Catoms2D::MotionStartEvent</label>
+        <link refid="class_catoms2_d_1_1_motion_start_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1728">
+        <label>Catoms3D::MotionStartEvent</label>
+        <link refid="class_catoms3_d_1_1_motion_start_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1737">
+        <label>MeldInterpret::VMSendMessageEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_send_message_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1726">
+        <label>Catoms2D::MotionStopEvent</label>
+        <link refid="class_catoms2_d_1_1_motion_stop_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1746">
+        <label>RemoveNeighborEvent</label>
+        <link refid="class_remove_neighbor_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1732">
+        <label>MeldInterpret::AddTupleEvent</label>
+        <link refid="class_meld_interpret_1_1_add_tuple_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1757">
+        <label>TapEvent</label>
+        <link refid="class_tap_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1759">
+        <label>MeldInterpret::VMDebugPauseSimEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_debug_pause_sim_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1747">
+        <label>RobotBlocks::MotionEndEvent</label>
+        <link refid="class_robot_blocks_1_1_motion_end_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1760">
+        <label>MeldProcess::VMDebugPauseSimEvent</label>
+        <link refid="class_meld_process_1_1_v_m_debug_pause_sim_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1720">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1745">
+        <label>ProcessLocalEvent</label>
+        <link refid="class_process_local_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1753">
+        <label>SmartBlocks::MotionEndEvent</label>
+        <link refid="class_smart_blocks_1_1_motion_end_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1751">
+        <label>SetColorEvent</label>
+        <link refid="class_set_color_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1740">
+        <label>MeldProcess::VMEndPollEvent</label>
+        <link refid="class_meld_process_1_1_v_m_end_poll_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1739">
+        <label>MeldInterpret::VMStopEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_stop_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1750">
+        <label>RobotBlocks::MotionStopEvent</label>
+        <link refid="class_robot_blocks_1_1_motion_stop_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1727">
+        <label>Catoms3D::MotionEndEvent</label>
+        <link refid="class_catoms3_d_1_1_motion_end_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1755">
+        <label>SmartBlocks::MotionStepEvent</label>
+        <link refid="class_smart_blocks_1_1_motion_step_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1733">
+        <label>MeldInterpret::ComputePredicateEvent</label>
+        <link refid="class_meld_interpret_1_1_compute_predicate_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1762">
+        <label>MultiCores::VMStartComputationEvent</label>
+        <link refid="class_multi_cores_1_1_v_m_start_computation_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1758">
+        <label>CodeEndSimulationEvent</label>
+        <link refid="class_code_end_simulation_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1766">
+        <label>NetworkInterfaceStartTransmittingEvent</label>
+        <link refid="class_network_interface_start_transmitting_event"/>
+        <childnode refid="1719" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1725">
+        <label>Catoms2D::MotionStepEvent</label>
+        <link refid="class_catoms2_d_1_1_motion_step_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1730">
+        <label>Catoms3D::MotionStopEvent</label>
+        <link refid="class_catoms3_d_1_1_motion_stop_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1738">
+        <label>MeldInterpret::VMSetIdEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_set_id_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1742">
+        <label>MeldProcess::VMSendMessageEvent</label>
+        <link refid="class_meld_process_1_1_v_m_send_message_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1748">
+        <label>RobotBlocks::MotionStartEvent</label>
+        <link refid="class_robot_blocks_1_1_motion_start_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1731">
+        <label>CodeStartEvent</label>
+        <link refid="class_code_start_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1754">
+        <label>SmartBlocks::MotionStartEvent</label>
+        <link refid="class_smart_blocks_1_1_motion_start_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1743">
+        <label>MeldProcess::VMSetIdEvent</label>
+        <link refid="class_meld_process_1_1_v_m_set_id_event"/>
+        <childnode refid="1720" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="47" bodyend="68"/>
+    <listofallmembers>
+      <member refid="class_event_1a3f4a0fa007ee754b139b0b6f688e86f3" prot="public" virt="pure-virtual"><scope>Event</scope><name>consume</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>Event</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>Event</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>Event</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>Event</scope><name>eventType</name></member>
+      <member refid="class_event_1a3290dbf5e83cd7dca078dc73fb3a2461" prot="public" virt="virtual"><scope>Event</scope><name>getConcernedBlock</name></member>
+      <member refid="class_event_1a0f07f046436bccc20c1cf507167e221a" prot="public" virt="virtual"><scope>Event</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>Event</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>Event</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>Event</scope><name>id</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>Event</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>Event</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>Event</scope><name>randomNumber</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>Event</scope><name>~Event</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

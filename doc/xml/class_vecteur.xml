@@ -1,0 +1,708 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_vecteur" kind="class" language="C++" prot="public">
+    <compoundname>Vecteur</compoundname>
+    <includes refid="vecteur_8h" local="no">vecteur.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Vecteur::pt[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>pt</name>
+        <briefdescription>
+<para>x,y,z,w in a table (w=0 for a vector, w=1 for a point) </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="29" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a926aa3271e6123c82e495591160777ac" compoundref="blinky_blocks_world_8cpp" startline="84" endline="118">BlinkyBlocks::BlinkyBlocksWorld::addBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9e488f5f0bce0b15c03658b288a54db2" compoundref="blinky_blocks_world_8cpp" startline="171" endline="212">BlinkyBlocks::BlinkyBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1af3ad77eb962c601443f51a63646cfc78" compoundref="blinky_blocks_world_8cpp" startline="394" endline="433">BlinkyBlocks::BlinkyBlocksWorld::menuChoice</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ace14ff1fd6bb0898277faf3fd16971c7" compoundref="blinky_blocks_world_8cpp" startline="461" endline="495">BlinkyBlocks::BlinkyBlocksWorld::stopBlock</referencedby>
+        <referencedby refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" compoundref="camera_8cpp" startline="27" endline="38">Camera::updatePositionFromAngles</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1a14611b19773548084c068d14dd893d99" compoundref="catoms2_d_events_8cpp" startline="128" endline="153">Catoms2D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a5649a288ebec492688e2f7980a3189d4" compoundref="catoms2_d_world_8cpp" startline="81" endline="120">Catoms2D::Catoms2DWorld::addBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a1ebad0184766474e148a9d444d886f2b" compoundref="catoms2_d_world_8cpp" startline="122" endline="151">Catoms2D::Catoms2DWorld::connectBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a279464337f346c7e066edbf372a43c2e" compoundref="catoms2_d_world_8cpp" startline="153" endline="170">Catoms2D::Catoms2DWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a146188561792cc778d39ea79551ceb03" compoundref="catoms2_d_world_8cpp" startline="273" endline="308">Catoms2D::Catoms2DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a55af3fd7293559c79591428d49fcfcd0" compoundref="catoms2_d_world_8cpp" startline="479" endline="494">Catoms2D::Catoms2DWorld::worldToGridPosition</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a4cbcefe3e5e975669fff8370a35fd7d7" compoundref="catoms2_d_world_8cpp" startline="496" endline="511">Catoms2D::Catoms2DWorld::gridToWorldPosition</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1aafd4539f681e68be96ac795b07789600" compoundref="catoms2_d_world_8cpp" startline="639" endline="731">Catoms2D::Catoms2DWorld::generateRandom</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1ad2ecd92d6814554817e0c03cdcf87708" compoundref="catoms3_d_block_8cpp" startline="97" endline="114">Catoms3D::Catoms3DBlock::getNeighborPos</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1aa51bcdb6b57c225f670e2e9555d8e646" compoundref="catoms3_d_world_8cpp" startline="441" endline="455">Catoms3D::Catoms3DWorld::gridToWorldPosition</referencedby>
+        <referencedby refid="matrice44_8h_1a07afb469d46cb2d7597c7534a36bd22d" compoundref="matrice44_8cpp" startline="35" endline="44">operator*</referencedby>
+        <referencedby refid="class_matrice_1a216114409b85e66aae3e99c587b7e77e" compoundref="matrice44_8cpp" startline="170" endline="188">Matrice::setGLmat</referencedby>
+        <referencedby refid="class_matrice_1a7f6e530c59602a007fa727461f70d716" compoundref="matrice44_8cpp" startline="190" endline="209">Matrice::setRotation</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_stop_event_1afbc1d05e25023873071013b5d02bc1ad" compoundref="robot_blocks_events_8cpp" startline="120" endline="138">RobotBlocks::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a15d447ddcf44637228234c0fc7494352" compoundref="robot_blocks_world_8cpp" startline="76" endline="111">RobotBlocks::RobotBlocksWorld::addBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1af628c74450302595cbbec15d35e862d5" compoundref="robot_blocks_world_8cpp" startline="113" endline="127">RobotBlocks::RobotBlocksWorld::connectBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1aacde9a25471862e4bf80f0fb8f15b174" compoundref="robot_blocks_world_8cpp" startline="129" endline="146">RobotBlocks::RobotBlocksWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a99e0958d82e7021d2d27b8f78f78bfd6" compoundref="robot_blocks_world_8cpp" startline="201" endline="236">RobotBlocks::RobotBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1ab130fbccabcc78107a61bbec5032896e" compoundref="robot_blocks_world_8cpp" startline="371" endline="380">RobotBlocks::RobotBlocksWorld::updateGlData</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a52f23707145ab10d07839c97950d53c9" compoundref="robot_blocks_world_8cpp" startline="429" endline="464">RobotBlocks::RobotBlocksWorld::menuChoice</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_stop_event_1a089637accbb54b2217e10f47e673487f" compoundref="smart_blocks_events_8cpp" startline="125" endline="143">SmartBlocks::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1af701979f43835062bb6d8577bd12bb7d" compoundref="smart_blocks_world_8cpp" startline="290" endline="302">SmartBlocks::SmartBlocksWorld::connectBlock</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1a852f54d8efacf3c842bf11a0dffb2d81" compoundref="smart_blocks_world_8cpp" startline="304" endline="320">SmartBlocks::SmartBlocksWorld::disconnectBlock</referencedby>
+        <referencedby refid="vecteur_8cpp_1ac5c5718aabc4c55cd536c854d7fcacfa" compoundref="vecteur_8cpp" startline="11" endline="14">operator&gt;&gt;</referencedby>
+        <referencedby refid="vecteur_8cpp_1a121336728d99289f957739a9a842cdf9" compoundref="vecteur_8cpp" startline="17" endline="20">operator&lt;&lt;</referencedby>
+        <referencedby refid="class_vecteur_1ad08b89785a8a3baca62b8d20346b60c6" compoundref="vecteur_8cpp" startline="35" endline="40">operator+=</referencedby>
+        <referencedby refid="vecteur_8h_1a427e12228c3c977cc871a46ad80f37a5" compoundref="vecteur_8cpp" startline="42" endline="49">operator+</referencedby>
+        <referencedby refid="vecteur_8h_1a0bee873a82f80b30547b4e972197bbf0" compoundref="vecteur_8cpp" startline="51" endline="58">operator-</referencedby>
+        <referencedby refid="vecteur_8h_1a59668ab608384de587a835cb630e52ef" compoundref="vecteur_8cpp" startline="69" endline="76">operator^</referencedby>
+        <referencedby refid="class_vecteur_1af5d29fed3edb7276c9da4950a7b3110b" compoundref="vecteur_8cpp" startline="78" endline="84">normer</referencedby>
+        <referencedby refid="class_vecteur_1afa6e8ccd9771f87419077954cf96677a" compoundref="vecteur_8cpp" startline="86" endline="88">norme</referencedby>
+        <referencedby refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" compoundref="vecteur_8cpp" startline="90" endline="92">norme2</referencedby>
+        <referencedby refid="class_vecteur_1a06dacfa5fc434136436734c6078eded5" compoundref="vecteur_8cpp" startline="94" endline="100">normer_interne</referencedby>
+        <referencedby refid="class_vecteur_1afdd21c25b0d60b68e097f0f40c0e4849" compoundref="vecteur_8cpp" startline="102" endline="108">setLength</referencedby>
+        <referencedby refid="class_vecteur_1a387acaa9d1bbb71a096a8d9484d124b3" compoundref="vecteur_8cpp" startline="110" endline="118">set</referencedby>
+        <referencedby refid="class_vecteur_1a088fefff60b16f1df7ea582126e71e4d" compoundref="vecteur_8h" startline="89" endline="89">operator==</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_vecteur_1a8227543ef6aadc8f9fbbc93de68af43b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Vecteur::Vecteur</definition>
+        <argsstring>()</argsstring>
+        <name>Vecteur</name>
+        <briefdescription>
+<para>Constructor, initialize the vector to 0. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1acae3eadb545982504b5b7c187031c8e6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Vecteur::Vecteur</definition>
+        <argsstring>(double x, double y, double z, double w=0.0)</argsstring>
+        <name>Vecteur</name>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>w</declname>
+          <defval>0.0</defval>
+        </param>
+        <briefdescription>
+<para>Constructor, initialize the vector to (x,y,z,w) </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: x coordinate of the vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: y coordinate of the vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: z coordinate of the vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>w</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: w=0 for a vector (default), w=1 for a point </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a9847818b536abf81b1a82196d4846918" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::set</definition>
+        <argsstring>(double x, double y, double z, double w=0.0)</argsstring>
+        <name>set</name>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>w</declname>
+          <defval>0.0</defval>
+        </param>
+        <briefdescription>
+<para>Set method, initialize the vector to (x,y,z,w) </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: x coordinate of the vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: y coordinate of the vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: z coordinate of the vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>w</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: w=0 for a vector (default), w=1 for a point </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="50" bodyend="50"/>
+        <referencedby refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" compoundref="camera_8cpp" startline="27" endline="38">Camera::updatePositionFromAngles</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1a9354c83fdd2f3e0352f535177036634a" compoundref="catoms2_d_events_8cpp" startline="26" endline="33">Catoms2D::MotionStartEvent::MotionStartEvent</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1a5b51b62026ce3478ed5667a72c034847" compoundref="catoms3_d_block_8cpp" startline="60" endline="80">Catoms3D::Catoms3DBlock::getOrientationFromMatrix</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1ad2ecd92d6814554817e0c03cdcf87708" compoundref="catoms3_d_block_8cpp" startline="97" endline="114">Catoms3D::Catoms3DBlock::getNeighborPos</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a387acaa9d1bbb71a096a8d9484d124b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::set</definition>
+        <argsstring>(const float *tab, short s, float extra=0.0f)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const float *</type>
+          <declname>tab</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>extra</declname>
+          <defval>0.0f</defval>
+        </param>
+        <briefdescription>
+<para>Set method, initialize the vector from an array of float. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tab</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: tab of coordinates </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: size of tab </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="110" bodyend="118"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a9043baadbd320905119e96c310c049bf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::setMin</definition>
+        <argsstring>(double x, double y, double z)</argsstring>
+        <name>setMin</name>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a90320ca0781be5b9fd96f9e721e840a1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::setMax</definition>
+        <argsstring>(double x, double y, double z)</argsstring>
+        <name>setMax</name>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1af5d29fed3edb7276c9da4950a7b3110b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur Vecteur::normer</definition>
+        <argsstring>() const </argsstring>
+        <name>normer</name>
+        <briefdescription>
+<para>Return a normalized copy of the vector. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="62" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="78" bodyend="84"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Catoms3D::Rotations::Rotations</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a06dacfa5fc434136436734c6078eded5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::normer_interne</definition>
+        <argsstring>()</argsstring>
+        <name>normer_interne</name>
+        <briefdescription>
+<para>Normalize the current vector. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="94" bodyend="100"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+        <referencedby refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" compoundref="camera_8cpp" startline="27" endline="38">Camera::updatePositionFromAngles</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1afdd21c25b0d60b68e097f0f40c0e4849" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::setLength</definition>
+        <argsstring>(double l)</argsstring>
+        <name>setLength</name>
+        <param>
+          <type>double</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+<para>Normalize the current vector with a lenght l. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>l</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: length of the vector </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="71" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="102" bodyend="108"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+        <referencedby refid="class_robot_blocks_1_1_motion_step_event_1a844e3bee28cca0e0afa100dc9284f119" compoundref="robot_blocks_events_8cpp" startline="57" endline="63">RobotBlocks::MotionStepEvent::MotionStepEvent</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_step_event_1adca6bb6b9a48d5daa4854b45742c3d26" compoundref="smart_blocks_events_8cpp" startline="60" endline="66">SmartBlocks::MotionStepEvent::MotionStepEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1afa6e8ccd9771f87419077954cf96677a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Vecteur::norme</definition>
+        <argsstring>() const </argsstring>
+        <name>norme</name>
+        <briefdescription>
+<para>Return the length of the vector. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="75" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="86" bodyend="88"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Vecteur::norme2</definition>
+        <argsstring>() const </argsstring>
+        <name>norme2</name>
+        <briefdescription>
+<para>Return the square of the length of the vector. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="79" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="90" bodyend="92"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+        <referencedby refid="class_skel_line_1a0d2a1b0c4208efd7e58a618006e14e6c" compoundref="skeleton_8cpp" startline="34" endline="41">SkelLine::distance2</referencedby>
+        <referencedby refid="class_skel_line_1a8519bb469f59b172391d35567c04e0fa" compoundref="skeleton_8h" startline="25" endline="25">SkelLine::SkelLine</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1ad08b89785a8a3baca62b8d20346b60c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::operator+=</definition>
+        <argsstring>(const Vecteur &amp;p)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+<para>Incrementation of the vecteur by p. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: vector to add to the current vector </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="84" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="35" bodyend="40"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a088fefff60b16f1df7ea582126e71e4d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Vecteur::operator==</definition>
+        <argsstring>(const Vecteur &amp;V1)</argsstring>
+        <name>operator==</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>V1</declname>
+        </param>
+        <briefdescription>
+<para>Comparison of two vectors, return true if equal. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: vector to compare to the current vector </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="89" bodyend="89"/>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">pt</references>
+        <references refid="matrice44_8cpp_1a2fb292a6c63637ebe765ba6fb020bce5" compoundref="matrice44_8cpp" startline="19" endline="24">operator&gt;&gt;</references>
+        <references refid="namespace_blinky_blocks_1af441bc9d1031530c3659d9529467aaeb" compoundref="blinky_blocks_block_8cpp" startline="179" endline="182">BlinkyBlocks::operator&lt;&lt;</references>
+        <references refid="vecteur_8h_1ad5c2a3119adcadf32cd932404c8d4574" compoundref="vecteur_8cpp" startline="22" endline="29">operator*</references>
+        <references refid="vecteur_8h_1a427e12228c3c977cc871a46ad80f37a5" compoundref="vecteur_8cpp" startline="42" endline="49">operator+</references>
+        <references refid="vecteur_8h_1a0bee873a82f80b30547b4e972197bbf0" compoundref="vecteur_8cpp" startline="51" endline="58">operator-</references>
+        <references refid="vecteur_8h_1a59668ab608384de587a835cb630e52ef" compoundref="vecteur_8cpp" startline="69" endline="76">operator^</references>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a03f1b68ef5a2bc53b0320cc05a3046d6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const double</type>
+        <definition>const double Vecteur::operator[]</definition>
+        <argsstring>(const int i) const </argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>const int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="108" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="108" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vecteur_1a5abdc2b2dd5238f665ddf3bc52bbc0a6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Vecteur::setPoint</definition>
+        <argsstring>(bool v)</argsstring>
+        <name>setPoint</name>
+        <param>
+          <type>bool</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="109" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="109" bodyend="109"/>
+        <references refid="vecteur_8h_1ad5c2a3119adcadf32cd932404c8d4574" compoundref="vecteur_8cpp" startline="22" endline="29">operator*</references>
+        <references refid="vecteur_8h_1a427e12228c3c977cc871a46ad80f37a5" compoundref="vecteur_8cpp" startline="42" endline="49">operator+</references>
+        <references refid="vecteur_8h_1a0bee873a82f80b30547b4e972197bbf0" compoundref="vecteur_8cpp" startline="51" endline="58">operator-</references>
+        <references refid="vecteur_8h_1a59668ab608384de587a835cb630e52ef" compoundref="vecteur_8cpp" startline="69" endline="76">operator^</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_vecteur_1ac5c5718aabc4c55cd536c854d7fcacfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend istream &amp;</type>
+        <definition>istream&amp; operator&gt;&gt;</definition>
+        <argsstring>(istream &amp;f, Vecteur &amp;p)</argsstring>
+        <name>operator&gt;&gt;</name>
+        <param>
+          <type>istream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="11" bodyend="14"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_vecteur_1a121336728d99289f957739a9a842cdf9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Vecteur &amp;p)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="91" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="17" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_vecteur_1ad5c2a3119adcadf32cd932404c8d4574" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator*</definition>
+        <argsstring>(double, const Vecteur)</argsstring>
+        <name>operator*</name>
+        <param>
+          <type>double</type>
+          <defname>v</defname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="92" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="22" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_vecteur_1a152a27e5ddc1e6dc46341e6382812228" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const double</type>
+        <definition>const double operator*</definition>
+        <argsstring>(const Vecteur v1, const Vecteur v2)</argsstring>
+        <name>operator*</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>v2</declname>
+        </param>
+        <briefdescription>
+<para>Return the scalar product of two vectors. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: first vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: second vector </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="98" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="31" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_vecteur_1a427e12228c3c977cc871a46ad80f37a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator+</definition>
+        <argsstring>(const Vecteur, const Vecteur)</argsstring>
+        <name>operator+</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p1</defname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="99" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="42" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_vecteur_1a0bee873a82f80b30547b4e972197bbf0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator-</definition>
+        <argsstring>(const Vecteur, const Vecteur)</argsstring>
+        <name>operator-</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p1</defname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="100" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="51" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_vecteur_1a1ab51fe91a9796a4da41edfe4ce57b73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator-</definition>
+        <argsstring>(const Vecteur)</argsstring>
+        <name>operator-</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p1</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="101" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="60" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_vecteur_1a59668ab608384de587a835cb630e52ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator^</definition>
+        <argsstring>(const Vecteur, const Vecteur)</argsstring>
+        <name>operator^</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p1</defname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p2</defname>
+        </param>
+        <briefdescription>
+<para>Return the cross product of two vectors. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: first vector </para></parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: second vector </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="107" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.cpp" bodystart="69" bodyend="76"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vecteur.h" bodystart="27" bodyend="110"/>
+    <listofallmembers>
+      <member refid="class_vecteur_1afa6e8ccd9771f87419077954cf96677a" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>norme</name></member>
+      <member refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>norme2</name></member>
+      <member refid="class_vecteur_1af5d29fed3edb7276c9da4950a7b3110b" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>normer</name></member>
+      <member refid="class_vecteur_1a06dacfa5fc434136436734c6078eded5" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>normer_interne</name></member>
+      <member refid="class_vecteur_1ad5c2a3119adcadf32cd932404c8d4574" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator*</name></member>
+      <member refid="class_vecteur_1a152a27e5ddc1e6dc46341e6382812228" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator*</name></member>
+      <member refid="class_vecteur_1a427e12228c3c977cc871a46ad80f37a5" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator+</name></member>
+      <member refid="class_vecteur_1ad08b89785a8a3baca62b8d20346b60c6" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator+=</name></member>
+      <member refid="class_vecteur_1a0bee873a82f80b30547b4e972197bbf0" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator-</name></member>
+      <member refid="class_vecteur_1a1ab51fe91a9796a4da41edfe4ce57b73" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator-</name></member>
+      <member refid="class_vecteur_1a121336728d99289f957739a9a842cdf9" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_vecteur_1a088fefff60b16f1df7ea582126e71e4d" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator==</name></member>
+      <member refid="class_vecteur_1ac5c5718aabc4c55cd536c854d7fcacfa" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator&gt;&gt;</name></member>
+      <member refid="class_vecteur_1a03f1b68ef5a2bc53b0320cc05a3046d6" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator[]</name></member>
+      <member refid="class_vecteur_1a59668ab608384de587a835cb630e52ef" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>operator^</name></member>
+      <member refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>pt</name></member>
+      <member refid="class_vecteur_1a9847818b536abf81b1a82196d4846918" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>set</name></member>
+      <member refid="class_vecteur_1a387acaa9d1bbb71a096a8d9484d124b3" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>set</name></member>
+      <member refid="class_vecteur_1afdd21c25b0d60b68e097f0f40c0e4849" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>setLength</name></member>
+      <member refid="class_vecteur_1a90320ca0781be5b9fd96f9e721e840a1" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>setMax</name></member>
+      <member refid="class_vecteur_1a9043baadbd320905119e96c310c049bf" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>setMin</name></member>
+      <member refid="class_vecteur_1a5abdc2b2dd5238f665ddf3bc52bbc0a6" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>setPoint</name></member>
+      <member refid="class_vecteur_1a8227543ef6aadc8f9fbbc93de68af43b" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>Vecteur</name></member>
+      <member refid="class_vecteur_1acae3eadb545982504b5b7c187031c8e6" prot="public" virt="non-virtual"><scope>Vecteur</scope><name>Vecteur</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

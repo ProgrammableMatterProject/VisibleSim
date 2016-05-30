@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="structtuple__pqueue" kind="struct" language="C++" prot="public">
+    <compoundname>tuple_pqueue</compoundname>
+    <includes refid="meld_interpret_v_m_8h" local="no">meldInterpretVM.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structtuple__pqueue_1ad8cdb4ccb8258a2572736311fed29e3f" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct__tuple__pentry" kindref="compound">_tuple_pentry</ref> *</type>
+        <definition>struct _tuple_pentry* tuple_pqueue::queue</definition>
+        <argsstring></argsstring>
+        <name>queue</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="63" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a21ea814519024dd9c2aa4caae77bf5a5" compoundref="meld_interpret_v_m_8cpp" startline="99" endline="111">MeldInterpret::MeldInterpretVM::print_newStratTuples</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ab55e4baa04ebdb0daef5031b98c8808d" compoundref="meld_interpret_v_m_8cpp" startline="1803" endline="1810">MeldInterpret::MeldInterpretVM::p_dequeue</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a5552a920500926659e6fcd494e1d4812" compoundref="meld_interpret_v_m_8cpp" startline="1812" endline="1829">MeldInterpret::MeldInterpretVM::p_enqueue</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a81cbef96786c02ef33f6764078048fa1" compoundref="meld_interpret_v_m_8h" startline="843" endline="846">MeldInterpret::MeldInterpretVM::p_empty</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a3d9e969037012ea22b69465eadb09f91" compoundref="meld_interpret_v_m_8h" startline="848" endline="851">MeldInterpret::MeldInterpretVM::p_peek</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2489">
+        <label>tuple_pqueue</label>
+        <link refid="structtuple__pqueue"/>
+        <childnode refid="2490" relation="usage">
+          <edgelabel>queue</edgelabel>
+        </childnode>
+      </node>
+      <node id="2492">
+        <label>_tuple_queue</label>
+        <link refid="struct__tuple__queue"/>
+        <childnode refid="2493" relation="usage">
+          <edgelabel>head</edgelabel>
+          <edgelabel>tail</edgelabel>
+        </childnode>
+      </node>
+      <node id="2493">
+        <label>_tuple_entry</label>
+        <link refid="struct__tuple__entry"/>
+        <childnode refid="2491" relation="usage">
+          <edgelabel>records</edgelabel>
+        </childnode>
+        <childnode refid="2493" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+      </node>
+      <node id="2491">
+        <label>record_type</label>
+        <link refid="classrecord__type"/>
+        <childnode refid="2492" relation="usage">
+          <edgelabel>agg_queue</edgelabel>
+        </childnode>
+      </node>
+      <node id="2490">
+        <label>_tuple_pentry</label>
+        <link refid="struct__tuple__pentry"/>
+        <childnode refid="2491" relation="usage">
+          <edgelabel>records</edgelabel>
+        </childnode>
+        <childnode refid="2490" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="63" bodyend="63"/>
+    <listofallmembers>
+      <member refid="structtuple__pqueue_1ad8cdb4ccb8258a2572736311fed29e3f" prot="public" virt="non-virtual"><scope>tuple_pqueue</scope><name>queue</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

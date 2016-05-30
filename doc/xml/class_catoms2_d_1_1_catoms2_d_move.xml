@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_catoms2_d_move" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::Catoms2DMove</compoundname>
+    <includes refid="catoms2_d_move_8h" local="no">catoms2DMove.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref> *</type>
+        <definition>Catoms2DBlock* Catoms2D::Catoms2DMove::pivot</definition>
+        <argsstring></argsstring>
+        <name>pivot</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="13" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" bodystart="13" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_move_1af71874ce50b719e9d44f361dff06e392" compoundref="catoms2_d_move_8cpp" startline="5" endline="8">Catoms2DMove</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_move_1a66ce87a9eabdc422f4ea9b5145b1d004" compoundref="catoms2_d_move_8cpp" startline="21" endline="23">getPivot</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms2_d_1_1_relative_direction_1a24e5b0814bc326f9ff38cd37cbfcf988" kindref="member">RelativeDirection::Direction</ref></type>
+        <definition>RelativeDirection::Direction Catoms2D::Catoms2DMove::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="14" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" bodystart="14" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_move_1af71874ce50b719e9d44f361dff06e392" compoundref="catoms2_d_move_8cpp" startline="5" endline="8">Catoms2DMove</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_move_1a1f7d3cee2e35e27a3d3fb7789ecb2636" compoundref="catoms2_d_move_8cpp" startline="17" endline="19">getDirection</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_move_1af71874ce50b719e9d44f361dff06e392" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::Catoms2DMove::Catoms2DMove</definition>
+        <argsstring>(Catoms2DBlock *p, RelativeDirection::Direction d)</argsstring>
+        <name>Catoms2DMove</name>
+        <param>
+          <type><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type><ref refid="class_catoms2_d_1_1_relative_direction_1a24e5b0814bc326f9ff38cd37cbfcf988" kindref="member">RelativeDirection::Direction</ref></type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="16" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp" bodystart="5" bodyend="8"/>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" compoundref="catoms2_d_move_8h" startline="13">pivot</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" compoundref="catoms2_d_move_8h" startline="14">direction</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_move_1a5c5abfcfb7a65e10afcbb4d1e5e2249c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::Catoms2DMove::Catoms2DMove</definition>
+        <argsstring>(const Catoms2DMove &amp;m)</argsstring>
+        <name>Catoms2DMove</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_catoms2_d_move" kindref="compound">Catoms2DMove</ref> &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="17" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp" bodystart="10" bodyend="13"/>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" compoundref="catoms2_d_move_8h" startline="13">pivot</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" compoundref="catoms2_d_move_8h" startline="14">direction</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_move_1a8eb4f34265a77654735cd6d5127d616f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::Catoms2DMove::~Catoms2DMove</definition>
+        <argsstring>()</argsstring>
+        <name>~Catoms2DMove</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="18" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp" bodystart="15" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_move_1a1f7d3cee2e35e27a3d3fb7789ecb2636" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms2_d_1_1_relative_direction_1a24e5b0814bc326f9ff38cd37cbfcf988" kindref="member">RelativeDirection::Direction</ref></type>
+        <definition>RelativeDirection::Direction Catoms2D::Catoms2DMove::getDirection</definition>
+        <argsstring>()</argsstring>
+        <name>getDirection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp" bodystart="17" bodyend="19"/>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" compoundref="catoms2_d_move_8h" startline="14">direction</references>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a11e9c6cd528ed197da1243c69b06ed86" compoundref="catoms2_d_block_8cpp" startline="226" endline="275">Catoms2D::Catoms2DBlock::canMove</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1a9354c83fdd2f3e0352f535177036634a" compoundref="catoms2_d_events_8cpp" startline="26" endline="33">Catoms2D::MotionStartEvent::MotionStartEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_move_1a66ce87a9eabdc422f4ea9b5145b1d004" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref> *</type>
+        <definition>Catoms2DBlock * Catoms2D::Catoms2DMove::getPivot</definition>
+        <argsstring>()</argsstring>
+        <name>getPivot</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp" bodystart="21" bodyend="23"/>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" compoundref="catoms2_d_move_8h" startline="13">pivot</references>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a11e9c6cd528ed197da1243c69b06ed86" compoundref="catoms2_d_block_8cpp" startline="226" endline="275">Catoms2D::Catoms2DBlock::canMove</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1a9354c83fdd2f3e0352f535177036634a" compoundref="catoms2_d_events_8cpp" startline="26" endline="33">Catoms2D::MotionStartEvent::MotionStartEvent</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1573">
+        <label>Catoms2D::Catoms2DMove</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_move"/>
+        <childnode refid="1574" relation="usage">
+          <edgelabel>pivot</edgelabel>
+        </childnode>
+      </node>
+      <node id="1581">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1580">
+        <label>Catoms2D::Catoms2DGlBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_gl_block"/>
+        <childnode refid="1581" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1574">
+        <label>Catoms2D::Catoms2DBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_block"/>
+        <childnode refid="1575" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1578" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="1579" relation="usage">
+          <edgelabel>buildNewBlockCode</edgelabel>
+        </childnode>
+        <childnode refid="1580" relation="usage">
+          <edgelabel>ptrGlBlock</edgelabel>
+        </childnode>
+        <childnode refid="1582" relation="usage">
+          <edgelabel>color</edgelabel>
+        </childnode>
+      </node>
+      <node id="1578">
+        <label>Vecteur</label>
+        <link refid="class_vecteur"/>
+      </node>
+      <node id="1579">
+        <label>Catoms2D::Catoms2DBlockCode</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_block_code"/>
+        <childnode refid="1577" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1582">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="1577">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1575" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1575">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1576" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1577" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1576">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1575" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" line="11" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h" bodystart="11" bodyend="23"/>
+    <listofallmembers>
+      <member refid="class_catoms2_d_1_1_catoms2_d_move_1af71874ce50b719e9d44f361dff06e392" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DMove</scope><name>Catoms2DMove</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_move_1a5c5abfcfb7a65e10afcbb4d1e5e2249c" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DMove</scope><name>Catoms2DMove</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DMove</scope><name>direction</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_move_1a1f7d3cee2e35e27a3d3fb7789ecb2636" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DMove</scope><name>getDirection</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_move_1a66ce87a9eabdc422f4ea9b5145b1d004" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DMove</scope><name>getPivot</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DMove</scope><name>pivot</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_move_1a8eb4f34265a77654735cd6d5127d616f" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DMove</scope><name>~Catoms2DMove</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

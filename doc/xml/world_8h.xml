@@ -1,0 +1,1332 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="world_8h" kind="file" language="C++">
+    <compoundname>world.h</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">map</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">boost/interprocess/sync/interprocess_mutex.hpp</includes>
+    <includes local="yes">assert.h</includes>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includes refid="gl_block_8h" local="yes">glBlock.h</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includedby refid="interface_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h</includedby>
+    <includedby refid="blinky_blocks_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</includedby>
+    <includedby refid="simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h</includedby>
+    <includedby refid="building_block_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp</includedby>
+    <includedby refid="catoms2_d_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</includedby>
+    <includedby refid="catoms3_d_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</includedby>
+    <includedby refid="config_stat_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h</includedby>
+    <includedby refid="meld_interpret_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</includedby>
+    <includedby refid="meld_process_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</includedby>
+    <includedby refid="multi_cores_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h</includedby>
+    <includedby refid="opengl_viewer_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp</includedby>
+    <includedby refid="robot_blocks_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h</includedby>
+    <includedby refid="smart_blocks_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.h</includedby>
+    <includedby refid="world_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.cpp</includedby>
+    <incdepgraph>
+      <node id="19745">
+        <label>list</label>
+      </node>
+      <node id="19756">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="19752" relation="include">
+        </childnode>
+        <childnode refid="19737" relation="include">
+        </childnode>
+        <childnode refid="19751" relation="include">
+        </childnode>
+        <childnode refid="19757" relation="include">
+        </childnode>
+        <childnode refid="19758" relation="include">
+        </childnode>
+      </node>
+      <node id="19748">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="19749" relation="include">
+        </childnode>
+        <childnode refid="19750" relation="include">
+        </childnode>
+        <childnode refid="19737" relation="include">
+        </childnode>
+        <childnode refid="19751" relation="include">
+        </childnode>
+        <childnode refid="19752" relation="include">
+        </childnode>
+        <childnode refid="19753" relation="include">
+        </childnode>
+        <childnode refid="19754" relation="include">
+        </childnode>
+        <childnode refid="19755" relation="include">
+        </childnode>
+        <childnode refid="19756" relation="include">
+        </childnode>
+        <childnode refid="19761" relation="include">
+        </childnode>
+      </node>
+      <node id="19758">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="19737" relation="include">
+        </childnode>
+        <childnode refid="19751" relation="include">
+        </childnode>
+        <childnode refid="19759" relation="include">
+        </childnode>
+        <childnode refid="19760" relation="include">
+        </childnode>
+      </node>
+      <node id="19743">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="19741">
+        <label>assert.h</label>
+      </node>
+      <node id="19766">
+        <label>stdint.h</label>
+      </node>
+      <node id="19750">
+        <label>stdlib.h</label>
+      </node>
+      <node id="19742">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="19743" relation="include">
+        </childnode>
+        <childnode refid="19744" relation="include">
+        </childnode>
+        <childnode refid="19740" relation="include">
+        </childnode>
+        <childnode refid="19745" relation="include">
+        </childnode>
+        <childnode refid="19746" relation="include">
+        </childnode>
+        <childnode refid="19763" relation="include">
+        </childnode>
+        <childnode refid="19765" relation="include">
+        </childnode>
+      </node>
+      <node id="19759">
+        <label>cmath</label>
+      </node>
+      <node id="19747">
+        <label>string</label>
+      </node>
+      <node id="19752">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="19738">
+        <label>map</label>
+      </node>
+      <node id="19760">
+        <label>memory.h</label>
+      </node>
+      <node id="19746">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="19747" relation="include">
+        </childnode>
+        <childnode refid="19748" relation="include">
+        </childnode>
+        <childnode refid="19758" relation="include">
+        </childnode>
+        <childnode refid="19762" relation="include">
+        </childnode>
+      </node>
+      <node id="19751">
+        <label>fstream</label>
+      </node>
+      <node id="19763">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="19742" relation="include">
+        </childnode>
+        <childnode refid="19764" relation="include">
+        </childnode>
+      </node>
+      <node id="19755">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="19761">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="19757" relation="include">
+        </childnode>
+        <childnode refid="19758" relation="include">
+        </childnode>
+        <childnode refid="19756" relation="include">
+        </childnode>
+      </node>
+      <node id="19753">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="19739">
+        <label>vector</label>
+      </node>
+      <node id="19757">
+        <label>math.h</label>
+      </node>
+      <node id="19762">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="19737" relation="include">
+        </childnode>
+        <childnode refid="19751" relation="include">
+        </childnode>
+        <childnode refid="19759" relation="include">
+        </childnode>
+        <childnode refid="19760" relation="include">
+        </childnode>
+        <childnode refid="19748" relation="include">
+        </childnode>
+      </node>
+      <node id="19737">
+        <label>iostream</label>
+      </node>
+      <node id="19740">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="19767">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="19751" relation="include">
+        </childnode>
+      </node>
+      <node id="19744">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="19736">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h</label>
+        <link refid="world.h"/>
+        <childnode refid="19737" relation="include">
+        </childnode>
+        <childnode refid="19738" relation="include">
+        </childnode>
+        <childnode refid="19739" relation="include">
+        </childnode>
+        <childnode refid="19740" relation="include">
+        </childnode>
+        <childnode refid="19741" relation="include">
+        </childnode>
+        <childnode refid="19742" relation="include">
+        </childnode>
+        <childnode refid="19746" relation="include">
+        </childnode>
+        <childnode refid="19767" relation="include">
+        </childnode>
+      </node>
+      <node id="19754">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="19749">
+        <label>stdio.h</label>
+      </node>
+      <node id="19765">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="19742" relation="include">
+        </childnode>
+        <childnode refid="19766" relation="include">
+        </childnode>
+        <childnode refid="19737" relation="include">
+        </childnode>
+        <childnode refid="19744" relation="include">
+        </childnode>
+        <childnode refid="19745" relation="include">
+        </childnode>
+      </node>
+      <node id="19764">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="19834">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="19770">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="19771" relation="include">
+        </childnode>
+        <childnode refid="19778" relation="include">
+        </childnode>
+        <childnode refid="19856" relation="include">
+        </childnode>
+        <childnode refid="19810" relation="include">
+        </childnode>
+        <childnode refid="19821" relation="include">
+        </childnode>
+        <childnode refid="19862" relation="include">
+        </childnode>
+        <childnode refid="19864" relation="include">
+        </childnode>
+        <childnode refid="19838" relation="include">
+        </childnode>
+        <childnode refid="19851" relation="include">
+        </childnode>
+      </node>
+      <node id="19783">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="19773" relation="include">
+        </childnode>
+        <childnode refid="19784" relation="include">
+        </childnode>
+        <childnode refid="19774" relation="include">
+        </childnode>
+      </node>
+      <node id="19786">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h</label>
+        <link refid="meld_interpret_v_m_8h"/>
+        <childnode refid="19787" relation="include">
+        </childnode>
+        <childnode refid="19788" relation="include">
+        </childnode>
+        <childnode refid="19791" relation="include">
+        </childnode>
+        <childnode refid="19792" relation="include">
+        </childnode>
+        <childnode refid="19789" relation="include">
+        </childnode>
+        <childnode refid="19790" relation="include">
+        </childnode>
+        <childnode refid="19793" relation="include">
+        </childnode>
+      </node>
+      <node id="19845">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.h</label>
+        <link refid="smart_blocks_block_8h"/>
+        <childnode refid="19846" relation="include">
+        </childnode>
+        <childnode refid="19847" relation="include">
+        </childnode>
+        <childnode refid="19851" relation="include">
+        </childnode>
+        <childnode refid="19855" relation="include">
+        </childnode>
+        <childnode refid="19849" relation="include">
+        </childnode>
+        <childnode refid="19854" relation="include">
+        </childnode>
+      </node>
+      <node id="19769">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="19770" relation="include">
+        </childnode>
+        <childnode refid="19877" relation="include">
+        </childnode>
+      </node>
+      <node id="19854">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.cpp</label>
+        <link refid="smart_blocks_world_8cpp"/>
+      </node>
+      <node id="19816">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3_d_block_code_8h"/>
+        <childnode refid="19814" relation="include">
+        </childnode>
+        <childnode refid="19817" relation="include">
+        </childnode>
+        <childnode refid="19820" relation="include">
+        </childnode>
+      </node>
+      <node id="19880">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp</label>
+        <link refid="multi_cores_world_8cpp"/>
+      </node>
+      <node id="19869">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</label>
+        <link refid="cpp_scheduler_8cpp"/>
+      </node>
+      <node id="19872">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp</label>
+        <link refid="building_block_8cpp"/>
+      </node>
+      <node id="19832">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="19830" relation="include">
+        </childnode>
+        <childnode refid="19833" relation="include">
+        </childnode>
+        <childnode refid="19835" relation="include">
+        </childnode>
+        <childnode refid="19836" relation="include">
+        </childnode>
+      </node>
+      <node id="19773">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="19772" relation="include">
+        </childnode>
+        <childnode refid="19774" relation="include">
+        </childnode>
+        <childnode refid="19775" relation="include">
+        </childnode>
+      </node>
+      <node id="19792">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.cpp</label>
+        <link refid="meld_interpret_messages_8cpp"/>
+      </node>
+      <node id="19810">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</label>
+        <link refid="catoms2_d_world_8h"/>
+        <childnode refid="19797" relation="include">
+        </childnode>
+        <childnode refid="19799" relation="include">
+        </childnode>
+        <childnode refid="19808" relation="include">
+        </childnode>
+        <childnode refid="19802" relation="include">
+        </childnode>
+        <childnode refid="19804" relation="include">
+        </childnode>
+      </node>
+      <node id="19868">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</label>
+        <link refid="cpp_scheduler_8h"/>
+        <childnode refid="19783" relation="include">
+        </childnode>
+        <childnode refid="19869" relation="include">
+        </childnode>
+      </node>
+      <node id="19861">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</label>
+        <link refid="meld_process_scheduler_8cpp"/>
+      </node>
+      <node id="19824">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</label>
+        <link refid="catoms3_d_scheduler_8h"/>
+        <childnode refid="19817" relation="include">
+        </childnode>
+        <childnode refid="19822" relation="include">
+        </childnode>
+        <childnode refid="19818" relation="include">
+        </childnode>
+        <childnode refid="19823" relation="include">
+        </childnode>
+      </node>
+      <node id="19875">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.cpp</label>
+        <link refid="config_stat_8cpp"/>
+      </node>
+      <node id="19800">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h</label>
+        <link refid="catoms2_d_generic_8h"/>
+        <childnode refid="19801" relation="include">
+        </childnode>
+      </node>
+      <node id="19784">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="19839">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="19828">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGlBlock.h</label>
+        <link refid="robot_blocks_gl_block_8h"/>
+        <childnode refid="19829" relation="include">
+        </childnode>
+        <childnode refid="19843" relation="include">
+        </childnode>
+      </node>
+      <node id="19809">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp</label>
+        <link refid="catoms2_d_move_8cpp"/>
+      </node>
+      <node id="19794">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksGlBlock.cpp</label>
+        <link refid="blinky_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="19813">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h</label>
+        <link refid="catoms3_d_gl_block_8h"/>
+        <childnode refid="19814" relation="include">
+        </childnode>
+        <childnode refid="19826" relation="include">
+        </childnode>
+      </node>
+      <node id="19887">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.cpp</label>
+        <link refid="world_8cpp"/>
+      </node>
+      <node id="19878">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp</label>
+        <link refid="meld_process_v_m_commands_8cpp"/>
+      </node>
+      <node id="19772">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="19859">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</label>
+        <link refid="meld_process_events_8h"/>
+        <childnode refid="19772" relation="include">
+        </childnode>
+        <childnode refid="19860" relation="include">
+        </childnode>
+        <childnode refid="19861" relation="include">
+        </childnode>
+        <childnode refid="19862" relation="include">
+        </childnode>
+      </node>
+      <node id="19775">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="19771">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="19772" relation="include">
+        </childnode>
+        <childnode refid="19773" relation="include">
+        </childnode>
+        <childnode refid="19776" relation="include">
+        </childnode>
+        <childnode refid="19774" relation="include">
+        </childnode>
+        <childnode refid="19777" relation="include">
+        </childnode>
+      </node>
+      <node id="19795">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h</label>
+        <link refid="catoms2_d_gl_block_8h"/>
+        <childnode refid="19796" relation="include">
+        </childnode>
+        <childnode refid="19812" relation="include">
+        </childnode>
+      </node>
+      <node id="19860">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.cpp</label>
+        <link refid="meld_process_events_8cpp"/>
+      </node>
+      <node id="19789">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</label>
+        <link refid="meld_interpret_scheduler_8cpp"/>
+      </node>
+      <node id="19787">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</label>
+        <link refid="meld_interpret_events_8h"/>
+        <childnode refid="19772" relation="include">
+        </childnode>
+        <childnode refid="19788" relation="include">
+        </childnode>
+        <childnode refid="19789" relation="include">
+        </childnode>
+        <childnode refid="19790" relation="include">
+        </childnode>
+      </node>
+      <node id="19838">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h</label>
+        <link refid="robot_blocks_world_8h"/>
+        <childnode refid="19830" relation="include">
+        </childnode>
+        <childnode refid="19832" relation="include">
+        </childnode>
+        <childnode refid="19839" relation="include">
+        </childnode>
+        <childnode refid="19835" relation="include">
+        </childnode>
+        <childnode refid="19840" relation="include">
+        </childnode>
+      </node>
+      <node id="19799">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.h</label>
+        <link refid="catoms2_d_simulator_8h"/>
+        <childnode refid="19797" relation="include">
+        </childnode>
+        <childnode refid="19800" relation="include">
+        </childnode>
+        <childnode refid="19802" relation="include">
+        </childnode>
+        <childnode refid="19803" relation="include">
+        </childnode>
+        <childnode refid="19804" relation="include">
+        </childnode>
+      </node>
+      <node id="19865">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h</label>
+        <link refid="multi_cores_simulator_8h"/>
+        <childnode refid="19866" relation="include">
+        </childnode>
+        <childnode refid="19867" relation="include">
+        </childnode>
+      </node>
+      <node id="19833">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="19834" relation="include">
+        </childnode>
+      </node>
+      <node id="19807">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h</label>
+        <link refid="catoms2_d_events_8h"/>
+        <childnode refid="19796" relation="include">
+        </childnode>
+        <childnode refid="19808" relation="include">
+        </childnode>
+        <childnode refid="19800" relation="include">
+        </childnode>
+      </node>
+      <node id="19883">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.h</label>
+        <link refid="smart_blocks_scheduler_8h"/>
+        <childnode refid="19852" relation="include">
+        </childnode>
+        <childnode refid="19884" relation="include">
+        </childnode>
+        <childnode refid="19849" relation="include">
+        </childnode>
+        <childnode refid="19854" relation="include">
+        </childnode>
+      </node>
+      <node id="19842">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h</label>
+        <link refid="robot_blocks_events_8h"/>
+        <childnode refid="19839" relation="include">
+        </childnode>
+        <childnode refid="19833" relation="include">
+        </childnode>
+      </node>
+      <node id="19825">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</label>
+        <link refid="catoms3_d_events_8h"/>
+        <childnode refid="19822" relation="include">
+        </childnode>
+      </node>
+      <node id="19855">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smart_blocks_events_8h"/>
+        <childnode refid="19852" relation="include">
+        </childnode>
+      </node>
+      <node id="19802">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.cpp</label>
+        <link refid="catoms2_d_scheduler_8cpp"/>
+      </node>
+      <node id="19808">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp</label>
+        <link refid="catoms2_d_events_8cpp"/>
+      </node>
+      <node id="19843">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGlBlock.cpp</label>
+        <link refid="robot_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="19826">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp</label>
+        <link refid="catoms3_d_gl_block_8cpp"/>
+      </node>
+      <node id="19798">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.h</label>
+        <link refid="catoms2_d_block_code_8h"/>
+        <childnode refid="19796" relation="include">
+        </childnode>
+        <childnode refid="19799" relation="include">
+        </childnode>
+        <childnode refid="19805" relation="include">
+        </childnode>
+        <childnode refid="19800" relation="include">
+        </childnode>
+      </node>
+      <node id="19782">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.cpp</label>
+        <link refid="blinky_blocks_block_code_8cpp"/>
+      </node>
+      <node id="19871">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h</label>
+        <link refid="meld_interpret_scheduler_8h"/>
+        <childnode refid="19783" relation="include">
+        </childnode>
+        <childnode refid="19788" relation="include">
+        </childnode>
+        <childnode refid="19789" relation="include">
+        </childnode>
+        <childnode refid="19790" relation="include">
+        </childnode>
+      </node>
+      <node id="19805">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.cpp</label>
+        <link refid="catoms2_d_block_code_8cpp"/>
+      </node>
+      <node id="19858">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="19859" relation="include">
+        </childnode>
+        <childnode refid="19863" relation="include">
+        </childnode>
+        <childnode refid="19861" relation="include">
+        </childnode>
+        <childnode refid="19862" relation="include">
+        </childnode>
+        <childnode refid="19864" relation="include">
+        </childnode>
+        <childnode refid="19793" relation="include">
+        </childnode>
+      </node>
+      <node id="19801">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp</label>
+        <link refid="catoms2_d_generic_8cpp"/>
+      </node>
+      <node id="19788">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp</label>
+        <link refid="meld_interpret_events_8cpp"/>
+      </node>
+      <node id="19850">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp</label>
+        <link refid="smart_blocks_simulator_8cpp"/>
+      </node>
+      <node id="19793">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="19796">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.h</label>
+        <link refid="catoms2_d_block_8h"/>
+        <childnode refid="19797" relation="include">
+        </childnode>
+        <childnode refid="19798" relation="include">
+        </childnode>
+        <childnode refid="19806" relation="include">
+        </childnode>
+        <childnode refid="19810" relation="include">
+        </childnode>
+        <childnode refid="19811" relation="include">
+        </childnode>
+        <childnode refid="19800" relation="include">
+        </childnode>
+        <childnode refid="19804" relation="include">
+        </childnode>
+      </node>
+      <node id="19790">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</label>
+        <link refid="meld_interpret_v_m_8cpp"/>
+      </node>
+      <node id="19867">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.cpp</label>
+        <link refid="multi_cores_simulator_8cpp"/>
+      </node>
+      <node id="19806">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h</label>
+        <link refid="catoms2_d_move_8h"/>
+        <childnode refid="19807" relation="include">
+        </childnode>
+        <childnode refid="19808" relation="include">
+        </childnode>
+        <childnode refid="19809" relation="include">
+        </childnode>
+      </node>
+      <node id="19811">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.h</label>
+        <link refid="catoms2_d_scheduler_8h"/>
+        <childnode refid="19799" relation="include">
+        </childnode>
+        <childnode refid="19808" relation="include">
+        </childnode>
+        <childnode refid="19800" relation="include">
+        </childnode>
+        <childnode refid="19802" relation="include">
+        </childnode>
+        <childnode refid="19804" relation="include">
+        </childnode>
+      </node>
+      <node id="19819">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.cpp</label>
+        <link refid="catoms3_d_simulator_8cpp"/>
+      </node>
+      <node id="19791">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.h</label>
+        <link refid="meld_interpret_messages_8h"/>
+        <childnode refid="19792" relation="include">
+        </childnode>
+        <childnode refid="19790" relation="include">
+        </childnode>
+      </node>
+      <node id="19879">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h</label>
+        <link refid="multi_cores_scheduler_8h"/>
+        <childnode refid="19865" relation="include">
+        </childnode>
+        <childnode refid="19866" relation="include">
+        </childnode>
+        <childnode refid="19880" relation="include">
+        </childnode>
+      </node>
+      <node id="19847">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="19845" relation="include">
+        </childnode>
+        <childnode refid="19848" relation="include">
+        </childnode>
+        <childnode refid="19849" relation="include">
+        </childnode>
+      </node>
+      <node id="19815">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.cpp</label>
+        <link refid="catoms3_d_block_8cpp"/>
+      </node>
+      <node id="19785">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</label>
+        <link refid="blinky_blocks_events_8h"/>
+        <childnode refid="19772" relation="include">
+        </childnode>
+        <childnode refid="19784" relation="include">
+        </childnode>
+        <childnode refid="19777" relation="include">
+        </childnode>
+      </node>
+      <node id="19886">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h</label>
+        <link refid="multi_cores_world_8h"/>
+        <childnode refid="19865" relation="include">
+        </childnode>
+        <childnode refid="19866" relation="include">
+        </childnode>
+        <childnode refid="19880" relation="include">
+        </childnode>
+      </node>
+      <node id="19822">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp</label>
+        <link refid="catoms3_d_events_8cpp"/>
+      </node>
+      <node id="19841">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robot_blocks_scheduler_8h"/>
+        <childnode refid="19832" relation="include">
+        </childnode>
+        <childnode refid="19839" relation="include">
+        </childnode>
+        <childnode refid="19833" relation="include">
+        </childnode>
+        <childnode refid="19835" relation="include">
+        </childnode>
+        <childnode refid="19840" relation="include">
+        </childnode>
+      </node>
+      <node id="19774">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="19857">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="19773" relation="include">
+        </childnode>
+        <childnode refid="19783" relation="include">
+        </childnode>
+        <childnode refid="19858" relation="include">
+        </childnode>
+        <childnode refid="19799" relation="include">
+        </childnode>
+        <childnode refid="19817" relation="include">
+        </childnode>
+        <childnode refid="19789" relation="include">
+        </childnode>
+        <childnode refid="19861" relation="include">
+        </childnode>
+        <childnode refid="19865" relation="include">
+        </childnode>
+        <childnode refid="19832" relation="include">
+        </childnode>
+        <childnode refid="19793" relation="include">
+        </childnode>
+        <childnode refid="19849" relation="include">
+        </childnode>
+      </node>
+      <node id="19818">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp</label>
+        <link refid="catoms3_d_scheduler_8cpp"/>
+      </node>
+      <node id="19856">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="19857" relation="include">
+        </childnode>
+        <childnode refid="19783" relation="include">
+        </childnode>
+        <childnode refid="19868" relation="include">
+        </childnode>
+        <childnode refid="19870" relation="include">
+        </childnode>
+        <childnode refid="19871" relation="include">
+        </childnode>
+        <childnode refid="19776" relation="include">
+        </childnode>
+        <childnode refid="19872" relation="include">
+        </childnode>
+        <childnode refid="19811" relation="include">
+        </childnode>
+        <childnode refid="19816" relation="include">
+        </childnode>
+        <childnode refid="19824" relation="include">
+        </childnode>
+        <childnode refid="19873" relation="include">
+        </childnode>
+        <childnode refid="19874" relation="include">
+        </childnode>
+        <childnode refid="19875" relation="include">
+        </childnode>
+        <childnode refid="19876" relation="include">
+        </childnode>
+        <childnode refid="19877" relation="include">
+        </childnode>
+        <childnode refid="19878" relation="include">
+        </childnode>
+        <childnode refid="19879" relation="include">
+        </childnode>
+        <childnode refid="19881" relation="include">
+        </childnode>
+        <childnode refid="19864" relation="include">
+        </childnode>
+        <childnode refid="19841" relation="include">
+        </childnode>
+        <childnode refid="19882" relation="include">
+        </childnode>
+        <childnode refid="19883" relation="include">
+        </childnode>
+        <childnode refid="19854" relation="include">
+        </childnode>
+      </node>
+      <node id="19831">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlockCode.h</label>
+        <link refid="robot_blocks_block_code_8h"/>
+        <childnode refid="19829" relation="include">
+        </childnode>
+        <childnode refid="19832" relation="include">
+        </childnode>
+        <childnode refid="19837" relation="include">
+        </childnode>
+        <childnode refid="19833" relation="include">
+        </childnode>
+      </node>
+      <node id="19804">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.cpp</label>
+        <link refid="catoms2_d_world_8cpp"/>
+      </node>
+      <node id="19797">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.cpp</label>
+        <link refid="catoms2_d_block_8cpp"/>
+      </node>
+      <node id="19853">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp</label>
+        <link refid="smart_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="19849">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h</label>
+        <link refid="smart_blocks_simulator_8h"/>
+        <childnode refid="19850" relation="include">
+        </childnode>
+      </node>
+      <node id="19837">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlockCode.cpp</label>
+        <link refid="robot_blocks_block_code_8cpp"/>
+      </node>
+      <node id="19864">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp</label>
+        <link refid="opengl_viewer_8cpp"/>
+      </node>
+      <node id="19873">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.cpp</label>
+        <link refid="clock_8cpp"/>
+      </node>
+      <node id="19885">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h</label>
+        <link refid="config_stat_8h"/>
+        <childnode refid="19875" relation="include">
+        </childnode>
+      </node>
+      <node id="19829">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.h</label>
+        <link refid="robot_blocks_block_8h"/>
+        <childnode refid="19830" relation="include">
+        </childnode>
+        <childnode refid="19831" relation="include">
+        </childnode>
+        <childnode refid="19838" relation="include">
+        </childnode>
+        <childnode refid="19841" relation="include">
+        </childnode>
+        <childnode refid="19842" relation="include">
+        </childnode>
+        <childnode refid="19833" relation="include">
+        </childnode>
+        <childnode refid="19840" relation="include">
+        </childnode>
+      </node>
+      <node id="19823">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.cpp</label>
+        <link refid="catoms3_d_world_8cpp"/>
+      </node>
+      <node id="19846">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.cpp</label>
+        <link refid="smart_blocks_block_8cpp"/>
+      </node>
+      <node id="19817">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</label>
+        <link refid="catoms3_d_simulator_8h"/>
+        <childnode refid="19815" relation="include">
+        </childnode>
+        <childnode refid="19818" relation="include">
+        </childnode>
+        <childnode refid="19819" relation="include">
+        </childnode>
+      </node>
+      <node id="19820">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3_d_block_code_8cpp"/>
+      </node>
+      <node id="19851">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.h</label>
+        <link refid="smart_blocks_world_8h"/>
+        <childnode refid="19846" relation="include">
+        </childnode>
+        <childnode refid="19852" relation="include">
+        </childnode>
+        <childnode refid="19853" relation="include">
+        </childnode>
+        <childnode refid="19849" relation="include">
+        </childnode>
+        <childnode refid="19854" relation="include">
+        </childnode>
+      </node>
+      <node id="19863">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</label>
+        <link refid="meld_process_debugger_8cpp"/>
+      </node>
+      <node id="19776">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="19771" relation="include">
+        </childnode>
+      </node>
+      <node id="19884">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.cpp</label>
+        <link refid="smart_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="19830">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="19777">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+      <node id="19848">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.cpp</label>
+        <link refid="smart_blocks_block_code_8cpp"/>
+      </node>
+      <node id="19836">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="19862">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</label>
+        <link refid="meld_process_v_m_8cpp"/>
+      </node>
+      <node id="19814">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="19815" relation="include">
+        </childnode>
+        <childnode refid="19816" relation="include">
+        </childnode>
+        <childnode refid="19821" relation="include">
+        </childnode>
+        <childnode refid="19824" relation="include">
+        </childnode>
+        <childnode refid="19825" relation="include">
+        </childnode>
+        <childnode refid="19823" relation="include">
+        </childnode>
+      </node>
+      <node id="19882">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.cpp</label>
+        <link refid="scheduler_8cpp"/>
+      </node>
+      <node id="19840">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="19781">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.h</label>
+        <link refid="blinky_blocks_block_code_8h"/>
+        <childnode refid="19780" relation="include">
+        </childnode>
+        <childnode refid="19773" relation="include">
+        </childnode>
+        <childnode refid="19782" relation="include">
+        </childnode>
+      </node>
+      <node id="19803">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.cpp</label>
+        <link refid="catoms2_d_simulator_8cpp"/>
+      </node>
+      <node id="19780">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h</label>
+        <link refid="blinky_blocks_block_8h"/>
+        <childnode refid="19772" relation="include">
+        </childnode>
+        <childnode refid="19781" relation="include">
+        </childnode>
+        <childnode refid="19771" relation="include">
+        </childnode>
+        <childnode refid="19783" relation="include">
+        </childnode>
+        <childnode refid="19785" relation="include">
+        </childnode>
+        <childnode refid="19786" relation="include">
+        </childnode>
+        <childnode refid="19777" relation="include">
+        </childnode>
+      </node>
+      <node id="19876">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp</label>
+        <link refid="events_8cpp"/>
+      </node>
+      <node id="19821">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</label>
+        <link refid="catoms3_d_world_8h"/>
+        <childnode refid="19815" relation="include">
+        </childnode>
+        <childnode refid="19817" relation="include">
+        </childnode>
+        <childnode refid="19822" relation="include">
+        </childnode>
+        <childnode refid="19818" relation="include">
+        </childnode>
+        <childnode refid="19823" relation="include">
+        </childnode>
+      </node>
+      <node id="19874">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/commandLine.cpp</label>
+        <link refid="command_line_8cpp"/>
+      </node>
+      <node id="19812">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp</label>
+        <link refid="catoms2_d_gl_block_8cpp"/>
+      </node>
+      <node id="19866">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp</label>
+        <link refid="multi_cores_scheduler_8cpp"/>
+      </node>
+      <node id="19881">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp</label>
+        <link refid="network_8cpp"/>
+      </node>
+      <node id="19768">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h</label>
+        <link refid="world.h"/>
+        <childnode refid="19769" relation="include">
+        </childnode>
+        <childnode refid="19771" relation="include">
+        </childnode>
+        <childnode refid="19857" relation="include">
+        </childnode>
+        <childnode refid="19872" relation="include">
+        </childnode>
+        <childnode refid="19810" relation="include">
+        </childnode>
+        <childnode refid="19821" relation="include">
+        </childnode>
+        <childnode refid="19885" relation="include">
+        </childnode>
+        <childnode refid="19789" relation="include">
+        </childnode>
+        <childnode refid="19861" relation="include">
+        </childnode>
+        <childnode refid="19886" relation="include">
+        </childnode>
+        <childnode refid="19864" relation="include">
+        </childnode>
+        <childnode refid="19838" relation="include">
+        </childnode>
+        <childnode refid="19851" relation="include">
+        </childnode>
+        <childnode refid="19887" relation="include">
+        </childnode>
+      </node>
+      <node id="19779">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="19780" relation="include">
+        </childnode>
+        <childnode refid="19794" relation="include">
+        </childnode>
+      </node>
+      <node id="19852">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</label>
+        <link refid="smart_blocks_events_8cpp"/>
+      </node>
+      <node id="19778">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="19779" relation="include">
+        </childnode>
+        <childnode refid="19771" relation="include">
+        </childnode>
+        <childnode refid="19795" relation="include">
+        </childnode>
+        <childnode refid="19810" relation="include">
+        </childnode>
+        <childnode refid="19813" relation="include">
+        </childnode>
+        <childnode refid="19821" relation="include">
+        </childnode>
+        <childnode refid="19827" relation="include">
+        </childnode>
+        <childnode refid="19828" relation="include">
+        </childnode>
+        <childnode refid="19838" relation="include">
+        </childnode>
+        <childnode refid="19844" relation="include">
+        </childnode>
+        <childnode refid="19851" relation="include">
+        </childnode>
+      </node>
+      <node id="19835">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="19844">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h</label>
+        <link refid="smart_blocks_gl_block_8h"/>
+        <childnode refid="19845" relation="include">
+        </childnode>
+        <childnode refid="19853" relation="include">
+        </childnode>
+      </node>
+      <node id="19870">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="19783" relation="include">
+        </childnode>
+        <childnode refid="19858" relation="include">
+        </childnode>
+        <childnode refid="19860" relation="include">
+        </childnode>
+        <childnode refid="19861" relation="include">
+        </childnode>
+        <childnode refid="19862" relation="include">
+        </childnode>
+      </node>
+      <node id="19827">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp</label>
+        <link refid="obj_loader_8cpp"/>
+      </node>
+      <node id="19877">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp</label>
+        <link refid="interface_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_base_simulator_1_1_world" prot="public">BaseSimulator::World</innerclass>
+    <innernamespace refid="namespace_base_simulator">BaseSimulator</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>world.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>23<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>WORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>WORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/interprocess/sync/interprocess_mutex.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;assert.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="gl_block_8h" kindref="compound">glBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_base_simulator" kindref="compound">BaseSimulator</ref><sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="class_base_simulator_1_1_world" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_base_simulator_1_1_world" kindref="compound">World</ref><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::interprocess::interprocess_mutex<sp/>mutex_gl;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="28" refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world" kindref="compound">World</ref><sp/>*<ref refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" kindref="member">world</ref>;</highlight></codeline>
+<codeline lineno="29" refid="class_base_simulator_1_1_world_1aa929faa22f07082739defacf3c2d9da5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>vector&lt;GlBlock*&gt;<ref refid="class_base_simulator_1_1_world_1aa929faa22f07082739defacf3c2d9da5" kindref="member">tabGlBlocks</ref>;</highlight></codeline>
+<codeline lineno="30" refid="class_base_simulator_1_1_world_1a83410ba3059cd646cc311ae5a0402ef9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map&lt;int,<sp/>BuildingBlock*&gt;<ref refid="class_base_simulator_1_1_world_1a83410ba3059cd646cc311ae5a0402ef9" kindref="member">buildingBlocksMap</ref>;</highlight></codeline>
+<codeline lineno="31" refid="class_base_simulator_1_1_world_1a8055758da32317631bfb1ac0c2dd4fe8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_gl_block" kindref="compound">GlBlock</ref><sp/>*<ref refid="class_base_simulator_1_1_world_1a8055758da32317631bfb1ac0c2dd4fe8" kindref="member">selectedBlock</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_world" kindref="compound">World</ref>();</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="class_base_simulator_1_1_world" kindref="compound">World</ref>();</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="38" refid="class_base_simulator_1_1_world_1abaf33df1a8ad4c4e9ad654e8b9784ba1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world" kindref="compound">World</ref>*<sp/><ref refid="class_base_simulator_1_1_world_1abaf33df1a8ad4c4e9ad654e8b9784ba1" kindref="member">getWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(world<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(world);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="43" refid="class_base_simulator_1_1_world_1aec7663bafbc5998c8dcd50429fc759e0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1aec7663bafbc5998c8dcd50429fc759e0" kindref="member">deleteWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">(world);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world=NULL;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="48" refid="class_base_simulator_1_1_world_1a6b18d9a02e3f31720ff3d326ee1b0e04" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>map&lt;int,<sp/>BuildingBlock*&gt;&amp;<sp/><ref refid="class_base_simulator_1_1_world_1a6b18d9a02e3f31720ff3d326ee1b0e04" kindref="member">getMap</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buildingBlocksMap;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="class_base_simulator_1_1_world_1a9f1a98e8567093c29b7234d903a42b6d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a9f1a98e8567093c29b7234d903a42b6d" kindref="member">getSize</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buildingBlocksMap.size();</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="class_base_simulator_1_1_world_1ac3eb241004936050057ec029737585d5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1ac3eb241004936050057ec029737585d5" kindref="member">printInfo</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;I&apos;m<sp/>a<sp/>World&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref>*<sp/>getBlockById(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="class_base_simulator_1_1_world_1a15f8a1bc3563fe9e6a7004c3a56d1b28" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_gl_block" kindref="compound">GlBlock</ref>*<sp/><ref refid="class_base_simulator_1_1_world_1a15f8a1bc3563fe9e6a7004c3a56d1b28" kindref="member">getSelectedBlock</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>selectedBlock;<sp/>};</highlight></codeline>
+<codeline lineno="63" refid="class_base_simulator_1_1_world_1a610ae24d624075d1b6b037713c4b2b07" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_gl_block" kindref="compound">GlBlock</ref>*<sp/><ref refid="class_base_simulator_1_1_world_1a610ae24d624075d1b6b037713c4b2b07" kindref="member">setSelectedBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(selectedBlock=(n&gt;=0)?tabGlBlocks[n]:NULL);<sp/>};</highlight></codeline>
+<codeline lineno="64" refid="class_base_simulator_1_1_world_1ae8e4e1a38466d7342c40e2da1f920ceb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1ae8e4e1a38466d7342c40e2da1f920ceb" kindref="member">setSelectedFace</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/>{};</highlight></codeline>
+<codeline lineno="65" refid="class_base_simulator_1_1_world_1af73fe571b3678097db9be586e7c87c4a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_gl_block" kindref="compound">GlBlock</ref>*<sp/><ref refid="class_base_simulator_1_1_world_1af73fe571b3678097db9be586e7c87c4a" kindref="member">getBlockByNum</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tabGlBlocks[n];<sp/>};</highlight></codeline>
+<codeline lineno="66" refid="class_base_simulator_1_1_world_1a3eff50e0f8f4cf00e53e2389be135596" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a3eff50e0f8f4cf00e53e2389be135596" kindref="member">getNbBlocks</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>buildingBlocksMap.size();<sp/>};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lock();</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>unlock();</highlight></codeline>
+<codeline lineno="69" refid="class_base_simulator_1_1_world_1ae5a660da750b30b9f063010140bae5a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1ae5a660da750b30b9f063010140bae5a9" kindref="member">glDraw</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="70" refid="class_base_simulator_1_1_world_1a3ee68797d8a2d77cf4260654c5d204eb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a3ee68797d8a2d77cf4260654c5d204eb" kindref="member">glDrawId</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="71" refid="class_base_simulator_1_1_world_1a97f96d8faeb1a7ced226437e0cebf78e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a97f96d8faeb1a7ced226437e0cebf78e" kindref="member">glDrawIdByMaterial</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="72" refid="class_base_simulator_1_1_world_1a7cf8e0a980022e9fc17d38d56441b812" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a7cf8e0a980022e9fc17d38d56441b812" kindref="member">createPopupMenu</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy)<sp/>{};</highlight></codeline>
+<codeline lineno="73" refid="class_base_simulator_1_1_world_1a92e98e08f49981219e87eb35eae9dd1b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a92e98e08f49981219e87eb35eae9dd1b" kindref="member">createHelpWindow</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="74" refid="class_base_simulator_1_1_world_1a8b9742b60db56e41957946e3c1ae2472" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>*<ref refid="class_base_simulator_1_1_world_1a8b9742b60db56e41957946e3c1ae2472" kindref="member">getCamera</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/>};</highlight></codeline>
+<codeline lineno="75" refid="class_base_simulator_1_1_world_1a6c1ccab8c259c05795be50ce537c03fc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a6c1ccab8c259c05795be50ce537c03fc" kindref="member">menuChoice</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/>{};</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Notify<sp/>the<sp/>bId<sp/>block<sp/>that<sp/>these<sp/>events<sp/>happened<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="class_base_simulator_1_1_world_1a5eb197362605bcacb709bd4a80dbb783" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a5eb197362605bcacb709bd4a80dbb783" kindref="member">tapBlock</ref>(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId)<sp/>{};</highlight></codeline>
+<codeline lineno="78" refid="class_base_simulator_1_1_world_1aa68bad650b935dd0255140b6a6bdea51" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1aa68bad650b935dd0255140b6a6bdea51" kindref="member">accelBlock</ref>(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z)<sp/>{};</highlight></codeline>
+<codeline lineno="79" refid="class_base_simulator_1_1_world_1a86dd18ce52a4285dcaaadc1c29964886" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world_1a86dd18ce52a4285dcaaadc1c29964886" kindref="member">shakeBlock</ref>(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>f)<sp/>{};</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Stop<sp/>the<sp/>block<sp/>execution<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>stopSimulation();</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>generateIds(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*ids);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="namespace_base_simulator_1a964dd9036faafc4a27d7760d8c38efd5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_base_simulator_1a964dd9036faafc4a27d7760d8c38efd5" kindref="member">deleteWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_base_simulator_1a964dd9036faafc4a27d7760d8c38efd5" kindref="member">World::deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="namespace_base_simulator_1a2a1f7a0fc6c69525e369dc9226e1a23c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_world" kindref="compound">World</ref>*<sp/><ref refid="namespace_base_simulator_1a2a1f7a0fc6c69525e369dc9226e1a23c" kindref="member">getWorld</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(<ref refid="namespace_base_simulator_1a2a1f7a0fc6c69525e369dc9226e1a23c" kindref="member">World::getWorld</ref>());<sp/>}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>BaseSimulator<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>WORLD_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h"/>
+  </compounddef>
+</doxygen>

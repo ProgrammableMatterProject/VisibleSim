@@ -1,0 +1,392 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_gl_block" kind="class" language="C++" prot="public">
+    <compoundname>GlBlock</compoundname>
+    <derivedcompoundref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block" prot="public" virt="non-virtual">BlinkyBlocks::BlinkyBlocksGlBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_catoms2_d_1_1_catoms2_d_gl_block" prot="public" virt="non-virtual">Catoms2D::Catoms2DGlBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_catoms3_d_1_1_catoms3_d_gl_block" prot="public" virt="non-virtual">Catoms3D::Catoms3DGlBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_robot_blocks_1_1_robot_blocks_gl_block" prot="public" virt="non-virtual">RobotBlocks::RobotBlocksGlBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_smart_blocks_1_1_smart_blocks_gl_block" prot="public" virt="non-virtual">SmartBlocks::SmartBlocksGlBlock</derivedcompoundref>
+    <includes refid="gl_block_8h" local="no">glBlock.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GlBlock::isHighlighted</definition>
+        <argsstring></argsstring>
+        <name>isHighlighted</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" bodystart="19" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a619a772aae3300b660eb951c5e39c613" compoundref="blinky_blocks_gl_block_8cpp" startline="11" endline="28">BlinkyBlocks::BlinkyBlocksGlBlock::glDraw</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a82ccf0021d861f9d87443cff1275ae8e" compoundref="catoms2_d_gl_block_8cpp" startline="12" endline="29">Catoms2D::Catoms2DGlBlock::glDraw</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6e16b11f9cab2d5c44666927b8c465a" compoundref="catoms3_d_gl_block_8cpp" startline="12" endline="34">Catoms3D::Catoms3DGlBlock::glDraw</referencedby>
+        <referencedby refid="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" compoundref="gl_block_8cpp" startline="3" endline="12">GlBlock</referencedby>
+        <referencedby refid="class_gl_block_1abbe6e6bfc4a1697ba7fc8722d830ed2f" compoundref="gl_block_8cpp" startline="53" endline="55">toggleHighlight</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a6746bc787917801125282ef70fa9ee63" compoundref="robot_blocks_gl_block_8cpp" startline="11" endline="28">RobotBlocks::RobotBlocksGlBlock::glDraw</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aadff921119bdeccefc40e13b2a5e9b3f" compoundref="smart_blocks_gl_block_8cpp" startline="13" endline="63">SmartBlocks::SmartBlocksGlBlock::glDraw</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat GlBlock::position[3]</definition>
+        <argsstring>[3]</argsstring>
+        <name>position</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a619a772aae3300b660eb951c5e39c613" compoundref="blinky_blocks_gl_block_8cpp" startline="11" endline="28">BlinkyBlocks::BlinkyBlocksGlBlock::glDraw</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1aef5efb531a73f261ff1eb0198b81208a" compoundref="blinky_blocks_gl_block_8cpp" startline="30" endline="35">BlinkyBlocks::BlinkyBlocksGlBlock::glDrawId</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1ab5965cc9bc0cae76b984cff61efa8122" compoundref="blinky_blocks_gl_block_8cpp" startline="37" endline="42">BlinkyBlocks::BlinkyBlocksGlBlock::glDrawIdByMaterial</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1ad0d2fcb189fbd915152c3c200da169c4" compoundref="catoms2_d_block_8cpp" startline="39" endline="42">Catoms2D::Catoms2DBlock::setColor</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1a9354c83fdd2f3e0352f535177036634a" compoundref="catoms2_d_events_8cpp" startline="26" endline="33">Catoms2D::MotionStartEvent::MotionStartEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_step_event_1a42c0f70e21b3cd89c844f54bb88819c1" compoundref="catoms2_d_events_8cpp" startline="79" endline="103">Catoms2D::MotionStepEvent::consume</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1a14611b19773548084c068d14dd893d99" compoundref="catoms2_d_events_8cpp" startline="128" endline="153">Catoms2D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a82ccf0021d861f9d87443cff1275ae8e" compoundref="catoms2_d_gl_block_8cpp" startline="12" endline="29">Catoms2D::Catoms2DGlBlock::glDraw</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1ae3ce1aa7886f4a6737acdd0960cac364" compoundref="catoms2_d_gl_block_8cpp" startline="31" endline="36">Catoms2D::Catoms2DGlBlock::glDrawId</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1ab0c9aea7efc1a50ddc8a17e616eec5a7" compoundref="catoms2_d_gl_block_8cpp" startline="38" endline="43">Catoms2D::Catoms2DGlBlock::glDrawIdByMaterial</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a44aa2997e893c912c7c4a76b335f4f1f" compoundref="catoms2_d_gl_block_8cpp" startline="46" endline="51">Catoms2D::Catoms2DGlBlock::getInfo</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1a6fd256fcbb3fe3fda21643f80fd7fd5f" compoundref="catoms3_d_gl_block_8cpp" startline="36" endline="41">Catoms3D::Catoms3DGlBlock::glDrawId</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1afbbda1d6eb24096e24c407e149a73823" compoundref="catoms3_d_gl_block_8cpp" startline="43" endline="48">Catoms3D::Catoms3DGlBlock::glDrawIdByMaterial</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6b35e0f81cf34e368470866cfdd7b3f" compoundref="catoms3_d_gl_block_8cpp" startline="51" endline="56">Catoms3D::Catoms3DGlBlock::getInfo</referencedby>
+        <referencedby refid="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" compoundref="gl_block_8cpp" startline="3" endline="12">GlBlock</referencedby>
+        <referencedby refid="class_gl_block_1ae9849a64de0e8b6636314826d0e2f5ca" compoundref="gl_block_8cpp" startline="29" endline="33">setPosition</referencedby>
+        <referencedby refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7" compoundref="gl_block_8cpp" startline="57" endline="62">getInfo</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a6746bc787917801125282ef70fa9ee63" compoundref="robot_blocks_gl_block_8cpp" startline="11" endline="28">RobotBlocks::RobotBlocksGlBlock::glDraw</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1ae80f1974b08ecaa3a02f232b8485f930" compoundref="robot_blocks_gl_block_8cpp" startline="30" endline="35">RobotBlocks::RobotBlocksGlBlock::glDrawId</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a3717da9e7f5f937f1c4c0152a325c171" compoundref="robot_blocks_gl_block_8cpp" startline="37" endline="42">RobotBlocks::RobotBlocksGlBlock::glDrawIdByMaterial</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a46beab988545e29d04dd498f2bdc8c19" compoundref="robot_blocks_gl_block_8cpp" startline="45" endline="50">RobotBlocks::RobotBlocksGlBlock::getInfo</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aadff921119bdeccefc40e13b2a5e9b3f" compoundref="smart_blocks_gl_block_8cpp" startline="13" endline="63">SmartBlocks::SmartBlocksGlBlock::glDraw</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a72517a4d3f17b8bdbe543eba47b75f47" compoundref="smart_blocks_gl_block_8cpp" startline="65" endline="70">SmartBlocks::SmartBlocksGlBlock::glDrawId</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_gl_block_1a7529622693ab66cd661fb883facd0517" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat GlBlock::color[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>color</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a619a772aae3300b660eb951c5e39c613" compoundref="blinky_blocks_gl_block_8cpp" startline="11" endline="28">BlinkyBlocks::BlinkyBlocksGlBlock::glDraw</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a82ccf0021d861f9d87443cff1275ae8e" compoundref="catoms2_d_gl_block_8cpp" startline="12" endline="29">Catoms2D::Catoms2DGlBlock::glDraw</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a44aa2997e893c912c7c4a76b335f4f1f" compoundref="catoms2_d_gl_block_8cpp" startline="46" endline="51">Catoms2D::Catoms2DGlBlock::getInfo</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6e16b11f9cab2d5c44666927b8c465a" compoundref="catoms3_d_gl_block_8cpp" startline="12" endline="34">Catoms3D::Catoms3DGlBlock::glDraw</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6b35e0f81cf34e368470866cfdd7b3f" compoundref="catoms3_d_gl_block_8cpp" startline="51" endline="56">Catoms3D::Catoms3DGlBlock::getInfo</referencedby>
+        <referencedby refid="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" compoundref="gl_block_8cpp" startline="3" endline="12">GlBlock</referencedby>
+        <referencedby refid="class_gl_block_1a3a659956f3df7b81ed21ad16fa33b391" compoundref="gl_block_8cpp" startline="35" endline="40">setColor</referencedby>
+        <referencedby refid="class_gl_block_1ab03ba1da95352c4951b2bfe408ef04c3" compoundref="gl_block_8cpp" startline="49" endline="51">setVisible</referencedby>
+        <referencedby refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7" compoundref="gl_block_8cpp" startline="57" endline="62">getInfo</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a6746bc787917801125282ef70fa9ee63" compoundref="robot_blocks_gl_block_8cpp" startline="11" endline="28">RobotBlocks::RobotBlocksGlBlock::glDraw</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a46beab988545e29d04dd498f2bdc8c19" compoundref="robot_blocks_gl_block_8cpp" startline="45" endline="50">RobotBlocks::RobotBlocksGlBlock::getInfo</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1aadff921119bdeccefc40e13b2a5e9b3f" compoundref="smart_blocks_gl_block_8cpp" startline="13" endline="63">SmartBlocks::SmartBlocksGlBlock::glDraw</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int GlBlock::blockId</definition>
+        <argsstring></argsstring>
+        <name>blockId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" bodystart="23" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a44aa2997e893c912c7c4a76b335f4f1f" compoundref="catoms2_d_gl_block_8cpp" startline="46" endline="51">Catoms2D::Catoms2DGlBlock::getInfo</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6b35e0f81cf34e368470866cfdd7b3f" compoundref="catoms3_d_gl_block_8cpp" startline="51" endline="56">Catoms3D::Catoms3DGlBlock::getInfo</referencedby>
+        <referencedby refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7" compoundref="gl_block_8cpp" startline="57" endline="62">getInfo</referencedby>
+        <referencedby refid="class_gl_block_1a83b01f275e6f319bf5bd50116adfee15" compoundref="gl_block_8cpp" startline="64" endline="69">getPopupInfo</referencedby>
+        <referencedby refid="class_glut_sliding_main_window_1afae498a37f111f6b11d33ada96789775" compoundref="interface_8cpp" startline="143" endline="231">GlutSlidingMainWindow::glDraw</referencedby>
+        <referencedby refid="class_glut_sliding_main_window_1a2bcada50d709b3dae884b7be1a495eb7" compoundref="interface_8cpp" startline="277" endline="285">GlutSlidingMainWindow::addTrace</referencedby>
+        <referencedby refid="class_glut_sliding_main_window_1a7edb56824e53467b9a457fd0616ae316" compoundref="interface_8cpp" startline="287" endline="302">GlutSlidingMainWindow::select</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a46beab988545e29d04dd498f2bdc8c19" compoundref="robot_blocks_gl_block_8cpp" startline="45" endline="50">RobotBlocks::RobotBlocksGlBlock::getInfo</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GlBlock::GlBlock</definition>
+        <argsstring>(int id)</argsstring>
+        <name>GlBlock</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="3" bodyend="12"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">position</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">color</references>
+        <references refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" compoundref="gl_block_8h" startline="19">isHighlighted</references>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1a5c86ad67ac4b062166ecfa5fe7322766" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GlBlock::GlBlock</definition>
+        <argsstring>(int id, const Vecteur &amp;pos, const Vecteur &amp;col)</argsstring>
+        <name>GlBlock</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="14" bodyend="23"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">position</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">color</references>
+        <references refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" compoundref="gl_block_8h" startline="19">isHighlighted</references>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1a2179d26fdfe814782897e57c3d77faa1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>GlBlock::~GlBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~GlBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="25" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1ae9849a64de0e8b6636314826d0e2f5ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GlBlock::setPosition</definition>
+        <argsstring>(const Vecteur &amp;p)</argsstring>
+        <name>setPosition</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="29" bodyend="33"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">position</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ad3d443badc81faa0ccadaa7f940b5ccd" compoundref="blinky_blocks_world_8cpp" startline="345" endline="354">BlinkyBlocks::BlinkyBlocksWorld::updateGlData</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a01d4ba23d35d1f2fd46d42dbb7eaddca" compoundref="catoms2_d_world_8cpp" startline="456" endline="465">Catoms2D::Catoms2DWorld::updateGlData</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a4918bde2e715273c9d10833dbd962d16" compoundref="catoms3_d_world_8cpp" startline="88" endline="112">Catoms3D::Catoms3DWorld::addBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a558da0b093e317f7040cfe778c80d75d" compoundref="catoms3_d_world_8cpp" startline="392" endline="400">Catoms3D::Catoms3DWorld::updateGlData</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1ab130fbccabcc78107a61bbec5032896e" compoundref="robot_blocks_world_8cpp" startline="371" endline="380">RobotBlocks::RobotBlocksWorld::updateGlData</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1a533a228759de301db25b229f773ef922" compoundref="smart_blocks_world_8cpp" startline="277" endline="288">SmartBlocks::SmartBlocksWorld::updateGlData</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1abe931d185bd4851420e78ea92ec1aca2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GlBlock::setColor</definition>
+        <argsstring>(const Color &amp;c)</argsstring>
+        <name>setColor</name>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="42" bodyend="47"/>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">color</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ad3d443badc81faa0ccadaa7f940b5ccd" compoundref="blinky_blocks_world_8cpp" startline="345" endline="354">BlinkyBlocks::BlinkyBlocksWorld::updateGlData</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a01d4ba23d35d1f2fd46d42dbb7eaddca" compoundref="catoms2_d_world_8cpp" startline="456" endline="465">Catoms2D::Catoms2DWorld::updateGlData</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a802e6fa1cc01dc9e214123741f214f87" compoundref="catoms3_d_world_8cpp" startline="372" endline="380">Catoms3D::Catoms3DWorld::updateGlData</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1ab130fbccabcc78107a61bbec5032896e" compoundref="robot_blocks_world_8cpp" startline="371" endline="380">RobotBlocks::RobotBlocksWorld::updateGlData</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1a533a228759de301db25b229f773ef922" compoundref="smart_blocks_world_8cpp" startline="277" endline="288">SmartBlocks::SmartBlocksWorld::updateGlData</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1a3a659956f3df7b81ed21ad16fa33b391" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GlBlock::setColor</definition>
+        <argsstring>(const Vecteur &amp;c)</argsstring>
+        <name>setColor</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="31" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="35" bodyend="40"/>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">color</references>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1ab03ba1da95352c4951b2bfe408ef04c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GlBlock::setVisible</definition>
+        <argsstring>(bool visible)</argsstring>
+        <name>setVisible</name>
+        <param>
+          <type>bool</type>
+          <declname>visible</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="49" bodyend="51"/>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">color</references>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1ab517f897285c5c2809802f73b0b8996f" compoundref="catoms3_d_world_8cpp" startline="382" endline="390">Catoms3D::Catoms3DWorld::updateGlData</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1abbe6e6bfc4a1697ba7fc8722d830ed2f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GlBlock::toggleHighlight</definition>
+        <argsstring>()</argsstring>
+        <name>toggleHighlight</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="53" bodyend="55"/>
+        <references refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" compoundref="gl_block_8h" startline="19">isHighlighted</references>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string GlBlock::getInfo</definition>
+        <argsstring>()</argsstring>
+        <name>getInfo</name>
+        <reimplementedby refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1ae3b6c92cb3f32ffaf6e841bfbc34ae35">getInfo</reimplementedby>
+        <reimplementedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a021053786e27f174044b42fcd73e3f1c">getInfo</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_robot_blocks_gl_block_1a46beab988545e29d04dd498f2bdc8c19">getInfo</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a44aa2997e893c912c7c4a76b335f4f1f">getInfo</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6b35e0f81cf34e368470866cfdd7b3f">getInfo</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="57" bodyend="62"/>
+        <references refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" compoundref="gl_block_8h" startline="23">blockId</references>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">position</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">color</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1ae3b6c92cb3f32ffaf6e841bfbc34ae35" compoundref="blinky_blocks_gl_block_8cpp" startline="45" endline="47">BlinkyBlocks::BlinkyBlocksGlBlock::getInfo</referencedby>
+        <referencedby refid="class_glut_sliding_main_window_1afae498a37f111f6b11d33ada96789775" compoundref="interface_8cpp" startline="143" endline="231">GlutSlidingMainWindow::glDraw</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_gl_block_1a021053786e27f174044b42fcd73e3f1c" compoundref="smart_blocks_gl_block_8cpp" startline="72" endline="74">SmartBlocks::SmartBlocksGlBlock::getInfo</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1a83b01f275e6f319bf5bd50116adfee15" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string GlBlock::getPopupInfo</definition>
+        <argsstring>()</argsstring>
+        <name>getPopupInfo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp" bodystart="64" bodyend="69"/>
+        <references refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" compoundref="gl_block_8h" startline="23">blockId</references>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_gl_block_1ac2f5755213e7bc106e83a7a8030fd048" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>virtual const Vecteur GlBlock::getPosition</definition>
+        <argsstring>()</argsstring>
+        <name>getPosition</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" bodystart="36" bodyend="36"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1803">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1805">
+        <label>Catoms2D::Catoms2DGlBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_gl_block"/>
+        <childnode refid="1803" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1804">
+        <label>BlinkyBlocks::BlinkyBlocksGlBlock</label>
+        <link refid="class_blinky_blocks_1_1_blinky_blocks_gl_block"/>
+        <childnode refid="1803" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1808">
+        <label>SmartBlocks::SmartBlocksGlBlock</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_gl_block"/>
+        <childnode refid="1803" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1807">
+        <label>RobotBlocks::RobotBlocksGlBlock</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_gl_block"/>
+        <childnode refid="1803" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1806">
+        <label>Catoms3D::Catoms3DGlBlock</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_gl_block"/>
+        <childnode refid="1803" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" line="17" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h" bodystart="17" bodyend="37"/>
+    <listofallmembers>
+      <member refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" prot="public" virt="non-virtual"><scope>GlBlock</scope><name>blockId</name></member>
+      <member refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" prot="public" virt="non-virtual"><scope>GlBlock</scope><name>color</name></member>
+      <member refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7" prot="public" virt="virtual"><scope>GlBlock</scope><name>getInfo</name></member>
+      <member refid="class_gl_block_1a83b01f275e6f319bf5bd50116adfee15" prot="public" virt="virtual"><scope>GlBlock</scope><name>getPopupInfo</name></member>
+      <member refid="class_gl_block_1ac2f5755213e7bc106e83a7a8030fd048" prot="public" virt="virtual"><scope>GlBlock</scope><name>getPosition</name></member>
+      <member refid="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" prot="public" virt="non-virtual"><scope>GlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_gl_block_1a5c86ad67ac4b062166ecfa5fe7322766" prot="public" virt="non-virtual"><scope>GlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" prot="protected" virt="non-virtual"><scope>GlBlock</scope><name>isHighlighted</name></member>
+      <member refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" prot="public" virt="non-virtual"><scope>GlBlock</scope><name>position</name></member>
+      <member refid="class_gl_block_1abe931d185bd4851420e78ea92ec1aca2" prot="public" virt="virtual"><scope>GlBlock</scope><name>setColor</name></member>
+      <member refid="class_gl_block_1a3a659956f3df7b81ed21ad16fa33b391" prot="public" virt="virtual"><scope>GlBlock</scope><name>setColor</name></member>
+      <member refid="class_gl_block_1ae9849a64de0e8b6636314826d0e2f5ca" prot="public" virt="virtual"><scope>GlBlock</scope><name>setPosition</name></member>
+      <member refid="class_gl_block_1ab03ba1da95352c4951b2bfe408ef04c3" prot="public" virt="virtual"><scope>GlBlock</scope><name>setVisible</name></member>
+      <member refid="class_gl_block_1abbe6e6bfc4a1697ba7fc8722d830ed2f" prot="public" virt="virtual"><scope>GlBlock</scope><name>toggleHighlight</name></member>
+      <member refid="class_gl_block_1a2179d26fdfe814782897e57c3d77faa1" prot="public" virt="virtual"><scope>GlBlock</scope><name>~GlBlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

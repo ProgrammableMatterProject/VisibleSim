@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_base_simulator_1_1_keyword_t" kind="class" language="C++" prot="public">
+    <compoundname>BaseSimulator::KeywordT</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_keyword" prot="public" virt="non-virtual">BaseSimulator::Keyword</basecompoundref>
+    <includes refid="scheduler_8h" local="no">scheduler.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_base_simulator_1_1_keyword_t_1adec711ce6620d08cb9999a25471d5a43" prot="private" static="no" mutable="no">
+        <type>T *</type>
+        <definition>T* BaseSimulator::KeywordT&lt; T &gt;::ptrData</definition>
+        <argsstring></argsstring>
+        <name>ptrData</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_base_simulator_1_1_keyword_t_1a5fb2fcf5759fe388a59c2ae86146cfd0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>BaseSimulator::KeywordT&lt; T &gt;::KeywordT</definition>
+        <argsstring>(string i, T *ptr, string comment=&quot;&quot;)</argsstring>
+        <name>KeywordT</name>
+        <param>
+          <type>string</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>T *</type>
+          <declname>ptr</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>comment</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1872">
+        <label>BaseSimulator::KeywordT&lt; T &gt;</label>
+        <link refid="class_base_simulator_1_1_keyword_t"/>
+        <childnode refid="1873" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1873">
+        <label>BaseSimulator::Keyword</label>
+        <link refid="class_base_simulator_1_1_keyword"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1874">
+        <label>BaseSimulator::KeywordT&lt; T &gt;</label>
+        <link refid="class_base_simulator_1_1_keyword_t"/>
+        <childnode refid="1875" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1875">
+        <label>BaseSimulator::Keyword</label>
+        <link refid="class_base_simulator_1_1_keyword"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" bodystart="38" bodyend="42"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_keyword_1a19bf331dc2f0fa188b35b3d30fac512c" prot="public" virt="non-virtual"><scope>BaseSimulator::KeywordT</scope><name>comment</name></member>
+      <member refid="class_base_simulator_1_1_keyword_1a8af69929bcdc8ccd16737f92078f53dd" prot="public" virt="non-virtual"><scope>BaseSimulator::KeywordT</scope><name>id</name></member>
+      <member refid="class_base_simulator_1_1_keyword_1a2d07bdd646ba1356ac77020eebef0da8" prot="public" virt="non-virtual"><scope>BaseSimulator::KeywordT</scope><name>Keyword</name></member>
+      <member refid="class_base_simulator_1_1_keyword_t_1a5fb2fcf5759fe388a59c2ae86146cfd0" prot="public" virt="non-virtual"><scope>BaseSimulator::KeywordT</scope><name>KeywordT</name></member>
+      <member refid="class_base_simulator_1_1_keyword_t_1adec711ce6620d08cb9999a25471d5a43" prot="private" virt="non-virtual"><scope>BaseSimulator::KeywordT</scope><name>ptrData</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

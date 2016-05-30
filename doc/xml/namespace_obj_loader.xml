@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="namespace_obj_loader" kind="namespace" language="C++">
+    <compoundname>ObjLoader</compoundname>
+    <innerclass refid="class_obj_loader_1_1_face_tri" prot="public">ObjLoader::FaceTri</innerclass>
+    <innerclass refid="class_obj_loader_1_1_mtl" prot="public">ObjLoader::Mtl</innerclass>
+    <innerclass refid="class_obj_loader_1_1_mtl_lib" prot="public">ObjLoader::MtlLib</innerclass>
+    <innerclass refid="class_obj_loader_1_1_obj_data" prot="public">ObjLoader::ObjData</innerclass>
+    <innerclass refid="class_obj_loader_1_1_obj_loader" prot="public">ObjLoader::ObjLoader</innerclass>
+    <innerclass refid="class_obj_loader_1_1_point2" prot="public">ObjLoader::Point2</innerclass>
+    <innerclass refid="class_obj_loader_1_1_point3" prot="public">ObjLoader::Point3</innerclass>
+    <innerclass refid="class_obj_loader_1_1_sommet" prot="public">ObjLoader::Sommet</innerclass>
+    <innerclass refid="struct_obj_loader_1_1vertex_pos_nrm_tx" prot="public">ObjLoader::vertexPosNrmTx</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_obj_loader_1a12ebd11c771d4ee6cda94c4a7afd177e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ObjLoader::extraire</definition>
+        <argsstring>(const char *src, char *dest, int size_dest)</argsstring>
+        <name>extraire</name>
+        <param>
+          <type>const char *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size_dest</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp" bodystart="20" bodyend="28"/>
+        <referencedby refid="class_obj_loader_1_1_obj_loader_1aa85283e5cd3ac8bcd4d3b8c57495e1c1" compoundref="obj_loader_8cpp" startline="56" endline="295">ObjLoader::ObjLoader::ObjLoader</referencedby>
+        <referencedby refid="class_obj_loader_1_1_mtl_lib_1ace25da245822ef5111852849240d003e" compoundref="obj_loader_8cpp" startline="540" endline="673">ObjLoader::MtlLib::MtlLib</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_obj_loader_1a0f80688e4a9c8e9b7550abd1ac1885a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>istream &amp;</type>
+        <definition>istream&amp; ObjLoader::operator&gt;&gt;</definition>
+        <argsstring>(istream &amp;in, Sommet &amp;p3)</argsstring>
+        <name>operator&gt;&gt;</name>
+        <param>
+          <type>istream &amp;</type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_sommet" kindref="compound">Sommet</ref> &amp;</type>
+          <declname>p3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp" line="767" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp" bodystart="767" bodyend="770"/>
+        <references refid="class_obj_loader_1_1_sommet_1a5dfd69833773284b52523a6e1219f8c5" compoundref="obj_loader_8h" startline="67">ObjLoader::Sommet::v</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp" line="18" column="1"/>
+  </compounddef>
+</doxygen>

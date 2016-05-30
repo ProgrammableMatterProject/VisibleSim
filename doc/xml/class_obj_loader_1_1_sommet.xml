@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_obj_loader_1_1_sommet" kind="class" language="C++" prot="public">
+    <compoundname>ObjLoader::Sommet</compoundname>
+    <includes refid="obj_loader_8h" local="no">objLoader.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_obj_loader_1_1_sommet_1a5dfd69833773284b52523a6e1219f8c5" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::Sommet::v[3]</definition>
+        <argsstring>[3]</argsstring>
+        <name>v</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="67" bodyend="-1"/>
+        <referencedby refid="namespace_obj_loader_1a0f80688e4a9c8e9b7550abd1ac1885a1" compoundref="obj_loader_8cpp" startline="767" endline="770">ObjLoader::operator&gt;&gt;</referencedby>
+        <referencedby refid="class_obj_loader_1_1_sommet_1a8c84a817ef69d2896ca3b85396f87414" compoundref="obj_loader_8cpp" startline="778" endline="782">operator==</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_obj_loader_1_1_sommet_1a56af91346be659f5a0e053a7d389a154" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::Sommet::t[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="67" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_sommet_1a8c84a817ef69d2896ca3b85396f87414" compoundref="obj_loader_8cpp" startline="778" endline="782">operator==</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_obj_loader_1_1_sommet_1a78a10d115e57ba6775783052c6eda822" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::Sommet::n[3]</definition>
+        <argsstring>[3]</argsstring>
+        <name>n</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="67" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_sommet_1a8c84a817ef69d2896ca3b85396f87414" compoundref="obj_loader_8cpp" startline="778" endline="782">operator==</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_obj_loader_1_1_sommet_1a10812af490d27be6031f33d9024de7b5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ObjLoader::Sommet::Sommet</definition>
+        <argsstring>()</argsstring>
+        <name>Sommet</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="69" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="69" bodyend="69"/>
+        <references refid="namespace_catoms2_d_1a3f730a776c3dc5dfd5c329a537e72ca9" compoundref="catoms2_d_capabilities_8cpp" startline="652" endline="654">Catoms2D::operator==</references>
+      </memberdef>
+      <memberdef kind="function" id="class_obj_loader_1_1_sommet_1ae98fdafc682b0a4e3d746d1e3755d2b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ObjLoader::Sommet::set</definition>
+        <argsstring>(GLfloat *tabV, GLfloat *tabN, GLfloat *tabT)</argsstring>
+        <name>set</name>
+        <param>
+          <type>GLfloat *</type>
+          <declname>tabV</declname>
+        </param>
+        <param>
+          <type>GLfloat *</type>
+          <declname>tabN</declname>
+        </param>
+        <param>
+          <type>GLfloat *</type>
+          <declname>tabT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="70" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp" bodystart="772" bodyend="776"/>
+        <referencedby refid="class_obj_loader_1_1_obj_loader_1aa85283e5cd3ac8bcd4d3b8c57495e1c1" compoundref="obj_loader_8cpp" startline="56" endline="295">ObjLoader::ObjLoader::ObjLoader</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_obj_loader_1_1_sommet_1a8c84a817ef69d2896ca3b85396f87414" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ObjLoader::Sommet::operator==</definition>
+        <argsstring>(const Sommet &amp;s)</argsstring>
+        <name>operator==</name>
+        <param>
+          <type>const <ref refid="class_obj_loader_1_1_sommet" kindref="compound">Sommet</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="71" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp" bodystart="778" bodyend="782"/>
+        <references refid="class_obj_loader_1_1_sommet_1a5dfd69833773284b52523a6e1219f8c5" compoundref="obj_loader_8h" startline="67">v</references>
+        <references refid="class_obj_loader_1_1_sommet_1a78a10d115e57ba6775783052c6eda822" compoundref="obj_loader_8h" startline="67">n</references>
+        <references refid="class_obj_loader_1_1_sommet_1a56af91346be659f5a0e053a7d389a154" compoundref="obj_loader_8h" startline="67">t</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="64" bodyend="72"/>
+    <listofallmembers>
+      <member refid="class_obj_loader_1_1_sommet_1a78a10d115e57ba6775783052c6eda822" prot="public" virt="non-virtual"><scope>ObjLoader::Sommet</scope><name>n</name></member>
+      <member refid="class_obj_loader_1_1_sommet_1a8c84a817ef69d2896ca3b85396f87414" prot="public" virt="non-virtual"><scope>ObjLoader::Sommet</scope><name>operator==</name></member>
+      <member refid="class_obj_loader_1_1_sommet_1ae98fdafc682b0a4e3d746d1e3755d2b1" prot="public" virt="non-virtual"><scope>ObjLoader::Sommet</scope><name>set</name></member>
+      <member refid="class_obj_loader_1_1_sommet_1a10812af490d27be6031f33d9024de7b5" prot="public" virt="non-virtual"><scope>ObjLoader::Sommet</scope><name>Sommet</name></member>
+      <member refid="class_obj_loader_1_1_sommet_1a56af91346be659f5a0e053a7d389a154" prot="public" virt="non-virtual"><scope>ObjLoader::Sommet</scope><name>t</name></member>
+      <member refid="class_obj_loader_1_1_sommet_1a5dfd69833773284b52523a6e1219f8c5" prot="public" virt="non-virtual"><scope>ObjLoader::Sommet</scope><name>v</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

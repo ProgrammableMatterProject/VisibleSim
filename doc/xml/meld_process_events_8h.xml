@@ -1,0 +1,590 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="meld_process_events_8h" kind="file" language="C++">
+    <compoundname>meldProcessEvents.h</compoundname>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includes refid="events_8h" local="yes">events.h</includes>
+    <includes refid="network_8h" local="yes">network.h</includes>
+    <includes refid="meld_process_debugger_8h" local="yes">meldProcessDebugger.h</includes>
+    <includedby refid="blinky_blocks_block_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</includedby>
+    <includedby refid="meld_process_events_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.cpp</includedby>
+    <includedby refid="meld_process_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</includedby>
+    <includedby refid="meld_process_v_m_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</includedby>
+    <incdepgraph>
+      <node id="15550">
+        <label>list</label>
+      </node>
+      <node id="15588">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="15553" relation="include">
+        </childnode>
+        <childnode refid="15589" relation="include">
+        </childnode>
+        <childnode refid="15562" relation="include">
+        </childnode>
+        <childnode refid="15567" relation="include">
+        </childnode>
+        <childnode refid="15551" relation="include">
+        </childnode>
+        <childnode refid="15590" relation="include">
+        </childnode>
+      </node>
+      <node id="15562">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="15558" relation="include">
+        </childnode>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15557" relation="include">
+        </childnode>
+        <childnode refid="15563" relation="include">
+        </childnode>
+        <childnode refid="15564" relation="include">
+        </childnode>
+      </node>
+      <node id="15553">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="15554" relation="include">
+        </childnode>
+        <childnode refid="15555" relation="include">
+        </childnode>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15557" relation="include">
+        </childnode>
+        <childnode refid="15558" relation="include">
+        </childnode>
+        <childnode refid="15559" relation="include">
+        </childnode>
+        <childnode refid="15560" relation="include">
+        </childnode>
+        <childnode refid="15561" relation="include">
+        </childnode>
+        <childnode refid="15562" relation="include">
+        </childnode>
+        <childnode refid="15567" relation="include">
+        </childnode>
+      </node>
+      <node id="15564">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15557" relation="include">
+        </childnode>
+        <childnode refid="15565" relation="include">
+        </childnode>
+        <childnode refid="15566" relation="include">
+        </childnode>
+      </node>
+      <node id="15590">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="15591" relation="include">
+        </childnode>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15557" relation="include">
+        </childnode>
+        <childnode refid="15566" relation="include">
+        </childnode>
+        <childnode refid="15551" relation="include">
+        </childnode>
+        <childnode refid="15592" relation="include">
+        </childnode>
+        <childnode refid="15568" relation="include">
+        </childnode>
+      </node>
+      <node id="15547">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="15587">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="15584">
+        <label>assert.h</label>
+      </node>
+      <node id="15572">
+        <label>stdint.h</label>
+      </node>
+      <node id="15555">
+        <label>stdlib.h</label>
+      </node>
+      <node id="15546">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="15547" relation="include">
+        </childnode>
+        <childnode refid="15548" relation="include">
+        </childnode>
+        <childnode refid="15549" relation="include">
+        </childnode>
+        <childnode refid="15550" relation="include">
+        </childnode>
+        <childnode refid="15551" relation="include">
+        </childnode>
+        <childnode refid="15569" relation="include">
+        </childnode>
+        <childnode refid="15571" relation="include">
+        </childnode>
+      </node>
+      <node id="15565">
+        <label>cmath</label>
+      </node>
+      <node id="15545">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</label>
+        <link refid="meldProcessEvents.h"/>
+        <childnode refid="15546" relation="include">
+        </childnode>
+        <childnode refid="15573" relation="include">
+        </childnode>
+        <childnode refid="15575" relation="include">
+        </childnode>
+        <childnode refid="15578" relation="include">
+        </childnode>
+      </node>
+      <node id="15552">
+        <label>string</label>
+      </node>
+      <node id="15558">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="15596">
+        <label>meldProcessVMCommands.h</label>
+        <link refid="meld_process_v_m_commands_8h"/>
+        <childnode refid="15575" relation="include">
+        </childnode>
+        <childnode refid="15568" relation="include">
+        </childnode>
+      </node>
+      <node id="15583">
+        <label>map</label>
+      </node>
+      <node id="15585">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="15566">
+        <label>memory.h</label>
+      </node>
+      <node id="15551">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="15552" relation="include">
+        </childnode>
+        <childnode refid="15553" relation="include">
+        </childnode>
+        <childnode refid="15564" relation="include">
+        </childnode>
+        <childnode refid="15568" relation="include">
+        </childnode>
+      </node>
+      <node id="15557">
+        <label>fstream</label>
+      </node>
+      <node id="15569">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="15546" relation="include">
+        </childnode>
+        <childnode refid="15570" relation="include">
+        </childnode>
+      </node>
+      <node id="15561">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="15574">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="15567">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="15563" relation="include">
+        </childnode>
+        <childnode refid="15564" relation="include">
+        </childnode>
+        <childnode refid="15562" relation="include">
+        </childnode>
+      </node>
+      <node id="15559">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="15580">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="15589">
+        <label>pthread.h</label>
+      </node>
+      <node id="15578">
+        <label>meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15547" relation="include">
+        </childnode>
+        <childnode refid="15570" relation="include">
+        </childnode>
+        <childnode refid="15579" relation="include">
+        </childnode>
+        <childnode refid="15595" relation="include">
+        </childnode>
+        <childnode refid="15596" relation="include">
+        </childnode>
+      </node>
+      <node id="15577">
+        <label>string.h</label>
+      </node>
+      <node id="15591">
+        <label>vector</label>
+      </node>
+      <node id="15575">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="15576" relation="include">
+        </childnode>
+        <childnode refid="15577" relation="include">
+        </childnode>
+        <childnode refid="15547" relation="include">
+        </childnode>
+        <childnode refid="15546" relation="include">
+        </childnode>
+      </node>
+      <node id="15582">
+        <label>sstream</label>
+      </node>
+      <node id="15594">
+        <label>commandLine.h</label>
+        <link refid="command_line_8h"/>
+        <childnode refid="15552" relation="include">
+        </childnode>
+      </node>
+      <node id="15579">
+        <label>simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="15580" relation="include">
+        </childnode>
+        <childnode refid="15581" relation="include">
+        </childnode>
+        <childnode refid="15592" relation="include">
+        </childnode>
+        <childnode refid="15594" relation="include">
+        </childnode>
+      </node>
+      <node id="15581">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15582" relation="include">
+        </childnode>
+        <childnode refid="15583" relation="include">
+        </childnode>
+        <childnode refid="15570" relation="include">
+        </childnode>
+        <childnode refid="15584" relation="include">
+        </childnode>
+        <childnode refid="15585" relation="include">
+        </childnode>
+        <childnode refid="15586" relation="include">
+        </childnode>
+        <childnode refid="15549" relation="include">
+        </childnode>
+        <childnode refid="15587" relation="include">
+        </childnode>
+        <childnode refid="15573" relation="include">
+        </childnode>
+        <childnode refid="15588" relation="include">
+        </childnode>
+      </node>
+      <node id="15563">
+        <label>math.h</label>
+      </node>
+      <node id="15568">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15557" relation="include">
+        </childnode>
+        <childnode refid="15565" relation="include">
+        </childnode>
+        <childnode refid="15566" relation="include">
+        </childnode>
+        <childnode refid="15553" relation="include">
+        </childnode>
+      </node>
+      <node id="15556">
+        <label>iostream</label>
+      </node>
+      <node id="15576">
+        <label>deque</label>
+      </node>
+      <node id="15586">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="15549">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="15593">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="15557" relation="include">
+        </childnode>
+      </node>
+      <node id="15573">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="15570" relation="include">
+        </childnode>
+        <childnode refid="15552" relation="include">
+        </childnode>
+        <childnode refid="15547" relation="include">
+        </childnode>
+        <childnode refid="15546" relation="include">
+        </childnode>
+        <childnode refid="15574" relation="include">
+        </childnode>
+        <childnode refid="15575" relation="include">
+        </childnode>
+        <childnode refid="15568" relation="include">
+        </childnode>
+      </node>
+      <node id="15548">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="15592">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15583" relation="include">
+        </childnode>
+        <childnode refid="15591" relation="include">
+        </childnode>
+        <childnode refid="15549" relation="include">
+        </childnode>
+        <childnode refid="15584" relation="include">
+        </childnode>
+        <childnode refid="15546" relation="include">
+        </childnode>
+        <childnode refid="15551" relation="include">
+        </childnode>
+        <childnode refid="15593" relation="include">
+        </childnode>
+      </node>
+      <node id="15560">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="15554">
+        <label>stdio.h</label>
+      </node>
+      <node id="15571">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="15546" relation="include">
+        </childnode>
+        <childnode refid="15572" relation="include">
+        </childnode>
+        <childnode refid="15556" relation="include">
+        </childnode>
+        <childnode refid="15548" relation="include">
+        </childnode>
+        <childnode refid="15550" relation="include">
+        </childnode>
+      </node>
+      <node id="15595">
+        <label>meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="15581" relation="include">
+        </childnode>
+        <childnode refid="15575" relation="include">
+        </childnode>
+        <childnode refid="15585" relation="include">
+        </childnode>
+        <childnode refid="15586" relation="include">
+        </childnode>
+        <childnode refid="15587" relation="include">
+        </childnode>
+        <childnode refid="15549" relation="include">
+        </childnode>
+        <childnode refid="15593" relation="include">
+        </childnode>
+      </node>
+      <node id="15570">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="15600">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</label>
+        <link refid="meld_process_scheduler_8cpp"/>
+      </node>
+      <node id="15598">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="15597">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</label>
+        <link refid="meldProcessEvents.h"/>
+        <childnode refid="15598" relation="include">
+        </childnode>
+        <childnode refid="15599" relation="include">
+        </childnode>
+        <childnode refid="15600" relation="include">
+        </childnode>
+        <childnode refid="15601" relation="include">
+        </childnode>
+      </node>
+      <node id="15599">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.cpp</label>
+        <link refid="meld_process_events_8cpp"/>
+      </node>
+      <node id="15601">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</label>
+        <link refid="meld_process_v_m_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_meld_process_1_1_v_m_set_id_event" prot="public">MeldProcess::VMSetIdEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_stop_event" prot="public">MeldProcess::VMStopEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_send_message_event" prot="public">MeldProcess::VMSendMessageEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_handle_debug_command_event" prot="public">MeldProcess::VMHandleDebugCommandEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_debug_pause_sim_event" prot="public">MeldProcess::VMDebugPauseSimEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_end_poll_event" prot="public">MeldProcess::VMEndPollEvent</innerclass>
+    <innernamespace refid="namespace_meld_process">MeldProcess</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>meldProcessEvents.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>28<sp/>March<sp/>2015</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>andre</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>MELDPROCESSEVENTS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MELDPROCESSEVENTS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="events_8h" kindref="compound">events.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="network_8h" kindref="compound">network.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_process_debugger_8h" kindref="compound">meldProcessDebugger.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_meld_process" kindref="compound">MeldProcess</ref><sp/>{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VMSetIdEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="class_meld_process_1_1_v_m_set_id_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_set_id_event" kindref="compound">VMSetIdEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1ab6052b1a2b837ee0771f722029dbd784" kindref="member">VMSetIdEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref><sp/>*conBlock);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1ab6052b1a2b837ee0771f722029dbd784" kindref="member">VMSetIdEvent</ref>(<ref refid="class_meld_process_1_1_v_m_set_id_event" kindref="compound">VMSetIdEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1aa4dd89b481a18f0c0f50c9f00410c547" kindref="member">~VMSetIdEvent</ref>();</highlight></codeline>
+<codeline lineno="30" refid="class_meld_process_1_1_v_m_set_id_event_1a1d83c31fcb7da726a860288a8c1e3202" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a1d83c31fcb7da726a860288a8c1e3202" kindref="member">consumeBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a80e5bcc9532b346768814584c84e026a" kindref="member">consume</ref>();</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a745540125f26ad9845347a2da57f6fd4" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VMStopEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_meld_process_1_1_v_m_stop_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_stop_event" kindref="compound">VMStopEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_stop_event" kindref="compound">VMStopEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref><sp/>*conBlock);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_stop_event" kindref="compound">VMStopEvent</ref>(<ref refid="class_meld_process_1_1_v_m_stop_event" kindref="compound">VMStopEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_meld_process_1_1_v_m_stop_event" kindref="compound">VMStopEvent</ref>();</highlight></codeline>
+<codeline lineno="47" refid="class_meld_process_1_1_v_m_stop_event_1ac527ec10bbeb04455253750497780a20" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_stop_event_1ac527ec10bbeb04455253750497780a20" kindref="member">consumeBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a80e5bcc9532b346768814584c84e026a" kindref="member">consume</ref>();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a745540125f26ad9845347a2da57f6fd4" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VMSendMessageEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="class_meld_process_1_1_v_m_send_message_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_send_message_event" kindref="compound">VMSendMessageEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="61" refid="class_meld_process_1_1_v_m_send_message_event_1ab5268cca9769fbbc4dc2ce00ede83d44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref><sp/><ref refid="class_meld_process_1_1_v_m_send_message_event_1ab5268cca9769fbbc4dc2ce00ede83d44" kindref="member">message</ref>;</highlight></codeline>
+<codeline lineno="62" refid="class_meld_process_1_1_v_m_send_message_event_1a9b1941c5977e1bd10c8f4b61b6b44f6c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_meld_process_1_1_v_m_send_message_event_1a9b1941c5977e1bd10c8f4b61b6b44f6c" kindref="member">sourceInterface</ref>;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_send_message_event" kindref="compound">VMSendMessageEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref><sp/>*conBlock,<sp/><ref refid="class_message" kindref="compound">Message</ref><sp/>*mes,<sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_send_message_event" kindref="compound">VMSendMessageEvent</ref>(<ref refid="class_meld_process_1_1_v_m_send_message_event" kindref="compound">VMSendMessageEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_meld_process_1_1_v_m_send_message_event" kindref="compound">VMSendMessageEvent</ref>();</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a1d83c31fcb7da726a860288a8c1e3202" kindref="member">consumeBlockEvent</ref>();</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a745540125f26ad9845347a2da57f6fd4" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VMHandleDebugCommandEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="class_meld_process_1_1_v_m_handle_debug_command_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_handle_debug_command_event" kindref="compound">VMHandleDebugCommandEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="80" refid="class_meld_process_1_1_v_m_handle_debug_command_event_1a39339826d57a90098dff80a5534a77dd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_debbugger_v_m_command" kindref="compound">DebbuggerVMCommand</ref><sp/>*<ref refid="class_meld_process_1_1_v_m_handle_debug_command_event_1a39339826d57a90098dff80a5534a77dd" kindref="member">command</ref>;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_handle_debug_command_event" kindref="compound">VMHandleDebugCommandEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref><sp/>*conBlock,<sp/><ref refid="class_meld_process_1_1_debbugger_v_m_command" kindref="compound">DebbuggerVMCommand</ref><sp/>*c);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_handle_debug_command_event" kindref="compound">VMHandleDebugCommandEvent</ref>(<ref refid="class_meld_process_1_1_v_m_handle_debug_command_event" kindref="compound">VMHandleDebugCommandEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_meld_process_1_1_v_m_handle_debug_command_event" kindref="compound">VMHandleDebugCommandEvent</ref>();</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a1d83c31fcb7da726a860288a8c1e3202" kindref="member">consumeBlockEvent</ref>();</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a745540125f26ad9845347a2da57f6fd4" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VMDebugMessageEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_meld_process_1_1_v_m_debug_pause_sim_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_debug_pause_sim_event" kindref="compound">VMDebugPauseSimEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_debug_pause_sim_event" kindref="compound">VMDebugPauseSimEvent</ref>(uint64_t);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_debug_pause_sim_event" kindref="compound">VMDebugPauseSimEvent</ref>(<ref refid="class_meld_process_1_1_v_m_debug_pause_sim_event" kindref="compound">VMDebugPauseSimEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_meld_process_1_1_v_m_debug_pause_sim_event" kindref="compound">VMDebugPauseSimEvent</ref>();</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a80e5bcc9532b346768814584c84e026a" kindref="member">consume</ref>();</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a745540125f26ad9845347a2da57f6fd4" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VMEndPollEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="class_meld_process_1_1_v_m_end_poll_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_end_poll_event" kindref="compound">VMEndPollEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_end_poll_event" kindref="compound">VMEndPollEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref><sp/>*conBlock);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_end_poll_event" kindref="compound">VMEndPollEvent</ref>(<ref refid="class_meld_process_1_1_v_m_end_poll_event" kindref="compound">VMEndPollEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_meld_process_1_1_v_m_end_poll_event" kindref="compound">VMEndPollEvent</ref>();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a1d83c31fcb7da726a860288a8c1e3202" kindref="member">consumeBlockEvent</ref>();</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_set_id_event_1a745540125f26ad9845347a2da57f6fd4" kindref="member">getEventName</ref>();</highlight></codeline>
+<codeline lineno="120"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>MeldProcess<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>MELDPROCESSEVENTS_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h"/>
+  </compounddef>
+</doxygen>

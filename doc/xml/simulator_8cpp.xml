@@ -1,0 +1,691 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="simulator_8cpp" kind="file" language="C++">
+    <compoundname>simulator.cpp</compoundname>
+    <includes refid="simulator_8h" local="yes">simulator.h</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includes refid="meld_process_v_m_8h" local="yes">meldProcessVM.h</includes>
+    <includes refid="meld_process_debugger_8h" local="yes">meldProcessDebugger.h</includes>
+    <includes refid="meld_interpret_v_m_8h" local="yes">meldInterpretVM.h</includes>
+    <incdepgraph>
+      <node id="18350">
+        <label>list</label>
+      </node>
+      <node id="18374">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="18352" relation="include">
+        </childnode>
+        <childnode refid="18375" relation="include">
+        </childnode>
+        <childnode refid="18360" relation="include">
+        </childnode>
+        <childnode refid="18365" relation="include">
+        </childnode>
+        <childnode refid="18351" relation="include">
+        </childnode>
+        <childnode refid="18376" relation="include">
+        </childnode>
+      </node>
+      <node id="18360">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="18356" relation="include">
+        </childnode>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18355" relation="include">
+        </childnode>
+        <childnode refid="18361" relation="include">
+        </childnode>
+        <childnode refid="18362" relation="include">
+        </childnode>
+      </node>
+      <node id="18352">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="18353" relation="include">
+        </childnode>
+        <childnode refid="18354" relation="include">
+        </childnode>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18355" relation="include">
+        </childnode>
+        <childnode refid="18356" relation="include">
+        </childnode>
+        <childnode refid="18357" relation="include">
+        </childnode>
+        <childnode refid="18358" relation="include">
+        </childnode>
+        <childnode refid="18359" relation="include">
+        </childnode>
+        <childnode refid="18360" relation="include">
+        </childnode>
+        <childnode refid="18365" relation="include">
+        </childnode>
+      </node>
+      <node id="18387">
+        <label>meldInterpretVM.h</label>
+        <link refid="meld_interpret_v_m_8h"/>
+        <childnode refid="18361" relation="include">
+        </childnode>
+        <childnode refid="18369" relation="include">
+        </childnode>
+        <childnode refid="18353" relation="include">
+        </childnode>
+        <childnode refid="18388" relation="include">
+        </childnode>
+        <childnode refid="18347" relation="include">
+        </childnode>
+        <childnode refid="18338" relation="include">
+        </childnode>
+        <childnode refid="18366" relation="include">
+        </childnode>
+        <childnode refid="18389" relation="include">
+        </childnode>
+      </node>
+      <node id="18362">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18355" relation="include">
+        </childnode>
+        <childnode refid="18363" relation="include">
+        </childnode>
+        <childnode refid="18364" relation="include">
+        </childnode>
+      </node>
+      <node id="18376">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="18377" relation="include">
+        </childnode>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18355" relation="include">
+        </childnode>
+        <childnode refid="18364" relation="include">
+        </childnode>
+        <childnode refid="18351" relation="include">
+        </childnode>
+        <childnode refid="18378" relation="include">
+        </childnode>
+        <childnode refid="18366" relation="include">
+        </childnode>
+      </node>
+      <node id="18382">
+        <label>queue</label>
+      </node>
+      <node id="18347">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="18344">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="18340">
+        <label>assert.h</label>
+      </node>
+      <node id="18369">
+        <label>stdint.h</label>
+      </node>
+      <node id="18354">
+        <label>stdlib.h</label>
+      </node>
+      <node id="18348">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="18347" relation="include">
+        </childnode>
+        <childnode refid="18349" relation="include">
+        </childnode>
+        <childnode refid="18343" relation="include">
+        </childnode>
+        <childnode refid="18350" relation="include">
+        </childnode>
+        <childnode refid="18351" relation="include">
+        </childnode>
+        <childnode refid="18367" relation="include">
+        </childnode>
+        <childnode refid="18368" relation="include">
+        </childnode>
+      </node>
+      <node id="18381">
+        <label>meldProcessVM.h</label>
+        <link refid="meld_process_v_m_8h"/>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18382" relation="include">
+        </childnode>
+        <childnode refid="18339" relation="include">
+        </childnode>
+        <childnode refid="18383" relation="include">
+        </childnode>
+        <childnode refid="18347" relation="include">
+        </childnode>
+        <childnode refid="18343" relation="include">
+        </childnode>
+        <childnode refid="18344" relation="include">
+        </childnode>
+        <childnode refid="18384" relation="include">
+        </childnode>
+        <childnode refid="18348" relation="include">
+        </childnode>
+      </node>
+      <node id="18363">
+        <label>cmath</label>
+      </node>
+      <node id="18393">
+        <label>stdexcept</label>
+      </node>
+      <node id="18346">
+        <label>string</label>
+      </node>
+      <node id="18356">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="18384">
+        <label>meldProcessVMCommands.h</label>
+        <link refid="meld_process_v_m_commands_8h"/>
+        <childnode refid="18371" relation="include">
+        </childnode>
+        <childnode refid="18366" relation="include">
+        </childnode>
+      </node>
+      <node id="18338">
+        <label>map</label>
+      </node>
+      <node id="18341">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="18364">
+        <label>memory.h</label>
+      </node>
+      <node id="18351">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="18346" relation="include">
+        </childnode>
+        <childnode refid="18352" relation="include">
+        </childnode>
+        <childnode refid="18362" relation="include">
+        </childnode>
+        <childnode refid="18366" relation="include">
+        </childnode>
+      </node>
+      <node id="18355">
+        <label>fstream</label>
+      </node>
+      <node id="18367">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="18348" relation="include">
+        </childnode>
+        <childnode refid="18339" relation="include">
+        </childnode>
+      </node>
+      <node id="18359">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="18370">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="18365">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="18361" relation="include">
+        </childnode>
+        <childnode refid="18362" relation="include">
+        </childnode>
+        <childnode refid="18360" relation="include">
+        </childnode>
+      </node>
+      <node id="18357">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="18334">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="18383">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="18375">
+        <label>pthread.h</label>
+      </node>
+      <node id="18385">
+        <label>meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18347" relation="include">
+        </childnode>
+        <childnode refid="18339" relation="include">
+        </childnode>
+        <childnode refid="18333" relation="include">
+        </childnode>
+        <childnode refid="18386" relation="include">
+        </childnode>
+        <childnode refid="18384" relation="include">
+        </childnode>
+      </node>
+      <node id="18373">
+        <label>string.h</label>
+      </node>
+      <node id="18332">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator.cpp"/>
+        <childnode refid="18333" relation="include">
+        </childnode>
+        <childnode refid="18379" relation="include">
+        </childnode>
+        <childnode refid="18381" relation="include">
+        </childnode>
+        <childnode refid="18385" relation="include">
+        </childnode>
+        <childnode refid="18387" relation="include">
+        </childnode>
+      </node>
+      <node id="18377">
+        <label>vector</label>
+      </node>
+      <node id="18371">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="18372" relation="include">
+        </childnode>
+        <childnode refid="18373" relation="include">
+        </childnode>
+        <childnode refid="18347" relation="include">
+        </childnode>
+        <childnode refid="18348" relation="include">
+        </childnode>
+      </node>
+      <node id="18337">
+        <label>sstream</label>
+      </node>
+      <node id="18380">
+        <label>commandLine.h</label>
+        <link refid="command_line_8h"/>
+        <childnode refid="18346" relation="include">
+        </childnode>
+      </node>
+      <node id="18333">
+        <label>simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="18334" relation="include">
+        </childnode>
+        <childnode refid="18335" relation="include">
+        </childnode>
+        <childnode refid="18378" relation="include">
+        </childnode>
+        <childnode refid="18380" relation="include">
+        </childnode>
+      </node>
+      <node id="18335">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18337" relation="include">
+        </childnode>
+        <childnode refid="18338" relation="include">
+        </childnode>
+        <childnode refid="18339" relation="include">
+        </childnode>
+        <childnode refid="18340" relation="include">
+        </childnode>
+        <childnode refid="18341" relation="include">
+        </childnode>
+        <childnode refid="18342" relation="include">
+        </childnode>
+        <childnode refid="18343" relation="include">
+        </childnode>
+        <childnode refid="18344" relation="include">
+        </childnode>
+        <childnode refid="18345" relation="include">
+        </childnode>
+        <childnode refid="18374" relation="include">
+        </childnode>
+      </node>
+      <node id="18361">
+        <label>math.h</label>
+      </node>
+      <node id="18366">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18355" relation="include">
+        </childnode>
+        <childnode refid="18363" relation="include">
+        </childnode>
+        <childnode refid="18364" relation="include">
+        </childnode>
+        <childnode refid="18352" relation="include">
+        </childnode>
+      </node>
+      <node id="18336">
+        <label>iostream</label>
+      </node>
+      <node id="18388">
+        <label>sys/timeb.h</label>
+      </node>
+      <node id="18372">
+        <label>deque</label>
+      </node>
+      <node id="18342">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="18343">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="18390">
+        <label>blinkyBlocksBlockCode.h</label>
+        <link refid="blinky_blocks_block_code_8h"/>
+        <childnode refid="18367" relation="include">
+        </childnode>
+        <childnode refid="18389" relation="include">
+        </childnode>
+      </node>
+      <node id="18389">
+        <label>blinkyBlocksBlock.h</label>
+        <link refid="blinky_blocks_block_8h"/>
+        <childnode refid="18348" relation="include">
+        </childnode>
+        <childnode refid="18366" relation="include">
+        </childnode>
+        <childnode refid="18390" relation="include">
+        </childnode>
+        <childnode refid="18391" relation="include">
+        </childnode>
+        <childnode refid="18383" relation="include">
+        </childnode>
+        <childnode refid="18393" relation="include">
+        </childnode>
+      </node>
+      <node id="18379">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="18355" relation="include">
+        </childnode>
+      </node>
+      <node id="18345">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="18339" relation="include">
+        </childnode>
+        <childnode refid="18346" relation="include">
+        </childnode>
+        <childnode refid="18347" relation="include">
+        </childnode>
+        <childnode refid="18348" relation="include">
+        </childnode>
+        <childnode refid="18370" relation="include">
+        </childnode>
+        <childnode refid="18371" relation="include">
+        </childnode>
+        <childnode refid="18366" relation="include">
+        </childnode>
+      </node>
+      <node id="18349">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="18378">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18338" relation="include">
+        </childnode>
+        <childnode refid="18377" relation="include">
+        </childnode>
+        <childnode refid="18343" relation="include">
+        </childnode>
+        <childnode refid="18340" relation="include">
+        </childnode>
+        <childnode refid="18348" relation="include">
+        </childnode>
+        <childnode refid="18351" relation="include">
+        </childnode>
+        <childnode refid="18379" relation="include">
+        </childnode>
+      </node>
+      <node id="18391">
+        <label>blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="18346" relation="include">
+        </childnode>
+        <childnode refid="18392" relation="include">
+        </childnode>
+        <childnode refid="18351" relation="include">
+        </childnode>
+      </node>
+      <node id="18358">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="18353">
+        <label>stdio.h</label>
+      </node>
+      <node id="18392">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="18374" relation="include">
+        </childnode>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18355" relation="include">
+        </childnode>
+        <childnode refid="18346" relation="include">
+        </childnode>
+        <childnode refid="18377" relation="include">
+        </childnode>
+        <childnode refid="18363" relation="include">
+        </childnode>
+        <childnode refid="18354" relation="include">
+        </childnode>
+        <childnode refid="18373" relation="include">
+        </childnode>
+      </node>
+      <node id="18368">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="18348" relation="include">
+        </childnode>
+        <childnode refid="18369" relation="include">
+        </childnode>
+        <childnode refid="18336" relation="include">
+        </childnode>
+        <childnode refid="18349" relation="include">
+        </childnode>
+        <childnode refid="18350" relation="include">
+        </childnode>
+      </node>
+      <node id="18386">
+        <label>meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="18335" relation="include">
+        </childnode>
+        <childnode refid="18371" relation="include">
+        </childnode>
+        <childnode refid="18341" relation="include">
+        </childnode>
+        <childnode refid="18342" relation="include">
+        </childnode>
+        <childnode refid="18344" relation="include">
+        </childnode>
+        <childnode refid="18343" relation="include">
+        </childnode>
+        <childnode refid="18379" relation="include">
+        </childnode>
+      </node>
+      <node id="18339">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_base_simulator">BaseSimulator</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>simulator.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>22<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="simulator_8h" kindref="compound">simulator.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_process_v_m_8h" kindref="compound">meldProcessVM.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_process_debugger_8h" kindref="compound">meldProcessDebugger.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_interpret_v_m_8h" kindref="compound">meldInterpretVM.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//#include<sp/>&quot;meldInterpretDebugger.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_base_simulator" kindref="compound">BaseSimulator</ref><sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" refkind="member"><highlight class="normal"><ref refid="class_base_simulator_1_1_simulator" kindref="compound">Simulator</ref>*<sp/><ref refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" kindref="member">simulator</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><ref refid="class_base_simulator_1_1_simulator" kindref="compound">Simulator</ref>*<sp/><ref refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" kindref="member">Simulator::simulator</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" kindref="member">Simulator::Type</ref><sp/>Simulator::type<sp/>=<sp/>CPP;<sp/></highlight><highlight class="comment">//<sp/>CPP<sp/>code<sp/>by<sp/>default</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" refkind="member"><highlight class="normal">Simulator::Simulator(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]):<sp/>cmdLine(argc,argv)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(simulator<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>simulator<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" kindref="member">BaseSimulator::simulator</ref><sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" kindref="member">simulator</ref>;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" kindref="member">ERRPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;31m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Only<sp/>one<sp/>Simulator<sp/>instance<sp/>can<sp/>be<sp/>created,<sp/>aborting<sp/>!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(EXIT_FAILURE);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" kindref="member">xmlWorldNode</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;34m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Simulator<sp/>constructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>confFileName<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" kindref="member">cmdLine</ref>.<ref refid="class_command_line_1ae618e2380c5457acf9852ca683ed81db" kindref="member">getConfigFile</ref>();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>TiXmlDocument(confFileName.c_str());</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isLoaded<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref>-&gt;LoadFile();</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!isLoaded)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Could<sp/>not<sp/>load<sp/>configuration<sp/>file<sp/>:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>confFileName<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(EXIT_FAILURE);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" kindref="member">xmlWorldNode</ref><sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref>-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;world&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" kindref="member">xmlWorldNode</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;34m<sp/><sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>confFileName<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>successfully<sp/>loaded<sp/>&quot;</highlight><highlight class="normal">&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" kindref="member">ERRPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;31m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Could<sp/>not<sp/>find<sp/>root<sp/>&apos;world&apos;<sp/>element<sp/>in<sp/>configuration<sp/>file&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(1);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" kindref="member">getType</ref>()<sp/>==<sp/><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" kindref="member">MELDPROCESS</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*node<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref>-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;vm&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>vmPath;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>programPath<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" kindref="member">cmdLine</ref>.<ref refid="class_command_line_1a5a08061e508dbf035640c4c90b86a056" kindref="member">getProgramPath</ref>();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>port<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>debugging<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" kindref="member">cmdLine</ref>.<ref refid="class_command_line_1a227a98ffeac4f0166e3f65730aac26ae" kindref="member">getMeldDebugger</ref>();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(node)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>vmElement<sp/>=<sp/>node-&gt;ToElement();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr<sp/>=<sp/>vmElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;serverport&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>port<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Error:<sp/>no<sp/>port<sp/>define<sp/>for<sp/>the<sp/>Meld<sp/>VM&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(1);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>vmElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;vmPath&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vmPath<sp/>=<sp/>string(attr);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Error:<sp/>no<sp/>port<sp/>define<sp/>for<sp/>the<sp/>Meld<sp/>VM&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(1);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>vmElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;programPath&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(programPath<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>programPath<sp/>=<sp/>string(attr);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Warning:<sp/>meld<sp/>program<sp/>provided<sp/>in<sp/>the<sp/>command<sp/>line<sp/>and<sp/>in<sp/>the<sp/>xml<sp/>file&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Warning:<sp/>meld<sp/>program<sp/>provided<sp/>in<sp/>the<sp/>xml<sp/>file<sp/>is<sp/>ignored&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>vmElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;debugging&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((strcmp(attr,<sp/></highlight><highlight class="stringliteral">&quot;True&quot;</highlight><highlight class="normal">)<sp/>==<sp/>0)<sp/>||(strcmp(attr,<sp/></highlight><highlight class="stringliteral">&quot;true&quot;</highlight><highlight class="normal">)<sp/>==<sp/>0)<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>debugging<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1a109979f1bd210da87e56500e55861763" kindref="member">MeldProcess::setVMConfiguration</ref>(vmPath,<sp/>programPath,<sp/>debugging);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1a8ef4dcdc77788c11e5f7bd1d6acb0e44" kindref="member">MeldProcess::createVMServer</ref>(port);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(debugging)<sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1a885f24ef522fd98264e04cd2d8e34d99" kindref="member">MeldProcess::createDebugger</ref>();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" kindref="member">getType</ref>()<sp/>==<sp/><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" kindref="member">MELDINTERPRET</ref>){</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*node<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref>-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;vm&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>programPath<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" kindref="member">cmdLine</ref>.<ref refid="class_command_line_1a5a08061e508dbf035640c4c90b86a056" kindref="member">getProgramPath</ref>();</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>debugging<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" kindref="member">cmdLine</ref>.<ref refid="class_command_line_1a227a98ffeac4f0166e3f65730aac26ae" kindref="member">getMeldDebugger</ref>();</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(node)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>vmElement<sp/>=<sp/>node-&gt;ToElement();</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr<sp/>=<sp/>vmElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;programPath&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(programPath<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>programPath<sp/>=<sp/>string(attr);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Warning:<sp/>meld<sp/>program<sp/>provided<sp/>in<sp/>the<sp/>command<sp/>line<sp/>and<sp/>in<sp/>the<sp/>xml<sp/>file&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Warning:<sp/>meld<sp/>program<sp/>provided<sp/>in<sp/>the<sp/>xml<sp/>file<sp/>is<sp/>ignored&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>vmElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;debugging&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((strcmp(attr,<sp/></highlight><highlight class="stringliteral">&quot;True&quot;</highlight><highlight class="normal">)<sp/>==<sp/>0)<sp/>||(strcmp(attr,<sp/></highlight><highlight class="stringliteral">&quot;true&quot;</highlight><highlight class="normal">)<sp/>==<sp/>0)<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>debugging<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Loading&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>programPath<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>with<sp/>MeldInterpretVM&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_interpret_1_1_meld_interpret_v_m_1ab1b5461191f09843972795af3b3bc050" kindref="member">MeldInterpret::MeldInterpretVM::setConfiguration</ref>(programPath,<sp/>debugging);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(debugging){</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Don&apos;t<sp/>know<sp/>what<sp/>to<sp/>do<sp/>yet</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" refkind="member"><highlight class="normal"><ref refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" kindref="member">Simulator::~Simulator</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;34m&quot;</highlight><highlight class="normal"><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Simulator<sp/>destructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//MODIF<sp/>NICO<sp/>:<sp/>le<sp/>mieux<sp/>serait<sp/>de<sp/>faire<sp/>ce<sp/>delete<sp/>juste<sp/>après<sp/>avoir<sp/>fini<sp/>de<sp/>lire<sp/>le<sp/>fichier<sp/>xml</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref>;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//FIN<sp/>MODIF<sp/>NICO</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" kindref="member">getType</ref>()<sp/>==<sp/><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" kindref="member">MELDPROCESS</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<ref refid="class_meld_process_1_1_meld_process_v_m_1a86485547146b1717ca00e055774336b2" kindref="member">MeldProcess::MeldProcessVM::isInDebuggingMode</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1a41aadf55262534f7e2afe5cc806987ae" kindref="member">MeldProcess::deleteDebugger</ref>();</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1ab2b55f9eae1afe9681f4449c7ed7e10e" kindref="member">MeldProcess::deleteVMServer</ref>();</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" kindref="member">getType</ref>()<sp/>==<sp/><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" kindref="member">MELDINTERPRET</ref>){</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Not<sp/>sure<sp/>if<sp/>there<sp/>is<sp/>something<sp/>to<sp/>do,<sp/>i<sp/>think<sp/>not</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_base_simulator_1a7e5df7146e696f7daea2878e5531f561" kindref="member">deleteScheduler</ref>();</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_base_simulator_1a964dd9036faafc4a27d7760d8c38efd5" kindref="member">deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="153"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>Simulator<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp"/>
+  </compounddef>
+</doxygen>

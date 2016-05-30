@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_smart_blocks_1_1_motion" kind="class" language="C++" prot="public">
+    <compoundname>SmartBlocks::Motion</compoundname>
+    <includes refid="smart_blocks_capabilities_8h" local="no">smartBlocksCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_smart_blocks_1_1_motion_1a8e15253ab72af2e0140763e867cde33e" prot="public" static="no" mutable="no">
+        <type>vector&lt; short &gt;</type>
+        <definition>vector&lt;short&gt; SmartBlocks::Motion::PathToBlock</definition>
+        <argsstring></argsstring>
+        <name>PathToBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="79" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="79" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">SmartBlocks::Capability::Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="smart_blocks_capabilities_8cpp" startline="666" endline="680">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_motion_1a7c780bafdce78a07b7d1a0e1c5935133" prot="public" static="no" mutable="no">
+        <type>vector&lt; short &gt;</type>
+        <definition>vector&lt;short&gt; SmartBlocks::Motion::UnlockPath</definition>
+        <argsstring></argsstring>
+        <name>UnlockPath</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="80" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="80" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">SmartBlocks::Capability::Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="smart_blocks_capabilities_8cpp" startline="666" endline="680">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_motion_1a49d5e55e31ac1cb0a0da563a7ed54b41" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double SmartBlocks::Motion::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="81" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="81" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="smart_blocks_capabilities_8cpp" startline="666" endline="680">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_motion_1a4b798ef0b4729c1c4214a353a112c676" prot="public" static="no" mutable="no">
+        <type><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref></type>
+        <definition>PointCel SmartBlocks::Motion::vect</definition>
+        <argsstring></argsstring>
+        <name>vect</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="82" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="82" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">SmartBlocks::Capability::Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="smart_blocks_capabilities_8cpp" startline="666" endline="680">Motion</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_smart_blocks_1_1_motion_1a444a2569aaadd10d76b4e6e6bfb3df0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Motion::Motion</definition>
+        <argsstring>()</argsstring>
+        <name>Motion</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="77" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="663" bodyend="664"/>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Motion::Motion</definition>
+        <argsstring>(const Motion *)</argsstring>
+        <name>Motion</name>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_motion" kindref="compound">Motion</ref> *</type>
+          <defname>src</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="78" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="666" bodyend="680"/>
+        <references refid="class_smart_blocks_1_1_motion_1a8e15253ab72af2e0140763e867cde33e" compoundref="smart_blocks_capabilities_8h" startline="79">PathToBlock</references>
+        <references refid="class_smart_blocks_1_1_motion_1a7c780bafdce78a07b7d1a0e1c5935133" compoundref="smart_blocks_capabilities_8h" startline="80">UnlockPath</references>
+        <references refid="class_smart_blocks_1_1_motion_1a49d5e55e31ac1cb0a0da563a7ed54b41" compoundref="smart_blocks_capabilities_8h" startline="81">time</references>
+        <references refid="class_smart_blocks_1_1_motion_1a4b798ef0b4729c1c4214a353a112c676" compoundref="smart_blocks_capabilities_8h" startline="82">vect</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1945">
+        <label>SmartBlocks::PointCel</label>
+        <link refid="class_smart_blocks_1_1_point_cel"/>
+      </node>
+      <node id="1944">
+        <label>SmartBlocks::Motion</label>
+        <link refid="class_smart_blocks_1_1_motion"/>
+        <childnode refid="1945" relation="usage">
+          <edgelabel>vect</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="75" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="75" bodyend="83"/>
+    <listofallmembers>
+      <member refid="class_smart_blocks_1_1_motion_1a444a2569aaadd10d76b4e6e6bfb3df0c" prot="public" virt="non-virtual"><scope>SmartBlocks::Motion</scope><name>Motion</name></member>
+      <member refid="class_smart_blocks_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" prot="public" virt="non-virtual"><scope>SmartBlocks::Motion</scope><name>Motion</name></member>
+      <member refid="class_smart_blocks_1_1_motion_1a8e15253ab72af2e0140763e867cde33e" prot="public" virt="non-virtual"><scope>SmartBlocks::Motion</scope><name>PathToBlock</name></member>
+      <member refid="class_smart_blocks_1_1_motion_1a49d5e55e31ac1cb0a0da563a7ed54b41" prot="public" virt="non-virtual"><scope>SmartBlocks::Motion</scope><name>time</name></member>
+      <member refid="class_smart_blocks_1_1_motion_1a7c780bafdce78a07b7d1a0e1c5935133" prot="public" virt="non-virtual"><scope>SmartBlocks::Motion</scope><name>UnlockPath</name></member>
+      <member refid="class_smart_blocks_1_1_motion_1a4b798ef0b4729c1c4214a353a112c676" prot="public" virt="non-virtual"><scope>SmartBlocks::Motion</scope><name>vect</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

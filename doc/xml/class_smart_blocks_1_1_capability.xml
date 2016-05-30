@@ -1,0 +1,356 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_smart_blocks_1_1_capability" kind="class" language="C++" prot="public">
+    <compoundname>SmartBlocks::Capability</compoundname>
+    <includes refid="smart_blocks_capabilities_8h" local="no">smartBlocksCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1a25d9d839b51032d3acd4d9490f48501b" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string SmartBlocks::Capability::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="87" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="87" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="smart_blocks_capabilities_8cpp" startline="10" endline="19">Capability</referencedby>
+        <referencedby refid="namespace_smart_blocks_1a6b3c7e76623c36dbb6af4c5dd07d6a20" compoundref="smart_blocks_capabilities_8cpp" startline="99" endline="107">SmartBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1a8faca14df3d77ca06c8844b8130d31d7" prot="public" static="no" mutable="no">
+        <type><ref refid="class_smart_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref></type>
+        <definition>ValidationMatrix SmartBlocks::Capability::validationMatrix</definition>
+        <argsstring></argsstring>
+        <name>validationMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="88" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="88" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">Capability</referencedby>
+        <referencedby refid="namespace_smart_blocks_1a6b3c7e76623c36dbb6af4c5dd07d6a20" compoundref="smart_blocks_capabilities_8cpp" startline="99" endline="107">SmartBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1a286dfc23b645aeacd1c4a691276b3c08" prot="public" static="no" mutable="no">
+        <type><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref> *</type>
+        <definition>PointCel* SmartBlocks::Capability::linkNextPos</definition>
+        <argsstring></argsstring>
+        <name>linkNextPos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="89" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="smart_blocks_capabilities_8cpp" startline="10" endline="19">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_capability_1a4063691d23ba2844ce6b372e547df858" compoundref="smart_blocks_capabilities_8cpp" startline="87" endline="96">~Capability</referencedby>
+        <referencedby refid="namespace_smart_blocks_1a6b3c7e76623c36dbb6af4c5dd07d6a20" compoundref="smart_blocks_capabilities_8cpp" startline="99" endline="107">SmartBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1a20d9e564eced128f8845d8ab09e03555" prot="public" static="no" mutable="no">
+        <type><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref> *</type>
+        <definition>PointCel * SmartBlocks::Capability::linkPrevPos</definition>
+        <argsstring></argsstring>
+        <name>linkPrevPos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="89" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="smart_blocks_capabilities_8cpp" startline="10" endline="19">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_capability_1a4063691d23ba2844ce6b372e547df858" compoundref="smart_blocks_capabilities_8cpp" startline="87" endline="96">~Capability</referencedby>
+        <referencedby refid="namespace_smart_blocks_1a6b3c7e76623c36dbb6af4c5dd07d6a20" compoundref="smart_blocks_capabilities_8cpp" startline="99" endline="107">SmartBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1af4f42feaed039e0440af4cb23281175b" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SmartBlocks::Capability::isHead</definition>
+        <argsstring></argsstring>
+        <name>isHead</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="90" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="smart_blocks_capabilities_8cpp" startline="10" endline="19">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1abd2650dc4a88e3fdd329bace7c15b308" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SmartBlocks::Capability::isEnd</definition>
+        <argsstring></argsstring>
+        <name>isEnd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="90" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="smart_blocks_capabilities_8cpp" startline="10" endline="19">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1ace68811f019dbc088f8a66305ce7b2b2" prot="public" static="no" mutable="no">
+        <type>vector&lt; <ref refid="class_smart_blocks_1_1_motion" kindref="compound">Motion</ref> * &gt;</type>
+        <definition>vector&lt;Motion*&gt; SmartBlocks::Capability::tabMotions</definition>
+        <argsstring></argsstring>
+        <name>tabMotions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="91" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="91" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_capability_1a4063691d23ba2844ce6b372e547df858" compoundref="smart_blocks_capabilities_8cpp" startline="87" endline="96">~Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1a3e909461aef88058a61f8f7f04ea473d" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool SmartBlocks::Capability::isAngle</definition>
+        <argsstring></argsstring>
+        <name>isAngle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="92" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="92" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1aa1d0bde35c2121b241cd4325fa0ac0cc" prot="public" static="no" mutable="no">
+        <type>vector&lt; short &gt;</type>
+        <definition>vector&lt;short&gt; SmartBlocks::Capability::tabUnlockPath</definition>
+        <argsstring></argsstring>
+        <name>tabUnlockPath</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="93" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="93" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="smart_blocks_capabilities_8cpp" startline="21" endline="85">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1a722653a4a9486ea6e079b01bc847d3de" prot="public" static="no" mutable="no">
+        <type><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref></type>
+        <definition>PointCel SmartBlocks::Capability::prevDir</definition>
+        <argsstring></argsstring>
+        <name>prevDir</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="94" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="94" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="smart_blocks_capabilities_8cpp" startline="10" endline="19">Capability</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_smart_blocks_1_1_capability_1a414d5e626683a0b278e1529b260cb0c2" prot="public" static="no" mutable="no">
+        <type><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref> *</type>
+        <definition>PointCel * SmartBlocks::Capability::singleMotionDir</definition>
+        <argsstring></argsstring>
+        <name>singleMotionDir</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="94" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="94" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="smart_blocks_capabilities_8cpp" startline="10" endline="19">Capability</referencedby>
+        <referencedby refid="namespace_smart_blocks_1a6b3c7e76623c36dbb6af4c5dd07d6a20" compoundref="smart_blocks_capabilities_8cpp" startline="99" endline="107">SmartBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Capability::Capability</definition>
+        <argsstring>(const string &amp;sid)</argsstring>
+        <name>Capability</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>sid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="96" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="10" bodyend="19"/>
+        <references refid="class_smart_blocks_1_1_capability_1a25d9d839b51032d3acd4d9490f48501b" compoundref="smart_blocks_capabilities_8h" startline="87">name</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_smart_blocks_1_1_capability_1a286dfc23b645aeacd1c4a691276b3c08" compoundref="smart_blocks_capabilities_8h" startline="89">linkNextPos</references>
+        <references refid="class_smart_blocks_1_1_capability_1a20d9e564eced128f8845d8ab09e03555" compoundref="smart_blocks_capabilities_8h" startline="89">linkPrevPos</references>
+        <references refid="class_smart_blocks_1_1_capability_1a414d5e626683a0b278e1529b260cb0c2" compoundref="smart_blocks_capabilities_8h" startline="94">singleMotionDir</references>
+        <references refid="class_smart_blocks_1_1_capability_1af4f42feaed039e0440af4cb23281175b" compoundref="smart_blocks_capabilities_8h" startline="90">isHead</references>
+        <references refid="class_smart_blocks_1_1_capability_1abd2650dc4a88e3fdd329bace7c15b308" compoundref="smart_blocks_capabilities_8h" startline="90">isEnd</references>
+        <references refid="class_smart_blocks_1_1_capability_1a722653a4a9486ea6e079b01bc847d3de" compoundref="smart_blocks_capabilities_8h" startline="94">prevDir</references>
+        <references refid="class_smart_blocks_1_1_point_cel_1ad79e65328739d099e0c2ecbc37e8b969" compoundref="smart_blocks_capabilities_8cpp" startline="644" endline="647">SmartBlocks::PointCel::set</references>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_capabilities_1a3995e5959dc92ad960c42fc54797366a" compoundref="smart_blocks_capabilities_8cpp" startline="111" endline="280">SmartBlocks::SmartBlocksCapabilities::SmartBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Capability::Capability</definition>
+        <argsstring>(const string &amp;sid, const Capability *ref, int n)</argsstring>
+        <name>Capability</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>sid</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_capability" kindref="compound">Capability</ref> *</type>
+          <declname>ref</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="97" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="21" bodyend="85"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_smart_blocks_1_1_capability_1a25d9d839b51032d3acd4d9490f48501b" compoundref="smart_blocks_capabilities_8h" startline="87">name</references>
+        <references refid="class_smart_blocks_1_1_capability_1a286dfc23b645aeacd1c4a691276b3c08" compoundref="smart_blocks_capabilities_8h" startline="89">linkNextPos</references>
+        <references refid="class_smart_blocks_1_1_capability_1a20d9e564eced128f8845d8ab09e03555" compoundref="smart_blocks_capabilities_8h" startline="89">linkPrevPos</references>
+        <references refid="class_smart_blocks_1_1_capability_1af4f42feaed039e0440af4cb23281175b" compoundref="smart_blocks_capabilities_8h" startline="90">isHead</references>
+        <references refid="class_smart_blocks_1_1_capability_1abd2650dc4a88e3fdd329bace7c15b308" compoundref="smart_blocks_capabilities_8h" startline="90">isEnd</references>
+        <references refid="class_smart_blocks_1_1_capability_1a3e909461aef88058a61f8f7f04ea473d" compoundref="smart_blocks_capabilities_8h" startline="92">isAngle</references>
+        <references refid="class_smart_blocks_1_1_capability_1a414d5e626683a0b278e1529b260cb0c2" compoundref="smart_blocks_capabilities_8h" startline="94">singleMotionDir</references>
+        <references refid="class_smart_blocks_1_1_capability_1a8faca14df3d77ca06c8844b8130d31d7" compoundref="smart_blocks_capabilities_8h" startline="88">validationMatrix</references>
+        <references refid="class_smart_blocks_1_1_validation_matrix_1a90c99bfd98cd99fe106de2313a80f772" compoundref="smart_blocks_capabilities_8cpp" startline="512" endline="523">SmartBlocks::ValidationMatrix::fromRotationZ</references>
+        <references refid="class_smart_blocks_1_1_point_cel_1a925e9347d8c12a790f461f29b17d7d50" compoundref="smart_blocks_capabilities_8cpp" startline="631" endline="642">SmartBlocks::PointCel::rotateZ</references>
+        <references refid="class_smart_blocks_1_1_capability_1a722653a4a9486ea6e079b01bc847d3de" compoundref="smart_blocks_capabilities_8h" startline="94">prevDir</references>
+        <references refid="class_smart_blocks_1_1_capability_1ace68811f019dbc088f8a66305ce7b2b2" compoundref="smart_blocks_capabilities_8h" startline="91">tabMotions</references>
+        <references refid="class_smart_blocks_1_1_motion_1a4b798ef0b4729c1c4214a353a112c676" compoundref="smart_blocks_capabilities_8h" startline="82">SmartBlocks::Motion::vect</references>
+        <references refid="class_smart_blocks_1_1_motion_1a8e15253ab72af2e0140763e867cde33e" compoundref="smart_blocks_capabilities_8h" startline="79">SmartBlocks::Motion::PathToBlock</references>
+        <references refid="smart_blocks_capabilities_8cpp_1a826a2ddc82f1e3231312bd244614cb8d" compoundref="smart_blocks_capabilities_8cpp" startline="7">rotDir</references>
+        <references refid="class_smart_blocks_1_1_motion_1a7c780bafdce78a07b7d1a0e1c5935133" compoundref="smart_blocks_capabilities_8h" startline="80">SmartBlocks::Motion::UnlockPath</references>
+        <references refid="class_smart_blocks_1_1_capability_1aa1d0bde35c2121b241cd4325fa0ac0cc" compoundref="smart_blocks_capabilities_8h" startline="93">tabUnlockPath</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_capability_1a4063691d23ba2844ce6b372e547df858" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Capability::~Capability</definition>
+        <argsstring>()</argsstring>
+        <name>~Capability</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="98" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="87" bodyend="96"/>
+        <references refid="class_smart_blocks_1_1_capability_1ace68811f019dbc088f8a66305ce7b2b2" compoundref="smart_blocks_capabilities_8h" startline="91">tabMotions</references>
+        <references refid="class_smart_blocks_1_1_capability_1a20d9e564eced128f8845d8ab09e03555" compoundref="smart_blocks_capabilities_8h" startline="89">linkPrevPos</references>
+        <references refid="class_smart_blocks_1_1_capability_1a286dfc23b645aeacd1c4a691276b3c08" compoundref="smart_blocks_capabilities_8h" startline="89">linkNextPos</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_capability_1a60c93d50c0c78b1f5fff54dcd900089d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::Capability::getCenter</definition>
+        <argsstring>(PointCel &amp;center)</argsstring>
+        <name>getCenter</name>
+        <param>
+          <type><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref> &amp;</type>
+          <declname>center</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="101" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_smart_blocks_1_1_capability_1a510379d0c3ace5baf87f68509e6897e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Capability &amp;c)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_smart_blocks_1_1_capability" kindref="compound">Capability</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="100" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.cpp" bodystart="99" bodyend="107"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1546">
+        <label>SmartBlocks::PointCel</label>
+        <link refid="class_smart_blocks_1_1_point_cel"/>
+      </node>
+      <node id="1545">
+        <label>SmartBlocks::Capability</label>
+        <link refid="class_smart_blocks_1_1_capability"/>
+        <childnode refid="1546" relation="usage">
+          <edgelabel>singleMotionDir</edgelabel>
+          <edgelabel>prevDir</edgelabel>
+          <edgelabel>linkPrevPos</edgelabel>
+          <edgelabel>linkNextPos</edgelabel>
+        </childnode>
+        <childnode refid="1547" relation="usage">
+          <edgelabel>validationMatrix</edgelabel>
+        </childnode>
+      </node>
+      <node id="1547">
+        <label>SmartBlocks::ValidationMatrix</label>
+        <link refid="class_smart_blocks_1_1_validation_matrix"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" line="85" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksCapabilities.h" bodystart="85" bodyend="102"/>
+    <listofallmembers>
+      <member refid="class_smart_blocks_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>Capability</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>Capability</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a60c93d50c0c78b1f5fff54dcd900089d" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>getCenter</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a3e909461aef88058a61f8f7f04ea473d" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>isAngle</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1abd2650dc4a88e3fdd329bace7c15b308" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>isEnd</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1af4f42feaed039e0440af4cb23281175b" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>isHead</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a286dfc23b645aeacd1c4a691276b3c08" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>linkNextPos</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a20d9e564eced128f8845d8ab09e03555" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>linkPrevPos</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a25d9d839b51032d3acd4d9490f48501b" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>name</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a510379d0c3ace5baf87f68509e6897e4" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a722653a4a9486ea6e079b01bc847d3de" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>prevDir</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a414d5e626683a0b278e1529b260cb0c2" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>singleMotionDir</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1ace68811f019dbc088f8a66305ce7b2b2" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>tabMotions</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1aa1d0bde35c2121b241cd4325fa0ac0cc" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>tabUnlockPath</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a8faca14df3d77ca06c8844b8130d31d7" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>validationMatrix</name></member>
+      <member refid="class_smart_blocks_1_1_capability_1a4063691d23ba2844ce6b372e547df858" prot="public" virt="non-virtual"><scope>SmartBlocks::Capability</scope><name>~Capability</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

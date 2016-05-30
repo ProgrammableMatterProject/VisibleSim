@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_block_debug_data" kind="class" language="C++" prot="public">
+    <compoundname>BlockDebugData</compoundname>
+    <includes refid="interface_8h" local="no">interface.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_block_debug_data_1aa159a6058d4cb491852b004d202c6408" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BlockDebugData::blockId</definition>
+        <argsstring></argsstring>
+        <name>blockId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_block_debug_data_1a3d03d14dc3f9080ba68a8e45b3d6c8ad" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string BlockDebugData::str</definition>
+        <argsstring></argsstring>
+        <name>str</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_block_debug_data_1ab616ce0a1aba1c12d7e936bbfbba42a1" prot="public" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color BlockDebugData::color</definition>
+        <argsstring></argsstring>
+        <name>color</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_block_debug_data_1ab5eed46a74396729257c1db4ca39ea0d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>BlockDebugData::BlockDebugData</definition>
+        <argsstring>(int id, const string &amp;s, const Color &amp;c)</argsstring>
+        <name>BlockDebugData</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const string &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="69" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="69" bodyend="69"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1468">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="1467">
+        <label>BlockDebugData</label>
+        <link refid="class_block_debug_data"/>
+        <childnode refid="1468" relation="usage">
+          <edgelabel>color</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="63" bodyend="70"/>
+    <listofallmembers>
+      <member refid="class_block_debug_data_1ab5eed46a74396729257c1db4ca39ea0d" prot="public" virt="non-virtual"><scope>BlockDebugData</scope><name>BlockDebugData</name></member>
+      <member refid="class_block_debug_data_1aa159a6058d4cb491852b004d202c6408" prot="public" virt="non-virtual"><scope>BlockDebugData</scope><name>blockId</name></member>
+      <member refid="class_block_debug_data_1ab616ce0a1aba1c12d7e936bbfbba42a1" prot="public" virt="non-virtual"><scope>BlockDebugData</scope><name>color</name></member>
+      <member refid="class_block_debug_data_1a3d03d14dc3f9080ba68a8e45b3d6c8ad" prot="public" virt="non-virtual"><scope>BlockDebugData</scope><name>str</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

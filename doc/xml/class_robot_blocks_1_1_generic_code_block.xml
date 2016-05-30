@@ -1,0 +1,485 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_robot_blocks_1_1_generic_code_block" kind="class" language="C++" prot="public">
+    <compoundname>RobotBlocks::GenericCodeBlock</compoundname>
+    <basecompoundref refid="class_robot_blocks_1_1_robot_blocks_block_code" prot="public" virt="non-virtual">RobotBlocks::RobotBlocksBlockCode</basecompoundref>
+    <includes refid="robot_blocks_generic_8h" local="no">robotBlocksGeneric.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_robot_blocks_1_1_generic_code_block_1a6e14f2bee40e0f5e4492c4aa3fc47fc5" prot="protected" static="no" mutable="no">
+        <type>multimap&lt; int, <ref refid="namespace_robot_blocks_1acf36a97ab61d65fb8a51b8d73b485508" kindref="member">eventFunc</ref> &gt;</type>
+        <definition>multimap&lt;int,eventFunc&gt; RobotBlocks::GenericCodeBlock::eventFuncMap</definition>
+        <argsstring></argsstring>
+        <name>eventFuncMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a85b41f169db69c825cb46de7b58f046d" compoundref="robot_blocks_generic_8cpp" startline="6" endline="8">addMessageEventFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1ad8fa38980724eef2f43c537baed78b7c" compoundref="robot_blocks_generic_8cpp" startline="89" endline="105">processLocalEvent</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_robot_blocks_1_1_generic_code_block_1a9cf8c6dd726c58424e872d50455a237e" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref> *</type>
+        <definition>RobotBlocksScheduler* RobotBlocks::GenericCodeBlock::scheduler</definition>
+        <argsstring></argsstring>
+        <name>scheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1aebc4786413213304dd936ea5e6dd0a01" compoundref="robot_blocks_generic_8cpp" startline="10" endline="15">sendMessage</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_robot_blocks_1_1_generic_code_block_1ac3246689facd08a7fe8d9cb4e8edf6c8" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref> *</type>
+        <definition>RobotBlocksBlock* RobotBlocks::GenericCodeBlock::module</definition>
+        <argsstring></argsstring>
+        <name>module</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="23" bodyend="-1"/>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_robot_blocks_1_1_generic_code_block_1a95b6761739559f1d652f07b8f664f765" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_console_stream" kindref="compound">ConsoleStream</ref></type>
+        <definition>ConsoleStream RobotBlocks::GenericCodeBlock::console</definition>
+        <argsstring></argsstring>
+        <name>console</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="24" bodyend="-1"/>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a4b84fa5b5379430bb447052b4e069d57" compoundref="robot_blocks_generic_8cpp" startline="17" endline="23">sendMessage</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a7f95f0fe88d27451be7f536d7a2a9583" compoundref="robot_blocks_generic_8cpp" startline="56" endline="85">sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1a6f42b391bdad8c159a7a8a47f20debfb" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::GenericCodeBlock::GenericCodeBlock</definition>
+        <argsstring>(RobotBlocksBlock *host)</argsstring>
+        <name>GenericCodeBlock</name>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref> *</type>
+          <declname>host</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="26" bodyend="31"/>
+        <references refid="namespace_robot_blocks_1a6ec5d7cdcd5d30cd2ddfd04588dfa527" compoundref="robot_blocks_scheduler_8h" startline="65" endline="65">RobotBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_block_code_1a31741e90aabcab37d2def57ab700332e" compoundref="block_code_8h" startline="24">BaseSimulator::BlockCode::hostBlock</references>
+        <references refid="class_console_stream_1aac6bf02318e6f33f210c7b4f5754e546" compoundref="scheduler_8h" startline="136" endline="139">ConsoleStream::setInfo</references>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">BaseSimulator::BuildingBlock::blockId</references>
+        <references refid="class_base_simulator_1_1_block_code_1af80f95d1e6a7dedf74a5300985709e74" compoundref="block_code_8h" startline="35" endline="35">BaseSimulator::BlockCode::addDebugAttributes</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1a25cf115d92107d5a5ad74d95b9a0b57a" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::GenericCodeBlock::~GenericCodeBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~GenericCodeBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="32" bodyend="32"/>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1ad8fa38980724eef2f43c537baed78b7c" compoundref="robot_blocks_generic_8cpp" startline="89" endline="105">processLocalEvent</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a85b41f169db69c825cb46de7b58f046d" compoundref="robot_blocks_generic_8cpp" startline="6" endline="8">addMessageEventFunc</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">sendMessageToAllNeighbors</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1aebc4786413213304dd936ea5e6dd0a01" compoundref="robot_blocks_generic_8cpp" startline="10" endline="15">sendMessage</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1ad8fa38980724eef2f43c537baed78b7c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::GenericCodeBlock::processLocalEvent</definition>
+        <argsstring>(EventPtr pev)</argsstring>
+        <name>processLocalEvent</name>
+        <reimplements refid="class_robot_blocks_1_1_robot_blocks_block_code_1ae7d0653df19a718605636bfc151164ce">processLocalEvent</reimplements>
+        <param>
+          <type><ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref></type>
+          <declname>pev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp" bodystart="89" bodyend="105"/>
+        <references refid="unique_events_id_8h_1a5149addf71a0eaf7253ffbe3325d70da" compoundref="unique_events_id_8h" startline="15">EVENT_NI_RECEIVE</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a6e14f2bee40e0f5e4492c4aa3fc47fc5" compoundref="robot_blocks_generic_8h" startline="21">eventFuncMap</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a25cf115d92107d5a5ad74d95b9a0b57a" compoundref="robot_blocks_generic_8h" startline="32" endline="32">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1a85b41f169db69c825cb46de7b58f046d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::GenericCodeBlock::addMessageEventFunc</definition>
+        <argsstring>(int type, eventFunc)</argsstring>
+        <name>addMessageEventFunc</name>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_robot_blocks_1acf36a97ab61d65fb8a51b8d73b485508" kindref="member">eventFunc</ref></type>
+          <defname>func</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp" bodystart="6" bodyend="8"/>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a6e14f2bee40e0f5e4492c4aa3fc47fc5" compoundref="robot_blocks_generic_8h" startline="21">eventFuncMap</references>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a25cf115d92107d5a5ad74d95b9a0b57a" compoundref="robot_blocks_generic_8h" startline="32" endline="32">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</definition>
+        <argsstring>(Message *, int t0, int dt, int nexcept,...)</argsstring>
+        <name>sendMessageToAllNeighbors</name>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nexcept</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp" bodystart="26" bodyend="54"/>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1ac3246689facd08a7fe8d9cb4e8edf6c8" compoundref="robot_blocks_generic_8h" startline="23">module</references>
+        <references refid="class_robot_blocks_1_1_robot_blocks_block_1a2a229556c71e3dabff40062e77ac1685" compoundref="robot_blocks_block_8h" startline="51" endline="51">RobotBlocks::RobotBlocksBlock::getInterface</references>
+        <references refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" compoundref="network_8h" startline="95">P2PNetworkInterface::connectedInterface</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a9cf8c6dd726c58424e872d50455a237e" compoundref="robot_blocks_generic_8h" startline="22">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">BaseSimulator::BuildingBlock::blockId</references>
+        <references refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" compoundref="network_8h" startline="46">Message::type</references>
+        <references refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" compoundref="network_8h" startline="96">P2PNetworkInterface::hostBlock</references>
+        <references refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" compoundref="network_8cpp" startline="52" endline="58">Message::clone</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a25cf115d92107d5a5ad74d95b9a0b57a" compoundref="robot_blocks_generic_8h" startline="32" endline="32">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1aebc4786413213304dd936ea5e6dd0a01" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int RobotBlocks::GenericCodeBlock::sendMessage</definition>
+        <argsstring>(Message *, P2PNetworkInterface *, int t0, int dt)</argsstring>
+        <name>sendMessage</name>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <defname>dest</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp" bodystart="10" bodyend="15"/>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a9cf8c6dd726c58424e872d50455a237e" compoundref="robot_blocks_generic_8h" startline="22">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a25cf115d92107d5a5ad74d95b9a0b57a" compoundref="robot_blocks_generic_8h" startline="32" endline="32">~GenericCodeBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1a7f95f0fe88d27451be7f536d7a2a9583" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</definition>
+        <argsstring>(const char *, Message *, int t0, int dt, int nexcept,...)</argsstring>
+        <name>sendMessageToAllNeighbors</name>
+        <param>
+          <type>const char *</type>
+          <defname>msgString</defname>
+        </param>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nexcept</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp" bodystart="56" bodyend="85"/>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1ac3246689facd08a7fe8d9cb4e8edf6c8" compoundref="robot_blocks_generic_8h" startline="23">module</references>
+        <references refid="class_robot_blocks_1_1_robot_blocks_block_1a2a229556c71e3dabff40062e77ac1685" compoundref="robot_blocks_block_8h" startline="51" endline="51">RobotBlocks::RobotBlocksBlock::getInterface</references>
+        <references refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" compoundref="network_8h" startline="95">P2PNetworkInterface::connectedInterface</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a9cf8c6dd726c58424e872d50455a237e" compoundref="robot_blocks_generic_8h" startline="22">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a95b6761739559f1d652f07b8f664f765" compoundref="robot_blocks_generic_8h" startline="24">console</references>
+        <references refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" compoundref="network_8h" startline="109" endline="111">P2PNetworkInterface::getConnectedBlockId</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">BaseSimulator::BuildingBlock::blockId</references>
+        <references refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" compoundref="network_8h" startline="46">Message::type</references>
+        <references refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" compoundref="network_8h" startline="96">P2PNetworkInterface::hostBlock</references>
+        <references refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" compoundref="network_8cpp" startline="52" endline="58">Message::clone</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1a4b84fa5b5379430bb447052b4e069d57" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int RobotBlocks::GenericCodeBlock::sendMessage</definition>
+        <argsstring>(const char *, Message *, P2PNetworkInterface *, int t0, int dt)</argsstring>
+        <name>sendMessage</name>
+        <param>
+          <type>const char *</type>
+          <defname>msgString</defname>
+        </param>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <defname>msg</defname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <defname>dest</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t0</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp" bodystart="17" bodyend="23"/>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a9cf8c6dd726c58424e872d50455a237e" compoundref="robot_blocks_generic_8h" startline="22">scheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_robot_blocks_1_1_generic_code_block_1a95b6761739559f1d652f07b8f664f765" compoundref="robot_blocks_generic_8h" startline="24">console</references>
+        <references refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" compoundref="network_8h" startline="109" endline="111">P2PNetworkInterface::getConnectedBlockId</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_generic_code_block_1a6e9bc7f95d37a47b310ca3334a66a5e9" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::GenericCodeBlock::setColor</definition>
+        <argsstring>(const Color &amp;c)</argsstring>
+        <name>setColor</name>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="41" bodyend="41"/>
+        <references refid="class_robot_blocks_1_1_robot_blocks_block_1a526f2de911701d326dd5ec0635c5ddab" compoundref="robot_blocks_block_8cpp" startline="91" endline="94">RobotBlocks::RobotBlocksBlock::setColor</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1772">
+        <label>RobotBlocks::RobotBlocksBlockCode</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_block_code"/>
+        <childnode refid="1773" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1773">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+      </node>
+      <node id="1771">
+        <label>RobotBlocks::GenericCodeBlock</label>
+        <link refid="class_robot_blocks_1_1_generic_code_block"/>
+        <childnode refid="1772" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1785">
+        <label>RobotBlocks::RobotBlocksScheduler</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_scheduler"/>
+        <childnode refid="1786" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1775">
+        <label>RobotBlocks::RobotBlocksBlockCode</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_block_code"/>
+        <childnode refid="1776" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1783">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1780">
+        <label>RobotBlocks::RobotBlocksBlock</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_block"/>
+        <childnode refid="1777" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1781" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="1775" relation="usage">
+          <edgelabel>buildNewBlockCode</edgelabel>
+        </childnode>
+        <childnode refid="1782" relation="usage">
+          <edgelabel>ptrGlBlock</edgelabel>
+        </childnode>
+        <childnode refid="1784" relation="usage">
+          <edgelabel>color</edgelabel>
+        </childnode>
+      </node>
+      <node id="1779">
+        <label>ConsoleStream</label>
+        <link refid="class_console_stream"/>
+      </node>
+      <node id="1781">
+        <label>Vecteur</label>
+        <link refid="class_vecteur"/>
+      </node>
+      <node id="1784">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="1782">
+        <label>RobotBlocks::RobotBlocksGlBlock</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_gl_block"/>
+        <childnode refid="1783" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1776">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1777" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1777">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1778" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1776" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1786">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="1786" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="1778">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1777" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1774">
+        <label>RobotBlocks::GenericCodeBlock</label>
+        <link refid="class_robot_blocks_1_1_generic_code_block"/>
+        <childnode refid="1775" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1779" relation="usage">
+          <edgelabel>console</edgelabel>
+        </childnode>
+        <childnode refid="1780" relation="usage">
+          <edgelabel>module</edgelabel>
+        </childnode>
+        <childnode refid="1785" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="19" bodyend="42"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_block_code_1af80f95d1e6a7dedf74a5300985709e74" prot="public" virt="virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>addDebugAttributes</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a85b41f169db69c825cb46de7b58f046d" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>addMessageEventFunc</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a9175e47cdc2641837778a041049337a4" prot="public" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>availabilityDate</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a618ac8e9707a9da6bfc70c57caed896c" prot="public" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>BlockCode</name></member>
+      <member refid="class_robot_blocks_1_1_robot_blocks_block_code_1a7f848b971ad2d5bc3620562fffd23cda" prot="public" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>buildNewBlockCode</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a95b6761739559f1d652f07b8f664f765" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>console</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a6e14f2bee40e0f5e4492c4aa3fc47fc5" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>eventFuncMap</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a6f42b391bdad8c159a7a8a47f20debfb" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>GenericCodeBlock</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a31741e90aabcab37d2def57ab700332e" prot="public" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>hostBlock</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1ac07b9798cc486160e3ec57356ac3960a" prot="public" virt="virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>init</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1ac3246689facd08a7fe8d9cb4e8edf6c8" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>module</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1ad8fa38980724eef2f43c537baed78b7c" prot="protected" virt="virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>processLocalEvent</name></member>
+      <member refid="class_robot_blocks_1_1_robot_blocks_block_code_1a527f1020814efc142aff1c2c28cecde0" prot="public" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>RobotBlocksBlockCode</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a9cf8c6dd726c58424e872d50455a237e" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>scheduler</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1aebc4786413213304dd936ea5e6dd0a01" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>sendMessage</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a4b84fa5b5379430bb447052b4e069d57" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>sendMessage</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>sendMessageToAllNeighbors</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a7f95f0fe88d27451be7f536d7a2a9583" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>sendMessageToAllNeighbors</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a6e9bc7f95d37a47b310ca3334a66a5e9" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>setColor</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a4522800d6069d71ece8c01db154038e1" prot="public" virt="pure-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>startup</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a0dd8a370319e10dc4aea44c96fa3b3cc" prot="public" virt="virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>~BlockCode</name></member>
+      <member refid="class_robot_blocks_1_1_generic_code_block_1a25cf115d92107d5a5ad74d95b9a0b57a" prot="protected" virt="non-virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>~GenericCodeBlock</name></member>
+      <member refid="class_robot_blocks_1_1_robot_blocks_block_code_1af7ad5698e4e6136fd078eb2ec4688542" prot="public" virt="virtual"><scope>RobotBlocks::GenericCodeBlock</scope><name>~RobotBlocksBlockCode</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

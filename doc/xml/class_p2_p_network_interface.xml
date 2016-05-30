@@ -1,0 +1,468 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_p2_p_network_interface" kind="class" language="C++" prot="public">
+    <compoundname>P2PNetworkInterface</compoundname>
+    <includes refid="network_8h" local="no">network.h</includes>
+      <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a762a436c25762f47984debc9d2dc65b6" prot="protected" static="yes" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int P2PNetworkInterface::nextId</definition>
+        <argsstring></argsstring>
+        <name>nextId</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="83" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1aace063eb8e666d81a10aefde0363034e" prot="protected" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double P2PNetworkInterface::defaultDataRate</definition>
+        <argsstring></argsstring>
+        <name>defaultDataRate</name>
+        <initializer>=1000000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="84" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1af6d0c9bf7ac9977ece42f9fe7ee8d40d" prot="protected" static="yes" mutable="no">
+        <type>double</type>
+        <definition>double P2PNetworkInterface::defaultDataRateVariability</definition>
+        <argsstring></argsstring>
+        <name>defaultDataRateVariability</name>
+        <initializer>=0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="85" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_p2_p_network_interface_1aa30f1b98f9aced401baf1be5c0039ca4" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double P2PNetworkInterface::dataRate</definition>
+        <argsstring></argsstring>
+        <name>dataRate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="86" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a16034a1ebf48cc627ddff15e7764677d" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double P2PNetworkInterface::dataRateVariability</definition>
+        <argsstring></argsstring>
+        <name>dataRateVariability</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="87" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1ac4a4940c40b3ec6d785b53c884c56598" prot="protected" static="no" mutable="no">
+        <type>boost::rand48</type>
+        <definition>boost::rand48 P2PNetworkInterface::generator</definition>
+        <argsstring></argsstring>
+        <name>generator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="88" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a07f1896da67880aa296e1f456ea5deb7" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int P2PNetworkInterface::globalId</definition>
+        <argsstring></argsstring>
+        <name>globalId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="91" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a92597762efcd066ef834519bfbaea0ac" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int P2PNetworkInterface::localId</definition>
+        <argsstring></argsstring>
+        <name>localId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="92" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a26ff02f3ee816fb2efccdfc057beac37" prot="public" static="no" mutable="no">
+        <type>deque&lt; <ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref> &gt;</type>
+        <definition>deque&lt;MessagePtr&gt; P2PNetworkInterface::outgoingQueue</definition>
+        <argsstring></argsstring>
+        <name>outgoingQueue</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="93" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="93" bodyend="-1"/>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" prot="public" static="no" mutable="no">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface* P2PNetworkInterface::connectedInterface</definition>
+        <argsstring></argsstring>
+        <name>connectedInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="95" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="95" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9e488f5f0bce0b15c03658b288a54db2" compoundref="blinky_blocks_world_8cpp" startline="171" endline="212">BlinkyBlocks::BlinkyBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ace14ff1fd6bb0898277faf3fd16971c7" compoundref="blinky_blocks_world_8cpp" startline="461" endline="495">BlinkyBlocks::BlinkyBlocksWorld::stopBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a633066cedf390a4bb292d67e4f8b6b4a" compoundref="catoms2_d_block_8cpp" startline="119" endline="127">Catoms2D::Catoms2DBlock::hasANeighbor</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a1f8f9767c33d89840824f9322646ba0a" compoundref="catoms2_d_block_8cpp" startline="202" endline="223">Catoms2D::Catoms2DBlock::getNextInterface</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a11e9c6cd528ed197da1243c69b06ed86" compoundref="catoms2_d_block_8cpp" startline="226" endline="275">Catoms2D::Catoms2DBlock::canMove</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1af12700322ee80d11c8d80289f3f9af1e" compoundref="catoms2_d_generic_8cpp" startline="26" endline="54">Catoms2D::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a279464337f346c7e066edbf372a43c2e" compoundref="catoms2_d_world_8cpp" startline="153" endline="170">Catoms2D::Catoms2DWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a146188561792cc778d39ea79551ceb03" compoundref="catoms2_d_world_8cpp" startline="273" endline="308">Catoms2D::Catoms2DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a5ac75cae05fe9d5e57fada935120261b" compoundref="catoms3_d_world_8cpp" startline="146" endline="159">Catoms3D::Catoms3DWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a48f79ea5d219469b30bd99eddc083c2b" compoundref="catoms3_d_world_8cpp" startline="199" endline="230">Catoms3D::Catoms3DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1acdfb654260e80c4e12edd89cdfbc3f16" compoundref="meld_interpret_v_m_8cpp" startline="357" endline="409">MeldInterpret::MeldInterpretVM::tuple_send</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ac6de36e5d07dca442e07d795694459cd" compoundref="meld_interpret_v_m_8cpp" startline="488" endline="492">MeldInterpret::MeldInterpretVM::down</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a9cff1f610f4bd410d115f3266a354db9" compoundref="meld_interpret_v_m_8cpp" startline="493" endline="497">MeldInterpret::MeldInterpretVM::up</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a3c7d029860f054593e93f027d4dd3b70" compoundref="meld_interpret_v_m_8cpp" startline="498" endline="502">MeldInterpret::MeldInterpretVM::north</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a7d9c7733114063d2a1ae20fbe2f42a52" compoundref="meld_interpret_v_m_8cpp" startline="503" endline="507">MeldInterpret::MeldInterpretVM::south</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ab523dde8b7a85d8027cca5616fb6210d" compoundref="meld_interpret_v_m_8cpp" startline="508" endline="512">MeldInterpret::MeldInterpretVM::east</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ad36d1b309f7db55cfca4e39f2aaa2bba" compoundref="meld_interpret_v_m_8cpp" startline="513" endline="517">MeldInterpret::MeldInterpretVM::west</referencedby>
+        <referencedby refid="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" compoundref="network_8cpp" startline="146" endline="166">connect</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1aacde9a25471862e4bf80f0fb8f15b174" compoundref="robot_blocks_world_8cpp" startline="129" endline="146">RobotBlocks::RobotBlocksWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a99e0958d82e7021d2d27b8f78f78bfd6" compoundref="robot_blocks_world_8cpp" startline="201" endline="236">RobotBlocks::RobotBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1a852f54d8efacf3c842bf11a0dffb2d81" compoundref="smart_blocks_world_8cpp" startline="304" endline="320">SmartBlocks::SmartBlocksWorld::disconnectBlock</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" prot="public" static="no" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+        <definition>BaseSimulator::BuildingBlock* P2PNetworkInterface::hostBlock</definition>
+        <argsstring></argsstring>
+        <name>hostBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="96" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="96" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a7c6b160fd4bb3a41d9954dd4c361f75e" compoundref="blinky_blocks_block_8cpp" startline="184" endline="193">BlinkyBlocks::BlinkyBlocksBlock::getInterfaceDestId</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9e488f5f0bce0b15c03658b288a54db2" compoundref="blinky_blocks_world_8cpp" startline="171" endline="212">BlinkyBlocks::BlinkyBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ace14ff1fd6bb0898277faf3fd16971c7" compoundref="blinky_blocks_world_8cpp" startline="461" endline="495">BlinkyBlocks::BlinkyBlocksWorld::stopBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a146188561792cc778d39ea79551ceb03" compoundref="catoms2_d_world_8cpp" startline="273" endline="308">Catoms2D::Catoms2DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a48f79ea5d219469b30bd99eddc083c2b" compoundref="catoms3_d_world_8cpp" startline="199" endline="230">Catoms3D::Catoms3DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ac6de36e5d07dca442e07d795694459cd" compoundref="meld_interpret_v_m_8cpp" startline="488" endline="492">MeldInterpret::MeldInterpretVM::down</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a9cff1f610f4bd410d115f3266a354db9" compoundref="meld_interpret_v_m_8cpp" startline="493" endline="497">MeldInterpret::MeldInterpretVM::up</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a3c7d029860f054593e93f027d4dd3b70" compoundref="meld_interpret_v_m_8cpp" startline="498" endline="502">MeldInterpret::MeldInterpretVM::north</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a7d9c7733114063d2a1ae20fbe2f42a52" compoundref="meld_interpret_v_m_8cpp" startline="503" endline="507">MeldInterpret::MeldInterpretVM::south</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ab523dde8b7a85d8027cca5616fb6210d" compoundref="meld_interpret_v_m_8cpp" startline="508" endline="512">MeldInterpret::MeldInterpretVM::east</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ad36d1b309f7db55cfca4e39f2aaa2bba" compoundref="meld_interpret_v_m_8cpp" startline="513" endline="517">MeldInterpret::MeldInterpretVM::west</referencedby>
+        <referencedby refid="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" compoundref="network_8cpp" startline="146" endline="166">connect</referencedby>
+        <referencedby refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" compoundref="network_8h" startline="109" endline="111">getConnectedBlockId</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a9aea32d44ee5f166b5cc82a206bd9545" compoundref="robot_blocks_block_8cpp" startline="100" endline="112">RobotBlocks::RobotBlocksBlock::setPrevNext</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a99e0958d82e7021d2d27b8f78f78bfd6" compoundref="robot_blocks_world_8cpp" startline="201" endline="236">RobotBlocks::RobotBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_block_1a81c5ea9084802a4ee407cf1b2ef6779f" compoundref="smart_blocks_block_8cpp" startline="74" endline="80">SmartBlocks::SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a4e38ef9507d8bd7d203dda927ef11e4e" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t P2PNetworkInterface::availabilityDate</definition>
+        <argsstring></argsstring>
+        <name>availabilityDate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="97" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="97" bodyend="-1"/>
+        <referencedby refid="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" compoundref="building_block_8cpp" startline="120" endline="130">BaseSimulator::BuildingBlock::scheduleLocalEvent</referencedby>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_p2_p_network_interface_1a3442b37eb8c0c3253d0c287857a14d2d" prot="public" static="no" mutable="no">
+        <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+        <definition>MessagePtr P2PNetworkInterface::messageBeingTransmitted</definition>
+        <argsstring></argsstring>
+        <name>messageBeingTransmitted</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="99" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="99" bodyend="-1"/>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_p2_p_network_interface_1ad05bc1c9388a27665d93b904591c7e45" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>P2PNetworkInterface::P2PNetworkInterface</definition>
+        <argsstring>(BaseSimulator::BuildingBlock *b)</argsstring>
+        <name>P2PNetworkInterface</name>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="101" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="66" bodyend="80"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1a21b46b2a200cc92c05df9eff04adba13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>P2PNetworkInterface::~P2PNetworkInterface</definition>
+        <argsstring>()</argsstring>
+        <name>~P2PNetworkInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="102" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="82" bodyend="86"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1a0cb6a82e71f3ced629867960d7525b05" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void P2PNetworkInterface::send</definition>
+        <argsstring>(Message *m)</argsstring>
+        <name>send</name>
+        <param>
+          <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="104" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="88" bodyend="90"/>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_network_interface_start_transmitting_event_1ae655fd7426188271982972dc809eeafa" compoundref="events_8cpp" startline="174" endline="177">NetworkInterfaceStartTransmittingEvent::consume</referencedby>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1aba195d9787f7ab292a164d7ad1af04fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool P2PNetworkInterface::addToOutgoingBuffer</definition>
+        <argsstring>(MessagePtr msg)</argsstring>
+        <name>addToOutgoingBuffer</name>
+        <param>
+          <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="106" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="92" bodyend="108"/>
+        <references refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" compoundref="scheduler_8h" startline="125" endline="125">BaseSimulator::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <references refid="class_base_simulator_1_1_scheduler_1af6601a5e1b70ff8ee02400b4657f6a22" compoundref="scheduler_8cpp" startline="116" endline="124">BaseSimulator::Scheduler::trace</references>
+        <referencedby refid="class_network_interface_enqueue_outgoing_event_1a7bcc6d5d1368ffa244b8610b8ca9b694" compoundref="events_8cpp" startline="266" endline="269">NetworkInterfaceEnqueueOutgoingEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1a3b714f1fcb3be3f2ba081c0eb3bf0bce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void P2PNetworkInterface::send</definition>
+        <argsstring>()</argsstring>
+        <name>send</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="107" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="110" bodyend="144"/>
+        <references refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" compoundref="scheduler_8h" startline="125" endline="125">BaseSimulator::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1af6601a5e1b70ff8ee02400b4657f6a22" compoundref="scheduler_8cpp" startline="116" endline="124">BaseSimulator::Scheduler::trace</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void P2PNetworkInterface::connect</definition>
+        <argsstring>(P2PNetworkInterface *ni)</argsstring>
+        <name>connect</name>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <declname>ni</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="108" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="146" bodyend="166"/>
+        <references refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" compoundref="network_8h" startline="95">connectedInterface</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" compoundref="network_8h" startline="96">hostBlock</references>
+        <references refid="class_base_simulator_1_1_building_block_1a155ceee57679e25f169353b06a5c56d9" compoundref="building_block_8h" startline="84" endline="84">BaseSimulator::BuildingBlock::removeNeighbor</references>
+        <references refid="class_base_simulator_1_1_building_block_1a42358d85b5fcfa533052024e3a539ffb" compoundref="building_block_8h" startline="83" endline="83">BaseSimulator::BuildingBlock::addNeighbor</references>
+        <referencedby refid="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" compoundref="building_block_8cpp" startline="54" endline="79">BaseSimulator::BuildingBlock::addP2PNetworkInterfaceAndConnectTo</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a3f19cc15b8d7fec44b1cd5ebefdee417" compoundref="catoms3_d_world_8cpp" startline="164" endline="182">Catoms3D::Catoms3DWorld::linkBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int P2PNetworkInterface::getConnectedBlockId</definition>
+        <argsstring>()</argsstring>
+        <name>getConnectedBlockId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="109" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="109" bodyend="111"/>
+        <references refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" compoundref="network_8h" startline="96">hostBlock</references>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">BaseSimulator::BuildingBlock::blockId</references>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a50470643e57e2f1821691305948cd280" compoundref="catoms2_d_generic_8cpp" startline="17" endline="23">Catoms2D::GenericCodeBlock::sendMessage</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a00b2b11727942dd873253f288df01645" compoundref="catoms2_d_generic_8cpp" startline="56" endline="85">Catoms2D::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a4b84fa5b5379430bb447052b4e069d57" compoundref="robot_blocks_generic_8cpp" startline="17" endline="23">RobotBlocks::GenericCodeBlock::sendMessage</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a7f95f0fe88d27451be7f536d7a2a9583" compoundref="robot_blocks_generic_8cpp" startline="56" endline="85">RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1a066ef31213236ff670864df1ab4736d1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void P2PNetworkInterface::setDataRate</definition>
+        <argsstring>(unsigned int rate)</argsstring>
+        <name>setDataRate</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="118" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="118" bodyend="118"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abf2f926c10b06124320f024bf50cf9d6" compoundref="blinky_blocks_block_8cpp" startline="84" endline="98">BlinkyBlocks::BlinkyBlocksBlock::BlinkyBlocksBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_p2_p_network_interface_1afe050d8912c91691c61a360bb6dccf68" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void P2PNetworkInterface::setDataRateVariability</definition>
+        <argsstring>(unsigned int variability)</argsstring>
+        <name>setDataRateVariability</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>variability</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="119" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="119" bodyend="119"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abf2f926c10b06124320f024bf50cf9d6" compoundref="blinky_blocks_block_8cpp" startline="84" endline="98">BlinkyBlocks::BlinkyBlocksBlock::BlinkyBlocksBlock</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2171">
+        <label>P2PNetworkInterface</label>
+        <link refid="class_p2_p_network_interface"/>
+        <childnode refid="2171" relation="usage">
+          <edgelabel>connectedInterface</edgelabel>
+        </childnode>
+        <childnode refid="2172" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2174">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2172" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2172">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2173" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2174" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2173">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2172" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="81" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="81" bodyend="120"/>
+    <listofallmembers>
+      <member refid="class_p2_p_network_interface_1aba195d9787f7ab292a164d7ad1af04fb" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>addToOutgoingBuffer</name></member>
+      <member refid="class_p2_p_network_interface_1a4e38ef9507d8bd7d203dda927ef11e4e" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>availabilityDate</name></member>
+      <member refid="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>connect</name></member>
+      <member refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>connectedInterface</name></member>
+      <member refid="class_p2_p_network_interface_1aa30f1b98f9aced401baf1be5c0039ca4" prot="protected" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>dataRate</name></member>
+      <member refid="class_p2_p_network_interface_1a16034a1ebf48cc627ddff15e7764677d" prot="protected" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>dataRateVariability</name></member>
+      <member refid="class_p2_p_network_interface_1aace063eb8e666d81a10aefde0363034e" prot="protected" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>defaultDataRate</name></member>
+      <member refid="class_p2_p_network_interface_1af6d0c9bf7ac9977ece42f9fe7ee8d40d" prot="protected" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>defaultDataRateVariability</name></member>
+      <member refid="class_p2_p_network_interface_1ac4a4940c40b3ec6d785b53c884c56598" prot="protected" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>generator</name></member>
+      <member refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>getConnectedBlockId</name></member>
+      <member refid="class_p2_p_network_interface_1a07f1896da67880aa296e1f456ea5deb7" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>globalId</name></member>
+      <member refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>hostBlock</name></member>
+      <member refid="class_p2_p_network_interface_1a92597762efcd066ef834519bfbaea0ac" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>localId</name></member>
+      <member refid="class_p2_p_network_interface_1a3442b37eb8c0c3253d0c287857a14d2d" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>messageBeingTransmitted</name></member>
+      <member refid="class_p2_p_network_interface_1a762a436c25762f47984debc9d2dc65b6" prot="protected" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>nextId</name></member>
+      <member refid="class_p2_p_network_interface_1a26ff02f3ee816fb2efccdfc057beac37" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>outgoingQueue</name></member>
+      <member refid="class_p2_p_network_interface_1ad05bc1c9388a27665d93b904591c7e45" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>P2PNetworkInterface</name></member>
+      <member refid="class_p2_p_network_interface_1a0cb6a82e71f3ced629867960d7525b05" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>send</name></member>
+      <member refid="class_p2_p_network_interface_1a3b714f1fcb3be3f2ba081c0eb3bf0bce" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>send</name></member>
+      <member refid="class_p2_p_network_interface_1a066ef31213236ff670864df1ab4736d1" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>setDataRate</name></member>
+      <member refid="class_p2_p_network_interface_1afe050d8912c91691c61a360bb6dccf68" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>setDataRateVariability</name></member>
+      <member refid="class_p2_p_network_interface_1a21b46b2a200cc92c05df9eff04adba13" prot="public" virt="non-virtual"><scope>P2PNetworkInterface</scope><name>~P2PNetworkInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

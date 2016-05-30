@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="cell3_d_position_8h" kind="file" language="C++">
+    <compoundname>cell3DPosition.h</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">fstream</includes>
+    <includes local="no">cmath</includes>
+    <includedby refid="catoms3_d_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</includedby>
+    <includedby refid="catoms3_d_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</includedby>
+    <includedby refid="cell3_d_position_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cell3DPosition.cpp</includedby>
+    <incdepgraph>
+      <node id="13529">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cell3DPosition.h</label>
+        <link refid="cell3DPosition.h"/>
+        <childnode refid="13530" relation="include">
+        </childnode>
+        <childnode refid="13531" relation="include">
+        </childnode>
+        <childnode refid="13532" relation="include">
+        </childnode>
+      </node>
+      <node id="13532">
+        <label>cmath</label>
+      </node>
+      <node id="13531">
+        <label>fstream</label>
+      </node>
+      <node id="13530">
+        <label>iostream</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="13533">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cell3DPosition.h</label>
+        <link refid="cell3DPosition.h"/>
+        <childnode refid="13534" relation="include">
+        </childnode>
+        <childnode refid="13541" relation="include">
+        </childnode>
+        <childnode refid="13546" relation="include">
+        </childnode>
+      </node>
+      <node id="13536">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3_d_block_code_8h"/>
+        <childnode refid="13534" relation="include">
+        </childnode>
+        <childnode refid="13537" relation="include">
+        </childnode>
+        <childnode refid="13540" relation="include">
+        </childnode>
+      </node>
+      <node id="13544">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</label>
+        <link refid="catoms3_d_scheduler_8h"/>
+        <childnode refid="13537" relation="include">
+        </childnode>
+        <childnode refid="13542" relation="include">
+        </childnode>
+        <childnode refid="13538" relation="include">
+        </childnode>
+        <childnode refid="13543" relation="include">
+        </childnode>
+      </node>
+      <node id="13545">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</label>
+        <link refid="catoms3_d_events_8h"/>
+        <childnode refid="13542" relation="include">
+        </childnode>
+      </node>
+      <node id="13539">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.cpp</label>
+        <link refid="catoms3_d_simulator_8cpp"/>
+      </node>
+      <node id="13535">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.cpp</label>
+        <link refid="catoms3_d_block_8cpp"/>
+      </node>
+      <node id="13542">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp</label>
+        <link refid="catoms3_d_events_8cpp"/>
+      </node>
+      <node id="13538">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp</label>
+        <link refid="catoms3_d_scheduler_8cpp"/>
+      </node>
+      <node id="13546">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cell3DPosition.cpp</label>
+        <link refid="cell3_d_position_8cpp"/>
+      </node>
+      <node id="13543">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.cpp</label>
+        <link refid="catoms3_d_world_8cpp"/>
+      </node>
+      <node id="13537">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</label>
+        <link refid="catoms3_d_simulator_8h"/>
+        <childnode refid="13535" relation="include">
+        </childnode>
+        <childnode refid="13538" relation="include">
+        </childnode>
+        <childnode refid="13539" relation="include">
+        </childnode>
+      </node>
+      <node id="13540">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3_d_block_code_8cpp"/>
+      </node>
+      <node id="13534">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="13535" relation="include">
+        </childnode>
+        <childnode refid="13536" relation="include">
+        </childnode>
+        <childnode refid="13541" relation="include">
+        </childnode>
+        <childnode refid="13544" relation="include">
+        </childnode>
+        <childnode refid="13545" relation="include">
+        </childnode>
+        <childnode refid="13543" relation="include">
+        </childnode>
+      </node>
+      <node id="13541">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</label>
+        <link refid="catoms3_d_world_8h"/>
+        <childnode refid="13535" relation="include">
+        </childnode>
+        <childnode refid="13537" relation="include">
+        </childnode>
+        <childnode refid="13542" relation="include">
+        </childnode>
+        <childnode refid="13538" relation="include">
+        </childnode>
+        <childnode refid="13543" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_cell3_d_position" prot="public">Cell3DPosition</innerclass>
+    <briefdescription>
+<para>3D integer position in a grid </para>    </briefdescription>
+    <detaileddescription>
+<para><simplesect kind="date"><para>29/01/2012 </para></simplesect>
+<simplesect kind="author"><para>Benoît Piranda </para></simplesect>
+</para>    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"></codeline>
+<codeline lineno="8"><highlight class="preprocessor">#ifndef<sp/>CELL3DPOSITION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CELL3DPOSITION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="class_cell3_d_position" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_cell3_d_position" kindref="compound">Cell3DPosition</ref><sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="19" refid="class_cell3_d_position_1ad0075c97146db5b504cd37c999db7fd3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>pt[3];</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_cell3_d_position" kindref="compound">Cell3DPosition</ref>();</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_cell3_d_position" kindref="compound">Cell3DPosition</ref>(</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>x,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>y,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>z);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>x,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>y,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>z);</highlight></codeline>
+<codeline lineno="24" refid="class_cell3_d_position_1a97e3ea31ebb0716f0acd3c704a0063ff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_cell3_d_position_1a97e3ea31ebb0716f0acd3c704a0063ff" kindref="member">operator[]</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>pt[i];<sp/>};</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/>ostream&amp;<sp/><ref refid="namespace_blinky_blocks_1af441bc9d1031530c3659d9529467aaeb" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_cell3_d_position" kindref="compound">Cell3DPosition</ref>&amp;p);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>CELL3DPOSITION_H</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cell3DPosition.h"/>
+  </compounddef>
+</doxygen>

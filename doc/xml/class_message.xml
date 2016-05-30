@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_message" kind="class" language="C++" prot="public">
+    <compoundname>Message</compoundname>
+    <derivedcompoundref refid="class_meld_interpret_1_1_add_tuple_message" prot="public" virt="non-virtual">MeldInterpret::AddTupleMessage</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_interpret_1_1_remove_tuple_message" prot="public" virt="non-virtual">MeldInterpret::RemoveTupleMessage</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_receive_message_v_m_command" prot="public" virt="non-virtual">MeldProcess::ReceiveMessageVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_send_message_v_m_command" prot="public" virt="non-virtual">MeldProcess::SendMessageVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_message_of" prot="public" virt="non-virtual">MessageOf&lt; T &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_multi_cores_1_1_v_m_data_message" prot="public" virt="non-virtual">MultiCores::VMDataMessage</derivedcompoundref>
+    <includes refid="network_8h" local="no">network.h</includes>
+      <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_message_1a00240b1a3f109deddf714c5208b5a49c" prot="protected" static="yes" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t Message::nextId</definition>
+        <argsstring></argsstring>
+        <name>nextId</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_1a25270a0fe7b0b5d32298c096867b24de" prot="protected" static="yes" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t Message::nbMessages</definition>
+        <argsstring></argsstring>
+        <name>nbMessages</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_message_1a46573773d5b65a28f527a44b3e4f8f2e" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t Message::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_1afecf31a110a6f007f03d890a0f77bd38" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int Message::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="46" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_add_tuple_message_1aec8f1d5395a749dd78e38834bcd5f5df" compoundref="meld_interpret_messages_8cpp" startline="7" endline="11">MeldInterpret::AddTupleMessage::AddTupleMessage</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_remove_tuple_message_1af5d7e810d3f1c2f48b766984cba5428a" compoundref="meld_interpret_messages_8cpp" startline="22" endline="26">MeldInterpret::RemoveTupleMessage::RemoveTupleMessage</referencedby>
+        <referencedby refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" compoundref="network_8cpp" startline="52" endline="58">clone</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_1a56c70396168363e83944cb6d65ef345d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface* Message::sourceInterface</definition>
+        <argsstring></argsstring>
+        <name>sourceInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="47" bodyend="-1"/>
+        <referencedby refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" compoundref="network_8cpp" startline="52" endline="58">clone</referencedby>
+        <referencedby refid="class_message_of_1a297c0a4bb0d2517a0d6287b7f6e32c0e" compoundref="network_8h" startline="67" endline="72">MessageOf&lt; T &gt;::clone</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_1a307a420fae17e9bd201105cd0397743d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface * Message::destinationInterface</definition>
+        <argsstring></argsstring>
+        <name>destinationInterface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="47" bodyend="-1"/>
+        <referencedby refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" compoundref="network_8cpp" startline="52" endline="58">clone</referencedby>
+        <referencedby refid="class_message_of_1a297c0a4bb0d2517a0d6287b7f6e32c0e" compoundref="network_8h" startline="67" endline="72">MessageOf&lt; T &gt;::clone</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_message_1a4fc4f717b634e66070366cb7722d7761" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Message::Message</definition>
+        <argsstring>()</argsstring>
+        <name>Message</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="32" bodyend="37"/>
+        <references refid="network_8h_1ac44fa136eae915ea2a8003757467c9ff" compoundref="network_8h" startline="27">MESSAGE_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_message_1a3f7275462831f787a861271687bcad67" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Message::~Message</definition>
+        <argsstring>()</argsstring>
+        <name>~Message</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="39" bodyend="42"/>
+        <references refid="network_8h_1a6058294755a0d846d639d90cebc6db2e" compoundref="network_8h" startline="28">MESSAGE_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_message_1a205fe80c0b08d73e2be7aeeb2baef531" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string Message::getMessageName</definition>
+        <argsstring>()</argsstring>
+        <name>getMessageName</name>
+        <reimplementedby refid="class_meld_interpret_1_1_add_tuple_message_1a69aaae4e6d769052fe48586d4b981475">getMessageName</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_remove_tuple_message_1a7aa0cfb2770c8c8274c552c0ed7408bc">getMessageName</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="class_message_1a8c20b5cfbbecb2dc08bf18eb47043cb0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>unsigned int</type>
+        <definition>virtual unsigned int Message::size</definition>
+        <argsstring>()</argsstring>
+        <name>size</name>
+        <reimplementedby refid="class_meld_interpret_1_1_add_tuple_message_1aa515570c1a309d3d254c6c6a7039dbc5">size</reimplementedby>
+        <reimplementedby refid="class_meld_interpret_1_1_remove_tuple_message_1ad87d5cbf981752456b1b56301a9a9f24">size</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_v_m_data_message_1a0da02e4e0308bd94774a3f57a79f2bfa">size</reimplementedby>
+        <reimplementedby refid="class_meld_process_1_1_receive_message_v_m_command_1af4ce8651e265e8c02fe24f737d08b7ed">size</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="56" bodyend="56"/>
+        <referencedby refid="class_multi_cores_1_1_v_m_data_message_1a0da02e4e0308bd94774a3f57a79f2bfa" compoundref="multi_cores_scheduler_8h" startline="101" endline="104">MultiCores::VMDataMessage::size</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_message" kindref="compound">Message</ref> *</type>
+        <definition>Message * Message::clone</definition>
+        <argsstring>()</argsstring>
+        <name>clone</name>
+        <reimplementedby refid="class_message_of_1a297c0a4bb0d2517a0d6287b7f6e32c0e">clone</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="52" bodyend="58"/>
+        <references refid="class_message_1a56c70396168363e83944cb6d65ef345d" compoundref="network_8h" startline="47">sourceInterface</references>
+        <references refid="class_message_1a307a420fae17e9bd201105cd0397743d" compoundref="network_8h" startline="47">destinationInterface</references>
+        <references refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" compoundref="network_8h" startline="46">type</references>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1af12700322ee80d11c8d80289f3f9af1e" compoundref="catoms2_d_generic_8cpp" startline="26" endline="54">Catoms2D::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint64_t</type>
+        <definition>uint64_t Message::getNbMessages</definition>
+        <argsstring>()</argsstring>
+        <name>getNbMessages</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp" bodystart="44" bodyend="46"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_scheduler_1a2d550292f04c7469ac4d09289214d060" compoundref="catoms2_d_scheduler_8cpp" startline="46" endline="156">Catoms2D::Catoms2DScheduler::startPaused</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a4c10d15d1facb044fa46a008240e8b75" compoundref="catoms3_d_scheduler_8cpp" startline="47" endline="151">Catoms3D::Catoms3DScheduler::startPaused</referencedby>
+        <referencedby refid="classcpp_scheduler_1_1_cpp_scheduler_1a8982dbad04f97509686a568f15076003" compoundref="cpp_scheduler_8cpp" startline="43" endline="150">cppScheduler::CppScheduler::startPaused</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_scheduler_1ac3f2838402b54e7c87496e4f1d80920c" compoundref="meld_interpret_scheduler_8cpp" startline="62" endline="212">MeldInterpret::MeldInterpretScheduler::startPaused</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" compoundref="meld_process_scheduler_8cpp" startline="62" endline="219">MeldProcess::MeldProcessScheduler::startPaused</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_scheduler_1afbb00dca1889d6db6842fbbcbc3c896f" compoundref="multi_cores_scheduler_8cpp" startline="51" endline="114">MultiCores::MultiCoresScheduler::startPaused</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_scheduler_1aaab1751772f13398074e847a975b7dfe" compoundref="robot_blocks_scheduler_8cpp" startline="46" endline="156">RobotBlocks::RobotBlocksScheduler::startPaused</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_scheduler_1a63f44bb59965a3ae86761b040200feb8" compoundref="smart_blocks_scheduler_8cpp" startline="42" endline="148">SmartBlocks::SmartBlocksScheduler::startPaused</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1917">
+        <label>MultiCores::VMDataMessage</label>
+        <link refid="class_multi_cores_1_1_v_m_data_message"/>
+        <childnode refid="1911" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1914">
+        <label>MeldProcess::ReceiveMessageVMCommand</label>
+        <link refid="class_meld_process_1_1_receive_message_v_m_command"/>
+        <childnode refid="1911" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1916">
+        <label>MessageOf&lt; T &gt;</label>
+        <link refid="class_message_of"/>
+        <childnode refid="1911" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1911">
+        <label>Message</label>
+        <link refid="class_message"/>
+      </node>
+      <node id="1915">
+        <label>MeldProcess::SendMessageVMCommand</label>
+        <link refid="class_meld_process_1_1_send_message_v_m_command"/>
+        <childnode refid="1911" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1913">
+        <label>MeldInterpret::RemoveTupleMessage</label>
+        <link refid="class_meld_interpret_1_1_remove_tuple_message"/>
+        <childnode refid="1911" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1912">
+        <label>MeldInterpret::AddTupleMessage</label>
+        <link refid="class_meld_interpret_1_1_add_tuple_message"/>
+        <childnode refid="1911" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1918">
+        <label>Message</label>
+        <link refid="class_message"/>
+        <childnode refid="1919" relation="usage">
+          <edgelabel>destinationInterface</edgelabel>
+          <edgelabel>sourceInterface</edgelabel>
+        </childnode>
+      </node>
+      <node id="1919">
+        <label>P2PNetworkInterface</label>
+        <link refid="class_p2_p_network_interface"/>
+        <childnode refid="1919" relation="usage">
+          <edgelabel>connectedInterface</edgelabel>
+        </childnode>
+        <childnode refid="1920" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1922">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1920" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1920">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1921" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1922" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1921">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1920" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="37" bodyend="58"/>
+    <listofallmembers>
+      <member refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" prot="public" virt="virtual"><scope>Message</scope><name>clone</name></member>
+      <member refid="class_message_1a307a420fae17e9bd201105cd0397743d" prot="public" virt="non-virtual"><scope>Message</scope><name>destinationInterface</name></member>
+      <member refid="class_message_1a205fe80c0b08d73e2be7aeeb2baef531" prot="public" virt="virtual"><scope>Message</scope><name>getMessageName</name></member>
+      <member refid="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" prot="public" virt="non-virtual"><scope>Message</scope><name>getNbMessages</name></member>
+      <member refid="class_message_1a46573773d5b65a28f527a44b3e4f8f2e" prot="public" virt="non-virtual"><scope>Message</scope><name>id</name></member>
+      <member refid="class_message_1a4fc4f717b634e66070366cb7722d7761" prot="public" virt="non-virtual"><scope>Message</scope><name>Message</name></member>
+      <member refid="class_message_1a25270a0fe7b0b5d32298c096867b24de" prot="protected" virt="non-virtual"><scope>Message</scope><name>nbMessages</name></member>
+      <member refid="class_message_1a00240b1a3f109deddf714c5208b5a49c" prot="protected" virt="non-virtual"><scope>Message</scope><name>nextId</name></member>
+      <member refid="class_message_1a8c20b5cfbbecb2dc08bf18eb47043cb0" prot="public" virt="virtual"><scope>Message</scope><name>size</name></member>
+      <member refid="class_message_1a56c70396168363e83944cb6d65ef345d" prot="public" virt="non-virtual"><scope>Message</scope><name>sourceInterface</name></member>
+      <member refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" prot="public" virt="non-virtual"><scope>Message</scope><name>type</name></member>
+      <member refid="class_message_1a3f7275462831f787a861271687bcad67" prot="public" virt="virtual"><scope>Message</scope><name>~Message</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

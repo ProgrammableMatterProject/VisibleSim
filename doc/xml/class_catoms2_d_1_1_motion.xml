@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_motion" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::Motion</compoundname>
+    <includes refid="catoms2_d_capabilities_8h" local="no">catoms2DCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms2_d_1_1_motion_1a7f50e5d1bcd103322ebf9157a8c8c17b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Catoms2D::Motion::obj</definition>
+        <argsstring></argsstring>
+        <name>obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="75" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="75" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a50d06389a861296ee2d44a7318387b14" compoundref="catoms2_d_capabilities_8cpp" startline="215" endline="330">Catoms2D::Catoms2DCapabilities::Catoms2DCapabilities</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="catoms2_d_capabilities_8cpp" startline="661" endline="666">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_motion_1ae4803d50e44ff1b6f5d23bfa583247bf" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Catoms2D::Motion::endTime</definition>
+        <argsstring></argsstring>
+        <name>endTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="76" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="76" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a50d06389a861296ee2d44a7318387b14" compoundref="catoms2_d_capabilities_8cpp" startline="215" endline="330">Catoms2D::Catoms2DCapabilities::Catoms2DCapabilities</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="catoms2_d_capabilities_8cpp" startline="661" endline="666">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_motion_1a0135ea5180500786c33f1232dd6678f8" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Catoms2D::Motion::init</definition>
+        <argsstring></argsstring>
+        <name>init</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="77" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="77" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms2_d_capabilities_8cpp" startline="16" endline="158">Catoms2D::Capability::Capability</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a50d06389a861296ee2d44a7318387b14" compoundref="catoms2_d_capabilities_8cpp" startline="215" endline="330">Catoms2D::Catoms2DCapabilities::Catoms2DCapabilities</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="catoms2_d_capabilities_8cpp" startline="661" endline="666">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_motion_1ad783d0d1c2abd7f97982673b2dd398b9" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Catoms2D::Motion::final</definition>
+        <argsstring></argsstring>
+        <name>final</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="78" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="78" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms2_d_capabilities_8cpp" startline="16" endline="158">Catoms2D::Capability::Capability</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a50d06389a861296ee2d44a7318387b14" compoundref="catoms2_d_capabilities_8cpp" startline="215" endline="330">Catoms2D::Catoms2DCapabilities::Catoms2DCapabilities</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="catoms2_d_capabilities_8cpp" startline="661" endline="666">Motion</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_1a444a2569aaadd10d76b4e6e6bfb3df0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Motion::Motion</definition>
+        <argsstring>()</argsstring>
+        <name>Motion</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="73" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="658" bodyend="659"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Motion::Motion</definition>
+        <argsstring>(const Motion *)</argsstring>
+        <name>Motion</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_motion" kindref="compound">Motion</ref> *</type>
+          <defname>src</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="74" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="661" bodyend="666"/>
+        <references refid="class_catoms2_d_1_1_motion_1a7f50e5d1bcd103322ebf9157a8c8c17b" compoundref="catoms2_d_capabilities_8h" startline="75">obj</references>
+        <references refid="class_catoms2_d_1_1_motion_1ae4803d50e44ff1b6f5d23bfa583247bf" compoundref="catoms2_d_capabilities_8h" startline="76">endTime</references>
+        <references refid="class_catoms2_d_1_1_motion_1a0135ea5180500786c33f1232dd6678f8" compoundref="catoms2_d_capabilities_8h" startline="77">init</references>
+        <references refid="class_catoms2_d_1_1_motion_1ad783d0d1c2abd7f97982673b2dd398b9" compoundref="catoms2_d_capabilities_8h" startline="78">final</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1938">
+        <label>Catoms2D::Motion</label>
+        <link refid="class_catoms2_d_1_1_motion"/>
+        <childnode refid="1939" relation="usage">
+          <edgelabel>final</edgelabel>
+          <edgelabel>init</edgelabel>
+        </childnode>
+      </node>
+      <node id="1939">
+        <label>Catoms2D::PointRel3D</label>
+        <link refid="class_catoms2_d_1_1_point_rel3_d"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="71" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="71" bodyend="79"/>
+    <listofallmembers>
+      <member refid="class_catoms2_d_1_1_motion_1ae4803d50e44ff1b6f5d23bfa583247bf" prot="public" virt="non-virtual"><scope>Catoms2D::Motion</scope><name>endTime</name></member>
+      <member refid="class_catoms2_d_1_1_motion_1ad783d0d1c2abd7f97982673b2dd398b9" prot="public" virt="non-virtual"><scope>Catoms2D::Motion</scope><name>final</name></member>
+      <member refid="class_catoms2_d_1_1_motion_1a0135ea5180500786c33f1232dd6678f8" prot="public" virt="non-virtual"><scope>Catoms2D::Motion</scope><name>init</name></member>
+      <member refid="class_catoms2_d_1_1_motion_1a444a2569aaadd10d76b4e6e6bfb3df0c" prot="public" virt="non-virtual"><scope>Catoms2D::Motion</scope><name>Motion</name></member>
+      <member refid="class_catoms2_d_1_1_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" prot="public" virt="non-virtual"><scope>Catoms2D::Motion</scope><name>Motion</name></member>
+      <member refid="class_catoms2_d_1_1_motion_1a7f50e5d1bcd103322ebf9157a8c8c17b" prot="public" virt="non-virtual"><scope>Catoms2D::Motion</scope><name>obj</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

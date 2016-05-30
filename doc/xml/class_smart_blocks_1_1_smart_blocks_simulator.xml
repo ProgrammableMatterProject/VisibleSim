@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_smart_blocks_1_1_smart_blocks_simulator" kind="class" language="C++" prot="public">
+    <compoundname>SmartBlocks::SmartBlocksSimulator</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_simulator" prot="public" virt="non-virtual">BaseSimulator::Simulator</basecompoundref>
+    <includes refid="smart_blocks_simulator_8h" local="no">smartBlocksSimulator.h</includes>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_smart_blocks_1_1_smart_blocks_simulator_1a78d710e831bd042022d61ed21de334f3" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref> *(*</type>
+        <definition>SmartBlocksBlockCode *(* SmartBlocks::SmartBlocksSimulator::buildNewBlockCode)(SmartBlocksBlock *)</definition>
+        <argsstring>)(SmartBlocksBlock *)</argsstring>
+        <name>buildNewBlockCode</name>
+        <initializer>=NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" bodystart="30" bodyend="-1"/>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocksSimulator</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</definition>
+        <argsstring>(int argc, char *argv[], SmartBlocksBlockCode *(*smartBlocksCodeBuildingFunction)(SmartBlocksBlock *))</argsstring>
+        <name>SmartBlocksSimulator</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref> *(*)(<ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref> *)</type>
+          <declname>smartBlocksCodeBuildingFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp" bodystart="17" bodyend="267"/>
+        <references refid="class_smart_blocks_1_1_smart_blocks_simulator_1a78d710e831bd042022d61ed21de334f3" compoundref="smart_blocks_simulator_8h" startline="30">buildNewBlockCode</references>
+        <references refid="namespace_smart_blocks_1adb75afe8d855703e9e884196220fadf2" compoundref="smart_blocks_scheduler_8h" startline="38" endline="40">SmartBlocks::createScheduler</references>
+        <references refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" compoundref="simulator_8h" startline="46">BaseSimulator::Simulator::xmlDoc</references>
+        <references refid="namespace_smart_blocks_1a63e744c9518abc2f09014a737e30ca56" compoundref="smart_blocks_scheduler_8h" startline="46" endline="46">SmartBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1aca72617a32cf260ac6d09f43d024bb26" compoundref="scheduler_8h" startline="76" endline="76">BaseSimulator::Scheduler::setMaximumDate</references>
+        <references refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" compoundref="opengl_viewer_8h" startline="36">GlutContext::initialScreenWidth</references>
+        <references refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" compoundref="opengl_viewer_8h" startline="36">GlutContext::initialScreenHeight</references>
+        <references refid="class_glut_context_1a2e53da196e3309de6f7096993e30e191" compoundref="opengl_viewer_8h" startline="35">GlutContext::screenWidth</references>
+        <references refid="class_glut_context_1a62d021000546e50bbec62a6974183322" compoundref="opengl_viewer_8h" startline="35">GlutContext::screenHeight</references>
+        <references refid="namespace_smart_blocks_1ae8d3c666131fbbf085abfef009647375" compoundref="smart_blocks_world_8h" startline="85" endline="87">SmartBlocks::createWorld</references>
+        <references refid="namespace_smart_blocks_1a082eac088d3c41655abf3de6776c70b4" compoundref="smart_blocks_world_8h" startline="93" endline="93">SmartBlocks::getWorld</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1a574a4a9ae925958117aff114d736aa73" compoundref="smart_blocks_world_8cpp" startline="267" endline="275">SmartBlocks::SmartBlocksWorld::loadTextures</references>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1a9b10e9a5d3e0606e0f468d51777470d9" compoundref="smart_blocks_world_8h" startline="71" endline="71">SmartBlocks::SmartBlocksWorld::getCamera</references>
+        <references refid="class_camera_1a7724b4bf8bbf5423da7dcb4644ee7d80" compoundref="camera_8h" startline="69" endline="69">Camera::setTarget</references>
+        <references refid="class_camera_1a13d88059aa510d8ac9aee7dc3adc84ce" compoundref="camera_8h" startline="68" endline="68">Camera::setAngle</references>
+        <references refid="class_camera_1af8eff8518d92273950368ede6fc4c800" compoundref="camera_8h" startline="70" endline="70">Camera::setDirection</references>
+        <references refid="class_camera_1a4e3d9d06d4cf59d5d49674bd3af57e61" compoundref="camera_8h" startline="71" endline="71">Camera::setDistance</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_camera_1a4ec50716a3c77cf11a664e602511e55f" compoundref="camera_8h" startline="67" endline="67">Camera::setNearFar</references>
+        <references refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" compoundref="camera_8cpp" startline="82" endline="93">Camera::setLightParameters</references>
+        <references refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" compoundref="color_8h" startline="15">Color::rgba</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1ad50423b2bd9120e6f5d8ec9fda9e6cab" compoundref="smart_blocks_world_8h" startline="51" endline="51">SmartBlocks::SmartBlocksWorld::setBlocksSize</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1a90c5a8c05b2cfd89e6af9e6ccb6f18d2" compoundref="smart_blocks_world_8cpp" startline="79" endline="98">SmartBlocks::SmartBlocksWorld::addBlock</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1a44635c6ed03d7311ae62ce094ff360ff" compoundref="smart_blocks_world_8h" startline="55" endline="55">SmartBlocks::SmartBlocksWorld::setTargetGrid</references>
+        <references refid="namespace_smart_blocks_1a76047759018e3660585ed31a83c3557aa53bbb97790b79a8dddead922a4c05ad8" compoundref="smart_blocks_capabilities_8h" startline="44">SmartBlocks::fullCell</references>
+        <references refid="namespace_smart_blocks_1a76047759018e3660585ed31a83c3557aacf93dd9efe3bf6c48b8c3a814e3c7156" compoundref="smart_blocks_capabilities_8h" startline="44">SmartBlocks::emptyCell</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1aa1d71ea6807b52375318dced7988a07a" compoundref="smart_blocks_world_8h" startline="61" endline="61">SmartBlocks::SmartBlocksWorld::setCapabilities</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_world_1a12bfca894d587eaa467c1b50248e6d61" compoundref="smart_blocks_world_8cpp" startline="100" endline="107">SmartBlocks::SmartBlocksWorld::linkBlocks</references>
+        <references refid="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" compoundref="opengl_viewer_8cpp" startline="490" endline="512">GlutContext::mainLoop</references>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a745631ed5b30e23076709ba882b91881" compoundref="smart_blocks_simulator_8cpp" startline="275" endline="277">createSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_simulator_1aa019c2b914524efcb11b5a9f2d6d4a94" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>SmartBlocks::SmartBlocksSimulator::~SmartBlocksSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>~SmartBlocksSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp" bodystart="269" bodyend="273"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_simulator_1a745631ed5b30e23076709ba882b91881" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::SmartBlocksSimulator::createSimulator</definition>
+        <argsstring>(int argc, char *argv[], SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock *))</argsstring>
+        <name>createSimulator</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref> *(*)(<ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref> *)</type>
+          <declname>smartBlocksBlockCodeBuildingFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp" bodystart="275" bodyend="277"/>
+        <references refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" compoundref="simulator_8h" startline="43">BaseSimulator::Simulator::simulator</references>
+        <references refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocksSimulator</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_simulator_1a6b7c7285393126a1e59795b920b09bb0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::SmartBlocksSimulator::deleteSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>deleteSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp" bodystart="279" bodyend="282"/>
+        <references refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" compoundref="simulator_8h" startline="43">BaseSimulator::Simulator::simulator</references>
+      </memberdef>
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_simulator_1aace5292de09fc0e755891b97feefd5ef" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_smart_blocks_1_1_smart_blocks_simulator" kindref="compound">SmartBlocksSimulator</ref> *</type>
+        <definition>static SmartBlocksSimulator* SmartBlocks::SmartBlocksSimulator::getSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>getSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" bodystart="32" bodyend="35"/>
+        <references refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" compoundref="simulator_8cpp" startline="19">BaseSimulator::simulator</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_smart_blocks_1_1_smart_blocks_simulator_1a6866a49c9f10e20f1a0a2c093c3bce35" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void SmartBlocks::SmartBlocksSimulator::printInfo</definition>
+        <argsstring>()</argsstring>
+        <name>printInfo</name>
+        <reimplements refid="class_base_simulator_1_1_simulator_1a21df91f0bb5bfe8fb643b3e4c30fc9f9">printInfo</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2440">
+        <label>BaseSimulator::Simulator</label>
+        <link refid="class_base_simulator_1_1_simulator"/>
+      </node>
+      <node id="2439">
+        <label>SmartBlocks::SmartBlocksSimulator</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_simulator"/>
+        <childnode refid="2440" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2442">
+        <label>BaseSimulator::Simulator</label>
+        <link refid="class_base_simulator_1_1_simulator"/>
+        <childnode refid="2443" relation="usage">
+          <edgelabel>cmdLine</edgelabel>
+        </childnode>
+        <childnode refid="2442" relation="usage">
+          <edgelabel>simulator</edgelabel>
+        </childnode>
+        <childnode refid="2444" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="2446">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2447" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2441">
+        <label>SmartBlocks::SmartBlocksSimulator</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_simulator"/>
+        <childnode refid="2442" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2445" relation="usage">
+          <edgelabel>buildNewBlockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2443">
+        <label>CommandLine</label>
+        <link refid="class_command_line"/>
+      </node>
+      <node id="2447">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2448" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2446" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2444">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="2444" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="2448">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2447" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2445">
+        <label>SmartBlocks::SmartBlocksBlockCode</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_block_code"/>
+        <childnode refid="2446" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h" bodystart="21" bodyend="38"/>
+    <listofallmembers>
+      <member refid="class_smart_blocks_1_1_smart_blocks_simulator_1a78d710e831bd042022d61ed21de334f3" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>buildNewBlockCode</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>cmdLine</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a887f8026b03db602d649b92d797ff3df" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>CPP</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_simulator_1a745631ed5b30e23076709ba882b91881" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>createSimulator</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_simulator_1a6b7c7285393126a1e59795b920b09bb0" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>deleteSimulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ab170e70fbb2b52ad3c4d8316a9b45b5a" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>getCmdLine</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_simulator_1aace5292de09fc0e755891b97feefd5ef" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>getSimulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>getType</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>MELDINTERPRET</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>MELDPROCESS</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_simulator_1a6866a49c9f10e20f1a0a2c093c3bce35" prot="public" virt="virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>printInfo</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1af109bff0fd7a7daf214dd8e9a9ef6b4c" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>scheduler</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a999259e121cb046688bd4b394804d2c5" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>setType</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>simulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>Simulator</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>SmartBlocksSimulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" prot="public" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>Type</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ad34fdbacc1ac2c668e36a3ed8dcfb88e" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>type</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>xmlDoc</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" prot="protected" virt="non-virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>xmlWorldNode</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" prot="protected" virt="virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>~Simulator</name></member>
+      <member refid="class_smart_blocks_1_1_smart_blocks_simulator_1aa019c2b914524efcb11b5a9f2d6d4a94" prot="protected" virt="virtual"><scope>SmartBlocks::SmartBlocksSimulator</scope><name>~SmartBlocksSimulator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

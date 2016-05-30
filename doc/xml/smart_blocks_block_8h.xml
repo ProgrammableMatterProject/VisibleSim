@@ -1,0 +1,500 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="smart_blocks_block_8h" kind="file" language="C++">
+    <compoundname>smartBlocksBlock.h</compoundname>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includes refid="smart_blocks_block_code_8h" local="yes">smartBlocksBlockCode.h</includes>
+    <includes refid="smart_blocks_gl_block_8h" local="yes">smartBlocksGlBlock.h</includes>
+    <includes refid="smart_blocks_capabilities_8h" local="yes">smartBlocksCapabilities.h</includes>
+    <includes refid="network_8h" local="yes">network.h</includes>
+    <includedby refid="smart_blocks_block_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.cpp</includedby>
+    <includedby refid="smart_blocks_block_code_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.h</includedby>
+    <includedby refid="smart_blocks_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.h</includedby>
+    <includedby refid="smart_blocks_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</includedby>
+    <includedby refid="smart_blocks_simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h</includedby>
+    <includedby refid="smart_blocks_world_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.cpp</includedby>
+    <incdepgraph>
+      <node id="18562">
+        <label>list</label>
+      </node>
+      <node id="18588">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="18565" relation="include">
+        </childnode>
+        <childnode refid="18589" relation="include">
+        </childnode>
+        <childnode refid="18574" relation="include">
+        </childnode>
+        <childnode refid="18579" relation="include">
+        </childnode>
+        <childnode refid="18563" relation="include">
+        </childnode>
+        <childnode refid="18590" relation="include">
+        </childnode>
+      </node>
+      <node id="18574">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="18570" relation="include">
+        </childnode>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18569" relation="include">
+        </childnode>
+        <childnode refid="18575" relation="include">
+        </childnode>
+        <childnode refid="18576" relation="include">
+        </childnode>
+      </node>
+      <node id="18565">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="18566" relation="include">
+        </childnode>
+        <childnode refid="18567" relation="include">
+        </childnode>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18569" relation="include">
+        </childnode>
+        <childnode refid="18570" relation="include">
+        </childnode>
+        <childnode refid="18571" relation="include">
+        </childnode>
+        <childnode refid="18572" relation="include">
+        </childnode>
+        <childnode refid="18573" relation="include">
+        </childnode>
+        <childnode refid="18574" relation="include">
+        </childnode>
+        <childnode refid="18579" relation="include">
+        </childnode>
+      </node>
+      <node id="18576">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18569" relation="include">
+        </childnode>
+        <childnode refid="18577" relation="include">
+        </childnode>
+        <childnode refid="18578" relation="include">
+        </childnode>
+      </node>
+      <node id="18557">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.h</label>
+        <link refid="smartBlocksBlock.h"/>
+        <childnode refid="18558" relation="include">
+        </childnode>
+        <childnode refid="18585" relation="include">
+        </childnode>
+        <childnode refid="18586" relation="include">
+        </childnode>
+        <childnode refid="18597" relation="include">
+        </childnode>
+        <childnode refid="18600" relation="include">
+        </childnode>
+      </node>
+      <node id="18590">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="18591" relation="include">
+        </childnode>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18569" relation="include">
+        </childnode>
+        <childnode refid="18578" relation="include">
+        </childnode>
+        <childnode refid="18563" relation="include">
+        </childnode>
+        <childnode refid="18592" relation="include">
+        </childnode>
+        <childnode refid="18580" relation="include">
+        </childnode>
+      </node>
+      <node id="18559">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="18594">
+        <label>assert.h</label>
+      </node>
+      <node id="18584">
+        <label>stdint.h</label>
+      </node>
+      <node id="18567">
+        <label>stdlib.h</label>
+      </node>
+      <node id="18558">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="18559" relation="include">
+        </childnode>
+        <childnode refid="18560" relation="include">
+        </childnode>
+        <childnode refid="18561" relation="include">
+        </childnode>
+        <childnode refid="18562" relation="include">
+        </childnode>
+        <childnode refid="18563" relation="include">
+        </childnode>
+        <childnode refid="18581" relation="include">
+        </childnode>
+        <childnode refid="18583" relation="include">
+        </childnode>
+      </node>
+      <node id="18577">
+        <label>cmath</label>
+      </node>
+      <node id="18597">
+        <label>smartBlocksCapabilities.h</label>
+        <link refid="smart_blocks_capabilities_8h"/>
+        <childnode refid="18591" relation="include">
+        </childnode>
+        <childnode refid="18598" relation="include">
+        </childnode>
+        <childnode refid="18576" relation="include">
+        </childnode>
+        <childnode refid="18595" relation="include">
+        </childnode>
+        <childnode refid="18564" relation="include">
+        </childnode>
+        <childnode refid="18599" relation="include">
+        </childnode>
+      </node>
+      <node id="18564">
+        <label>string</label>
+      </node>
+      <node id="18570">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="18593">
+        <label>map</label>
+      </node>
+      <node id="18578">
+        <label>memory.h</label>
+      </node>
+      <node id="18563">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="18564" relation="include">
+        </childnode>
+        <childnode refid="18565" relation="include">
+        </childnode>
+        <childnode refid="18576" relation="include">
+        </childnode>
+        <childnode refid="18580" relation="include">
+        </childnode>
+      </node>
+      <node id="18569">
+        <label>fstream</label>
+      </node>
+      <node id="18581">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="18558" relation="include">
+        </childnode>
+        <childnode refid="18582" relation="include">
+        </childnode>
+      </node>
+      <node id="18573">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="18579">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="18575" relation="include">
+        </childnode>
+        <childnode refid="18576" relation="include">
+        </childnode>
+        <childnode refid="18574" relation="include">
+        </childnode>
+      </node>
+      <node id="18571">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="18599">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="18589">
+        <label>pthread.h</label>
+      </node>
+      <node id="18596">
+        <label>string.h</label>
+      </node>
+      <node id="18591">
+        <label>vector</label>
+      </node>
+      <node id="18585">
+        <label>smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="18581" relation="include">
+        </childnode>
+        <childnode refid="18557" relation="include">
+        </childnode>
+      </node>
+      <node id="18600">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="18601" relation="include">
+        </childnode>
+        <childnode refid="18596" relation="include">
+        </childnode>
+        <childnode refid="18559" relation="include">
+        </childnode>
+        <childnode refid="18558" relation="include">
+        </childnode>
+      </node>
+      <node id="18575">
+        <label>math.h</label>
+      </node>
+      <node id="18580">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18569" relation="include">
+        </childnode>
+        <childnode refid="18577" relation="include">
+        </childnode>
+        <childnode refid="18578" relation="include">
+        </childnode>
+        <childnode refid="18565" relation="include">
+        </childnode>
+      </node>
+      <node id="18568">
+        <label>iostream</label>
+      </node>
+      <node id="18601">
+        <label>deque</label>
+      </node>
+      <node id="18598">
+        <label>climits</label>
+      </node>
+      <node id="18561">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="18595">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="18569" relation="include">
+        </childnode>
+      </node>
+      <node id="18560">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="18592">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18593" relation="include">
+        </childnode>
+        <childnode refid="18591" relation="include">
+        </childnode>
+        <childnode refid="18561" relation="include">
+        </childnode>
+        <childnode refid="18594" relation="include">
+        </childnode>
+        <childnode refid="18558" relation="include">
+        </childnode>
+        <childnode refid="18563" relation="include">
+        </childnode>
+        <childnode refid="18595" relation="include">
+        </childnode>
+      </node>
+      <node id="18572">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="18566">
+        <label>stdio.h</label>
+      </node>
+      <node id="18587">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="18588" relation="include">
+        </childnode>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18569" relation="include">
+        </childnode>
+        <childnode refid="18564" relation="include">
+        </childnode>
+        <childnode refid="18591" relation="include">
+        </childnode>
+        <childnode refid="18577" relation="include">
+        </childnode>
+        <childnode refid="18567" relation="include">
+        </childnode>
+        <childnode refid="18596" relation="include">
+        </childnode>
+      </node>
+      <node id="18583">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="18558" relation="include">
+        </childnode>
+        <childnode refid="18584" relation="include">
+        </childnode>
+        <childnode refid="18568" relation="include">
+        </childnode>
+        <childnode refid="18560" relation="include">
+        </childnode>
+        <childnode refid="18562" relation="include">
+        </childnode>
+      </node>
+      <node id="18586">
+        <label>smartBlocksGlBlock.h</label>
+        <link refid="smart_blocks_gl_block_8h"/>
+        <childnode refid="18564" relation="include">
+        </childnode>
+        <childnode refid="18587" relation="include">
+        </childnode>
+        <childnode refid="18563" relation="include">
+        </childnode>
+      </node>
+      <node id="18582">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="18602">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.h</label>
+        <link refid="smartBlocksBlock.h"/>
+        <childnode refid="18603" relation="include">
+        </childnode>
+        <childnode refid="18604" relation="include">
+        </childnode>
+        <childnode refid="18608" relation="include">
+        </childnode>
+        <childnode refid="18612" relation="include">
+        </childnode>
+        <childnode refid="18606" relation="include">
+        </childnode>
+        <childnode refid="18611" relation="include">
+        </childnode>
+      </node>
+      <node id="18611">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.cpp</label>
+        <link refid="smart_blocks_world_8cpp"/>
+      </node>
+      <node id="18612">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smart_blocks_events_8h"/>
+        <childnode refid="18609" relation="include">
+        </childnode>
+      </node>
+      <node id="18607">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp</label>
+        <link refid="smart_blocks_simulator_8cpp"/>
+      </node>
+      <node id="18604">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="18602" relation="include">
+        </childnode>
+        <childnode refid="18605" relation="include">
+        </childnode>
+        <childnode refid="18606" relation="include">
+        </childnode>
+      </node>
+      <node id="18610">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp</label>
+        <link refid="smart_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="18606">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h</label>
+        <link refid="smart_blocks_simulator_8h"/>
+        <childnode refid="18607" relation="include">
+        </childnode>
+      </node>
+      <node id="18603">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.cpp</label>
+        <link refid="smart_blocks_block_8cpp"/>
+      </node>
+      <node id="18608">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.h</label>
+        <link refid="smart_blocks_world_8h"/>
+        <childnode refid="18603" relation="include">
+        </childnode>
+        <childnode refid="18609" relation="include">
+        </childnode>
+        <childnode refid="18610" relation="include">
+        </childnode>
+        <childnode refid="18606" relation="include">
+        </childnode>
+        <childnode refid="18611" relation="include">
+        </childnode>
+      </node>
+      <node id="18605">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.cpp</label>
+        <link refid="smart_blocks_block_code_8cpp"/>
+      </node>
+      <node id="18609">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</label>
+        <link refid="smart_blocks_events_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_smart_blocks_1_1_smart_blocks_block" prot="public">SmartBlocks::SmartBlocksBlock</innerclass>
+    <innernamespace refid="namespace_smart_blocks">SmartBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>smartBlocksBlock.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>avril<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>ben</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SMARTBLOCKSBLOCK_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SMARTBLOCKSBLOCK_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="smart_blocks_block_code_8h" kindref="compound">smartBlocksBlockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="smart_blocks_gl_block_8h" kindref="compound">smartBlocksGlBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="smart_blocks_capabilities_8h" kindref="compound">smartBlocksCapabilities.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="network_8h" kindref="compound">network.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_smart_blocks" kindref="compound">SmartBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="18" refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a03687aa721f59fc1df91bd59547de8bb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102" kindref="member">NeighborDirection</ref><sp/>{<sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a07b91e5a57f8312abe11c609b97ac106" kindref="member">North</ref>=0,<sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a7d95f8a1c10c09bda305dd0401f10612" kindref="member">East</ref>,<sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102ad9f30002f5431b994525cf02366ac5cc" kindref="member">South</ref>,<sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a03687aa721f59fc1df91bd59547de8bb" kindref="member">West</ref>};</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="class_smart_blocks_1_1_smart_blocks_block" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*tabInterfaces[4];</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_gl_block" kindref="compound">SmartBlocksGlBlock</ref><sp/>*ptrGlBlock;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="26" refid="class_smart_blocks_1_1_smart_blocks_block_1a1e681981398ea735bd01f8abe343eea6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a1e681981398ea735bd01f8abe343eea6" kindref="member">color</ref>;<sp/></highlight><highlight class="comment">//<sp/>color<sp/>of<sp/>the<sp/>block</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="class_smart_blocks_1_1_smart_blocks_block_1a8a466beb1447531d03f3ae43558266d9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a8a466beb1447531d03f3ae43558266d9" kindref="member">position</ref>;<sp/></highlight><highlight class="comment">//<sp/>position<sp/>of<sp/>the<sp/>block;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="class_smart_blocks_1_1_smart_blocks_block_1a71fab2368b08d2fbba9e958350c047f3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a71fab2368b08d2fbba9e958350c047f3" kindref="member">wellPlaced</ref>,<ref refid="class_smart_blocks_1_1_smart_blocks_block_1a2dd0acbbfbd86eff71fc360dd458e4cb" kindref="member">_isBorder</ref>,<ref refid="class_smart_blocks_1_1_smart_blocks_block_1aa0b95e88a10c541561d9749cabb515ad" kindref="member">_isTrain</ref>,<ref refid="class_smart_blocks_1_1_smart_blocks_block_1a6a5ab5f5fde4c964a02bdd1a5706051c" kindref="member">_isSingle</ref>;</highlight></codeline>
+<codeline lineno="29" refid="class_smart_blocks_1_1_smart_blocks_block_1a843fe9295593018eed03b53ed7a0e97a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref><sp/>*(*buildNewBlockCode)(<ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref>*);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1aab5d1ad0927c368a788c64447ffd2dc8" kindref="member">SmartBlocksBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId,<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref><sp/>*(*SmartBlocksBlockCodeBuildingFunction)(<ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref><sp/>*));</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a8e13ca3bce8517b87f58d4350ead1c83" kindref="member">~SmartBlocksBlock</ref>();</highlight></codeline>
+<codeline lineno="33" refid="class_smart_blocks_1_1_smart_blocks_block_1a05e59c0441520b1df874fa041fc83d24" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_gl_block" kindref="compound">SmartBlocksGlBlock</ref>*<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a05e59c0441520b1df874fa041fc83d24" kindref="member">getGlBlock</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ptrGlBlock;<sp/>};</highlight></codeline>
+<codeline lineno="34" refid="class_smart_blocks_1_1_smart_blocks_block_1a43d12889f9f9ab611c489a43557b277c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a43d12889f9f9ab611c489a43557b277c" kindref="member">setGlBlock</ref>(<ref refid="class_smart_blocks_1_1_smart_blocks_gl_block" kindref="compound">SmartBlocksGlBlock</ref>*ptr)<sp/>{<sp/>ptrGlBlock=ptr;};</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a7488aa21c2b9c495896104514523fea0" kindref="member">setColor</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a7488aa21c2b9c495896104514523fea0" kindref="member">setColor</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1ae4214bedbbde0d3e9115fa1645e1b6bd" kindref="member">setPosition</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;p);</highlight></codeline>
+<codeline lineno="38" refid="class_smart_blocks_1_1_smart_blocks_block_1a0373fc2b5cc83151e3daf174e3e75fa7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a0373fc2b5cc83151e3daf174e3e75fa7" kindref="member">setDisplayedValue</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/>{<sp/>ptrGlBlock-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_gl_block_1ad1795806c1eff84cf65424e7171d7408" kindref="member">setDisplayedValue</ref>(n);<sp/>};</highlight></codeline>
+<codeline lineno="39" refid="class_smart_blocks_1_1_smart_blocks_block_1a1f3bb07ae96f57fb74f70d61dd2eca11" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_smart_blocks_1_1_smart_blocks_block_1a1f3bb07ae96f57fb74f70d61dd2eca11" kindref="member">getInterface</ref>(<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102" kindref="member">NeighborDirection</ref><sp/>d)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tabInterfaces[d];<sp/>}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_smart_blocks_1_1_smart_blocks_block_1ab2ed1389fadb088b6593dfd5f4669205" kindref="member">getP2PNetworkInterfaceByRelPos</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref><sp/>&amp;pos);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_smart_blocks_1_1_smart_blocks_block_1a81c5ea9084802a4ee407cf1b2ef6779f" kindref="member">getP2PNetworkInterfaceByDestBlockId</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102" kindref="member">NeighborDirection</ref><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a7458639c40a375b6e1e08933f8f95973" kindref="member">getDirection</ref>(<sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref>*);</highlight></codeline>
+<codeline lineno="44" refid="class_smart_blocks_1_1_smart_blocks_block_1aeb38147ca4b103ad88a41f689dfacb60" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1aeb38147ca4b103ad88a41f689dfacb60" kindref="member">getGridPosition</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;x,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;y)<sp/>{<sp/>x<sp/>=<sp/>int(position[0]);<sp/>y=int(position[1]);<sp/>};</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>SMARTBLOCKSBLOCK_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.h"/>
+  </compounddef>
+</doxygen>

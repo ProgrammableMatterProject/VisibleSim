@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_neighbor_direction" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::NeighborDirection</compoundname>
+    <includes refid="catoms2_d_direction_8h" local="no">catoms2DDirection.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5d" prot="public" static="no">
+        <name>Direction</name>
+        <enumvalue id="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5dac87d6e06067cee7b1d73d3f8b19894fb" prot="public">
+          <name>Right</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5dab7f3fcd9853ab1844dfaa23299205418" prot="public">
+          <name>TopRight</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5da4366dca0561752af5474d7495d9321d4" prot="public">
+          <name>TopLeft</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5dad6aea09af0465198fcf3d44e084073a8" prot="public">
+          <name>Left</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5daf827a3c5518d74534f69db83fa755fb0" prot="public">
+          <name>BottomLeft</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5da3f84ad061916b66e2f768b421ea69122" prot="public">
+          <name>BottomRight</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.h" line="13" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.h" bodystart="13" bodyend="13"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_neighbor_direction_1a6937d24dc443caaa163106747dd06e06" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Catoms2D::NeighborDirection::getOpposite</definition>
+        <argsstring>(int d)</argsstring>
+        <name>getOpposite</name>
+        <param>
+          <type>int</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.h" line="14" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.cpp" bodystart="36" bodyend="61"/>
+        <references refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" compoundref="trace_8h" startline="18">ERRPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_neighbor_direction_1ac5d55caa90f13717c24233c5b1bf6229" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>string Catoms2D::NeighborDirection::getString</definition>
+        <argsstring>(int d)</argsstring>
+        <name>getString</name>
+        <param>
+          <type>int</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.h" line="15" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.cpp" bodystart="9" bodyend="34"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.h" line="11" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DDirection.h" bodystart="11" bodyend="16"/>
+    <listofallmembers>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5daf827a3c5518d74534f69db83fa755fb0" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>BottomLeft</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5da3f84ad061916b66e2f768b421ea69122" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>BottomRight</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5d" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>Direction</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1a6937d24dc443caaa163106747dd06e06" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>getOpposite</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1ac5d55caa90f13717c24233c5b1bf6229" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>getString</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5dad6aea09af0465198fcf3d44e084073a8" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>Left</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5dac87d6e06067cee7b1d73d3f8b19894fb" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>Right</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5da4366dca0561752af5474d7495d9321d4" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>TopLeft</name></member>
+      <member refid="class_catoms2_d_1_1_neighbor_direction_1aecfd4eeeee9151d232269a991f99eb5dab7f3fcd9853ab1844dfaa23299205418" prot="public" virt="non-virtual"><scope>Catoms2D::NeighborDirection</scope><name>TopRight</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

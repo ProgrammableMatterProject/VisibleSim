@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_multi_cores_1_1_multi_cores_block" kind="class" language="C++" prot="public">
+    <compoundname>MultiCores::MultiCoresBlock</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_building_block" prot="public" virt="non-virtual">BaseSimulator::BuildingBlock</basecompoundref>
+    <includes refid="multi_cores_block_8h" local="no">multiCoresBlock.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_multi_cores_1_1_multi_cores_block_1a82418d1404ecda57211b05d8889d260c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref> *(*</type>
+        <definition>MultiCoresBlockCode*(* MultiCores::MultiCoresBlock::buildNewBlockCode) (MultiCoresBlock *)</definition>
+        <argsstring>)(MultiCoresBlock *)</argsstring>
+        <name>buildNewBlockCode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.h" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.h" bodystart="20" bodyend="-1"/>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_block_1ab62b9094973f8a0b3721ff9dd43c95c5" compoundref="multi_cores_block_8cpp" startline="15" endline="19">MultiCoresBlock</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_block_1ab62b9094973f8a0b3721ff9dd43c95c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MultiCores::MultiCoresBlock::MultiCoresBlock</definition>
+        <argsstring>(int bId, MultiCoresBlockCode *(*multiCoreBlockCodeBuildingFunction)(MultiCoresBlock *))</argsstring>
+        <name>MultiCoresBlock</name>
+        <param>
+          <type>int</type>
+          <declname>bId</declname>
+        </param>
+        <param>
+          <type><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref> *(*)(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref> *)</type>
+          <declname>multiCoreBlockCodeBuildingFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.cpp" bodystart="15" bodyend="19"/>
+        <references refid="class_multi_cores_1_1_multi_cores_block_1a82418d1404ecda57211b05d8889d260c" compoundref="multi_cores_block_8h" startline="20">buildNewBlockCode</references>
+        <references refid="class_base_simulator_1_1_building_block_1aa42bdf9c46446055c12a4eeee9134e99" compoundref="building_block_8h" startline="62">BaseSimulator::BuildingBlock::blockCode</references>
+      </memberdef>
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_block_1ab5a655df69152876b33d728c523ce653" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MultiCores::MultiCoresBlock::~MultiCoresBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~MultiCoresBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.cpp" bodystart="23" bodyend="25"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2094">
+        <label>MultiCores::MultiCoresBlock</label>
+        <link refid="class_multi_cores_1_1_multi_cores_block"/>
+        <childnode refid="2095" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2095">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2100">
+        <label>MultiCores::MultiCoresBlockCode</label>
+        <link refid="class_multi_cores_1_1_multi_cores_block_code"/>
+        <childnode refid="2099" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2096">
+        <label>MultiCores::MultiCoresBlock</label>
+        <link refid="class_multi_cores_1_1_multi_cores_block"/>
+        <childnode refid="2097" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2100" relation="usage">
+          <edgelabel>buildNewBlockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2099">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2097" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2097">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2098" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2099" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2098">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2097" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.h" line="18" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.h" bodystart="18" bodyend="24"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_building_block_1a42358d85b5fcfa533052024e3a539ffb" prot="public" virt="virtual"><scope>MultiCores::MultiCoresBlock</scope><name>addNeighbor</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>addP2PNetworkInterfaceAndConnectTo</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad2e1ae70e54db639cd601cc9646f6353" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>addP2PNetworkInterfaceAndConnectTo</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea9129df5068a873b9ca8108a6e56b8595" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>ALIVE</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1aa42bdf9c46446055c12a4eeee9134e99" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>blockCode</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>blockId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1aba95f6f397d531a01b27f2b3fa7de652" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>BuildingBlock</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_block_1a82418d1404ecda57211b05d8889d260c" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>buildNewBlockCode</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a2e6709a10ba46b80ff51de3fee9c7f7c" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>clock</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea0e5a41f4ed4c69ee90f7beff5f2cea97" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>COMPUTING</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a630f27700c085183885aa9ebcdfcb0a2" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>generator</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a8f0e6775f89826a6c6ac6d1d5425af43" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getNextP2PInterfaceLocalId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a24792d57532b46ad3af4b02c6a88360b" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getNextRandomNumber</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1afa1ec97c549b373435d5b4243fe3b06b" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getP2PNetworkInterfaceByBlockRef</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a241c4094748d9ef309ba802415652f71" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getP2PNetworkInterfaceByDestBlockId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ae9cb6194c20eb804d6658341556f82d9" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getP2PNetworkInterfaceList</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a2e37ca9ab2044b9ab7af54b1c0312451" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getSchedulerTimeForLocalTime</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a89c9a84ee50c884112db1038588ffa89" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getState</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a6fb1405bc2d1bda4056591a22ecd311d" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>getTime</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad171d80d53d48f4ab9f3012617be9f6c" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>localEventsList</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ae7cbda10b8cc1c6470041d7e687df82b" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>lock</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_block_1ab62b9094973f8a0b3721ff9dd43c95c5" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>MultiCoresBlock</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad069e72cbda1ac6e2d2a08f5106f71f4" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>mutex_state</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a16f1f2f2c763ecbc6d63b34fafb395d7" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>nextId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5946de890047149f5efd92c85593fd46" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>P2PNetworkInterfaceList</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a4c2ba679c8c0c97999e56ba01ab586" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>P2PNetworkInterfaceNextLocalId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1abbb0537e4aae4eba618526dbbb8575a8" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>processLocalEvent</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea2765c4a64c5620f077efa40a76ab8df9" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>REMOVED</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a155ceee57679e25f169353b06a5c56d9" prot="public" virt="virtual"><scope>MultiCores::MultiCoresBlock</scope><name>removeNeighbor</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>scheduleLocalEvent</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1afa7744e3eb61b9fc32444e83ae091a4d" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>setState</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7e" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>State</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a0a721b63604db68e293ad926289e54e9" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>state</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ac5762fea70c48102d0ee5e2e51caf367" prot="public" virt="virtual"><scope>MultiCores::MultiCoresBlock</scope><name>stop</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7eac496c390647cb8297abb56c8c9d79c8e" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>STOPPED</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ab34e003d3f279e0c5f4e1f2f59a19e67" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>unlock</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a9c412cb16054c2d87aaba8f4c9b16ff2" prot="public" virt="virtual"><scope>MultiCores::MultiCoresBlock</scope><name>updateGlData</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad967e578e5caf99add64a73522eb9843" prot="public" virt="virtual"><scope>MultiCores::MultiCoresBlock</scope><name>~BuildingBlock</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_block_1ab5a655df69152876b33d728c523ce653" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresBlock</scope><name>~MultiCoresBlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

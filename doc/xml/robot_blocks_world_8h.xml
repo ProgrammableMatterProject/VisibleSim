@@ -1,0 +1,551 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="robot_blocks_world_8h" kind="file" language="C++">
+    <compoundname>robotBlocksWorld.h</compoundname>
+    <includes refid="opengl_viewer_8h" local="yes">openglViewer.h</includes>
+    <includes refid="world_8h" local="yes">world.h</includes>
+    <includes refid="vecteur_8h" local="yes">vecteur.h</includes>
+    <includes refid="robot_blocks_block_8h" local="yes">robotBlocksBlock.h</includes>
+    <includes refid="robot_blocks_capabilities_8h" local="yes">robotBlocksCapabilities.h</includes>
+    <includes refid="obj_loader_8h" local="yes">objLoader.h</includes>
+    <includes local="no">boost/asio.hpp</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="robot_blocks_block_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</includedby>
+    <includedby refid="robot_blocks_simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</includedby>
+    <includedby refid="robot_blocks_events_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</includedby>
+    <includedby refid="robot_blocks_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</includedby>
+    <includedby refid="robot_blocks_world_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</includedby>
+    <incdepgraph>
+      <node id="17965">
+        <label>list</label>
+      </node>
+      <node id="17936">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="17937" relation="include">
+        </childnode>
+        <childnode refid="17952" relation="include">
+        </childnode>
+        <childnode refid="17946" relation="include">
+        </childnode>
+        <childnode refid="17951" relation="include">
+        </childnode>
+        <childnode refid="17953" relation="include">
+        </childnode>
+        <childnode refid="17956" relation="include">
+        </childnode>
+      </node>
+      <node id="17946">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="17942" relation="include">
+        </childnode>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17941" relation="include">
+        </childnode>
+        <childnode refid="17947" relation="include">
+        </childnode>
+        <childnode refid="17948" relation="include">
+        </childnode>
+      </node>
+      <node id="17937">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="17938" relation="include">
+        </childnode>
+        <childnode refid="17939" relation="include">
+        </childnode>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17941" relation="include">
+        </childnode>
+        <childnode refid="17942" relation="include">
+        </childnode>
+        <childnode refid="17943" relation="include">
+        </childnode>
+        <childnode refid="17944" relation="include">
+        </childnode>
+        <childnode refid="17945" relation="include">
+        </childnode>
+        <childnode refid="17946" relation="include">
+        </childnode>
+        <childnode refid="17951" relation="include">
+        </childnode>
+      </node>
+      <node id="17948">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17941" relation="include">
+        </childnode>
+        <childnode refid="17949" relation="include">
+        </childnode>
+        <childnode refid="17950" relation="include">
+        </childnode>
+      </node>
+      <node id="17956">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="17957" relation="include">
+        </childnode>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17941" relation="include">
+        </childnode>
+        <childnode refid="17950" relation="include">
+        </childnode>
+        <childnode refid="17953" relation="include">
+        </childnode>
+        <childnode refid="17958" relation="include">
+        </childnode>
+        <childnode refid="17955" relation="include">
+        </childnode>
+      </node>
+      <node id="17963">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="17961">
+        <label>assert.h</label>
+      </node>
+      <node id="17969">
+        <label>stdint.h</label>
+      </node>
+      <node id="17939">
+        <label>stdlib.h</label>
+      </node>
+      <node id="17962">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="17963" relation="include">
+        </childnode>
+        <childnode refid="17964" relation="include">
+        </childnode>
+        <childnode refid="17960" relation="include">
+        </childnode>
+        <childnode refid="17965" relation="include">
+        </childnode>
+        <childnode refid="17953" relation="include">
+        </childnode>
+        <childnode refid="17966" relation="include">
+        </childnode>
+        <childnode refid="17968" relation="include">
+        </childnode>
+      </node>
+      <node id="17973">
+        <label>robotBlocksGlBlock.h</label>
+        <link refid="robot_blocks_gl_block_8h"/>
+        <childnode refid="17954" relation="include">
+        </childnode>
+        <childnode refid="17974" relation="include">
+        </childnode>
+        <childnode refid="17953" relation="include">
+        </childnode>
+        <childnode refid="17976" relation="include">
+        </childnode>
+      </node>
+      <node id="17949">
+        <label>cmath</label>
+      </node>
+      <node id="17980">
+        <label>stdexcept</label>
+      </node>
+      <node id="17976">
+        <label>robotBlocksCapabilities.h</label>
+        <link refid="robot_blocks_capabilities_8h"/>
+        <childnode refid="17957" relation="include">
+        </childnode>
+        <childnode refid="17977" relation="include">
+        </childnode>
+        <childnode refid="17948" relation="include">
+        </childnode>
+        <childnode refid="17970" relation="include">
+        </childnode>
+        <childnode refid="17954" relation="include">
+        </childnode>
+        <childnode refid="17978" relation="include">
+        </childnode>
+      </node>
+      <node id="17954">
+        <label>string</label>
+      </node>
+      <node id="17942">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="17935">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h</label>
+        <link refid="robotBlocksWorld.h"/>
+        <childnode refid="17936" relation="include">
+        </childnode>
+        <childnode refid="17958" relation="include">
+        </childnode>
+        <childnode refid="17948" relation="include">
+        </childnode>
+        <childnode refid="17971" relation="include">
+        </childnode>
+        <childnode refid="17976" relation="include">
+        </childnode>
+        <childnode refid="17974" relation="include">
+        </childnode>
+        <childnode refid="17979" relation="include">
+        </childnode>
+        <childnode refid="17970" relation="include">
+        </childnode>
+        <childnode refid="17957" relation="include">
+        </childnode>
+      </node>
+      <node id="17959">
+        <label>map</label>
+      </node>
+      <node id="17953">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="17954" relation="include">
+        </childnode>
+        <childnode refid="17937" relation="include">
+        </childnode>
+        <childnode refid="17948" relation="include">
+        </childnode>
+        <childnode refid="17955" relation="include">
+        </childnode>
+      </node>
+      <node id="17950">
+        <label>memory.h</label>
+      </node>
+      <node id="17941">
+        <label>fstream</label>
+      </node>
+      <node id="17966">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="17962" relation="include">
+        </childnode>
+        <childnode refid="17967" relation="include">
+        </childnode>
+      </node>
+      <node id="17945">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="17951">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="17947" relation="include">
+        </childnode>
+        <childnode refid="17948" relation="include">
+        </childnode>
+        <childnode refid="17946" relation="include">
+        </childnode>
+      </node>
+      <node id="17943">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="17978">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="17979">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="17952">
+        <label>pthread.h</label>
+      </node>
+      <node id="17975">
+        <label>string.h</label>
+      </node>
+      <node id="17957">
+        <label>vector</label>
+      </node>
+      <node id="17972">
+        <label>robotBlocksBlockCode.h</label>
+        <link refid="robot_blocks_block_code_8h"/>
+        <childnode refid="17966" relation="include">
+        </childnode>
+        <childnode refid="17971" relation="include">
+        </childnode>
+      </node>
+      <node id="17947">
+        <label>math.h</label>
+      </node>
+      <node id="17955">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17941" relation="include">
+        </childnode>
+        <childnode refid="17949" relation="include">
+        </childnode>
+        <childnode refid="17950" relation="include">
+        </childnode>
+        <childnode refid="17937" relation="include">
+        </childnode>
+      </node>
+      <node id="17971">
+        <label>robotBlocksBlock.h</label>
+        <link refid="robot_blocks_block_8h"/>
+        <childnode refid="17962" relation="include">
+        </childnode>
+        <childnode refid="17972" relation="include">
+        </childnode>
+        <childnode refid="17973" relation="include">
+        </childnode>
+        <childnode refid="17976" relation="include">
+        </childnode>
+        <childnode refid="17979" relation="include">
+        </childnode>
+        <childnode refid="17980" relation="include">
+        </childnode>
+      </node>
+      <node id="17940">
+        <label>iostream</label>
+      </node>
+      <node id="17977">
+        <label>climits</label>
+      </node>
+      <node id="17960">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="17970">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="17941" relation="include">
+        </childnode>
+      </node>
+      <node id="17964">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="17958">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17959" relation="include">
+        </childnode>
+        <childnode refid="17957" relation="include">
+        </childnode>
+        <childnode refid="17960" relation="include">
+        </childnode>
+        <childnode refid="17961" relation="include">
+        </childnode>
+        <childnode refid="17962" relation="include">
+        </childnode>
+        <childnode refid="17953" relation="include">
+        </childnode>
+        <childnode refid="17970" relation="include">
+        </childnode>
+      </node>
+      <node id="17944">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="17938">
+        <label>stdio.h</label>
+      </node>
+      <node id="17974">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="17936" relation="include">
+        </childnode>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17941" relation="include">
+        </childnode>
+        <childnode refid="17954" relation="include">
+        </childnode>
+        <childnode refid="17957" relation="include">
+        </childnode>
+        <childnode refid="17949" relation="include">
+        </childnode>
+        <childnode refid="17939" relation="include">
+        </childnode>
+        <childnode refid="17975" relation="include">
+        </childnode>
+      </node>
+      <node id="17968">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="17962" relation="include">
+        </childnode>
+        <childnode refid="17969" relation="include">
+        </childnode>
+        <childnode refid="17940" relation="include">
+        </childnode>
+        <childnode refid="17964" relation="include">
+        </childnode>
+        <childnode refid="17965" relation="include">
+        </childnode>
+      </node>
+      <node id="17967">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="17985">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="17983">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="17982" relation="include">
+        </childnode>
+        <childnode refid="17984" relation="include">
+        </childnode>
+        <childnode refid="17986" relation="include">
+        </childnode>
+        <childnode refid="17987" relation="include">
+        </childnode>
+      </node>
+      <node id="17988">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="17981">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h</label>
+        <link refid="robotBlocksWorld.h"/>
+        <childnode refid="17982" relation="include">
+        </childnode>
+        <childnode refid="17983" relation="include">
+        </childnode>
+        <childnode refid="17988" relation="include">
+        </childnode>
+        <childnode refid="17986" relation="include">
+        </childnode>
+        <childnode refid="17989" relation="include">
+        </childnode>
+      </node>
+      <node id="17984">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="17985" relation="include">
+        </childnode>
+      </node>
+      <node id="17982">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="17987">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="17989">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="17986">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_world" prot="public">RobotBlocks::RobotBlocksWorld</innerclass>
+    <innernamespace refid="namespace_robot_blocks">RobotBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>robotBlocksWorld.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ROBOTBLOCKSWORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROBOTBLOCKSWORLD_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="opengl_viewer_8h" kindref="compound">openglViewer.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="world_8h" kindref="compound">world.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vecteur_8h" kindref="compound">vecteur.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="robot_blocks_block_8h" kindref="compound">robotBlocksBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="robot_blocks_capabilities_8h" kindref="compound">robotBlocksCapabilities.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="obj_loader_8h" kindref="compound">objLoader.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/asio.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_robot_blocks" kindref="compound">RobotBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="class_robot_blocks_1_1_robot_blocks_world" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_robot_blocks_world" kindref="compound">RobotBlocksWorld</ref><sp/>:<sp/><ref refid="class_base_simulator_1_1_world" kindref="compound">BaseSimulator::World</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="25" refid="class_robot_blocks_1_1_robot_blocks_world_1a13e0080681af9b3c7b026c3e2900576f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a13e0080681af9b3c7b026c3e2900576f" kindref="member">gridSize</ref>[3];</highlight></codeline>
+<codeline lineno="26" refid="class_robot_blocks_1_1_robot_blocks_world_1a72f918a7d5c92a0dbd94430a2770ba71" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref><sp/>**<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a72f918a7d5c92a0dbd94430a2770ba71" kindref="member">gridPtrBlocks</ref>;</highlight></codeline>
+<codeline lineno="27" refid="class_robot_blocks_1_1_robot_blocks_world_1aa5eedd752e1b24e5e0ee8e09c695f189" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLfloat<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1aa5eedd752e1b24e5e0ee8e09c695f189" kindref="member">blockSize</ref>[3];</highlight></codeline>
+<codeline lineno="28" refid="class_robot_blocks_1_1_robot_blocks_world_1aab107e2b1c3e0769e43cb6436872f96c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1aab107e2b1c3e0769e43cb6436872f96c" kindref="member">camera</ref>;</highlight></codeline>
+<codeline lineno="29" refid="class_robot_blocks_1_1_robot_blocks_world_1abb27029733beee6ff16af4e6b42b82cf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref><sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a9a6fcd56a21f41b380be1723430c0dc4" kindref="member">objBlock</ref>,*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a4ce2001097ff431b2ed4917d2e460138" kindref="member">objBlockForPicking</ref>,*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1abb27029733beee6ff16af4e6b42b82cf" kindref="member">objRepere</ref>;</highlight></codeline>
+<codeline lineno="30" refid="class_robot_blocks_1_1_robot_blocks_world_1a5d4b2249d2ea35f64afc378605384e60" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a5d4b2249d2ea35f64afc378605384e60" kindref="member">idTextureWall</ref>;</highlight></codeline>
+<codeline lineno="31" refid="class_robot_blocks_1_1_robot_blocks_world_1afdcd44bcb81d64af536172c8738d4276" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLushort<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1afdcd44bcb81d64af536172c8738d4276" kindref="member">numSelectedFace</ref>;</highlight></codeline>
+<codeline lineno="32" refid="class_robot_blocks_1_1_robot_blocks_world_1ab497a3a47b722228f510c60295d9e341" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1ab497a3a47b722228f510c60295d9e341" kindref="member">numSelectedBlock</ref>;</highlight></codeline>
+<codeline lineno="33" refid="class_robot_blocks_1_1_robot_blocks_world_1ac9a201ba083d4d62b83ff6ae59f1935d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>GLint<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1ac9a201ba083d4d62b83ff6ae59f1935d" kindref="member">menuId</ref>;</highlight></codeline>
+<codeline lineno="34" refid="class_robot_blocks_1_1_robot_blocks_world_1a423b7c87ff438cc270fc71eb2bca1c43" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a423b7c87ff438cc270fc71eb2bca1c43" kindref="member">targetGrid</ref>;</highlight></codeline>
+<codeline lineno="35" refid="class_robot_blocks_1_1_robot_blocks_world_1a6a9cc727c07df89010a0b004715ad63e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_capabilities" kindref="compound">RobotBlocksCapabilities</ref><sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a6a9cc727c07df89010a0b004715ad63e" kindref="member">capabilities</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a43b61c929f575fb85492feddbc53750e" kindref="member">RobotBlocksWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a4a8276191b524ec7975e8e2f882b3bc6" kindref="member">~RobotBlocksWorld</ref>();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1ae00b93faa135ae3970a204c38a28adb0" kindref="member">linkBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1af82b71389c0544e5bf573be99651b470" kindref="member">createWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[]);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a56e2a2b952abbb689267d61c33a4471e" kindref="member">deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="44" refid="class_robot_blocks_1_1_robot_blocks_world_1a629154a7fd5584a2a25ba336163c1e86" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world" kindref="compound">RobotBlocksWorld</ref>*<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a629154a7fd5584a2a25ba336163c1e86" kindref="member">getWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(<ref refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" kindref="member">world</ref><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_robot_blocks_1_1_robot_blocks_world" kindref="compound">RobotBlocksWorld</ref>*)<ref refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" kindref="member">world</ref>);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_robot_blocks_1_1_robot_blocks_world_1aa32b346050bc7354c6504582346b424f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1aa32b346050bc7354c6504582346b424f" kindref="member">printInfo</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;I&apos;m<sp/>a<sp/>RobotBlocksWorld&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_robot_blocks_1_1_robot_blocks_world_1a3a1480d87a4d0af9978d4f2f7cc080cd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a3a1480d87a4d0af9978d4f2f7cc080cd" kindref="member">getBlockById</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*)World::getBlockById(bId));</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a15d447ddcf44637228234c0fc7494352" kindref="member">addBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>blockId,<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_block_code" kindref="compound">RobotBlocksBlockCode</ref><sp/>*(*robotBlockCodeBuildingFunction)(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*),<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;col,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>master=</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a99e0958d82e7021d2d27b8f78f78bfd6" kindref="member">deleteBlock</ref>(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref><sp/>*bb);</highlight></codeline>
+<codeline lineno="59" refid="class_robot_blocks_1_1_robot_blocks_world_1a02b70b57a72e5807bbb1671f3224e21f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a02b70b57a72e5807bbb1671f3224e21f" kindref="member">setBlocksSize</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*siz)<sp/>{<sp/>blockSize[0]<sp/>=<sp/>siz[0];<sp/>blockSize[1]<sp/>=<sp/>siz[1];<sp/>blockSize[2]<sp/>=<sp/>siz[2];<sp/>};</highlight></codeline>
+<codeline lineno="60" refid="class_robot_blocks_1_1_robot_blocks_world_1aa491ed6b025c88f27953804e4f4a7803" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1aa491ed6b025c88f27953804e4f4a7803" kindref="member">getBlocksSize</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1aa5eedd752e1b24e5e0ee8e09c695f189" kindref="member">blockSize</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="class_robot_blocks_1_1_robot_blocks_world_1aa3399ae333ac9f2f73e74eade39ac6b7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1aa3399ae333ac9f2f73e74eade39ac6b7" kindref="member">setGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz,<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref><sp/>*ptr)<sp/>{<sp/>gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr;<sp/>};</highlight></codeline>
+<codeline lineno="63" refid="class_robot_blocks_1_1_robot_blocks_world_1a7d0d5e980a0994b6799d60a805176bf9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a7d0d5e980a0994b6799d60a805176bf9" kindref="member">getGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]];<sp/>};</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_robot_blocks_1_1_robot_blocks_world_1a6c6ca904e81ef5aaec628872cd202caa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a6c6ca904e81ef5aaec628872cd202caa" kindref="member">getTargetGridPtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*gs)<sp/>{<sp/>memcpy(gs,gridSize,3*</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">));<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a423b7c87ff438cc270fc71eb2bca1c43" kindref="member">targetGrid</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="66" refid="class_robot_blocks_1_1_robot_blocks_world_1a3b5bd2d4452247e619cd96d65d79357c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a3b5bd2d4452247e619cd96d65d79357c" kindref="member">getTargetGrid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix];<sp/>};</highlight></codeline>
+<codeline lineno="67" refid="class_robot_blocks_1_1_robot_blocks_world_1adf2abf66582bd34e8fbfc968c10916df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1adf2abf66582bd34e8fbfc968c10916df" kindref="member">setTargetGrid</ref>(<ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/>value,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iz)<sp/>{<sp/>targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value;<sp/>};</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a695f81c402c80a73df4ae9bacf7b7551" kindref="member">initTargetGrid</ref>();</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="class_robot_blocks_1_1_robot_blocks_world_1a36f373d7052c858eacee349cc5be925e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a36f373d7052c858eacee349cc5be925e" kindref="member">setCapabilities</ref>(<ref refid="class_robot_blocks_1_1_robot_blocks_capabilities" kindref="compound">RobotBlocksCapabilities</ref><sp/>*capa)<sp/>{<sp/>capabilities=capa;<sp/>};</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a09781af8d101b21b6f108240672d7ccd" kindref="member">getPresenceMatrix</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;pos,<ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;pm);</highlight></codeline>
+<codeline lineno="72" refid="class_robot_blocks_1_1_robot_blocks_world_1a59bcc0b92755e8a589db164f146580a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_capabilities" kindref="compound">RobotBlocksCapabilities</ref>*<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59bcc0b92755e8a589db164f146580a5" kindref="member">getCapabilities</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a6a9cc727c07df89010a0b004715ad63e" kindref="member">capabilities</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a2ffbe2ea3384747c56c24dbfb688caa1" kindref="member">linkBlocks</ref>();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a6fbbe6ba264ba0ed0f3f93663d4febeb" kindref="member">loadTextures</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;str);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a5d3615b685f6a22859f923dee83a7089" kindref="member">glDraw</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a8d7e77974144473c230e9fb0c30bfe92" kindref="member">glDrawId</ref>();</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a9b60bd54d74b5a73b9906cbbb4ade773" kindref="member">glDrawIdByMaterial</ref>();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1ab130fbccabcc78107a61bbec5032896e" kindref="member">updateGlData</ref>(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*blc);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1ab130fbccabcc78107a61bbec5032896e" kindref="member">updateGlData</ref>(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*blc,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>prev,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>next);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1aca55d9879d45a9cd240c683f1d8c4ff5" kindref="member">createPopupMenu</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a259ab3243c5c5d8e6c0bca9200c0ec32" kindref="member">createHelpWindow</ref>();</highlight></codeline>
+<codeline lineno="82" refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" kindref="member">getCamera</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1aab107e2b1c3e0769e43cb6436872f96c" kindref="member">camera</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a88c2492a86f8170033d366dfcd3295e8" kindref="member">setSelectedFace</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a52f23707145ab10d07839c97950d53c9" kindref="member">menuChoice</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1aacde9a25471862e4bf80f0fb8f15b174" kindref="member">disconnectBlock</ref>(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref><sp/>*block);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1af628c74450302595cbbec15d35e862d5" kindref="member">connectBlock</ref>(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref><sp/>*block);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="namespace_robot_blocks_1a3862dfc3f29f6e8014d781e5c46ce357" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1af82b71389c0544e5bf573be99651b470" kindref="member">createWorld</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slx,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sly,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>slz,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[])<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1af82b71389c0544e5bf573be99651b470" kindref="member">RobotBlocksWorld::createWorld</ref>(slx,sly,slz,<sp/>argc,argv);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="namespace_robot_blocks_1ad507145e125c91a9ca70d3f0e7277929" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a56e2a2b952abbb689267d61c33a4471e" kindref="member">deleteWorld</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a56e2a2b952abbb689267d61c33a4471e" kindref="member">RobotBlocksWorld::deleteWorld</ref>();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="namespace_robot_blocks_1a6094e7149d1c4120c11cff9c67a5f392" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world" kindref="compound">RobotBlocksWorld</ref>*<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world_1a629154a7fd5584a2a25ba336163c1e86" kindref="member">getWorld</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a629154a7fd5584a2a25ba336163c1e86" kindref="member">RobotBlocksWorld::getWorld</ref>());<sp/>}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>RobotBlocks<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ROBOTBLOCKSWORLD_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h"/>
+  </compounddef>
+</doxygen>

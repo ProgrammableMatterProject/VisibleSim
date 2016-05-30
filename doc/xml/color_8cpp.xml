@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="color_8cpp" kind="file" language="C++">
+    <compoundname>color.cpp</compoundname>
+    <includes refid="color_8h" local="yes">color.h</includes>
+    <incdepgraph>
+      <node id="13769">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="13765" relation="include">
+        </childnode>
+        <childnode refid="13758" relation="include">
+        </childnode>
+        <childnode refid="13759" relation="include">
+        </childnode>
+        <childnode refid="13770" relation="include">
+        </childnode>
+        <childnode refid="13771" relation="include">
+        </childnode>
+      </node>
+      <node id="13762">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="13763" relation="include">
+        </childnode>
+        <childnode refid="13764" relation="include">
+        </childnode>
+        <childnode refid="13758" relation="include">
+        </childnode>
+        <childnode refid="13759" relation="include">
+        </childnode>
+        <childnode refid="13765" relation="include">
+        </childnode>
+        <childnode refid="13766" relation="include">
+        </childnode>
+        <childnode refid="13767" relation="include">
+        </childnode>
+        <childnode refid="13768" relation="include">
+        </childnode>
+        <childnode refid="13769" relation="include">
+        </childnode>
+        <childnode refid="13772" relation="include">
+        </childnode>
+      </node>
+      <node id="13771">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="13758" relation="include">
+        </childnode>
+        <childnode refid="13759" relation="include">
+        </childnode>
+        <childnode refid="13760" relation="include">
+        </childnode>
+        <childnode refid="13761" relation="include">
+        </childnode>
+      </node>
+      <node id="13764">
+        <label>stdlib.h</label>
+      </node>
+      <node id="13760">
+        <label>cmath</label>
+      </node>
+      <node id="13765">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="13761">
+        <label>memory.h</label>
+      </node>
+      <node id="13759">
+        <label>fstream</label>
+      </node>
+      <node id="13768">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="13772">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="13770" relation="include">
+        </childnode>
+        <childnode refid="13771" relation="include">
+        </childnode>
+        <childnode refid="13769" relation="include">
+        </childnode>
+      </node>
+      <node id="13766">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="13770">
+        <label>math.h</label>
+      </node>
+      <node id="13757">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="13758" relation="include">
+        </childnode>
+        <childnode refid="13759" relation="include">
+        </childnode>
+        <childnode refid="13760" relation="include">
+        </childnode>
+        <childnode refid="13761" relation="include">
+        </childnode>
+        <childnode refid="13762" relation="include">
+        </childnode>
+      </node>
+      <node id="13758">
+        <label>iostream</label>
+      </node>
+      <node id="13767">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="13763">
+        <label>stdio.h</label>
+      </node>
+      <node id="13756">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.cpp</label>
+        <link refid="color.cpp"/>
+        <childnode refid="13757" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="color_8cpp_1accbe115356912906dbced892e435ce8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Color &amp;p)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.cpp" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.cpp" bodystart="22" bodyend="25"/>
+        <references refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" compoundref="color_8h" startline="15">Color::rgba</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="color_8h" kindref="compound">color.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="class_color_1a9a742cbe9f9f4037f5d9f4e81a9b2428" refkind="member"><highlight class="normal"><ref refid="class_color_1a9a742cbe9f9f4037f5d9f4e81a9b2428" kindref="member">Color::Color</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/>memset(<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>,0,4*</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(GLfloat));</highlight></codeline>
+<codeline lineno="5"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="class_color_1a1ff48fafaffb35cdbf0d8384fc48e7e9" refkind="member"><highlight class="normal"><ref refid="class_color_1a9a742cbe9f9f4037f5d9f4e81a9b2428" kindref="member">Color::Color</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>r,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>g,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>b,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>a)<sp/>{</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]=r;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]=g;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]=b;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[3]=a;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="class_color_1a8adfa78739fcc5ca469264e893188215" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_color_1a8adfa78739fcc5ca469264e893188215" kindref="member">Color::set</ref>(GLfloat<sp/>r,GLfloat<sp/>g,<sp/>GLfloat<sp/>b,<sp/>GLfloat<sp/>a)<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]=r;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]=g;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]=b;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[3]=a;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">//<sp/>écriture<sp/>d&apos;une<sp/>couleur<sp/>dans<sp/>un<sp/>flux</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="color_8cpp_1accbe115356912906dbced892e435ce8f" refkind="member"><highlight class="normal">ostream&amp;<sp/><ref refid="class_color_1a5d57747da49aec3ea3d83e7a137ba7bd" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref>&amp;p)</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{<sp/>f<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;(&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>p.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[3]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.cpp"/>
+  </compounddef>
+</doxygen>

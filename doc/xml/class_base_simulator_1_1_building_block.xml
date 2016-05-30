@@ -1,0 +1,777 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_base_simulator_1_1_building_block" kind="class" language="C++" prot="public">
+    <compoundname>BaseSimulator::BuildingBlock</compoundname>
+    <derivedcompoundref refid="class_blinky_blocks_1_1_blinky_blocks_block" prot="public" virt="non-virtual">BlinkyBlocks::BlinkyBlocksBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_catoms2_d_1_1_catoms2_d_block" prot="public" virt="non-virtual">Catoms2D::Catoms2DBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_catoms3_d_1_1_catoms3_d_block" prot="public" virt="non-virtual">Catoms3D::Catoms3DBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_multi_cores_1_1_multi_cores_block" prot="public" virt="non-virtual">MultiCores::MultiCoresBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_robot_blocks_1_1_robot_blocks_block" prot="public" virt="non-virtual">RobotBlocks::RobotBlocksBlock</derivedcompoundref>
+    <derivedcompoundref refid="class_smart_blocks_1_1_smart_blocks_block" prot="public" virt="non-virtual">SmartBlocks::SmartBlocksBlock</derivedcompoundref>
+    <includes refid="building_block_8h" local="no">buildingBlock.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7e" prot="public" static="no">
+        <name>State</name>
+        <enumvalue id="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7eac496c390647cb8297abb56c8c9d79c8e" prot="public">
+          <name>STOPPED</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea2765c4a64c5620f077efa40a76ab8df9" prot="public">
+          <name>REMOVED</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea9129df5068a873b9ca8108a6e56b8595" prot="public">
+          <name>ALIVE</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea0e5a41f4ed4c69ee90f7beff5f2cea97" prot="public">
+          <name>COMPUTING</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="60" bodyend="60"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1a16f1f2f2c763ecbc6d63b34fafb395d7" prot="protected" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int BaseSimulator::BuildingBlock::nextId</definition>
+        <argsstring></argsstring>
+        <name>nextId</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="43" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="43" bodyend="-1"/>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a9aea32d44ee5f166b5cc82a206bd9545" compoundref="robot_blocks_block_8cpp" startline="100" endline="112">RobotBlocks::RobotBlocksBlock::setPrevNext</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1a5a4c2ba679c8c0c97999e56ba01ab586" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BaseSimulator::BuildingBlock::P2PNetworkInterfaceNextLocalId</definition>
+        <argsstring></argsstring>
+        <name>P2PNetworkInterfaceNextLocalId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1a5946de890047149f5efd92c85593fd46" prot="protected" static="no" mutable="no">
+        <type>list&lt; <ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> * &gt;</type>
+        <definition>list&lt;P2PNetworkInterface*&gt; BaseSimulator::BuildingBlock::P2PNetworkInterfaceList</definition>
+        <argsstring></argsstring>
+        <name>P2PNetworkInterfaceList</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="47" bodyend="-1"/>
+        <referencedby refid="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" compoundref="building_block_8cpp" startline="54" endline="79">addP2PNetworkInterfaceAndConnectTo</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1ad171d80d53d48f4ab9f3012617be9f6c" prot="protected" static="no" mutable="no">
+        <type>list&lt; <ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref> &gt;</type>
+        <definition>list&lt;EventPtr&gt; BaseSimulator::BuildingBlock::localEventsList</definition>
+        <argsstring></argsstring>
+        <name>localEventsList</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1ad069e72cbda1ac6e2d2a08f5106f71f4" prot="protected" static="no" mutable="no">
+        <type>boost::interprocess::interprocess_mutex</type>
+        <definition>boost::interprocess::interprocess_mutex BaseSimulator::BuildingBlock::mutex_state</definition>
+        <argsstring></argsstring>
+        <name>mutex_state</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BaseSimulator::BuildingBlock::blockId</definition>
+        <argsstring></argsstring>
+        <name>blockId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a4f7a64f5c9bd59e0fd5d2f0d5d7e7903" compoundref="blinky_blocks_block_8cpp" startline="100" endline="102">BlinkyBlocks::BlinkyBlocksBlock::~BlinkyBlocksBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abbf30e71ef0235eda09f82109bba141c" compoundref="blinky_blocks_block_8cpp" startline="152" endline="155">BlinkyBlocks::BlinkyBlocksBlock::addNeighbor</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a47cc7982f4c51d0f7269b16598258348" compoundref="blinky_blocks_block_8cpp" startline="157" endline="160">BlinkyBlocks::BlinkyBlocksBlock::removeNeighbor</referencedby>
+        <referencedby refid="namespace_blinky_blocks_1af441bc9d1031530c3659d9529467aaeb" compoundref="blinky_blocks_block_8cpp" startline="179" endline="182">BlinkyBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a7c6b160fd4bb3a41d9954dd4c361f75e" compoundref="blinky_blocks_block_8cpp" startline="184" endline="193">BlinkyBlocks::BlinkyBlocksBlock::getInterfaceDestId</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a926aa3271e6123c82e495591160777ac" compoundref="blinky_blocks_world_8cpp" startline="84" endline="118">BlinkyBlocks::BlinkyBlocksWorld::addBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a05645dcac50ba018ef86373dafb9898b" compoundref="blinky_blocks_world_8cpp" startline="120" endline="169">BlinkyBlocks::BlinkyBlocksWorld::linkBlocks</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1af3ad77eb962c601443f51a63646cfc78" compoundref="blinky_blocks_world_8cpp" startline="394" endline="433">BlinkyBlocks::BlinkyBlocksWorld::menuChoice</referencedby>
+        <referencedby refid="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" compoundref="building_block_8cpp" startline="54" endline="79">addP2PNetworkInterfaceAndConnectTo</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1aa399f1aa83f4e36824531d122512b8e4" compoundref="catoms2_d_block_8cpp" startline="30" endline="32">Catoms2D::Catoms2DBlock::~Catoms2DBlock</referencedby>
+        <referencedby refid="namespace_catoms2_d_1a76f90ecc63f00c517a5c3220c219ea9f" compoundref="catoms2_d_block_8cpp" startline="98" endline="101">Catoms2D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1a14611b19773548084c068d14dd893d99" compoundref="catoms2_d_events_8cpp" startline="128" endline="153">Catoms2D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_generic_code_block_1a95d9b06b1f9b0b946369bea29fe8d8cb" compoundref="catoms2_d_generic_8h" startline="27" endline="32">Catoms2D::GenericCodeBlock::GenericCodeBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a5649a288ebec492688e2f7980a3189d4" compoundref="catoms2_d_world_8cpp" startline="81" endline="120">Catoms2D::Catoms2DWorld::addBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a1ebad0184766474e148a9d444d886f2b" compoundref="catoms2_d_world_8cpp" startline="122" endline="151">Catoms2D::Catoms2DWorld::connectBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a279464337f346c7e066edbf372a43c2e" compoundref="catoms2_d_world_8cpp" startline="153" endline="170">Catoms2D::Catoms2DWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a5bbbdbc8592691d2828494a6d0fd1f18" compoundref="catoms2_d_world_8cpp" startline="172" endline="259">Catoms2D::Catoms2DWorld::linkBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a3dfb3e1802753ce02fb92cf2beaeff06" compoundref="catoms2_d_world_8cpp" startline="568" endline="583">Catoms2D::Catoms2DWorld::menuChoice</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1a342b5e5d3b1c1f7bf2d051314e6cacae" compoundref="catoms3_d_block_8cpp" startline="31" endline="33">Catoms3D::Catoms3DBlock::~Catoms3DBlock</referencedby>
+        <referencedby refid="namespace_catoms3_d_1abf90b7d64af93331c8bd9a89b46d0fe3" compoundref="catoms3_d_block_8cpp" startline="92" endline="95">Catoms3D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_stop_event_1a01f55d7e6e08e9baf5c5fcf1a7750cb7" compoundref="catoms3_d_events_8cpp" startline="112" endline="134">Catoms3D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a4918bde2e715273c9d10833dbd962d16" compoundref="catoms3_d_world_8cpp" startline="88" endline="112">Catoms3D::Catoms3DWorld::addBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a555769648870583b2a56743040ebf431" compoundref="catoms3_d_world_8cpp" startline="117" endline="144">Catoms3D::Catoms3DWorld::connectBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a5ac75cae05fe9d5e57fada935120261b" compoundref="catoms3_d_world_8cpp" startline="146" endline="159">Catoms3D::Catoms3DWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a3f19cc15b8d7fec44b1cd5ebefdee417" compoundref="catoms3_d_world_8cpp" startline="164" endline="182">Catoms3D::Catoms3DWorld::linkBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a020f4b0aa6986a25a832149c0f0d0aa4" compoundref="catoms3_d_world_8cpp" startline="496" endline="531">Catoms3D::Catoms3DWorld::menuChoice</referencedby>
+        <referencedby refid="class_base_simulator_1_1_clock_1a0ed4bd514d08d95e22a953b2327b66f2" compoundref="clock_8cpp" startline="9" endline="15">BaseSimulator::Clock::Clock</referencedby>
+        <referencedby refid="class_base_simulator_1_1_clock_1aa5e9fc26ec77e56bc9d086628e9c1f8b" compoundref="clock_8cpp" startline="17" endline="66">BaseSimulator::Clock::setClockProperties</referencedby>
+        <referencedby refid="class_base_simulator_1_1_clock_1a305c5d108edc964ab7289ceef9e8fbf7" compoundref="clock_8cpp" startline="95" endline="136">BaseSimulator::Clock::getTimeUS</referencedby>
+        <referencedby refid="class_base_simulator_1_1_clock_1aa2ab94f61b3cb67dd322c058b54d37b5" compoundref="clock_8cpp" startline="138" endline="197">BaseSimulator::Clock::getSchedulerTimeForLocalTime</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a0f00f69c3413f1ccc0e71898a91e5770" compoundref="meld_interpret_v_m_8cpp" startline="26" endline="58">MeldInterpret::MeldInterpretVM::MeldInterpretVM</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ac6de36e5d07dca442e07d795694459cd" compoundref="meld_interpret_v_m_8cpp" startline="488" endline="492">MeldInterpret::MeldInterpretVM::down</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a9cff1f610f4bd410d115f3266a354db9" compoundref="meld_interpret_v_m_8cpp" startline="493" endline="497">MeldInterpret::MeldInterpretVM::up</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a3c7d029860f054593e93f027d4dd3b70" compoundref="meld_interpret_v_m_8cpp" startline="498" endline="502">MeldInterpret::MeldInterpretVM::north</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a7d9c7733114063d2a1ae20fbe2f42a52" compoundref="meld_interpret_v_m_8cpp" startline="503" endline="507">MeldInterpret::MeldInterpretVM::south</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ab523dde8b7a85d8027cca5616fb6210d" compoundref="meld_interpret_v_m_8cpp" startline="508" endline="512">MeldInterpret::MeldInterpretVM::east</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ad36d1b309f7db55cfca4e39f2aaa2bba" compoundref="meld_interpret_v_m_8cpp" startline="513" endline="517">MeldInterpret::MeldInterpretVM::west</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a2fb398fac26ef86b9a7a266aef8fa962" compoundref="meld_process_v_m_8cpp" startline="37" endline="121">MeldProcess::MeldProcessVM::MeldProcessVM</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_world_1aa5596e4ea4ffbaf7fb9f718917476337" compoundref="multi_cores_world_8cpp" startline="35" endline="40">MultiCores::MultiCoresWorld::addBlock</referencedby>
+        <referencedby refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" compoundref="network_8h" startline="109" endline="111">P2PNetworkInterface::getConnectedBlockId</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a86760e9ece8d1ff001b5c19bc6ccc39d" compoundref="robot_blocks_block_8cpp" startline="82" endline="84">RobotBlocks::RobotBlocksBlock::~RobotBlocksBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a9aea32d44ee5f166b5cc82a206bd9545" compoundref="robot_blocks_block_8cpp" startline="100" endline="112">RobotBlocks::RobotBlocksBlock::setPrevNext</referencedby>
+        <referencedby refid="namespace_robot_blocks_1a3998e853cf6e162a769e5856625f3689" compoundref="robot_blocks_block_8cpp" startline="135" endline="138">RobotBlocks::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_stop_event_1afbc1d05e25023873071013b5d02bc1ad" compoundref="robot_blocks_events_8cpp" startline="120" endline="138">RobotBlocks::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a02468c4362e43b23c460e861c10d8e23" compoundref="robot_blocks_generic_8cpp" startline="26" endline="54">RobotBlocks::GenericCodeBlock::sendMessageToAllNeighbors</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a6f42b391bdad8c159a7a8a47f20debfb" compoundref="robot_blocks_generic_8h" startline="26" endline="31">RobotBlocks::GenericCodeBlock::GenericCodeBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a15d447ddcf44637228234c0fc7494352" compoundref="robot_blocks_world_8cpp" startline="76" endline="111">RobotBlocks::RobotBlocksWorld::addBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1af628c74450302595cbbec15d35e862d5" compoundref="robot_blocks_world_8cpp" startline="113" endline="127">RobotBlocks::RobotBlocksWorld::connectBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1aacde9a25471862e4bf80f0fb8f15b174" compoundref="robot_blocks_world_8cpp" startline="129" endline="146">RobotBlocks::RobotBlocksWorld::disconnectBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1ae00b93faa135ae3970a204c38a28adb0" compoundref="robot_blocks_world_8cpp" startline="148" endline="188">RobotBlocks::RobotBlocksWorld::linkBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a52f23707145ab10d07839c97950d53c9" compoundref="robot_blocks_world_8cpp" startline="429" endline="464">RobotBlocks::RobotBlocksWorld::menuChoice</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_block_1a8e13ca3bce8517b87f58d4350ead1c83" compoundref="smart_blocks_block_8cpp" startline="29" endline="34">SmartBlocks::SmartBlocksBlock::~SmartBlocksBlock</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_block_1a81c5ea9084802a4ee407cf1b2ef6779f" compoundref="smart_blocks_block_8cpp" startline="74" endline="80">SmartBlocks::SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_world_1a90c5a8c05b2cfd89e6af9e6ccb6f18d2" compoundref="smart_blocks_world_8cpp" startline="79" endline="98">SmartBlocks::SmartBlocksWorld::addBlock</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1aa42bdf9c46446055c12a4eeee9134e99" prot="public" static="no" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_block_code" kindref="compound">BlockCode</ref> *</type>
+        <definition>BlockCode* BaseSimulator::BuildingBlock::blockCode</definition>
+        <argsstring></argsstring>
+        <name>blockCode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="62" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="62" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abf2f926c10b06124320f024bf50cf9d6" compoundref="blinky_blocks_block_8cpp" startline="84" endline="98">BlinkyBlocks::BlinkyBlocksBlock::BlinkyBlocksBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a91dd081458fb5c7cf6adf74198740d41" compoundref="catoms2_d_block_8cpp" startline="19" endline="28">Catoms2D::Catoms2DBlock::Catoms2DBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_end_event_1a33a64764f73e3ee43e01abffb966764f" compoundref="catoms2_d_events_8cpp" startline="178" endline="182">Catoms2D::MotionEndEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1a3b16685cd70d3730a55a32d223c95a17" compoundref="catoms3_d_block_8cpp" startline="20" endline="29">Catoms3D::Catoms3DBlock::Catoms3DBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_end_event_1a4388abb7834a97c0c4ccc482719bb695" compoundref="catoms3_d_events_8cpp" startline="159" endline="163">Catoms3D::MotionEndEvent::consume</referencedby>
+        <referencedby refid="class_code_start_event_1a38aa5549c65493648b51555cd056bc4a" compoundref="events_8cpp" startline="102" endline="105">CodeStartEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_stop_event_1a19411a0370fa8783f8c33223f7461e56" compoundref="meld_interpret_events_8cpp" startline="61" endline="65">MeldInterpret::VMStopEvent::consume</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_stop_event_1a350c58fb457b85dab84c1862523ea6cf" compoundref="meld_process_events_8cpp" startline="60" endline="64">MeldProcess::VMStopEvent::consume</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a595d19ebd0f4a22ecf4281f306e04941" compoundref="meld_process_v_m_8cpp" startline="418" endline="431">MeldProcess::MeldProcessVM::broadcastDebugCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1ae9758d22aa56b9f8d0b87cf6709c8cf0" compoundref="meld_process_v_m_8cpp" startline="433" endline="442">MeldProcess::MeldProcessVM::sendCommand</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_block_1ab62b9094973f8a0b3721ff9dd43c95c5" compoundref="multi_cores_block_8cpp" startline="15" endline="19">MultiCores::MultiCoresBlock::MultiCoresBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a82ee970836ce8dd0a3058c04c2d22965" compoundref="robot_blocks_block_8cpp" startline="73" endline="80">RobotBlocks::RobotBlocksBlock::RobotBlocksBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_end_event_1a1749488842c38df3d1d10df5bbdc5e21" compoundref="robot_blocks_events_8cpp" startline="163" endline="167">RobotBlocks::MotionEndEvent::consume</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_block_1aab5d1ad0927c368a788c64447ffd2dc8" compoundref="smart_blocks_block_8cpp" startline="20" endline="27">SmartBlocks::SmartBlocksBlock::SmartBlocksBlock</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_end_event_1a405766a0f99d7328b01486d576419bd1" compoundref="smart_blocks_events_8cpp" startline="168" endline="172">SmartBlocks::MotionEndEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1a0a721b63604db68e293ad926289e54e9" prot="public" static="no" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7e" kindref="member">State</ref></type>
+        <definition>State BaseSimulator::BuildingBlock::state</definition>
+        <argsstring></argsstring>
+        <name>state</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="63" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a6914cd2390374332bf236b168be230e0" compoundref="blinky_blocks_block_8cpp" startline="114" endline="121">BlinkyBlocks::BlinkyBlocksBlock::setColor</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a11bb7e183cede0af91c0afd0ccce87e0" compoundref="blinky_blocks_block_8cpp" startline="162" endline="177">BlinkyBlocks::BlinkyBlocksBlock::stop</referencedby>
+        <referencedby refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" compoundref="events_8h" startline="88" endline="92">BlockEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1a2e6709a10ba46b80ff51de3fee9c7f7c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_clock" kindref="compound">Clock</ref> *</type>
+        <definition>Clock* BaseSimulator::BuildingBlock::clock</definition>
+        <argsstring></argsstring>
+        <name>clock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="64" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abf2f926c10b06124320f024bf50cf9d6" compoundref="blinky_blocks_block_8cpp" startline="84" endline="98">BlinkyBlocks::BlinkyBlocksBlock::BlinkyBlocksBlock</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_building_block_1a630f27700c085183885aa9ebcdfcb0a2" prot="public" static="no" mutable="no">
+        <type>boost::rand48</type>
+        <definition>boost::rand48 BaseSimulator::BuildingBlock::generator</definition>
+        <argsstring></argsstring>
+        <name>generator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1aba95f6f397d531a01b27f2b3fa7de652" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BaseSimulator::BuildingBlock::BuildingBlock</definition>
+        <argsstring>(int bId)</argsstring>
+        <name>BuildingBlock</name>
+        <param>
+          <type>int</type>
+          <declname>bId</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="26" bodyend="38"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1ad967e578e5caf99add64a73522eb9843" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>BaseSimulator::BuildingBlock::~BuildingBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~BuildingBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="68" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="40" bodyend="46"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a8f0e6775f89826a6c6ac6d1d5425af43" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int BaseSimulator::BuildingBlock::getNextP2PInterfaceLocalId</definition>
+        <argsstring>()</argsstring>
+        <name>getNextP2PInterfaceLocalId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="70" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="48" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1ae9cb6194c20eb804d6658341556f82d9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>list&lt; <ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> * &gt; &amp;</type>
+        <definition>list&lt;P2PNetworkInterface*&gt;&amp; BaseSimulator::BuildingBlock::getP2PNetworkInterfaceList</definition>
+        <argsstring>()</argsstring>
+        <name>getP2PNetworkInterfaceList</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="72" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="72" bodyend="72"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abf2f926c10b06124320f024bf50cf9d6" compoundref="blinky_blocks_block_8cpp" startline="84" endline="98">BlinkyBlocks::BlinkyBlocksBlock::BlinkyBlocksBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a91dd081458fb5c7cf6adf74198740d41" compoundref="catoms2_d_block_8cpp" startline="19" endline="28">Catoms2D::Catoms2DBlock::Catoms2DBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a241c4094748d9ef309ba802415652f71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface * BaseSimulator::BuildingBlock::getP2PNetworkInterfaceByDestBlockId</definition>
+        <argsstring>(int destBlockId)</argsstring>
+        <name>getP2PNetworkInterfaceByDestBlockId</name>
+        <param>
+          <type>int</type>
+          <declname>destBlockId</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="73" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="108" bodyend="117"/>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1acdfb654260e80c4e12edd89cdfbc3f16" compoundref="meld_interpret_v_m_8cpp" startline="357" endline="409">MeldInterpret::MeldInterpretVM::tuple_send</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseSimulator::BuildingBlock::addP2PNetworkInterfaceAndConnectTo</definition>
+        <argsstring>(BuildingBlock *destBlock)</argsstring>
+        <name>addP2PNetworkInterfaceAndConnectTo</name>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref> *</type>
+          <declname>destBlock</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="74" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="54" bodyend="79"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">blockId</references>
+        <references refid="class_base_simulator_1_1_building_block_1afa1ec97c549b373435d5b4243fe3b06b" compoundref="building_block_8cpp" startline="97" endline="106">getP2PNetworkInterfaceByBlockRef</references>
+        <references refid="class_base_simulator_1_1_building_block_1a5946de890047149f5efd92c85593fd46" compoundref="building_block_8h" startline="47">P2PNetworkInterfaceList</references>
+        <references refid="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" compoundref="network_8cpp" startline="146" endline="166">P2PNetworkInterface::connect</references>
+        <referencedby refid="class_base_simulator_1_1_building_block_1ad2e1ae70e54db639cd601cc9646f6353" compoundref="building_block_8cpp" startline="81" endline="95">addP2PNetworkInterfaceAndConnectTo</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_scheduler_1a1baad4091f3181d382b17269ccfed322" compoundref="multi_cores_scheduler_8cpp" startline="116" endline="221">MultiCores::MultiCoresScheduler::waitForVMMessage</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1ad2e1ae70e54db639cd601cc9646f6353" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseSimulator::BuildingBlock::addP2PNetworkInterfaceAndConnectTo</definition>
+        <argsstring>(int destBlockId)</argsstring>
+        <name>addP2PNetworkInterfaceAndConnectTo</name>
+        <param>
+          <type>int</type>
+          <declname>destBlockId</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="75" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="81" bodyend="95"/>
+        <references refid="namespace_base_simulator_1a2a1f7a0fc6c69525e369dc9226e1a23c" compoundref="world_8h" startline="90" endline="90">BaseSimulator::getWorld</references>
+        <references refid="class_base_simulator_1_1_world_1a5242c801311b599d02cd5987ea165900" compoundref="world_8cpp" startline="47" endline="55">BaseSimulator::World::getBlockById</references>
+        <references refid="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" compoundref="building_block_8cpp" startline="54" endline="79">addP2PNetworkInterfaceAndConnectTo</references>
+        <references refid="class_base_simulator_1_1_building_block_1afa1ec97c549b373435d5b4243fe3b06b" compoundref="building_block_8cpp" startline="97" endline="106">getP2PNetworkInterfaceByBlockRef</references>
+        <references refid="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" compoundref="network_8cpp" startline="146" endline="166">P2PNetworkInterface::connect</references>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1afa1ec97c549b373435d5b4243fe3b06b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface * BaseSimulator::BuildingBlock::getP2PNetworkInterfaceByBlockRef</definition>
+        <argsstring>(BuildingBlock *destBlock)</argsstring>
+        <name>getP2PNetworkInterfaceByBlockRef</name>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref> *</type>
+          <declname>destBlock</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="76" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="97" bodyend="106"/>
+        <referencedby refid="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" compoundref="building_block_8cpp" startline="54" endline="79">addP2PNetworkInterfaceAndConnectTo</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1a11e9c6cd528ed197da1243c69b06ed86" compoundref="catoms2_d_block_8cpp" startline="226" endline="275">Catoms2D::Catoms2DBlock::canMove</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseSimulator::BuildingBlock::scheduleLocalEvent</definition>
+        <argsstring>(EventPtr pev)</argsstring>
+        <name>scheduleLocalEvent</name>
+        <param>
+          <type><ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref></type>
+          <declname>pev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="78" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="120" bodyend="130"/>
+        <references refid="class_p2_p_network_interface_1a4e38ef9507d8bd7d203dda927ef11e4e" compoundref="network_8h" startline="97">P2PNetworkInterface::availabilityDate</references>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+        <referencedby refid="class_set_color_event_1a1ffeea1f4a9a3fa7dadd0dd3c061ef90" compoundref="events_8cpp" startline="306" endline="309">SetColorEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_add_neighbor_event_1a94e0cc6edde0ab4284fa0963d063dc91" compoundref="events_8cpp" startline="338" endline="341">AddNeighborEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_remove_neighbor_event_1ac9594e8b1d0a4dc936de90f34244a652" compoundref="events_8cpp" startline="368" endline="371">RemoveNeighborEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_tap_event_1a0832620a6a38cf982491759d39cc9f53" compoundref="events_8cpp" startline="396" endline="399">TapEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_accel_event_1afaeb3f70468c5fdbbb5d074d60cf1a7d" compoundref="events_8cpp" startline="430" endline="433">AccelEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_shake_event_1ac8338aa1242d01bd44fd2205c596167d" compoundref="events_8cpp" startline="460" endline="463">ShakeEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_set_id_event_1aa4efdd8f132b54b429e262d9b3f2295b" compoundref="meld_interpret_events_8cpp" startline="33" endline="36">MeldInterpret::VMSetIdEvent::consume</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1a99e819a69b45d2373c8d4969ecfff19d" compoundref="meld_interpret_events_8cpp" startline="97" endline="100">MeldInterpret::VMSendMessageEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_handle_debug_command_event_1a84bca03fe80e46e3ec6ec1bfc6f00372" compoundref="meld_interpret_events_8cpp" startline="127" endline="130">MeldInterpret::VMHandleDebugCommandEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_end_poll_event_1ac743f25ca6f538aebb0e051841117bc8" compoundref="meld_interpret_events_8cpp" startline="186" endline="190">MeldInterpret::VMEndPollEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_compute_predicate_event_1a8af29c452425bd8cb77975404392835b" compoundref="meld_interpret_events_8cpp" startline="216" endline="219">MeldInterpret::ComputePredicateEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_add_tuple_event_1a8447436c61677421ad0e1f03d3427ea0" compoundref="meld_interpret_events_8cpp" startline="249" endline="252">MeldInterpret::AddTupleEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_remove_tuple_event_1a8683cc873880ff6e6c25b5719837f205" compoundref="meld_interpret_events_8cpp" startline="282" endline="285">MeldInterpret::RemoveTupleEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_set_id_event_1a80e5bcc9532b346768814584c84e026a" compoundref="meld_process_events_8cpp" startline="32" endline="35">MeldProcess::VMSetIdEvent::consume</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_send_message_event_1adc4f159cd01cf7338f41f3557c8dec8c" compoundref="meld_process_events_8cpp" startline="96" endline="99">MeldProcess::VMSendMessageEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_handle_debug_command_event_1aa3dee00af4436de11ec2497a409cc38c" compoundref="meld_process_events_8cpp" startline="126" endline="129">MeldProcess::VMHandleDebugCommandEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_end_poll_event_1a0ee2a3ebe83facdf6569829719ee914a" compoundref="meld_process_events_8cpp" startline="185" endline="189">MeldProcess::VMEndPollEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_multi_cores_1_1_v_m_start_computation_event_1aae3d0a31d06e0b4d137263476938a257" compoundref="multi_cores_events_8cpp" startline="36" endline="39">MultiCores::VMStartComputationEvent::consume</referencedby>
+        <referencedby refid="class_multi_cores_1_1_v_m_end_computation_event_1ada98910c7651260157659129d00cc2cc" compoundref="multi_cores_events_8cpp" startline="67" endline="71">MultiCores::VMEndComputationEvent::consume</referencedby>
+        <referencedby refid="class_multi_cores_1_1_v_m_start_transmission_event_1a3e7a5492544612b7f4deab6cb3f55ea5" compoundref="multi_cores_events_8cpp" startline="103" endline="106">MultiCores::VMStartTransmissionEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1abbb0537e4aae4eba618526dbbb8575a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseSimulator::BuildingBlock::processLocalEvent</definition>
+        <argsstring>()</argsstring>
+        <name>processLocalEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="79" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="132" bodyend="147"/>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1af6601a5e1b70ff8ee02400b4657f6a22" compoundref="scheduler_8cpp" startline="116" endline="124">BaseSimulator::Scheduler::trace</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_process_local_event_1a9be8193e67dcbf45384ce6fe31b49dd0" compoundref="events_8cpp" startline="150" endline="153">ProcessLocalEvent::consumeBlockEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a9c412cb16054c2d87aaba8f4c9b16ff2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseSimulator::BuildingBlock::updateGlData</definition>
+        <argsstring>()</argsstring>
+        <name>updateGlData</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="81" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="81" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a42358d85b5fcfa533052024e3a539ffb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseSimulator::BuildingBlock::addNeighbor</definition>
+        <argsstring>(P2PNetworkInterface *ni, BuildingBlock *target)</argsstring>
+        <name>addNeighbor</name>
+        <reimplementedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abbf30e71ef0235eda09f82109bba141c">addNeighbor</reimplementedby>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <declname>ni</declname>
+        </param>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref> *</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="83" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="83" bodyend="83"/>
+        <referencedby refid="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" compoundref="network_8cpp" startline="146" endline="166">P2PNetworkInterface::connect</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a155ceee57679e25f169353b06a5c56d9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseSimulator::BuildingBlock::removeNeighbor</definition>
+        <argsstring>(P2PNetworkInterface *ni)</argsstring>
+        <name>removeNeighbor</name>
+        <reimplementedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a47cc7982f4c51d0f7269b16598258348">removeNeighbor</reimplementedby>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <declname>ni</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="84" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="84" bodyend="84"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9e488f5f0bce0b15c03658b288a54db2" compoundref="blinky_blocks_world_8cpp" startline="171" endline="212">BlinkyBlocks::BlinkyBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ace14ff1fd6bb0898277faf3fd16971c7" compoundref="blinky_blocks_world_8cpp" startline="461" endline="495">BlinkyBlocks::BlinkyBlocksWorld::stopBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a146188561792cc778d39ea79551ceb03" compoundref="catoms2_d_world_8cpp" startline="273" endline="308">Catoms2D::Catoms2DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a48f79ea5d219469b30bd99eddc083c2b" compoundref="catoms3_d_world_8cpp" startline="199" endline="230">Catoms3D::Catoms3DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_p2_p_network_interface_1a455a98370d6a05e68b992f1418a7a8bd" compoundref="network_8cpp" startline="146" endline="166">P2PNetworkInterface::connect</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a99e0958d82e7021d2d27b8f78f78bfd6" compoundref="robot_blocks_world_8cpp" startline="201" endline="236">RobotBlocks::RobotBlocksWorld::deleteBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1ac5762fea70c48102d0ee5e2e51caf367" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseSimulator::BuildingBlock::stop</definition>
+        <argsstring>()</argsstring>
+        <name>stop</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="85" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="85" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1ae7cbda10b8cc1c6470041d7e687df82b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseSimulator::BuildingBlock::lock</definition>
+        <argsstring>()</argsstring>
+        <name>lock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="89" bodyend="89"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a6914cd2390374332bf236b168be230e0" compoundref="blinky_blocks_block_8cpp" startline="114" endline="121">BlinkyBlocks::BlinkyBlocksBlock::setColor</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a11bb7e183cede0af91c0afd0ccce87e0" compoundref="blinky_blocks_block_8cpp" startline="162" endline="177">BlinkyBlocks::BlinkyBlocksBlock::stop</referencedby>
+        <referencedby refid="class_base_simulator_1_1_world_1a9c40cfd24c7c6ac5ef7101743a3e2cd9" compoundref="world_8cpp" startline="57" endline="59">BaseSimulator::World::lock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1ab34e003d3f279e0c5f4e1f2f59a19e67" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseSimulator::BuildingBlock::unlock</definition>
+        <argsstring>()</argsstring>
+        <name>unlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="90" bodyend="90"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a6914cd2390374332bf236b168be230e0" compoundref="blinky_blocks_block_8cpp" startline="114" endline="121">BlinkyBlocks::BlinkyBlocksBlock::setColor</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a11bb7e183cede0af91c0afd0ccce87e0" compoundref="blinky_blocks_block_8cpp" startline="162" endline="177">BlinkyBlocks::BlinkyBlocksBlock::stop</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a89c9a84ee50c884112db1038588ffa89" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7e" kindref="member">State</ref></type>
+        <definition>State BaseSimulator::BuildingBlock::getState</definition>
+        <argsstring>()</argsstring>
+        <name>getState</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="91" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="91" bodyend="91"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9e488f5f0bce0b15c03658b288a54db2" compoundref="blinky_blocks_world_8cpp" startline="171" endline="212">BlinkyBlocks::BlinkyBlocksWorld::deleteBlock</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_world_1ace14ff1fd6bb0898277faf3fd16971c7" compoundref="blinky_blocks_world_8cpp" startline="461" endline="495">BlinkyBlocks::BlinkyBlocksWorld::stopBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a146188561792cc778d39ea79551ceb03" compoundref="catoms2_d_world_8cpp" startline="273" endline="308">Catoms2D::Catoms2DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a48f79ea5d219469b30bd99eddc083c2b" compoundref="catoms3_d_world_8cpp" startline="199" endline="230">Catoms3D::Catoms3DWorld::deleteBlock</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a69484765490f3ec3b58e41205c684abd" compoundref="meld_interpret_v_m_8cpp" startline="534" endline="547">MeldInterpret::MeldInterpretVM::equilibrium</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a33d028ed4be0a964a0ce190a70c8105f" compoundref="meld_process_v_m_8cpp" startline="353" endline="393">MeldProcess::MeldProcessVM::dateHasBeenReachedByAll</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a28e2134b300ffb536c7c0173caa5932d" compoundref="meld_process_v_m_8cpp" startline="395" endline="408">MeldProcess::MeldProcessVM::equilibrium</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a99e0958d82e7021d2d27b8f78f78bfd6" compoundref="robot_blocks_world_8cpp" startline="201" endline="236">RobotBlocks::RobotBlocksWorld::deleteBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1afa7744e3eb61b9fc32444e83ae091a4d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseSimulator::BuildingBlock::setState</definition>
+        <argsstring>(State s)</argsstring>
+        <name>setState</name>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7e" kindref="member">State</ref></type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="92" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="92" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a24792d57532b46ad3af4b02c6a88360b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int BaseSimulator::BuildingBlock::getNextRandomNumber</definition>
+        <argsstring>()</argsstring>
+        <name>getNextRandomNumber</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="95" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="149" bodyend="155"/>
+        <referencedby refid="class_set_color_event_1a91cbed8f0371018d982d30cee4fb8d39" compoundref="events_8cpp" startline="282" endline="287">SetColorEvent::SetColorEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_send_message_event_1ab5b805ed58924f05a8b3cd3edcdc5adc" compoundref="meld_interpret_events_8cpp" startline="77" endline="83">MeldInterpret::VMSendMessageEvent::VMSendMessageEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_v_m_end_poll_event_1a16cee1cc2ec225b8356eef79b0091641" compoundref="meld_interpret_events_8cpp" startline="172" endline="176">MeldInterpret::VMEndPollEvent::VMEndPollEvent</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ad9c92d5d1964ac2dd969daf763d3a7e7" compoundref="meld_interpret_v_m_8cpp" startline="850" endline="958">MeldInterpret::MeldInterpretVM::execute_iter</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_send_message_event_1a61e3ba44bccb78f1b7242948f60a38c3" compoundref="meld_process_events_8cpp" startline="76" endline="82">MeldProcess::VMSendMessageEvent::VMSendMessageEvent</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_end_poll_event_1aa85f1898993c187aa7c9a9ef1ca56d33" compoundref="meld_process_events_8cpp" startline="171" endline="175">MeldProcess::VMEndPollEvent::VMEndPollEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a6fb1405bc2d1bda4056591a22ecd311d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint64_t</type>
+        <definition>uint64_t BaseSimulator::BuildingBlock::getTime</definition>
+        <argsstring>()</argsstring>
+        <name>getTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="97" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="157" bodyend="163"/>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a0268d81b98f389c37117f7b390d06514" compoundref="meld_interpret_v_m_8cpp" startline="81" endline="84">MeldInterpret::MeldInterpretVM::myGetTime</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_building_block_1a2e37ca9ab2044b9ab7af54b1c0312451" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint64_t</type>
+        <definition>uint64_t BaseSimulator::BuildingBlock::getSchedulerTimeForLocalTime</definition>
+        <argsstring>(uint64_t localTime)</argsstring>
+        <name>getSchedulerTimeForLocalTime</name>
+        <param>
+          <type>uint64_t</type>
+          <declname>localTime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="98" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp" bodystart="165" bodyend="171"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1514">
+        <label>BlinkyBlocks::BlinkyBlocksBlock</label>
+        <link refid="class_blinky_blocks_1_1_blinky_blocks_block"/>
+        <childnode refid="1513" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1518">
+        <label>RobotBlocks::RobotBlocksBlock</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_block"/>
+        <childnode refid="1513" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1519">
+        <label>SmartBlocks::SmartBlocksBlock</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_block"/>
+        <childnode refid="1513" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1515">
+        <label>Catoms2D::Catoms2DBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_block"/>
+        <childnode refid="1513" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1517">
+        <label>MultiCores::MultiCoresBlock</label>
+        <link refid="class_multi_cores_1_1_multi_cores_block"/>
+        <childnode refid="1513" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1513">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+      </node>
+      <node id="1516">
+        <label>Catoms3D::Catoms3DBlock</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_block"/>
+        <childnode refid="1513" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1522">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1520" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1520">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1521" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1522" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1521">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1520" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h" bodystart="41" bodyend="100"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_building_block_1a42358d85b5fcfa533052024e3a539ffb" prot="public" virt="virtual"><scope>BaseSimulator::BuildingBlock</scope><name>addNeighbor</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a0562dfed0ecc8ad52ba997bbd34d6260" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>addP2PNetworkInterfaceAndConnectTo</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad2e1ae70e54db639cd601cc9646f6353" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>addP2PNetworkInterfaceAndConnectTo</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea9129df5068a873b9ca8108a6e56b8595" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>ALIVE</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1aa42bdf9c46446055c12a4eeee9134e99" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>blockCode</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>blockId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1aba95f6f397d531a01b27f2b3fa7de652" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>BuildingBlock</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a2e6709a10ba46b80ff51de3fee9c7f7c" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>clock</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea0e5a41f4ed4c69ee90f7beff5f2cea97" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>COMPUTING</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a630f27700c085183885aa9ebcdfcb0a2" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>generator</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a8f0e6775f89826a6c6ac6d1d5425af43" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getNextP2PInterfaceLocalId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a24792d57532b46ad3af4b02c6a88360b" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getNextRandomNumber</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1afa1ec97c549b373435d5b4243fe3b06b" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getP2PNetworkInterfaceByBlockRef</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a241c4094748d9ef309ba802415652f71" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getP2PNetworkInterfaceByDestBlockId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ae9cb6194c20eb804d6658341556f82d9" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getP2PNetworkInterfaceList</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a2e37ca9ab2044b9ab7af54b1c0312451" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getSchedulerTimeForLocalTime</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a89c9a84ee50c884112db1038588ffa89" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getState</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a6fb1405bc2d1bda4056591a22ecd311d" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>getTime</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad171d80d53d48f4ab9f3012617be9f6c" prot="protected" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>localEventsList</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ae7cbda10b8cc1c6470041d7e687df82b" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>lock</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad069e72cbda1ac6e2d2a08f5106f71f4" prot="protected" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>mutex_state</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a16f1f2f2c763ecbc6d63b34fafb395d7" prot="protected" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>nextId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5946de890047149f5efd92c85593fd46" prot="protected" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>P2PNetworkInterfaceList</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a4c2ba679c8c0c97999e56ba01ab586" prot="protected" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>P2PNetworkInterfaceNextLocalId</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1abbb0537e4aae4eba618526dbbb8575a8" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>processLocalEvent</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea2765c4a64c5620f077efa40a76ab8df9" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>REMOVED</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a155ceee57679e25f169353b06a5c56d9" prot="public" virt="virtual"><scope>BaseSimulator::BuildingBlock</scope><name>removeNeighbor</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>scheduleLocalEvent</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1afa7744e3eb61b9fc32444e83ae091a4d" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>setState</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7e" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>State</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a0a721b63604db68e293ad926289e54e9" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>state</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ac5762fea70c48102d0ee5e2e51caf367" prot="public" virt="virtual"><scope>BaseSimulator::BuildingBlock</scope><name>stop</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7eac496c390647cb8297abb56c8c9d79c8e" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>STOPPED</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ab34e003d3f279e0c5f4e1f2f59a19e67" prot="public" virt="non-virtual"><scope>BaseSimulator::BuildingBlock</scope><name>unlock</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1a9c412cb16054c2d87aaba8f4c9b16ff2" prot="public" virt="virtual"><scope>BaseSimulator::BuildingBlock</scope><name>updateGlData</name></member>
+      <member refid="class_base_simulator_1_1_building_block_1ad967e578e5caf99add64a73522eb9843" prot="public" virt="virtual"><scope>BaseSimulator::BuildingBlock</scope><name>~BuildingBlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

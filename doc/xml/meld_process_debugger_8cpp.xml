@@ -1,0 +1,601 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="meld_process_debugger_8cpp" kind="file" language="C++">
+    <compoundname>meldProcessDebugger.cpp</compoundname>
+    <includes refid="meld_process_debugger_8h" local="yes">meldProcessDebugger.h</includes>
+    <includes refid="meld_process_v_m_8h" local="yes">meldProcessVM.h</includes>
+    <includes local="yes">Debugger/debug_Simprompt.hpp</includes>
+    <includes local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/Debugger/debug_Simhandler.hpp</includes>
+    <includes local="no">string</includes>
+    <includes local="no">list</includes>
+    <includes local="no">stdint.h</includes>
+    <includes local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/Debugger/concurrentQueue.hpp</includes>
+    <includes local="no">queue</includes>
+    <includes local="no">boost/thread/mutex.hpp</includes>
+    <includes local="no">boost/thread/condition.hpp</includes>
+    <includes local="no">iostream</includes>
+    <includes local="no">stdio.h</includes>
+    <includes local="no">boost/thread/thread.hpp</includes>
+    <includes local="no">boost/bind.hpp</includes>
+    <incdepgraph>
+      <node id="15388">
+        <label>list</label>
+      </node>
+      <node id="15412">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="15390" relation="include">
+        </childnode>
+        <childnode refid="15413" relation="include">
+        </childnode>
+        <childnode refid="15398" relation="include">
+        </childnode>
+        <childnode refid="15403" relation="include">
+        </childnode>
+        <childnode refid="15389" relation="include">
+        </childnode>
+        <childnode refid="15414" relation="include">
+        </childnode>
+      </node>
+      <node id="15427">
+        <label>boost/thread/mutex.hpp</label>
+      </node>
+      <node id="15398">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="15394" relation="include">
+        </childnode>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15393" relation="include">
+        </childnode>
+        <childnode refid="15399" relation="include">
+        </childnode>
+        <childnode refid="15400" relation="include">
+        </childnode>
+      </node>
+      <node id="15390">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="15391" relation="include">
+        </childnode>
+        <childnode refid="15392" relation="include">
+        </childnode>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15393" relation="include">
+        </childnode>
+        <childnode refid="15394" relation="include">
+        </childnode>
+        <childnode refid="15395" relation="include">
+        </childnode>
+        <childnode refid="15396" relation="include">
+        </childnode>
+        <childnode refid="15397" relation="include">
+        </childnode>
+        <childnode refid="15398" relation="include">
+        </childnode>
+        <childnode refid="15403" relation="include">
+        </childnode>
+      </node>
+      <node id="15400">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15393" relation="include">
+        </childnode>
+        <childnode refid="15401" relation="include">
+        </childnode>
+        <childnode refid="15402" relation="include">
+        </childnode>
+      </node>
+      <node id="15414">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="15415" relation="include">
+        </childnode>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15393" relation="include">
+        </childnode>
+        <childnode refid="15402" relation="include">
+        </childnode>
+        <childnode refid="15389" relation="include">
+        </childnode>
+        <childnode refid="15416" relation="include">
+        </childnode>
+        <childnode refid="15404" relation="include">
+        </childnode>
+      </node>
+      <node id="15422">
+        <label>queue</label>
+      </node>
+      <node id="15372">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="15383">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="15379">
+        <label>assert.h</label>
+      </node>
+      <node id="15407">
+        <label>stdint.h</label>
+      </node>
+      <node id="15392">
+        <label>stdlib.h</label>
+      </node>
+      <node id="15386">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="15372" relation="include">
+        </childnode>
+        <childnode refid="15387" relation="include">
+        </childnode>
+        <childnode refid="15382" relation="include">
+        </childnode>
+        <childnode refid="15388" relation="include">
+        </childnode>
+        <childnode refid="15389" relation="include">
+        </childnode>
+        <childnode refid="15405" relation="include">
+        </childnode>
+        <childnode refid="15406" relation="include">
+        </childnode>
+      </node>
+      <node id="15421">
+        <label>meldProcessVM.h</label>
+        <link refid="meld_process_v_m_8h"/>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15422" relation="include">
+        </childnode>
+        <childnode refid="15373" relation="include">
+        </childnode>
+        <childnode refid="15423" relation="include">
+        </childnode>
+        <childnode refid="15372" relation="include">
+        </childnode>
+        <childnode refid="15382" relation="include">
+        </childnode>
+        <childnode refid="15383" relation="include">
+        </childnode>
+        <childnode refid="15420" relation="include">
+        </childnode>
+        <childnode refid="15386" relation="include">
+        </childnode>
+      </node>
+      <node id="15401">
+        <label>cmath</label>
+      </node>
+      <node id="15429">
+        <label>boost/thread/thread.hpp</label>
+      </node>
+      <node id="15385">
+        <label>string</label>
+      </node>
+      <node id="15394">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="15420">
+        <label>meldProcessVMCommands.h</label>
+        <link refid="meld_process_v_m_commands_8h"/>
+        <childnode refid="15409" relation="include">
+        </childnode>
+        <childnode refid="15404" relation="include">
+        </childnode>
+      </node>
+      <node id="15378">
+        <label>map</label>
+      </node>
+      <node id="15380">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="15402">
+        <label>memory.h</label>
+      </node>
+      <node id="15389">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="15385" relation="include">
+        </childnode>
+        <childnode refid="15390" relation="include">
+        </childnode>
+        <childnode refid="15400" relation="include">
+        </childnode>
+        <childnode refid="15404" relation="include">
+        </childnode>
+      </node>
+      <node id="15393">
+        <label>fstream</label>
+      </node>
+      <node id="15405">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="15386" relation="include">
+        </childnode>
+        <childnode refid="15373" relation="include">
+        </childnode>
+      </node>
+      <node id="15397">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="15408">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="15426">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/Debugger/concurrentQueue.hpp</label>
+      </node>
+      <node id="15403">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="15399" relation="include">
+        </childnode>
+        <childnode refid="15400" relation="include">
+        </childnode>
+        <childnode refid="15398" relation="include">
+        </childnode>
+      </node>
+      <node id="15395">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="15375">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="15423">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="15413">
+        <label>pthread.h</label>
+      </node>
+      <node id="15370">
+        <label>meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15372" relation="include">
+        </childnode>
+        <childnode refid="15373" relation="include">
+        </childnode>
+        <childnode refid="15374" relation="include">
+        </childnode>
+        <childnode refid="15419" relation="include">
+        </childnode>
+        <childnode refid="15420" relation="include">
+        </childnode>
+      </node>
+      <node id="15411">
+        <label>string.h</label>
+      </node>
+      <node id="15428">
+        <label>boost/thread/condition.hpp</label>
+      </node>
+      <node id="15415">
+        <label>vector</label>
+      </node>
+      <node id="15425">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/Debugger/debug_Simhandler.hpp</label>
+      </node>
+      <node id="15409">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="15410" relation="include">
+        </childnode>
+        <childnode refid="15411" relation="include">
+        </childnode>
+        <childnode refid="15372" relation="include">
+        </childnode>
+        <childnode refid="15386" relation="include">
+        </childnode>
+      </node>
+      <node id="15377">
+        <label>sstream</label>
+      </node>
+      <node id="15418">
+        <label>commandLine.h</label>
+        <link refid="command_line_8h"/>
+        <childnode refid="15385" relation="include">
+        </childnode>
+      </node>
+      <node id="15374">
+        <label>simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="15375" relation="include">
+        </childnode>
+        <childnode refid="15376" relation="include">
+        </childnode>
+        <childnode refid="15416" relation="include">
+        </childnode>
+        <childnode refid="15418" relation="include">
+        </childnode>
+      </node>
+      <node id="15376">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15377" relation="include">
+        </childnode>
+        <childnode refid="15378" relation="include">
+        </childnode>
+        <childnode refid="15373" relation="include">
+        </childnode>
+        <childnode refid="15379" relation="include">
+        </childnode>
+        <childnode refid="15380" relation="include">
+        </childnode>
+        <childnode refid="15381" relation="include">
+        </childnode>
+        <childnode refid="15382" relation="include">
+        </childnode>
+        <childnode refid="15383" relation="include">
+        </childnode>
+        <childnode refid="15384" relation="include">
+        </childnode>
+        <childnode refid="15412" relation="include">
+        </childnode>
+      </node>
+      <node id="15399">
+        <label>math.h</label>
+      </node>
+      <node id="15404">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15393" relation="include">
+        </childnode>
+        <childnode refid="15401" relation="include">
+        </childnode>
+        <childnode refid="15402" relation="include">
+        </childnode>
+        <childnode refid="15390" relation="include">
+        </childnode>
+      </node>
+      <node id="15371">
+        <label>iostream</label>
+      </node>
+      <node id="15369">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</label>
+        <link refid="meldProcessDebugger.cpp"/>
+        <childnode refid="15370" relation="include">
+        </childnode>
+        <childnode refid="15421" relation="include">
+        </childnode>
+        <childnode refid="15424" relation="include">
+        </childnode>
+        <childnode refid="15425" relation="include">
+        </childnode>
+        <childnode refid="15385" relation="include">
+        </childnode>
+        <childnode refid="15388" relation="include">
+        </childnode>
+        <childnode refid="15407" relation="include">
+        </childnode>
+        <childnode refid="15426" relation="include">
+        </childnode>
+        <childnode refid="15422" relation="include">
+        </childnode>
+        <childnode refid="15427" relation="include">
+        </childnode>
+        <childnode refid="15428" relation="include">
+        </childnode>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15391" relation="include">
+        </childnode>
+        <childnode refid="15429" relation="include">
+        </childnode>
+        <childnode refid="15381" relation="include">
+        </childnode>
+      </node>
+      <node id="15410">
+        <label>deque</label>
+      </node>
+      <node id="15381">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="15382">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="15417">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="15393" relation="include">
+        </childnode>
+      </node>
+      <node id="15424">
+        <label>Debugger/debug_Simprompt.hpp</label>
+      </node>
+      <node id="15384">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="15373" relation="include">
+        </childnode>
+        <childnode refid="15385" relation="include">
+        </childnode>
+        <childnode refid="15372" relation="include">
+        </childnode>
+        <childnode refid="15386" relation="include">
+        </childnode>
+        <childnode refid="15408" relation="include">
+        </childnode>
+        <childnode refid="15409" relation="include">
+        </childnode>
+        <childnode refid="15404" relation="include">
+        </childnode>
+      </node>
+      <node id="15387">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="15416">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15378" relation="include">
+        </childnode>
+        <childnode refid="15415" relation="include">
+        </childnode>
+        <childnode refid="15382" relation="include">
+        </childnode>
+        <childnode refid="15379" relation="include">
+        </childnode>
+        <childnode refid="15386" relation="include">
+        </childnode>
+        <childnode refid="15389" relation="include">
+        </childnode>
+        <childnode refid="15417" relation="include">
+        </childnode>
+      </node>
+      <node id="15396">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="15391">
+        <label>stdio.h</label>
+      </node>
+      <node id="15406">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="15386" relation="include">
+        </childnode>
+        <childnode refid="15407" relation="include">
+        </childnode>
+        <childnode refid="15371" relation="include">
+        </childnode>
+        <childnode refid="15387" relation="include">
+        </childnode>
+        <childnode refid="15388" relation="include">
+        </childnode>
+      </node>
+      <node id="15419">
+        <label>meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="15376" relation="include">
+        </childnode>
+        <childnode refid="15409" relation="include">
+        </childnode>
+        <childnode refid="15380" relation="include">
+        </childnode>
+        <childnode refid="15381" relation="include">
+        </childnode>
+        <childnode refid="15383" relation="include">
+        </childnode>
+        <childnode refid="15382" relation="include">
+        </childnode>
+        <childnode refid="15417" relation="include">
+        </childnode>
+      </node>
+      <node id="15373">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_meld_process">MeldProcess</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_process_debugger_8h" kindref="compound">meldProcessDebugger.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_process_v_m_8h" kindref="compound">meldProcessVM.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Debugger/debug_Simprompt.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/thread/thread.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/bind.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="namespace_meld_process" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_meld_process" kindref="compound">MeldProcess</ref><sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><ref refid="class_meld_process_1_1_meld_process_debugger" kindref="compound">MeldProcessDebugger</ref><sp/>*<ref refid="class_meld_process_1_1_meld_process_debugger_1a43fbad00ad13eb6c4dfb6aa78d465d33" kindref="member">MeldProcessDebugger::debugger</ref>=NULL;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="class_meld_process_1_1_meld_process_debugger_1a231ebd049b920011364bed6a8c56ff26" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_meld_process_debugger_1a231ebd049b920011364bed6a8c56ff26" kindref="member">MeldProcessDebugger::MeldProcessDebugger</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_meld_process_1_1_meld_process_debugger_1a43fbad00ad13eb6c4dfb6aa78d465d33" kindref="member">debugger</ref><sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a43fbad00ad13eb6c4dfb6aa78d465d33" kindref="member">debugger</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a646f86e30e215212602ad3317658538a" kindref="member">debuggerCommandHandler</ref><sp/>=<sp/>debugger::initDebugger(&amp;<ref refid="namespace_meld_process_1a89030efced0ddbe796a6be27424b3b10" kindref="member">sendCommand</ref>,<sp/>&amp;<ref refid="namespace_meld_process_1ac4db6800ed7b715d17eb06ba8f6dc163" kindref="member">pauseSimulation</ref>,<sp/>&amp;<ref refid="namespace_meld_process_1ac3b5f0341c8fc0f831861487210e495e" kindref="member">unPauseSimulation</ref>,<sp/>&amp;<ref refid="namespace_meld_process_1aeadca003234162d1bbcb571574b8428d" kindref="member">quit</ref>);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" kindref="member">ERRPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;31m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Only<sp/>one<sp/>Debugger<sp/>instance<sp/>can<sp/>be<sp/>created,<sp/>aborting<sp/>!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(EXIT_FAILURE);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="class_meld_process_1_1_meld_process_debugger_1a8820daa0ae2cd072cbba50af5590dc82" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a8820daa0ae2cd072cbba50af5590dc82" kindref="member">MeldProcessDebugger::sendCmd</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/><ref refid="class_meld_process_1_1_debbugger_v_m_command" kindref="compound">DebbuggerVMCommand</ref><sp/>&amp;c)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_meld_process_1_1_meld_process_v_m_1a29f1e29b68fb12cebb95828d37ebefcd" kindref="member">MeldProcessVM::sendCommand</ref>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/>c)<sp/>==<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>==<sp/>-1)<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>send<sp/>to<sp/>all<sp/>vm</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a595d19ebd0f4a22ecf4281f306e04941" kindref="member">MeldProcessVM::broadcastDebugCommand</ref>(c);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="class_meld_process_1_1_meld_process_debugger_1ac98d7fe7ede84e31ed1bc31f9dd94e83" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1ac98d7fe7ede84e31ed1bc31f9dd94e83" kindref="member">MeldProcessDebugger::handleDebugCommand</ref>(<ref refid="class_meld_process_1_1_debbugger_v_m_command" kindref="compound">DebbuggerVMCommand</ref><sp/>*c)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a646f86e30e215212602ad3317658538a" kindref="member">debuggerCommandHandler</ref>(c-&gt;<ref refid="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" kindref="member">getData</ref>());</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>c;<sp/></highlight><highlight class="comment">//<sp/>delete<sp/>command<sp/>object,<sp/>not<sp/>the<sp/>data.<sp/>The<sp/>debugger<sp/>will<sp/>do<sp/>it<sp/>after<sp/>having<sp/>processed<sp/>the<sp/>command.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="class_meld_process_1_1_meld_process_debugger_1ac7d4845272cc367789936168a5d08aae" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1ac7d4845272cc367789936168a5d08aae" kindref="member">MeldProcessDebugger::pauseSim</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t)<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(t<sp/>==<sp/>-1)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_meld_process_1adbb7674143d2135d6ab52ed8c2f258af" kindref="member">getScheduler</ref>()-&gt;getMode()<sp/>==<sp/><ref refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" kindref="member">SCHEDULER_MODE_REALTIME</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1adbb7674143d2135d6ab52ed8c2f258af" kindref="member">getScheduler</ref>()-&gt;<ref refid="class_meld_process_1_1_meld_process_scheduler_1ac1a431d62d9d23f8d2872a52d1e1156d" kindref="member">pause</ref>(<ref refid="namespace_meld_process_1adbb7674143d2135d6ab52ed8c2f258af" kindref="member">getScheduler</ref>()-&gt;now());</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ostringstream<sp/>msg;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>msg<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Time<sp/>break<sp/>point<sp/>set<sp/>at<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>t<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a646f86e30e215212602ad3317658538a" kindref="member">debuggerCommandHandler</ref>(debugger::pack(debugger::PRINTCONTENT,<sp/>msg.str(),1));</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a646f86e30e215212602ad3317658538a" kindref="member">debuggerCommandHandler</ref>(debugger::pack(debugger::PRINTCONTENT,</highlight><highlight class="stringliteral">&quot;2&quot;</highlight><highlight class="normal">,0));</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1adbb7674143d2135d6ab52ed8c2f258af" kindref="member">getScheduler</ref>()-&gt;<ref refid="class_meld_process_1_1_meld_process_scheduler_1ac1a431d62d9d23f8d2872a52d1e1156d" kindref="member">pause</ref>(t);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="class_meld_process_1_1_meld_process_debugger_1a62488b8136f3ee45c4b3a777a92dca75" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a62488b8136f3ee45c4b3a777a92dca75" kindref="member">MeldProcessDebugger::unPauseSim</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_meld_process_1adbb7674143d2135d6ab52ed8c2f258af" kindref="member">getScheduler</ref>()-&gt;<ref refid="class_meld_process_1_1_meld_process_scheduler_1a787c5d9a9596f0515f1c8a3b4344db5b" kindref="member">unPause</ref>();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="class_meld_process_1_1_meld_process_debugger_1a6b53e3da3c88554339c840549674ead3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a6b53e3da3c88554339c840549674ead3" kindref="member">MeldProcessDebugger::waitForDebuggerEnd</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>debugger::joinThread();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="class_meld_process_1_1_meld_process_debugger_1abb65cecb74805bf2509f32661c9e0a66" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1abb65cecb74805bf2509f32661c9e0a66" kindref="member">MeldProcessDebugger::detachDebuggerThread</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>debugger::detachThread();</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="class_meld_process_1_1_meld_process_debugger_1a463d2c3905c9c839a86c62d83bf5dac3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a463d2c3905c9c839a86c62d83bf5dac3" kindref="member">MeldProcessDebugger::sendTerminateCmd</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//debugger::sendCmd(id,debugger::TERMINATE,&quot;&quot;);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Unfreezes<sp/>the<sp/>debugger<sp/>thread<sp/>when<sp/>the<sp/>user<sp/>presses<sp/>&quot;p&quot;<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/>simulator<sp/>graphical<sp/>window.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="class_meld_process_1_1_meld_process_debugger_1ac48b7b3b60bf543b593109216321be75" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1ac48b7b3b60bf543b593109216321be75" kindref="member">MeldProcessDebugger::handlePauseRequest</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>debugger::handlePauseCommand();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="class_meld_process_1_1_meld_process_debugger_1a2c191ae614f56aaced833fa0345cb8af" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a2c191ae614f56aaced833fa0345cb8af" kindref="member">MeldProcessDebugger::handleBreakAtTimeReached</ref>(uint64_t<sp/>t)<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>ostringstream<sp/>msg;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>msg<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Time<sp/>break<sp/>point<sp/>reached<sp/>at<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>t<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a646f86e30e215212602ad3317658538a" kindref="member">debuggerCommandHandler</ref>(debugger::pack(debugger::TIME,<sp/>msg.str(),1));</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a646f86e30e215212602ad3317658538a" kindref="member">debuggerCommandHandler</ref>(debugger::pack(debugger::TIME,</highlight><highlight class="stringliteral">&quot;2&quot;</highlight><highlight class="normal">,0));</highlight></codeline>
+<codeline lineno="86"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="class_meld_process_1_1_meld_process_debugger_1a26721b7dec3d688d976ccdad9bb2cbba" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_debugger_1a26721b7dec3d688d976ccdad9bb2cbba" kindref="member">MeldProcessDebugger::print</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>s,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>arrow)<sp/>{<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/>s<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_meld_process_1_1_meld_process_v_m_1a86485547146b1717ca00e055774336b2" kindref="member">MeldProcessVM::isInDebuggingMode</ref>()<sp/>&amp;&amp;<sp/>arrow)<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_meld_process_1_1_meld_process_debugger_1a36f0440efbfca9478a83b4ce77bce4ee" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_meld_process_debugger_1a36f0440efbfca9478a83b4ce77bce4ee" kindref="member">MeldProcessDebugger::~MeldProcessDebugger</ref>()<sp/>{<sp/>};</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp"/>
+  </compounddef>
+</doxygen>

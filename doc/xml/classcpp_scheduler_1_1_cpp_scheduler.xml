@@ -1,0 +1,289 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="classcpp_scheduler_1_1_cpp_scheduler" kind="class" language="C++" prot="public">
+    <compoundname>cppScheduler::CppScheduler</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_scheduler" prot="public" virt="non-virtual">BaseSimulator::Scheduler</basecompoundref>
+    <includes refid="cpp_scheduler_8h" local="no">cppScheduler.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classcpp_scheduler_1_1_cpp_scheduler_1a22ce4010a929e5c2613edc767525311f" prot="protected" static="no" mutable="no">
+        <type>boost::thread *</type>
+        <definition>boost::thread* cppScheduler::CppScheduler::schedulerThread</definition>
+        <argsstring></argsstring>
+        <name>schedulerThread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classcpp_scheduler_1_1_cpp_scheduler_1a39a37fa34139bbf3408c1dae555232c4" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int cppScheduler::CppScheduler::schedulerMode</definition>
+        <argsstring></argsstring>
+        <name>schedulerMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="26" bodyend="-1"/>
+        <referencedby refid="classcpp_scheduler_1_1_cpp_scheduler_1a1c2887e54970bc7ba4806dc181d3ceae" compoundref="cpp_scheduler_8cpp" startline="152" endline="156">start</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classcpp_scheduler_1_1_cpp_scheduler_1a3b7eae49cf72c3ebce3f94e21b40fb5d" prot="public" static="no" mutable="no">
+        <type>boost::interprocess::interprocess_semaphore *</type>
+        <definition>boost::interprocess::interprocess_semaphore* cppScheduler::CppScheduler::sem_schedulerStart</definition>
+        <argsstring></argsstring>
+        <name>sem_schedulerStart</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="classcpp_scheduler_1_1_cpp_scheduler_1a1c2887e54970bc7ba4806dc181d3ceae" compoundref="cpp_scheduler_8cpp" startline="152" endline="156">start</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1a2adb71b818bff4e0cc1a0fb4b86c9932" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>cppScheduler::CppScheduler::CppScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>CppScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp" bodystart="21" bodyend="27"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+      </memberdef>
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1a75015395cebfa4bc2689beb9b6980802" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>cppScheduler::CppScheduler::~CppScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>~CppScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp" bodystart="29" bodyend="33"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1a8982dbad04f97509686a568f15076003" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * cppScheduler::CppScheduler::startPaused</definition>
+        <argsstring>()</argsstring>
+        <name>startPaused</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp" bodystart="43" bodyend="150"/>
+        <references refid="scheduler_8h_1abf9fcbad9241517e70536eb685c6c799" compoundref="scheduler_8h" startline="25">SCHEDULER_MODE_FASTEST</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+        <references refid="class_event_1a98e8d962b67f768b9278481564f83ab1" compoundref="events_8cpp" startline="55" endline="57">Event::getNextId</references>
+        <references refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" compoundref="events_8cpp" startline="59" endline="61">Event::getNbLivingEvents</references>
+        <references refid="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" compoundref="network_8cpp" startline="44" endline="46">Message::getNbMessages</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1a18ca62ae8dcc97634eb1311662341b43" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void cppScheduler::CppScheduler::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp" bodystart="35" bodyend="37"/>
+        <referencedby refid="namespace_blinky_blocks_1ac102af21a67bb63072643278e99756f4" compoundref="blinky_blocks_scheduler_8h" startline="29" endline="42">BlinkyBlocks::createScheduler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1ac1c2b646d19d7d81b84d811869dc2faa" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void cppScheduler::CppScheduler::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp" bodystart="39" bodyend="41"/>
+        <referencedby refid="namespace_blinky_blocks_1aac09cf80b036c44ba801c48aab6a05be" compoundref="blinky_blocks_scheduler_8h" startline="44" endline="56">BlinkyBlocks::deleteScheduler</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1abdc33d7ebf66a3e3f5176b336defd5ce" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref> *</type>
+        <definition>static CppScheduler* cppScheduler::CppScheduler::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="37" bodyend="40"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1af2b34d95fa8d83da061ef2acb5fed3de" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cppScheduler::CppScheduler::printInfo</definition>
+        <argsstring>()</argsstring>
+        <name>printInfo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="42" bodyend="44"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1a1c2887e54970bc7ba4806dc181d3ceae" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void cppScheduler::CppScheduler::start</definition>
+        <argsstring>(int mode)</argsstring>
+        <name>start</name>
+        <reimplements refid="class_base_simulator_1_1_scheduler_1a242f63f51209b7fda69f46832bb4cc94">start</reimplements>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp" bodystart="152" bodyend="156"/>
+        <references refid="classcpp_scheduler_1_1_cpp_scheduler_1a39a37fa34139bbf3408c1dae555232c4" compoundref="cpp_scheduler_8h" startline="26">schedulerMode</references>
+        <references refid="classcpp_scheduler_1_1_cpp_scheduler_1a3b7eae49cf72c3ebce3f94e21b40fb5d" compoundref="cpp_scheduler_8h" startline="33">sem_schedulerStart</references>
+      </memberdef>
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1a129c746635b8bd68c4515675967ffe73" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cppScheduler::CppScheduler::waitForSchedulerEnd</definition>
+        <argsstring>()</argsstring>
+        <name>waitForSchedulerEnd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classcpp_scheduler_1_1_cpp_scheduler_1a21ff5b8781b538bdc632f7bcc74eb0ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int cppScheduler::CppScheduler::getMode</definition>
+        <argsstring>()</argsstring>
+        <name>getMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="52" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1708">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+      </node>
+      <node id="1707">
+        <label>cppScheduler::CppScheduler</label>
+        <link refid="classcpp_scheduler_1_1_cpp_scheduler"/>
+        <childnode refid="1708" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1710">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="1710" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="1709">
+        <label>cppScheduler::CppScheduler</label>
+        <link refid="classcpp_scheduler_1_1_cpp_scheduler"/>
+        <childnode refid="1710" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="23" bodyend="54"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_scheduler_1ac1fba29a1baa8cb10850ea3482c77e7b" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>addKeyword</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a2adb71b818bff4e0cc1a0fb4b86c9932" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>CppScheduler</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a18ca62ae8dcc97634eb1311662341b43" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>createScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1aba5efd9a72cb0aad8896d649399e418b" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>currentDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac3807abb2d5f62b5208da9b046c6101d" prot="public" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>debug</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac488bdbb9cfc8db34a3862a2aca81de1" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>debugDate</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1ac1c2b646d19d7d81b84d811869dc2faa" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>deleteScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa61d0f40619e29d2a2deff9663c5b60b3" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>ENDED</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a64b5f64b90fcc6d61fa6f02b28229caf" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>eventsMap</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4d4384500eb203b3770a01e8aed4e2bc" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>eventsMapSize</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a21ff5b8781b538bdc632f7bcc74eb0ac" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>getMode</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1acc23d53cd67a3a90cd811a5fbf17107d" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>getNbreMessages</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1abdc33d7ebf66a3e3f5176b336defd5ce" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>getScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a6ea1a5506bfaa5e7a4873b76d6545d08" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>getState</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a34e7e2f65b63ea2fff50b2083e324cfc" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>largestEventsMapSize</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4d733428435018614ba07bfd12c9cbdb" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>lock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a71703934946c4fd3c9df7d0cfe8675a9" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>maximumDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a03f3f940c6a87a05124fd1ee623bf7f8" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>mutex_schedule</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a02436c16d488003f947119e859a82ea1" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>mutex_trace</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa28ba7aad53862cc08b3f1e50e47c60cb" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>NOTREADY</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa5cee64df631489c6e8bd753e7d67bf05" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>NOTSTARTED</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>now</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa5bda1b17aeede9905ed346ce303cc562" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>PAUSED</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1af2b34d95fa8d83da061ef2acb5fed3de" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>printInfo</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a7f415c6da6d2f533407b173ad08a1bae" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>removeEventsToBlock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a75613ffc0ff20be96fee25cd60012879" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>removeKeywords</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a8046d5cb5c7f085ca848ddf368fd96b5" prot="public" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>restart</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aaa53d7d02469eabe0aeb8056c0777caf5" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>RUNNING</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" prot="public" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>schedule</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a9d417c5bf3558a7344362b5c7076a56b" prot="public" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>scheduleLock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a39592d973751ef2e8cec4a086f100e7e" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>Scheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a887c2ae764fe364a8d5dcb738b284ee6" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>scheduler</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a39a37fa34139bbf3408c1dae555232c4" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>schedulerMode</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a22ce4010a929e5c2613edc767525311f" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>schedulerThread</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a3b7eae49cf72c3ebce3f94e21b40fb5d" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>sem_schedulerStart</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1aca72617a32cf260ac6d09f43d024bb26" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>setMaximumDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4fb373ae5465372b61a53fa8e73a1e6c" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>setState</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a1c2887e54970bc7ba4806dc181d3ceae" prot="public" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>start</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a8982dbad04f97509686a568f15076003" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>startPaused</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067a" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>State</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a6aa4eb67b4af24f58d186b28fa5037e2" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>state</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a29d72be4ed6f925d6ea20a5584050d21" prot="public" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>stop</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a5850b793fd4a94b06b499ac892a556f9" prot="protected" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>tabKeywords</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1af6601a5e1b70ff8ee02400b4657f6a22" prot="public" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>trace</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a398ea684955459c97fd9a15e541b8440" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>unlock</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a129c746635b8bd68c4515675967ffe73" prot="public" virt="non-virtual"><scope>cppScheduler::CppScheduler</scope><name>waitForSchedulerEnd</name></member>
+      <member refid="classcpp_scheduler_1_1_cpp_scheduler_1a75015395cebfa4bc2689beb9b6980802" prot="protected" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>~CppScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac11343e2de03e636df91f89e30fcd9b1" prot="protected" virt="virtual"><scope>cppScheduler::CppScheduler</scope><name>~Scheduler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

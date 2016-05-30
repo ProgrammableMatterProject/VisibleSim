@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="blinky_blocks_gl_block_8cpp" kind="file" language="C++">
+    <compoundname>blinkyBlocksGlBlock.cpp</compoundname>
+    <includes refid="blinky_blocks_gl_block_8h" local="yes">blinkyBlocksGlBlock.h</includes>
+    <incdepgraph>
+      <node id="10331">
+        <label>list</label>
+      </node>
+      <node id="10303">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="10304" relation="include">
+        </childnode>
+        <childnode refid="10319" relation="include">
+        </childnode>
+        <childnode refid="10313" relation="include">
+        </childnode>
+        <childnode refid="10318" relation="include">
+        </childnode>
+        <childnode refid="10320" relation="include">
+        </childnode>
+        <childnode refid="10322" relation="include">
+        </childnode>
+      </node>
+      <node id="10313">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="10309" relation="include">
+        </childnode>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10308" relation="include">
+        </childnode>
+        <childnode refid="10314" relation="include">
+        </childnode>
+        <childnode refid="10315" relation="include">
+        </childnode>
+      </node>
+      <node id="10304">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="10305" relation="include">
+        </childnode>
+        <childnode refid="10306" relation="include">
+        </childnode>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10308" relation="include">
+        </childnode>
+        <childnode refid="10309" relation="include">
+        </childnode>
+        <childnode refid="10310" relation="include">
+        </childnode>
+        <childnode refid="10311" relation="include">
+        </childnode>
+        <childnode refid="10312" relation="include">
+        </childnode>
+        <childnode refid="10313" relation="include">
+        </childnode>
+        <childnode refid="10318" relation="include">
+        </childnode>
+      </node>
+      <node id="10315">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10308" relation="include">
+        </childnode>
+        <childnode refid="10316" relation="include">
+        </childnode>
+        <childnode refid="10317" relation="include">
+        </childnode>
+      </node>
+      <node id="10322">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="10323" relation="include">
+        </childnode>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10308" relation="include">
+        </childnode>
+        <childnode refid="10317" relation="include">
+        </childnode>
+        <childnode refid="10320" relation="include">
+        </childnode>
+        <childnode refid="10324" relation="include">
+        </childnode>
+        <childnode refid="10321" relation="include">
+        </childnode>
+      </node>
+      <node id="10329">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="10327">
+        <label>assert.h</label>
+      </node>
+      <node id="10335">
+        <label>stdint.h</label>
+      </node>
+      <node id="10306">
+        <label>stdlib.h</label>
+      </node>
+      <node id="10328">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="10329" relation="include">
+        </childnode>
+        <childnode refid="10330" relation="include">
+        </childnode>
+        <childnode refid="10326" relation="include">
+        </childnode>
+        <childnode refid="10331" relation="include">
+        </childnode>
+        <childnode refid="10320" relation="include">
+        </childnode>
+        <childnode refid="10332" relation="include">
+        </childnode>
+        <childnode refid="10334" relation="include">
+        </childnode>
+      </node>
+      <node id="10299">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksGlBlock.cpp</label>
+        <link refid="blinkyBlocksGlBlock.cpp"/>
+        <childnode refid="10300" relation="include">
+        </childnode>
+      </node>
+      <node id="10316">
+        <label>cmath</label>
+      </node>
+      <node id="10301">
+        <label>string</label>
+      </node>
+      <node id="10309">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="10325">
+        <label>map</label>
+      </node>
+      <node id="10320">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="10301" relation="include">
+        </childnode>
+        <childnode refid="10304" relation="include">
+        </childnode>
+        <childnode refid="10315" relation="include">
+        </childnode>
+        <childnode refid="10321" relation="include">
+        </childnode>
+      </node>
+      <node id="10317">
+        <label>memory.h</label>
+      </node>
+      <node id="10308">
+        <label>fstream</label>
+      </node>
+      <node id="10332">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="10328" relation="include">
+        </childnode>
+        <childnode refid="10333" relation="include">
+        </childnode>
+      </node>
+      <node id="10312">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="10318">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="10314" relation="include">
+        </childnode>
+        <childnode refid="10315" relation="include">
+        </childnode>
+        <childnode refid="10313" relation="include">
+        </childnode>
+      </node>
+      <node id="10310">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="10319">
+        <label>pthread.h</label>
+      </node>
+      <node id="10337">
+        <label>string.h</label>
+      </node>
+      <node id="10323">
+        <label>vector</label>
+      </node>
+      <node id="10314">
+        <label>math.h</label>
+      </node>
+      <node id="10321">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10308" relation="include">
+        </childnode>
+        <childnode refid="10316" relation="include">
+        </childnode>
+        <childnode refid="10317" relation="include">
+        </childnode>
+        <childnode refid="10304" relation="include">
+        </childnode>
+      </node>
+      <node id="10307">
+        <label>iostream</label>
+      </node>
+      <node id="10326">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="10336">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="10308" relation="include">
+        </childnode>
+      </node>
+      <node id="10330">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="10324">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10325" relation="include">
+        </childnode>
+        <childnode refid="10323" relation="include">
+        </childnode>
+        <childnode refid="10326" relation="include">
+        </childnode>
+        <childnode refid="10327" relation="include">
+        </childnode>
+        <childnode refid="10328" relation="include">
+        </childnode>
+        <childnode refid="10320" relation="include">
+        </childnode>
+        <childnode refid="10336" relation="include">
+        </childnode>
+      </node>
+      <node id="10300">
+        <label>blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="10301" relation="include">
+        </childnode>
+        <childnode refid="10302" relation="include">
+        </childnode>
+        <childnode refid="10320" relation="include">
+        </childnode>
+      </node>
+      <node id="10311">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="10305">
+        <label>stdio.h</label>
+      </node>
+      <node id="10302">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="10303" relation="include">
+        </childnode>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10308" relation="include">
+        </childnode>
+        <childnode refid="10301" relation="include">
+        </childnode>
+        <childnode refid="10323" relation="include">
+        </childnode>
+        <childnode refid="10316" relation="include">
+        </childnode>
+        <childnode refid="10306" relation="include">
+        </childnode>
+        <childnode refid="10337" relation="include">
+        </childnode>
+      </node>
+      <node id="10334">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="10328" relation="include">
+        </childnode>
+        <childnode refid="10335" relation="include">
+        </childnode>
+        <childnode refid="10307" relation="include">
+        </childnode>
+        <childnode refid="10330" relation="include">
+        </childnode>
+        <childnode refid="10331" relation="include">
+        </childnode>
+      </node>
+      <node id="10333">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_blinky_blocks">BlinkyBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="blinky_blocks_gl_block_8h" kindref="compound">blinkyBlocksGlBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_blinky_blocks" kindref="compound">BlinkyBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5" refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a7dc14cd2894701117700ce07e127c8df" refkind="member"><highlight class="normal"><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a7dc14cd2894701117700ce07e127c8df" kindref="member">BlinkyBlocksGlBlock::BlinkyBlocksGlBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>:<sp/><ref refid="class_gl_block" kindref="compound">GlBlock</ref>(id)<sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a2ea9d8f6aaa4a82581c8b3fbbf05dc58" refkind="member"><highlight class="normal"><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a2ea9d8f6aaa4a82581c8b3fbbf05dc58" kindref="member">BlinkyBlocksGlBlock::~BlinkyBlocksGlBlock</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a619a772aae3300b660eb951c5e39c613" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1a619a772aae3300b660eb951c5e39c613" kindref="member">BlinkyBlocksGlBlock::glDraw</ref>(<ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref><sp/>*ptrObj)<sp/>{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>glPushMatrix();</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>glTranslatef(<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[0],<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[1],<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[2]);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" kindref="member">isHighlighted</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>GLfloat<sp/>n<sp/>=<sp/>0.5+1.5*(1.0-(glutGet(GLUT_ELAPSED_TIME)%1000)/1000.0);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>GLfloat<sp/>c[4];</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>c[0]=<ref refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" kindref="member">color</ref>[0]*n;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>c[1]=<ref refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" kindref="member">color</ref>[1]*n;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>c[2]=<ref refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" kindref="member">color</ref>[2]*n;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>c[3]=1.0;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptrObj-&gt;<ref refid="class_obj_loader_1_1_obj_loader_1ac656199a96623b14bf5038632bbffd10" kindref="member">setLightedColor</ref>(c);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptrObj-&gt;<ref refid="class_obj_loader_1_1_obj_loader_1ac656199a96623b14bf5038632bbffd10" kindref="member">setLightedColor</ref>(<ref refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" kindref="member">color</ref>);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>ptrObj-&gt;<ref refid="class_obj_loader_1_1_obj_loader_1ac92663308186d17dacb1e9337d3fe21a" kindref="member">glDraw</ref>();</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>glPopMatrix();</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1aef5efb531a73f261ff1eb0198b81208a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1aef5efb531a73f261ff1eb0198b81208a" kindref="member">BlinkyBlocksGlBlock::glDrawId</ref>(<ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref><sp/>*ptrObj,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;n)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>glPushMatrix();</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>glTranslatef(<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[0],<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[1],<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[2]);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>ptrObj-&gt;<ref refid="class_obj_loader_1_1_obj_loader_1a53df76e90fc70c3d3f98f5df257ae335" kindref="member">glDrawId</ref>(n);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>glPopMatrix();</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1ab5965cc9bc0cae76b984cff61efa8122" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1ab5965cc9bc0cae76b984cff61efa8122" kindref="member">BlinkyBlocksGlBlock::glDrawIdByMaterial</ref>(<ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref><sp/>*ptrObj,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;n)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>glPushMatrix();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>glTranslatef(<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[0],<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[1],<ref refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" kindref="member">position</ref>[2]);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>ptrObj-&gt;<ref refid="class_obj_loader_1_1_obj_loader_1a940beec33d1554190596fae8fa034d6f" kindref="member">glDrawIdByMaterial</ref>(n);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>glPopMatrix();</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1ae3b6c92cb3f32ffaf6e841bfbc34ae35" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block_1ae3b6c92cb3f32ffaf6e841bfbc34ae35" kindref="member">BlinkyBlocksGlBlock::getInfo</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7" kindref="member">GlBlock::getInfo</ref>();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksGlBlock.cpp"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_obj_loader_1_1_point2" kind="class" language="C++" prot="public">
+    <compoundname>ObjLoader::Point2</compoundname>
+    <includes refid="obj_loader_8h" local="no">objLoader.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_obj_loader_1_1_point2_1afd6e94cdd77d11bbc95d06aaa44aec17" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float ObjLoader::Point2::v[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>v</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_obj_loader_1_1_point2_1a612a00107f00e54c69696fd52d699a6d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ObjLoader::Point2::Point2</definition>
+        <argsstring>()</argsstring>
+        <name>Point2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_obj_loader_1_1_point2_1a1becb1b62e5295159ac0f3f893ae6c12" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ObjLoader::Point2::Point2</definition>
+        <argsstring>(double x, double y)</argsstring>
+        <name>Point2</name>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_obj_loader_1_1_point2_1a4668c63cff3673cbdea8e7c2352a553a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int ObjLoader::Point2::scan</definition>
+        <argsstring>(const char *str)</argsstring>
+        <name>scan</name>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="39" bodyend="43"/>
+        <referencedby refid="class_obj_loader_1_1_obj_loader_1aa85283e5cd3ac8bcd4d3b8c57495e1c1" compoundref="obj_loader_8cpp" startline="56" endline="295">ObjLoader::ObjLoader::ObjLoader</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="32" bodyend="45"/>
+    <listofallmembers>
+      <member refid="class_obj_loader_1_1_point2_1a612a00107f00e54c69696fd52d699a6d" prot="public" virt="non-virtual"><scope>ObjLoader::Point2</scope><name>Point2</name></member>
+      <member refid="class_obj_loader_1_1_point2_1a1becb1b62e5295159ac0f3f893ae6c12" prot="public" virt="non-virtual"><scope>ObjLoader::Point2</scope><name>Point2</name></member>
+      <member refid="class_obj_loader_1_1_point2_1a4668c63cff3673cbdea8e7c2352a553a" prot="public" virt="non-virtual"><scope>ObjLoader::Point2</scope><name>scan</name></member>
+      <member refid="class_obj_loader_1_1_point2_1afd6e94cdd77d11bbc95d06aaa44aec17" prot="public" virt="non-virtual"><scope>ObjLoader::Point2</scope><name>v</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

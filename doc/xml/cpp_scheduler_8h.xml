@@ -1,0 +1,492 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="cpp_scheduler_8h" kind="file" language="C++">
+    <compoundname>cppScheduler.h</compoundname>
+    <includes refid="scheduler_8h" local="yes">scheduler.h</includes>
+    <includes refid="network_8h" local="yes">network.h</includes>
+    <includes local="no">boost/thread.hpp</includes>
+    <includes local="no">boost/bind.hpp</includes>
+    <includes local="no">boost/interprocess/sync/interprocess_semaphore.hpp</includes>
+    <includes local="no">boost/interprocess/sync/interprocess_mutex.hpp</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includedby refid="blinky_blocks_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</includedby>
+    <includedby refid="cpp_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</includedby>
+    <incdepgraph>
+      <node id="14169">
+        <label>list</label>
+      </node>
+      <node id="14193">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="14171" relation="include">
+        </childnode>
+        <childnode refid="14194" relation="include">
+        </childnode>
+        <childnode refid="14179" relation="include">
+        </childnode>
+        <childnode refid="14184" relation="include">
+        </childnode>
+        <childnode refid="14170" relation="include">
+        </childnode>
+        <childnode refid="14195" relation="include">
+        </childnode>
+      </node>
+      <node id="14179">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="14175" relation="include">
+        </childnode>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14174" relation="include">
+        </childnode>
+        <childnode refid="14180" relation="include">
+        </childnode>
+        <childnode refid="14181" relation="include">
+        </childnode>
+      </node>
+      <node id="14171">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="14172" relation="include">
+        </childnode>
+        <childnode refid="14173" relation="include">
+        </childnode>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14174" relation="include">
+        </childnode>
+        <childnode refid="14175" relation="include">
+        </childnode>
+        <childnode refid="14176" relation="include">
+        </childnode>
+        <childnode refid="14177" relation="include">
+        </childnode>
+        <childnode refid="14178" relation="include">
+        </childnode>
+        <childnode refid="14179" relation="include">
+        </childnode>
+        <childnode refid="14184" relation="include">
+        </childnode>
+      </node>
+      <node id="14181">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14174" relation="include">
+        </childnode>
+        <childnode refid="14182" relation="include">
+        </childnode>
+        <childnode refid="14183" relation="include">
+        </childnode>
+      </node>
+      <node id="14195">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="14196" relation="include">
+        </childnode>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14174" relation="include">
+        </childnode>
+        <childnode refid="14183" relation="include">
+        </childnode>
+        <childnode refid="14170" relation="include">
+        </childnode>
+        <childnode refid="14197" relation="include">
+        </childnode>
+        <childnode refid="14185" relation="include">
+        </childnode>
+      </node>
+      <node id="14166">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="14163">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="14159">
+        <label>assert.h</label>
+      </node>
+      <node id="14153">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</label>
+        <link refid="cppScheduler.h"/>
+        <childnode refid="14154" relation="include">
+        </childnode>
+        <childnode refid="14190" relation="include">
+        </childnode>
+        <childnode refid="14160" relation="include">
+        </childnode>
+        <childnode refid="14161" relation="include">
+        </childnode>
+        <childnode refid="14163" relation="include">
+        </childnode>
+        <childnode refid="14162" relation="include">
+        </childnode>
+        <childnode refid="14198" relation="include">
+        </childnode>
+      </node>
+      <node id="14188">
+        <label>stdint.h</label>
+      </node>
+      <node id="14173">
+        <label>stdlib.h</label>
+      </node>
+      <node id="14167">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="14166" relation="include">
+        </childnode>
+        <childnode refid="14168" relation="include">
+        </childnode>
+        <childnode refid="14162" relation="include">
+        </childnode>
+        <childnode refid="14169" relation="include">
+        </childnode>
+        <childnode refid="14170" relation="include">
+        </childnode>
+        <childnode refid="14186" relation="include">
+        </childnode>
+        <childnode refid="14187" relation="include">
+        </childnode>
+      </node>
+      <node id="14182">
+        <label>cmath</label>
+      </node>
+      <node id="14165">
+        <label>string</label>
+      </node>
+      <node id="14175">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="14157">
+        <label>map</label>
+      </node>
+      <node id="14160">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="14183">
+        <label>memory.h</label>
+      </node>
+      <node id="14170">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="14165" relation="include">
+        </childnode>
+        <childnode refid="14171" relation="include">
+        </childnode>
+        <childnode refid="14181" relation="include">
+        </childnode>
+        <childnode refid="14185" relation="include">
+        </childnode>
+      </node>
+      <node id="14174">
+        <label>fstream</label>
+      </node>
+      <node id="14186">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="14167" relation="include">
+        </childnode>
+        <childnode refid="14158" relation="include">
+        </childnode>
+      </node>
+      <node id="14178">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="14189">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="14184">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="14180" relation="include">
+        </childnode>
+        <childnode refid="14181" relation="include">
+        </childnode>
+        <childnode refid="14179" relation="include">
+        </childnode>
+      </node>
+      <node id="14176">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="14194">
+        <label>pthread.h</label>
+      </node>
+      <node id="14192">
+        <label>string.h</label>
+      </node>
+      <node id="14196">
+        <label>vector</label>
+      </node>
+      <node id="14190">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="14191" relation="include">
+        </childnode>
+        <childnode refid="14192" relation="include">
+        </childnode>
+        <childnode refid="14166" relation="include">
+        </childnode>
+        <childnode refid="14167" relation="include">
+        </childnode>
+      </node>
+      <node id="14156">
+        <label>sstream</label>
+      </node>
+      <node id="14154">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14156" relation="include">
+        </childnode>
+        <childnode refid="14157" relation="include">
+        </childnode>
+        <childnode refid="14158" relation="include">
+        </childnode>
+        <childnode refid="14159" relation="include">
+        </childnode>
+        <childnode refid="14160" relation="include">
+        </childnode>
+        <childnode refid="14161" relation="include">
+        </childnode>
+        <childnode refid="14162" relation="include">
+        </childnode>
+        <childnode refid="14163" relation="include">
+        </childnode>
+        <childnode refid="14164" relation="include">
+        </childnode>
+        <childnode refid="14193" relation="include">
+        </childnode>
+      </node>
+      <node id="14180">
+        <label>math.h</label>
+      </node>
+      <node id="14185">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14174" relation="include">
+        </childnode>
+        <childnode refid="14182" relation="include">
+        </childnode>
+        <childnode refid="14183" relation="include">
+        </childnode>
+        <childnode refid="14171" relation="include">
+        </childnode>
+      </node>
+      <node id="14155">
+        <label>iostream</label>
+      </node>
+      <node id="14191">
+        <label>deque</label>
+      </node>
+      <node id="14161">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="14162">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="14198">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="14174" relation="include">
+        </childnode>
+      </node>
+      <node id="14164">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="14158" relation="include">
+        </childnode>
+        <childnode refid="14165" relation="include">
+        </childnode>
+        <childnode refid="14166" relation="include">
+        </childnode>
+        <childnode refid="14167" relation="include">
+        </childnode>
+        <childnode refid="14189" relation="include">
+        </childnode>
+        <childnode refid="14190" relation="include">
+        </childnode>
+        <childnode refid="14185" relation="include">
+        </childnode>
+      </node>
+      <node id="14168">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="14197">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14157" relation="include">
+        </childnode>
+        <childnode refid="14196" relation="include">
+        </childnode>
+        <childnode refid="14162" relation="include">
+        </childnode>
+        <childnode refid="14159" relation="include">
+        </childnode>
+        <childnode refid="14167" relation="include">
+        </childnode>
+        <childnode refid="14170" relation="include">
+        </childnode>
+        <childnode refid="14198" relation="include">
+        </childnode>
+      </node>
+      <node id="14177">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="14172">
+        <label>stdio.h</label>
+      </node>
+      <node id="14187">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="14167" relation="include">
+        </childnode>
+        <childnode refid="14188" relation="include">
+        </childnode>
+        <childnode refid="14155" relation="include">
+        </childnode>
+        <childnode refid="14168" relation="include">
+        </childnode>
+        <childnode refid="14169" relation="include">
+        </childnode>
+      </node>
+      <node id="14158">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="14200">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="14201" relation="include">
+        </childnode>
+        <childnode refid="14205" relation="include">
+        </childnode>
+        <childnode refid="14203" relation="include">
+        </childnode>
+      </node>
+      <node id="14206">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</label>
+        <link refid="cpp_scheduler_8cpp"/>
+      </node>
+      <node id="14201">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="14202" relation="include">
+        </childnode>
+        <childnode refid="14203" relation="include">
+        </childnode>
+        <childnode refid="14204" relation="include">
+        </childnode>
+      </node>
+      <node id="14199">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</label>
+        <link refid="cppScheduler.h"/>
+        <childnode refid="14200" relation="include">
+        </childnode>
+        <childnode refid="14206" relation="include">
+        </childnode>
+      </node>
+      <node id="14205">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="14202">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="14204">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="14203">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classcpp_scheduler_1_1_cpp_scheduler" prot="public">cppScheduler::CppScheduler</innerclass>
+    <innernamespace refid="namespacecpp_scheduler">cppScheduler</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>CppScheduler.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>CPPSCHEDULER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CPPSCHEDULER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scheduler_8h" kindref="compound">scheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="network_8h" kindref="compound">network.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/thread.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/bind.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/interprocess/sync/interprocess_semaphore.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/interprocess/sync/interprocess_mutex.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceboost" kindref="compound">boost</ref>;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacecpp_scheduler" kindref="compound">cppScheduler</ref><sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="classcpp_scheduler_1_1_cpp_scheduler" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_scheduler" kindref="compound">BaseSimulator::Scheduler</ref><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="25" refid="classcpp_scheduler_1_1_cpp_scheduler_1a22ce4010a929e5c2613edc767525311f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::thread<sp/>*<ref refid="classcpp_scheduler_1_1_cpp_scheduler_1a22ce4010a929e5c2613edc767525311f" kindref="member">schedulerThread</ref>;</highlight></codeline>
+<codeline lineno="26" refid="classcpp_scheduler_1_1_cpp_scheduler_1a39a37fa34139bbf3408c1dae555232c4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler_1a39a37fa34139bbf3408c1dae555232c4" kindref="member">schedulerMode</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>();</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>();</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/><ref refid="namespace_multi_cores_1a76ac8382d7298dfd24beb7e6c7706b46" kindref="member">startPaused</ref>(</highlight><highlight class="comment">/*void<sp/>*param<sp/>*/</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="33" refid="classcpp_scheduler_1_1_cpp_scheduler_1a3b7eae49cf72c3ebce3f94e21b40fb5d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::interprocess::interprocess_semaphore<sp/>*<ref refid="classcpp_scheduler_1_1_cpp_scheduler_1a3b7eae49cf72c3ebce3f94e21b40fb5d" kindref="member">sem_schedulerStart</ref>;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecpp_scheduler_1a6255e7804f0deed42dd69369c3e58715" kindref="member">createScheduler</ref>();</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecpp_scheduler_1ac7361593bd0b2e8850ba31c6f353c582" kindref="member">deleteScheduler</ref>();</highlight></codeline>
+<codeline lineno="37" refid="classcpp_scheduler_1_1_cpp_scheduler_1abdc33d7ebf66a3e3f5176b336defd5ce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>*<sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler_1abdc33d7ebf66a3e3f5176b336defd5ce" kindref="member">getScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(scheduler<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>*)scheduler);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="classcpp_scheduler_1_1_cpp_scheduler_1af2b34d95fa8d83da061ef2acb5fed3de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler_1af2b34d95fa8d83da061ef2acb5fed3de" kindref="member">printInfo</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;I&apos;m<sp/>a<sp/>CppScheduler&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>start(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="classcpp_scheduler_1_1_cpp_scheduler_1a129c746635b8bd68c4515675967ffe73" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler_1a129c746635b8bd68c4515675967ffe73" kindref="member">waitForSchedulerEnd</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>schedulerThread-&gt;join();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="classcpp_scheduler_1_1_cpp_scheduler_1a21ff5b8781b538bdc632f7bcc74eb0ac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler_1a21ff5b8781b538bdc632f7bcc74eb0ac" kindref="member">getMode</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>schedulerMode;<sp/>}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="namespacecpp_scheduler_1a6255e7804f0deed42dd69369c3e58715" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecpp_scheduler_1a6255e7804f0deed42dd69369c3e58715" kindref="member">createScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecpp_scheduler_1a6255e7804f0deed42dd69369c3e58715" kindref="member">CppScheduler::createScheduler</ref>();</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="namespacecpp_scheduler_1ac7361593bd0b2e8850ba31c6f353c582" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacecpp_scheduler_1ac7361593bd0b2e8850ba31c6f353c582" kindref="member">deleteScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacecpp_scheduler_1ac7361593bd0b2e8850ba31c6f353c582" kindref="member">CppScheduler::deleteScheduler</ref>();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="namespacecpp_scheduler_1ab0017571352adc03e406334acd067142" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>*<sp/><ref refid="namespacecpp_scheduler_1ab0017571352adc03e406334acd067142" kindref="member">getScheduler</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(<ref refid="namespacecpp_scheduler_1ab0017571352adc03e406334acd067142" kindref="member">CppScheduler::getScheduler</ref>());<sp/>}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>CppScheduler<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>CPPSCHEDULER_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h"/>
+  </compounddef>
+</doxygen>

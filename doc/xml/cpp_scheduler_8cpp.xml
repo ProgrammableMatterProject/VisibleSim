@@ -1,0 +1,553 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="cpp_scheduler_8cpp" kind="file" language="C++">
+    <compoundname>cppScheduler.cpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">cstdlib</includes>
+    <includes local="no">algorithm</includes>
+    <includes refid="cpp_scheduler_8h" local="yes">cppScheduler.h</includes>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includes refid="block_code_8h" local="yes">blockCode.h</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <incdepgraph>
+      <node id="14122">
+        <label>list</label>
+      </node>
+      <node id="14146">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="14124" relation="include">
+        </childnode>
+        <childnode refid="14147" relation="include">
+        </childnode>
+        <childnode refid="14132" relation="include">
+        </childnode>
+        <childnode refid="14137" relation="include">
+        </childnode>
+        <childnode refid="14123" relation="include">
+        </childnode>
+        <childnode refid="14148" relation="include">
+        </childnode>
+      </node>
+      <node id="14132">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="14128" relation="include">
+        </childnode>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14127" relation="include">
+        </childnode>
+        <childnode refid="14133" relation="include">
+        </childnode>
+        <childnode refid="14134" relation="include">
+        </childnode>
+      </node>
+      <node id="14124">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="14125" relation="include">
+        </childnode>
+        <childnode refid="14126" relation="include">
+        </childnode>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14127" relation="include">
+        </childnode>
+        <childnode refid="14128" relation="include">
+        </childnode>
+        <childnode refid="14129" relation="include">
+        </childnode>
+        <childnode refid="14130" relation="include">
+        </childnode>
+        <childnode refid="14131" relation="include">
+        </childnode>
+        <childnode refid="14132" relation="include">
+        </childnode>
+        <childnode refid="14137" relation="include">
+        </childnode>
+      </node>
+      <node id="14134">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14127" relation="include">
+        </childnode>
+        <childnode refid="14135" relation="include">
+        </childnode>
+        <childnode refid="14136" relation="include">
+        </childnode>
+      </node>
+      <node id="14148">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="14149" relation="include">
+        </childnode>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14127" relation="include">
+        </childnode>
+        <childnode refid="14136" relation="include">
+        </childnode>
+        <childnode refid="14123" relation="include">
+        </childnode>
+        <childnode refid="14150" relation="include">
+        </childnode>
+        <childnode refid="14138" relation="include">
+        </childnode>
+      </node>
+      <node id="14103">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</label>
+        <link refid="cppScheduler.cpp"/>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14105" relation="include">
+        </childnode>
+        <childnode refid="14106" relation="include">
+        </childnode>
+        <childnode refid="14107" relation="include">
+        </childnode>
+        <childnode refid="14120" relation="include">
+        </childnode>
+        <childnode refid="14139" relation="include">
+        </childnode>
+        <childnode refid="14151" relation="include">
+        </childnode>
+      </node>
+      <node id="14119">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="14116">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="14112">
+        <label>assert.h</label>
+      </node>
+      <node id="14107">
+        <label>cppScheduler.h</label>
+        <link refid="cpp_scheduler_8h"/>
+        <childnode refid="14108" relation="include">
+        </childnode>
+        <childnode refid="14143" relation="include">
+        </childnode>
+        <childnode refid="14113" relation="include">
+        </childnode>
+        <childnode refid="14114" relation="include">
+        </childnode>
+        <childnode refid="14116" relation="include">
+        </childnode>
+        <childnode refid="14115" relation="include">
+        </childnode>
+        <childnode refid="14151" relation="include">
+        </childnode>
+      </node>
+      <node id="14141">
+        <label>stdint.h</label>
+      </node>
+      <node id="14126">
+        <label>stdlib.h</label>
+      </node>
+      <node id="14120">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="14119" relation="include">
+        </childnode>
+        <childnode refid="14121" relation="include">
+        </childnode>
+        <childnode refid="14115" relation="include">
+        </childnode>
+        <childnode refid="14122" relation="include">
+        </childnode>
+        <childnode refid="14123" relation="include">
+        </childnode>
+        <childnode refid="14139" relation="include">
+        </childnode>
+        <childnode refid="14140" relation="include">
+        </childnode>
+      </node>
+      <node id="14135">
+        <label>cmath</label>
+      </node>
+      <node id="14118">
+        <label>string</label>
+      </node>
+      <node id="14128">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="14110">
+        <label>map</label>
+      </node>
+      <node id="14113">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="14136">
+        <label>memory.h</label>
+      </node>
+      <node id="14123">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="14118" relation="include">
+        </childnode>
+        <childnode refid="14124" relation="include">
+        </childnode>
+        <childnode refid="14134" relation="include">
+        </childnode>
+        <childnode refid="14138" relation="include">
+        </childnode>
+      </node>
+      <node id="14127">
+        <label>fstream</label>
+      </node>
+      <node id="14139">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="14120" relation="include">
+        </childnode>
+        <childnode refid="14111" relation="include">
+        </childnode>
+      </node>
+      <node id="14131">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="14142">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="14137">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="14133" relation="include">
+        </childnode>
+        <childnode refid="14134" relation="include">
+        </childnode>
+        <childnode refid="14132" relation="include">
+        </childnode>
+      </node>
+      <node id="14129">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="14147">
+        <label>pthread.h</label>
+      </node>
+      <node id="14145">
+        <label>string.h</label>
+      </node>
+      <node id="14149">
+        <label>vector</label>
+      </node>
+      <node id="14143">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="14144" relation="include">
+        </childnode>
+        <childnode refid="14145" relation="include">
+        </childnode>
+        <childnode refid="14119" relation="include">
+        </childnode>
+        <childnode refid="14120" relation="include">
+        </childnode>
+      </node>
+      <node id="14109">
+        <label>sstream</label>
+      </node>
+      <node id="14108">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14109" relation="include">
+        </childnode>
+        <childnode refid="14110" relation="include">
+        </childnode>
+        <childnode refid="14111" relation="include">
+        </childnode>
+        <childnode refid="14112" relation="include">
+        </childnode>
+        <childnode refid="14113" relation="include">
+        </childnode>
+        <childnode refid="14114" relation="include">
+        </childnode>
+        <childnode refid="14115" relation="include">
+        </childnode>
+        <childnode refid="14116" relation="include">
+        </childnode>
+        <childnode refid="14117" relation="include">
+        </childnode>
+        <childnode refid="14146" relation="include">
+        </childnode>
+      </node>
+      <node id="14133">
+        <label>math.h</label>
+      </node>
+      <node id="14138">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14127" relation="include">
+        </childnode>
+        <childnode refid="14135" relation="include">
+        </childnode>
+        <childnode refid="14136" relation="include">
+        </childnode>
+        <childnode refid="14124" relation="include">
+        </childnode>
+      </node>
+      <node id="14105">
+        <label>cstdlib</label>
+      </node>
+      <node id="14104">
+        <label>iostream</label>
+      </node>
+      <node id="14144">
+        <label>deque</label>
+      </node>
+      <node id="14114">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="14115">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="14151">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="14127" relation="include">
+        </childnode>
+      </node>
+      <node id="14117">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="14111" relation="include">
+        </childnode>
+        <childnode refid="14118" relation="include">
+        </childnode>
+        <childnode refid="14119" relation="include">
+        </childnode>
+        <childnode refid="14120" relation="include">
+        </childnode>
+        <childnode refid="14142" relation="include">
+        </childnode>
+        <childnode refid="14143" relation="include">
+        </childnode>
+        <childnode refid="14138" relation="include">
+        </childnode>
+      </node>
+      <node id="14121">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="14106">
+        <label>algorithm</label>
+      </node>
+      <node id="14150">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14110" relation="include">
+        </childnode>
+        <childnode refid="14149" relation="include">
+        </childnode>
+        <childnode refid="14115" relation="include">
+        </childnode>
+        <childnode refid="14112" relation="include">
+        </childnode>
+        <childnode refid="14120" relation="include">
+        </childnode>
+        <childnode refid="14123" relation="include">
+        </childnode>
+        <childnode refid="14151" relation="include">
+        </childnode>
+      </node>
+      <node id="14130">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="14125">
+        <label>stdio.h</label>
+      </node>
+      <node id="14140">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="14120" relation="include">
+        </childnode>
+        <childnode refid="14141" relation="include">
+        </childnode>
+        <childnode refid="14104" relation="include">
+        </childnode>
+        <childnode refid="14121" relation="include">
+        </childnode>
+        <childnode refid="14122" relation="include">
+        </childnode>
+      </node>
+      <node id="14111">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacecpp_scheduler">cppScheduler</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">*<sp/>cppScheduler.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">*<sp/><sp/>Created<sp/>on:<sp/>28<sp/>March<sp/>2015</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Andre</highlight></codeline>
+<codeline lineno="6"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdlib&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="cpp_scheduler_8h" kindref="compound">cppScheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="block_code_8h" kindref="compound">blockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceboost" kindref="compound">boost</ref>;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="namespacecpp_scheduler" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacecpp_scheduler" kindref="compound">cppScheduler</ref><sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="classcpp_scheduler_1_1_cpp_scheduler_1a2adb71b818bff4e0cc1a0fb4b86c9932" refkind="member"><highlight class="normal">CppScheduler::CppScheduler()<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;CppScheduler<sp/>constructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>state<sp/>=<sp/>NOTREADY;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>sem_schedulerStart<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>boost::interprocess::interprocess_semaphore(0);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>schedulerMode<sp/>=<sp/><ref refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" kindref="member">SCHEDULER_MODE_REALTIME</ref>;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>schedulerThread<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>thread(bind(&amp;<ref refid="namespace_multi_cores_1a76ac8382d7298dfd24beb7e6c7706b46" kindref="member">CppScheduler::startPaused</ref>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="classcpp_scheduler_1_1_cpp_scheduler_1a75015395cebfa4bc2689beb9b6980802" refkind="member"><highlight class="normal">CppScheduler::~CppScheduler()<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;31mCppScheduler<sp/>destructor\33[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>schedulerThread;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>sem_schedulerStart;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="classcpp_scheduler_1_1_cpp_scheduler_1a18ca62ae8dcc97634eb1311662341b43" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_blinky_blocks_1ac102af21a67bb63072643278e99756f4" kindref="member">CppScheduler::createScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>scheduler<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="classcpp_scheduler_1_1_cpp_scheduler_1ac1c2b646d19d7d81b84d811869dc2faa" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_blinky_blocks_1aac09cf80b036c44ba801c48aab6a05be" kindref="member">CppScheduler::deleteScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">((<ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>*)scheduler);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="classcpp_scheduler_1_1_cpp_scheduler_1a8982dbad04f97509686a568f15076003" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="namespace_multi_cores_1a76ac8382d7298dfd24beb7e6c7706b46" kindref="member">CppScheduler::startPaused</ref>(</highlight><highlight class="comment">/*void<sp/>*param*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/>systemCurrentTime,<sp/>systemCurrentTimeMax;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//usleep(1000000);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;33mScheduler<sp/>Mode<sp/>:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>schedulerMode<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>sem_schedulerStart-&gt;wait();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>state<sp/>=<sp/>RUNNING;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>systemStartTime,<sp/>systemStopTime;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>multimap&lt;uint64_t,<sp/>EventPtr&gt;::iterator<sp/>first;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref><sp/>pev;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>systemStartTime<sp/>=<sp/>(glutGet(GLUT_ELAPSED_TIME))*1000;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;33m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scheduler<sp/>:<sp/>start<sp/>order<sp/>received<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>systemStartTime<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(schedulerMode)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="scheduler_8h_1abf9fcbad9241517e70536eb685c6c799" kindref="member">SCHEDULER_MODE_FASTEST</ref>:</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<sp/>(!eventsMap.empty()<sp/>)<sp/>&amp;&amp;<sp/>currentDate<sp/>&lt;<sp/>maximumDate)<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="comment">//JUSTE<sp/>POUR<sp/>DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="comment">//~<sp/>cout<sp/>&lt;&lt;<sp/>endl<sp/>&lt;&lt;<sp/>&quot;Contenu<sp/>du<sp/>scheduler<sp/>:&quot;<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="comment">//~<sp/>first=eventsMap.begin();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="comment">//~<sp/>do<sp/>{</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//~<sp/>std::cout<sp/>&lt;&lt;<sp/>(*first).first<sp/>&lt;&lt;<sp/>&quot;<sp/>:<sp/>Evennement<sp/>de<sp/>type<sp/>&quot;<sp/>&lt;&lt;<sp/>(*first).second-&gt;eventType<sp/>&lt;&lt;<sp/>&quot;<sp/>au<sp/>temps<sp/>&quot;<sp/>&lt;&lt;<sp/>(*first).second-&gt;date<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//~<sp/>first++;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="comment">//~<sp/>}<sp/>while(<sp/>first<sp/>!=<sp/>eventsMap.end());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">//~<sp/>cout<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first=eventsMap.begin();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pev<sp/>=<sp/>(*first).second;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>currentDate<sp/>=<sp/>pev-&gt;date;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pev-&gt;consume();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eventsMap.erase(first);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eventsMapSize--;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" kindref="member">SCHEDULER_MODE_REALTIME</ref>:</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Realtime<sp/>mode<sp/>scheduler\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal">(state!=ENDED<sp/>&amp;&amp;<sp/>!eventsMap.empty())<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//gettimeofday(&amp;heureGlobaleActuelle,NULL);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>systemCurrentTime<sp/>=<sp/>((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>systemCurrentTimeMax<sp/>=<sp/>systemCurrentTime<sp/>-<sp/>systemStartTime;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//ev<sp/>=<sp/>*(listeEvenements.begin());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first=eventsMap.begin();</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pev<sp/>=<sp/>(*first).second;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(!eventsMap.empty()<sp/>&amp;&amp;<sp/>pev-&gt;date<sp/>&lt;=<sp/>systemCurrentTimeMax)<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first=eventsMap.begin();</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pev<sp/>=<sp/>(*first).second;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>traitement<sp/>du<sp/>mouvement<sp/>des<sp/>objets<sp/>physiques*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//Physics::update(ev-&gt;heureEvenement);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>currentDate<sp/>=<sp/>pev-&gt;date;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//lock();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pev-&gt;consume();</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//unlock();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//pev-&gt;nbRef--;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//listeEvenements.pop_front();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eventsMap.erase(first);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eventsMapSize--;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>=<sp/>*(listeEvenements.begin());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//first=eventsMap.begin();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//pev<sp/>=<sp/>(*first).second;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>systemCurrentTime<sp/>=<sp/>systemCurrentTimeMax;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!eventsMap.empty())<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//ev<sp/>=<sp/>*(listeEvenements.begin());</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first=eventsMap.begin();</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pev<sp/>=<sp/>(*first).second;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dureeAttente<sp/>=<sp/>ev-&gt;heureEvenement<sp/>-<sp/>heureActuelle;</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dureeAttenteTimeval.tv_sec<sp/>=<sp/>floor(dureeAttente<sp/>/<sp/>1000000);</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dureeAttenteTimeval.tv_usec<sp/>=<sp/>(dureeAttente%1000000);</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>select(0,NULL,NULL,NULL,&amp;dureeAttenteTimeval);</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>WIN32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Sleep(5);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>usleep(5000);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;ERROR<sp/>:<sp/>Scheduler<sp/>mode<sp/>not<sp/>recognized<sp/>!!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>systemStopTime<sp/>=<sp/>((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;33m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Scheduler<sp/>end<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>systemStopTime<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>pev.reset();</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;end<sp/>time<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>currentDate<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;real<sp/>time<sp/>elapsed<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>((double)(systemStopTime-systemStartTime))/1000000<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/>cout<sp/>&lt;&lt;<sp/>&quot;Nombre<sp/>d&apos;événements<sp/>restants<sp/>en<sp/>mémoire<sp/>:<sp/>&quot;<sp/>&lt;&lt;<sp/>Evenement::nbEvenements<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/>cout<sp/>&lt;&lt;<sp/>&quot;Nombre<sp/>de<sp/>messages<sp/>restants<sp/>en<sp/>mémoire<sp/>:<sp/>&quot;<sp/>&lt;&lt;<sp/>Message::nbMessages<sp/>&lt;&lt;<sp/>endl;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Maximum<sp/>sized<sp/>reached<sp/>by<sp/>the<sp/>events<sp/>list<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>largestEventsMapSize<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Size<sp/>of<sp/>the<sp/>events<sp/>list<sp/>at<sp/>the<sp/>end<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>eventsMap.size()<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Number<sp/>of<sp/>events<sp/>processed<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_event_1a98e8d962b67f768b9278481564f83ab1" kindref="member">Event::getNextId</ref>()<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Events(s)<sp/>left<sp/>in<sp/>memory<sp/>before<sp/>destroying<sp/>Scheduler<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" kindref="member">Event::getNbLivingEvents</ref>()<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Message(s)<sp/>left<sp/>in<sp/>memory<sp/>before<sp/>destroying<sp/>Scheduler<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" kindref="member">Message::getNbMessages</ref>()<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(NULL);}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152" refid="classcpp_scheduler_1_1_cpp_scheduler_1a1c2887e54970bc7ba4806dc181d3ceae" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>CppScheduler::start(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode)<sp/>{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>*<sp/>sbs<sp/>=<sp/>(<ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref>*)scheduler;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>sbs-&gt;<ref refid="classcpp_scheduler_1_1_cpp_scheduler_1a39a37fa34139bbf3408c1dae555232c4" kindref="member">schedulerMode</ref><sp/>=<sp/>mode;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>sbs-&gt;<ref refid="classcpp_scheduler_1_1_cpp_scheduler_1a3b7eae49cf72c3ebce3f94e21b40fb5d" kindref="member">sem_schedulerStart</ref>-&gt;post();</highlight></codeline>
+<codeline lineno="156"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>BaseSimulator</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp"/>
+  </compounddef>
+</doxygen>

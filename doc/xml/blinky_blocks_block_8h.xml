@@ -1,0 +1,573 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="blinky_blocks_block_8h" kind="file" language="C++">
+    <compoundname>blinkyBlocksBlock.h</compoundname>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includes refid="color_8h" local="yes">color.h</includes>
+    <includes refid="blinky_blocks_block_code_8h" local="yes">blinkyBlocksBlockCode.h</includes>
+    <includes refid="blinky_blocks_gl_block_8h" local="yes">blinkyBlocksGlBlock.h</includes>
+    <includes local="no">boost/asio.hpp</includes>
+    <includes local="no">stdexcept</includes>
+    <includedby refid="blinky_blocks_block_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</includedby>
+    <includedby refid="blinky_blocks_block_code_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.h</includedby>
+    <includedby refid="blinky_blocks_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</includedby>
+    <includedby refid="blinky_blocks_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</includedby>
+    <includedby refid="blinky_blocks_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</includedby>
+    <includedby refid="meld_interpret_v_m_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h</includedby>
+    <includedby refid="blinky_blocks_world_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</includedby>
+    <incdepgraph>
+      <node id="10022">
+        <label>list</label>
+      </node>
+      <node id="10048">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="10025" relation="include">
+        </childnode>
+        <childnode refid="10049" relation="include">
+        </childnode>
+        <childnode refid="10034" relation="include">
+        </childnode>
+        <childnode refid="10039" relation="include">
+        </childnode>
+        <childnode refid="10023" relation="include">
+        </childnode>
+        <childnode refid="10050" relation="include">
+        </childnode>
+      </node>
+      <node id="10034">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="10030" relation="include">
+        </childnode>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10029" relation="include">
+        </childnode>
+        <childnode refid="10035" relation="include">
+        </childnode>
+        <childnode refid="10036" relation="include">
+        </childnode>
+      </node>
+      <node id="10025">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="10026" relation="include">
+        </childnode>
+        <childnode refid="10027" relation="include">
+        </childnode>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10029" relation="include">
+        </childnode>
+        <childnode refid="10030" relation="include">
+        </childnode>
+        <childnode refid="10031" relation="include">
+        </childnode>
+        <childnode refid="10032" relation="include">
+        </childnode>
+        <childnode refid="10033" relation="include">
+        </childnode>
+        <childnode refid="10034" relation="include">
+        </childnode>
+        <childnode refid="10039" relation="include">
+        </childnode>
+      </node>
+      <node id="10036">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10029" relation="include">
+        </childnode>
+        <childnode refid="10037" relation="include">
+        </childnode>
+        <childnode refid="10038" relation="include">
+        </childnode>
+      </node>
+      <node id="10050">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="10051" relation="include">
+        </childnode>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10029" relation="include">
+        </childnode>
+        <childnode refid="10038" relation="include">
+        </childnode>
+        <childnode refid="10023" relation="include">
+        </childnode>
+        <childnode refid="10052" relation="include">
+        </childnode>
+        <childnode refid="10040" relation="include">
+        </childnode>
+      </node>
+      <node id="10019">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="10054">
+        <label>assert.h</label>
+      </node>
+      <node id="10044">
+        <label>stdint.h</label>
+      </node>
+      <node id="10027">
+        <label>stdlib.h</label>
+      </node>
+      <node id="10018">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="10019" relation="include">
+        </childnode>
+        <childnode refid="10020" relation="include">
+        </childnode>
+        <childnode refid="10021" relation="include">
+        </childnode>
+        <childnode refid="10022" relation="include">
+        </childnode>
+        <childnode refid="10023" relation="include">
+        </childnode>
+        <childnode refid="10041" relation="include">
+        </childnode>
+        <childnode refid="10043" relation="include">
+        </childnode>
+      </node>
+      <node id="10037">
+        <label>cmath</label>
+      </node>
+      <node id="10058">
+        <label>stdexcept</label>
+      </node>
+      <node id="10024">
+        <label>string</label>
+      </node>
+      <node id="10030">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="10053">
+        <label>map</label>
+      </node>
+      <node id="10038">
+        <label>memory.h</label>
+      </node>
+      <node id="10023">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="10024" relation="include">
+        </childnode>
+        <childnode refid="10025" relation="include">
+        </childnode>
+        <childnode refid="10036" relation="include">
+        </childnode>
+        <childnode refid="10040" relation="include">
+        </childnode>
+      </node>
+      <node id="10029">
+        <label>fstream</label>
+      </node>
+      <node id="10041">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="10018" relation="include">
+        </childnode>
+        <childnode refid="10042" relation="include">
+        </childnode>
+      </node>
+      <node id="10033">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="10039">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="10035" relation="include">
+        </childnode>
+        <childnode refid="10036" relation="include">
+        </childnode>
+        <childnode refid="10034" relation="include">
+        </childnode>
+      </node>
+      <node id="10031">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="10057">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="10049">
+        <label>pthread.h</label>
+      </node>
+      <node id="10056">
+        <label>string.h</label>
+      </node>
+      <node id="10051">
+        <label>vector</label>
+      </node>
+      <node id="10035">
+        <label>math.h</label>
+      </node>
+      <node id="10040">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10029" relation="include">
+        </childnode>
+        <childnode refid="10037" relation="include">
+        </childnode>
+        <childnode refid="10038" relation="include">
+        </childnode>
+        <childnode refid="10025" relation="include">
+        </childnode>
+      </node>
+      <node id="10028">
+        <label>iostream</label>
+      </node>
+      <node id="10021">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="10045">
+        <label>blinkyBlocksBlockCode.h</label>
+        <link refid="blinky_blocks_block_code_8h"/>
+        <childnode refid="10041" relation="include">
+        </childnode>
+        <childnode refid="10017" relation="include">
+        </childnode>
+      </node>
+      <node id="10017">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h</label>
+        <link refid="blinkyBlocksBlock.h"/>
+        <childnode refid="10018" relation="include">
+        </childnode>
+        <childnode refid="10040" relation="include">
+        </childnode>
+        <childnode refid="10045" relation="include">
+        </childnode>
+        <childnode refid="10046" relation="include">
+        </childnode>
+        <childnode refid="10057" relation="include">
+        </childnode>
+        <childnode refid="10058" relation="include">
+        </childnode>
+      </node>
+      <node id="10055">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="10029" relation="include">
+        </childnode>
+      </node>
+      <node id="10020">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="10052">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10053" relation="include">
+        </childnode>
+        <childnode refid="10051" relation="include">
+        </childnode>
+        <childnode refid="10021" relation="include">
+        </childnode>
+        <childnode refid="10054" relation="include">
+        </childnode>
+        <childnode refid="10018" relation="include">
+        </childnode>
+        <childnode refid="10023" relation="include">
+        </childnode>
+        <childnode refid="10055" relation="include">
+        </childnode>
+      </node>
+      <node id="10046">
+        <label>blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="10024" relation="include">
+        </childnode>
+        <childnode refid="10047" relation="include">
+        </childnode>
+        <childnode refid="10023" relation="include">
+        </childnode>
+      </node>
+      <node id="10032">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="10026">
+        <label>stdio.h</label>
+      </node>
+      <node id="10047">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="10048" relation="include">
+        </childnode>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10029" relation="include">
+        </childnode>
+        <childnode refid="10024" relation="include">
+        </childnode>
+        <childnode refid="10051" relation="include">
+        </childnode>
+        <childnode refid="10037" relation="include">
+        </childnode>
+        <childnode refid="10027" relation="include">
+        </childnode>
+        <childnode refid="10056" relation="include">
+        </childnode>
+      </node>
+      <node id="10043">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="10018" relation="include">
+        </childnode>
+        <childnode refid="10044" relation="include">
+        </childnode>
+        <childnode refid="10028" relation="include">
+        </childnode>
+        <childnode refid="10020" relation="include">
+        </childnode>
+        <childnode refid="10022" relation="include">
+        </childnode>
+      </node>
+      <node id="10042">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="10069">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="10062" relation="include">
+        </childnode>
+        <childnode refid="10070" relation="include">
+        </childnode>
+        <childnode refid="10063" relation="include">
+        </childnode>
+      </node>
+      <node id="10072">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h</label>
+        <link refid="meld_interpret_v_m_8h"/>
+        <childnode refid="10073" relation="include">
+        </childnode>
+        <childnode refid="10074" relation="include">
+        </childnode>
+        <childnode refid="10077" relation="include">
+        </childnode>
+        <childnode refid="10078" relation="include">
+        </childnode>
+        <childnode refid="10075" relation="include">
+        </childnode>
+        <childnode refid="10076" relation="include">
+        </childnode>
+        <childnode refid="10079" relation="include">
+        </childnode>
+      </node>
+      <node id="10062">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="10060" relation="include">
+        </childnode>
+        <childnode refid="10063" relation="include">
+        </childnode>
+        <childnode refid="10064" relation="include">
+        </childnode>
+      </node>
+      <node id="10078">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.cpp</label>
+        <link refid="meld_interpret_messages_8cpp"/>
+      </node>
+      <node id="10070">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="10060">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="10064">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="10066">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="10060" relation="include">
+        </childnode>
+        <childnode refid="10062" relation="include">
+        </childnode>
+        <childnode refid="10067" relation="include">
+        </childnode>
+        <childnode refid="10063" relation="include">
+        </childnode>
+        <childnode refid="10068" relation="include">
+        </childnode>
+      </node>
+      <node id="10075">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</label>
+        <link refid="meld_interpret_scheduler_8cpp"/>
+      </node>
+      <node id="10073">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</label>
+        <link refid="meld_interpret_events_8h"/>
+        <childnode refid="10060" relation="include">
+        </childnode>
+        <childnode refid="10074" relation="include">
+        </childnode>
+        <childnode refid="10075" relation="include">
+        </childnode>
+        <childnode refid="10076" relation="include">
+        </childnode>
+      </node>
+      <node id="10065">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.cpp</label>
+        <link refid="blinky_blocks_block_code_8cpp"/>
+      </node>
+      <node id="10074">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp</label>
+        <link refid="meld_interpret_events_8cpp"/>
+      </node>
+      <node id="10079">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="10076">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</label>
+        <link refid="meld_interpret_v_m_8cpp"/>
+      </node>
+      <node id="10077">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.h</label>
+        <link refid="meld_interpret_messages_8h"/>
+        <childnode refid="10078" relation="include">
+        </childnode>
+        <childnode refid="10076" relation="include">
+        </childnode>
+      </node>
+      <node id="10071">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</label>
+        <link refid="blinky_blocks_events_8h"/>
+        <childnode refid="10060" relation="include">
+        </childnode>
+        <childnode refid="10070" relation="include">
+        </childnode>
+        <childnode refid="10068" relation="include">
+        </childnode>
+      </node>
+      <node id="10063">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="10067">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="10066" relation="include">
+        </childnode>
+      </node>
+      <node id="10068">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+      <node id="10061">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.h</label>
+        <link refid="blinky_blocks_block_code_8h"/>
+        <childnode refid="10059" relation="include">
+        </childnode>
+        <childnode refid="10062" relation="include">
+        </childnode>
+        <childnode refid="10065" relation="include">
+        </childnode>
+      </node>
+      <node id="10059">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h</label>
+        <link refid="blinkyBlocksBlock.h"/>
+        <childnode refid="10060" relation="include">
+        </childnode>
+        <childnode refid="10061" relation="include">
+        </childnode>
+        <childnode refid="10066" relation="include">
+        </childnode>
+        <childnode refid="10069" relation="include">
+        </childnode>
+        <childnode refid="10071" relation="include">
+        </childnode>
+        <childnode refid="10072" relation="include">
+        </childnode>
+        <childnode refid="10068" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_blinky_blocks_1_1_neighbor_direction" prot="public">BlinkyBlocks::NeighborDirection</innerclass>
+    <innerclass refid="class_blinky_blocks_1_1_blinky_blocks_block" prot="public">BlinkyBlocks::BlinkyBlocksBlock</innerclass>
+    <innernamespace refid="namespace_blinky_blocks">BlinkyBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>blinkyBlocksBlock.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>23<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>BLINKYBLOCKSBLOCK_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BLINKYBLOCKSBLOCK_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="color_8h" kindref="compound">color.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="blinky_blocks_block_code_8h" kindref="compound">blinkyBlocksBlockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="blinky_blocks_gl_block_8h" kindref="compound">blinkyBlocksGlBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/asio.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_blinky_blocks" kindref="compound">BlinkyBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="class_blinky_blocks_1_1_neighbor_direction" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_blinky_blocks_1_1_neighbor_direction" kindref="compound">NeighborDirection</ref><sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="22" refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea3666a7ad6f2e49699891d4d3caab3037" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81e" kindref="member">Direction</ref><sp/>{<sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea0073e117ea78b601fe6070155bac4e87" kindref="member">Bottom</ref><sp/>=<sp/>0,<sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea89a86a625f18fab4a2ea50429fe3aa15" kindref="member">Back</ref><sp/>=<sp/>1,<sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81eaeb55ecbcbab4d351d82aae6d4c105f8b" kindref="member">Right</ref>,<sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea5d24c67edd11d8142bf994d23170827f" kindref="member">Front</ref>,<sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea1892e7cdcd0c3dc38eb2dec00f54cd96" kindref="member">Left</ref>,<sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea3666a7ad6f2e49699891d4d3caab3037" kindref="member">Top</ref><sp/>};</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a3684dbf210f11648d1b01512d703447d" kindref="member">getOpposite</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>d);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a0fc8d94829cb10f4376a330d2db08c70" kindref="member">getString</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>d);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="class_blinky_blocks_1_1_blinky_blocks_block" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*tabInterfaces[6];</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="33" refid="class_blinky_blocks_1_1_blinky_blocks_block_1ae842cade13e1114f399c28670e62e7b9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block" kindref="compound">BlinkyBlocksGlBlock</ref><sp/>*<ref refid="class_blinky_blocks_1_1_blinky_blocks_block_1ae842cade13e1114f399c28670e62e7b9" kindref="member">ptrGlBlock</ref>;</highlight></codeline>
+<codeline lineno="34" refid="class_blinky_blocks_1_1_blinky_blocks_block_1acad2d2cf56f850fa0f774e1c541ad1ca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_1acad2d2cf56f850fa0f774e1c541ad1ca" kindref="member">color</ref>;<sp/></highlight><highlight class="comment">//<sp/>color<sp/>of<sp/>the<sp/>block</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="class_blinky_blocks_1_1_blinky_blocks_block_1a50df2e61f3c9eccae2abb55e0a6c41de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_1a50df2e61f3c9eccae2abb55e0a6c41de" kindref="member">position</ref>;<sp/></highlight><highlight class="comment">//<sp/>position<sp/>of<sp/>the<sp/>block;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_blinky_blocks_1_1_blinky_blocks_block_1a048868761144f23f774405f04e755eef" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref><sp/>*(*buildNewBlockCode)(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>*);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId,<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref><sp/>*(*blinkyBlocksBlockCodeBuildingFunction)(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>*));</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref>();</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_blinky_blocks_1_1_blinky_blocks_block_1afd1b24a19d8d0c239c75b46afcfc683f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block" kindref="compound">BlinkyBlocksGlBlock</ref>*<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_1afd1b24a19d8d0c239c75b46afcfc683f" kindref="member">getGlBlock</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ptrGlBlock;<sp/>};</highlight></codeline>
+<codeline lineno="42" refid="class_blinky_blocks_1_1_blinky_blocks_block_1a26eac4ceea9f87b3117474bbc8bbf0b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_1a26eac4ceea9f87b3117474bbc8bbf0b6" kindref="member">setGlBlock</ref>(<ref refid="class_blinky_blocks_1_1_blinky_blocks_gl_block" kindref="compound">BlinkyBlocksGlBlock</ref>*ptr)<sp/>{<sp/>ptrGlBlock=ptr;};</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setColor(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setColor(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setPosition(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;p);</highlight></codeline>
+<codeline lineno="46" refid="class_blinky_blocks_1_1_blinky_blocks_block_1a94be154723f60d7299746e2a654bc256" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_blinky_blocks_1_1_blinky_blocks_block_1a94be154723f60d7299746e2a654bc256" kindref="member">getInterface</ref>(<ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81e" kindref="member">NeighborDirection::Direction</ref><sp/>d)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tabInterfaces[d];<sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*getInterfaceDestId(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81e" kindref="member">NeighborDirection::Direction</ref><sp/>getDirection(<ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref>*);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>schedule<sp/>the<sp/>appropriate<sp/>event<sp/>for<sp/>this<sp/>action<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>tap(uint64_t<sp/>date);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>accel(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>z);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>shake(uint64_t<sp/>date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>f);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>addNeighbor(<ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref>*<sp/>target);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>removeNeighbor(<ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>stop(uint64_t<sp/>date,<sp/><ref refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7e" kindref="member">State</ref><sp/>s);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>pauseClock(uint64_t<sp/>delay,<sp/>uint64_t<sp/>start);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal">std::ostream&amp;<sp/><ref refid="namespace_blinky_blocks_1af441bc9d1031530c3659d9529467aaeb" kindref="member">operator&lt;&lt;</ref>(std::ostream<sp/>&amp;stream,<sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>bb);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BLINKYBLOCKSBLOCK_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h"/>
+  </compounddef>
+</doxygen>

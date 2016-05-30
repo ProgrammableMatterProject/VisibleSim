@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_catoms2_d_capabilities" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::Catoms2DCapabilities</compoundname>
+    <includes refid="catoms2_d_capabilities_8h" local="no">catoms2DCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms2_d_1_1_catoms2_d_capabilities_1afea8a82dce5912f7bf0b7c44087e42ce" prot="public" static="no" mutable="no">
+        <type>vector&lt; <ref refid="class_catoms2_d_1_1_capability" kindref="compound">Capability</ref> * &gt;</type>
+        <definition>vector&lt;Capability*&gt; Catoms2D::Catoms2DCapabilities::tabCapabilities</definition>
+        <argsstring></argsstring>
+        <name>tabCapabilities</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="114" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_capabilities_1a50d06389a861296ee2d44a7318387b14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::Catoms2DCapabilities::Catoms2DCapabilities</definition>
+        <argsstring>(TiXmlNode *node)</argsstring>
+        <name>Catoms2DCapabilities</name>
+        <param>
+          <type>TiXmlNode *</type>
+          <declname>node</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="116" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="215" bodyend="330"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_catoms2_d_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="catoms2_d_capabilities_8cpp" startline="9" endline="14">Catoms2D::Capability::Capability</references>
+        <references refid="class_catoms2_d_1_1_capability_1afc280097bb3bb0be026a80c69e815fa6" compoundref="catoms2_d_capabilities_8h" startline="84">Catoms2D::Capability::level</references>
+        <references refid="class_catoms2_d_1_1_capability_1af930af0a96692e242f7887cd4b8c5a9e" compoundref="catoms2_d_capabilities_8h" startline="91">Catoms2D::Capability::nbreConditions</references>
+        <references refid="class_catoms2_d_1_1_capability_1a7ace7b3d1c298e89214deb2efa0cb48c" compoundref="catoms2_d_capabilities_8h" startline="89">Catoms2D::Capability::isHead</references>
+        <references refid="class_catoms2_d_1_1_capability_1a8296b380387b25de0f8b60f4bed23121" compoundref="catoms2_d_capabilities_8h" startline="89">Catoms2D::Capability::isEnd</references>
+        <references refid="class_catoms2_d_1_1_capability_1a4a1640f936dd9836f54cf428421e7b70" compoundref="catoms2_d_capabilities_8h" startline="86">Catoms2D::Capability::validationMatrix</references>
+        <references refid="class_catoms2_d_1_1_validation_matrix_1a5f58d7843e16c49b8c341224848a8cf9" compoundref="catoms2_d_capabilities_8cpp" startline="431" endline="474">Catoms2D::ValidationMatrix::fromString</references>
+        <references refid="class_catoms2_d_1_1_capability_1ad116b3dc970973a00a4fdba1b832bb75" compoundref="catoms2_d_capabilities_8h" startline="87">Catoms2D::Capability::refPos</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" compoundref="catoms2_d_capabilities_8cpp" startline="564" endline="574">Catoms2D::PointRel3D::fromString</references>
+        <references refid="class_catoms2_d_1_1_capability_1a6f9ad56587f634cc60ccdf16f5593530" compoundref="catoms2_d_capabilities_8h" startline="88">Catoms2D::Capability::linkPrevPos</references>
+        <references refid="class_catoms2_d_1_1_capability_1a83506dbfdf1a58a79a89eed2413b4bbe" compoundref="catoms2_d_capabilities_8h" startline="88">Catoms2D::Capability::linkNextPos</references>
+        <references refid="class_catoms2_d_1_1_motion_1a7f50e5d1bcd103322ebf9157a8c8c17b" compoundref="catoms2_d_capabilities_8h" startline="75">Catoms2D::Motion::obj</references>
+        <references refid="class_catoms2_d_1_1_motion_1ae4803d50e44ff1b6f5d23bfa583247bf" compoundref="catoms2_d_capabilities_8h" startline="76">Catoms2D::Motion::endTime</references>
+        <references refid="class_catoms2_d_1_1_motion_1a0135ea5180500786c33f1232dd6678f8" compoundref="catoms2_d_capabilities_8h" startline="77">Catoms2D::Motion::init</references>
+        <references refid="class_catoms2_d_1_1_motion_1ad783d0d1c2abd7f97982673b2dd398b9" compoundref="catoms2_d_capabilities_8h" startline="78">Catoms2D::Motion::final</references>
+        <references refid="class_catoms2_d_1_1_capability_1a54c98ab750f054688318b7cf71b395cc" compoundref="catoms2_d_capabilities_8h" startline="90">Catoms2D::Capability::tabMotions</references>
+        <references refid="class_catoms2_d_1_1_capability_1a708b8f5dc2680174327c8ad0afeeb5fd" compoundref="catoms2_d_capabilities_8h" startline="85">Catoms2D::Capability::name</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_capabilities_1a6d55c5c3690d14bb1c0bc7844f01c92f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::Catoms2DCapabilities::~Catoms2DCapabilities</definition>
+        <argsstring>()</argsstring>
+        <name>~Catoms2DCapabilities</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="117" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="332" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_capabilities_1ac06398b17d894b44a81534ff66d00349" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms2_d_1_1_capability" kindref="compound">Capability</ref> *</type>
+        <definition>Capability * Catoms2D::Catoms2DCapabilities::validate</definition>
+        <argsstring>(const PresenceMatrix &amp;sm)</argsstring>
+        <name>validate</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="118" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="341" bodyend="351"/>
+        <references refid="class_catoms2_d_1_1_capability_1afc280097bb3bb0be026a80c69e815fa6" compoundref="catoms2_d_capabilities_8h" startline="84">Catoms2D::Capability::level</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_capabilities_1ae1543ffb59bef032e4891afc36cc13a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms2_d_1_1_capability" kindref="compound">Capability</ref> *</type>
+        <definition>Capability * Catoms2D::Catoms2DCapabilities::validateWithTarget</definition>
+        <argsstring>(const PresenceMatrix &amp;sm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateWithTarget</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="119" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="353" bodyend="368"/>
+        <references refid="class_catoms2_d_1_1_capability_1afc280097bb3bb0be026a80c69e815fa6" compoundref="catoms2_d_capabilities_8h" startline="84">Catoms2D::Capability::level</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_capabilities_1a973bae95257143ceffbd0341cc61a8f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms2_d_1_1_capability" kindref="compound">Capability</ref> *</type>
+        <definition>Capability * Catoms2D::Catoms2DCapabilities::validateTrain</definition>
+        <argsstring>(const PresenceMatrix &amp;sm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateTrain</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="120" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="370" bodyend="387"/>
+        <references refid="class_catoms2_d_1_1_capability_1afc280097bb3bb0be026a80c69e815fa6" compoundref="catoms2_d_capabilities_8h" startline="84">Catoms2D::Capability::level</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_capabilities_1ab88923f5c61a0175e48dbe910847edf9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>vector&lt; <ref refid="class_catoms2_d_1_1_validation" kindref="compound">Validation</ref> * &gt; *</type>
+        <definition>vector&lt; Validation * &gt; * Catoms2D::Catoms2DCapabilities::validateMulti</definition>
+        <argsstring>(const PresenceMatrix &amp;sm, const PresenceMatrix &amp;ltm)</argsstring>
+        <name>validateMulti</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="121" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="393" bodyend="422"/>
+        <references refid="catoms2_d_capabilities_8cpp_1ad80b5f61e8c79a2735c9aee7c25b139e" compoundref="catoms2_d_capabilities_8cpp" startline="6">gainTable</references>
+        <references refid="class_catoms2_d_1_1_presence_matrix_1a575e50d15ba1f2275a8d6a299131471a" compoundref="catoms2_d_capabilities_8cpp" startline="688" endline="690">Catoms2D::PresenceMatrix::get</references>
+        <references refid="namespace_catoms2_d_1ac09e38b58b191f404fa24addd7a719f1" compoundref="catoms2_d_capabilities_8cpp" startline="389" endline="391">Catoms2D::compare</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="112" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="112" bodyend="122"/>
+    <listofallmembers>
+      <member refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a50d06389a861296ee2d44a7318387b14" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DCapabilities</scope><name>Catoms2DCapabilities</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_capabilities_1afea8a82dce5912f7bf0b7c44087e42ce" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DCapabilities</scope><name>tabCapabilities</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_capabilities_1ac06398b17d894b44a81534ff66d00349" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DCapabilities</scope><name>validate</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_capabilities_1ab88923f5c61a0175e48dbe910847edf9" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DCapabilities</scope><name>validateMulti</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a973bae95257143ceffbd0341cc61a8f5" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DCapabilities</scope><name>validateTrain</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_capabilities_1ae1543ffb59bef032e4891afc36cc13a1" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DCapabilities</scope><name>validateWithTarget</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a6d55c5c3690d14bb1c0bc7844f01c92f" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DCapabilities</scope><name>~Catoms2DCapabilities</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

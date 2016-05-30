@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="multi_cores_block_code_8cpp" kind="file" language="C++">
+    <compoundname>multiCoresBlockCode.cpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes refid="multi_cores_block_code_8h" local="yes">multiCoresBlockCode.h</includes>
+    <incdepgraph>
+      <node id="15993">
+        <label>list</label>
+      </node>
+      <node id="16004">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="16000" relation="include">
+        </childnode>
+        <childnode refid="15986" relation="include">
+        </childnode>
+        <childnode refid="15999" relation="include">
+        </childnode>
+        <childnode refid="16005" relation="include">
+        </childnode>
+        <childnode refid="16006" relation="include">
+        </childnode>
+      </node>
+      <node id="15996">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="15997" relation="include">
+        </childnode>
+        <childnode refid="15998" relation="include">
+        </childnode>
+        <childnode refid="15986" relation="include">
+        </childnode>
+        <childnode refid="15999" relation="include">
+        </childnode>
+        <childnode refid="16000" relation="include">
+        </childnode>
+        <childnode refid="16001" relation="include">
+        </childnode>
+        <childnode refid="16002" relation="include">
+        </childnode>
+        <childnode refid="16003" relation="include">
+        </childnode>
+        <childnode refid="16004" relation="include">
+        </childnode>
+        <childnode refid="16009" relation="include">
+        </childnode>
+      </node>
+      <node id="16006">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="15986" relation="include">
+        </childnode>
+        <childnode refid="15999" relation="include">
+        </childnode>
+        <childnode refid="16007" relation="include">
+        </childnode>
+        <childnode refid="16008" relation="include">
+        </childnode>
+      </node>
+      <node id="15990">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="16012">
+        <label>stdint.h</label>
+      </node>
+      <node id="15998">
+        <label>stdlib.h</label>
+      </node>
+      <node id="15989">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="15990" relation="include">
+        </childnode>
+        <childnode refid="15991" relation="include">
+        </childnode>
+        <childnode refid="15992" relation="include">
+        </childnode>
+        <childnode refid="15993" relation="include">
+        </childnode>
+        <childnode refid="15994" relation="include">
+        </childnode>
+        <childnode refid="15988" relation="include">
+        </childnode>
+        <childnode refid="16011" relation="include">
+        </childnode>
+      </node>
+      <node id="16007">
+        <label>cmath</label>
+      </node>
+      <node id="15995">
+        <label>string</label>
+      </node>
+      <node id="16000">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="16008">
+        <label>memory.h</label>
+      </node>
+      <node id="15994">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="15995" relation="include">
+        </childnode>
+        <childnode refid="15996" relation="include">
+        </childnode>
+        <childnode refid="16006" relation="include">
+        </childnode>
+        <childnode refid="16010" relation="include">
+        </childnode>
+      </node>
+      <node id="15999">
+        <label>fstream</label>
+      </node>
+      <node id="15988">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="15989" relation="include">
+        </childnode>
+        <childnode refid="16013" relation="include">
+        </childnode>
+      </node>
+      <node id="16003">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="16009">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="16005" relation="include">
+        </childnode>
+        <childnode refid="16006" relation="include">
+        </childnode>
+        <childnode refid="16004" relation="include">
+        </childnode>
+      </node>
+      <node id="16001">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="15987">
+        <label>multiCoresBlockCode.h</label>
+        <link refid="multi_cores_block_code_8h"/>
+        <childnode refid="15988" relation="include">
+        </childnode>
+        <childnode refid="16014" relation="include">
+        </childnode>
+      </node>
+      <node id="16005">
+        <label>math.h</label>
+      </node>
+      <node id="16010">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="15986" relation="include">
+        </childnode>
+        <childnode refid="15999" relation="include">
+        </childnode>
+        <childnode refid="16007" relation="include">
+        </childnode>
+        <childnode refid="16008" relation="include">
+        </childnode>
+        <childnode refid="15996" relation="include">
+        </childnode>
+      </node>
+      <node id="15986">
+        <label>iostream</label>
+      </node>
+      <node id="15985">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlockCode.cpp</label>
+        <link refid="multiCoresBlockCode.cpp"/>
+        <childnode refid="15986" relation="include">
+        </childnode>
+        <childnode refid="15987" relation="include">
+        </childnode>
+      </node>
+      <node id="15992">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="15991">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="16002">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="15997">
+        <label>stdio.h</label>
+      </node>
+      <node id="16011">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="15989" relation="include">
+        </childnode>
+        <childnode refid="16012" relation="include">
+        </childnode>
+        <childnode refid="15986" relation="include">
+        </childnode>
+        <childnode refid="15991" relation="include">
+        </childnode>
+        <childnode refid="15993" relation="include">
+        </childnode>
+      </node>
+      <node id="16013">
+        <label>inttypes.h</label>
+      </node>
+      <node id="16014">
+        <label>multiCoresBlock.h</label>
+        <link refid="multi_cores_block_8h"/>
+        <childnode refid="15989" relation="include">
+        </childnode>
+        <childnode refid="15987" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_multi_cores">MultiCores</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>multiCoresBlockCode.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>22<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="multi_cores_block_code_8h" kindref="compound">multiCoresBlockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_multi_cores" kindref="compound">MultiCores</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="class_multi_cores_1_1_multi_cores_block_code_1a2878a9bba9d9041b0dd001ba2ffc1212" refkind="member"><highlight class="normal">MultiCoresBlockCode::MultiCoresBlockCode(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref><sp/>*host):BlockCode(host)<sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;MultiCoresBlockCode<sp/>constructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="class_multi_cores_1_1_multi_cores_block_code_1ac95c2c1cfd44c39307e790b4a9982e80" refkind="member"><highlight class="normal"><ref refid="class_multi_cores_1_1_multi_cores_block_code_1ac95c2c1cfd44c39307e790b4a9982e80" kindref="member">MultiCoresBlockCode::~MultiCoresBlockCode</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;MultiCoresBlockCode<sp/>destructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">MultiCoresBlockCode*<sp/>MultiCoresBlockCode::buildNewBlockCode(MultiCoresBlock<sp/>*host)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/><sp/><sp/><sp/>return(new<sp/>MultiCoresBlockCode(host));</highlight></codeline>
+<codeline lineno="26"><highlight class="comment">}</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlockCode.cpp"/>
+  </compounddef>
+</doxygen>

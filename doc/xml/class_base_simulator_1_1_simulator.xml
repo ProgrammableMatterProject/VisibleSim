@@ -1,0 +1,395 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_base_simulator_1_1_simulator" kind="class" language="C++" prot="public">
+    <compoundname>BaseSimulator::Simulator</compoundname>
+    <derivedcompoundref refid="class_blinky_blocks_1_1_blinky_blocks_simulator" prot="public" virt="non-virtual">BlinkyBlocks::BlinkyBlocksSimulator</derivedcompoundref>
+    <derivedcompoundref refid="class_catoms2_d_1_1_catoms2_d_simulator" prot="public" virt="non-virtual">Catoms2D::Catoms2DSimulator</derivedcompoundref>
+    <derivedcompoundref refid="class_catoms3_d_1_1_catoms3_d_simulator" prot="public" virt="non-virtual">Catoms3D::Catoms3DSimulator</derivedcompoundref>
+    <derivedcompoundref refid="class_multi_cores_1_1_multi_cores_simulator" prot="public" virt="non-virtual">MultiCores::MultiCoresSimulator</derivedcompoundref>
+    <derivedcompoundref refid="class_robot_blocks_1_1_robot_blocks_simulator" prot="public" virt="non-virtual">RobotBlocks::RobotBlocksSimulator</derivedcompoundref>
+    <derivedcompoundref refid="class_smart_blocks_1_1_smart_blocks_simulator" prot="public" virt="non-virtual">SmartBlocks::SmartBlocksSimulator</derivedcompoundref>
+    <includes refid="simulator_8h" local="no">simulator.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" prot="public" static="no">
+        <name>Type</name>
+        <enumvalue id="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a887f8026b03db602d649b92d797ff3df" prot="public">
+          <name>CPP</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" prot="public">
+          <name>MELDPROCESS</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" prot="public">
+          <name>MELDINTERPRET</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="28" bodyend="28"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_base_simulator_1_1_simulator_1ad34fdbacc1ac2c668e36a3ed8dcfb88e" prot="protected" static="yes" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" kindref="member">Type</ref></type>
+        <definition>Simulator::Type BaseSimulator::Simulator::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <initializer>= <ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a887f8026b03db602d649b92d797ff3df" kindref="member">CPP</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" prot="protected" static="yes" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_simulator" kindref="compound">Simulator</ref> *</type>
+        <definition>Simulator * BaseSimulator::Simulator::simulator</definition>
+        <argsstring></argsstring>
+        <name>simulator</name>
+        <initializer>= NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="43" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="43" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a54b4c9fdd4b18d3dd34fec8706d84f52" compoundref="blinky_blocks_simulator_8cpp" startline="301" endline="303">BlinkyBlocks::BlinkyBlocksSimulator::createSimulator</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a2961eb7c802b889a159d1b7b20d7e4c1" compoundref="blinky_blocks_simulator_8cpp" startline="305" endline="307">BlinkyBlocks::BlinkyBlocksSimulator::deleteSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a06f9f0db0d9ec8f651c138d1e3d1480a" compoundref="catoms2_d_simulator_8cpp" startline="338" endline="340">Catoms2D::Catoms2DSimulator::createSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a42e86604e9edeaf9b0c835d7cf96b1a4" compoundref="catoms2_d_simulator_8cpp" startline="342" endline="344">Catoms2D::Catoms2DSimulator::deleteSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1aa62ef1eaa91c59c897c5451db429fe36" compoundref="catoms3_d_simulator_8cpp" startline="429" endline="431">Catoms3D::Catoms3DSimulator::createSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1af843edca6f641d01e178170d2b040da2" compoundref="catoms3_d_simulator_8cpp" startline="433" endline="435">Catoms3D::Catoms3DSimulator::deleteSimulator</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_simulator_1a36eafc2bfcf66eab89ac6264acf046ab" compoundref="multi_cores_simulator_8cpp" startline="30" endline="32">MultiCores::MultiCoresSimulator::createSimulator</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_simulator_1ae2b19594f43b011a13613f63ce9529f6" compoundref="multi_cores_simulator_8cpp" startline="34" endline="36">MultiCores::MultiCoresSimulator::deleteSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1a8ce133c7007be9e31a2fbca2997bff5e" compoundref="robot_blocks_simulator_8cpp" startline="311" endline="313">RobotBlocks::RobotBlocksSimulator::createSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1afe2c9b2910d6df5d43438fc42d736acb" compoundref="robot_blocks_simulator_8cpp" startline="315" endline="317">RobotBlocks::RobotBlocksSimulator::deleteSimulator</referencedby>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">Simulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a745631ed5b30e23076709ba882b91881" compoundref="smart_blocks_simulator_8cpp" startline="275" endline="277">SmartBlocks::SmartBlocksSimulator::createSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a6b7c7285393126a1e59795b920b09bb0" compoundref="smart_blocks_simulator_8cpp" startline="279" endline="282">SmartBlocks::SmartBlocksSimulator::deleteSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_simulator_1af109bff0fd7a7daf214dd8e9a9ef6b4c" prot="protected" static="yes" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_scheduler" kindref="compound">Scheduler</ref> *</type>
+        <definition>Scheduler* BaseSimulator::Simulator::scheduler</definition>
+        <argsstring></argsstring>
+        <name>scheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" prot="protected" static="no" mutable="no">
+        <type>TiXmlDocument *</type>
+        <definition>TiXmlDocument* BaseSimulator::Simulator::xmlDoc</definition>
+        <argsstring></argsstring>
+        <name>xmlDoc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="46" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">Simulator</referencedby>
+        <referencedby refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" compoundref="simulator_8cpp" startline="135" endline="153">~Simulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" compoundref="smart_blocks_simulator_8cpp" startline="17" endline="267">SmartBlocks::SmartBlocksSimulator::SmartBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" prot="protected" static="no" mutable="no">
+        <type>TiXmlNode *</type>
+        <definition>TiXmlNode* BaseSimulator::Simulator::xmlWorldNode</definition>
+        <argsstring></argsstring>
+        <name>xmlWorldNode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="47" bodyend="-1"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_command_line" kindref="compound">CommandLine</ref></type>
+        <definition>CommandLine BaseSimulator::Simulator::cmdLine</definition>
+        <argsstring></argsstring>
+        <name>cmdLine</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="49" bodyend="-1"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">Simulator</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_base_simulator_1_1_simulator_1ad63ea55d96448da82214c7a98093bc85" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_base_simulator_1_1_simulator" kindref="compound">Simulator</ref> *</type>
+        <definition>static Simulator* BaseSimulator::Simulator::getSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>getSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="29" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_simulator_1a999259e121cb046688bd4b394804d2c5" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void BaseSimulator::Simulator::setType</definition>
+        <argsstring>(Type t)</argsstring>
+        <name>setType</name>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" kindref="member">Type</ref></type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" kindref="member">Type</ref></type>
+        <definition>static Type BaseSimulator::Simulator::getType</definition>
+        <argsstring>()</argsstring>
+        <name>getType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="35" bodyend="35"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a11bb7e183cede0af91c0afd0ccce87e0" compoundref="blinky_blocks_block_8cpp" startline="162" endline="177">BlinkyBlocks::BlinkyBlocksBlock::stop</referencedby>
+        <referencedby refid="namespace_blinky_blocks_1ac102af21a67bb63072643278e99756f4" compoundref="blinky_blocks_scheduler_8h" startline="29" endline="42">BlinkyBlocks::createScheduler</referencedby>
+        <referencedby refid="namespace_blinky_blocks_1aac09cf80b036c44ba801c48aab6a05be" compoundref="blinky_blocks_scheduler_8h" startline="44" endline="56">BlinkyBlocks::deleteScheduler</referencedby>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">Simulator</referencedby>
+        <referencedby refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" compoundref="simulator_8cpp" startline="135" endline="153">~Simulator</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_base_simulator_1_1_simulator_1ab170e70fbb2b52ad3c4d8316a9b45b5a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_command_line" kindref="compound">CommandLine</ref> &amp;</type>
+        <definition>CommandLine&amp; BaseSimulator::Simulator::getCmdLine</definition>
+        <argsstring>()</argsstring>
+        <name>getCmdLine</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_simulator_1a21df91f0bb5bfe8fb643b3e4c30fc9f9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseSimulator::Simulator::printInfo</definition>
+        <argsstring>()</argsstring>
+        <name>printInfo</name>
+        <reimplementedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1a6866a49c9f10e20f1a0a2c093c3bce35">printInfo</reimplementedby>
+        <reimplementedby refid="class_multi_cores_1_1_multi_cores_simulator_1a80c0f2d1d0498872bef5ca2634aa09b3">printInfo</reimplementedby>
+        <reimplementedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1add32de736abaa2092123423da971bb15">printInfo</reimplementedby>
+        <reimplementedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1a30f37b5a6cca5bd45aa1dd957c254c4d">printInfo</reimplementedby>
+        <reimplementedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ae72ffef5ddf1f5088d856e84ba502063">printInfo</reimplementedby>
+        <reimplementedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a4a5e1849733e67628a5fc40366484e63">printInfo</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BaseSimulator::Simulator::Simulator</definition>
+        <argsstring>(int argc, char *argv[])</argsstring>
+        <name>Simulator</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp" bodystart="25" bodyend="133"/>
+        <references refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" compoundref="simulator_8cpp" startline="19">BaseSimulator::simulator</references>
+        <references refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" compoundref="simulator_8h" startline="43">simulator</references>
+        <references refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" compoundref="trace_8h" startline="18">ERRPUT</references>
+        <references refid="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" compoundref="simulator_8h" startline="47">xmlWorldNode</references>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" compoundref="simulator_8h" startline="49">cmdLine</references>
+        <references refid="class_command_line_1ae618e2380c5457acf9852ca683ed81db" compoundref="command_line_8h" startline="48" endline="48">CommandLine::getConfigFile</references>
+        <references refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" compoundref="simulator_8h" startline="46">xmlDoc</references>
+        <references refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" compoundref="simulator_8h" startline="35" endline="35">getType</references>
+        <references refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" compoundref="simulator_8h" startline="28">MELDPROCESS</references>
+        <references refid="class_command_line_1a5a08061e508dbf035640c4c90b86a056" compoundref="command_line_8h" startline="47" endline="47">CommandLine::getProgramPath</references>
+        <references refid="class_command_line_1a227a98ffeac4f0166e3f65730aac26ae" compoundref="command_line_8h" startline="46" endline="46">CommandLine::getMeldDebugger</references>
+        <references refid="namespace_meld_process_1a109979f1bd210da87e56500e55861763" compoundref="meld_process_v_m_8h" startline="114" endline="114">MeldProcess::setVMConfiguration</references>
+        <references refid="namespace_meld_process_1a8ef4dcdc77788c11e5f7bd1d6acb0e44" compoundref="meld_process_v_m_8h" startline="112" endline="112">MeldProcess::createVMServer</references>
+        <references refid="namespace_meld_process_1a885f24ef522fd98264e04cd2d8e34d99" compoundref="meld_process_debugger_8h" startline="69" endline="69">MeldProcess::createDebugger</references>
+        <references refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" compoundref="simulator_8h" startline="28">MELDINTERPRET</references>
+        <references refid="class_meld_interpret_1_1_meld_interpret_v_m_1ab1b5461191f09843972795af3b3bc050" compoundref="meld_interpret_v_m_8cpp" startline="549" endline="555">MeldInterpret::MeldInterpretVM::setConfiguration</references>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>BaseSimulator::Simulator::~Simulator</definition>
+        <argsstring>()</argsstring>
+        <name>~Simulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="52" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp" bodystart="135" bodyend="153"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" compoundref="simulator_8h" startline="46">xmlDoc</references>
+        <references refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" compoundref="simulator_8h" startline="35" endline="35">getType</references>
+        <references refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" compoundref="simulator_8h" startline="28">MELDPROCESS</references>
+        <references refid="class_meld_process_1_1_meld_process_v_m_1a86485547146b1717ca00e055774336b2" compoundref="meld_process_v_m_8h" startline="96" endline="96">MeldProcess::MeldProcessVM::isInDebuggingMode</references>
+        <references refid="namespace_meld_process_1a41aadf55262534f7e2afe5cc806987ae" compoundref="meld_process_debugger_8h" startline="71" endline="71">MeldProcess::deleteDebugger</references>
+        <references refid="namespace_meld_process_1ab2b55f9eae1afe9681f4449c7ed7e10e" compoundref="meld_process_v_m_8h" startline="113" endline="113">MeldProcess::deleteVMServer</references>
+        <references refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" compoundref="simulator_8h" startline="28">MELDINTERPRET</references>
+        <references refid="namespace_base_simulator_1a7e5df7146e696f7daea2878e5531f561" compoundref="scheduler_8h" startline="121" endline="123">BaseSimulator::deleteScheduler</references>
+        <references refid="namespace_base_simulator_1a964dd9036faafc4a27d7760d8c38efd5" compoundref="world_8h" startline="86" endline="88">BaseSimulator::deleteWorld</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2391">
+        <label>BlinkyBlocks::BlinkyBlocksSimulator</label>
+        <link refid="class_blinky_blocks_1_1_blinky_blocks_simulator"/>
+        <childnode refid="2390" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2390">
+        <label>BaseSimulator::Simulator</label>
+        <link refid="class_base_simulator_1_1_simulator"/>
+      </node>
+      <node id="2392">
+        <label>Catoms2D::Catoms2DSimulator</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_simulator"/>
+        <childnode refid="2390" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2395">
+        <label>RobotBlocks::RobotBlocksSimulator</label>
+        <link refid="class_robot_blocks_1_1_robot_blocks_simulator"/>
+        <childnode refid="2390" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2396">
+        <label>SmartBlocks::SmartBlocksSimulator</label>
+        <link refid="class_smart_blocks_1_1_smart_blocks_simulator"/>
+        <childnode refid="2390" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2393">
+        <label>Catoms3D::Catoms3DSimulator</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_simulator"/>
+        <childnode refid="2390" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2394">
+        <label>MultiCores::MultiCoresSimulator</label>
+        <link refid="class_multi_cores_1_1_multi_cores_simulator"/>
+        <childnode refid="2390" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2397">
+        <label>BaseSimulator::Simulator</label>
+        <link refid="class_base_simulator_1_1_simulator"/>
+        <childnode refid="2398" relation="usage">
+          <edgelabel>cmdLine</edgelabel>
+        </childnode>
+        <childnode refid="2397" relation="usage">
+          <edgelabel>simulator</edgelabel>
+        </childnode>
+        <childnode refid="2399" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="2398">
+        <label>CommandLine</label>
+        <link refid="class_command_line"/>
+      </node>
+      <node id="2399">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="2399" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h" bodystart="26" bodyend="53"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" prot="protected" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>cmdLine</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a887f8026b03db602d649b92d797ff3df" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>CPP</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ab170e70fbb2b52ad3c4d8316a9b45b5a" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>getCmdLine</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ad63ea55d96448da82214c7a98093bc85" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>getSimulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>getType</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>MELDINTERPRET</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>MELDPROCESS</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a21df91f0bb5bfe8fb643b3e4c30fc9f9" prot="public" virt="virtual"><scope>BaseSimulator::Simulator</scope><name>printInfo</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1af109bff0fd7a7daf214dd8e9a9ef6b4c" prot="protected" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>scheduler</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a999259e121cb046688bd4b394804d2c5" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>setType</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" prot="protected" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>simulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" prot="protected" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>Simulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ad34fdbacc1ac2c668e36a3ed8dcfb88e" prot="protected" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>type</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" prot="public" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>Type</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" prot="protected" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>xmlDoc</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" prot="protected" virt="non-virtual"><scope>BaseSimulator::Simulator</scope><name>xmlWorldNode</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" prot="protected" virt="virtual"><scope>BaseSimulator::Simulator</scope><name>~Simulator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

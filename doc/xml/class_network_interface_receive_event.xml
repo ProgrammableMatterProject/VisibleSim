@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_network_interface_receive_event" kind="class" language="C++" prot="public">
+    <compoundname>NetworkInterfaceReceiveEvent</compoundname>
+    <basecompoundref refid="class_event" prot="public" virt="non-virtual">Event</basecompoundref>
+    <includes refid="events_8h" local="no">events.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_network_interface_receive_event_1a935413e706761477e9d34418c4edb979" prot="public" static="no" mutable="no">
+        <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+        <definition>P2PNetworkInterface* NetworkInterfaceReceiveEvent::interface</definition>
+        <argsstring></argsstring>
+        <name>interface</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="180" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_network_interface_receive_event_1a8385d841b1b57fa006d1abecde6f7453" prot="public" static="no" mutable="no">
+        <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+        <definition>MessagePtr NetworkInterfaceReceiveEvent::message</definition>
+        <argsstring></argsstring>
+        <name>message</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="181" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="181" bodyend="-1"/>
+        <referencedby refid="class_network_interface_receive_event_1a47ada31626fdebe3df6b8f644240cf0e" compoundref="events_8cpp" startline="221" endline="226">NetworkInterfaceReceiveEvent</referencedby>
+        <referencedby refid="class_network_interface_receive_event_1a3814d5815822d6bb8125d792673664e8" compoundref="events_8cpp" startline="228" endline="231">~NetworkInterfaceReceiveEvent</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_network_interface_receive_event_1a47ada31626fdebe3df6b8f644240cf0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>NetworkInterfaceReceiveEvent::NetworkInterfaceReceiveEvent</definition>
+        <argsstring>(uint64_t, P2PNetworkInterface *ni, MessagePtr mes)</argsstring>
+        <name>NetworkInterfaceReceiveEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *</type>
+          <declname>ni</declname>
+        </param>
+        <param>
+          <type><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref></type>
+          <declname>mes</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="182" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="221" bodyend="226"/>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a5149addf71a0eaf7253ffbe3325d70da" compoundref="unique_events_id_8h" startline="15">EVENT_NI_RECEIVE</references>
+        <references refid="class_network_interface_receive_event_1a8385d841b1b57fa006d1abecde6f7453" compoundref="events_8h" startline="181">message</references>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_network_interface_receive_event_1a3814d5815822d6bb8125d792673664e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>NetworkInterfaceReceiveEvent::~NetworkInterfaceReceiveEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~NetworkInterfaceReceiveEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="183" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="228" bodyend="231"/>
+        <references refid="class_network_interface_receive_event_1a8385d841b1b57fa006d1abecde6f7453" compoundref="events_8h" startline="181">message</references>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_network_interface_receive_event_1a27f20349cb9a0d84d95efb904f36e721" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void NetworkInterfaceReceiveEvent::consume</definition>
+        <argsstring>()</argsstring>
+        <name>consume</name>
+        <reimplements refid="class_event_1a3f4a0fa007ee754b139b0b6f688e86f3">consume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="184" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="233" bodyend="235"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_network_interface_receive_event_1ad3218f93f82bc93067b987163e329c5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string NetworkInterfaceReceiveEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_event_1a0f07f046436bccc20c1cf507167e221a">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="185" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="237" bodyend="239"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2141">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2140">
+        <label>NetworkInterfaceReceiveEvent</label>
+        <link refid="class_network_interface_receive_event"/>
+        <childnode refid="2141" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2143">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2142">
+        <label>NetworkInterfaceReceiveEvent</label>
+        <link refid="class_network_interface_receive_event"/>
+        <childnode refid="2143" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2144" relation="usage">
+          <edgelabel>interface</edgelabel>
+        </childnode>
+      </node>
+      <node id="2144">
+        <label>P2PNetworkInterface</label>
+        <link refid="class_p2_p_network_interface"/>
+        <childnode refid="2144" relation="usage">
+          <edgelabel>connectedInterface</edgelabel>
+        </childnode>
+        <childnode refid="2145" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2147">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2145" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2145">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2146" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2147" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2146">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2145" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="178" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="178" bodyend="186"/>
+    <listofallmembers>
+      <member refid="class_network_interface_receive_event_1a27f20349cb9a0d84d95efb904f36e721" prot="public" virt="virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>consume</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>eventType</name></member>
+      <member refid="class_event_1a3290dbf5e83cd7dca078dc73fb3a2461" prot="public" virt="virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_network_interface_receive_event_1ad3218f93f82bc93067b987163e329c5a" prot="public" virt="virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>id</name></member>
+      <member refid="class_network_interface_receive_event_1a935413e706761477e9d34418c4edb979" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>interface</name></member>
+      <member refid="class_network_interface_receive_event_1a8385d841b1b57fa006d1abecde6f7453" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>message</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_network_interface_receive_event_1a47ada31626fdebe3df6b8f644240cf0e" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>NetworkInterfaceReceiveEvent</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>randomNumber</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>~Event</name></member>
+      <member refid="class_network_interface_receive_event_1a3814d5815822d6bb8125d792673664e8" prot="public" virt="non-virtual"><scope>NetworkInterfaceReceiveEvent</scope><name>~NetworkInterfaceReceiveEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="camera_8cpp" kind="file" language="C++">
+    <compoundname>camera.cpp</compoundname>
+    <includes refid="camera_8h" local="yes">camera.h</includes>
+    <incdepgraph>
+      <node id="11255">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="11256" relation="include">
+        </childnode>
+        <childnode refid="11251" relation="include">
+        </childnode>
+        <childnode refid="11252" relation="include">
+        </childnode>
+        <childnode refid="11249" relation="include">
+        </childnode>
+        <childnode refid="11250" relation="include">
+        </childnode>
+      </node>
+      <node id="11250">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="11251" relation="include">
+        </childnode>
+        <childnode refid="11252" relation="include">
+        </childnode>
+        <childnode refid="11253" relation="include">
+        </childnode>
+        <childnode refid="11254" relation="include">
+        </childnode>
+      </node>
+      <node id="11247">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp</label>
+        <link refid="camera.cpp"/>
+        <childnode refid="11248" relation="include">
+        </childnode>
+      </node>
+      <node id="11253">
+        <label>cmath</label>
+      </node>
+      <node id="11256">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="11254">
+        <label>memory.h</label>
+      </node>
+      <node id="11252">
+        <label>fstream</label>
+      </node>
+      <node id="11248">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="11249" relation="include">
+        </childnode>
+        <childnode refid="11250" relation="include">
+        </childnode>
+        <childnode refid="11255" relation="include">
+        </childnode>
+      </node>
+      <node id="11249">
+        <label>math.h</label>
+      </node>
+      <node id="11251">
+        <label>iostream</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="camera_8cpp_1a83d37ef0dca8248a1b80133cffdc36a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Camera &amp;c)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_camera" kindref="compound">Camera</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" line="175" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp" bodystart="175" bodyend="178"/>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Camera.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>29<sp/>janv.<sp/>2012</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">/***************************************************************************</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/><sp/>camera.cpp<sp/><sp/>-<sp/><sp/>gestion<sp/>de<sp/>la<sp/>camera<sp/>OpenGL</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>-------------------</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/><sp/><sp/><sp/>copyright<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>(C)<sp/>2011<sp/>by<sp/>Benoît<sp/>Piranda</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/><sp/><sp/><sp/>email<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>benoit.piranda@univ-fcomte.fr</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>LASELDI<sp/>/<sp/>Universite<sp/>de<sp/>Franche-Comté</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>***************************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="camera_8h" kindref="compound">camera.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="class_camera_1a78e57277b569a12b634ee3f7ce4c603e" refkind="member"><highlight class="normal"><ref refid="class_camera_1a78e57277b569a12b634ee3f7ce4c603e" kindref="member">Camera::Camera</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>t,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>SX,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>SY)<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>phi=p;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>theta=t;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>distance<sp/>=<sp/>d;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>sensibilityX=SX;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>sensibilityY=SY;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>targetMotion=</highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" kindref="member">updatePositionFromAngles</ref>();</highlight></codeline>
+<codeline lineno="25"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" kindref="member">Camera::updatePositionFromAngles</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>OCamx<sp/>=<sp/>distance*cos(phi)*cos(theta),</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>OCamy<sp/>=<sp/>distance*cos(phi)*sin(theta),</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>OCamz<sp/>=<sp/>distance*sin(phi);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>+<sp/>OCamx;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>+<sp/>OCamy;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>+<sp/>OCamz;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>Xcam.<ref refid="class_vecteur_1a9847818b536abf81b1a82196d4846918" kindref="member">set</ref>(OCamy,-OCamx,0);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>Xcam.<ref refid="class_vecteur_1a06dacfa5fc434136436734c6078eded5" kindref="member">normer_interne</ref>();</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>Ycam.<ref refid="class_vecteur_1a9847818b536abf81b1a82196d4846918" kindref="member">set</ref>(-OCamx*OCamz,-OCamy*OCamz,OCamx*OCamx+OCamy*OCamy);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>Ycam.<ref refid="class_vecteur_1a06dacfa5fc434136436734c6078eded5" kindref="member">normer_interne</ref>();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="class_camera_1a8e5c2a5f38ed6e0acecd9bb3e9ae1c99" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a8e5c2a5f38ed6e0acecd9bb3e9ae1c99" kindref="member">Camera::mouseDown</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>tm)<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[0]=x;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[1]=y;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>targetMotion=tm;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="class_camera_1a6486849c28c1fff783c36dabd3344436" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a6486849c28c1fff783c36dabd3344436" kindref="member">Camera::mouseUp</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(targetMotion)</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>target+=-0.1*(mouse[0]-x)*Xcam<sp/>+<sp/>0.1*(y-mouse[1])*Ycam;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>theta<sp/>+=<sp/>(mouse[0]-x)*sensibilityX;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>phi<sp/>-=<sp/>(mouse[1]-y)*sensibilityY;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(phi&gt;<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/>phi=<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(phi&lt;-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/>phi=-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>targetMotion=</highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" kindref="member">updatePositionFromAngles</ref>();</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="class_camera_1ab0ded66af0a35f693f173007f24be44c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1ab0ded66af0a35f693f173007f24be44c" kindref="member">Camera::mouseMove</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(targetMotion)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target+=-0.1*(mouse[0]-x)*Xcam<sp/>+<sp/>0.1*(y-mouse[1])*Ycam;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>theta<sp/>+=<sp/>(mouse[0]-x)*sensibilityX;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>phi<sp/>-=<sp/>(mouse[1]-y)*sensibilityY;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(phi&gt;<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/>phi=<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(phi&lt;-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/>phi=-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[0]=x;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[1]=y;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" kindref="member">updatePositionFromAngles</ref>();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="class_camera_1a8cb013647e06793c56e529c9c62b9371" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a8cb013647e06793c56e529c9c62b9371" kindref="member">Camera::mouseZoom</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>pas)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>distance+=pas;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a6748a848ba5a275ee23671f2c31f4b57" kindref="member">updatePositionFromAngles</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="class_camera_1ac4c7f5e91786f418464392df8c7a140e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1ac4c7f5e91786f418464392df8c7a140e" kindref="member">Camera::glLookAt</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>gluLookAt(position[0],position[1],position[2],target[0],target[1],target[2],<sp/>0.,0.,1.);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" kindref="member">Camera::setLightParameters</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;t,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>th,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>ph,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>angle,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nearplane,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>farplane)<sp/>{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a80f115bcdb70a6d87c5a31b6dfabf043" kindref="member">target</ref>[0]<sp/>=<sp/>t[0];</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a80f115bcdb70a6d87c5a31b6dfabf043" kindref="member">target</ref>[1]<sp/>=<sp/>t[1];</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a80f115bcdb70a6d87c5a31b6dfabf043" kindref="member">target</ref>[2]<sp/>=<sp/>t[2];</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aadca4f2cb4d8244b2d01e72a698f8191" kindref="member">theta</ref>=th*<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/180;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>=ph*<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/180;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a54fe67c22b44ef6afa97283edc586225" kindref="member">distance</ref>=d;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aee8435898de039ce5c8fc56dfa4f08dc" kindref="member">falloffAngle</ref>=angle;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a2ccb22d67e544717af374db4a4326da6" kindref="member">near_plane</ref>=nearplane;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aa9192c3a67cd0589bc83d2983259d04c" kindref="member">far_plane</ref>=farplane;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" kindref="member">calcMatrices</ref>();</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_camera_1aaf55ae7f5f95e6c45332fb33b8db9fe5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1aaf55ae7f5f95e6c45332fb33b8db9fe5" kindref="member">Camera::glProjection</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>gluPerspective(angle,w_h,near_plane,far_plane);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="class_camera_1a64744eab539145034be6abcda043290b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a64744eab539145034be6abcda043290b" kindref="member">Camera::updateIntrinsics</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>a,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>rwh,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>np,</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>fp)<sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>angle=a;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>w_h<sp/>=<sp/>rwh;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>near_plane=np;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>far_plane=fp;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="class_camera_1af1af6f6cde8769da4571cfbea78418ce" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1af1af6f6cde8769da4571cfbea78418ce" kindref="member">Camera::mouseLightDown</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[0]=x;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[1]=y;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="class_camera_1a232ea5d526f5ab404c88173bde2fc8fb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a232ea5d526f5ab404c88173bde2fc8fb" kindref="member">Camera::mouseLightUp</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aadca4f2cb4d8244b2d01e72a698f8191" kindref="member">theta</ref><sp/>+=<sp/>(mouse[0]-x)*sensibilityX;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref><sp/>-=<sp/>(mouse[1]-y)*sensibilityY;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>&gt;<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>=<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>&lt;-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>=-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" kindref="member">calcMatrices</ref>();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="class_camera_1af9569cd37406f292c0271ea86b4666ee" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1af9569cd37406f292c0271ea86b4666ee" kindref="member">Camera::mouseLightMove</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aadca4f2cb4d8244b2d01e72a698f8191" kindref="member">theta</ref><sp/>+=<sp/>(mouse[0]-x)*sensibilityX;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref><sp/>-=<sp/>(mouse[1]-y)*sensibilityY;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>&gt;<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>=<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>&lt;-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2)<sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1aed8983c1dc237f0b005b4149611fb19a" kindref="member">phi</ref>=-<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/2;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[0]=x;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse[1]=y;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" kindref="member">calcMatrices</ref>();</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131" refid="class_camera_1a9a803bf1d5daed6b1111416ae9b7c476" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_camera_1a9a803bf1d5daed6b1111416ae9b7c476" kindref="member">Camera::mouseLightZoom</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>pas)<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a54fe67c22b44ef6afa97283edc586225" kindref="member">distance</ref>+=GLfloat(pas);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_camera_1a2acac692956489f3b291b41c0238d82d" kindref="member">ls</ref>.<ref refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" kindref="member">calcMatrices</ref>();</highlight></codeline>
+<codeline lineno="134"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137" refid="class_light_source_1adcdaf865d0cf3e72c4eca0cc20c0825c" refkind="member"><highlight class="normal"><ref refid="class_light_source_1adcdaf865d0cf3e72c4eca0cc20c0825c" kindref="member">LightSource::LightSource</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>falloffAngle=60.0;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/>near_plane=1.0;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>far_plane=10000.0;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>theta=phi=0;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>distance=1000;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" kindref="member">LightSource::calcMatrices</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_smart_blocks_1a3b7c8b52667fdbd212d3113508c64bcd" kindref="member">dir</ref>[0]<sp/>=<sp/>-cos(phi)*cos(theta);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_smart_blocks_1a3b7c8b52667fdbd212d3113508c64bcd" kindref="member">dir</ref>[1]<sp/>=<sp/>-cos(phi)*sin(theta);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_smart_blocks_1a3b7c8b52667fdbd212d3113508c64bcd" kindref="member">dir</ref>[2]<sp/>=<sp/>-sin(phi);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>pos[0]<sp/>=<sp/>target[0]<sp/>-<sp/>distance*<ref refid="namespace_smart_blocks_1a3b7c8b52667fdbd212d3113508c64bcd" kindref="member">dir</ref>[0];</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>pos[1]<sp/>=<sp/>target[1]<sp/>-<sp/>distance*dir[1];</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>pos[2]<sp/>=<sp/>target[2]<sp/>-<sp/>distance*dir[2];</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>pos[3]=1.0;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>glMatrixMode(GL_MODELVIEW);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>glPushMatrix();</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>glLoadIdentity();</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0,0,1);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>glGetFloatv(GL_MODELVIEW_MATRIX,<sp/>matMV);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_matrice" kindref="compound">Matrice</ref><sp/>mat(matMV),mat_1;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>mat.<ref refid="class_matrice_1a2a3e43dbf203b548d2da12164c567538" kindref="member">inverse</ref>(mat_1);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>mat_1.<ref refid="class_matrice_1a0f718072562674ccc3c5bd548247388a" kindref="member">fillArray</ref>(matMV_1);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>glLoadIdentity<sp/>();</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>gluPerspective(falloffAngle*2.,<sp/>1.0f,<sp/>near_plane,<sp/>far_plane);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>glGetFloatv(GL_MODELVIEW_MATRIX,<sp/>matP);<sp/></highlight><highlight class="comment">//<sp/>mémorisation<sp/>de<sp/>la<sp/>matrice<sp/>de<sp/>projection<sp/>pour<sp/>la<sp/>source</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>glPopMatrix();</highlight></codeline>
+<codeline lineno="166"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="class_light_source_1a97f336d56f58049aedfed2c946f4528b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_light_source_1a97f336d56f58049aedfed2c946f4528b" kindref="member">LightSource::draw</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>glPushMatrix();</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>glTranslatef(pos[0],pos[1],pos[2]);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>glutSolidCone(1.0,1.0,10.0,10.0);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>glPopMatrix();</highlight></codeline>
+<codeline lineno="173"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175" refid="camera_8cpp_1a83d37ef0dca8248a1b80133cffdc36a4" refkind="member"><highlight class="normal">ostream&amp;<sp/><ref refid="class_camera_1a83d37ef0dca8248a1b80133cffdc36a4" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_camera" kindref="compound">Camera</ref><sp/>&amp;c)</highlight></codeline>
+<codeline lineno="176"><highlight class="normal">{<sp/>f<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;(&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>c.phi*180.0/<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>c.theta*180.0/<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>c.distance<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>f;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/camera.cpp"/>
+  </compounddef>
+</doxygen>

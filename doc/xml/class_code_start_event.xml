@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_code_start_event" kind="class" language="C++" prot="public">
+    <compoundname>CodeStartEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="events_8h" local="no">events.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_code_start_event_1abae175b5d0e5e334954fe268fd7ae15c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CodeStartEvent::CodeStartEvent</definition>
+        <argsstring>(uint64_t, BaseSimulator::BuildingBlock *conBlock)</argsstring>
+        <name>CodeStartEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+          <declname>conBlock</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="104" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="94" bodyend="97"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a877dc79b1964d1c3327995b3c10315c8" compoundref="unique_events_id_8h" startline="12">EVENT_CODE_START</references>
+      </memberdef>
+      <memberdef kind="function" id="class_code_start_event_1abfb215ed94bc7ea6364c4305bc4efd99" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CodeStartEvent::~CodeStartEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~CodeStartEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="105" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="98" bodyend="100"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_code_start_event_1a38aa5549c65493648b51555cd056bc4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CodeStartEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="106" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="102" bodyend="105"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_base_simulator_1_1_building_block_1aa42bdf9c46446055c12a4eeee9134e99" compoundref="building_block_8h" startline="62">BaseSimulator::BuildingBlock::blockCode</references>
+        <references refid="class_base_simulator_1_1_block_code_1a4522800d6069d71ece8c01db154038e1">BaseSimulator::BlockCode::startup</references>
+      </memberdef>
+      <memberdef kind="function" id="class_code_start_event_1a539e04996f52594a8b6a843b993a85e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string CodeStartEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="107" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="107" bodyend="109"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1683">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="1682">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="1683" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1681">
+        <label>CodeStartEvent</label>
+        <link refid="class_code_start_event"/>
+        <childnode refid="1682" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1686">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="1685">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="1686" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1687" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1689">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1687" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1687">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1688" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1689" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1688">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1687" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1684">
+        <label>CodeStartEvent</label>
+        <link refid="class_code_start_event"/>
+        <childnode refid="1685" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="101" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="101" bodyend="108"/>
+    <listofallmembers>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>CodeStartEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>CodeStartEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_code_start_event_1abae175b5d0e5e334954fe268fd7ae15c" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>CodeStartEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>CodeStartEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" prot="public" virt="virtual"><scope>CodeStartEvent</scope><name>consume</name></member>
+      <member refid="class_code_start_event_1a38aa5549c65493648b51555cd056bc4a" prot="public" virt="virtual"><scope>CodeStartEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>eventType</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>CodeStartEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_code_start_event_1a539e04996f52594a8b6a843b993a85e6" prot="public" virt="virtual"><scope>CodeStartEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>id</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>CodeStartEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>CodeStartEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>randomNumber</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>CodeStartEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_code_start_event_1abfb215ed94bc7ea6364c4305bc4efd99" prot="public" virt="non-virtual"><scope>CodeStartEvent</scope><name>~CodeStartEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>CodeStartEvent</scope><name>~Event</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

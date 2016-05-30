@@ -1,0 +1,358 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="robot_blocks_capabilities_8h" kind="file" language="C++">
+    <compoundname>robotBlocksCapabilities.h</compoundname>
+    <includes local="no">vector</includes>
+    <includes local="no">climits</includes>
+    <includes refid="vecteur_8h" local="yes">vecteur.h</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includes local="no">string</includes>
+    <includes local="no">TinyXML/tinyxml.h</includes>
+    <includedby refid="robot_blocks_gl_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGlBlock.h</includedby>
+    <includedby refid="robot_blocks_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.h</includedby>
+    <includedby refid="robot_blocks_world_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h</includedby>
+    <includedby refid="robot_blocks_capabilities_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp</includedby>
+    <incdepgraph>
+      <node id="17253">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="17254" relation="include">
+        </childnode>
+        <childnode refid="17255" relation="include">
+        </childnode>
+        <childnode refid="17256" relation="include">
+        </childnode>
+        <childnode refid="17257" relation="include">
+        </childnode>
+      </node>
+      <node id="17256">
+        <label>cmath</label>
+      </node>
+      <node id="17250">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h</label>
+        <link refid="robotBlocksCapabilities.h"/>
+        <childnode refid="17251" relation="include">
+        </childnode>
+        <childnode refid="17252" relation="include">
+        </childnode>
+        <childnode refid="17253" relation="include">
+        </childnode>
+        <childnode refid="17258" relation="include">
+        </childnode>
+        <childnode refid="17259" relation="include">
+        </childnode>
+        <childnode refid="17260" relation="include">
+        </childnode>
+      </node>
+      <node id="17259">
+        <label>string</label>
+      </node>
+      <node id="17257">
+        <label>memory.h</label>
+      </node>
+      <node id="17255">
+        <label>fstream</label>
+      </node>
+      <node id="17260">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="17251">
+        <label>vector</label>
+      </node>
+      <node id="17254">
+        <label>iostream</label>
+      </node>
+      <node id="17252">
+        <label>climits</label>
+      </node>
+      <node id="17258">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="17255" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="17268">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="17266">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="17264" relation="include">
+        </childnode>
+        <childnode refid="17267" relation="include">
+        </childnode>
+        <childnode refid="17269" relation="include">
+        </childnode>
+        <childnode refid="17270" relation="include">
+        </childnode>
+      </node>
+      <node id="17273">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="17262">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGlBlock.h</label>
+        <link refid="robot_blocks_gl_block_8h"/>
+        <childnode refid="17263" relation="include">
+        </childnode>
+        <childnode refid="17277" relation="include">
+        </childnode>
+      </node>
+      <node id="17261">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h</label>
+        <link refid="robotBlocksCapabilities.h"/>
+        <childnode refid="17262" relation="include">
+        </childnode>
+        <childnode refid="17263" relation="include">
+        </childnode>
+        <childnode refid="17272" relation="include">
+        </childnode>
+        <childnode refid="17278" relation="include">
+        </childnode>
+      </node>
+      <node id="17272">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h</label>
+        <link refid="robot_blocks_world_8h"/>
+        <childnode refid="17264" relation="include">
+        </childnode>
+        <childnode refid="17266" relation="include">
+        </childnode>
+        <childnode refid="17273" relation="include">
+        </childnode>
+        <childnode refid="17269" relation="include">
+        </childnode>
+        <childnode refid="17274" relation="include">
+        </childnode>
+      </node>
+      <node id="17267">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="17268" relation="include">
+        </childnode>
+      </node>
+      <node id="17276">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h</label>
+        <link refid="robot_blocks_events_8h"/>
+        <childnode refid="17273" relation="include">
+        </childnode>
+        <childnode refid="17267" relation="include">
+        </childnode>
+      </node>
+      <node id="17277">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGlBlock.cpp</label>
+        <link refid="robot_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="17278">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp</label>
+        <link refid="robot_blocks_capabilities_8cpp"/>
+      </node>
+      <node id="17275">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robot_blocks_scheduler_8h"/>
+        <childnode refid="17266" relation="include">
+        </childnode>
+        <childnode refid="17273" relation="include">
+        </childnode>
+        <childnode refid="17267" relation="include">
+        </childnode>
+        <childnode refid="17269" relation="include">
+        </childnode>
+        <childnode refid="17274" relation="include">
+        </childnode>
+      </node>
+      <node id="17265">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlockCode.h</label>
+        <link refid="robot_blocks_block_code_8h"/>
+        <childnode refid="17263" relation="include">
+        </childnode>
+        <childnode refid="17266" relation="include">
+        </childnode>
+        <childnode refid="17271" relation="include">
+        </childnode>
+        <childnode refid="17267" relation="include">
+        </childnode>
+      </node>
+      <node id="17271">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlockCode.cpp</label>
+        <link refid="robot_blocks_block_code_8cpp"/>
+      </node>
+      <node id="17263">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.h</label>
+        <link refid="robot_blocks_block_8h"/>
+        <childnode refid="17264" relation="include">
+        </childnode>
+        <childnode refid="17265" relation="include">
+        </childnode>
+        <childnode refid="17272" relation="include">
+        </childnode>
+        <childnode refid="17275" relation="include">
+        </childnode>
+        <childnode refid="17276" relation="include">
+        </childnode>
+        <childnode refid="17267" relation="include">
+        </childnode>
+        <childnode refid="17274" relation="include">
+        </childnode>
+      </node>
+      <node id="17264">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="17270">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="17274">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="17269">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_robot_blocks_1_1_point_rel3_d" prot="public">RobotBlocks::PointRel3D</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_presence_matrix" prot="public">RobotBlocks::PresenceMatrix</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_validation_matrix" prot="public">RobotBlocks::ValidationMatrix</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_motion" prot="public">RobotBlocks::Motion</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_capability" prot="public">RobotBlocks::Capability</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_validation" prot="public">RobotBlocks::Validation</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_capabilities" prot="public">RobotBlocks::RobotBlocksCapabilities</innerclass>
+    <innernamespace refid="namespace_robot_blocks">RobotBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>robotBlocksCapability.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>15<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ROBOTBLOCKSCAPABILITY_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROBOTBLOCKSCAPABILITY_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;climits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vecteur_8h" kindref="compound">vecteur.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;TinyXML/tinyxml.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_robot_blocks" kindref="compound">RobotBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="class_robot_blocks_1_1_point_rel3_d" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="21" refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" kindref="member">x</ref>;</highlight></codeline>
+<codeline lineno="22" refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" kindref="member">y</ref>;</highlight></codeline>
+<codeline lineno="23" refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" kindref="member">z</ref>;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3935bfa6b4c3f3223fe9c8273b7de12d" kindref="member">PointRel3D</ref>();</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3935bfa6b4c3f3223fe9c8273b7de12d" kindref="member">PointRel3D</ref>(</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>vx,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>vy,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>vz);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3935bfa6b4c3f3223fe9c8273b7de12d" kindref="member">PointRel3D</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;str);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>vx,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>vy,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>vz);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a687ea2ab9234c85d82296d9d85adc025" kindref="member">isInBoundingBox</ref>(</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>x0,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>x1,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>y0,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>y1,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>z0,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>z1);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" kindref="member">fromString</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;str);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" kindref="member">fromString</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>&amp;str,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref>&amp;ref);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1adcef6b343083e2155abd150aa5cf67ae" kindref="member">rotateY</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3d9ed051cce715cb78d74647c7489336" kindref="member">rotateZ</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34" refid="class_robot_blocks_1_1_point_rel3_d_1a1d1540880032448320890aee9454517a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a1d1540880032448320890aee9454517a" kindref="member">isZero</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(x==0<sp/>&amp;&amp;<sp/>y==0<sp/>&amp;&amp;<sp/>z==0);<sp/>}</highlight></codeline>
+<codeline lineno="35" refid="class_robot_blocks_1_1_point_rel3_d_1a451107e6ff25cf7c294d1c6e3c7be4df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a451107e6ff25cf7c294d1c6e3c7be4df" kindref="member">isSet</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x!=SHRT_MIN;<sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1adbd78fed2f1733db2c9266bdadd39951" kindref="member">operator ==</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>p1,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>p2);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a2807aa438d8f113c29f8cd4f82b85b1a" kindref="member">operator !=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>p1,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>p2);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/>ostream&amp;<sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3a016f6c843ae1f800cab6bec6ef31ec" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;pt);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a55810ab5170ebbeca2ffc4b706761d69" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" kindref="member">states</ref><sp/>{<sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a5a72eab51308fbaa39886721d07abd98" kindref="member">emptyState</ref>=0,<sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a3038df3d3ff36fa41f992935894ebd42" kindref="member">fullState</ref>=3,<sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a767614fec88920680a73ea3c7d68224f" kindref="member">filledState</ref>=5,<sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1afcd4d2721448d1b7e4b2607b0229eb5d" kindref="member">emptiedState</ref>=6,<sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a55810ab5170ebbeca2ffc4b706761d69" kindref="member">transitState</ref>=7,<sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1ad0af3046079d980b5f0df197e3bc0c2f" kindref="member">jockerState</ref>=8<sp/>};</highlight></codeline>
+<codeline lineno="42" refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aad275be7b61c220691e25b428b5f8f118" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/>{<sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aae5e0fc67709665b949c418d96639f45e" kindref="member">emptyCell</ref>=0,<sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aaca9d5ec0004ea9994d44b2447984c2f8" kindref="member">fullCell</ref>=1,<sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aad275be7b61c220691e25b428b5f8f118" kindref="member">wallCell</ref>=2,<sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aa6cb1f56c238b94d83786c2fef80e3f52" kindref="member">lockedCell</ref>=3};</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="class_robot_blocks_1_1_presence_matrix" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="46" refid="class_robot_blocks_1_1_presence_matrix_1ac022be07fed7dad1eda648c0e6e3d679" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/>grid[27];</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref>();</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/>ostream&amp;<sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3a016f6c843ae1f800cab6bec6ef31ec" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;sm);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>add(<ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/>v,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;posAdd,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;origine);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref>&amp;<sp/>pt,<ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/>v);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" kindref="member">presence</ref><sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;pt)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="class_robot_blocks_1_1_validation_matrix" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref><sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="56" refid="class_robot_blocks_1_1_validation_matrix_1afb4eabfd87149faba5df261200e44d04" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" kindref="member">states</ref><sp/>grid[27];</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref>();</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" kindref="member">fromString</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*str);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>fromRotationY(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref>&amp;,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>fromRotationZ(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref>&amp;,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref>&amp;<sp/>pt,<ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" kindref="member">states</ref><sp/>v);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" kindref="member">states</ref><sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;pt);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/>ostream&amp;<sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3a016f6c843ae1f800cab6bec6ef31ec" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref><sp/>&amp;sm);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>validate(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;pm);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>validateWithTarget(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;pm,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;ltm,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;gain);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>validateTrain(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;pm,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;ltm,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;gain);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="class_robot_blocks_1_1_motion" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_motion" kindref="compound">Motion</ref><sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_motion" kindref="compound">Motion</ref>();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_motion" kindref="compound">Motion</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_motion" kindref="compound">Motion</ref><sp/>*);</highlight></codeline>
+<codeline lineno="75" refid="class_robot_blocks_1_1_motion_1a99e0f20ac186aa8e2df113525a684989" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_motion_1a99e0f20ac186aa8e2df113525a684989" kindref="member">obj</ref>;</highlight></codeline>
+<codeline lineno="76" refid="class_robot_blocks_1_1_motion_1aa388fe6af7b0dbd520edcc6e66851c14" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_motion_1aa388fe6af7b0dbd520edcc6e66851c14" kindref="member">endTime</ref>;</highlight></codeline>
+<codeline lineno="77" refid="class_robot_blocks_1_1_motion_1a777c55c476d1c2896f1a695dd887e418" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/><ref refid="class_robot_blocks_1_1_motion_1a777c55c476d1c2896f1a695dd887e418" kindref="member">init</ref>;</highlight></codeline>
+<codeline lineno="78" refid="class_robot_blocks_1_1_motion_1a129b177f9f7cf257f310efed1af3d600" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/></highlight><highlight class="keyword">final</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="class_robot_blocks_1_1_capability" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref><sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="83" refid="class_robot_blocks_1_1_capability_1a237cafbc84586612042f4d163e06d1b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_capability_1a237cafbc84586612042f4d163e06d1b4" kindref="member">num</ref>;</highlight></codeline>
+<codeline lineno="84" refid="class_robot_blocks_1_1_capability_1a43801b59c0baa3c3328791f3198ab9f6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_capability_1a43801b59c0baa3c3328791f3198ab9f6" kindref="member">level</ref>;</highlight></codeline>
+<codeline lineno="85" refid="class_robot_blocks_1_1_capability_1a3f976300e79a6b8d21a5ba791c0fbc55" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_capability_1a3f976300e79a6b8d21a5ba791c0fbc55" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="86" refid="class_robot_blocks_1_1_capability_1ac35784f9dfac7d2d0cea676549f8f102" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref><sp/><ref refid="class_robot_blocks_1_1_capability_1ac35784f9dfac7d2d0cea676549f8f102" kindref="member">validationMatrix</ref>;</highlight></codeline>
+<codeline lineno="87" refid="class_robot_blocks_1_1_capability_1afd594a3064a2155b56c80b97a0a4d6e5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/><ref refid="class_robot_blocks_1_1_capability_1afd594a3064a2155b56c80b97a0a4d6e5" kindref="member">refPos</ref>;</highlight><highlight class="comment">//,*helperPos</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="class_robot_blocks_1_1_capability_1a20cefe05a0fcde5753c94116dfb45060" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>*linkNextPos,*<ref refid="class_robot_blocks_1_1_capability_1a20cefe05a0fcde5753c94116dfb45060" kindref="member">linkPrevPos</ref>;</highlight></codeline>
+<codeline lineno="89" refid="class_robot_blocks_1_1_capability_1aa299f737573720523d0c763c9e2bcd67" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_capability_1aa299f737573720523d0c763c9e2bcd67" kindref="member">isHead</ref>,isEnd;</highlight></codeline>
+<codeline lineno="90" refid="class_robot_blocks_1_1_capability_1a29873a6c63c00263b42c012d90eb2a81" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>vector<sp/>&lt;Motion*&gt;<sp/><ref refid="class_robot_blocks_1_1_capability_1a29873a6c63c00263b42c012d90eb2a81" kindref="member">tabMotions</ref>;</highlight></codeline>
+<codeline lineno="91" refid="class_robot_blocks_1_1_capability_1af7bf2339e262b38c26ff12b1519e4c33" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_capability_1af7bf2339e262b38c26ff12b1519e4c33" kindref="member">nbreConditions</ref>;</highlight></codeline>
+<codeline lineno="92" refid="class_robot_blocks_1_1_capability_1a61498f97d79751545c1db6baf35d8a12" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/><ref refid="class_robot_blocks_1_1_capability_1a61498f97d79751545c1db6baf35d8a12" kindref="member">conditionPreviousPosition</ref>;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">&amp;<sp/>sid);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">&amp;<sp/>sid,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref>*ref,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref>();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/>ostream&amp;<sp/><ref refid="class_robot_blocks_1_1_point_rel3_d_1a3a016f6c843ae1f800cab6bec6ef31ec" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref><sp/>&amp;c);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>getCenter(<ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>&amp;center);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>getMotionVector(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>time);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref><sp/>getMotionVector(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="class_robot_blocks_1_1_validation" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_validation" kindref="compound">Validation</ref><sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="106" refid="class_robot_blocks_1_1_validation_1ab9b01f6daefa6b6b8b15ba892d354afc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref>*<ref refid="class_robot_blocks_1_1_validation_1ab9b01f6daefa6b6b8b15ba892d354afc" kindref="member">capa</ref>;</highlight></codeline>
+<codeline lineno="107" refid="class_robot_blocks_1_1_validation_1ae06aabc800cfca154b1cc2a50c13ac43" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_validation_1ae06aabc800cfca154b1cc2a50c13ac43" kindref="member">gain</ref>;</highlight></codeline>
+<codeline lineno="108" refid="class_robot_blocks_1_1_validation_1a51b2e869c7c2814bae55018a8e73baff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_validation_1a51b2e869c7c2814bae55018a8e73baff" kindref="member">nbreConditions</ref>;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_validation" kindref="compound">Validation</ref>(<ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref><sp/>*c,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>g,</highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="class_robot_blocks_1_1_robot_blocks_capabilities" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_robot_blocks_capabilities" kindref="compound">RobotBlocksCapabilities</ref><sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="114" refid="class_robot_blocks_1_1_robot_blocks_capabilities_1a534cf53850cbd40b2c402ac7b4b6bf38" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>vector<sp/>&lt;Capability*&gt;<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_capabilities_1a534cf53850cbd40b2c402ac7b4b6bf38" kindref="member">tabCapabilities</ref>;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_capabilities" kindref="compound">RobotBlocksCapabilities</ref>(TiXmlNode<sp/>*node);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_robot_blocks_1_1_robot_blocks_capabilities" kindref="compound">RobotBlocksCapabilities</ref>();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref><sp/>*validate(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;sm);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref><sp/>*validateWithTarget(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;sm,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;ltm,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;gain);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref><sp/>*validateTrain(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;sm,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;ltm,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;gain);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/>vector<sp/>&lt;Validation*&gt;<sp/>*validateMulti(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;sm,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref><sp/>&amp;ltm);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h"/>
+  </compounddef>
+</doxygen>

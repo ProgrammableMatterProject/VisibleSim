@@ -1,0 +1,580 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="clock_8cpp" kind="file" language="C++">
+    <compoundname>clock.cpp</compoundname>
+    <includes refid="clock_8h" local="yes">clock.h</includes>
+    <includes refid="scheduler_8h" local="yes">scheduler.h</includes>
+    <includes local="no">limits</includes>
+    <incdepgraph>
+      <node id="13553">
+        <label>list</label>
+      </node>
+      <node id="13587">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="13556" relation="include">
+        </childnode>
+        <childnode refid="13588" relation="include">
+        </childnode>
+        <childnode refid="13565" relation="include">
+        </childnode>
+        <childnode refid="13570" relation="include">
+        </childnode>
+        <childnode refid="13554" relation="include">
+        </childnode>
+        <childnode refid="13589" relation="include">
+        </childnode>
+      </node>
+      <node id="13565">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="13561" relation="include">
+        </childnode>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13560" relation="include">
+        </childnode>
+        <childnode refid="13566" relation="include">
+        </childnode>
+        <childnode refid="13567" relation="include">
+        </childnode>
+      </node>
+      <node id="13556">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="13557" relation="include">
+        </childnode>
+        <childnode refid="13558" relation="include">
+        </childnode>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13560" relation="include">
+        </childnode>
+        <childnode refid="13561" relation="include">
+        </childnode>
+        <childnode refid="13562" relation="include">
+        </childnode>
+        <childnode refid="13563" relation="include">
+        </childnode>
+        <childnode refid="13564" relation="include">
+        </childnode>
+        <childnode refid="13565" relation="include">
+        </childnode>
+        <childnode refid="13570" relation="include">
+        </childnode>
+      </node>
+      <node id="13567">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13560" relation="include">
+        </childnode>
+        <childnode refid="13568" relation="include">
+        </childnode>
+        <childnode refid="13569" relation="include">
+        </childnode>
+      </node>
+      <node id="13589">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="13590" relation="include">
+        </childnode>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13560" relation="include">
+        </childnode>
+        <childnode refid="13569" relation="include">
+        </childnode>
+        <childnode refid="13554" relation="include">
+        </childnode>
+        <childnode refid="13591" relation="include">
+        </childnode>
+        <childnode refid="13571" relation="include">
+        </childnode>
+      </node>
+      <node id="13550">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="13593">
+        <label>limits</label>
+      </node>
+      <node id="13581">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="13578">
+        <label>assert.h</label>
+      </node>
+      <node id="13574">
+        <label>stdint.h</label>
+      </node>
+      <node id="13558">
+        <label>stdlib.h</label>
+      </node>
+      <node id="13549">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="13550" relation="include">
+        </childnode>
+        <childnode refid="13551" relation="include">
+        </childnode>
+        <childnode refid="13552" relation="include">
+        </childnode>
+        <childnode refid="13553" relation="include">
+        </childnode>
+        <childnode refid="13554" relation="include">
+        </childnode>
+        <childnode refid="13572" relation="include">
+        </childnode>
+        <childnode refid="13548" relation="include">
+        </childnode>
+      </node>
+      <node id="13568">
+        <label>cmath</label>
+      </node>
+      <node id="13555">
+        <label>string</label>
+      </node>
+      <node id="13561">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="13577">
+        <label>map</label>
+      </node>
+      <node id="13579">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="13569">
+        <label>memory.h</label>
+      </node>
+      <node id="13554">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="13555" relation="include">
+        </childnode>
+        <childnode refid="13556" relation="include">
+        </childnode>
+        <childnode refid="13567" relation="include">
+        </childnode>
+        <childnode refid="13571" relation="include">
+        </childnode>
+      </node>
+      <node id="13560">
+        <label>fstream</label>
+      </node>
+      <node id="13572">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="13549" relation="include">
+        </childnode>
+        <childnode refid="13573" relation="include">
+        </childnode>
+      </node>
+      <node id="13564">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="13583">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="13570">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="13566" relation="include">
+        </childnode>
+        <childnode refid="13567" relation="include">
+        </childnode>
+        <childnode refid="13565" relation="include">
+        </childnode>
+      </node>
+      <node id="13562">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="13588">
+        <label>pthread.h</label>
+      </node>
+      <node id="13586">
+        <label>string.h</label>
+      </node>
+      <node id="13590">
+        <label>vector</label>
+      </node>
+      <node id="13584">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="13585" relation="include">
+        </childnode>
+        <childnode refid="13586" relation="include">
+        </childnode>
+        <childnode refid="13550" relation="include">
+        </childnode>
+        <childnode refid="13549" relation="include">
+        </childnode>
+      </node>
+      <node id="13576">
+        <label>sstream</label>
+      </node>
+      <node id="13575">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13576" relation="include">
+        </childnode>
+        <childnode refid="13577" relation="include">
+        </childnode>
+        <childnode refid="13573" relation="include">
+        </childnode>
+        <childnode refid="13578" relation="include">
+        </childnode>
+        <childnode refid="13579" relation="include">
+        </childnode>
+        <childnode refid="13580" relation="include">
+        </childnode>
+        <childnode refid="13552" relation="include">
+        </childnode>
+        <childnode refid="13581" relation="include">
+        </childnode>
+        <childnode refid="13582" relation="include">
+        </childnode>
+        <childnode refid="13587" relation="include">
+        </childnode>
+      </node>
+      <node id="13566">
+        <label>math.h</label>
+      </node>
+      <node id="13547">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.cpp</label>
+        <link refid="clock.cpp"/>
+        <childnode refid="13548" relation="include">
+        </childnode>
+        <childnode refid="13575" relation="include">
+        </childnode>
+        <childnode refid="13593" relation="include">
+        </childnode>
+      </node>
+      <node id="13571">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13560" relation="include">
+        </childnode>
+        <childnode refid="13568" relation="include">
+        </childnode>
+        <childnode refid="13569" relation="include">
+        </childnode>
+        <childnode refid="13556" relation="include">
+        </childnode>
+      </node>
+      <node id="13559">
+        <label>iostream</label>
+      </node>
+      <node id="13585">
+        <label>deque</label>
+      </node>
+      <node id="13580">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="13552">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="13592">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="13560" relation="include">
+        </childnode>
+      </node>
+      <node id="13582">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="13573" relation="include">
+        </childnode>
+        <childnode refid="13555" relation="include">
+        </childnode>
+        <childnode refid="13550" relation="include">
+        </childnode>
+        <childnode refid="13549" relation="include">
+        </childnode>
+        <childnode refid="13583" relation="include">
+        </childnode>
+        <childnode refid="13584" relation="include">
+        </childnode>
+        <childnode refid="13571" relation="include">
+        </childnode>
+      </node>
+      <node id="13551">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="13591">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13577" relation="include">
+        </childnode>
+        <childnode refid="13590" relation="include">
+        </childnode>
+        <childnode refid="13552" relation="include">
+        </childnode>
+        <childnode refid="13578" relation="include">
+        </childnode>
+        <childnode refid="13549" relation="include">
+        </childnode>
+        <childnode refid="13554" relation="include">
+        </childnode>
+        <childnode refid="13592" relation="include">
+        </childnode>
+      </node>
+      <node id="13563">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="13557">
+        <label>stdio.h</label>
+      </node>
+      <node id="13548">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="13549" relation="include">
+        </childnode>
+        <childnode refid="13574" relation="include">
+        </childnode>
+        <childnode refid="13559" relation="include">
+        </childnode>
+        <childnode refid="13551" relation="include">
+        </childnode>
+        <childnode refid="13553" relation="include">
+        </childnode>
+      </node>
+      <node id="13573">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_base_simulator">BaseSimulator</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="clock_8h" kindref="compound">clock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scheduler_8h" kindref="compound">scheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//#define<sp/>CLOCK_DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_base_simulator" kindref="compound">BaseSimulator</ref><sp/>{</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="class_base_simulator_1_1_clock_1a0ed4bd514d08d95e22a953b2327b66f2" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a0ed4bd514d08d95e22a953b2327b66f2" kindref="member">Clock::Clock</ref>(<ref refid="class_base_simulator_1_1_clock_1a1d4606a84fbd55c3754c461adffc0782" kindref="member">ClockType</ref><sp/>clockType,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref><sp/>*h)<sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1ac239e40c3736ccbe6350d189caddd8e3" kindref="member">hostBlock</ref><sp/>=<sp/>h;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a79103dfffa520d54769100b57f0b7732" kindref="member">type</ref><sp/>=<sp/>clockType;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a72130d5e614af48020e061139a9cca85" kindref="member">x0</ref><sp/>=<sp/><ref refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" kindref="member">BaseSimulator::getScheduler</ref>()-&gt;<ref refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" kindref="member">now</ref>();</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1ad89d3ad318ce49ba45eee110936ed3b6" kindref="member">generator</ref><sp/>=<sp/><sp/>boost::rand48(<ref refid="class_base_simulator_1_1_clock_1ac239e40c3736ccbe6350d189caddd8e3" kindref="member">hostBlock</ref>-&gt;<ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref>);</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1aa5e9fc26ec77e56bc9d086628e9c1f8b" kindref="member">setClockProperties</ref>(clockType);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="17" refid="class_base_simulator_1_1_clock_1aa5e9fc26ec77e56bc9d086628e9c1f8b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1aa5e9fc26ec77e56bc9d086628e9c1f8b" kindref="member">Clock::setClockProperties</ref>(<ref refid="class_base_simulator_1_1_clock_1a1d4606a84fbd55c3754c461adffc0782" kindref="member">ClockType</ref><sp/>clockType)<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(clockType)<sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a1d4606a84fbd55c3754c461adffc0782a18ac227f6a48c5b09f991b9213d5bea7" kindref="member">XMEGA_RTC_OSC1K_ULPRC</ref>:</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a811bc2cc08dc447bcf345e11bdf70ed0" kindref="member">resolution</ref><sp/>=<sp/>RESOLUTION_1MS;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1abd0e85e4235e9074bb8e0238d6e1daf3" kindref="member">accuracy</ref><sp/>=<sp/>ACCURACY_320000PPM;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref>=0;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref>=1;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;warning<sp/>XMEGA_RTC_OSC1K_ULPRC<sp/>oscillator<sp/>not<sp/>supported<sp/>yet!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a1d4606a84fbd55c3754c461adffc0782a95158388448a04a73803a23be5dff78f" kindref="member">XMEGA_RTC_OSC1K_CRC</ref>:</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a811bc2cc08dc447bcf345e11bdf70ed0" kindref="member">resolution</ref><sp/>=<sp/>RESOLUTION_1MS;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1abd0e85e4235e9074bb8e0238d6e1daf3" kindref="member">accuracy</ref><sp/>=<sp/>ACCURACY_10000PPM;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>D,<sp/>y0,<sp/>errorSD</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>us:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>mean[3]<sp/>=<sp/>{<sp/>-1.179717*pow(10,-14),<sp/>0.9922277,<sp/>2080197};</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>sd[3]<sp/>=<sp/>{3.060884*pow(10,-15),<sp/>0.001851285,<sp/>294832};</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>v[3];</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ms:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//double<sp/>mean[3]<sp/>=<sp/>{<sp/>-1.179717*pow(10,-11),<sp/>0.9922277,<sp/>2080.197};</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//double<sp/>sd[3]<sp/>=<sp/>{3.060884*pow(10,-12),<sp/>0.001851285,<sp/>294.832};</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//double<sp/>v[3];</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>3;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::mt19937<sp/>uGenerator(<ref refid="class_base_simulator_1_1_clock_1ac239e40c3736ccbe6350d189caddd8e3" kindref="member">hostBlock</ref>-&gt;<ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::normal_distribution&lt;double&gt;<sp/>normalDist(mean[i],sd[i]);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::variate_generator&lt;boost::mt19937&amp;,<sp/>boost::normal_distribution&lt;double&gt;<sp/>&gt;<sp/><ref refid="class_base_simulator_1_1_clock_1ad89d3ad318ce49ba45eee110936ed3b6" kindref="member">generator</ref>(uGenerator,<sp/>normalDist);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>v[i]<sp/>=<sp/><ref refid="class_base_simulator_1_1_clock_1ad89d3ad318ce49ba45eee110936ed3b6" kindref="member">generator</ref>();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref><sp/>=<sp/>v[0];</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref><sp/>=<sp/>v[1];</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a1e195554496d2e82474b7a270f72769b" kindref="member">sigma</ref><sp/>=<sp/>v[2];</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>CLOCK_DEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;@&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_base_simulator_1_1_clock_1ac239e40c3736ccbe6350d189caddd8e3" kindref="member">hostBlock</ref>-&gt;<ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>D=&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>y0=&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>sigma=&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_base_simulator_1_1_clock_1a1e195554496d2e82474b7a270f72769b" kindref="member">sigma</ref><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a1d4606a84fbd55c3754c461adffc0782ae1318ac50a83c5630469d176e7657789" kindref="member">XMEGA_RTC_OSC32K_EXT</ref>:</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a811bc2cc08dc447bcf345e11bdf70ed0" kindref="member">resolution</ref><sp/>=<sp/>RESOLUTION_1MS;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1abd0e85e4235e9074bb8e0238d6e1daf3" kindref="member">accuracy</ref><sp/>=<sp/>ACCURACY_100PPM;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref>=0;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref>=1;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;warning<sp/><sp/>XMEGA_RTC_OSC32K_EXT<sp/>oscillator<sp/>not<sp/>supported<sp/>yet!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Undefined<sp/>clock<sp/>resolution&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="class_base_simulator_1_1_clock_1a2db9bd301ba568498ca3d787a01513c6" refkind="member"><highlight class="normal"><sp/><sp/>uint64_t<sp/><ref refid="class_base_simulator_1_1_clock_1a2db9bd301ba568498ca3d787a01513c6" kindref="member">Clock::getTime</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a2db9bd301ba568498ca3d787a01513c6" kindref="member">getTime</ref>(<ref refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" kindref="member">getScheduler</ref>()-&gt;now());</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="class_base_simulator_1_1_clock_1a217ca491c736fc7188f5fcdc197db0f4" refkind="member"><highlight class="normal"><sp/><sp/>uint64_t<sp/><ref refid="class_base_simulator_1_1_clock_1a2db9bd301ba568498ca3d787a01513c6" kindref="member">Clock::getTime</ref>(uint64_t<sp/>simTime)<sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="class_base_simulator_1_1_clock_1a811bc2cc08dc447bcf345e11bdf70ed0" kindref="member">resolution</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>RESOLUTION_1US:</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a305c5d108edc964ab7289ceef9e8fbf7" kindref="member">getTimeUS</ref>(simTime);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>RESOLUTION_31US:<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>uint64_t<sp/>time<sp/>=<sp/><ref refid="class_base_simulator_1_1_clock_1a305c5d108edc964ab7289ceef9e8fbf7" kindref="member">getTimeUS</ref>(simTime);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>floor(time/31)<sp/>*<sp/>31;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>RESOLUTION_1MS:</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a722a10bbfe8292cdb5943975c60bd1ff" kindref="member">getTimeMS</ref>(simTime)*1000;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Undefined<sp/>clock<sp/>resolution&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="91" refid="class_base_simulator_1_1_clock_1a722a10bbfe8292cdb5943975c60bd1ff" refkind="member"><highlight class="normal"><sp/><sp/>uint64_t<sp/><ref refid="class_base_simulator_1_1_clock_1a722a10bbfe8292cdb5943975c60bd1ff" kindref="member">Clock::getTimeMS</ref>(uint64_t<sp/>simTime)<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a305c5d108edc964ab7289ceef9e8fbf7" kindref="member">getTimeUS</ref>(simTime)/1000;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_base_simulator_1_1_clock_1a305c5d108edc964ab7289ceef9e8fbf7" refkind="member"><highlight class="normal"><sp/><sp/>uint64_t<sp/><ref refid="class_base_simulator_1_1_clock_1a305c5d108edc964ab7289ceef9e8fbf7" kindref="member">Clock::getTimeUS</ref>(uint64_t<sp/>simTime)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>localTime<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>noise<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::mt19937<sp/>uGenerator(simTime*<ref refid="class_base_simulator_1_1_clock_1ac239e40c3736ccbe6350d189caddd8e3" kindref="member">hostBlock</ref>-&gt;<ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref>);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::normal_distribution&lt;double&gt;<sp/>normalDist(0,<ref refid="class_base_simulator_1_1_clock_1a1e195554496d2e82474b7a270f72769b" kindref="member">sigma</ref>);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::variate_generator&lt;boost::mt19937&amp;,<sp/>boost::normal_distribution&lt;double&gt;<sp/>&gt;<sp/><ref refid="class_base_simulator_1_1_clock_1ad89d3ad318ce49ba45eee110936ed3b6" kindref="member">generator</ref>(uGenerator,<sp/>normalDist);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>minL<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>maxL<sp/>=<sp/>numeric_limits&lt;double&gt;::max();</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>list&lt;ReferencePoint&gt;::iterator<sp/>it;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a77c9e4e3b7f3bb0a457217045006e269" kindref="member">cleanReferencePoints</ref>();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(it<sp/>=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.begin();<sp/>it<sp/>!=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.end();<sp/>it++)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;simulation<sp/>==<sp/>simTime)<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>it-&gt;local;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;simulation<sp/>&lt;<sp/>simTime)<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>minL<sp/>=<sp/>max(minL,(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)it-&gt;local);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;simulation<sp/>&gt;<sp/>simTime)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>maxL<sp/>=<sp/>min(maxL,(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)it-&gt;local);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//sorted<sp/>list</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>noise<sp/>?</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//noise<sp/>=<sp/>generator();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>localTime<sp/>=<sp/>(1.0/2.0)*<ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref>*pow((</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)simTime,2)<sp/>+<sp/><ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref>*((double)simTime)<sp/>+<sp/><ref refid="class_base_simulator_1_1_clock_1a72130d5e614af48020e061139a9cca85" kindref="member">x0</ref><sp/>+<sp/>noise;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>localTime<sp/>=<sp/>max(minL,localTime);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>localTime<sp/>=<sp/>min(maxL,localTime);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_reference_point" kindref="compound">ReferencePoint</ref><sp/>p<sp/>=<sp/><ref refid="class_base_simulator_1_1_reference_point" kindref="compound">ReferencePoint</ref>((uint64_t)localTime,simTime);<sp/></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>==<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.end())<sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.push_back(p);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.insert(it,p);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint64_t)localTime;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="138" refid="class_base_simulator_1_1_clock_1aa2ab94f61b3cb67dd322c058b54d37b5" refkind="member"><highlight class="normal"><sp/><sp/>uint64_t<sp/><ref refid="class_base_simulator_1_1_clock_1aa2ab94f61b3cb67dd322c058b54d37b5" kindref="member">Clock::getSchedulerTimeForLocalTime</ref>(uint64_t<sp/>localTime)<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>noise<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>simTime<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::mt19937<sp/>uGenerator(localTime*<ref refid="class_base_simulator_1_1_clock_1ac239e40c3736ccbe6350d189caddd8e3" kindref="member">hostBlock</ref>-&gt;<ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref>);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::normal_distribution&lt;double&gt;<sp/>normalDist(0,<ref refid="class_base_simulator_1_1_clock_1a1e195554496d2e82474b7a270f72769b" kindref="member">sigma</ref>);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::variate_generator&lt;boost::mt19937&amp;,<sp/>boost::normal_distribution&lt;double&gt;<sp/>&gt;<sp/><ref refid="class_base_simulator_1_1_clock_1ad89d3ad318ce49ba45eee110936ed3b6" kindref="member">generator</ref>(uGenerator,<sp/>normalDist);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>minL<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>maxL<sp/>=<sp/>numeric_limits&lt;double&gt;::max();</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>list&lt;ReferencePoint&gt;::iterator<sp/>it;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a77c9e4e3b7f3bb0a457217045006e269" kindref="member">cleanReferencePoints</ref>();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(it<sp/>=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.begin();<sp/>it<sp/>!=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.end();<sp/>it++)<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;local<sp/>==<sp/>localTime)<sp/>{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>it-&gt;simulation;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;local<sp/>&lt;<sp/>localTime)<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>minL<sp/>=<sp/>max(minL,(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)it-&gt;simulation);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;local<sp/>&gt;<sp/>localTime)<sp/>{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>maxL<sp/>=<sp/>min(maxL,(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">)it-&gt;simulation);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//sorted<sp/>list</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>noise<sp/>?</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//noise<sp/>=<sp/>generator();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>delta<sp/>=<sp/><sp/>pow(<ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref>,2)<sp/>-<sp/>4<sp/>*<sp/>(1.0/2.0)*<ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref><sp/>*<sp/>(<ref refid="class_base_simulator_1_1_clock_1a72130d5e614af48020e061139a9cca85" kindref="member">x0</ref>+noise-(double)localTime);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(delta<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>s1<sp/>=<sp/>(-<ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref><sp/>+<sp/>sqrt(delta))<sp/>/<sp/><ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref>;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>s2<sp/>=<sp/>(-<ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref><sp/>-<sp/>sqrt(delta))<sp/>/<sp/><ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref>;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>we<sp/>take<sp/>the<sp/>value<sp/>closest<sp/>to<sp/>localTime</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(abs(s1-localTime)<sp/>&lt;<sp/>abs(s2-localTime))<sp/>{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>simTime<sp/>=<sp/>s1;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>simTime<sp/>=<sp/>s2;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(delta<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>simTime<sp/>=<sp/>-<ref refid="class_base_simulator_1_1_clock_1a6b0c7a094de49853a9e795d54084921c" kindref="member">y0</ref><sp/>/<sp/><ref refid="class_base_simulator_1_1_clock_1af391ef00a638323da6b01fd8d3b4eaff" kindref="member">D</ref>;</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;delta<sp/>should<sp/>be<sp/>positive!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>simTime<sp/>=<sp/>minL;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>simTime<sp/>=<sp/>max(minL,simTime);</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>simTime<sp/>=<sp/>min(maxL,simTime);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_reference_point" kindref="compound">ReferencePoint</ref><sp/>p<sp/>=<sp/><ref refid="class_base_simulator_1_1_reference_point" kindref="compound">ReferencePoint</ref>(localTime,(uint64_t)simTime);<sp/></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>==<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.end())<sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.push_back(p);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.insert(it,p);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(uint64_t)<sp/>simTime;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="199" refid="class_base_simulator_1_1_clock_1a77c9e4e3b7f3bb0a457217045006e269" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_clock_1a77c9e4e3b7f3bb0a457217045006e269" kindref="member">Clock::cleanReferencePoints</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/>simTime<sp/>=<sp/><ref refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" kindref="member">getScheduler</ref>()-&gt;<ref refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" kindref="member">now</ref>();</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(list&lt;ReferencePoint&gt;::iterator<sp/>it<sp/>=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.begin();</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>it<sp/>!=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.end();<sp/>it++)<sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;simulation<sp/>&gt;=<sp/>simTime)<sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>!=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.begin())<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>it--;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.erase(<ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.begin(),it);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(list&lt;ReferencePoint&gt;::iterator<sp/>it<sp/>=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.begin();</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>it<sp/>!=<sp/><ref refid="class_base_simulator_1_1_clock_1a7c7c3c9aac436ff1029d900ad87553be" kindref="member">referencePoints</ref>.end();<sp/>it++)<sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="216"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.cpp"/>
+  </compounddef>
+</doxygen>

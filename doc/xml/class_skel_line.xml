@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_skel_line" kind="class" language="C++" prot="public">
+    <compoundname>SkelLine</compoundname>
+    <basecompoundref refid="class_skeleton" prot="public" virt="non-virtual">Skeleton</basecompoundref>
+    <includes refid="skeleton_8h" local="no">skeleton.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_skel_line_1a8a41af14df2201759a22bc3c5310cd4b" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur SkelLine::ptA</definition>
+        <argsstring></argsstring>
+        <name>ptA</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_skel_line_1a3984ba5c9b65fce1efdf85562e6e77ec" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur SkelLine::ptB</definition>
+        <argsstring></argsstring>
+        <name>ptB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_skel_line_1acfffe1fb93eb48425e882fc47d352994" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur SkelLine::AB</definition>
+        <argsstring></argsstring>
+        <name>AB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_skel_line_1a6716988073796ec50d6a1b20e6fc1244" prot="protected" static="no" mutable="no">
+        <type>double</type>
+        <definition>double SkelLine::AB2</definition>
+        <argsstring></argsstring>
+        <name>AB2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_skel_line_1a8519bb469f59b172391d35567c04e0fa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>SkelLine::SkelLine</definition>
+        <argsstring>(const Vecteur &amp;A, const Vecteur &amp;B, double r, double b)</argsstring>
+        <name>SkelLine</name>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" bodystart="25" bodyend="25"/>
+        <references refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" compoundref="vecteur_8cpp" startline="90" endline="92">Vecteur::norme2</references>
+      </memberdef>
+      <memberdef kind="function" id="class_skel_line_1ac4de74c142d99efe325759c8550c63ae" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>SkelLine::~SkelLine</definition>
+        <argsstring>()</argsstring>
+        <name>~SkelLine</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" bodystart="26" bodyend="26"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_skel_line_1a0d2a1b0c4208efd7e58a618006e14e6c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double SkelLine::distance2</definition>
+        <argsstring>(const Vecteur &amp;pos)</argsstring>
+        <name>distance2</name>
+        <reimplements refid="class_skeleton_1ad105f115dde3b6e6b31617a941c6e2b1">distance2</reimplements>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.cpp" bodystart="34" bodyend="41"/>
+        <references refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" compoundref="vecteur_8cpp" startline="90" endline="92">Vecteur::norme2</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2405">
+        <label>Skeleton</label>
+        <link refid="class_skeleton"/>
+      </node>
+      <node id="2404">
+        <label>SkelLine</label>
+        <link refid="class_skel_line"/>
+        <childnode refid="2405" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2407">
+        <label>Skeleton</label>
+        <link refid="class_skeleton"/>
+      </node>
+      <node id="2406">
+        <label>SkelLine</label>
+        <link refid="class_skel_line"/>
+        <childnode refid="2407" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2408" relation="usage">
+          <edgelabel>AB</edgelabel>
+          <edgelabel>ptA</edgelabel>
+          <edgelabel>ptB</edgelabel>
+        </childnode>
+      </node>
+      <node id="2408">
+        <label>Vecteur</label>
+        <link refid="class_vecteur"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.h" bodystart="23" bodyend="31"/>
+    <listofallmembers>
+      <member refid="class_skel_line_1acfffe1fb93eb48425e882fc47d352994" prot="protected" virt="non-virtual"><scope>SkelLine</scope><name>AB</name></member>
+      <member refid="class_skel_line_1a6716988073796ec50d6a1b20e6fc1244" prot="protected" virt="non-virtual"><scope>SkelLine</scope><name>AB2</name></member>
+      <member refid="class_skeleton_1a59fc00ba11fe315f9c431fa878292d86" prot="public" virt="virtual"><scope>SkelLine</scope><name>add</name></member>
+      <member refid="class_skeleton_1acf06b310b51020a6c23414ec8d8c96f1" prot="protected" virt="non-virtual"><scope>SkelLine</scope><name>blobbiness</name></member>
+      <member refid="class_skeleton_1a72218b6aebbf974f7d6a584a08e2082e" prot="protected" virt="non-virtual"><scope>SkelLine</scope><name>children</name></member>
+      <member refid="class_skel_line_1a0d2a1b0c4208efd7e58a618006e14e6c" prot="protected" virt="virtual"><scope>SkelLine</scope><name>distance2</name></member>
+      <member refid="class_skeleton_1aba130bfaf50b224053e846a7023115d4" prot="public" virt="non-virtual"><scope>SkelLine</scope><name>potentiel</name></member>
+      <member refid="class_skel_line_1a8a41af14df2201759a22bc3c5310cd4b" prot="protected" virt="non-virtual"><scope>SkelLine</scope><name>ptA</name></member>
+      <member refid="class_skel_line_1a3984ba5c9b65fce1efdf85562e6e77ec" prot="protected" virt="non-virtual"><scope>SkelLine</scope><name>ptB</name></member>
+      <member refid="class_skeleton_1a72a37114c8ff2d528da0a40b79925e16" prot="protected" virt="non-virtual"><scope>SkelLine</scope><name>radius2</name></member>
+      <member refid="class_skeleton_1af01a02f1ce9ae4c801cd6e66ccf7407f" prot="public" virt="non-virtual"><scope>SkelLine</scope><name>Skeleton</name></member>
+      <member refid="class_skeleton_1a59ce7fe8e5b59080251ee85f637f08cc" prot="public" virt="non-virtual"><scope>SkelLine</scope><name>Skeleton</name></member>
+      <member refid="class_skel_line_1a8519bb469f59b172391d35567c04e0fa" prot="public" virt="non-virtual"><scope>SkelLine</scope><name>SkelLine</name></member>
+      <member refid="class_skeleton_1aeece886a4e2f039128144f94f25efd10" prot="public" virt="virtual"><scope>SkelLine</scope><name>~Skeleton</name></member>
+      <member refid="class_skel_line_1ac4de74c142d99efe325759c8550c63ae" prot="public" virt="non-virtual"><scope>SkelLine</scope><name>~SkelLine</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

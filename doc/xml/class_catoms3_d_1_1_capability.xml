@@ -1,0 +1,412 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms3_d_1_1_capability" kind="class" language="C++" prot="public">
+    <compoundname>Catoms3D::Capability</compoundname>
+    <includes refid="catoms3_d_capabilities_8h" local="no">catoms3DCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1aca66ca305ca2f8aa116df9efe0fb6413" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Catoms3D::Capability::num</definition>
+        <argsstring></argsstring>
+        <name>num</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="83" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="83" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="catoms3_d_capabilities_8cpp" startline="9" endline="14">Capability</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a9e2210a3e1a281eb6bdf42ad995d8dcc" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short Catoms3D::Capability::level</definition>
+        <argsstring></argsstring>
+        <name>level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="84" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="84" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1afecd420c23cc945794f1d333b06369bb" compoundref="catoms3_d_capabilities_8cpp" startline="341" endline="351">Catoms3D::Catoms3DCapabilities::validate</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a08b9e939c0e111a94e76a9dab7906c2f" compoundref="catoms3_d_capabilities_8cpp" startline="353" endline="368">Catoms3D::Catoms3DCapabilities::validateWithTarget</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1af26766328bddc8430afb7280b4457e56" compoundref="catoms3_d_capabilities_8cpp" startline="370" endline="387">Catoms3D::Catoms3DCapabilities::validateTrain</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1aeeb3c353c030fe667496abd86d7a392a" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string Catoms3D::Capability::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="85" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="85" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="catoms3_d_capabilities_8cpp" startline="9" endline="14">Capability</referencedby>
+        <referencedby refid="namespace_catoms3_d_1ac4b60b9180a59c5515854054d609c299" compoundref="catoms3_d_capabilities_8cpp" startline="197" endline="205">Catoms3D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a5436bb81c07b468d85d29ac51b8e34d9" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms3_d_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref></type>
+        <definition>ValidationMatrix Catoms3D::Capability::validationMatrix</definition>
+        <argsstring></argsstring>
+        <name>validationMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="86" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="86" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Capability</referencedby>
+        <referencedby refid="namespace_catoms3_d_1ac4b60b9180a59c5515854054d609c299" compoundref="catoms3_d_capabilities_8cpp" startline="197" endline="205">Catoms3D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a50ed9027ccb7717ec4d54622bde67abd" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Catoms3D::Capability::refPos</definition>
+        <argsstring></argsstring>
+        <name>refPos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="87" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="87" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Capability</referencedby>
+        <referencedby refid="namespace_catoms3_d_1ac4b60b9180a59c5515854054d609c299" compoundref="catoms3_d_capabilities_8cpp" startline="197" endline="205">Catoms3D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_capability_1a5cc8c836192604691777ce3cedb533ac" compoundref="catoms3_d_capabilities_8cpp" startline="207" endline="211">getCenter</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1af7e182c3d14dddee83cdc92ae9823dc2" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> *</type>
+        <definition>PointRel3D* Catoms3D::Capability::linkNextPos</definition>
+        <argsstring></argsstring>
+        <name>linkNextPos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="88" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="88" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="catoms3_d_capabilities_8cpp" startline="9" endline="14">Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_capability_1a4063691d23ba2844ce6b372e547df858" compoundref="catoms3_d_capabilities_8cpp" startline="161" endline="170">~Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a26738b76b3bb5a7b0c73b2d0e8f852ba" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> *</type>
+        <definition>PointRel3D * Catoms3D::Capability::linkPrevPos</definition>
+        <argsstring></argsstring>
+        <name>linkPrevPos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="88" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="88" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" compoundref="catoms3_d_capabilities_8cpp" startline="9" endline="14">Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_capability_1a4063691d23ba2844ce6b372e547df858" compoundref="catoms3_d_capabilities_8cpp" startline="161" endline="170">~Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a5f3fcb5a947cc0b9435023be61ab9596" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Catoms3D::Capability::isHead</definition>
+        <argsstring></argsstring>
+        <name>isHead</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="89" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a918942e7babb49103b85ff95a8c214f6" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Catoms3D::Capability::isEnd</definition>
+        <argsstring></argsstring>
+        <name>isEnd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="89" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1afc9b63347fa7aa94b9cf8b3133226d95" prot="public" static="no" mutable="no">
+        <type>vector&lt; <ref refid="class_catoms3_d_1_1_motion" kindref="compound">Motion</ref> * &gt;</type>
+        <definition>vector&lt;Motion*&gt; Catoms3D::Capability::tabMotions</definition>
+        <argsstring></argsstring>
+        <name>tabMotions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="90" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_capability_1a4063691d23ba2844ce6b372e547df858" compoundref="catoms3_d_capabilities_8cpp" startline="161" endline="170">~Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aaeb8f4cd0eecd3e8651a2c2591f82e72" compoundref="catoms3_d_capabilities_8cpp" startline="172" endline="182">getMotionVector</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a5f3f1953ddd895535ce4019ca00aa913" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short Catoms3D::Capability::nbreConditions</definition>
+        <argsstring></argsstring>
+        <name>nbreConditions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="91" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="91" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms3_d_capabilities_8cpp" startline="16" endline="158">Capability</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms3_d_1_1_capability_1a8ada538a9ad38050d81d60860701268e" prot="public" static="no" mutable="no">
+        <type><ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Catoms3D::Capability::conditionPreviousPosition</definition>
+        <argsstring></argsstring>
+        <name>conditionPreviousPosition</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="92" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Capability::Capability</definition>
+        <argsstring>(const string &amp;sid)</argsstring>
+        <name>Capability</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>sid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="94" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="9" bodyend="14"/>
+        <references refid="class_catoms3_d_1_1_capability_1aeeb3c353c030fe667496abd86d7a392a" compoundref="catoms3_d_capabilities_8h" startline="85">name</references>
+        <references refid="class_catoms3_d_1_1_capability_1aca66ca305ca2f8aa116df9efe0fb6413" compoundref="catoms3_d_capabilities_8h" startline="83">num</references>
+        <references refid="class_catoms3_d_1_1_capability_1af7e182c3d14dddee83cdc92ae9823dc2" compoundref="catoms3_d_capabilities_8h" startline="88">linkNextPos</references>
+        <references refid="class_catoms3_d_1_1_capability_1a26738b76b3bb5a7b0c73b2d0e8f852ba" compoundref="catoms3_d_capabilities_8h" startline="88">linkPrevPos</references>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_capabilities_1a1337185f76290181351229a69084e1ef" compoundref="catoms3_d_capabilities_8cpp" startline="215" endline="330">Catoms3D::Catoms3DCapabilities::Catoms3DCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Capability::Capability</definition>
+        <argsstring>(const string &amp;sid, const Capability *ref, int n)</argsstring>
+        <name>Capability</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>sid</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_capability" kindref="compound">Capability</ref> *</type>
+          <declname>ref</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="95" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="16" bodyend="158"/>
+        <references refid="class_catoms3_d_1_1_capability_1aca66ca305ca2f8aa116df9efe0fb6413" compoundref="catoms3_d_capabilities_8h" startline="83">num</references>
+        <references refid="class_catoms3_d_1_1_capability_1aeeb3c353c030fe667496abd86d7a392a" compoundref="catoms3_d_capabilities_8h" startline="85">name</references>
+        <references refid="class_catoms3_d_1_1_capability_1a9e2210a3e1a281eb6bdf42ad995d8dcc" compoundref="catoms3_d_capabilities_8h" startline="84">level</references>
+        <references refid="class_catoms3_d_1_1_capability_1a5f3f1953ddd895535ce4019ca00aa913" compoundref="catoms3_d_capabilities_8h" startline="91">nbreConditions</references>
+        <references refid="class_catoms3_d_1_1_capability_1af7e182c3d14dddee83cdc92ae9823dc2" compoundref="catoms3_d_capabilities_8h" startline="88">linkNextPos</references>
+        <references refid="class_catoms3_d_1_1_capability_1a26738b76b3bb5a7b0c73b2d0e8f852ba" compoundref="catoms3_d_capabilities_8h" startline="88">linkPrevPos</references>
+        <references refid="class_catoms3_d_1_1_capability_1a5f3fcb5a947cc0b9435023be61ab9596" compoundref="catoms3_d_capabilities_8h" startline="89">isHead</references>
+        <references refid="class_catoms3_d_1_1_capability_1a918942e7babb49103b85ff95a8c214f6" compoundref="catoms3_d_capabilities_8h" startline="89">isEnd</references>
+        <references refid="class_catoms3_d_1_1_capability_1a5436bb81c07b468d85d29ac51b8e34d9" compoundref="catoms3_d_capabilities_8h" startline="86">validationMatrix</references>
+        <references refid="class_catoms3_d_1_1_validation_matrix_1ac99a595d8c8968097a469a1b394ebaf2" compoundref="catoms3_d_capabilities_8cpp" startline="476" endline="487">Catoms3D::ValidationMatrix::fromRotationZ</references>
+        <references refid="class_catoms3_d_1_1_capability_1a50ed9027ccb7717ec4d54622bde67abd" compoundref="catoms3_d_capabilities_8h" startline="87">refPos</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1a3d9ed051cce715cb78d74647c7489336" compoundref="catoms3_d_capabilities_8cpp" startline="608" endline="620">Catoms3D::PointRel3D::rotateZ</references>
+        <references refid="class_catoms3_d_1_1_capability_1afc9b63347fa7aa94b9cf8b3133226d95" compoundref="catoms3_d_capabilities_8h" startline="90">tabMotions</references>
+        <references refid="class_catoms3_d_1_1_motion_1a5c4ebba8fe6f38523e7ebb6ad0e13105" compoundref="catoms3_d_capabilities_8h" startline="77">Catoms3D::Motion::init</references>
+        <references refid="class_catoms3_d_1_1_motion_1a978d3999325d0f2e4cf43c56634dcb83" compoundref="catoms3_d_capabilities_8h" startline="78">Catoms3D::Motion::final</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_capability_1a4063691d23ba2844ce6b372e547df858" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Capability::~Capability</definition>
+        <argsstring>()</argsstring>
+        <name>~Capability</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="96" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="161" bodyend="170"/>
+        <references refid="class_catoms3_d_1_1_capability_1afc9b63347fa7aa94b9cf8b3133226d95" compoundref="catoms3_d_capabilities_8h" startline="90">tabMotions</references>
+        <references refid="class_catoms3_d_1_1_capability_1a26738b76b3bb5a7b0c73b2d0e8f852ba" compoundref="catoms3_d_capabilities_8h" startline="88">linkPrevPos</references>
+        <references refid="class_catoms3_d_1_1_capability_1af7e182c3d14dddee83cdc92ae9823dc2" compoundref="catoms3_d_capabilities_8h" startline="88">linkNextPos</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_capability_1a5cc8c836192604691777ce3cedb533ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Capability::getCenter</definition>
+        <argsstring>(PointRel3D &amp;center)</argsstring>
+        <name>getCenter</name>
+        <param>
+          <type><ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>center</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="99" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="207" bodyend="211"/>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1aeacde0f11f957522b01b032f24c42124" compoundref="catoms3_d_capabilities_8h" startline="21">Catoms3D::PointRel3D::x</references>
+        <references refid="class_catoms3_d_1_1_capability_1a50ed9027ccb7717ec4d54622bde67abd" compoundref="catoms3_d_capabilities_8h" startline="87">refPos</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1a89209395bf28298bc1bfc8148f71106b" compoundref="catoms3_d_capabilities_8h" startline="22">Catoms3D::PointRel3D::y</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1a552772557d1655909e3e78d2f60afc9b" compoundref="catoms3_d_capabilities_8h" startline="23">Catoms3D::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_capability_1aaeb8f4cd0eecd3e8651a2c2591f82e72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Capability::getMotionVector</definition>
+        <argsstring>(int id, int time)</argsstring>
+        <name>getMotionVector</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>time</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="100" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="172" bodyend="182"/>
+        <references refid="class_catoms3_d_1_1_capability_1afc9b63347fa7aa94b9cf8b3133226d95" compoundref="catoms3_d_capabilities_8h" startline="90">tabMotions</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1af3e70a65fd38854220ee370c0ac6a715" compoundref="catoms3_d_capabilities_8cpp" startline="622" endline="626">Catoms3D::PointRel3D::set</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_capability_1abf3dd076dbcd56b6a3aabc73aebabc19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms3_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Capability::getMotionVector</definition>
+        <argsstring>(int id)</argsstring>
+        <name>getMotionVector</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="101" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="184" bodyend="194"/>
+        <references refid="class_catoms3_d_1_1_capability_1afc9b63347fa7aa94b9cf8b3133226d95" compoundref="catoms3_d_capabilities_8h" startline="90">tabMotions</references>
+        <references refid="class_catoms3_d_1_1_point_rel3_d_1af3e70a65fd38854220ee370c0ac6a715" compoundref="catoms3_d_capabilities_8cpp" startline="622" endline="626">Catoms3D::PointRel3D::set</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_catoms3_d_1_1_capability_1a510379d0c3ace5baf87f68509e6897e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Capability &amp;c)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_capability" kindref="compound">Capability</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="98" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.cpp" bodystart="197" bodyend="205"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1530">
+        <label>Catoms3D::ValidationMatrix</label>
+        <link refid="class_catoms3_d_1_1_validation_matrix"/>
+      </node>
+      <node id="1531">
+        <label>Catoms3D::PointRel3D</label>
+        <link refid="class_catoms3_d_1_1_point_rel3_d"/>
+      </node>
+      <node id="1529">
+        <label>Catoms3D::Capability</label>
+        <link refid="class_catoms3_d_1_1_capability"/>
+        <childnode refid="1530" relation="usage">
+          <edgelabel>validationMatrix</edgelabel>
+        </childnode>
+        <childnode refid="1531" relation="usage">
+          <edgelabel>refPos</edgelabel>
+          <edgelabel>conditionPreviousPosition</edgelabel>
+          <edgelabel>linkPrevPos</edgelabel>
+          <edgelabel>linkNextPos</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" line="81" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DCapabilities.h" bodystart="81" bodyend="102"/>
+    <listofallmembers>
+      <member refid="class_catoms3_d_1_1_capability_1adff257f830e27c88928be2d9bb8cd82f" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>Capability</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>Capability</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a8ada538a9ad38050d81d60860701268e" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>conditionPreviousPosition</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a5cc8c836192604691777ce3cedb533ac" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>getCenter</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1aaeb8f4cd0eecd3e8651a2c2591f82e72" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>getMotionVector</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1abf3dd076dbcd56b6a3aabc73aebabc19" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>getMotionVector</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a918942e7babb49103b85ff95a8c214f6" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>isEnd</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a5f3fcb5a947cc0b9435023be61ab9596" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>isHead</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a9e2210a3e1a281eb6bdf42ad995d8dcc" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>level</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1af7e182c3d14dddee83cdc92ae9823dc2" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>linkNextPos</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a26738b76b3bb5a7b0c73b2d0e8f852ba" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>linkPrevPos</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1aeeb3c353c030fe667496abd86d7a392a" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>name</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a5f3f1953ddd895535ce4019ca00aa913" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>nbreConditions</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1aca66ca305ca2f8aa116df9efe0fb6413" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>num</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a510379d0c3ace5baf87f68509e6897e4" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a50ed9027ccb7717ec4d54622bde67abd" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>refPos</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1afc9b63347fa7aa94b9cf8b3133226d95" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>tabMotions</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a5436bb81c07b468d85d29ac51b8e34d9" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>validationMatrix</name></member>
+      <member refid="class_catoms3_d_1_1_capability_1a4063691d23ba2844ce6b372e547df858" prot="public" virt="non-virtual"><scope>Catoms3D::Capability</scope><name>~Capability</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

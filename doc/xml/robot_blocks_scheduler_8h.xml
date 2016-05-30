@@ -1,0 +1,591 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="robot_blocks_scheduler_8h" kind="file" language="C++">
+    <compoundname>robotBlocksScheduler.h</compoundname>
+    <includes refid="scheduler_8h" local="yes">scheduler.h</includes>
+    <includes refid="network_8h" local="yes">network.h</includes>
+    <includes refid="robot_blocks_block_8h" local="yes">robotBlocksBlock.h</includes>
+    <includes local="no">boost/thread.hpp</includes>
+    <includes local="no">boost/bind.hpp</includes>
+    <includes local="no">boost/interprocess/sync/interprocess_semaphore.hpp</includes>
+    <includes local="no">boost/interprocess/sync/interprocess_mutex.hpp</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <includedby refid="robot_blocks_simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</includedby>
+    <includedby refid="robot_blocks_events_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</includedby>
+    <includedby refid="robot_blocks_generic_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</includedby>
+    <includedby refid="robot_blocks_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</includedby>
+    <includedby refid="robot_blocks_world_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</includedby>
+    <incdepgraph>
+      <node id="17700">
+        <label>list</label>
+      </node>
+      <node id="17724">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="17702" relation="include">
+        </childnode>
+        <childnode refid="17725" relation="include">
+        </childnode>
+        <childnode refid="17710" relation="include">
+        </childnode>
+        <childnode refid="17715" relation="include">
+        </childnode>
+        <childnode refid="17701" relation="include">
+        </childnode>
+        <childnode refid="17726" relation="include">
+        </childnode>
+      </node>
+      <node id="17710">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="17706" relation="include">
+        </childnode>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17705" relation="include">
+        </childnode>
+        <childnode refid="17711" relation="include">
+        </childnode>
+        <childnode refid="17712" relation="include">
+        </childnode>
+      </node>
+      <node id="17702">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="17703" relation="include">
+        </childnode>
+        <childnode refid="17704" relation="include">
+        </childnode>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17705" relation="include">
+        </childnode>
+        <childnode refid="17706" relation="include">
+        </childnode>
+        <childnode refid="17707" relation="include">
+        </childnode>
+        <childnode refid="17708" relation="include">
+        </childnode>
+        <childnode refid="17709" relation="include">
+        </childnode>
+        <childnode refid="17710" relation="include">
+        </childnode>
+        <childnode refid="17715" relation="include">
+        </childnode>
+      </node>
+      <node id="17712">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17705" relation="include">
+        </childnode>
+        <childnode refid="17713" relation="include">
+        </childnode>
+        <childnode refid="17714" relation="include">
+        </childnode>
+      </node>
+      <node id="17726">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="17727" relation="include">
+        </childnode>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17705" relation="include">
+        </childnode>
+        <childnode refid="17714" relation="include">
+        </childnode>
+        <childnode refid="17701" relation="include">
+        </childnode>
+        <childnode refid="17728" relation="include">
+        </childnode>
+        <childnode refid="17716" relation="include">
+        </childnode>
+      </node>
+      <node id="17697">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="17694">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="17690">
+        <label>assert.h</label>
+      </node>
+      <node id="17719">
+        <label>stdint.h</label>
+      </node>
+      <node id="17704">
+        <label>stdlib.h</label>
+      </node>
+      <node id="17698">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="17697" relation="include">
+        </childnode>
+        <childnode refid="17699" relation="include">
+        </childnode>
+        <childnode refid="17693" relation="include">
+        </childnode>
+        <childnode refid="17700" relation="include">
+        </childnode>
+        <childnode refid="17701" relation="include">
+        </childnode>
+        <childnode refid="17717" relation="include">
+        </childnode>
+        <childnode refid="17718" relation="include">
+        </childnode>
+      </node>
+      <node id="17732">
+        <label>robotBlocksGlBlock.h</label>
+        <link refid="robot_blocks_gl_block_8h"/>
+        <childnode refid="17696" relation="include">
+        </childnode>
+        <childnode refid="17733" relation="include">
+        </childnode>
+        <childnode refid="17701" relation="include">
+        </childnode>
+        <childnode refid="17734" relation="include">
+        </childnode>
+      </node>
+      <node id="17713">
+        <label>cmath</label>
+      </node>
+      <node id="17738">
+        <label>stdexcept</label>
+      </node>
+      <node id="17734">
+        <label>robotBlocksCapabilities.h</label>
+        <link refid="robot_blocks_capabilities_8h"/>
+        <childnode refid="17727" relation="include">
+        </childnode>
+        <childnode refid="17735" relation="include">
+        </childnode>
+        <childnode refid="17712" relation="include">
+        </childnode>
+        <childnode refid="17729" relation="include">
+        </childnode>
+        <childnode refid="17696" relation="include">
+        </childnode>
+        <childnode refid="17736" relation="include">
+        </childnode>
+      </node>
+      <node id="17696">
+        <label>string</label>
+      </node>
+      <node id="17706">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="17688">
+        <label>map</label>
+      </node>
+      <node id="17691">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="17714">
+        <label>memory.h</label>
+      </node>
+      <node id="17701">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="17696" relation="include">
+        </childnode>
+        <childnode refid="17702" relation="include">
+        </childnode>
+        <childnode refid="17712" relation="include">
+        </childnode>
+        <childnode refid="17716" relation="include">
+        </childnode>
+      </node>
+      <node id="17705">
+        <label>fstream</label>
+      </node>
+      <node id="17717">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="17698" relation="include">
+        </childnode>
+        <childnode refid="17689" relation="include">
+        </childnode>
+      </node>
+      <node id="17709">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="17720">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="17715">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="17711" relation="include">
+        </childnode>
+        <childnode refid="17712" relation="include">
+        </childnode>
+        <childnode refid="17710" relation="include">
+        </childnode>
+      </node>
+      <node id="17707">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="17736">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="17737">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="17725">
+        <label>pthread.h</label>
+      </node>
+      <node id="17723">
+        <label>string.h</label>
+      </node>
+      <node id="17727">
+        <label>vector</label>
+      </node>
+      <node id="17721">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="17722" relation="include">
+        </childnode>
+        <childnode refid="17723" relation="include">
+        </childnode>
+        <childnode refid="17697" relation="include">
+        </childnode>
+        <childnode refid="17698" relation="include">
+        </childnode>
+      </node>
+      <node id="17687">
+        <label>sstream</label>
+      </node>
+      <node id="17684">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robotBlocksScheduler.h"/>
+        <childnode refid="17685" relation="include">
+        </childnode>
+        <childnode refid="17721" relation="include">
+        </childnode>
+        <childnode refid="17730" relation="include">
+        </childnode>
+        <childnode refid="17691" relation="include">
+        </childnode>
+        <childnode refid="17692" relation="include">
+        </childnode>
+        <childnode refid="17694" relation="include">
+        </childnode>
+        <childnode refid="17693" relation="include">
+        </childnode>
+        <childnode refid="17729" relation="include">
+        </childnode>
+      </node>
+      <node id="17685">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17687" relation="include">
+        </childnode>
+        <childnode refid="17688" relation="include">
+        </childnode>
+        <childnode refid="17689" relation="include">
+        </childnode>
+        <childnode refid="17690" relation="include">
+        </childnode>
+        <childnode refid="17691" relation="include">
+        </childnode>
+        <childnode refid="17692" relation="include">
+        </childnode>
+        <childnode refid="17693" relation="include">
+        </childnode>
+        <childnode refid="17694" relation="include">
+        </childnode>
+        <childnode refid="17695" relation="include">
+        </childnode>
+        <childnode refid="17724" relation="include">
+        </childnode>
+      </node>
+      <node id="17731">
+        <label>robotBlocksBlockCode.h</label>
+        <link refid="robot_blocks_block_code_8h"/>
+        <childnode refid="17717" relation="include">
+        </childnode>
+        <childnode refid="17730" relation="include">
+        </childnode>
+      </node>
+      <node id="17711">
+        <label>math.h</label>
+      </node>
+      <node id="17716">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17705" relation="include">
+        </childnode>
+        <childnode refid="17713" relation="include">
+        </childnode>
+        <childnode refid="17714" relation="include">
+        </childnode>
+        <childnode refid="17702" relation="include">
+        </childnode>
+      </node>
+      <node id="17730">
+        <label>robotBlocksBlock.h</label>
+        <link refid="robot_blocks_block_8h"/>
+        <childnode refid="17698" relation="include">
+        </childnode>
+        <childnode refid="17731" relation="include">
+        </childnode>
+        <childnode refid="17732" relation="include">
+        </childnode>
+        <childnode refid="17734" relation="include">
+        </childnode>
+        <childnode refid="17737" relation="include">
+        </childnode>
+        <childnode refid="17738" relation="include">
+        </childnode>
+      </node>
+      <node id="17686">
+        <label>iostream</label>
+      </node>
+      <node id="17722">
+        <label>deque</label>
+      </node>
+      <node id="17735">
+        <label>climits</label>
+      </node>
+      <node id="17692">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="17693">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="17729">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="17705" relation="include">
+        </childnode>
+      </node>
+      <node id="17695">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="17689" relation="include">
+        </childnode>
+        <childnode refid="17696" relation="include">
+        </childnode>
+        <childnode refid="17697" relation="include">
+        </childnode>
+        <childnode refid="17698" relation="include">
+        </childnode>
+        <childnode refid="17720" relation="include">
+        </childnode>
+        <childnode refid="17721" relation="include">
+        </childnode>
+        <childnode refid="17716" relation="include">
+        </childnode>
+      </node>
+      <node id="17699">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="17728">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17688" relation="include">
+        </childnode>
+        <childnode refid="17727" relation="include">
+        </childnode>
+        <childnode refid="17693" relation="include">
+        </childnode>
+        <childnode refid="17690" relation="include">
+        </childnode>
+        <childnode refid="17698" relation="include">
+        </childnode>
+        <childnode refid="17701" relation="include">
+        </childnode>
+        <childnode refid="17729" relation="include">
+        </childnode>
+      </node>
+      <node id="17708">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="17703">
+        <label>stdio.h</label>
+      </node>
+      <node id="17733">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="17724" relation="include">
+        </childnode>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17705" relation="include">
+        </childnode>
+        <childnode refid="17696" relation="include">
+        </childnode>
+        <childnode refid="17727" relation="include">
+        </childnode>
+        <childnode refid="17713" relation="include">
+        </childnode>
+        <childnode refid="17704" relation="include">
+        </childnode>
+        <childnode refid="17723" relation="include">
+        </childnode>
+      </node>
+      <node id="17718">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="17698" relation="include">
+        </childnode>
+        <childnode refid="17719" relation="include">
+        </childnode>
+        <childnode refid="17686" relation="include">
+        </childnode>
+        <childnode refid="17699" relation="include">
+        </childnode>
+        <childnode refid="17700" relation="include">
+        </childnode>
+      </node>
+      <node id="17689">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="17743">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="17740">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="17741" relation="include">
+        </childnode>
+        <childnode refid="17742" relation="include">
+        </childnode>
+        <childnode refid="17744" relation="include">
+        </childnode>
+        <childnode refid="17745" relation="include">
+        </childnode>
+      </node>
+      <node id="17746">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="17742">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="17743" relation="include">
+        </childnode>
+      </node>
+      <node id="17739">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robotBlocksScheduler.h"/>
+        <childnode refid="17740" relation="include">
+        </childnode>
+        <childnode refid="17746" relation="include">
+        </childnode>
+        <childnode refid="17742" relation="include">
+        </childnode>
+        <childnode refid="17744" relation="include">
+        </childnode>
+        <childnode refid="17747" relation="include">
+        </childnode>
+      </node>
+      <node id="17741">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="17745">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="17747">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="17744">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_scheduler" prot="public">RobotBlocks::RobotBlocksScheduler</innerclass>
+    <innernamespace refid="namespace_robot_blocks">RobotBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>robotBlocksScheduler.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ROBOTBLOCKSSCHEDULER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ROBOTBLOCKSSCHEDULER_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scheduler_8h" kindref="compound">scheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="network_8h" kindref="compound">network.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="robot_blocks_block_8h" kindref="compound">robotBlocksBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/thread.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/bind.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/interprocess/sync/interprocess_semaphore.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/interprocess/sync/interprocess_mutex.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceboost" kindref="compound">boost</ref>;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_robot_blocks" kindref="compound">RobotBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="class_robot_blocks_1_1_robot_blocks_scheduler" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_scheduler" kindref="compound">BaseSimulator::Scheduler</ref><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="26" refid="class_robot_blocks_1_1_robot_blocks_scheduler_1ac47608d405194c67ddb4bb27fd1aa307" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::thread<sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_scheduler_1ac47608d405194c67ddb4bb27fd1aa307" kindref="member">schedulerThread</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//int<sp/>schedulerMode;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref>();</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref>();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/><ref refid="namespace_multi_cores_1a76ac8382d7298dfd24beb7e6c7706b46" kindref="member">startPaused</ref>(</highlight><highlight class="comment">/*void<sp/>*param<sp/>*/</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="34" refid="class_robot_blocks_1_1_robot_blocks_scheduler_1aea1d47af5fcc66e45a33de69ecee8ca8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::interprocess::interprocess_semaphore<sp/>*<ref refid="class_robot_blocks_1_1_robot_blocks_scheduler_1aea1d47af5fcc66e45a33de69ecee8ca8" kindref="member">sem_schedulerStart</ref>;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1ad3eb76847606a1d5e4e461f967aceae2" kindref="member">createScheduler</ref>();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1abf32c8eab7179114c67998c86e1dfbf3" kindref="member">deleteScheduler</ref>();</highlight></codeline>
+<codeline lineno="38" refid="class_robot_blocks_1_1_robot_blocks_scheduler_1ad11fc76749abf4ebd871260b6540e179" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref>*<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler_1ad11fc76749abf4ebd871260b6540e179" kindref="member">getScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(scheduler<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">((<ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref>*)scheduler);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="class_robot_blocks_1_1_robot_blocks_scheduler_1a173808a2ca4e0d8ae1cad627bb994f66" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler_1a173808a2ca4e0d8ae1cad627bb994f66" kindref="member">printInfo</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;I&apos;m<sp/>a<sp/>RobotBlocksScheduler&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>start(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_robot_blocks_1_1_robot_blocks_scheduler_1a08bc22714814e1f48d4fdb12a9bd1ad1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler_1a08bc22714814e1f48d4fdb12a9bd1ad1" kindref="member">waitForSchedulerEnd</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>schedulerThread-&gt;join();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_robot_blocks_1_1_robot_blocks_scheduler_1a6c866b629f5d6efb83ffca0790dab14e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler_1a6c866b629f5d6efb83ffca0790dab14e" kindref="member">getMode</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>schedulerMode;<sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="namespace_robot_blocks_1ad3eb76847606a1d5e4e461f967aceae2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1ad3eb76847606a1d5e4e461f967aceae2" kindref="member">createScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1ad3eb76847606a1d5e4e461f967aceae2" kindref="member">RobotBlocksScheduler::createScheduler</ref>();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="namespace_robot_blocks_1abf32c8eab7179114c67998c86e1dfbf3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_robot_blocks_1abf32c8eab7179114c67998c86e1dfbf3" kindref="member">deleteScheduler</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1abf32c8eab7179114c67998c86e1dfbf3" kindref="member">RobotBlocksScheduler::deleteScheduler</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="namespace_robot_blocks_1a6ec5d7cdcd5d30cd2ddfd04588dfa527" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref>*<sp/><ref refid="namespace_robot_blocks_1a6ec5d7cdcd5d30cd2ddfd04588dfa527" kindref="member">getScheduler</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(<ref refid="namespace_robot_blocks_1a6ec5d7cdcd5d30cd2ddfd04588dfa527" kindref="member">RobotBlocksScheduler::getScheduler</ref>());<sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>RobotBlocks<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ROBOTBLOCKSSCHEDULER_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h"/>
+  </compounddef>
+</doxygen>

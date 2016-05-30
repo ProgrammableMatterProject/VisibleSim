@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_base_simulator_1_1_reference_point" kind="class" language="C++" prot="public">
+    <compoundname>BaseSimulator::ReferencePoint</compoundname>
+    <includes refid="clock_8h" local="no">clock.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_base_simulator_1_1_reference_point_1accdab610ad1863bf3d94f6dced8de5eb" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t BaseSimulator::ReferencePoint::local</definition>
+        <argsstring></argsstring>
+        <name>local</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" bodystart="29" bodyend="-1"/>
+        <referencedby refid="class_base_simulator_1_1_reference_point_1ad6da4fd12b78ad0b30dc424a63b76ae4" compoundref="clock_8h" startline="33" endline="33">ReferencePoint</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_simulator_1_1_reference_point_1a1c9048ee7cf70f633b9c0befb7e68c1f" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t BaseSimulator::ReferencePoint::simulation</definition>
+        <argsstring></argsstring>
+        <name>simulation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" bodystart="30" bodyend="-1"/>
+        <referencedby refid="class_base_simulator_1_1_reference_point_1ad6da4fd12b78ad0b30dc424a63b76ae4" compoundref="clock_8h" startline="33" endline="33">ReferencePoint</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_base_simulator_1_1_reference_point_1a3c501313b6be58b17ecba2c633bbcb32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>BaseSimulator::ReferencePoint::ReferencePoint</definition>
+        <argsstring>(uint64_t l, uint64_t s)</argsstring>
+        <name>ReferencePoint</name>
+        <param>
+          <type>uint64_t</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>uint64_t</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_reference_point_1ad6da4fd12b78ad0b30dc424a63b76ae4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>BaseSimulator::ReferencePoint::ReferencePoint</definition>
+        <argsstring>(const ReferencePoint &amp;p)</argsstring>
+        <name>ReferencePoint</name>
+        <param>
+          <type>const <ref refid="class_base_simulator_1_1_reference_point" kindref="compound">ReferencePoint</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" bodystart="33" bodyend="33"/>
+        <references refid="class_base_simulator_1_1_reference_point_1accdab610ad1863bf3d94f6dced8de5eb" compoundref="clock_8h" startline="29">local</references>
+        <references refid="class_base_simulator_1_1_reference_point_1a1c9048ee7cf70f633b9c0befb7e68c1f" compoundref="clock_8h" startline="30">simulation</references>
+      </memberdef>
+      <memberdef kind="function" id="class_base_simulator_1_1_reference_point_1a5656334b0cda34095424e72ab92e5136" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>BaseSimulator::ReferencePoint::~ReferencePoint</definition>
+        <argsstring>()</argsstring>
+        <name>~ReferencePoint</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h" bodystart="27" bodyend="35"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_reference_point_1accdab610ad1863bf3d94f6dced8de5eb" prot="public" virt="non-virtual"><scope>BaseSimulator::ReferencePoint</scope><name>local</name></member>
+      <member refid="class_base_simulator_1_1_reference_point_1a3c501313b6be58b17ecba2c633bbcb32" prot="public" virt="non-virtual"><scope>BaseSimulator::ReferencePoint</scope><name>ReferencePoint</name></member>
+      <member refid="class_base_simulator_1_1_reference_point_1ad6da4fd12b78ad0b30dc424a63b76ae4" prot="public" virt="non-virtual"><scope>BaseSimulator::ReferencePoint</scope><name>ReferencePoint</name></member>
+      <member refid="class_base_simulator_1_1_reference_point_1a1c9048ee7cf70f633b9c0befb7e68c1f" prot="public" virt="non-virtual"><scope>BaseSimulator::ReferencePoint</scope><name>simulation</name></member>
+      <member refid="class_base_simulator_1_1_reference_point_1a5656334b0cda34095424e72ab92e5136" prot="public" virt="non-virtual"><scope>BaseSimulator::ReferencePoint</scope><name>~ReferencePoint</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

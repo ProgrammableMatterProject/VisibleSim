@@ -1,0 +1,664 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_matrice" kind="class" language="C++" prot="public">
+    <compoundname>Matrice</compoundname>
+    <includes refid="matrice44_8h" local="no">matrice44.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Matrice::m[16]</definition>
+        <argsstring>[16]</argsstring>
+        <name>m</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="24" bodyend="-1"/>
+        <referencedby refid="class_matrice_1aeb93aa51835553fa252d84b448ad7f3c" compoundref="matrice44_8cpp" startline="10" endline="16">Matrice</referencedby>
+        <referencedby refid="matrice44_8cpp_1a2fb292a6c63637ebe765ba6fb020bce5" compoundref="matrice44_8cpp" startline="19" endline="24">operator&gt;&gt;</referencedby>
+        <referencedby refid="matrice44_8cpp_1a488cd01fb49c4f3fb26b012b5d51a73a" compoundref="matrice44_8cpp" startline="27" endline="33">operator&lt;&lt;</referencedby>
+        <referencedby refid="matrice44_8h_1a07afb469d46cb2d7597c7534a36bd22d" compoundref="matrice44_8cpp" startline="35" endline="44">operator*</referencedby>
+        <referencedby refid="class_matrice_1a583bc1bde1d5c3e838a9854cff1f526a" compoundref="matrice44_8cpp" startline="72" endline="76">setRotationX</referencedby>
+        <referencedby refid="class_matrice_1a007a36f46dd53c1fb12df0494b95bcb4" compoundref="matrice44_8cpp" startline="78" endline="82">setRotationY</referencedby>
+        <referencedby refid="class_matrice_1a1ebaa9bf2b30feb11950c9a2f2a852e9" compoundref="matrice44_8cpp" startline="84" endline="88">setRotationZ</referencedby>
+        <referencedby refid="class_matrice_1a685b7d225e3448c9142f70a7f63a5744" compoundref="matrice44_8cpp" startline="94" endline="99">determinant</referencedby>
+        <referencedby refid="class_matrice_1a2a3e43dbf203b548d2da12164c567538" compoundref="matrice44_8cpp" startline="106" endline="127">inverse</referencedby>
+        <referencedby refid="class_matrice_1aa1cc88c416d86a305b0680d20e077518" compoundref="matrice44_8cpp" startline="129" endline="146">transpose</referencedby>
+        <referencedby refid="class_matrice_1a5d72c12269df6047627a62aba6fd9e5c" compoundref="matrice44_8cpp" startline="148" endline="168">set</referencedby>
+        <referencedby refid="class_matrice_1a216114409b85e66aae3e99c587b7e77e" compoundref="matrice44_8cpp" startline="170" endline="188">setGLmat</referencedby>
+        <referencedby refid="class_matrice_1a7f6e530c59602a007fa727461f70d716" compoundref="matrice44_8cpp" startline="190" endline="209">setRotation</referencedby>
+        <referencedby refid="class_matrice_1a525f482afb4c63d1f73951a706d4f607" compoundref="matrice44_8cpp" startline="211" endline="229">setFromGL</referencedby>
+        <referencedby refid="class_matrice_1a1382997d012d481d5ed40b76eeb3d336" compoundref="matrice44_8cpp" startline="231" endline="251">glLoadMatrix</referencedby>
+        <referencedby refid="class_matrice_1a6ccd6fce0ea69884b3a11d952d30cba4" compoundref="matrice44_8cpp" startline="253" endline="273">glMultMatrix</referencedby>
+        <referencedby refid="class_matrice_1a0f718072562674ccc3c5bd548247388a" compoundref="matrice44_8cpp" startline="275" endline="277">fillArray</referencedby>
+        <referencedby refid="shaders_8h_1af9bd99e5de0905f53b874be82f95c890" compoundref="shaders_8cpp" startline="172" endline="234">shadowedRenderingStep3</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_matrice_1a68c16bbff072fb3450f5318653fbea26" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Matrice::Matrice</definition>
+        <argsstring>()</argsstring>
+        <name>Matrice</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1aeb93aa51835553fa252d84b448ad7f3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Matrice::Matrice</definition>
+        <argsstring>(const float *)</argsstring>
+        <name>Matrice</name>
+        <param>
+          <type>const float *</type>
+          <defname>tab</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="10" bodyend="16"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a2d2c324a368494b995e3373e12e6a28c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::identity</definition>
+        <argsstring>()</argsstring>
+        <name>identity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="28" bodyend="28"/>
+        <references refid="matrice44_8cpp_1a2fb292a6c63637ebe765ba6fb020bce5" compoundref="matrice44_8cpp" startline="19" endline="24">operator&gt;&gt;</references>
+        <references refid="namespace_blinky_blocks_1af441bc9d1031530c3659d9529467aaeb" compoundref="blinky_blocks_block_8cpp" startline="179" endline="182">BlinkyBlocks::operator&lt;&lt;</references>
+        <references refid="matrice44_8h_1ab5c8cf7fee081a19f69114acc9329cf2" compoundref="matrice44_8cpp" startline="57" endline="70">operator*</references>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a72f0065825383f21fd7881fba534b3de" compoundref="catoms3_d_events_8h" startline="32" endline="37">Catoms3D::Rotations::init</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1aafbeb7e271225406c7cf5bbbf73f9c65" compoundref="catoms3_d_gl_block_8cpp" startline="5" endline="7">Catoms3D::Catoms3DGlBlock::Catoms3DGlBlock</referencedby>
+        <referencedby refid="class_matrice_1a583bc1bde1d5c3e838a9854cff1f526a" compoundref="matrice44_8cpp" startline="72" endline="76">setRotationX</referencedby>
+        <referencedby refid="class_matrice_1a007a36f46dd53c1fb12df0494b95bcb4" compoundref="matrice44_8cpp" startline="78" endline="82">setRotationY</referencedby>
+        <referencedby refid="class_matrice_1a1ebaa9bf2b30feb11950c9a2f2a852e9" compoundref="matrice44_8cpp" startline="84" endline="88">setRotationZ</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a420ddd92b332c83f9a4c16fc3ce2c540" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Matrice::operator[]</definition>
+        <argsstring>(const int i)</argsstring>
+        <name>operator[]</name>
+        <param>
+          <type>const int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a3ce3c791b77d8f16dbe476abdbe832f7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setTranslation</definition>
+        <argsstring>(Vecteur V)</argsstring>
+        <name>setTranslation</name>
+        <param>
+          <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="34" bodyend="34"/>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1aaecfe6d2e5f8ecd1a7c00b7c90a6e5ea" compoundref="catoms3_d_block_8cpp" startline="44" endline="58">Catoms3D::Catoms3DBlock::setPositionAndOrientation</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Catoms3D::Rotations::Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">Catoms3D::Rotations::nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">Catoms3D::Rotations::getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1ae9b937c815038e80f2cbdd62534e2fcc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setTranslation</definition>
+        <argsstring>(double Vx, double Vy, double Vz)</argsstring>
+        <name>setTranslation</name>
+        <param>
+          <type>double</type>
+          <declname>Vx</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>Vy</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>Vz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1ae5a729bfde44c6acc86e410f1df84aa4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setTranslationGL</definition>
+        <argsstring>(Vecteur V)</argsstring>
+        <name>setTranslationGL</name>
+        <param>
+          <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a58362c92c4139a5a2ac124db488f20db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setHomothetie</definition>
+        <argsstring>(double hx, double hy, double hz)</argsstring>
+        <name>setHomothetie</name>
+        <param>
+          <type>double</type>
+          <declname>hx</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>hy</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>hz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="37" bodyend="37"/>
+        <references refid="matrice44_8h_1ab5c8cf7fee081a19f69114acc9329cf2" compoundref="matrice44_8cpp" startline="57" endline="70">operator*</references>
+        <references refid="matrice44_8h_1aeb57f3ff3bb001d6c421f0eaf0cd79be" compoundref="matrice44_8cpp" startline="90" endline="92">det33</references>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a583bc1bde1d5c3e838a9854cff1f526a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setRotationX</definition>
+        <argsstring>(double a)</argsstring>
+        <name>setRotationX</name>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="72" bodyend="76"/>
+        <references refid="class_matrice_1a2d2c324a368494b995e3373e12e6a28c" compoundref="matrice44_8h" startline="28" endline="28">identity</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1aaecfe6d2e5f8ecd1a7c00b7c90a6e5ea" compoundref="catoms3_d_block_8cpp" startline="44" endline="58">Catoms3D::Catoms3DBlock::setPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a007a36f46dd53c1fb12df0494b95bcb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setRotationY</definition>
+        <argsstring>(double a)</argsstring>
+        <name>setRotationY</name>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="78" bodyend="82"/>
+        <references refid="class_matrice_1a2d2c324a368494b995e3373e12e6a28c" compoundref="matrice44_8h" startline="28" endline="28">identity</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <referencedby refid="class_catoms2_d_1_1_motion_step_event_1a42c0f70e21b3cd89c844f54bb88819c1" compoundref="catoms2_d_events_8cpp" startline="79" endline="103">Catoms2D::MotionStepEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1aaecfe6d2e5f8ecd1a7c00b7c90a6e5ea" compoundref="catoms3_d_block_8cpp" startline="44" endline="58">Catoms3D::Catoms3DBlock::setPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a1ebaa9bf2b30feb11950c9a2f2a852e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setRotationZ</definition>
+        <argsstring>(double a)</argsstring>
+        <name>setRotationZ</name>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="40" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="84" bodyend="88"/>
+        <references refid="class_matrice_1a2d2c324a368494b995e3373e12e6a28c" compoundref="matrice44_8h" startline="28" endline="28">identity</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1aaecfe6d2e5f8ecd1a7c00b7c90a6e5ea" compoundref="catoms3_d_block_8cpp" startline="44" endline="58">Catoms3D::Catoms3DBlock::setPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a7f6e530c59602a007fa727461f70d716" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setRotation</definition>
+        <argsstring>(double a, const Vecteur &amp;V)</argsstring>
+        <name>setRotation</name>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <declname>V</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="190" bodyend="209"/>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Catoms3D::Rotations::Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">Catoms3D::Rotations::nextStep</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a4c523fc23639325b3eeabb9e579705ff" compoundref="catoms3_d_events_8cpp" startline="272" endline="298">Catoms3D::Rotations::getFinalPositionAndOrientation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a685b7d225e3448c9142f70a7f63a5744" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Matrice::determinant</definition>
+        <argsstring>() const </argsstring>
+        <name>determinant</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="94" bodyend="99"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <references refid="matrice44_8cpp_1aafabfef23aa831c57bf549ae7c777f20" compoundref="matrice44_8cpp" startline="90" endline="92">det33</references>
+        <referencedby refid="class_matrice_1a2a3e43dbf203b548d2da12164c567538" compoundref="matrice44_8cpp" startline="106" endline="127">inverse</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a2a3e43dbf203b548d2da12164c567538" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::inverse</definition>
+        <argsstring>(Matrice &amp;) const </argsstring>
+        <name>inverse</name>
+        <param>
+          <type><ref refid="class_matrice" kindref="compound">Matrice</ref> &amp;</type>
+          <defname>inv</defname>
+        </param>
+        <briefdescription>
+<para>calculate the inverse of the current matrix </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>result</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of the invertion of the current matrix </para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="43" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="106" bodyend="127"/>
+        <references refid="class_matrice_1a685b7d225e3448c9142f70a7f63a5744" compoundref="matrice44_8cpp" startline="94" endline="99">determinant</references>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <references refid="matrice44_8cpp_1aafabfef23aa831c57bf549ae7c777f20" compoundref="matrice44_8cpp" startline="90" endline="92">det33</references>
+        <referencedby refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" compoundref="camera_8cpp" startline="145" endline="166">LightSource::calcMatrices</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1a5b51b62026ce3478ed5667a72c034847" compoundref="catoms3_d_block_8cpp" startline="60" endline="80">Catoms3D::Catoms3DBlock::getOrientationFromMatrix</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1af5855cfd2d3e26c3824b1fef9fbc8ba1" compoundref="catoms3_d_block_8cpp" startline="116" endline="140">Catoms3D::Catoms3DBlock::getInterface</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Catoms3D::Rotations::Rotations</referencedby>
+        <referencedby refid="shaders_8h_1af9bd99e5de0905f53b874be82f95c890" compoundref="shaders_8cpp" startline="172" endline="234">shadowedRenderingStep3</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1aa1cc88c416d86a305b0680d20e077518" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::transpose</definition>
+        <argsstring>(Matrice &amp;) const </argsstring>
+        <name>transpose</name>
+        <param>
+          <type><ref refid="class_matrice" kindref="compound">Matrice</ref> &amp;</type>
+          <defname>t</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="129" bodyend="146"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a216114409b85e66aae3e99c587b7e77e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setGLmat</definition>
+        <argsstring>(const Matrice &amp;, const Vecteur &amp;)</argsstring>
+        <name>setGLmat</name>
+        <param>
+          <type>const <ref refid="class_matrice" kindref="compound">Matrice</ref> &amp;</type>
+          <defname>R</defname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref> &amp;</type>
+          <defname>T</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="45" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="170" bodyend="188"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a5d72c12269df6047627a62aba6fd9e5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::set</definition>
+        <argsstring>(double, double, double, double, double, double, double, double, double, double, double, double, double, double, double, double)</argsstring>
+        <name>set</name>
+        <param>
+          <type>double</type>
+          <defname>x00</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x10</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x20</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x30</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x01</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x11</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x21</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x31</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x02</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x12</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x22</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x32</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x03</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x13</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x23</defname>
+        </param>
+        <param>
+          <type>double</type>
+          <defname>x33</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="148" bodyend="168"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a525f482afb4c63d1f73951a706d4f607" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::setFromGL</definition>
+        <argsstring>(GLfloat *mat)</argsstring>
+        <name>setFromGL</name>
+        <param>
+          <type>GLfloat *</type>
+          <declname>mat</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="211" bodyend="229"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a1382997d012d481d5ed40b76eeb3d336" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::glLoadMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>glLoadMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="231" bodyend="251"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a6ccd6fce0ea69884b3a11d952d30cba4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::glMultMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>glMultMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="253" bodyend="273"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6e16b11f9cab2d5c44666927b8c465a" compoundref="catoms3_d_gl_block_8cpp" startline="12" endline="34">Catoms3D::Catoms3DGlBlock::glDraw</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a0f718072562674ccc3c5bd548247388a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::fillArray</definition>
+        <argsstring>(GLdouble *)</argsstring>
+        <name>fillArray</name>
+        <param>
+          <type>GLdouble *</type>
+          <defname>mat</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="275" bodyend="277"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+        <referencedby refid="class_light_source_1a369f330f78080e7b552171ebe06af16b" compoundref="camera_8cpp" startline="145" endline="166">LightSource::calcMatrices</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_matrice_1a1375019c3313a5f9c4dba7d3950a3187" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Matrice::fillArray</definition>
+        <argsstring>(GLfloat *)</argsstring>
+        <name>fillArray</name>
+        <param>
+          <type>GLfloat *</type>
+          <defname>mat</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="279" bodyend="282"/>
+        <references refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" compoundref="matrice44_8h" startline="24">m</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_matrice_1a2fb292a6c63637ebe765ba6fb020bce5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend istream &amp;</type>
+        <definition>istream&amp; operator&gt;&gt;</definition>
+        <argsstring>(istream &amp;f, Matrice &amp;p)</argsstring>
+        <name>operator&gt;&gt;</name>
+        <param>
+          <type>istream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type><ref refid="class_matrice" kindref="compound">Matrice</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="19" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_matrice_1a488cd01fb49c4f3fb26b012b5d51a73a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, Matrice &amp;p)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type><ref refid="class_matrice" kindref="compound">Matrice</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="27" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_matrice_1ab5c8cf7fee081a19f69114acc9329cf2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const <ref refid="class_matrice" kindref="compound">Matrice</ref></type>
+        <definition>const Matrice operator*</definition>
+        <argsstring>(const Matrice, const Matrice)</argsstring>
+        <name>operator*</name>
+        <param>
+          <type>const <ref refid="class_matrice" kindref="compound">Matrice</ref></type>
+          <defname>p1</defname>
+        </param>
+        <param>
+          <type>const <ref refid="class_matrice" kindref="compound">Matrice</ref></type>
+          <defname>p2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="31" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="57" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_matrice_1a07afb469d46cb2d7597c7534a36bd22d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>const Vecteur operator*</definition>
+        <argsstring>(const Matrice, const Vecteur)</argsstring>
+        <name>operator*</name>
+        <param>
+          <type>const <ref refid="class_matrice" kindref="compound">Matrice</ref></type>
+          <defname>p1</defname>
+        </param>
+        <param>
+          <type>const <ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+          <defname>p2</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.cpp" bodystart="35" bodyend="44"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/matrice44.h" bodystart="22" bodyend="52"/>
+    <listofallmembers>
+      <member refid="class_matrice_1a685b7d225e3448c9142f70a7f63a5744" prot="public" virt="non-virtual"><scope>Matrice</scope><name>determinant</name></member>
+      <member refid="class_matrice_1a0f718072562674ccc3c5bd548247388a" prot="public" virt="non-virtual"><scope>Matrice</scope><name>fillArray</name></member>
+      <member refid="class_matrice_1a1375019c3313a5f9c4dba7d3950a3187" prot="public" virt="non-virtual"><scope>Matrice</scope><name>fillArray</name></member>
+      <member refid="class_matrice_1a1382997d012d481d5ed40b76eeb3d336" prot="public" virt="non-virtual"><scope>Matrice</scope><name>glLoadMatrix</name></member>
+      <member refid="class_matrice_1a6ccd6fce0ea69884b3a11d952d30cba4" prot="public" virt="non-virtual"><scope>Matrice</scope><name>glMultMatrix</name></member>
+      <member refid="class_matrice_1a2d2c324a368494b995e3373e12e6a28c" prot="public" virt="non-virtual"><scope>Matrice</scope><name>identity</name></member>
+      <member refid="class_matrice_1a2a3e43dbf203b548d2da12164c567538" prot="public" virt="non-virtual"><scope>Matrice</scope><name>inverse</name></member>
+      <member refid="class_matrice_1a94b8d27c9c99cce3183182d6a4b2495e" prot="public" virt="non-virtual"><scope>Matrice</scope><name>m</name></member>
+      <member refid="class_matrice_1a68c16bbff072fb3450f5318653fbea26" prot="public" virt="non-virtual"><scope>Matrice</scope><name>Matrice</name></member>
+      <member refid="class_matrice_1aeb93aa51835553fa252d84b448ad7f3c" prot="public" virt="non-virtual"><scope>Matrice</scope><name>Matrice</name></member>
+      <member refid="class_matrice_1ab5c8cf7fee081a19f69114acc9329cf2" prot="public" virt="non-virtual"><scope>Matrice</scope><name>operator*</name></member>
+      <member refid="class_matrice_1a07afb469d46cb2d7597c7534a36bd22d" prot="public" virt="non-virtual"><scope>Matrice</scope><name>operator*</name></member>
+      <member refid="class_matrice_1a488cd01fb49c4f3fb26b012b5d51a73a" prot="public" virt="non-virtual"><scope>Matrice</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_matrice_1a2fb292a6c63637ebe765ba6fb020bce5" prot="public" virt="non-virtual"><scope>Matrice</scope><name>operator&gt;&gt;</name></member>
+      <member refid="class_matrice_1a420ddd92b332c83f9a4c16fc3ce2c540" prot="public" virt="non-virtual"><scope>Matrice</scope><name>operator[]</name></member>
+      <member refid="class_matrice_1a5d72c12269df6047627a62aba6fd9e5c" prot="public" virt="non-virtual"><scope>Matrice</scope><name>set</name></member>
+      <member refid="class_matrice_1a525f482afb4c63d1f73951a706d4f607" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setFromGL</name></member>
+      <member refid="class_matrice_1a216114409b85e66aae3e99c587b7e77e" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setGLmat</name></member>
+      <member refid="class_matrice_1a58362c92c4139a5a2ac124db488f20db" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setHomothetie</name></member>
+      <member refid="class_matrice_1a7f6e530c59602a007fa727461f70d716" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setRotation</name></member>
+      <member refid="class_matrice_1a583bc1bde1d5c3e838a9854cff1f526a" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setRotationX</name></member>
+      <member refid="class_matrice_1a007a36f46dd53c1fb12df0494b95bcb4" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setRotationY</name></member>
+      <member refid="class_matrice_1a1ebaa9bf2b30feb11950c9a2f2a852e9" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setRotationZ</name></member>
+      <member refid="class_matrice_1a3ce3c791b77d8f16dbe476abdbe832f7" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setTranslation</name></member>
+      <member refid="class_matrice_1ae9b937c815038e80f2cbdd62534e2fcc" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setTranslation</name></member>
+      <member refid="class_matrice_1ae5a729bfde44c6acc86e410f1df84aa4" prot="public" virt="non-virtual"><scope>Matrice</scope><name>setTranslationGL</name></member>
+      <member refid="class_matrice_1aa1cc88c416d86a305b0680d20e077518" prot="public" virt="non-virtual"><scope>Matrice</scope><name>transpose</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1922 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="color_8h" kind="file" language="C++">
+    <compoundname>color.h</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">fstream</includes>
+    <includes local="no">cmath</includes>
+    <includes local="no">memory.h</includes>
+    <includes refid="shaders_8h" local="yes">shaders.h</includes>
+    <includedby refid="gl_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h</includedby>
+    <includedby refid="blinky_blocks_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h</includedby>
+    <includedby refid="interface_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h</includedby>
+    <includedby refid="events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</includedby>
+    <includedby refid="meld_process_v_m_commands_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h</includedby>
+    <includedby refid="meld_interpret_v_m_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h</includedby>
+    <includedby refid="color_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.cpp</includedby>
+    <includedby refid="shaders_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/shaders.cpp</includedby>
+    <incdepgraph>
+      <node id="13786">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="13782" relation="include">
+        </childnode>
+        <childnode refid="13775" relation="include">
+        </childnode>
+        <childnode refid="13776" relation="include">
+        </childnode>
+        <childnode refid="13787" relation="include">
+        </childnode>
+        <childnode refid="13788" relation="include">
+        </childnode>
+      </node>
+      <node id="13779">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="13780" relation="include">
+        </childnode>
+        <childnode refid="13781" relation="include">
+        </childnode>
+        <childnode refid="13775" relation="include">
+        </childnode>
+        <childnode refid="13776" relation="include">
+        </childnode>
+        <childnode refid="13782" relation="include">
+        </childnode>
+        <childnode refid="13783" relation="include">
+        </childnode>
+        <childnode refid="13784" relation="include">
+        </childnode>
+        <childnode refid="13785" relation="include">
+        </childnode>
+        <childnode refid="13786" relation="include">
+        </childnode>
+        <childnode refid="13789" relation="include">
+        </childnode>
+      </node>
+      <node id="13788">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="13775" relation="include">
+        </childnode>
+        <childnode refid="13776" relation="include">
+        </childnode>
+        <childnode refid="13777" relation="include">
+        </childnode>
+        <childnode refid="13778" relation="include">
+        </childnode>
+      </node>
+      <node id="13781">
+        <label>stdlib.h</label>
+      </node>
+      <node id="13777">
+        <label>cmath</label>
+      </node>
+      <node id="13782">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="13778">
+        <label>memory.h</label>
+      </node>
+      <node id="13776">
+        <label>fstream</label>
+      </node>
+      <node id="13785">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="13789">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="13787" relation="include">
+        </childnode>
+        <childnode refid="13788" relation="include">
+        </childnode>
+        <childnode refid="13786" relation="include">
+        </childnode>
+      </node>
+      <node id="13783">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="13787">
+        <label>math.h</label>
+      </node>
+      <node id="13774">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h</label>
+        <link refid="color.h"/>
+        <childnode refid="13775" relation="include">
+        </childnode>
+        <childnode refid="13776" relation="include">
+        </childnode>
+        <childnode refid="13777" relation="include">
+        </childnode>
+        <childnode refid="13778" relation="include">
+        </childnode>
+        <childnode refid="13779" relation="include">
+        </childnode>
+      </node>
+      <node id="13775">
+        <label>iostream</label>
+      </node>
+      <node id="13784">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="13780">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="13864">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="13887">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="13800" relation="include">
+        </childnode>
+        <childnode refid="13888" relation="include">
+        </childnode>
+        <childnode refid="13899" relation="include">
+        </childnode>
+        <childnode refid="13825" relation="include">
+        </childnode>
+        <childnode refid="13835" relation="include">
+        </childnode>
+        <childnode refid="13904" relation="include">
+        </childnode>
+        <childnode refid="13906" relation="include">
+        </childnode>
+        <childnode refid="13861" relation="include">
+        </childnode>
+        <childnode refid="13875" relation="include">
+        </childnode>
+      </node>
+      <node id="13928">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/shaders.cpp</label>
+        <link refid="shaders_8cpp"/>
+      </node>
+      <node id="13803">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="13796" relation="include">
+        </childnode>
+        <childnode refid="13804" relation="include">
+        </childnode>
+        <childnode refid="13797" relation="include">
+        </childnode>
+      </node>
+      <node id="13806">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h</label>
+        <link refid="meld_interpret_v_m_8h"/>
+        <childnode refid="13807" relation="include">
+        </childnode>
+        <childnode refid="13808" relation="include">
+        </childnode>
+        <childnode refid="13811" relation="include">
+        </childnode>
+        <childnode refid="13812" relation="include">
+        </childnode>
+        <childnode refid="13809" relation="include">
+        </childnode>
+        <childnode refid="13810" relation="include">
+        </childnode>
+        <childnode refid="13813" relation="include">
+        </childnode>
+      </node>
+      <node id="13873">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.h</label>
+        <link refid="smart_blocks_block_8h"/>
+        <childnode refid="13874" relation="include">
+        </childnode>
+        <childnode refid="13872" relation="include">
+        </childnode>
+        <childnode refid="13875" relation="include">
+        </childnode>
+        <childnode refid="13881" relation="include">
+        </childnode>
+        <childnode refid="13878" relation="include">
+        </childnode>
+        <childnode refid="13880" relation="include">
+        </childnode>
+      </node>
+      <node id="13886">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="13887" relation="include">
+        </childnode>
+        <childnode refid="13913" relation="include">
+        </childnode>
+      </node>
+      <node id="13880">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.cpp</label>
+        <link refid="smart_blocks_world_8cpp"/>
+      </node>
+      <node id="13832">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3_d_block_code_8h"/>
+        <childnode refid="13833" relation="include">
+        </childnode>
+        <childnode refid="13836" relation="include">
+        </childnode>
+        <childnode refid="13843" relation="include">
+        </childnode>
+      </node>
+      <node id="13855">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp</label>
+        <link refid="multi_cores_world_8cpp"/>
+      </node>
+      <node id="13844">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</label>
+        <link refid="cpp_scheduler_8cpp"/>
+      </node>
+      <node id="13910">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp</label>
+        <link refid="building_block_8cpp"/>
+      </node>
+      <node id="13862">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="13860" relation="include">
+        </childnode>
+        <childnode refid="13863" relation="include">
+        </childnode>
+        <childnode refid="13865" relation="include">
+        </childnode>
+        <childnode refid="13866" relation="include">
+        </childnode>
+      </node>
+      <node id="13796">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13797" relation="include">
+        </childnode>
+        <childnode refid="13798" relation="include">
+        </childnode>
+      </node>
+      <node id="13812">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.cpp</label>
+        <link refid="meld_interpret_messages_8cpp"/>
+      </node>
+      <node id="13815">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blockCode.cpp</label>
+        <link refid="block_code_8cpp"/>
+      </node>
+      <node id="13851">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.cpp</label>
+        <link refid="multi_cores_events_8cpp"/>
+      </node>
+      <node id="13825">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</label>
+        <link refid="catoms2_d_world_8h"/>
+        <childnode refid="13818" relation="include">
+        </childnode>
+        <childnode refid="13826" relation="include">
+        </childnode>
+        <childnode refid="13821" relation="include">
+        </childnode>
+        <childnode refid="13827" relation="include">
+        </childnode>
+        <childnode refid="13829" relation="include">
+        </childnode>
+      </node>
+      <node id="13907">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</label>
+        <link refid="cpp_scheduler_8h"/>
+        <childnode refid="13803" relation="include">
+        </childnode>
+        <childnode refid="13844" relation="include">
+        </childnode>
+      </node>
+      <node id="13846">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</label>
+        <link refid="meld_process_scheduler_8cpp"/>
+      </node>
+      <node id="13841">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</label>
+        <link refid="catoms3_d_scheduler_8h"/>
+        <childnode refid="13836" relation="include">
+        </childnode>
+        <childnode refid="13839" relation="include">
+        </childnode>
+        <childnode refid="13837" relation="include">
+        </childnode>
+        <childnode refid="13840" relation="include">
+        </childnode>
+      </node>
+      <node id="13912">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.cpp</label>
+        <link refid="config_stat_8cpp"/>
+      </node>
+      <node id="13792">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="13793" relation="include">
+        </childnode>
+        <childnode refid="13814" relation="include">
+        </childnode>
+        <childnode refid="13883" relation="include">
+        </childnode>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13885" relation="include">
+        </childnode>
+        <childnode refid="13922" relation="include">
+        </childnode>
+        <childnode refid="13923" relation="include">
+        </childnode>
+        <childnode refid="13902" relation="include">
+        </childnode>
+        <childnode refid="13807" relation="include">
+        </childnode>
+        <childnode refid="13797" relation="include">
+        </childnode>
+        <childnode refid="13910" relation="include">
+        </childnode>
+        <childnode refid="13817" relation="include">
+        </childnode>
+        <childnode refid="13818" relation="include">
+        </childnode>
+        <childnode refid="13827" relation="include">
+        </childnode>
+        <childnode refid="13833" relation="include">
+        </childnode>
+        <childnode refid="13834" relation="include">
+        </childnode>
+        <childnode refid="13837" relation="include">
+        </childnode>
+        <childnode refid="13920" relation="include">
+        </childnode>
+        <childnode refid="13844" relation="include">
+        </childnode>
+        <childnode refid="13809" relation="include">
+        </childnode>
+        <childnode refid="13925" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13848" relation="include">
+        </childnode>
+        <childnode refid="13859" relation="include">
+        </childnode>
+        <childnode refid="13860" relation="include">
+        </childnode>
+        <childnode refid="13865" relation="include">
+        </childnode>
+        <childnode refid="13873" relation="include">
+        </childnode>
+      </node>
+      <node id="13822">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h</label>
+        <link refid="catoms2_d_generic_8h"/>
+        <childnode refid="13823" relation="include">
+        </childnode>
+      </node>
+      <node id="13804">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="13867">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="13896">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGlBlock.h</label>
+        <link refid="robot_blocks_gl_block_8h"/>
+        <childnode refid="13859" relation="include">
+        </childnode>
+        <childnode refid="13897" relation="include">
+        </childnode>
+      </node>
+      <node id="13824">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp</label>
+        <link refid="catoms2_d_move_8cpp"/>
+      </node>
+      <node id="13890">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksGlBlock.cpp</label>
+        <link refid="blinky_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="13850">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.h</label>
+        <link refid="multi_cores_events_8h"/>
+        <childnode refid="13851" relation="include">
+        </childnode>
+        <childnode refid="13852" relation="include">
+        </childnode>
+      </node>
+      <node id="13893">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h</label>
+        <link refid="catoms3_d_gl_block_8h"/>
+        <childnode refid="13833" relation="include">
+        </childnode>
+        <childnode refid="13894" relation="include">
+        </childnode>
+      </node>
+      <node id="13921">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.cpp</label>
+        <link refid="world_8cpp"/>
+      </node>
+      <node id="13925">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h</label>
+        <link refid="meld_process_v_m_8h"/>
+        <childnode refid="13905" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13904" relation="include">
+        </childnode>
+        <childnode refid="13813" relation="include">
+        </childnode>
+      </node>
+      <node id="13914">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp</label>
+        <link refid="meld_process_v_m_commands_8cpp"/>
+      </node>
+      <node id="13794">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="13902">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</label>
+        <link refid="meld_process_events_8h"/>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13903" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13904" relation="include">
+        </childnode>
+      </node>
+      <node id="13798">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="13800">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13796" relation="include">
+        </childnode>
+        <childnode refid="13801" relation="include">
+        </childnode>
+        <childnode refid="13797" relation="include">
+        </childnode>
+        <childnode refid="13802" relation="include">
+        </childnode>
+      </node>
+      <node id="13891">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h</label>
+        <link refid="catoms2_d_gl_block_8h"/>
+        <childnode refid="13817" relation="include">
+        </childnode>
+        <childnode refid="13892" relation="include">
+        </childnode>
+      </node>
+      <node id="13903">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.cpp</label>
+        <link refid="meld_process_events_8cpp"/>
+      </node>
+      <node id="13809">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</label>
+        <link refid="meld_interpret_scheduler_8cpp"/>
+      </node>
+      <node id="13807">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</label>
+        <link refid="meld_interpret_events_8h"/>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13808" relation="include">
+        </childnode>
+        <childnode refid="13809" relation="include">
+        </childnode>
+        <childnode refid="13810" relation="include">
+        </childnode>
+      </node>
+      <node id="13861">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h</label>
+        <link refid="robot_blocks_world_8h"/>
+        <childnode refid="13860" relation="include">
+        </childnode>
+        <childnode refid="13862" relation="include">
+        </childnode>
+        <childnode refid="13867" relation="include">
+        </childnode>
+        <childnode refid="13865" relation="include">
+        </childnode>
+        <childnode refid="13868" relation="include">
+        </childnode>
+      </node>
+      <node id="13924">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h</label>
+        <link refid="meld_process_v_m_commands_8h"/>
+        <childnode refid="13901" relation="include">
+        </childnode>
+        <childnode refid="13925" relation="include">
+        </childnode>
+        <childnode refid="13914" relation="include">
+        </childnode>
+      </node>
+      <node id="13826">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.h</label>
+        <link refid="catoms2_d_simulator_8h"/>
+        <childnode refid="13818" relation="include">
+        </childnode>
+        <childnode refid="13822" relation="include">
+        </childnode>
+        <childnode refid="13827" relation="include">
+        </childnode>
+        <childnode refid="13828" relation="include">
+        </childnode>
+        <childnode refid="13829" relation="include">
+        </childnode>
+      </node>
+      <node id="13852">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h</label>
+        <link refid="multi_cores_simulator_8h"/>
+        <childnode refid="13853" relation="include">
+        </childnode>
+        <childnode refid="13854" relation="include">
+        </childnode>
+      </node>
+      <node id="13863">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="13864" relation="include">
+        </childnode>
+      </node>
+      <node id="13820">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h</label>
+        <link refid="catoms2_d_events_8h"/>
+        <childnode refid="13817" relation="include">
+        </childnode>
+        <childnode refid="13821" relation="include">
+        </childnode>
+        <childnode refid="13822" relation="include">
+        </childnode>
+      </node>
+      <node id="13918">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.h</label>
+        <link refid="smart_blocks_scheduler_8h"/>
+        <childnode refid="13876" relation="include">
+        </childnode>
+        <childnode refid="13919" relation="include">
+        </childnode>
+        <childnode refid="13878" relation="include">
+        </childnode>
+        <childnode refid="13880" relation="include">
+        </childnode>
+      </node>
+      <node id="13870">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h</label>
+        <link refid="robot_blocks_events_8h"/>
+        <childnode refid="13867" relation="include">
+        </childnode>
+        <childnode refid="13863" relation="include">
+        </childnode>
+      </node>
+      <node id="13791">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="13792" relation="include">
+        </childnode>
+        <childnode refid="13889" relation="include">
+        </childnode>
+        <childnode refid="13887" relation="include">
+        </childnode>
+        <childnode refid="13886" relation="include">
+        </childnode>
+        <childnode refid="13885" relation="include">
+        </childnode>
+        <childnode refid="13891" relation="include">
+        </childnode>
+        <childnode refid="13893" relation="include">
+        </childnode>
+        <childnode refid="13926" relation="include">
+        </childnode>
+        <childnode refid="13896" relation="include">
+        </childnode>
+        <childnode refid="13898" relation="include">
+        </childnode>
+      </node>
+      <node id="13842">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</label>
+        <link refid="catoms3_d_events_8h"/>
+        <childnode refid="13839" relation="include">
+        </childnode>
+      </node>
+      <node id="13814">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="13792" relation="include">
+        </childnode>
+        <childnode refid="13795" relation="include">
+        </childnode>
+        <childnode refid="13797" relation="include">
+        </childnode>
+        <childnode refid="13815" relation="include">
+        </childnode>
+        <childnode refid="13816" relation="include">
+        </childnode>
+        <childnode refid="13827" relation="include">
+        </childnode>
+        <childnode refid="13832" relation="include">
+        </childnode>
+        <childnode refid="13837" relation="include">
+        </childnode>
+        <childnode refid="13844" relation="include">
+        </childnode>
+        <childnode refid="13845" relation="include">
+        </childnode>
+        <childnode refid="13809" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13847" relation="include">
+        </childnode>
+        <childnode refid="13858" relation="include">
+        </childnode>
+        <childnode refid="13865" relation="include">
+        </childnode>
+        <childnode refid="13872" relation="include">
+        </childnode>
+      </node>
+      <node id="13881">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smart_blocks_events_8h"/>
+        <childnode refid="13876" relation="include">
+        </childnode>
+      </node>
+      <node id="13827">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.cpp</label>
+        <link refid="catoms2_d_scheduler_8cpp"/>
+      </node>
+      <node id="13821">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp</label>
+        <link refid="catoms2_d_events_8cpp"/>
+      </node>
+      <node id="13897">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGlBlock.cpp</label>
+        <link refid="robot_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="13894">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp</label>
+        <link refid="catoms3_d_gl_block_8cpp"/>
+      </node>
+      <node id="13816">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.h</label>
+        <link refid="catoms2_d_block_code_8h"/>
+        <childnode refid="13817" relation="include">
+        </childnode>
+        <childnode refid="13826" relation="include">
+        </childnode>
+        <childnode refid="13831" relation="include">
+        </childnode>
+        <childnode refid="13822" relation="include">
+        </childnode>
+      </node>
+      <node id="13799">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.cpp</label>
+        <link refid="blinky_blocks_block_code_8cpp"/>
+      </node>
+      <node id="13909">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h</label>
+        <link refid="meld_interpret_scheduler_8h"/>
+        <childnode refid="13803" relation="include">
+        </childnode>
+        <childnode refid="13808" relation="include">
+        </childnode>
+        <childnode refid="13809" relation="include">
+        </childnode>
+        <childnode refid="13810" relation="include">
+        </childnode>
+      </node>
+      <node id="13831">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.cpp</label>
+        <link refid="catoms2_d_block_code_8cpp"/>
+      </node>
+      <node id="13847">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlockCode.h</label>
+        <link refid="multi_cores_block_code_8h"/>
+        <childnode refid="13848" relation="include">
+        </childnode>
+        <childnode refid="13856" relation="include">
+        </childnode>
+        <childnode refid="13852" relation="include">
+        </childnode>
+        <childnode refid="13857" relation="include">
+        </childnode>
+      </node>
+      <node id="13901">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="13902" relation="include">
+        </childnode>
+        <childnode refid="13905" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13904" relation="include">
+        </childnode>
+        <childnode refid="13906" relation="include">
+        </childnode>
+        <childnode refid="13813" relation="include">
+        </childnode>
+      </node>
+      <node id="13823">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp</label>
+        <link refid="catoms2_d_generic_8cpp"/>
+      </node>
+      <node id="13808">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp</label>
+        <link refid="meld_interpret_events_8cpp"/>
+      </node>
+      <node id="13879">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp</label>
+        <link refid="smart_blocks_simulator_8cpp"/>
+      </node>
+      <node id="13813">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="13817">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.h</label>
+        <link refid="catoms2_d_block_8h"/>
+        <childnode refid="13818" relation="include">
+        </childnode>
+        <childnode refid="13816" relation="include">
+        </childnode>
+        <childnode refid="13819" relation="include">
+        </childnode>
+        <childnode refid="13825" relation="include">
+        </childnode>
+        <childnode refid="13830" relation="include">
+        </childnode>
+        <childnode refid="13822" relation="include">
+        </childnode>
+        <childnode refid="13829" relation="include">
+        </childnode>
+      </node>
+      <node id="13810">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</label>
+        <link refid="meld_interpret_v_m_8cpp"/>
+      </node>
+      <node id="13854">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.cpp</label>
+        <link refid="multi_cores_simulator_8cpp"/>
+      </node>
+      <node id="13819">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h</label>
+        <link refid="catoms2_d_move_8h"/>
+        <childnode refid="13820" relation="include">
+        </childnode>
+        <childnode refid="13821" relation="include">
+        </childnode>
+        <childnode refid="13824" relation="include">
+        </childnode>
+      </node>
+      <node id="13830">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.h</label>
+        <link refid="catoms2_d_scheduler_8h"/>
+        <childnode refid="13826" relation="include">
+        </childnode>
+        <childnode refid="13821" relation="include">
+        </childnode>
+        <childnode refid="13822" relation="include">
+        </childnode>
+        <childnode refid="13827" relation="include">
+        </childnode>
+        <childnode refid="13829" relation="include">
+        </childnode>
+      </node>
+      <node id="13838">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.cpp</label>
+        <link refid="catoms3_d_simulator_8cpp"/>
+      </node>
+      <node id="13811">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.h</label>
+        <link refid="meld_interpret_messages_8h"/>
+        <childnode refid="13812" relation="include">
+        </childnode>
+        <childnode refid="13810" relation="include">
+        </childnode>
+      </node>
+      <node id="13915">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h</label>
+        <link refid="multi_cores_scheduler_8h"/>
+        <childnode refid="13852" relation="include">
+        </childnode>
+        <childnode refid="13853" relation="include">
+        </childnode>
+        <childnode refid="13855" relation="include">
+        </childnode>
+      </node>
+      <node id="13872">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="13873" relation="include">
+        </childnode>
+        <childnode refid="13882" relation="include">
+        </childnode>
+        <childnode refid="13878" relation="include">
+        </childnode>
+      </node>
+      <node id="13834">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.cpp</label>
+        <link refid="catoms3_d_block_8cpp"/>
+      </node>
+      <node id="13923">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="13922" relation="include">
+        </childnode>
+        <childnode refid="13803" relation="include">
+        </childnode>
+        <childnode refid="13907" relation="include">
+        </childnode>
+        <childnode refid="13908" relation="include">
+        </childnode>
+        <childnode refid="13909" relation="include">
+        </childnode>
+        <childnode refid="13805" relation="include">
+        </childnode>
+        <childnode refid="13902" relation="include">
+        </childnode>
+        <childnode refid="13924" relation="include">
+        </childnode>
+        <childnode refid="13807" relation="include">
+        </childnode>
+        <childnode refid="13830" relation="include">
+        </childnode>
+        <childnode refid="13832" relation="include">
+        </childnode>
+        <childnode refid="13841" relation="include">
+        </childnode>
+        <childnode refid="13843" relation="include">
+        </childnode>
+        <childnode refid="13912" relation="include">
+        </childnode>
+        <childnode refid="13811" relation="include">
+        </childnode>
+        <childnode refid="13915" relation="include">
+        </childnode>
+        <childnode refid="13916" relation="include">
+        </childnode>
+        <childnode refid="13869" relation="include">
+        </childnode>
+        <childnode refid="13873" relation="include">
+        </childnode>
+      </node>
+      <node id="13805">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</label>
+        <link refid="blinky_blocks_events_8h"/>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13804" relation="include">
+        </childnode>
+        <childnode refid="13802" relation="include">
+        </childnode>
+      </node>
+      <node id="13857">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h</label>
+        <link refid="multi_cores_world_8h"/>
+        <childnode refid="13852" relation="include">
+        </childnode>
+        <childnode refid="13853" relation="include">
+        </childnode>
+        <childnode refid="13855" relation="include">
+        </childnode>
+      </node>
+      <node id="13839">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp</label>
+        <link refid="catoms3_d_events_8cpp"/>
+      </node>
+      <node id="13869">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robot_blocks_scheduler_8h"/>
+        <childnode refid="13862" relation="include">
+        </childnode>
+        <childnode refid="13867" relation="include">
+        </childnode>
+        <childnode refid="13863" relation="include">
+        </childnode>
+        <childnode refid="13865" relation="include">
+        </childnode>
+        <childnode refid="13868" relation="include">
+        </childnode>
+      </node>
+      <node id="13797">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="13900">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="13796" relation="include">
+        </childnode>
+        <childnode refid="13803" relation="include">
+        </childnode>
+        <childnode refid="13901" relation="include">
+        </childnode>
+        <childnode refid="13826" relation="include">
+        </childnode>
+        <childnode refid="13836" relation="include">
+        </childnode>
+        <childnode refid="13809" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13852" relation="include">
+        </childnode>
+        <childnode refid="13862" relation="include">
+        </childnode>
+        <childnode refid="13813" relation="include">
+        </childnode>
+        <childnode refid="13878" relation="include">
+        </childnode>
+      </node>
+      <node id="13837">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp</label>
+        <link refid="catoms3_d_scheduler_8cpp"/>
+      </node>
+      <node id="13899">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="13900" relation="include">
+        </childnode>
+        <childnode refid="13803" relation="include">
+        </childnode>
+        <childnode refid="13907" relation="include">
+        </childnode>
+        <childnode refid="13908" relation="include">
+        </childnode>
+        <childnode refid="13909" relation="include">
+        </childnode>
+        <childnode refid="13801" relation="include">
+        </childnode>
+        <childnode refid="13910" relation="include">
+        </childnode>
+        <childnode refid="13830" relation="include">
+        </childnode>
+        <childnode refid="13832" relation="include">
+        </childnode>
+        <childnode refid="13841" relation="include">
+        </childnode>
+        <childnode refid="13884" relation="include">
+        </childnode>
+        <childnode refid="13911" relation="include">
+        </childnode>
+        <childnode refid="13912" relation="include">
+        </childnode>
+        <childnode refid="13845" relation="include">
+        </childnode>
+        <childnode refid="13913" relation="include">
+        </childnode>
+        <childnode refid="13914" relation="include">
+        </childnode>
+        <childnode refid="13915" relation="include">
+        </childnode>
+        <childnode refid="13916" relation="include">
+        </childnode>
+        <childnode refid="13906" relation="include">
+        </childnode>
+        <childnode refid="13869" relation="include">
+        </childnode>
+        <childnode refid="13917" relation="include">
+        </childnode>
+        <childnode refid="13918" relation="include">
+        </childnode>
+        <childnode refid="13880" relation="include">
+        </childnode>
+      </node>
+      <node id="13858">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlockCode.h</label>
+        <link refid="robot_blocks_block_code_8h"/>
+        <childnode refid="13859" relation="include">
+        </childnode>
+        <childnode refid="13862" relation="include">
+        </childnode>
+        <childnode refid="13871" relation="include">
+        </childnode>
+        <childnode refid="13863" relation="include">
+        </childnode>
+      </node>
+      <node id="13829">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.cpp</label>
+        <link refid="catoms2_d_world_8cpp"/>
+      </node>
+      <node id="13818">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.cpp</label>
+        <link refid="catoms2_d_block_8cpp"/>
+      </node>
+      <node id="13877">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp</label>
+        <link refid="smart_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="13878">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h</label>
+        <link refid="smart_blocks_simulator_8h"/>
+        <childnode refid="13879" relation="include">
+        </childnode>
+      </node>
+      <node id="13871">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlockCode.cpp</label>
+        <link refid="robot_blocks_block_code_8cpp"/>
+      </node>
+      <node id="13906">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp</label>
+        <link refid="opengl_viewer_8cpp"/>
+      </node>
+      <node id="13884">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.cpp</label>
+        <link refid="clock_8cpp"/>
+      </node>
+      <node id="13790">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h</label>
+        <link refid="color.h"/>
+        <childnode refid="13791" relation="include">
+        </childnode>
+        <childnode refid="13793" relation="include">
+        </childnode>
+        <childnode refid="13886" relation="include">
+        </childnode>
+        <childnode refid="13922" relation="include">
+        </childnode>
+        <childnode refid="13924" relation="include">
+        </childnode>
+        <childnode refid="13806" relation="include">
+        </childnode>
+        <childnode refid="13927" relation="include">
+        </childnode>
+        <childnode refid="13928" relation="include">
+        </childnode>
+      </node>
+      <node id="13920">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.h</label>
+        <link refid="config_stat_8h"/>
+        <childnode refid="13912" relation="include">
+        </childnode>
+      </node>
+      <node id="13859">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.h</label>
+        <link refid="robot_blocks_block_8h"/>
+        <childnode refid="13860" relation="include">
+        </childnode>
+        <childnode refid="13858" relation="include">
+        </childnode>
+        <childnode refid="13861" relation="include">
+        </childnode>
+        <childnode refid="13869" relation="include">
+        </childnode>
+        <childnode refid="13870" relation="include">
+        </childnode>
+        <childnode refid="13863" relation="include">
+        </childnode>
+        <childnode refid="13868" relation="include">
+        </childnode>
+      </node>
+      <node id="13840">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.cpp</label>
+        <link refid="catoms3_d_world_8cpp"/>
+      </node>
+      <node id="13874">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.cpp</label>
+        <link refid="smart_blocks_block_8cpp"/>
+      </node>
+      <node id="13836">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</label>
+        <link refid="catoms3_d_simulator_8h"/>
+        <childnode refid="13834" relation="include">
+        </childnode>
+        <childnode refid="13837" relation="include">
+        </childnode>
+        <childnode refid="13838" relation="include">
+        </childnode>
+      </node>
+      <node id="13926">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/glBlock.cpp</label>
+        <link refid="gl_block_8cpp"/>
+      </node>
+      <node id="13843">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3_d_block_code_8cpp"/>
+      </node>
+      <node id="13856">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlockCode.cpp</label>
+        <link refid="multi_cores_block_code_8cpp"/>
+      </node>
+      <node id="13875">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.h</label>
+        <link refid="smart_blocks_world_8h"/>
+        <childnode refid="13874" relation="include">
+        </childnode>
+        <childnode refid="13876" relation="include">
+        </childnode>
+        <childnode refid="13877" relation="include">
+        </childnode>
+        <childnode refid="13878" relation="include">
+        </childnode>
+        <childnode refid="13880" relation="include">
+        </childnode>
+      </node>
+      <node id="13905">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</label>
+        <link refid="meld_process_debugger_8cpp"/>
+      </node>
+      <node id="13801">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="13800" relation="include">
+        </childnode>
+      </node>
+      <node id="13919">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.cpp</label>
+        <link refid="smart_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="13860">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="13802">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+      <node id="13882">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.cpp</label>
+        <link refid="smart_blocks_block_code_8cpp"/>
+      </node>
+      <node id="13866">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="13904">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</label>
+        <link refid="meld_process_v_m_8cpp"/>
+      </node>
+      <node id="13833">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="13834" relation="include">
+        </childnode>
+        <childnode refid="13832" relation="include">
+        </childnode>
+        <childnode refid="13835" relation="include">
+        </childnode>
+        <childnode refid="13841" relation="include">
+        </childnode>
+        <childnode refid="13842" relation="include">
+        </childnode>
+        <childnode refid="13840" relation="include">
+        </childnode>
+      </node>
+      <node id="13917">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.cpp</label>
+        <link refid="scheduler_8cpp"/>
+      </node>
+      <node id="13868">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="13795">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.h</label>
+        <link refid="blinky_blocks_block_code_8h"/>
+        <childnode refid="13793" relation="include">
+        </childnode>
+        <childnode refid="13796" relation="include">
+        </childnode>
+        <childnode refid="13799" relation="include">
+        </childnode>
+      </node>
+      <node id="13828">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.cpp</label>
+        <link refid="catoms2_d_simulator_8cpp"/>
+      </node>
+      <node id="13793">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h</label>
+        <link refid="blinky_blocks_block_8h"/>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13795" relation="include">
+        </childnode>
+        <childnode refid="13800" relation="include">
+        </childnode>
+        <childnode refid="13803" relation="include">
+        </childnode>
+        <childnode refid="13805" relation="include">
+        </childnode>
+        <childnode refid="13806" relation="include">
+        </childnode>
+        <childnode refid="13802" relation="include">
+        </childnode>
+      </node>
+      <node id="13845">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp</label>
+        <link refid="events_8cpp"/>
+      </node>
+      <node id="13835">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</label>
+        <link refid="catoms3_d_world_8h"/>
+        <childnode refid="13834" relation="include">
+        </childnode>
+        <childnode refid="13836" relation="include">
+        </childnode>
+        <childnode refid="13839" relation="include">
+        </childnode>
+        <childnode refid="13837" relation="include">
+        </childnode>
+        <childnode refid="13840" relation="include">
+        </childnode>
+      </node>
+      <node id="13911">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/commandLine.cpp</label>
+        <link refid="command_line_8cpp"/>
+      </node>
+      <node id="13892">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp</label>
+        <link refid="catoms2_d_gl_block_8cpp"/>
+      </node>
+      <node id="13853">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp</label>
+        <link refid="multi_cores_scheduler_8cpp"/>
+      </node>
+      <node id="13922">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="13899" relation="include">
+        </childnode>
+        <childnode refid="13805" relation="include">
+        </childnode>
+        <childnode refid="13902" relation="include">
+        </childnode>
+        <childnode refid="13807" relation="include">
+        </childnode>
+        <childnode refid="13820" relation="include">
+        </childnode>
+        <childnode refid="13842" relation="include">
+        </childnode>
+        <childnode refid="13845" relation="include">
+        </childnode>
+        <childnode refid="13810" relation="include">
+        </childnode>
+        <childnode refid="13904" relation="include">
+        </childnode>
+        <childnode refid="13850" relation="include">
+        </childnode>
+        <childnode refid="13906" relation="include">
+        </childnode>
+        <childnode refid="13870" relation="include">
+        </childnode>
+        <childnode refid="13881" relation="include">
+        </childnode>
+      </node>
+      <node id="13849">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.cpp</label>
+        <link refid="multi_cores_block_8cpp"/>
+      </node>
+      <node id="13916">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp</label>
+        <link refid="network_8cpp"/>
+      </node>
+      <node id="13885">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="13886" relation="include">
+        </childnode>
+        <childnode refid="13800" relation="include">
+        </childnode>
+        <childnode refid="13900" relation="include">
+        </childnode>
+        <childnode refid="13910" relation="include">
+        </childnode>
+        <childnode refid="13825" relation="include">
+        </childnode>
+        <childnode refid="13835" relation="include">
+        </childnode>
+        <childnode refid="13920" relation="include">
+        </childnode>
+        <childnode refid="13809" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13857" relation="include">
+        </childnode>
+        <childnode refid="13906" relation="include">
+        </childnode>
+        <childnode refid="13861" relation="include">
+        </childnode>
+        <childnode refid="13875" relation="include">
+        </childnode>
+        <childnode refid="13921" relation="include">
+        </childnode>
+      </node>
+      <node id="13889">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="13793" relation="include">
+        </childnode>
+        <childnode refid="13890" relation="include">
+        </childnode>
+      </node>
+      <node id="13876">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</label>
+        <link refid="smart_blocks_events_8cpp"/>
+      </node>
+      <node id="13888">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="13889" relation="include">
+        </childnode>
+        <childnode refid="13800" relation="include">
+        </childnode>
+        <childnode refid="13891" relation="include">
+        </childnode>
+        <childnode refid="13825" relation="include">
+        </childnode>
+        <childnode refid="13893" relation="include">
+        </childnode>
+        <childnode refid="13835" relation="include">
+        </childnode>
+        <childnode refid="13895" relation="include">
+        </childnode>
+        <childnode refid="13896" relation="include">
+        </childnode>
+        <childnode refid="13861" relation="include">
+        </childnode>
+        <childnode refid="13898" relation="include">
+        </childnode>
+        <childnode refid="13875" relation="include">
+        </childnode>
+      </node>
+      <node id="13927">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.cpp</label>
+        <link refid="color_8cpp"/>
+      </node>
+      <node id="13865">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="13883">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="13792" relation="include">
+        </childnode>
+        <childnode refid="13794" relation="include">
+        </childnode>
+        <childnode refid="13884" relation="include">
+        </childnode>
+      </node>
+      <node id="13898">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.h</label>
+        <link refid="smart_blocks_gl_block_8h"/>
+        <childnode refid="13873" relation="include">
+        </childnode>
+        <childnode refid="13877" relation="include">
+        </childnode>
+      </node>
+      <node id="13908">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="13803" relation="include">
+        </childnode>
+        <childnode refid="13901" relation="include">
+        </childnode>
+        <childnode refid="13903" relation="include">
+        </childnode>
+        <childnode refid="13846" relation="include">
+        </childnode>
+        <childnode refid="13904" relation="include">
+        </childnode>
+      </node>
+      <node id="13895">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.cpp</label>
+        <link refid="obj_loader_8cpp"/>
+      </node>
+      <node id="13913">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp</label>
+        <link refid="interface_8cpp"/>
+      </node>
+      <node id="13848">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.h</label>
+        <link refid="multi_cores_block_8h"/>
+        <childnode refid="13849" relation="include">
+        </childnode>
+        <childnode refid="13847" relation="include">
+        </childnode>
+        <childnode refid="13850" relation="include">
+        </childnode>
+        <childnode refid="13855" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_color" prot="public">Color</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="color_8h_1a4eb1e4499302064515a4ba26dbc193bd" prot="public" static="no" mutable="no">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color Colors[9]</definition>
+        <argsstring>[9]</argsstring>
+        <name>Colors</name>
+        <initializer>= {<ref refid="color_8h_1a5aade9593e0241c494b1c29409b0bb22" kindref="member">RED</ref>, <ref refid="color_8h_1add70f1ca9cf5b2452249158d0ed5cf6f" kindref="member">ORANGE</ref>, <ref refid="color_8h_1aab5dbb779670c093c41d9418f9f7f86f" kindref="member">YELLOW</ref>, <ref refid="color_8h_1a16f374b173c6e3541091280bac9870a4" kindref="member">GREEN</ref>, <ref refid="color_8h_1a37e7b41d460615d4fb57efe97f0d4778" kindref="member">CYAN</ref>, <ref refid="color_8h_1a5d0eab04c50d92cbe9803c1a0b9cecee" kindref="member">BLUE</ref>, <ref refid="color_8h_1a431bad54841fc93f8b7c65864da5c282" kindref="member">WHITE</ref>, <ref refid="color_8h_1a101e84149e32a5a7278b75c663d32685" kindref="member">MAGENTA</ref>, <ref refid="color_8h_1a5ac6dbcf2abddbd2896d69f022f9dc3d" kindref="member">PINK</ref>}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="43" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" bodystart="43" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ac00eaec1be979c9cd493adc7f01bb866" compoundref="meld_interpret_v_m_8cpp" startline="526" endline="528">MeldInterpret::MeldInterpretVM::setColor</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="color_8h_1a431bad54841fc93f8b7c65864da5c282" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color WHITE</definition>
+        <argsstring>(1.0f, 1.0f, 1.0f)</argsstring>
+        <name>WHITE</name>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="26" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+        <referencedby refid="class_base_simulator_1_1_scheduler_1a1de04641e411a04965558357c58a77b2" compoundref="scheduler_8h" startline="80" endline="80">BaseSimulator::Scheduler::getMode</referencedby>
+        <referencedby refid="shaders_8h_1af9bd99e5de0905f53b874be82f95c890" compoundref="shaders_8cpp" startline="172" endline="234">shadowedRenderingStep3</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a5aade9593e0241c494b1c29409b0bb22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color RED</definition>
+        <argsstring>(1.0f, 0.0f, 0.0f)</argsstring>
+        <name>RED</name>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="27" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a16f374b173c6e3541091280bac9870a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color GREEN</definition>
+        <argsstring>(0.0f, 1.0f, 0.0f)</argsstring>
+        <name>GREEN</name>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="28" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a39d9b947e2e32e0e4a0d7f7ff91d6f1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color LIGHTGREEN</definition>
+        <argsstring>(0.75f, 1.0f, 0.25f)</argsstring>
+        <name>LIGHTGREEN</name>
+        <param>
+          <type>0.</type>
+          <declname>75f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>25f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="29" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a5d0eab04c50d92cbe9803c1a0b9cecee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color BLUE</definition>
+        <argsstring>(0.0f, 0.0f, 1.0f)</argsstring>
+        <name>BLUE</name>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="30" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1aab5dbb779670c093c41d9418f9f7f86f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color YELLOW</definition>
+        <argsstring>(1.0f, 1.0f, 0.0f)</argsstring>
+        <name>YELLOW</name>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="31" column="1"/>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1a14611b19773548084c068d14dd893d99" compoundref="catoms2_d_events_8cpp" startline="128" endline="153">Catoms2D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_stop_event_1a01f55d7e6e08e9baf5c5fcf1a7750cb7" compoundref="catoms3_d_events_8cpp" startline="112" endline="134">Catoms3D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+        <referencedby refid="class_glut_sliding_debug_window_1a40a48ece9d420089212ecb8b1ff165b0" compoundref="interface_8cpp" startline="410" endline="431">GlutSlidingDebugWindow::keyFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_stop_event_1afbc1d05e25023873071013b5d02bc1ad" compoundref="robot_blocks_events_8cpp" startline="120" endline="138">RobotBlocks::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_stop_event_1a089637accbb54b2217e10f47e673487f" compoundref="smart_blocks_events_8cpp" startline="125" endline="143">SmartBlocks::MotionStopEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a37e7b41d460615d4fb57efe97f0d4778" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color CYAN</definition>
+        <argsstring>(0.0f, 1.0f, 1.0f)</argsstring>
+        <name>CYAN</name>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="32" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a101e84149e32a5a7278b75c663d32685" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color MAGENTA</definition>
+        <argsstring>(1.0f, 0.0f, 1.0f)</argsstring>
+        <name>MAGENTA</name>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0f</declname>
+        </param>
+        <param>
+          <type>1.</type>
+          <declname>0f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="33" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1ab5465586b1fc8c892c082f0b60c2ccc6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color LIGHTBLUE</definition>
+        <argsstring>(173/255.0, 216/255.0, 230/255.0)</argsstring>
+        <name>LIGHTBLUE</name>
+        <param>
+          <type>173/255.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>216/255.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>230/255.</type>
+          <declname>0</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="34" column="1"/>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1a14611b19773548084c068d14dd893d99" compoundref="catoms2_d_events_8cpp" startline="128" endline="153">Catoms2D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_stop_event_1a01f55d7e6e08e9baf5c5fcf1a7750cb7" compoundref="catoms3_d_events_8cpp" startline="112" endline="134">Catoms3D::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+        <referencedby refid="class_glut_sliding_debug_window_1a40a48ece9d420089212ecb8b1ff165b0" compoundref="interface_8cpp" startline="410" endline="431">GlutSlidingDebugWindow::keyFunc</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_stop_event_1afbc1d05e25023873071013b5d02bc1ad" compoundref="robot_blocks_events_8cpp" startline="120" endline="138">RobotBlocks::MotionStopEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a6388927485c5fd193b2d1e7d3caa9b31" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color GOLD</definition>
+        <argsstring>(1.0, 215/255.0, 0)</argsstring>
+        <name>GOLD</name>
+        <param>
+          <type>1.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>215/255.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>0</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="35" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a5ac6dbcf2abddbd2896d69f022f9dc3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color PINK</definition>
+        <argsstring>(1.0, 192/255.0, 203/255.0)</argsstring>
+        <name>PINK</name>
+        <param>
+          <type>1.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>192/255.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>203/255.</type>
+          <declname>0</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="36" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a3d943b9c0f1b2cebad0630dabe613ab4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color GREY</definition>
+        <argsstring>(0.5, 0.5, 0.5)</argsstring>
+        <name>GREY</name>
+        <param>
+          <type>0.</type>
+          <declname>5</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>5</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>5</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="37" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a7bad783beb5dd0b10417d2e62599fb56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color LIGHTGREY</definition>
+        <argsstring>(0.75, 0.75, 0.75)</argsstring>
+        <name>LIGHTGREY</name>
+        <param>
+          <type>0.</type>
+          <declname>75</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>75</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>75</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="38" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a6c951de855d70b05562e8ec8d09fdebf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color DARKGREY</definition>
+        <argsstring>(0.25, 0.25, 0.25)</argsstring>
+        <name>DARKGREY</name>
+        <param>
+          <type>0.</type>
+          <declname>25</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>25</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>25</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="39" column="1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1abb8ae9875fd8899e5e9148f093fbfe43" compoundref="catoms2_d_events_8cpp" startline="43" endline="50">Catoms2D::MotionStartEvent::consume</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1a79c53f8a53d514c4b5b932fab9f6d2f8" compoundref="catoms2_d_simulator_8cpp" startline="27" endline="332">Catoms2D::Catoms2DSimulator::Catoms2DSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1aafd4539f681e68be96ac795b07789600" compoundref="catoms2_d_world_8cpp" startline="639" endline="731">Catoms2D::Catoms2DWorld::generateRandom</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_start_event_1ada7939add62235116670dbcc7a50bc18" compoundref="catoms3_d_events_8cpp" startline="37" endline="45">Catoms3D::MotionStartEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1ab6fa0b3dc811d294b20688cfb90e1b74" compoundref="catoms3_d_simulator_8cpp" startline="27" endline="423">Catoms3D::Catoms3DSimulator::Catoms3DSimulator</referencedby>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_start_event_1a1414e3f54a11874041b443ddfd23b1f7" compoundref="robot_blocks_events_8cpp" startline="38" endline="45">RobotBlocks::MotionStartEvent::consume</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_motion_start_event_1aef3dfa8f89f3e86693704853656e3005" compoundref="smart_blocks_events_8cpp" startline="39" endline="48">SmartBlocks::MotionStartEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1add70f1ca9cf5b2452249158d0ed5cf6f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color ORANGE</definition>
+        <argsstring>(1.0, 0.64706, 0.0)</argsstring>
+        <name>ORANGE</name>
+        <param>
+          <type>1.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>64706</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="40" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="color_8h_1a5ff8fd64fa9a86cb72747b520487bb82" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>const Color DARKORANGE</definition>
+        <argsstring>(1.0, 0.549, 0.0)</argsstring>
+        <name>DARKORANGE</name>
+        <param>
+          <type>1.</type>
+          <declname>0</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>549</declname>
+        </param>
+        <param>
+          <type>0.</type>
+          <declname>0</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h" line="41" column="1"/>
+        <referencedby refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" compoundref="color_8h" startline="22" endline="22">Color::operator[]</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>COLOR_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>COLOR_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_WIN</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="shaders_8h" kindref="compound">shaders.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="class_color" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_color" kindref="compound">Color</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="15" refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" refkind="member"><highlight class="normal">GLfloat<sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[4];</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a9a742cbe9f9f4037f5d9f4e81a9b2428" kindref="member">Color</ref>();</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color_1a9a742cbe9f9f4037f5d9f4e81a9b2428" kindref="member">Color</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>r,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>g,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>b,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>a=1.0);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>r,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>g,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>b,</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>a=1.0);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/>Color(unsigned<sp/>char<sp/>r,unsigned<sp/>char<sp/>g,unsigned<sp/>char<sp/>b,unsigned<sp/>char<sp/>a=255)<sp/>{<sp/>color[0]=r/255.0;<sp/>color[1]=g/255.0;<sp/>color[2]=b/255.0;<sp/>color[3]=a/255.0;<sp/>};</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="class_color_1a1da74b1eebf219c4f2d4bd1c24c180ec" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_color_1a1da74b1eebf219c4f2d4bd1c24c180ec" kindref="member">glColor</ref>()<sp/>{<sp/>glColor4fv(<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>);<sp/>};</highlight></codeline>
+<codeline lineno="22" refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>GLfloat<sp/><ref refid="class_color_1ac0f8411b6b24736cc12eef13ba439bc5" kindref="member">operator[]</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[i];<sp/>};</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/>ostream&amp;<sp/><ref refid="class_color_1a5d57747da49aec3ea3d83e7a137ba7bd" kindref="member">operator&lt;&lt;</ref>(ostream&amp;<sp/>f,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;c);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a431bad54841fc93f8b7c65864da5c282" kindref="member">WHITE</ref>(1.0f,1.0f,1.0f);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a5aade9593e0241c494b1c29409b0bb22" kindref="member">RED</ref>(1.0f,0.0f,0.0f);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a16f374b173c6e3541091280bac9870a4" kindref="member">GREEN</ref>(0.0f,1.0f,0.0f);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a39d9b947e2e32e0e4a0d7f7ff91d6f1a" kindref="member">LIGHTGREEN</ref>(0.75f,1.0f,0.25f);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a5d0eab04c50d92cbe9803c1a0b9cecee" kindref="member">BLUE</ref>(0.0f,0.0f,1.0f);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1aab5dbb779670c093c41d9418f9f7f86f" kindref="member">YELLOW</ref>(1.0f,1.0f,0.0f);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a37e7b41d460615d4fb57efe97f0d4778" kindref="member">CYAN</ref>(0.0f,1.0f,1.0f);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a101e84149e32a5a7278b75c663d32685" kindref="member">MAGENTA</ref>(1.0f,0.0f,1.0f);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1ab5465586b1fc8c892c082f0b60c2ccc6" kindref="member">LIGHTBLUE</ref>(173/255.0,216/255.0,230/255.0);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a6388927485c5fd193b2d1e7d3caa9b31" kindref="member">GOLD</ref>(1.0,215/255.0,0);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a5ac6dbcf2abddbd2896d69f022f9dc3d" kindref="member">PINK</ref>(1.0,192/255.0,203/255.0);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a3d943b9c0f1b2cebad0630dabe613ab4" kindref="member">GREY</ref>(0.5,0.5,0.5);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a7bad783beb5dd0b10417d2e62599fb56" kindref="member">LIGHTGREY</ref>(0.75,0.75,0.75);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a6c951de855d70b05562e8ec8d09fdebf" kindref="member">DARKGREY</ref>(0.25,0.25,0.25);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1add70f1ca9cf5b2452249158d0ed5cf6f" kindref="member">ORANGE</ref>(1.0,0.64706,0.0);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a5ff8fd64fa9a86cb72747b520487bb82" kindref="member">DARKORANGE</ref>(1.0,0.549,0.0);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="color_8h_1a4eb1e4499302064515a4ba26dbc193bd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="color_8h_1a4eb1e4499302064515a4ba26dbc193bd" kindref="member">Colors</ref>[9]<sp/>=<sp/>{<ref refid="color_8h_1a5aade9593e0241c494b1c29409b0bb22" kindref="member">RED</ref>,<sp/><ref refid="color_8h_1add70f1ca9cf5b2452249158d0ed5cf6f" kindref="member">ORANGE</ref>,<sp/><ref refid="color_8h_1aab5dbb779670c093c41d9418f9f7f86f" kindref="member">YELLOW</ref>,<sp/><ref refid="color_8h_1a16f374b173c6e3541091280bac9870a4" kindref="member">GREEN</ref>,<sp/><ref refid="color_8h_1a37e7b41d460615d4fb57efe97f0d4778" kindref="member">CYAN</ref>,<sp/><ref refid="color_8h_1a5d0eab04c50d92cbe9803c1a0b9cecee" kindref="member">BLUE</ref>,<sp/><ref refid="color_8h_1a431bad54841fc93f8b7c65864da5c282" kindref="member">WHITE</ref>,<sp/><ref refid="color_8h_1a101e84149e32a5a7278b75c663d32685" kindref="member">MAGENTA</ref>,<sp/>PINK};</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>COLOR_H_</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/color.h"/>
+  </compounddef>
+</doxygen>

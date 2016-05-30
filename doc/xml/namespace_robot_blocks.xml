@@ -1,0 +1,503 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="namespace_robot_blocks" kind="namespace" language="C++">
+    <compoundname>RobotBlocks</compoundname>
+    <innerclass refid="class_robot_blocks_1_1_capability" prot="public">RobotBlocks::Capability</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_generic_code_block" prot="public">RobotBlocks::GenericCodeBlock</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_motion" prot="public">RobotBlocks::Motion</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_motion_end_event" prot="public">RobotBlocks::MotionEndEvent</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_motion_start_event" prot="public">RobotBlocks::MotionStartEvent</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_motion_step_event" prot="public">RobotBlocks::MotionStepEvent</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_motion_stop_event" prot="public">RobotBlocks::MotionStopEvent</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_neighbor_direction" prot="public">RobotBlocks::NeighborDirection</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_point_rel3_d" prot="public">RobotBlocks::PointRel3D</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_presence_matrix" prot="public">RobotBlocks::PresenceMatrix</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_block" prot="public">RobotBlocks::RobotBlocksBlock</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_block_code" prot="public">RobotBlocks::RobotBlocksBlockCode</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_capabilities" prot="public">RobotBlocks::RobotBlocksCapabilities</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_gl_block" prot="public">RobotBlocks::RobotBlocksGlBlock</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_scheduler" prot="public">RobotBlocks::RobotBlocksScheduler</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_simulator" prot="public">RobotBlocks::RobotBlocksSimulator</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_robot_blocks_world" prot="public">RobotBlocks::RobotBlocksWorld</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_validation" prot="public">RobotBlocks::Validation</innerclass>
+    <innerclass refid="class_robot_blocks_1_1_validation_matrix" prot="public">RobotBlocks::ValidationMatrix</innerclass>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" prot="public" static="no">
+        <name>states</name>
+        <enumvalue id="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a5a72eab51308fbaa39886721d07abd98" prot="public">
+          <name>emptyState</name>
+          <initializer>=0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a3038df3d3ff36fa41f992935894ebd42" prot="public">
+          <name>fullState</name>
+          <initializer>=3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a767614fec88920680a73ea3c7d68224f" prot="public">
+          <name>filledState</name>
+          <initializer>=5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1afcd4d2721448d1b7e4b2607b0229eb5d" prot="public">
+          <name>emptiedState</name>
+          <initializer>=6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a55810ab5170ebbeca2ffc4b706761d69" prot="public">
+          <name>transitState</name>
+          <initializer>=7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1ad0af3046079d980b5f0df197e3bc0c2f" prot="public">
+          <name>jockerState</name>
+          <initializer>=8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24a" prot="public" static="no">
+        <name>presence</name>
+        <enumvalue id="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aae5e0fc67709665b949c418d96639f45e" prot="public">
+          <name>emptyCell</name>
+          <initializer>=0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aaca9d5ec0004ea9994d44b2447984c2f8" prot="public">
+          <name>fullCell</name>
+          <initializer>=1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aad275be7b61c220691e25b428b5f8f118" prot="public">
+          <name>wallCell</name>
+          <initializer>=2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aa6cb1f56c238b94d83786c2fef80e3f52" prot="public">
+          <name>lockedCell</name>
+          <initializer>=3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" bodystart="42" bodyend="42"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_robot_blocks_1acf36a97ab61d65fb8a51b8d73b485508" prot="public" static="no">
+        <type>boost::function&lt; void(<ref refid="class_robot_blocks_1_1_generic_code_block" kindref="compound">GenericCodeBlock</ref> *, <ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref>, <ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref> *)&gt;</type>
+        <definition>typedef boost::function&lt;void (GenericCodeBlock*,MessagePtr,P2PNetworkInterface*)&gt; RobotBlocks::eventFunc</definition>
+        <argsstring></argsstring>
+        <name>eventFunc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" line="17" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_robot_blocks_1a3998e853cf6e162a769e5856625f3689" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; RobotBlocks::operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;stream, RobotBlocksBlock const &amp;bb)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref> const &amp;</type>
+          <declname>bb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp" line="135" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp" bodystart="135" bodyend="138"/>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">BaseSimulator::BuildingBlock::blockId</references>
+        <references refid="class_robot_blocks_1_1_robot_blocks_block_1a687264f8317e6e9a944158c5d7678ae8" compoundref="robot_blocks_block_8h" startline="36">RobotBlocks::RobotBlocksBlock::color</references>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a2a229556c71e3dabff40062e77ac1685" compoundref="robot_blocks_block_8h" startline="51" endline="51">RobotBlocks::RobotBlocksBlock::getInterface</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a1cbfaee1ff9dc6b54f18bdb37f002a81" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; RobotBlocks::operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const Capability &amp;c)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_capability" kindref="compound">Capability</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" line="197" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="197" bodyend="205"/>
+        <references refid="class_robot_blocks_1_1_capability_1a3f976300e79a6b8d21a5ba791c0fbc55" compoundref="robot_blocks_capabilities_8h" startline="85">RobotBlocks::Capability::name</references>
+        <references refid="class_robot_blocks_1_1_capability_1afd594a3064a2155b56c80b97a0a4d6e5" compoundref="robot_blocks_capabilities_8h" startline="87">RobotBlocks::Capability::refPos</references>
+        <references refid="class_robot_blocks_1_1_capability_1ac35784f9dfac7d2d0cea676549f8f102" compoundref="robot_blocks_capabilities_8h" startline="86">RobotBlocks::Capability::validationMatrix</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a013529b68d2c505a73483de16abc30f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool RobotBlocks::compare</definition>
+        <argsstring>(Validation *a, Validation *b)</argsstring>
+        <name>compare</name>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_validation" kindref="compound">Validation</ref> *</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_validation" kindref="compound">Validation</ref> *</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" line="389" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="389" bodyend="391"/>
+        <references refid="class_robot_blocks_1_1_validation_1a51b2e869c7c2814bae55018a8e73baff" compoundref="robot_blocks_capabilities_8h" startline="108">RobotBlocks::Validation::nbreConditions</references>
+        <references refid="class_robot_blocks_1_1_validation_1ae06aabc800cfca154b1cc2a50c13ac43" compoundref="robot_blocks_capabilities_8h" startline="107">RobotBlocks::Validation::gain</references>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_capabilities_1ada2eae6e620968a36fa6ce6dd2c789e8" compoundref="robot_blocks_capabilities_8cpp" startline="393" endline="422">RobotBlocks::RobotBlocksCapabilities::validateMulti</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a6d185a6a532db2ce6b0f44ee8fb8b382" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; RobotBlocks::operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const ValidationMatrix &amp;sm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" line="511" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="511" bodyend="516"/>
+        <references refid="class_robot_blocks_1_1_validation_matrix_1afb4eabfd87149faba5df261200e44d04" compoundref="robot_blocks_capabilities_8h" startline="56">RobotBlocks::ValidationMatrix::grid</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a3d383f378ef2f9abf3d00e0360e18b52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; RobotBlocks::operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const PointRel3D &amp;pt)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" line="589" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="589" bodyend="592"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a75291231f6afcf3c443a23717c2bd145" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool RobotBlocks::operator!=</definition>
+        <argsstring>(const PointRel3D p1, const PointRel3D p2)</argsstring>
+        <name>operator!=</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" line="648" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="648" bodyend="650"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a3e4fb671afe5b33545a43547e9c45e60" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool RobotBlocks::operator==</definition>
+        <argsstring>(const PointRel3D p1, const PointRel3D p2)</argsstring>
+        <name>operator==</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" line="652" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="652" bodyend="654"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a36a8b8ac50e5bb3d6bf19aba9774e574" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ostream &amp;</type>
+        <definition>ostream&amp; RobotBlocks::operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const PresenceMatrix &amp;sm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" line="699" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="699" bodyend="704"/>
+        <references refid="class_robot_blocks_1_1_presence_matrix_1ac022be07fed7dad1eda648c0e6e3d679" compoundref="robot_blocks_capabilities_8h" startline="46">RobotBlocks::PresenceMatrix::grid</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1ad3eb76847606a1d5e4e461f967aceae2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h" bodystart="57" bodyend="59"/>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1abf32c8eab7179114c67998c86e1dfbf3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h" bodystart="61" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a6ec5d7cdcd5d30cd2ddfd04588dfa527" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_robot_blocks_1_1_robot_blocks_scheduler" kindref="compound">RobotBlocksScheduler</ref> *</type>
+        <definition>RobotBlocksScheduler* RobotBlocks::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h" bodystart="65" bodyend="65"/>
+        <referencedby refid="class_robot_blocks_1_1_motion_start_event_1a1414e3f54a11874041b443ddfd23b1f7" compoundref="robot_blocks_events_8cpp" startline="38" endline="45">RobotBlocks::MotionStartEvent::consume</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_step_event_1a19d30f66f161b076584a96bee4f8c986" compoundref="robot_blocks_events_8cpp" startline="81" endline="94">RobotBlocks::MotionStepEvent::consume</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_motion_stop_event_1afbc1d05e25023873071013b5d02bc1ad" compoundref="robot_blocks_events_8cpp" startline="120" endline="138">RobotBlocks::MotionStopEvent::consume</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_generic_code_block_1a6f42b391bdad8c159a7a8a47f20debfb" compoundref="robot_blocks_generic_8h" startline="26" endline="31">RobotBlocks::GenericCodeBlock::GenericCodeBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1a15d447ddcf44637228234c0fc7494352" compoundref="robot_blocks_world_8cpp" startline="76" endline="111">RobotBlocks::RobotBlocksWorld::addBlock</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_world_1aacde9a25471862e4bf80f0fb8f15b174" compoundref="robot_blocks_world_8cpp" startline="129" endline="146">RobotBlocks::RobotBlocksWorld::disconnectBlock</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1ad7a8caa1f2738fef7fdc2e3999ec4863" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::createSimulator</definition>
+        <argsstring>(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock *))</argsstring>
+        <name>createSimulator</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type><ref refid="class_robot_blocks_1_1_robot_blocks_block_code" kindref="compound">RobotBlocksBlockCode</ref> *(*)(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref> *)</type>
+          <declname>robotBlocksBlockCodeBuildingFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h" line="45" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h" bodystart="45" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1acc1831b7312371574e43f7bfd03fbbe6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::deleteSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>deleteSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h" bodystart="49" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1abca137ea0cbc045d0b835260ff0dda83" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_robot_blocks_1_1_robot_blocks_simulator" kindref="compound">RobotBlocksSimulator</ref> *</type>
+        <definition>RobotBlocksSimulator* RobotBlocks::getSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>getSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h" bodystart="53" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a3862dfc3f29f6e8014d781e5c46ce357" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::createWorld</definition>
+        <argsstring>(int slx, int sly, int slz, int argc, char *argv[])</argsstring>
+        <name>createWorld</name>
+        <param>
+          <type>int</type>
+          <declname>slx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sly</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>slz</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h" bodystart="89" bodyend="91"/>
+        <references refid="class_robot_blocks_1_1_robot_blocks_world_1af82b71389c0544e5bf573be99651b470" compoundref="robot_blocks_world_8cpp" startline="68" endline="70">RobotBlocks::RobotBlocksWorld::createWorld</references>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1ad507145e125c91a9ca70d3f0e7277929" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::deleteWorld</definition>
+        <argsstring>()</argsstring>
+        <name>deleteWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h" line="93" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h" bodystart="93" bodyend="95"/>
+        <references refid="class_robot_blocks_1_1_robot_blocks_world_1a56e2a2b952abbb689267d61c33a4471e" compoundref="robot_blocks_world_8cpp" startline="72" endline="74">RobotBlocks::RobotBlocksWorld::deleteWorld</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_robot_blocks_1a6094e7149d1c4120c11cff9c67a5f392" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_robot_blocks_1_1_robot_blocks_world" kindref="compound">RobotBlocksWorld</ref> *</type>
+        <definition>RobotBlocksWorld* RobotBlocks::getWorld</definition>
+        <argsstring>()</argsstring>
+        <name>getWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h" line="97" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.h" bodystart="97" bodyend="97"/>
+        <references refid="class_robot_blocks_1_1_robot_blocks_world_1a629154a7fd5584a2a25ba336163c1e86" compoundref="robot_blocks_world_8h" startline="44" endline="47">RobotBlocks::RobotBlocksWorld::getWorld</references>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1ac33e922159444b0097190fc88bdc9b55" compoundref="robot_blocks_block_8cpp" startline="86" endline="89">RobotBlocks::RobotBlocksBlock::setPosition</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a526f2de911701d326dd5ec0635c5ddab" compoundref="robot_blocks_block_8cpp" startline="91" endline="94">RobotBlocks::RobotBlocksBlock::setColor</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_block_1a0e2e6d74c0bdc53c98e368853ff6398f" compoundref="robot_blocks_block_8cpp" startline="96" endline="98">RobotBlocks::RobotBlocksBlock::setPrevNext</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" compoundref="robot_blocks_simulator_8cpp" startline="25" endline="305">RobotBlocks::RobotBlocksSimulator::RobotBlocksSimulator</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp" line="17" column="1"/>
+  </compounddef>
+</doxygen>

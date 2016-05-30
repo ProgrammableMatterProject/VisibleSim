@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms3_d_1_1_catoms3_d_block_code" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Catoms3D::Catoms3DBlockCode</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_block_code" prot="public" virt="non-virtual">BaseSimulator::BlockCode</basecompoundref>
+    <includes refid="catoms3_d_block_code_8h" local="no">catoms3DBlockCode.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_block_code_1ad0d1f35c6f725c775da2acfd9daf0ca6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::Catoms3DBlockCode::Catoms3DBlockCode</definition>
+        <argsstring>(Catoms3DBlock *host)</argsstring>
+        <name>Catoms3DBlockCode</name>
+        <param>
+          <type><ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref> *</type>
+          <declname>host</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp" bodystart="17" bodyend="19"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_block_code_1abf03a22d71a2634d96b295ed7eaa485b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Catoms3D::Catoms3DBlockCode::~Catoms3DBlockCode</definition>
+        <argsstring>()</argsstring>
+        <name>~Catoms3DBlockCode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp" bodystart="21" bodyend="23"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_block_code_1ad7bf3cd9e72d44f3ae29cf3582a463ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms3_d_1_1_catoms3_d_block_code" kindref="compound">Catoms3DBlockCode</ref> *</type>
+        <definition>Catoms3DBlockCode* Catoms3D::Catoms3DBlockCode::buildNewBlockCode</definition>
+        <argsstring>(Catoms3DBlock *host)</argsstring>
+        <name>buildNewBlockCode</name>
+        <param>
+          <type><ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref> *</type>
+          <declname>host</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h" line="27" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_block_code_1a6c7768238fe393c880f8a8dece7232f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Catoms3D::Catoms3DBlockCode::processLocalEvent</definition>
+        <argsstring>(EventPtr pev)=0</argsstring>
+        <name>processLocalEvent</name>
+        <reimplements refid="class_base_simulator_1_1_block_code_1a9eef5fd6e69c29c66176d3edd7d57807">processLocalEvent</reimplements>
+        <param>
+          <type><ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref></type>
+          <declname>pev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h" line="28" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_block_code_1aadc4b82429e73713605bfc3034455257" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DBlockCode::addDebugAttributes</definition>
+        <argsstring>(Scheduler *scheduler)</argsstring>
+        <name>addDebugAttributes</name>
+        <reimplements refid="class_base_simulator_1_1_block_code_1af80f95d1e6a7dedf74a5300985709e74">addDebugAttributes</reimplements>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_scheduler" kindref="compound">Scheduler</ref> *</type>
+          <declname>scheduler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp" bodystart="25" bodyend="28"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1627">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+      </node>
+      <node id="1626">
+        <label>Catoms3D::Catoms3DBlockCode</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_block_code"/>
+        <childnode refid="1627" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1629">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1630" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1628">
+        <label>Catoms3D::Catoms3DBlockCode</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_block_code"/>
+        <childnode refid="1629" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1630">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1631" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1629" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1631">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1630" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h" bodystart="21" bodyend="31"/>
+    <listofallmembers>
+      <member refid="class_catoms3_d_1_1_catoms3_d_block_code_1aadc4b82429e73713605bfc3034455257" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>addDebugAttributes</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a9175e47cdc2641837778a041049337a4" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>availabilityDate</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a618ac8e9707a9da6bfc70c57caed896c" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>BlockCode</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_block_code_1ad7bf3cd9e72d44f3ae29cf3582a463ae" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>buildNewBlockCode</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_block_code_1ad0d1f35c6f725c775da2acfd9daf0ca6" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>Catoms3DBlockCode</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a31741e90aabcab37d2def57ab700332e" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>hostBlock</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1ac07b9798cc486160e3ec57356ac3960a" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>init</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_block_code_1a6c7768238fe393c880f8a8dece7232f7" prot="public" virt="pure-virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>processLocalEvent</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a4522800d6069d71ece8c01db154038e1" prot="public" virt="pure-virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>startup</name></member>
+      <member refid="class_base_simulator_1_1_block_code_1a0dd8a370319e10dc4aea44c96fa3b3cc" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>~BlockCode</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_block_code_1abf03a22d71a2634d96b295ed7eaa485b" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DBlockCode</scope><name>~Catoms3DBlockCode</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

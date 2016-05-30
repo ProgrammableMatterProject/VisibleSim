@@ -1,0 +1,449 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="catoms2_d_move_8cpp" kind="file" language="C++">
+    <compoundname>catoms2DMove.cpp</compoundname>
+    <includes refid="catoms2_d_move_8h" local="yes">catoms2DMove.h</includes>
+    <incdepgraph>
+      <node id="12106">
+        <label>list</label>
+      </node>
+      <node id="12132">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="12109" relation="include">
+        </childnode>
+        <childnode refid="12133" relation="include">
+        </childnode>
+        <childnode refid="12118" relation="include">
+        </childnode>
+        <childnode refid="12123" relation="include">
+        </childnode>
+        <childnode refid="12107" relation="include">
+        </childnode>
+        <childnode refid="12134" relation="include">
+        </childnode>
+      </node>
+      <node id="12118">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="12114" relation="include">
+        </childnode>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12113" relation="include">
+        </childnode>
+        <childnode refid="12119" relation="include">
+        </childnode>
+        <childnode refid="12120" relation="include">
+        </childnode>
+      </node>
+      <node id="12109">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="12110" relation="include">
+        </childnode>
+        <childnode refid="12111" relation="include">
+        </childnode>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12113" relation="include">
+        </childnode>
+        <childnode refid="12114" relation="include">
+        </childnode>
+        <childnode refid="12115" relation="include">
+        </childnode>
+        <childnode refid="12116" relation="include">
+        </childnode>
+        <childnode refid="12117" relation="include">
+        </childnode>
+        <childnode refid="12118" relation="include">
+        </childnode>
+        <childnode refid="12123" relation="include">
+        </childnode>
+      </node>
+      <node id="12120">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12113" relation="include">
+        </childnode>
+        <childnode refid="12121" relation="include">
+        </childnode>
+        <childnode refid="12122" relation="include">
+        </childnode>
+      </node>
+      <node id="12134">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="12135" relation="include">
+        </childnode>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12113" relation="include">
+        </childnode>
+        <childnode refid="12122" relation="include">
+        </childnode>
+        <childnode refid="12107" relation="include">
+        </childnode>
+        <childnode refid="12136" relation="include">
+        </childnode>
+        <childnode refid="12124" relation="include">
+        </childnode>
+      </node>
+      <node id="12103">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="12138">
+        <label>assert.h</label>
+      </node>
+      <node id="12128">
+        <label>stdint.h</label>
+      </node>
+      <node id="12111">
+        <label>stdlib.h</label>
+      </node>
+      <node id="12102">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="12103" relation="include">
+        </childnode>
+        <childnode refid="12104" relation="include">
+        </childnode>
+        <childnode refid="12105" relation="include">
+        </childnode>
+        <childnode refid="12106" relation="include">
+        </childnode>
+        <childnode refid="12107" relation="include">
+        </childnode>
+        <childnode refid="12125" relation="include">
+        </childnode>
+        <childnode refid="12127" relation="include">
+        </childnode>
+      </node>
+      <node id="12149">
+        <label>catoms2DDirection.h</label>
+        <link refid="catoms2_d_direction_8h"/>
+        <childnode refid="12108" relation="include">
+        </childnode>
+      </node>
+      <node id="12099">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp</label>
+        <link refid="catoms2DMove.cpp"/>
+        <childnode refid="12100" relation="include">
+        </childnode>
+      </node>
+      <node id="12121">
+        <label>cmath</label>
+      </node>
+      <node id="12151">
+        <label>stdexcept</label>
+      </node>
+      <node id="12130">
+        <label>catoms2DGlBlock.h</label>
+        <link refid="catoms2_d_gl_block_8h"/>
+        <childnode refid="12108" relation="include">
+        </childnode>
+        <childnode refid="12131" relation="include">
+        </childnode>
+        <childnode refid="12107" relation="include">
+        </childnode>
+        <childnode refid="12141" relation="include">
+        </childnode>
+      </node>
+      <node id="12108">
+        <label>string</label>
+      </node>
+      <node id="12114">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="12137">
+        <label>map</label>
+      </node>
+      <node id="12144">
+        <label>catoms2DEvents.h</label>
+        <link refid="catoms2_d_events_8h"/>
+        <childnode refid="12145" relation="include">
+        </childnode>
+        <childnode refid="12100" relation="include">
+        </childnode>
+      </node>
+      <node id="12122">
+        <label>memory.h</label>
+      </node>
+      <node id="12107">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="12108" relation="include">
+        </childnode>
+        <childnode refid="12109" relation="include">
+        </childnode>
+        <childnode refid="12120" relation="include">
+        </childnode>
+        <childnode refid="12124" relation="include">
+        </childnode>
+      </node>
+      <node id="12113">
+        <label>fstream</label>
+      </node>
+      <node id="12125">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="12102" relation="include">
+        </childnode>
+        <childnode refid="12126" relation="include">
+        </childnode>
+      </node>
+      <node id="12117">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="12146">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="12123">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="12119" relation="include">
+        </childnode>
+        <childnode refid="12120" relation="include">
+        </childnode>
+        <childnode refid="12118" relation="include">
+        </childnode>
+      </node>
+      <node id="12115">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="12129">
+        <label>catoms2DBlockCode.h</label>
+        <link refid="catoms2_d_block_code_8h"/>
+        <childnode refid="12125" relation="include">
+        </childnode>
+        <childnode refid="12101" relation="include">
+        </childnode>
+      </node>
+      <node id="12143">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="12150">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="12133">
+        <label>pthread.h</label>
+      </node>
+      <node id="12140">
+        <label>string.h</label>
+      </node>
+      <node id="12141">
+        <label>catoms2DCapabilities.h</label>
+        <link refid="catoms2_d_capabilities_8h"/>
+        <childnode refid="12135" relation="include">
+        </childnode>
+        <childnode refid="12142" relation="include">
+        </childnode>
+        <childnode refid="12120" relation="include">
+        </childnode>
+        <childnode refid="12139" relation="include">
+        </childnode>
+        <childnode refid="12108" relation="include">
+        </childnode>
+        <childnode refid="12143" relation="include">
+        </childnode>
+      </node>
+      <node id="12101">
+        <label>catoms2DBlock.h</label>
+        <link refid="catoms2_d_block_8h"/>
+        <childnode refid="12102" relation="include">
+        </childnode>
+        <childnode refid="12129" relation="include">
+        </childnode>
+        <childnode refid="12130" relation="include">
+        </childnode>
+        <childnode refid="12141" relation="include">
+        </childnode>
+        <childnode refid="12144" relation="include">
+        </childnode>
+        <childnode refid="12149" relation="include">
+        </childnode>
+        <childnode refid="12150" relation="include">
+        </childnode>
+        <childnode refid="12151" relation="include">
+        </childnode>
+      </node>
+      <node id="12100">
+        <label>catoms2DMove.h</label>
+        <link refid="catoms2_d_move_8h"/>
+        <childnode refid="12101" relation="include">
+        </childnode>
+        <childnode refid="12149" relation="include">
+        </childnode>
+      </node>
+      <node id="12135">
+        <label>vector</label>
+      </node>
+      <node id="12147">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="12148" relation="include">
+        </childnode>
+        <childnode refid="12140" relation="include">
+        </childnode>
+        <childnode refid="12103" relation="include">
+        </childnode>
+        <childnode refid="12102" relation="include">
+        </childnode>
+      </node>
+      <node id="12119">
+        <label>math.h</label>
+      </node>
+      <node id="12124">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12113" relation="include">
+        </childnode>
+        <childnode refid="12121" relation="include">
+        </childnode>
+        <childnode refid="12122" relation="include">
+        </childnode>
+        <childnode refid="12109" relation="include">
+        </childnode>
+      </node>
+      <node id="12112">
+        <label>iostream</label>
+      </node>
+      <node id="12148">
+        <label>deque</label>
+      </node>
+      <node id="12142">
+        <label>climits</label>
+      </node>
+      <node id="12105">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="12139">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="12113" relation="include">
+        </childnode>
+      </node>
+      <node id="12145">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="12126" relation="include">
+        </childnode>
+        <childnode refid="12108" relation="include">
+        </childnode>
+        <childnode refid="12103" relation="include">
+        </childnode>
+        <childnode refid="12102" relation="include">
+        </childnode>
+        <childnode refid="12146" relation="include">
+        </childnode>
+        <childnode refid="12147" relation="include">
+        </childnode>
+        <childnode refid="12124" relation="include">
+        </childnode>
+      </node>
+      <node id="12104">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="12136">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12137" relation="include">
+        </childnode>
+        <childnode refid="12135" relation="include">
+        </childnode>
+        <childnode refid="12105" relation="include">
+        </childnode>
+        <childnode refid="12138" relation="include">
+        </childnode>
+        <childnode refid="12102" relation="include">
+        </childnode>
+        <childnode refid="12107" relation="include">
+        </childnode>
+        <childnode refid="12139" relation="include">
+        </childnode>
+      </node>
+      <node id="12116">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="12110">
+        <label>stdio.h</label>
+      </node>
+      <node id="12131">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="12132" relation="include">
+        </childnode>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12113" relation="include">
+        </childnode>
+        <childnode refid="12108" relation="include">
+        </childnode>
+        <childnode refid="12135" relation="include">
+        </childnode>
+        <childnode refid="12121" relation="include">
+        </childnode>
+        <childnode refid="12111" relation="include">
+        </childnode>
+        <childnode refid="12140" relation="include">
+        </childnode>
+      </node>
+      <node id="12127">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="12102" relation="include">
+        </childnode>
+        <childnode refid="12128" relation="include">
+        </childnode>
+        <childnode refid="12112" relation="include">
+        </childnode>
+        <childnode refid="12104" relation="include">
+        </childnode>
+        <childnode refid="12106" relation="include">
+        </childnode>
+      </node>
+      <node id="12126">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_catoms2_d">Catoms2D</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="catoms2_d_move_8h" kindref="compound">catoms2DMove.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_catoms2_d" kindref="compound">Catoms2D</ref><sp/>{</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5" refid="class_catoms2_d_1_1_catoms2_d_move_1af71874ce50b719e9d44f361dff06e392" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1af71874ce50b719e9d44f361dff06e392" kindref="member">Catoms2DMove::Catoms2DMove</ref>(<ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref><sp/>*p,<sp/><ref refid="class_catoms2_d_1_1_relative_direction_1a24e5b0814bc326f9ff38cd37cbfcf988" kindref="member">RelativeDirection::Direction</ref><sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" kindref="member">pivot</ref><sp/>=<sp/>p;</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" kindref="member">direction</ref><sp/>=<sp/>d;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="class_catoms2_d_1_1_catoms2_d_move_1a5c5abfcfb7a65e10afcbb4d1e5e2249c" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1af71874ce50b719e9d44f361dff06e392" kindref="member">Catoms2DMove::Catoms2DMove</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move" kindref="compound">Catoms2DMove</ref><sp/>&amp;m)<sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" kindref="member">pivot</ref><sp/>=<sp/>m.<ref refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" kindref="member">pivot</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" kindref="member">direction</ref><sp/>=<sp/>m.<ref refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" kindref="member">direction</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="class_catoms2_d_1_1_catoms2_d_move_1a8eb4f34265a77654735cd6d5127d616f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1a8eb4f34265a77654735cd6d5127d616f" kindref="member">Catoms2DMove::~Catoms2DMove</ref>()<sp/>{<sp/>}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="class_catoms2_d_1_1_catoms2_d_move_1a1f7d3cee2e35e27a3d3fb7789ecb2636" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_catoms2_d_1_1_relative_direction_1a24e5b0814bc326f9ff38cd37cbfcf988" kindref="member">RelativeDirection::Direction</ref><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1a1f7d3cee2e35e27a3d3fb7789ecb2636" kindref="member">Catoms2DMove::getDirection</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1aecd9a568add8407ec95008d2b76d5d7d" kindref="member">direction</ref>;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="class_catoms2_d_1_1_catoms2_d_move_1a66ce87a9eabdc422f4ea9b5145b1d004" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref>*<sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1a66ce87a9eabdc422f4ea9b5145b1d004" kindref="member">Catoms2DMove::getPivot</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_catoms2_d_1_1_catoms2_d_move_1acd3f4dc7ff56c65be06b62f0e08aa688" kindref="member">pivot</ref>;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp"/>
+  </compounddef>
+</doxygen>

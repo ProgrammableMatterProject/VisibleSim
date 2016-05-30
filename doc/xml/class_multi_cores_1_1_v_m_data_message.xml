@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_multi_cores_1_1_v_m_data_message" kind="class" language="C++" prot="public">
+    <compoundname>MultiCores::VMDataMessage</compoundname>
+    <basecompoundref refid="class_message" prot="public" virt="non-virtual">Message</basecompoundref>
+    <includes refid="multi_cores_scheduler_8h" local="no">multiCoresScheduler.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_multi_cores_1_1_v_m_data_message_1ad6885ac5265810cd11c57d4b090db7c0" prot="protected" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int MultiCores::VMDataMessage::dataSize</definition>
+        <argsstring></argsstring>
+        <name>dataSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="96" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_multi_cores_1_1_v_m_data_message_1a9a9b01cfe4731ef9a9b3e4014c9ba24c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>MultiCores::VMDataMessage::VMDataMessage</definition>
+        <argsstring>(unsigned int s)</argsstring>
+        <name>VMDataMessage</name>
+        <param>
+          <type>unsigned int</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="98" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" bodystart="98" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_multi_cores_1_1_v_m_data_message_1a0da02e4e0308bd94774a3f57a79f2bfa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>unsigned int</type>
+        <definition>virtual unsigned int MultiCores::VMDataMessage::size</definition>
+        <argsstring>()</argsstring>
+        <name>size</name>
+        <reimplements refid="class_message_1a8c20b5cfbbecb2dc08bf18eb47043cb0">size</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="101" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" bodystart="101" bodyend="104"/>
+        <references refid="class_message_1a8c20b5cfbbecb2dc08bf18eb47043cb0" compoundref="network_8h" startline="56" endline="56">Message::size</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2544">
+        <label>MultiCores::VMDataMessage</label>
+        <link refid="class_multi_cores_1_1_v_m_data_message"/>
+        <childnode refid="2545" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2545">
+        <label>Message</label>
+        <link refid="class_message"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2546">
+        <label>MultiCores::VMDataMessage</label>
+        <link refid="class_multi_cores_1_1_v_m_data_message"/>
+        <childnode refid="2547" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2547">
+        <label>Message</label>
+        <link refid="class_message"/>
+        <childnode refid="2548" relation="usage">
+          <edgelabel>destinationInterface</edgelabel>
+          <edgelabel>sourceInterface</edgelabel>
+        </childnode>
+      </node>
+      <node id="2548">
+        <label>P2PNetworkInterface</label>
+        <link refid="class_p2_p_network_interface"/>
+        <childnode refid="2548" relation="usage">
+          <edgelabel>connectedInterface</edgelabel>
+        </childnode>
+        <childnode refid="2549" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2551">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2549" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2549">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2550" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2551" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2550">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2549" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="94" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" bodystart="94" bodyend="105"/>
+    <listofallmembers>
+      <member refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" prot="public" virt="virtual"><scope>MultiCores::VMDataMessage</scope><name>clone</name></member>
+      <member refid="class_multi_cores_1_1_v_m_data_message_1ad6885ac5265810cd11c57d4b090db7c0" prot="protected" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>dataSize</name></member>
+      <member refid="class_message_1a307a420fae17e9bd201105cd0397743d" prot="public" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>destinationInterface</name></member>
+      <member refid="class_message_1a205fe80c0b08d73e2be7aeeb2baef531" prot="public" virt="virtual"><scope>MultiCores::VMDataMessage</scope><name>getMessageName</name></member>
+      <member refid="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" prot="public" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>getNbMessages</name></member>
+      <member refid="class_message_1a46573773d5b65a28f527a44b3e4f8f2e" prot="public" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>id</name></member>
+      <member refid="class_message_1a4fc4f717b634e66070366cb7722d7761" prot="public" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>Message</name></member>
+      <member refid="class_message_1a25270a0fe7b0b5d32298c096867b24de" prot="protected" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>nbMessages</name></member>
+      <member refid="class_message_1a00240b1a3f109deddf714c5208b5a49c" prot="protected" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>nextId</name></member>
+      <member refid="class_multi_cores_1_1_v_m_data_message_1a0da02e4e0308bd94774a3f57a79f2bfa" prot="public" virt="virtual"><scope>MultiCores::VMDataMessage</scope><name>size</name></member>
+      <member refid="class_message_1a56c70396168363e83944cb6d65ef345d" prot="public" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>sourceInterface</name></member>
+      <member refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" prot="public" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>type</name></member>
+      <member refid="class_multi_cores_1_1_v_m_data_message_1a9a9b01cfe4731ef9a9b3e4014c9ba24c" prot="public" virt="non-virtual"><scope>MultiCores::VMDataMessage</scope><name>VMDataMessage</name></member>
+      <member refid="class_message_1a3f7275462831f787a861271687bcad67" prot="public" virt="virtual"><scope>MultiCores::VMDataMessage</scope><name>~Message</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

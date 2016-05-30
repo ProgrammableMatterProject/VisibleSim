@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms3_d_1_1_motion_step_event" kind="class" language="C++" prot="public">
+    <compoundname>Catoms3D::MotionStepEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="catoms3_d_events_8h" local="no">catoms3DEvents.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_motion_step_event_1a8db7e4abb7cd224b49732039595a064b" prot="private" static="no" mutable="no">
+        <type><ref refid="class_catoms3_d_1_1_rotations" kindref="compound">Rotations</ref></type>
+        <definition>Rotations Catoms3D::MotionStepEvent::rot</definition>
+        <argsstring></argsstring>
+        <name>rot</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="88" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_motion_step_event_1ae21efded4f282f152d3eab1b9429ada7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::MotionStepEvent::MotionStepEvent</definition>
+        <argsstring>(uint64_t, Catoms3DBlock *block, const Rotations &amp;r)</argsstring>
+        <name>MotionStepEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_catoms3_d_1_1_catoms3_d_block" kindref="compound">Catoms3DBlock</ref> *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms3_d_1_1_rotations" kindref="compound">Rotations</ref> &amp;</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="57" bodyend="62"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a9cc2f4c7f3ef9b84729b0ebe8903df05" compoundref="unique_events_id_8h" startline="56">EVENT_MOTION_STEP</references>
+        <referencedby refid="class_catoms3_d_1_1_motion_step_event_1ab44f28ee40cb242ca20bd6f564ad3c87" compoundref="catoms3_d_events_8cpp" startline="72" endline="86">consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_motion_step_event_1af40c449b018234f571995c07f0b2c883" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::MotionStepEvent::MotionStepEvent</definition>
+        <argsstring>(MotionStepEvent *ev)</argsstring>
+        <name>MotionStepEvent</name>
+        <param>
+          <type><ref refid="class_catoms3_d_1_1_motion_step_event" kindref="compound">MotionStepEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="91" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="64" bodyend="66"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_motion_step_event_1a253257f5a75786dc035d6a3581b4442b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::MotionStepEvent::~MotionStepEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~MotionStepEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="92" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="68" bodyend="70"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_motion_step_event_1a4e84da474318ab8f8c6fc451d20fc5a4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Catoms3D::MotionStepEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="93" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="93" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_motion_step_event_1ab44f28ee40cb242ca20bd6f564ad3c87" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Catoms3D::MotionStepEvent::consume</definition>
+        <argsstring>()</argsstring>
+        <name>consume</name>
+        <reimplements refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d">consume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="94" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="72" bodyend="86"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="namespace_catoms3_d_1aba1a28e70384955881059f53eab330a6" compoundref="catoms3_d_scheduler_8h" startline="64" endline="64">Catoms3D::getScheduler</references>
+        <references refid="class_catoms3_d_1_1_rotations_1ac3fc615a688b1b8dd7f3e6be69d193e0" compoundref="catoms3_d_events_8cpp" startline="219" endline="270">Catoms3D::Rotations::nextStep</references>
+        <references refid="namespace_catoms3_d_1a45479e8ba07750a65246bbb15f5a513f" compoundref="catoms3_d_world_8h" startline="126" endline="126">Catoms3D::getWorld</references>
+        <references refid="class_catoms3_d_1_1_catoms3_d_world_1a802e6fa1cc01dc9e214123741f214f87" compoundref="catoms3_d_world_8cpp" startline="372" endline="380">Catoms3D::Catoms3DWorld::updateGlData</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="catoms3_d_events_8cpp_1ae299fa5bdefb0b9480c9bfae6b1bb0e2" compoundref="catoms3_d_events_8cpp" startline="12">ANIMATION_DELAY</references>
+        <references refid="class_catoms3_d_1_1_motion_step_event_1ae21efded4f282f152d3eab1b9429ada7" compoundref="catoms3_d_events_8cpp" startline="57" endline="62">MotionStepEvent</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_motion_step_event_1af751d3e95764d3545e09ef241f42160b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string Catoms3D::MotionStepEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="95" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp" bodystart="88" bodyend="90"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2020">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2018">
+        <label>Catoms3D::MotionStepEvent</label>
+        <link refid="class_catoms3_d_1_1_motion_step_event"/>
+        <childnode refid="2019" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2019">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2020" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2023">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2021">
+        <label>Catoms3D::MotionStepEvent</label>
+        <link refid="class_catoms3_d_1_1_motion_step_event"/>
+        <childnode refid="2022" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2022">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2023" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2024" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2026">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2024" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2024">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2025" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2026" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2025">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2024" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" line="87" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h" bodystart="87" bodyend="96"/>
+    <listofallmembers>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_catoms3_d_1_1_motion_step_event_1ab44f28ee40cb242ca20bd6f564ad3c87" prot="public" virt="virtual"><scope>Catoms3D::MotionStepEvent</scope><name>consume</name></member>
+      <member refid="class_catoms3_d_1_1_motion_step_event_1a4e84da474318ab8f8c6fc451d20fc5a4" prot="public" virt="virtual"><scope>Catoms3D::MotionStepEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>eventType</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>Catoms3D::MotionStepEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_catoms3_d_1_1_motion_step_event_1af751d3e95764d3545e09ef241f42160b" prot="public" virt="virtual"><scope>Catoms3D::MotionStepEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>id</name></member>
+      <member refid="class_catoms3_d_1_1_motion_step_event_1ae21efded4f282f152d3eab1b9429ada7" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>MotionStepEvent</name></member>
+      <member refid="class_catoms3_d_1_1_motion_step_event_1af40c449b018234f571995c07f0b2c883" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>MotionStepEvent</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>randomNumber</name></member>
+      <member refid="class_catoms3_d_1_1_motion_step_event_1a8db7e4abb7cd224b49732039595a064b" prot="private" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>rot</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>Catoms3D::MotionStepEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>Catoms3D::MotionStepEvent</scope><name>~Event</name></member>
+      <member refid="class_catoms3_d_1_1_motion_step_event_1a253257f5a75786dc035d6a3581b4442b" prot="public" virt="non-virtual"><scope>Catoms3D::MotionStepEvent</scope><name>~MotionStepEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

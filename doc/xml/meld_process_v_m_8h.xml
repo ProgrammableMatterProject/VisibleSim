@@ -1,0 +1,429 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="meld_process_v_m_8h" kind="file" language="C++">
+    <compoundname>meldProcessVM.h</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">queue</includes>
+    <includes local="no">inttypes.h</includes>
+    <includes local="no">boost/asio.hpp</includes>
+    <includes local="no">boost/shared_ptr.hpp</includes>
+    <includes local="no">boost/interprocess/sync/interprocess_mutex.hpp</includes>
+    <includes local="no">boost/interprocess/sync/interprocess_semaphore.hpp</includes>
+    <includes refid="meld_process_v_m_commands_8h" local="yes">meldProcessVMCommands.h</includes>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includedby refid="meld_process_debugger_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</includedby>
+    <includedby refid="meld_process_scheduler_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</includedby>
+    <includedby refid="meld_process_v_m_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</includedby>
+    <includedby refid="simulator_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</includedby>
+    <incdepgraph>
+      <node id="15797">
+        <label>list</label>
+      </node>
+      <node id="15808">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="15804" relation="include">
+        </childnode>
+        <childnode refid="15784" relation="include">
+        </childnode>
+        <childnode refid="15803" relation="include">
+        </childnode>
+        <childnode refid="15809" relation="include">
+        </childnode>
+        <childnode refid="15810" relation="include">
+        </childnode>
+      </node>
+      <node id="15800">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="15801" relation="include">
+        </childnode>
+        <childnode refid="15802" relation="include">
+        </childnode>
+        <childnode refid="15784" relation="include">
+        </childnode>
+        <childnode refid="15803" relation="include">
+        </childnode>
+        <childnode refid="15804" relation="include">
+        </childnode>
+        <childnode refid="15805" relation="include">
+        </childnode>
+        <childnode refid="15806" relation="include">
+        </childnode>
+        <childnode refid="15807" relation="include">
+        </childnode>
+        <childnode refid="15808" relation="include">
+        </childnode>
+        <childnode refid="15813" relation="include">
+        </childnode>
+      </node>
+      <node id="15810">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="15784" relation="include">
+        </childnode>
+        <childnode refid="15803" relation="include">
+        </childnode>
+        <childnode refid="15811" relation="include">
+        </childnode>
+        <childnode refid="15812" relation="include">
+        </childnode>
+      </node>
+      <node id="15785">
+        <label>queue</label>
+      </node>
+      <node id="15788">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="15790">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="15817">
+        <label>stdint.h</label>
+      </node>
+      <node id="15802">
+        <label>stdlib.h</label>
+      </node>
+      <node id="15795">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="15788" relation="include">
+        </childnode>
+        <childnode refid="15796" relation="include">
+        </childnode>
+        <childnode refid="15789" relation="include">
+        </childnode>
+        <childnode refid="15797" relation="include">
+        </childnode>
+        <childnode refid="15798" relation="include">
+        </childnode>
+        <childnode refid="15815" relation="include">
+        </childnode>
+        <childnode refid="15816" relation="include">
+        </childnode>
+      </node>
+      <node id="15783">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h</label>
+        <link refid="meldProcessVM.h"/>
+        <childnode refid="15784" relation="include">
+        </childnode>
+        <childnode refid="15785" relation="include">
+        </childnode>
+        <childnode refid="15786" relation="include">
+        </childnode>
+        <childnode refid="15787" relation="include">
+        </childnode>
+        <childnode refid="15788" relation="include">
+        </childnode>
+        <childnode refid="15789" relation="include">
+        </childnode>
+        <childnode refid="15790" relation="include">
+        </childnode>
+        <childnode refid="15791" relation="include">
+        </childnode>
+        <childnode refid="15795" relation="include">
+        </childnode>
+      </node>
+      <node id="15811">
+        <label>cmath</label>
+      </node>
+      <node id="15799">
+        <label>string</label>
+      </node>
+      <node id="15804">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="15791">
+        <label>meldProcessVMCommands.h</label>
+        <link refid="meld_process_v_m_commands_8h"/>
+        <childnode refid="15792" relation="include">
+        </childnode>
+        <childnode refid="15814" relation="include">
+        </childnode>
+      </node>
+      <node id="15812">
+        <label>memory.h</label>
+      </node>
+      <node id="15798">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="15799" relation="include">
+        </childnode>
+        <childnode refid="15800" relation="include">
+        </childnode>
+        <childnode refid="15810" relation="include">
+        </childnode>
+        <childnode refid="15814" relation="include">
+        </childnode>
+      </node>
+      <node id="15803">
+        <label>fstream</label>
+      </node>
+      <node id="15815">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="15795" relation="include">
+        </childnode>
+        <childnode refid="15786" relation="include">
+        </childnode>
+      </node>
+      <node id="15807">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="15813">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="15809" relation="include">
+        </childnode>
+        <childnode refid="15810" relation="include">
+        </childnode>
+        <childnode refid="15808" relation="include">
+        </childnode>
+      </node>
+      <node id="15805">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="15787">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="15794">
+        <label>string.h</label>
+      </node>
+      <node id="15792">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="15793" relation="include">
+        </childnode>
+        <childnode refid="15794" relation="include">
+        </childnode>
+        <childnode refid="15788" relation="include">
+        </childnode>
+        <childnode refid="15795" relation="include">
+        </childnode>
+      </node>
+      <node id="15809">
+        <label>math.h</label>
+      </node>
+      <node id="15814">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="15784" relation="include">
+        </childnode>
+        <childnode refid="15803" relation="include">
+        </childnode>
+        <childnode refid="15811" relation="include">
+        </childnode>
+        <childnode refid="15812" relation="include">
+        </childnode>
+        <childnode refid="15800" relation="include">
+        </childnode>
+      </node>
+      <node id="15784">
+        <label>iostream</label>
+      </node>
+      <node id="15793">
+        <label>deque</label>
+      </node>
+      <node id="15789">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="15796">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="15806">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="15801">
+        <label>stdio.h</label>
+      </node>
+      <node id="15816">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="15795" relation="include">
+        </childnode>
+        <childnode refid="15817" relation="include">
+        </childnode>
+        <childnode refid="15784" relation="include">
+        </childnode>
+        <childnode refid="15796" relation="include">
+        </childnode>
+        <childnode refid="15797" relation="include">
+        </childnode>
+      </node>
+      <node id="15786">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="15820">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</label>
+        <link refid="meld_process_scheduler_8cpp"/>
+      </node>
+      <node id="15818">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h</label>
+        <link refid="meldProcessVM.h"/>
+        <childnode refid="15819" relation="include">
+        </childnode>
+        <childnode refid="15820" relation="include">
+        </childnode>
+        <childnode refid="15821" relation="include">
+        </childnode>
+        <childnode refid="15822" relation="include">
+        </childnode>
+      </node>
+      <node id="15822">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="15819">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</label>
+        <link refid="meld_process_debugger_8cpp"/>
+      </node>
+      <node id="15821">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</label>
+        <link refid="meld_process_v_m_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_meld_process_1_1_meld_process_v_m" prot="public">MeldProcess::MeldProcessVM</innerclass>
+    <innernamespace refid="namespace_meld_process">MeldProcess</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>meldProcessVM.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>28<sp/>avril<sp/>2015</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Andre</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>MELDPROCESSVM_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MELDPROCESSVM_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;queue&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;inttypes.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/asio.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/shared_ptr.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/interprocess/sync/interprocess_mutex.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/interprocess/sync/interprocess_semaphore.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_process_v_m_commands_8h" kindref="compound">meldProcessVMCommands.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>boost::asio::ip::tcp;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_meld_process" kindref="compound">MeldProcess</ref><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//class<sp/>BuildingBlock;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">MeldProcessVM;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="class_meld_process_1_1_meld_process_v_m" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_meld_process_1_1_meld_process_v_m" kindref="compound">MeldProcessVM</ref><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>associated<sp/>Block<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="class_meld_process_1_1_meld_process_v_m_1ae62f21cfc77ae06cbaa7e7902b798992" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref>*<sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1ae62f21cfc77ae06cbaa7e7902b798992" kindref="member">hostBlock</ref>;</highlight></codeline>
+<codeline lineno="35" refid="class_meld_process_1_1_meld_process_v_m_1a21add03a46be72c8a9360e2a97b31c73" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>boost::interprocess::interprocess_mutex<sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a21add03a46be72c8a9360e2a97b31c73" kindref="member">mutex_ios</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="37" refid="class_meld_process_1_1_meld_process_v_m_1acab278bc6c21674f7759dca226bf2ec7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>tcp::socket&amp;<sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1acab278bc6c21674f7759dca226bf2ec7" kindref="member">getSocket</ref>()<sp/>{<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(socket<sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*(socket.get());<sp/>};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>kill<sp/>the<sp/>associated<sp/>VM<sp/>program<sp/>(and<sp/>wait<sp/>for<sp/>the<sp/>effective<sp/>end)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>terminate();</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//static<sp/>int<sp/>port;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="class_meld_process_1_1_meld_process_v_m_1a7487dd22182da028fe320418b4eceb44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>boost::asio::io_service<sp/>*<ref refid="class_meld_process_1_1_meld_process_v_m_1a7487dd22182da028fe320418b4eceb44" kindref="member">ios</ref>;</highlight></codeline>
+<codeline lineno="45" refid="class_meld_process_1_1_meld_process_v_m_1a2ad1c2cf3b01f68b94103e397dec283c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>tcp::acceptor<sp/>*<ref refid="class_meld_process_1_1_meld_process_v_m_1a2ad1c2cf3b01f68b94103e397dec283c" kindref="member">acceptor</ref>;</highlight></codeline>
+<codeline lineno="46" refid="class_meld_process_1_1_meld_process_v_m_1a04dff8ff4a6db8c0fcbd75c61a928fc7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a04dff8ff4a6db8c0fcbd75c61a928fc7" kindref="member">vmPath</ref>;</highlight></codeline>
+<codeline lineno="47" refid="class_meld_process_1_1_meld_process_v_m_1a699ac953cc1a9929464a9c2bd23f5c5a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a699ac953cc1a9929464a9c2bd23f5c5a" kindref="member">programPath</ref>;</highlight></codeline>
+<codeline lineno="48" refid="class_meld_process_1_1_meld_process_v_m_1a45f9f31bdfeee7f0abc210fc9d164414" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a45f9f31bdfeee7f0abc210fc9d164414" kindref="member">debugging</ref>;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="50" refid="class_meld_process_1_1_meld_process_v_m_1acea511257345071746d64f4f97af1175" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1acea511257345071746d64f4f97af1175" kindref="member">currentLocalDate</ref>;<sp/></highlight><highlight class="comment">//<sp/>fastest<sp/>mode</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="class_meld_process_1_1_meld_process_v_m_1a81be732afc6666859c96322e537082dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a81be732afc6666859c96322e537082dc" kindref="member">hasWork</ref>;<sp/></highlight><highlight class="comment">//<sp/>fastest<sp/>mode</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="class_meld_process_1_1_meld_process_v_m_1a9a3c9b901a053bd32b22cfaed945daa5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a9a3c9b901a053bd32b22cfaed945daa5" kindref="member">polling</ref>;<sp/></highlight><highlight class="comment">//<sp/>fastest<sp/>mode</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54" refid="class_meld_process_1_1_meld_process_v_m_1ac820059b97fa4b5e4caac3aba8af483d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>map&lt;int,MeldProcessVM*&gt;<sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1ac820059b97fa4b5e4caac3aba8af483d" kindref="member">vmMap</ref>;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>socket<sp/>connected<sp/>to<sp/>the<sp/>associated<sp/>VM<sp/>program<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="class_meld_process_1_1_meld_process_v_m_1a9dbe19428e3f1ac237ce0163e67edcd8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::shared_ptr&lt;tcp::socket&gt;<sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a9dbe19428e3f1ac237ce0163e67edcd8" kindref="member">socket</ref>;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_meld_process_v_m" kindref="compound">MeldProcessVM</ref>(<ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref>*<sp/>bb);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_meld_process_1_1_meld_process_v_m" kindref="compound">MeldProcessVM</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>associated<sp/>VM<sp/>program<sp/>pid<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_meld_process_1_1_meld_process_v_m_1a993d834dbb55c962d5513c4b40ab7495" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>pid_t<sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a993d834dbb55c962d5513c4b40ab7495" kindref="member">pid</ref>;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>buffer<sp/>used<sp/>to<sp/>receive<sp/>tcp<sp/>message<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="class_meld_process_1_1_meld_process_v_m_1a86a5ba1af235fee1d15907e5cde3fec5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>inBuffer[<ref refid="meld_process_v_m_commands_8h_1a4ad934a923eaf55a068289b85506e34e" kindref="member">VM_COMMAND_MAX_LENGHT</ref>];</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="69" refid="class_meld_process_1_1_meld_process_v_m_1a7e635d0a85e559a610cd8c2f3fc92194" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a7e635d0a85e559a610cd8c2f3fc92194" kindref="member">nbSentCommands</ref>;<sp/></highlight><highlight class="comment">//<sp/>mode<sp/>fastest<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>True<sp/>only<sp/>if<sp/>the<sp/>id<sp/>was<sp/>sent<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="class_meld_process_1_1_meld_process_v_m_1aa9dc1191ef46258447464463c5f45bef" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1aa9dc1191ef46258447464463c5f45bef" kindref="member">idSent</ref>;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>True<sp/>only<sp/>if<sp/>the<sp/>simulation<sp/>is<sp/>in<sp/>fastest<sp/>mode<sp/>and<sp/>it<sp/>has<sp/>been</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>set<sp/>on<sp/>the<sp/>VM.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="class_meld_process_1_1_meld_process_v_m_1a2686386ffc3650e49bdf9364735ec820" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a2686386ffc3650e49bdf9364735ec820" kindref="member">deterministicSet</ref>;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>asyncAcceptHandler(boost::system::error_code&amp;<sp/>error,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>connected);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>send<sp/>and<sp/>receive<sp/>message<sp/>from<sp/>the<sp/>associated<sp/>VM<sp/>program<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_meld_process_1a89030efced0ddbe796a6be27424b3b10" kindref="member">sendCommand</ref>(<ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref><sp/>&amp;command);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>asyncReadCommand();<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>asyncReadCommandHandler(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>boost::system::error_code&amp;<sp/>error,<sp/>std::size_t<sp/>bytes_transferred);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>handleInBuffer();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>handle_write(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>boost::system::error_code&amp;<sp/>error);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>kill<sp/>the<sp/>VM<sp/>process<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>killProcess();</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>close<sp/>the<sp/>socket<sp/>associated<sp/>to<sp/>the<sp/>VM<sp/>program<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>closeSocket();</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>handleDeterministicMode(<ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref><sp/>&amp;command);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>handleCommand(<ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref><sp/>&amp;command);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="93" refid="class_meld_process_1_1_meld_process_v_m_1a69773b91b2ff6a7904f790c8b541714c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a69773b91b2ff6a7904f790c8b541714c" kindref="member">setCurrentLocalDate</ref>(uint64_t<sp/>t)<sp/>{currentLocalDate<sp/>=<sp/>t;}</highlight></codeline>
+<codeline lineno="94" refid="class_meld_process_1_1_meld_process_v_m_1ac0b9bd489782956d67eebbf90cdf8576" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1ac0b9bd489782956d67eebbf90cdf8576" kindref="member">setPolling</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>b)<sp/>{polling<sp/>=<sp/>b;<sp/>}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="96" refid="class_meld_process_1_1_meld_process_v_m_1a86485547146b1717ca00e055774336b2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m_1a86485547146b1717ca00e055774336b2" kindref="member">isInDebuggingMode</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>debugging;<sp/>};</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setConfiguration(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>v,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>d);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createServer(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>p);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>deleteServer();</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>checkForReceivedCommands();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>waitForOneCommand();</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>dateHasBeenReachedByAll(uint64_t<sp/>date);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>equilibrium();</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>broadcastDebugCommand(<ref refid="class_meld_process_1_1_debbugger_v_m_command" kindref="compound">DebbuggerVMCommand</ref><sp/>&amp;c);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_meld_process_1a89030efced0ddbe796a6be27424b3b10" kindref="member">sendCommand</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref><sp/>&amp;c);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>closeAllSockets();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_meld_process_v_m" kindref="compound">MeldProcessVM</ref>*<sp/>getMeldProcessVMById(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="namespace_meld_process_1a8ef4dcdc77788c11e5f7bd1d6acb0e44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_meld_process_1a8ef4dcdc77788c11e5f7bd1d6acb0e44" kindref="member">createVMServer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>p)<sp/>{<sp/>MeldProcessVM::createServer(p);<sp/>};</highlight></codeline>
+<codeline lineno="113" refid="namespace_meld_process_1ab2b55f9eae1afe9681f4449c7ed7e10e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_meld_process_1ab2b55f9eae1afe9681f4449c7ed7e10e" kindref="member">deleteVMServer</ref>()<sp/>{<sp/>MeldProcessVM::deleteServer();<sp/>};</highlight></codeline>
+<codeline lineno="114" refid="namespace_meld_process_1a109979f1bd210da87e56500e55861763" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_meld_process_1a109979f1bd210da87e56500e55861763" kindref="member">setVMConfiguration</ref>(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>v,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>p,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>d)<sp/>{<sp/>MeldProcessVM::setConfiguration(v,p,d);<sp/>};</highlight></codeline>
+<codeline lineno="115" refid="namespace_meld_process_1a7358d26c5dfafb550597efedf32ab64e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_meld_process_1a7358d26c5dfafb550597efedf32ab64e" kindref="member">checkForReceivedVMCommands</ref>()<sp/>{<sp/>MeldProcessVM::checkForReceivedCommands();<sp/>};</highlight></codeline>
+<codeline lineno="116" refid="namespace_meld_process_1aa7edfff8a7dc1f75ba0762a936dd9f01" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_meld_process_1aa7edfff8a7dc1f75ba0762a936dd9f01" kindref="member">waitForOneVMCommand</ref>()<sp/>{<sp/>MeldProcessVM::waitForOneCommand();<sp/>};</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/><sp/><sp/><sp/>Sends<sp/>directly<sp/>(not<sp/>scheduled)<sp/>a<sp/>message<sp/>to<sp/>all<sp/>the<sp/>active<sp/>VMs<sp/>of<sp/>the<sp/>world.</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/><sp/><sp/><sp/>Returns<sp/>to<sp/>how<sp/>many<sp/>nodes<sp/>the<sp/>message<sp/>has<sp/>been<sp/>sent.</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"></highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/><sp/><sp/><sp/>//int<sp/>broadcastDebugCommand(DebbuggerVMCommand<sp/>&amp;c);</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/><sp/><sp/><sp/>//int<sp/>sendCommand(int<sp/>id,<sp/>VMCommand<sp/>&amp;c);</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/><sp/><sp/><sp/>//bool<sp/>dateHasBeenReachedByAll(uint64_t<sp/>date);</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/><sp/><sp/><sp/>//bool<sp/>equilibrium();</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/><sp/><sp/><sp/>//void<sp/>killAllVMs();</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/><sp/><sp/><sp/>//void<sp/>closeAllSockets();</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"></highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>MELDPROCESS_VM_H<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h"/>
+  </compounddef>
+</doxygen>

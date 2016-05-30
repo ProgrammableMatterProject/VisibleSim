@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="namespacecpp_scheduler" kind="namespace" language="C++">
+    <compoundname>cppScheduler</compoundname>
+    <innerclass refid="classcpp_scheduler_1_1_cpp_scheduler" prot="public">cppScheduler::CppScheduler</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespacecpp_scheduler_1a6255e7804f0deed42dd69369c3e58715" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cppScheduler::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="56" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacecpp_scheduler_1ac7361593bd0b2e8850ba31c6f353c582" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void cppScheduler::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="60" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacecpp_scheduler_1ab0017571352adc03e406334acd067142" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classcpp_scheduler_1_1_cpp_scheduler" kindref="compound">CppScheduler</ref> *</type>
+        <definition>CppScheduler* cppScheduler::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h" bodystart="64" bodyend="64"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp" line="19" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_scenario_select_block_event" kind="class" language="C++" prot="public">
+    <compoundname>ScenarioSelectBlockEvent</compoundname>
+    <basecompoundref refid="class_scenario_event" prot="public" virt="non-virtual">ScenarioEvent</basecompoundref>
+    <includes refid="blinky_blocks_scenario_8h" local="no">blinkyBlocksScenario.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scenario_select_block_event_1a05bb12ab4470a951b60a194a2037d755" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ScenarioSelectBlockEvent::blockId</definition>
+        <argsstring></argsstring>
+        <name>blockId</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scenario_select_block_event_1a195b213cc0d376dd0cfae7778555845a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ScenarioSelectBlockEvent::ScenarioSelectBlockEvent</definition>
+        <argsstring>(float t, int id)</argsstring>
+        <name>ScenarioSelectBlockEvent</name>
+        <param>
+          <type>float</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scenario_select_block_event_1a3f7c566ac33833c242ec1a9978348a88" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ScenarioSelectBlockEvent::~ScenarioSelectBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~ScenarioSelectBlockEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" line="45" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scenario_select_block_event_1a9e79c72b0bb580f0bb8deec029089c23" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void ScenarioSelectBlockEvent::exportEventToScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>exportEventToScheduler</name>
+        <reimplements refid="class_scenario_event_1aaec56fb9f4a106cd8866d3a800df760c">exportEventToScheduler</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2327">
+        <label>ScenarioSelectBlockEvent</label>
+        <link refid="class_scenario_select_block_event"/>
+        <childnode refid="2328" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2328">
+        <label>ScenarioEvent</label>
+        <link refid="class_scenario_event"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2329">
+        <label>ScenarioSelectBlockEvent</label>
+        <link refid="class_scenario_select_block_event"/>
+        <childnode refid="2330" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2330">
+        <label>ScenarioEvent</label>
+        <link refid="class_scenario_event"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h" bodystart="41" bodyend="47"/>
+    <listofallmembers>
+      <member refid="class_scenario_select_block_event_1a05bb12ab4470a951b60a194a2037d755" prot="private" virt="non-virtual"><scope>ScenarioSelectBlockEvent</scope><name>blockId</name></member>
+      <member refid="class_scenario_event_1a2450b5b5095bf5cd37e6d64e5397fe15" prot="protected" virt="non-virtual"><scope>ScenarioSelectBlockEvent</scope><name>eventTime</name></member>
+      <member refid="class_scenario_select_block_event_1a9e79c72b0bb580f0bb8deec029089c23" prot="public" virt="virtual"><scope>ScenarioSelectBlockEvent</scope><name>exportEventToScheduler</name></member>
+      <member refid="class_scenario_event_1a63741f4d2a811e6e7361c3e5f93f4892" prot="public" virt="non-virtual"><scope>ScenarioSelectBlockEvent</scope><name>getEventTime</name></member>
+      <member refid="class_scenario_event_1abd7df3bf1ed8afd2c5806c53f92695c0" prot="public" virt="non-virtual"><scope>ScenarioSelectBlockEvent</scope><name>ScenarioEvent</name></member>
+      <member refid="class_scenario_select_block_event_1a195b213cc0d376dd0cfae7778555845a" prot="public" virt="non-virtual"><scope>ScenarioSelectBlockEvent</scope><name>ScenarioSelectBlockEvent</name></member>
+      <member refid="class_scenario_event_1abc03197faf88d5738826fe562cb12c5b" prot="public" virt="virtual"><scope>ScenarioSelectBlockEvent</scope><name>~ScenarioEvent</name></member>
+      <member refid="class_scenario_select_block_event_1a3f7c566ac33833c242ec1a9978348a88" prot="public" virt="non-virtual"><scope>ScenarioSelectBlockEvent</scope><name>~ScenarioSelectBlockEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

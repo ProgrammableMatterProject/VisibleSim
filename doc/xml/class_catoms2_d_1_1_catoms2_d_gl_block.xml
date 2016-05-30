@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_catoms2_d_gl_block" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::Catoms2DGlBlock</compoundname>
+    <basecompoundref refid="class_gl_block" prot="public" virt="non-virtual">GlBlock</basecompoundref>
+    <includes refid="catoms2_d_gl_block_8h" local="no">catoms2DGlBlock.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms2_d_1_1_catoms2_d_gl_block_1aeb13d5de440ef2d3073b20cce87eefe0" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Catoms2D::Catoms2DGlBlock::angle</definition>
+        <argsstring></argsstring>
+        <name>angle</name>
+        <briefdescription>
+<para>orientation angle in degree around Y axis </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" bodystart="19" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_block_1ad0d2fcb189fbd915152c3c200da169c4" compoundref="catoms2_d_block_8cpp" startline="39" endline="42">Catoms2D::Catoms2DBlock::setColor</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_step_event_1a42c0f70e21b3cd89c844f54bb88819c1" compoundref="catoms2_d_events_8cpp" startline="79" endline="103">Catoms2D::MotionStepEvent::consume</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a89b0163e5de26c03246d5567539e708a" compoundref="catoms2_d_gl_block_8cpp" startline="5" endline="7">Catoms2DGlBlock</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a82ccf0021d861f9d87443cff1275ae8e" compoundref="catoms2_d_gl_block_8cpp" startline="12" endline="29">glDraw</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_gl_block_1a89b0163e5de26c03246d5567539e708a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::Catoms2DGlBlock::Catoms2DGlBlock</definition>
+        <argsstring>(int id)</argsstring>
+        <name>Catoms2DGlBlock</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp" bodystart="5" bodyend="7"/>
+        <references refid="class_catoms2_d_1_1_catoms2_d_gl_block_1aeb13d5de440ef2d3073b20cce87eefe0" compoundref="catoms2_d_gl_block_8h" startline="19">angle</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_gl_block_1ad9f2688219a8da1a3228a28b6082fa76" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Catoms2D::Catoms2DGlBlock::~Catoms2DGlBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~Catoms2DGlBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp" bodystart="9" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_gl_block_1a44aa2997e893c912c7c4a76b335f4f1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string Catoms2D::Catoms2DGlBlock::getInfo</definition>
+        <argsstring>()</argsstring>
+        <name>getInfo</name>
+        <reimplements refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7">getInfo</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp" bodystart="46" bodyend="51"/>
+        <references refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" compoundref="gl_block_8h" startline="23">GlBlock::blockId</references>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">GlBlock::color</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_gl_block_1a685b6e2852ee8e6fe1bcd56bb61286c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms2D::Catoms2DGlBlock::setAngle</definition>
+        <argsstring>(double a)</argsstring>
+        <name>setAngle</name>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" bodystart="25" bodyend="25"/>
+        <references refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a82ccf0021d861f9d87443cff1275ae8e" compoundref="catoms2_d_gl_block_8cpp" startline="12" endline="29">glDraw</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_gl_block_1ae3ce1aa7886f4a6737acdd0960cac364" compoundref="catoms2_d_gl_block_8cpp" startline="31" endline="36">glDrawId</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_gl_block_1ab0c9aea7efc1a50ddc8a17e616eec5a7" compoundref="catoms2_d_gl_block_8cpp" startline="38" endline="43">glDrawIdByMaterial</references>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1a09be904c51d9a6093ceffa0962316add" compoundref="catoms2_d_world_8cpp" startline="467" endline="477">Catoms2D::Catoms2DWorld::updateGlData</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_gl_block_1a82ccf0021d861f9d87443cff1275ae8e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms2D::Catoms2DGlBlock::glDraw</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj)</argsstring>
+        <name>glDraw</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp" bodystart="12" bodyend="29"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_gl_block_1aeb13d5de440ef2d3073b20cce87eefe0" compoundref="catoms2_d_gl_block_8h" startline="19">angle</references>
+        <references refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" compoundref="gl_block_8h" startline="19">GlBlock::isHighlighted</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">GlBlock::color</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1ac656199a96623b14bf5038632bbffd10" compoundref="obj_loader_8cpp" startline="326" endline="332">ObjLoader::ObjLoader::setLightedColor</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1ac92663308186d17dacb1e9337d3fe21a" compoundref="obj_loader_8cpp" startline="297" endline="304">ObjLoader::ObjLoader::glDraw</references>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a685b6e2852ee8e6fe1bcd56bb61286c5" compoundref="catoms2_d_gl_block_8h" startline="25" endline="25">setAngle</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_gl_block_1ae3ce1aa7886f4a6737acdd0960cac364" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms2D::Catoms2DGlBlock::glDrawId</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj, int &amp;n)</argsstring>
+        <name>glDrawId</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp" bodystart="31" bodyend="36"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1a53df76e90fc70c3d3f98f5df257ae335" compoundref="obj_loader_8cpp" startline="306" endline="314">ObjLoader::ObjLoader::glDrawId</references>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a685b6e2852ee8e6fe1bcd56bb61286c5" compoundref="catoms2_d_gl_block_8h" startline="25" endline="25">setAngle</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_catoms2_d_gl_block_1ab0c9aea7efc1a50ddc8a17e616eec5a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms2D::Catoms2DGlBlock::glDrawIdByMaterial</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj, int &amp;n)</argsstring>
+        <name>glDrawIdByMaterial</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.cpp" bodystart="38" bodyend="43"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1a940beec33d1554190596fae8fa034d6f" compoundref="obj_loader_8cpp" startline="316" endline="324">ObjLoader::ObjLoader::glDrawIdByMaterial</references>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a685b6e2852ee8e6fe1bcd56bb61286c5" compoundref="catoms2_d_gl_block_8h" startline="25" endline="25">setAngle</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1569">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1568">
+        <label>Catoms2D::Catoms2DGlBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_gl_block"/>
+        <childnode refid="1569" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1571">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1570">
+        <label>Catoms2D::Catoms2DGlBlock</label>
+        <link refid="class_catoms2_d_1_1_catoms2_d_gl_block"/>
+        <childnode refid="1571" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" line="16" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGlBlock.h" bodystart="16" bodyend="30"/>
+    <listofallmembers>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1aeb13d5de440ef2d3073b20cce87eefe0" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>angle</name></member>
+      <member refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>blockId</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a89b0163e5de26c03246d5567539e708a" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>Catoms2DGlBlock</name></member>
+      <member refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>color</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a44aa2997e893c912c7c4a76b335f4f1f" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>getInfo</name></member>
+      <member refid="class_gl_block_1a83b01f275e6f319bf5bd50116adfee15" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>getPopupInfo</name></member>
+      <member refid="class_gl_block_1ac2f5755213e7bc106e83a7a8030fd048" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>getPosition</name></member>
+      <member refid="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_gl_block_1a5c86ad67ac4b062166ecfa5fe7322766" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a82ccf0021d861f9d87443cff1275ae8e" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>glDraw</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1ae3ce1aa7886f4a6737acdd0960cac364" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>glDrawId</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1ab0c9aea7efc1a50ddc8a17e616eec5a7" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>glDrawIdByMaterial</name></member>
+      <member refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" prot="protected" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>isHighlighted</name></member>
+      <member refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>position</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1a685b6e2852ee8e6fe1bcd56bb61286c5" prot="public" virt="non-virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>setAngle</name></member>
+      <member refid="class_gl_block_1abe931d185bd4851420e78ea92ec1aca2" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>setColor</name></member>
+      <member refid="class_gl_block_1a3a659956f3df7b81ed21ad16fa33b391" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>setColor</name></member>
+      <member refid="class_gl_block_1ae9849a64de0e8b6636314826d0e2f5ca" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>setPosition</name></member>
+      <member refid="class_gl_block_1ab03ba1da95352c4951b2bfe408ef04c3" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>setVisible</name></member>
+      <member refid="class_gl_block_1abbe6e6bfc4a1697ba7fc8722d830ed2f" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>toggleHighlight</name></member>
+      <member refid="class_catoms2_d_1_1_catoms2_d_gl_block_1ad9f2688219a8da1a3228a28b6082fa76" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>~Catoms2DGlBlock</name></member>
+      <member refid="class_gl_block_1a2179d26fdfe814782897e57c3d77faa1" prot="public" virt="virtual"><scope>Catoms2D::Catoms2DGlBlock</scope><name>~GlBlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

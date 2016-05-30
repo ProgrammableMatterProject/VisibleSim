@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_glut_help_window" kind="class" language="C++" prot="public">
+    <compoundname>GlutHelpWindow</compoundname>
+    <basecompoundref refid="class_glut_window" prot="public" virt="non-virtual">GlutWindow</basecompoundref>
+    <includes refid="interface_8h" local="no">interface.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_glut_help_window_1ac67be5000cac24538f5c6b8711d32f75" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GlutHelpWindow::isVisible</definition>
+        <argsstring></argsstring>
+        <name>isVisible</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="176" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_help_window_1ac386250a75e698d6ebef386e06bc665c" prot="private" static="no" mutable="no">
+        <type>unsigned char *</type>
+        <definition>unsigned char* GlutHelpWindow::text</definition>
+        <argsstring></argsstring>
+        <name>text</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="177" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_glut_help_window_1a011bd1b8d0266ce9bbf6f56e9d8ccdad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GlutHelpWindow::GlutHelpWindow</definition>
+        <argsstring>(GlutWindow *parent, GLint px, GLint py, GLint pw, GLint ph, const char *textFile)</argsstring>
+        <name>GlutHelpWindow</name>
+        <param>
+          <type><ref refid="class_glut_window" kindref="compound">GlutWindow</ref> *</type>
+          <declname>parent</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>pw</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>ph</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>textFile</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="179" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="709" bodyend="727"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_help_window_1af21e3d91ae30451a3532a90c26f015cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>GlutHelpWindow::~GlutHelpWindow</definition>
+        <argsstring>()</argsstring>
+        <name>~GlutHelpWindow</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="180" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="729" bodyend="731"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_help_window_1a21df1cdbb729f1e88c40a7550c703885" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutHelpWindow::show</definition>
+        <argsstring>(bool v)</argsstring>
+        <name>show</name>
+        <param>
+          <type>bool</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="182" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="182" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_help_window_1aed8e1fada3ea2d5ece8133a46fbb1d2f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void GlutHelpWindow::showHide</definition>
+        <argsstring>()</argsstring>
+        <name>showHide</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="183" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="183" bodyend="183"/>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_help_window_1aeed2634499d4a256e313375a380cb303" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int GlutHelpWindow::mouseFunc</definition>
+        <argsstring>(int button, int state, int x, int y)</argsstring>
+        <name>mouseFunc</name>
+        <reimplements refid="class_glut_window_1abce1a1917a28605b7f8755eef9f3fd45">mouseFunc</reimplements>
+        <param>
+          <type>int</type>
+          <declname>button</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="184" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="761" bodyend="770"/>
+        <references refid="class_glut_window_1abce1a1917a28605b7f8755eef9f3fd45" compoundref="interface_8cpp" startline="73" endline="86">GlutWindow::mouseFunc</references>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_help_window_1a78ba33923a0456c613d06efbe578a741" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GlutHelpWindow::glDraw</definition>
+        <argsstring>()</argsstring>
+        <name>glDraw</name>
+        <reimplements refid="class_glut_window_1aac065bb62afe22487b197e0959893162">glDraw</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="185" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="733" bodyend="759"/>
+        <references refid="class_glut_window_1a95f15835c3b88fe4caea82b5bdfd747d" compoundref="interface_8h" startline="33">GlutWindow::x</references>
+        <references refid="class_glut_window_1aa67de6944ee84ce2245f47eaafb9e883" compoundref="interface_8h" startline="33">GlutWindow::y</references>
+        <references refid="class_glut_window_1a3995a01320c43e0b6654828d86b0ee2a" compoundref="interface_8h" startline="33">GlutWindow::h</references>
+        <references refid="class_glut_window_1aa5131effbb6a485236192d815eb34475" compoundref="interface_8h" startline="33">GlutWindow::w</references>
+        <references refid="class_glut_window_1aac065bb62afe22487b197e0959893162" compoundref="interface_8cpp" startline="49" endline="58">GlutWindow::glDraw</references>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1823">
+        <label>GlutWindow</label>
+        <link refid="class_glut_window"/>
+      </node>
+      <node id="1822">
+        <label>GlutHelpWindow</label>
+        <link refid="class_glut_help_window"/>
+        <childnode refid="1823" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1825">
+        <label>GlutWindow</label>
+        <link refid="class_glut_window"/>
+      </node>
+      <node id="1824">
+        <label>GlutHelpWindow</label>
+        <link refid="class_glut_help_window"/>
+        <childnode refid="1825" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="175" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="175" bodyend="186"/>
+    <listofallmembers>
+      <member refid="class_glut_window_1a1f551501788e5d111661638baa5811cb" prot="protected" virt="non-virtual"><scope>GlutHelpWindow</scope><name>addChild</name></member>
+      <member refid="class_glut_window_1a975deaaec8e65dbd51719966cffbfaf4" prot="protected" virt="non-virtual"><scope>GlutHelpWindow</scope><name>bindTexture</name></member>
+      <member refid="class_glut_window_1a93960fe17b0b5dd7bddee6ac6c6841d6" prot="protected" virt="non-virtual"><scope>GlutHelpWindow</scope><name>children</name></member>
+      <member refid="class_glut_window_1a24166cadde4ac575bdef40a62022835a" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>drawString</name></member>
+      <member refid="class_glut_help_window_1a78ba33923a0456c613d06efbe578a741" prot="public" virt="virtual"><scope>GlutHelpWindow</scope><name>glDraw</name></member>
+      <member refid="class_glut_help_window_1a011bd1b8d0266ce9bbf6f56e9d8ccdad" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>GlutHelpWindow</name></member>
+      <member refid="class_glut_window_1a37f63445e319e55b86e944a9a1f1e9ad" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>GlutWindow</name></member>
+      <member refid="class_glut_window_1a3995a01320c43e0b6654828d86b0ee2a" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>h</name></member>
+      <member refid="class_glut_window_1a00fbd8336c9c16b13e96dccea1fb6709" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>id</name></member>
+      <member refid="class_glut_window_1a10bb60c1e780921e3bd151e37e848297" prot="protected" virt="non-virtual"><scope>GlutHelpWindow</scope><name>idTexture</name></member>
+      <member refid="class_glut_help_window_1ac67be5000cac24538f5c6b8711d32f75" prot="private" virt="non-virtual"><scope>GlutHelpWindow</scope><name>isVisible</name></member>
+      <member refid="class_glut_window_1a174463c2c890abc830edfa0c85cedae2" prot="public" virt="virtual"><scope>GlutHelpWindow</scope><name>keyFunc</name></member>
+      <member refid="class_glut_window_1a510fbca48d058183471bfc3109e226a7" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>lectureTarga</name></member>
+      <member refid="class_glut_window_1aca1a6737fb20291682ebab3dbafe0f2d" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>loadTexture</name></member>
+      <member refid="class_glut_help_window_1aeed2634499d4a256e313375a380cb303" prot="public" virt="virtual"><scope>GlutHelpWindow</scope><name>mouseFunc</name></member>
+      <member refid="class_glut_window_1ab4599613b8b8d97944483b7e9a131d43" prot="public" virt="virtual"><scope>GlutHelpWindow</scope><name>passiveMotionFunc</name></member>
+      <member refid="class_glut_window_1ac88eef85e16c17df47aefc9a43e905f6" prot="public" virt="virtual"><scope>GlutHelpWindow</scope><name>reshapeFunc</name></member>
+      <member refid="class_glut_window_1a744f418778787f9e9142a8700c83d698" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>setGeometry</name></member>
+      <member refid="class_glut_help_window_1a21df1cdbb729f1e88c40a7550c703885" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>show</name></member>
+      <member refid="class_glut_help_window_1aed8e1fada3ea2d5ece8133a46fbb1d2f" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>showHide</name></member>
+      <member refid="class_glut_help_window_1ac386250a75e698d6ebef386e06bc665c" prot="private" virt="non-virtual"><scope>GlutHelpWindow</scope><name>text</name></member>
+      <member refid="class_glut_window_1aa5131effbb6a485236192d815eb34475" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>w</name></member>
+      <member refid="class_glut_window_1a95f15835c3b88fe4caea82b5bdfd747d" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>x</name></member>
+      <member refid="class_glut_window_1aa67de6944ee84ce2245f47eaafb9e883" prot="public" virt="non-virtual"><scope>GlutHelpWindow</scope><name>y</name></member>
+      <member refid="class_glut_help_window_1af21e3d91ae30451a3532a90c26f015cc" prot="public" virt="virtual"><scope>GlutHelpWindow</scope><name>~GlutHelpWindow</name></member>
+      <member refid="class_glut_window_1ab455bdfdacdc6881f4583fccdd5bc56d" prot="public" virt="virtual"><scope>GlutHelpWindow</scope><name>~GlutWindow</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

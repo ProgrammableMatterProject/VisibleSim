@@ -1,0 +1,1332 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="events_8h" kind="file" language="C++">
+    <compoundname>events.h</compoundname>
+    <includes local="no">inttypes.h</includes>
+    <includes local="no">string</includes>
+    <includes local="no">boost/shared_ptr.hpp</includes>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includes refid="unique_events_id_8h" local="yes">uniqueEventsId.h</includes>
+    <includes refid="network_8h" local="yes">network.h</includes>
+    <includes refid="color_8h" local="yes">color.h</includes>
+    <includedby refid="scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h</includedby>
+    <includedby refid="blinky_blocks_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</includedby>
+    <includedby refid="meld_process_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</includedby>
+    <includedby refid="meld_interpret_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</includedby>
+    <includedby refid="catoms2_d_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h</includedby>
+    <includedby refid="catoms3_d_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</includedby>
+    <includedby refid="events_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp</includedby>
+    <includedby refid="meld_interpret_v_m_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</includedby>
+    <includedby refid="meld_process_v_m_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</includedby>
+    <includedby refid="multi_cores_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.h</includedby>
+    <includedby refid="opengl_viewer_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp</includedby>
+    <includedby refid="robot_blocks_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h</includedby>
+    <includedby refid="smart_blocks_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</includedby>
+    <incdepgraph>
+      <node id="14261">
+        <label>list</label>
+      </node>
+      <node id="14272">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="14268" relation="include">
+        </childnode>
+        <childnode refid="14266" relation="include">
+        </childnode>
+        <childnode refid="14267" relation="include">
+        </childnode>
+        <childnode refid="14273" relation="include">
+        </childnode>
+        <childnode refid="14274" relation="include">
+        </childnode>
+      </node>
+      <node id="14263">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="14264" relation="include">
+        </childnode>
+        <childnode refid="14265" relation="include">
+        </childnode>
+        <childnode refid="14266" relation="include">
+        </childnode>
+        <childnode refid="14267" relation="include">
+        </childnode>
+        <childnode refid="14268" relation="include">
+        </childnode>
+        <childnode refid="14269" relation="include">
+        </childnode>
+        <childnode refid="14270" relation="include">
+        </childnode>
+        <childnode refid="14271" relation="include">
+        </childnode>
+        <childnode refid="14272" relation="include">
+        </childnode>
+        <childnode refid="14277" relation="include">
+        </childnode>
+      </node>
+      <node id="14274">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="14266" relation="include">
+        </childnode>
+        <childnode refid="14267" relation="include">
+        </childnode>
+        <childnode refid="14275" relation="include">
+        </childnode>
+        <childnode refid="14276" relation="include">
+        </childnode>
+      </node>
+      <node id="14257">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="14281">
+        <label>stdint.h</label>
+      </node>
+      <node id="14265">
+        <label>stdlib.h</label>
+      </node>
+      <node id="14258">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="14257" relation="include">
+        </childnode>
+        <childnode refid="14259" relation="include">
+        </childnode>
+        <childnode refid="14260" relation="include">
+        </childnode>
+        <childnode refid="14261" relation="include">
+        </childnode>
+        <childnode refid="14262" relation="include">
+        </childnode>
+        <childnode refid="14279" relation="include">
+        </childnode>
+        <childnode refid="14280" relation="include">
+        </childnode>
+      </node>
+      <node id="14275">
+        <label>cmath</label>
+      </node>
+      <node id="14256">
+        <label>string</label>
+      </node>
+      <node id="14268">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="14276">
+        <label>memory.h</label>
+      </node>
+      <node id="14262">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="14256" relation="include">
+        </childnode>
+        <childnode refid="14263" relation="include">
+        </childnode>
+        <childnode refid="14274" relation="include">
+        </childnode>
+        <childnode refid="14278" relation="include">
+        </childnode>
+      </node>
+      <node id="14267">
+        <label>fstream</label>
+      </node>
+      <node id="14279">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="14258" relation="include">
+        </childnode>
+        <childnode refid="14255" relation="include">
+        </childnode>
+      </node>
+      <node id="14271">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="14282">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="14277">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="14273" relation="include">
+        </childnode>
+        <childnode refid="14274" relation="include">
+        </childnode>
+        <childnode refid="14272" relation="include">
+        </childnode>
+      </node>
+      <node id="14269">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="14285">
+        <label>string.h</label>
+      </node>
+      <node id="14283">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="14284" relation="include">
+        </childnode>
+        <childnode refid="14285" relation="include">
+        </childnode>
+        <childnode refid="14257" relation="include">
+        </childnode>
+        <childnode refid="14258" relation="include">
+        </childnode>
+      </node>
+      <node id="14273">
+        <label>math.h</label>
+      </node>
+      <node id="14278">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="14266" relation="include">
+        </childnode>
+        <childnode refid="14267" relation="include">
+        </childnode>
+        <childnode refid="14275" relation="include">
+        </childnode>
+        <childnode refid="14276" relation="include">
+        </childnode>
+        <childnode refid="14263" relation="include">
+        </childnode>
+      </node>
+      <node id="14266">
+        <label>iostream</label>
+      </node>
+      <node id="14284">
+        <label>deque</label>
+      </node>
+      <node id="14260">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="14254">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</label>
+        <link refid="events.h"/>
+        <childnode refid="14255" relation="include">
+        </childnode>
+        <childnode refid="14256" relation="include">
+        </childnode>
+        <childnode refid="14257" relation="include">
+        </childnode>
+        <childnode refid="14258" relation="include">
+        </childnode>
+        <childnode refid="14282" relation="include">
+        </childnode>
+        <childnode refid="14283" relation="include">
+        </childnode>
+        <childnode refid="14278" relation="include">
+        </childnode>
+      </node>
+      <node id="14259">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="14270">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="14264">
+        <label>stdio.h</label>
+      </node>
+      <node id="14280">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="14258" relation="include">
+        </childnode>
+        <childnode refid="14281" relation="include">
+        </childnode>
+        <childnode refid="14266" relation="include">
+        </childnode>
+        <childnode refid="14259" relation="include">
+        </childnode>
+        <childnode refid="14261" relation="include">
+        </childnode>
+      </node>
+      <node id="14255">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="14321">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="14293">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="14289" relation="include">
+        </childnode>
+        <childnode refid="14294" relation="include">
+        </childnode>
+        <childnode refid="14291" relation="include">
+        </childnode>
+      </node>
+      <node id="14362">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.cpp</label>
+        <link refid="smart_blocks_world_8cpp"/>
+      </node>
+      <node id="14338">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3_d_block_code_8h"/>
+        <childnode refid="14339" relation="include">
+        </childnode>
+        <childnode refid="14310" relation="include">
+        </childnode>
+        <childnode refid="14345" relation="include">
+        </childnode>
+      </node>
+      <node id="14353">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp</label>
+        <link refid="multi_cores_world_8cpp"/>
+      </node>
+      <node id="14327">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</label>
+        <link refid="cpp_scheduler_8cpp"/>
+      </node>
+      <node id="14335">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp</label>
+        <link refid="building_block_8cpp"/>
+      </node>
+      <node id="14318">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="14319" relation="include">
+        </childnode>
+        <childnode refid="14320" relation="include">
+        </childnode>
+        <childnode refid="14322" relation="include">
+        </childnode>
+        <childnode refid="14323" relation="include">
+        </childnode>
+      </node>
+      <node id="14289">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="14290" relation="include">
+        </childnode>
+        <childnode refid="14291" relation="include">
+        </childnode>
+        <childnode refid="14292" relation="include">
+        </childnode>
+      </node>
+      <node id="14373">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.cpp</label>
+        <link refid="multi_cores_events_8cpp"/>
+      </node>
+      <node id="14371">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</label>
+        <link refid="catoms2_d_world_8h"/>
+        <childnode refid="14304" relation="include">
+        </childnode>
+        <childnode refid="14303" relation="include">
+        </childnode>
+        <childnode refid="14337" relation="include">
+        </childnode>
+        <childnode refid="14307" relation="include">
+        </childnode>
+        <childnode refid="14309" relation="include">
+        </childnode>
+      </node>
+      <node id="14326">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</label>
+        <link refid="cpp_scheduler_8h"/>
+        <childnode refid="14293" relation="include">
+        </childnode>
+        <childnode refid="14327" relation="include">
+        </childnode>
+      </node>
+      <node id="14343">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</label>
+        <link refid="catoms3_d_scheduler_8h"/>
+        <childnode refid="14310" relation="include">
+        </childnode>
+        <childnode refid="14341" relation="include">
+        </childnode>
+        <childnode refid="14312" relation="include">
+        </childnode>
+        <childnode refid="14342" relation="include">
+        </childnode>
+      </node>
+      <node id="14298">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</label>
+        <link refid="meld_process_scheduler_8cpp"/>
+      </node>
+      <node id="14348">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.cpp</label>
+        <link refid="config_stat_8cpp"/>
+      </node>
+      <node id="14305">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h</label>
+        <link refid="catoms2_d_generic_8h"/>
+        <childnode refid="14306" relation="include">
+        </childnode>
+      </node>
+      <node id="14294">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="14356">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="14370">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp</label>
+        <link refid="catoms2_d_move_8cpp"/>
+      </node>
+      <node id="14372">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.h</label>
+        <link refid="multi_cores_events_8h"/>
+        <childnode refid="14373" relation="include">
+        </childnode>
+        <childnode refid="14315" relation="include">
+        </childnode>
+      </node>
+      <node id="14351">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp</label>
+        <link refid="meld_process_v_m_commands_8cpp"/>
+      </node>
+      <node id="14290">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="14296">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</label>
+        <link refid="meld_process_events_8h"/>
+        <childnode refid="14290" relation="include">
+        </childnode>
+        <childnode refid="14297" relation="include">
+        </childnode>
+        <childnode refid="14298" relation="include">
+        </childnode>
+        <childnode refid="14299" relation="include">
+        </childnode>
+      </node>
+      <node id="14292">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="14333">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="14290" relation="include">
+        </childnode>
+        <childnode refid="14289" relation="include">
+        </childnode>
+        <childnode refid="14332" relation="include">
+        </childnode>
+        <childnode refid="14291" relation="include">
+        </childnode>
+        <childnode refid="14334" relation="include">
+        </childnode>
+      </node>
+      <node id="14297">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.cpp</label>
+        <link refid="meld_process_events_8cpp"/>
+      </node>
+      <node id="14364">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</label>
+        <link refid="meld_interpret_events_8h"/>
+        <childnode refid="14290" relation="include">
+        </childnode>
+        <childnode refid="14330" relation="include">
+        </childnode>
+        <childnode refid="14314" relation="include">
+        </childnode>
+        <childnode refid="14331" relation="include">
+        </childnode>
+      </node>
+      <node id="14314">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</label>
+        <link refid="meld_interpret_scheduler_8cpp"/>
+      </node>
+      <node id="14303">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.h</label>
+        <link refid="catoms2_d_simulator_8h"/>
+        <childnode refid="14304" relation="include">
+        </childnode>
+        <childnode refid="14305" relation="include">
+        </childnode>
+        <childnode refid="14307" relation="include">
+        </childnode>
+        <childnode refid="14308" relation="include">
+        </childnode>
+        <childnode refid="14309" relation="include">
+        </childnode>
+      </node>
+      <node id="14315">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h</label>
+        <link refid="multi_cores_simulator_8h"/>
+        <childnode refid="14316" relation="include">
+        </childnode>
+        <childnode refid="14317" relation="include">
+        </childnode>
+      </node>
+      <node id="14320">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="14321" relation="include">
+        </childnode>
+      </node>
+      <node id="14365">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h</label>
+        <link refid="catoms2_d_events_8h"/>
+        <childnode refid="14366" relation="include">
+        </childnode>
+        <childnode refid="14337" relation="include">
+        </childnode>
+        <childnode refid="14305" relation="include">
+        </childnode>
+      </node>
+      <node id="14359">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.h</label>
+        <link refid="smart_blocks_scheduler_8h"/>
+        <childnode refid="14360" relation="include">
+        </childnode>
+        <childnode refid="14361" relation="include">
+        </childnode>
+        <childnode refid="14324" relation="include">
+        </childnode>
+        <childnode refid="14362" relation="include">
+        </childnode>
+      </node>
+      <node id="14374">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h</label>
+        <link refid="robot_blocks_events_8h"/>
+        <childnode refid="14356" relation="include">
+        </childnode>
+        <childnode refid="14320" relation="include">
+        </childnode>
+      </node>
+      <node id="14344">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</label>
+        <link refid="catoms3_d_events_8h"/>
+        <childnode refid="14341" relation="include">
+        </childnode>
+      </node>
+      <node id="14375">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smart_blocks_events_8h"/>
+        <childnode refid="14360" relation="include">
+        </childnode>
+      </node>
+      <node id="14307">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.cpp</label>
+        <link refid="catoms2_d_scheduler_8cpp"/>
+      </node>
+      <node id="14337">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp</label>
+        <link refid="catoms2_d_events_8cpp"/>
+      </node>
+      <node id="14367">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.h</label>
+        <link refid="catoms2_d_block_code_8h"/>
+        <childnode refid="14366" relation="include">
+        </childnode>
+        <childnode refid="14303" relation="include">
+        </childnode>
+        <childnode refid="14368" relation="include">
+        </childnode>
+        <childnode refid="14305" relation="include">
+        </childnode>
+      </node>
+      <node id="14329">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h</label>
+        <link refid="meld_interpret_scheduler_8h"/>
+        <childnode refid="14293" relation="include">
+        </childnode>
+        <childnode refid="14330" relation="include">
+        </childnode>
+        <childnode refid="14314" relation="include">
+        </childnode>
+        <childnode refid="14331" relation="include">
+        </childnode>
+      </node>
+      <node id="14368">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.cpp</label>
+        <link refid="catoms2_d_block_code_8cpp"/>
+      </node>
+      <node id="14295">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="14296" relation="include">
+        </childnode>
+        <childnode refid="14300" relation="include">
+        </childnode>
+        <childnode refid="14298" relation="include">
+        </childnode>
+        <childnode refid="14299" relation="include">
+        </childnode>
+        <childnode refid="14301" relation="include">
+        </childnode>
+        <childnode refid="14302" relation="include">
+        </childnode>
+      </node>
+      <node id="14306">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp</label>
+        <link refid="catoms2_d_generic_8cpp"/>
+      </node>
+      <node id="14330">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp</label>
+        <link refid="meld_interpret_events_8cpp"/>
+      </node>
+      <node id="14325">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp</label>
+        <link refid="smart_blocks_simulator_8cpp"/>
+      </node>
+      <node id="14302">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="14366">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.h</label>
+        <link refid="catoms2_d_block_8h"/>
+        <childnode refid="14304" relation="include">
+        </childnode>
+        <childnode refid="14367" relation="include">
+        </childnode>
+        <childnode refid="14369" relation="include">
+        </childnode>
+        <childnode refid="14371" relation="include">
+        </childnode>
+        <childnode refid="14336" relation="include">
+        </childnode>
+        <childnode refid="14305" relation="include">
+        </childnode>
+        <childnode refid="14309" relation="include">
+        </childnode>
+      </node>
+      <node id="14331">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</label>
+        <link refid="meld_interpret_v_m_8cpp"/>
+      </node>
+      <node id="14369">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h</label>
+        <link refid="catoms2_d_move_8h"/>
+        <childnode refid="14365" relation="include">
+        </childnode>
+        <childnode refid="14337" relation="include">
+        </childnode>
+        <childnode refid="14370" relation="include">
+        </childnode>
+      </node>
+      <node id="14317">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.cpp</label>
+        <link refid="multi_cores_simulator_8cpp"/>
+      </node>
+      <node id="14336">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.h</label>
+        <link refid="catoms2_d_scheduler_8h"/>
+        <childnode refid="14303" relation="include">
+        </childnode>
+        <childnode refid="14337" relation="include">
+        </childnode>
+        <childnode refid="14305" relation="include">
+        </childnode>
+        <childnode refid="14307" relation="include">
+        </childnode>
+        <childnode refid="14309" relation="include">
+        </childnode>
+      </node>
+      <node id="14313">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.cpp</label>
+        <link refid="catoms3_d_simulator_8cpp"/>
+      </node>
+      <node id="14352">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h</label>
+        <link refid="multi_cores_scheduler_8h"/>
+        <childnode refid="14315" relation="include">
+        </childnode>
+        <childnode refid="14316" relation="include">
+        </childnode>
+        <childnode refid="14353" relation="include">
+        </childnode>
+      </node>
+      <node id="14311">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.cpp</label>
+        <link refid="catoms3_d_block_8cpp"/>
+      </node>
+      <node id="14363">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</label>
+        <link refid="blinky_blocks_events_8h"/>
+        <childnode refid="14290" relation="include">
+        </childnode>
+        <childnode refid="14294" relation="include">
+        </childnode>
+        <childnode refid="14334" relation="include">
+        </childnode>
+      </node>
+      <node id="14341">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp</label>
+        <link refid="catoms3_d_events_8cpp"/>
+      </node>
+      <node id="14355">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robot_blocks_scheduler_8h"/>
+        <childnode refid="14318" relation="include">
+        </childnode>
+        <childnode refid="14356" relation="include">
+        </childnode>
+        <childnode refid="14320" relation="include">
+        </childnode>
+        <childnode refid="14322" relation="include">
+        </childnode>
+        <childnode refid="14357" relation="include">
+        </childnode>
+      </node>
+      <node id="14291">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="14288">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="14289" relation="include">
+        </childnode>
+        <childnode refid="14293" relation="include">
+        </childnode>
+        <childnode refid="14295" relation="include">
+        </childnode>
+        <childnode refid="14303" relation="include">
+        </childnode>
+        <childnode refid="14310" relation="include">
+        </childnode>
+        <childnode refid="14314" relation="include">
+        </childnode>
+        <childnode refid="14298" relation="include">
+        </childnode>
+        <childnode refid="14315" relation="include">
+        </childnode>
+        <childnode refid="14318" relation="include">
+        </childnode>
+        <childnode refid="14302" relation="include">
+        </childnode>
+        <childnode refid="14324" relation="include">
+        </childnode>
+      </node>
+      <node id="14312">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp</label>
+        <link refid="catoms3_d_scheduler_8cpp"/>
+      </node>
+      <node id="14287">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="14288" relation="include">
+        </childnode>
+        <childnode refid="14293" relation="include">
+        </childnode>
+        <childnode refid="14326" relation="include">
+        </childnode>
+        <childnode refid="14328" relation="include">
+        </childnode>
+        <childnode refid="14329" relation="include">
+        </childnode>
+        <childnode refid="14332" relation="include">
+        </childnode>
+        <childnode refid="14335" relation="include">
+        </childnode>
+        <childnode refid="14336" relation="include">
+        </childnode>
+        <childnode refid="14338" relation="include">
+        </childnode>
+        <childnode refid="14343" relation="include">
+        </childnode>
+        <childnode refid="14346" relation="include">
+        </childnode>
+        <childnode refid="14347" relation="include">
+        </childnode>
+        <childnode refid="14348" relation="include">
+        </childnode>
+        <childnode refid="14349" relation="include">
+        </childnode>
+        <childnode refid="14350" relation="include">
+        </childnode>
+        <childnode refid="14351" relation="include">
+        </childnode>
+        <childnode refid="14352" relation="include">
+        </childnode>
+        <childnode refid="14354" relation="include">
+        </childnode>
+        <childnode refid="14301" relation="include">
+        </childnode>
+        <childnode refid="14355" relation="include">
+        </childnode>
+        <childnode refid="14358" relation="include">
+        </childnode>
+        <childnode refid="14359" relation="include">
+        </childnode>
+        <childnode refid="14362" relation="include">
+        </childnode>
+      </node>
+      <node id="14309">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.cpp</label>
+        <link refid="catoms2_d_world_8cpp"/>
+      </node>
+      <node id="14304">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.cpp</label>
+        <link refid="catoms2_d_block_8cpp"/>
+      </node>
+      <node id="14324">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h</label>
+        <link refid="smart_blocks_simulator_8h"/>
+        <childnode refid="14325" relation="include">
+        </childnode>
+      </node>
+      <node id="14301">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp</label>
+        <link refid="opengl_viewer_8cpp"/>
+      </node>
+      <node id="14346">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.cpp</label>
+        <link refid="clock_8cpp"/>
+      </node>
+      <node id="14342">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.cpp</label>
+        <link refid="catoms3_d_world_8cpp"/>
+      </node>
+      <node id="14310">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</label>
+        <link refid="catoms3_d_simulator_8h"/>
+        <childnode refid="14311" relation="include">
+        </childnode>
+        <childnode refid="14312" relation="include">
+        </childnode>
+        <childnode refid="14313" relation="include">
+        </childnode>
+      </node>
+      <node id="14345">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3_d_block_code_8cpp"/>
+      </node>
+      <node id="14300">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</label>
+        <link refid="meld_process_debugger_8cpp"/>
+      </node>
+      <node id="14332">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="14333" relation="include">
+        </childnode>
+      </node>
+      <node id="14361">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.cpp</label>
+        <link refid="smart_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="14319">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="14334">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+      <node id="14323">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="14339">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="14311" relation="include">
+        </childnode>
+        <childnode refid="14338" relation="include">
+        </childnode>
+        <childnode refid="14340" relation="include">
+        </childnode>
+        <childnode refid="14343" relation="include">
+        </childnode>
+        <childnode refid="14344" relation="include">
+        </childnode>
+        <childnode refid="14342" relation="include">
+        </childnode>
+      </node>
+      <node id="14299">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</label>
+        <link refid="meld_process_v_m_8cpp"/>
+      </node>
+      <node id="14358">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.cpp</label>
+        <link refid="scheduler_8cpp"/>
+      </node>
+      <node id="14357">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="14308">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.cpp</label>
+        <link refid="catoms2_d_simulator_8cpp"/>
+      </node>
+      <node id="14349">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp</label>
+        <link refid="events_8cpp"/>
+      </node>
+      <node id="14340">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</label>
+        <link refid="catoms3_d_world_8h"/>
+        <childnode refid="14311" relation="include">
+        </childnode>
+        <childnode refid="14310" relation="include">
+        </childnode>
+        <childnode refid="14341" relation="include">
+        </childnode>
+        <childnode refid="14312" relation="include">
+        </childnode>
+        <childnode refid="14342" relation="include">
+        </childnode>
+      </node>
+      <node id="14347">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/commandLine.cpp</label>
+        <link refid="command_line_8cpp"/>
+      </node>
+      <node id="14316">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp</label>
+        <link refid="multi_cores_scheduler_8cpp"/>
+      </node>
+      <node id="14286">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</label>
+        <link refid="events.h"/>
+        <childnode refid="14287" relation="include">
+        </childnode>
+        <childnode refid="14363" relation="include">
+        </childnode>
+        <childnode refid="14296" relation="include">
+        </childnode>
+        <childnode refid="14364" relation="include">
+        </childnode>
+        <childnode refid="14365" relation="include">
+        </childnode>
+        <childnode refid="14344" relation="include">
+        </childnode>
+        <childnode refid="14349" relation="include">
+        </childnode>
+        <childnode refid="14331" relation="include">
+        </childnode>
+        <childnode refid="14299" relation="include">
+        </childnode>
+        <childnode refid="14372" relation="include">
+        </childnode>
+        <childnode refid="14301" relation="include">
+        </childnode>
+        <childnode refid="14374" relation="include">
+        </childnode>
+        <childnode refid="14375" relation="include">
+        </childnode>
+      </node>
+      <node id="14354">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp</label>
+        <link refid="network_8cpp"/>
+      </node>
+      <node id="14360">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</label>
+        <link refid="smart_blocks_events_8cpp"/>
+      </node>
+      <node id="14322">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="14328">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="14293" relation="include">
+        </childnode>
+        <childnode refid="14295" relation="include">
+        </childnode>
+        <childnode refid="14297" relation="include">
+        </childnode>
+        <childnode refid="14298" relation="include">
+        </childnode>
+        <childnode refid="14299" relation="include">
+        </childnode>
+      </node>
+      <node id="14350">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp</label>
+        <link refid="interface_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_event" prot="public">Event</innerclass>
+    <innerclass refid="class_block_event" prot="public">BlockEvent</innerclass>
+    <innerclass refid="class_code_start_event" prot="public">CodeStartEvent</innerclass>
+    <innerclass refid="class_code_end_simulation_event" prot="public">CodeEndSimulationEvent</innerclass>
+    <innerclass refid="class_process_local_event" prot="public">ProcessLocalEvent</innerclass>
+    <innerclass refid="class_network_interface_start_transmitting_event" prot="public">NetworkInterfaceStartTransmittingEvent</innerclass>
+    <innerclass refid="class_network_interface_stop_transmitting_event" prot="public">NetworkInterfaceStopTransmittingEvent</innerclass>
+    <innerclass refid="class_network_interface_receive_event" prot="public">NetworkInterfaceReceiveEvent</innerclass>
+    <innerclass refid="class_network_interface_enqueue_outgoing_event" prot="public">NetworkInterfaceEnqueueOutgoingEvent</innerclass>
+    <innerclass refid="class_set_color_event" prot="public">SetColorEvent</innerclass>
+    <innerclass refid="class_add_neighbor_event" prot="public">AddNeighborEvent</innerclass>
+    <innerclass refid="class_remove_neighbor_event" prot="public">RemoveNeighborEvent</innerclass>
+    <innerclass refid="class_tap_event" prot="public">TapEvent</innerclass>
+    <innerclass refid="class_accel_event" prot="public">AccelEvent</innerclass>
+    <innerclass refid="class_shake_event" prot="public">ShakeEvent</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" prot="public" static="no">
+        <name>EVENT_CONSTRUCTOR_INFO</name>
+        <param></param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="31" column="10" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="events_8h_1a2dd9eaba50cd9ad7740599310732d271" prot="public" static="no">
+        <name>EVENT_DESTRUCTOR_INFO</name>
+        <param></param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="32" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="events_8h_1a50c5b450f17e9072b74dfbd82df27571" prot="public" static="no">
+        <name>EVENT_CONSUME_INFO</name>
+        <param></param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="38" column="10" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="events_8h_1a56b05f33015aed5e05468e7319580b56" prot="public" static="no">
+        <type>boost::shared_ptr&lt; <ref refid="class_event" kindref="compound">Event</ref> &gt;</type>
+        <definition>typedef boost::shared_ptr&lt;Event&gt; EventPtr</definition>
+        <argsstring></argsstring>
+        <name>EventPtr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>events.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>26<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EVENTS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENTS_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//class<sp/>BuildingBlock;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;inttypes.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/shared_ptr.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="unique_events_id_8h" kindref="compound">uniqueEventsId.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="network_8h" kindref="compound">network.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="color_8h" kindref="compound">color.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="events_8h_1a56b05f33015aed5e05468e7319580b56" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_event" kindref="compound">Event</ref>;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>boost::shared_ptr&lt;Event&gt;<sp/><ref refid="events_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref>;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG_EVENTS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_CONSTRUCTOR_INFO()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(OUTPUT<sp/>&lt;&lt;<sp/>getEventName()<sp/>&lt;&lt;<sp/>&quot;<sp/>constructor<sp/>(&quot;<sp/>&lt;&lt;<sp/>id<sp/>&lt;&lt;<sp/>&quot;)&quot;<sp/>&lt;&lt;<sp/>endl)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_DESTRUCTOR_INFO()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(OUTPUT<sp/>&lt;&lt;<sp/>getEventName()<sp/>&lt;&lt;<sp/>&quot;<sp/>destructor<sp/>(&quot;<sp/>&lt;&lt;<sp/>id<sp/>&lt;&lt;<sp/>&quot;)&quot;<sp/>&lt;&lt;<sp/>endl)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_CONSTRUCTOR_INFO()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_DESTRUCTOR_INFO()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG_CONSUME_EVENTS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_CONSUME_INFO()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>({<sp/>stringstream<sp/>debuginfo1;<sp/>debuginfo1<sp/>&lt;&lt;<sp/>&quot;consuming<sp/>event<sp/>&quot;<sp/>&lt;&lt;<sp/>id<sp/>&lt;&lt;<sp/>&quot;<sp/>(&quot;<sp/>&lt;&lt;<sp/>getEventName()<sp/>&lt;&lt;<sp/>&quot;)&quot;;<sp/>Scheduler::trace(debuginfo1.str());})</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_CONSUME_INFO()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Event<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="class_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="49" refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" kindref="member">nextId</ref>;</highlight></codeline>
+<codeline lineno="50" refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" kindref="member">nbLivingEvents</ref>;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="53" refid="class_event_1a08ba599a781bea8b678251fdb7290890" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_event_1a08ba599a781bea8b678251fdb7290890" kindref="member">id</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>unique<sp/>ID<sp/>of<sp/>the<sp/>event<sp/>(mainly<sp/>for<sp/>debugging<sp/>purpose)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" kindref="member">date</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>time<sp/>at<sp/>which<sp/>the<sp/>event<sp/>will<sp/>be<sp/>processed.<sp/>0<sp/>means<sp/>simulation<sp/>start</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" kindref="member">eventType</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>see<sp/>the<sp/>various<sp/>types<sp/>at<sp/>the<sp/>beginning<sp/>of<sp/>this<sp/>file</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" kindref="member">randomNumber</ref>;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_event" kindref="compound">Event</ref>(uint64_t<sp/>t);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_event" kindref="compound">Event</ref>(<ref refid="class_event" kindref="compound">Event</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="class_event" kindref="compound">Event</ref>();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consume()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>getNextId();</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>getNbLivingEvents();</highlight></codeline>
+<codeline lineno="67" refid="class_event_1a3290dbf5e83cd7dca078dc73fb3a2461" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref>*<sp/><ref refid="class_event_1a3290dbf5e83cd7dca078dc73fb3a2461" kindref="member">getConcernedBlock</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/>};</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>BlockEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="class_block_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="79" refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*<ref refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" kindref="member">concernedBlock</ref>;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref>(uint64_t<sp/>t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref>(<ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="class_block_event" kindref="compound">BlockEvent</ref>();</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="86" refid="class_block_event_1a765f731149929db834bb955ac840c19f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref>*<sp/><ref refid="class_block_event_1a765f731149929db834bb955ac840c19f" kindref="member">getConcernedBlock</ref>()<sp/>{</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>concernedBlock;};</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="88" refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" kindref="member">consume</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(concernedBlock-&gt;<ref refid="class_base_simulator_1_1_building_block_1a0a721b63604db68e293ad926289e54e9" kindref="member">state</ref><sp/>&gt;=<sp/><ref refid="class_base_simulator_1_1_building_block_1a5a917443cbd34ffc19ceda2691699c7ea9129df5068a873b9ca8108a6e56b8595" kindref="member">BaseSimulator::BuildingBlock::ALIVE</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;consumeBlockEvent();</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CodeStartEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="class_code_start_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_code_start_event" kindref="compound">CodeStartEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_code_start_event" kindref="compound">CodeStartEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_code_start_event" kindref="compound">CodeStartEvent</ref>();</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CodeEndSimulationEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="class_code_end_simulation_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_code_end_simulation_event" kindref="compound">CodeEndSimulationEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_code_end_simulation_event" kindref="compound">CodeEndSimulationEvent</ref>(uint64_t);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_code_end_simulation_event" kindref="compound">CodeEndSimulationEvent</ref>();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consume();</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="123"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ProcessLocalEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131" refid="class_process_local_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_process_local_event" kindref="compound">ProcessLocalEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_process_local_event" kindref="compound">ProcessLocalEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_process_local_event" kindref="compound">ProcessLocalEvent</ref>();</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="138"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NetworkInterfaceStartTransmittingEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="class_network_interface_start_transmitting_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_network_interface_start_transmitting_event" kindref="compound">NetworkInterfaceStartTransmittingEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="148" refid="class_network_interface_start_transmitting_event_1ac53d294b435509be4f67c7da9788400e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_network_interface_start_transmitting_event_1ac53d294b435509be4f67c7da9788400e" kindref="member">interface</ref>;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_network_interface_start_transmitting_event" kindref="compound">NetworkInterfaceStartTransmittingEvent</ref>(uint64_t,<sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_network_interface_start_transmitting_event" kindref="compound">NetworkInterfaceStartTransmittingEvent</ref>();</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consume();</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="154"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NetworkInterfaceStopTransmittingEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162" refid="class_network_interface_stop_transmitting_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_network_interface_stop_transmitting_event" kindref="compound">NetworkInterfaceStopTransmittingEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="164" refid="class_network_interface_stop_transmitting_event_1abf7c9678b91b021b109667e8ccb7f58b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_network_interface_stop_transmitting_event_1abf7c9678b91b021b109667e8ccb7f58b" kindref="member">interface</ref>;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_network_interface_stop_transmitting_event" kindref="compound">NetworkInterfaceStopTransmittingEvent</ref>(uint64_t,<sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_network_interface_stop_transmitting_event" kindref="compound">NetworkInterfaceStopTransmittingEvent</ref>();</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consume();</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="170"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NetworkInterfaceReceiveEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178" refid="class_network_interface_receive_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_network_interface_receive_event" kindref="compound">NetworkInterfaceReceiveEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="180" refid="class_network_interface_receive_event_1a935413e706761477e9d34418c4edb979" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_network_interface_receive_event_1a935413e706761477e9d34418c4edb979" kindref="member">interface</ref>;</highlight></codeline>
+<codeline lineno="181" refid="class_network_interface_receive_event_1a8385d841b1b57fa006d1abecde6f7453" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref><sp/><ref refid="class_network_interface_receive_event_1a8385d841b1b57fa006d1abecde6f7453" kindref="member">message</ref>;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_network_interface_receive_event" kindref="compound">NetworkInterfaceReceiveEvent</ref>(uint64_t,<ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni,<sp/><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref><sp/>mes);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_network_interface_receive_event" kindref="compound">NetworkInterfaceReceiveEvent</ref>();</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consume();</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NetworkInterfaceEnqueueOutgoingEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194" refid="class_network_interface_enqueue_outgoing_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_network_interface_enqueue_outgoing_event" kindref="compound">NetworkInterfaceEnqueueOutgoingEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_event" kindref="compound">Event</ref><sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="196" refid="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref><sp/><ref refid="class_network_interface_enqueue_outgoing_event_1a40ef120e68d0cf1da7ad9f6ebe0b1c51" kindref="member">message</ref>;</highlight></codeline>
+<codeline lineno="197" refid="class_network_interface_enqueue_outgoing_event_1abec9bcdede59cd649fa2370906b8ab23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_network_interface_enqueue_outgoing_event_1abec9bcdede59cd649fa2370906b8ab23" kindref="member">sourceInterface</ref>;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_network_interface_enqueue_outgoing_event" kindref="compound">NetworkInterfaceEnqueueOutgoingEvent</ref>(uint64_t,<sp/><ref refid="class_message" kindref="compound">Message</ref><sp/>*mes,<sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_network_interface_enqueue_outgoing_event" kindref="compound">NetworkInterfaceEnqueueOutgoingEvent</ref>(uint64_t,<sp/><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref><sp/>mes,<sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni);</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_network_interface_enqueue_outgoing_event" kindref="compound">NetworkInterfaceEnqueueOutgoingEvent</ref>();</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consume();</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="204"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SetColorEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213" refid="class_set_color_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_set_color_event" kindref="compound">SetColorEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="215" refid="class_set_color_event_1ad7975abb861cb9caa9f775ae4da32d0f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="class_set_color_event_1ad7975abb861cb9caa9f775ae4da32d0f" kindref="member">color</ref>;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_set_color_event" kindref="compound">SetColorEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>r,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>g,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>b,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>a);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_set_color_event" kindref="compound">SetColorEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock,<sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;c);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_set_color_event" kindref="compound">SetColorEvent</ref>(<ref refid="class_set_color_event" kindref="compound">SetColorEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_set_color_event" kindref="compound">SetColorEvent</ref>();</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="223"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AddNeighborEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232" refid="class_add_neighbor_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_add_neighbor_event" kindref="compound">AddNeighborEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="234" refid="class_add_neighbor_event_1a238adb59cc49b468712d419da887d445" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_add_neighbor_event_1a238adb59cc49b468712d419da887d445" kindref="member">face</ref>;</highlight></codeline>
+<codeline lineno="235" refid="class_add_neighbor_event_1a78ca8280faeb049f7959bf18d6bec910" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_add_neighbor_event_1a78ca8280faeb049f7959bf18d6bec910" kindref="member">target</ref>;</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_add_neighbor_event" kindref="compound">AddNeighborEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock,<sp/>uint64_t<sp/>f,<sp/>uint64_t<sp/>ta);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_add_neighbor_event" kindref="compound">AddNeighborEvent</ref>(<ref refid="class_add_neighbor_event" kindref="compound">AddNeighborEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_add_neighbor_event" kindref="compound">AddNeighborEvent</ref>();</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="242"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>RemoveNeighborEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250" refid="class_remove_neighbor_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_remove_neighbor_event" kindref="compound">RemoveNeighborEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="252" refid="class_remove_neighbor_event_1aee85f2aed6d5fefe003e33c395dea18b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_remove_neighbor_event_1aee85f2aed6d5fefe003e33c395dea18b" kindref="member">face</ref>;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_remove_neighbor_event" kindref="compound">RemoveNeighborEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock,<sp/>uint64_t<sp/>f);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_remove_neighbor_event" kindref="compound">RemoveNeighborEvent</ref>(<ref refid="class_remove_neighbor_event" kindref="compound">RemoveNeighborEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_remove_neighbor_event" kindref="compound">RemoveNeighborEvent</ref>();</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="259"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TapEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight></codeline>
+<codeline lineno="267" refid="class_tap_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_tap_event" kindref="compound">TapEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_tap_event" kindref="compound">TapEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_tap_event" kindref="compound">TapEvent</ref>(<ref refid="class_tap_event" kindref="compound">TapEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_tap_event" kindref="compound">TapEvent</ref>();</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="275"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AccelEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284" refid="class_accel_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_accel_event" kindref="compound">AccelEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="286" refid="class_accel_event_1afc0ae0edb636ede3ba2c753a13304535" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_accel_event_1afc0ae0edb636ede3ba2c753a13304535" kindref="member">x</ref>;</highlight></codeline>
+<codeline lineno="287" refid="class_accel_event_1a976ee9300dea0bb9a9c1d93522d3e3db" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_accel_event_1a976ee9300dea0bb9a9c1d93522d3e3db" kindref="member">y</ref>;</highlight></codeline>
+<codeline lineno="288" refid="class_accel_event_1a054e93772809a3ba7f2d9c011a7e9cb8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_accel_event_1a054e93772809a3ba7f2d9c011a7e9cb8" kindref="member">z</ref>;</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_accel_event" kindref="compound">AccelEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock,<sp/>uint64_t<sp/>xx,<sp/>uint64_t<sp/>yy,<sp/>uint64_t<sp/>zz);</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_accel_event" kindref="compound">AccelEvent</ref>(<ref refid="class_accel_event" kindref="compound">AccelEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_accel_event" kindref="compound">AccelEvent</ref>();</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="295"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ShakeEvent<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"></highlight></codeline>
+<codeline lineno="303" refid="class_shake_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_shake_event" kindref="compound">ShakeEvent</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_block_event" kindref="compound">BlockEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="305" refid="class_shake_event_1a6dac4a5d54ce0c4cec4ce186f831d6c7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_shake_event_1a6dac4a5d54ce0c4cec4ce186f831d6c7" kindref="member">force</ref>;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_shake_event" kindref="compound">ShakeEvent</ref>(uint64_t,<sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*conBlock,<sp/>uint64_t<sp/>f);</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_shake_event" kindref="compound">ShakeEvent</ref>(<ref refid="class_shake_event" kindref="compound">ShakeEvent</ref><sp/>*ev);</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_shake_event" kindref="compound">ShakeEvent</ref>();</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>consumeBlockEvent();</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getEventName();</highlight></codeline>
+<codeline lineno="312"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"></highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>EVENTS_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms3_d_1_1_catoms3_d_scheduler" kind="class" language="C++" prot="public">
+    <compoundname>Catoms3D::Catoms3DScheduler</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_scheduler" prot="public" virt="non-virtual">BaseSimulator::Scheduler</basecompoundref>
+    <includes refid="catoms3_d_scheduler_8h" local="no">catoms3DScheduler.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_catoms3_d_scheduler_1a6e03fe24ff5df73e4a0e319b11092fa8" prot="protected" static="no" mutable="no">
+        <type>boost::thread *</type>
+        <definition>boost::thread* Catoms3D::Catoms3DScheduler::schedulerThread</definition>
+        <argsstring></argsstring>
+        <name>schedulerThread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_catoms3_d_scheduler_1ac28b297de44deed470836a8f49c089c9" prot="public" static="no" mutable="no">
+        <type>boost::interprocess::interprocess_semaphore *</type>
+        <definition>boost::interprocess::interprocess_semaphore* Catoms3D::Catoms3DScheduler::sem_schedulerStart</definition>
+        <argsstring></argsstring>
+        <name>sem_schedulerStart</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a482d38d61d103464e1e8a31b8c919888" compoundref="catoms3_d_scheduler_8cpp" startline="153" endline="157">start</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1a19fcc2c33a3ea29f94024819a954fc7d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::Catoms3DScheduler::Catoms3DScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>Catoms3DScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp" bodystart="24" bodyend="31"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1a683089dee3ba0fe3ecb4f42c85547a2d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Catoms3D::Catoms3DScheduler::~Catoms3DScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>~Catoms3DScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp" bodystart="33" bodyend="37"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1a4c10d15d1facb044fa46a008240e8b75" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * Catoms3D::Catoms3DScheduler::startPaused</definition>
+        <argsstring>()</argsstring>
+        <name>startPaused</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp" bodystart="47" bodyend="151"/>
+        <references refid="scheduler_8h_1abf9fcbad9241517e70536eb685c6c799" compoundref="scheduler_8h" startline="25">SCHEDULER_MODE_FASTEST</references>
+        <references refid="scheduler_8h_1a3a4cfd397890dfeab298e023f1623422" compoundref="scheduler_8h" startline="26">SCHEDULER_MODE_REALTIME</references>
+        <references refid="scheduler_8h_1ae1e648a30c72e0d958e0d14e7437daab" compoundref="scheduler_8h" startline="27">SCHEDULER_MODE_DEBUG</references>
+        <references refid="class_event_1a98e8d962b67f768b9278481564f83ab1" compoundref="events_8cpp" startline="55" endline="57">Event::getNextId</references>
+        <references refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" compoundref="events_8cpp" startline="59" endline="61">Event::getNbLivingEvents</references>
+        <references refid="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" compoundref="network_8cpp" startline="44" endline="46">Message::getNbMessages</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1a3aa59669e8f82fdb00495c5df976dbac" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DScheduler::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp" bodystart="39" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1aea74e72c31fb766ce7b06e830ab3770b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DScheduler::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp" bodystart="43" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1adbf13ce847a474b9687b147d432967ba" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_catoms3_d_1_1_catoms3_d_scheduler" kindref="compound">Catoms3DScheduler</ref> *</type>
+        <definition>static Catoms3DScheduler* Catoms3D::Catoms3DScheduler::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" bodystart="37" bodyend="40"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1a2ac35b933b1d1b47f9c97878eaf7a14c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DScheduler::printInfo</definition>
+        <argsstring>()</argsstring>
+        <name>printInfo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="42" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" bodystart="42" bodyend="44"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1a482d38d61d103464e1e8a31b8c919888" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DScheduler::start</definition>
+        <argsstring>(int mode)</argsstring>
+        <name>start</name>
+        <reimplements refid="class_base_simulator_1_1_scheduler_1a242f63f51209b7fda69f46832bb4cc94">start</reimplements>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp" bodystart="153" bodyend="157"/>
+        <references refid="class_base_simulator_1_1_scheduler_1a8af90704911834ec1aec4f03c9ae69bd" compoundref="scheduler_8h" startline="47">BaseSimulator::Scheduler::schedulerMode</references>
+        <references refid="class_catoms3_d_1_1_catoms3_d_scheduler_1ac28b297de44deed470836a8f49c089c9" compoundref="catoms3_d_scheduler_8h" startline="33">sem_schedulerStart</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1aa0091d49ac5b031e428c4e40fa77d4f4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DScheduler::waitForSchedulerEnd</definition>
+        <argsstring>()</argsstring>
+        <name>waitForSchedulerEnd</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_scheduler_1abe20b5f514f5aa581fd8b07b482ce5e9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Catoms3D::Catoms3DScheduler::getMode</definition>
+        <argsstring>()</argsstring>
+        <name>getMode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="52" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1639">
+        <label>Catoms3D::Catoms3DScheduler</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_scheduler"/>
+        <childnode refid="1640" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1640">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1641">
+        <label>Catoms3D::Catoms3DScheduler</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_scheduler"/>
+        <childnode refid="1642" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1642">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="1642" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h" bodystart="24" bodyend="54"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_scheduler_1ac1fba29a1baa8cb10850ea3482c77e7b" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>addKeyword</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a19fcc2c33a3ea29f94024819a954fc7d" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>Catoms3DScheduler</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a3aa59669e8f82fdb00495c5df976dbac" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>createScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1aba5efd9a72cb0aad8896d649399e418b" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>currentDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac3807abb2d5f62b5208da9b046c6101d" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>debug</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac488bdbb9cfc8db34a3862a2aca81de1" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>debugDate</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1aea74e72c31fb766ce7b06e830ab3770b" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>deleteScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa61d0f40619e29d2a2deff9663c5b60b3" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>ENDED</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a64b5f64b90fcc6d61fa6f02b28229caf" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>eventsMap</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4d4384500eb203b3770a01e8aed4e2bc" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>eventsMapSize</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1abe20b5f514f5aa581fd8b07b482ce5e9" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>getMode</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1acc23d53cd67a3a90cd811a5fbf17107d" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>getNbreMessages</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1adbf13ce847a474b9687b147d432967ba" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>getScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a6ea1a5506bfaa5e7a4873b76d6545d08" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>getState</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a34e7e2f65b63ea2fff50b2083e324cfc" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>largestEventsMapSize</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4d733428435018614ba07bfd12c9cbdb" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>lock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a71703934946c4fd3c9df7d0cfe8675a9" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>maximumDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a03f3f940c6a87a05124fd1ee623bf7f8" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>mutex_schedule</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a02436c16d488003f947119e859a82ea1" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>mutex_trace</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa28ba7aad53862cc08b3f1e50e47c60cb" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>NOTREADY</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa5cee64df631489c6e8bd753e7d67bf05" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>NOTSTARTED</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>now</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aa5bda1b17aeede9905ed346ce303cc562" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>PAUSED</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a2ac35b933b1d1b47f9c97878eaf7a14c" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>printInfo</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a7f415c6da6d2f533407b173ad08a1bae" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>removeEventsToBlock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a75613ffc0ff20be96fee25cd60012879" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>removeKeywords</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a8046d5cb5c7f085ca848ddf368fd96b5" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>restart</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067aaa53d7d02469eabe0aeb8056c0777caf5" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>RUNNING</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>schedule</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a9d417c5bf3558a7344362b5c7076a56b" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>scheduleLock</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a39592d973751ef2e8cec4a086f100e7e" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>Scheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a887c2ae764fe364a8d5dcb738b284ee6" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>scheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a8af90704911834ec1aec4f03c9ae69bd" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>schedulerMode</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a6e03fe24ff5df73e4a0e319b11092fa8" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>schedulerThread</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1ac28b297de44deed470836a8f49c089c9" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>sem_schedulerStart</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1aca72617a32cf260ac6d09f43d024bb26" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>setMaximumDate</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a4fb373ae5465372b61a53fa8e73a1e6c" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>setState</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a482d38d61d103464e1e8a31b8c919888" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>start</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a4c10d15d1facb044fa46a008240e8b75" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>startPaused</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1abfedc6fa7b54c4f4caa645419966067a" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>State</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a6aa4eb67b4af24f58d186b28fa5037e2" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>state</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a29d72be4ed6f925d6ea20a5584050d21" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>stop</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a5850b793fd4a94b06b499ac892a556f9" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>tabKeywords</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1af6601a5e1b70ff8ee02400b4657f6a22" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>trace</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1a398ea684955459c97fd9a15e541b8440" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>unlock</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1aa0091d49ac5b031e428c4e40fa77d4f4" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>waitForSchedulerEnd</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_scheduler_1a683089dee3ba0fe3ecb4f42c85547a2d" prot="protected" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>~Catoms3DScheduler</name></member>
+      <member refid="class_base_simulator_1_1_scheduler_1ac11343e2de03e636df91f89e30fcd9b1" prot="protected" virt="virtual"><scope>Catoms3D::Catoms3DScheduler</scope><name>~Scheduler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

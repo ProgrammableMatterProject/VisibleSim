@@ -42,3 +42,7 @@ applications*/*
 ## And files with extension
 !*.*
 ## Hence, all extension-less files from these directories are ignored => No binaries
+
+
+# Doxyfile documentation output
+doc/html/

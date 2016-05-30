@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_blinky_blocks_1_1_neighbor_direction" kind="class" language="C++" prot="public">
+    <compoundname>BlinkyBlocks::NeighborDirection</compoundname>
+    <includes refid="blinky_blocks_block_8h" local="no">blinkyBlocksBlock.h</includes>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81e" prot="public" static="no">
+        <name>Direction</name>
+        <enumvalue id="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea0073e117ea78b601fe6070155bac4e87" prot="public">
+          <name>Bottom</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea89a86a625f18fab4a2ea50429fe3aa15" prot="public">
+          <name>Back</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81eaeb55ecbcbab4d351d82aae6d4c105f8b" prot="public">
+          <name>Right</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea5d24c67edd11d8142bf994d23170827f" prot="public">
+          <name>Front</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea1892e7cdcd0c3dc38eb2dec00f54cd96" prot="public">
+          <name>Left</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea3666a7ad6f2e49699891d4d3caab3037" prot="public">
+          <name>Top</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h" bodystart="22" bodyend="22"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_blinky_blocks_1_1_neighbor_direction_1a3684dbf210f11648d1b01512d703447d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int BlinkyBlocks::NeighborDirection::getOpposite</definition>
+        <argsstring>(int d)</argsstring>
+        <name>getOpposite</name>
+        <param>
+          <type>int</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp" bodystart="57" bodyend="82"/>
+        <references refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" compoundref="trace_8h" startline="18">ERRPUT</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abbf30e71ef0235eda09f82109bba141c" compoundref="blinky_blocks_block_8cpp" startline="152" endline="155">BlinkyBlocks::BlinkyBlocksBlock::addNeighbor</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a47cc7982f4c51d0f7269b16598258348" compoundref="blinky_blocks_block_8cpp" startline="157" endline="160">BlinkyBlocks::BlinkyBlocksBlock::removeNeighbor</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_blinky_blocks_1_1_neighbor_direction_1a0fc8d94829cb10f4376a330d2db08c70" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>string</type>
+        <definition>string BlinkyBlocks::NeighborDirection::getString</definition>
+        <argsstring>(int d)</argsstring>
+        <name>getString</name>
+        <param>
+          <type>int</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp" bodystart="30" bodyend="55"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1abbf30e71ef0235eda09f82109bba141c" compoundref="blinky_blocks_block_8cpp" startline="152" endline="155">BlinkyBlocks::BlinkyBlocksBlock::addNeighbor</referencedby>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_block_1a47cc7982f4c51d0f7269b16598258348" compoundref="blinky_blocks_block_8cpp" startline="157" endline="160">BlinkyBlocks::BlinkyBlocksBlock::removeNeighbor</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h" bodystart="20" bodyend="25"/>
+    <listofallmembers>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea89a86a625f18fab4a2ea50429fe3aa15" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>Back</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea0073e117ea78b601fe6070155bac4e87" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>Bottom</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81e" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>Direction</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea5d24c67edd11d8142bf994d23170827f" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>Front</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a3684dbf210f11648d1b01512d703447d" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>getOpposite</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a0fc8d94829cb10f4376a330d2db08c70" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>getString</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea1892e7cdcd0c3dc38eb2dec00f54cd96" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>Left</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81eaeb55ecbcbab4d351d82aae6d4c105f8b" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>Right</name></member>
+      <member refid="class_blinky_blocks_1_1_neighbor_direction_1a769f471acf4eef755a294b8b47cfb81ea3666a7ad6f2e49699891d4d3caab3037" prot="public" virt="non-virtual"><scope>BlinkyBlocks::NeighborDirection</scope><name>Top</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

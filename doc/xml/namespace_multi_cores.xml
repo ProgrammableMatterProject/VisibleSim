@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="namespace_multi_cores" kind="namespace" language="C++">
+    <compoundname>MultiCores</compoundname>
+    <innerclass refid="class_multi_cores_1_1_multi_cores_block" prot="public">MultiCores::MultiCoresBlock</innerclass>
+    <innerclass refid="class_multi_cores_1_1_multi_cores_block_code" prot="public">MultiCores::MultiCoresBlockCode</innerclass>
+    <innerclass refid="class_multi_cores_1_1_multi_cores_scheduler" prot="public">MultiCores::MultiCoresScheduler</innerclass>
+    <innerclass refid="class_multi_cores_1_1_multi_cores_simulator" prot="public">MultiCores::MultiCoresSimulator</innerclass>
+    <innerclass refid="class_multi_cores_1_1_multi_cores_world" prot="public">MultiCores::MultiCoresWorld</innerclass>
+    <innerclass refid="class_multi_cores_1_1_v_m_data_message" prot="public">MultiCores::VMDataMessage</innerclass>
+    <innerclass refid="class_multi_cores_1_1_v_m_end_computation_event" prot="public">MultiCores::VMEndComputationEvent</innerclass>
+    <innerclass refid="class_multi_cores_1_1_v_m_message" prot="public">MultiCores::VMMessage</innerclass>
+    <innerclass refid="struct_multi_cores_1_1_v_m_message__tt" prot="public">MultiCores::VMMessage_tt</innerclass>
+    <innerclass refid="class_multi_cores_1_1_v_m_start_computation_event" prot="public">MultiCores::VMStartComputationEvent</innerclass>
+    <innerclass refid="class_multi_cores_1_1_v_m_start_transmission_event" prot="public">MultiCores::VMStartTransmissionEvent</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_multi_cores_1a76ac8382d7298dfd24beb7e6c7706b46" prot="public" static="no">
+        <type>void *(MultiCoresScheduler::*</type>
+        <definition>typedef void*(MultiCoresScheduler::* MultiCores::startPaused) (void *)</definition>
+        <argsstring>)(void *)</argsstring>
+        <name>startPaused</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp" line="20" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespace_multi_cores_1a5ffc2e000ab1cf7864826b6b3bd86ac4" prot="public" static="no">
+        <type>struct <ref refid="struct_multi_cores_1_1_v_m_message__tt" kindref="compound">MultiCores::VMMessage_tt</ref></type>
+        <definition>typedef struct MultiCores::VMMessage_tt  MultiCores::VMMessage_t_old</definition>
+        <argsstring></argsstring>
+        <name>VMMessage_t_old</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="43" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_multi_cores_1ae85c4644034d052ccfa6d83c3d784f6b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="173" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" bodystart="173" bodyend="175"/>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_simulator_1a3bd6e61db2576f1793a78ca7a33302c4" compoundref="multi_cores_simulator_8cpp" startline="17" endline="24">MultiCores::MultiCoresSimulator::MultiCoresSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1ad9a04cad9b3003a9eb59f2723c2bf20b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="177" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" bodystart="177" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1a9a62370566b8f638eb507ea4f93f025c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_multi_cores_1_1_multi_cores_scheduler" kindref="compound">MultiCoresScheduler</ref> *</type>
+        <definition>MultiCoresScheduler* MultiCores::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" line="181" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h" bodystart="181" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1a8f8943c24469a390b0cbc059222f5c21" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::createSimulator</definition>
+        <argsstring>(int argc, char *argv[], MultiCoresBlockCode *(*multiCoreBlockCodeBuildingFunction)(MultiCoresBlock *))</argsstring>
+        <name>createSimulator</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref> *(*)(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref> *)</type>
+          <declname>multiCoreBlockCodeBuildingFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h" bodystart="41" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1a2780de0c14ab6380d4a73e62bfb365e4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::deleteSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>deleteSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h" line="44" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h" bodystart="44" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1aad39fb2573754263da0538c2db202c36" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_multi_cores_1_1_multi_cores_simulator" kindref="compound">MultiCoresSimulator</ref> *</type>
+        <definition>MultiCoresSimulator* MultiCores::getSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>getSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h" line="48" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1a5686ce94a6d2cb3ebbccf62da81e9d8d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::createWorld</definition>
+        <argsstring>()</argsstring>
+        <name>createWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="41" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" bodystart="41" bodyend="43"/>
+        <references refid="class_multi_cores_1_1_multi_cores_world_1a1b736f59cdd7139904cb246abd6cc358" compoundref="multi_cores_world_8cpp" startline="27" endline="29">MultiCores::MultiCoresWorld::createWorld</references>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_simulator_1a3bd6e61db2576f1793a78ca7a33302c4" compoundref="multi_cores_simulator_8cpp" startline="17" endline="24">MultiCores::MultiCoresSimulator::MultiCoresSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1aa9dff66c56046280ca47ca760307c176" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::deleteWorld</definition>
+        <argsstring>()</argsstring>
+        <name>deleteWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="45" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" bodystart="45" bodyend="47"/>
+        <references refid="class_multi_cores_1_1_multi_cores_world_1aef30085efac151326fcacda47950dca2" compoundref="multi_cores_world_8cpp" startline="31" endline="33">MultiCores::MultiCoresWorld::deleteWorld</references>
+      </memberdef>
+      <memberdef kind="function" id="namespace_multi_cores_1a10f2a5a06db51d8b27f35c5f7c4894d2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_multi_cores_1_1_multi_cores_world" kindref="compound">MultiCoresWorld</ref> *</type>
+        <definition>MultiCoresWorld* MultiCores::getWorld</definition>
+        <argsstring>()</argsstring>
+        <name>getWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="49" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" bodystart="49" bodyend="49"/>
+        <references refid="class_multi_cores_1_1_multi_cores_world_1a889e851d841037174680fa113b71dca8" compoundref="multi_cores_world_8h" startline="24" endline="27">MultiCores::MultiCoresWorld::getWorld</references>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_scheduler_1a1baad4091f3181d382b17269ccfed322" compoundref="multi_cores_scheduler_8cpp" startline="116" endline="221">MultiCores::MultiCoresScheduler::waitForVMMessage</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresBlock.cpp" line="13" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,723 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="meld_process_v_m_commands_8cpp" kind="file" language="C++">
+    <compoundname>meldProcessVMCommands.cpp</compoundname>
+    <includes refid="meld_process_v_m_commands_8h" local="yes">meldProcessVMCommands.h</includes>
+    <includes refid="scheduler_8h" local="yes">scheduler.h</includes>
+    <incdepgraph>
+      <node id="15832">
+        <label>list</label>
+      </node>
+      <node id="15864">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="15835" relation="include">
+        </childnode>
+        <childnode refid="15865" relation="include">
+        </childnode>
+        <childnode refid="15844" relation="include">
+        </childnode>
+        <childnode refid="15849" relation="include">
+        </childnode>
+        <childnode refid="15833" relation="include">
+        </childnode>
+        <childnode refid="15866" relation="include">
+        </childnode>
+      </node>
+      <node id="15844">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="15840" relation="include">
+        </childnode>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15839" relation="include">
+        </childnode>
+        <childnode refid="15845" relation="include">
+        </childnode>
+        <childnode refid="15846" relation="include">
+        </childnode>
+      </node>
+      <node id="15835">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="15836" relation="include">
+        </childnode>
+        <childnode refid="15837" relation="include">
+        </childnode>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15839" relation="include">
+        </childnode>
+        <childnode refid="15840" relation="include">
+        </childnode>
+        <childnode refid="15841" relation="include">
+        </childnode>
+        <childnode refid="15842" relation="include">
+        </childnode>
+        <childnode refid="15843" relation="include">
+        </childnode>
+        <childnode refid="15844" relation="include">
+        </childnode>
+        <childnode refid="15849" relation="include">
+        </childnode>
+      </node>
+      <node id="15846">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15839" relation="include">
+        </childnode>
+        <childnode refid="15847" relation="include">
+        </childnode>
+        <childnode refid="15848" relation="include">
+        </childnode>
+      </node>
+      <node id="15866">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="15867" relation="include">
+        </childnode>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15839" relation="include">
+        </childnode>
+        <childnode refid="15848" relation="include">
+        </childnode>
+        <childnode refid="15833" relation="include">
+        </childnode>
+        <childnode refid="15868" relation="include">
+        </childnode>
+        <childnode refid="15850" relation="include">
+        </childnode>
+      </node>
+      <node id="15828">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="15861">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="15858">
+        <label>assert.h</label>
+      </node>
+      <node id="15854">
+        <label>stdint.h</label>
+      </node>
+      <node id="15837">
+        <label>stdlib.h</label>
+      </node>
+      <node id="15829">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="15828" relation="include">
+        </childnode>
+        <childnode refid="15830" relation="include">
+        </childnode>
+        <childnode refid="15831" relation="include">
+        </childnode>
+        <childnode refid="15832" relation="include">
+        </childnode>
+        <childnode refid="15833" relation="include">
+        </childnode>
+        <childnode refid="15851" relation="include">
+        </childnode>
+        <childnode refid="15853" relation="include">
+        </childnode>
+      </node>
+      <node id="15847">
+        <label>cmath</label>
+      </node>
+      <node id="15823">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp</label>
+        <link refid="meldProcessVMCommands.cpp"/>
+        <childnode refid="15824" relation="include">
+        </childnode>
+        <childnode refid="15855" relation="include">
+        </childnode>
+      </node>
+      <node id="15834">
+        <label>string</label>
+      </node>
+      <node id="15840">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="15824">
+        <label>meldProcessVMCommands.h</label>
+        <link refid="meld_process_v_m_commands_8h"/>
+        <childnode refid="15825" relation="include">
+        </childnode>
+        <childnode refid="15850" relation="include">
+        </childnode>
+      </node>
+      <node id="15857">
+        <label>map</label>
+      </node>
+      <node id="15859">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="15848">
+        <label>memory.h</label>
+      </node>
+      <node id="15833">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="15834" relation="include">
+        </childnode>
+        <childnode refid="15835" relation="include">
+        </childnode>
+        <childnode refid="15846" relation="include">
+        </childnode>
+        <childnode refid="15850" relation="include">
+        </childnode>
+      </node>
+      <node id="15839">
+        <label>fstream</label>
+      </node>
+      <node id="15851">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="15829" relation="include">
+        </childnode>
+        <childnode refid="15852" relation="include">
+        </childnode>
+      </node>
+      <node id="15843">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="15863">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="15849">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="15845" relation="include">
+        </childnode>
+        <childnode refid="15846" relation="include">
+        </childnode>
+        <childnode refid="15844" relation="include">
+        </childnode>
+      </node>
+      <node id="15841">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="15865">
+        <label>pthread.h</label>
+      </node>
+      <node id="15827">
+        <label>string.h</label>
+      </node>
+      <node id="15867">
+        <label>vector</label>
+      </node>
+      <node id="15825">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="15826" relation="include">
+        </childnode>
+        <childnode refid="15827" relation="include">
+        </childnode>
+        <childnode refid="15828" relation="include">
+        </childnode>
+        <childnode refid="15829" relation="include">
+        </childnode>
+      </node>
+      <node id="15856">
+        <label>sstream</label>
+      </node>
+      <node id="15855">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15856" relation="include">
+        </childnode>
+        <childnode refid="15857" relation="include">
+        </childnode>
+        <childnode refid="15852" relation="include">
+        </childnode>
+        <childnode refid="15858" relation="include">
+        </childnode>
+        <childnode refid="15859" relation="include">
+        </childnode>
+        <childnode refid="15860" relation="include">
+        </childnode>
+        <childnode refid="15831" relation="include">
+        </childnode>
+        <childnode refid="15861" relation="include">
+        </childnode>
+        <childnode refid="15862" relation="include">
+        </childnode>
+        <childnode refid="15864" relation="include">
+        </childnode>
+      </node>
+      <node id="15845">
+        <label>math.h</label>
+      </node>
+      <node id="15850">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15839" relation="include">
+        </childnode>
+        <childnode refid="15847" relation="include">
+        </childnode>
+        <childnode refid="15848" relation="include">
+        </childnode>
+        <childnode refid="15835" relation="include">
+        </childnode>
+      </node>
+      <node id="15838">
+        <label>iostream</label>
+      </node>
+      <node id="15826">
+        <label>deque</label>
+      </node>
+      <node id="15860">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="15831">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="15869">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="15839" relation="include">
+        </childnode>
+      </node>
+      <node id="15862">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="15852" relation="include">
+        </childnode>
+        <childnode refid="15834" relation="include">
+        </childnode>
+        <childnode refid="15828" relation="include">
+        </childnode>
+        <childnode refid="15829" relation="include">
+        </childnode>
+        <childnode refid="15863" relation="include">
+        </childnode>
+        <childnode refid="15825" relation="include">
+        </childnode>
+        <childnode refid="15850" relation="include">
+        </childnode>
+      </node>
+      <node id="15830">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="15868">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15857" relation="include">
+        </childnode>
+        <childnode refid="15867" relation="include">
+        </childnode>
+        <childnode refid="15831" relation="include">
+        </childnode>
+        <childnode refid="15858" relation="include">
+        </childnode>
+        <childnode refid="15829" relation="include">
+        </childnode>
+        <childnode refid="15833" relation="include">
+        </childnode>
+        <childnode refid="15869" relation="include">
+        </childnode>
+      </node>
+      <node id="15842">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="15836">
+        <label>stdio.h</label>
+      </node>
+      <node id="15853">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="15829" relation="include">
+        </childnode>
+        <childnode refid="15854" relation="include">
+        </childnode>
+        <childnode refid="15838" relation="include">
+        </childnode>
+        <childnode refid="15830" relation="include">
+        </childnode>
+        <childnode refid="15832" relation="include">
+        </childnode>
+      </node>
+      <node id="15852">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_meld_process">MeldProcess</innernamespace>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="meld_process_v_m_commands_8cpp_1aff9b7f6d81297248bf0ad06d725c8cbb" prot="public" static="no">
+        <name>CONTENT_SIZE</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" line="13" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" prot="public" static="no">
+        <name>TYPE</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" line="14" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" prot="public" static="no">
+        <name>TIMESTAMP</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" line="15" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" prot="public" static="no">
+        <name>NODE</name>
+        <initializer>3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" line="16" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" prot="public" static="no">
+        <name>PARAM1</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" line="17" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meld_process_v_m_commands_8cpp_1abdd1bc0c9e1b837bbf643458c90e44c4" prot="public" static="no">
+        <name>PARAM2</name>
+        <initializer>5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" line="18" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meld_process_v_m_commands_8cpp_1a67880a9145ff5eabe594d28a6ea8ce42" prot="public" static="no">
+        <name>PARAM3</name>
+        <initializer>6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" line="19" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>meldProcessVMCommands.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>11<sp/>aout<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Andre</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meld_process_v_m_commands_8h" kindref="compound">meldProcessVMCommands.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scheduler_8h" kindref="compound">scheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Format:<sp/>&lt;content<sp/>size<sp/>(in<sp/>bytes)&gt;<sp/>&lt;type&gt;<sp/>&lt;timestamp&gt;<sp/>&lt;src&gt;<sp/>&lt;parameter1&gt;<sp/>...</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="meld_process_v_m_commands_8cpp_1aff9b7f6d81297248bf0ad06d725c8cbb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CONTENT_SIZE<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TYPE<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TIMESTAMP<sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODE<sp/><sp/><sp/><sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PARAM1<sp/><sp/>4<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="meld_process_v_m_commands_8cpp_1abdd1bc0c9e1b837bbf643458c90e44c4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PARAM2<sp/><sp/>5</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="meld_process_v_m_commands_8cpp_1a67880a9145ff5eabe594d28a6ea8ce42" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PARAM3<sp/><sp/>6</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_meld_process" kindref="compound">MeldProcess</ref><sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>VMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" kindref="member">VMCommand::VMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>s,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>t,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref><sp/>=<sp/>d;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1aff9b7f6d81297248bf0ad06d725c8cbb" kindref="member">CONTENT_SIZE</ref>]<sp/>=<sp/>s;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" kindref="member">TYPE</ref>]<sp/>=<sp/>t;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" kindref="member">TIMESTAMP</ref>]<sp/>=<sp/><ref refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" kindref="member">BaseSimulator::getScheduler</ref>()-&gt;<ref refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" kindref="member">now</ref>();</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" kindref="member">NODE</ref>]<sp/>=<sp/>src;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_meld_process_1_1_v_m_command_1a8089656f1461e1150fe11a7d7e7a2adf" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" kindref="member">VMCommand::VMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref><sp/>=<sp/>d;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_meld_process_1_1_v_m_command_1af89ad28c9013f80d2e499e25621322b7" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_v_m_command_1a4587d5e8229aa13af6b94c4df856617d" kindref="member">VMCommand::getType</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>d[<ref refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" kindref="member">TYPE</ref>];</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="class_meld_process_1_1_v_m_command_1a1ecac65b2b277decf691cc50e6e35744" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_v_m_command_1a9d797a8249034cd1d1ee5d988d9b1629" kindref="member">VMCommand::getTimestamp</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>d[<ref refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" kindref="member">TIMESTAMP</ref>];</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" kindref="member">VMCommand::getContentSize</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1aff9b7f6d81297248bf0ad06d725c8cbb" kindref="member">CONTENT_SIZE</ref>];</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" kindref="member">VMCommand::getSize</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" kindref="member">getContentSize</ref>()<sp/>+<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="class_meld_process_1_1_v_m_command_1a4587d5e8229aa13af6b94c4df856617d" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_v_m_command_1a4587d5e8229aa13af6b94c4df856617d" kindref="member">VMCommand::getType</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" kindref="member">TYPE</ref>];</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="class_meld_process_1_1_v_m_command_1a9d797a8249034cd1d1ee5d988d9b1629" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_v_m_command_1a9d797a8249034cd1d1ee5d988d9b1629" kindref="member">VMCommand::getTimestamp</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" kindref="member">TIMESTAMP</ref>];</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" kindref="member">VMCommand::getSource</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" kindref="member">NODE</ref>];</highlight></codeline>
+<codeline lineno="67"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>*<sp/><ref refid="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" kindref="member">VMCommand::getData</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="class_meld_process_1_1_v_m_command_1a193079affb5da0c2a9f3be49fc2ce5d5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1a193079affb5da0c2a9f3be49fc2ce5d5" kindref="member">VMCommand::setTimestamp</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>ts)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" kindref="member">TIMESTAMP</ref>]<sp/>=<sp/>ts;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" kindref="member">VMCommand::copyData</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>size<sp/>=<sp/><ref refid="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" kindref="member">getSize</ref>();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>*<sp/>copy<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>uint64_t[size/</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>)+1];</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(copy,<sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>,<sp/>size);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref><sp/>=<sp/>copy;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="class_meld_process_1_1_v_m_command_1a177a7f5705abbee5d0cd1a3f826b2702" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1a177a7f5705abbee5d0cd1a3f826b2702" kindref="member">VMCommand::getString</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>t)<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal">(t)<sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="meld_process_v_m_commands_8h_1ab844515a69c0ada29de1d734c10a4b4d" kindref="member">VM_COMMAND_SET_COLOR</ref>:</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;VM_COMMAND_SET_COLOR&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="meld_process_v_m_commands_8h_1ad48c71f5570e0eadc2c8cb42eb3b9f22" kindref="member">VM_COMMAND_SEND_MESSAGE</ref>:</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;VM_COMMAND_SEND_MESSAGE&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="meld_process_v_m_commands_8h_1ae6834ee081e97c53fdefa37e9e6c75ed" kindref="member">VM_COMMAND_DEBUG</ref>:</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;VM_COMMAND_DEBUG&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="meld_process_v_m_commands_8h_1a1fdaa515ab26869d8c531dd7acc76e7b" kindref="member">VM_COMMAND_WORK_END</ref>:</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;VM_COMMAND_WORK_END&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="meld_process_v_m_commands_8h_1a55fafff5ad460c1bc6866206a449ca1a" kindref="member">VM_COMMAND_TIME_INFO</ref>:</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;VM_MESSAGE_TIME_INFO&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="meld_process_v_m_commands_8h_1a08a2aedb3eeaf3f9b6d948c15a180c95" kindref="member">VM_COMMAND_POLL_START</ref>:</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;VM_MESSAGE_POLL_START&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="meld_process_v_m_commands_8h_1ab156f7fd99644fcd9f444f608dce7023" kindref="member">VM_COMMAND_END_POLL</ref>:</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;VM_COMMAND_END_POLL&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" kindref="member">ERRPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Unknown<sp/>received-message<sp/>type&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Unknown<sp/>command:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>t<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>string(</highlight><highlight class="stringliteral">&quot;Unknown&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SetIdVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="class_meld_process_1_1_set_id_v_m_command_1ae0e9bf6b0707b069bd41e6e7346128cf" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_set_id_v_m_command_1ae0e9bf6b0707b069bd41e6e7346128cf" kindref="member">SetIdVMCommand::SetIdVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src):<sp/></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>3*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1aceb85351e48ff1e49c9df6a66ebc713c" kindref="member">VM_COMMAND_SET_ID</ref>,<sp/>src)<sp/>{<sp/>};</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>StopVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126" refid="class_meld_process_1_1_stop_v_m_command_1a7671992b895f55df2090d0b6faef2271" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_stop_v_m_command_1a7671992b895f55df2090d0b6faef2271" kindref="member">StopVMCommand::StopVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src):</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>3*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1ab869f3ad31fdb663d5641d0cde004943" kindref="member">VM_COMMAND_STOP</ref>,<sp/>src)<sp/>{<sp/>};</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AddNeighborVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="class_meld_process_1_1_add_neighbor_v_m_command_1af9fbb7d42db39673c0f625ab48d45439" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_add_neighbor_v_m_command_1af9fbb7d42db39673c0f625ab48d45439" kindref="member">AddNeighborVMCommand::AddNeighborVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src,</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>t,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>f):</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>5*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1a09f0da670b4e863f7e828a2db183ac15" kindref="member">VM_COMMAND_ADD_NEIGHBOR</ref>,<sp/>src)<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" kindref="member">PARAM1</ref>]<sp/>=<sp/>t;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1abdd1bc0c9e1b837bbf643458c90e44c4" kindref="member">PARAM2</ref>]<sp/>=<sp/>f;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>RemoveNeighborVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148" refid="class_meld_process_1_1_remove_neighbor_v_m_command_1af921fc50f44787d96a476e5bd683e325" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_remove_neighbor_v_m_command_1af921fc50f44787d96a476e5bd683e325" kindref="member">RemoveNeighborVMCommand::RemoveNeighborVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>f):</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>4*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1a8621f1bd4cbad14f663aec715d387871" kindref="member">VM_COMMAND_REMOVE_NEIGHBOR</ref>,<sp/>src)<sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" kindref="member">PARAM1</ref>]<sp/>=<sp/>f;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TapVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159" refid="class_meld_process_1_1_tap_v_m_command_1afe2c74d541f72b66ffe95ce2018f1480" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_tap_v_m_command_1afe2c74d541f72b66ffe95ce2018f1480" kindref="member">TapVMCommand::TapVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src)<sp/>:<sp/></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>3*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1a2687350c84c1682b1e468113ef951a84" kindref="member">VM_COMMAND_TAP</ref>,<sp/>src)<sp/>{<sp/>};</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SetColorVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="class_meld_process_1_1_set_color_v_m_command_1a242883c49237e7564f79bf6bfb56397d" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_set_color_v_m_command_1a242883c49237e7564f79bf6bfb56397d" kindref="member">SetColorVMCommand::SetColorVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>*<sp/>d):<sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d)<sp/>{};</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170" refid="class_meld_process_1_1_set_color_v_m_command_1ad844620b59379b1ac06937c7dfbb6b2e" refkind="member"><highlight class="normal"><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="class_meld_process_1_1_set_color_v_m_command_1ad844620b59379b1ac06937c7dfbb6b2e" kindref="member">SetColorVMCommand::getColor</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref>((</highlight><highlight class="keywordtype">float</highlight><highlight class="normal">)<ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[4]/255.0,<sp/>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal">)<ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[5]/255.0,<sp/>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal">)<ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[6]/255.0,<sp/>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal">)<ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[7]/255.0);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SendMessageVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight><highlight class="comment">//<sp/>format:<sp/>&lt;size&gt;<sp/>&lt;command&gt;<sp/>&lt;timestamp&gt;<sp/>&lt;src&gt;<sp/>&lt;destFace=0:<sp/>not<sp/>used&gt;<sp/>&lt;destId&gt;<sp/>&lt;<sp/>&lt;content...&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182" refid="class_meld_process_1_1_send_message_v_m_command_1a7af6043b675b0e455cdfcb684ad74760" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_send_message_v_m_command_1a7af6043b675b0e455cdfcb684ad74760" kindref="member">SendMessageVMCommand::SendMessageVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d):<sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d)<sp/>{};</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="184" refid="class_meld_process_1_1_send_message_v_m_command_1adb19c8027f956340f2cc0fc4f6af5f51" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_send_message_v_m_command_1adb19c8027f956340f2cc0fc4f6af5f51" kindref="member">SendMessageVMCommand::getDestFace</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" kindref="member">PARAM1</ref>];</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188" refid="class_meld_process_1_1_send_message_v_m_command_1ae3eb9091e9419f25146f98e4d1529fca" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_send_message_v_m_command_1ae3eb9091e9419f25146f98e4d1529fca" kindref="member">SendMessageVMCommand::getDestId</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1abdd1bc0c9e1b837bbf643458c90e44c4" kindref="member">PARAM2</ref>];</highlight></codeline>
+<codeline lineno="190"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ReceiveMessageVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198" refid="class_meld_process_1_1_receive_message_v_m_command_1af2eec2b8bf1c5105112dd89d94786f37" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_receive_message_v_m_command_1af2eec2b8bf1c5105112dd89d94786f37" kindref="member">ReceiveMessageVMCommand::ReceiveMessageVMCommand</ref>(<ref refid="class_meld_process_1_1_send_message_v_m_command" kindref="compound">SendMessageVMCommand</ref><sp/>&amp;c)<sp/>:<sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(c.<ref refid="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" kindref="member">getData</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;<ref refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" kindref="member">copyData</ref>();</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" kindref="member">TYPE</ref>]<sp/>=<sp/><ref refid="meld_process_v_m_commands_8h_1ac3555b6a3b3c33503048e159b11fc016" kindref="member">VM_COMMAND_RECEIVE_MESSAGE</ref>;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1abdd1bc0c9e1b837bbf643458c90e44c4" kindref="member">PARAM2</ref>]<sp/>=<sp/>c.<ref refid="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" kindref="member">getSource</ref>();</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" kindref="member">NODE</ref>]<sp/>=<sp/>c.<ref refid="class_meld_process_1_1_send_message_v_m_command_1ae3eb9091e9419f25146f98e4d1529fca" kindref="member">getDestId</ref>();</highlight></codeline>
+<codeline lineno="203"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205" refid="class_meld_process_1_1_receive_message_v_m_command_1af4ce8651e265e8c02fe24f737d08b7ed" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_receive_message_v_m_command_1af4ce8651e265e8c02fe24f737d08b7ed" kindref="member">ReceiveMessageVMCommand::size</ref>()<sp/>{<sp/></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//return<sp/>(getContentSize()<sp/>-<sp/>5*sizeof(commandType));<sp/>//<sp/>data<sp/>size<sp/>only</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>17;<sp/></highlight><highlight class="comment">//<sp/>bad<sp/>fix,<sp/>BB<sp/>have<sp/>fixed<sp/>size<sp/>data<sp/>packet</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210" refid="class_meld_process_1_1_receive_message_v_m_command_1ad96c24cae101c36a0bc6ccbd5e227f28" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_receive_message_v_m_command_1ad96c24cae101c36a0bc6ccbd5e227f28" kindref="member">ReceiveMessageVMCommand::~ReceiveMessageVMCommand</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">[]<sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AccelVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221" refid="class_meld_process_1_1_accel_v_m_command_1aeb9a87ba570dfcd60a2261f6afec3d32" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_accel_v_m_command_1aeb9a87ba570dfcd60a2261f6afec3d32" kindref="member">AccelVMCommand::AccelVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>x,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>y,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>z)<sp/>:<sp/></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>6*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1aaff3bd2d40a6325e11d3691bf31b9bb9" kindref="member">VM_COMMAND_ACCEL</ref>,<sp/>src)<sp/>{</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" kindref="member">PARAM1</ref>]<sp/>=<sp/>x;</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1abdd1bc0c9e1b837bbf643458c90e44c4" kindref="member">PARAM2</ref>]<sp/>=<sp/>y;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a67880a9145ff5eabe594d28a6ea8ce42" kindref="member">PARAM3</ref>]<sp/>=<sp/>z;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ShakeVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234" refid="class_meld_process_1_1_shake_v_m_command_1a5121d3a201561f849690352619d2bd26" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_shake_v_m_command_1a5121d3a201561f849690352619d2bd26" kindref="member">ShakeVMCommand::ShakeVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>f):<sp/></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>4*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1a93fe24db59571f23b6a3466e8fcaf6e9" kindref="member">VM_COMMAND_SHAKE</ref>,<sp/>src)<sp/>{</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" kindref="member">PARAM1</ref>]<sp/>=<sp/>f;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SetDeterministicModeVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245" refid="class_meld_process_1_1_set_deterministic_mode_v_m_command_1a33bddbe37cf980131311d763d56d97ca" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_set_deterministic_mode_v_m_command_1a33bddbe37cf980131311d763d56d97ca" kindref="member">SetDeterministicModeVMCommand::SetDeterministicModeVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src):</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>3*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1ac2a13754baf5e47a926abeab09b2a365" kindref="member">VM_COMMAND_SET_DETERMINISTIC_MODE</ref>,<sp/>src)<sp/>{};</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WorkEndVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254" refid="class_meld_process_1_1_work_end_v_m_command_1aebd41266c1bdc84bff0b1a86d91e4e48" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_work_end_v_m_command_1aebd41266c1bdc84bff0b1a86d91e4e48" kindref="member">WorkEndVMCommand::WorkEndVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d)<sp/>:<sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d)<sp/>{};</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256" refid="class_meld_process_1_1_work_end_v_m_command_1a821f061763fcd26a287e58a75d3b15c3" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_work_end_v_m_command_1a821f061763fcd26a287e58a75d3b15c3" kindref="member">WorkEndVMCommand::getNbProcessedMsg</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>[<ref refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" kindref="member">PARAM1</ref>];<sp/>}</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DebbuggerVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264" refid="class_meld_process_1_1_debbugger_v_m_command_1acf2acaa0be523f3f1d22d3c37e224042" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_debbugger_v_m_command_1acf2acaa0be523f3f1d22d3c37e224042" kindref="member">DebbuggerVMCommand::DebbuggerVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d)<sp/>:<sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d)<sp/>{};</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266" refid="class_meld_process_1_1_debbugger_v_m_command_1a3489bf41700785bf5c63b27c80920ae1" refkind="member"><highlight class="normal"><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/><ref refid="class_meld_process_1_1_debbugger_v_m_command_1a3489bf41700785bf5c63b27c80920ae1" kindref="member">DebbuggerVMCommand::getDebuggerCommand</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*d<sp/>=<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*)<sp/>(<ref refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" kindref="member">data</ref>+<ref refid="meld_process_v_m_commands_8cpp_1a7592aa1eaa790ae27e542130b3864191" kindref="member">PARAM1</ref>);<sp/><sp/></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>d[1];</highlight></codeline>
+<codeline lineno="269"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>EndPollVMCommand<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277" refid="class_meld_process_1_1_end_poll_v_m_command_1a9b6c902d45b0bfce838869f5647bec4d" refkind="member"><highlight class="normal"><ref refid="class_meld_process_1_1_end_poll_v_m_command_1a9b6c902d45b0bfce838869f5647bec4d" kindref="member">EndPollVMCommand::EndPollVMCommand</ref>(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>*d,<sp/><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref><sp/>src):</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_meld_process_1_1_v_m_command" kindref="compound">VMCommand</ref>(d,<sp/>3*sizeof(<ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref>),<sp/><ref refid="meld_process_v_m_commands_8h_1ab156f7fd99644fcd9f444f608dce7023" kindref="member">VM_COMMAND_END_POLL</ref>,<sp/>src)<sp/>{};</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="280"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,266 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_robot_blocks_1_1_validation_matrix" kind="class" language="C++" prot="public">
+    <compoundname>RobotBlocks::ValidationMatrix</compoundname>
+    <includes refid="robot_blocks_capabilities_8h" local="no">robotBlocksCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_robot_blocks_1_1_validation_matrix_1afb4eabfd87149faba5df261200e44d04" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" kindref="member">states</ref></type>
+        <definition>states RobotBlocks::ValidationMatrix::grid[27]</definition>
+        <argsstring>[27]</argsstring>
+        <name>grid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="class_robot_blocks_1_1_validation_matrix_1a2d01ed79eb9ae83f6dc451a32121cf2d" compoundref="robot_blocks_capabilities_8cpp" startline="476" endline="487">fromRotationZ</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_validation_matrix_1a902154a69966bde5dad3ca4ee9ce5acd" compoundref="robot_blocks_capabilities_8cpp" startline="489" endline="499">fromRotationY</referencedby>
+        <referencedby refid="namespace_robot_blocks_1a6d185a6a532db2ce6b0f44ee8fb8b382" compoundref="robot_blocks_capabilities_8cpp" startline="511" endline="516">RobotBlocks::operator&lt;&lt;</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1a9cdda1dc3fe064dd7dd50e2d79437025" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>RobotBlocks::ValidationMatrix::ValidationMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>ValidationMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="426" bodyend="428"/>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1ac0f2e8095004153a0907ece33f1437dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::ValidationMatrix::fromString</definition>
+        <argsstring>(const char *str)</argsstring>
+        <name>fromString</name>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="431" bodyend="474"/>
+        <references refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a5a72eab51308fbaa39886721d07abd98" compoundref="robot_blocks_capabilities_8h" startline="41">RobotBlocks::emptyState</references>
+        <references refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a3038df3d3ff36fa41f992935894ebd42" compoundref="robot_blocks_capabilities_8h" startline="41">RobotBlocks::fullState</references>
+        <references refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a767614fec88920680a73ea3c7d68224f" compoundref="robot_blocks_capabilities_8h" startline="41">RobotBlocks::filledState</references>
+        <references refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1afcd4d2721448d1b7e4b2607b0229eb5d" compoundref="robot_blocks_capabilities_8h" startline="41">RobotBlocks::emptiedState</references>
+        <references refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1a55810ab5170ebbeca2ffc4b706761d69" compoundref="robot_blocks_capabilities_8h" startline="41">RobotBlocks::transitState</references>
+        <references refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1ad0af3046079d980b5f0df197e3bc0c2f" compoundref="robot_blocks_capabilities_8h" startline="41">RobotBlocks::jockerState</references>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_capabilities_1af868366357c0355261025c73f610ee31" compoundref="robot_blocks_capabilities_8cpp" startline="215" endline="330">RobotBlocks::RobotBlocksCapabilities::RobotBlocksCapabilities</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1a902154a69966bde5dad3ca4ee9ce5acd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::ValidationMatrix::fromRotationY</definition>
+        <argsstring>(const ValidationMatrix &amp;, int)</argsstring>
+        <name>fromRotationY</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <defname>mat</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <defname>n</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="489" bodyend="499"/>
+        <references refid="class_robot_blocks_1_1_validation_matrix_1afb4eabfd87149faba5df261200e44d04" compoundref="robot_blocks_capabilities_8h" startline="56">grid</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1a2d01ed79eb9ae83f6dc451a32121cf2d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::ValidationMatrix::fromRotationZ</definition>
+        <argsstring>(const ValidationMatrix &amp;, int)</argsstring>
+        <name>fromRotationZ</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <defname>mat</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <defname>n</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="476" bodyend="487"/>
+        <references refid="class_robot_blocks_1_1_validation_matrix_1afb4eabfd87149faba5df261200e44d04" compoundref="robot_blocks_capabilities_8h" startline="56">grid</references>
+        <referencedby refid="class_robot_blocks_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="robot_blocks_capabilities_8cpp" startline="16" endline="158">RobotBlocks::Capability::Capability</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1a25902ae032bfab5476e5cd294a64e50d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void RobotBlocks::ValidationMatrix::set</definition>
+        <argsstring>(const PointRel3D &amp;pt, states v)</argsstring>
+        <name>set</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" kindref="member">states</ref></type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="505" bodyend="508"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1af54294ccb4a061f870185e83cda841fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_robot_blocks_1af43ad44040869dcc00f6f0cf38077bc1" kindref="member">states</ref></type>
+        <definition>states RobotBlocks::ValidationMatrix::get</definition>
+        <argsstring>(const PointRel3D &amp;pt)</argsstring>
+        <name>get</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="64" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="501" bodyend="503"/>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a5f56d0f6d7807f36934ac2bfefa3dcba" compoundref="robot_blocks_capabilities_8h" startline="21">RobotBlocks::PointRel3D::x</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1aecfc4079db46f910d431170c6c9f44d0" compoundref="robot_blocks_capabilities_8h" startline="22">RobotBlocks::PointRel3D::y</references>
+        <references refid="class_robot_blocks_1_1_point_rel3_d_1a3c6b1ba79ab143ad529266b19e3baad7" compoundref="robot_blocks_capabilities_8h" startline="23">RobotBlocks::PointRel3D::z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1a099a261ed585ec744a2de3cd71b943e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool RobotBlocks::ValidationMatrix::validate</definition>
+        <argsstring>(const PresenceMatrix &amp;pm)</argsstring>
+        <name>validate</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="518" bodyend="530"/>
+        <references refid="class_robot_blocks_1_1_presence_matrix_1ac022be07fed7dad1eda648c0e6e3d679" compoundref="robot_blocks_capabilities_8h" startline="46">RobotBlocks::PresenceMatrix::grid</references>
+        <references refid="robot_blocks_capabilities_8cpp_1a18d68ca0cb2f799f8a95a2858fd5939b" compoundref="robot_blocks_capabilities_8cpp" startline="5">truthTable</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1aef7f28638dcdd1abb1f4bef169189129" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool RobotBlocks::ValidationMatrix::validateWithTarget</definition>
+        <argsstring>(const PresenceMatrix &amp;pm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateWithTarget</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="67" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="532" bodyend="549"/>
+        <references refid="class_robot_blocks_1_1_presence_matrix_1ac022be07fed7dad1eda648c0e6e3d679" compoundref="robot_blocks_capabilities_8h" startline="46">RobotBlocks::PresenceMatrix::grid</references>
+        <references refid="robot_blocks_capabilities_8cpp_1a18d68ca0cb2f799f8a95a2858fd5939b" compoundref="robot_blocks_capabilities_8cpp" startline="5">truthTable</references>
+        <references refid="robot_blocks_capabilities_8cpp_1ad80b5f61e8c79a2735c9aee7c25b139e" compoundref="robot_blocks_capabilities_8cpp" startline="6">gainTable</references>
+      </memberdef>
+      <memberdef kind="function" id="class_robot_blocks_1_1_validation_matrix_1a8082d4ad65b33552735de76af5626323" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool RobotBlocks::ValidationMatrix::validateTrain</definition>
+        <argsstring>(const PresenceMatrix &amp;pm, const PresenceMatrix &amp;ltm, int &amp;gain)</argsstring>
+        <name>validateTrain</name>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_presence_matrix" kindref="compound">PresenceMatrix</ref> &amp;</type>
+          <declname>ltm</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>gain</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="68" column="1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_robot_blocks_1_1_validation_matrix_1abe0664b63ceba30db6aced7560fb582b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const ValidationMatrix &amp;sm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_robot_blocks_1_1_validation_matrix" kindref="compound">ValidationMatrix</ref> &amp;</type>
+          <declname>sm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.cpp" bodystart="511" bodyend="516"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksCapabilities.h" bodystart="54" bodyend="69"/>
+    <listofallmembers>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1a902154a69966bde5dad3ca4ee9ce5acd" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>fromRotationY</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1a2d01ed79eb9ae83f6dc451a32121cf2d" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>fromRotationZ</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1ac0f2e8095004153a0907ece33f1437dd" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>fromString</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1af54294ccb4a061f870185e83cda841fd" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>get</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1afb4eabfd87149faba5df261200e44d04" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>grid</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1abe0664b63ceba30db6aced7560fb582b" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1a25902ae032bfab5476e5cd294a64e50d" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>set</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1a099a261ed585ec744a2de3cd71b943e3" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>validate</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1a8082d4ad65b33552735de76af5626323" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>validateTrain</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1aef7f28638dcdd1abb1f4bef169189129" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>validateWithTarget</name></member>
+      <member refid="class_robot_blocks_1_1_validation_matrix_1a9cdda1dc3fe064dd7dd50e2d79437025" prot="public" virt="non-virtual"><scope>RobotBlocks::ValidationMatrix</scope><name>ValidationMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

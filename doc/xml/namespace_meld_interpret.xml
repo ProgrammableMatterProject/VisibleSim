@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="namespace_meld_interpret" kind="namespace" language="C++">
+    <compoundname>MeldInterpret</compoundname>
+    <innerclass refid="class_meld_interpret_1_1_add_tuple_event" prot="public">MeldInterpret::AddTupleEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_add_tuple_message" prot="public">MeldInterpret::AddTupleMessage</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_compute_predicate_event" prot="public">MeldInterpret::ComputePredicateEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_meld_interpret_scheduler" prot="public">MeldInterpret::MeldInterpretScheduler</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_meld_interpret_v_m" prot="public">MeldInterpret::MeldInterpretVM</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_remove_tuple_event" prot="public">MeldInterpret::RemoveTupleEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_remove_tuple_message" prot="public">MeldInterpret::RemoveTupleMessage</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_v_m_debug_pause_sim_event" prot="public">MeldInterpret::VMDebugPauseSimEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_v_m_end_poll_event" prot="public">MeldInterpret::VMEndPollEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_v_m_handle_debug_command_event" prot="public">MeldInterpret::VMHandleDebugCommandEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_v_m_send_message_event" prot="public">MeldInterpret::VMSendMessageEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_v_m_set_id_event" prot="public">MeldInterpret::VMSetIdEvent</innerclass>
+    <innerclass refid="class_meld_interpret_1_1_v_m_stop_event" prot="public">MeldInterpret::VMStopEvent</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_meld_interpret_1a585623f692cb2dbd7b1b92fecd9d81b2" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* MeldInterpret::rule_names_load[]</definition>
+        <argsstring>[]</argsstring>
+        <name>rule_names_load</name>
+        <initializer>= {&quot;_init -o node-axioms.&quot;, }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp" line="17" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_meld_interpret_1abdadd3af527e08440f90125faa83f636" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int MeldInterpret::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp" line="1833" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp" bodystart="1833" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_meld_interpret_1abfe83e15cc32d0b8d71903aca055875a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldInterpret::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h" line="79" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h" bodystart="79" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_interpret_1ab60f9c186d2fea77da3f971dd136239b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldInterpret::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h" line="83" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h" bodystart="83" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_interpret_1a5573ca066eaec92821d4d1521ba39244" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_meld_interpret_1_1_meld_interpret_scheduler" kindref="compound">MeldInterpretScheduler</ref> *</type>
+        <definition>MeldInterpretScheduler* MeldInterpret::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h" line="87" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h" bodystart="87" bodyend="87"/>
+        <referencedby refid="class_meld_interpret_1_1_v_m_debug_pause_sim_event_1a4a3b8bf2a5d1fe79d66132ba17742e70" compoundref="meld_interpret_events_8cpp" startline="155" endline="160">MeldInterpret::VMDebugPauseSimEvent::consume</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1acdfb654260e80c4e12edd89cdfbc3f16" compoundref="meld_interpret_v_m_8cpp" startline="357" endline="409">MeldInterpret::MeldInterpretVM::tuple_send</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" line="12" column="1"/>
+  </compounddef>
+</doxygen>

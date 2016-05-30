@@ -1,0 +1,273 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_motion_start_event" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::MotionStartEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="catoms2_d_events_8h" local="no">catoms2DEvents.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_catoms2_d_1_1_motion_start_event_1ae5751a141cf34e0b794f1bd8bbfd45a6" prot="private" static="no" mutable="no">
+        <type><ref refid="class_vecteur" kindref="compound">Vecteur</ref></type>
+        <definition>Vecteur Catoms2D::MotionStartEvent::pivot</definition>
+        <argsstring></argsstring>
+        <name>pivot</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_motion_start_event_1abab60da5bbe31f7ec457130141448dde" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Catoms2D::MotionStartEvent::angle</definition>
+        <argsstring></argsstring>
+        <name>angle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="27" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_motion_start_event_1a9cb284dde67899dc3b40800bb4ec8206" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Catoms2D::MotionStartEvent::sens</definition>
+        <argsstring></argsstring>
+        <name>sens</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_start_event_1a9354c83fdd2f3e0352f535177036634a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::MotionStartEvent::MotionStartEvent</definition>
+        <argsstring>(uint64_t, Catoms2DBlock *block, Catoms2DMove &amp;m)</argsstring>
+        <name>MotionStartEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_catoms2_d_1_1_catoms2_d_block" kindref="compound">Catoms2DBlock</ref> *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type><ref refid="class_catoms2_d_1_1_catoms2_d_move" kindref="compound">Catoms2DMove</ref> &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp" bodystart="26" bodyend="33"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1ac42969c5e8ca83cdf102d4c8e250f05c" compoundref="unique_events_id_8h" startline="54">EVENT_MOTION_START</references>
+        <references refid="class_vecteur_1a9847818b536abf81b1a82196d4846918" compoundref="vecteur_8h" startline="50" endline="50">Vecteur::set</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1a66ce87a9eabdc422f4ea9b5145b1d004" compoundref="catoms2_d_move_8cpp" startline="21" endline="23">Catoms2D::Catoms2DMove::getPivot</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_block_1a7875d7de3bb59fc1d59adc7430306490" compoundref="catoms2_d_block_8h" startline="32">Catoms2D::Catoms2DBlock::ptrGlBlock</references>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_move_1a1f7d3cee2e35e27a3d3fb7789ecb2636" compoundref="catoms2_d_move_8cpp" startline="17" endline="19">Catoms2D::Catoms2DMove::getDirection</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_start_event_1a021097d781e1d3df39b36a1c51948857" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::MotionStartEvent::MotionStartEvent</definition>
+        <argsstring>(MotionStartEvent *ev)</argsstring>
+        <name>MotionStartEvent</name>
+        <param>
+          <type><ref refid="class_catoms2_d_1_1_motion_start_event" kindref="compound">MotionStartEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="31" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp" bodystart="35" bodyend="37"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_start_event_1a5705f76d146bb787f6666a0a4c26fc08" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms2D::MotionStartEvent::~MotionStartEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~MotionStartEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp" bodystart="39" bodyend="41"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_start_event_1ad23f448985f4feb2699a04d71f1d448b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Catoms2D::MotionStartEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" bodystart="33" bodyend="33"/>
+        <references refid="class_catoms2_d_1_1_motion_start_event_1abb8ae9875fd8899e5e9148f093fbfe43" compoundref="catoms2_d_events_8cpp" startline="43" endline="50">consume</references>
+        <references refid="class_catoms2_d_1_1_motion_start_event_1a38a3acbd5ca13a3b67ef8bc52f38b4f9" compoundref="catoms2_d_events_8cpp" startline="52" endline="54">getEventName</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_start_event_1abb8ae9875fd8899e5e9148f093fbfe43" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Catoms2D::MotionStartEvent::consume</definition>
+        <argsstring>()</argsstring>
+        <name>consume</name>
+        <reimplements refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d">consume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp" bodystart="43" bodyend="50"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="namespace_catoms2_d_1aa3804541c500b83ab15a584804225012" compoundref="catoms2_d_scheduler_8h" startline="65" endline="65">Catoms2D::getScheduler</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_world_1a90b5011fef8ef89caea6a2ab5bae953e" compoundref="catoms2_d_world_8h" startline="44" endline="47">Catoms2D::Catoms2DWorld::getWorld</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_world_1a279464337f346c7e066edbf372a43c2e" compoundref="catoms2_d_world_8cpp" startline="153" endline="170">Catoms2D::Catoms2DWorld::disconnectBlock</references>
+        <references refid="class_catoms2_d_1_1_catoms2_d_block_1ad0d2fcb189fbd915152c3c200da169c4" compoundref="catoms2_d_block_8cpp" startline="39" endline="42">Catoms2D::Catoms2DBlock::setColor</references>
+        <references refid="color_8h_1a6c951de855d70b05562e8ec8d09fdebf">DARKGREY</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="catoms2_d_events_8cpp_1ae299fa5bdefb0b9480c9bfae6b1bb0e2" compoundref="catoms2_d_events_8cpp" startline="13">ANIMATION_DELAY</references>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1ad23f448985f4feb2699a04d71f1d448b" compoundref="catoms2_d_events_8h" startline="33" endline="33">consumeBlockEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_step_event_1a756df326cc3eed2771be52cd27b54700" compoundref="catoms2_d_events_8h" startline="52" endline="52">Catoms2D::MotionStepEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1a0518b3b351cffab0c8c71b122aaad032" compoundref="catoms2_d_events_8h" startline="69" endline="69">Catoms2D::MotionStopEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_end_event_1a097607429c355bbea97182bbeacb847a" compoundref="catoms2_d_events_8h" startline="85" endline="85">Catoms2D::MotionEndEvent::consumeBlockEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_motion_start_event_1a38a3acbd5ca13a3b67ef8bc52f38b4f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string Catoms2D::MotionStartEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp" bodystart="52" bodyend="54"/>
+        <referencedby refid="class_catoms2_d_1_1_motion_start_event_1ad23f448985f4feb2699a04d71f1d448b" compoundref="catoms2_d_events_8h" startline="33" endline="33">consumeBlockEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_step_event_1a756df326cc3eed2771be52cd27b54700" compoundref="catoms2_d_events_8h" startline="52" endline="52">Catoms2D::MotionStepEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_stop_event_1a0518b3b351cffab0c8c71b122aaad032" compoundref="catoms2_d_events_8h" startline="69" endline="69">Catoms2D::MotionStopEvent::consumeBlockEvent</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_motion_end_event_1a097607429c355bbea97182bbeacb847a" compoundref="catoms2_d_events_8h" startline="85" endline="85">Catoms2D::MotionEndEvent::consumeBlockEvent</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2011">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2009">
+        <label>Catoms2D::MotionStartEvent</label>
+        <link refid="class_catoms2_d_1_1_motion_start_event"/>
+        <childnode refid="2010" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2010">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2011" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2014">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2012">
+        <label>Catoms2D::MotionStartEvent</label>
+        <link refid="class_catoms2_d_1_1_motion_start_event"/>
+        <childnode refid="2013" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2013">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2014" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2015" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2017">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2015" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2015">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2016" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2017" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2016">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2015" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h" bodystart="25" bodyend="36"/>
+    <listofallmembers>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1abab60da5bbe31f7ec457130141448dde" prot="private" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>angle</name></member>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1abb8ae9875fd8899e5e9148f093fbfe43" prot="public" virt="virtual"><scope>Catoms2D::MotionStartEvent</scope><name>consume</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1ad23f448985f4feb2699a04d71f1d448b" prot="public" virt="virtual"><scope>Catoms2D::MotionStartEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>eventType</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>Catoms2D::MotionStartEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1a38a3acbd5ca13a3b67ef8bc52f38b4f9" prot="public" virt="virtual"><scope>Catoms2D::MotionStartEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>id</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1a9354c83fdd2f3e0352f535177036634a" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>MotionStartEvent</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1a021097d781e1d3df39b36a1c51948857" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>MotionStartEvent</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>nextId</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1ae5751a141cf34e0b794f1bd8bbfd45a6" prot="private" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>pivot</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>randomNumber</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1a9cb284dde67899dc3b40800bb4ec8206" prot="private" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>sens</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>Catoms2D::MotionStartEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>Catoms2D::MotionStartEvent</scope><name>~Event</name></member>
+      <member refid="class_catoms2_d_1_1_motion_start_event_1a5705f76d146bb787f6666a0a4c26fc08" prot="public" virt="non-virtual"><scope>Catoms2D::MotionStartEvent</scope><name>~MotionStartEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

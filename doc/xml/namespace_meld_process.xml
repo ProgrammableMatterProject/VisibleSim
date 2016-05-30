@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="namespace_meld_process" kind="namespace" language="C++">
+    <compoundname>MeldProcess</compoundname>
+    <innerclass refid="class_meld_process_1_1_accel_v_m_command" prot="public">MeldProcess::AccelVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_add_neighbor_v_m_command" prot="public">MeldProcess::AddNeighborVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_debbugger_v_m_command" prot="public">MeldProcess::DebbuggerVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_end_poll_v_m_command" prot="public">MeldProcess::EndPollVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_meld_process_debugger" prot="public">MeldProcess::MeldProcessDebugger</innerclass>
+    <innerclass refid="class_meld_process_1_1_meld_process_scheduler" prot="public">MeldProcess::MeldProcessScheduler</innerclass>
+    <innerclass refid="class_meld_process_1_1_meld_process_v_m" prot="public">MeldProcess::MeldProcessVM</innerclass>
+    <innerclass refid="class_meld_process_1_1_receive_message_v_m_command" prot="public">MeldProcess::ReceiveMessageVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_remove_neighbor_v_m_command" prot="public">MeldProcess::RemoveNeighborVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_send_message_v_m_command" prot="public">MeldProcess::SendMessageVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_set_color_v_m_command" prot="public">MeldProcess::SetColorVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_set_deterministic_mode_v_m_command" prot="public">MeldProcess::SetDeterministicModeVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_set_id_v_m_command" prot="public">MeldProcess::SetIdVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_shake_v_m_command" prot="public">MeldProcess::ShakeVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_stop_v_m_command" prot="public">MeldProcess::StopVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_tap_v_m_command" prot="public">MeldProcess::TapVMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_command" prot="public">MeldProcess::VMCommand</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_debug_pause_sim_event" prot="public">MeldProcess::VMDebugPauseSimEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_end_poll_event" prot="public">MeldProcess::VMEndPollEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_handle_debug_command_event" prot="public">MeldProcess::VMHandleDebugCommandEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_send_message_event" prot="public">MeldProcess::VMSendMessageEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_set_id_event" prot="public">MeldProcess::VMSetIdEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_v_m_stop_event" prot="public">MeldProcess::VMStopEvent</innerclass>
+    <innerclass refid="class_meld_process_1_1_work_end_v_m_command" prot="public">MeldProcess::WorkEndVMCommand</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_meld_process_1a885f24ef522fd98264e04cd2d8e34d99" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::createDebugger</definition>
+        <argsstring>()</argsstring>
+        <name>createDebugger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="69" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="69" bodyend="69"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">BaseSimulator::Simulator::Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a41aadf55262534f7e2afe5cc806987ae" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::deleteDebugger</definition>
+        <argsstring>()</argsstring>
+        <name>deleteDebugger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="71" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="71" bodyend="71"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" compoundref="simulator_8cpp" startline="135" endline="153">BaseSimulator::Simulator::~Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a909781d4212cf825a8ed456c46e727ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_meld_process_1_1_meld_process_debugger" kindref="compound">MeldProcessDebugger</ref> *</type>
+        <definition>MeldProcessDebugger* MeldProcess::getDebugger</definition>
+        <argsstring>()</argsstring>
+        <name>getDebugger</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="73" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="73" bodyend="73"/>
+        <referencedby refid="namespace_meld_process_1a89030efced0ddbe796a6be27424b3b10" compoundref="meld_process_debugger_8h" startline="75" endline="75">sendCommand</referencedby>
+        <referencedby refid="namespace_meld_process_1ac4db6800ed7b715d17eb06ba8f6dc163" compoundref="meld_process_debugger_8h" startline="77" endline="77">pauseSimulation</referencedby>
+        <referencedby refid="namespace_meld_process_1ac3b5f0341c8fc0f831861487210e495e" compoundref="meld_process_debugger_8h" startline="79" endline="79">unPauseSimulation</referencedby>
+        <referencedby refid="namespace_meld_process_1a1c6f6398f87d908f6eb96478a2a3bad8" compoundref="meld_process_debugger_8h" startline="81" endline="81">handleDebugCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" compoundref="meld_process_scheduler_8cpp" startline="62" endline="219">MeldProcess::MeldProcessScheduler::startPaused</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a89030efced0ddbe796a6be27424b3b10" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int MeldProcess::sendCommand</definition>
+        <argsstring>(int id, uint64_t *data, int size)</argsstring>
+        <name>sendCommand</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>uint64_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="75" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="75" bodyend="75"/>
+        <references refid="namespace_meld_process_1a909781d4212cf825a8ed456c46e727ad" compoundref="meld_process_debugger_8h" startline="73" endline="73">getDebugger</references>
+        <references refid="class_meld_process_1_1_meld_process_debugger_1a8820daa0ae2cd072cbba50af5590dc82" compoundref="meld_process_debugger_8cpp" startline="24" endline="37">MeldProcess::MeldProcessDebugger::sendCmd</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1a231ebd049b920011364bed6a8c56ff26" compoundref="meld_process_debugger_8cpp" startline="13" endline="21">MeldProcess::MeldProcessDebugger::MeldProcessDebugger</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a86485547146b1717ca00e055774336b2" compoundref="meld_process_v_m_8h" startline="96" endline="96">MeldProcess::MeldProcessVM::isInDebuggingMode</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1ac4db6800ed7b715d17eb06ba8f6dc163" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::pauseSimulation</definition>
+        <argsstring>(int t)</argsstring>
+        <name>pauseSimulation</name>
+        <param>
+          <type>int</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="77" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="77" bodyend="77"/>
+        <references refid="namespace_meld_process_1a909781d4212cf825a8ed456c46e727ad" compoundref="meld_process_debugger_8h" startline="73" endline="73">getDebugger</references>
+        <references refid="class_meld_process_1_1_meld_process_debugger_1ac7d4845272cc367789936168a5d08aae" compoundref="meld_process_debugger_8cpp" startline="44" endline="56">MeldProcess::MeldProcessDebugger::pauseSim</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1a231ebd049b920011364bed6a8c56ff26" compoundref="meld_process_debugger_8cpp" startline="13" endline="21">MeldProcess::MeldProcessDebugger::MeldProcessDebugger</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1ac3b5f0341c8fc0f831861487210e495e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::unPauseSimulation</definition>
+        <argsstring>()</argsstring>
+        <name>unPauseSimulation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="79" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="79" bodyend="79"/>
+        <references refid="namespace_meld_process_1a909781d4212cf825a8ed456c46e727ad" compoundref="meld_process_debugger_8h" startline="73" endline="73">getDebugger</references>
+        <references refid="class_meld_process_1_1_meld_process_debugger_1a62488b8136f3ee45c4b3a777a92dca75" compoundref="meld_process_debugger_8cpp" startline="58" endline="60">MeldProcess::MeldProcessDebugger::unPauseSim</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1a231ebd049b920011364bed6a8c56ff26" compoundref="meld_process_debugger_8cpp" startline="13" endline="21">MeldProcess::MeldProcessDebugger::MeldProcessDebugger</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a1c6f6398f87d908f6eb96478a2a3bad8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::handleDebugCommand</definition>
+        <argsstring>(DebbuggerVMCommand *c)</argsstring>
+        <name>handleDebugCommand</name>
+        <param>
+          <type><ref refid="class_meld_process_1_1_debbugger_v_m_command" kindref="compound">DebbuggerVMCommand</ref> *</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="81" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="81" bodyend="81"/>
+        <references refid="namespace_meld_process_1a909781d4212cf825a8ed456c46e727ad" compoundref="meld_process_debugger_8h" startline="73" endline="73">getDebugger</references>
+        <references refid="class_meld_process_1_1_meld_process_debugger_1ac98d7fe7ede84e31ed1bc31f9dd94e83" compoundref="meld_process_debugger_8cpp" startline="39" endline="42">MeldProcess::MeldProcessDebugger::handleDebugCommand</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1a09418df2b8833051aec6c1f561caf71d" compoundref="meld_process_debugger_8h" startline="46" endline="49">MeldProcess::MeldProcessDebugger::deleteDebugger</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1aebde150ce36ba7aa08df29e59191c09a" compoundref="meld_process_v_m_8cpp" startline="276" endline="342">MeldProcess::MeldProcessVM::handleCommand</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1aeadca003234162d1bbcb571574b8428d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::quit</definition>
+        <argsstring>()</argsstring>
+        <name>quit</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" line="83" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h" bodystart="83" bodyend="88"/>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1a231ebd049b920011364bed6a8c56ff26" compoundref="meld_process_debugger_8cpp" startline="13" endline="21">MeldProcess::MeldProcessDebugger::MeldProcessDebugger</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a6d45eefcb2d12032c4c5e25ca5e81804" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::createScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>createScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="79" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="79" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a9dcb311a7bef23c7d66fb027a0dcf2f7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="83" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="83" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1adbb7674143d2135d6ab52ed8c2f258af" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_meld_process_1_1_meld_process_scheduler" kindref="compound">MeldProcessScheduler</ref> *</type>
+        <definition>MeldProcessScheduler* MeldProcess::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" line="87" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h" bodystart="87" bodyend="87"/>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1ac7d4845272cc367789936168a5d08aae" compoundref="meld_process_debugger_8cpp" startline="44" endline="56">MeldProcess::MeldProcessDebugger::pauseSim</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1a62488b8136f3ee45c4b3a777a92dca75" compoundref="meld_process_debugger_8cpp" startline="58" endline="60">MeldProcess::MeldProcessDebugger::unPauseSim</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_debug_pause_sim_event_1a22090b539b2856899f35dbec30efc0e4" compoundref="meld_process_events_8cpp" startline="154" endline="159">MeldProcess::VMDebugPauseSimEvent::consume</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a8ef4dcdc77788c11e5f7bd1d6acb0e44" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::createVMServer</definition>
+        <argsstring>(int p)</argsstring>
+        <name>createVMServer</name>
+        <param>
+          <type>int</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" line="112" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" bodystart="112" bodyend="112"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">BaseSimulator::Simulator::Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1ab2b55f9eae1afe9681f4449c7ed7e10e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::deleteVMServer</definition>
+        <argsstring>()</argsstring>
+        <name>deleteVMServer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" line="113" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" bodystart="113" bodyend="113"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" compoundref="simulator_8cpp" startline="135" endline="153">BaseSimulator::Simulator::~Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a109979f1bd210da87e56500e55861763" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::setVMConfiguration</definition>
+        <argsstring>(string v, string p, bool d)</argsstring>
+        <name>setVMConfiguration</name>
+        <param>
+          <type>string</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" line="114" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" bodystart="114" bodyend="114"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">BaseSimulator::Simulator::Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1a7358d26c5dfafb550597efedf32ab64e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::checkForReceivedVMCommands</definition>
+        <argsstring>()</argsstring>
+        <name>checkForReceivedVMCommands</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" line="115" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" bodystart="115" bodyend="115"/>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1ae16819afdf9fd4310859dc9f2c7f4a23" compoundref="meld_process_scheduler_8cpp" startline="50" endline="60">MeldProcess::MeldProcessScheduler::SemWaitOrReadDebugMessage</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" compoundref="meld_process_scheduler_8cpp" startline="62" endline="219">MeldProcess::MeldProcessScheduler::startPaused</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a2fb398fac26ef86b9a7a266aef8fa962" compoundref="meld_process_v_m_8cpp" startline="37" endline="121">MeldProcess::MeldProcessVM::MeldProcessVM</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_meld_process_1aa7edfff8a7dc1f75ba0762a936dd9f01" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::waitForOneVMCommand</definition>
+        <argsstring>()</argsstring>
+        <name>waitForOneVMCommand</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" line="116" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h" bodystart="116" bodyend="116"/>
+        <referencedby refid="class_meld_process_1_1_meld_process_scheduler_1ac5f373e29328a3eec4d3a33611ef9a5b" compoundref="meld_process_scheduler_8cpp" startline="62" endline="219">MeldProcess::MeldProcessScheduler::startPaused</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp" line="9" column="1"/>
+  </compounddef>
+</doxygen>

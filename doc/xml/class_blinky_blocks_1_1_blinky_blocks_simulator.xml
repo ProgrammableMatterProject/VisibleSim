@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_blinky_blocks_1_1_blinky_blocks_simulator" kind="class" language="C++" prot="public">
+    <compoundname>BlinkyBlocks::BlinkyBlocksSimulator</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_simulator" prot="public" virt="non-virtual">BaseSimulator::Simulator</basecompoundref>
+    <includes refid="blinky_blocks_simulator_8h" local="no">blinkyBlocksSimulator.h</includes>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_blinky_blocks_1_1_blinky_blocks_simulator_1a0e8b01729f0612284f3f4715f3fc6ed6" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref> *(*</type>
+        <definition>BlinkyBlocksBlockCode *(* BlinkyBlocks::BlinkyBlocksSimulator::buildNewBlockCode)(BlinkyBlocksBlock *)</definition>
+        <argsstring>)(BlinkyBlocksBlock *)</argsstring>
+        <name>buildNewBlockCode</name>
+        <initializer>=NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" bodystart="32" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocksSimulator</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BlinkyBlocks::BlinkyBlocksSimulator::BlinkyBlocksSimulator</definition>
+        <argsstring>(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksCodeBuildingFunction)(BlinkyBlocksBlock *))</argsstring>
+        <name>BlinkyBlocksSimulator</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref> *(*)(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref> *)</type>
+          <declname>blinkyBlocksCodeBuildingFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp" bodystart="19" bodyend="295"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a0e8b01729f0612284f3f4715f3fc6ed6" compoundref="blinky_blocks_simulator_8h" startline="32">buildNewBlockCode</references>
+        <references refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" compoundref="simulator_8h" startline="46">BaseSimulator::Simulator::xmlDoc</references>
+        <references refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" compoundref="opengl_viewer_8h" startline="36">GlutContext::initialScreenWidth</references>
+        <references refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" compoundref="opengl_viewer_8h" startline="36">GlutContext::initialScreenHeight</references>
+        <references refid="class_glut_context_1a2e53da196e3309de6f7096993e30e191" compoundref="opengl_viewer_8h" startline="35">GlutContext::screenWidth</references>
+        <references refid="class_glut_context_1a62d021000546e50bbec62a6974183322" compoundref="opengl_viewer_8h" startline="35">GlutContext::screenHeight</references>
+        <references refid="namespace_blinky_blocks_1a5c80bccf81f07c600475f5eca9525de4" compoundref="blinky_blocks_world_8h" startline="91" endline="93">BlinkyBlocks::createWorld</references>
+        <references refid="namespace_blinky_blocks_1aba3b7e8c9eec534ab90c0c7f9e98eef7" compoundref="blinky_blocks_world_8h" startline="99" endline="99">BlinkyBlocks::getWorld</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1a435ee1614eddb849b581cf209cef5d8d" compoundref="blinky_blocks_world_8cpp" startline="339" endline="343">BlinkyBlocks::BlinkyBlocksWorld::loadTextures</references>
+        <references refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" compoundref="trace_8h" startline="18">ERRPUT</references>
+        <references refid="namespace_blinky_blocks_1ac102af21a67bb63072643278e99756f4" compoundref="blinky_blocks_scheduler_8h" startline="29" endline="42">BlinkyBlocks::createScheduler</references>
+        <references refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" compoundref="vecteur_8h" startline="29">Vecteur::pt</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1a9031b8230147b5c085750c0007e035b3" compoundref="blinky_blocks_world_8h" startline="74" endline="74">BlinkyBlocks::BlinkyBlocksWorld::getCamera</references>
+        <references refid="class_camera_1a7724b4bf8bbf5423da7dcb4644ee7d80" compoundref="camera_8h" startline="69" endline="69">Camera::setTarget</references>
+        <references refid="class_camera_1af8eff8518d92273950368ede6fc4c800" compoundref="camera_8h" startline="70" endline="70">Camera::setDirection</references>
+        <references refid="class_camera_1a4e3d9d06d4cf59d5d49674bd3af57e61" compoundref="camera_8h" startline="71" endline="71">Camera::setDistance</references>
+        <references refid="class_camera_1a13d88059aa510d8ac9aee7dc3adc84ce" compoundref="camera_8h" startline="68" endline="68">Camera::setAngle</references>
+        <references refid="class_camera_1a4ec50716a3c77cf11a664e602511e55f" compoundref="camera_8h" startline="67" endline="67">Camera::setNearFar</references>
+        <references refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" compoundref="vecteur_8h" startline="19">M_PI</references>
+        <references refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" compoundref="camera_8cpp" startline="82" endline="93">Camera::setLightParameters</references>
+        <references refid="color_8h_1a6c951de855d70b05562e8ec8d09fdebf">DARKGREY</references>
+        <references refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" compoundref="color_8h" startline="15">Color::rgba</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1aa56f345d6bd94da0d69cb8c46e4c3743" compoundref="blinky_blocks_world_8h" startline="64" endline="64">BlinkyBlocks::BlinkyBlocksWorld::setBlocksSize</references>
+        <references refid="class_color_1a8adfa78739fcc5ca469264e893188215" compoundref="color_8cpp" startline="14" endline="19">Color::set</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1a926aa3271e6123c82e495591160777ac" compoundref="blinky_blocks_world_8cpp" startline="84" endline="118">BlinkyBlocks::BlinkyBlocksWorld::addBlock</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1a28b4d00db206f770fd9149c63bd59bfa" compoundref="blinky_blocks_world_8h" startline="84" endline="84">BlinkyBlocks::BlinkyBlocksWorld::addScenarioEvent</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_world_1a05645dcac50ba018ef86373dafb9898b" compoundref="blinky_blocks_world_8cpp" startline="120" endline="169">BlinkyBlocks::BlinkyBlocksWorld::linkBlocks</references>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1a4fb373ae5465372b61a53fa8e73a1e6c" compoundref="scheduler_8h" startline="100" endline="100">BaseSimulator::Scheduler::setState</references>
+        <references refid="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" compoundref="opengl_viewer_8cpp" startline="490" endline="512">GlutContext::mainLoop</references>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a54b4c9fdd4b18d3dd34fec8706d84f52" compoundref="blinky_blocks_simulator_8cpp" startline="301" endline="303">createSimulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_blinky_blocks_1_1_blinky_blocks_simulator_1a407e5bda186d48aa8b4fe1ad41863a2f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>BlinkyBlocks::BlinkyBlocksSimulator::~BlinkyBlocksSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>~BlinkyBlocksSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp" bodystart="297" bodyend="299"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_blinky_blocks_1_1_blinky_blocks_simulator_1a54b4c9fdd4b18d3dd34fec8706d84f52" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BlinkyBlocks::BlinkyBlocksSimulator::createSimulator</definition>
+        <argsstring>(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock *))</argsstring>
+        <name>createSimulator</name>
+        <param>
+          <type>int</type>
+          <declname>argc</declname>
+        </param>
+        <param>
+          <type>char *</type>
+          <declname>argv</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref> *(*)(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref> *)</type>
+          <declname>blinkyBlocksBlockCodeBuildingFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp" bodystart="301" bodyend="303"/>
+        <references refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" compoundref="simulator_8h" startline="43">BaseSimulator::Simulator::simulator</references>
+        <references refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" compoundref="blinky_blocks_simulator_8cpp" startline="19" endline="295">BlinkyBlocksSimulator</references>
+      </memberdef>
+      <memberdef kind="function" id="class_blinky_blocks_1_1_blinky_blocks_simulator_1a2961eb7c802b889a159d1b7b20d7e4c1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BlinkyBlocks::BlinkyBlocksSimulator::deleteSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>deleteSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp" bodystart="305" bodyend="307"/>
+        <references refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" compoundref="simulator_8h" startline="43">BaseSimulator::Simulator::simulator</references>
+      </memberdef>
+      <memberdef kind="function" id="class_blinky_blocks_1_1_blinky_blocks_simulator_1ae683a9b3b2592c5b2e0d7a6fd396cf60" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_blinky_blocks_1_1_blinky_blocks_simulator" kindref="compound">BlinkyBlocksSimulator</ref> *</type>
+        <definition>static BlinkyBlocksSimulator* BlinkyBlocks::BlinkyBlocksSimulator::getSimulator</definition>
+        <argsstring>()</argsstring>
+        <name>getSimulator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" bodystart="34" bodyend="37"/>
+        <references refid="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" compoundref="simulator_8cpp" startline="19">BaseSimulator::simulator</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_blinky_blocks_1_1_blinky_blocks_simulator_1add32de736abaa2092123423da971bb15" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void BlinkyBlocks::BlinkyBlocksSimulator::printInfo</definition>
+        <argsstring>()</argsstring>
+        <name>printInfo</name>
+        <reimplements refid="class_base_simulator_1_1_simulator_1a21df91f0bb5bfe8fb643b3e4c30fc9f9">printInfo</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="39" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" bodystart="39" bodyend="39"/>
+        <references refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" compoundref="trace_8h" startline="17">OUTPUT</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1426">
+        <label>BlinkyBlocks::BlinkyBlocksSimulator</label>
+        <link refid="class_blinky_blocks_1_1_blinky_blocks_simulator"/>
+        <childnode refid="1427" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1427">
+        <label>BaseSimulator::Simulator</label>
+        <link refid="class_base_simulator_1_1_simulator"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1428">
+        <label>BlinkyBlocks::BlinkyBlocksSimulator</label>
+        <link refid="class_blinky_blocks_1_1_blinky_blocks_simulator"/>
+        <childnode refid="1429" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1432" relation="usage">
+          <edgelabel>buildNewBlockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1432">
+        <label>BlinkyBlocks::BlinkyBlocksBlockCode</label>
+        <link refid="class_blinky_blocks_1_1_blinky_blocks_block_code"/>
+        <childnode refid="1433" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1429">
+        <label>BaseSimulator::Simulator</label>
+        <link refid="class_base_simulator_1_1_simulator"/>
+        <childnode refid="1430" relation="usage">
+          <edgelabel>cmdLine</edgelabel>
+        </childnode>
+        <childnode refid="1429" relation="usage">
+          <edgelabel>simulator</edgelabel>
+        </childnode>
+        <childnode refid="1431" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="1433">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="1434" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="1430">
+        <label>CommandLine</label>
+        <link refid="class_command_line"/>
+      </node>
+      <node id="1434">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="1435" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="1433" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="1431">
+        <label>BaseSimulator::Scheduler</label>
+        <link refid="class_base_simulator_1_1_scheduler"/>
+        <childnode refid="1431" relation="usage">
+          <edgelabel>scheduler</edgelabel>
+        </childnode>
+      </node>
+      <node id="1435">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="1434" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h" bodystart="21" bodyend="40"/>
+    <listofallmembers>
+      <member refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a64a7369729e4b12aa558e76bd7a92d5d" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>BlinkyBlocksSimulator</name></member>
+      <member refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a0e8b01729f0612284f3f4715f3fc6ed6" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>buildNewBlockCode</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a313f810e735e45a42291c0903b02b3b4" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>cmdLine</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a887f8026b03db602d649b92d797ff3df" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>CPP</name></member>
+      <member refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a54b4c9fdd4b18d3dd34fec8706d84f52" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>createSimulator</name></member>
+      <member refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a2961eb7c802b889a159d1b7b20d7e4c1" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>deleteSimulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ab170e70fbb2b52ad3c4d8316a9b45b5a" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>getCmdLine</name></member>
+      <member refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1ae683a9b3b2592c5b2e0d7a6fd396cf60" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>getSimulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a461d67beedc12eb2f76c9785751cbefe" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>getType</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a4a20f2771a7a2d68070aa5da203783ac" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>MELDINTERPRET</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80a40fd907ae63bde48488d27916187d170" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>MELDPROCESS</name></member>
+      <member refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1add32de736abaa2092123423da971bb15" prot="public" virt="virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>printInfo</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1af109bff0fd7a7daf214dd8e9a9ef6b4c" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>scheduler</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a999259e121cb046688bd4b394804d2c5" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>setType</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>Simulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>simulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a92ab38c0a24870f86a89cdc6d825ae80" prot="public" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>Type</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ad34fdbacc1ac2c668e36a3ed8dcfb88e" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>type</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>xmlDoc</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ae59a605fa3160f178d4fd3a9562b477f" prot="protected" virt="non-virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>xmlWorldNode</name></member>
+      <member refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1a407e5bda186d48aa8b4fe1ad41863a2f" prot="protected" virt="virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>~BlinkyBlocksSimulator</name></member>
+      <member refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" prot="protected" virt="virtual"><scope>BlinkyBlocks::BlinkyBlocksSimulator</scope><name>~Simulator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

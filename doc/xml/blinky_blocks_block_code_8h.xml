@@ -1,0 +1,531 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="blinky_blocks_block_code_8h" kind="file" language="C++">
+    <compoundname>blinkyBlocksBlockCode.h</compoundname>
+    <includes refid="block_code_8h" local="yes">blockCode.h</includes>
+    <includes refid="blinky_blocks_block_8h" local="yes">blinkyBlocksBlock.h</includes>
+    <includedby refid="blinky_blocks_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h</includedby>
+    <includedby refid="blinky_blocks_simulator_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</includedby>
+    <includedby refid="blinky_blocks_block_code_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.cpp</includedby>
+    <incdepgraph>
+      <node id="10130">
+        <label>list</label>
+      </node>
+      <node id="10155">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="10133" relation="include">
+        </childnode>
+        <childnode refid="10156" relation="include">
+        </childnode>
+        <childnode refid="10142" relation="include">
+        </childnode>
+        <childnode refid="10147" relation="include">
+        </childnode>
+        <childnode refid="10131" relation="include">
+        </childnode>
+        <childnode refid="10157" relation="include">
+        </childnode>
+      </node>
+      <node id="10142">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="10138" relation="include">
+        </childnode>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10137" relation="include">
+        </childnode>
+        <childnode refid="10143" relation="include">
+        </childnode>
+        <childnode refid="10144" relation="include">
+        </childnode>
+      </node>
+      <node id="10133">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="10134" relation="include">
+        </childnode>
+        <childnode refid="10135" relation="include">
+        </childnode>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10137" relation="include">
+        </childnode>
+        <childnode refid="10138" relation="include">
+        </childnode>
+        <childnode refid="10139" relation="include">
+        </childnode>
+        <childnode refid="10140" relation="include">
+        </childnode>
+        <childnode refid="10141" relation="include">
+        </childnode>
+        <childnode refid="10142" relation="include">
+        </childnode>
+        <childnode refid="10147" relation="include">
+        </childnode>
+      </node>
+      <node id="10144">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10137" relation="include">
+        </childnode>
+        <childnode refid="10145" relation="include">
+        </childnode>
+        <childnode refid="10146" relation="include">
+        </childnode>
+      </node>
+      <node id="10157">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="10158" relation="include">
+        </childnode>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10137" relation="include">
+        </childnode>
+        <childnode refid="10146" relation="include">
+        </childnode>
+        <childnode refid="10131" relation="include">
+        </childnode>
+        <childnode refid="10159" relation="include">
+        </childnode>
+        <childnode refid="10148" relation="include">
+        </childnode>
+      </node>
+      <node id="10127">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="10161">
+        <label>assert.h</label>
+      </node>
+      <node id="10150">
+        <label>stdint.h</label>
+      </node>
+      <node id="10135">
+        <label>stdlib.h</label>
+      </node>
+      <node id="10126">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="10127" relation="include">
+        </childnode>
+        <childnode refid="10128" relation="include">
+        </childnode>
+        <childnode refid="10129" relation="include">
+        </childnode>
+        <childnode refid="10130" relation="include">
+        </childnode>
+        <childnode refid="10131" relation="include">
+        </childnode>
+        <childnode refid="10125" relation="include">
+        </childnode>
+        <childnode refid="10149" relation="include">
+        </childnode>
+      </node>
+      <node id="10145">
+        <label>cmath</label>
+      </node>
+      <node id="10165">
+        <label>stdexcept</label>
+      </node>
+      <node id="10132">
+        <label>string</label>
+      </node>
+      <node id="10138">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="10160">
+        <label>map</label>
+      </node>
+      <node id="10146">
+        <label>memory.h</label>
+      </node>
+      <node id="10131">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="10132" relation="include">
+        </childnode>
+        <childnode refid="10133" relation="include">
+        </childnode>
+        <childnode refid="10144" relation="include">
+        </childnode>
+        <childnode refid="10148" relation="include">
+        </childnode>
+      </node>
+      <node id="10137">
+        <label>fstream</label>
+      </node>
+      <node id="10125">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="10126" relation="include">
+        </childnode>
+        <childnode refid="10151" relation="include">
+        </childnode>
+      </node>
+      <node id="10141">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="10147">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="10143" relation="include">
+        </childnode>
+        <childnode refid="10144" relation="include">
+        </childnode>
+        <childnode refid="10142" relation="include">
+        </childnode>
+      </node>
+      <node id="10139">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="10164">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="10156">
+        <label>pthread.h</label>
+      </node>
+      <node id="10163">
+        <label>string.h</label>
+      </node>
+      <node id="10158">
+        <label>vector</label>
+      </node>
+      <node id="10143">
+        <label>math.h</label>
+      </node>
+      <node id="10148">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10137" relation="include">
+        </childnode>
+        <childnode refid="10145" relation="include">
+        </childnode>
+        <childnode refid="10146" relation="include">
+        </childnode>
+        <childnode refid="10133" relation="include">
+        </childnode>
+      </node>
+      <node id="10136">
+        <label>iostream</label>
+      </node>
+      <node id="10129">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="10124">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.h</label>
+        <link refid="blinkyBlocksBlockCode.h"/>
+        <childnode refid="10125" relation="include">
+        </childnode>
+        <childnode refid="10152" relation="include">
+        </childnode>
+      </node>
+      <node id="10152">
+        <label>blinkyBlocksBlock.h</label>
+        <link refid="blinky_blocks_block_8h"/>
+        <childnode refid="10126" relation="include">
+        </childnode>
+        <childnode refid="10148" relation="include">
+        </childnode>
+        <childnode refid="10124" relation="include">
+        </childnode>
+        <childnode refid="10153" relation="include">
+        </childnode>
+        <childnode refid="10164" relation="include">
+        </childnode>
+        <childnode refid="10165" relation="include">
+        </childnode>
+      </node>
+      <node id="10162">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="10137" relation="include">
+        </childnode>
+      </node>
+      <node id="10128">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="10159">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10160" relation="include">
+        </childnode>
+        <childnode refid="10158" relation="include">
+        </childnode>
+        <childnode refid="10129" relation="include">
+        </childnode>
+        <childnode refid="10161" relation="include">
+        </childnode>
+        <childnode refid="10126" relation="include">
+        </childnode>
+        <childnode refid="10131" relation="include">
+        </childnode>
+        <childnode refid="10162" relation="include">
+        </childnode>
+      </node>
+      <node id="10153">
+        <label>blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="10132" relation="include">
+        </childnode>
+        <childnode refid="10154" relation="include">
+        </childnode>
+        <childnode refid="10131" relation="include">
+        </childnode>
+      </node>
+      <node id="10140">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="10134">
+        <label>stdio.h</label>
+      </node>
+      <node id="10154">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="10155" relation="include">
+        </childnode>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10137" relation="include">
+        </childnode>
+        <childnode refid="10132" relation="include">
+        </childnode>
+        <childnode refid="10158" relation="include">
+        </childnode>
+        <childnode refid="10145" relation="include">
+        </childnode>
+        <childnode refid="10135" relation="include">
+        </childnode>
+        <childnode refid="10163" relation="include">
+        </childnode>
+      </node>
+      <node id="10149">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="10126" relation="include">
+        </childnode>
+        <childnode refid="10150" relation="include">
+        </childnode>
+        <childnode refid="10136" relation="include">
+        </childnode>
+        <childnode refid="10128" relation="include">
+        </childnode>
+        <childnode refid="10130" relation="include">
+        </childnode>
+      </node>
+      <node id="10151">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="10175">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="10170" relation="include">
+        </childnode>
+        <childnode refid="10176" relation="include">
+        </childnode>
+        <childnode refid="10171" relation="include">
+        </childnode>
+      </node>
+      <node id="10178">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h</label>
+        <link refid="meld_interpret_v_m_8h"/>
+        <childnode refid="10179" relation="include">
+        </childnode>
+        <childnode refid="10180" relation="include">
+        </childnode>
+        <childnode refid="10183" relation="include">
+        </childnode>
+        <childnode refid="10184" relation="include">
+        </childnode>
+        <childnode refid="10181" relation="include">
+        </childnode>
+        <childnode refid="10182" relation="include">
+        </childnode>
+        <childnode refid="10185" relation="include">
+        </childnode>
+      </node>
+      <node id="10170">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="10168" relation="include">
+        </childnode>
+        <childnode refid="10171" relation="include">
+        </childnode>
+        <childnode refid="10172" relation="include">
+        </childnode>
+      </node>
+      <node id="10184">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.cpp</label>
+        <link refid="meld_interpret_messages_8cpp"/>
+      </node>
+      <node id="10176">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="10168">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="10172">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="10169">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="10168" relation="include">
+        </childnode>
+        <childnode refid="10170" relation="include">
+        </childnode>
+        <childnode refid="10173" relation="include">
+        </childnode>
+        <childnode refid="10171" relation="include">
+        </childnode>
+        <childnode refid="10174" relation="include">
+        </childnode>
+      </node>
+      <node id="10181">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</label>
+        <link refid="meld_interpret_scheduler_8cpp"/>
+      </node>
+      <node id="10179">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</label>
+        <link refid="meld_interpret_events_8h"/>
+        <childnode refid="10168" relation="include">
+        </childnode>
+        <childnode refid="10180" relation="include">
+        </childnode>
+        <childnode refid="10181" relation="include">
+        </childnode>
+        <childnode refid="10182" relation="include">
+        </childnode>
+      </node>
+      <node id="10186">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.cpp</label>
+        <link refid="blinky_blocks_block_code_8cpp"/>
+      </node>
+      <node id="10180">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp</label>
+        <link refid="meld_interpret_events_8cpp"/>
+      </node>
+      <node id="10185">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="10182">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</label>
+        <link refid="meld_interpret_v_m_8cpp"/>
+      </node>
+      <node id="10183">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.h</label>
+        <link refid="meld_interpret_messages_8h"/>
+        <childnode refid="10184" relation="include">
+        </childnode>
+        <childnode refid="10182" relation="include">
+        </childnode>
+      </node>
+      <node id="10177">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</label>
+        <link refid="blinky_blocks_events_8h"/>
+        <childnode refid="10168" relation="include">
+        </childnode>
+        <childnode refid="10176" relation="include">
+        </childnode>
+        <childnode refid="10174" relation="include">
+        </childnode>
+      </node>
+      <node id="10171">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="10173">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="10169" relation="include">
+        </childnode>
+      </node>
+      <node id="10174">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+      <node id="10166">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.h</label>
+        <link refid="blinkyBlocksBlockCode.h"/>
+        <childnode refid="10167" relation="include">
+        </childnode>
+        <childnode refid="10170" relation="include">
+        </childnode>
+        <childnode refid="10186" relation="include">
+        </childnode>
+      </node>
+      <node id="10167">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.h</label>
+        <link refid="blinky_blocks_block_8h"/>
+        <childnode refid="10168" relation="include">
+        </childnode>
+        <childnode refid="10166" relation="include">
+        </childnode>
+        <childnode refid="10169" relation="include">
+        </childnode>
+        <childnode refid="10175" relation="include">
+        </childnode>
+        <childnode refid="10177" relation="include">
+        </childnode>
+        <childnode refid="10178" relation="include">
+        </childnode>
+        <childnode refid="10174" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_blinky_blocks_1_1_blinky_blocks_block_code" prot="public">BlinkyBlocks::BlinkyBlocksBlockCode</innerclass>
+    <innernamespace refid="namespace_blinky_blocks">BlinkyBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>blinkyBlocksBlockCode.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>23<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>BLINKYBLOCKSBLOCKCODE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BLINKYBLOCKSBLOCKCODE_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="block_code_8h" kindref="compound">blockCode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="blinky_blocks_block_8h" kindref="compound">blinkyBlocksBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_blinky_blocks" kindref="compound">BlinkyBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">BlinkyBlocksBlock;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="class_blinky_blocks_1_1_blinky_blocks_block_code" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code" kindref="compound">BlinkyBlocksBlockCode</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_base_simulator_1_1_block_code" kindref="compound">BaseSimulator::BlockCode</ref><sp/>{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code_1ae75be4b7cfe7edc99daf3696b60415f0" kindref="member">BlinkyBlocksBlockCode</ref>(<ref refid="class_blinky_blocks_1_1_blinky_blocks_block" kindref="compound">BlinkyBlocksBlock</ref><sp/>*host);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code_1a172636833c8290022f0c8df922171250" kindref="member">~BlinkyBlocksBlockCode</ref>();</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="class_blinky_blocks_1_1_blinky_blocks_block_code_1a57f11b91ac62191dffd70ad999a58179" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code_1a57f11b91ac62191dffd70ad999a58179" kindref="member">init</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//static<sp/>BlinkyBlocksBlockCode*<sp/>buildNewBlockCode(BlinkyBlocksBlock<sp/>*host);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_blinky_blocks_1_1_blinky_blocks_block_code_1a60260f272750f2d5373429691d647b21" kindref="member">processLocalEvent</ref>(<ref refid="block_code_8h_1a56b05f33015aed5e05468e7319580b56" kindref="member">EventPtr</ref><sp/>pev)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BLINKYBLOCKSBLOCKCODE_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlockCode.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="vertex_array_8h" kind="file" language="C++">
+    <compoundname>vertexArray.h</compoundname>
+    <includes local="no">GL/glew.h</includes>
+    <includes local="no">GL/freeglut.h</includes>
+    <includedby refid="vertex_array_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp</includedby>
+    <incdepgraph>
+      <node id="19697">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h</label>
+        <link refid="vertexArray.h"/>
+        <childnode refid="19698" relation="include">
+        </childnode>
+        <childnode refid="19699" relation="include">
+        </childnode>
+      </node>
+      <node id="19698">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="19699">
+        <label>GL/freeglut.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="19700">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h</label>
+        <link refid="vertexArray.h"/>
+        <childnode refid="19701" relation="include">
+        </childnode>
+      </node>
+      <node id="19701">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.cpp</label>
+        <link refid="vertex_array_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_vertex_array" prot="public">VertexArray</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>VERTEXARRAY_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>VERTEXARRAY_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;GL/glew.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;GL/freeglut.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="class_vertex_array" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_vertex_array" kindref="compound">VertexArray</ref><sp/>{</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/>GLfloat<sp/>*tabVertices,*tabNormals,*tabTexCoords;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/>*tabIndices;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>GLuint<sp/>nbrePts,nbreIndices;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vertex_array_1ad50cd65c132d791c50459abd6e541764" kindref="member">VertexArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>np,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ni);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vertex_array_1a82597eb9daba5ad66dd3cf898e159a95" kindref="member">~VertexArray</ref>();</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1add89da6087c7d14771b99a3f4d621c67" kindref="member">setPoint</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n,GLfloat<sp/>px,GLfloat<sp/>py,GLfloat<sp/>pz,GLfloat<sp/>nx,GLfloat<sp/>ny,GLfloat<sp/>nz,GLfloat<sp/>tx,GLfloat<sp/>ty);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1a79a9cc25ceb4e53215a0e09628ebaedd" kindref="member">setIndicesTriangle</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n,GLuint<sp/>i1,GLuint<sp/>i2,GLuint<sp/>i3);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1a8fa8a59d9a7edf881efaee11458ba93a" kindref="member">draw</ref>();</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_vertex_array_1a9100788a8b50fc2040217992db6c20e4" kindref="member">drawNormals</ref>();</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/vertexArray.h"/>
+  </compounddef>
+</doxygen>

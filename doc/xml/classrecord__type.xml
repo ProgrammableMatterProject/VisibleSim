@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="classrecord__type" kind="class" language="C++" prot="public">
+    <compoundname>record_type</compoundname>
+    <includes refid="meld_interpret_v_m_8h" local="no">meldInterpretVM.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classrecord__type_1a5dd2e58208c69bb026d0bfc63a271097" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int record_type::count</definition>
+        <argsstring></argsstring>
+        <name>count</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="45" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="45" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1ad5c7795e098978990a35766b2bc7ffc6" compoundref="meld_interpret_v_m_8cpp" startline="87" endline="96">MeldInterpret::MeldInterpretVM::print_newTuples</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a21ea814519024dd9c2aa4caae77bf5a5" compoundref="meld_interpret_v_m_8cpp" startline="99" endline="111">MeldInterpret::MeldInterpretVM::print_newStratTuples</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a26e36a24ac72f705f031fdacabe09494" compoundref="meld_interpret_v_m_8cpp" startline="222" endline="311">MeldInterpret::MeldInterpretVM::processOneRule</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a78f4930e27312529c3cb0a9d5a43fa4c" compoundref="meld_interpret_v_m_8cpp" startline="1789" endline="1801">MeldInterpret::MeldInterpretVM::queue_dequeue</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1acde56c47a66cb2851ec6e5c52b94b053" compoundref="meld_interpret_v_m_8cpp" startline="2052" endline="2099">MeldInterpret::MeldInterpretVM::aggregate_recalc</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a0ddea5ec56158262a1327004f3354db2" compoundref="meld_interpret_v_m_8cpp" startline="2109" endline="2296">MeldInterpret::MeldInterpretVM::tuple_do_handle</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a480469f018f1c114fca1762ad438ca36" compoundref="meld_interpret_v_m_8cpp" startline="3111" endline="3165">MeldInterpret::MeldInterpretVM::facts_dump</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classrecord__type_1a55dc166afba41ef535652d222057490f" prot="public" static="no" mutable="no">
+        <type><ref refid="meld_interpret_v_m_8h_1ad455dc062d309f92016369afb0c423fd" kindref="member">tuple_queue</ref> *</type>
+        <definition>tuple_queue* record_type::agg_queue</definition>
+        <argsstring></argsstring>
+        <name>agg_queue</name>
+        <initializer>= NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="46" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="46" bodyend="-1"/>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1acde56c47a66cb2851ec6e5c52b94b053" compoundref="meld_interpret_v_m_8cpp" startline="2052" endline="2099">MeldInterpret::MeldInterpretVM::aggregate_recalc</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a0ddea5ec56158262a1327004f3354db2" compoundref="meld_interpret_v_m_8cpp" startline="2109" endline="2296">MeldInterpret::MeldInterpretVM::tuple_do_handle</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a480469f018f1c114fca1762ad438ca36" compoundref="meld_interpret_v_m_8cpp" startline="3111" endline="3165">MeldInterpret::MeldInterpretVM::facts_dump</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classrecord__type_1a9729225d07597ad6e7d66fcfefad9a80" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>record_type::record_type</definition>
+        <argsstring>(int i)</argsstring>
+        <name>record_type</name>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="47" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classrecord__type_1a7aeb27436fae52f3648e3d9d42c910e0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>record_type::record_type</definition>
+        <argsstring>(tuple_queue *q)</argsstring>
+        <name>record_type</name>
+        <param>
+          <type><ref refid="meld_interpret_v_m_8h_1ad455dc062d309f92016369afb0c423fd" kindref="member">tuple_queue</ref> *</type>
+          <declname>q</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="classrecord__type_1a686e12b654ea39feec690680786503fe" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>record_type::operator int</definition>
+        <argsstring>() const </argsstring>
+        <name>operator int</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="53" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classrecord__type_1a3771add1f0f65a8f619e2bfc93325008" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>record_type::operator tuple_queue *</definition>
+        <argsstring>() const </argsstring>
+        <name>operator tuple_queue *</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="56" bodyend="58"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2218">
+        <label>_tuple_queue</label>
+        <link refid="struct__tuple__queue"/>
+        <childnode refid="2219" relation="usage">
+          <edgelabel>head</edgelabel>
+          <edgelabel>tail</edgelabel>
+        </childnode>
+      </node>
+      <node id="2219">
+        <label>_tuple_entry</label>
+        <link refid="struct__tuple__entry"/>
+        <childnode refid="2217" relation="usage">
+          <edgelabel>records</edgelabel>
+        </childnode>
+        <childnode refid="2219" relation="usage">
+          <edgelabel>next</edgelabel>
+        </childnode>
+      </node>
+      <node id="2217">
+        <label>record_type</label>
+        <link refid="classrecord__type"/>
+        <childnode refid="2218" relation="usage">
+          <edgelabel>agg_queue</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" line="43" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.h" bodystart="43" bodyend="59"/>
+    <listofallmembers>
+      <member refid="classrecord__type_1a55dc166afba41ef535652d222057490f" prot="public" virt="non-virtual"><scope>record_type</scope><name>agg_queue</name></member>
+      <member refid="classrecord__type_1a5dd2e58208c69bb026d0bfc63a271097" prot="public" virt="non-virtual"><scope>record_type</scope><name>count</name></member>
+      <member refid="classrecord__type_1a686e12b654ea39feec690680786503fe" prot="public" virt="non-virtual"><scope>record_type</scope><name>operator int</name></member>
+      <member refid="classrecord__type_1a3771add1f0f65a8f619e2bfc93325008" prot="public" virt="non-virtual"><scope>record_type</scope><name>operator tuple_queue *</name></member>
+      <member refid="classrecord__type_1a9729225d07597ad6e7d66fcfefad9a80" prot="public" virt="non-virtual"><scope>record_type</scope><name>record_type</name></member>
+      <member refid="classrecord__type_1a7aeb27436fae52f3648e3d9d42c910e0" prot="public" virt="non-virtual"><scope>record_type</scope><name>record_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

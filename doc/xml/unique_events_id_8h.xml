@@ -1,0 +1,1221 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="unique_events_id_8h" kind="file" language="C++">
+    <compoundname>uniqueEventsId.h</compoundname>
+    <includedby refid="events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</includedby>
+    <includedby refid="multi_cores_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.h</includedby>
+    <invincdepgraph>
+      <node id="19467">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="19439">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="19435" relation="include">
+        </childnode>
+        <childnode refid="19440" relation="include">
+        </childnode>
+        <childnode refid="19437" relation="include">
+        </childnode>
+      </node>
+      <node id="19508">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.cpp</label>
+        <link refid="smart_blocks_world_8cpp"/>
+      </node>
+      <node id="19484">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3_d_block_code_8h"/>
+        <childnode refid="19485" relation="include">
+        </childnode>
+        <childnode refid="19456" relation="include">
+        </childnode>
+        <childnode refid="19491" relation="include">
+        </childnode>
+      </node>
+      <node id="19499">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp</label>
+        <link refid="multi_cores_world_8cpp"/>
+      </node>
+      <node id="19473">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</label>
+        <link refid="cpp_scheduler_8cpp"/>
+      </node>
+      <node id="19481">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp</label>
+        <link refid="building_block_8cpp"/>
+      </node>
+      <node id="19464">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="19465" relation="include">
+        </childnode>
+        <childnode refid="19466" relation="include">
+        </childnode>
+        <childnode refid="19468" relation="include">
+        </childnode>
+        <childnode refid="19469" relation="include">
+        </childnode>
+      </node>
+      <node id="19435">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="19436" relation="include">
+        </childnode>
+        <childnode refid="19437" relation="include">
+        </childnode>
+        <childnode refid="19438" relation="include">
+        </childnode>
+      </node>
+      <node id="19519">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.cpp</label>
+        <link refid="multi_cores_events_8cpp"/>
+      </node>
+      <node id="19517">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</label>
+        <link refid="catoms2_d_world_8h"/>
+        <childnode refid="19450" relation="include">
+        </childnode>
+        <childnode refid="19449" relation="include">
+        </childnode>
+        <childnode refid="19483" relation="include">
+        </childnode>
+        <childnode refid="19453" relation="include">
+        </childnode>
+        <childnode refid="19455" relation="include">
+        </childnode>
+      </node>
+      <node id="19472">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</label>
+        <link refid="cpp_scheduler_8h"/>
+        <childnode refid="19439" relation="include">
+        </childnode>
+        <childnode refid="19473" relation="include">
+        </childnode>
+      </node>
+      <node id="19489">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</label>
+        <link refid="catoms3_d_scheduler_8h"/>
+        <childnode refid="19456" relation="include">
+        </childnode>
+        <childnode refid="19487" relation="include">
+        </childnode>
+        <childnode refid="19458" relation="include">
+        </childnode>
+        <childnode refid="19488" relation="include">
+        </childnode>
+      </node>
+      <node id="19444">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</label>
+        <link refid="meld_process_scheduler_8cpp"/>
+      </node>
+      <node id="19494">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.cpp</label>
+        <link refid="config_stat_8cpp"/>
+      </node>
+      <node id="19451">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h</label>
+        <link refid="catoms2_d_generic_8h"/>
+        <childnode refid="19452" relation="include">
+        </childnode>
+      </node>
+      <node id="19440">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="19502">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="19516">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp</label>
+        <link refid="catoms2_d_move_8cpp"/>
+      </node>
+      <node id="19518">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.h</label>
+        <link refid="multi_cores_events_8h"/>
+        <childnode refid="19519" relation="include">
+        </childnode>
+        <childnode refid="19461" relation="include">
+        </childnode>
+      </node>
+      <node id="19497">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp</label>
+        <link refid="meld_process_v_m_commands_8cpp"/>
+      </node>
+      <node id="19436">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="19442">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</label>
+        <link refid="meld_process_events_8h"/>
+        <childnode refid="19436" relation="include">
+        </childnode>
+        <childnode refid="19443" relation="include">
+        </childnode>
+        <childnode refid="19444" relation="include">
+        </childnode>
+        <childnode refid="19445" relation="include">
+        </childnode>
+      </node>
+      <node id="19438">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="19479">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="19436" relation="include">
+        </childnode>
+        <childnode refid="19435" relation="include">
+        </childnode>
+        <childnode refid="19478" relation="include">
+        </childnode>
+        <childnode refid="19437" relation="include">
+        </childnode>
+        <childnode refid="19480" relation="include">
+        </childnode>
+      </node>
+      <node id="19443">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.cpp</label>
+        <link refid="meld_process_events_8cpp"/>
+      </node>
+      <node id="19510">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</label>
+        <link refid="meld_interpret_events_8h"/>
+        <childnode refid="19436" relation="include">
+        </childnode>
+        <childnode refid="19476" relation="include">
+        </childnode>
+        <childnode refid="19460" relation="include">
+        </childnode>
+        <childnode refid="19477" relation="include">
+        </childnode>
+      </node>
+      <node id="19460">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</label>
+        <link refid="meld_interpret_scheduler_8cpp"/>
+      </node>
+      <node id="19449">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.h</label>
+        <link refid="catoms2_d_simulator_8h"/>
+        <childnode refid="19450" relation="include">
+        </childnode>
+        <childnode refid="19451" relation="include">
+        </childnode>
+        <childnode refid="19453" relation="include">
+        </childnode>
+        <childnode refid="19454" relation="include">
+        </childnode>
+        <childnode refid="19455" relation="include">
+        </childnode>
+      </node>
+      <node id="19461">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h</label>
+        <link refid="multi_cores_simulator_8h"/>
+        <childnode refid="19462" relation="include">
+        </childnode>
+        <childnode refid="19463" relation="include">
+        </childnode>
+      </node>
+      <node id="19466">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="19467" relation="include">
+        </childnode>
+      </node>
+      <node id="19511">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h</label>
+        <link refid="catoms2_d_events_8h"/>
+        <childnode refid="19512" relation="include">
+        </childnode>
+        <childnode refid="19483" relation="include">
+        </childnode>
+        <childnode refid="19451" relation="include">
+        </childnode>
+      </node>
+      <node id="19505">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.h</label>
+        <link refid="smart_blocks_scheduler_8h"/>
+        <childnode refid="19506" relation="include">
+        </childnode>
+        <childnode refid="19507" relation="include">
+        </childnode>
+        <childnode refid="19470" relation="include">
+        </childnode>
+        <childnode refid="19508" relation="include">
+        </childnode>
+      </node>
+      <node id="19520">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h</label>
+        <link refid="robot_blocks_events_8h"/>
+        <childnode refid="19502" relation="include">
+        </childnode>
+        <childnode refid="19466" relation="include">
+        </childnode>
+      </node>
+      <node id="19490">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</label>
+        <link refid="catoms3_d_events_8h"/>
+        <childnode refid="19487" relation="include">
+        </childnode>
+      </node>
+      <node id="19521">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smart_blocks_events_8h"/>
+        <childnode refid="19506" relation="include">
+        </childnode>
+      </node>
+      <node id="19431">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h</label>
+        <link refid="uniqueEventsId.h"/>
+        <childnode refid="19432" relation="include">
+        </childnode>
+        <childnode refid="19518" relation="include">
+        </childnode>
+      </node>
+      <node id="19453">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.cpp</label>
+        <link refid="catoms2_d_scheduler_8cpp"/>
+      </node>
+      <node id="19483">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp</label>
+        <link refid="catoms2_d_events_8cpp"/>
+      </node>
+      <node id="19513">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.h</label>
+        <link refid="catoms2_d_block_code_8h"/>
+        <childnode refid="19512" relation="include">
+        </childnode>
+        <childnode refid="19449" relation="include">
+        </childnode>
+        <childnode refid="19514" relation="include">
+        </childnode>
+        <childnode refid="19451" relation="include">
+        </childnode>
+      </node>
+      <node id="19475">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h</label>
+        <link refid="meld_interpret_scheduler_8h"/>
+        <childnode refid="19439" relation="include">
+        </childnode>
+        <childnode refid="19476" relation="include">
+        </childnode>
+        <childnode refid="19460" relation="include">
+        </childnode>
+        <childnode refid="19477" relation="include">
+        </childnode>
+      </node>
+      <node id="19514">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.cpp</label>
+        <link refid="catoms2_d_block_code_8cpp"/>
+      </node>
+      <node id="19441">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="19442" relation="include">
+        </childnode>
+        <childnode refid="19446" relation="include">
+        </childnode>
+        <childnode refid="19444" relation="include">
+        </childnode>
+        <childnode refid="19445" relation="include">
+        </childnode>
+        <childnode refid="19447" relation="include">
+        </childnode>
+        <childnode refid="19448" relation="include">
+        </childnode>
+      </node>
+      <node id="19452">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp</label>
+        <link refid="catoms2_d_generic_8cpp"/>
+      </node>
+      <node id="19476">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp</label>
+        <link refid="meld_interpret_events_8cpp"/>
+      </node>
+      <node id="19471">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp</label>
+        <link refid="smart_blocks_simulator_8cpp"/>
+      </node>
+      <node id="19448">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="19512">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.h</label>
+        <link refid="catoms2_d_block_8h"/>
+        <childnode refid="19450" relation="include">
+        </childnode>
+        <childnode refid="19513" relation="include">
+        </childnode>
+        <childnode refid="19515" relation="include">
+        </childnode>
+        <childnode refid="19517" relation="include">
+        </childnode>
+        <childnode refid="19482" relation="include">
+        </childnode>
+        <childnode refid="19451" relation="include">
+        </childnode>
+        <childnode refid="19455" relation="include">
+        </childnode>
+      </node>
+      <node id="19477">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</label>
+        <link refid="meld_interpret_v_m_8cpp"/>
+      </node>
+      <node id="19515">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h</label>
+        <link refid="catoms2_d_move_8h"/>
+        <childnode refid="19511" relation="include">
+        </childnode>
+        <childnode refid="19483" relation="include">
+        </childnode>
+        <childnode refid="19516" relation="include">
+        </childnode>
+      </node>
+      <node id="19463">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.cpp</label>
+        <link refid="multi_cores_simulator_8cpp"/>
+      </node>
+      <node id="19482">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.h</label>
+        <link refid="catoms2_d_scheduler_8h"/>
+        <childnode refid="19449" relation="include">
+        </childnode>
+        <childnode refid="19483" relation="include">
+        </childnode>
+        <childnode refid="19451" relation="include">
+        </childnode>
+        <childnode refid="19453" relation="include">
+        </childnode>
+        <childnode refid="19455" relation="include">
+        </childnode>
+      </node>
+      <node id="19459">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.cpp</label>
+        <link refid="catoms3_d_simulator_8cpp"/>
+      </node>
+      <node id="19498">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h</label>
+        <link refid="multi_cores_scheduler_8h"/>
+        <childnode refid="19461" relation="include">
+        </childnode>
+        <childnode refid="19462" relation="include">
+        </childnode>
+        <childnode refid="19499" relation="include">
+        </childnode>
+      </node>
+      <node id="19457">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.cpp</label>
+        <link refid="catoms3_d_block_8cpp"/>
+      </node>
+      <node id="19509">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</label>
+        <link refid="blinky_blocks_events_8h"/>
+        <childnode refid="19436" relation="include">
+        </childnode>
+        <childnode refid="19440" relation="include">
+        </childnode>
+        <childnode refid="19480" relation="include">
+        </childnode>
+      </node>
+      <node id="19487">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp</label>
+        <link refid="catoms3_d_events_8cpp"/>
+      </node>
+      <node id="19501">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robot_blocks_scheduler_8h"/>
+        <childnode refid="19464" relation="include">
+        </childnode>
+        <childnode refid="19502" relation="include">
+        </childnode>
+        <childnode refid="19466" relation="include">
+        </childnode>
+        <childnode refid="19468" relation="include">
+        </childnode>
+        <childnode refid="19503" relation="include">
+        </childnode>
+      </node>
+      <node id="19437">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="19434">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="19435" relation="include">
+        </childnode>
+        <childnode refid="19439" relation="include">
+        </childnode>
+        <childnode refid="19441" relation="include">
+        </childnode>
+        <childnode refid="19449" relation="include">
+        </childnode>
+        <childnode refid="19456" relation="include">
+        </childnode>
+        <childnode refid="19460" relation="include">
+        </childnode>
+        <childnode refid="19444" relation="include">
+        </childnode>
+        <childnode refid="19461" relation="include">
+        </childnode>
+        <childnode refid="19464" relation="include">
+        </childnode>
+        <childnode refid="19448" relation="include">
+        </childnode>
+        <childnode refid="19470" relation="include">
+        </childnode>
+      </node>
+      <node id="19458">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp</label>
+        <link refid="catoms3_d_scheduler_8cpp"/>
+      </node>
+      <node id="19433">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="19434" relation="include">
+        </childnode>
+        <childnode refid="19439" relation="include">
+        </childnode>
+        <childnode refid="19472" relation="include">
+        </childnode>
+        <childnode refid="19474" relation="include">
+        </childnode>
+        <childnode refid="19475" relation="include">
+        </childnode>
+        <childnode refid="19478" relation="include">
+        </childnode>
+        <childnode refid="19481" relation="include">
+        </childnode>
+        <childnode refid="19482" relation="include">
+        </childnode>
+        <childnode refid="19484" relation="include">
+        </childnode>
+        <childnode refid="19489" relation="include">
+        </childnode>
+        <childnode refid="19492" relation="include">
+        </childnode>
+        <childnode refid="19493" relation="include">
+        </childnode>
+        <childnode refid="19494" relation="include">
+        </childnode>
+        <childnode refid="19495" relation="include">
+        </childnode>
+        <childnode refid="19496" relation="include">
+        </childnode>
+        <childnode refid="19497" relation="include">
+        </childnode>
+        <childnode refid="19498" relation="include">
+        </childnode>
+        <childnode refid="19500" relation="include">
+        </childnode>
+        <childnode refid="19447" relation="include">
+        </childnode>
+        <childnode refid="19501" relation="include">
+        </childnode>
+        <childnode refid="19504" relation="include">
+        </childnode>
+        <childnode refid="19505" relation="include">
+        </childnode>
+        <childnode refid="19508" relation="include">
+        </childnode>
+      </node>
+      <node id="19455">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.cpp</label>
+        <link refid="catoms2_d_world_8cpp"/>
+      </node>
+      <node id="19450">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.cpp</label>
+        <link refid="catoms2_d_block_8cpp"/>
+      </node>
+      <node id="19470">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h</label>
+        <link refid="smart_blocks_simulator_8h"/>
+        <childnode refid="19471" relation="include">
+        </childnode>
+      </node>
+      <node id="19447">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp</label>
+        <link refid="opengl_viewer_8cpp"/>
+      </node>
+      <node id="19492">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.cpp</label>
+        <link refid="clock_8cpp"/>
+      </node>
+      <node id="19488">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.cpp</label>
+        <link refid="catoms3_d_world_8cpp"/>
+      </node>
+      <node id="19456">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</label>
+        <link refid="catoms3_d_simulator_8h"/>
+        <childnode refid="19457" relation="include">
+        </childnode>
+        <childnode refid="19458" relation="include">
+        </childnode>
+        <childnode refid="19459" relation="include">
+        </childnode>
+      </node>
+      <node id="19491">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3_d_block_code_8cpp"/>
+      </node>
+      <node id="19446">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</label>
+        <link refid="meld_process_debugger_8cpp"/>
+      </node>
+      <node id="19478">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="19479" relation="include">
+        </childnode>
+      </node>
+      <node id="19507">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.cpp</label>
+        <link refid="smart_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="19465">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="19480">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+      <node id="19469">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="19485">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="19457" relation="include">
+        </childnode>
+        <childnode refid="19484" relation="include">
+        </childnode>
+        <childnode refid="19486" relation="include">
+        </childnode>
+        <childnode refid="19489" relation="include">
+        </childnode>
+        <childnode refid="19490" relation="include">
+        </childnode>
+        <childnode refid="19488" relation="include">
+        </childnode>
+      </node>
+      <node id="19445">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</label>
+        <link refid="meld_process_v_m_8cpp"/>
+      </node>
+      <node id="19504">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.cpp</label>
+        <link refid="scheduler_8cpp"/>
+      </node>
+      <node id="19503">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="19454">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.cpp</label>
+        <link refid="catoms2_d_simulator_8cpp"/>
+      </node>
+      <node id="19495">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp</label>
+        <link refid="events_8cpp"/>
+      </node>
+      <node id="19486">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</label>
+        <link refid="catoms3_d_world_8h"/>
+        <childnode refid="19457" relation="include">
+        </childnode>
+        <childnode refid="19456" relation="include">
+        </childnode>
+        <childnode refid="19487" relation="include">
+        </childnode>
+        <childnode refid="19458" relation="include">
+        </childnode>
+        <childnode refid="19488" relation="include">
+        </childnode>
+      </node>
+      <node id="19493">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/commandLine.cpp</label>
+        <link refid="command_line_8cpp"/>
+      </node>
+      <node id="19462">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp</label>
+        <link refid="multi_cores_scheduler_8cpp"/>
+      </node>
+      <node id="19432">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="19433" relation="include">
+        </childnode>
+        <childnode refid="19509" relation="include">
+        </childnode>
+        <childnode refid="19442" relation="include">
+        </childnode>
+        <childnode refid="19510" relation="include">
+        </childnode>
+        <childnode refid="19511" relation="include">
+        </childnode>
+        <childnode refid="19490" relation="include">
+        </childnode>
+        <childnode refid="19495" relation="include">
+        </childnode>
+        <childnode refid="19477" relation="include">
+        </childnode>
+        <childnode refid="19445" relation="include">
+        </childnode>
+        <childnode refid="19518" relation="include">
+        </childnode>
+        <childnode refid="19447" relation="include">
+        </childnode>
+        <childnode refid="19520" relation="include">
+        </childnode>
+        <childnode refid="19521" relation="include">
+        </childnode>
+      </node>
+      <node id="19500">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp</label>
+        <link refid="network_8cpp"/>
+      </node>
+      <node id="19506">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</label>
+        <link refid="smart_blocks_events_8cpp"/>
+      </node>
+      <node id="19468">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="19474">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="19439" relation="include">
+        </childnode>
+        <childnode refid="19441" relation="include">
+        </childnode>
+        <childnode refid="19443" relation="include">
+        </childnode>
+        <childnode refid="19444" relation="include">
+        </childnode>
+        <childnode refid="19445" relation="include">
+        </childnode>
+      </node>
+      <node id="19496">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp</label>
+        <link refid="interface_8cpp"/>
+      </node>
+    </invincdepgraph>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="unique_events_id_8h_1ab7ac99beb1e5d6cf7a02da77de5e0a5d" prot="public" static="no">
+        <name>EVENT_GENERIC</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="11" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a877dc79b1964d1c3327995b3c10315c8" prot="public" static="no">
+        <name>EVENT_CODE_START</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="12" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ac28c041c5a619459156620ae80a0577f" prot="public" static="no">
+        <name>EVENT_NI_START_TRANSMITTING</name>
+        <initializer>3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="13" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a303b78071e10ec246e9f3a081390b7f3" prot="public" static="no">
+        <name>EVENT_NI_STOP_TRANSMITTING</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="14" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a5149addf71a0eaf7253ffbe3325d70da" prot="public" static="no">
+        <name>EVENT_NI_RECEIVE</name>
+        <initializer>5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="15" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ab294016f82a7a8c43b1ee10c9bb40f00" prot="public" static="no">
+        <name>EVENT_NI_ENQUEUE_OUTGOING_MESSAGE</name>
+        <initializer>6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="16" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1aee034252fb7eded601a94a38a8eaca86" prot="public" static="no">
+        <name>EVENT_PROCESS_LOCAL_EVENT</name>
+        <initializer>7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="17" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a1db148c005f5651023adff565b0e95d7" prot="public" static="no">
+        <name>EVENT_BLOCK_TIMER</name>
+        <initializer>8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="18" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a3b0101e6c47745d37650cbddd728aff0" prot="public" static="no">
+        <name>EVENT_END_SIMULATION</name>
+        <initializer>9</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="19" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a0d0ddfb72bcee1c152cd35d1ccfc27bf" prot="public" static="no">
+        <name>BLOCKEVENT_GENERIC</name>
+        <initializer>10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="20" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1af8437b80ad389c894267ab9b567fd96b" prot="public" static="no">
+        <name>EVENT_SAVE_SCREEN</name>
+        <initializer>11</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="21" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a0c14ae3eeda1365cfd7aef67057a7cef" prot="public" static="no">
+        <name>EVENT_VM_START_COMPUTATION</name>
+        <initializer>1001</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="23" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a554743e3a4dd917b53577ecbf70c7127" prot="public" static="no">
+        <name>EVENT_VM_END_COMPUTATION</name>
+        <initializer>1002</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="24" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1aa0b8a68d6d43c1031c8f22347e48a0c8" prot="public" static="no">
+        <name>EVENT_VM_START_TRANSMISSION</name>
+        <initializer>1005</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="25" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ac71dcf93eb9694ebd924c630a25e06d7" prot="public" static="no">
+        <name>EVENT_VM_WAIT_FOR_COMMAND</name>
+        <initializer>1006</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="26" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1add94ccd4a578a34b8ef4d072161e3edd" prot="public" static="no">
+        <name>EVENT_VM_TIMEOUT_WAIT_FOR_COMMAND</name>
+        <initializer>1007</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="27" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a03685c2c4c481e47a7f707f291f2fe93" prot="public" static="no">
+        <name>EVENT_SET_ID</name>
+        <initializer>1050</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="30" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a906099a8d2a98f3e1c5496bfe955f0bd" prot="public" static="no">
+        <name>EVENT_STOP</name>
+        <initializer>1051</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="31" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a09e075867c8e92c6906a3fd2a67518c2" prot="public" static="no">
+        <name>EVENT_HANDLE_DEBUG_COMMAND</name>
+        <initializer>1058</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="32" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ac85c12ea0f17e3d749573302b63173a1" prot="public" static="no">
+        <name>EVENT_DEBUG_PAUSE_SIMULATION</name>
+        <initializer>1059</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="33" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a73a744c0848e9200785eff75b3463994" prot="public" static="no">
+        <name>EVENT_SET_DETERMINISTIC</name>
+        <initializer>1060</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="34" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1aedeb197451a30cc15eb0aab73859beda" prot="public" static="no">
+        <name>EVENT_RESUME_COMPUTATION</name>
+        <initializer>1061</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="35" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a4bbe5d658556bb6f3f8910c94e663817" prot="public" static="no">
+        <name>EVENT_EXPECTED_COMPUTATION_PAUSE</name>
+        <initializer>1062</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="36" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a3774e4c4ee65686b8963dacc29442444" prot="public" static="no">
+        <name>EVENT_EFFECTIVE_COMPUTATION_PAUSE</name>
+        <initializer>1063</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="37" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a37d9bbaca263dc78cb4fca6da14547d8" prot="public" static="no">
+        <name>EVENT_END_POLL</name>
+        <initializer>1064</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="38" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1aeec354f3730936512d96d63dd1512386" prot="public" static="no">
+        <name>EVENT_COMPUTE_PREDICATE</name>
+        <initializer>1065</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="39" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a2316706d6d4dead006a19abb79bf8999" prot="public" static="no">
+        <name>EVENT_ADD_TUPLE</name>
+        <initializer>1066</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="40" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a1fc798df129b1e9a1890be82b20ae299" prot="public" static="no">
+        <name>EVENT_REMOVE_TUPLE</name>
+        <initializer>1067</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="41" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a048e934e6fc212067f0f2f9d9cbf3df5" prot="public" static="no">
+        <name>EVENT_ADD_NEIGHBOR</name>
+        <initializer>1052</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="44" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1af5e8f74215567a68e0d4d08dfd6e3ee0" prot="public" static="no">
+        <name>EVENT_REMOVE_NEIGHBOR</name>
+        <initializer>1053</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="45" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ab3e1da5e129bfe31eb23431cc620f3fb" prot="public" static="no">
+        <name>EVENT_TAP</name>
+        <initializer>1054</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="46" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a16b3929bf47c7e69aa4faea329814045" prot="public" static="no">
+        <name>EVENT_SET_COLOR</name>
+        <initializer>1055</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="47" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a7584ea897f1c62cfc4eb09b15f134dd9" prot="public" static="no">
+        <name>EVENT_SEND_MESSAGE</name>
+        <initializer><ref refid="unique_events_id_8h_1aa0b8a68d6d43c1031c8f22347e48a0c8" kindref="member">EVENT_VM_START_TRANSMISSION</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="48" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ab28a9ae563df26f6029f4fe339899026" prot="public" static="no">
+        <name>EVENT_RECEIVE_MESSAGE</name>
+        <initializer><ref refid="unique_events_id_8h_1a5149addf71a0eaf7253ffbe3325d70da" kindref="member">EVENT_NI_RECEIVE</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="49" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ae6e2744c47b024d7d384288f9b4f7554" prot="public" static="no">
+        <name>EVENT_ACCEL</name>
+        <initializer>1056</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="50" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a9c8cce3bf8c24f28c3ec4df4093d4920" prot="public" static="no">
+        <name>EVENT_SHAKE</name>
+        <initializer>1057</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="51" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1ac42969c5e8ca83cdf102d4c8e250f05c" prot="public" static="no">
+        <name>EVENT_MOTION_START</name>
+        <initializer>1101</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="54" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a405b7e3c72aa8d2b6cf802b28cec8c4c" prot="public" static="no">
+        <name>EVENT_MOTION_STOP</name>
+        <initializer>1102</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="55" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a9cc2f4c7f3ef9b84729b0ebe8903df05" prot="public" static="no">
+        <name>EVENT_MOTION_STEP</name>
+        <initializer>1103</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="56" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="unique_events_id_8h_1a43f9cebc25f724798859dd81ac6b76dc" prot="public" static="no">
+        <name>EVENT_MOTION_END</name>
+        <initializer>1104</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" line="57" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>uniqueEventsId.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>26<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>UNIQUEEVENTSID_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>UNIQUEEVENTSID_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="unique_events_id_8h_1ab7ac99beb1e5d6cf7a02da77de5e0a5d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_GENERIC<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12" refid="unique_events_id_8h_1a877dc79b1964d1c3327995b3c10315c8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_CODE_START<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="unique_events_id_8h_1ac28c041c5a619459156620ae80a0577f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_NI_START_TRANSMITTING<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="unique_events_id_8h_1a303b78071e10ec246e9f3a081390b7f3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_NI_STOP_TRANSMITTING<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="unique_events_id_8h_1a5149addf71a0eaf7253ffbe3325d70da" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_NI_RECEIVE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>5</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="unique_events_id_8h_1ab294016f82a7a8c43b1ee10c9bb40f00" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_NI_ENQUEUE_OUTGOING_MESSAGE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>6</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="unique_events_id_8h_1aee034252fb7eded601a94a38a8eaca86" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_PROCESS_LOCAL_EVENT<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>7</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="unique_events_id_8h_1a1db148c005f5651023adff565b0e95d7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_BLOCK_TIMER<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="unique_events_id_8h_1a3b0101e6c47745d37650cbddd728aff0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_END_SIMULATION<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>9</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="unique_events_id_8h_1a0d0ddfb72bcee1c152cd35d1ccfc27bf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BLOCKEVENT_GENERIC<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>10</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="unique_events_id_8h_1af8437b80ad389c894267ab9b567fd96b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_SAVE_SCREEN<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>11</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="unique_events_id_8h_1a0c14ae3eeda1365cfd7aef67057a7cef" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_VM_START_COMPUTATION<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1001</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="unique_events_id_8h_1a554743e3a4dd917b53577ecbf70c7127" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_VM_END_COMPUTATION<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1002</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="unique_events_id_8h_1aa0b8a68d6d43c1031c8f22347e48a0c8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_VM_START_TRANSMISSION<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1005</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="unique_events_id_8h_1ac71dcf93eb9694ebd924c630a25e06d7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_VM_WAIT_FOR_COMMAND<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1006</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="unique_events_id_8h_1add94ccd4a578a34b8ef4d072161e3edd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_VM_TIMEOUT_WAIT_FOR_COMMAND<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1007</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>VM</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="unique_events_id_8h_1a03685c2c4c481e47a7f707f291f2fe93" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_SET_ID<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1050</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="unique_events_id_8h_1a906099a8d2a98f3e1c5496bfe955f0bd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_STOP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1051</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="unique_events_id_8h_1a09e075867c8e92c6906a3fd2a67518c2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_HANDLE_DEBUG_COMMAND<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1058</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="unique_events_id_8h_1ac85c12ea0f17e3d749573302b63173a1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_DEBUG_PAUSE_SIMULATION<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1059</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="unique_events_id_8h_1a73a744c0848e9200785eff75b3463994" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_SET_DETERMINISTIC<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1060</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="unique_events_id_8h_1aedeb197451a30cc15eb0aab73859beda" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_RESUME_COMPUTATION<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1061</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="unique_events_id_8h_1a4bbe5d658556bb6f3f8910c94e663817" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_EXPECTED_COMPUTATION_PAUSE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1062</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="unique_events_id_8h_1a3774e4c4ee65686b8963dacc29442444" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_EFFECTIVE_COMPUTATION_PAUSE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1063</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="unique_events_id_8h_1a37d9bbaca263dc78cb4fca6da14547d8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_END_POLL<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1064</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="unique_events_id_8h_1aeec354f3730936512d96d63dd1512386" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_COMPUTE_PREDICATE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1065</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="unique_events_id_8h_1a2316706d6d4dead006a19abb79bf8999" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_ADD_TUPLE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1066</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="unique_events_id_8h_1a1fc798df129b1e9a1890be82b20ae299" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_REMOVE_TUPLE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1067</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment">//<sp/>General</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="unique_events_id_8h_1a048e934e6fc212067f0f2f9d9cbf3df5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_ADD_NEIGHBOR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1052</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="unique_events_id_8h_1af5e8f74215567a68e0d4d08dfd6e3ee0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_REMOVE_NEIGHBOR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1053</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="unique_events_id_8h_1ab3e1da5e129bfe31eb23431cc620f3fb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_TAP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1054</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="unique_events_id_8h_1a16b3929bf47c7e69aa4faea329814045" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_SET_COLOR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1055</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="unique_events_id_8h_1a7584ea897f1c62cfc4eb09b15f134dd9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_SEND_MESSAGE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>EVENT_VM_START_TRANSMISSION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="unique_events_id_8h_1ab28a9ae563df26f6029f4fe339899026" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_RECEIVE_MESSAGE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>EVENT_NI_RECEIVE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="unique_events_id_8h_1ae6e2744c47b024d7d384288f9b4f7554" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_ACCEL<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1056</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="unique_events_id_8h_1a9c8cce3bf8c24f28c3ec4df4093d4920" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_SHAKE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1057</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">//<sp/>ROBOT<sp/>BLOCKS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="unique_events_id_8h_1ac42969c5e8ca83cdf102d4c8e250f05c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_MOTION_START<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1101</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="unique_events_id_8h_1a405b7e3c72aa8d2b6cf802b28cec8c4c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_MOTION_STOP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1102</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="unique_events_id_8h_1a9cc2f4c7f3ef9b84729b0ebe8903df05" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_MOTION_STEP<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1103</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="unique_events_id_8h_1a43f9cebc25f724798859dd81ac6b76dc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EVENT_MOTION_END<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1104</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>UNIQUEEVENTSID_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/uniqueEventsId.h"/>
+  </compounddef>
+</doxygen>

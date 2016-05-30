@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="struct_obj_loader_1_1vertex_pos_nrm_tx" kind="struct" language="C++" prot="public">
+    <compoundname>ObjLoader::vertexPosNrmTx</compoundname>
+    <includes refid="obj_loader_8h" local="no">objLoader.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1a08d1fdf9f5e265596fdbf8c77b78da8a" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="117" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="117" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1a4b0bc38526479d87c139aa09eb114a71" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="117" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="117" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1a0c8fcd7397134ceede894cc3736c8770" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::z</definition>
+        <argsstring></argsstring>
+        <name>z</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="117" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="117" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1a3f60727e5e7db6b8ee13f75c32e0e10f" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::nx</definition>
+        <argsstring></argsstring>
+        <name>nx</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="118" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="118" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1a01f737aa29f00e2d1eae7bdf031b4e9e" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::ny</definition>
+        <argsstring></argsstring>
+        <name>ny</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="118" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="118" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1aae2e93a0831dadbd52da86c4e30b3975" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::nz</definition>
+        <argsstring></argsstring>
+        <name>nz</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="118" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="118" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1a7460622fa7b4af4be6693d19c70a2df8" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::s</definition>
+        <argsstring></argsstring>
+        <name>s</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="119" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="119" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="struct_obj_loader_1_1vertex_pos_nrm_tx_1a9348dd70e4ca8fd52ba773933e6c3216" prot="public" static="no" mutable="no">
+        <type>GLfloat</type>
+        <definition>GLfloat ObjLoader::vertexPosNrmTx::t</definition>
+        <argsstring></argsstring>
+        <name>t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="119" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="119" bodyend="-1"/>
+        <referencedby refid="class_obj_loader_1_1_obj_data_1a975690ee79143b316b7ff92260342f1a" compoundref="obj_loader_8cpp" startline="479" endline="536">ObjLoader::ObjData::createVertexArray</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" line="116" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/objLoader.h" bodystart="116" bodyend="120"/>
+    <listofallmembers>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1a3f60727e5e7db6b8ee13f75c32e0e10f" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>nx</name></member>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1a01f737aa29f00e2d1eae7bdf031b4e9e" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>ny</name></member>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1aae2e93a0831dadbd52da86c4e30b3975" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>nz</name></member>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1a7460622fa7b4af4be6693d19c70a2df8" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>s</name></member>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1a9348dd70e4ca8fd52ba773933e6c3216" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>t</name></member>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1a08d1fdf9f5e265596fdbf8c77b78da8a" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>x</name></member>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1a4b0bc38526479d87c139aa09eb114a71" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>y</name></member>
+      <member refid="struct_obj_loader_1_1vertex_pos_nrm_tx_1a0c8fcd7397134ceede894cc3736c8770" prot="public" virt="non-virtual"><scope>ObjLoader::vertexPosNrmTx</scope><name>z</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

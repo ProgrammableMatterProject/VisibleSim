@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_meld_process_1_1_receive_message_v_m_command" kind="class" language="C++" prot="public">
+    <compoundname>MeldProcess::ReceiveMessageVMCommand</compoundname>
+    <basecompoundref refid="class_meld_process_1_1_v_m_command" prot="public" virt="non-virtual">MeldProcess::VMCommand</basecompoundref>
+    <basecompoundref refid="class_message" prot="public" virt="non-virtual">Message</basecompoundref>
+    <includes refid="meld_process_v_m_commands_8h" local="no">meldProcessVMCommands.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_meld_process_1_1_receive_message_v_m_command_1af2eec2b8bf1c5105112dd89d94786f37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldProcess::ReceiveMessageVMCommand::ReceiveMessageVMCommand</definition>
+        <argsstring>(SendMessageVMCommand &amp;c)</argsstring>
+        <name>ReceiveMessageVMCommand</name>
+        <param>
+          <type><ref refid="class_meld_process_1_1_send_message_v_m_command" kindref="compound">SendMessageVMCommand</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="163" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="198" bodyend="203"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" compoundref="meld_process_v_m_commands_8cpp" startline="77" endline="82">MeldProcess::VMCommand::copyData</references>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">MeldProcess::VMCommand::data</references>
+        <references refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" compoundref="meld_process_v_m_commands_8cpp" startline="14">TYPE</references>
+        <references refid="meld_process_v_m_commands_8h_1ac3555b6a3b3c33503048e159b11fc016" compoundref="meld_process_v_m_commands_8h" startline="25">VM_COMMAND_RECEIVE_MESSAGE</references>
+        <references refid="meld_process_v_m_commands_8cpp_1abdd1bc0c9e1b837bbf643458c90e44c4" compoundref="meld_process_v_m_commands_8cpp" startline="18">PARAM2</references>
+        <references refid="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" compoundref="meld_process_v_m_commands_8cpp" startline="65" endline="67">MeldProcess::VMCommand::getSource</references>
+        <references refid="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" compoundref="meld_process_v_m_commands_8cpp" startline="16">NODE</references>
+        <references refid="class_meld_process_1_1_send_message_v_m_command_1ae3eb9091e9419f25146f98e4d1529fca" compoundref="meld_process_v_m_commands_8cpp" startline="188" endline="190">MeldProcess::SendMessageVMCommand::getDestId</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_receive_message_v_m_command_1af4ce8651e265e8c02fe24f737d08b7ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>unsigned int</type>
+        <definition>unsigned int MeldProcess::ReceiveMessageVMCommand::size</definition>
+        <argsstring>()</argsstring>
+        <name>size</name>
+        <reimplements refid="class_message_1a8c20b5cfbbecb2dc08bf18eb47043cb0">size</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="164" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="205" bodyend="208"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_receive_message_v_m_command_1ad96c24cae101c36a0bc6ccbd5e227f28" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldProcess::ReceiveMessageVMCommand::~ReceiveMessageVMCommand</definition>
+        <argsstring>()</argsstring>
+        <name>~ReceiveMessageVMCommand</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="165" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="210" bodyend="212"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">MeldProcess::VMCommand::data</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2207">
+        <label>MeldProcess::VMCommand</label>
+        <link refid="class_meld_process_1_1_v_m_command"/>
+      </node>
+      <node id="2206">
+        <label>MeldProcess::ReceiveMessageVMCommand</label>
+        <link refid="class_meld_process_1_1_receive_message_v_m_command"/>
+        <childnode refid="2207" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2208" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2208">
+        <label>Message</label>
+        <link refid="class_message"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2210">
+        <label>MeldProcess::VMCommand</label>
+        <link refid="class_meld_process_1_1_v_m_command"/>
+      </node>
+      <node id="2209">
+        <label>MeldProcess::ReceiveMessageVMCommand</label>
+        <link refid="class_meld_process_1_1_receive_message_v_m_command"/>
+        <childnode refid="2210" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2211" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2211">
+        <label>Message</label>
+        <link refid="class_message"/>
+        <childnode refid="2212" relation="usage">
+          <edgelabel>destinationInterface</edgelabel>
+          <edgelabel>sourceInterface</edgelabel>
+        </childnode>
+      </node>
+      <node id="2212">
+        <label>P2PNetworkInterface</label>
+        <link refid="class_p2_p_network_interface"/>
+        <childnode refid="2212" relation="usage">
+          <edgelabel>connectedInterface</edgelabel>
+        </childnode>
+        <childnode refid="2213" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2215">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2213" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2213">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2214" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2215" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2214">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2213" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="161" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" bodystart="161" bodyend="166"/>
+    <listofallmembers>
+      <member refid="class_message_1a17662f9b9d6c8bcf9ca3f4f67ba65f8d" prot="public" virt="virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>clone</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>copyData</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" prot="protected" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>data</name></member>
+      <member refid="class_message_1a307a420fae17e9bd201105cd0397743d" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>destinationInterface</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getContentSize</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getData</name></member>
+      <member refid="class_message_1a205fe80c0b08d73e2be7aeeb2baef531" prot="public" virt="virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getMessageName</name></member>
+      <member refid="class_message_1a11ca0a45d704f93dbdf7ec1860f20abf" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getNbMessages</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getSize</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getSource</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a177a7f5705abbee5d0cd1a3f826b2702" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getString</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a1ecac65b2b277decf691cc50e6e35744" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getTimestamp</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a9d797a8249034cd1d1ee5d988d9b1629" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getTimestamp</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1af89ad28c9013f80d2e499e25621322b7" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getType</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a4587d5e8229aa13af6b94c4df856617d" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>getType</name></member>
+      <member refid="class_message_1a46573773d5b65a28f527a44b3e4f8f2e" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>id</name></member>
+      <member refid="class_message_1a4fc4f717b634e66070366cb7722d7761" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>Message</name></member>
+      <member refid="class_message_1a25270a0fe7b0b5d32298c096867b24de" prot="protected" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>nbMessages</name></member>
+      <member refid="class_message_1a00240b1a3f109deddf714c5208b5a49c" prot="protected" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>nextId</name></member>
+      <member refid="class_meld_process_1_1_receive_message_v_m_command_1af2eec2b8bf1c5105112dd89d94786f37" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>ReceiveMessageVMCommand</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a193079affb5da0c2a9f3be49fc2ce5d5" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>setTimestamp</name></member>
+      <member refid="class_meld_process_1_1_receive_message_v_m_command_1af4ce8651e265e8c02fe24f737d08b7ed" prot="public" virt="virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>size</name></member>
+      <member refid="class_message_1a56c70396168363e83944cb6d65ef345d" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>sourceInterface</name></member>
+      <member refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>type</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" prot="protected" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>VMCommand</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a8089656f1461e1150fe11a7d7e7a2adf" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>VMCommand</name></member>
+      <member refid="class_message_1a3f7275462831f787a861271687bcad67" prot="public" virt="virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>~Message</name></member>
+      <member refid="class_meld_process_1_1_receive_message_v_m_command_1ad96c24cae101c36a0bc6ccbd5e227f28" prot="public" virt="non-virtual"><scope>MeldProcess::ReceiveMessageVMCommand</scope><name>~ReceiveMessageVMCommand</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

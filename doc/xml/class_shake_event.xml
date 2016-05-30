@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_shake_event" kind="class" language="C++" prot="public">
+    <compoundname>ShakeEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="events_8h" local="no">events.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_shake_event_1a6dac4a5d54ce0c4cec4ce186f831d6c7" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t ShakeEvent::force</definition>
+        <argsstring></argsstring>
+        <name>force</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="305" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="305" bodyend="-1"/>
+        <referencedby refid="class_shake_event_1a710e24124df25f32395ecfe9a971d172" compoundref="events_8cpp" startline="445" endline="449">ShakeEvent</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_shake_event_1a710e24124df25f32395ecfe9a971d172" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ShakeEvent::ShakeEvent</definition>
+        <argsstring>(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f)</argsstring>
+        <name>ShakeEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+          <declname>conBlock</declname>
+        </param>
+        <param>
+          <type>uint64_t</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="307" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="445" bodyend="449"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a9c8cce3bf8c24f28c3ec4df4093d4920" compoundref="unique_events_id_8h" startline="51">EVENT_SHAKE</references>
+        <references refid="class_shake_event_1a6dac4a5d54ce0c4cec4ce186f831d6c7" compoundref="events_8h" startline="305">force</references>
+        <referencedby refid="class_shake_event_1ac8338aa1242d01bd44fd2205c596167d" compoundref="events_8cpp" startline="460" endline="463">consumeBlockEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_shake_event_1ae0c32238929c12c287e2c12765118600" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ShakeEvent::ShakeEvent</definition>
+        <argsstring>(ShakeEvent *ev)</argsstring>
+        <name>ShakeEvent</name>
+        <param>
+          <type><ref refid="class_shake_event" kindref="compound">ShakeEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="308" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="451" bodyend="454"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_shake_event_1a6dac4a5d54ce0c4cec4ce186f831d6c7" compoundref="events_8h" startline="305">force</references>
+      </memberdef>
+      <memberdef kind="function" id="class_shake_event_1a79a4a1c1e8e4199b5e2c4336db548bf3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ShakeEvent::~ShakeEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~ShakeEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="309" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="456" bodyend="458"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_shake_event_1ac8338aa1242d01bd44fd2205c596167d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void ShakeEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="310" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="460" bodyend="463"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" compoundref="building_block_8cpp" startline="120" endline="130">BaseSimulator::BuildingBlock::scheduleLocalEvent</references>
+        <references refid="class_shake_event_1a710e24124df25f32395ecfe9a971d172" compoundref="events_8cpp" startline="445" endline="449">ShakeEvent</references>
+      </memberdef>
+      <memberdef kind="function" id="class_shake_event_1a1f8f7dfca41d60627d3e6423d7d40935" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string ShakeEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="311" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp" bodystart="465" bodyend="467"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2379">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2377">
+        <label>ShakeEvent</label>
+        <link refid="class_shake_event"/>
+        <childnode refid="2378" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2378">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2379" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2382">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2380">
+        <label>ShakeEvent</label>
+        <link refid="class_shake_event"/>
+        <childnode refid="2381" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2381">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2382" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2383" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2385">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2383" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2383">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2384" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2385" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2384">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2383" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" line="303" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h" bodystart="303" bodyend="312"/>
+    <listofallmembers>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>ShakeEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>ShakeEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>ShakeEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" prot="public" virt="virtual"><scope>ShakeEvent</scope><name>consume</name></member>
+      <member refid="class_shake_event_1ac8338aa1242d01bd44fd2205c596167d" prot="public" virt="virtual"><scope>ShakeEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>eventType</name></member>
+      <member refid="class_shake_event_1a6dac4a5d54ce0c4cec4ce186f831d6c7" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>force</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>ShakeEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_shake_event_1a1f8f7dfca41d60627d3e6423d7d40935" prot="public" virt="virtual"><scope>ShakeEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>id</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>ShakeEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>ShakeEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>randomNumber</name></member>
+      <member refid="class_shake_event_1a710e24124df25f32395ecfe9a971d172" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>ShakeEvent</name></member>
+      <member refid="class_shake_event_1ae0c32238929c12c287e2c12765118600" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>ShakeEvent</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>ShakeEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>ShakeEvent</scope><name>~Event</name></member>
+      <member refid="class_shake_event_1a79a4a1c1e8e4199b5e2c4336db548bf3" prot="public" virt="non-virtual"><scope>ShakeEvent</scope><name>~ShakeEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

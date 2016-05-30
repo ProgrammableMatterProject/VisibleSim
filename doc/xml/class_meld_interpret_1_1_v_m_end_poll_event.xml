@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_meld_interpret_1_1_v_m_end_poll_event" kind="class" language="C++" prot="public">
+    <compoundname>MeldInterpret::VMEndPollEvent</compoundname>
+    <basecompoundref refid="class_block_event" prot="public" virt="non-virtual">BlockEvent</basecompoundref>
+    <includes refid="meld_interpret_events_8h" local="no">meldInterpretEvents.h</includes>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_end_poll_event_1a16cee1cc2ec225b8356eef79b0091641" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldInterpret::VMEndPollEvent::VMEndPollEvent</definition>
+        <argsstring>(uint64_t, BaseSimulator::BuildingBlock *conBlock)</argsstring>
+        <name>VMEndPollEvent</name>
+        <param>
+          <type>uint64_t</type>
+          <defname>t</defname>
+        </param>
+        <param>
+          <type><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref> *</type>
+          <declname>conBlock</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="110" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="172" bodyend="176"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+        <references refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" compoundref="events_8h" startline="56">Event::randomNumber</references>
+        <references refid="class_base_simulator_1_1_building_block_1a24792d57532b46ad3af4b02c6a88360b" compoundref="building_block_8cpp" startline="149" endline="155">BaseSimulator::BuildingBlock::getNextRandomNumber</references>
+        <references refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" compoundref="events_8h" startline="55">Event::eventType</references>
+        <references refid="unique_events_id_8h_1a37d9bbaca263dc78cb4fca6da14547d8" compoundref="unique_events_id_8h" startline="38">EVENT_END_POLL</references>
+        <referencedby refid="class_meld_interpret_1_1_v_m_end_poll_event_1ac743f25ca6f538aebb0e051841117bc8" compoundref="meld_interpret_events_8cpp" startline="186" endline="190">consumeBlockEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_end_poll_event_1aab4c47a3fd3bb29b7b3c481d762099f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldInterpret::VMEndPollEvent::VMEndPollEvent</definition>
+        <argsstring>(VMEndPollEvent *ev)</argsstring>
+        <name>VMEndPollEvent</name>
+        <param>
+          <type><ref refid="class_meld_interpret_1_1_v_m_end_poll_event" kindref="compound">VMEndPollEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="111" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="178" bodyend="180"/>
+        <references refid="events_8h_1ac17b4715795e4b3ad2abe3afef4f3624" compoundref="events_8h" startline="31">EVENT_CONSTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_end_poll_event_1ac8d109cfd8e473c4be1f7e640015f7e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldInterpret::VMEndPollEvent::~VMEndPollEvent</definition>
+        <argsstring>()</argsstring>
+        <name>~VMEndPollEvent</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="112" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="182" bodyend="184"/>
+        <references refid="events_8h_1a2dd9eaba50cd9ad7740599310732d271" compoundref="events_8h" startline="32">EVENT_DESTRUCTOR_INFO</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_end_poll_event_1ac743f25ca6f538aebb0e051841117bc8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void MeldInterpret::VMEndPollEvent::consumeBlockEvent</definition>
+        <argsstring>()</argsstring>
+        <name>consumeBlockEvent</name>
+        <reimplements refid="class_block_event_1ab80005615b33c49e46ea2c03ec82feef">consumeBlockEvent</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="113" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="186" bodyend="190"/>
+        <references refid="events_8h_1a50c5b450f17e9072b74dfbd82df27571" compoundref="events_8h" startline="38">EVENT_CONSUME_INFO</references>
+        <references refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" compoundref="events_8h" startline="79">BlockEvent::concernedBlock</references>
+        <references refid="class_base_simulator_1_1_building_block_1aae17adb1550aa82ebc545407c4b3d5a3" compoundref="building_block_8cpp" startline="120" endline="130">BaseSimulator::BuildingBlock::scheduleLocalEvent</references>
+        <references refid="class_meld_interpret_1_1_v_m_end_poll_event_1a16cee1cc2ec225b8356eef79b0091641" compoundref="meld_interpret_events_8cpp" startline="172" endline="176">VMEndPollEvent</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_interpret_1_1_v_m_end_poll_event_1a1dca784eaa83f03d750c103b92305fcf" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>const string</type>
+        <definition>const string MeldInterpret::VMEndPollEvent::getEventName</definition>
+        <argsstring>()</argsstring>
+        <name>getEventName</name>
+        <reimplements refid="class_block_event_1a625cea8e0a7247d641bd52ce637e417c">getEventName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="114" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp" bodystart="192" bodyend="194"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2569">
+        <label>MeldInterpret::VMEndPollEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_end_poll_event"/>
+        <childnode refid="2570" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2571">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2570">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2571" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2572">
+        <label>MeldInterpret::VMEndPollEvent</label>
+        <link refid="class_meld_interpret_1_1_v_m_end_poll_event"/>
+        <childnode refid="2573" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2574">
+        <label>Event</label>
+        <link refid="class_event"/>
+      </node>
+      <node id="2573">
+        <label>BlockEvent</label>
+        <link refid="class_block_event"/>
+        <childnode refid="2574" relation="public-inheritance">
+        </childnode>
+        <childnode refid="2575" relation="usage">
+          <edgelabel>concernedBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2577">
+        <label>BaseSimulator::BlockCode</label>
+        <link refid="class_base_simulator_1_1_block_code"/>
+        <childnode refid="2575" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+      <node id="2575">
+        <label>BaseSimulator::BuildingBlock</label>
+        <link refid="class_base_simulator_1_1_building_block"/>
+        <childnode refid="2576" relation="usage">
+          <edgelabel>clock</edgelabel>
+        </childnode>
+        <childnode refid="2577" relation="usage">
+          <edgelabel>blockCode</edgelabel>
+        </childnode>
+      </node>
+      <node id="2576">
+        <label>BaseSimulator::Clock</label>
+        <link refid="class_base_simulator_1_1_clock"/>
+        <childnode refid="2575" relation="usage">
+          <edgelabel>hostBlock</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" line="107" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h" bodystart="107" bodyend="115"/>
+    <listofallmembers>
+      <member refid="class_block_event_1a9970a03940fd617c764910e80f49ad46" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1a6365b49ce15c203acb2a6993f503e78a" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>BlockEvent</name></member>
+      <member refid="class_block_event_1aa4277a1a0cbc2f71a46c83e412b00dcb" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>concernedBlock</name></member>
+      <member refid="class_block_event_1a03d9a29aaaa60419763b1c43f6b60d0d" prot="public" virt="virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>consume</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_end_poll_event_1ac743f25ca6f538aebb0e051841117bc8" prot="public" virt="virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>consumeBlockEvent</name></member>
+      <member refid="class_event_1abc4fdc5ab4139b5e1885912888b21b97" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>date</name></member>
+      <member refid="class_event_1a0e60c1707da11f756b66b7ea2dde47be" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a882966319ceeed9ac9ec5b69e4aabcf2" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>Event</name></member>
+      <member refid="class_event_1a89af965f2ba94e2b40824256dafa6cd6" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>eventType</name></member>
+      <member refid="class_block_event_1a765f731149929db834bb955ac840c19f" prot="public" virt="virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>getConcernedBlock</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_end_poll_event_1a1dca784eaa83f03d750c103b92305fcf" prot="public" virt="virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>getEventName</name></member>
+      <member refid="class_event_1aa8b24a8696fea56680ff8e17830dfe2a" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>getNbLivingEvents</name></member>
+      <member refid="class_event_1a98e8d962b67f768b9278481564f83ab1" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>getNextId</name></member>
+      <member refid="class_event_1a08ba599a781bea8b678251fdb7290890" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>id</name></member>
+      <member refid="class_event_1ad949ea0ad0a2be14ccf8b809483d3cc5" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>nbLivingEvents</name></member>
+      <member refid="class_event_1a1ffa1b66d8de3efc78de02c5c744f881" prot="protected" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>nextId</name></member>
+      <member refid="class_event_1ac18858eefaeb92c4b62cce489bcd26e3" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>randomNumber</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_end_poll_event_1a16cee1cc2ec225b8356eef79b0091641" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>VMEndPollEvent</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_end_poll_event_1aab4c47a3fd3bb29b7b3c481d762099f8" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>VMEndPollEvent</name></member>
+      <member refid="class_block_event_1abf8d9c0b21ca963108970f919b23f13e" prot="protected" virt="virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>~BlockEvent</name></member>
+      <member refid="class_event_1a7704ec01ce91e673885792054214b3d2" prot="public" virt="virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>~Event</name></member>
+      <member refid="class_meld_interpret_1_1_v_m_end_poll_event_1ac8d109cfd8e473c4be1f7e640015f7e8" prot="public" virt="non-virtual"><scope>MeldInterpret::VMEndPollEvent</scope><name>~VMEndPollEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

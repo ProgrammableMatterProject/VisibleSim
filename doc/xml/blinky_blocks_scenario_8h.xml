@@ -1,0 +1,566 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="blinky_blocks_scenario_8h" kind="file" language="C++">
+    <compoundname>blinkyBlocksScenario.h</compoundname>
+    <includes refid="vecteur_8h" local="yes">vecteur.h</includes>
+    <includes refid="blinky_blocks_world_8h" local="yes">blinkyBlocksWorld.h</includes>
+    <includes refid="scheduler_8h" local="yes">scheduler.h</includes>
+    <includedby refid="blinky_blocks_world_8h" local="no">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</includedby>
+    <incdepgraph>
+      <node id="10431">
+        <label>list</label>
+      </node>
+      <node id="10407">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="10408" relation="include">
+        </childnode>
+        <childnode refid="10418" relation="include">
+        </childnode>
+        <childnode refid="10415" relation="include">
+        </childnode>
+        <childnode refid="10417" relation="include">
+        </childnode>
+        <childnode refid="10419" relation="include">
+        </childnode>
+        <childnode refid="10422" relation="include">
+        </childnode>
+      </node>
+      <node id="10415">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="10411" relation="include">
+        </childnode>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10403" relation="include">
+        </childnode>
+        <childnode refid="10416" relation="include">
+        </childnode>
+        <childnode refid="10401" relation="include">
+        </childnode>
+      </node>
+      <node id="10408">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="10409" relation="include">
+        </childnode>
+        <childnode refid="10410" relation="include">
+        </childnode>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10403" relation="include">
+        </childnode>
+        <childnode refid="10411" relation="include">
+        </childnode>
+        <childnode refid="10412" relation="include">
+        </childnode>
+        <childnode refid="10413" relation="include">
+        </childnode>
+        <childnode refid="10414" relation="include">
+        </childnode>
+        <childnode refid="10415" relation="include">
+        </childnode>
+        <childnode refid="10417" relation="include">
+        </childnode>
+      </node>
+      <node id="10401">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10403" relation="include">
+        </childnode>
+        <childnode refid="10404" relation="include">
+        </childnode>
+        <childnode refid="10405" relation="include">
+        </childnode>
+      </node>
+      <node id="10422">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="10423" relation="include">
+        </childnode>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10403" relation="include">
+        </childnode>
+        <childnode refid="10405" relation="include">
+        </childnode>
+        <childnode refid="10419" relation="include">
+        </childnode>
+        <childnode refid="10424" relation="include">
+        </childnode>
+        <childnode refid="10421" relation="include">
+        </childnode>
+      </node>
+      <node id="10429">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="10450">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="10427">
+        <label>assert.h</label>
+      </node>
+      <node id="10435">
+        <label>stdint.h</label>
+      </node>
+      <node id="10410">
+        <label>stdlib.h</label>
+      </node>
+      <node id="10428">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="10429" relation="include">
+        </childnode>
+        <childnode refid="10430" relation="include">
+        </childnode>
+        <childnode refid="10426" relation="include">
+        </childnode>
+        <childnode refid="10431" relation="include">
+        </childnode>
+        <childnode refid="10419" relation="include">
+        </childnode>
+        <childnode refid="10432" relation="include">
+        </childnode>
+        <childnode refid="10434" relation="include">
+        </childnode>
+      </node>
+      <node id="10404">
+        <label>cmath</label>
+      </node>
+      <node id="10443">
+        <label>stdexcept</label>
+      </node>
+      <node id="10406">
+        <label>blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="10407" relation="include">
+        </childnode>
+        <childnode refid="10424" relation="include">
+        </childnode>
+        <childnode refid="10401" relation="include">
+        </childnode>
+        <childnode refid="10437" relation="include">
+        </childnode>
+        <childnode refid="10440" relation="include">
+        </childnode>
+        <childnode refid="10442" relation="include">
+        </childnode>
+        <childnode refid="10436" relation="include">
+        </childnode>
+        <childnode refid="10400" relation="include">
+        </childnode>
+        <childnode refid="10423" relation="include">
+        </childnode>
+        <childnode refid="10444" relation="include">
+        </childnode>
+      </node>
+      <node id="10420">
+        <label>string</label>
+      </node>
+      <node id="10411">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="10425">
+        <label>map</label>
+      </node>
+      <node id="10448">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="10419">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="10420" relation="include">
+        </childnode>
+        <childnode refid="10408" relation="include">
+        </childnode>
+        <childnode refid="10401" relation="include">
+        </childnode>
+        <childnode refid="10421" relation="include">
+        </childnode>
+      </node>
+      <node id="10405">
+        <label>memory.h</label>
+      </node>
+      <node id="10403">
+        <label>fstream</label>
+      </node>
+      <node id="10432">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="10428" relation="include">
+        </childnode>
+        <childnode refid="10433" relation="include">
+        </childnode>
+      </node>
+      <node id="10414">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="10452">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="10417">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="10416" relation="include">
+        </childnode>
+        <childnode refid="10401" relation="include">
+        </childnode>
+        <childnode refid="10415" relation="include">
+        </childnode>
+      </node>
+      <node id="10412">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="10442">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="10418">
+        <label>pthread.h</label>
+      </node>
+      <node id="10441">
+        <label>string.h</label>
+      </node>
+      <node id="10423">
+        <label>vector</label>
+      </node>
+      <node id="10453">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="10454" relation="include">
+        </childnode>
+        <childnode refid="10441" relation="include">
+        </childnode>
+        <childnode refid="10429" relation="include">
+        </childnode>
+        <childnode refid="10428" relation="include">
+        </childnode>
+      </node>
+      <node id="10447">
+        <label>sstream</label>
+      </node>
+      <node id="10446">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10447" relation="include">
+        </childnode>
+        <childnode refid="10425" relation="include">
+        </childnode>
+        <childnode refid="10433" relation="include">
+        </childnode>
+        <childnode refid="10427" relation="include">
+        </childnode>
+        <childnode refid="10448" relation="include">
+        </childnode>
+        <childnode refid="10449" relation="include">
+        </childnode>
+        <childnode refid="10426" relation="include">
+        </childnode>
+        <childnode refid="10450" relation="include">
+        </childnode>
+        <childnode refid="10451" relation="include">
+        </childnode>
+        <childnode refid="10407" relation="include">
+        </childnode>
+      </node>
+      <node id="10416">
+        <label>math.h</label>
+      </node>
+      <node id="10421">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10403" relation="include">
+        </childnode>
+        <childnode refid="10404" relation="include">
+        </childnode>
+        <childnode refid="10405" relation="include">
+        </childnode>
+        <childnode refid="10408" relation="include">
+        </childnode>
+      </node>
+      <node id="10445">
+        <label>grid.h</label>
+        <link refid="grid_8h"/>
+        <childnode refid="10423" relation="include">
+        </childnode>
+      </node>
+      <node id="10402">
+        <label>iostream</label>
+      </node>
+      <node id="10454">
+        <label>deque</label>
+      </node>
+      <node id="10400">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinkyBlocksScenario.h"/>
+        <childnode refid="10401" relation="include">
+        </childnode>
+        <childnode refid="10406" relation="include">
+        </childnode>
+        <childnode refid="10446" relation="include">
+        </childnode>
+      </node>
+      <node id="10449">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="10426">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="10438">
+        <label>blinkyBlocksBlockCode.h</label>
+        <link refid="blinky_blocks_block_code_8h"/>
+        <childnode refid="10432" relation="include">
+        </childnode>
+        <childnode refid="10437" relation="include">
+        </childnode>
+      </node>
+      <node id="10437">
+        <label>blinkyBlocksBlock.h</label>
+        <link refid="blinky_blocks_block_8h"/>
+        <childnode refid="10428" relation="include">
+        </childnode>
+        <childnode refid="10421" relation="include">
+        </childnode>
+        <childnode refid="10438" relation="include">
+        </childnode>
+        <childnode refid="10439" relation="include">
+        </childnode>
+        <childnode refid="10442" relation="include">
+        </childnode>
+        <childnode refid="10443" relation="include">
+        </childnode>
+      </node>
+      <node id="10444">
+        <label>grid3D.h</label>
+        <link refid="grid3_d_8h"/>
+        <childnode refid="10445" relation="include">
+        </childnode>
+      </node>
+      <node id="10436">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="10403" relation="include">
+        </childnode>
+      </node>
+      <node id="10451">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="10433" relation="include">
+        </childnode>
+        <childnode refid="10420" relation="include">
+        </childnode>
+        <childnode refid="10429" relation="include">
+        </childnode>
+        <childnode refid="10428" relation="include">
+        </childnode>
+        <childnode refid="10452" relation="include">
+        </childnode>
+        <childnode refid="10453" relation="include">
+        </childnode>
+        <childnode refid="10421" relation="include">
+        </childnode>
+      </node>
+      <node id="10430">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="10424">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10425" relation="include">
+        </childnode>
+        <childnode refid="10423" relation="include">
+        </childnode>
+        <childnode refid="10426" relation="include">
+        </childnode>
+        <childnode refid="10427" relation="include">
+        </childnode>
+        <childnode refid="10428" relation="include">
+        </childnode>
+        <childnode refid="10419" relation="include">
+        </childnode>
+        <childnode refid="10436" relation="include">
+        </childnode>
+      </node>
+      <node id="10439">
+        <label>blinkyBlocksGlBlock.h</label>
+        <link refid="blinky_blocks_gl_block_8h"/>
+        <childnode refid="10420" relation="include">
+        </childnode>
+        <childnode refid="10440" relation="include">
+        </childnode>
+        <childnode refid="10419" relation="include">
+        </childnode>
+      </node>
+      <node id="10413">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="10409">
+        <label>stdio.h</label>
+      </node>
+      <node id="10440">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="10407" relation="include">
+        </childnode>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10403" relation="include">
+        </childnode>
+        <childnode refid="10420" relation="include">
+        </childnode>
+        <childnode refid="10423" relation="include">
+        </childnode>
+        <childnode refid="10404" relation="include">
+        </childnode>
+        <childnode refid="10410" relation="include">
+        </childnode>
+        <childnode refid="10441" relation="include">
+        </childnode>
+      </node>
+      <node id="10434">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="10428" relation="include">
+        </childnode>
+        <childnode refid="10435" relation="include">
+        </childnode>
+        <childnode refid="10402" relation="include">
+        </childnode>
+        <childnode refid="10430" relation="include">
+        </childnode>
+        <childnode refid="10431" relation="include">
+        </childnode>
+      </node>
+      <node id="10433">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="10458">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="10457" relation="include">
+        </childnode>
+        <childnode refid="10459" relation="include">
+        </childnode>
+        <childnode refid="10460" relation="include">
+        </childnode>
+      </node>
+      <node id="10457">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="10460">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="10456">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="10457" relation="include">
+        </childnode>
+        <childnode refid="10458" relation="include">
+        </childnode>
+        <childnode refid="10455" relation="include">
+        </childnode>
+        <childnode refid="10459" relation="include">
+        </childnode>
+        <childnode refid="10461" relation="include">
+        </childnode>
+      </node>
+      <node id="10459">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="10455">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinkyBlocksScenario.h"/>
+        <childnode refid="10456" relation="include">
+        </childnode>
+      </node>
+      <node id="10461">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_scenario_event" prot="public">ScenarioEvent</innerclass>
+    <innerclass refid="class_scenario_tapp_event" prot="public">ScenarioTappEvent</innerclass>
+    <innerclass refid="class_scenario_debug_event" prot="public">ScenarioDebugEvent</innerclass>
+    <innerclass refid="class_scenario_select_block_event" prot="public">ScenarioSelectBlockEvent</innerclass>
+    <innerclass refid="class_scenario_add_block_event" prot="public">ScenarioAddBlockEvent</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>blinkyBlocksScenario.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>16<sp/>août<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>bpiranda</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>BLINKYBLOCKSSCENARIO_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BLINKYBLOCKSSCENARIO_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="vecteur_8h" kindref="compound">vecteur.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="blinky_blocks_world_8h" kindref="compound">blinkyBlocksWorld.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scheduler_8h" kindref="compound">scheduler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="class_scenario_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="16" refid="class_scenario_event_1a2450b5b5095bf5cd37e6d64e5397fe15" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event_1a2450b5b5095bf5cd37e6d64e5397fe15" kindref="member">eventTime</ref>;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="18" refid="class_scenario_event_1abd7df3bf1ed8afd2c5806c53f92695c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_event_1abd7df3bf1ed8afd2c5806c53f92695c0" kindref="member">ScenarioEvent</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>t):eventTime(t)<sp/>{};</highlight></codeline>
+<codeline lineno="19" refid="class_scenario_event_1abc03197faf88d5738826fe562cb12c5b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event_1abc03197faf88d5738826fe562cb12c5b" kindref="member">~ScenarioEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="21" refid="class_scenario_event_1a63741f4d2a811e6e7361c3e5f93f4892" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event_1a63741f4d2a811e6e7361c3e5f93f4892" kindref="member">getEventTime</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event_1a2450b5b5095bf5cd37e6d64e5397fe15" kindref="member">eventTime</ref>;<sp/>};</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event_1aaec56fb9f4a106cd8866d3a800df760c" kindref="member">exportEventToScheduler</ref>()=0;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="class_scenario_tapp_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_scenario_tapp_event" kindref="compound">ScenarioTappEvent</ref>:</highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>blockId;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="28" refid="class_scenario_tapp_event_1a4af4c3da5819055da33e672675e02565" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_tapp_event_1a4af4c3da5819055da33e672675e02565" kindref="member">ScenarioTappEvent</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>t,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">):<ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref>(t),blockId(id)<sp/>{};</highlight></codeline>
+<codeline lineno="29" refid="class_scenario_tapp_event_1a00a59644484199d837f31593931f326d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_tapp_event_1a00a59644484199d837f31593931f326d" kindref="member">~ScenarioTappEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="30" refid="class_scenario_tapp_event_1a568986fa9464d5e806d5507191e75479" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scenario_tapp_event_1a568986fa9464d5e806d5507191e75479" kindref="member">exportEventToScheduler</ref>()<sp/>{<sp/><ref refid="namespace_base_simulator_1a2a1f7a0fc6c69525e369dc9226e1a23c" kindref="member">BaseSimulator::getWorld</ref>()-&gt;<ref refid="class_base_simulator_1_1_world_1a5eb197362605bcacb709bd4a80dbb783" kindref="member">tapBlock</ref>(<ref refid="class_scenario_event_1a2450b5b5095bf5cd37e6d64e5397fe15" kindref="member">eventTime</ref>*1000000+<ref refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" kindref="member">BaseSimulator::getScheduler</ref>()-&gt;now(),blockId);<sp/>};</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="class_scenario_debug_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_scenario_debug_event" kindref="compound">ScenarioDebugEvent</ref>:</highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>open;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="36" refid="class_scenario_debug_event_1a42d2262d7da925870ecb5646c2a9e643" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_debug_event_1a42d2262d7da925870ecb5646c2a9e643" kindref="member">ScenarioDebugEvent</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>t,</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>op):<ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref>(t),open(op)<sp/>{};</highlight></codeline>
+<codeline lineno="37" refid="class_scenario_debug_event_1a62ef4a506e453a14f63be40e8122a0a7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_debug_event_1a62ef4a506e453a14f63be40e8122a0a7" kindref="member">~ScenarioDebugEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="38" refid="class_scenario_debug_event_1af3834233ef242089c35959df237b3a7d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scenario_debug_event_1af3834233ef242089c35959df237b3a7d" kindref="member">exportEventToScheduler</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_scenario_select_block_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_scenario_select_block_event" kindref="compound">ScenarioSelectBlockEvent</ref>:</highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>blockId;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="44" refid="class_scenario_select_block_event_1a195b213cc0d376dd0cfae7778555845a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_select_block_event_1a195b213cc0d376dd0cfae7778555845a" kindref="member">ScenarioSelectBlockEvent</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>t,</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">):<ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref>(t),blockId(id)<sp/>{};</highlight></codeline>
+<codeline lineno="45" refid="class_scenario_select_block_event_1a3f7c566ac33833c242ec1a9978348a88" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_select_block_event_1a3f7c566ac33833c242ec1a9978348a88" kindref="member">~ScenarioSelectBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="46" refid="class_scenario_select_block_event_1a9e79c72b0bb580f0bb8deec029089c23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scenario_select_block_event_1a9e79c72b0bb580f0bb8deec029089c23" kindref="member">exportEventToScheduler</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_scenario_add_block_event" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_scenario_add_block_event" kindref="compound">ScenarioAddBlockEvent</ref>:</highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref><sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>position;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="52" refid="class_scenario_add_block_event_1ae7455059be8fee1ab61e5a886b3a54c5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_add_block_event_1ae7455059be8fee1ab61e5a886b3a54c5" kindref="member">ScenarioAddBlockEvent</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>t,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos):<ref refid="class_scenario_event" kindref="compound">ScenarioEvent</ref>(t),position(pos)<sp/>{};</highlight></codeline>
+<codeline lineno="53" refid="class_scenario_add_block_event_1aadd0031b1d0463f0cd02b22a5085b89b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scenario_add_block_event_1aadd0031b1d0463f0cd02b22a5085b89b" kindref="member">~ScenarioAddBlockEvent</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="54" refid="class_scenario_add_block_event_1afd212165aca9c68806ec73301aee4a65" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scenario_add_block_event_1afd212165aca9c68806ec73301aee4a65" kindref="member">exportEventToScheduler</ref>()<sp/>{};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>BLINKYBLOCKSSCENARIO_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h"/>
+  </compounddef>
+</doxygen>

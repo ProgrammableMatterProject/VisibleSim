@@ -1,0 +1,1224 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="network_8h" kind="file" language="C++">
+    <compoundname>network.h</compoundname>
+    <includes local="no">deque</includes>
+    <includes local="no">string.h</includes>
+    <includes local="no">boost/shared_ptr.hpp</includes>
+    <includes refid="building_block_8h" local="yes">buildingBlock.h</includes>
+    <includedby refid="events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</includedby>
+    <includedby refid="blinky_blocks_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</includedby>
+    <includedby refid="cpp_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</includedby>
+    <includedby refid="meld_process_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h</includedby>
+    <includedby refid="meld_interpret_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h</includedby>
+    <includedby refid="blinky_blocks_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</includedby>
+    <includedby refid="meld_process_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</includedby>
+    <includedby refid="meld_process_v_m_commands_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h</includedby>
+    <includedby refid="meld_interpret_events_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</includedby>
+    <includedby refid="catoms2_d_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.h</includedby>
+    <includedby refid="catoms3_d_block_code_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</includedby>
+    <includedby refid="catoms3_d_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</includedby>
+    <includedby refid="catoms3_d_block_code_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</includedby>
+    <includedby refid="config_stat_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.cpp</includedby>
+    <includedby refid="meld_interpret_messages_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.h</includedby>
+    <includedby refid="multi_cores_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h</includedby>
+    <includedby refid="network_8cpp" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp</includedby>
+    <includedby refid="robot_blocks_scheduler_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</includedby>
+    <includedby refid="smart_blocks_block_8h" local="yes">/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.h</includedby>
+    <incdepgraph>
+      <node id="16508">
+        <label>list</label>
+      </node>
+      <node id="16520">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="16516" relation="include">
+        </childnode>
+        <childnode refid="16514" relation="include">
+        </childnode>
+        <childnode refid="16515" relation="include">
+        </childnode>
+        <childnode refid="16521" relation="include">
+        </childnode>
+        <childnode refid="16522" relation="include">
+        </childnode>
+      </node>
+      <node id="16511">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="16512" relation="include">
+        </childnode>
+        <childnode refid="16513" relation="include">
+        </childnode>
+        <childnode refid="16514" relation="include">
+        </childnode>
+        <childnode refid="16515" relation="include">
+        </childnode>
+        <childnode refid="16516" relation="include">
+        </childnode>
+        <childnode refid="16517" relation="include">
+        </childnode>
+        <childnode refid="16518" relation="include">
+        </childnode>
+        <childnode refid="16519" relation="include">
+        </childnode>
+        <childnode refid="16520" relation="include">
+        </childnode>
+        <childnode refid="16525" relation="include">
+        </childnode>
+      </node>
+      <node id="16522">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="16514" relation="include">
+        </childnode>
+        <childnode refid="16515" relation="include">
+        </childnode>
+        <childnode refid="16523" relation="include">
+        </childnode>
+        <childnode refid="16524" relation="include">
+        </childnode>
+      </node>
+      <node id="16504">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="16530">
+        <label>stdint.h</label>
+      </node>
+      <node id="16513">
+        <label>stdlib.h</label>
+      </node>
+      <node id="16505">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="16504" relation="include">
+        </childnode>
+        <childnode refid="16506" relation="include">
+        </childnode>
+        <childnode refid="16507" relation="include">
+        </childnode>
+        <childnode refid="16508" relation="include">
+        </childnode>
+        <childnode refid="16509" relation="include">
+        </childnode>
+        <childnode refid="16527" relation="include">
+        </childnode>
+        <childnode refid="16529" relation="include">
+        </childnode>
+      </node>
+      <node id="16523">
+        <label>cmath</label>
+      </node>
+      <node id="16510">
+        <label>string</label>
+      </node>
+      <node id="16516">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="16524">
+        <label>memory.h</label>
+      </node>
+      <node id="16509">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="16510" relation="include">
+        </childnode>
+        <childnode refid="16511" relation="include">
+        </childnode>
+        <childnode refid="16522" relation="include">
+        </childnode>
+        <childnode refid="16526" relation="include">
+        </childnode>
+      </node>
+      <node id="16515">
+        <label>fstream</label>
+      </node>
+      <node id="16527">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="16505" relation="include">
+        </childnode>
+        <childnode refid="16528" relation="include">
+        </childnode>
+      </node>
+      <node id="16519">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="16525">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="16521" relation="include">
+        </childnode>
+        <childnode refid="16522" relation="include">
+        </childnode>
+        <childnode refid="16520" relation="include">
+        </childnode>
+      </node>
+      <node id="16517">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="16503">
+        <label>string.h</label>
+      </node>
+      <node id="16501">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h</label>
+        <link refid="network.h"/>
+        <childnode refid="16502" relation="include">
+        </childnode>
+        <childnode refid="16503" relation="include">
+        </childnode>
+        <childnode refid="16504" relation="include">
+        </childnode>
+        <childnode refid="16505" relation="include">
+        </childnode>
+      </node>
+      <node id="16521">
+        <label>math.h</label>
+      </node>
+      <node id="16526">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="16514" relation="include">
+        </childnode>
+        <childnode refid="16515" relation="include">
+        </childnode>
+        <childnode refid="16523" relation="include">
+        </childnode>
+        <childnode refid="16524" relation="include">
+        </childnode>
+        <childnode refid="16511" relation="include">
+        </childnode>
+      </node>
+      <node id="16514">
+        <label>iostream</label>
+      </node>
+      <node id="16502">
+        <label>deque</label>
+      </node>
+      <node id="16507">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="16506">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="16518">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="16512">
+        <label>stdio.h</label>
+      </node>
+      <node id="16529">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="16505" relation="include">
+        </childnode>
+        <childnode refid="16530" relation="include">
+        </childnode>
+        <childnode refid="16514" relation="include">
+        </childnode>
+        <childnode refid="16506" relation="include">
+        </childnode>
+        <childnode refid="16508" relation="include">
+        </childnode>
+      </node>
+      <node id="16528">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="16567">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.cpp</label>
+        <link refid="robot_blocks_generic_8cpp"/>
+      </node>
+      <node id="16539">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.h</label>
+        <link refid="blinky_blocks_scheduler_8h"/>
+        <childnode refid="16535" relation="include">
+        </childnode>
+        <childnode refid="16540" relation="include">
+        </childnode>
+        <childnode refid="16537" relation="include">
+        </childnode>
+      </node>
+      <node id="16626">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.h</label>
+        <link refid="smart_blocks_block_8h"/>
+        <childnode refid="16627" relation="include">
+        </childnode>
+        <childnode refid="16628" relation="include">
+        </childnode>
+        <childnode refid="16630" relation="include">
+        </childnode>
+        <childnode refid="16621" relation="include">
+        </childnode>
+        <childnode refid="16570" relation="include">
+        </childnode>
+        <childnode refid="16608" relation="include">
+        </childnode>
+      </node>
+      <node id="16608">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.cpp</label>
+        <link refid="smart_blocks_world_8cpp"/>
+      </node>
+      <node id="16584">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.h</label>
+        <link refid="catoms3_d_block_code_8h"/>
+        <childnode refid="16585" relation="include">
+        </childnode>
+        <childnode refid="16556" relation="include">
+        </childnode>
+        <childnode refid="16591" relation="include">
+        </childnode>
+      </node>
+      <node id="16599">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp</label>
+        <link refid="multi_cores_world_8cpp"/>
+      </node>
+      <node id="16573">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.cpp</label>
+        <link refid="cpp_scheduler_8cpp"/>
+      </node>
+      <node id="16581">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/buildingBlock.cpp</label>
+        <link refid="building_block_8cpp"/>
+      </node>
+      <node id="16564">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="16565" relation="include">
+        </childnode>
+        <childnode refid="16566" relation="include">
+        </childnode>
+        <childnode refid="16568" relation="include">
+        </childnode>
+        <childnode refid="16569" relation="include">
+        </childnode>
+      </node>
+      <node id="16535">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.h</label>
+        <link refid="blinky_blocks_simulator_8h"/>
+        <childnode refid="16536" relation="include">
+        </childnode>
+        <childnode refid="16537" relation="include">
+        </childnode>
+        <childnode refid="16538" relation="include">
+        </childnode>
+      </node>
+      <node id="16625">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.cpp</label>
+        <link refid="meld_interpret_messages_8cpp"/>
+      </node>
+      <node id="16619">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.cpp</label>
+        <link refid="multi_cores_events_8cpp"/>
+      </node>
+      <node id="16617">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.h</label>
+        <link refid="catoms2_d_world_8h"/>
+        <childnode refid="16550" relation="include">
+        </childnode>
+        <childnode refid="16549" relation="include">
+        </childnode>
+        <childnode refid="16583" relation="include">
+        </childnode>
+        <childnode refid="16553" relation="include">
+        </childnode>
+        <childnode refid="16555" relation="include">
+        </childnode>
+      </node>
+      <node id="16572">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/cppScheduler.h</label>
+        <link refid="cpp_scheduler_8h"/>
+        <childnode refid="16539" relation="include">
+        </childnode>
+        <childnode refid="16573" relation="include">
+        </childnode>
+      </node>
+      <node id="16589">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.h</label>
+        <link refid="catoms3_d_scheduler_8h"/>
+        <childnode refid="16556" relation="include">
+        </childnode>
+        <childnode refid="16587" relation="include">
+        </childnode>
+        <childnode refid="16558" relation="include">
+        </childnode>
+        <childnode refid="16588" relation="include">
+        </childnode>
+      </node>
+      <node id="16544">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.cpp</label>
+        <link refid="meld_process_scheduler_8cpp"/>
+      </node>
+      <node id="16594">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/configStat.cpp</label>
+        <link refid="config_stat_8cpp"/>
+      </node>
+      <node id="16551">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.h</label>
+        <link refid="catoms2_d_generic_8h"/>
+        <childnode refid="16552" relation="include">
+        </childnode>
+      </node>
+      <node id="16540">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.cpp</label>
+        <link refid="blinky_blocks_events_8cpp"/>
+      </node>
+      <node id="16602">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.cpp</label>
+        <link refid="robot_blocks_events_8cpp"/>
+      </node>
+      <node id="16616">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.cpp</label>
+        <link refid="catoms2_d_move_8cpp"/>
+      </node>
+      <node id="16618">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresEvents.h</label>
+        <link refid="multi_cores_events_8h"/>
+        <childnode refid="16619" relation="include">
+        </childnode>
+        <childnode refid="16561" relation="include">
+        </childnode>
+      </node>
+      <node id="16623">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.h</label>
+        <link refid="meld_process_v_m_8h"/>
+        <childnode refid="16546" relation="include">
+        </childnode>
+        <childnode refid="16544" relation="include">
+        </childnode>
+        <childnode refid="16545" relation="include">
+        </childnode>
+        <childnode refid="16548" relation="include">
+        </childnode>
+      </node>
+      <node id="16597">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp</label>
+        <link refid="meld_process_v_m_commands_8cpp"/>
+      </node>
+      <node id="16536">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksBlock.cpp</label>
+        <link refid="blinky_blocks_block_8cpp"/>
+      </node>
+      <node id="16542">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.h</label>
+        <link refid="meld_process_events_8h"/>
+        <childnode refid="16536" relation="include">
+        </childnode>
+        <childnode refid="16543" relation="include">
+        </childnode>
+        <childnode refid="16544" relation="include">
+        </childnode>
+        <childnode refid="16545" relation="include">
+        </childnode>
+      </node>
+      <node id="16538">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksSimulator.cpp</label>
+        <link refid="blinky_blocks_simulator_8cpp"/>
+      </node>
+      <node id="16579">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.h</label>
+        <link refid="blinky_blocks_world_8h"/>
+        <childnode refid="16536" relation="include">
+        </childnode>
+        <childnode refid="16535" relation="include">
+        </childnode>
+        <childnode refid="16578" relation="include">
+        </childnode>
+        <childnode refid="16537" relation="include">
+        </childnode>
+        <childnode refid="16580" relation="include">
+        </childnode>
+      </node>
+      <node id="16543">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessEvents.cpp</label>
+        <link refid="meld_process_events_8cpp"/>
+      </node>
+      <node id="16610">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.h</label>
+        <link refid="meld_interpret_events_8h"/>
+        <childnode refid="16536" relation="include">
+        </childnode>
+        <childnode refid="16576" relation="include">
+        </childnode>
+        <childnode refid="16560" relation="include">
+        </childnode>
+        <childnode refid="16577" relation="include">
+        </childnode>
+      </node>
+      <node id="16560">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.cpp</label>
+        <link refid="meld_interpret_scheduler_8cpp"/>
+      </node>
+      <node id="16622">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h</label>
+        <link refid="meld_process_v_m_commands_8h"/>
+        <childnode refid="16541" relation="include">
+        </childnode>
+        <childnode refid="16623" relation="include">
+        </childnode>
+        <childnode refid="16597" relation="include">
+        </childnode>
+      </node>
+      <node id="16549">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.h</label>
+        <link refid="catoms2_d_simulator_8h"/>
+        <childnode refid="16550" relation="include">
+        </childnode>
+        <childnode refid="16551" relation="include">
+        </childnode>
+        <childnode refid="16553" relation="include">
+        </childnode>
+        <childnode refid="16554" relation="include">
+        </childnode>
+        <childnode refid="16555" relation="include">
+        </childnode>
+      </node>
+      <node id="16561">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.h</label>
+        <link refid="multi_cores_simulator_8h"/>
+        <childnode refid="16562" relation="include">
+        </childnode>
+        <childnode refid="16563" relation="include">
+        </childnode>
+      </node>
+      <node id="16566">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksGeneric.h</label>
+        <link refid="robot_blocks_generic_8h"/>
+        <childnode refid="16567" relation="include">
+        </childnode>
+      </node>
+      <node id="16611">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.h</label>
+        <link refid="catoms2_d_events_8h"/>
+        <childnode refid="16612" relation="include">
+        </childnode>
+        <childnode refid="16583" relation="include">
+        </childnode>
+        <childnode refid="16551" relation="include">
+        </childnode>
+      </node>
+      <node id="16605">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.h</label>
+        <link refid="smart_blocks_scheduler_8h"/>
+        <childnode refid="16606" relation="include">
+        </childnode>
+        <childnode refid="16607" relation="include">
+        </childnode>
+        <childnode refid="16570" relation="include">
+        </childnode>
+        <childnode refid="16608" relation="include">
+        </childnode>
+      </node>
+      <node id="16620">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksEvents.h</label>
+        <link refid="robot_blocks_events_8h"/>
+        <childnode refid="16602" relation="include">
+        </childnode>
+        <childnode refid="16566" relation="include">
+        </childnode>
+      </node>
+      <node id="16590">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.h</label>
+        <link refid="catoms3_d_events_8h"/>
+        <childnode refid="16587" relation="include">
+        </childnode>
+      </node>
+      <node id="16621">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.h</label>
+        <link refid="smart_blocks_events_8h"/>
+        <childnode refid="16606" relation="include">
+        </childnode>
+      </node>
+      <node id="16553">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.cpp</label>
+        <link refid="catoms2_d_scheduler_8cpp"/>
+      </node>
+      <node id="16583">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DEvents.cpp</label>
+        <link refid="catoms2_d_events_8cpp"/>
+      </node>
+      <node id="16613">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.h</label>
+        <link refid="catoms2_d_block_code_8h"/>
+        <childnode refid="16612" relation="include">
+        </childnode>
+        <childnode refid="16549" relation="include">
+        </childnode>
+        <childnode refid="16614" relation="include">
+        </childnode>
+        <childnode refid="16551" relation="include">
+        </childnode>
+      </node>
+      <node id="16575">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretScheduler.h</label>
+        <link refid="meld_interpret_scheduler_8h"/>
+        <childnode refid="16539" relation="include">
+        </childnode>
+        <childnode refid="16576" relation="include">
+        </childnode>
+        <childnode refid="16560" relation="include">
+        </childnode>
+        <childnode refid="16577" relation="include">
+        </childnode>
+      </node>
+      <node id="16614">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlockCode.cpp</label>
+        <link refid="catoms2_d_block_code_8cpp"/>
+      </node>
+      <node id="16541">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.h</label>
+        <link refid="meld_process_debugger_8h"/>
+        <childnode refid="16542" relation="include">
+        </childnode>
+        <childnode refid="16546" relation="include">
+        </childnode>
+        <childnode refid="16544" relation="include">
+        </childnode>
+        <childnode refid="16545" relation="include">
+        </childnode>
+        <childnode refid="16547" relation="include">
+        </childnode>
+        <childnode refid="16548" relation="include">
+        </childnode>
+      </node>
+      <node id="16552">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DGeneric.cpp</label>
+        <link refid="catoms2_d_generic_8cpp"/>
+      </node>
+      <node id="16576">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretEvents.cpp</label>
+        <link refid="meld_interpret_events_8cpp"/>
+      </node>
+      <node id="16571">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp</label>
+        <link refid="smart_blocks_simulator_8cpp"/>
+      </node>
+      <node id="16548">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp</label>
+        <link refid="simulator_8cpp"/>
+      </node>
+      <node id="16612">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.h</label>
+        <link refid="catoms2_d_block_8h"/>
+        <childnode refid="16550" relation="include">
+        </childnode>
+        <childnode refid="16613" relation="include">
+        </childnode>
+        <childnode refid="16615" relation="include">
+        </childnode>
+        <childnode refid="16617" relation="include">
+        </childnode>
+        <childnode refid="16582" relation="include">
+        </childnode>
+        <childnode refid="16551" relation="include">
+        </childnode>
+        <childnode refid="16555" relation="include">
+        </childnode>
+      </node>
+      <node id="16577">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretVM.cpp</label>
+        <link refid="meld_interpret_v_m_8cpp"/>
+      </node>
+      <node id="16615">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DMove.h</label>
+        <link refid="catoms2_d_move_8h"/>
+        <childnode refid="16611" relation="include">
+        </childnode>
+        <childnode refid="16583" relation="include">
+        </childnode>
+        <childnode refid="16616" relation="include">
+        </childnode>
+      </node>
+      <node id="16563">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresSimulator.cpp</label>
+        <link refid="multi_cores_simulator_8cpp"/>
+      </node>
+      <node id="16582">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DScheduler.h</label>
+        <link refid="catoms2_d_scheduler_8h"/>
+        <childnode refid="16549" relation="include">
+        </childnode>
+        <childnode refid="16583" relation="include">
+        </childnode>
+        <childnode refid="16551" relation="include">
+        </childnode>
+        <childnode refid="16553" relation="include">
+        </childnode>
+        <childnode refid="16555" relation="include">
+        </childnode>
+      </node>
+      <node id="16559">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.cpp</label>
+        <link refid="catoms3_d_simulator_8cpp"/>
+      </node>
+      <node id="16624">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldInterpretMessages.h</label>
+        <link refid="meld_interpret_messages_8h"/>
+        <childnode refid="16625" relation="include">
+        </childnode>
+        <childnode refid="16577" relation="include">
+        </childnode>
+      </node>
+      <node id="16598">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.h</label>
+        <link refid="multi_cores_scheduler_8h"/>
+        <childnode refid="16561" relation="include">
+        </childnode>
+        <childnode refid="16562" relation="include">
+        </childnode>
+        <childnode refid="16599" relation="include">
+        </childnode>
+      </node>
+      <node id="16628">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="16626" relation="include">
+        </childnode>
+        <childnode refid="16629" relation="include">
+        </childnode>
+        <childnode refid="16570" relation="include">
+        </childnode>
+      </node>
+      <node id="16557">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.cpp</label>
+        <link refid="catoms3_d_block_8cpp"/>
+      </node>
+      <node id="16531">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h</label>
+        <link refid="network.h"/>
+        <childnode refid="16532" relation="include">
+        </childnode>
+        <childnode refid="16539" relation="include">
+        </childnode>
+        <childnode refid="16572" relation="include">
+        </childnode>
+        <childnode refid="16574" relation="include">
+        </childnode>
+        <childnode refid="16575" relation="include">
+        </childnode>
+        <childnode refid="16609" relation="include">
+        </childnode>
+        <childnode refid="16542" relation="include">
+        </childnode>
+        <childnode refid="16622" relation="include">
+        </childnode>
+        <childnode refid="16610" relation="include">
+        </childnode>
+        <childnode refid="16582" relation="include">
+        </childnode>
+        <childnode refid="16584" relation="include">
+        </childnode>
+        <childnode refid="16589" relation="include">
+        </childnode>
+        <childnode refid="16591" relation="include">
+        </childnode>
+        <childnode refid="16594" relation="include">
+        </childnode>
+        <childnode refid="16624" relation="include">
+        </childnode>
+        <childnode refid="16598" relation="include">
+        </childnode>
+        <childnode refid="16600" relation="include">
+        </childnode>
+        <childnode refid="16601" relation="include">
+        </childnode>
+        <childnode refid="16626" relation="include">
+        </childnode>
+      </node>
+      <node id="16609">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksEvents.h</label>
+        <link refid="blinky_blocks_events_8h"/>
+        <childnode refid="16536" relation="include">
+        </childnode>
+        <childnode refid="16540" relation="include">
+        </childnode>
+        <childnode refid="16580" relation="include">
+        </childnode>
+      </node>
+      <node id="16587">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DEvents.cpp</label>
+        <link refid="catoms3_d_events_8cpp"/>
+      </node>
+      <node id="16601">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.h</label>
+        <link refid="robot_blocks_scheduler_8h"/>
+        <childnode refid="16564" relation="include">
+        </childnode>
+        <childnode refid="16602" relation="include">
+        </childnode>
+        <childnode refid="16566" relation="include">
+        </childnode>
+        <childnode refid="16568" relation="include">
+        </childnode>
+        <childnode refid="16603" relation="include">
+        </childnode>
+      </node>
+      <node id="16537">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScheduler.cpp</label>
+        <link refid="blinky_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="16534">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="16535" relation="include">
+        </childnode>
+        <childnode refid="16539" relation="include">
+        </childnode>
+        <childnode refid="16541" relation="include">
+        </childnode>
+        <childnode refid="16549" relation="include">
+        </childnode>
+        <childnode refid="16556" relation="include">
+        </childnode>
+        <childnode refid="16560" relation="include">
+        </childnode>
+        <childnode refid="16544" relation="include">
+        </childnode>
+        <childnode refid="16561" relation="include">
+        </childnode>
+        <childnode refid="16564" relation="include">
+        </childnode>
+        <childnode refid="16548" relation="include">
+        </childnode>
+        <childnode refid="16570" relation="include">
+        </childnode>
+      </node>
+      <node id="16558">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DScheduler.cpp</label>
+        <link refid="catoms3_d_scheduler_8cpp"/>
+      </node>
+      <node id="16533">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="16534" relation="include">
+        </childnode>
+        <childnode refid="16539" relation="include">
+        </childnode>
+        <childnode refid="16572" relation="include">
+        </childnode>
+        <childnode refid="16574" relation="include">
+        </childnode>
+        <childnode refid="16575" relation="include">
+        </childnode>
+        <childnode refid="16578" relation="include">
+        </childnode>
+        <childnode refid="16581" relation="include">
+        </childnode>
+        <childnode refid="16582" relation="include">
+        </childnode>
+        <childnode refid="16584" relation="include">
+        </childnode>
+        <childnode refid="16589" relation="include">
+        </childnode>
+        <childnode refid="16592" relation="include">
+        </childnode>
+        <childnode refid="16593" relation="include">
+        </childnode>
+        <childnode refid="16594" relation="include">
+        </childnode>
+        <childnode refid="16595" relation="include">
+        </childnode>
+        <childnode refid="16596" relation="include">
+        </childnode>
+        <childnode refid="16597" relation="include">
+        </childnode>
+        <childnode refid="16598" relation="include">
+        </childnode>
+        <childnode refid="16600" relation="include">
+        </childnode>
+        <childnode refid="16547" relation="include">
+        </childnode>
+        <childnode refid="16601" relation="include">
+        </childnode>
+        <childnode refid="16604" relation="include">
+        </childnode>
+        <childnode refid="16605" relation="include">
+        </childnode>
+        <childnode refid="16608" relation="include">
+        </childnode>
+      </node>
+      <node id="16555">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DWorld.cpp</label>
+        <link refid="catoms2_d_world_8cpp"/>
+      </node>
+      <node id="16550">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DBlock.cpp</label>
+        <link refid="catoms2_d_block_8cpp"/>
+      </node>
+      <node id="16631">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksGlBlock.cpp</label>
+        <link refid="smart_blocks_gl_block_8cpp"/>
+      </node>
+      <node id="16570">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.h</label>
+        <link refid="smart_blocks_simulator_8h"/>
+        <childnode refid="16571" relation="include">
+        </childnode>
+      </node>
+      <node id="16547">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/openglViewer.cpp</label>
+        <link refid="opengl_viewer_8cpp"/>
+      </node>
+      <node id="16592">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/clock.cpp</label>
+        <link refid="clock_8cpp"/>
+      </node>
+      <node id="16588">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.cpp</label>
+        <link refid="catoms3_d_world_8cpp"/>
+      </node>
+      <node id="16627">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.cpp</label>
+        <link refid="smart_blocks_block_8cpp"/>
+      </node>
+      <node id="16556">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DSimulator.h</label>
+        <link refid="catoms3_d_simulator_8h"/>
+        <childnode refid="16557" relation="include">
+        </childnode>
+        <childnode refid="16558" relation="include">
+        </childnode>
+        <childnode refid="16559" relation="include">
+        </childnode>
+      </node>
+      <node id="16591">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlockCode.cpp</label>
+        <link refid="catoms3_d_block_code_8cpp"/>
+      </node>
+      <node id="16630">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksWorld.h</label>
+        <link refid="smart_blocks_world_8h"/>
+        <childnode refid="16627" relation="include">
+        </childnode>
+        <childnode refid="16606" relation="include">
+        </childnode>
+        <childnode refid="16631" relation="include">
+        </childnode>
+        <childnode refid="16570" relation="include">
+        </childnode>
+        <childnode refid="16608" relation="include">
+        </childnode>
+      </node>
+      <node id="16546">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessDebugger.cpp</label>
+        <link refid="meld_process_debugger_8cpp"/>
+      </node>
+      <node id="16578">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksScenario.h</label>
+        <link refid="blinky_blocks_scenario_8h"/>
+        <childnode refid="16579" relation="include">
+        </childnode>
+      </node>
+      <node id="16607">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksScheduler.cpp</label>
+        <link refid="smart_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="16565">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksBlock.cpp</label>
+        <link refid="robot_blocks_block_8cpp"/>
+      </node>
+      <node id="16580">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blinkyBlocksWorld.cpp</label>
+        <link refid="blinky_blocks_world_8cpp"/>
+      </node>
+      <node id="16629">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlockCode.cpp</label>
+        <link refid="smart_blocks_block_code_8cpp"/>
+      </node>
+      <node id="16569">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robot_blocks_simulator_8cpp"/>
+      </node>
+      <node id="16585">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DBlock.h</label>
+        <link refid="catoms3_d_block_8h"/>
+        <childnode refid="16557" relation="include">
+        </childnode>
+        <childnode refid="16584" relation="include">
+        </childnode>
+        <childnode refid="16586" relation="include">
+        </childnode>
+        <childnode refid="16589" relation="include">
+        </childnode>
+        <childnode refid="16590" relation="include">
+        </childnode>
+        <childnode refid="16588" relation="include">
+        </childnode>
+      </node>
+      <node id="16545">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVM.cpp</label>
+        <link refid="meld_process_v_m_8cpp"/>
+      </node>
+      <node id="16604">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.cpp</label>
+        <link refid="scheduler_8cpp"/>
+      </node>
+      <node id="16603">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksWorld.cpp</label>
+        <link refid="robot_blocks_world_8cpp"/>
+      </node>
+      <node id="16554">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DSimulator.cpp</label>
+        <link refid="catoms2_d_simulator_8cpp"/>
+      </node>
+      <node id="16595">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.cpp</label>
+        <link refid="events_8cpp"/>
+      </node>
+      <node id="16586">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DWorld.h</label>
+        <link refid="catoms3_d_world_8h"/>
+        <childnode refid="16557" relation="include">
+        </childnode>
+        <childnode refid="16556" relation="include">
+        </childnode>
+        <childnode refid="16587" relation="include">
+        </childnode>
+        <childnode refid="16558" relation="include">
+        </childnode>
+        <childnode refid="16588" relation="include">
+        </childnode>
+      </node>
+      <node id="16593">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/commandLine.cpp</label>
+        <link refid="command_line_8cpp"/>
+      </node>
+      <node id="16562">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresScheduler.cpp</label>
+        <link refid="multi_cores_scheduler_8cpp"/>
+      </node>
+      <node id="16532">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="16533" relation="include">
+        </childnode>
+        <childnode refid="16609" relation="include">
+        </childnode>
+        <childnode refid="16542" relation="include">
+        </childnode>
+        <childnode refid="16610" relation="include">
+        </childnode>
+        <childnode refid="16611" relation="include">
+        </childnode>
+        <childnode refid="16590" relation="include">
+        </childnode>
+        <childnode refid="16595" relation="include">
+        </childnode>
+        <childnode refid="16577" relation="include">
+        </childnode>
+        <childnode refid="16545" relation="include">
+        </childnode>
+        <childnode refid="16618" relation="include">
+        </childnode>
+        <childnode refid="16547" relation="include">
+        </childnode>
+        <childnode refid="16620" relation="include">
+        </childnode>
+        <childnode refid="16621" relation="include">
+        </childnode>
+      </node>
+      <node id="16600">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.cpp</label>
+        <link refid="network_8cpp"/>
+      </node>
+      <node id="16606">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksEvents.cpp</label>
+        <link refid="smart_blocks_events_8cpp"/>
+      </node>
+      <node id="16568">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksScheduler.cpp</label>
+        <link refid="robot_blocks_scheduler_8cpp"/>
+      </node>
+      <node id="16574">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessScheduler.h</label>
+        <link refid="meld_process_scheduler_8h"/>
+        <childnode refid="16539" relation="include">
+        </childnode>
+        <childnode refid="16541" relation="include">
+        </childnode>
+        <childnode refid="16543" relation="include">
+        </childnode>
+        <childnode refid="16544" relation="include">
+        </childnode>
+        <childnode refid="16545" relation="include">
+        </childnode>
+      </node>
+      <node id="16596">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp</label>
+        <link refid="interface_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_message" prot="public">Message</innerclass>
+    <innerclass refid="class_message_of" prot="public">MessageOf</innerclass>
+    <innerclass refid="class_p2_p_network_interface" prot="public">P2PNetworkInterface</innerclass>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="network_8h_1ac44fa136eae915ea2a8003757467c9ff" prot="public" static="no">
+        <name>MESSAGE_CONSTRUCTOR_INFO</name>
+        <param></param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="27" column="10" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="network_8h_1a6058294755a0d846d639d90cebc6db2e" prot="public" static="no">
+        <name>MESSAGE_DESTRUCTOR_INFO</name>
+        <param></param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="28" column="9" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="network_8h_1a00ba9ba2c62de520385018123878d265" prot="public" static="no">
+        <type>boost::shared_ptr&lt; <ref refid="class_message" kindref="compound">Message</ref> &gt;</type>
+        <definition>typedef boost::shared_ptr&lt;Message&gt; MessagePtr</definition>
+        <argsstring></argsstring>
+        <name>MessagePtr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>network.h</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>24<sp/>mars<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>dom</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NETWORK_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NETWORK_H_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;deque&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/shared_ptr.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="building_block_8h" kindref="compound">buildingBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_message" kindref="compound">Message</ref>;</highlight></codeline>
+<codeline lineno="19" refid="network_8h_1a00ba9ba2c62de520385018123878d265" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref>;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>boost::shared_ptr&lt;Message&gt;<sp/><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref>;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>DEBUG_MESSAGES</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MESSAGE_CONSTRUCTOR_INFO()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(cout<sp/>&lt;&lt;<sp/>getMessageName()<sp/>&lt;&lt;<sp/>&quot;<sp/>constructor<sp/>(&quot;<sp/>&lt;&lt;<sp/>id<sp/>&lt;&lt;<sp/>&quot;)&quot;<sp/>&lt;&lt;<sp/>endl)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MESSAGE_DESTRUCTOR_INFO()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(cout<sp/>&lt;&lt;<sp/>getMessageName()<sp/>&lt;&lt;<sp/>&quot;<sp/>destructor<sp/>(&quot;<sp/>&lt;&lt;<sp/>id<sp/>&lt;&lt;<sp/>&quot;)&quot;<sp/>&lt;&lt;<sp/>endl)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="network_8h_1ac44fa136eae915ea2a8003757467c9ff" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MESSAGE_CONSTRUCTOR_INFO()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="network_8h_1a6058294755a0d846d639d90cebc6db2e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MESSAGE_DESTRUCTOR_INFO()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Message<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_message" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_message" kindref="compound">Message</ref><sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="39" refid="class_message_1a00240b1a3f109deddf714c5208b5a49c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint64_t<sp/><ref refid="class_message_1a00240b1a3f109deddf714c5208b5a49c" kindref="member">nextId</ref>;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//static<sp/>unsigned<sp/>int<sp/>nextId;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_message_1a25270a0fe7b0b5d32298c096867b24de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint64_t<sp/><ref refid="class_message_1a25270a0fe7b0b5d32298c096867b24de" kindref="member">nbMessages</ref>;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//static<sp/>unsigned<sp/>int<sp/>nbMessages;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="44" refid="class_message_1a46573773d5b65a28f527a44b3e4f8f2e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_message_1a46573773d5b65a28f527a44b3e4f8f2e" kindref="member">id</ref>;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//unsigned<sp/>int<sp/>id;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_message_1afecf31a110a6f007f03d890a0f77bd38" kindref="member">type</ref>;</highlight></codeline>
+<codeline lineno="47" refid="class_message_1a56c70396168363e83944cb6d65ef345d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_message_1a56c70396168363e83944cb6d65ef345d" kindref="member">sourceInterface</ref>,<sp/>*destinationInterface;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_message" kindref="compound">Message</ref>();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>~<ref refid="class_message" kindref="compound">Message</ref>();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/>static<sp/>unsigned<sp/>int<sp/>getNbMessages();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>uint64_t<sp/>getNbMessages();</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>getMessageName();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="class_message_1a8c20b5cfbbecb2dc08bf18eb47043cb0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_message_1a8c20b5cfbbecb2dc08bf18eb47043cb0" kindref="member">size</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">(4);<sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_message" kindref="compound">Message</ref>*<sp/>clone();</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="61" refid="class_message_of" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_message_of" kindref="compound">MessageOf</ref>:</highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_message" kindref="compound">Message</ref><sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>T<sp/>*ptrData;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>:</highlight></codeline>
+<codeline lineno="64" refid="class_message_of_1adc3f446d5bbc0252299c18f879fad3ed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_message_of_1adc3f446d5bbc0252299c18f879fad3ed" kindref="member">MessageOf</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t,</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;data):<ref refid="class_message" kindref="compound">Message</ref>()<sp/>{<sp/>type=t;<sp/>ptrData<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>T(data);};</highlight></codeline>
+<codeline lineno="65" refid="class_message_of_1aba02c00a233d54020abcf0b3043b6b8b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_message_of_1aba02c00a233d54020abcf0b3043b6b8b" kindref="member">~MessageOf</ref>()<sp/>{<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>ptrData;<sp/>};</highlight></codeline>
+<codeline lineno="66" refid="class_message_of_1ae39b75b0d68c04b2cd536a81ff519dee" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>T*<sp/><ref refid="class_message_of_1ae39b75b0d68c04b2cd536a81ff519dee" kindref="member">getData</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ptrData;<sp/>};</highlight></codeline>
+<codeline lineno="67" refid="class_message_of_1a297c0a4bb0d2517a0d6287b7f6e32c0e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_message" kindref="compound">Message</ref>*<sp/><ref refid="class_message_of_1a297c0a4bb0d2517a0d6287b7f6e32c0e" kindref="member">clone</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_message_of" kindref="compound">MessageOf&lt;T&gt;</ref><sp/>*ptr<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_message_of" kindref="compound">MessageOf&lt;T&gt;</ref>(type,*ptrData);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptr-&gt;<ref refid="class_message_1a56c70396168363e83944cb6d65ef345d" kindref="member">sourceInterface</ref><sp/>=<sp/>sourceInterface;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptr-&gt;<ref refid="class_message_1a307a420fae17e9bd201105cd0397743d" kindref="member">destinationInterface</ref><sp/>=<sp/>destinationInterface;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ptr;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>P2PNetworkInterface<sp/><sp/>(class)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="comment">//===========================================================================================================</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="class_p2_p_network_interface" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="83" refid="class_p2_p_network_interface_1a762a436c25762f47984debc9d2dc65b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1a762a436c25762f47984debc9d2dc65b6" kindref="member">nextId</ref>;</highlight></codeline>
+<codeline lineno="84" refid="class_p2_p_network_interface_1aace063eb8e666d81a10aefde0363034e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1aace063eb8e666d81a10aefde0363034e" kindref="member">defaultDataRate</ref>;</highlight></codeline>
+<codeline lineno="85" refid="class_p2_p_network_interface_1af6d0c9bf7ac9977ece42f9fe7ee8d40d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1af6d0c9bf7ac9977ece42f9fe7ee8d40d" kindref="member">defaultDataRateVariability</ref>;</highlight></codeline>
+<codeline lineno="86" refid="class_p2_p_network_interface_1aa30f1b98f9aced401baf1be5c0039ca4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1aa30f1b98f9aced401baf1be5c0039ca4" kindref="member">dataRate</ref>;<sp/></highlight><highlight class="comment">//<sp/>bit/s</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="class_p2_p_network_interface_1a16034a1ebf48cc627ddff15e7764677d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1a16034a1ebf48cc627ddff15e7764677d" kindref="member">dataRateVariability</ref>;</highlight></codeline>
+<codeline lineno="88" refid="class_p2_p_network_interface_1ac4a4940c40b3ec6d785b53c884c56598" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>boost::rand48<sp/><ref refid="class_p2_p_network_interface_1ac4a4940c40b3ec6d785b53c884c56598" kindref="member">generator</ref>;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="91" refid="class_p2_p_network_interface_1a07f1896da67880aa296e1f456ea5deb7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1a07f1896da67880aa296e1f456ea5deb7" kindref="member">globalId</ref>;</highlight></codeline>
+<codeline lineno="92" refid="class_p2_p_network_interface_1a92597762efcd066ef834519bfbaea0ac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1a92597762efcd066ef834519bfbaea0ac" kindref="member">localId</ref>;</highlight></codeline>
+<codeline lineno="93" refid="class_p2_p_network_interface_1a26ff02f3ee816fb2efccdfc057beac37" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>deque&lt;MessagePtr&gt;<sp/><ref refid="class_p2_p_network_interface_1a26ff02f3ee816fb2efccdfc057beac37" kindref="member">outgoingQueue</ref>;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_p2_p_network_interface_1a2144b4d30d551e3faa4f69c4b2545e72" kindref="member">connectedInterface</ref>;</highlight></codeline>
+<codeline lineno="96" refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*<ref refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" kindref="member">hostBlock</ref>;</highlight></codeline>
+<codeline lineno="97" refid="class_p2_p_network_interface_1a4e38ef9507d8bd7d203dda927ef11e4e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint64_t<sp/><ref refid="class_p2_p_network_interface_1a4e38ef9507d8bd7d203dda927ef11e4e" kindref="member">availabilityDate</ref>;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="class_p2_p_network_interface_1a3442b37eb8c0c3253d0c287857a14d2d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref><sp/><ref refid="class_p2_p_network_interface_1a3442b37eb8c0c3253d0c287857a14d2d" kindref="member">messageBeingTransmitted</ref>;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref>(<ref refid="class_base_simulator_1_1_building_block" kindref="compound">BaseSimulator::BuildingBlock</ref><sp/>*b);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref>();</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>send(<ref refid="class_message" kindref="compound">Message</ref><sp/>*m);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>addToOutgoingBuffer(<ref refid="network_8h_1a00ba9ba2c62de520385018123878d265" kindref="member">MessagePtr</ref><sp/>msg);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>send();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>connect(<ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*ni);</highlight></codeline>
+<codeline lineno="109" refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1a2b29a3570d4d7f44683cebd3df3d62a8" kindref="member">getConnectedBlockId</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(connectedInterface!=NULL<sp/>&amp;&amp;<sp/>connectedInterface-&gt;<ref refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" kindref="member">hostBlock</ref>!=NULL)?connectedInterface-&gt;<ref refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" kindref="member">hostBlock</ref>-&gt;<ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref>:-1;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/><sp/><sp/><sp/>void<sp/>disconnect();</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/><sp/><sp/><sp/>static<sp/>void<sp/>setDefaultDataRate(unsigned<sp/>int<sp/>rate)<sp/>{<sp/>defaultDataRate<sp/>=<sp/>rate;<sp/>}</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="118" refid="class_p2_p_network_interface_1a066ef31213236ff670864df1ab4736d1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1a066ef31213236ff670864df1ab4736d1" kindref="member">setDataRate</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>rate)<sp/>{<sp/>dataRate<sp/>=<sp/>rate;<sp/>}</highlight></codeline>
+<codeline lineno="119" refid="class_p2_p_network_interface_1afe050d8912c91691c61a360bb6dccf68" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface_1afe050d8912c91691c61a360bb6dccf68" kindref="member">setDataRateVariability</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variability)<sp/>{<sp/>dataRateVariability<sp/>=<sp/>variability;<sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>NETWORK_H_<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/network.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="skeleton_8cpp" kind="file" language="C++">
+    <compoundname>skeleton.cpp</compoundname>
+    <includes refid="skeleton_8h" local="yes">skeleton.h</includes>
+    <includes local="yes">math.h</includes>
+    <incdepgraph>
+      <node id="18486">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="18487" relation="include">
+        </childnode>
+        <childnode refid="18484" relation="include">
+        </childnode>
+        <childnode refid="18488" relation="include">
+        </childnode>
+        <childnode refid="18489" relation="include">
+        </childnode>
+      </node>
+      <node id="18481">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.cpp</label>
+        <link refid="skeleton.cpp"/>
+        <childnode refid="18482" relation="include">
+        </childnode>
+        <childnode refid="18490" relation="include">
+        </childnode>
+      </node>
+      <node id="18488">
+        <label>cmath</label>
+      </node>
+      <node id="18489">
+        <label>memory.h</label>
+      </node>
+      <node id="18484">
+        <label>fstream</label>
+      </node>
+      <node id="18485">
+        <label>vector</label>
+      </node>
+      <node id="18490">
+        <label>math.h</label>
+      </node>
+      <node id="18482">
+        <label>skeleton.h</label>
+        <link refid="skeleton_8h"/>
+        <childnode refid="18483" relation="include">
+        </childnode>
+        <childnode refid="18485" relation="include">
+        </childnode>
+        <childnode refid="18486" relation="include">
+        </childnode>
+      </node>
+      <node id="18487">
+        <label>iostream</label>
+      </node>
+      <node id="18483">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="18484" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="skeleton_8h" kindref="compound">skeleton.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;math.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="class_skeleton_1aeece886a4e2f039128144f94f25efd10" refkind="member"><highlight class="normal"><ref refid="class_skeleton_1aeece886a4e2f039128144f94f25efd10" kindref="member">Skeleton::~Skeleton</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_skeleton" kindref="compound">Skeleton</ref><sp/>*s;</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(!<ref refid="class_skeleton_1a72218b6aebbf974f7d6a584a08e2082e" kindref="member">children</ref>.empty())<sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s<sp/>=<sp/><ref refid="class_skeleton_1a72218b6aebbf974f7d6a584a08e2082e" kindref="member">children</ref>.back();</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>s;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_skeleton_1a72218b6aebbf974f7d6a584a08e2082e" kindref="member">children</ref>.pop_back();</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="class_skeleton_1a59fc00ba11fe315f9c431fa878292d86" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_skeleton_1a59fc00ba11fe315f9c431fa878292d86" kindref="member">Skeleton::add</ref>(<ref refid="class_skeleton" kindref="compound">Skeleton</ref><sp/>*child)<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_skeleton_1a72218b6aebbf974f7d6a584a08e2082e" kindref="member">children</ref>.push_back(child);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="class_skeleton_1aba130bfaf50b224053e846a7023115d4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_skeleton_1aba130bfaf50b224053e846a7023115d4" kindref="member">Skeleton::potentiel</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos)<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>d2<sp/>=<sp/><ref refid="class_skeleton_1ad105f115dde3b6e6b31617a941c6e2b1" kindref="member">distance2</ref>(pos);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>sum=0;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(d2&gt;0)<sp/>sum=exp(<ref refid="class_skeleton_1acf06b310b51020a6c23414ec8d8c96f1" kindref="member">blobbiness</ref>*(d2/<ref refid="class_skeleton_1a72a37114c8ff2d528da0a40b79925e16" kindref="member">radius2</ref>-1));</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>vector<sp/>&lt;Skeleton*&gt;::const_iterator<sp/>ci=<ref refid="class_skeleton_1a72218b6aebbf974f7d6a584a08e2082e" kindref="member">children</ref>.begin();</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(ci!=<ref refid="class_skeleton_1a72218b6aebbf974f7d6a584a08e2082e" kindref="member">children</ref>.end())<sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sum+=(*ci)-&gt;potentiel(pos);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ci++;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sum;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="class_skel_point_1ab1d32dfab8d7e963f273d65ec493e6c3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_skel_point_1ab1d32dfab8d7e963f273d65ec493e6c3" kindref="member">SkelPoint::distance2</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(pos-ptA).norme2();</highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="class_skel_line_1a0d2a1b0c4208efd7e58a618006e14e6c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_skel_line_1a0d2a1b0c4208efd7e58a618006e14e6c" kindref="member">SkelLine::distance2</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;pos)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>AM<sp/>=<sp/>pos-ptA;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>AMAB<sp/>=<sp/>AM*AB;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(AMAB&lt;0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>AM.<ref refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" kindref="member">norme2</ref>();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>AMAB=(AMAB*AMAB)/AB2;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(AMAB&gt;AB2)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(pos-ptB).norme2();</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>AM.<ref refid="class_vecteur_1a7914c55a22dc2dbb9127ca6fa7b87650" kindref="member">norme2</ref>()-AMAB;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/skeleton.cpp"/>
+  </compounddef>
+</doxygen>

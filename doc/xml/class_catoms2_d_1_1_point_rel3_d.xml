@@ -1,0 +1,426 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms2_d_1_1_point_rel3_d" kind="class" language="C++" prot="public">
+    <compoundname>Catoms2D::PointRel3D</compoundname>
+    <includes refid="catoms2_d_capabilities_8h" local="no">catoms2DCapabilities.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short Catoms2D::PointRel3D::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_capability_1a5cc8c836192604691777ce3cedb533ac" compoundref="catoms2_d_capabilities_8cpp" startline="207" endline="211">Catoms2D::Capability::getCenter</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_validation_matrix_1a44180c0aa0f7a40d8b800b51318f3408" compoundref="catoms2_d_capabilities_8cpp" startline="501" endline="503">Catoms2D::ValidationMatrix::get</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_validation_matrix_1adc145075ffd02bc66d476c1e1fe98c1d" compoundref="catoms2_d_capabilities_8cpp" startline="505" endline="508">Catoms2D::ValidationMatrix::set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" compoundref="catoms2_d_capabilities_8cpp" startline="564" endline="574">fromString</referencedby>
+        <referencedby refid="namespace_catoms2_d_1ad0bbf99448f6d884fbee2c997df40694" compoundref="catoms2_d_capabilities_8cpp" startline="589" endline="592">Catoms2D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1adcef6b343083e2155abd150aa5cf67ae" compoundref="catoms2_d_capabilities_8cpp" startline="594" endline="606">rotateY</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a3d9ed051cce715cb78d74647c7489336" compoundref="catoms2_d_capabilities_8cpp" startline="608" endline="620">rotateZ</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1af3e70a65fd38854220ee370c0ac6a715" compoundref="catoms2_d_capabilities_8cpp" startline="622" endline="626">set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a687ea2ab9234c85d82296d9d85adc025" compoundref="catoms2_d_capabilities_8cpp" startline="628" endline="630">isInBoundingBox</referencedby>
+        <referencedby refid="namespace_catoms2_d_1a96a035dec4deea73e1107c4e34c3f814" compoundref="catoms2_d_capabilities_8cpp" startline="648" endline="650">Catoms2D::operator!=</referencedby>
+        <referencedby refid="namespace_catoms2_d_1a3f730a776c3dc5dfd5c329a537e72ca9" compoundref="catoms2_d_capabilities_8cpp" startline="652" endline="654">Catoms2D::operator==</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1a9a01c37091293ddd2bc919971d07ccd7" compoundref="catoms2_d_capabilities_8cpp" startline="674" endline="686">Catoms2D::PresenceMatrix::add</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1a575e50d15ba1f2275a8d6a299131471a" compoundref="catoms2_d_capabilities_8cpp" startline="688" endline="690">Catoms2D::PresenceMatrix::get</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1ac761db179f0ed70f466d6c870efebd57" compoundref="catoms2_d_capabilities_8cpp" startline="692" endline="695">Catoms2D::PresenceMatrix::set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1ad7a814cc2eb410f4ae15294c2a316890" compoundref="catoms2_d_world_8cpp" startline="605" endline="629">Catoms2D::Catoms2DWorld::getPresenceMatrix</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_point_rel3_d_1a742ff9175bf3a07359bcaacbded6246c" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short Catoms2D::PointRel3D::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="22" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_capability_1a5cc8c836192604691777ce3cedb533ac" compoundref="catoms2_d_capabilities_8cpp" startline="207" endline="211">Catoms2D::Capability::getCenter</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_validation_matrix_1a44180c0aa0f7a40d8b800b51318f3408" compoundref="catoms2_d_capabilities_8cpp" startline="501" endline="503">Catoms2D::ValidationMatrix::get</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_validation_matrix_1adc145075ffd02bc66d476c1e1fe98c1d" compoundref="catoms2_d_capabilities_8cpp" startline="505" endline="508">Catoms2D::ValidationMatrix::set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" compoundref="catoms2_d_capabilities_8cpp" startline="564" endline="574">fromString</referencedby>
+        <referencedby refid="namespace_catoms2_d_1ad0bbf99448f6d884fbee2c997df40694" compoundref="catoms2_d_capabilities_8cpp" startline="589" endline="592">Catoms2D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1adcef6b343083e2155abd150aa5cf67ae" compoundref="catoms2_d_capabilities_8cpp" startline="594" endline="606">rotateY</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a3d9ed051cce715cb78d74647c7489336" compoundref="catoms2_d_capabilities_8cpp" startline="608" endline="620">rotateZ</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1af3e70a65fd38854220ee370c0ac6a715" compoundref="catoms2_d_capabilities_8cpp" startline="622" endline="626">set</referencedby>
+        <referencedby refid="namespace_catoms2_d_1a96a035dec4deea73e1107c4e34c3f814" compoundref="catoms2_d_capabilities_8cpp" startline="648" endline="650">Catoms2D::operator!=</referencedby>
+        <referencedby refid="namespace_catoms2_d_1a3f730a776c3dc5dfd5c329a537e72ca9" compoundref="catoms2_d_capabilities_8cpp" startline="652" endline="654">Catoms2D::operator==</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1a9a01c37091293ddd2bc919971d07ccd7" compoundref="catoms2_d_capabilities_8cpp" startline="674" endline="686">Catoms2D::PresenceMatrix::add</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1a575e50d15ba1f2275a8d6a299131471a" compoundref="catoms2_d_capabilities_8cpp" startline="688" endline="690">Catoms2D::PresenceMatrix::get</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1ac761db179f0ed70f466d6c870efebd57" compoundref="catoms2_d_capabilities_8cpp" startline="692" endline="695">Catoms2D::PresenceMatrix::set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1ad7a814cc2eb410f4ae15294c2a316890" compoundref="catoms2_d_world_8cpp" startline="605" endline="629">Catoms2D::Catoms2DWorld::getPresenceMatrix</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short Catoms2D::PointRel3D::z</definition>
+        <argsstring></argsstring>
+        <name>z</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="23" bodyend="-1"/>
+        <referencedby refid="class_catoms2_d_1_1_capability_1a5cc8c836192604691777ce3cedb533ac" compoundref="catoms2_d_capabilities_8cpp" startline="207" endline="211">Catoms2D::Capability::getCenter</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_validation_matrix_1a44180c0aa0f7a40d8b800b51318f3408" compoundref="catoms2_d_capabilities_8cpp" startline="501" endline="503">Catoms2D::ValidationMatrix::get</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_validation_matrix_1adc145075ffd02bc66d476c1e1fe98c1d" compoundref="catoms2_d_capabilities_8cpp" startline="505" endline="508">Catoms2D::ValidationMatrix::set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" compoundref="catoms2_d_capabilities_8cpp" startline="564" endline="574">fromString</referencedby>
+        <referencedby refid="namespace_catoms2_d_1ad0bbf99448f6d884fbee2c997df40694" compoundref="catoms2_d_capabilities_8cpp" startline="589" endline="592">Catoms2D::operator&lt;&lt;</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1adcef6b343083e2155abd150aa5cf67ae" compoundref="catoms2_d_capabilities_8cpp" startline="594" endline="606">rotateY</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a3d9ed051cce715cb78d74647c7489336" compoundref="catoms2_d_capabilities_8cpp" startline="608" endline="620">rotateZ</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1af3e70a65fd38854220ee370c0ac6a715" compoundref="catoms2_d_capabilities_8cpp" startline="622" endline="626">set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a687ea2ab9234c85d82296d9d85adc025" compoundref="catoms2_d_capabilities_8cpp" startline="628" endline="630">isInBoundingBox</referencedby>
+        <referencedby refid="namespace_catoms2_d_1a96a035dec4deea73e1107c4e34c3f814" compoundref="catoms2_d_capabilities_8cpp" startline="648" endline="650">Catoms2D::operator!=</referencedby>
+        <referencedby refid="namespace_catoms2_d_1a3f730a776c3dc5dfd5c329a537e72ca9" compoundref="catoms2_d_capabilities_8cpp" startline="652" endline="654">Catoms2D::operator==</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1a9a01c37091293ddd2bc919971d07ccd7" compoundref="catoms2_d_capabilities_8cpp" startline="674" endline="686">Catoms2D::PresenceMatrix::add</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1a575e50d15ba1f2275a8d6a299131471a" compoundref="catoms2_d_capabilities_8cpp" startline="688" endline="690">Catoms2D::PresenceMatrix::get</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_presence_matrix_1ac761db179f0ed70f466d6c870efebd57" compoundref="catoms2_d_capabilities_8cpp" startline="692" endline="695">Catoms2D::PresenceMatrix::set</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_world_1ad7a814cc2eb410f4ae15294c2a316890" compoundref="catoms2_d_world_8cpp" startline="605" endline="629">Catoms2D::Catoms2DWorld::getPresenceMatrix</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1a3935bfa6b4c3f3223fe9c8273b7de12d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PointRel3D::PointRel3D</definition>
+        <argsstring>()</argsstring>
+        <name>PointRel3D</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="553" bodyend="555"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1a818ab65a9fa3a1ba16090b6b25bd02f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PointRel3D::PointRel3D</definition>
+        <argsstring>(short vx, short vy, short vz)</argsstring>
+        <name>PointRel3D</name>
+        <param>
+          <type>short</type>
+          <declname>vx</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>vy</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>vz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="557" bodyend="558"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1adc7dcd9bd152be8e9ad055cc5e89ec8b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>PointRel3D::PointRel3D</definition>
+        <argsstring>(const string &amp;str)</argsstring>
+        <name>PointRel3D</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="26" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="560" bodyend="562"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" compoundref="catoms2_d_capabilities_8cpp" startline="564" endline="574">fromString</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1af3e70a65fd38854220ee370c0ac6a715" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PointRel3D::set</definition>
+        <argsstring>(short vx, short vy, short vz)</argsstring>
+        <name>set</name>
+        <param>
+          <type>short</type>
+          <declname>vx</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>vy</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>vz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="28" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="622" bodyend="626"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" compoundref="catoms2_d_capabilities_8h" startline="21">x</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a742ff9175bf3a07359bcaacbded6246c" compoundref="catoms2_d_capabilities_8h" startline="22">y</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" compoundref="catoms2_d_capabilities_8h" startline="23">z</references>
+        <referencedby refid="class_catoms2_d_1_1_capability_1aaeb8f4cd0eecd3e8651a2c2591f82e72" compoundref="catoms2_d_capabilities_8cpp" startline="172" endline="182">Catoms2D::Capability::getMotionVector</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1a687ea2ab9234c85d82296d9d85adc025" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PointRel3D::isInBoundingBox</definition>
+        <argsstring>(short x0, short x1, short y0, short y1, short z0, short z1)</argsstring>
+        <name>isInBoundingBox</name>
+        <param>
+          <type>short</type>
+          <declname>x0</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>x1</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>y0</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>y1</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>z0</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>z1</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="628" bodyend="630"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" compoundref="catoms2_d_capabilities_8h" startline="21">x</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" compoundref="catoms2_d_capabilities_8h" startline="23">z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PointRel3D::fromString</definition>
+        <argsstring>(const string &amp;str)</argsstring>
+        <name>fromString</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="564" bodyend="574"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" compoundref="catoms2_d_capabilities_8h" startline="21">x</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a742ff9175bf3a07359bcaacbded6246c" compoundref="catoms2_d_capabilities_8h" startline="22">y</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" compoundref="catoms2_d_capabilities_8h" startline="23">z</references>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_capabilities_1a50d06389a861296ee2d44a7318387b14" compoundref="catoms2_d_capabilities_8cpp" startline="215" endline="330">Catoms2D::Catoms2DCapabilities::Catoms2DCapabilities</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1adc7dcd9bd152be8e9ad055cc5e89ec8b" compoundref="catoms2_d_capabilities_8cpp" startline="560" endline="562">PointRel3D</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1a3910c0c687d8b4088fb5de3fa028c343" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void PointRel3D::fromString</definition>
+        <argsstring>(const string &amp;str, const PointRel3D &amp;ref)</argsstring>
+        <name>fromString</name>
+        <param>
+          <type>const string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="31" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="576" bodyend="586"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" compoundref="catoms2_d_capabilities_8h" startline="21">x</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a742ff9175bf3a07359bcaacbded6246c" compoundref="catoms2_d_capabilities_8h" startline="22">y</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" compoundref="catoms2_d_capabilities_8h" startline="23">z</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1adcef6b343083e2155abd150aa5cf67ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D PointRel3D::rotateY</definition>
+        <argsstring>(int n) const </argsstring>
+        <name>rotateY</name>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="32" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="594" bodyend="606"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" compoundref="catoms2_d_capabilities_8h" startline="21">x</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" compoundref="catoms2_d_capabilities_8h" startline="23">z</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a742ff9175bf3a07359bcaacbded6246c" compoundref="catoms2_d_capabilities_8h" startline="22">y</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1a3d9ed051cce715cb78d74647c7489336" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D PointRel3D::rotateZ</definition>
+        <argsstring>(int n) const </argsstring>
+        <name>rotateZ</name>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="608" bodyend="620"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" compoundref="catoms2_d_capabilities_8h" startline="21">x</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a742ff9175bf3a07359bcaacbded6246c" compoundref="catoms2_d_capabilities_8h" startline="22">y</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" compoundref="catoms2_d_capabilities_8h" startline="23">z</references>
+        <referencedby refid="class_catoms2_d_1_1_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="catoms2_d_capabilities_8cpp" startline="16" endline="158">Catoms2D::Capability::Capability</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1ab5446aa64e51373730bde01bbc7b6660" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Catoms2D::PointRel3D::isZero</definition>
+        <argsstring>()</argsstring>
+        <name>isZero</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="34" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms2_d_1_1_point_rel3_d_1a128bf7cf7fa0c7e5575375bbccc1055a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Catoms2D::PointRel3D::isSet</definition>
+        <argsstring>() const </argsstring>
+        <name>isSet</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="35" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="35" bodyend="35"/>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1adbd78fed2f1733db2c9266bdadd39951" compoundref="catoms2_d_capabilities_8cpp" startline="652" endline="654">operator==</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a2807aa438d8f113c29f8cd4f82b85b1a" compoundref="catoms2_d_capabilities_8cpp" startline="648" endline="650">operator!=</references>
+        <references refid="class_catoms2_d_1_1_point_rel3_d_1a3a016f6c843ae1f800cab6bec6ef31ec" compoundref="catoms2_d_capabilities_8cpp" startline="589" endline="592">operator&lt;&lt;</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_catoms2_d_1_1_point_rel3_d_1adbd78fed2f1733db2c9266bdadd39951" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend bool</type>
+        <definition>bool operator==</definition>
+        <argsstring>(const PointRel3D p1, const PointRel3D p2)</argsstring>
+        <name>operator==</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="36" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="652" bodyend="654"/>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a128bf7cf7fa0c7e5575375bbccc1055a" compoundref="catoms2_d_capabilities_8h" startline="35" endline="35">isSet</referencedby>
+      </memberdef>
+      <memberdef kind="friend" id="class_catoms2_d_1_1_point_rel3_d_1a2807aa438d8f113c29f8cd4f82b85b1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend bool</type>
+        <definition>bool operator!=</definition>
+        <argsstring>(const PointRel3D p1, const PointRel3D p2)</argsstring>
+        <name>operator!=</name>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+          <declname>p2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="648" bodyend="650"/>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a128bf7cf7fa0c7e5575375bbccc1055a" compoundref="catoms2_d_capabilities_8h" startline="35" endline="35">isSet</referencedby>
+      </memberdef>
+      <memberdef kind="friend" id="class_catoms2_d_1_1_point_rel3_d_1a3a016f6c843ae1f800cab6bec6ef31ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>friend ostream &amp;</type>
+        <definition>ostream&amp; operator&lt;&lt;</definition>
+        <argsstring>(ostream &amp;f, const PointRel3D &amp;pt)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <param>
+          <type>ostream &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_catoms2_d_1_1_point_rel3_d" kindref="compound">PointRel3D</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="38" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.cpp" bodystart="589" bodyend="592"/>
+        <referencedby refid="class_catoms2_d_1_1_point_rel3_d_1a128bf7cf7fa0c7e5575375bbccc1055a" compoundref="catoms2_d_capabilities_8h" startline="35" endline="35">isSet</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms2DCapabilities.h" bodystart="19" bodyend="39"/>
+    <listofallmembers>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1aa0ed31aaf0c725c62a2dc1b07ca5f863" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>fromString</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a3910c0c687d8b4088fb5de3fa028c343" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>fromString</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a687ea2ab9234c85d82296d9d85adc025" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>isInBoundingBox</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a128bf7cf7fa0c7e5575375bbccc1055a" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>isSet</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1ab5446aa64e51373730bde01bbc7b6660" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>isZero</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a2807aa438d8f113c29f8cd4f82b85b1a" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>operator!=</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a3a016f6c843ae1f800cab6bec6ef31ec" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1adbd78fed2f1733db2c9266bdadd39951" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>operator==</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a3935bfa6b4c3f3223fe9c8273b7de12d" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>PointRel3D</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a818ab65a9fa3a1ba16090b6b25bd02f9" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>PointRel3D</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1adc7dcd9bd152be8e9ad055cc5e89ec8b" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>PointRel3D</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1adcef6b343083e2155abd150aa5cf67ae" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>rotateY</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a3d9ed051cce715cb78d74647c7489336" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>rotateZ</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1af3e70a65fd38854220ee370c0ac6a715" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>set</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a585361ea9ddcee442b2b2cc87147c81c" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>x</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1a742ff9175bf3a07359bcaacbded6246c" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>y</name></member>
+      <member refid="class_catoms2_d_1_1_point_rel3_d_1aa7730c58085c45d2ac09f7694850f29d" prot="public" virt="non-virtual"><scope>Catoms2D::PointRel3D</scope><name>z</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

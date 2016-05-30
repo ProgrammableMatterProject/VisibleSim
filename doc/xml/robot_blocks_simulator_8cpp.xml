@@ -1,0 +1,839 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="robot_blocks_simulator_8cpp" kind="file" language="C++">
+    <compoundname>robotBlocksSimulator.cpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes refid="robot_blocks_simulator_8h" local="yes">robotBlocksSimulator.h</includes>
+    <includes local="no">string.h</includes>
+    <includes refid="trace_8h" local="yes">trace.h</includes>
+    <incdepgraph>
+      <node id="17767">
+        <label>list</label>
+      </node>
+      <node id="17791">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="17769" relation="include">
+        </childnode>
+        <childnode refid="17792" relation="include">
+        </childnode>
+        <childnode refid="17777" relation="include">
+        </childnode>
+        <childnode refid="17782" relation="include">
+        </childnode>
+        <childnode refid="17768" relation="include">
+        </childnode>
+        <childnode refid="17793" relation="include">
+        </childnode>
+      </node>
+      <node id="17777">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="17773" relation="include">
+        </childnode>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17772" relation="include">
+        </childnode>
+        <childnode refid="17778" relation="include">
+        </childnode>
+        <childnode refid="17779" relation="include">
+        </childnode>
+      </node>
+      <node id="17769">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="17770" relation="include">
+        </childnode>
+        <childnode refid="17771" relation="include">
+        </childnode>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17772" relation="include">
+        </childnode>
+        <childnode refid="17773" relation="include">
+        </childnode>
+        <childnode refid="17774" relation="include">
+        </childnode>
+        <childnode refid="17775" relation="include">
+        </childnode>
+        <childnode refid="17776" relation="include">
+        </childnode>
+        <childnode refid="17777" relation="include">
+        </childnode>
+        <childnode refid="17782" relation="include">
+        </childnode>
+      </node>
+      <node id="17779">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17772" relation="include">
+        </childnode>
+        <childnode refid="17780" relation="include">
+        </childnode>
+        <childnode refid="17781" relation="include">
+        </childnode>
+      </node>
+      <node id="17793">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="17794" relation="include">
+        </childnode>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17772" relation="include">
+        </childnode>
+        <childnode refid="17781" relation="include">
+        </childnode>
+        <childnode refid="17768" relation="include">
+        </childnode>
+        <childnode refid="17795" relation="include">
+        </childnode>
+        <childnode refid="17783" relation="include">
+        </childnode>
+      </node>
+      <node id="17764">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="17750">
+        <label>robotBlocksSimulator.h</label>
+        <link refid="robot_blocks_simulator_8h"/>
+        <childnode refid="17751" relation="include">
+        </childnode>
+        <childnode refid="17798" relation="include">
+        </childnode>
+        <childnode refid="17806" relation="include">
+        </childnode>
+        <childnode refid="17807" relation="include">
+        </childnode>
+        <childnode refid="17796" relation="include">
+        </childnode>
+      </node>
+      <node id="17761">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="17757">
+        <label>assert.h</label>
+      </node>
+      <node id="17786">
+        <label>stdint.h</label>
+      </node>
+      <node id="17771">
+        <label>stdlib.h</label>
+      </node>
+      <node id="17765">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="17764" relation="include">
+        </childnode>
+        <childnode refid="17766" relation="include">
+        </childnode>
+        <childnode refid="17760" relation="include">
+        </childnode>
+        <childnode refid="17767" relation="include">
+        </childnode>
+        <childnode refid="17768" relation="include">
+        </childnode>
+        <childnode refid="17784" relation="include">
+        </childnode>
+        <childnode refid="17785" relation="include">
+        </childnode>
+      </node>
+      <node id="17800">
+        <label>robotBlocksGlBlock.h</label>
+        <link refid="robot_blocks_gl_block_8h"/>
+        <childnode refid="17763" relation="include">
+        </childnode>
+        <childnode refid="17801" relation="include">
+        </childnode>
+        <childnode refid="17768" relation="include">
+        </childnode>
+        <childnode refid="17802" relation="include">
+        </childnode>
+      </node>
+      <node id="17780">
+        <label>cmath</label>
+      </node>
+      <node id="17805">
+        <label>stdexcept</label>
+      </node>
+      <node id="17802">
+        <label>robotBlocksCapabilities.h</label>
+        <link refid="robot_blocks_capabilities_8h"/>
+        <childnode refid="17794" relation="include">
+        </childnode>
+        <childnode refid="17803" relation="include">
+        </childnode>
+        <childnode refid="17779" relation="include">
+        </childnode>
+        <childnode refid="17796" relation="include">
+        </childnode>
+        <childnode refid="17763" relation="include">
+        </childnode>
+        <childnode refid="17752" relation="include">
+        </childnode>
+      </node>
+      <node id="17763">
+        <label>string</label>
+      </node>
+      <node id="17773">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="17807">
+        <label>robotBlocksWorld.h</label>
+        <link refid="robot_blocks_world_8h"/>
+        <childnode refid="17791" relation="include">
+        </childnode>
+        <childnode refid="17795" relation="include">
+        </childnode>
+        <childnode refid="17779" relation="include">
+        </childnode>
+        <childnode refid="17799" relation="include">
+        </childnode>
+        <childnode refid="17802" relation="include">
+        </childnode>
+        <childnode refid="17801" relation="include">
+        </childnode>
+        <childnode refid="17804" relation="include">
+        </childnode>
+        <childnode refid="17796" relation="include">
+        </childnode>
+        <childnode refid="17794" relation="include">
+        </childnode>
+      </node>
+      <node id="17755">
+        <label>map</label>
+      </node>
+      <node id="17758">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="17781">
+        <label>memory.h</label>
+      </node>
+      <node id="17768">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="17763" relation="include">
+        </childnode>
+        <childnode refid="17769" relation="include">
+        </childnode>
+        <childnode refid="17779" relation="include">
+        </childnode>
+        <childnode refid="17783" relation="include">
+        </childnode>
+      </node>
+      <node id="17772">
+        <label>fstream</label>
+      </node>
+      <node id="17784">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="17765" relation="include">
+        </childnode>
+        <childnode refid="17756" relation="include">
+        </childnode>
+      </node>
+      <node id="17776">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="17787">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="17782">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="17778" relation="include">
+        </childnode>
+        <childnode refid="17779" relation="include">
+        </childnode>
+        <childnode refid="17777" relation="include">
+        </childnode>
+      </node>
+      <node id="17774">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="17752">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="17804">
+        <label>boost/asio.hpp</label>
+      </node>
+      <node id="17792">
+        <label>pthread.h</label>
+      </node>
+      <node id="17790">
+        <label>string.h</label>
+      </node>
+      <node id="17794">
+        <label>vector</label>
+      </node>
+      <node id="17788">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="17789" relation="include">
+        </childnode>
+        <childnode refid="17790" relation="include">
+        </childnode>
+        <childnode refid="17764" relation="include">
+        </childnode>
+        <childnode refid="17765" relation="include">
+        </childnode>
+      </node>
+      <node id="17754">
+        <label>sstream</label>
+      </node>
+      <node id="17806">
+        <label>robotBlocksScheduler.h</label>
+        <link refid="robot_blocks_scheduler_8h"/>
+        <childnode refid="17753" relation="include">
+        </childnode>
+        <childnode refid="17788" relation="include">
+        </childnode>
+        <childnode refid="17799" relation="include">
+        </childnode>
+        <childnode refid="17758" relation="include">
+        </childnode>
+        <childnode refid="17759" relation="include">
+        </childnode>
+        <childnode refid="17761" relation="include">
+        </childnode>
+        <childnode refid="17760" relation="include">
+        </childnode>
+        <childnode refid="17796" relation="include">
+        </childnode>
+      </node>
+      <node id="17797">
+        <label>commandLine.h</label>
+        <link refid="command_line_8h"/>
+        <childnode refid="17763" relation="include">
+        </childnode>
+      </node>
+      <node id="17751">
+        <label>simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="17752" relation="include">
+        </childnode>
+        <childnode refid="17753" relation="include">
+        </childnode>
+        <childnode refid="17795" relation="include">
+        </childnode>
+        <childnode refid="17797" relation="include">
+        </childnode>
+      </node>
+      <node id="17753">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17754" relation="include">
+        </childnode>
+        <childnode refid="17755" relation="include">
+        </childnode>
+        <childnode refid="17756" relation="include">
+        </childnode>
+        <childnode refid="17757" relation="include">
+        </childnode>
+        <childnode refid="17758" relation="include">
+        </childnode>
+        <childnode refid="17759" relation="include">
+        </childnode>
+        <childnode refid="17760" relation="include">
+        </childnode>
+        <childnode refid="17761" relation="include">
+        </childnode>
+        <childnode refid="17762" relation="include">
+        </childnode>
+        <childnode refid="17791" relation="include">
+        </childnode>
+      </node>
+      <node id="17798">
+        <label>robotBlocksBlockCode.h</label>
+        <link refid="robot_blocks_block_code_8h"/>
+        <childnode refid="17784" relation="include">
+        </childnode>
+        <childnode refid="17799" relation="include">
+        </childnode>
+      </node>
+      <node id="17778">
+        <label>math.h</label>
+      </node>
+      <node id="17783">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17772" relation="include">
+        </childnode>
+        <childnode refid="17780" relation="include">
+        </childnode>
+        <childnode refid="17781" relation="include">
+        </childnode>
+        <childnode refid="17769" relation="include">
+        </childnode>
+      </node>
+      <node id="17799">
+        <label>robotBlocksBlock.h</label>
+        <link refid="robot_blocks_block_8h"/>
+        <childnode refid="17765" relation="include">
+        </childnode>
+        <childnode refid="17798" relation="include">
+        </childnode>
+        <childnode refid="17800" relation="include">
+        </childnode>
+        <childnode refid="17802" relation="include">
+        </childnode>
+        <childnode refid="17804" relation="include">
+        </childnode>
+        <childnode refid="17805" relation="include">
+        </childnode>
+      </node>
+      <node id="17749">
+        <label>iostream</label>
+      </node>
+      <node id="17789">
+        <label>deque</label>
+      </node>
+      <node id="17803">
+        <label>climits</label>
+      </node>
+      <node id="17759">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="17748">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp</label>
+        <link refid="robotBlocksSimulator.cpp"/>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17750" relation="include">
+        </childnode>
+        <childnode refid="17790" relation="include">
+        </childnode>
+        <childnode refid="17796" relation="include">
+        </childnode>
+      </node>
+      <node id="17760">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="17796">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="17772" relation="include">
+        </childnode>
+      </node>
+      <node id="17762">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="17756" relation="include">
+        </childnode>
+        <childnode refid="17763" relation="include">
+        </childnode>
+        <childnode refid="17764" relation="include">
+        </childnode>
+        <childnode refid="17765" relation="include">
+        </childnode>
+        <childnode refid="17787" relation="include">
+        </childnode>
+        <childnode refid="17788" relation="include">
+        </childnode>
+        <childnode refid="17783" relation="include">
+        </childnode>
+      </node>
+      <node id="17766">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="17795">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17755" relation="include">
+        </childnode>
+        <childnode refid="17794" relation="include">
+        </childnode>
+        <childnode refid="17760" relation="include">
+        </childnode>
+        <childnode refid="17757" relation="include">
+        </childnode>
+        <childnode refid="17765" relation="include">
+        </childnode>
+        <childnode refid="17768" relation="include">
+        </childnode>
+        <childnode refid="17796" relation="include">
+        </childnode>
+      </node>
+      <node id="17775">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="17770">
+        <label>stdio.h</label>
+      </node>
+      <node id="17801">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="17791" relation="include">
+        </childnode>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17772" relation="include">
+        </childnode>
+        <childnode refid="17763" relation="include">
+        </childnode>
+        <childnode refid="17794" relation="include">
+        </childnode>
+        <childnode refid="17780" relation="include">
+        </childnode>
+        <childnode refid="17771" relation="include">
+        </childnode>
+        <childnode refid="17790" relation="include">
+        </childnode>
+      </node>
+      <node id="17785">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="17765" relation="include">
+        </childnode>
+        <childnode refid="17786" relation="include">
+        </childnode>
+        <childnode refid="17749" relation="include">
+        </childnode>
+        <childnode refid="17766" relation="include">
+        </childnode>
+        <childnode refid="17767" relation="include">
+        </childnode>
+      </node>
+      <node id="17756">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_robot_blocks">RobotBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">*<sp/>robotBlocksSimulator.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>janvier<sp/>2014</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>Benoît</highlight></codeline>
+<codeline lineno="6"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="robot_blocks_simulator_8h" kindref="compound">robotBlocksSimulator.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="trace_8h" kindref="compound">trace.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_robot_blocks" kindref="compound">RobotBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">RobotBlocksBlockCode*(*<sp/>RobotBlocksSimulator::buildNewBlockCode)(RobotBlocksBlock*)=NULL;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="class_robot_blocks_1_1_robot_blocks_simulator_1a34966f93f4287b0cb67084b141e0dee9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RobotBlocksSimulator::help()<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;VisibleSim:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Robot01&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/>exit(EXIT_SUCCESS);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" refkind="member"><highlight class="normal">RobotBlocksSimulator::RobotBlocksSimulator(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[],<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_block_code" kindref="compound">RobotBlocksBlockCode</ref><sp/>*(*robotBlocksBlockCodeBuildingFunction)(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*))<sp/>:<sp/><ref refid="namespace_base_simulator" kindref="compound">BaseSimulator</ref>::<ref refid="class_base_simulator_1_1_simulator" kindref="compound">Simulator</ref>(argc,<sp/>argv)<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;34m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;RobotBlocksSimulator<sp/>constructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>currentID<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_world" kindref="compound">RobotBlocksWorld</ref><sp/>*world<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1a09b89e9c47e3b651b751342ba44d9e7c" kindref="member">buildNewBlockCode</ref><sp/>=<sp/>robotBlocksBlockCodeBuildingFunction;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1a5e1d8433a21bcc59a2ad87af9b775c0a" kindref="member">testMode</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>reading<sp/>the<sp/>xml<sp/>file<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*node<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref>-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;world&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(node)<sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>worldElement<sp/>=<sp/>node-&gt;ToElement();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=<sp/>worldElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;gridSize&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lx,ly,lz;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str=attr;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lx<sp/>=<sp/>atoi(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ly<sp/>=<sp/>atoi(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lz<sp/>=<sp/>atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;grid<sp/>size<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>lx<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>x<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>ly<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>x<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>lz<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;WARNING<sp/>No<sp/>grid<sp/>size<sp/>in<sp/>XML<sp/>file&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=worldElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;windowSize&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str=attr;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" kindref="member">GlutContext::initialScreenWidth</ref><sp/>=<sp/>atoi(str.substr(0,pos).c_str());</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" kindref="member">GlutContext::initialScreenHeight</ref><sp/>=<sp/>atoi(str.substr(pos+1,str.length()-pos-1).c_str());</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1a2e53da196e3309de6f7096993e30e191" kindref="member">GlutContext::screenWidth</ref><sp/>=<sp/><ref refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" kindref="member">GlutContext::initialScreenWidth</ref>;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1a62d021000546e50bbec62a6974183322" kindref="member">GlutContext::screenHeight</ref><sp/>=<sp/><ref refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" kindref="member">GlutContext::initialScreenHeight</ref>;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1a3862dfc3f29f6e8014d781e5c46ce357" kindref="member">createWorld</ref>(lx,<sp/>ly,<sp/>lz,<sp/>argc,<sp/>argv);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world<sp/>=<sp/><ref refid="namespace_robot_blocks_1a6094e7149d1c4120c11cff9c67a5f392" kindref="member">getWorld</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a6fbbe6ba264ba0ed0f3f93663d4febeb" kindref="member">loadTextures</ref>(</highlight><highlight class="stringliteral">&quot;../../simulatorCore/robotBlocksTextures&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" kindref="member">ERRPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;ERROR<sp/>:<sp/>NO<sp/>world<sp/>in<sp/>XML<sp/>file&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(1);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_robot_blocks_1ad3eb76847606a1d5e4e461f967aceae2" kindref="member">createScheduler</ref>();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>loading<sp/>the<sp/>camera<sp/>parameters</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeConfig<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;camera&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeConfig)<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>cameraElement<sp/>=<sp/>nodeConfig-&gt;ToElement();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;target&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_near=1,def_far=1500;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>angle=45.0;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>target;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a7724b4bf8bbf5423da7dcb4644ee7d80" kindref="member">setTarget</ref>(target);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;angle&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>angle<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a13d88059aa510d8ac9aee7dc3adc84ce" kindref="member">setAngle</ref>(angle);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;directionSpherical&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>az,ele,dist;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>az<sp/>=<sp/>-90.0+atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ele<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dist<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1af8eff8518d92273950368ede6fc4c800" kindref="member">setDirection</ref>(az,ele);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a4e3d9d06d4cf59d5d49674bd3af57e61" kindref="member">setDistance</ref>(dist);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>az<sp/>=<sp/>dist*sin(angle*<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/180.0);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_near<sp/>=<sp/>dist-az;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_far<sp/>=<sp/>dist+az;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;near&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_near<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;far&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_far<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a4ec50716a3c77cf11a664e602511e55f" kindref="member">setNearFar</ref>(def_near,def_far);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>loading<sp/>the<sp/>spotlight<sp/>parameters</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>nodeConfig<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;spotlight&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeConfig)<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>target;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>az=0,ele=60,dist=1000,angle=50;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>lightElement<sp/>=<sp/>nodeConfig-&gt;ToElement();</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=lightElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;target&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=lightElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;directionSpherical&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>az<sp/>=<sp/>-90.0+atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ele<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dist<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=lightElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;angle&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>angle<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>farplane=2.0*dist*tan(angle*<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/180.0);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a59b1341ab9abfe3cda472d92ebd08748" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" kindref="member">setLightParameters</ref>(target,az,ele,dist,angle,10.0,farplane);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeBlock<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;blockList&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeBlock)<sp/>{</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>defaultColor=<ref refid="color_8h_1a6c951de855d70b05562e8ec8d09fdebf" kindref="member">DARKGREY</ref>;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>element<sp/>=<sp/>nodeBlock-&gt;ToElement();</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;color&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defaultColor.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defaultColor.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defaultColor.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;new<sp/>default<sp/>color<sp/>:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>defaultColor<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;blocksize&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>siz[3];</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>siz[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>siz[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>siz[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;blocksize<sp/>=&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>siz[0]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>siz[1]<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>siz[2]<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a02b70b57a72e5807bbb1671f3224e21f" kindref="member">setBlocksSize</ref>(siz);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Reading<sp/>a<sp/>robotblock<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*block<sp/>=<sp/>nodeBlock-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;block&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>position;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>color;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>master;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(block)<sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>element<sp/>=<sp/>block-&gt;ToElement();</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color=defaultColor;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>master=</highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;color&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a8adfa78739fcc5ca469264e893188215" kindref="member">set</ref>(atof(str.substr(0,pos1).c_str())/255.0,</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;new<sp/>color<sp/>:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>defaultColor<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;position&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;position<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>position<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;master&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str.compare(</highlight><highlight class="stringliteral">&quot;true&quot;</highlight><highlight class="normal">)==0<sp/>||<sp/>str.compare(</highlight><highlight class="stringliteral">&quot;1&quot;</highlight><highlight class="normal">)==0)<sp/>{</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>master=</highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;master<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>master<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a15d447ddcf44637228234c0fc7494352" kindref="member">addBlock</ref>(currentID++,<ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1a09b89e9c47e3b651b751342ba44d9e7c" kindref="member">RobotBlocksSimulator::buildNewBlockCode</ref>,position,color,master);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>block-&gt;NextSibling(</highlight><highlight class="stringliteral">&quot;block&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>end<sp/>while<sp/>(block)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>nodeBlock-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;blocksLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line,plane;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(block)<sp/>{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>element<sp/>=<sp/>block-&gt;ToElement();</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color=defaultColor;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;color&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;line<sp/>color<sp/>:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>color<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;line&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>line<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;plane&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>plane<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;values&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>plane;</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>line;</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>str.length();</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/><sp/>(str[i]==</highlight><highlight class="charliteral">&apos;1&apos;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]=i;</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a15d447ddcf44637228234c0fc7494352" kindref="member">addBlock</ref>(currentID++,<ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1a09b89e9c47e3b651b751342ba44d9e7c" kindref="member">RobotBlocksSimulator::buildNewBlockCode</ref>,position,color);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>block-&gt;NextSibling(</highlight><highlight class="stringliteral">&quot;blocksLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>end<sp/>while<sp/>(nodeBlock)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">//<sp/>end<sp/>if(nodeBlock)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;no<sp/>Block<sp/>List&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeGrid<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;targetGrid&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeGrid)<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a695f81c402c80a73df4ae9bacf7b7551" kindref="member">initTargetGrid</ref>();</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*block<sp/>=<sp/>nodeGrid-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;targetLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line,plane;</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(block)<sp/>{</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>element<sp/>=<sp/>block-&gt;ToElement();</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;line&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>line<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;plane&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>plane<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;values&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>str.length();</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1adf2abf66582bd34e8fbfc968c10916df" kindref="member">setTargetGrid</ref>((str[i]==</highlight><highlight class="charliteral">&apos;1&apos;</highlight><highlight class="normal">)?<ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aaca9d5ec0004ea9994d44b2447984c2f8" kindref="member">fullCell</ref>:<ref refid="namespace_robot_blocks_1ad4640c1f3250f8c22ac14e563815b24aae5e0fc67709665b949c418d96639f45e" kindref="member">emptyCell</ref>,i,line,plane);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>block-&gt;NextSibling(</highlight><highlight class="stringliteral">&quot;targetLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" kindref="member">ERRPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;No<sp/>target<sp/>grid&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeCapa<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;capabilities&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeCapa)<sp/>{</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a36f373d7052c858eacee349cc5be925e" kindref="member">setCapabilities</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_capabilities" kindref="compound">RobotBlocksCapabilities</ref>(nodeCapa));</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_robot_blocks_1_1_robot_blocks_world_1a2ffbe2ea3384747c56c24dbfb688caa1" kindref="member">linkBlocks</ref>();</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/>getScheduler()-&gt;sem_schedulerStart-&gt;post();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/>getScheduler()-&gt;setState(Scheduler::NOTSTARTED);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1a5e1d8433a21bcc59a2ad87af9b775c0a" kindref="member">testMode</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" kindref="member">GlutContext::mainLoop</ref>();</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="305"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight></codeline>
+<codeline lineno="307" refid="class_robot_blocks_1_1_robot_blocks_simulator_1a51f5f05c7ec9d3e897aed7d93fccc170" refkind="member"><highlight class="normal"><ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1a51f5f05c7ec9d3e897aed7d93fccc170" kindref="member">RobotBlocksSimulator::~RobotBlocksSimulator</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;34m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;RobotBlocksSimulator<sp/>destructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;endl;</highlight></codeline>
+<codeline lineno="309"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight></codeline>
+<codeline lineno="311" refid="class_robot_blocks_1_1_robot_blocks_simulator_1a8ce133c7007be9e31a2fbca2997bff5e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1a8ce133c7007be9e31a2fbca2997bff5e" kindref="member">RobotBlocksSimulator::createSimulator</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[],<sp/><ref refid="class_robot_blocks_1_1_robot_blocks_block_code" kindref="compound">RobotBlocksBlockCode</ref><sp/>*(*robotBlocksBlockCodeBuildingFunction)(<ref refid="class_robot_blocks_1_1_robot_blocks_block" kindref="compound">RobotBlocksBlock</ref>*))<sp/>{</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" kindref="member">simulator</ref><sp/>=<sp/><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad140bea3b17e72049b78839c7721f211" kindref="member">RobotBlocksSimulator</ref>(argc,<sp/>argv,<sp/>robotBlocksBlockCodeBuildingFunction);</highlight></codeline>
+<codeline lineno="313"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315" refid="class_robot_blocks_1_1_robot_blocks_simulator_1afe2c9b2910d6df5d43438fc42d736acb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_robot_blocks_1_1_robot_blocks_simulator_1afe2c9b2910d6df5d43438fc42d736acb" kindref="member">RobotBlocksSimulator::deleteSimulator</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">((<ref refid="class_robot_blocks_1_1_robot_blocks_simulator" kindref="compound">RobotBlocksSimulator</ref>*)<ref refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" kindref="member">simulator</ref>);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>RobotBlocks<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlocksSimulator.cpp"/>
+  </compounddef>
+</doxygen>

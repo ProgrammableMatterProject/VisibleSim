@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_catoms3_d_1_1_catoms3_d_gl_block" kind="class" language="C++" prot="public">
+    <compoundname>Catoms3D::Catoms3DGlBlock</compoundname>
+    <basecompoundref refid="class_gl_block" prot="public" virt="non-virtual">GlBlock</basecompoundref>
+    <includes refid="catoms3_d_gl_block_8h" local="no">catoms3DGlBlock.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_catoms3_d_1_1_catoms3_d_gl_block_1a57200a6e463be1f2745977175dd3d714" prot="public" static="no" mutable="no">
+        <type><ref refid="class_matrice" kindref="compound">Matrice</ref></type>
+        <definition>Matrice Catoms3D::Catoms3DGlBlock::mat</definition>
+        <argsstring></argsstring>
+        <name>mat</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="21" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" bodystart="21" bodyend="-1"/>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1ad2ecd92d6814554817e0c03cdcf87708" compoundref="catoms3_d_block_8cpp" startline="97" endline="114">Catoms3D::Catoms3DBlock::getNeighborPos</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_block_1af5855cfd2d3e26c3824b1fef9fbc8ba1" compoundref="catoms3_d_block_8cpp" startline="116" endline="140">Catoms3D::Catoms3DBlock::getInterface</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_motion_start_event_1ada7939add62235116670dbcc7a50bc18" compoundref="catoms3_d_events_8cpp" startline="37" endline="45">Catoms3D::MotionStartEvent::consume</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_rotations_1a57b25808a9354fcfce523a7cb01ba88e" compoundref="catoms3_d_events_8cpp" startline="175" endline="217">Catoms3D::Rotations::Rotations</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1aafbeb7e271225406c7cf5bbbf73f9c65" compoundref="catoms3_d_gl_block_8cpp" startline="5" endline="7">Catoms3DGlBlock</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6e16b11f9cab2d5c44666927b8c465a" compoundref="catoms3_d_gl_block_8cpp" startline="12" endline="34">glDraw</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_world_1a27df1d044b6f2d5d1f28c17395941124" compoundref="catoms3_d_world_8cpp" startline="412" endline="419">Catoms3D::Catoms3DWorld::updateGlData</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_gl_block_1aafbeb7e271225406c7cf5bbbf73f9c65" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Catoms3D::Catoms3DGlBlock::Catoms3DGlBlock</definition>
+        <argsstring>(int id)</argsstring>
+        <name>Catoms3DGlBlock</name>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp" bodystart="5" bodyend="7"/>
+        <references refid="class_catoms3_d_1_1_catoms3_d_gl_block_1a57200a6e463be1f2745977175dd3d714" compoundref="catoms3_d_gl_block_8h" startline="21">mat</references>
+        <references refid="class_matrice_1a2d2c324a368494b995e3373e12e6a28c" compoundref="matrice44_8h" startline="28" endline="28">Matrice::identity</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_gl_block_1aec4dcf9d6eaf876fb1e95aa52790a3aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Catoms3D::Catoms3DGlBlock::~Catoms3DGlBlock</definition>
+        <argsstring>()</argsstring>
+        <name>~Catoms3DGlBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp" bodystart="9" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_gl_block_1af6b35e0f81cf34e368470866cfdd7b3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>string</type>
+        <definition>string Catoms3D::Catoms3DGlBlock::getInfo</definition>
+        <argsstring>()</argsstring>
+        <name>getInfo</name>
+        <reimplements refid="class_gl_block_1a6ea26eca5a7b4e5307ed10f99af1d5e7">getInfo</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="25" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp" bodystart="51" bodyend="56"/>
+        <references refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" compoundref="gl_block_8h" startline="23">GlBlock::blockId</references>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">GlBlock::color</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_gl_block_1af6e16b11f9cab2d5c44666927b8c465a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DGlBlock::glDraw</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj)</argsstring>
+        <name>glDraw</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp" bodystart="12" bodyend="34"/>
+        <references refid="class_catoms3_d_1_1_catoms3_d_gl_block_1a57200a6e463be1f2745977175dd3d714" compoundref="catoms3_d_gl_block_8h" startline="21">mat</references>
+        <references refid="class_matrice_1a6ccd6fce0ea69884b3a11d952d30cba4" compoundref="matrice44_8cpp" startline="253" endline="273">Matrice::glMultMatrix</references>
+        <references refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" compoundref="gl_block_8h" startline="19">GlBlock::isHighlighted</references>
+        <references refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" compoundref="gl_block_8h" startline="22">GlBlock::color</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1ac656199a96623b14bf5038632bbffd10" compoundref="obj_loader_8cpp" startline="326" endline="332">ObjLoader::ObjLoader::setLightedColor</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1ac92663308186d17dacb1e9337d3fe21a" compoundref="obj_loader_8cpp" startline="297" endline="304">ObjLoader::ObjLoader::glDraw</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_gl_block_1a6fd256fcbb3fe3fda21643f80fd7fd5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DGlBlock::glDrawId</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj, int &amp;n)</argsstring>
+        <name>glDrawId</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="30" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp" bodystart="36" bodyend="41"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1a53df76e90fc70c3d3f98f5df257ae335" compoundref="obj_loader_8cpp" startline="306" endline="314">ObjLoader::ObjLoader::glDrawId</references>
+      </memberdef>
+      <memberdef kind="function" id="class_catoms3_d_1_1_catoms3_d_gl_block_1afbbda1d6eb24096e24c407e149a73823" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Catoms3D::Catoms3DGlBlock::glDrawIdByMaterial</definition>
+        <argsstring>(ObjLoader::ObjLoader *ptrObj, int &amp;n)</argsstring>
+        <name>glDrawIdByMaterial</name>
+        <param>
+          <type><ref refid="class_obj_loader_1_1_obj_loader" kindref="compound">ObjLoader::ObjLoader</ref> *</type>
+          <declname>ptrObj</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="31" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.cpp" bodystart="43" bodyend="48"/>
+        <references refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" compoundref="gl_block_8h" startline="21">GlBlock::position</references>
+        <references refid="class_obj_loader_1_1_obj_loader_1a940beec33d1554190596fae8fa034d6f" compoundref="obj_loader_8cpp" startline="316" endline="324">ObjLoader::ObjLoader::glDrawIdByMaterial</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1635">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1634">
+        <label>Catoms3D::Catoms3DGlBlock</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_gl_block"/>
+        <childnode refid="1635" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1637">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="1638">
+        <label>Matrice</label>
+        <link refid="class_matrice"/>
+      </node>
+      <node id="1636">
+        <label>Catoms3D::Catoms3DGlBlock</label>
+        <link refid="class_catoms3_d_1_1_catoms3_d_gl_block"/>
+        <childnode refid="1637" relation="public-inheritance">
+        </childnode>
+        <childnode refid="1638" relation="usage">
+          <edgelabel>mat</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" line="17" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/catoms3DGlBlock.h" bodystart="17" bodyend="32"/>
+    <listofallmembers>
+      <member refid="class_gl_block_1a1b82a2bb5bffa25346bec5042f0e9273" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>blockId</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_gl_block_1aafbeb7e271225406c7cf5bbbf73f9c65" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>Catoms3DGlBlock</name></member>
+      <member refid="class_gl_block_1a7529622693ab66cd661fb883facd0517" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>color</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6b35e0f81cf34e368470866cfdd7b3f" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>getInfo</name></member>
+      <member refid="class_gl_block_1a83b01f275e6f319bf5bd50116adfee15" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>getPopupInfo</name></member>
+      <member refid="class_gl_block_1ac2f5755213e7bc106e83a7a8030fd048" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>getPosition</name></member>
+      <member refid="class_gl_block_1a08a6ceae70583e35aa07a84b65f26ace" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_gl_block_1a5c86ad67ac4b062166ecfa5fe7322766" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>GlBlock</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_gl_block_1af6e16b11f9cab2d5c44666927b8c465a" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>glDraw</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_gl_block_1a6fd256fcbb3fe3fda21643f80fd7fd5f" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>glDrawId</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_gl_block_1afbbda1d6eb24096e24c407e149a73823" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>glDrawIdByMaterial</name></member>
+      <member refid="class_gl_block_1aa1b65ad97e164794cb436fc07108d78a" prot="protected" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>isHighlighted</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_gl_block_1a57200a6e463be1f2745977175dd3d714" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>mat</name></member>
+      <member refid="class_gl_block_1a1542afc32802f48bf93ee07094ff78b4" prot="public" virt="non-virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>position</name></member>
+      <member refid="class_gl_block_1abe931d185bd4851420e78ea92ec1aca2" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>setColor</name></member>
+      <member refid="class_gl_block_1a3a659956f3df7b81ed21ad16fa33b391" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>setColor</name></member>
+      <member refid="class_gl_block_1ae9849a64de0e8b6636314826d0e2f5ca" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>setPosition</name></member>
+      <member refid="class_gl_block_1ab03ba1da95352c4951b2bfe408ef04c3" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>setVisible</name></member>
+      <member refid="class_gl_block_1abbe6e6bfc4a1697ba7fc8722d830ed2f" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>toggleHighlight</name></member>
+      <member refid="class_catoms3_d_1_1_catoms3_d_gl_block_1aec4dcf9d6eaf876fb1e95aa52790a3aa" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>~Catoms3DGlBlock</name></member>
+      <member refid="class_gl_block_1a2179d26fdfe814782897e57c3d77faa1" prot="public" virt="virtual"><scope>Catoms3D::Catoms3DGlBlock</scope><name>~GlBlock</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

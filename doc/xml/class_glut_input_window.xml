@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_glut_input_window" kind="class" language="C++" prot="public">
+    <compoundname>GlutInputWindow</compoundname>
+    <basecompoundref refid="class_glut_window" prot="public" virt="non-virtual">GlutWindow</basecompoundref>
+    <includes refid="interface_8h" local="no">interface.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_glut_input_window_1a6582723eb24534cf357f767a48450982" prot="private" static="no" mutable="no">
+        <type>string</type>
+        <definition>string GlutInputWindow::text</definition>
+        <argsstring></argsstring>
+        <name>text</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_glut_input_window_1ac09e7326bd508d0630abf91195e8505f" prot="private" static="no" mutable="no">
+        <type><ref refid="class_glut_window" kindref="compound">GlutWindow</ref> *</type>
+        <definition>GlutWindow* GlutInputWindow::server</definition>
+        <argsstring></argsstring>
+        <name>server</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="91" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_glut_input_window_1a6739e1dee6c73af991fffe251a218c92" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GlutInputWindow::hasFocus</definition>
+        <argsstring></argsstring>
+        <name>hasFocus</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="93" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="93" bodyend="-1"/>
+        <referencedby refid="class_glut_sliding_debug_window_1adb2038038ae6a736f1a406c9e3c63728" compoundref="interface_8cpp" startline="327" endline="384">GlutSlidingDebugWindow::glDraw</referencedby>
+        <referencedby refid="class_glut_sliding_debug_window_1a5b62eaf688d366f94bb7bcb6d48da36e" compoundref="interface_8cpp" startline="386" endline="408">GlutSlidingDebugWindow::mouseFunc</referencedby>
+        <referencedby refid="class_glut_sliding_debug_window_1a40a48ece9d420089212ecb8b1ff165b0" compoundref="interface_8cpp" startline="410" endline="431">GlutSlidingDebugWindow::keyFunc</referencedby>
+        <referencedby refid="class_glut_input_window_1a2e7e7baadcfc9419ad0997c996191e71" compoundref="interface_8cpp" startline="921" endline="924">GlutInputWindow</referencedby>
+        <referencedby refid="class_glut_input_window_1a6c323805d267bca28a19a766f0a415f6" compoundref="interface_8cpp" startline="930" endline="975">glDraw</referencedby>
+        <referencedby refid="class_glut_input_window_1aa7038db8bea7077cba302f4561ccb6ce" compoundref="interface_8cpp" startline="977" endline="983">mouseFunc</referencedby>
+        <referencedby refid="class_glut_input_window_1a0eef9fb572c33949a42527395d3f5b4d" compoundref="interface_8cpp" startline="985" endline="1004">keyFunc</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_glut_input_window_1a2e7e7baadcfc9419ad0997c996191e71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>GlutInputWindow::GlutInputWindow</definition>
+        <argsstring>(GlutWindow *parent, GLuint pid, GLint px, GLint py, GLint pw, GLint ph)</argsstring>
+        <name>GlutInputWindow</name>
+        <param>
+          <type><ref refid="class_glut_window" kindref="compound">GlutWindow</ref> *</type>
+          <declname>parent</declname>
+        </param>
+        <param>
+          <type>GLuint</type>
+          <declname>pid</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>px</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>py</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>pw</declname>
+        </param>
+        <param>
+          <type>GLint</type>
+          <declname>ph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="94" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="921" bodyend="924"/>
+        <references refid="class_glut_input_window_1a6739e1dee6c73af991fffe251a218c92" compoundref="interface_8h" startline="93">hasFocus</references>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_input_window_1a55cc4bbb498764204b82063eb102cba7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>GlutInputWindow::~GlutInputWindow</definition>
+        <argsstring>()</argsstring>
+        <name>~GlutInputWindow</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="95" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="926" bodyend="928"/>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_input_window_1a0eef9fb572c33949a42527395d3f5b4d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int GlutInputWindow::keyFunc</definition>
+        <argsstring>(int keycode)</argsstring>
+        <name>keyFunc</name>
+        <reimplements refid="class_glut_window_1a174463c2c890abc830edfa0c85cedae2">keyFunc</reimplements>
+        <param>
+          <type>int</type>
+          <declname>keycode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="97" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="985" bodyend="1004"/>
+        <references refid="class_glut_input_window_1a6739e1dee6c73af991fffe251a218c92" compoundref="interface_8h" startline="93">hasFocus</references>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_input_window_1aa7038db8bea7077cba302f4561ccb6ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int GlutInputWindow::mouseFunc</definition>
+        <argsstring>(int button, int state, int x, int y)</argsstring>
+        <name>mouseFunc</name>
+        <reimplements refid="class_glut_window_1abce1a1917a28605b7f8755eef9f3fd45">mouseFunc</reimplements>
+        <param>
+          <type>int</type>
+          <declname>button</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="98" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="977" bodyend="983"/>
+        <references refid="class_glut_window_1a95f15835c3b88fe4caea82b5bdfd747d" compoundref="interface_8h" startline="33">GlutWindow::x</references>
+        <references refid="class_glut_window_1aa67de6944ee84ce2245f47eaafb9e883" compoundref="interface_8h" startline="33">GlutWindow::y</references>
+        <references refid="class_glut_window_1a3995a01320c43e0b6654828d86b0ee2a" compoundref="interface_8h" startline="33">GlutWindow::h</references>
+        <references refid="class_glut_input_window_1a6739e1dee6c73af991fffe251a218c92" compoundref="interface_8h" startline="93">hasFocus</references>
+        <references refid="class_glut_window_1a00fbd8336c9c16b13e96dccea1fb6709" compoundref="interface_8h" startline="32">GlutWindow::id</references>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_input_window_1a6c323805d267bca28a19a766f0a415f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void GlutInputWindow::glDraw</definition>
+        <argsstring>()</argsstring>
+        <name>glDraw</name>
+        <reimplements refid="class_glut_window_1aac065bb62afe22487b197e0959893162">glDraw</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="99" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="930" bodyend="975"/>
+        <references refid="class_glut_window_1a95f15835c3b88fe4caea82b5bdfd747d" compoundref="interface_8h" startline="33">GlutWindow::x</references>
+        <references refid="class_glut_window_1aa67de6944ee84ce2245f47eaafb9e883" compoundref="interface_8h" startline="33">GlutWindow::y</references>
+        <references refid="class_glut_input_window_1a6739e1dee6c73af991fffe251a218c92" compoundref="interface_8h" startline="93">hasFocus</references>
+        <references refid="class_glut_window_1aa5131effbb6a485236192d815eb34475" compoundref="interface_8h" startline="33">GlutWindow::w</references>
+        <references refid="class_glut_window_1a3995a01320c43e0b6654828d86b0ee2a" compoundref="interface_8h" startline="33">GlutWindow::h</references>
+        <references refid="class_glut_window_1a24166cadde4ac575bdef40a62022835a" compoundref="interface_8cpp" startline="106" endline="118">GlutWindow::drawString</references>
+        <references refid="class_glut_window_1aac065bb62afe22487b197e0959893162" compoundref="interface_8cpp" startline="49" endline="58">GlutWindow::glDraw</references>
+      </memberdef>
+      <memberdef kind="function" id="class_glut_input_window_1a64d3adfc2d7700d1b6e4c13e5e37f394" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>string</type>
+        <definition>string GlutInputWindow::getTextAndClear</definition>
+        <argsstring>()</argsstring>
+        <name>getTextAndClear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="100" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.cpp" bodystart="1006" bodyend="1010"/>
+        <referencedby refid="class_glut_sliding_debug_window_1a40a48ece9d420089212ecb8b1ff165b0" compoundref="interface_8cpp" startline="410" endline="431">GlutSlidingDebugWindow::keyFunc</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1826">
+        <label>GlutInputWindow</label>
+        <link refid="class_glut_input_window"/>
+        <childnode refid="1827" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1827">
+        <label>GlutWindow</label>
+        <link refid="class_glut_window"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1828">
+        <label>GlutInputWindow</label>
+        <link refid="class_glut_input_window"/>
+        <childnode refid="1829" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1829">
+        <label>GlutWindow</label>
+        <link refid="class_glut_window"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" line="89" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/interface.h" bodystart="89" bodyend="101"/>
+    <listofallmembers>
+      <member refid="class_glut_window_1a1f551501788e5d111661638baa5811cb" prot="protected" virt="non-virtual"><scope>GlutInputWindow</scope><name>addChild</name></member>
+      <member refid="class_glut_window_1a975deaaec8e65dbd51719966cffbfaf4" prot="protected" virt="non-virtual"><scope>GlutInputWindow</scope><name>bindTexture</name></member>
+      <member refid="class_glut_window_1a93960fe17b0b5dd7bddee6ac6c6841d6" prot="protected" virt="non-virtual"><scope>GlutInputWindow</scope><name>children</name></member>
+      <member refid="class_glut_window_1a24166cadde4ac575bdef40a62022835a" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>drawString</name></member>
+      <member refid="class_glut_input_window_1a64d3adfc2d7700d1b6e4c13e5e37f394" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>getTextAndClear</name></member>
+      <member refid="class_glut_input_window_1a6c323805d267bca28a19a766f0a415f6" prot="public" virt="virtual"><scope>GlutInputWindow</scope><name>glDraw</name></member>
+      <member refid="class_glut_input_window_1a2e7e7baadcfc9419ad0997c996191e71" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>GlutInputWindow</name></member>
+      <member refid="class_glut_window_1a37f63445e319e55b86e944a9a1f1e9ad" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>GlutWindow</name></member>
+      <member refid="class_glut_window_1a3995a01320c43e0b6654828d86b0ee2a" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>h</name></member>
+      <member refid="class_glut_input_window_1a6739e1dee6c73af991fffe251a218c92" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>hasFocus</name></member>
+      <member refid="class_glut_window_1a00fbd8336c9c16b13e96dccea1fb6709" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>id</name></member>
+      <member refid="class_glut_window_1a10bb60c1e780921e3bd151e37e848297" prot="protected" virt="non-virtual"><scope>GlutInputWindow</scope><name>idTexture</name></member>
+      <member refid="class_glut_input_window_1a0eef9fb572c33949a42527395d3f5b4d" prot="public" virt="virtual"><scope>GlutInputWindow</scope><name>keyFunc</name></member>
+      <member refid="class_glut_window_1a510fbca48d058183471bfc3109e226a7" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>lectureTarga</name></member>
+      <member refid="class_glut_window_1aca1a6737fb20291682ebab3dbafe0f2d" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>loadTexture</name></member>
+      <member refid="class_glut_input_window_1aa7038db8bea7077cba302f4561ccb6ce" prot="public" virt="virtual"><scope>GlutInputWindow</scope><name>mouseFunc</name></member>
+      <member refid="class_glut_window_1ab4599613b8b8d97944483b7e9a131d43" prot="public" virt="virtual"><scope>GlutInputWindow</scope><name>passiveMotionFunc</name></member>
+      <member refid="class_glut_window_1ac88eef85e16c17df47aefc9a43e905f6" prot="public" virt="virtual"><scope>GlutInputWindow</scope><name>reshapeFunc</name></member>
+      <member refid="class_glut_input_window_1ac09e7326bd508d0630abf91195e8505f" prot="private" virt="non-virtual"><scope>GlutInputWindow</scope><name>server</name></member>
+      <member refid="class_glut_window_1a744f418778787f9e9142a8700c83d698" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>setGeometry</name></member>
+      <member refid="class_glut_input_window_1a6582723eb24534cf357f767a48450982" prot="private" virt="non-virtual"><scope>GlutInputWindow</scope><name>text</name></member>
+      <member refid="class_glut_window_1aa5131effbb6a485236192d815eb34475" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>w</name></member>
+      <member refid="class_glut_window_1a95f15835c3b88fe4caea82b5bdfd747d" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>x</name></member>
+      <member refid="class_glut_window_1aa67de6944ee84ce2245f47eaafb9e883" prot="public" virt="non-virtual"><scope>GlutInputWindow</scope><name>y</name></member>
+      <member refid="class_glut_input_window_1a55cc4bbb498764204b82063eb102cba7" prot="public" virt="virtual"><scope>GlutInputWindow</scope><name>~GlutInputWindow</name></member>
+      <member refid="class_glut_window_1ab455bdfdacdc6881f4583fccdd5bc56d" prot="public" virt="virtual"><scope>GlutInputWindow</scope><name>~GlutWindow</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,471 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="smart_blocks_block_8cpp" kind="file" language="C++">
+    <compoundname>smartBlocksBlock.cpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes refid="smart_blocks_block_8h" local="yes">smartBlocksBlock.h</includes>
+    <includes refid="smart_blocks_world_8h" local="yes">smartBlocksWorld.h</includes>
+    <incdepgraph>
+      <node id="18516">
+        <label>list</label>
+      </node>
+      <node id="18541">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="18519" relation="include">
+        </childnode>
+        <childnode refid="18542" relation="include">
+        </childnode>
+        <childnode refid="18527" relation="include">
+        </childnode>
+        <childnode refid="18532" relation="include">
+        </childnode>
+        <childnode refid="18517" relation="include">
+        </childnode>
+        <childnode refid="18543" relation="include">
+        </childnode>
+      </node>
+      <node id="18527">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="18523" relation="include">
+        </childnode>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18522" relation="include">
+        </childnode>
+        <childnode refid="18528" relation="include">
+        </childnode>
+        <childnode refid="18529" relation="include">
+        </childnode>
+      </node>
+      <node id="18519">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="18520" relation="include">
+        </childnode>
+        <childnode refid="18521" relation="include">
+        </childnode>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18522" relation="include">
+        </childnode>
+        <childnode refid="18523" relation="include">
+        </childnode>
+        <childnode refid="18524" relation="include">
+        </childnode>
+        <childnode refid="18525" relation="include">
+        </childnode>
+        <childnode refid="18526" relation="include">
+        </childnode>
+        <childnode refid="18527" relation="include">
+        </childnode>
+        <childnode refid="18532" relation="include">
+        </childnode>
+      </node>
+      <node id="18529">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18522" relation="include">
+        </childnode>
+        <childnode refid="18530" relation="include">
+        </childnode>
+        <childnode refid="18531" relation="include">
+        </childnode>
+      </node>
+      <node id="18511">
+        <label>smartBlocksBlock.h</label>
+        <link refid="smart_blocks_block_8h"/>
+        <childnode refid="18512" relation="include">
+        </childnode>
+        <childnode refid="18538" relation="include">
+        </childnode>
+        <childnode refid="18539" relation="include">
+        </childnode>
+        <childnode refid="18550" relation="include">
+        </childnode>
+        <childnode refid="18553" relation="include">
+        </childnode>
+      </node>
+      <node id="18543">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="18544" relation="include">
+        </childnode>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18522" relation="include">
+        </childnode>
+        <childnode refid="18531" relation="include">
+        </childnode>
+        <childnode refid="18517" relation="include">
+        </childnode>
+        <childnode refid="18545" relation="include">
+        </childnode>
+        <childnode refid="18533" relation="include">
+        </childnode>
+      </node>
+      <node id="18513">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="18547">
+        <label>assert.h</label>
+      </node>
+      <node id="18537">
+        <label>stdint.h</label>
+      </node>
+      <node id="18521">
+        <label>stdlib.h</label>
+      </node>
+      <node id="18512">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="18513" relation="include">
+        </childnode>
+        <childnode refid="18514" relation="include">
+        </childnode>
+        <childnode refid="18515" relation="include">
+        </childnode>
+        <childnode refid="18516" relation="include">
+        </childnode>
+        <childnode refid="18517" relation="include">
+        </childnode>
+        <childnode refid="18534" relation="include">
+        </childnode>
+        <childnode refid="18536" relation="include">
+        </childnode>
+      </node>
+      <node id="18530">
+        <label>cmath</label>
+      </node>
+      <node id="18550">
+        <label>smartBlocksCapabilities.h</label>
+        <link refid="smart_blocks_capabilities_8h"/>
+        <childnode refid="18544" relation="include">
+        </childnode>
+        <childnode refid="18551" relation="include">
+        </childnode>
+        <childnode refid="18529" relation="include">
+        </childnode>
+        <childnode refid="18548" relation="include">
+        </childnode>
+        <childnode refid="18518" relation="include">
+        </childnode>
+        <childnode refid="18552" relation="include">
+        </childnode>
+      </node>
+      <node id="18518">
+        <label>string</label>
+      </node>
+      <node id="18523">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="18546">
+        <label>map</label>
+      </node>
+      <node id="18531">
+        <label>memory.h</label>
+      </node>
+      <node id="18517">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="18518" relation="include">
+        </childnode>
+        <childnode refid="18519" relation="include">
+        </childnode>
+        <childnode refid="18529" relation="include">
+        </childnode>
+        <childnode refid="18533" relation="include">
+        </childnode>
+      </node>
+      <node id="18522">
+        <label>fstream</label>
+      </node>
+      <node id="18534">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="18512" relation="include">
+        </childnode>
+        <childnode refid="18535" relation="include">
+        </childnode>
+      </node>
+      <node id="18526">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="18532">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="18528" relation="include">
+        </childnode>
+        <childnode refid="18529" relation="include">
+        </childnode>
+        <childnode refid="18527" relation="include">
+        </childnode>
+      </node>
+      <node id="18524">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="18552">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="18542">
+        <label>pthread.h</label>
+      </node>
+      <node id="18549">
+        <label>string.h</label>
+      </node>
+      <node id="18544">
+        <label>vector</label>
+      </node>
+      <node id="18538">
+        <label>smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="18534" relation="include">
+        </childnode>
+        <childnode refid="18511" relation="include">
+        </childnode>
+      </node>
+      <node id="18553">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="18554" relation="include">
+        </childnode>
+        <childnode refid="18549" relation="include">
+        </childnode>
+        <childnode refid="18513" relation="include">
+        </childnode>
+        <childnode refid="18512" relation="include">
+        </childnode>
+      </node>
+      <node id="18528">
+        <label>math.h</label>
+      </node>
+      <node id="18533">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18522" relation="include">
+        </childnode>
+        <childnode refid="18530" relation="include">
+        </childnode>
+        <childnode refid="18531" relation="include">
+        </childnode>
+        <childnode refid="18519" relation="include">
+        </childnode>
+      </node>
+      <node id="18509">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.cpp</label>
+        <link refid="smartBlocksBlock.cpp"/>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18511" relation="include">
+        </childnode>
+        <childnode refid="18555" relation="include">
+        </childnode>
+      </node>
+      <node id="18510">
+        <label>iostream</label>
+      </node>
+      <node id="18555">
+        <label>smartBlocksWorld.h</label>
+        <link refid="smart_blocks_world_8h"/>
+        <childnode refid="18541" relation="include">
+        </childnode>
+        <childnode refid="18545" relation="include">
+        </childnode>
+        <childnode refid="18529" relation="include">
+        </childnode>
+        <childnode refid="18511" relation="include">
+        </childnode>
+        <childnode refid="18550" relation="include">
+        </childnode>
+        <childnode refid="18540" relation="include">
+        </childnode>
+      </node>
+      <node id="18554">
+        <label>deque</label>
+      </node>
+      <node id="18551">
+        <label>climits</label>
+      </node>
+      <node id="18515">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="18548">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="18522" relation="include">
+        </childnode>
+      </node>
+      <node id="18514">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="18545">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18546" relation="include">
+        </childnode>
+        <childnode refid="18544" relation="include">
+        </childnode>
+        <childnode refid="18515" relation="include">
+        </childnode>
+        <childnode refid="18547" relation="include">
+        </childnode>
+        <childnode refid="18512" relation="include">
+        </childnode>
+        <childnode refid="18517" relation="include">
+        </childnode>
+        <childnode refid="18548" relation="include">
+        </childnode>
+      </node>
+      <node id="18525">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="18520">
+        <label>stdio.h</label>
+      </node>
+      <node id="18540">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="18541" relation="include">
+        </childnode>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18522" relation="include">
+        </childnode>
+        <childnode refid="18518" relation="include">
+        </childnode>
+        <childnode refid="18544" relation="include">
+        </childnode>
+        <childnode refid="18530" relation="include">
+        </childnode>
+        <childnode refid="18521" relation="include">
+        </childnode>
+        <childnode refid="18549" relation="include">
+        </childnode>
+      </node>
+      <node id="18536">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="18512" relation="include">
+        </childnode>
+        <childnode refid="18537" relation="include">
+        </childnode>
+        <childnode refid="18510" relation="include">
+        </childnode>
+        <childnode refid="18514" relation="include">
+        </childnode>
+        <childnode refid="18516" relation="include">
+        </childnode>
+      </node>
+      <node id="18539">
+        <label>smartBlocksGlBlock.h</label>
+        <link refid="smart_blocks_gl_block_8h"/>
+        <childnode refid="18518" relation="include">
+        </childnode>
+        <childnode refid="18540" relation="include">
+        </childnode>
+        <childnode refid="18517" relation="include">
+        </childnode>
+      </node>
+      <node id="18535">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_smart_blocks">SmartBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>SmartBlocksBlock.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>avril<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>ben</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="smart_blocks_block_8h" kindref="compound">smartBlocksBlock.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="smart_blocks_world_8h" kindref="compound">smartBlocksWorld.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespace_smart_blocks" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_smart_blocks" kindref="compound">SmartBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>GLfloat<sp/>tabColors[12][4]={{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},{0.0,1.0,0.0,1.0},</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{0.0,0.0,1.0,1.0},{0.274509804,0.509803922,0.705882353,1.0},{0.815686275,0.125490196,0.564705882,1.0},{0.5,0.5,0.5,1.0},</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">{0.980392157,0.5,0.456,1.0},{0.549019608,0.85,0.5,1.0},{0.980392157,0.843137255,0.0,1.0},{0.094117647,0.545098039,0.094117647,1.0}};</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="class_smart_blocks_1_1_smart_blocks_block_1aab5d1ad0927c368a788c64447ffd2dc8" refkind="member"><highlight class="normal">SmartBlocksBlock::SmartBlocksBlock(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bId,<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref><sp/>*(*smartBlocksBlockCodeBuildingFunction)(<ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref>*))<sp/>:<sp/><ref refid="namespace_base_simulator" kindref="compound">BaseSimulator</ref>::<ref refid="class_base_simulator_1_1_building_block" kindref="compound">BuildingBlock</ref>(bId)<sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;SmartBlocksBlock<sp/>#&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>bId<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>constructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a843fe9295593018eed03b53ed7a0e97a" kindref="member">buildNewBlockCode</ref><sp/>=<sp/>smartBlocksBlockCodeBuildingFunction;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><ref refid="class_base_simulator_1_1_building_block_1aa42bdf9c46446055c12a4eeee9134e99" kindref="member">blockCode</ref><sp/>=<sp/>(<ref refid="class_base_simulator_1_1_block_code" kindref="compound">BaseSimulator::BlockCode</ref>*)<ref refid="class_smart_blocks_1_1_smart_blocks_block_1a843fe9295593018eed03b53ed7a0e97a" kindref="member">buildNewBlockCode</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a07b91e5a57f8312abe11c609b97ac106" kindref="member">North</ref>;<sp/>i&lt;=<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a03687aa721f59fc1df91bd59547de8bb" kindref="member">West</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/>tabInterfaces[i]<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="class_smart_blocks_1_1_smart_blocks_block_1a8e13ca3bce8517b87f58d4350ead1c83" refkind="member"><highlight class="normal"><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a8e13ca3bce8517b87f58d4350ead1c83" kindref="member">SmartBlocksBlock::~SmartBlocksBlock</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a07b91e5a57f8312abe11c609b97ac106" kindref="member">North</ref>;<sp/>i&lt;=<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a03687aa721f59fc1df91bd59547de8bb" kindref="member">West</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>tabInterfaces[i];</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><ref refid="trace_8h_1a61a3c9a18380aafb6e430e79bf596557" kindref="member">OUTPUT</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;SmartBlocksBlock<sp/>#&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>destructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="class_smart_blocks_1_1_smart_blocks_block_1ae4214bedbbde0d3e9115fa1645e1b6bd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1ae4214bedbbde0d3e9115fa1645e1b6bd" kindref="member">SmartBlocksBlock::setPosition</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>&amp;p)<sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a8a466beb1447531d03f3ae43558266d9" kindref="member">position</ref>=p;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><ref refid="namespace_smart_blocks_1a082eac088d3c41655abf3de6776c70b4" kindref="member">getWorld</ref>()-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a533a228759de301db25b229f773ef922" kindref="member">updateGlData</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_smart_blocks_1_1_smart_blocks_block_1a7488aa21c2b9c495896104514523fea0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a7488aa21c2b9c495896104514523fea0" kindref="member">SmartBlocksBlock::setColor</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>&amp;c)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a1e681981398ea735bd01f8abe343eea6" kindref="member">color</ref>=c;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><ref refid="namespace_smart_blocks_1a082eac088d3c41655abf3de6776c70b4" kindref="member">getWorld</ref>()-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a533a228759de301db25b229f773ef922" kindref="member">updateGlData</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="class_smart_blocks_1_1_smart_blocks_block_1ac539f4a55a0d0a3d51fbda9b469890fd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a7488aa21c2b9c495896104514523fea0" kindref="member">SmartBlocksBlock::setColor</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>GLfloat<sp/>*col<sp/>=<sp/>tabColors[num%12];</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a1e681981398ea735bd01f8abe343eea6" kindref="member">color</ref>.<ref refid="class_color_1a8adfa78739fcc5ca469264e893188215" kindref="member">set</ref>(col[0],col[1],col[2],col[3]);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><ref refid="namespace_smart_blocks_1a082eac088d3c41655abf3de6776c70b4" kindref="member">getWorld</ref>()-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a533a228759de301db25b229f773ef922" kindref="member">updateGlData</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="class_smart_blocks_1_1_smart_blocks_block_1ab2ed1389fadb088b6593dfd5f4669205" refkind="member"><highlight class="normal"><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_smart_blocks_1_1_smart_blocks_block_1ab2ed1389fadb088b6593dfd5f4669205" kindref="member">SmartBlocksBlock::getP2PNetworkInterfaceByRelPos</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_point_cel" kindref="compound">PointCel</ref><sp/>&amp;pos)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pos.<ref refid="class_smart_blocks_1_1_point_cel_1aa3c7172c8be8fc099200b0dd0812621b" kindref="member">x</ref>==-1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tabInterfaces[<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a03687aa721f59fc1df91bd59547de8bb" kindref="member">West</ref>];</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pos.<ref refid="class_smart_blocks_1_1_point_cel_1aa3c7172c8be8fc099200b0dd0812621b" kindref="member">x</ref>==1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tabInterfaces[<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a7d95f8a1c10c09bda305dd0401f10612" kindref="member">East</ref>];</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pos.<ref refid="class_smart_blocks_1_1_point_cel_1a0baa8a7663c2c79f63069f760039fa5e" kindref="member">y</ref>==-1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tabInterfaces[<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102ad9f30002f5431b994525cf02366ac5cc" kindref="member">South</ref>];</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pos.<ref refid="class_smart_blocks_1_1_point_cel_1a0baa8a7663c2c79f63069f760039fa5e" kindref="member">y</ref>==1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tabInterfaces[<ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a07b91e5a57f8312abe11c609b97ac106" kindref="member">North</ref>];</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="class_smart_blocks_1_1_smart_blocks_block_1a7458639c40a375b6e1e08933f8f95973" refkind="member"><highlight class="normal"><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102" kindref="member">NeighborDirection</ref><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_1a7458639c40a375b6e1e08933f8f95973" kindref="member">SmartBlocksBlock::getDirection</ref>(<ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*given_interface)<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*if(<sp/>!given_interface)<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>NeighborDirection(0);</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/>}*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i(<sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a07b91e5a57f8312abe11c609b97ac106" kindref="member">North</ref>);<sp/>i<sp/>&lt;=<sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102a03687aa721f59fc1df91bd59547de8bb" kindref="member">West</ref>;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref>*<sp/>p2p<sp/>=<sp/>tabInterfaces[<sp/>i];</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal">(<sp/>p2p<sp/>==<sp/>given_interface)<sp/>{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_smart_blocks_1a6b96a3058eabc6217b171060dfd43102" kindref="member">NeighborDirection</ref>(i);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(0);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>should<sp/>never<sp/>get<sp/>here</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_smart_blocks_1_1_smart_blocks_block_1a81c5ea9084802a4ee407cf1b2ef6779f" refkind="member"><highlight class="normal"><ref refid="class_p2_p_network_interface" kindref="compound">P2PNetworkInterface</ref><sp/>*<ref refid="class_smart_blocks_1_1_smart_blocks_block_1a81c5ea9084802a4ee407cf1b2ef6779f" kindref="member">SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=0;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(i&lt;4<sp/>&amp;&amp;<sp/>(tabInterfaces[i]-&gt;connectedInterface==NULL<sp/>||<sp/>tabInterfaces[i]-&gt;connectedInterface-&gt;<ref refid="class_p2_p_network_interface_1a21404cf304781e6a86f6bb00d3969210" kindref="member">hostBlock</ref>-&gt;<ref refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" kindref="member">blockId</ref>!=</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>i++;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(i&lt;4?tabInterfaces[i]:NULL);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksBlock.cpp"/>
+  </compounddef>
+</doxygen>

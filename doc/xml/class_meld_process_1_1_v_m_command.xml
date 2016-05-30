@@ -1,0 +1,422 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_meld_process_1_1_v_m_command" kind="class" language="C++" prot="public">
+    <compoundname>MeldProcess::VMCommand</compoundname>
+    <derivedcompoundref refid="class_meld_process_1_1_accel_v_m_command" prot="public" virt="non-virtual">MeldProcess::AccelVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_add_neighbor_v_m_command" prot="public" virt="non-virtual">MeldProcess::AddNeighborVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_debbugger_v_m_command" prot="public" virt="non-virtual">MeldProcess::DebbuggerVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_end_poll_v_m_command" prot="public" virt="non-virtual">MeldProcess::EndPollVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_receive_message_v_m_command" prot="public" virt="non-virtual">MeldProcess::ReceiveMessageVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_remove_neighbor_v_m_command" prot="public" virt="non-virtual">MeldProcess::RemoveNeighborVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_send_message_v_m_command" prot="public" virt="non-virtual">MeldProcess::SendMessageVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_set_color_v_m_command" prot="public" virt="non-virtual">MeldProcess::SetColorVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_set_deterministic_mode_v_m_command" prot="public" virt="non-virtual">MeldProcess::SetDeterministicModeVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_set_id_v_m_command" prot="public" virt="non-virtual">MeldProcess::SetIdVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_shake_v_m_command" prot="public" virt="non-virtual">MeldProcess::ShakeVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_stop_v_m_command" prot="public" virt="non-virtual">MeldProcess::StopVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_tap_v_m_command" prot="public" virt="non-virtual">MeldProcess::TapVMCommand</derivedcompoundref>
+    <derivedcompoundref refid="class_meld_process_1_1_work_end_v_m_command" prot="public" virt="non-virtual">MeldProcess::WorkEndVMCommand</derivedcompoundref>
+    <includes refid="meld_process_v_m_commands_8h" local="no">meldProcessVMCommands.h</includes>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" prot="protected" static="no" mutable="no">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref> *</type>
+        <definition>commandType* MeldProcess::VMCommand::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" bodystart="50" bodyend="-1"/>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" compoundref="meld_process_v_m_commands_8cpp" startline="29" endline="35">VMCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" compoundref="meld_process_v_m_commands_8cpp" startline="49" endline="51">getContentSize</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1a4587d5e8229aa13af6b94c4df856617d" compoundref="meld_process_v_m_commands_8cpp" startline="57" endline="59">getType</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1a9d797a8249034cd1d1ee5d988d9b1629" compoundref="meld_process_v_m_commands_8cpp" startline="61" endline="63">getTimestamp</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" compoundref="meld_process_v_m_commands_8cpp" startline="65" endline="67">getSource</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" compoundref="meld_process_v_m_commands_8cpp" startline="69" endline="71">getData</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1a193079affb5da0c2a9f3be49fc2ce5d5" compoundref="meld_process_v_m_commands_8cpp" startline="73" endline="75">setTimestamp</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" compoundref="meld_process_v_m_commands_8cpp" startline="77" endline="82">copyData</referencedby>
+        <referencedby refid="class_meld_process_1_1_add_neighbor_v_m_command_1af9fbb7d42db39673c0f625ab48d45439" compoundref="meld_process_v_m_commands_8cpp" startline="135" endline="140">MeldProcess::AddNeighborVMCommand::AddNeighborVMCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_remove_neighbor_v_m_command_1af921fc50f44787d96a476e5bd683e325" compoundref="meld_process_v_m_commands_8cpp" startline="148" endline="151">MeldProcess::RemoveNeighborVMCommand::RemoveNeighborVMCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_set_color_v_m_command_1ad844620b59379b1ac06937c7dfbb6b2e" compoundref="meld_process_v_m_commands_8cpp" startline="170" endline="172">MeldProcess::SetColorVMCommand::getColor</referencedby>
+        <referencedby refid="class_meld_process_1_1_send_message_v_m_command_1adb19c8027f956340f2cc0fc4f6af5f51" compoundref="meld_process_v_m_commands_8cpp" startline="184" endline="186">MeldProcess::SendMessageVMCommand::getDestFace</referencedby>
+        <referencedby refid="class_meld_process_1_1_send_message_v_m_command_1ae3eb9091e9419f25146f98e4d1529fca" compoundref="meld_process_v_m_commands_8cpp" startline="188" endline="190">MeldProcess::SendMessageVMCommand::getDestId</referencedby>
+        <referencedby refid="class_meld_process_1_1_receive_message_v_m_command_1af2eec2b8bf1c5105112dd89d94786f37" compoundref="meld_process_v_m_commands_8cpp" startline="198" endline="203">MeldProcess::ReceiveMessageVMCommand::ReceiveMessageVMCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_receive_message_v_m_command_1ad96c24cae101c36a0bc6ccbd5e227f28" compoundref="meld_process_v_m_commands_8cpp" startline="210" endline="212">MeldProcess::ReceiveMessageVMCommand::~ReceiveMessageVMCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_accel_v_m_command_1aeb9a87ba570dfcd60a2261f6afec3d32" compoundref="meld_process_v_m_commands_8cpp" startline="221" endline="226">MeldProcess::AccelVMCommand::AccelVMCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_shake_v_m_command_1a5121d3a201561f849690352619d2bd26" compoundref="meld_process_v_m_commands_8cpp" startline="234" endline="237">MeldProcess::ShakeVMCommand::ShakeVMCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_work_end_v_m_command_1a821f061763fcd26a287e58a75d3b15c3" compoundref="meld_process_v_m_commands_8cpp" startline="256" endline="256">MeldProcess::WorkEndVMCommand::getNbProcessedMsg</referencedby>
+        <referencedby refid="class_meld_process_1_1_debbugger_v_m_command_1a3489bf41700785bf5c63b27c80920ae1" compoundref="meld_process_v_m_commands_8cpp" startline="266" endline="269">MeldProcess::DebbuggerVMCommand::getDebuggerCommand</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldProcess::VMCommand::VMCommand</definition>
+        <argsstring>(commandType *d, commandType s, commandType t, commandType src)</argsstring>
+        <name>VMCommand</name>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref> *</type>
+          <declname>d</declname>
+        </param>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+          <declname>src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="51" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="29" bodyend="35"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <references refid="meld_process_v_m_commands_8cpp_1aff9b7f6d81297248bf0ad06d725c8cbb" compoundref="meld_process_v_m_commands_8cpp" startline="13">CONTENT_SIZE</references>
+        <references refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" compoundref="meld_process_v_m_commands_8cpp" startline="14">TYPE</references>
+        <references refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" compoundref="meld_process_v_m_commands_8cpp" startline="15">TIMESTAMP</references>
+        <references refid="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" compoundref="scheduler_8h" startline="125" endline="125">BaseSimulator::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1ae81ef60dad0226f78f234599c674628f" compoundref="scheduler_8cpp" startline="108" endline="110">BaseSimulator::Scheduler::now</references>
+        <references refid="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" compoundref="meld_process_v_m_commands_8cpp" startline="16">NODE</references>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a8089656f1461e1150fe11a7d7e7a2adf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MeldProcess::VMCommand::VMCommand</definition>
+        <argsstring>(commandType *d)</argsstring>
+        <name>VMCommand</name>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref> *</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="37" bodyend="39"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+        <definition>commandType MeldProcess::VMCommand::getContentSize</definition>
+        <argsstring>()</argsstring>
+        <name>getContentSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="58" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="49" bodyend="51"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <references refid="meld_process_v_m_commands_8cpp_1aff9b7f6d81297248bf0ad06d725c8cbb" compoundref="meld_process_v_m_commands_8cpp" startline="13">CONTENT_SIZE</references>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" compoundref="meld_process_v_m_commands_8cpp" startline="53" endline="55">getSize</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+        <definition>commandType MeldProcess::VMCommand::getSize</definition>
+        <argsstring>()</argsstring>
+        <name>getSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="59" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="53" bodyend="55"/>
+        <references refid="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" compoundref="meld_process_v_m_commands_8cpp" startline="49" endline="51">getContentSize</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a29f1e29b68fb12cebb95828d37ebefcd" compoundref="meld_process_v_m_8cpp" startline="198" endline="214">MeldProcess::MeldProcessVM::sendCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" compoundref="meld_process_v_m_commands_8cpp" startline="77" endline="82">copyData</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a4587d5e8229aa13af6b94c4df856617d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+        <definition>commandType MeldProcess::VMCommand::getType</definition>
+        <argsstring>()</argsstring>
+        <name>getType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="60" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="57" bodyend="59"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <references refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" compoundref="meld_process_v_m_commands_8cpp" startline="14">TYPE</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a9d797a8249034cd1d1ee5d988d9b1629" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+        <definition>commandType MeldProcess::VMCommand::getTimestamp</definition>
+        <argsstring>()</argsstring>
+        <name>getTimestamp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="61" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="61" bodyend="63"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <references refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" compoundref="meld_process_v_m_commands_8cpp" startline="15">TIMESTAMP</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+        <definition>commandType MeldProcess::VMCommand::getSource</definition>
+        <argsstring>()</argsstring>
+        <name>getSource</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="62" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="65" bodyend="67"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <references refid="meld_process_v_m_commands_8cpp_1a9a2bbc66102de668efe5e9c7feb23eaa" compoundref="meld_process_v_m_commands_8cpp" startline="16">NODE</references>
+        <referencedby refid="class_meld_process_1_1_receive_message_v_m_command_1af2eec2b8bf1c5105112dd89d94786f37" compoundref="meld_process_v_m_commands_8cpp" startline="198" endline="203">MeldProcess::ReceiveMessageVMCommand::ReceiveMessageVMCommand</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref> *</type>
+        <definition>commandType * MeldProcess::VMCommand::getData</definition>
+        <argsstring>()</argsstring>
+        <name>getData</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="63" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="69" bodyend="71"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_debugger_1ac98d7fe7ede84e31ed1bc31f9dd94e83" compoundref="meld_process_debugger_8cpp" startline="39" endline="42">MeldProcess::MeldProcessDebugger::handleDebugCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a29f1e29b68fb12cebb95828d37ebefcd" compoundref="meld_process_v_m_8cpp" startline="198" endline="214">MeldProcess::MeldProcessVM::sendCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1aebde150ce36ba7aa08df29e59191c09a" compoundref="meld_process_v_m_8cpp" startline="276" endline="342">MeldProcess::MeldProcessVM::handleCommand</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a193079affb5da0c2a9f3be49fc2ce5d5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::VMCommand::setTimestamp</definition>
+        <argsstring>(commandType ts)</argsstring>
+        <name>setTimestamp</name>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+          <declname>ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="65" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="73" bodyend="75"/>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <references refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" compoundref="meld_process_v_m_commands_8cpp" startline="15">TIMESTAMP</references>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MeldProcess::VMCommand::copyData</definition>
+        <argsstring>()</argsstring>
+        <name>copyData</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="66" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="77" bodyend="82"/>
+        <references refid="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" compoundref="meld_process_v_m_commands_8cpp" startline="53" endline="55">getSize</references>
+        <references refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" compoundref="meld_process_v_m_commands_8h" startline="50">data</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1aebde150ce36ba7aa08df29e59191c09a" compoundref="meld_process_v_m_8cpp" startline="276" endline="342">MeldProcess::MeldProcessVM::handleCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_receive_message_v_m_command_1af2eec2b8bf1c5105112dd89d94786f37" compoundref="meld_process_v_m_commands_8cpp" startline="198" endline="203">MeldProcess::ReceiveMessageVMCommand::ReceiveMessageVMCommand</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1af89ad28c9013f80d2e499e25621322b7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+        <definition>commandType MeldProcess::VMCommand::getType</definition>
+        <argsstring>(commandType *d)</argsstring>
+        <name>getType</name>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref> *</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="41" bodyend="43"/>
+        <references refid="meld_process_v_m_commands_8cpp_1a5a392548f2df67370cb15d2a5d75cd7b" compoundref="meld_process_v_m_commands_8cpp" startline="14">TYPE</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a29f1e29b68fb12cebb95828d37ebefcd" compoundref="meld_process_v_m_8cpp" startline="198" endline="214">MeldProcess::MeldProcessVM::sendCommand</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1a935b595ee2deab41cff25ffdade90e7c" compoundref="meld_process_v_m_8cpp" startline="269" endline="274">MeldProcess::MeldProcessVM::handleDeterministicMode</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1aebde150ce36ba7aa08df29e59191c09a" compoundref="meld_process_v_m_8cpp" startline="276" endline="342">MeldProcess::MeldProcessVM::handleCommand</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a1ecac65b2b277decf691cc50e6e35744" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+        <definition>commandType MeldProcess::VMCommand::getTimestamp</definition>
+        <argsstring>(commandType *d)</argsstring>
+        <name>getTimestamp</name>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref> *</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="45" bodyend="47"/>
+        <references refid="meld_process_v_m_commands_8cpp_1ac59bf49f337079e65fe54acbfa21977e" compoundref="meld_process_v_m_commands_8cpp" startline="15">TIMESTAMP</references>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1aebde150ce36ba7aa08df29e59191c09a" compoundref="meld_process_v_m_8cpp" startline="276" endline="342">MeldProcess::MeldProcessVM::handleCommand</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_meld_process_1_1_v_m_command_1a177a7f5705abbee5d0cd1a3f826b2702" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>string</type>
+        <definition>string MeldProcess::VMCommand::getString</definition>
+        <argsstring>(commandType t)</argsstring>
+        <name>getString</name>
+        <param>
+          <type><ref refid="meld_process_v_m_commands_8h_1a76836754a86e73125a6e641adcb77745" kindref="member">commandType</ref></type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="68" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.cpp" bodystart="84" bodyend="110"/>
+        <references refid="meld_process_v_m_commands_8h_1ab844515a69c0ada29de1d734c10a4b4d" compoundref="meld_process_v_m_commands_8h" startline="23">VM_COMMAND_SET_COLOR</references>
+        <references refid="meld_process_v_m_commands_8h_1ad48c71f5570e0eadc2c8cb42eb3b9f22" compoundref="meld_process_v_m_commands_8h" startline="24">VM_COMMAND_SEND_MESSAGE</references>
+        <references refid="meld_process_v_m_commands_8h_1ae6834ee081e97c53fdefa37e9e6c75ed" compoundref="meld_process_v_m_commands_8h" startline="28">VM_COMMAND_DEBUG</references>
+        <references refid="meld_process_v_m_commands_8h_1a1fdaa515ab26869d8c531dd7acc76e7b" compoundref="meld_process_v_m_commands_8h" startline="33">VM_COMMAND_WORK_END</references>
+        <references refid="meld_process_v_m_commands_8h_1a55fafff5ad460c1bc6866206a449ca1a" compoundref="meld_process_v_m_commands_8h" startline="35">VM_COMMAND_TIME_INFO</references>
+        <references refid="meld_process_v_m_commands_8h_1a08a2aedb3eeaf3f9b6d948c15a180c95" compoundref="meld_process_v_m_commands_8h" startline="31">VM_COMMAND_POLL_START</references>
+        <references refid="meld_process_v_m_commands_8h_1ab156f7fd99644fcd9f444f608dce7023" compoundref="meld_process_v_m_commands_8h" startline="32">VM_COMMAND_END_POLL</references>
+        <references refid="trace_8h_1a6667b9548cdadbd55cabd90840a4edeb" compoundref="trace_8h" startline="18">ERRPUT</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2531">
+        <label>MeldProcess::DebbuggerVMCommand</label>
+        <link refid="class_meld_process_1_1_debbugger_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2540">
+        <label>MeldProcess::StopVMCommand</label>
+        <link refid="class_meld_process_1_1_stop_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2528">
+        <label>MeldProcess::VMCommand</label>
+        <link refid="class_meld_process_1_1_v_m_command"/>
+      </node>
+      <node id="2532">
+        <label>MeldProcess::EndPollVMCommand</label>
+        <link refid="class_meld_process_1_1_end_poll_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2541">
+        <label>MeldProcess::TapVMCommand</label>
+        <link refid="class_meld_process_1_1_tap_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2538">
+        <label>MeldProcess::SetIdVMCommand</label>
+        <link refid="class_meld_process_1_1_set_id_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2533">
+        <label>MeldProcess::ReceiveMessageVMCommand</label>
+        <link refid="class_meld_process_1_1_receive_message_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2536">
+        <label>MeldProcess::SetColorVMCommand</label>
+        <link refid="class_meld_process_1_1_set_color_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2542">
+        <label>MeldProcess::WorkEndVMCommand</label>
+        <link refid="class_meld_process_1_1_work_end_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2537">
+        <label>MeldProcess::SetDeterministicModeVMCommand</label>
+        <link refid="class_meld_process_1_1_set_deterministic_mode_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2539">
+        <label>MeldProcess::ShakeVMCommand</label>
+        <link refid="class_meld_process_1_1_shake_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2534">
+        <label>MeldProcess::RemoveNeighborVMCommand</label>
+        <link refid="class_meld_process_1_1_remove_neighbor_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2535">
+        <label>MeldProcess::SendMessageVMCommand</label>
+        <link refid="class_meld_process_1_1_send_message_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2530">
+        <label>MeldProcess::AddNeighborVMCommand</label>
+        <link refid="class_meld_process_1_1_add_neighbor_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2529">
+        <label>MeldProcess::AccelVMCommand</label>
+        <link refid="class_meld_process_1_1_accel_v_m_command"/>
+        <childnode refid="2528" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" line="47" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/meldProcessVMCommands.h" bodystart="47" bodyend="70"/>
+    <listofallmembers>
+      <member refid="class_meld_process_1_1_v_m_command_1ace9cb8c6431145cbcce0e6b63d9cdc0b" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>copyData</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1ad369f6c06b2f9577634ad341e2c15423" prot="protected" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>data</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1aaab0fdaf2a18300077d94ea5761ca91a" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getContentSize</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1abb0c6dd4ecf5a6c1dcbf14ed4e1ca046" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getData</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a4bd104911f0cf66e04275c6df7f028cb" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getSize</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1aa0aaed9c846a629213ea3f323d834cb1" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getSource</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a177a7f5705abbee5d0cd1a3f826b2702" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getString</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a1ecac65b2b277decf691cc50e6e35744" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getTimestamp</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a9d797a8249034cd1d1ee5d988d9b1629" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getTimestamp</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1af89ad28c9013f80d2e499e25621322b7" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getType</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a4587d5e8229aa13af6b94c4df856617d" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>getType</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a193079affb5da0c2a9f3be49fc2ce5d5" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>setTimestamp</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" prot="protected" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>VMCommand</name></member>
+      <member refid="class_meld_process_1_1_v_m_command_1a8089656f1461e1150fe11a7d7e7a2adf" prot="public" virt="non-virtual"><scope>MeldProcess::VMCommand</scope><name>VMCommand</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

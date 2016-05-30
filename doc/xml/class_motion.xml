@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_motion" kind="class" language="C++" prot="public">
+    <compoundname>Motion</compoundname>
+    <includes refid="robot_block_capability_8h" local="no">robotBlockCapability.h</includes>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_motion_1ac5c2279dc9bb79e77f117f0349102a05" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Motion::obj</definition>
+        <argsstring></argsstring>
+        <name>obj</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" line="54" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" bodystart="54" bodyend="-1"/>
+        <referencedby refid="class_capabilities_1a5e3de045b1bb0f33174ab143a4b27927" compoundref="robot_block_capability_8cpp" startline="183" endline="259">Capabilities::Capabilities</referencedby>
+        <referencedby refid="class_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="robot_block_capability_8cpp" startline="522" endline="527">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_motion_1aa30d3062dfa1c1f2d06c212f49325790" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Motion::endTime</definition>
+        <argsstring></argsstring>
+        <name>endTime</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" line="55" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" bodystart="55" bodyend="-1"/>
+        <referencedby refid="class_capabilities_1a5e3de045b1bb0f33174ab143a4b27927" compoundref="robot_block_capability_8cpp" startline="183" endline="259">Capabilities::Capabilities</referencedby>
+        <referencedby refid="class_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="robot_block_capability_8cpp" startline="522" endline="527">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_motion_1a05ddb22d6af1f628f452d00b1811a52f" prot="public" static="no" mutable="no">
+        <type><ref refid="class_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Motion::init</definition>
+        <argsstring></argsstring>
+        <name>init</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" line="56" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" bodystart="56" bodyend="-1"/>
+        <referencedby refid="class_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="robot_block_capability_8cpp" startline="12" endline="142">Capability::Capability</referencedby>
+        <referencedby refid="class_capabilities_1a5e3de045b1bb0f33174ab143a4b27927" compoundref="robot_block_capability_8cpp" startline="183" endline="259">Capabilities::Capabilities</referencedby>
+        <referencedby refid="class_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="robot_block_capability_8cpp" startline="522" endline="527">Motion</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="class_motion_1a3be2cb3552403f0c2ca0b8ce48851e20" prot="public" static="no" mutable="no">
+        <type><ref refid="class_point_rel3_d" kindref="compound">PointRel3D</ref></type>
+        <definition>PointRel3D Motion::final</definition>
+        <argsstring></argsstring>
+        <name>final</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" line="57" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" bodystart="57" bodyend="-1"/>
+        <referencedby refid="class_capability_1aa26a660a8fc1ea500c0b8be82c3678ce" compoundref="robot_block_capability_8cpp" startline="12" endline="142">Capability::Capability</referencedby>
+        <referencedby refid="class_capabilities_1a5e3de045b1bb0f33174ab143a4b27927" compoundref="robot_block_capability_8cpp" startline="183" endline="259">Capabilities::Capabilities</referencedby>
+        <referencedby refid="class_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" compoundref="robot_block_capability_8cpp" startline="522" endline="527">Motion</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_motion_1a444a2569aaadd10d76b4e6e6bfb3df0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Motion::Motion</definition>
+        <argsstring>()</argsstring>
+        <name>Motion</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" line="52" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.cpp" bodystart="519" bodyend="520"/>
+      </memberdef>
+      <memberdef kind="function" id="class_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Motion::Motion</definition>
+        <argsstring>(const Motion *)</argsstring>
+        <name>Motion</name>
+        <param>
+          <type>const <ref refid="class_motion" kindref="compound">Motion</ref> *</type>
+          <defname>src</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" line="53" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.cpp" bodystart="522" bodyend="527"/>
+        <references refid="class_motion_1ac5c2279dc9bb79e77f117f0349102a05" compoundref="robot_block_capability_8h" startline="54">obj</references>
+        <references refid="class_motion_1aa30d3062dfa1c1f2d06c212f49325790" compoundref="robot_block_capability_8h" startline="55">endTime</references>
+        <references refid="class_motion_1a05ddb22d6af1f628f452d00b1811a52f" compoundref="robot_block_capability_8h" startline="56">init</references>
+        <references refid="class_motion_1a3be2cb3552403f0c2ca0b8ce48851e20" compoundref="robot_block_capability_8h" startline="57">final</references>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1932">
+        <label>Motion</label>
+        <link refid="class_motion"/>
+        <childnode refid="1933" relation="usage">
+          <edgelabel>final</edgelabel>
+          <edgelabel>init</edgelabel>
+        </childnode>
+      </node>
+      <node id="1933">
+        <label>PointRel3D</label>
+        <link refid="class_point_rel3_d"/>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" line="50" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/robotBlockCapability.h" bodystart="50" bodyend="58"/>
+    <listofallmembers>
+      <member refid="class_motion_1aa30d3062dfa1c1f2d06c212f49325790" prot="public" virt="non-virtual"><scope>Motion</scope><name>endTime</name></member>
+      <member refid="class_motion_1a3be2cb3552403f0c2ca0b8ce48851e20" prot="public" virt="non-virtual"><scope>Motion</scope><name>final</name></member>
+      <member refid="class_motion_1a05ddb22d6af1f628f452d00b1811a52f" prot="public" virt="non-virtual"><scope>Motion</scope><name>init</name></member>
+      <member refid="class_motion_1a444a2569aaadd10d76b4e6e6bfb3df0c" prot="public" virt="non-virtual"><scope>Motion</scope><name>Motion</name></member>
+      <member refid="class_motion_1ab29f07a8c87e37b14b6e2f3c8573e8f7" prot="public" virt="non-virtual"><scope>Motion</scope><name>Motion</name></member>
+      <member refid="class_motion_1ac5c2279dc9bb79e77f117f0349102a05" prot="public" virt="non-virtual"><scope>Motion</scope><name>obj</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

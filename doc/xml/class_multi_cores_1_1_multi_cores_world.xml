@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="class_multi_cores_1_1_multi_cores_world" kind="class" language="C++" prot="public">
+    <compoundname>MultiCores::MultiCoresWorld</compoundname>
+    <basecompoundref refid="class_base_simulator_1_1_world" prot="public" virt="non-virtual">BaseSimulator::World</basecompoundref>
+    <includes refid="multi_cores_world_8h" local="no">multiCoresWorld.h</includes>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1a0ac16ee0818f6dddb957c6ecc79676ce" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MultiCores::MultiCoresWorld::MultiCoresWorld</definition>
+        <argsstring>()</argsstring>
+        <name>MultiCoresWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="18" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp" bodystart="18" bodyend="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1adbd92ebf8b6898b4e621b66e9c9eacb1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>MultiCores::MultiCoresWorld::~MultiCoresWorld</definition>
+        <argsstring>()</argsstring>
+        <name>~MultiCoresWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp" bodystart="22" bodyend="24"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1a1b736f59cdd7139904cb246abd6cc358" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::MultiCoresWorld::createWorld</definition>
+        <argsstring>()</argsstring>
+        <name>createWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="22" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp" bodystart="27" bodyend="29"/>
+        <referencedby refid="namespace_multi_cores_1a5686ce94a6d2cb3ebbccf62da81e9d8d" compoundref="multi_cores_world_8h" startline="41" endline="43">MultiCores::createWorld</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1aef30085efac151326fcacda47950dca2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::MultiCoresWorld::deleteWorld</definition>
+        <argsstring>()</argsstring>
+        <name>deleteWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="23" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp" bodystart="31" bodyend="33"/>
+        <referencedby refid="namespace_multi_cores_1aa9dff66c56046280ca47ca760307c176" compoundref="multi_cores_world_8h" startline="45" endline="47">MultiCores::deleteWorld</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1a889e851d841037174680fa113b71dca8" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_multi_cores_1_1_multi_cores_world" kindref="compound">MultiCoresWorld</ref> *</type>
+        <definition>static MultiCoresWorld* MultiCores::MultiCoresWorld::getWorld</definition>
+        <argsstring>()</argsstring>
+        <name>getWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="24" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" bodystart="24" bodyend="27"/>
+        <references refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" compoundref="world_8h" startline="28">BaseSimulator::World::world</references>
+        <referencedby refid="namespace_multi_cores_1a10f2a5a06db51d8b27f35c5f7c4894d2" compoundref="multi_cores_world_8h" startline="49" endline="49">MultiCores::getWorld</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1a4181946e5d60b2e6d9d37d2699b34af9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MultiCores::MultiCoresWorld::printInfo</definition>
+        <argsstring>()</argsstring>
+        <name>printInfo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="29" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" bodystart="29" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1a4220ce6732251322c12892763bc5a342" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref> *</type>
+        <definition>virtual MultiCoresBlock* MultiCores::MultiCoresWorld::getBlockById</definition>
+        <argsstring>(int bId)</argsstring>
+        <name>getBlockById</name>
+        <reimplements refid="class_base_simulator_1_1_world_1a5242c801311b599d02cd5987ea165900">getBlockById</reimplements>
+        <param>
+          <type>int</type>
+          <declname>bId</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="33" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" bodystart="33" bodyend="35"/>
+        <references refid="class_multi_cores_1_1_multi_cores_world_1aa5596e4ea4ffbaf7fb9f718917476337" compoundref="multi_cores_world_8cpp" startline="35" endline="40">addBlock</references>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_scheduler_1a1baad4091f3181d382b17269ccfed322" compoundref="multi_cores_scheduler_8cpp" startline="116" endline="221">MultiCores::MultiCoresScheduler::waitForVMMessage</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="class_multi_cores_1_1_multi_cores_world_1aa5596e4ea4ffbaf7fb9f718917476337" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void MultiCores::MultiCoresWorld::addBlock</definition>
+        <argsstring>(int blockId, MultiCoresBlockCode *(*multiCoreBlockCodeBuildingFunction)(MultiCoresBlock *), float posX, float posY, float posZ, float colorR, float colorG, float colorB)</argsstring>
+        <name>addBlock</name>
+        <param>
+          <type>int</type>
+          <declname>blockId</declname>
+        </param>
+        <param>
+          <type><ref refid="class_multi_cores_1_1_multi_cores_block_code" kindref="compound">MultiCoresBlockCode</ref> *(*)(<ref refid="class_multi_cores_1_1_multi_cores_block" kindref="compound">MultiCoresBlock</ref> *)</type>
+          <declname>multiCoreBlockCodeBuildingFunction</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>posX</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>posY</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>posZ</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>colorR</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>colorG</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>colorB</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="37" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.cpp" bodystart="35" bodyend="40"/>
+        <references refid="class_base_simulator_1_1_building_block_1ab12b5c18f7bfa254584dfc2891b1f21e" compoundref="building_block_8h" startline="61">BaseSimulator::BuildingBlock::blockId</references>
+        <references refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</references>
+        <references refid="class_base_simulator_1_1_scheduler_1abbc91e91f78b52204af22e66afedecb4" compoundref="scheduler_8cpp" startline="48" endline="84">BaseSimulator::Scheduler::schedule</references>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_scheduler_1a1baad4091f3181d382b17269ccfed322" compoundref="multi_cores_scheduler_8cpp" startline="116" endline="221">MultiCores::MultiCoresScheduler::waitForVMMessage</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_world_1a4220ce6732251322c12892763bc5a342" compoundref="multi_cores_world_8h" startline="33" endline="35">getBlockById</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2121">
+        <label>MultiCores::MultiCoresWorld</label>
+        <link refid="class_multi_cores_1_1_multi_cores_world"/>
+        <childnode refid="2122" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2122">
+        <label>BaseSimulator::World</label>
+        <link refid="class_base_simulator_1_1_world"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2125">
+        <label>GlBlock</label>
+        <link refid="class_gl_block"/>
+      </node>
+      <node id="2123">
+        <label>MultiCores::MultiCoresWorld</label>
+        <link refid="class_multi_cores_1_1_multi_cores_world"/>
+        <childnode refid="2124" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2124">
+        <label>BaseSimulator::World</label>
+        <link refid="class_base_simulator_1_1_world"/>
+        <childnode refid="2125" relation="usage">
+          <edgelabel>selectedBlock</edgelabel>
+        </childnode>
+        <childnode refid="2124" relation="usage">
+          <edgelabel>world</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" line="16" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/multiCoresWorld.h" bodystart="16" bodyend="39"/>
+    <listofallmembers>
+      <member refid="class_base_simulator_1_1_world_1aa68bad650b935dd0255140b6a6bdea51" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>accelBlock</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1aa5596e4ea4ffbaf7fb9f718917476337" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>addBlock</name></member>
+      <member refid="class_base_simulator_1_1_world_1a83410ba3059cd646cc311ae5a0402ef9" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>buildingBlocksMap</name></member>
+      <member refid="class_base_simulator_1_1_world_1a92e98e08f49981219e87eb35eae9dd1b" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>createHelpWindow</name></member>
+      <member refid="class_base_simulator_1_1_world_1a7cf8e0a980022e9fc17d38d56441b812" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>createPopupMenu</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1a1b736f59cdd7139904cb246abd6cc358" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>createWorld</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1aef30085efac151326fcacda47950dca2" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>deleteWorld</name></member>
+      <member refid="class_base_simulator_1_1_world_1a229de16483022383fb665e6dbf7223bd" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>generateIds</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1a4220ce6732251322c12892763bc5a342" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getBlockById</name></member>
+      <member refid="class_base_simulator_1_1_world_1af73fe571b3678097db9be586e7c87c4a" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getBlockByNum</name></member>
+      <member refid="class_base_simulator_1_1_world_1a8b9742b60db56e41957946e3c1ae2472" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getCamera</name></member>
+      <member refid="class_base_simulator_1_1_world_1a6b18d9a02e3f31720ff3d326ee1b0e04" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getMap</name></member>
+      <member refid="class_base_simulator_1_1_world_1a3eff50e0f8f4cf00e53e2389be135596" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getNbBlocks</name></member>
+      <member refid="class_base_simulator_1_1_world_1a15f8a1bc3563fe9e6a7004c3a56d1b28" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getSelectedBlock</name></member>
+      <member refid="class_base_simulator_1_1_world_1a9f1a98e8567093c29b7234d903a42b6d" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getSize</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1a889e851d841037174680fa113b71dca8" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>getWorld</name></member>
+      <member refid="class_base_simulator_1_1_world_1ae5a660da750b30b9f063010140bae5a9" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>glDraw</name></member>
+      <member refid="class_base_simulator_1_1_world_1a3ee68797d8a2d77cf4260654c5d204eb" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>glDrawId</name></member>
+      <member refid="class_base_simulator_1_1_world_1a97f96d8faeb1a7ced226437e0cebf78e" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>glDrawIdByMaterial</name></member>
+      <member refid="class_base_simulator_1_1_world_1a9c40cfd24c7c6ac5ef7101743a3e2cd9" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>lock</name></member>
+      <member refid="class_base_simulator_1_1_world_1a6c1ccab8c259c05795be50ce537c03fc" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>menuChoice</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1a0ac16ee0818f6dddb957c6ecc79676ce" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>MultiCoresWorld</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1a4181946e5d60b2e6d9d37d2699b34af9" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>printInfo</name></member>
+      <member refid="class_base_simulator_1_1_world_1a8055758da32317631bfb1ac0c2dd4fe8" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>selectedBlock</name></member>
+      <member refid="class_base_simulator_1_1_world_1a610ae24d624075d1b6b037713c4b2b07" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>setSelectedBlock</name></member>
+      <member refid="class_base_simulator_1_1_world_1ae8e4e1a38466d7342c40e2da1f920ceb" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>setSelectedFace</name></member>
+      <member refid="class_base_simulator_1_1_world_1a86dd18ce52a4285dcaaadc1c29964886" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>shakeBlock</name></member>
+      <member refid="class_base_simulator_1_1_world_1ab4b29d2ad42ae105aac582e742f914c6" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>stopSimulation</name></member>
+      <member refid="class_base_simulator_1_1_world_1aa929faa22f07082739defacf3c2d9da5" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>tabGlBlocks</name></member>
+      <member refid="class_base_simulator_1_1_world_1a5eb197362605bcacb709bd4a80dbb783" prot="public" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>tapBlock</name></member>
+      <member refid="class_base_simulator_1_1_world_1a9a9373a9b601c2a94ce66c5737a3647d" prot="public" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>unlock</name></member>
+      <member refid="class_base_simulator_1_1_world_1a0251490bddc8c83ddda119d6c0d16882" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>world</name></member>
+      <member refid="class_base_simulator_1_1_world_1a7e94af369a98e4de7f6a45cb5758b5b9" prot="protected" virt="non-virtual"><scope>MultiCores::MultiCoresWorld</scope><name>World</name></member>
+      <member refid="class_multi_cores_1_1_multi_cores_world_1adbd92ebf8b6898b4e621b66e9c9eacb1" prot="protected" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>~MultiCoresWorld</name></member>
+      <member refid="class_base_simulator_1_1_world_1a7f83c6dde04899866019fd407dc0e48a" prot="protected" virt="virtual"><scope>MultiCores::MultiCoresWorld</scope><name>~World</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,768 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="smart_blocks_simulator_8cpp" kind="file" language="C++">
+    <compoundname>smartBlocksSimulator.cpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes refid="smart_blocks_simulator_8h" local="yes">smartBlocksSimulator.h</includes>
+    <incdepgraph>
+      <node id="19092">
+        <label>list</label>
+      </node>
+      <node id="19064">
+        <label>openglViewer.h</label>
+        <link refid="opengl_viewer_8h"/>
+        <childnode refid="19065" relation="include">
+        </childnode>
+        <childnode refid="19079" relation="include">
+        </childnode>
+        <childnode refid="19073" relation="include">
+        </childnode>
+        <childnode refid="19078" relation="include">
+        </childnode>
+        <childnode refid="19080" relation="include">
+        </childnode>
+        <childnode refid="19083" relation="include">
+        </childnode>
+      </node>
+      <node id="19073">
+        <label>matrice44.h</label>
+        <link refid="matrice44_8h"/>
+        <childnode refid="19069" relation="include">
+        </childnode>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19068" relation="include">
+        </childnode>
+        <childnode refid="19074" relation="include">
+        </childnode>
+        <childnode refid="19075" relation="include">
+        </childnode>
+      </node>
+      <node id="19065">
+        <label>shaders.h</label>
+        <link refid="shaders_8h"/>
+        <childnode refid="19066" relation="include">
+        </childnode>
+        <childnode refid="19067" relation="include">
+        </childnode>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19068" relation="include">
+        </childnode>
+        <childnode refid="19069" relation="include">
+        </childnode>
+        <childnode refid="19070" relation="include">
+        </childnode>
+        <childnode refid="19071" relation="include">
+        </childnode>
+        <childnode refid="19072" relation="include">
+        </childnode>
+        <childnode refid="19073" relation="include">
+        </childnode>
+        <childnode refid="19078" relation="include">
+        </childnode>
+      </node>
+      <node id="19075">
+        <label>vecteur.h</label>
+        <link refid="vecteur_8h"/>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19068" relation="include">
+        </childnode>
+        <childnode refid="19076" relation="include">
+        </childnode>
+        <childnode refid="19077" relation="include">
+        </childnode>
+      </node>
+      <node id="19098">
+        <label>smartBlocksBlock.h</label>
+        <link refid="smart_blocks_block_8h"/>
+        <childnode refid="19089" relation="include">
+        </childnode>
+        <childnode refid="19099" relation="include">
+        </childnode>
+        <childnode refid="19100" relation="include">
+        </childnode>
+        <childnode refid="19103" relation="include">
+        </childnode>
+        <childnode refid="19106" relation="include">
+        </childnode>
+      </node>
+      <node id="19083">
+        <label>interface.h</label>
+        <link refid="interface_8h"/>
+        <childnode refid="19084" relation="include">
+        </childnode>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19068" relation="include">
+        </childnode>
+        <childnode refid="19077" relation="include">
+        </childnode>
+        <childnode refid="19080" relation="include">
+        </childnode>
+        <childnode refid="19085" relation="include">
+        </childnode>
+        <childnode refid="19082" relation="include">
+        </childnode>
+      </node>
+      <node id="19090">
+        <label>boost/shared_ptr.hpp</label>
+      </node>
+      <node id="19113">
+        <label>boost/interprocess/sync/interprocess_semaphore.hpp</label>
+      </node>
+      <node id="19088">
+        <label>assert.h</label>
+      </node>
+      <node id="19096">
+        <label>stdint.h</label>
+      </node>
+      <node id="19067">
+        <label>stdlib.h</label>
+      </node>
+      <node id="19089">
+        <label>buildingBlock.h</label>
+        <link refid="building_block_8h"/>
+        <childnode refid="19090" relation="include">
+        </childnode>
+        <childnode refid="19091" relation="include">
+        </childnode>
+        <childnode refid="19087" relation="include">
+        </childnode>
+        <childnode refid="19092" relation="include">
+        </childnode>
+        <childnode refid="19080" relation="include">
+        </childnode>
+        <childnode refid="19093" relation="include">
+        </childnode>
+        <childnode refid="19095" relation="include">
+        </childnode>
+      </node>
+      <node id="19076">
+        <label>cmath</label>
+      </node>
+      <node id="19103">
+        <label>smartBlocksCapabilities.h</label>
+        <link refid="smart_blocks_capabilities_8h"/>
+        <childnode refid="19084" relation="include">
+        </childnode>
+        <childnode refid="19104" relation="include">
+        </childnode>
+        <childnode refid="19075" relation="include">
+        </childnode>
+        <childnode refid="19097" relation="include">
+        </childnode>
+        <childnode refid="19081" relation="include">
+        </childnode>
+        <childnode refid="19105" relation="include">
+        </childnode>
+      </node>
+      <node id="19081">
+        <label>string</label>
+      </node>
+      <node id="19069">
+        <label>GL/glew.h</label>
+      </node>
+      <node id="19086">
+        <label>map</label>
+      </node>
+      <node id="19111">
+        <label>boost/thread.hpp</label>
+      </node>
+      <node id="19117">
+        <label>smartBlocksScheduler.h</label>
+        <link refid="smart_blocks_scheduler_8h"/>
+        <childnode refid="19109" relation="include">
+        </childnode>
+      </node>
+      <node id="19080">
+        <label>glBlock.h</label>
+        <link refid="gl_block_8h"/>
+        <childnode refid="19081" relation="include">
+        </childnode>
+        <childnode refid="19065" relation="include">
+        </childnode>
+        <childnode refid="19075" relation="include">
+        </childnode>
+        <childnode refid="19082" relation="include">
+        </childnode>
+      </node>
+      <node id="19077">
+        <label>memory.h</label>
+      </node>
+      <node id="19068">
+        <label>fstream</label>
+      </node>
+      <node id="19093">
+        <label>blockCode.h</label>
+        <link refid="block_code_8h"/>
+        <childnode refid="19089" relation="include">
+        </childnode>
+        <childnode refid="19094" relation="include">
+        </childnode>
+      </node>
+      <node id="19072">
+        <label>GL/glu.h</label>
+      </node>
+      <node id="19115">
+        <label>uniqueEventsId.h</label>
+        <link refid="unique_events_id_8h"/>
+      </node>
+      <node id="19078">
+        <label>camera.h</label>
+        <link refid="camera_8h"/>
+        <childnode refid="19074" relation="include">
+        </childnode>
+        <childnode refid="19075" relation="include">
+        </childnode>
+        <childnode refid="19073" relation="include">
+        </childnode>
+      </node>
+      <node id="19070">
+        <label>GL/freeglut.h</label>
+      </node>
+      <node id="19105">
+        <label>TinyXML/tinyxml.h</label>
+      </node>
+      <node id="19079">
+        <label>pthread.h</label>
+      </node>
+      <node id="19102">
+        <label>string.h</label>
+      </node>
+      <node id="19060">
+        <label>/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp</label>
+        <link refid="smartBlocksSimulator.cpp"/>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19062" relation="include">
+        </childnode>
+      </node>
+      <node id="19084">
+        <label>vector</label>
+      </node>
+      <node id="19099">
+        <label>smartBlocksBlockCode.h</label>
+        <link refid="smart_blocks_block_code_8h"/>
+        <childnode refid="19093" relation="include">
+        </childnode>
+        <childnode refid="19098" relation="include">
+        </childnode>
+      </node>
+      <node id="19106">
+        <label>network.h</label>
+        <link refid="network_8h"/>
+        <childnode refid="19107" relation="include">
+        </childnode>
+        <childnode refid="19102" relation="include">
+        </childnode>
+        <childnode refid="19090" relation="include">
+        </childnode>
+        <childnode refid="19089" relation="include">
+        </childnode>
+      </node>
+      <node id="19110">
+        <label>sstream</label>
+      </node>
+      <node id="19116">
+        <label>commandLine.h</label>
+        <link refid="command_line_8h"/>
+        <childnode refid="19081" relation="include">
+        </childnode>
+      </node>
+      <node id="19108">
+        <label>simulator.h</label>
+        <link refid="simulator_8h"/>
+        <childnode refid="19105" relation="include">
+        </childnode>
+        <childnode refid="19109" relation="include">
+        </childnode>
+        <childnode refid="19085" relation="include">
+        </childnode>
+        <childnode refid="19116" relation="include">
+        </childnode>
+      </node>
+      <node id="19109">
+        <label>scheduler.h</label>
+        <link refid="scheduler_8h"/>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19110" relation="include">
+        </childnode>
+        <childnode refid="19086" relation="include">
+        </childnode>
+        <childnode refid="19094" relation="include">
+        </childnode>
+        <childnode refid="19088" relation="include">
+        </childnode>
+        <childnode refid="19111" relation="include">
+        </childnode>
+        <childnode refid="19112" relation="include">
+        </childnode>
+        <childnode refid="19087" relation="include">
+        </childnode>
+        <childnode refid="19113" relation="include">
+        </childnode>
+        <childnode refid="19114" relation="include">
+        </childnode>
+        <childnode refid="19064" relation="include">
+        </childnode>
+      </node>
+      <node id="19062">
+        <label>smartBlocksSimulator.h</label>
+        <link refid="smart_blocks_simulator_8h"/>
+        <childnode refid="19063" relation="include">
+        </childnode>
+        <childnode refid="19108" relation="include">
+        </childnode>
+        <childnode refid="19098" relation="include">
+        </childnode>
+        <childnode refid="19099" relation="include">
+        </childnode>
+        <childnode refid="19117" relation="include">
+        </childnode>
+      </node>
+      <node id="19074">
+        <label>math.h</label>
+      </node>
+      <node id="19082">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19068" relation="include">
+        </childnode>
+        <childnode refid="19076" relation="include">
+        </childnode>
+        <childnode refid="19077" relation="include">
+        </childnode>
+        <childnode refid="19065" relation="include">
+        </childnode>
+      </node>
+      <node id="19061">
+        <label>iostream</label>
+      </node>
+      <node id="19063">
+        <label>smartBlocksWorld.h</label>
+        <link refid="smart_blocks_world_8h"/>
+        <childnode refid="19064" relation="include">
+        </childnode>
+        <childnode refid="19085" relation="include">
+        </childnode>
+        <childnode refid="19075" relation="include">
+        </childnode>
+        <childnode refid="19098" relation="include">
+        </childnode>
+        <childnode refid="19103" relation="include">
+        </childnode>
+        <childnode refid="19101" relation="include">
+        </childnode>
+      </node>
+      <node id="19107">
+        <label>deque</label>
+      </node>
+      <node id="19104">
+        <label>climits</label>
+      </node>
+      <node id="19112">
+        <label>boost/bind.hpp</label>
+      </node>
+      <node id="19087">
+        <label>boost/interprocess/sync/interprocess_mutex.hpp</label>
+      </node>
+      <node id="19097">
+        <label>trace.h</label>
+        <link refid="trace_8h"/>
+        <childnode refid="19068" relation="include">
+        </childnode>
+      </node>
+      <node id="19114">
+        <label>events.h</label>
+        <link refid="events_8h"/>
+        <childnode refid="19094" relation="include">
+        </childnode>
+        <childnode refid="19081" relation="include">
+        </childnode>
+        <childnode refid="19090" relation="include">
+        </childnode>
+        <childnode refid="19089" relation="include">
+        </childnode>
+        <childnode refid="19115" relation="include">
+        </childnode>
+        <childnode refid="19106" relation="include">
+        </childnode>
+        <childnode refid="19082" relation="include">
+        </childnode>
+      </node>
+      <node id="19091">
+        <label>boost/random.hpp</label>
+      </node>
+      <node id="19085">
+        <label>world.h</label>
+        <link refid="world_8h"/>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19086" relation="include">
+        </childnode>
+        <childnode refid="19084" relation="include">
+        </childnode>
+        <childnode refid="19087" relation="include">
+        </childnode>
+        <childnode refid="19088" relation="include">
+        </childnode>
+        <childnode refid="19089" relation="include">
+        </childnode>
+        <childnode refid="19080" relation="include">
+        </childnode>
+        <childnode refid="19097" relation="include">
+        </childnode>
+      </node>
+      <node id="19071">
+        <label>GL/gl.h</label>
+      </node>
+      <node id="19066">
+        <label>stdio.h</label>
+      </node>
+      <node id="19101">
+        <label>objLoader.h</label>
+        <link refid="obj_loader_8h"/>
+        <childnode refid="19064" relation="include">
+        </childnode>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19068" relation="include">
+        </childnode>
+        <childnode refid="19081" relation="include">
+        </childnode>
+        <childnode refid="19084" relation="include">
+        </childnode>
+        <childnode refid="19076" relation="include">
+        </childnode>
+        <childnode refid="19067" relation="include">
+        </childnode>
+        <childnode refid="19102" relation="include">
+        </childnode>
+      </node>
+      <node id="19095">
+        <label>clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="19089" relation="include">
+        </childnode>
+        <childnode refid="19096" relation="include">
+        </childnode>
+        <childnode refid="19061" relation="include">
+        </childnode>
+        <childnode refid="19091" relation="include">
+        </childnode>
+        <childnode refid="19092" relation="include">
+        </childnode>
+      </node>
+      <node id="19100">
+        <label>smartBlocksGlBlock.h</label>
+        <link refid="smart_blocks_gl_block_8h"/>
+        <childnode refid="19081" relation="include">
+        </childnode>
+        <childnode refid="19101" relation="include">
+        </childnode>
+        <childnode refid="19080" relation="include">
+        </childnode>
+      </node>
+      <node id="19094">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_smart_blocks">SmartBlocks</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>smartBlocksSimulator.cpp</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/><sp/>Created<sp/>on:<sp/>12<sp/>avril<sp/>2013</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/>Author:<sp/>ben</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="smart_blocks_simulator_8h" kindref="compound">smartBlocksSimulator.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespacestd" kindref="compound">std</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_smart_blocks" kindref="compound">SmartBlocks</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">SmartBlocksBlockCode*(*<sp/>SmartBlocksSimulator::buildNewBlockCode)(SmartBlocksBlock*)=NULL;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" refkind="member"><highlight class="normal">SmartBlocksSimulator::SmartBlocksSimulator(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[],<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref><sp/>*(*smartBlocksBlockCodeBuildingFunction)(<ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref>*))<sp/>:<sp/><ref refid="namespace_base_simulator" kindref="compound">BaseSimulator</ref>::<ref refid="class_base_simulator_1_1_simulator" kindref="compound">Simulator</ref>(argc,<sp/>argv)<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;34m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;SmartBlocksSimulator<sp/>constructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_simulator_1a78d710e831bd042022d61ed21de334f3" kindref="member">buildNewBlockCode</ref><sp/>=<sp/>smartBlocksBlockCodeBuildingFunction;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_smart_blocks_1adb75afe8d855703e9e884196220fadf2" kindref="member">createScheduler</ref>();</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>currentID=1;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_world" kindref="compound">SmartBlocksWorld</ref><sp/>*world=NULL;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>reading<sp/>the<sp/>xml<sp/>file<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*node<sp/>=<sp/><ref refid="class_base_simulator_1_1_simulator_1a82a37ff2219f6fb5c4d619d3ad61a14a" kindref="member">xmlDoc</ref>-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;world&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(node)<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>worldElement<sp/>=<sp/>node-&gt;ToElement();</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str<sp/>=<sp/>worldElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;gridSize&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>largeur<sp/>=<sp/>atoi(str.substr(0,pos).c_str());</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>hauteur<sp/>=<sp/>atoi(str.substr(pos+1,str.length()-pos-1).c_str());</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;grid<sp/>size<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>largeur<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>x<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>hauteur<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=worldElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;maxSimulationTime&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>str=attr;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint64_t<sp/>t<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l<sp/>=<sp/>strlen(attr);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str.substr(l-2,2)==</highlight><highlight class="stringliteral">&quot;mn&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t*=60000000;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str.substr(l-2,2)==</highlight><highlight class="stringliteral">&quot;ms&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t*=1000;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str.substr(l-1,1)==</highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>t*=1000000;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_smart_blocks_1a63e744c9518abc2f09014a737e30ca56" kindref="member">getScheduler</ref>()-&gt;<ref refid="class_base_simulator_1_1_scheduler_1aca72617a32cf260ac6d09f43d024bb26" kindref="member">setMaximumDate</ref>(t);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=worldElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;windowSize&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>str=attr;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" kindref="member">GlutContext::initialScreenWidth</ref><sp/>=<sp/>atoi(str.substr(0,pos).c_str());</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" kindref="member">GlutContext::initialScreenHeight</ref><sp/>=<sp/>atoi(str.substr(pos+1,str.length()-pos-1).c_str());</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1a2e53da196e3309de6f7096993e30e191" kindref="member">GlutContext::screenWidth</ref><sp/>=<sp/><ref refid="class_glut_context_1aad3ff7d7735c811f5a6af307a3ae737d" kindref="member">GlutContext::initialScreenWidth</ref>;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1a62d021000546e50bbec62a6974183322" kindref="member">GlutContext::screenHeight</ref><sp/>=<sp/><ref refid="class_glut_context_1ac53ee8a5ded98f074faf583c90aad312" kindref="member">GlutContext::initialScreenHeight</ref>;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_smart_blocks_1ae8d3c666131fbbf085abfef009647375" kindref="member">createWorld</ref>(largeur,hauteur,argc,argv);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world<sp/>=<sp/><ref refid="namespace_smart_blocks_1a082eac088d3c41655abf3de6776c70b4" kindref="member">getWorld</ref>();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a574a4a9ae925958117aff114d736aa73" kindref="member">loadTextures</ref>(</highlight><highlight class="stringliteral">&quot;../../simulatorCore/smartBlocksTextures&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;ERROR<sp/>:<sp/>NO<sp/>world<sp/>in<sp/>XML<sp/>file&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>exit(1);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeConfig<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;camera&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeConfig)<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>cameraElement<sp/>=<sp/>nodeConfig-&gt;ToElement();</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;target&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>def_near=1,def_far=1500;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>angle=45;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>target;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a9b10e9a5d3e0606e0f468d51777470d9" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a7724b4bf8bbf5423da7dcb4644ee7d80" kindref="member">setTarget</ref>(target);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;angle&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>angle<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a9b10e9a5d3e0606e0f468d51777470d9" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a13d88059aa510d8ac9aee7dc3adc84ce" kindref="member">setAngle</ref>(angle);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;directionSpherical&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>az,ele,dist;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>az<sp/>=<sp/>-90.0+atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ele<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dist<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a9b10e9a5d3e0606e0f468d51777470d9" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1af8eff8518d92273950368ede6fc4c800" kindref="member">setDirection</ref>(az,ele);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a9b10e9a5d3e0606e0f468d51777470d9" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a4e3d9d06d4cf59d5d49674bd3af57e61" kindref="member">setDistance</ref>(dist);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>az<sp/>=<sp/>dist*sin(angle*<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/180.0);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_near<sp/>=<sp/>dist-az;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_far<sp/>=<sp/>dist+az;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;near&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_near<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=cameraElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;far&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>def_far<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a9b10e9a5d3e0606e0f468d51777470d9" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a4ec50716a3c77cf11a664e602511e55f" kindref="member">setNearFar</ref>(def_near,def_far);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>loading<sp/>the<sp/>spotlight<sp/>parameters</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>nodeConfig<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;spotlight&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeConfig)<sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>target;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>az=0,ele=60,dist=1000,angle=50;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>lightElement<sp/>=<sp/>nodeConfig-&gt;ToElement();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=lightElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;target&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>target.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=lightElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;directionSpherical&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>az<sp/>=<sp/>-90.0+atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ele<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dist<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=lightElement-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;angle&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>angle<sp/>=<sp/>atof(attr);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>farplane=3.0*dist*tan(angle*<ref refid="vecteur_8h_1ae71449b1cc6e6250b91f539153a7a0d3" kindref="member">M_PI</ref>/180.0);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a9b10e9a5d3e0606e0f468d51777470d9" kindref="member">getCamera</ref>()-&gt;<ref refid="class_camera_1a098deaf9d6124ea94b2da0b0df053d3c" kindref="member">setLightParameters</ref>(target,az,ele,dist,angle,10.0,farplane);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeBlock<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;blockList&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeBlock)<sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>defaultColor(0.8,0.8,0.8);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>element<sp/>=<sp/>nodeBlock-&gt;ToElement();</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;color&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defaultColor.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defaultColor.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>defaultColor.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;blocksize&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>siz[3];</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>siz[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str());</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>siz[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>siz[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str());</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;blocksize<sp/>=&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>siz[0]<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;,&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>siz[1]&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1ad50423b2bd9120e6f5d8ec9fda9e6cab" kindref="member">setBlocksSize</ref>(siz);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Reading<sp/>a<sp/>smartblock<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;default<sp/>color<sp/>:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>defaultColor<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*block<sp/>=<sp/>nodeBlock-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;block&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_vecteur" kindref="compound">Vecteur</ref><sp/>position;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>color;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(block)<sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>element<sp/>=<sp/>block-&gt;ToElement();</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color=defaultColor;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;color&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;color<sp/>:&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>defaultColor<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;position&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]<sp/>=<sp/>atoi(str.substr(0,pos).c_str());</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>atoi(str.substr(pos+1,str.length()-pos-1).c_str());</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;position<sp/>:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>position<sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a90c5a8c05b2cfd89e6af9e6ccb6f18d2" kindref="member">addBlock</ref>(currentID++,<ref refid="class_smart_blocks_1_1_smart_blocks_simulator_1a78d710e831bd042022d61ed21de334f3" kindref="member">SmartBlocksSimulator::buildNewBlockCode</ref>,position,color);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>block-&gt;NextSibling(</highlight><highlight class="stringliteral">&quot;block&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>end<sp/>while<sp/>(block)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>nodeBlock-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;blocksLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(block)<sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>element<sp/>=<sp/>block-&gt;ToElement();</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color=defaultColor;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;color&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos1<sp/>=<sp/>str.find_first_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos2<sp/>=<sp/>str.find_last_of(</highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[0]<sp/>=<sp/>atof(str.substr(0,pos1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[1]<sp/>=<sp/>atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color.<ref refid="class_color_1a0aa2f69d2314f4008e35d03d5f66fcf8" kindref="member">rgba</ref>[2]<sp/>=<sp/>atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;line&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>line<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;values&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[1]<sp/>=<sp/>line;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;str.length();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/><sp/>(str[i]==</highlight><highlight class="charliteral">&apos;1&apos;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>position.<ref refid="class_vecteur_1a9dba75d889e496f82d6fd28012a1eb54" kindref="member">pt</ref>[0]=i;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a90c5a8c05b2cfd89e6af9e6ccb6f18d2" kindref="member">addBlock</ref>(currentID++,<ref refid="class_smart_blocks_1_1_smart_blocks_simulator_1a78d710e831bd042022d61ed21de334f3" kindref="member">SmartBlocksSimulator::buildNewBlockCode</ref>,position,color);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>block-&gt;NextSibling(</highlight><highlight class="stringliteral">&quot;blocksLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>end<sp/>while<sp/>(nodeBlock)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">//<sp/>end<sp/>if(nodeBlock)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>cerr<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;no<sp/>Block<sp/>List&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeGrid<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;targetGrid&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeGrid)<sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*block<sp/>=<sp/>nodeGrid-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;targetLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line;</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(block)<sp/>{</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>TiXmlElement*<sp/>element<sp/>=<sp/>block-&gt;ToElement();</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;line&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>line<sp/>=<sp/>atoi(attr);</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>attr<sp/>=<sp/>element-&gt;Attribute(</highlight><highlight class="stringliteral">&quot;values&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(attr)<sp/>{</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>str(attr);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i=0;<sp/>i&lt;str.length();<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a44635c6ed03d7311ae62ce094ff360ff" kindref="member">setTargetGrid</ref>((str[i]==</highlight><highlight class="charliteral">&apos;1&apos;</highlight><highlight class="normal">)?<ref refid="namespace_smart_blocks_1a76047759018e3660585ed31a83c3557aa53bbb97790b79a8dddead922a4c05ad8" kindref="member">fullCell</ref>:<ref refid="namespace_smart_blocks_1a76047759018e3660585ed31a83c3557aacf93dd9efe3bf6c48b8c3a814e3c7156" kindref="member">emptyCell</ref>,i,line);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>block<sp/>=<sp/>block-&gt;NextSibling(</highlight><highlight class="stringliteral">&quot;targetLine&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;No<sp/>target<sp/>grid&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>endl;</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/>TiXmlNode<sp/>*nodeCapa<sp/>=<sp/>node-&gt;FirstChild(</highlight><highlight class="stringliteral">&quot;capabilities&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nodeCapa)<sp/>{</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1aa1d71ea6807b52375318dced7988a07a" kindref="member">setCapabilities</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_capabilities" kindref="compound">SmartBlocksCapabilities</ref>(nodeCapa));</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/>world-&gt;<ref refid="class_smart_blocks_1_1_smart_blocks_world_1a12bfca894d587eaa467c1b50248e6d61" kindref="member">linkBlocks</ref>();</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" kindref="member">GlutContext::mainLoop</ref>();</highlight></codeline>
+<codeline lineno="267"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269" refid="class_smart_blocks_1_1_smart_blocks_simulator_1aa019c2b914524efcb11b5a9f2d6d4a94" refkind="member"><highlight class="normal"><ref refid="class_smart_blocks_1_1_smart_blocks_simulator_1aa019c2b914524efcb11b5a9f2d6d4a94" kindref="member">SmartBlocksSimulator::~SmartBlocksSimulator</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//MODIF<sp/>NICO<sp/>:<sp/>deleteScheduler()<sp/>est<sp/>déjà<sp/>appellée<sp/>par<sp/>BaseSimulator::~Simulator()</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//~<sp/>deleteScheduler();</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/>cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[1;34m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;SmartBlocksSimulator<sp/>destructor&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\033[0m&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;endl;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275" refid="class_smart_blocks_1_1_smart_blocks_simulator_1a745631ed5b30e23076709ba882b91881" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_simulator_1a745631ed5b30e23076709ba882b91881" kindref="member">SmartBlocksSimulator::createSimulator</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>argc,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*argv[],<sp/><ref refid="class_smart_blocks_1_1_smart_blocks_block_code" kindref="compound">SmartBlocksBlockCode</ref><sp/>*(*smartBlocksBlockCodeBuildingFunction)(<ref refid="class_smart_blocks_1_1_smart_blocks_block" kindref="compound">SmartBlocksBlock</ref>*))<sp/>{</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" kindref="member">simulator</ref><sp/>=<sp/><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_simulator_1a599ecdffee9c2913062aca21d943cea3" kindref="member">SmartBlocksSimulator</ref>(argc,<sp/>argv,<sp/>smartBlocksBlockCodeBuildingFunction);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279" refid="class_smart_blocks_1_1_smart_blocks_simulator_1a6b7c7285393126a1e59795b920b09bb0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_smart_blocks_1_1_smart_blocks_simulator_1a6b7c7285393126a1e59795b920b09bb0" kindref="member">SmartBlocksSimulator::deleteSimulator</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>((<ref refid="class_smart_blocks_1_1_smart_blocks_simulator" kindref="compound">SmartBlocksSimulator</ref>*)<ref refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" kindref="member">simulator</ref>);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_base_simulator_1_1_simulator_1a79fd3494bdb283ef256f6c63a4376846" kindref="member">simulator</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="282"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>SmartBlocks<sp/>namespace</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/smartBlocksSimulator.cpp"/>
+  </compounddef>
+</doxygen>

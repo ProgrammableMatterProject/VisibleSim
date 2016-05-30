@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.11">
+  <compounddef id="namespace_base_simulator" kind="namespace" language="C++">
+    <compoundname>BaseSimulator</compoundname>
+    <innerclass refid="class_base_simulator_1_1_block_code" prot="public">BaseSimulator::BlockCode</innerclass>
+    <innerclass refid="class_base_simulator_1_1_building_block" prot="public">BaseSimulator::BuildingBlock</innerclass>
+    <innerclass refid="class_base_simulator_1_1_clock" prot="public">BaseSimulator::Clock</innerclass>
+    <innerclass refid="class_base_simulator_1_1_keyword" prot="public">BaseSimulator::Keyword</innerclass>
+    <innerclass refid="class_base_simulator_1_1_keyword_t" prot="public">BaseSimulator::KeywordT</innerclass>
+    <innerclass refid="class_base_simulator_1_1_reference_point" prot="public">BaseSimulator::ReferencePoint</innerclass>
+    <innerclass refid="class_base_simulator_1_1_scheduler" prot="public">BaseSimulator::Scheduler</innerclass>
+    <innerclass refid="class_base_simulator_1_1_simulator" prot="public">BaseSimulator::Simulator</innerclass>
+    <innerclass refid="class_base_simulator_1_1_world" prot="public">BaseSimulator::World</innerclass>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_base_simulator_1a9ab92863c9b5138207607f17fd1f94c8" prot="public" static="no" mutable="no">
+        <type><ref refid="class_base_simulator_1_1_simulator" kindref="compound">Simulator</ref> *</type>
+        <definition>Simulator * BaseSimulator::simulator</definition>
+        <argsstring></argsstring>
+        <name>simulator</name>
+        <initializer>= NULL</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp" line="19" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/simulator.cpp" bodystart="19" bodyend="-1"/>
+        <referencedby refid="class_blinky_blocks_1_1_blinky_blocks_simulator_1ae683a9b3b2592c5b2e0d7a6fd396cf60" compoundref="blinky_blocks_simulator_8h" startline="34" endline="37">BlinkyBlocks::BlinkyBlocksSimulator::getSimulator</referencedby>
+        <referencedby refid="class_catoms2_d_1_1_catoms2_d_simulator_1ac4f02b9085bfd6ea3a8a7a758916f135" compoundref="catoms2_d_simulator_8h" startline="35" endline="38">Catoms2D::Catoms2DSimulator::getSimulator</referencedby>
+        <referencedby refid="class_catoms3_d_1_1_catoms3_d_simulator_1a51fdc46916a11038b1e9901eb4c208c6" compoundref="catoms3_d_simulator_8h" startline="35" endline="38">Catoms3D::Catoms3DSimulator::getSimulator</referencedby>
+        <referencedby refid="class_multi_cores_1_1_multi_cores_simulator_1a4622794c621c76b39e7de3afd4211da9" compoundref="multi_cores_simulator_8h" startline="33" endline="36">MultiCores::MultiCoresSimulator::getSimulator</referencedby>
+        <referencedby refid="class_robot_blocks_1_1_robot_blocks_simulator_1ad212c2c893be2e84bb1b4d1aecfef980" compoundref="robot_blocks_simulator_8h" startline="35" endline="38">RobotBlocks::RobotBlocksSimulator::getSimulator</referencedby>
+        <referencedby refid="class_base_simulator_1_1_simulator_1afd6cc3e15280a1c39c171505731b90ae" compoundref="simulator_8cpp" startline="25" endline="133">BaseSimulator::Simulator::Simulator</referencedby>
+        <referencedby refid="class_smart_blocks_1_1_smart_blocks_simulator_1aace5292de09fc0e755891b97feefd5ef" compoundref="smart_blocks_simulator_8h" startline="32" endline="35">SmartBlocks::SmartBlocksSimulator::getSimulator</referencedby>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_base_simulator_1a7e5df7146e696f7daea2878e5531f561" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseSimulator::deleteScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>deleteScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" line="121" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" bodystart="121" bodyend="123"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" compoundref="simulator_8cpp" startline="135" endline="153">BaseSimulator::Simulator::~Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_base_simulator_1a84599318263b50a4a4cf3ea1ada44f7d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_base_simulator_1_1_scheduler" kindref="compound">Scheduler</ref> *</type>
+        <definition>Scheduler* BaseSimulator::getScheduler</definition>
+        <argsstring>()</argsstring>
+        <name>getScheduler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" line="125" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/scheduler.h" bodystart="125" bodyend="125"/>
+        <referencedby refid="class_scenario_tapp_event_1a568986fa9464d5e806d5507191e75479" compoundref="blinky_blocks_scenario_8h" startline="30" endline="30">ScenarioTappEvent::exportEventToScheduler</referencedby>
+        <referencedby refid="namespace_blinky_blocks_1ad7233374e9ceba1a46d8a3b748c00d13" compoundref="blinky_blocks_scheduler_8h" startline="58" endline="58">BlinkyBlocks::getScheduler</referencedby>
+        <referencedby refid="class_base_simulator_1_1_clock_1a0ed4bd514d08d95e22a953b2327b66f2" compoundref="clock_8cpp" startline="9" endline="15">BaseSimulator::Clock::Clock</referencedby>
+        <referencedby refid="class_base_simulator_1_1_clock_1a2db9bd301ba568498ca3d787a01513c6" compoundref="clock_8cpp" startline="68" endline="70">BaseSimulator::Clock::getTime</referencedby>
+        <referencedby refid="class_base_simulator_1_1_clock_1a77c9e4e3b7f3bb0a457217045006e269" compoundref="clock_8cpp" startline="199" endline="215">BaseSimulator::Clock::cleanReferencePoints</referencedby>
+        <referencedby refid="class_code_end_simulation_event_1a43aa0aa9b9541a951d1ff6123c9a8690" compoundref="events_8cpp" startline="126" endline="129">CodeEndSimulationEvent::consume</referencedby>
+        <referencedby refid="class_network_interface_stop_transmitting_event_1a7fc67ce64687023ac885de0cdbdab216" compoundref="events_8cpp" startline="198" endline="209">NetworkInterfaceStopTransmittingEvent::consume</referencedby>
+        <referencedby refid="class_glut_sliding_main_window_1afae498a37f111f6b11d33ada96789775" compoundref="interface_8cpp" startline="143" endline="231">GlutSlidingMainWindow::glDraw</referencedby>
+        <referencedby refid="class_glut_sliding_main_window_1a2bcada50d709b3dae884b7be1a495eb7" compoundref="interface_8cpp" startline="277" endline="285">GlutSlidingMainWindow::addTrace</referencedby>
+        <referencedby refid="class_glut_sliding_debug_window_1adb2038038ae6a736f1a406c9e3c63728" compoundref="interface_8cpp" startline="327" endline="384">GlutSlidingDebugWindow::glDraw</referencedby>
+        <referencedby refid="class_meld_interpret_1_1_meld_interpret_v_m_1a9d1b55a707812f2ea420642126e3ee1a" compoundref="meld_interpret_v_m_8cpp" startline="529" endline="531">MeldInterpret::MeldInterpretVM::setLED</referencedby>
+        <referencedby refid="class_meld_process_1_1_v_m_command_1a80e7a29fb76d9b3635be2d81c7a3eb30" compoundref="meld_process_v_m_commands_8cpp" startline="29" endline="35">MeldProcess::VMCommand::VMCommand</referencedby>
+        <referencedby refid="class_p2_p_network_interface_1aba195d9787f7ab292a164d7ad1af04fb" compoundref="network_8cpp" startline="92" endline="108">P2PNetworkInterface::addToOutgoingBuffer</referencedby>
+        <referencedby refid="class_p2_p_network_interface_1a3b714f1fcb3be3f2ba081c0eb3bf0bce" compoundref="network_8cpp" startline="110" endline="144">P2PNetworkInterface::send</referencedby>
+        <referencedby refid="class_glut_context_1ad3770197f422ae0e7dc49406fbd2add6" compoundref="opengl_viewer_8cpp" startline="89" endline="96">GlutContext::deleteContext</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+        <referencedby refid="class_glut_context_1a9831af277f22b30e227e83ec924f11fc" compoundref="opengl_viewer_8cpp" startline="490" endline="512">GlutContext::mainLoop</referencedby>
+        <referencedby refid="class_glut_context_1a7824b09892fd1d2ede8a2bcfad0e8b87" compoundref="opengl_viewer_8cpp" startline="514" endline="518">GlutContext::addTrace</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_base_simulator_1aa73a7e6315135dd184e0061c97eb3ded" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void BaseSimulator::swap</definition>
+        <argsstring>(int *a, int *b)</argsstring>
+        <name>swap</name>
+        <param>
+          <type>int *</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.cpp" line="72" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.cpp" bodystart="72" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_base_simulator_1a964dd9036faafc4a27d7760d8c38efd5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseSimulator::deleteWorld</definition>
+        <argsstring>()</argsstring>
+        <name>deleteWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h" line="86" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h" bodystart="86" bodyend="88"/>
+        <referencedby refid="class_base_simulator_1_1_simulator_1ac07aacbae01ce09e483e5564c3809f01" compoundref="simulator_8cpp" startline="135" endline="153">BaseSimulator::Simulator::~Simulator</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespace_base_simulator_1a2a1f7a0fc6c69525e369dc9226e1a23c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_base_simulator_1_1_world" kindref="compound">World</ref> *</type>
+        <definition>World* BaseSimulator::getWorld</definition>
+        <argsstring>()</argsstring>
+        <name>getWorld</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h" line="90" column="1" bodyfile="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/world.h" bodystart="90" bodyend="90"/>
+        <referencedby refid="class_scenario_tapp_event_1a568986fa9464d5e806d5507191e75479" compoundref="blinky_blocks_scenario_8h" startline="30" endline="30">ScenarioTappEvent::exportEventToScheduler</referencedby>
+        <referencedby refid="class_base_simulator_1_1_building_block_1ad2e1ae70e54db639cd601cc9646f6353" compoundref="building_block_8cpp" startline="81" endline="95">BaseSimulator::BuildingBlock::addP2PNetworkInterfaceAndConnectTo</referencedby>
+        <referencedby refid="class_meld_process_1_1_meld_process_v_m_1ae9758d22aa56b9f8d0b87cf6709c8cf0" compoundref="meld_process_v_m_8cpp" startline="433" endline="442">MeldProcess::MeldProcessVM::sendCommand</referencedby>
+        <referencedby refid="class_glut_context_1ac663fcc1336e9a9f3c7a89471e333772" compoundref="opengl_viewer_8cpp" startline="108" endline="123">GlutContext::reshapeFunc</referencedby>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Abstract class clock Simuate RTC (Real-Time Counter) behaviour </para>    </detaileddescription>
+    <location file="/Users/pthalamy/Desktop/VSimRef/VisibleSim/simulatorCore/src/blockCode.cpp" line="14" column="1"/>
+  </compounddef>
+</doxygen>
