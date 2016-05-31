@@ -42,7 +42,7 @@ RobotBlocksWorld::RobotBlocksWorld(int slx,int sly,int slz, int argc, char *argv
 	blockSize[1]=39.0;
 	blockSize[2]=40.0;
 	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
-	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
+	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlockPicking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
 	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
@@ -391,11 +391,11 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
 void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
 		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-		GlutContext::popupMenu->addButton(1,"../../simulatorCore/robotBlocksTextures/menu_add.tga");
-		GlutContext::popupMenu->addButton(2,"../../simulatorCore/robotBlocksTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_tap.tga");
-		GlutContext::popupMenu->addButton(4,"../../simulatorCore/robotBlocksTextures/menu_save.tga");
-		GlutContext::popupMenu->addButton(5,"../../simulatorCore/robotBlocksTextures/menu_cancel.tga");
+		GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
+		GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
+		GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
+		GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
+		GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
 	}
 	if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
 	// verify if add is possible for this face

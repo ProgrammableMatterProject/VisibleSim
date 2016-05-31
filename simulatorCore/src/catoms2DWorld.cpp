@@ -528,11 +528,11 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
     void Catoms2DWorld::createPopupMenu(int ix, int iy) {
         if (!GlutContext::popupMenu) {
             GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-            GlutContext::popupMenu->addButton(1,"../../simulatorCore/catoms2DTextures/menu_add.tga");
-            GlutContext::popupMenu->addButton(2,"../../simulatorCore/catoms2DTextures/menu_del.tga");
-            GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_tap.tga");
-            GlutContext::popupMenu->addButton(4,"../../simulatorCore/catoms2DTextures/menu_save.tga");
-            GlutContext::popupMenu->addButton(5,"../../simulatorCore/catoms2DTextures/menu_cancel.tga");
+            GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
+            GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
+            GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
+            GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
+            GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
         }
         if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
         // verify if add is possible for this face
@@ -653,101 +653,6 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         int sz = gridSize[0]*gridSize[1]*gridSize[2];
         targetGrid = new presence[gridSize[0]*gridSize[1]*gridSize[2]];
         memset(targetGrid,emptyCell,sz*sizeof(presence));
-    }
-
-
-    void Catoms2DWorld::generateRandom(int n) {
-        Vecteur position;
-        int blockId = 0;
-        int face = 0;
-        bool inserted = false;
-        Catoms2DBlock *catom;
-        int current = 1;
-        int id = 0;
-        int *ids = NULL;
-    
-        //struct timespec t;
-        //clock_gettime(CLOCK_REALTIME, &t);
-        //boost::rand48 generator = boost::rand48(t.tv_nsec);
-        // not implemented in mac os
-    
-        boost::rand48 generator = boost::rand48(time(NULL));
-    
-        ids = (int*) malloc(n*sizeof(int));
-        generateIds(n,ids);
-    
-        // initial block: bottom middle
-        position.pt[0] = gridSize[2]/2;
-        position.pt[1] = 0;
-        position.pt[2] = 0;
-    
-        id = ids[current-1];
-        current++;
-    
-        addBlock(id, Catoms2DSimulator::buildNewBlockCode, position, DARKGREY);
-    
-        for (int i = 0; i < n - 1; i++) {
-            inserted = false;
-            //Direction
-            while (!inserted) {
-                do {
-                    blockId = ids[generator() % (i+1)];
-                    catom = (Catoms2DBlock *)world->getBlockById(blockId);
-                } while (catom == NULL);
-            
-                position.pt[0] = catom->position.pt[0];
-                position.pt[1] = catom->position.pt[1];
-                position.pt[2] = catom->position.pt[2];
-                face = generator() % 6;
-                switch(NeighborDirection::Direction(face)) {
-                case NeighborDirection::Right:
-                    position.pt[0]++; // x axis
-                    break;
-                case NeighborDirection::Left:
-                    position.pt[0]--;
-                    break;
-                    
-                    
-                case NeighborDirection::BottomLeft:
-                    if ((int)position.pt[2]%2 == 0) {
-                        position.pt[0]--;
-                    }
-                    position.pt[2]--;
-                    break;
-                case NeighborDirection::BottomRight:
-                    if ((int)position.pt[2]%2 == 1) {
-                        position.pt[0]++;
-                    }
-                    position.pt[2]--;
-                    break;
-                    
-                case NeighborDirection::TopLeft:
-                    if ((int)position.pt[2]%2 == 0) {
-                        position.pt[0]--;
-                    }
-                    position.pt[2]++;
-                    break;
-                case NeighborDirection::TopRight:
-                    if ((int)position.pt[2]%2 == 1) {
-                        position.pt[0]++;
-                    }
-                    position.pt[2]++;
-                    break;
-                default:
-                    cerr << "random config: unknown face" << endl;
-                }
-                if ((position.pt[0] >=0) && (position.pt[0] < gridSize[0]-1) && 
-                    (position.pt[2] >=0) && (position.pt[2] < gridSize[2]-1)) {
-                    if (!getGridPtr(position.pt[0], position.pt[1], position.pt[2])) { // location not busy
-                        id = ids[current-1];
-                        current++;
-                        addBlock(id, catom->buildNewBlockCode, position, DARKGREY);
-                        inserted = true;
-                    }
-                }
-            }
-        }
-        cout << "random world built" << endl;
     }
 
     void Catoms2DWorld::extractConfig() {

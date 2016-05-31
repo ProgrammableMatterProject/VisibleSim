@@ -45,4 +45,5 @@ applications*/*
 
 
 # Doxyfile documentation output
+doc/xml/
 doc/html/

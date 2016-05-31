@@ -356,11 +356,11 @@ void BlinkyBlocksWorld::updateGlData(BlinkyBlocksBlock*blc) {
 void BlinkyBlocksWorld::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
 		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-		GlutContext::popupMenu->addButton(1,"../../simulatorCore/blinkyBlocksTextures/menu_add.tga");
-		GlutContext::popupMenu->addButton(2,"../../simulatorCore/blinkyBlocksTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/blinkyBlocksTextures/menu_tap.tga");
-		GlutContext::popupMenu->addButton(4,"../../simulatorCore/blinkyBlocksTextures/menu_save.tga");
-		GlutContext::popupMenu->addButton(5,"../../simulatorCore/blinkyBlocksTextures/menu_cancel.tga");
+		GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
+		GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
+		GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
+		GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
+		GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
 	}
 	if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
 	// verify if add is possible for this face
@@ -499,7 +499,7 @@ void BlinkyBlocksWorld::createPopupMenu(int ix, int iy) {
     void BlinkyBlocksWorld::createHelpWindow() {
         if (GlutContext::helpWindow)
             delete GlutContext::helpWindow;
-        GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/blinkyBlocksHelp.txt");
+        GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
     }
 
    void BlinkyBlocksWorld::dump() {

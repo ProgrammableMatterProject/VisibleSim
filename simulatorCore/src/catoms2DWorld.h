@@ -93,7 +93,6 @@ public:
 	virtual void disconnectBlock(Catoms2DBlock *block);
 	virtual void connectBlock(Catoms2DBlock *block);
 	
-	void generateRandom(int n);
 	void extractConfig();
 };
 

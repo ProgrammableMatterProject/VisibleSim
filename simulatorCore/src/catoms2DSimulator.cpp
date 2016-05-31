@@ -177,9 +177,6 @@ namespace Catoms2D {
 	world->setBlocksSize(blockSize);
       }
 	
-      //world->generateRandom(100);
-      //world->extractConfig();
-
 #if 1
       /* Reading a catoms */
       TiXmlNode *block = nodeBlock->FirstChild("block");
