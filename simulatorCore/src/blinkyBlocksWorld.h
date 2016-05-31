@@ -33,8 +33,6 @@ int gridSize[3];
 	Camera *camera;
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureWall;
-	GLushort numSelectedFace;
-	GLuint numSelectedBlock;
 	GLint menuId;
 	
 	vector<ScenarioEvent*> tabEvents;
@@ -69,17 +67,19 @@ public:
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
 	virtual void updateGlData(BlinkyBlocksBlock*blc);
-	virtual void createPopupMenu(int ix, int iy);
+        void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
-	virtual void setSelectedFace(int n);
+    	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
 	
 	/* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
 	void accelBlock(uint64_t date, int bId, int x, int y, int z);
 	void shakeBlock(uint64_t date, int bId, int f);	
 	void stopBlock(uint64_t date, int bId);
-	
+
+        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+    
 	void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
 
    // Prints information about the blocks

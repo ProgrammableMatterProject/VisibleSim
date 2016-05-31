@@ -388,44 +388,6 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
 	}
 }
 
-void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
-	if (!GlutContext::popupMenu) {
-		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-		GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
-		GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
-		GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-		GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
-	}
-	if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
-	// verify if add is possible for this face
-	RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-	bool valid=true;
-	switch (numSelectedFace) {
-		case NeighborDirection::Left :
-			valid=(bb->position[0]>0 && getGridPtr(int(bb->position[0])-1,int(bb->position[1]),int(bb->position[2]))==NULL);
-			break;
-		case NeighborDirection::Right :
-			valid=(bb->position[0]<gridSize[0]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2]))==NULL);
-		break;
-		case NeighborDirection::Front :
-			valid=(bb->position[1]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1])-1,int(bb->position[2]))==NULL);
-			break;
-		case NeighborDirection::Back :
-			valid=(bb->position[1]<gridSize[1]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1])+1,int(bb->position[2]))==NULL);
-		break;
-		case NeighborDirection::Bottom :
-			valid=(bb->position[2]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])-1)==NULL);
-			break;
-		case NeighborDirection::Top :
-			valid=(bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])+1)==NULL);
-		break;
-	}
-	GlutContext::popupMenu->activate(1,valid);
-	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
-	GlutContext::popupMenu->show(true);
-}
-
 void RobotBlocksWorld::menuChoice(int n) {
 	switch (n) {
 		case 1 : {
@@ -462,6 +424,51 @@ void RobotBlocksWorld::menuChoice(int n) {
 		} break;
 	}
 }
+
+bool RobotBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
+    RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    switch (numSelectedFace) {
+    case NeighborDirection::Left :
+        return (bb->position[0]>0
+                && getGridPtr(int(bb->position[0])-1,
+                              int(bb->position[1]),
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Right :
+        return (bb->position[0]<gridSize[0]-1
+                && getGridPtr(int(bb->position[0])+1,
+                              int(bb->position[1]),
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Front :
+        return (bb->position[1]>0
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1])-1,
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Back :
+        return (bb->position[1]<gridSize[1]-1
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1])+1,
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Bottom :
+        return (bb->position[2]>0
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1]),
+                              int(bb->position[2])-1) == NULL);
+        break;
+    case NeighborDirection::Top :
+        return (bb->position[2]<gridSize[2]-1
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1]),
+                              int(bb->position[2])+1) == NULL);
+        break;
+    }
+
+    return false;
+}
+
 
 void RobotBlocksWorld::setSelectedFace(int n) {
 	numSelectedBlock=n/6;

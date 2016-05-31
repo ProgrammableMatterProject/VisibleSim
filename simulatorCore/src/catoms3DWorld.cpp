@@ -454,45 +454,6 @@ Vecteur Catoms3DWorld::gridToWorldPosition(const Cell3DPosition &pos) {
     return res;
 }
 
-    void Catoms3DWorld::createPopupMenu(int ix, int iy) {
-	if (!GlutContext::popupMenu) {
-            GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-            GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
-            GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
-            GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
-            GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-            GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
-	}
-	if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
-	// verify if add is possible for this face
-/*	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-	bool valid=true;
-	switch (numSelectedFace) {
-		//BottomLeft = 0, Left = 1, TopLeft = 2, BottomRight = 3, Right = 4, TopRight =5}
-		case NeighborDirection::Left :
-			valid=(bb->position[0]>0 && getGridPtr(int(bb->position[0])-1,int(bb->position[1]),int(bb->position[2]))==NULL);
-			break;
-		case NeighborDirection::Right :
-			valid=(bb->position[0]<gridSize[0]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2]))==NULL);
-		break;
-		case NeighborDirection::BottomLeft :
-			valid=(bb->position[2]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])-1)==NULL);
-			break;
-		case NeighborDirection::TopLeft :
-			valid=(bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])+1)==NULL);
-		break;
-		case NeighborDirection::BottomRight :
-			valid=(bb->position[0]<gridSize[0]-1 && bb->position[2]>0 && getGridPtr(int(bb->position[0]+1),int(bb->position[1]),int(bb->position[2])-1)==NULL);
-			break;
-		case NeighborDirection::TopRight :
-			valid=(bb->position[0]<gridSize[0]-1 && bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2])+1)==NULL);
-		break;
-	}
-	GlutContext::popupMenu->activate(1,valid);*/
-	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
-	GlutContext::popupMenu->show(true);
-}
-
 void Catoms3DWorld::menuChoice(int n) {
 	switch (n) {
 		case 1 : {
@@ -529,6 +490,55 @@ void Catoms3DWorld::menuChoice(int n) {
 		} break;
 	}
 }
+
+bool Catoms3DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
+    Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    // switch (numSelectedFace) {
+    //     // FALSE: depends on the parity of the line
+    // case NeighborDirection::Left :
+    //     return (bb->position[0]>0
+    //             && getGridPtr(int(bb->position[0])-1,
+    //                           int(bb->position[1]),
+    //                           int(bb->position[2])) == NULL);
+    //     break;
+    // case NeighborDirection::Right :
+    //     return (bb->position[0]<gridSize[0]-1
+    //             && getGridPtr(int(bb->position[0])+1,
+    //                           int(bb->position[1]),
+    //                           int(bb->position[2])) == NULL);
+    //     break;
+    // case NeighborDirection::BottomLeft :
+    //     return (bb->position[2]>0
+    //             && getGridPtr(int(bb->position[0]),
+    //                           int(bb->position[1]),
+    //                           int(bb->position[2])-1) == NULL);
+    //     break;
+    // case NeighborDirection::TopLeft :
+    //     return (bb->position[2]<gridSize[2]-1
+    //             && getGridPtr(int(bb->position[0]),
+    //                           int(bb->position[1]),
+    //                           int(bb->position[2])+1) == NULL);
+    //     break;
+    // case NeighborDirection::BottomRight :
+    //     return (bb->position[0]<gridSize[0]-1
+    //             && bb->position[2]>0
+    //             && getGridPtr(int(bb->position[0]+1),
+    //                           int(bb->position[1]),
+    //                           int(bb->position[2])-1) == NULL);
+    //     break;
+    // case NeighborDirection::TopRight :
+    //     return (bb->position[0]<gridSize[0]-1
+    //             && bb->position[2]<gridSize[2]-1
+    //             && getGridPtr(int(bb->position[0])+1,
+    //                           int(bb->position[1]),
+    //                           int(bb->position[2])+1) == NULL);
+    //     break;
+    // }
+
+    // TODO
+    return false;
+}
+
 
 void Catoms3DWorld::setSelectedFace(int n) {
 	numSelectedBlock=n/6;

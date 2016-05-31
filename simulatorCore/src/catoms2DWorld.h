@@ -28,8 +28,6 @@ protected:
 	Camera *camera;
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureHexa,idTextureLines;
-	GLushort numSelectedFace;
-	GLuint numSelectedBlock;
 	GLint menuId;
 	presence *targetGrid;
 	Catoms2DCapabilities *capabilities;
@@ -85,14 +83,14 @@ public:
 	virtual void updateGlData(Catoms2DBlock*blc);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position, double angle);
-	virtual void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(Catoms2DBlock *block);
 	virtual void connectBlock(Catoms2DBlock *block);
-	
+        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+    
 	void extractConfig();
 };
 

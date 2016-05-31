@@ -33,8 +33,6 @@ protected:
 	Camera *camera;
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureHexa,idTextureGrid;
-	GLushort numSelectedFace;
-	GLuint numSelectedBlock;
 	GLint menuId;
 	Skeleton *skeleton;
 /*	presence *targetGrid;
@@ -100,13 +98,13 @@ public:
 	virtual void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
 	virtual void updateGlData(Catoms3DBlock*blc, const Vecteur &position);
 	virtual void updateGlData(Catoms3DBlock*blc, const Matrice &mat);
-	virtual void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(Catoms3DBlock *block);
 	virtual void connectBlock(Catoms3DBlock *block);
+        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
 
 /**
  * \brief load the background textures (internal)

@@ -29,6 +29,8 @@ namespace BaseSimulator {
 	static vector<GlBlock*>tabGlBlocks;
 	static map<int, BuildingBlock*>buildingBlocksMap;
 	GlBlock *selectedBlock;
+	GLushort numSelectedFace;
+	GLuint numSelectedBlock;
 
 	World();
 	virtual ~World();
@@ -56,7 +58,18 @@ namespace BaseSimulator {
 	void printInfo() {
             OUTPUT << "I'm a World" << endl;
 	}
-	
+
+        /**
+         * Returns a boolean indicating if a block can be added to face #numSelectedFace
+         *  of block identified by numSelectedBlock
+         * 
+         * @param numSelectedBlock id of selected block 
+         * @param numSelectedFace id of face to consider
+         * @return true if corresponding cell is free and inside the grid, false otherwise
+         */
+        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace) { return true; };
+
+        
 	virtual BuildingBlock* getBlockById(int bId);
 
         inline GlBlock* getSelectedBlock() { return selectedBlock; };
@@ -69,7 +82,7 @@ namespace BaseSimulator {
         virtual void glDraw() {};
         virtual void glDrawId() {};
         virtual void glDrawIdByMaterial() {};
-        virtual void createPopupMenu(int ix,int iy) {};
+        void createPopupMenu(int ix,int iy);
         virtual void createHelpWindow() {};
         virtual Camera *getCamera() { return NULL; };
         virtual void menuChoice(int) {};
@@ -77,6 +90,7 @@ namespace BaseSimulator {
         void tapBlock(uint64_t date, int bId);        
         virtual void accelBlock(uint64_t date, int bId, int x, int y, int z) {};
         virtual void shakeBlock(uint64_t date, int bId, int f) {};
+
         /* Stop the block execution */
         void stopSimulation();
 	

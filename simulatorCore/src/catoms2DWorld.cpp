@@ -525,95 +525,96 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         return areNeighborsWorldPos(wpos1,wpos2);
     }
 
-    void Catoms2DWorld::createPopupMenu(int ix, int iy) {
-        if (!GlutContext::popupMenu) {
-            GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-            GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
-            GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
-            GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
-            GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-            GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
-        }
-        if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
-        // verify if add is possible for this face
-        Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-        bool valid=true;
-        switch (numSelectedFace) {
-            // FALSE: depends on the parity of the line
-            //BottomLeft = 0, Left = 1, TopLeft = 2, BottomRight = 3, Right = 4, TopRight =5}
-        case NeighborDirection::Left :
-            valid=(bb->position[0]>0 && getGridPtr(int(bb->position[0])-1,int(bb->position[1]),int(bb->position[2]))==NULL);
-            break;
-        case NeighborDirection::Right :
-            valid=(bb->position[0]<gridSize[0]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2]))==NULL);
-            break;
-        case NeighborDirection::BottomLeft :
-            valid=(bb->position[2]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])-1)==NULL);
-            break;
-        case NeighborDirection::TopLeft :
-            valid=(bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])+1)==NULL);
-            break;
-        case NeighborDirection::BottomRight :
-            valid=(bb->position[0]<gridSize[0]-1 && bb->position[2]>0 && getGridPtr(int(bb->position[0]+1),int(bb->position[1]),int(bb->position[2])-1)==NULL);
-            break;
-        case NeighborDirection::TopRight :
-            valid=(bb->position[0]<gridSize[0]-1 && bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2])+1)==NULL);
-            break;
-        }
-        GlutContext::popupMenu->activate(1,valid);
-        GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
-        GlutContext::popupMenu->show(true);
-    }
-
     void Catoms2DWorld::menuChoice(int n) {
         switch (n) {
         case 1 : {
             Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
             OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-            /*Vecteur pos=bb->position;
-              switch (numSelectedFace) {
-              case NeighborDirection::Left :
-              pos.pt[0]--;
-              break;
-              case NeighborDirection::Right :
-              pos.pt[0]++;
-              break;
-              case NeighborDirection::Front :
-              pos.pt[1]--;
-              break;
-              case NeighborDirection::Back :
-              pos.pt[1]++;
-              break;
-              case NeighborDirection::Bottom :
-              pos.pt[2]--;
-              break;
-              case NeighborDirection::Top :
-              pos.pt[2]++;
-              break;
-              }
-              addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
-              linkBlocks();*/
+            cerr << "CURRENT C2D ANGLE = " << bb->angle << endl;
+
+            Vecteur pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
+
+            addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
+            linkBlocks();            
         } break;
         case 2 : {
             OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
             Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
             deleteBlock(bb);
         } break;
-        }
+        case 3 : {
+            Catoms2DBlock *bb =
+                (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+            tapBlock(getScheduler()->now(), bb->blockId);           
+        } break;
+        case 4:                 // Save current configuration
+            cerr << "NOT YET IMPLEMENTED" << endl;            
+            break;
+	}
     }
 
+    bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
+        Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+        switch (numSelectedFace) {
+            // FALSE: depends on the parity of the line
+        case NeighborDirection::Left :
+            return (bb->position[0]>0
+                    && getGridPtr(int(bb->position[0])-1,
+                                  int(bb->position[1]),
+                                  int(bb->position[2])) == NULL);
+            break;
+        case NeighborDirection::Right :
+            return (bb->position[0]<gridSize[0]-1
+                    && getGridPtr(int(bb->position[0])+1,
+                                  int(bb->position[1]),
+                                  int(bb->position[2])) == NULL);
+            break;
+        case NeighborDirection::BottomLeft :
+            return (bb->position[2]>0
+                    && getGridPtr(int(bb->position[0]),
+                                  int(bb->position[1]),
+                                  int(bb->position[2])-1) == NULL);
+            break;
+        case NeighborDirection::TopLeft :
+            return (bb->position[2]<gridSize[2]-1
+                    && getGridPtr(int(bb->position[0]),
+                                  int(bb->position[1]),
+                                  int(bb->position[2])+1) == NULL);
+            break;
+        case NeighborDirection::BottomRight :
+            return (bb->position[0]<gridSize[0]-1
+                    && bb->position[2]>0
+                    && getGridPtr(int(bb->position[0]+1),
+                                  int(bb->position[1]),
+                                  int(bb->position[2])-1) == NULL);
+            break;
+        case NeighborDirection::TopRight :
+            return (bb->position[0]<gridSize[0]-1
+                    && bb->position[2]<gridSize[2]-1
+                    && getGridPtr(int(bb->position[0])+1,
+                                  int(bb->position[1]),
+                                  int(bb->position[2])+1) == NULL);
+            break;
+        }
+        
+        return false;
+    }
+
+    
     void Catoms2DWorld::setSelectedFace(int n) {
         numSelectedBlock=n/6;
         string name = objBlockForPicking->getObjMtlName(n%6);
-        numSelectedFace=0;
-        /*
-          if (name=="face_top") numSelectedFace=NeighborDirection::Top;
-          else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
-          else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
-          else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
-          else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
-          else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
-        */
+        numSelectedFace = -1;
+
+        // TODO: CHECK THIS
+        if (name=="face_0") numSelectedFace=NeighborDirection::BottomLeft;
+        else if (name=="face_1") numSelectedFace=NeighborDirection::Left;
+        else if (name=="face_2") numSelectedFace=NeighborDirection::TopLeft;
+        else if (name=="face_3") numSelectedFace=NeighborDirection::TopRight;
+        else if (name=="face_4") numSelectedFace=NeighborDirection::Right;
+        else if (name=="face_5") numSelectedFace=NeighborDirection::BottomRight;
+
+        cerr << name << " = " << NeighborDirection::getString(numSelectedFace) << endl;
     }
 
     void Catoms2DWorld::createHelpWindow() {
@@ -655,25 +656,5 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         memset(targetGrid,emptyCell,sz*sizeof(presence));
     }
 
-    void Catoms2DWorld::extractConfig() {
-        ofstream file;
-        file.open ("random.xml");
-        //file << toStringXmlFormat() << endl;
-        string s;
-        map<int, BaseSimulator::BuildingBlock*>::iterator it;
-        // <block position="4,5,6"/>
-        for(it = buildingBlocksMap.begin(); 
-            it != buildingBlocksMap.end(); it++) {
-            Catoms2DBlock* c = (Catoms2DBlock*) it->second;
-            //s += bb->toStringXmlFormat() + "\n" ;
-            file << "<block position=\"" 
-                 << c->position[0]
-                 << "," 
-                 << c->position[2] 
-                 <<  "\"/>"
-                 << endl;
-        }
-        file.close();
-    }
 } // RobotBlock namespace
 

@@ -28,8 +28,6 @@ protected:
 	Camera *camera;
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureWall;
-	GLushort numSelectedFace;
-	GLuint numSelectedBlock;
 	GLint menuId;
 	presence *targetGrid;
 	RobotBlocksCapabilities *capabilities;
@@ -77,13 +75,14 @@ public:
 	virtual void glDrawIdByMaterial();
 	virtual void updateGlData(RobotBlocksBlock*blc);
 	virtual void updateGlData(RobotBlocksBlock*blc,int prev,int next);
-	virtual void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(RobotBlocksBlock *block);
 	virtual void connectBlock(RobotBlocksBlock *block);
+        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+
 };
 
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {

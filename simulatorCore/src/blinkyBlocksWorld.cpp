@@ -116,56 +116,85 @@ void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlo
 		exit(1);
 	}
 }
-
+    
+/**
+ * Linearly scans the world for blocks and connects the interfaces of neighbors 
+ *
+ * @return 
+ */
 void BlinkyBlocksWorld::linkBlocks() {
-	int ix,iy,iz;
-	BlinkyBlocksBlock *ptrBlock;
-	for (iz=0; iz<gridSize[2]; iz++) {
-		for (iy=0; iy<gridSize[1]; iy++) {
-			for(ix=0; ix<gridSize[0]; ix++) {
-				ptrBlock = getGridPtr(ix,iy,iz);
-				if (ptrBlock) {
-					if (iz<gridSize[2]-1 && getGridPtr(ix,iy,iz+1)) {
-						(ptrBlock)->getInterface(NeighborDirection::Top)->connect(getGridPtr(ix,iy,iz+1)->getInterface(NeighborDirection::Bottom));
-						OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy,iz+1)->blockId << endl;
-					} else {
-						(ptrBlock)->getInterface(NeighborDirection::Top)->connect(NULL);
-					}
-					if (iy<gridSize[1]-1 && getGridPtr(ix,iy+1,iz)) {
-						(ptrBlock)->getInterface(NeighborDirection::Right)->connect(getGridPtr(ix,iy+1,iz)->getInterface(NeighborDirection::Left));
-						OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy+1,iz)->blockId << endl;
-					} else {
-						(ptrBlock)->getInterface(NeighborDirection::Right)->connect(NULL);
-					}
-					if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy,iz)) {
-						(ptrBlock)->getInterface(NeighborDirection::Front)->connect(getGridPtr(ix+1,iy,iz)->getInterface(NeighborDirection::Back));
-						OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz)->blockId << endl;
-					} else {
-						(ptrBlock)->getInterface(NeighborDirection::Front)->connect(NULL);
-					}
-					if (iy>0 && getGridPtr(ix,iy-1,iz)) {
-						(ptrBlock)->getInterface(NeighborDirection::Left)->connect(getGridPtr(ix,iy-1,iz)->getInterface(NeighborDirection::Right));
-						OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy-1,iz)->blockId << endl;
-					} else {
-						(ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
-					}
-					if (iz>0 && getGridPtr(ix,iy,iz-1)) {
-						(ptrBlock)->getInterface(NeighborDirection::Bottom)->connect(getGridPtr(ix,iy,iz-1)->getInterface(NeighborDirection::Top));
-						OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy,iz-1)->blockId << endl;
-					} else {
-						(ptrBlock)->getInterface(NeighborDirection::Bottom)->connect(NULL);
-					}
-					if (ix>0 && getGridPtr(ix-1,iy,iz)) {
-						(ptrBlock)->getInterface(NeighborDirection::Back)->connect(getGridPtr(ix-1,iy,iz)->getInterface(NeighborDirection::Front));
-						OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz)->blockId << endl;
-					} else {
-						(ptrBlock)->getInterface(NeighborDirection::Back)->connect(NULL);
-					}
-				}
-			}
+    int ix,iy,iz;
+    BlinkyBlocksBlock *ptrBlock;
+    for (iz=0; iz<gridSize[2]; iz++) {
+        for (iy=0; iy<gridSize[1]; iy++) {
+            for(ix=0; ix<gridSize[0]; ix++) {
+                ptrBlock = getGridPtr(ix,iy,iz);
+                // There is a block on cell (ix, iy, iz)
+                if (ptrBlock) {
+                    // Check Top neighbor
+                    if (iz<gridSize[2]-1 && getGridPtr(ix,iy,iz+1)) {
+                        (ptrBlock)->getInterface(NeighborDirection::Top)->
+                            connect(getGridPtr(ix,iy,iz+1)->getInterface(NeighborDirection::Bottom));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                            " to #" << getGridPtr(ix,iy,iz+1)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::Top)->connect(NULL);
+                    }
 
-		}
-	}
+                    // Check Right neighbor
+                    if (iy<gridSize[1]-1 && getGridPtr(ix,iy+1,iz)) {
+                        (ptrBlock)->getInterface(NeighborDirection::Right)->
+                            connect(getGridPtr(ix,iy+1,iz)->getInterface(NeighborDirection::Left));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                            " to #" << getGridPtr(ix,iy+1,iz)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::Right)->connect(NULL);
+                    }
+
+                    // Check Front Neighbor
+                    if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy,iz)) {
+                        (ptrBlock)->getInterface(NeighborDirection::Front)->
+                            connect(getGridPtr(ix+1,iy,iz)->getInterface(NeighborDirection::Back));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                            " to #" << getGridPtr(ix+1,iy,iz)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::Front)->connect(NULL);
+                    }
+
+                    // Check Left neighbor
+                    if (iy>0 && getGridPtr(ix,iy-1,iz)) {
+                        (ptrBlock)->getInterface(NeighborDirection::Left)->
+                            connect(getGridPtr(ix,iy-1,iz)->getInterface(NeighborDirection::Right));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                            " to #" << getGridPtr(ix,iy-1,iz)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
+                    }
+
+                    // Check Bottom neighbor
+                    if (iz>0 && getGridPtr(ix,iy,iz-1)) {
+                        (ptrBlock)->getInterface(NeighborDirection::Bottom)->
+                            connect(getGridPtr(ix,iy,iz-1)->getInterface(NeighborDirection::Top));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                            " to #" << getGridPtr(ix,iy,iz-1)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::Bottom)->connect(NULL);
+                    }
+
+                    // Check Back neighbor
+                    if (ix>0 && getGridPtr(ix-1,iy,iz)) {
+                        (ptrBlock)->getInterface(NeighborDirection::Back)->
+                            connect(getGridPtr(ix-1,iy,iz)->getInterface(NeighborDirection::Front));
+                        OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                            " to #" << getGridPtr(ix-1,iy,iz)->blockId << endl;
+                    } else {
+                        (ptrBlock)->getInterface(NeighborDirection::Back)->connect(NULL);
+                    }
+                }
+            }
+
+        }
+    }
 }
 
 void BlinkyBlocksWorld::deleteBlock(BlinkyBlocksBlock *bb) {
@@ -353,44 +382,51 @@ void BlinkyBlocksWorld::updateGlData(BlinkyBlocksBlock*blc) {
 	}
 }
 
-void BlinkyBlocksWorld::createPopupMenu(int ix, int iy) {
-	if (!GlutContext::popupMenu) {
-		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-		GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
-		GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
-		GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-		GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
-	}
-	if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
-	// verify if add is possible for this face
-	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-	bool valid=true;
-	switch (numSelectedFace) {
-		case NeighborDirection::Left :
-			valid=(bb->position[0]>0 && getGridPtr(int(bb->position[0])-1,int(bb->position[1]),int(bb->position[2]))==NULL);
-			break;
-		case NeighborDirection::Right :
-			valid=(bb->position[0]<gridSize[0]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2]))==NULL);
-		break;
-		case NeighborDirection::Front :
-			valid=(bb->position[1]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1])-1,int(bb->position[2]))==NULL);
-			break;
-		case NeighborDirection::Back :
-			valid=(bb->position[1]<gridSize[1]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1])+1,int(bb->position[2]))==NULL);
-		break;
-		case NeighborDirection::Bottom :
-			valid=(bb->position[2]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])-1)==NULL);
-			break;
-		case NeighborDirection::Top :
-			valid=(bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])+1)==NULL);
-		break;
-	}
-	GlutContext::popupMenu->activate(1,valid);
-	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
-	GlutContext::popupMenu->show(true);
+bool BlinkyBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
+    BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    switch (numSelectedFace) {
+    case NeighborDirection::Left :
+        return (bb->position[0]>0
+                && getGridPtr(int(bb->position[0])-1,
+                              int(bb->position[1]),
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Right :
+        return (bb->position[0]<gridSize[0]-1
+                && getGridPtr(int(bb->position[0])+1,
+                              int(bb->position[1]),
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Front :
+        return (bb->position[1]>0
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1])-1,
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Back :
+        return (bb->position[1]<gridSize[1]-1
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1])+1,
+                              int(bb->position[2])) == NULL);
+        break;
+    case NeighborDirection::Bottom :
+        return (bb->position[2]>0
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1]),
+                              int(bb->position[2])-1) == NULL);
+        break;
+    case NeighborDirection::Top :
+        return (bb->position[2]<gridSize[2]-1
+                && getGridPtr(int(bb->position[0]),
+                              int(bb->position[1]),
+                              int(bb->position[2])+1) == NULL);
+        break;
+    }
+
+    return false;
 }
 
+    
     void BlinkyBlocksWorld::menuChoice(int n) {
 	switch (n) {
         case 1 : {
