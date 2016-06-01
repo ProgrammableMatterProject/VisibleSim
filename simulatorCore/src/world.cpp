@@ -139,7 +139,9 @@ void World::createPopupMenu(int ix, int iy) {
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
-        
+
+    cerr << "Block " << numSelectedBlock << ":" << numSelectedFace << " selected" << endl;
+    
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
     GlutContext::popupMenu->show(true);

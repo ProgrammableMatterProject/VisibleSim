@@ -30,7 +30,10 @@ protected:
 	GLuint idTextureHexa,idTextureLines;
 	GLint menuId;
 	presence *targetGrid;
-	Catoms2DCapabilities *capabilities;
+        Catoms2DCapabilities *capabilities;
+        static const int numPickingTextures = 7; /* The number of picking textures defined for 
+                                                         this type of catom, 
+                                                         used to deduce selected Block / face */
 
 	Catoms2DWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~Catoms2DWorld();

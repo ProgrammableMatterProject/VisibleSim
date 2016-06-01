@@ -17,6 +17,9 @@
 #include "glBlock.h"
 #include "trace.h"
 
+#define IS_ODD(x) ((x) % 2)
+#define IS_EVEN(x) (!IS_ODD(x))
+
 using namespace std;
 
 namespace BaseSimulator {
