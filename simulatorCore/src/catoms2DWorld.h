@@ -28,7 +28,6 @@ protected:
 	Camera *camera;
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureHexa,idTextureLines;
-	GLint menuId;
 	presence *targetGrid;
         Catoms2DCapabilities *capabilities;
         static const int numPickingTextures = 7; /* The number of picking textures defined for 

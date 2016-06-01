@@ -44,7 +44,9 @@ public:
 	void setColor(const Color &);
 	void setPosition(const Vecteur &p);
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
-        inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[(NeighborDirection::Direction)d]; }
+        inline P2PNetworkInterface *getInterface(int d) {
+            return tabInterfaces[(NeighborDirection::Direction)d];
+        }
         P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 
 	Vecteur getPosition(NeighborDirection::Direction d);
@@ -58,7 +60,8 @@ public:
 	bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false);
 
 	//inline direction_t getOpposite(direction_t d) { return (direction_t) (d * (-1));}  
-	P2PNetworkInterface* getNextInterface(RelativeDirection::Direction dir, P2PNetworkInterface *p2p, bool connected = false);
+	P2PNetworkInterface* getNextInterface(RelativeDirection::Direction dir,
+                                              P2PNetworkInterface *p2p, bool connected = false);
 
 	// Motion
 	bool isBlocked();

@@ -36,7 +36,10 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 	if (node) {
 		TiXmlElement* worldElement = node->ToElement();
 		const char *attr= worldElement->Attribute("gridSize");
-		int lx,ly,lz;
+		int lx = 0;
+                int ly = 0;
+                int lz = 0;
+                
 		if (attr) {
 			string str=attr;
 			int pos1 = str.find_first_of(','),

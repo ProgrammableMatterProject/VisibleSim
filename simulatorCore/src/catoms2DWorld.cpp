@@ -579,8 +579,6 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         // cerr << "bb->blockId = " << bb->blockId << endl;
         
         switch (numSelectedFace) {
-            // FALSE: depends on the parity of the line.
-            // PTHY: Indeed, there can be two blocks on the same spot right now
         case NeighborDirection::Left :
             return (bb->position[0] > 0
                     && getGridPtr(int(bb->position[0]) - 1,
@@ -668,12 +666,12 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
 
         numSelectedFace = numPickingTextures;   // Undefined NeighborDirection
 
-        if (name=="face_0") numSelectedFace=NeighborDirection::Right;
-        else if (name=="face_1") numSelectedFace=NeighborDirection::TopRight;
-        else if (name=="face_2") numSelectedFace=NeighborDirection::TopLeft;
-        else if (name=="face_3") numSelectedFace=NeighborDirection::Left;
-        else if (name=="face_4") numSelectedFace=NeighborDirection::BottomLeft;
-        else if (name=="face_5") numSelectedFace=NeighborDirection::BottomRight;            
+        if (name == "face_0") numSelectedFace = NeighborDirection::Right;
+        else if (name == "face_1") numSelectedFace = NeighborDirection::TopRight;
+        else if (name == "face_2") numSelectedFace = NeighborDirection::TopLeft;
+        else if (name == "face_3") numSelectedFace = NeighborDirection::Left;
+        else if (name == "face_4") numSelectedFace = NeighborDirection::BottomLeft;
+        else if (name == "face_5") numSelectedFace = NeighborDirection::BottomRight;            
         
         // cerr << name << " = " << NeighborDirection::getString(numSelectedFace) << endl;
     }

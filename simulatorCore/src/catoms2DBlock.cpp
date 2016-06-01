@@ -91,7 +91,8 @@ namespace Catoms2D {
     }
     return p;
   }
-  Vecteur Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
+
+    Vecteur Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
     return getPosition(getDirection(p2p));
   }
 

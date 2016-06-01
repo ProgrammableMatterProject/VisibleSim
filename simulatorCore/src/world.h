@@ -34,7 +34,8 @@ namespace BaseSimulator {
 	GlBlock *selectedBlock;
 	GLushort numSelectedFace;
 	GLuint numSelectedBlock;
-
+	GLint menuId;
+        
 	World();
 	virtual ~World();
 

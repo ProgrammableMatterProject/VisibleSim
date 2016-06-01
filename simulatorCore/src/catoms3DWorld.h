@@ -31,12 +31,11 @@ protected:
 	Catoms3DBlock **gridPtrBlocks;
 	GLfloat blockSize[3];
 	Camera *camera;
-	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureHexa,idTextureGrid;
-	GLint menuId;
 	Skeleton *skeleton;
 /*	presence *targetGrid;
 	Catoms3DCapabilities *capabilities;*/
+        ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
 	Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~Catoms3DWorld();

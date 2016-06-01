@@ -26,11 +26,11 @@ protected:
 	RobotBlocksBlock **gridPtrBlocks;
 	GLfloat blockSize[3];
 	Camera *camera;
-	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureWall;
 	GLint menuId;
 	presence *targetGrid;
 	RobotBlocksCapabilities *capabilities;
+        ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
 	RobotBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~RobotBlocksWorld();

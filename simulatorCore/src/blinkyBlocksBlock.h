@@ -17,25 +17,26 @@
 
 namespace BlinkyBlocks {
 
-class NeighborDirection {
-public:
+    class NeighborDirection {
+    public:
 	enum Direction { Bottom = 0, Back = 1, Right, Front, Left, Top };
 	static int getOpposite(int d);
 	static string getString(int d);
-};
+    };
 
-class BlinkyBlocksBlockCode;
+    class BlinkyBlocksBlockCode;
 
-class BlinkyBlocksBlock : public BaseSimulator::BuildingBlock {
+    class BlinkyBlocksBlock : public BaseSimulator::BuildingBlock {
 	P2PNetworkInterface *tabInterfaces[6];
 
-public:
+    public:
 	BlinkyBlocksGlBlock *ptrGlBlock;
 	Color color; // color of the block
 	Vecteur position; // position of the block;
-
+    
 	BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
-	BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
+	BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *
+                          (*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
 	~BlinkyBlocksBlock();
 
 	inline BlinkyBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
@@ -57,9 +58,9 @@ public:
         using BaseSimulator::BuildingBlock::stop;
 	void stop(uint64_t date, State s);
 	void pauseClock(uint64_t delay, uint64_t start);
-};
+    };
 
-std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);
+    std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);
 
 }
 

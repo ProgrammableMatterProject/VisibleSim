@@ -31,9 +31,9 @@ int gridSize[3];
 	BlinkyBlocksBlock **gridPtrBlocks;
 	GLfloat blockSize[3];
 	Camera *camera;
-	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureWall;
 	GLint menuId;
+        ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	
 	vector<ScenarioEvent*> tabEvents;
 
