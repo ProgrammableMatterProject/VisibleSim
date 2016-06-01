@@ -96,8 +96,8 @@ namespace Catoms2D {
   }
 
   std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {
-    stream << bb.blockId << "\tcolor: " << bb.color;
-    return stream;
+      stream << bb.blockId << "\tcolor: " << bb.color << "\tpos: " << bb.position;
+      return stream;
   }
 
   P2PNetworkInterface *Catoms2DBlock::getInterface(NeighborDirection::Direction d) {
