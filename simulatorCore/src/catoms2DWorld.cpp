@@ -166,7 +166,8 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         iy = int(block->position.pt[1]);
         iz = int(block->position.pt[2]);
         setGridPtr(ix,iy,iz,NULL);
-        OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId << " pos ="<< ix << "," << iy << "," << iz << endl;
+        OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId <<
+            " pos ="<< ix << "," << iy << "," << iz << endl;
     }
     
     void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
@@ -543,26 +544,23 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
     }
 
     void Catoms2DWorld::menuChoice(int n) {
+        Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+        
         switch (n) {
         case 1 : {
-            Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
             OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-            cerr << "CURRENT C2D ANGLE = " << bb->angle << endl;
 
             Vecteur pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
 
             addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
-            linkBlocks();            
+            linkBlocks();
         } break;
         case 2 : {
             OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
-            Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
             deleteBlock(bb);
         } break;
         case 3 : {
-            Catoms2DBlock *bb =
-                (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-            tapBlock(getScheduler()->now(), bb->blockId);           
+            tapBlock(getScheduler()->now(), bb->blockId);
         } break;
         case 4:                 // Save current configuration
             cerr << "NOT YET IMPLEMENTED" << endl;            

@@ -54,6 +54,7 @@ public:
 
 	void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
 	void removeNeighbor(P2PNetworkInterface *ni);
+        using BaseSimulator::BuildingBlock::stop;
 	void stop(uint64_t date, State s);
 	void pauseClock(uint64_t delay, uint64_t start);
 };

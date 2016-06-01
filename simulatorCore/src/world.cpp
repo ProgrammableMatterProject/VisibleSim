@@ -104,7 +104,7 @@ void World::generateIds(int n, int* ids) {
 		do {
 			a = generator() % n;
 			b = generator() % n;
-		} while ((a == b));
+		} while (a == b);
 		swap(&ids[a], &ids[b]);
 	}
 }

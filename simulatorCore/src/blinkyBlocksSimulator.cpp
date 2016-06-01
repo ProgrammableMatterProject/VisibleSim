@@ -29,7 +29,10 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
     if (node) {
 		TiXmlElement* worldElement = node->ToElement();
 		const char *attr= worldElement->Attribute("gridSize");
-		int lx,ly,lz;
+		int lx = 0;
+                int ly = 0;
+                int lz = 0;
+                
 		if (attr) {
 			string str=attr;
 			int pos1 = str.find_first_of(','),
@@ -240,7 +243,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 						ERRPUT << "SCENARIO:No id for tap event" << endl;
 					} else {
 						OUTPUT << "SCENARIO: tap(" << eventTime << "," << eventBlockId << ")" << endl;
-						world->addScenarioEvent(new ScenarioTappEvent(eventTime,eventBlockId));
+						world->addScenarioEvent(new ScenarioTapEvent(eventTime,eventBlockId));
 					}
 				} else if (strAttr=="debug") {
 					attr = element->Attribute("id");
