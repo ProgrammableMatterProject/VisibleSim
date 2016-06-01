@@ -10,7 +10,7 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimMultiCores -lsimBlinkyBlocks -lsimSmartBlocks
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks
 
 ifeq ($(OS),Darwin)
 #MacOS

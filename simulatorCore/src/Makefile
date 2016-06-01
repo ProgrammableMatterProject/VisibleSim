@@ -12,10 +12,6 @@ BASESIMULATOR_SRCS = $(MELDPROCESS_SRCS) $(MELDINTERPRET_SRCS) $(TINYXMLSRCS) si
 BASESIMULATOR_OBJS = $(BASESIMULATOR_SRCS:.cpp=.o)
 BASESIMULATOR_DEPS = $(BASESIMULATOR_SRCS:.cpp=.depends)
 
-MULTICORES_SRCS = multiCoresSimulator.cpp multiCoresBlock.cpp multiCoresBlockCode.cpp multiCoresScheduler.cpp multiCoresWorld.cpp multiCoresEvents.cpp
-MULTICORES_OBJS = $(MULTICORES_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
-MULTICORES_DEPS = $(MULTICORES_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
-
 BLINKYBLOCKS_SRCS = $(DEBUGGER) blinkyBlocksSimulator.cpp blinkyBlocksBlock.cpp blinkyBlocksBlockCode.cpp blinkyBlocksScheduler.cpp blinkyBlocksWorld.cpp blinkyBlocksGlBlock.cpp
 BLINKYBLOCKS_OBJS = $(BLINKYBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 BLINKYBLOCKS_DEPS = $(BLINKYBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
@@ -36,11 +32,11 @@ SMARTBLOCKS_SRCS = smartBlocksSimulator.cpp smartBlocksBlock.cpp smartBlocksBloc
 SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
 SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(MULTICORES_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(MELDPROCESS_SRCS) $(MELDINTERPRET_SRCS) $(CATOMS3D_SRCS)
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(MELDPROCESS_SRCS) $(MELDINTERPRET_SRCS) $(CATOMS3D_SRCS)
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
-OUT = libsimMultiCores.a libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
+OUT = libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
 #OUT = libsimCatom3D.a libsimRobotBlocks.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
@@ -68,7 +64,7 @@ CC = g++
 .cpp.o:
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
 
-all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
+all: libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
 #all: libsimCatoms3D.a libsimRobotBlocks.a
 
 #$(OUT)
@@ -76,11 +72,6 @@ all: libsimMultiCores.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBloc
 #$(OUT): $(OBJS)
 #	ar rcs $(OUT) $(OBJS)
 #	cp $(OUT) ../lib
-
-libsimMultiCores.a: $(BASESIMULATOR_OBJS) $(MULTICORES_OBJS)
-	mkdir -p ../lib
-	ar rcs libsimMultiCores.a $(BASESIMULATOR_OBJS) $(MULTICORES_OBJS)
-	cp libsimMultiCores.a ../lib
 
 libsimBlinkyBlocks.a: $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
 	mkdir -p ../lib

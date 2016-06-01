@@ -39,8 +39,7 @@ void SmartBlocksScheduler::deleteScheduler() {
 	delete((SmartBlocksScheduler*)scheduler);
 }
 
-void *SmartBlocksScheduler::startPaused(/*void *param*/) {
-	//MultiCoresScheduler *scheduler = (MultiCoresScheduler*)param;
+void *SmartBlocksScheduler::startPaused(/*void *param*/) {	
 	bool mustStop;
 	uint64_t systemCurrentTime, systemCurrentTimeMax;
 
