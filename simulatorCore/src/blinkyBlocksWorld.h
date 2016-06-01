@@ -17,16 +17,17 @@
 #include "trace.h"
 #include <blinkyBlocksScenario.h>
 #include <vector>
+#include "configUtils.h"
 
 #include "grid3D.h"
 
 namespace BlinkyBlocks {
 
-class BlinkyBlocksWorld : BaseSimulator::World {
-protected:
-  Grid3D<BuildingBlock*> *grid;
+    class BlinkyBlocksWorld : BaseSimulator::World {
+    protected:
+	Grid3D<BuildingBlock*> *grid;
   
-int gridSize[3];
+	int gridSize[3];
   
 	BlinkyBlocksBlock **gridPtrBlocks;
 	GLfloat blockSize[3];
@@ -41,20 +42,20 @@ int gridSize[3];
 	virtual ~BlinkyBlocksWorld();
 	inline BlinkyBlocksBlock* getGridPtr(int ix,int iy,int iz) { return gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]; };
 	inline void setGridPtr(int ix,int iy,int iz,BlinkyBlocksBlock *ptr) { gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr; };
-public:
+    public:
 	static void createWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	static void deleteWorld();
 	static BlinkyBlocksWorld* getWorld() {
-		assert(world != NULL);
-		return((BlinkyBlocksWorld*)world);
+	    assert(world != NULL);
+	    return((BlinkyBlocksWorld*)world);
 	}
 	
 	void printInfo() {
-		OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
+	    OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
 	}
 
 	virtual BlinkyBlocksBlock* getBlockById(int bId) {
-		return((BlinkyBlocksBlock*)World::getBlockById(bId));
+	    return((BlinkyBlocksBlock*)World::getBlockById(bId));
 	}
 
 	virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Vecteur &pos, const Color &col);
@@ -72,6 +73,7 @@ public:
 	inline virtual Camera *getCamera() { return camera; };
     	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
+	virtual void exportConfiguration();
 	
 	/* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
 	void accelBlock(uint64_t date, int bId, int x, int y, int z);
@@ -82,20 +84,22 @@ public:
     
 	void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
 
-   // Prints information about the blocks
-   void dump();
+	// Prints information about the blocks
+	void dump();
    
-};
-
-inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
+    };
+    
+    std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);
+    
+    inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
 	BlinkyBlocksWorld::createWorld(slx,sly,slz, argc,argv);
-}
+    }
 
-inline void deleteWorld() {
+    inline void deleteWorld() {
 	BlinkyBlocksWorld::deleteWorld();
-}
+    }
 
-inline BlinkyBlocksWorld* getWorld() { return(BlinkyBlocksWorld::getWorld()); }
+    inline BlinkyBlocksWorld* getWorld() { return(BlinkyBlocksWorld::getWorld()); }
 
 } // BlinkyBlocks namespace
 

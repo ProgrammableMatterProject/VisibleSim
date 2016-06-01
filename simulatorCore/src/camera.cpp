@@ -134,6 +134,16 @@ void Camera::mouseLightZoom(double pas) {
 }
 
 
+const Vecteur& Camera::getDirectionSpherical() {
+    Vecteur v;
+    
+    v.pt[0] = 90.0 + (theta * 180.0 / M_PI);
+    v.pt[1] = phi * 180.0 / M_PI;
+    v.pt[2] = distance;
+
+    return v;
+}
+
 LightSource::LightSource() {
 	falloffAngle=60.0;
 	near_plane=1.0;
@@ -171,6 +181,18 @@ void LightSource::draw() {
 	glutSolidCone(1.0,1.0,10.0,10.0);
 	glPopMatrix();
 }
+
+
+const Vecteur& LightSource::getDirectionSpherical() {
+    Vecteur v;
+    
+    v.pt[0] = 90.0 + (theta * 180.0 / M_PI);
+    v.pt[1] = phi * 180.0 / M_PI;
+    v.pt[2] = distance;
+
+    return v;
+}
+
 
 ostream& operator<<(ostream& f,const Camera &c)
 { f << "(" << c.phi*180.0/M_PI << "," << c.theta*180.0/M_PI << "," << c.distance << ")";

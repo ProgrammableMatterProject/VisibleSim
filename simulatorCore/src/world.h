@@ -90,6 +90,9 @@ namespace BaseSimulator {
         virtual void createHelpWindow() {};
         virtual Camera *getCamera() { return NULL; };
         virtual void menuChoice(int) {};
+	virtual void exportConfiguration() {};
+        string generateConfigName();
+        
         /* Notify the bId block that these events happened */
         void tapBlock(uint64_t date, int bId);        
         virtual void accelBlock(uint64_t date, int bId, int x, int y, int z) {};

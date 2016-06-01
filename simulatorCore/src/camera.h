@@ -32,15 +32,18 @@
 
 class LightSource {
 public :
-	GLfloat pos[4],target[3],dir[3];
-	GLfloat color;
-	GLfloat falloffAngle,near_plane,far_plane;
-	GLfloat matMV[16],matMV_1[16],matP[16];
-	GLfloat theta,phi,distance;
+  GLfloat pos[4],target[3],dir[3];
+  GLfloat color;
+  GLfloat falloffAngle,near_plane,far_plane;
+  GLfloat matMV[16],matMV_1[16],matP[16];
+  GLfloat theta,phi,distance;
 
-	LightSource();
-	void calcMatrices();
-	void draw();
+  LightSource();
+  void calcMatrices();
+  void draw();
+  const Vecteur& getDirectionSpherical();
+  inline double* getTarget() { return (double *)target; };
+  inline double getAngle() { return (180.0 / M_PI) * atan(far_plane / (2.0 * distance)); };
 };
 
 class Camera {
@@ -66,14 +69,17 @@ public :
   void setW_H(double r) { w_h=r; };
   void setNearFar(double n,double f) { near_plane=n; far_plane=f; };
   void setAngle(double a) { angle=a; };
+  inline const double getAngle() { return angle; };
   inline void setTarget(const Vecteur &p) { target=p; updatePositionFromAngles(); }
+  inline const Vecteur& getTarget() { return target; }
   inline void setDirection(double az,double ele) { theta=az*M_PI/180.0; phi=ele*M_PI/180.0; updatePositionFromAngles(); }
   inline void setDistance(double d) { distance=d; updatePositionFromAngles(); }
   void glLookAt();
   void setLightParameters(const Vecteur &t,double th,double ph, double d,double angle,double nearplane,double farplane);
   void glProjection();
-
-	friend ostream& operator<<(ostream& f,const Camera &c);
+  const Vecteur& getDirectionSpherical();  
+  
+  friend ostream& operator<<(ostream& f,const Camera &c);
 protected :
   void updatePositionFromAngles();
 };

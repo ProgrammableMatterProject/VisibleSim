@@ -20,7 +20,7 @@ GLfloat rgba[4];
 //    Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a=255) { color[0]=r/255.0; color[1]=g/255.0; color[2]=b/255.0; color[3]=a/255.0; };
     inline void glColor() { glColor4fv(rgba); };
     inline const GLfloat operator[](const int i) const { return rgba[i]; };
-    friend ostream& operator<<(ostream& f,const Color &c);
+    friend ostream& operator<<(ostream& f,const Color &c);        
 };
 
 const Color WHITE(1.0f,1.0f,1.0f);
@@ -41,6 +41,5 @@ const Color ORANGE(1.0,0.64706,0.0);
 const Color DARKORANGE(1.0,0.549,0.0);
 
 const Color Colors[9] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK};
-
 
 #endif // COLOR_H_
