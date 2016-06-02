@@ -161,7 +161,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 			defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
 			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 		}
-		attr= element->Attribute("blocksize");
+		attr= element->Attribute("blockSize");
 		if (attr) {
 			string str(attr);
 			int pos1 = str.find_first_of(','),
@@ -170,7 +170,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 			siz[0] = atof(str.substr(0,pos1).c_str());
 			siz[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			siz[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			OUTPUT << "blocksize =" << siz[0] <<"," << siz[1] <<"," << siz[2]<< endl;
+			OUTPUT << "blockSize =" << siz[0] <<"," << siz[1] <<"," << siz[2]<< endl;
 			world->setBlocksSize(siz);
 		}
 
