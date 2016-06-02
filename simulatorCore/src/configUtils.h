@@ -7,11 +7,11 @@
 #include <map>
 
 #include "buildingBlock.h"
-#include "blinkyBlocksBlock.h"
 #include "camera.h"
 #include "vecteur.h"
 #include "color.h"
-#include "openGlViewer.h"
+
+#include "BuildingBlock.h"
 
 using namespace std;
 using namespace BaseSimulator;
@@ -30,6 +30,10 @@ namespace ConfigUtils {
         return "\"" + to_string(array[0]) + ", " + to_string(array[1]) + ", " + to_string(array[2]) + "\"";
     }
 
+    static inline string array3DToXmlString(short array[3]) {
+        return "\"" + to_string(array[0]) + ", " + to_string(array[1]) + ", " + to_string(array[2]) + "\"";
+    }
+
     static inline string array3DToXmlString(float *array) {
         return "\"" + to_string(array[0]) + ", " + to_string(array[1]) + ", " + to_string(array[2]) + "\"";
     }
@@ -43,10 +47,10 @@ namespace ConfigUtils {
             + to_string(c.rgba[2] * 255) + "\"";
     }
     
-    static inline string xmlWorldOpen(int gridSize[3]) {
+    static inline string xmlWorldOpen(int gridSize[3], int screenWidth, int screenHeight) {
         return "<world gridSize=" + array3DToXmlString(gridSize)
-            + " windowSize=\"" + to_string(GlutContext::screenWidth)
-            + "," + to_string(GlutContext::screenHeight) + "\" >";
+            + " windowSize=\"" + to_string(screenWidth)
+            + "," + to_string(screenHeight) + "\" >";
     }
 
     static inline string xmlWorldClose() { return "</world>"; };
@@ -62,11 +66,6 @@ namespace ConfigUtils {
             + "directionSpherical=" + vecteur3DToXmlString(spotlight->getDirectionSpherical()) + " "
             + "angle=\"" + to_string(spotlight->getAngle()) + "\" />";
     };
-
-    static inline string xmlBlinkyBlock(BlinkyBlocks::BlinkyBlocksBlock *bb) {
-        return "\t\t<block position=" + vecteur3DToXmlString(bb->position)
-            + " color=" + colorToXmlString(bb->color) + " />\n";
-    }
 
     string xmlBlockList(Color &color, float blockSize[3],
                         map<int, BuildingBlock*> &blocks);

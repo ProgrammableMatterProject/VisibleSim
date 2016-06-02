@@ -82,7 +82,7 @@ public:
 	virtual void disconnectBlock(RobotBlocksBlock *block);
 	virtual void connectBlock(RobotBlocksBlock *block);
         virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
-
+	virtual void exportConfiguration();
 };
 
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {

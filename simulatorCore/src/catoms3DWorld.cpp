@@ -488,6 +488,13 @@ void Catoms3DWorld::menuChoice(int n) {
 			Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 			deleteBlock(bb);
 		} break;
+	        case 3 : {
+		    Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+		    tapBlock(getScheduler()->now(), bb->blockId);
+		} break;
+                case 4:                 // Save current configuration
+		    exportConfiguration();
+		    break;
 	}
 }
 

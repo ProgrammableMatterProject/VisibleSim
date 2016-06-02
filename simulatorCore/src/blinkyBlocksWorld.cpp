@@ -545,7 +545,8 @@ namespace BlinkyBlocks {
 		
 		configFile.open(configFilename);
 		configFile << ConfigUtils::xmlVersion() << endl;
-		configFile << ConfigUtils::xmlWorldOpen(gridSize) << endl;
+		configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
+												GlutContext::screenHeight) << endl;
 		configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
 		configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
 		configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;

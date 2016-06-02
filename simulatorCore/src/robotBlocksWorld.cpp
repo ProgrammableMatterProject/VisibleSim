@@ -15,6 +15,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
+#include "configUtils.h"
 
 using namespace std;
 
@@ -422,6 +423,13 @@ void RobotBlocksWorld::menuChoice(int n) {
 			RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 			deleteBlock(bb);
 		} break;
+	        case 3 : {
+		    RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+		    tapBlock(getScheduler()->now(), bb->blockId);
+		} break;
+                case 4:                 // Save current configuration
+		    exportConfiguration();
+		    break;
 	}
 }
 
@@ -513,6 +521,27 @@ void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &p
     }
 }
 
+void RobotBlocksWorld::exportConfiguration() {
+    ofstream configFile;
+    RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    string configFilename = ConfigUtils::generateConfigFilename();
+		
+    configFile.open(configFilename);
+    configFile << ConfigUtils::xmlVersion() << endl;
+    configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
+					    GlutContext::screenHeight) << endl;
+    configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
+    configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
+    configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
+    configFile << ConfigUtils::xmlWorldClose() << endl;
+		
+    configFile.close();
+
+    OUTPUT << "Configuration exported to: " << configFilename << endl;
+    cerr << "Configuration exported to: " << configFilename << endl;
+}
+
+    
 void RobotBlocksWorld::initTargetGrid() {
     if (targetGrid) delete [] targetGrid;
     int sz = gridSize[0]*gridSize[1]*gridSize[2];

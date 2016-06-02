@@ -11,6 +11,7 @@
 #include "robotBlocksWorld.h"
 #include "robotBlocksSimulator.h"
 #include "trace.h"
+#include "configUtils.h"
 
 using namespace std;
 
@@ -137,4 +138,10 @@ std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb) {
   return stream;
 }
 
+inline string RobotBlocksBlock::xmlBuildingBlock() {       
+    return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
+        + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
+}
+
+    
 }

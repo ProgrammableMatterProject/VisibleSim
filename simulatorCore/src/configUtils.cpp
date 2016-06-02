@@ -12,8 +12,7 @@ namespace ConfigUtils {
         map<int, BaseSimulator::BuildingBlock*>::iterator it;
         for(it = blocks.begin(); 
             it != blocks.end(); it++) {
-            BlinkyBlocks::BlinkyBlocksBlock* bb = (BlinkyBlocks::BlinkyBlocksBlock*) it->second;
-            str = str + xmlBlinkyBlock(bb);
+            str = str + it->second->xmlBuildingBlock();
         }
 
         str = str + "\t</blockList>";

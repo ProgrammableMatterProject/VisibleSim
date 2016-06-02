@@ -406,7 +406,7 @@ void SmartBlocksWorld::menuChoice(int n) {
         tapBlock(getScheduler()->now(), bb->blockId);
     } break;
     case 4:                 // Save current configuration
-        cerr << "NOT YET IMPLEMENTED" << endl;            
+        exportConfiguration();
         break;
     }
 }

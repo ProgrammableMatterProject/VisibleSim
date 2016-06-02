@@ -51,6 +51,7 @@ public:
 	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
 
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
+	inline virtual string xmlBuildingBlock();	
 };
 
 std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb);

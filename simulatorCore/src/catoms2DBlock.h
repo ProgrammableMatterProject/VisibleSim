@@ -68,6 +68,8 @@ public:
 	bool canMove(Catoms2DMove &m);
         void startMove(Catoms2DMove &m, uint64_t t);
 	void startMove(Catoms2DMove &m);
+    
+        inline virtual string xmlBuildingBlock();	
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb);

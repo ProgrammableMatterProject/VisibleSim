@@ -15,6 +15,7 @@
 #include "clock.h"
 #include "meldProcessEvents.h"
 #include "meldInterpretEvents.h"
+#include "configUtils.h"
 
 using namespace std;
 
@@ -191,4 +192,10 @@ P2PNetworkInterface* BlinkyBlocksBlock::getInterfaceDestId(int id) {
 	return NULL;
 }
 
+inline string BlinkyBlocksBlock::xmlBuildingBlock() {       
+	return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
+		+ " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
+}
+    
+    
 }

@@ -91,7 +91,9 @@ public:
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(Catoms2DBlock *block);
 	virtual void connectBlock(Catoms2DBlock *block);
-        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);   
+        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+
+	virtual void exportConfiguration();
 };
 
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
