@@ -41,8 +41,8 @@ public :
   LightSource();
   void calcMatrices();
   void draw();
-  const Vecteur& getDirectionSpherical();
-  inline double* getTarget() { return (double *)target; };
+  const Vecteur getDirectionSpherical();
+  inline float* getTarget() { return (float *)target; };
   inline double getAngle() { return (180.0 / M_PI) * atan(far_plane / (2.0 * distance)); };
 };
 
@@ -77,7 +77,7 @@ public :
   void glLookAt();
   void setLightParameters(const Vecteur &t,double th,double ph, double d,double angle,double nearplane,double farplane);
   void glProjection();
-  const Vecteur& getDirectionSpherical();  
+  const Vecteur getDirectionSpherical();  
   
   friend ostream& operator<<(ostream& f,const Camera &c);
 protected :

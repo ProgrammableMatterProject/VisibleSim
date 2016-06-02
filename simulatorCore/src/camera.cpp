@@ -134,14 +134,8 @@ void Camera::mouseLightZoom(double pas) {
 }
 
 
-const Vecteur& Camera::getDirectionSpherical() {
-    Vecteur v;
-    
-    v.pt[0] = 90.0 + (theta * 180.0 / M_PI);
-    v.pt[1] = phi * 180.0 / M_PI;
-    v.pt[2] = distance;
-
-    return v;
+const Vecteur Camera::getDirectionSpherical() {
+    return Vecteur(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
 }
 
 LightSource::LightSource() {
@@ -183,14 +177,8 @@ void LightSource::draw() {
 }
 
 
-const Vecteur& LightSource::getDirectionSpherical() {
-    Vecteur v;
-    
-    v.pt[0] = 90.0 + (theta * 180.0 / M_PI);
-    v.pt[1] = phi * 180.0 / M_PI;
-    v.pt[2] = distance;
-
-    return v;
+const Vecteur LightSource::getDirectionSpherical() {
+    return Vecteur(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
 }
 
 

@@ -540,18 +540,21 @@ namespace BlinkyBlocks {
 
 	void BlinkyBlocksWorld::exportConfiguration() {
 		ofstream configFile;
-
 		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+		string configFilename = ConfigUtils::generateConfigFilename();
 		
-		configFile.open (ConfigUtils::generateConfigFilename());
+		configFile.open(configFilename);
 		configFile << ConfigUtils::xmlVersion() << endl;
 		configFile << ConfigUtils::xmlWorldOpen(gridSize) << endl;
 		configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
 		configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
-		configFile << ConfigUtils::xmlBlockList(bb->color, (double*)blockSize, getMap()) << endl;
+		configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
 		configFile << ConfigUtils::xmlWorldClose() << endl;
 		
 		configFile.close();
+
+		OUTPUT << "Configuration exported to: " << configFilename << endl;
+		cerr << "Configuration exported to: " << configFilename << endl;
 	}
     
 	void BlinkyBlocksWorld::dump() {
