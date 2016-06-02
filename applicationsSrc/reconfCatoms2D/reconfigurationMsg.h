@@ -25,7 +25,7 @@ typedef boost::shared_ptr<ReconfigurationStartMsg> ReconfigurationStartMsg_ptr;
 
 class ReconfigurationMsg : public Message {
    public:
-  enum subtype_t {STATE_QUERY = 0, STATE_UPDATE, START_MOVING, STOP_MOVING, PLEASE_MOVE};  
+  enum subtype_t {STATE_QUERY = 0, STATE_UPDATE, START_MOVING, START_MOVING_ACK, STOP_MOVING, PLEASE_MOVE};  
       subtype_t subtype;
       
       ReconfigurationMsg() : Message() { 
@@ -104,6 +104,24 @@ class ReconfigurationStartMovingMsg : public ReconfigurationMsg {
       
       std::string toString() {return "START_MOVING";}
 };
+
+class ReconfigurationStartMovingAckMsg;
+typedef boost::shared_ptr<ReconfigurationStartMovingAckMsg> ReconfigurationStartMovingAckMsg_ptr;
+
+class ReconfigurationStartMovingAckMsg : public ReconfigurationMsg {
+   public:
+       
+      ReconfigurationStartMovingAckMsg() : ReconfigurationMsg() { 
+         subtype = START_MOVING_ACK;
+      }
+
+      ReconfigurationStartMovingAckMsg(ReconfigurationStartMovingAckMsg *m) : ReconfigurationMsg(m) {}
+  
+      ~ReconfigurationStartMovingAckMsg() {}
+      
+      std::string toString() {return "START_MOVING_ACK";}
+};
+
 
 class ReconfigurationStopMovingMsg;
 typedef boost::shared_ptr<ReconfigurationStopMovingMsg> ReconfigurationStopMovingMsg_ptr;

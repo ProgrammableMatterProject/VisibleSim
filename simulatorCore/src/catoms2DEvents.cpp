@@ -135,10 +135,12 @@ namespace Catoms2D {
     Catoms2DWorld *wrld=Catoms2DWorld::getWorld();
     Vecteur worldPos = Vecteur(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
     Vecteur gridPos = wrld->worldToGridPosition(worldPos);
+    /*
     cout << "---------------motion end-----------------"<<endl;
     cout << worldPos << endl;
     cout << gridPos << endl;
     cout << "------------------------------------------"<<endl;
+    */
     rb->setPosition(gridPos);
     wrld->setGridPtr(gridPos.pt[0],gridPos.pt[1],gridPos.pt[2],rb);
     

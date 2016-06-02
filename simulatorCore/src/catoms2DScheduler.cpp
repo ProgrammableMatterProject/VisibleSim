@@ -52,7 +52,7 @@ void *Catoms2DScheduler::startPaused(/*void *param*/) {
 
 	sem_schedulerStart->wait();
 
-    state = RUNNING;
+	state = RUNNING;
 	int systemStartTime, systemStopTime;
 	multimap<uint64_t, EventPtr>::iterator first;
 	EventPtr pev;

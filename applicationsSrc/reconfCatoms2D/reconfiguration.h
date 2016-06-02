@@ -34,7 +34,8 @@ private:
    reconfigurationState_t state;
    Catoms2D::Catoms2DBlock *catom;
    Map *map;
-
+   bool started;
+   
    //Border *border;
    //PerimeterCaseState rotationDirectionCell;
    //PerimeterCaseState antiRotationDirectionCell;
@@ -44,6 +45,7 @@ private:
    void updatePosition();
    void updateState();
    
+   void advertiseBeforeMoving(P2PNetworkInterface *pivot);
    void move(P2PNetworkInterface *pivot);
    void queryStates();
    P2PNetworkInterface* getPivot();

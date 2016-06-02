@@ -245,12 +245,11 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
     break;
   case EVENT_MOTION_END: {
-    cout << "motion end" << endl;
-    cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
+    cout << "@" << catom2D->blockId << " motion end: " << catom2D->position << endl;
     catom2D->setColor(DARKGREY);
     reconfiguration->handleStopMovingEvent();
-    break;
   }
+    break;
   }
 }
 
