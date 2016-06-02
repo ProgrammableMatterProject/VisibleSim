@@ -101,9 +101,11 @@ bool Map::handleMessage(MessagePtr message) {
       buildMap();
       if (waiting==0) {
 	mapBuilt(toHost);
+	return true;
       }
     } else {
       mapBuilt(recv_interface);
+      return false;
     }
   }
     break;

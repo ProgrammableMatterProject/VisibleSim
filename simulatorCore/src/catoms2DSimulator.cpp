@@ -284,6 +284,9 @@ namespace Catoms2D {
 	  position.pt[0] = ix;
 	  position.pt[1] = 0;
 	  position.pt[2] = iy;
+#if 1
+	  cerr << "Target: (" << ix << "," << iy << ")" << endl; 
+#endif
 	}
 	world->setTargetGrid(fullCell,position[0],position[1],position[2]);
 	block = block->NextSibling("block");

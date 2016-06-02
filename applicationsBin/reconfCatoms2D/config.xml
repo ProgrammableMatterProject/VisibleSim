@@ -1,52 +1,54 @@
 <?xml version="1.0" standalone="no" ?>
 <!-- <world gridSize="11,10">
 <camera target="1,1,0" directionSpherical="5,25,25" angle="45"/> -->
-<world gridSize="30,30">  
-<camera target="17,1,0" directionSpherical="5,25,25" angle="45"/>
-  <spotlight target="20,18,0" directionSpherical="-45,40,50" angle="30"/>
-
-  <!-- x,y -->
+<world gridSize="12,12">  
+<camera target="6,1,0" directionSpherical="5,25,25" angle="45"/>
+  <spotlight target="6,1,0" directionSpherical="-45,40,50" angle="30"/>
   <blockList color="100,100,100" blocksize="1,5,1">
-    <!-- x,y 
-	 <block position="8,0"/>
-	 <block position="7,0"/>
-	 <block position="6,0"/>
-	 <block position="5,0"/>
-	 <block position="4,0"/>
-	 <block position="3,0"/>
-	 <block position="7,1"/>
-	 <block position="6,1"/>
-	 <block position="5,1"/>
-	 <block position="4,1"/> -->
+    <!-- x,y  -->
     
+    <block position="1,0"/>
+    <block position="2,0"/>
     <block position="3,0"/>
     <block position="4,0"/>
     <block position="5,0"/>
     <block position="6,0"/>
     <block position="7,0"/>
-    <block position="8,0"/>
+    <block position="3,1"/>
     <block position="4,1"/>
     <block position="5,1"/>
-    <block position="6,1"/>
-    <block position="7,1"/> 
+
+    <!-- 
+    <block position="7,0"/>
+    <block position="8,0"/>
+    <block position="9,0"/>
+    <block position="10,0"/>
+   
+    <block position="7,1"/>
+    <block position="8,1"/>
+    <block position="9,1"/>
     
+    <block position="8,2"/>
+    <block position="9,2"/>
+    
+    <block position="8,3"/>-->
     
   </blockList>	
   <targetGrid>
     
-    <block position="3,0"/>
-    <block position="4,0"/>
-    <block position="5,0"/>
-    <block position="6,0"/>
+    <block position="7,0"/>
+    <block position="8,0"/>
+    <block position="9,0"/>
+    <block position="10,0"/>
+   
+    <block position="7,1"/>
+    <block position="8,1"/>
+    <block position="9,1"/>
     
-    <block position="3,1"/>
-    <block position="4,1"/>
-    <block position="5,1"/>
+    <block position="8,2"/>
+    <block position="9,2"/>
     
-    <block position="4,2"/>
-    <block position="5,2"/>
-    
-    <block position="4,3"/>		
+    <block position="8,3"/>		
   </targetGrid>
   
 </world>

@@ -9,7 +9,7 @@
 #define RECONFIGURATION_MSG_H_
 
 #include <map>
-
+#include <string>
 #include "reconfiguration.h"
 #include "network.h"
 #include "coordinate.h"
@@ -23,15 +23,9 @@ typedef boost::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
 typedef boost::shared_ptr<ReconfigurationStartMsg> ReconfigurationStartMsg_ptr;
 */
 
-class ReconfigurationStateQueryMsg;
-typedef boost::shared_ptr<ReconfigurationStateQueryMsg> ReconfigurationStateQueryMsg_ptr;
-
-class ReconfigurationStateAnswerMsg;
-typedef boost::shared_ptr<ReconfigurationStateAnswerMsg> ReconfigurationStateAnswerMsg_ptr;
-
 class ReconfigurationMsg : public Message {
    public:
-  enum subtype_t {STATE_QUERY = 0, STATE_ANSWER};  
+  enum subtype_t {STATE_QUERY = 0, STATE_UPDATE, START_MOVING, STOP_MOVING, PLEASE_MOVE};  
       subtype_t subtype;
       
       ReconfigurationMsg() : Message() { 
@@ -46,49 +40,86 @@ class ReconfigurationMsg : public Message {
       ~ReconfigurationMsg() {}
  
       unsigned int size() {return 17;};
+
+      virtual std::string toString() = 0;
 };
+
+class ReconfigurationStateQueryMsg;
+typedef boost::shared_ptr<ReconfigurationStateQueryMsg> ReconfigurationStateQueryMsg_ptr;
 
 class ReconfigurationStateQueryMsg : public ReconfigurationMsg {
    public:
-      int sourceId;
       Coordinate cell;
       
-      ReconfigurationStateQueryMsg(int i, Coordinate c) : ReconfigurationMsg() { 
+      ReconfigurationStateQueryMsg(Coordinate c) : ReconfigurationMsg() { 
          subtype = STATE_QUERY;
          cell = c;
-         sourceId = i;
       }
 
       ReconfigurationStateQueryMsg(ReconfigurationStateQueryMsg *m) : ReconfigurationMsg(m) { 
          cell = m->cell;
-         sourceId = m->sourceId;
       }
   
       ~ReconfigurationStateQueryMsg() {}
  
       unsigned int size() {return 17;};
+
+      std::string toString() {return "STATE_QUERY: <c=" + cell.toString() + ">";}
 };
 
-class ReconfigurationStateAnswerMsg : public ReconfigurationMsg {
+class ReconfigurationStateUpdateMsg;
+typedef boost::shared_ptr<ReconfigurationStateUpdateMsg> ReconfigurationStateUpdateMsg_ptr;
+
+class ReconfigurationStateUpdateMsg : public ReconfigurationMsg {
    public:
-      Coordinate cell;
-      int destinationId;
-      std::map<int,Reconfiguration::state_t> neighborStates;
+      PerimeterCaseState states;
        
-      ReconfigurationStateAnswerMsg(int i, Coordinate c, std::map<int, Reconfiguration::state_t> n) : ReconfigurationMsg() { 
-         subtype = STATE_ANSWER;
-         cell = c;
-         destinationId = i;
-         neighborStates = n;
+      ReconfigurationStateUpdateMsg(PerimeterCaseState s) : ReconfigurationMsg() { 
+         subtype = STATE_UPDATE;
+         states = s;
       }
 
-      ReconfigurationStateAnswerMsg(ReconfigurationStateAnswerMsg *m) : ReconfigurationMsg(m) { 
-         cell = m->cell;
-         destinationId = m->destinationId;
-         neighborStates = m->neighborStates;
+      ReconfigurationStateUpdateMsg(ReconfigurationStateUpdateMsg *m) : ReconfigurationMsg(m) { 
+         states = m->states;
       }
   
-      ~ReconfigurationStateAnswerMsg() {}
+      ~ReconfigurationStateUpdateMsg() {}
+      
+      std::string toString() {return "STATE_UPDATE: <states=" + states.toString() + ">";}
+};
+
+class ReconfigurationStartMovingMsg;
+typedef boost::shared_ptr<ReconfigurationStartMovingMsg> ReconfigurationStartMovingMsg_ptr;
+
+class ReconfigurationStartMovingMsg : public ReconfigurationMsg {
+   public:
+       
+      ReconfigurationStartMovingMsg() : ReconfigurationMsg() { 
+         subtype = START_MOVING;
+      }
+
+      ReconfigurationStartMovingMsg(ReconfigurationStartMovingMsg *m) : ReconfigurationMsg(m) {}
+  
+      ~ReconfigurationStartMovingMsg() {}
+      
+      std::string toString() {return "START_MOVING";}
+};
+
+class ReconfigurationStopMovingMsg;
+typedef boost::shared_ptr<ReconfigurationStopMovingMsg> ReconfigurationStopMovingMsg_ptr;
+
+class ReconfigurationStopMovingMsg : public ReconfigurationMsg {
+   public: 
+
+      ReconfigurationStopMovingMsg() : ReconfigurationMsg() { 
+         subtype = STOP_MOVING;
+      }
+
+      ReconfigurationStopMovingMsg(ReconfigurationStopMovingMsg *m) : ReconfigurationMsg(m) {}
+  
+      ~ReconfigurationStopMovingMsg() {}
+
+      std::string toString() {return "STOP_MOVING";}
       
 };
 

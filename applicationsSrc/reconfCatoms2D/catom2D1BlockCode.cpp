@@ -114,8 +114,8 @@ void Catoms2D1BlockCode::startup() {
   }
 #endif
 
-  landmarks->start();
-
+  //landmarks->start();
+  
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
@@ -132,7 +132,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       if (finished) {
 	//ctuples->out(ContextTuple(string("map"), map->getPosition()));
 	reconfiguration->start();
-
+	
 	if (map->connectedToHost) {
 	  //cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
@@ -248,6 +248,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     cout << "motion end" << endl;
     cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
     catom2D->setColor(DARKGREY);
+    reconfiguration->handleStopMovingEvent();
     break;
   }
   }

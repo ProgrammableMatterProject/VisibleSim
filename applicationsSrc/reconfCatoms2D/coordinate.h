@@ -1,6 +1,7 @@
 #ifndef COORDINATE_H_
 #define COORDINATE_H_
 
+#include <string>
 #include <iostream>
 
 class Coordinate {
@@ -28,8 +29,12 @@ public:
     return ( x+y < c.x+c.y);
   }
 
+  std::string toString() const {
+    return "(" + std::to_string(x) + "," + std::to_string(y) + ")";
+  }
+
   friend std::ostream& operator<<(std::ostream& os, const Coordinate &c) {
-    os << "(" << c.x << "," << c.y << ")";
+    os << c.toString();
     return os;
   }
 };
