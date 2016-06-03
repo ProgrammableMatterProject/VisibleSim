@@ -145,28 +145,6 @@ void World::createPopupMenu(int ix, int iy) {
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
     GlutContext::popupMenu->show(true);
-}
-    
-// Save config menu action: NYI
-// void World::saveConfig() {
-//     ofstream file;
-//     file.open ("random.xml");
-//     //file << toStringXmlFormat() << endl;
-//     string s;
-//     map<int, BaseSimulator::BuildingBlock*>::iterator it;
-//     // <block position="x,y,z"/>
-//     for(it = buildingBlocksMap.begin(); 
-//         it != buildingBlocksMap.end(); it++) {
-//         Catoms2DBlock* c = (Catoms2DBlock*) it->second;
-//         file << "<block position=\"" 
-//              << c->position[0]
-//              << "," 
-//              << c->position[2] 
-//              <<  "\"/>"
-//              << endl;
-//     }
-//     file.close();
-// }
-
+}    
     
 } // BaseSimulator namespace

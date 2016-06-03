@@ -17,13 +17,12 @@
 #include "trace.h"
 #include <blinkyBlocksScenario.h>
 #include <vector>
-#include "configUtils.h"
 
 #include "grid3D.h"
 
 namespace BlinkyBlocks {
 
-    class BlinkyBlocksWorld : BaseSimulator::World {
+    class BlinkyBlocksWorld : public BaseSimulator::World {
     protected:
 	Grid3D<BuildingBlock*> *grid;
   
@@ -49,6 +48,9 @@ namespace BlinkyBlocks {
 	    assert(world != NULL);
 	    return((BlinkyBlocksWorld*)world);
 	}
+
+	inline int* getGridSize() { return gridSize; };
+	inline float* getBlockSize() { return blockSize; };
 	
 	void printInfo() {
 	    OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
@@ -74,6 +76,7 @@ namespace BlinkyBlocks {
     	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
 	virtual void exportConfiguration();
+	virtual inline BuildingBlock* getMenuBlock() { return World::getMenuBlock(); };
 	
 	/* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
 	void accelBlock(uint64_t date, int bId, int x, int y, int z);

@@ -15,7 +15,6 @@
 //#include "catoms3DCapabilities.h"
 #include <boost/asio.hpp>
 #include <stdexcept>
-#include "configUtils.h"
 
 //! \namespace Catoms3D
 namespace Catoms3D {
@@ -77,16 +76,9 @@ public:
 	int getDirection(P2PNetworkInterface*);
 
 	static short getOrientationFromMatrix(const Matrice &mat);
-        inline virtual string xmlBuildingBlock();	
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb);
-
-inline string Catoms3DBlock::xmlBuildingBlock() {       
-    return "\t\t<block position=" + ConfigUtils::array3DToXmlString(position.pt)
-        + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
-}
-
     
 }
 

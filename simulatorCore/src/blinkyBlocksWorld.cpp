@@ -11,6 +11,7 @@
 #include "blinkyBlocksWorld.h"
 #include "blinkyBlocksBlock.h"
 #include "blinkyBlocksEvents.h"
+#include "configExporter.h"
 #include "trace.h"
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -430,7 +431,7 @@ namespace BlinkyBlocks {
     void BlinkyBlocksWorld::menuChoice(int n) {
 		switch (n) {
         case 1 : {
-            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getMenuBlock();
             OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
             Vecteur pos=bb->position;
             switch (numSelectedFace) {
@@ -539,23 +540,26 @@ namespace BlinkyBlocks {
     }
 
 	void BlinkyBlocksWorld::exportConfiguration() {
-		ofstream configFile;
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-		string configFilename = ConfigUtils::generateConfigFilename();
+		// ofstream configFile;
+		// BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+		// string configFilename = ConfigUtils::generateConfigFilename();
 		
-		configFile.open(configFilename);
-		configFile << ConfigUtils::xmlVersion() << endl;
-		configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-												GlutContext::screenHeight) << endl;
-		configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
-		configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
-		configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
-		configFile << ConfigUtils::xmlWorldClose() << endl;
+		// configFile.open(configFilename);
+		// configFile << ConfigUtils::xmlVersion() << endl;
+		// configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
+		// 										GlutContext::screenHeight) << endl;
+		// configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
+		// configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
+		// configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
+		// configFile << ConfigUtils::xmlWorldClose() << endl;
 		
-		configFile.close();
+		// configFile.close();
 
-		OUTPUT << "Configuration exported to: " << configFilename << endl;
-		cerr << "Configuration exported to: " << configFilename << endl;
+		// OUTPUT << "Configuration exported to: " << configFilename << endl;
+		// cerr << "Configuration exported to: " << configFilename << endl;
+
+		BlinkyBlocksConfigExporter *exporter = new BlinkyBlocksConfigExporter(this);
+		exporter->exportConfiguration();
 	}
     
 	void BlinkyBlocksWorld::dump() {

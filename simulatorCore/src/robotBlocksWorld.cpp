@@ -15,7 +15,6 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
-#include "configUtils.h"
 
 using namespace std;
 
@@ -522,23 +521,23 @@ void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &p
 }
 
 void RobotBlocksWorld::exportConfiguration() {
-    ofstream configFile;
-    RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-    string configFilename = ConfigUtils::generateConfigFilename();
+    // ofstream configFile;
+    // RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    // string configFilename = ConfigUtils::generateConfigFilename();
 		
-    configFile.open(configFilename);
-    configFile << ConfigUtils::xmlVersion() << endl;
-    configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-					    GlutContext::screenHeight) << endl;
-    configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
-    configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
-    configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
-    configFile << ConfigUtils::xmlWorldClose() << endl;
+    // configFile.open(configFilename);
+    // configFile << ConfigUtils::xmlVersion() << endl;
+    // configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
+    // 					    GlutContext::screenHeight) << endl;
+    // configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
+    // configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
+    // configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
+    // configFile << ConfigUtils::xmlWorldClose() << endl;
 		
-    configFile.close();
+    // configFile.close();
 
-    OUTPUT << "Configuration exported to: " << configFilename << endl;
-    cerr << "Configuration exported to: " << configFilename << endl;
+    // OUTPUT << "Configuration exported to: " << configFilename << endl;
+    // cerr << "Configuration exported to: " << configFilename << endl;
 }
 
     

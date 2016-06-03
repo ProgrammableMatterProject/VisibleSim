@@ -58,7 +58,6 @@ namespace BlinkyBlocks {
         using BaseSimulator::BuildingBlock::stop;
 	void stop(uint64_t date, State s);
 	void pauseClock(uint64_t delay, uint64_t start);
-        inline virtual string xmlBuildingBlock();	
     };
 
     std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);

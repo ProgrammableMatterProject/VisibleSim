@@ -18,7 +18,6 @@
 #include <sys/types.h>
 #include <signal.h>
 #include "catoms2DSimulator.h"
-#include "configUtils.h"
 
 using namespace std;
 
@@ -710,23 +709,23 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
     }
 
     void Catoms2DWorld::exportConfiguration() {
-        ofstream configFile;
-        Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-        string configFilename = ConfigUtils::generateConfigFilename();
+        // ofstream configFile;
+        // Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+        // string configFilename = ConfigUtils::generateConfigFilename();
 		
-        configFile.open(configFilename);
-        configFile << ConfigUtils::xmlVersion() << endl;
-        configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-                                                GlutContext::screenHeight) << endl;
-        configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
-        configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
-        configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
-        configFile << ConfigUtils::xmlWorldClose() << endl;
+        // configFile.open(configFilename);
+        // configFile << ConfigUtils::xmlVersion() << endl;
+        // configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
+        //                                         GlutContext::screenHeight) << endl;
+        // configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
+        // configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
+        // configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
+        // configFile << ConfigUtils::xmlWorldClose() << endl;
 		
-        configFile.close();
+        // configFile.close();
 
-        OUTPUT << "Configuration exported to: " << configFilename << endl;
-        cerr << "Configuration exported to: " << configFilename << endl;
+        // OUTPUT << "Configuration exported to: " << configFilename << endl;
+        // cerr << "Configuration exported to: " << configFilename << endl;
     }
 
     

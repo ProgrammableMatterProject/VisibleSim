@@ -100,8 +100,6 @@ public:
         
 	uint64_t getTime();
 	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
-
-    inline virtual string xmlBuildingBlock() { return NULL; };	
 	
 };
 

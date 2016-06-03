@@ -8,7 +8,6 @@
 #include <iostream>
 #include "smartBlocksBlock.h"
 #include "smartBlocksWorld.h"
-#include "configUtils.h"
 
 using namespace std;
 
@@ -151,11 +150,5 @@ P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(int i
     }
     return (i<4?tabInterfaces[i]:NULL);
 }
-
-inline string SmartBlocksBlock::xmlBuildingBlock() {       
-    return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
-        + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
-}
-
     
 }

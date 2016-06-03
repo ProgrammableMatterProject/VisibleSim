@@ -72,11 +72,10 @@ namespace BaseSimulator {
          * @return true if corresponding cell is free and inside the grid, false otherwise
          */
         virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace) { return true; };
-
         
 	virtual BuildingBlock* getBlockById(int bId);
 
-        inline GlBlock* getSelectedBlock() { return selectedBlock; };
+        virtual GlBlock* getSelectedBlock() { return selectedBlock; };
         inline GlBlock* setSelectedBlock(int n) { return (selectedBlock=(n>=0)?tabGlBlocks[n]:NULL); };
         virtual void setSelectedFace(int n) {};
         inline GlBlock* getBlockByNum(int n) { return tabGlBlocks[n]; };
@@ -91,6 +90,10 @@ namespace BaseSimulator {
         virtual Camera *getCamera() { return NULL; };
         virtual void menuChoice(int) {};
 	virtual void exportConfiguration() {};
+	virtual inline BuildingBlock* getMenuBlock() {
+	    return getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+	};
+	
         string generateConfigName();
         
         /* Notify the bId block that these events happened */

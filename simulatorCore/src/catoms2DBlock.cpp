@@ -11,7 +11,6 @@
 #include "catoms2DWorld.h"
 #include "catoms2DSimulator.h"
 #include "trace.h"
-#include "configUtils.h"
 
 using namespace std;
 
@@ -284,9 +283,9 @@ namespace Catoms2D {
     startMove(m,getScheduler()->now());
   }
 
-  inline string Catoms2DBlock::xmlBuildingBlock() {       
-    return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
-      + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
-  }
+  // inline string Catoms2DBlock::xmlBuildingBlock() {       
+  //   return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
+  //     + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
+  // }
 
 }

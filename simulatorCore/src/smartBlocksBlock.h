@@ -50,7 +50,6 @@ public:
     Vecteur getPosition(NeighborDirection::Direction d);
     NeighborDirection::Direction getDirection( P2PNetworkInterface*);
     inline void getGridPosition(int &x,int &y) { x = int(position[0]); y=int(position[1]); };
-    inline virtual string xmlBuildingBlock();	
 };
 
 }
