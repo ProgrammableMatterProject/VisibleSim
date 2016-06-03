@@ -502,10 +502,6 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
     res.pt[0] = (pos[0]+((int)(pos[2]+0.01)%2)*0.5)*blockSize[0]; // +0.01 because of round problem
     /*cout << "------------computation gridToWorldPosition--------------" << endl;
       cout << pos << endl;
-      cout << ((int)pos[2]%2)*0.5 << endl;
-      cout << (int)pos[2]%2 << endl;
-      cout << pos[2] << endl;
-      cout << (int)(pos[2]+0.01) << endl;
       cout << res << endl;
       cout << "---------------------------------------------------------" << endl;*/
     return res;

@@ -186,7 +186,7 @@ void Reconfiguration::handle(MessagePtr m) {
     P2PNetworkInterface *nextP2P = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, true);
     Coordinate nextCoordinate = map->getPosition(nextP2P);
 
-    getchar();
+    //getchar();
     
     if (nextP2P == recv || !Map::areNeighbors(nextCoordinate,rsum->states.cell)) {
       // answer is for that catom, last around the cell of interest!
