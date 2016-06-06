@@ -252,23 +252,23 @@ namespace Catoms2D {
   
     for (int i = 0; i < 3; i++) {
       if (direction == RelativeDirection::CW) {
-	if (p2pDirection == NeighborDirection::BottomRight) {
-	  p2pDirection = NeighborDirection::Right;
-	} else {
-	  p2pDirection++;
-	}
+        if (p2pDirection == NeighborDirection::BottomRight) {
+          p2pDirection = NeighborDirection::Right;
+        } else {
+          p2pDirection++;
+        }
       } else if (direction == RelativeDirection::CCW) {
-	if (p2pDirection == NeighborDirection::Right) {
-	  p2pDirection = NeighborDirection::BottomRight;
-	} else {
-	  p2pDirection--;
-	}
+        if (p2pDirection == NeighborDirection::Right) {
+          p2pDirection = NeighborDirection::BottomRight;
+        } else {
+          p2pDirection--;
+        }
       }
       P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)p2pDirection);
       Vecteur p = getPosition((NeighborDirection::Direction)p2pDirection);
       if (p2p->connectedInterface || (p[2] < 0)) {
-	//cout << "somebody is connected there" << endl;
-	res = false;
+        //cout << "somebody is connected there" << endl;
+        res = false;
       }
     }
   

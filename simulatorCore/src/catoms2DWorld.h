@@ -86,6 +86,7 @@ public:
 	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position, double angle);
 	virtual void createHelpWindow();
+	virtual void createPopupMenu(int ix,int iy);
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);

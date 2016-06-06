@@ -70,7 +70,6 @@ namespace BlinkyBlocks {
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
 	virtual void updateGlData(BlinkyBlocksBlock*blc);
-        void createPopupMenu(int ix, int iy);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
     	virtual void setSelectedFace(int n);

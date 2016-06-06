@@ -85,7 +85,7 @@ namespace BaseSimulator {
         virtual void glDraw() {};
         virtual void glDrawId() {};
         virtual void glDrawIdByMaterial() {};
-        void createPopupMenu(int ix,int iy);
+        virtual void createPopupMenu(int ix, int iy);
         virtual void createHelpWindow() {};
         virtual Camera *getCamera() { return NULL; };
         virtual void menuChoice(int) {};

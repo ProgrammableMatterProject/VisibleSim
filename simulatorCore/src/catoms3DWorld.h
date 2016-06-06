@@ -104,7 +104,6 @@ public:
 	virtual void disconnectBlock(Catoms3DBlock *block);
 	virtual void connectBlock(Catoms3DBlock *block);
         virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
-
 /**
  * \brief load the background textures (internal)
 */

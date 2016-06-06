@@ -565,7 +565,14 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         case 4:                 // Save current configuration
             exportConfiguration();
             break;
-	}
+        case 5: {                 // Move Left
+            
+        } break;
+        case 6:                 // Move Right
+            
+        break;
+        }
+
     }
 
     bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
@@ -708,24 +715,38 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         }
     }
 
-    void Catoms2DWorld::exportConfiguration() {
-        // ofstream configFile;
-        // Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-        // string configFilename = ConfigUtils::generateConfigFilename();
-		
-        // configFile.open(configFilename);
-        // configFile << ConfigUtils::xmlVersion() << endl;
-        // configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-        //                                         GlutContext::screenHeight) << endl;
-        // configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
-        // configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
-        // configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
-        // configFile << ConfigUtils::xmlWorldClose() << endl;
-		
-        // configFile.close();
+    /**
+     * Displays a popup menu at coordinates (ix, iy)
+     *  Overriden for catoms2D to allow for c2d movements
+     *
+     * @param ix 
+     * @param iy 
+     * @return 
+     */
+     void Catoms2DWorld::createPopupMenu(int ix, int iy) {
+         if (!GlutContext::popupMenu) {
+             GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
+             GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
+             GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
+             GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
+             GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
+             GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
+             GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_add.tga");
+             GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_add.tga");
+         }
 
-        // OUTPUT << "Configuration exported to: " << configFilename << endl;
-        // cerr << "Configuration exported to: " << configFilename << endl;
+         if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
+
+         cerr << "Block " << numSelectedBlock << ":" << numSelectedFace << " selected" << endl;
+    
+         GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
+         GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
+         GlutContext::popupMenu->show(true);
+     }    
+
+
+    void Catoms2DWorld::exportConfiguration() {
+        throw "configuration export not yet implemented";
     }
 
     

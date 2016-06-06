@@ -136,11 +136,5 @@ std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb) {
   stream << bb.blockId << "\tcolor: " << bb.color;
   return stream;
 }
-
-// inline string RobotBlocksBlock::xmlBuildingBlock() {       
-//     return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
-//         + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
-// }
-
     
 }

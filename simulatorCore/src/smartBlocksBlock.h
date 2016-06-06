@@ -46,7 +46,7 @@ public:
     inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointCel &pos);
     P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int id);
-
+    
     Vecteur getPosition(NeighborDirection::Direction d);
     NeighborDirection::Direction getDirection( P2PNetworkInterface*);
     inline void getGridPosition(int &x,int &y) { x = int(position[0]); y=int(position[1]); };
