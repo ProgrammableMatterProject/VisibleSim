@@ -566,10 +566,18 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
             exportConfiguration();
             break;
         case 5: {                 // Move Left
-            
+			// Identify pivot
+			int pivotId = bb->getCCWMovePivotId();
+			Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
+			Catoms2DMove move = Catoms2DMove(pivot, RelativeDirection::CCW);
+			bb->startMove(move);
         } break;
         case 6:                 // Move Right
-            
+			// Identify pivot
+			int pivotId = bb->getCWMovePivotId();
+			Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
+			Catoms2DMove move = Catoms2DMove(pivot, RelativeDirection::CW);
+			bb->startMove(move);
         break;
         }
 
@@ -730,20 +738,22 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
              GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
              GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
              GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-             GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
-             GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_add.tga");
-             GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_add.tga");
+             GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_tap.tga");
+             GlutContext::popupMenu->addButton(6,"../../simulatorCore/menuTextures/menu_tap.tga");
+             GlutContext::popupMenu->addButton(7,"../../simulatorCore/menuTextures/menu_cancel.tga");
          }
 
          if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
          cerr << "Block " << numSelectedBlock << ":" << numSelectedFace << " selected" << endl;
-    
+		 Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+		 
          GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
+		 GlutContext::popupMenu->activate(5, bb->getCCWMovePivotId() != -1);
+		 GlutContext::popupMenu->activate(6, bb->getCWMovePivotId() != -1);
          GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
          GlutContext::popupMenu->show(true);
      }    
-
 
     void Catoms2DWorld::exportConfiguration() {
         throw "configuration export not yet implemented";

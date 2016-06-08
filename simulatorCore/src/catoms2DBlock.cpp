@@ -223,8 +223,57 @@ namespace Catoms2D {
     return next;
   }
 
+	
+	
+	int Catoms2DBlock::getCCWMovePivotId() {
+		for (int j = 0; j < 6; j++) {
+			P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)j);
+			
+			if (p2p->connectedInterface) {
+				bool res = true;
+				for (int i = 1; i < 4; i++) {
+					int dir = ((j + i) % 6);
+					P2PNetworkInterface *p2pNeighbor = getInterface(dir);
+					Vecteur p = getPosition((NeighborDirection::Direction)dir);
+					if (p2pNeighbor->connectedInterface || (p[2] < 0)) {
+						res = false;
+					}
+				}
+				
+				if (res)
+					return p2p->getConnectedBlockId();
+			}
+		}
+		
+		return -1;
+	}
+
+	int Catoms2DBlock::getCWMovePivotId() {
+		for (int j = 5; j > 0; j--) {
+			P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)j);
+			
+			if (p2p->connectedInterface) {
+				bool res = true;
+				for (int i = 1; i < 4; i++) {
+					int dir = ((j - i)%6 + 6)%6;
+					P2PNetworkInterface *p2pNeighbor = getInterface(dir);
+					Vecteur p = getPosition((NeighborDirection::Direction)dir);
+					if (p2pNeighbor->connectedInterface || (p[2] < 0)) {
+						res = false;
+					}
+				}
+				
+				if (res)
+					return p2p->getConnectedBlockId();
+			}
+		}
+		
+		return -1;
+	}
+
+	
   // Motion
-  bool Catoms2DBlock::canMove(Catoms2DMove &m) {  
+  bool Catoms2DBlock::canMove(Catoms2DMove &m) {
     // physical moving condition
     // pivot is a neighbor (physically connected)
     // move CW around i connector: i+1, i+2 and i+3 should be free

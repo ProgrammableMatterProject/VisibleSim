@@ -66,7 +66,9 @@ public:
 	// Motion
 	bool isBlocked();
 	bool canMove(Catoms2DMove &m);
-        void startMove(Catoms2DMove &m, uint64_t t);
+	int getCCWMovePivotId();
+	int getCWMovePivotId();
+	void startMove(Catoms2DMove &m, uint64_t t);
 	void startMove(Catoms2DMove &m);   
 };
 
