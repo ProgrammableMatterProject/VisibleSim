@@ -36,6 +36,7 @@
 
 # External tools config files
 .projectile
+*.xcodeproj/
 
 # Application binary files
 ## Exclude all files from applicationsSrc and applicationsBin sub-directories
