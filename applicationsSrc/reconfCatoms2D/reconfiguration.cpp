@@ -64,7 +64,8 @@ Reconfiguration::Reconfiguration(Catoms2DBlock *c, Map *m): map(m) {
   catom = c;
   state = UNKNOWN;
   started = false;
-  moving = NULL;
+  nbWaitingAuthorization = 0;
+  
   /*if (c->blockId == 1) {
     std::set<Coordinate> myset;
     std::set<Coordinate>::iterator it;
@@ -124,7 +125,11 @@ void Reconfiguration::handleStopMovingEvent() {
     MY_CERR << "ERROR: ex-pivot NULL!" << endl;
     return;
   }
-  ReconfigurationStopMovingMsg *msg = new ReconfigurationStopMovingMsg();
+
+  // previous coordinate was:
+  P2PNetworkInterface *previousPositionInt = catom->getNextInterface(ROTATION_DIRECTION, pivot, false);
+  Coordinate previousPosition = map->getPosition(previousPositionInt);
+  ReconfigurationStopMovingMsg *msg = new ReconfigurationStopMovingMsg(previousPosition);
 
 #ifdef RECONFIGURATION_MSG_DEBUG
   MY_CERR << " sends STOP_MOVING to " << pivot->connectedInterface->hostBlock->blockId << endl;
@@ -169,11 +174,8 @@ void Reconfiguration::handle(MessagePtr m) {
       // send back the reply. All nodes on the reply path will include their state, 
       // and the state of the node moving around them
       list<reconfigurationState_t> states;
-      if (moving != NULL) {
-	Coordinate cellmv = map->getPosition(moving);
-	if (Map::areNeighbors(cellmv,rsqm->cell)) {
+      if (isNeighborToMoving(rsqm->cell)) {
 	  states.push_front(MOVING);
-	}
       }
       states.push_front(state);
       PerimeterCaseState pcs(rsqm->cell,states);
@@ -205,7 +207,7 @@ void Reconfiguration::handle(MessagePtr m) {
 #ifdef RECONFIGURATION_MOVES_DEBUG
 	  MY_CERR << " should move around it!" << endl; 
 #endif
-	  advertiseBeforeMoving(pivot);
+	  nbWaitingAuthorization = advertiseBeforeMoving();
 	} else {
 	  hasConverged();
 	  P2PNetworkInterface *p2p = catom->getNextInterface(ROTATION_DIRECTION, pivot, false);
@@ -219,11 +221,8 @@ void Reconfiguration::handle(MessagePtr m) {
     } else {
       // add catom's state, and states of catom moving around this one, then forward the msg
       PerimeterCaseState pcs = rsum->states;
-      if (moving != NULL) {
-	Coordinate cellmv = map->getPosition(moving);
-	if (Map::areNeighbors(cellmv,pcs.cell)) {
-	  pcs.states.push_front(MOVING);
-	}
+      if (isNeighborToMoving(pcs.cell)) {
+	pcs.states.push_front(MOVING);
       }
       pcs.states.push_front(state);
       forwardStateUpdate(nextP2P,pcs);
@@ -231,41 +230,66 @@ void Reconfiguration::handle(MessagePtr m) {
   }
     break;
   case ReconfigurationMsg::START_MOVING: {
-    moving = recv;
+    Coordinate c = map->getPosition(recv);
+    moving.push_back(c);
     ReconfigurationStartMovingAckMsg *msg = new ReconfigurationStartMovingAckMsg();
     recv->send(msg);
   }
     break;
   case ReconfigurationMsg::START_MOVING_ACK: {
-    move(recv);
+    nbWaitingAuthorization--;
+    if (nbWaitingAuthorization == 0) {
+      move(recv);
+    }
   }
     break;
   case ReconfigurationMsg::STOP_MOVING: {
     // This module was the pivot
     // Update state for the cell of interet for the next rolling
     // catoms on the perimeter
-    P2PNetworkInterface *oppd = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, true);
+    ReconfigurationStopMovingMsg_ptr rsmm = boost::static_pointer_cast<ReconfigurationStopMovingMsg>(m);
+    P2PNetworkInterface *oppd = NULL;
+    Coordinate celloppd;
     
-    Coordinate cell = map->getPosition(moving);
-    Coordinate cellnoppd =  map->getPosition(oppd);
-    Coordinate celln = map->getPosition(recv);
-    moving = NULL;
-    
-    list<reconfigurationState_t> states;
+    // remove from moving
+    Coordinate& cell = rsmm->cell;
+    removeMoving(cell);
 
-    if (oppd == catom->getNextInterface(ROTATION_DIRECTION, recv, true) ||
-	!Map::areNeighbors(cell,cellnoppd)) {
+    // forward stop moving to cells neigh
+    oppd = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, true);
+
+    // case 1 (scheme on paper)
+    if (oppd == catom->getNextInterface(ROTATION_DIRECTION, recv, true)) {
       return;
     }
 
+    celloppd = map->getPosition(oppd);
+    if (Map::areNeighbors(cell,celloppd)) {
+      forwardStopMoving(oppd, cell);
+      return;
+    } 
+
+    // inform potentially waiting modules
+    P2PNetworkInterface *potentialInterestInt = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION,
+									catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, false), false);
+    Coordinate potentialInterest =  map->getPosition(potentialInterestInt);
+    P2PNetworkInterface *potentiallyInterested = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, potentialInterestInt, false);
+    if (!potentiallyInterested->connectedInterface) {
+      return;
+    }
+    
+    // Inform (potentially) waiting modules
+    list<reconfigurationState_t> states;
+    
     // case module that has moved is still neighbor of the cell "cell"
-    if (Map::areNeighbors(cell,celln)) {
+    Coordinate celln = map->getPosition(recv);
+    if (Map::areNeighbors(potentialInterest,celln)) {
       states.push_front(WAITING);
     }
     
     states.push_front(state);
-    PerimeterCaseState pcs(cell,states);
-    forwardStateUpdate(oppd,pcs);
+    PerimeterCaseState pcs(potentialInterest,states);
+    forwardStateUpdate(potentiallyInterested,pcs);
   }
     break; 
   default:
@@ -309,7 +333,7 @@ void Reconfiguration::updateState() {
     return;
   }
   
-  if (isFree() && !moving) {
+  if (isFree() && moving.empty()) {
     state = WAITING;
     catom->setColor(RED);
   } else {
@@ -325,11 +349,21 @@ void Reconfiguration::updateState() {
 //  return Map::getPosition(m.getPivot(),position,p2p);
 //}
 
-void Reconfiguration::advertiseBeforeMoving(P2PNetworkInterface *pivot) {
- 
-  // send start to move to the pivot!
-  ReconfigurationStartMovingMsg *msg = new ReconfigurationStartMovingMsg();
-  pivot->send(msg);
+int Reconfiguration::advertiseBeforeMoving() {
+  P2PNetworkInterface *p2p; 
+  ReconfigurationStartMovingMsg *msg;
+  int sent = 0;
+  
+  // send start to move to all neighbors
+  for (int i = 0; i < 6; i++) {
+    p2p = catom->getInterface((NeighborDirection::Direction)i);
+    if(p2p->connectedInterface) {
+      msg = new ReconfigurationStartMovingMsg();
+      p2p->send(msg);
+      sent++;
+    }
+  }
+  return sent;
 }
 
 void Reconfiguration::move(P2PNetworkInterface *pivot) {
@@ -446,6 +480,11 @@ void Reconfiguration::forwardStateUpdate(P2PNetworkInterface *p2p, PerimeterCase
   p2p->send(msg);
 }
 
+void Reconfiguration::forwardStopMoving(P2PNetworkInterface *p2p, Coordinate &c) {
+  ReconfigurationStopMovingMsg *msg = new ReconfigurationStopMovingMsg (c);
+  p2p->send(msg);
+}
+
 bool Reconfiguration::isDone() {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
   int *gridSize = world->getGridSize();
@@ -459,4 +498,34 @@ bool Reconfiguration::isDone() {
     }
   }
   return true;
+}
+
+bool Reconfiguration::isMoving(Coordinate &c) {
+  list<Coordinate>::iterator it;
+  for (it = moving.begin(); it != moving.end(); it++) {
+    if (*it == c) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Reconfiguration::isNeighborToMoving(Coordinate &c) {
+  list<Coordinate>::iterator it;
+  for (it = moving.begin(); it != moving.end(); it++) {
+    if (Map::areNeighbors(*it,c)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void Reconfiguration::removeMoving(Coordinate &c) {
+  list<Coordinate>::iterator it;
+  for (it = moving.begin(); it != moving.end(); it++) {
+    if (*it == c) {
+      moving.erase(it);
+      break;
+    }
+  }
 }

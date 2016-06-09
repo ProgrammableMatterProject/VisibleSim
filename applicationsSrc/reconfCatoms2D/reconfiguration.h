@@ -8,6 +8,7 @@
 #ifndef RECONFIGURATION_H_
 #define RECONFIGURATION_H_
 
+#include <list>
 #include "catoms2DBlock.h"
 #include "network.h"
 #include "map.h"
@@ -39,13 +40,19 @@ private:
    //Border *border;
    //PerimeterCaseState rotationDirectionCell;
    //PerimeterCaseState antiRotationDirectionCell;
-   P2PNetworkInterface *moving;
+   std::list<Coordinate> moving;
+   int nbWaitingAuthorization;
    
    void init();
    void updatePosition();
    void updateState();
    
-   void advertiseBeforeMoving(P2PNetworkInterface *pivot);
+   int advertiseBeforeMoving();
+   bool isMoving(Coordinate &c);
+   bool isNeighborToMoving(Coordinate &c);
+   void removeMoving(Coordinate &c);
+   void forwardStopMoving(P2PNetworkInterface *p2p, Coordinate &c);
+   
    void move(P2PNetworkInterface *pivot);
    void queryStates();
    P2PNetworkInterface* getPivot();
@@ -60,6 +67,7 @@ private:
    void forwardStateUpdate(P2PNetworkInterface *p2p, PerimeterCaseState &pcs);
    
    Catoms2D::Catoms2DMove* nextMove();
+   
 public:
    
    Reconfiguration(Catoms2D::Catoms2DBlock *c, Map *m);

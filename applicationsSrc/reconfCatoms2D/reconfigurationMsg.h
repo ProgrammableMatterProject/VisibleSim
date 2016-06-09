@@ -127,13 +127,18 @@ class ReconfigurationStopMovingMsg;
 typedef boost::shared_ptr<ReconfigurationStopMovingMsg> ReconfigurationStopMovingMsg_ptr;
 
 class ReconfigurationStopMovingMsg : public ReconfigurationMsg {
-   public: 
+   public:
 
-      ReconfigurationStopMovingMsg() : ReconfigurationMsg() { 
+     Coordinate cell;
+
+      ReconfigurationStopMovingMsg(Coordinate c) : ReconfigurationMsg() { 
          subtype = STOP_MOVING;
+	 cell = c;
       }
 
-      ReconfigurationStopMovingMsg(ReconfigurationStopMovingMsg *m) : ReconfigurationMsg(m) {}
+      ReconfigurationStopMovingMsg(ReconfigurationStopMovingMsg *m) : ReconfigurationMsg(m) {
+         cell = m->cell;
+      }
   
       ~ReconfigurationStopMovingMsg() {}
 
