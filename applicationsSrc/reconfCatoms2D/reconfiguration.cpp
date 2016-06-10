@@ -441,7 +441,7 @@ bool Reconfiguration::shouldMove(P2PNetworkInterface *pivot) {
   if (c2.y < 0) {
     return false;
   }
-  if (!Map::isInTarget(c1) || (Map::isInTarget(c1) && Map::isInTarget(c2))) {
+  if (!Map::isInTarget(c1) || (Map::isInTarget(c1) && Map::isInTarget(c2) && (c2.y <= c1.y))) {
     return true;
   }
   return false;
