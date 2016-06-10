@@ -49,6 +49,7 @@ class Map {
   void buildMap();
   void mapBuilt(P2PNetworkInterface *d);
 
+  P2PNetworkInterface* getInterface(Coordinate &pos);
   P2PNetworkInterface* getClosestInterface(Coordinate dest, P2PNetworkInterface *ignore);
   int distance(Coordinate p1, Coordinate p2);
   int distance(Coordinate p2);

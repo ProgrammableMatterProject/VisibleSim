@@ -157,6 +157,10 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
       fromBlock = block->getInterface(NeighborDirection::Direction(i));
       if (fromBlock && fromBlock->connectedInterface) {
 	toBlock = fromBlock->connectedInterface;
+
+	fromBlock->outgoingQueue.clear();
+	toBlock->outgoingQueue.clear();
+	
 	fromBlock->connectedInterface=NULL;
 	toBlock->connectedInterface=NULL;
       }

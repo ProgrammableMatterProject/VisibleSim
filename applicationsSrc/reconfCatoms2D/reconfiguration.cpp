@@ -188,11 +188,15 @@ void Reconfiguration::handle(MessagePtr m) {
     P2PNetworkInterface *nextP2P = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, true);
     Coordinate nextCoordinate = map->getPosition(nextP2P);
 
-    //getchar();
+    if (state == ASK_TO_MOVE) {
+      return;
+    }
     
+    //getchar();
+    cerr << "Next Module: " << nextP2P->connectedInterface->hostBlock->blockId << endl;
     if (nextP2P == recv || !Map::areNeighbors(nextCoordinate,rsum->states.cell)) {
       // answer is for that catom, last around the cell of interest!
-
+      cerr << "Not forwarded!" << endl;
       // Decide whether to move or not!
       updateState();
       if (state != WAITING) {
@@ -208,6 +212,7 @@ void Reconfiguration::handle(MessagePtr m) {
 	  MY_CERR << " should move around it!" << endl; 
 #endif
 	  nbWaitingAuthorization = advertiseBeforeMoving();
+	  state = ASK_TO_MOVE;
 	} else {
 	  hasConverged();
 	  P2PNetworkInterface *p2p = catom->getNextInterface(ROTATION_DIRECTION, pivot, false);
@@ -220,9 +225,11 @@ void Reconfiguration::handle(MessagePtr m) {
       }
     } else {
       // add catom's state, and states of catom moving around this one, then forward the msg
+      cerr << "Forwarded!" << endl;
       PerimeterCaseState pcs = rsum->states;
       if (isNeighborToMoving(pcs.cell)) {
 	pcs.states.push_front(MOVING);
+	printMoving();
       }
       pcs.states.push_front(state);
       forwardStateUpdate(nextP2P,pcs);
@@ -239,7 +246,7 @@ void Reconfiguration::handle(MessagePtr m) {
   case ReconfigurationMsg::START_MOVING_ACK: {
     nbWaitingAuthorization--;
     if (nbWaitingAuthorization == 0) {
-      move(recv);
+      move();
     }
   }
     break;
@@ -253,31 +260,61 @@ void Reconfiguration::handle(MessagePtr m) {
     
     // remove from moving
     Coordinate& cell = rsmm->cell;
+    cerr << "Before removing" << cell << endl;
+    printMoving();
     removeMoving(cell);
-
+    cerr << "After removing" << cell << endl;
+    printMoving();
+    
+    /*updateState();
+    if (state == WAITING) {
+      queryStates();
+      }*/
+    
     // forward stop moving to cells neigh
     oppd = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, true);
 
-    // case 1 (scheme on paper)
-    if (oppd == catom->getNextInterface(ROTATION_DIRECTION, recv, true)) {
-      return;
-    }
-
+    //if (catom->blockId == 6) {
+    //  cerr << "ICIIIIIIIIIIIIIIIIIII" << endl;
+    //  getchar();
+    //}
+	
+    
     celloppd = map->getPosition(oppd);
     if (Map::areNeighbors(cell,celloppd)) {
       forwardStopMoving(oppd, cell);
-      return;
-    } 
-
-    // inform potentially waiting modules
-    P2PNetworkInterface *potentialInterestInt = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION,
-									catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, false), false);
-    Coordinate potentialInterest =  map->getPosition(potentialInterestInt);
-    P2PNetworkInterface *potentiallyInterested = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, potentialInterestInt, false);
-    if (!potentiallyInterested->connectedInterface) {
+      cerr << "CASE 1" << endl;
       return;
     }
+
+    // case 2 :
+    //  o
+    // o o o (last o was moving)
+    //if (oppd == catom->getNextInterface(ROTATION_DIRECTION, recv, true)) {
+    //  cerr << "CASE 2" << endl;
+    //  return;
+    //}
     
+    // inform potentially waiting modules
+    P2PNetworkInterface *cellInt = map->getInterface(cell);
+    P2PNetworkInterface *potentialInterestInt =  catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, cellInt, false);
+    Coordinate potentialInterest =  map->getPosition(potentialInterestInt);
+    P2PNetworkInterface *potentiallyInterestedInt = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, potentialInterestInt, false);
+    Coordinate potentiallyInterested = map->getPosition(potentiallyInterestedInt);
+    
+    cerr << "CASSSSSEEEEEE 3" << endl;
+    cerr << "Cell: " << cell << endl;
+    cerr << "Interesting: " << potentialInterest << endl;
+    cerr << "Interested: " << potentiallyInterested << endl;
+    
+    //getchar();
+
+    if (potentialInterest.y < 0 ||
+	potentiallyInterested.y < 0 ||
+	!potentiallyInterestedInt->connectedInterface) {
+      return;
+    }
+	
     // Inform (potentially) waiting modules
     list<reconfigurationState_t> states;
     
@@ -289,7 +326,7 @@ void Reconfiguration::handle(MessagePtr m) {
     
     states.push_front(state);
     PerimeterCaseState pcs(potentialInterest,states);
-    forwardStateUpdate(potentiallyInterested,pcs);
+    forwardStateUpdate(potentiallyInterestedInt,pcs);
   }
     break; 
   default:
@@ -366,7 +403,8 @@ int Reconfiguration::advertiseBeforeMoving() {
   return sent;
 }
 
-void Reconfiguration::move(P2PNetworkInterface *pivot) {
+void Reconfiguration::move() {
+  P2PNetworkInterface *pivot = getPivot();
   Catoms2DMove m((Catoms2DBlock*)pivot->connectedInterface->hostBlock, ROTATION_DIRECTION);
 
   // change map coordinate
@@ -399,6 +437,10 @@ void Reconfiguration::queryStates() {
 bool Reconfiguration::shouldMove(P2PNetworkInterface *pivot) {
   Coordinate c1 = map->getPosition(); 
   Coordinate c2 = getCellAfterRotationAround(pivot);
+
+  if (c2.y < 0) {
+    return false;
+  }
   if (!Map::isInTarget(c1) || (Map::isInTarget(c1) && Map::isInTarget(c2))) {
     return true;
   }
@@ -528,4 +570,13 @@ void Reconfiguration::removeMoving(Coordinate &c) {
       break;
     }
   }
+}
+
+
+void Reconfiguration::printMoving() {
+  cerr << "Moving:";
+  for (list<Coordinate>::iterator it = moving.begin(); it != moving.end(); it++) {
+    cerr << " " << *it;
+  }
+  cerr << endl;
 }

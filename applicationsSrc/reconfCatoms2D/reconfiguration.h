@@ -14,7 +14,7 @@
 #include "map.h"
 #include "border.h"
 
-enum reconfigurationState_t {NOT_SET = -2, UNKNOWN = -1, BLOCKED, WAITING, MOVING, GOAL};
+enum reconfigurationState_t {NOT_SET = -2, UNKNOWN = -1, BLOCKED, WAITING, ASK_TO_MOVE, MOVING, GOAL};
 
 class PerimeterCaseState {
  public:
@@ -52,8 +52,9 @@ private:
    bool isNeighborToMoving(Coordinate &c);
    void removeMoving(Coordinate &c);
    void forwardStopMoving(P2PNetworkInterface *p2p, Coordinate &c);
+   void printMoving();
    
-   void move(P2PNetworkInterface *pivot);
+   void move();
    void queryStates();
    P2PNetworkInterface* getPivot();
    Coordinate getCellAfterRotationAround(P2PNetworkInterface *pivot);

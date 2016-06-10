@@ -248,6 +248,19 @@ P2PNetworkInterface* Map::getClosestInterface(Coordinate dest, P2PNetworkInterfa
   return closest;
 }
 
+P2PNetworkInterface* Map::getInterface(Coordinate &pos) {
+  P2PNetworkInterface *p2p = NULL;
+  Coordinate c;
+  for (int i = 0; i<6; i++) {
+    p2p = catom2D->getInterface((NeighborDirection::Direction)i);
+    c = getPosition(p2p);
+    if (pos == c) {
+      return p2p;
+    }
+  }
+  return NULL;
+}
+
 int Map::distance(Coordinate p1, Coordinate p2) {
   return abs(p2.x - p1.x) +  abs(p2.y - p1.y); 
 }

@@ -198,11 +198,16 @@ NetworkInterfaceStopTransmittingEvent::~NetworkInterfaceStopTransmittingEvent() 
 void NetworkInterfaceStopTransmittingEvent::consume() {
 	EVENT_CONSUME_INFO();
 
-	interface->connectedInterface->hostBlock->scheduleLocalEvent(EventPtr(new NetworkInterfaceReceiveEvent(BaseSimulator::getScheduler()->now(), interface->connectedInterface, interface->messageBeingTransmitted)));
+	if (!interface->connectedInterface) {
+	  cerr << "Warning: connection loss, untransmitted message!" << endl;
+	} else {
+	  interface->connectedInterface->hostBlock->scheduleLocalEvent(EventPtr(new NetworkInterfaceReceiveEvent(BaseSimulator::getScheduler()->now(), interface->connectedInterface, interface->messageBeingTransmitted)));
 	// TODO add a confirmation event to the sender ?
-
+	}
+	
 	interface->messageBeingTransmitted.reset();
 	interface->availabilityDate = BaseSimulator::getScheduler()->now();
+	
 	if (interface->outgoingQueue.size() > 0) {
 		//cout << "one more to send !!" << endl;
 		interface->send();
