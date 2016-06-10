@@ -36,6 +36,8 @@ using namespace Catoms2D;
 //#define CENTRALIZED_COMP
 //#define SEND_TARGET_TUPLES
 
+//#define RECONFIGURATION_DEBUG
+
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
   scheduler = Catoms2D::getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
@@ -245,7 +247,9 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
     break;
   case EVENT_MOTION_END: {
+    #ifdef RECONFIGURATION_DEBUG
     cout << "@" << catom2D->blockId << " motion end: " << catom2D->position << endl;
+    #endif
     catom2D->setColor(DARKGREY);
     reconfiguration->handleStopMovingEvent();
   }

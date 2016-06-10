@@ -16,9 +16,9 @@
 #include "reconfigurationMsg.h"
 #include "catoms2DMove.h"
 
-#define RECONFIGURATION_DEBUG
-#define RECONFIGURATION_MOVES_DEBUG
-#define RECONFIGURATION_MSG_DEBUG
+//#define RECONFIGURATION_DEBUG
+//#define RECONFIGURATION_MOVES_DEBUG
+//#define RECONFIGURATION_MSG_DEBUG
 
 using namespace std;
 using namespace Catoms2D;
@@ -192,11 +192,11 @@ void Reconfiguration::handle(MessagePtr m) {
       return;
     }
     
-    //getchar();
-    cerr << "Next Module: " << nextP2P->connectedInterface->hostBlock->blockId << endl;
     if (nextP2P == recv || !Map::areNeighbors(nextCoordinate,rsum->states.cell)) {
       // answer is for that catom, last around the cell of interest!
-      cerr << "Not forwarded!" << endl;
+#ifdef RECONFIGURATION_MSG_DEBUG
+      MY_CERR << "Not forwarded!" << endl;
+#endif
       // Decide whether to move or not!
       updateState();
       if (state != WAITING) {
@@ -225,11 +225,13 @@ void Reconfiguration::handle(MessagePtr m) {
       }
     } else {
       // add catom's state, and states of catom moving around this one, then forward the msg
-      cerr << "Forwarded!" << endl;
+#ifdef RECONFIGURATION_MSG_DEBUG
+      MY_CERR << "Forwarded to : " <<
+	nextP2P->connectedInterface->hostBlock->blockId << "!" << endl;
+#endif
       PerimeterCaseState pcs = rsum->states;
       if (isNeighborToMoving(pcs.cell)) {
 	pcs.states.push_front(MOVING);
-	printMoving();
       }
       pcs.states.push_front(state);
       forwardStateUpdate(nextP2P,pcs);
@@ -260,12 +262,15 @@ void Reconfiguration::handle(MessagePtr m) {
     
     // remove from moving
     Coordinate& cell = rsmm->cell;
-    cerr << "Before removing" << cell << endl;
+#ifdef RECONFIGURATION_MSG_DEBUG
+    MY_CERR << "Before removing" << cell << endl;
     printMoving();
+#endif
     removeMoving(cell);
-    cerr << "After removing" << cell << endl;
+#ifdef RECONFIGURATION_MSG_DEBUG
+    MY_CERR << "After removing" << cell << endl;
     printMoving();
-    
+#endif
     /*updateState();
     if (state == WAITING) {
       queryStates();
@@ -273,42 +278,25 @@ void Reconfiguration::handle(MessagePtr m) {
     
     // forward stop moving to cells neigh
     oppd = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, true);
-
-    //if (catom->blockId == 6) {
-    //  cerr << "ICIIIIIIIIIIIIIIIIIII" << endl;
-    //  getchar();
-    //}
-	
-    
+   
     celloppd = map->getPosition(oppd);
     if (Map::areNeighbors(cell,celloppd)) {
       forwardStopMoving(oppd, cell);
-      cerr << "CASE 1" << endl;
       return;
     }
 
-    // case 2 :
-    //  o
-    // o o o (last o was moving)
-    //if (oppd == catom->getNextInterface(ROTATION_DIRECTION, recv, true)) {
-    //  cerr << "CASE 2" << endl;
-    //  return;
-    //}
-    
     // inform potentially waiting modules
     P2PNetworkInterface *cellInt = map->getInterface(cell);
     P2PNetworkInterface *potentialInterestInt =  catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, cellInt, false);
     Coordinate potentialInterest =  map->getPosition(potentialInterestInt);
     P2PNetworkInterface *potentiallyInterestedInt = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, potentialInterestInt, false);
     Coordinate potentiallyInterested = map->getPosition(potentiallyInterestedInt);
-    
-    cerr << "CASSSSSEEEEEE 3" << endl;
-    cerr << "Cell: " << cell << endl;
-    cerr << "Interesting: " << potentialInterest << endl;
-    cerr << "Interested: " << potentiallyInterested << endl;
-    
-    //getchar();
 
+#ifdef RECONFIGURATION_MSG_DEBUG
+    MY_CERR << "Cell: " << cell << endl;
+    MY_CERR << "Interesting: " << potentialInterest << endl;
+    MY_CERR << "Interested: " << potentiallyInterested << endl;
+#endif
     if (potentialInterest.y < 0 ||
 	potentiallyInterested.y < 0 ||
 	!potentiallyInterestedInt->connectedInterface) {
@@ -420,9 +408,10 @@ void Reconfiguration::queryStates() {
   P2PNetworkInterface *pivot = getPivot();
   
   if (pivot == NULL) {
-    cerr << "@" << catom->blockId << " No potential Pivot!" << endl;
+    MY_CERR << " No potential Pivot!" << endl;
     return;
   }
+  
 #ifdef RECONFIGURATION_DEBUG
   MY_CERR << " potential pivot: "
 	  << pivot->connectedInterface->hostBlock->blockId
@@ -574,7 +563,7 @@ void Reconfiguration::removeMoving(Coordinate &c) {
 
 
 void Reconfiguration::printMoving() {
-  cerr << "Moving:";
+  MY_CERR << "Moving:";
   for (list<Coordinate>::iterator it = moving.begin(); it != moving.end(); it++) {
     cerr << " " << *it;
   }
