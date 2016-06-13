@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <stdint.h>
 #include "assert.h"
 #include "scheduler.h"
 #include "trace.h"
@@ -33,8 +34,9 @@ Scheduler::Scheduler() {
 	}
 
 	currentDate = 0;
-	maximumDate = 60000000;
-
+	//maximumDate = 60000000;
+	maximumDate = UINT64_MAX;
+	
 	eventsMapSize = 0;
 	largestEventsMapSize = 0;
 }
