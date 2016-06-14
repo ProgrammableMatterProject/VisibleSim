@@ -64,7 +64,7 @@ private:
    bool hasConverged();
    
    P2PNetworkInterface *canMove(PerimeterCaseState &pcs);
-   bool shouldMove(P2PNetworkInterface *pivot);
+   bool shouldMove(P2PNetworkInterface *pivot, PerimeterCaseState &pcs);
    void forwardStateUpdate(P2PNetworkInterface *p2p, PerimeterCaseState &pcs);
    
    Catoms2D::Catoms2DMove* nextMove();

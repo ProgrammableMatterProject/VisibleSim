@@ -26,6 +26,8 @@ using namespace Catoms2D;
 #define ROTATION_DIRECTION RelativeDirection::CW
 #define OPPOSITE_ROTATION_DIRECTION RelativeDirection::getOpposite(ROTATION_DIRECTION)
 
+#define STRATEGY_TWO
+
 #define MY_CERR cerr << "@" << catom->blockId
 
 /***** Permieter Case State Class *****/
@@ -207,7 +209,7 @@ void Reconfiguration::handle(MessagePtr m) {
 #ifdef RECONFIGURATION_MOVES_DEBUG
 	MY_CERR << " can move around " << pivot->connectedInterface->hostBlock->blockId << endl; 
 #endif
-	if (shouldMove(pivot)) {
+	if (shouldMove(pivot, rsum->states)) {
 #ifdef RECONFIGURATION_MOVES_DEBUG
 	  MY_CERR << " should move around it!" << endl; 
 #endif
@@ -423,16 +425,30 @@ void Reconfiguration::queryStates() {
   pivot->send(msg);
 }
 
-bool Reconfiguration::shouldMove(P2PNetworkInterface *pivot) {
+bool Reconfiguration::shouldMove(P2PNetworkInterface *pivot, PerimeterCaseState &pcs) {
   Coordinate c1 = map->getPosition(); 
   Coordinate c2 = getCellAfterRotationAround(pivot);
 
   if (c2.y < 0) {
     return false;
   }
-  if (!Map::isInTarget(c1) || (Map::isInTarget(c1) && Map::isInTarget(c2) && (c2.y <= c1.y))) {
+  
+  if (!Map::isInTarget(c1)) {
+#ifdef STRATEGY_TWO
+    if (c1.y != 0 &&
+	c2.y > c1.y &&
+	pcs.states.size() > 0 &&
+	*(pcs.states.begin()) != GOAL) {
+      return false;
+    }
+#endif
     return true;
   }
+
+  if (Map::isInTarget(c1) && Map::isInTarget(c2) && (c2.y <= c1.y)) {
+    return true;
+  }
+  
   return false;
 }
 
