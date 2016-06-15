@@ -1,13 +1,13 @@
 /*
- * matrice44.cpp
+ * matrix44.cpp
  *
  *  Created on: 29 janv. 2012
  *
  */
 
-#include "matrice44.h"
+#include "matrix44.h"
 
-Matrice::Matrice(const float *tab)
+Matrix::Matrix(const float *tab)
 { int i=16;
   double *ptr=m;
   while (i--)
@@ -15,16 +15,16 @@ Matrice::Matrice(const float *tab)
   }
 }
 
-// lecture d'un Matrice dans un flux
-istream& operator>>(istream& f,Matrice&p)
+// lecture d'un Matrix dans un flux
+istream& operator>>(istream& f,Matrix&p)
 { for (int i=0; i<16; i++)
   { f >> p.m[i];
   }
   return f;
 }
 
-// �criture d'un Matrice dans un flux
-ostream& operator<<(ostream& f,Matrice&p)
+// �criture d'un Matrix dans un flux
+ostream& operator<<(ostream& f,Matrix&p)
 { f << "|" << p.m[0] << "," << p.m[1] << "," << p.m[2] << "," << p.m[3] << "|" << endl;
   f << "|" << p.m[4] << "," << p.m[5] << "," << p.m[6] << "," << p.m[7] << "|" << endl;
   f << "|" << p.m[8] << "," << p.m[9] << "," << p.m[10] << "," << p.m[11] << "|" << endl;
@@ -32,7 +32,7 @@ ostream& operator<<(ostream& f,Matrice&p)
   return f;
 }
 
-const Vector3D operator *(const Matrice p1, const Vector3D p2)
+const Vector3D operator *(const Matrix p1, const Vector3D p2)
 { Vector3D r;
   for (int i=0; i<4; i++)
   { r.pt[0] += p1.m[i]*p2.pt[i];
@@ -43,7 +43,7 @@ const Vector3D operator *(const Matrice p1, const Vector3D p2)
   return r;
 }
 
-const Vector3D operator *(const Vector3D p1, const Matrice p2)
+const Vector3D operator *(const Vector3D p1, const Matrix p2)
 { Vector3D r;
   for (int i=0; i<4; i++)
   { r.pt[0] += p2.m[i*4]*p1.pt[i];
@@ -54,8 +54,8 @@ const Vector3D operator *(const Vector3D p1, const Matrice p2)
   return r;
 }
 
-const Matrice operator *(const Matrice p1, const Matrice p2)
-{ Matrice r;
+const Matrix operator *(const Matrix p1, const Matrix p2)
+{ Matrix r;
   int l,c,i;
 
   for (l=0; l<4; l++)
@@ -69,19 +69,19 @@ const Matrice operator *(const Matrice p1, const Matrice p2)
   return r;
 }
 
-void Matrice::setRotationX(double a)
+void Matrix::setRotationX(double a)
 { identity();
   double cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
   m[5]=m[10]=cs; m[6]=-sn; m[9]=sn;
 }
 
-void Matrice::setRotationY(double a)
+void Matrix::setRotationY(double a)
 { identity();
   double cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
   m[0]=m[10]=cs; m[2]=sn; m[8]=-sn;
 }
 
-void Matrice::setRotationZ(double a)
+void Matrix::setRotationZ(double a)
 { identity();
   double cs=cos(a*M_PI/180.),sn=sin(a*M_PI/180.);
   m[0]=m[5]=cs; m[1]=-sn; m[4]=sn;
@@ -91,7 +91,7 @@ double det33(double a,double b,double c,double d,double e,double f,double g,doub
 { return a*(e*i-h*f)-d*(b*i-h*c)+g*(b*f-e*c);
 }
 
-double Matrice::determinant() const
+double Matrix::determinant() const
 { return ( m[0] * det33(m[5],m[6],m[7],m[9],m[10],m[11],m[13],m[14],m[15])-
            m[4] * det33(m[1],m[2],m[3],m[9],m[10],m[11],m[13],m[14],m[15])+
 		   m[8] * det33(m[1],m[2],m[3],m[5],m[6],m[7],m[13],m[14],m[15])-
@@ -103,7 +103,7 @@ double Matrice::determinant() const
     * \brief calculate the inverse of the current matrix
     \param result of the invertion of the current matrix
 */
-void Matrice::inverse(Matrice &inv) const
+void Matrix::inverse(Matrix &inv) const
 { double det = determinant();
   inv.m[0] = det33(m[5],m[6],m[7],m[9],m[10],m[11],m[13],m[14],m[15])/det;
   inv.m[4] = -det33(m[4],m[6],m[7],m[8],m[10],m[11],m[12],m[14],m[15])/det;
@@ -126,7 +126,7 @@ void Matrice::inverse(Matrice &inv) const
   inv.m[15] = det33(m[0],m[1],m[2],m[4],m[5],m[6],m[8],m[9],m[10])/det;
 }
 
-void Matrice::transpose(Matrice &t) const
+void Matrix::transpose(Matrix &t) const
 { t.m[0] = m[0];
   t.m[1] = m[4];
   t.m[2] = m[8];
@@ -145,7 +145,7 @@ void Matrice::transpose(Matrice &t) const
   t.m[15] = m[15];
 }
 
-void Matrice::set(double x00,double x10,double x20,double x30,
+void Matrix::set(double x00,double x10,double x20,double x30,
 				  double x01,double x11,double x21,double x31,
 				  double x02,double x12,double x22,double x32,
 				  double x03,double x13,double x23,double x33)
@@ -167,7 +167,7 @@ void Matrice::set(double x00,double x10,double x20,double x30,
   m[15] = x33;
 }
 
-void Matrice::setGLmat(const Matrice &R,const Vector3D &T)
+void Matrix::setGLmat(const Matrix &R,const Vector3D &T)
 { m[0] = R.m[0];
   m[1] = R.m[4];
   m[2] = R.m[8];
@@ -187,7 +187,7 @@ void Matrice::setGLmat(const Matrice &R,const Vector3D &T)
 
 }
 
-void Matrice::setRotation(double a,const Vector3D &V)
+void Matrix::setRotation(double a,const Vector3D &V)
 { double cosa=cos(a*M_PI/180.),sina=sin(a*M_PI/180.);
 
   m[0] = V.pt[0]*V.pt[0] + cosa*(1.-V.pt[0]*V.pt[0]);
@@ -208,7 +208,7 @@ void Matrice::setRotation(double a,const Vector3D &V)
   m[15] = 1.0;
 }
 
-void Matrice::setFromGL(GLfloat *mat) {
+void Matrix::setFromGL(GLfloat *mat) {
 	// copie en transposant !
 	m[0] = mat[0];
 	m[1] = mat[4];
@@ -228,7 +228,7 @@ void Matrice::setFromGL(GLfloat *mat) {
 	m[15] = mat[15];
 }
 
-void Matrice::glLoadMatrix() {
+void Matrix::glLoadMatrix() {
 	GLfloat mat[16];
 
 	mat[0] = GLfloat(m[0]);
@@ -250,7 +250,7 @@ void Matrice::glLoadMatrix() {
 	glLoadMatrixf(mat);
 }
 
-void Matrice::glMultMatrix() {
+void Matrix::glMultMatrix() {
 	GLfloat mat[16];
 
 	mat[0] = GLfloat(m[0]);
@@ -272,11 +272,11 @@ void Matrice::glMultMatrix() {
 	glMultMatrixf(mat);
 }
 
-void Matrice::fillArray(GLdouble *mat) {
+void Matrix::fillArray(GLdouble *mat) {
 	memcpy(mat,m,16*sizeof(GLdouble));
 }
 
-void Matrice::fillArray(GLfloat *mat) {
+void Matrix::fillArray(GLfloat *mat) {
 	int i;
 	for (i=0; i<16; i++) { mat[i]=GLfloat(m[i]); };
 }

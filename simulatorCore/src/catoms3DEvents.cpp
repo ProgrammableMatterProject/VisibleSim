@@ -74,7 +74,7 @@ void MotionStepEvent::consume() {
 	Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
 	Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
 
-    Matrice mat;
+    Matrix mat;
     bool rotationEnd=rot.nextStep(mat);
 
     getWorld()->updateGlData(catom,mat);
@@ -174,16 +174,16 @@ const string MotionEndEvent::getEventName() {
 
 Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2):angle1(ang1),angle2(ang2) {
     static const double c_2 = 0.5/(3+sqrt(2));
-    Matrice MA = mobile->getGlBlock()->mat;
-    Matrice MB = fixe->getGlBlock()->mat;
-    Matrice MA_1;
+    Matrix MA = mobile->getGlBlock()->mat;
+    Matrix MB = fixe->getGlBlock()->mat;
+    Matrix MA_1;
 
     // we calculate AB translation in A referentiel
     MA.inverse(MA_1);
-    Matrice m = MA_1*MB;
+    Matrix m = MA_1*MB;
     AB = m*Vector3D(0,0,0,1);
 
-    Matrice matTAB,matTBA;
+    Matrix matTAB,matTBA;
     matTAB.setTranslation(AB);
     matTBA.setTranslation(-AB);
 
@@ -197,7 +197,7 @@ Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &a
 
     axe2 = ax2.normer();
 
-    Matrice mr;
+    Matrix mr;
     mr.setRotation(angle1,axe1);
     firstStepMatrix = matTBA*mr;
     firstStepMatrix = mr*firstStepMatrix;
@@ -216,14 +216,14 @@ Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &a
     axe2 = axe2.normer();
 }
 
-bool Rotations::nextStep(Matrice &m) {
+bool Rotations::nextStep(Matrix &m) {
     if (firstRotation) {
         step++;
         double angle=angle1*step/nbRotationSteps;
         OUTPUT << "step=" << step << "   angle=" << angle << endl;
-        Matrice mr;
+        Matrix mr;
         mr.setRotation(angle,axe1);
-        Matrice matTAB,matTBA;
+        Matrix matTAB,matTBA;
         /*if (angle<angleArticulation) {
             matTAB.setTranslation(AD);
             matTBA.setTranslation(-AD);
@@ -249,11 +249,11 @@ bool Rotations::nextStep(Matrice &m) {
         step++;
         double angle=angle2*step/nbRotationSteps;
         // TRT-1R
-        Matrice mr;
+        Matrix mr;
         mr.setRotation(angle,axe2);
         //double coef=(angle>angle2-angleArticulation)?(angle2-angle)*coefRayonCourbure/(angle2-angleArticulation):coefRayonCourbure;
         double coef=coefRayonCourbure;
-        Matrice matTCB,matTBC;
+        Matrix matTCB,matTBC;
         matTCB.setTranslation(coef*CB);
         matTBC.setTranslation((-coef)*CB);
 
@@ -270,9 +270,9 @@ bool Rotations::nextStep(Matrice &m) {
 }
 
 void Rotations::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
-    Matrice mr,m;
+    Matrix mr,m;
     mr.setRotation(angle1,axe1);
-    Matrice matTAB,matTBA;
+    Matrix matTAB,matTBA;
     matTAB.setTranslation(AB);
     matTBA.setTranslation(-AB);
     m = matTBA*mr;

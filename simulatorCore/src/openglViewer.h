@@ -11,7 +11,7 @@
 #include "shaders.h"
 
 #include <pthread.h>
-#include "matrice44.h"
+#include "matrix44.h"
 #include "camera.h"
 #include "glBlock.h"
 #include "interface.h"

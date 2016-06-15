@@ -8,7 +8,7 @@
 #ifndef CATOMS3DEVENTS_H_
 #define CATOMS3DEVENTS_H_
 
-#include "matrice44.h"
+#include "matrix44.h"
 #include "catoms3DBlock.h"
 #include "events.h"
 
@@ -29,7 +29,7 @@ public :
     Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2);
     Rotations() {};
 
-    void init(const Matrice& m) {
+    void init(const Matrix& m) {
         firstRotation=true;
         step=0;
         initialMatrix=m;
@@ -40,18 +40,18 @@ public :
     \brief Return current transformation matrix in m
     \param m : result matrix
 */
-//    void getCurrentMatrix(Matrice &m) { m=mat; };
+//    void getCurrentMatrix(Matrix &m) { m=mat; };
 /**
     \brief Calculate transformation matrix for one more step of rotations
     \param m : result matrix
     \return true at the end of the animation.
 */
-    bool nextStep(Matrice &m);
+    bool nextStep(Matrix &m);
     void getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation);
 protected :
     bool firstRotation;
     short step;
-    Matrice initialMatrix,firstStepMatrix;//,matTBA,matTAB,matTBC,matTCB;
+    Matrix initialMatrix,firstStepMatrix;//,matTBA,matTAB,matTBC,matTCB;
     Vector3D AB,AD,CB;
     Vector3D axe1;
     Vector3D axe2;

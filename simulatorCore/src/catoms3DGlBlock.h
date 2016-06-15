@@ -9,7 +9,7 @@
 #define CATOMS3DGLBLOCK_H_
 #include <string>
 #include <objLoader.h>
-#include "matrice44.h"
+#include "matrix44.h"
 #include "glBlock.h"
 #include "catoms3DCapabilities.h"
 
@@ -18,7 +18,7 @@ class Catoms3DGlBlock:public GlBlock {
 protected :
 public :
     //GLfloat theta,phi,psi; //!< spherical coordinates angles in degree
-    Matrice mat;
+    Matrix mat;
 
 	Catoms3DGlBlock(int id);
 	virtual ~Catoms3DGlBlock();

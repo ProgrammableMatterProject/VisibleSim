@@ -75,7 +75,7 @@ public:
 
 	int getDirection(P2PNetworkInterface*);
 
-	static short getOrientationFromMatrix(const Matrice &mat);
+	static short getOrientationFromMatrix(const Matrix &mat);
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb);

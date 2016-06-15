@@ -1,12 +1,12 @@
 /*
- * matrice44.h
+ * matrix44.h
  *
  *  Created on: 29 janv. 2012
  *
  */
 
-#ifndef MATRICE44_H_
-#define MATRICE44_H_
+#ifndef matrix44_H_
+#define matrix44_H_
 
 #include <GL/glew.h>
 #include <iostream>
@@ -19,17 +19,17 @@
 
 using namespace std;
 
-class Matrice
+class Matrix
 { public :
   double m[16];
 
-  Matrice() { identity(); };
-  Matrice(const float *);
+  Matrix() { identity(); };
+  Matrix(const float *);
   void identity() { memset(m,0,16*sizeof(double)); m[0]=m[5]=m[10]=m[15]=1.; };
-  friend istream& operator>>(istream& f,Matrice &p);
-  friend ostream& operator<<(ostream& f,Matrice &p);
-  friend const Matrice operator *(const Matrice,const Matrice);
-  friend const Vector3D operator *(const Matrice,const Vector3D);
+  friend istream& operator>>(istream& f,Matrix &p);
+  friend ostream& operator<<(ostream& f,Matrix &p);
+  friend const Matrix operator *(const Matrix,const Matrix);
+  friend const Vector3D operator *(const Matrix,const Vector3D);
   inline double operator[](const int i) { return m[i]; };
   inline void setTranslation(Vector3D V) { identity(); m[3]=V[0]; m[7]=V[1]; m[11]=V[2]; m[15]=1.0; };
   inline void setTranslation(double Vx,double Vy,double Vz) { identity(); m[3]=Vx; m[7]=Vy; m[11]=Vz; m[15]=1.0; };
@@ -40,9 +40,9 @@ class Matrice
   void setRotationZ(double a);
   void setRotation(double a,const Vector3D &V);
   double determinant() const;
-  void inverse(Matrice &) const;
-  void transpose(Matrice &) const;
-  void setGLmat(const Matrice &,const Vector3D &);
+  void inverse(Matrix &) const;
+  void transpose(Matrix &) const;
+  void setGLmat(const Matrix &,const Vector3D &);
   void set(double,double,double,double,double,double,double,double,double,double,double,double,double,double,double,double);
   void setFromGL(GLfloat *mat);
   void glLoadMatrix();
@@ -51,10 +51,10 @@ class Matrice
   void fillArray(GLfloat *);
 };
 
-const Matrice operator *(const Matrice,const Matrice);
-const Vector3D operator *(const Matrice,const Vector3D);
-const Vector3D operator *(const Vector3D,const Matrice);
+const Matrix operator *(const Matrix,const Matrix);
+const Vector3D operator *(const Matrix,const Vector3D);
+const Vector3D operator *(const Vector3D,const Matrix);
 
 double det33(double,double,double,double,double,double,double,double,double);
 
-#endif /* MATRICE44_H_ */
+#endif /* matrix44_H_ */

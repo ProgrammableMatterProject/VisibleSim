@@ -185,7 +185,7 @@ void shadowedRenderingStep3(Camera *camera) {
 
 	float camViewMatrix[16];
 	glGetFloatv(GL_MODELVIEW_MATRIX, camViewMatrix);
-	Matrice mat(camViewMatrix),mat_1;
+	Matrix mat(camViewMatrix),mat_1;
 	mat.inverse(mat_1);
 
 	glMatrixMode(GL_TEXTURE);

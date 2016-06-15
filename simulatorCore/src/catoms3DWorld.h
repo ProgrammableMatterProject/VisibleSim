@@ -96,7 +96,7 @@ public:
 	virtual void updateGlData(Catoms3DBlock*blc, bool visible);
 	virtual void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
 	virtual void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
-	virtual void updateGlData(Catoms3DBlock*blc, const Matrice &mat);
+	virtual void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);

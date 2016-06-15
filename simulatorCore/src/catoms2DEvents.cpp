@@ -82,7 +82,7 @@ namespace Catoms2D {
 
     Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
 
-    Matrice roty;
+    Matrix roty;
     if (angle<ANGULAR_STEP) {
       roty.setRotationY(-sens*angle);
       Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);

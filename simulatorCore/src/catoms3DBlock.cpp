@@ -45,7 +45,7 @@ void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code
     orientationCode = code;
     position = p;
 
-	Matrice M1,M2,M3,M;
+	Matrix M1,M2,M3,M;
 	M1.setRotationZ(tabOrientationAngles[code][0]);
     M2.setRotationY(tabOrientationAngles[code][1]);
     M3.setRotationX(tabOrientationAngles[code][2]);
@@ -57,11 +57,11 @@ void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code
     getWorld()->updateGlData(this,M);
 }
 
-short Catoms3DBlock::getOrientationFromMatrix(const Matrice &mat) {
+short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
     Vector3D x(1.0,0.0,0.0,0.0); // Vector3D X
     Vector3D v;
     //p = mat*x;
-    Matrice mat_1;
+    Matrix mat_1;
     mat.inverse(mat_1);
 
     short current=-1;
@@ -117,7 +117,7 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
     Catoms3DWorld *wrl = getWorld();
     Vector3D realPos = wrl->gridToWorldPosition(pos);
 
-    Matrice m_1;
+    Matrix m_1;
     ptrGlBlock->mat.inverse(m_1);
     realPos = m_1*realPos;
 

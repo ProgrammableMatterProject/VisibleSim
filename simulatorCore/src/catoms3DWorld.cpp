@@ -409,7 +409,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Cell3DPosition &positi
 	}
 }
 
-void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrice &mat) {
+void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
 	Catoms3DGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
 		lock();

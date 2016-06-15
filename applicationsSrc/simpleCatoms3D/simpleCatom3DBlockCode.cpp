@@ -78,7 +78,7 @@ void SimpleCatom3DBlockCode::startup() {
             }
             i++;
         }
-        Matrice m_1;
+        Matrix m_1;
         voisin->getGlBlock()->mat.inverse(m_1);
         // recherche le voisin d'indice minimum
         //Rotations rotations(catom,voisin,m_1*Vector3D(0,1,0),35.2643896828,m_1*Vector3D(-1,1, -M_SQRT2),35.2643896828);
@@ -117,7 +117,7 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
                 }
                 i++;
             }
-            Matrice m_1;
+            Matrix m_1;
             voisin->getGlBlock()->mat.inverse(m_1);
             // Rotations rotations(catom,voisin,m_1*Vector3D(-1,1,M_SQRT2),35.26,m_1*Vector3D(-1,-1, -M_SQRT2),35.26);
             Rotations rotations(catom,voisin,m_1*Vector3D(-1,-1,0),45.0,m_1*Vector3D(0,0,1),45.0);

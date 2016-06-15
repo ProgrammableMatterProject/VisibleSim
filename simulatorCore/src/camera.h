@@ -24,7 +24,7 @@
 
 #include <math.h>
 #include "vector3D.h"
-#include "matrice44.h"
+#include "matrix44.h"
 
 #ifndef M_PI
 #define M_PI	3.1415926535897932384626433832795
@@ -39,7 +39,7 @@ public :
   GLfloat theta,phi,distance;
 
   LightSource();
-  void calcMatrices();
+  void calcMatrixs();
   void draw();
   const Vector3D getDirectionSpherical();
   inline float* getTarget() { return (float *)target; };
