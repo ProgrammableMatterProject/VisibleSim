@@ -98,11 +98,11 @@ namespace BaseSimulator {
         BlinkyBlocksBlock *blc = (BlinkyBlocksBlock *)bb;
         TiXmlElement *bbElt = new TiXmlElement("block");
         float *color = blc->color.rgba;
-        Vector3D pos = blc->position;
+        Cell3DPosition pos = blc->position;
         
         bbElt->SetAttribute("position", toXmlAttribute(pos.pt[0],
-                                                      pos.pt[1],
-                                                      pos.pt[2]));
+                                                       pos.pt[1],
+                                                       pos.pt[2]));
         bbElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
                                                     color[1] * 255,
                                                     color[2] * 255));

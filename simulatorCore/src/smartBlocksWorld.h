@@ -16,7 +16,7 @@
 
 namespace SmartBlocks {
 
-    class SmartBlocksWorld : BaseSimulator::World {
+    class SmartBlocksWorld : public BaseSimulator::World {
     protected:
         SmartBlocksBlock **tabPtrBlocks;
         int gridSize[2];
@@ -51,7 +51,7 @@ namespace SmartBlocks {
 
         virtual void addBlock(int blockId,
                               SmartBlocksBlockCode *(*smartBlockCodeBuildingFunction)(SmartBlocksBlock*),
-                              const Vector3D &pos,const Color &col);
+                              const Cell3DPosition &pos,const Color &col);
         inline void setBlocksSize(float *siz) { blockSize[0]=siz[0];blockSize[1]=siz[1];blockSize[2]=siz[2];};
 
         inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,2*sizeof(int)); return targetGrid; };
@@ -71,7 +71,6 @@ namespace SmartBlocks {
         void loadTextures(const string &str);
         virtual void glDraw();
         virtual void glDrawId();
-        virtual void updateGlData(SmartBlocksBlock*blc);
         inline virtual Camera *getCamera() { return camera; };
 
         virtual void disconnectBlock(SmartBlocksBlock *block);

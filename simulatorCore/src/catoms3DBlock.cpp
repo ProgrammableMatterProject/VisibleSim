@@ -32,11 +32,6 @@ Catoms3DBlock::~Catoms3DBlock() {
 	OUTPUT << "Catoms3DBlock destructor " << blockId << endl;
 }
 
-void Catoms3DBlock::setColor(const Color &c) {
-	color = c;
-	getWorld()->updateGlData(this,c);
-}
-
 void Catoms3DBlock::setVisible(bool visible) {
 	getWorld()->updateGlData(this,visible);
 }
@@ -105,7 +100,7 @@ bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
     realPos.pt[0]*=bs[0];
     realPos.pt[1]*=bs[1];
     realPos.pt[2]*=bs[2];
-    realPos = ptrGlBlock->mat*realPos;
+    realPos = ((Catoms3DGlBlock*)ptrGlBlock)->mat*realPos;
     if (realPos[2]<0) return false;
     pos = wrl->worldToGridPosition(realPos);
     return (pos[0]>=0 && pos[0]<gs[0] &&
@@ -118,7 +113,7 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
     Vector3D realPos = wrl->gridToWorldPosition(pos);
 
     Matrix m_1;
-    ptrGlBlock->mat.inverse(m_1);
+    ((Catoms3DGlBlock*)ptrGlBlock)->mat.inverse(m_1);
     realPos = m_1*realPos;
 
     const float *bs = wrl->getBlocksSize();

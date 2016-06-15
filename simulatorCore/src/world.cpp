@@ -59,6 +59,19 @@ BuildingBlock* World::getBlockById(int bId) {
 	}
 }
 
+void World::updateGlData(BuildingBlock *bb) {
+    GlBlock *glblc = bb->getGlBlock();
+    if (glblc) {
+	lock();
+	Vector3D pos(blockSize[0]*bb->position[0],
+		     blockSize[1]*bb->position[1],
+		     blockSize[2]*bb->position[2]);
+	glblc->setPosition(pos);
+	glblc->setColor(bb->color);
+	unlock();
+    }
+}
+
 void World::lock() {
 	mutex_gl.lock();
 }

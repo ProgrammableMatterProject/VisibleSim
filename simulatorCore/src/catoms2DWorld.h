@@ -24,7 +24,6 @@ class Catoms2DWorld : public BaseSimulator::World {
 protected:
 	int gridSize[3];
 	Catoms2DBlock **gridPtrBlocks;
-	GLfloat blockSize[3];
 	Camera *camera;
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureHexa,idTextureLines;
@@ -54,7 +53,7 @@ public:
 		return((Catoms2DBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*), const Vector3D &pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*), const Cell3DPosition &pos, const Color &col, bool master=false);
 	void deleteBlock(Catoms2DBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
@@ -73,16 +72,16 @@ public:
 	void linkBlocks();
 	void loadTextures(const string &str);
 
-	Vector3D worldToGridPosition(Vector3D &pos);
-	Vector3D gridToWorldPosition(Vector3D &pos);
+	Cell3DPosition worldToGridPosition(Vector3D &pos);
+	Vector3D gridToWorldPosition(Cell3DPosition &pos);
 
 	bool areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2);
-	bool areNeighborsGridPos(Vector3D &pos1, Vector3D &pos2);
+	bool areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2);
 	
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
-	virtual void updateGlData(Catoms2DBlock*blc);
+	virtual void updateGlData(BuildingBlock*blc);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
 	virtual void createHelpWindow();

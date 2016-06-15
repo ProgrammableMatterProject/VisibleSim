@@ -171,7 +171,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 /* Reading a smartblock */
 		cout << "default color :" << defaultColor << endl;
 		TiXmlNode *block = nodeBlock->FirstChild("block");
-		Vector3D position;
+		Cell3DPosition position;
 		Color color;
 		while (block) {
 		   element = block->ToElement();

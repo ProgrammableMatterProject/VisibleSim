@@ -89,7 +89,7 @@ namespace Catoms2D {
       Vector3D BC = roty*BA;
       Vector3D pos = pivot+BC;
       rb->angle += angle*sens;
-      Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+angle*sens);
+      Catoms2DWorld::getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
       scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
     } else {
       roty.setRotationY(-sens*ANGULAR_STEP);
@@ -97,8 +97,10 @@ namespace Catoms2D {
       Vector3D BC = roty*BA;
       Vector3D pos = pivot+BC;
       rb->angle += ANGULAR_STEP*sens;
-      Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+ANGULAR_STEP*sens);
-      scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-ANGULAR_STEP,sens));
+      Catoms2DWorld::getWorld()->updateGlData(rb,pos,
+                                              ((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+ANGULAR_STEP*sens);
+      scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb,
+                                              pivot,angle-ANGULAR_STEP,sens));
     }
   }
 
@@ -134,7 +136,7 @@ namespace Catoms2D {
 
     Catoms2DWorld *wrld=Catoms2DWorld::getWorld();
     Vector3D worldPos = Vector3D(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
-    Vector3D gridPos = wrld->worldToGridPosition(worldPos);
+    Cell3DPosition gridPos = wrld->worldToGridPosition(worldPos);
     cout << "---------------motion end-----------------"<<endl;
     cout << worldPos << endl;
     cout << gridPos << endl;

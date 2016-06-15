@@ -83,16 +83,6 @@ RobotBlocksBlock::~RobotBlocksBlock() {
 	OUTPUT << "RobotBlocksBlock destructor " << blockId << endl;
 }
 
-void RobotBlocksBlock::setPosition(const Vector3D &p) {
-	position=p;
-	getWorld()->updateGlData(this);
-}
-
-void RobotBlocksBlock::setColor(const Color &c) {
-	color = c;
-	getWorld()->updateGlData(this);
-}
-
 void RobotBlocksBlock::setPrevNext(int prev,int next) {
 	getWorld()->updateGlData(this,prev,next);
 }

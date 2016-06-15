@@ -35,7 +35,8 @@ namespace BaseSimulator {
 	GLushort numSelectedFace;
 	GLuint numSelectedBlock;
 	GLint menuId;
-        
+	GLfloat blockSize[3];
+	
 	World();
 	virtual ~World();
 
@@ -74,7 +75,7 @@ namespace BaseSimulator {
         virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace) { return true; };
         
 	virtual BuildingBlock* getBlockById(int bId);
-
+	virtual void updateGlData(BuildingBlock *bb);
         virtual GlBlock* getSelectedBlock() { return selectedBlock; };
         inline GlBlock* setSelectedBlock(int n) { return (selectedBlock=(n>=0)?tabGlBlocks[n]:NULL); };
         virtual void setSelectedFace(int n) {};

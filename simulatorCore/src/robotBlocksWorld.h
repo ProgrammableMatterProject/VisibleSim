@@ -52,7 +52,7 @@ public:
 		return((RobotBlocksBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*), const Vector3D &pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*), const Cell3DPosition &pos, const Color &col, bool master=false);
 	void deleteBlock(RobotBlocksBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
@@ -73,7 +73,6 @@ public:
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
-	virtual void updateGlData(RobotBlocksBlock*blc);
 	virtual void updateGlData(RobotBlocksBlock*blc,int prev,int next);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };

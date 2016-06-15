@@ -82,7 +82,7 @@ namespace BlinkyBlocks {
 		delete((BlinkyBlocksWorld*)world);
 	}
 
-	void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*),const Vector3D &pos,const Color &col) {
+	void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Cell3DPosition &pos, const Color &col) {
 
 		if (blockId == -1) {
 			map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -104,10 +104,10 @@ namespace BlinkyBlocks {
 		blinkyBlock->setPosition(pos);
 		blinkyBlock->setColor(col);
 
-		int ix,iy,iz;
-		ix = int(blinkyBlock->position.pt[0]);
-		iy = int(blinkyBlock->position.pt[1]);
-		iz = int(blinkyBlock->position.pt[2]);
+		short ix,iy,iz;
+		ix = blinkyBlock->position.pt[0];
+		iy = blinkyBlock->position.pt[1];
+		iz = blinkyBlock->position.pt[2];
 		if (ix>=0 && ix<gridSize[0] &&
 			iy>=0 && iy<gridSize[1] &&
 			iz>=0 && iz<gridSize[2]) {
@@ -372,17 +372,6 @@ namespace BlinkyBlocks {
 		idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 	}
 
-	void BlinkyBlocksWorld::updateGlData(BlinkyBlocksBlock*blc) {
-		BlinkyBlocksGlBlock *glblc = blc->getGlBlock();
-		if (glblc) {
-			lock();
-			Vector3D pos(blockSize[0]*blc->position[0],blockSize[1]*blc->position[1],blockSize[2]*blc->position[2]);
-			glblc->setPosition(pos);
-			glblc->setColor(blc->color);
-			unlock();
-		}
-	}
-
 	bool BlinkyBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
 		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 		switch (numSelectedFace) {
@@ -433,7 +422,7 @@ namespace BlinkyBlocks {
         case 1 : {
             BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getMenuBlock();
             OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-            Vector3D pos=bb->position;
+            Cell3DPosition pos=bb->position;
             switch (numSelectedFace) {
             case NeighborDirection::Left :
                 pos.pt[0]--;

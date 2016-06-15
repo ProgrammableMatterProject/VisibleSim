@@ -182,7 +182,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 
 	/* Reading a robotblock */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
-		Vector3D position;
+		Cell3DPosition position;
 		Color color;
 		bool master;
 		while (block) {

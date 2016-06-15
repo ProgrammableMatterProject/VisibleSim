@@ -31,8 +31,6 @@ namespace BlinkyBlocks {
 
     public:
 	BlinkyBlocksGlBlock *ptrGlBlock;
-	Color color; // color of the block
-	Vector3D position; // position of the block;
     
 	BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
 	BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *
@@ -41,9 +39,6 @@ namespace BlinkyBlocks {
 
 	inline BlinkyBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(BlinkyBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
-	void setColor(const Color &);
-	void setColor(int num);
-	void setPosition(const Vector3D &p);
 	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
 	P2PNetworkInterface *getInterfaceDestId(int id);
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);

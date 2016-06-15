@@ -78,7 +78,7 @@ void SmartBlocksWorld::deleteWorld() {
 
 void SmartBlocksWorld::addBlock(int blockId,
                                 SmartBlocksBlockCode *(*smartBlockCodeBuildingFunction)(SmartBlocksBlock*),
-                                const Vector3D &pos,const Color &col) {
+                                const Cell3DPosition &pos,const Color &col) {
     SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId,smartBlockCodeBuildingFunction);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (smartBlock->blockId, (BaseSimulator::BuildingBlock*)smartBlock) );
@@ -292,19 +292,6 @@ void SmartBlocksWorld::loadTextures(const string &str) {
     idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-void SmartBlocksWorld::updateGlData(SmartBlocksBlock*blc) {
-    SmartBlocksGlBlock *glblc = blc->getGlBlock();
-    if (glblc) {
-        lock();
-
-        Vector3D pos(blockSize[0]*blc->position[0],blockSize[1]*blc->position[1],0.0);
-        glblc->setPosition(pos);
-        glblc->setColor(blc->color);
-        unlock();
-        //GlutContext::mustSaveImage=true;
-    }
-}
-
 void SmartBlocksWorld::connectBlock(SmartBlocksBlock *block) {
     int ix,iy;
     ix = int(block->position.pt[0]);
@@ -393,7 +380,7 @@ void SmartBlocksWorld::menuChoice(int n) {
     case 1 : {
         OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 
-        Vector3D pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
+        Cell3DPosition pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
 
         addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
         linkBlocks();

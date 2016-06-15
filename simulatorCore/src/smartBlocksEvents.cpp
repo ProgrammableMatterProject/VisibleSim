@@ -61,7 +61,7 @@ MotionStepEvent::MotionStepEvent(uint64_t t, SmartBlocksBlock *block,const Vecto
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STEP;
 	finalPosition = fpos;
-	motionStep = finalPosition - ((SmartBlocksBlock*)concernedBlock)->position;
+	motionStep = finalPosition - ((SmartBlocksBlock*)concernedBlock)->getPositionVector();
 	motionStep.setLength(0.2);
 }
 
@@ -84,12 +84,12 @@ MotionStepEvent::~MotionStepEvent() {
 void MotionStepEvent::consume() {
 	EVENT_CONSUME_INFO();
 	SmartBlocksBlock *rb = (SmartBlocksBlock*)concernedBlock;
-	rb->position+=motionStep;
-	SmartBlocksWorld::getWorld()->updateGlData(rb);
+	rb->setPosition(motionStep + rb->getPositionVector());
+	World::getWorld()->updateGlData(rb);
     SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
 
 // OUTPUT << rb->blockId << ":" << scheduler->now()<< endl;
-    double v=(finalPosition-rb->position)*motionStep;
+    double v=(finalPosition-rb->getPositionVector())*motionStep;
     if (v<EPS) {
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
 	} else {
@@ -125,8 +125,8 @@ MotionStopEvent::~MotionStopEvent() {
 void MotionStopEvent::consume() {
 	EVENT_CONSUME_INFO();
 	SmartBlocksBlock *rb = (SmartBlocksBlock*)concernedBlock;
-	rb->position=finalPosition;
-    SmartBlocksWorld::getWorld()->updateGlData(rb);
+	rb->setPosition(finalPosition);
+    World::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     SmartBlocksWorld *wrld=SmartBlocksWorld::getWorld();
     int ix = int(rb->position.pt[0]),

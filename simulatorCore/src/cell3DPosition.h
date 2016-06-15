@@ -16,7 +16,7 @@ using namespace std;
 
 class Cell3DPosition {
 public:
-    short pt[3];
+    short pt[3]; //!< (x,y,z) values of the vector
     Cell3DPosition();
     Cell3DPosition(short x,short y,short z);
 

@@ -29,28 +29,21 @@ protected:
 	boost::interprocess::interprocess_mutex mutex_vm;
 
 public:
-	Catoms2DGlBlock *ptrGlBlock;
-	Color color; // color of the block
-	Vector3D position; // position of the block;
-	bool isMaster;
 	int angle;
 	
 	Catoms2DBlockCode *(*buildNewBlockCode)(Catoms2DBlock*);
 	Catoms2DBlock(int bId, Catoms2DBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(Catoms2DBlock*));
 	~Catoms2DBlock();
 
-	inline Catoms2DGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
-	void setColor(const Color &);
-	void setPosition(const Vector3D &p);
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
         inline P2PNetworkInterface *getInterface(int d) {
             return tabInterfaces[(NeighborDirection::Direction)d];
         }
         P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 
-	Vector3D getPosition(NeighborDirection::Direction d);
-	Vector3D getPosition(P2PNetworkInterface *p2p);
+        Cell3DPosition getPosition(NeighborDirection::Direction d);
+        Cell3DPosition getPosition(P2PNetworkInterface *p2p);
 
 	NeighborDirection::Direction getDirection(P2PNetworkInterface* p2p);
 	int nbNeighbors(bool groundIsNeighbor = false);

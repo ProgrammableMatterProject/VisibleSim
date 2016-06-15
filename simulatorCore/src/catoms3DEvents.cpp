@@ -40,7 +40,7 @@ void MotionStartEvent::consume() {
 	Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
     catom->setColor(DARKGREY);
-	rot.init(catom->ptrGlBlock->mat);
+	rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
 	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,catom, rot));
 }
 
@@ -174,8 +174,8 @@ const string MotionEndEvent::getEventName() {
 
 Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2):angle1(ang1),angle2(ang2) {
     static const double c_2 = 0.5/(3+sqrt(2));
-    Matrix MA = mobile->getGlBlock()->mat;
-    Matrix MB = fixe->getGlBlock()->mat;
+    Matrix MA = ((Catoms3DGlBlock*)mobile->getGlBlock())->mat;
+    Matrix MB = ((Catoms3DGlBlock*)fixe->getGlBlock())->mat;
     Matrix MA_1;
 
     // we calculate AB translation in A referentiel

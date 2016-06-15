@@ -177,7 +177,7 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 		/* Reading a blinkyblock */
 		OUTPUT << "default color :" << defaultColor << endl;
 		nodeBlock = nodeBlock->FirstChild("block");
-		Vector3D position;
+		Cell3DPosition position;
 		Color color;
 		while (nodeBlock) {
 			element = nodeBlock->ToElement();

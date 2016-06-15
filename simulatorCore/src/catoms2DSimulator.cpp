@@ -182,7 +182,7 @@ namespace Catoms2D {
 #if 1
       /* Reading a catoms */
       TiXmlNode *block = nodeBlock->FirstChild("block");
-      Vector3D position;
+      Cell3DPosition position;
       Color color;
       bool master;
       while (block) {
@@ -269,7 +269,7 @@ namespace Catoms2D {
     if (nodeGrid) {
       world->initTargetGrid();
       TiXmlNode *block = nodeGrid->FirstChild("block");
-      Vector3D position;
+      Cell3DPosition position;
       const char *attr;
       TiXmlElement* element;
       while (block) {
