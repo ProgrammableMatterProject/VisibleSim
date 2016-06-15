@@ -2,6 +2,7 @@
 *.slo
 *.lo
 *.o
+*.o-*
 #*.obj // graphic files can have this extension.
 
 # Precompiled Headers
@@ -37,6 +38,8 @@
 # External tools config files
 .projectile
 *.xcodeproj/
+*.cbp
+*.layout
 
 # Application binary files
 ## Exclude all files from applicationsSrc and applicationsBin sub-directories
@@ -51,3 +54,4 @@ applications*/*
 # Doxyfile documentation output
 doc/xml/
 doc/html/
+
