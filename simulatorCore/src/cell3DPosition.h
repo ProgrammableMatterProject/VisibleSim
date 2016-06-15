@@ -23,6 +23,8 @@ public:
     void set(short x,short y,short z);
     inline const short operator[](const int i) const { return pt[i]; };
     friend ostream& operator<<(ostream& f,const Cell3DPosition&p);
+    friend const Cell3DPosition operator +(const Cell3DPosition,const Cell3DPosition);
+    friend const Cell3DPosition operator -(const Cell3DPosition,const Cell3DPosition);
 };
 
 #endif // CELL3DPOSITION_H
