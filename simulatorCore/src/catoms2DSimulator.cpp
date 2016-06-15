@@ -6,15 +6,16 @@
  */
 
 #include <iostream>
-#include "catoms2DSimulator.h"
 #include <string.h>
+
+#include "catoms2DSimulator.h"
 #include "trace.h"
+#include "utils.h"
 
 using namespace std;
+using namespace BaseSimulator::utils;
 
 namespace Catoms2D {
-
-  const double M_SQRT3_2 = sqrt(3.0)/2;
 
   Catoms2DBlockCode*(* Catoms2DSimulator::buildNewBlockCode)(Catoms2DBlock*)=NULL;
 

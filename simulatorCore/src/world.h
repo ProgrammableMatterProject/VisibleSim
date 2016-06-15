@@ -16,10 +16,9 @@
 #include "buildingBlock.h"
 #include "glBlock.h"
 #include "trace.h"
+#include "utils.h"
 
-#define IS_ODD(x) ((x) % 2)
-#define IS_EVEN(x) (!IS_ODD(x))
-
+using namespace BaseSimulator::utils;
 using namespace std;
 
 namespace BaseSimulator {

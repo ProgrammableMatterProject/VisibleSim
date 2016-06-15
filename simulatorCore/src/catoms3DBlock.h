@@ -15,11 +15,12 @@
 //#include "catoms3DCapabilities.h"
 #include <boost/asio.hpp>
 #include <stdexcept>
+#include "utils.h"
+
+using namespace BaseSimulator::utils;
 
 //! \namespace Catoms3D
 namespace Catoms3D {
-
-const float M_SQRT2_2 = sqrt(2.0)/2.0;
 
 const float tabOrientationAngles[12][3] = { {0,0,0}, {-90.0f,0,90.0f}, {-45.0f,45.0,-90.0f},
 											{-135.0f,45.0f,90}, {135.0f,45.0f,-90.0f}, {45.0f,45.0f,90.0f},

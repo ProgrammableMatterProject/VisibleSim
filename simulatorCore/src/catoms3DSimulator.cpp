@@ -9,12 +9,12 @@
 #include "catoms3DSimulator.h"
 #include <string.h>
 #include "trace.h"
+#include "utils.h"
 
 using namespace std;
+using namespace BaseSimulator::utils;
 
 namespace Catoms3D {
-
-const double M_SQRT3_2 = sqrt(3.0)/2;
 
 Catoms3DBlockCode*(* Catoms3DSimulator::buildNewBlockCode)(Catoms3DBlock*)=NULL;
 

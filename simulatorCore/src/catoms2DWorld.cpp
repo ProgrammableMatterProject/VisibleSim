@@ -18,12 +18,12 @@
 #include <sys/types.h>
 #include <signal.h>
 #include "catoms2DSimulator.h"
+#include "utils.h"
 
 using namespace std;
+using namespace BaseSimulator::utils;
 
-namespace Catoms2D {
-    
-const double M_SQRT3_2 = sqrt(3.0)/2.0;
+namespace Catoms2D {   
     
 Catoms2DWorld::Catoms2DWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
     OUTPUT << "\033[1;31mCatoms2DWorld constructor\033[0m" << endl;
