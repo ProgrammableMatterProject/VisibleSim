@@ -83,7 +83,7 @@ RobotBlocksBlock::~RobotBlocksBlock() {
 	OUTPUT << "RobotBlocksBlock destructor " << blockId << endl;
 }
 
-void RobotBlocksBlock::setPosition(const Vecteur &p) {
+void RobotBlocksBlock::setPosition(const Vector3D &p) {
 	position=p;
 	getWorld()->updateGlData(this);
 }

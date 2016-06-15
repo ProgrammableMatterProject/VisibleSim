@@ -35,11 +35,11 @@ public:
     CsgNode getCSGTree() { return csgTree; }
     char * getCSGBuffer() { return csgBuffer; }
     int getCSGBufferSize() { return csgBufferSize; }
-    PositionInfo isInside(Vecteur catomPosition);
+    PositionInfo isInside(Vector3D catomPosition);
 
 private:
     CsgNode readCSGNode();
-    PositionInfo isInside(CsgNode &node, Vecteur basePosition, Color color, Vecteur catomPosition);
+    PositionInfo isInside(CsgNode &node, Vector3D basePosition, Color color, Vector3D catomPosition);
 };
 
 #endif /* CSGUTILS_H_ */

@@ -3,7 +3,7 @@
 
 #include <trace.h>
 #include <vector>
-#include <vecteur.h>
+#include <vector3D.h>
 
 class Skeleton {
 
@@ -13,31 +13,31 @@ public :
     virtual ~Skeleton();
 
     virtual void add(Skeleton *);
-    double potentiel(const Vecteur &pos);
+    double potentiel(const Vector3D &pos);
 protected :
-    virtual double distance2(const Vecteur &pos) { return -1.0; };
+    virtual double distance2(const Vector3D &pos) { return -1.0; };
     double radius2,blobbiness;
     vector <Skeleton*> children;
 };
 
 class SkelLine : public Skeleton {
 public :
-    SkelLine(const Vecteur &A,const Vecteur &B,double r,double b):Skeleton(r,b),ptA(A),ptB(B) { AB=B-A; AB2 = AB.norme2(); };
+    SkelLine(const Vector3D &A,const Vector3D &B,double r,double b):Skeleton(r,b),ptA(A),ptB(B) { AB=B-A; AB2 = AB.norme2(); };
     ~SkelLine() {};
 protected :
-    Vecteur ptA,ptB,AB;
+    Vector3D ptA,ptB,AB;
     double AB2;
-    virtual double distance2(const Vecteur &pos);
+    virtual double distance2(const Vector3D &pos);
 };
 
 class SkelPoint : public Skeleton {
 
 public :
-    SkelPoint(const Vecteur &pt,double r,double b):Skeleton(r,b),ptA(pt) {};
+    SkelPoint(const Vector3D &pt,double r,double b):Skeleton(r,b),ptA(pt) {};
     ~SkelPoint() {};
 protected :
-    Vecteur ptA;
-    virtual double distance2(const Vecteur &pos);
+    Vector3D ptA;
+    virtual double distance2(const Vector3D &pos);
 };
 
 #endif // SQUELETON_H

@@ -4,7 +4,7 @@
 #include "contextTuple.hpp"
 
 #include "catoms2DWorld.h"
-#include "vecteur.h"
+#include "vector3D.h"
 
 //#define VIRTUAL_COORDINATES
 #define REAL_COORDINATES
@@ -255,8 +255,8 @@ int Map::distance(Coordinate p2) {
 }
 
 bool Map::areNeighbors(Coordinate p1, Coordinate p2) {
-  Vecteur pos1 = Vecteur(p1.x, 0, p1.y);
-  Vecteur pos2 = Vecteur(p2.x, 0, p2.y);
+  Vector3D pos1 = Vector3D(p1.x, 0, p1.y);
+  Vector3D pos2 = Vector3D(p2.x, 0, p2.y);
   return Catoms2DWorld::getWorld()->areNeighborsGridPos(pos1,pos2);
 }
 

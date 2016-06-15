@@ -79,7 +79,7 @@ void Camera::glLookAt() {
 	gluLookAt(position[0],position[1],position[2],target[0],target[1],target[2], 0.,0.,1.);
 }
 
-void Camera::setLightParameters(const Vecteur &t, double th,double ph,double d,double angle,double nearplane,double farplane) {
+void Camera::setLightParameters(const Vector3D &t, double th,double ph,double d,double angle,double nearplane,double farplane) {
 	ls.target[0] = t[0];
 	ls.target[1] = t[1];
 	ls.target[2] = t[2];
@@ -134,8 +134,8 @@ void Camera::mouseLightZoom(double pas) {
 }
 
 
-const Vecteur Camera::getDirectionSpherical() {
-    return Vecteur(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
+const Vector3D Camera::getDirectionSpherical() {
+    return Vector3D(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
 }
 
 LightSource::LightSource() {
@@ -177,8 +177,8 @@ void LightSource::draw() {
 }
 
 
-const Vecteur LightSource::getDirectionSpherical() {
-    return Vecteur(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
+const Vector3D LightSource::getDirectionSpherical() {
+    return Vector3D(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
 }
 
 

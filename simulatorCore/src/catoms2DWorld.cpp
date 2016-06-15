@@ -51,8 +51,8 @@ namespace Catoms2D {
         objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2Dpicking.obj");
         objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
         camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-        camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-        camera->setTarget(Vecteur(0,0,1.0));
+        camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
+        camera->setTarget(Vector3D(0,0,1.0));
         
         menuId=0;
         numSelectedFace=0;
@@ -78,7 +78,7 @@ namespace Catoms2D {
         delete((Catoms2DWorld*)world);
     }
     
-    void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*),const Vecteur &pos,const Color &color,bool master) {
+    void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*),const Vector3D &pos,const Color &color,bool master) {
         
         if (blockId == -1) {
             map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -471,7 +471,7 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         updateGlData(blc,gridToWorldPosition(blc->position));
     }
 
-    void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vecteur &position) {
+    void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vector3D &position) {
         Catoms2DGlBlock *glblc = blc->getGlBlock();
         if (glblc) {
             lock();
@@ -482,7 +482,7 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         }
     }
 
-    void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vecteur &position, double angle) {
+    void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle) {
         Catoms2DGlBlock *glblc = blc->getGlBlock();
         if (glblc) {
             lock();
@@ -494,8 +494,8 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         }
     }
 
-    Vecteur Catoms2DWorld::worldToGridPosition(Vecteur &pos) {
-        Vecteur res;
+    Vector3D Catoms2DWorld::worldToGridPosition(Vector3D &pos) {
+        Vector3D res;
         res.pt[2] = round(pos[2] / (M_SQRT3_2 * blockSize[2]));
         res.pt[1] = 0;
         res.pt[0] = (int) (pos[0]/blockSize[0] - ((int)res.pt[2]%2)*0.5);
@@ -511,8 +511,8 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         return res;
     }
 
-    Vecteur Catoms2DWorld::gridToWorldPosition(Vecteur &pos) {
-        Vecteur res;
+    Vector3D Catoms2DWorld::gridToWorldPosition(Vector3D &pos) {
+        Vector3D res;
     
         res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
         res.pt[1] = blockSize[1]/2.0;
@@ -528,7 +528,7 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         return res;
     }
 
-    bool Catoms2DWorld::areNeighborsWorldPos(Vecteur &pos1, Vecteur &pos2) {
+    bool Catoms2DWorld::areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2) {
         float distance = 0;
         for (int i = 0; i < 3; i++) {
             distance += powf(pos2[i] - pos1[i],2);
@@ -537,9 +537,9 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         return (ceil(distance) == blockSize[0]);
     }
 
-    bool Catoms2DWorld::areNeighborsGridPos(Vecteur &pos1, Vecteur &pos2) {
-        Vecteur wpos1 = gridToWorldPosition(pos1);
-        Vecteur wpos2 = gridToWorldPosition(pos2);
+    bool Catoms2DWorld::areNeighborsGridPos(Vector3D &pos1, Vector3D &pos2) {
+        Vector3D wpos1 = gridToWorldPosition(pos1);
+        Vector3D wpos2 = gridToWorldPosition(pos2);
         return areNeighborsWorldPos(wpos1,wpos2);
     }
 
@@ -550,7 +550,7 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         case 1 : {
             OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 
-            Vecteur pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
+            Vector3D pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
 
             addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
             linkBlocks();

@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
-#include "vecteur.h"
+#include "vector3D.h"
 #if !defined(M_PI)
 #define M_PI	3.1415926535897932384626433832795
 #endif
@@ -29,20 +29,20 @@ class Matrice
   friend istream& operator>>(istream& f,Matrice &p);
   friend ostream& operator<<(ostream& f,Matrice &p);
   friend const Matrice operator *(const Matrice,const Matrice);
-  friend const Vecteur operator *(const Matrice,const Vecteur);
+  friend const Vector3D operator *(const Matrice,const Vector3D);
   inline double operator[](const int i) { return m[i]; };
-  inline void setTranslation(Vecteur V) { identity(); m[3]=V[0]; m[7]=V[1]; m[11]=V[2]; m[15]=1.0; };
+  inline void setTranslation(Vector3D V) { identity(); m[3]=V[0]; m[7]=V[1]; m[11]=V[2]; m[15]=1.0; };
   inline void setTranslation(double Vx,double Vy,double Vz) { identity(); m[3]=Vx; m[7]=Vy; m[11]=Vz; m[15]=1.0; };
-  inline void setTranslationGL(Vecteur V) { identity(); m[12]=V[0]; m[13]=V[1]; m[14]=V[2]; m[15]=1.0; };
+  inline void setTranslationGL(Vector3D V) { identity(); m[12]=V[0]; m[13]=V[1]; m[14]=V[2]; m[15]=1.0; };
   inline void setHomothetie(double hx,double hy,double hz) { identity(); m[0]=hx; m[5]=hy; m[10]=hz; m[15]=1.0; };
   void setRotationX(double a);
   void setRotationY(double a);
   void setRotationZ(double a);
-  void setRotation(double a,const Vecteur &V);
+  void setRotation(double a,const Vector3D &V);
   double determinant() const;
   void inverse(Matrice &) const;
   void transpose(Matrice &) const;
-  void setGLmat(const Matrice &,const Vecteur &);
+  void setGLmat(const Matrice &,const Vector3D &);
   void set(double,double,double,double,double,double,double,double,double,double,double,double,double,double,double,double);
   void setFromGL(GLfloat *mat);
   void glLoadMatrix();
@@ -52,8 +52,8 @@ class Matrice
 };
 
 const Matrice operator *(const Matrice,const Matrice);
-const Vecteur operator *(const Matrice,const Vecteur);
-const Vecteur operator *(const Vecteur,const Matrice);
+const Vector3D operator *(const Matrice,const Vector3D);
+const Vector3D operator *(const Vector3D,const Matrice);
 
 double det33(double,double,double,double,double,double,double,double,double);
 

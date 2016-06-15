@@ -45,7 +45,7 @@ public:
 
 	Catoms3D::Catoms3DScheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
-    Vecteur myPosition; // has relative position from the master
+    Vector3D myPosition; // has relative position from the master
     bool hasPosition; // flag position
     int distance;
     CsgUtils csgUtils;
@@ -84,18 +84,18 @@ public :
 class CSG_message : public Message {
     char *csgBuffer;
     int csgBufferSize;
-    Vecteur position;
+    Vector3D position;
     vector<Brick> bricks;
     string bitmap;
 public :
-	CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> bricks, string _bitmap, Vecteur position);
+	CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> bricks, string _bitmap, Vector3D position);
 	~CSG_message();
 
 	char* getCsgBuffer() { return csgBuffer; };
 	int getCsgBufferSize() { return csgBufferSize; };
 	vector<Brick> getBricks() { return bricks; };
 	string getBitmap() { return bitmap; };
-	Vecteur getPosition() { return position; };
+	Vector3D getPosition() { return position; };
 };
 
 

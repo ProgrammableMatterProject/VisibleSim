@@ -288,7 +288,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
           info.str("");
 					info << robotBlock->blockId << " rec. AnswerDelayMsg(" << recvMessage->globalRDVTime << ") from " << sourceId;
 					scheduler->trace(info.str(),hostBlock->blockId);
-					Vecteur finalPosition;
+					Vector3D finalPosition;
 					finalPosition.set(robotBlock->position.pt[0]+motionVector.x,
           robotBlock->position.pt[1]+motionVector.y,robotBlock->position.pt[2]+motionVector.z);
           blockToUnlock=0;
@@ -546,7 +546,7 @@ void Robot01BlockCode::sendAnswerDelayOrMotionDelayMessage(uint64_t gt) {
       info << robotBlock->blockId << " send AnswerDelayMessage(" << adm_message->globalRDVTime << ") to " << trainPrevious->hostBlock->blockId;
       scheduler->trace(info.str(),hostBlock->blockId,GREEN);
     }
-    Vecteur finalPosition(robotBlock->position.pt[0]+motionVector.x,
+    Vector3D finalPosition(robotBlock->position.pt[0]+motionVector.x,
                               robotBlock->position.pt[1]+motionVector.y,
 															robotBlock->position.pt[2]+motionVector.z);
     scheduler->schedule(new MotionStartEvent(rdvTime,robotBlock,finalPosition));

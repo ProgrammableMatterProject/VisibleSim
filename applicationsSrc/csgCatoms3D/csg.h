@@ -9,14 +9,14 @@
 #define CSG_H_
 
 #include <vector>
-#include "vecteur.h"
+#include "vector3D.h"
 
 enum class node_t {bool_op, shape, transformation, color, end};
 
 class Shape3D
 {
 public:
-    virtual bool isInside(Vecteur basePos, Vecteur p) = 0;
+    virtual bool isInside(Vector3D basePos, Vector3D p) = 0;
     virtual ~Shape3D() {};
     virtual Shape3D* clone() = 0;
 };
@@ -32,7 +32,7 @@ public:
     virtual ~Cube() {};
 
     void print();
-    bool isInside(Vecteur basePos, Vecteur p);
+    bool isInside(Vector3D basePos, Vector3D p);
 
     virtual Shape3D* clone() { return new Cube(*this); }
 };
@@ -45,7 +45,7 @@ public:
     virtual ~Sphere() {};
 
     void print();
-    bool isInside(Vecteur basePos, Vecteur p);
+    bool isInside(Vector3D basePos, Vector3D p);
 
     virtual Shape3D* clone() { return new Sphere(*this); };
 };
@@ -59,7 +59,7 @@ public:
     virtual ~Cylinder() {};
 
     void print();
-    bool isInside(Vecteur basePos, Vecteur p);
+    bool isInside(Vector3D basePos, Vector3D p);
 
     virtual Shape3D* clone() { return new Cylinder(*this); };
 };

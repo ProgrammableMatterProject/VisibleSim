@@ -83,7 +83,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 			string str(attr);
 			int pos1 = str.find_first_of(','),
 			pos2 = str.find_last_of(',');
-			Vecteur target;
+			Vector3D target;
 			target.pt[0] = atof(str.substr(0,pos1).c_str());
 			target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
@@ -123,7 +123,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 	// loading the spotlight parameters
 	nodeConfig = node->FirstChild("spotlight");
 	if (nodeConfig) {
-		Vecteur target;
+		Vector3D target;
 		float az=0,ele=60,dist=1000,angle=50;
 		TiXmlElement* lightElement = nodeConfig->ToElement();
 		const char *attr=lightElement->Attribute("target");
@@ -182,7 +182,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 
 	/* Reading a robotblock */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
-		Vecteur position;
+		Vector3D position;
 		Color color;
 		bool master;
 		while (block) {

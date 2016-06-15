@@ -10,7 +10,7 @@
 
 #include "openglViewer.h"
 #include "world.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "catoms2DBlock.h"
 #include "catoms2DCapabilities.h"
 #include "objLoader.h"
@@ -54,7 +54,7 @@ public:
 		return((Catoms2DBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*), const Vecteur &pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*), const Vector3D &pos, const Color &col, bool master=false);
 	void deleteBlock(Catoms2DBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
@@ -73,18 +73,18 @@ public:
 	void linkBlocks();
 	void loadTextures(const string &str);
 
-	Vecteur worldToGridPosition(Vecteur &pos);
-	Vecteur gridToWorldPosition(Vecteur &pos);
+	Vector3D worldToGridPosition(Vector3D &pos);
+	Vector3D gridToWorldPosition(Vector3D &pos);
 
-	bool areNeighborsWorldPos(Vecteur &pos1, Vecteur &pos2);
-	bool areNeighborsGridPos(Vecteur &pos1, Vecteur &pos2);
+	bool areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2);
+	bool areNeighborsGridPos(Vector3D &pos1, Vector3D &pos2);
 	
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
 	virtual void updateGlData(Catoms2DBlock*blc);
-	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position);
-	virtual void updateGlData(Catoms2DBlock*blc, const Vecteur &position, double angle);
+	virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
+	virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
 	virtual void createHelpWindow();
 	virtual void createPopupMenu(int ix,int iy);
 	inline virtual Camera *getCamera() { return camera; };

@@ -213,7 +213,7 @@ void SbReconfBlockCode::setRulesColor() {
 
 void SbReconfBlockCode::startMotion(uint64_t t,const SmartBlocks::PointCel &mv,int step,const vector<short>&path) {
 	prepareUnlock(path,step);
-	Vecteur finalPosition;
+	Vector3D finalPosition;
 	finalPosition.set(block->position.pt[0]+mv.x,block->position.pt[1]+mv.y,0);
 	scheduler->schedule(new MotionStartEvent(t,block,finalPosition));
 #ifdef verbose

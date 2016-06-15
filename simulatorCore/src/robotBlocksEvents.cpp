@@ -21,7 +21,7 @@ namespace RobotBlocks {
 //
 //===========================================================================================================
 
-MotionStartEvent::MotionStartEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
+MotionStartEvent::MotionStartEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_START;
 	finalPosition = fpos;
@@ -54,7 +54,7 @@ const string MotionStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
+MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STEP;
 	finalPosition = fpos;
@@ -62,7 +62,7 @@ MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vecte
 	motionStep.setLength(0.1);
 }
 
-MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos,const Vecteur &step): BlockEvent(t,block) {
+MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos,const Vector3D &step): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STEP;
 	concernedBlock = block;
@@ -103,7 +103,7 @@ const string MotionStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStopEvent::MotionStopEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
+MotionStopEvent::MotionStopEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STOP;
 	finalPosition = fpos;

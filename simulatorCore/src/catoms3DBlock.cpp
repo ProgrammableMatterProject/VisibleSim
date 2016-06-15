@@ -58,8 +58,8 @@ void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code
 }
 
 short Catoms3DBlock::getOrientationFromMatrix(const Matrice &mat) {
-    Vecteur x(1.0,0.0,0.0,0.0); // vecteur X
-    Vecteur v;
+    Vector3D x(1.0,0.0,0.0,0.0); // Vector3D X
+    Vector3D v;
     //p = mat*x;
     Matrice mat_1;
     mat.inverse(mat_1);
@@ -95,7 +95,7 @@ std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
 }
 
 bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
-    Vecteur realPos;
+    Vector3D realPos;
 
     Catoms3DWorld *wrl = getWorld();
     const float *bs = wrl->getBlocksSize();
@@ -115,7 +115,7 @@ bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
 
 P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
     Catoms3DWorld *wrl = getWorld();
-    Vecteur realPos = wrl->gridToWorldPosition(pos);
+    Vector3D realPos = wrl->gridToWorldPosition(pos);
 
     Matrice m_1;
     ptrGlBlock->mat.inverse(m_1);

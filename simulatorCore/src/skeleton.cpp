@@ -14,7 +14,7 @@ void Skeleton::add(Skeleton *child) {
     children.push_back(child);
 }
 
-double Skeleton::potentiel(const Vecteur &pos) {
+double Skeleton::potentiel(const Vector3D &pos) {
     double d2 = distance2(pos);
 
     double sum=0;
@@ -27,12 +27,12 @@ double Skeleton::potentiel(const Vecteur &pos) {
     return sum;
 }
 
-double SkelPoint::distance2(const Vecteur &pos) {
+double SkelPoint::distance2(const Vector3D &pos) {
     return (pos-ptA).norme2();
 }
 
-double SkelLine::distance2(const Vecteur &pos) {
-    Vecteur AM = pos-ptA;
+double SkelLine::distance2(const Vector3D &pos) {
+    Vector3D AM = pos-ptA;
     double AMAB = AM*AB;
     if (AMAB<0) return AM.norme2();
     AMAB=(AMAB*AMAB)/AB2;

@@ -8,7 +8,7 @@ void Cube::print() {
     cout << "CUBE " << size_x << ' ' << size_y << ' ' << size_z << endl;
 }
 
-bool Cube::isInside(Vecteur basePos, Vecteur p) {
+bool Cube::isInside(Vector3D basePos, Vector3D p) {
     //center
     if (false) {
         if (fabs(p.pt[0] - basePos.pt[0]) < size_x/2 && fabs(p.pt[1] - basePos.pt[1]) < size_y/2 && fabs(p.pt[2] - basePos.pt[2]) < size_z/2)
@@ -27,7 +27,7 @@ void Sphere::print() {
     cout << "SPHERE " << radius << endl;
 }
 
-bool Sphere::isInside(Vecteur basePos, Vecteur p) {
+bool Sphere::isInside(Vector3D basePos, Vector3D p) {
     double dist = sqrt(pow(p.pt[0]-basePos.pt[0], 2) + pow(p.pt[1]-basePos.pt[1], 2) + pow(p.pt[2]-basePos.pt[2], 2));
     if (dist < radius)
         return true;
@@ -40,7 +40,7 @@ void Cylinder::print() {
     cout << "CYLINDER " << h << " " << r << endl;
 }
 
-bool Cylinder::isInside(Vecteur basePos, Vecteur p) {
+bool Cylinder::isInside(Vector3D basePos, Vector3D p) {
     if (p.pt[2] - basePos.pt[2] < h && p.pt[2] - basePos.pt[2] > -EPS)
         if (sqrt(pow(p.pt[0]-basePos.pt[0], 2) + pow(p.pt[1]-basePos.pt[1],2)) < r)
             return true;

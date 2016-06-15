@@ -32,8 +32,8 @@ ostream& operator<<(ostream& f,Matrice&p)
   return f;
 }
 
-const Vecteur operator *(const Matrice p1, const Vecteur p2)
-{ Vecteur r;
+const Vector3D operator *(const Matrice p1, const Vector3D p2)
+{ Vector3D r;
   for (int i=0; i<4; i++)
   { r.pt[0] += p1.m[i]*p2.pt[i];
     r.pt[1] += p1.m[i+4]*p2.pt[i];
@@ -43,8 +43,8 @@ const Vecteur operator *(const Matrice p1, const Vecteur p2)
   return r;
 }
 
-const Vecteur operator *(const Vecteur p1, const Matrice p2)
-{ Vecteur r;
+const Vector3D operator *(const Vector3D p1, const Matrice p2)
+{ Vector3D r;
   for (int i=0; i<4; i++)
   { r.pt[0] += p2.m[i*4]*p1.pt[i];
     r.pt[1] += p2.m[i*4+1]*p1.pt[i];
@@ -167,7 +167,7 @@ void Matrice::set(double x00,double x10,double x20,double x30,
   m[15] = x33;
 }
 
-void Matrice::setGLmat(const Matrice &R,const Vecteur &T)
+void Matrice::setGLmat(const Matrice &R,const Vector3D &T)
 { m[0] = R.m[0];
   m[1] = R.m[4];
   m[2] = R.m[8];
@@ -187,7 +187,7 @@ void Matrice::setGLmat(const Matrice &R,const Vecteur &T)
 
 }
 
-void Matrice::setRotation(double a,const Vecteur &V)
+void Matrice::setRotation(double a,const Vector3D &V)
 { double cosa=cos(a*M_PI/180.),sina=sin(a*M_PI/180.);
 
   m[0] = V.pt[0]*V.pt[0] + cosa*(1.-V.pt[0]*V.pt[0]);

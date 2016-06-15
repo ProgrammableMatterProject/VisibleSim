@@ -83,7 +83,7 @@ namespace Catoms2D {
       if (attr) {
 	string str(attr);
 	int pos = str.find_first_of(',');
-	Vecteur target;
+	Vector3D target;
 	target.pt[0] = atof(str.substr(0,pos).c_str());
 	target.pt[1] = 1;
 	target.pt[2] = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
@@ -123,7 +123,7 @@ namespace Catoms2D {
     // loading the spotlight parameters
     nodeConfig = node->FirstChild("spotlight");
     if (nodeConfig) {
-      Vecteur target;
+      Vector3D target;
       float az=0,ele=60,dist=1000,angle=50;
       TiXmlElement* lightElement = nodeConfig->ToElement();
       const char *attr=lightElement->Attribute("target");
@@ -182,7 +182,7 @@ namespace Catoms2D {
 #if 1
       /* Reading a catoms */
       TiXmlNode *block = nodeBlock->FirstChild("block");
-      Vecteur position;
+      Vector3D position;
       Color color;
       bool master;
       while (block) {
@@ -269,7 +269,7 @@ namespace Catoms2D {
     if (nodeGrid) {
       world->initTargetGrid();
       TiXmlNode *block = nodeGrid->FirstChild("block");
-      Vecteur position;
+      Vector3D position;
       const char *attr;
       TiXmlElement* element;
       while (block) {

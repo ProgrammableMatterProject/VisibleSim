@@ -7,7 +7,7 @@
 
 #ifndef BLINKYBLOCKSSCENARIO_H_
 #define BLINKYBLOCKSSCENARIO_H_
-#include "vecteur.h"
+#include "vector3D.h"
 #include "blinkyBlocksWorld.h"
 #include "scheduler.h"
 
@@ -54,9 +54,9 @@ public:
 };
 
 class ScenarioAddBlockEvent:public ScenarioEvent {
-	Vecteur position;
+	Vector3D position;
 public:
-	ScenarioAddBlockEvent(float t,const Vecteur &pos):ScenarioEvent(t),position(pos) {};
+	ScenarioAddBlockEvent(float t,const Vector3D &pos):ScenarioEvent(t),position(pos) {};
 	~ScenarioAddBlockEvent() {};
 	virtual void exportEventToScheduler() {};
 };

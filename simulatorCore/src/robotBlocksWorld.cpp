@@ -45,8 +45,8 @@ RobotBlocksWorld::RobotBlocksWorld(int slx,int sly,int slz, int argc, char *argv
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlockPicking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-	camera->setTarget(Vecteur(0,0,1.0));
+	camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
+	camera->setTarget(Vector3D(0,0,1.0));
 
 	menuId=0;
 	numSelectedFace=0;
@@ -73,7 +73,7 @@ void RobotBlocksWorld::deleteWorld() {
 	delete((RobotBlocksWorld*)world);
 }
 
-void RobotBlocksWorld::addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*),const Vecteur &pos,const Color &color,bool master) {
+void RobotBlocksWorld::addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*),const Vector3D &pos,const Color &color,bool master) {
 
 	if (blockId == -1) {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -372,7 +372,7 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc) {
 	RobotBlocksGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
 		lock();
-		Vecteur pos(blockSize[0]*blc->position.pt[0],blockSize[1]*blc->position.pt[1],blockSize[2]*blc->position.pt[2]);
+		Vector3D pos(blockSize[0]*blc->position.pt[0],blockSize[1]*blc->position.pt[1],blockSize[2]*blc->position.pt[2]);
 		glblc->setPosition(pos);
 		glblc->setColor(blc->color);
 		unlock();
@@ -393,7 +393,7 @@ void RobotBlocksWorld::menuChoice(int n) {
 		case 1 : {
 			RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 			OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-			Vecteur pos=bb->position;
+			Vector3D pos=bb->position;
 			switch (numSelectedFace) {
 				case NeighborDirection::Left :
 					pos.pt[0]--;

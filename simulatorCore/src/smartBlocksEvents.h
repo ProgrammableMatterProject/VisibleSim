@@ -20,9 +20,9 @@ namespace SmartBlocks {
 //===========================================================================================================
 
 class MotionStartEvent : public BlockEvent {
-    Vecteur finalPosition;
+    Vector3D finalPosition;
 public:
-	MotionStartEvent(uint64_t, SmartBlocksBlock *block,const Vecteur &fpos);
+	MotionStartEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
 	MotionStartEvent(MotionStartEvent *ev);
 	~MotionStartEvent();
 	void consumeBlockEvent() {};
@@ -37,10 +37,10 @@ public:
 //===========================================================================================================
 
 class MotionStepEvent : public BlockEvent {
-    Vecteur finalPosition,motionStep;
+    Vector3D finalPosition,motionStep;
 public:
-	MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vecteur &fpos);
-	MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vecteur &fpos,const Vecteur &step);
+	MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
+	MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos,const Vector3D &step);
 	MotionStepEvent(MotionStepEvent *ev);
 	~MotionStepEvent();
 	void consumeBlockEvent() {};
@@ -55,9 +55,9 @@ public:
 //===========================================================================================================
 
 class MotionStopEvent : public BlockEvent {
-    Vecteur finalPosition;
+    Vector3D finalPosition;
 public:
-	MotionStopEvent(uint64_t, SmartBlocksBlock *block,const Vecteur &fpos);
+	MotionStopEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
 	MotionStopEvent(MotionStepEvent *ev);
 	~MotionStopEvent();
 	void consumeBlockEvent() {};

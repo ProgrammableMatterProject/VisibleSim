@@ -9,7 +9,7 @@
 #define GLBLOCK_H_
 #include <string>
 #include "shaders.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "color.h"
 
 using namespace std;
@@ -23,17 +23,17 @@ public :
 	int blockId;
 
 	GlBlock(int id);
-	GlBlock(int id,const Vecteur &pos, const Vecteur &col);
+	GlBlock(int id,const Vector3D &pos, const Vector3D &col);
 	virtual ~GlBlock();
 
-	virtual void setPosition(const Vecteur &p);
+	virtual void setPosition(const Vector3D &p);
 	virtual void setColor(const Color &c);
-	virtual void setColor(const Vecteur &c);
+	virtual void setColor(const Vector3D &c);
 	virtual void setVisible(bool visible);
 	virtual void toggleHighlight();
 	virtual string getInfo();
 	virtual string getPopupInfo();
-	virtual const Vecteur getPosition() { return Vecteur(position[0],position[1],position[2],1); };
+	virtual const Vector3D getPosition() { return Vector3D(position[0],position[1],position[2],1); };
 };
 
 #endif /* GLBLOCK_H_ */

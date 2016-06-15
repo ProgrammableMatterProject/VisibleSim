@@ -110,7 +110,7 @@ void BlinkyBlocksBlock::pauseClock(uint64_t delay, uint64_t start){
 
 }
 
-void BlinkyBlocksBlock::setPosition(const Vecteur &p) {
+void BlinkyBlocksBlock::setPosition(const Vector3D &p) {
 	position=p;
 	getWorld()->updateGlData(this);
 }
@@ -192,7 +192,7 @@ P2PNetworkInterface* BlinkyBlocksBlock::getInterfaceDestId(int id) {
 }
 
 // inline string BlinkyBlocksBlock::xmlBuildingBlock() {       
-// 	return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
+// 	return "\t\t<block position=" + ConfigUtils::Vector3D3DToXmlString(position)
 // 		+ " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
 // }
     

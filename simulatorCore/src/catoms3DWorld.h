@@ -10,7 +10,7 @@
 
 #include "openglViewer.h"
 #include "world.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "cell3DPosition.h"
 #include "catoms3DBlock.h"
 #include "objLoader.h"
@@ -75,7 +75,7 @@ public:
 	//inline presence getTargetGrid(int ix,int iy,int iz) { return targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]; };
 	//inline void setTargetGrid(presence value,int ix,int iy,int iz) { targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value; };
 	inline void setSkeleton(Skeleton *s) { skeleton=s; };
-	inline double getSkeletonPotentiel(const Vecteur& pos) { return (skeleton==NULL)?-1:skeleton->potentiel(pos); };
+	inline double getSkeletonPotentiel(const Vector3D& pos) { return (skeleton==NULL)?-1:skeleton->potentiel(pos); };
 	//void initTargetGrid();
 
 	//inline void setCapabilities(Catoms3DCapabilities *capa) { capabilities=capa; };
@@ -86,8 +86,8 @@ public:
 */
 	void linkBlocks();
 
-	Cell3DPosition worldToGridPosition(Vecteur &pos);
-	Vecteur gridToWorldPosition(const Cell3DPosition &pos);
+	Cell3DPosition worldToGridPosition(Vector3D &pos);
+	Vector3D gridToWorldPosition(const Cell3DPosition &pos);
 
 	virtual void glDraw();
 	virtual void glDrawId();
@@ -95,7 +95,7 @@ public:
 	virtual void updateGlData(Catoms3DBlock*blc,const Color &color);
 	virtual void updateGlData(Catoms3DBlock*blc, bool visible);
 	virtual void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
-	virtual void updateGlData(Catoms3DBlock*blc, const Vecteur &position);
+	virtual void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
 	virtual void updateGlData(Catoms3DBlock*blc, const Matrice &mat);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };

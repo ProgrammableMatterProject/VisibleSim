@@ -31,14 +31,14 @@ namespace Catoms2D {
     OUTPUT << "Catoms2DBlock destructor " << blockId << endl;
   }
 
-  void Catoms2DBlock::setPosition(const Vecteur &p) {
+  void Catoms2DBlock::setPosition(const Vector3D &p) {
     position=p;
     getWorld()->updateGlData(this);
   }
 
   void Catoms2DBlock::setColor(const Color &c) {
     color = c;
-    getWorld()->updateGlData(this,Vecteur(ptrGlBlock->position[0],ptrGlBlock->position[1],ptrGlBlock->position[2]),ptrGlBlock->angle);
+    getWorld()->updateGlData(this,Vector3D(ptrGlBlock->position[0],ptrGlBlock->position[1],ptrGlBlock->position[2]),ptrGlBlock->angle);
   }
 
   NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
@@ -54,8 +54,8 @@ namespace Catoms2D {
     return NeighborDirection::Direction(0);
   }
   
-  Vecteur Catoms2DBlock::getPosition(NeighborDirection::Direction d) {
-    Vecteur p = position;
+  Vector3D Catoms2DBlock::getPosition(NeighborDirection::Direction d) {
+    Vector3D p = position;
 
     switch(d) {
     case NeighborDirection::BottomLeft:
@@ -92,7 +92,7 @@ namespace Catoms2D {
     return p;
   }
 
-    Vecteur Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
+    Vector3D Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
     return getPosition(getDirection(p2p));
   }
 
@@ -118,7 +118,7 @@ namespace Catoms2D {
   }
 	
   bool Catoms2DBlock::hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor) {
-    Vecteur p = getPosition(p2p);
+    Vector3D p = getPosition(p2p);
     if(p2p->connectedInterface) {
       return true;
     } else if (groundIsNeighbor && (p[2]<0)) {
@@ -234,7 +234,7 @@ namespace Catoms2D {
 				for (int i = 1; i < 4; i++) {
 					int dir = ((j + i) % 6);
 					P2PNetworkInterface *p2pNeighbor = getInterface(dir);
-					Vecteur p = getPosition((NeighborDirection::Direction)dir);
+					Vector3D p = getPosition((NeighborDirection::Direction)dir);
 					if (p2pNeighbor->connectedInterface || (p[2] < 0)) {
 						res = false;
 					}
@@ -257,7 +257,7 @@ namespace Catoms2D {
 				for (int i = 1; i < 4; i++) {
 					int dir = ((j - i)%6 + 6)%6;
 					P2PNetworkInterface *p2pNeighbor = getInterface(dir);
-					Vecteur p = getPosition((NeighborDirection::Direction)dir);
+					Vector3D p = getPosition((NeighborDirection::Direction)dir);
 					if (p2pNeighbor->connectedInterface || (p[2] < 0)) {
 						res = false;
 					}
@@ -314,7 +314,7 @@ namespace Catoms2D {
         }
       }
       P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)p2pDirection);
-      Vecteur p = getPosition((NeighborDirection::Direction)p2pDirection);
+      Vector3D p = getPosition((NeighborDirection::Direction)p2pDirection);
       if (p2p->connectedInterface || (p[2] < 0)) {
         //cout << "somebody is connected there" << endl;
         res = false;
@@ -333,7 +333,7 @@ namespace Catoms2D {
   }
 
   // inline string Catoms2DBlock::xmlBuildingBlock() {       
-  //   return "\t\t<block position=" + ConfigUtils::vecteur3DToXmlString(position)
+  //   return "\t\t<block position=" + ConfigUtils::Vector3D3DToXmlString(position)
   //     + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
   // }
 

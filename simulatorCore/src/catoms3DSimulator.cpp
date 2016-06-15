@@ -85,7 +85,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 			string str(attr);
 			int pos1 = str.find_first_of(','),
 			pos2 = str.find_last_of(',');
-			Vecteur target;
+			Vector3D target;
 			target.pt[0] = atof(str.substr(0,pos1).c_str());
 			target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
@@ -125,7 +125,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	// loading the spotlight parameters
 	nodeConfig = node->FirstChild("spotlight");
 	if (nodeConfig) {
-		Vecteur target;
+		Vector3D target;
 		float az=0,ele=60,dist=1000,angle=50;
 		double def_near=10.0,def_far=1500.0;
 		TiXmlElement* lightElement = nodeConfig->ToElement();
@@ -289,7 +289,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 		world->setSkeleton(sk);
 		/* skeleton points */
 		TiXmlNode *skelPoint = nodeGrid->FirstChild("skeleton_point");
-		Vecteur position;
+		Vector3D position;
 		double radius=10,blobbiness=-0.1;
 		const char *attr;
 		TiXmlElement* element;
@@ -320,7 +320,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 		}
         /* skeleton points */
 		TiXmlNode *skelLine = nodeGrid->FirstChild("skeleton_line");
-		Vecteur posA,posB;
+		Vector3D posA,posB;
 		while (skelLine) {
 		   	element = skelLine->ToElement();
 			attr = element->Attribute("posA");
@@ -364,7 +364,7 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	if (nodeGrid) {
 		world->initTargetGrid();
 		TiXmlNode *block = nodeGrid->FirstChild("block");
-		Vecteur position;
+		Vector3D position;
 		const char *attr;
 		TiXmlElement* element;
 		while (block) {

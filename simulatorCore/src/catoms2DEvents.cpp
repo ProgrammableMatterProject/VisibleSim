@@ -59,7 +59,7 @@ namespace Catoms2D {
   //
   //===========================================================================================================
 
-  MotionStepEvent::MotionStepEvent(uint64_t t, Catoms2DBlock *block,const Vecteur &p,double angle2goal,int s): BlockEvent(t,block) {
+  MotionStepEvent::MotionStepEvent(uint64_t t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_STEP;
 
@@ -85,17 +85,17 @@ namespace Catoms2D {
     Matrice roty;
     if (angle<ANGULAR_STEP) {
       roty.setRotationY(-sens*angle);
-      Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
-      Vecteur BC = roty*BA;
-      Vecteur pos = pivot+BC;
+      Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
+      Vector3D BC = roty*BA;
+      Vector3D pos = pivot+BC;
       rb->angle += angle*sens;
       Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+angle*sens);
       scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
     } else {
       roty.setRotationY(-sens*ANGULAR_STEP);
-      Vecteur BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
-      Vecteur BC = roty*BA;
-      Vecteur pos = pivot+BC;
+      Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
+      Vector3D BC = roty*BA;
+      Vector3D pos = pivot+BC;
       rb->angle += ANGULAR_STEP*sens;
       Catoms2DWorld::getWorld()->updateGlData(rb,pos,rb->ptrGlBlock->angle+ANGULAR_STEP*sens);
       scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb, pivot,angle-ANGULAR_STEP,sens));
@@ -133,8 +133,8 @@ namespace Catoms2D {
     /* Transformer les coordonnées GL en coordonnées grille*/
 
     Catoms2DWorld *wrld=Catoms2DWorld::getWorld();
-    Vecteur worldPos = Vecteur(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
-    Vecteur gridPos = wrld->worldToGridPosition(worldPos);
+    Vector3D worldPos = Vector3D(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
+    Vector3D gridPos = wrld->worldToGridPosition(worldPos);
     cout << "---------------motion end-----------------"<<endl;
     cout << worldPos << endl;
     cout << gridPos << endl;

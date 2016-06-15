@@ -763,7 +763,7 @@ void Mtl::glBind() {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// pour DEBUG : affichage d'un vecteur
+// pour DEBUG : affichage d'un Vector3D
 istream& operator>>(istream& in, Sommet& p3)
 { in >> p3.v[0] >> p3.v[1] >> p3.v[2];
   return in;

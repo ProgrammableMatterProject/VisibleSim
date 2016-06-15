@@ -71,7 +71,7 @@ static bool isNeighbor(Catoms2DBlock *c,Coordinate p) {
   
   // test all neighbors cell
   for (int i = 0; i < 6; i++) {
-    Vecteur v = c->getPosition((NeighborDirection::Direction)i);
+    Vector3D v = c->getPosition((NeighborDirection::Direction)i);
     Coordinate ci(v[0],v[2]);
     if (ci == p) {
       return true;
@@ -558,7 +558,7 @@ static void move(Catoms2DBlock* c, Catoms2DMove &m) {
   c->angle += 60*m.getDirection();
   // set grid and update gl world
   world->setGridPtr(p.x,0,p.y,c);
-  c->setPosition(Vecteur(p.x,0,p.y)); 
+  c->setPosition(Vector3D(p.x,0,p.y)); 
   world->updateGlData(c,world->gridToWorldPosition(c->position),c->angle);
   // connect
   world->connectBlock(c);

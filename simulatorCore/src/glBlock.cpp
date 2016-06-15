@@ -11,7 +11,7 @@ GlBlock::GlBlock(int id):blockId(id) {
 	isHighlighted = false;
 }
 
-GlBlock::GlBlock(int id,const Vecteur &pos, const Vecteur &col) : blockId(id) {
+GlBlock::GlBlock(int id,const Vector3D &pos, const Vector3D &col) : blockId(id) {
 	position[0] = pos[0];
 	position[1] = pos[1];
 	position[2] = pos[2];
@@ -26,13 +26,13 @@ GlBlock::~GlBlock() {
 
 }
 
-void GlBlock::setPosition(const Vecteur &pos) {
+void GlBlock::setPosition(const Vector3D &pos) {
 	position[0] = GLfloat(pos[0]);
 	position[1] = GLfloat(pos[1]);
 	position[2] = GLfloat(pos[2]);
 }
 
-void GlBlock::setColor(const Vecteur &col) {
+void GlBlock::setColor(const Vector3D &col) {
 	color[0] = GLfloat(col[0]);
 	color[1] = GLfloat(col[1]);
 	color[2] = GLfloat(col[2]);

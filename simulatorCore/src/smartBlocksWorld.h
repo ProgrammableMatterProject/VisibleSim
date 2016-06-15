@@ -10,7 +10,7 @@
 
 #include "openglViewer.h"
 #include "world.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "smartBlocksBlock.h"
 #include "smartBlocksCapabilities.h"
 
@@ -51,7 +51,7 @@ namespace SmartBlocks {
 
         virtual void addBlock(int blockId,
                               SmartBlocksBlockCode *(*smartBlockCodeBuildingFunction)(SmartBlocksBlock*),
-                              const Vecteur &pos,const Color &col);
+                              const Vector3D &pos,const Color &col);
         inline void setBlocksSize(float *siz) { blockSize[0]=siz[0];blockSize[1]=siz[1];blockSize[2]=siz[2];};
 
         inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,2*sizeof(int)); return targetGrid; };

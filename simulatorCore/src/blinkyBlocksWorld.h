@@ -10,7 +10,7 @@
 
 #include "openglViewer.h"
 #include "world.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "blinkyBlocksBlock.h"
 #include "objLoader.h"
 #include <boost/asio.hpp>
@@ -60,7 +60,7 @@ namespace BlinkyBlocks {
 	    return((BlinkyBlocksBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Vecteur &pos, const Color &col);
+	virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Vector3D &pos, const Color &col);
 	void deleteBlock(BlinkyBlocksBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 

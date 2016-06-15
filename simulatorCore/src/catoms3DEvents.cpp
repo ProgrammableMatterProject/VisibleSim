@@ -172,7 +172,7 @@ const string MotionEndEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vecteur &ax1,double ang1,const Vecteur &ax2,double ang2):angle1(ang1),angle2(ang2) {
+Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2):angle1(ang1),angle2(ang2) {
     static const double c_2 = 0.5/(3+sqrt(2));
     Matrice MA = mobile->getGlBlock()->mat;
     Matrice MB = fixe->getGlBlock()->mat;
@@ -181,7 +181,7 @@ Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vecteur &ax
     // we calculate AB translation in A referentiel
     MA.inverse(MA_1);
     Matrice m = MA_1*MB;
-    AB = m*Vecteur(0,0,0,1);
+    AB = m*Vector3D(0,0,0,1);
 
     Matrice matTAB,matTBA;
     matTAB.setTranslation(AB);
@@ -191,7 +191,7 @@ Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vecteur &ax
     axe1 = m*ax1;
     axe1 = axe1.normer();
 
-    Vecteur v=(AB^axe1).normer();
+    Vector3D v=(AB^axe1).normer();
     AD = 0.5*AB + c_2*v;
 
 
@@ -207,7 +207,7 @@ Rotations::Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vecteur &ax
     // we calculate AC=firstStep*AB translation in A referentiel
     firstStepMatrix.inverse(MA_1);
     m = MA_1*MB;
-    CB = m*Vecteur(0,0,0,1);
+    CB = m*Vector3D(0,0,0,1);
     //matTCB.setTranslation(AB);
     //matTBC.setTranslation(-AB);
 
@@ -288,7 +288,7 @@ void Rotations::getFinalPositionAndOrientation(Cell3DPosition &position, short &
     m = matTAB*m;
     m = firstStepMatrix * m;
 
-    Vecteur p(0,0,0,1),q = m * p;
+    Vector3D p(0,0,0,1),q = m * p;
 
     OUTPUT << "final=" << q << endl;
     position = getWorld()->worldToGridPosition(q);

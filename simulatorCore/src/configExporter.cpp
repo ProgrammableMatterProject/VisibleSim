@@ -33,8 +33,8 @@ namespace BaseSimulator {
     void ConfigExporter::exportCameraAndLightSource() {
         // Export Camera
         TiXmlElement *cam = new TiXmlElement("camera");
-        Vecteur target = camera->getTarget();
-        Vecteur ds = camera->getDirectionSpherical();
+        Vector3D target = camera->getTarget();
+        Vector3D ds = camera->getDirectionSpherical();
         cam->SetAttribute("target", toXmlAttribute(target.pt[0],
                                                    target.pt[1],
                                                    target.pt[2]));
@@ -98,7 +98,7 @@ namespace BaseSimulator {
         BlinkyBlocksBlock *blc = (BlinkyBlocksBlock *)bb;
         TiXmlElement *bbElt = new TiXmlElement("block");
         float *color = blc->color.rgba;
-        Vecteur pos = blc->position;
+        Vector3D pos = blc->position;
         
         bbElt->SetAttribute("position", toXmlAttribute(pos.pt[0],
                                                       pos.pt[1],

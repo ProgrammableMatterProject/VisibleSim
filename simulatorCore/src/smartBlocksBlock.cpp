@@ -82,7 +82,7 @@ SmartBlocksBlock::~SmartBlocksBlock() {
     OUTPUT << "SmartBlocksBlock #" << blockId << " destructor" << endl;
 }
 
-void SmartBlocksBlock::setPosition(const Vecteur &p) {
+void SmartBlocksBlock::setPosition(const Vector3D &p) {
     position=p;
     getWorld()->updateGlData(this);
 }
@@ -120,8 +120,8 @@ NeighborDirection::Direction SmartBlocksBlock::getDirection(P2PNetworkInterface 
     assert(0);			// should never get here
 }
 
-Vecteur SmartBlocksBlock::getPosition(NeighborDirection::Direction d) {
-    Vecteur p = position;
+Vector3D SmartBlocksBlock::getPosition(NeighborDirection::Direction d) {
+    Vector3D p = position;
 
     switch (d) {
     case NeighborDirection::North :

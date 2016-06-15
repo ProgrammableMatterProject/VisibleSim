@@ -56,8 +56,8 @@ Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-	camera->setTarget(Vecteur(0,0,1.0));
+	camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
+	camera->setTarget(Vector3D(0,0,1.0));
 
     menuId=0;
 	numSelectedFace=0;
@@ -389,7 +389,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, bool visible) {
 	}
 }
 
-void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vecteur &position) {
+void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Vector3D &position) {
 	Catoms3DGlBlock *glblc = blc->getGlBlock();
 	if (glblc) {
 		lock();
@@ -419,7 +419,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrice &mat) {
 }
 
 
-Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
+Cell3DPosition Catoms3DWorld::worldToGridPosition(Vector3D &pos) {
 	Cell3DPosition res;
 	static const double round=0.05;
     double v;
@@ -438,8 +438,8 @@ Cell3DPosition Catoms3DWorld::worldToGridPosition(Vecteur &pos) {
 	return res;
 }
 
-Vecteur Catoms3DWorld::gridToWorldPosition(const Cell3DPosition &pos) {
-	Vecteur res;
+Vector3D Catoms3DWorld::gridToWorldPosition(const Cell3DPosition &pos) {
+	Vector3D res;
 
     res.pt[3] = 1.0;
     res.pt[2] = M_SQRT2_2*(pos[2]+0.5)*blockSize[2];
@@ -459,7 +459,7 @@ void Catoms3DWorld::menuChoice(int n) {
 		case 1 : {
 			Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 			OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-			/*Vecteur pos=bb->position;
+			/*Vector3D pos=bb->position;
 			switch (numSelectedFace) {
 				case NeighborDirection::Left :
 					pos.pt[0]--;

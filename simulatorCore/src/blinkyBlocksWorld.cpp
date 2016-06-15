@@ -48,8 +48,8 @@ namespace BlinkyBlocks {
 		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures","blinkyBlockPicking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
 		camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-		camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-		camera->setTarget(Vecteur(0,0,1.0));
+		camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
+		camera->setTarget(Vector3D(0,0,1.0));
 
 		menuId=0;
 		numSelectedFace=0;
@@ -82,7 +82,7 @@ namespace BlinkyBlocks {
 		delete((BlinkyBlocksWorld*)world);
 	}
 
-	void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*),const Vecteur &pos,const Color &col) {
+	void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*),const Vector3D &pos,const Color &col) {
 
 		if (blockId == -1) {
 			map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -376,7 +376,7 @@ namespace BlinkyBlocks {
 		BlinkyBlocksGlBlock *glblc = blc->getGlBlock();
 		if (glblc) {
 			lock();
-			Vecteur pos(blockSize[0]*blc->position[0],blockSize[1]*blc->position[1],blockSize[2]*blc->position[2]);
+			Vector3D pos(blockSize[0]*blc->position[0],blockSize[1]*blc->position[1],blockSize[2]*blc->position[2]);
 			glblc->setPosition(pos);
 			glblc->setColor(blc->color);
 			unlock();
@@ -433,7 +433,7 @@ namespace BlinkyBlocks {
         case 1 : {
             BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getMenuBlock();
             OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-            Vecteur pos=bb->position;
+            Vector3D pos=bb->position;
             switch (numSelectedFace) {
             case NeighborDirection::Left :
                 pos.pt[0]--;

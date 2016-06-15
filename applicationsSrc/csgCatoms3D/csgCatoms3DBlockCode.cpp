@@ -55,7 +55,7 @@ void CsgCatoms3DBlockCode::startup() {
 
 	info << "Starting  ";
 
-    Vecteur basePosition(4, 4, 4);
+    Vector3D basePosition(4, 4, 4);
     info << "POSITION = " << catom->position << endl;
 	scheduler->trace(info.str(),hostBlock->blockId);
     hasPosition = false;
@@ -75,7 +75,7 @@ void CsgCatoms3DBlockCode::startup() {
         else
             catom->setVisible(false);
 
-        myPosition = Vecteur(0, 0, 0);
+        myPosition = Vector3D(0, 0, 0);
         hasPosition = true;
         sendCSGMessage();
         
@@ -210,7 +210,7 @@ void CsgCatoms3DBlockCode::calcMesh() {
 void CsgCatoms3DBlockCode::sendDistanceMessage() {
     for (int i = 0; i < 12; i++) {
         if (catom->getInterface(i)->connectedInterface != NULL) {
-            Vecteur pos(
+            Vector3D pos(
                 myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0], 
                 myPosition.pt[1] + Catoms3D::tabConnectorPositions[i][1],
                 myPosition.pt[2] + Catoms3D::tabConnectorPositions[i][2]);
@@ -223,7 +223,7 @@ void CsgCatoms3DBlockCode::sendDistanceMessage() {
 void CsgCatoms3DBlockCode::sendCSGMessage() {
     for (int i = 0; i < 12; i++) {
         if (catom->getInterface(i)->connectedInterface != NULL) {
-            Vecteur pos(
+            Vector3D pos(
                 myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0], 
                 myPosition.pt[1] + Catoms3D::tabConnectorPositions[i][1],
                 myPosition.pt[2] + Catoms3D::tabConnectorPositions[i][2]);
@@ -243,7 +243,7 @@ Distance_message::Distance_message(int _distance) {
     distance = _distance;
 }
 
-CSG_message::CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> _bricks, string _bitmap, Vecteur pos) {
+CSG_message::CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> _bricks, string _bitmap, Vector3D pos) {
 	id = CSG_MSG_ID;
 
     csgBuffer = new char[_csgBufferSize];

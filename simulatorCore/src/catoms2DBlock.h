@@ -31,7 +31,7 @@ protected:
 public:
 	Catoms2DGlBlock *ptrGlBlock;
 	Color color; // color of the block
-	Vecteur position; // position of the block;
+	Vector3D position; // position of the block;
 	bool isMaster;
 	int angle;
 	
@@ -42,15 +42,15 @@ public:
 	inline Catoms2DGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
-	void setPosition(const Vecteur &p);
+	void setPosition(const Vector3D &p);
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
         inline P2PNetworkInterface *getInterface(int d) {
             return tabInterfaces[(NeighborDirection::Direction)d];
         }
         P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 
-	Vecteur getPosition(NeighborDirection::Direction d);
-	Vecteur getPosition(P2PNetworkInterface *p2p);
+	Vector3D getPosition(NeighborDirection::Direction d);
+	Vector3D getPosition(P2PNetworkInterface *p2p);
 
 	NeighborDirection::Direction getDirection(P2PNetworkInterface* p2p);
 	int nbNeighbors(bool groundIsNeighbor = false);

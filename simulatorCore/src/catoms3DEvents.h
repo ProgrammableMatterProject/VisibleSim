@@ -26,7 +26,7 @@ public :
     \param ax2 : rotation axe for the second rotation
     \param ang2 : rotation angle for the second rotation
 */
-    Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vecteur &ax1,double ang1,const Vecteur &ax2,double ang2);
+    Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2);
     Rotations() {};
 
     void init(const Matrice& m) {
@@ -52,9 +52,9 @@ protected :
     bool firstRotation;
     short step;
     Matrice initialMatrix,firstStepMatrix;//,matTBA,matTAB,matTBC,matTCB;
-    Vecteur AB,AD,CB;
-    Vecteur axe1;
-    Vecteur axe2;
+    Vector3D AB,AD,CB;
+    Vector3D axe1;
+    Vector3D axe2;
     double angle1;
     double angle2;
     static constexpr double angleArticulation=6.46237535743;

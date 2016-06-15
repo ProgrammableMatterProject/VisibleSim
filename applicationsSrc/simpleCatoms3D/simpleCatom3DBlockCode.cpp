@@ -56,7 +56,7 @@ void SimpleCatom3DBlockCode::startup() {
 
 	/* skeleton test */
 	Catoms3DWorld*wrl = Catoms3DWorld::getWorld();
-	Vecteur pos(catom->ptrGlBlock->position[0],catom->ptrGlBlock->position[1],catom->ptrGlBlock->position[2]);
+	Vector3D pos(catom->ptrGlBlock->position[0],catom->ptrGlBlock->position[1],catom->ptrGlBlock->position[2]);
 	potentiel = wrl->getSkeletonPotentiel(pos);
 	catom->setColor(potentiel>1.0?YELLOW:DARKORANGE);
 
@@ -65,7 +65,7 @@ void SimpleCatom3DBlockCode::startup() {
 
 /*
 	if (catom->blockId==1) {
-        Vecteur position=wrl->gridToWorldPosition(Cell3DPosition(2,1,0));
+        Vector3D position=wrl->gridToWorldPosition(Cell3DPosition(2,1,0));
         int id=1000000;
         int i=0;
         Catoms3DBlock *voisin=NULL;
@@ -81,8 +81,8 @@ void SimpleCatom3DBlockCode::startup() {
         Matrice m_1;
         voisin->getGlBlock()->mat.inverse(m_1);
         // recherche le voisin d'indice minimum
-        //Rotations rotations(catom,voisin,m_1*Vecteur(0,1,0),35.2643896828,m_1*Vecteur(-1,1, -M_SQRT2),35.2643896828);
-        Rotations rotations(catom,voisin,m_1*Vecteur(0,0,1),45.0,m_1*Vecteur(-1,1,0),45.0);
+        //Rotations rotations(catom,voisin,m_1*Vector3D(0,1,0),35.2643896828,m_1*Vector3D(-1,1, -M_SQRT2),35.2643896828);
+        Rotations rotations(catom,voisin,m_1*Vector3D(0,0,1),45.0,m_1*Vector3D(-1,1,0),45.0);
         uint64_t t = scheduler->now()+2000;
         scheduler->schedule(new MotionStartEvent(t,catom,rotations));
 #ifdef verbose
@@ -119,8 +119,8 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             Matrice m_1;
             voisin->getGlBlock()->mat.inverse(m_1);
-            // Rotations rotations(catom,voisin,m_1*Vecteur(-1,1,M_SQRT2),35.26,m_1*Vecteur(-1,-1, -M_SQRT2),35.26);
-            Rotations rotations(catom,voisin,m_1*Vecteur(-1,-1,0),45.0,m_1*Vecteur(0,0,1),45.0);
+            // Rotations rotations(catom,voisin,m_1*Vector3D(-1,1,M_SQRT2),35.26,m_1*Vector3D(-1,-1, -M_SQRT2),35.26);
+            Rotations rotations(catom,voisin,m_1*Vector3D(-1,-1,0),45.0,m_1*Vector3D(0,0,1),45.0);
             uint64_t t = scheduler->now()+1002000;
             // scheduler->schedule(new MotionStartEvent(t,catom,rotations));
         }

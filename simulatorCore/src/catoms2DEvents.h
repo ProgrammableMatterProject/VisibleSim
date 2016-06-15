@@ -23,7 +23,7 @@ class Catoms2DMove;
   //===========================================================================================================
 
   class MotionStartEvent : public BlockEvent {
-    Vecteur pivot;
+    Vector3D pivot;
     double angle;
     int sens;
   public:
@@ -42,11 +42,11 @@ class Catoms2DMove;
   //===========================================================================================================
 
   class MotionStepEvent : public BlockEvent {
-    Vecteur pivot;
+    Vector3D pivot;
     double angle;
     int sens;
   public:
-    MotionStepEvent(uint64_t, Catoms2DBlock *block,const Vecteur &pivot,double angle2goal,int s);
+    MotionStepEvent(uint64_t, Catoms2DBlock *block,const Vector3D &pivot,double angle2goal,int s);
     MotionStepEvent(MotionStepEvent *ev);
     ~MotionStepEvent();
     void consumeBlockEvent() {};
@@ -61,7 +61,7 @@ class Catoms2DMove;
   //===========================================================================================================
 
   class MotionStopEvent : public BlockEvent {
-    Vecteur finalPosition;
+    Vector3D finalPosition;
   public:
     MotionStopEvent(uint64_t, Catoms2DBlock *block);
     MotionStopEvent(MotionStepEvent *ev);

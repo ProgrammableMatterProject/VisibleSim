@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <climits>
-#include "vecteur.h"
+#include "vector3D.h"
 #include "trace.h"
 #include <string>
 #include <TinyXML/tinyxml.h>

@@ -1,26 +1,27 @@
+
 /*!
- * \file vecteur.cpp
+ * \file Vector3D.cpp
  * \brief 3D homogeneous vector
  * \date 29/01/2012
  * \author Benoît Piranda
  */
 
-#include "vecteur.h"
+#include "vector3D.h"
 
-// lecture d'un vecteur dans un flux
-istream& operator>>(istream& f,Vecteur&p)
+// lecture d'un Vector3D dans un flux
+istream& operator>>(istream& f,Vector3D&p)
 { f >> p.pt[0] >> p.pt[1] >> p.pt[2];
   return f;
 }
 
-// écriture d'un vecteur dans un flux
-ostream& operator<<(ostream& f,const Vecteur&p)
+// écriture d'un Vector3D dans un flux
+ostream& operator<<(ostream& f,const Vector3D&p)
 { f << "(" << p.pt[0] << "," << p.pt[1] << "," << p.pt[2] << "," << p.pt[3] << ")";
   return f;
 }
 
-const Vecteur operator *(double v,const Vecteur p)
-{ Vecteur r;
+const Vector3D operator *(double v,const Vector3D p)
+{ Vector3D r;
   r.pt[0] = p.pt[0]*v;
   r.pt[1] = p.pt[1]*v;
   r.pt[2] = p.pt[2]*v;
@@ -28,19 +29,19 @@ const Vecteur operator *(double v,const Vecteur p)
   return r;
 }
 
-const double operator *(const Vecteur p1, const Vecteur p2)
+const double operator *(const Vector3D p1, const Vector3D p2)
 { return p1.pt[0]*p2.pt[0] + p1.pt[1]*p2.pt[1] + p1.pt[2]*p2.pt[2];
 }
 
-void Vecteur::operator +=(const Vecteur &p)
+void Vector3D::operator +=(const Vector3D &p)
 { pt[0]+=p.pt[0];
   pt[1]+=p.pt[1];
   pt[2]+=p.pt[2];
   pt[3]+=p.pt[3];
 }
 
-const Vecteur operator +(const Vecteur p1, const Vecteur p2)
-{ Vecteur r;
+const Vector3D operator +(const Vector3D p1, const Vector3D p2)
+{ Vector3D r;
   r.pt[0] = p1.pt[0]+p2.pt[0];
   r.pt[1] = p1.pt[1]+p2.pt[1];
   r.pt[2] = p1.pt[2]+p2.pt[2];
@@ -48,8 +49,8 @@ const Vecteur operator +(const Vecteur p1, const Vecteur p2)
   return r;
 }
 
-const Vecteur operator -(const Vecteur p1, const Vecteur p2)
-{ Vecteur r;
+const Vector3D operator -(const Vector3D p1, const Vector3D p2)
+{ Vector3D r;
   r.pt[0] = p1.pt[0]-p2.pt[0];
   r.pt[1] = p1.pt[1]-p2.pt[1];
   r.pt[2] = p1.pt[2]-p2.pt[2];
@@ -57,8 +58,8 @@ const Vecteur operator -(const Vecteur p1, const Vecteur p2)
   return r;
 }
 
-const Vecteur operator -(const Vecteur p1)
-{ Vecteur r;
+const Vector3D operator -(const Vector3D p1)
+{ Vector3D r;
   r.pt[0] = -p1.pt[0];
   r.pt[1] = -p1.pt[1];
   r.pt[2] = -p1.pt[2];
@@ -66,8 +67,8 @@ const Vecteur operator -(const Vecteur p1)
   return r;
 }
 
-const Vecteur operator ^(const Vecteur p1, const Vecteur p2)
-{ Vecteur r;
+const Vector3D operator ^(const Vector3D p1, const Vector3D p2)
+{ Vector3D r;
   r.pt[0] = p1.pt[1]*p2.pt[2] - p1.pt[2]*p2.pt[1];
   r.pt[1] = p1.pt[2]*p2.pt[0] - p1.pt[0]*p2.pt[2];
   r.pt[2] = p1.pt[0]*p2.pt[1] - p1.pt[1]*p2.pt[0];
@@ -75,23 +76,23 @@ const Vecteur operator ^(const Vecteur p1, const Vecteur p2)
   return r;
 }
 
-const Vecteur Vecteur::normer() const
-{ Vecteur r;
+const Vector3D Vector3D::normer() const
+{ Vector3D r;
   double d=1.0/sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
 
   r = d*(*this);
   return r;
 }
 
-double Vecteur::norme() const
+double Vector3D::norme() const
 { return sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
 }
 
-double Vecteur::norme2() const
+double Vector3D::norme2() const
 { return pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2];
 }
 
-void Vecteur::normer_interne()
+void Vector3D::normer_interne()
 { double d=1.0/sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
   pt[0]*=d;
   pt[1]*=d;
@@ -99,7 +100,7 @@ void Vecteur::normer_interne()
   pt[3]=0;
 }
 
-void Vecteur::setLength(double l)
+void Vector3D::setLength(double l)
 { double d=l/sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
   pt[0]*=d;
   pt[1]*=d;
@@ -107,7 +108,7 @@ void Vecteur::setLength(double l)
   pt[3]=0;
 }
 
-void Vecteur::set(const float *tab,short s,float extra) {
+void Vector3D::set(const float *tab,short s,float extra) {
     short i;
     for (i=0; i<s; i++) {
         pt[i]=tab[i];

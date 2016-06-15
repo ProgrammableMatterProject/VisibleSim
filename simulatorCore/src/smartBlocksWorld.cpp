@@ -46,8 +46,8 @@ SmartBlocksWorld::SmartBlocksWorld(int gw,int gh,int argc, char *argv[]):World()
     objRepere=NULL;
 #endif
     camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-    camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-    camera->setTarget(Vecteur(0,0,1.0));
+    camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
+    camera->setTarget(Vector3D(0,0,1.0));
 
     nbreStats=0;
     for (i=0; i<10; i++) {
@@ -78,7 +78,7 @@ void SmartBlocksWorld::deleteWorld() {
 
 void SmartBlocksWorld::addBlock(int blockId,
                                 SmartBlocksBlockCode *(*smartBlockCodeBuildingFunction)(SmartBlocksBlock*),
-                                const Vecteur &pos,const Color &col) {
+                                const Vector3D &pos,const Color &col) {
     SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId,smartBlockCodeBuildingFunction);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (smartBlock->blockId, (BaseSimulator::BuildingBlock*)smartBlock) );
@@ -297,7 +297,7 @@ void SmartBlocksWorld::updateGlData(SmartBlocksBlock*blc) {
     if (glblc) {
         lock();
 
-        Vecteur pos(blockSize[0]*blc->position[0],blockSize[1]*blc->position[1],0.0);
+        Vector3D pos(blockSize[0]*blc->position[0],blockSize[1]*blc->position[1],0.0);
         glblc->setPosition(pos);
         glblc->setColor(blc->color);
         unlock();
@@ -393,7 +393,7 @@ void SmartBlocksWorld::menuChoice(int n) {
     case 1 : {
         OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 
-        Vecteur pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
+        Vector3D pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
 
         addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
         linkBlocks();

@@ -136,13 +136,13 @@ CsgNode CsgUtils::readCSGNode() {
     }
 }
 
-PositionInfo CsgUtils::isInside(Vecteur catomPosition) {
-    Vecteur v(0,0,0);
+PositionInfo CsgUtils::isInside(Vector3D catomPosition) {
+    Vector3D v(0,0,0);
     Color c(0,0,0);
     return isInside(csgTree, v, c, catomPosition);
 }
 
-PositionInfo CsgUtils::isInside(CsgNode &node, Vecteur basePosition, Color color, Vecteur catomPosition) {
+PositionInfo CsgUtils::isInside(CsgNode &node, Vector3D basePosition, Color color, Vector3D catomPosition) {
     switch (node.getType())
     {
         case node_t::shape: {
@@ -168,7 +168,7 @@ PositionInfo CsgUtils::isInside(CsgNode &node, Vecteur basePosition, Color color
             PositionInfo pi;
             if (t_op->my_type == Transformation::transformation_t::translate) {
                 for (unsigned int i = 0; i < node.vchildren.size(); i++) {
-                    Vecteur transf_position(t_op->x, t_op->y, t_op->z);
+                    Vector3D transf_position(t_op->x, t_op->y, t_op->z);
                     pi = isInside(node.vchildren[i], transf_position, color, catomPosition);
                     if (pi.isInside())
                         return pi;

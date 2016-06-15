@@ -34,7 +34,7 @@ protected:
 public:
 	RobotBlocksGlBlock *ptrGlBlock;
 	Color color; // color of the block
-	Vecteur position; // position of the block;
+	Vector3D position; // position of the block;
 	bool isMaster;
 
 	RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
@@ -44,7 +44,7 @@ public:
 	inline RobotBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(RobotBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
 	void setColor(const Color &);
-	void setPosition(const Vecteur &p);
+	void setPosition(const Vector3D &p);
 	void setPrevNext(int,int);
 	void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
 	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);

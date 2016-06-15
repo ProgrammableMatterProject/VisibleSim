@@ -10,7 +10,7 @@
 
 #include "openglViewer.h"
 #include "world.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "robotBlocksBlock.h"
 #include "robotBlocksCapabilities.h"
 #include "objLoader.h"
@@ -52,7 +52,7 @@ public:
 		return((RobotBlocksBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*), const Vecteur &pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*), const Vector3D &pos, const Color &col, bool master=false);
 	void deleteBlock(RobotBlocksBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
