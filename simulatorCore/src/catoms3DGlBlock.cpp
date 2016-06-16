@@ -35,7 +35,8 @@ void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 
 void Catoms3DGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
+	mat.glMultMatrix();
+//	glTranslatef(position[0],position[1],position[2]);
 	ptrObj->glDrawId(n);
 	glPopMatrix();
 }

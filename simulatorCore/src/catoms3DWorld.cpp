@@ -256,8 +256,6 @@ void Catoms3DWorld::glDraw() {
     glMaterialf(GL_FRONT,GL_SHININESS,40.0);
     glPushMatrix();
     enableTexture(true);
-    float h = ((1+(gridSize[2]-1)*M_SQRT2_2))/1.5;
-    OUTPUT << "h=" << h << endl;
     glBindTexture(GL_TEXTURE_2D,idTextureGrid);
     glTranslatef(0,0,blockSize[2]*(0.5-M_SQRT2_2));
     glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],(1+(gridSize[2]-1)*M_SQRT2_2)*blockSize[2]);
@@ -292,17 +290,17 @@ void Catoms3DWorld::glDraw() {
         glVertex3f(0.0f,0.0f,0.0f);
         glTexCoord2f(gridSize[1]/3.0f,0);
         glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(gridSize[1]/3.0f,h);
+        glTexCoord2f(gridSize[1]/3.0f,gridSize[2]/1.5f);
         glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(0,h);
+        glTexCoord2f(0,gridSize[2]/1.5f);
         glVertex3f(0.0,0.0,1.0f);
     // right
         glNormal3f(-1.0f,0,0);
         glTexCoord2f(0,0);
         glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(0,gridSize[2]/2.0f);
+        glTexCoord2f(0,gridSize[2]/1.5f);
         glVertex3f(1.0,0.0,1.0f);
-        glTexCoord2f(gridSize[1]/3.0f,gridSize[2]/2.0f);
+        glTexCoord2f(gridSize[1]/3.0f,gridSize[2]/1.5f);
         glVertex3f(1.0,1.0,1.0f);
         glTexCoord2f(gridSize[1]/3.0f,0);
         glVertex3f(1.0f,1.0f,0.0f);
@@ -312,17 +310,17 @@ void Catoms3DWorld::glDraw() {
         glVertex3f(0.0f,1.0f,0.0f);
         glTexCoord2f(gridSize[0]/3.0f,0);
         glVertex3f(1.0f,1.0f,0.0f);
-        glTexCoord2f(gridSize[0]/3.0f,gridSize[2]/2.0f);
+        glTexCoord2f(gridSize[0]/3.0f,gridSize[2]/1.5f);
         glVertex3f(1.0f,1.0,1.0f);
-        glTexCoord2f(0,gridSize[2]/2.0f);
+        glTexCoord2f(0,gridSize[2]/1.5f);
         glVertex3f(0.0,1.0,1.0f);
     // front
         glNormal3f(0,1.0,0);
         glTexCoord2f(0,0);
         glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(0,gridSize[2]/2.0f);
+        glTexCoord2f(0,gridSize[2]/1.5f);
         glVertex3f(0.0,0.0,1.0f);
-        glTexCoord2f(gridSize[0]/3.0f,gridSize[2]/2.0f);
+        glTexCoord2f(gridSize[0]/3.0f,gridSize[2]/1.5f);
         glVertex3f(1.0f,0.0,1.0f);
         glTexCoord2f(gridSize[0]/3.0f,0);
         glVertex3f(1.0f,0.0f,0.0f);
