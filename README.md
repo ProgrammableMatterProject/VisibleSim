@@ -1,11 +1,6 @@
 VisibleSim
 ==================
 
-### Merge Branch
-
-- 26/05/16: Merged with Refactoring
-- 26/05/16: Merged with catoms2D
-
 Dependencies:
  - Boost C++ Libraries >= 1.47.0
  - GLUT
