@@ -21,13 +21,15 @@ namespace Catoms3D {
 class Catoms3DSimulator : public BaseSimulator::Simulator {
 protected:
 
-	Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *(*catoms3DCodeBuildingFunction)(Catoms3DBlock*));
+	Catoms3DSimulator(int argc, char *argv[],
+			  Catoms3DBlockCode *(*catoms3DCodeBuildingFunction)(Catoms3DBlock*));
 	virtual ~Catoms3DSimulator();
 
 public:
-   bool testMode;
+	bool testMode;
 
-	static void createSimulator(int argc, char *argv[], Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*));
+	static void createSimulator(int argc, char *argv[],
+				    Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*));
 	static void deleteSimulator();
 
 	static Catoms3DBlockCode *(*buildNewBlockCode)(Catoms3DBlock*);
@@ -37,12 +39,15 @@ public:
 		return((Catoms3DSimulator*)simulator);
 	}
 
+	void loadScheduler();
+	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
+	
 	void printInfo() { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
-
-   void help();
+	void help();
 };
 
-inline void createSimulator(int argc, char *argv[], Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) {
+inline void createSimulator(int argc, char *argv[],
+			    Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) {
 	Catoms3DSimulator::createSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
 }
 

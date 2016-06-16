@@ -319,4 +319,16 @@ void RobotBlocksSimulator::deleteSimulator() {
 	delete((RobotBlocksSimulator*)simulator);
 }
 
+void RobotBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
+  RobotBlocksWorld::createWorld(lx,ly,lz,argc,argv);
+  world = RobotBlocksWorld::getWorld();
+  world->loadTextures("../../simulatorCore/robotBlocksTextures");
+}
+
+void RobotBlocksSimulator::loadScheduler() {
+  RobotBlocksScheduler::createScheduler();
+  scheduler = RobotBlocksScheduler::getScheduler();
+}
+
+
 } // RobotBlocks namespace

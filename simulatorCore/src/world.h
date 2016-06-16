@@ -94,7 +94,12 @@ namespace BaseSimulator {
 	    return getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 	};
 	
-        string generateConfigName();
+	virtual void loadTextures(const string &str) { };
+
+	inline void setBlocksSize(float *siz)
+	    { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
+	
+	string generateConfigName();
         
         /* Notify the bId block that these events happened */
         void tapBlock(uint64_t date, int bId);        

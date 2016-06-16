@@ -34,6 +34,9 @@ public:
 		return((SmartBlocksSimulator*)simulator);
 	}
 
+	void loadScheduler();
+	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
+	
 	void printInfo() { cout << "I'm a SmartBlocksSimulator" << endl; }
 };
 

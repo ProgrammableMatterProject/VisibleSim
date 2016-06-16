@@ -20,7 +20,7 @@
 
 namespace RobotBlocks {
 
-class RobotBlocksWorld : BaseSimulator::World {
+class RobotBlocksWorld : public BaseSimulator::World {
 protected:
 	int gridSize[3];
 	RobotBlocksBlock **gridPtrBlocks;
@@ -73,7 +73,7 @@ public:
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
-	virtual void updateGlData(RobotBlocksBlock*blc,int prev,int next);
+	void updateGlData(RobotBlocksBlock*blc,int prev,int next);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);

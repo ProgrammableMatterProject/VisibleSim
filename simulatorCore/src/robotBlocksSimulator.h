@@ -37,6 +37,9 @@ public:
 		return((RobotBlocksSimulator*)simulator);
 	}
 
+	void loadScheduler();
+	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
+	
 	void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
 
    void help();

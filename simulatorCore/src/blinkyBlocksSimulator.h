@@ -36,7 +36,10 @@ public:
 		return((BlinkyBlocksSimulator*)simulator);
 	}
 
-   void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
+	void loadScheduler();
+	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
+	
+	void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {

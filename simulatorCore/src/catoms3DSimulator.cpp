@@ -432,6 +432,17 @@ void Catoms3DSimulator::createSimulator(int argc, char *argv[], Catoms3DBlockCod
 	simulator =  new Catoms3DSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
 }
 
+void Catoms3DSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
+  Catoms3DWorld::createWorld(lx,ly,lz,argc,argv);
+  world = World::getWorld();
+  world->loadTextures("../../simulatorCore/catoms3DTextures");
+}
+
+void Catoms3DSimulator::loadScheduler() {
+  Catoms3DScheduler::createScheduler();
+  scheduler = Catoms3DScheduler::getScheduler();
+}
+
 void Catoms3DSimulator::deleteSimulator() {
 	delete((Catoms3DSimulator*)simulator);
 }

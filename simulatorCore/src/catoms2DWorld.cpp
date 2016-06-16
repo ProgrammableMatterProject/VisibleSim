@@ -770,5 +770,5 @@ void Catoms2DWorld::initTargetGrid() {
     memset(targetGrid,emptyCell,sz*sizeof(presence));
 }
 
-} // RobotBlock namespace
+} // Catoms2D namespace
 

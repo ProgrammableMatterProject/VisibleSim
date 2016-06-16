@@ -95,11 +95,11 @@ public:
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
-    virtual void updateGlData(Catoms3DBlock*blc,const Color &color);
-    virtual void updateGlData(Catoms3DBlock*blc, bool visible);
-    virtual void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
-    virtual void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
-    virtual void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
+     void updateGlData(Catoms3DBlock*blc,const Color &color);
+     void updateGlData(Catoms3DBlock*blc, bool visible);
+     void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
+     void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
+     void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
     virtual void createHelpWindow();
     inline virtual Camera *getCamera() { return camera; };
     virtual void setSelectedFace(int n);

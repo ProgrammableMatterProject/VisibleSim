@@ -14,6 +14,7 @@
 #include "scheduler.h"
 #include "world.h"
 #include "commandLine.h"
+#include "BlockCode.h"
 
 using namespace std;
 
@@ -43,11 +44,26 @@ protected:
 	static Simulator *simulator;
 	static Scheduler *scheduler;
 
+	World *world;
+	
 	TiXmlDocument *xmlDoc;
 	TiXmlNode* xmlWorldNode;
 
+	BlockCode *(*newBlockCode)(BuildingBlock*);
+	
 	CommandLine cmdLine;
 
+	void parseWorld(int argc, char*argv[]);
+	void parseBlockList();
+	void parseTarget(int yz);   
+	
+	virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[]) = 0;	
+	virtual void loadScheduler() = 0;   
+	virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+						   (BuildingBlock*), const Cell3DPosition &pos,
+						   const Color &color, bool master) {};
+	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {};
+	
 	Simulator(int argc, char *argv[]);
 	virtual ~Simulator();
 };

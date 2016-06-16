@@ -14,7 +14,9 @@ namespace SmartBlocks {
 
 SmartBlocksBlockCode*(* SmartBlocksSimulator::buildNewBlockCode)(SmartBlocksBlock*)=NULL;
 
-SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
+SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[],
+					   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
+					   (SmartBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
 	cout << "\033[1;34m" << "SmartBlocksSimulator constructor" << "\033[0m" << endl;
 
 	buildNewBlockCode = smartBlocksBlockCodeBuildingFunction;
@@ -272,7 +274,9 @@ SmartBlocksSimulator::~SmartBlocksSimulator() {
 	cout << "\033[1;34m" << "SmartBlocksSimulator destructor" << "\033[0m" <<endl;
 }
 
-void SmartBlocksSimulator::createSimulator(int argc, char *argv[], SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*)) {
+void SmartBlocksSimulator::createSimulator(int argc, char *argv[],
+					   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
+					   (SmartBlocksBlock*)) {
 	simulator =  new SmartBlocksSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
 }
 
@@ -280,5 +284,17 @@ void SmartBlocksSimulator::deleteSimulator() {
 	delete ((SmartBlocksSimulator*)simulator);
 	simulator = NULL;
 }
+
+void SmartBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
+  SmartBlocksWorld::createWorld(lx,ly,argc,argv);
+  world = SmartBlocksWorld::getWorld();
+  world->loadTextures("../../simulatorCore/smartBlocksTextures");
+}
+
+void SmartBlocksSimulator::loadScheduler() {
+  SmartBlocksScheduler::createScheduler();
+  scheduler = SmartBlocksScheduler::getScheduler();
+}
+
 
 } // SmartBlocks namespace

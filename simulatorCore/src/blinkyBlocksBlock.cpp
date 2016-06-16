@@ -25,143 +25,143 @@ using namespace std;
 namespace BlinkyBlocks {
 
 string NeighborDirection::getString(int d) {
-	switch(d) {
-		case Front:
-			return string("Front");
-			break;
-		case Back:
-			return string("Back");
-			break;
-		case Left:
-			return string("Left");
-			break;
-		case Right:
-			return string("Right");
-			break;
-		case Top:
-			return string("Top");
-			break;
-		case Bottom:
-			return string("Bottom");
-			break;
-		default:
-			cerr << "Unknown direction" << endl;
-			return string("Unknown");
-			break;
-	}
+    switch(d) {
+    case Front:
+	return string("Front");
+	break;
+    case Back:
+	return string("Back");
+	break;
+    case Left:
+	return string("Left");
+	break;
+    case Right:
+	return string("Right");
+	break;
+    case Top:
+	return string("Top");
+	break;
+    case Bottom:
+	return string("Bottom");
+	break;
+    default:
+	cerr << "Unknown direction" << endl;
+	return string("Unknown");
+	break;
+    }
 }
 
 int NeighborDirection::getOpposite(int d) {
-switch (Direction(d)) {
-		case Front:
-			return Back;
-			break;
-		case Back:
-			return Front;
-			break;
-		case Left:
-			return Right;
-			break;
-		case Right:
-			return Left;
-			break;
-		case Top:
-			return Bottom;
-			break;
-		case Bottom:
-			return Top;
-			break;
-		default:
-			ERRPUT << "*** ERROR *** : unknown face" << endl;
-			return -1;
-			break;
-	}
+    switch (Direction(d)) {
+    case Front:
+	return Back;
+	break;
+    case Back:
+	return Front;
+	break;
+    case Left:
+	return Right;
+	break;
+    case Right:
+	return Left;
+	break;
+    case Top:
+	return Bottom;
+	break;
+    case Bottom:
+	return Top;
+	break;
+    default:
+	ERRPUT << "*** ERROR *** : unknown face" << endl;
+	return -1;
+	break;
+    }
 }
 
 BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::BuildingBlock(bId) {
-	OUTPUT << "BlinkyBlocksBlock constructor" << endl;
-	double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
-	double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
+    OUTPUT << "BlinkyBlocksBlock constructor" << endl;
+    double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
+    double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
 
-	for (int i=0; i<6; i++) {
-		tabInterfaces[i] = new P2PNetworkInterface(this);
-		getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
-		tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
-		tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
-	}
-	clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
-	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
-	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+    for (int i=0; i<6; i++) {
+	tabInterfaces[i] = new P2PNetworkInterface(this);
+	getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
+	tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
+	tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
+    }
+    clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
+    buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
+    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {
-	OUTPUT << "BlinkyBlocksBlock destructor " << blockId << endl;
+    OUTPUT << "BlinkyBlocksBlock destructor " << blockId << endl;
 }
 
 void BlinkyBlocksBlock::pauseClock(uint64_t delay, uint64_t start){
-	//while(BaseSimulator::getScheduler()->now()<delay+start){
+    //while(BaseSimulator::getScheduler()->now()<delay+start){
 
 }
     
 NeighborDirection::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
-	if( !given_interface) {
-		return NeighborDirection::Direction(0);
-	}
-	for( int i(0); i < 6; ++i) {
-		if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
-	}
+    if( !given_interface) {
 	return NeighborDirection::Direction(0);
+    }
+    for( int i(0); i < 6; ++i) {
+	if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+    }
+    return NeighborDirection::Direction(0);
 }
 
 void BlinkyBlocksBlock::accel(uint64_t date, int x, int y, int z) {
-	getScheduler()->scheduleLock(new AccelEvent(date, this, x, y, z));
+    getScheduler()->scheduleLock(new AccelEvent(date, this, x, y, z));
 }
 
 void BlinkyBlocksBlock::shake(uint64_t date, int f) {
-	getScheduler()->scheduleLock(new ShakeEvent(getScheduler()->now(), this, f));
+    getScheduler()->scheduleLock(new ShakeEvent(getScheduler()->now(), this, f));
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
-	OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;
-	getScheduler()->scheduleLock(new AddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
+    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(new AddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
-	OUTPUT << "Simulator: "<< blockId << " remove neighbor on " << NeighborDirection::getString(getDirection(ni)) << endl;
-	getScheduler()->scheduleLock(new RemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
+    OUTPUT << "Simulator: "<< blockId << " remove neighbor on " << NeighborDirection::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(new RemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
 }
 
 void BlinkyBlocksBlock::stop(uint64_t date, State s) {
-	OUTPUT << "Simulator: stop scheduled" << endl;
-	lock();
-	state = s;
-	if (s == STOPPED) {
-		// patch en attendant l'objet 3D qui modelise un BB stopped
-		color = Color(0.1, 0.1, 0.1, 0.5);
-	}
-	unlock();
-	getWorld()->updateGlData(this);
-	if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
-            getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
-	} else if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
-            getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
-	}
+    OUTPUT << "Simulator: stop scheduled" << endl;
+    lock();
+    state = s;
+    if (s == STOPPED) {
+	// patch en attendant l'objet 3D qui modelise un BB stopped
+	color = Color(0.1, 0.1, 0.1, 0.5);
+    }
+    unlock();
+    getWorld()->updateGlData(this);
+    if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
+	getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
+    } else if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
+	getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
+    }
 }
 
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {
-	stream << bb.blockId << "\tcolor: " << bb.color;
-	return stream;
+    stream << bb.blockId << "\tcolor: " << bb.color;
+    return stream;
 }
 
 P2PNetworkInterface* BlinkyBlocksBlock::getInterfaceDestId(int id) {
-	for (int i=0; i<6; i++) {
-		if (tabInterfaces[i]->connectedInterface != NULL) {
-			if (tabInterfaces[i]->connectedInterface->hostBlock->blockId == id) {
-				return tabInterfaces[i];
-			}
-		}
+    for (int i=0; i<6; i++) {
+	if (tabInterfaces[i]->connectedInterface != NULL) {
+	    if (tabInterfaces[i]->connectedInterface->hostBlock->blockId == id) {
+		return tabInterfaces[i];
+	    }
 	}
-	return NULL;
+    }
+    return NULL;
 }
 
 // inline string BlinkyBlocksBlock::xmlBuildingBlock() {       

@@ -53,17 +53,25 @@ public:
 		return((Catoms2DBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*), const Cell3DPosition &pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId,
+			      Catoms2DBlockCode *(*catoms2DCodeBuildingFunction)(Catoms2DBlock*),
+			      const Cell3DPosition &pos, const Color &col, bool master=false);
 	void deleteBlock(Catoms2DBlock *bb);
-	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
+	inline void setBlocksSize(float *siz)
+		{ blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
 
-	inline void setGridPtr(int ix,int iy,int iz,Catoms2DBlock *ptr) { gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr; };
-	inline Catoms2DBlock* getGridPtr(int ix,int iy,int iz) { return gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]; };
+	inline void setGridPtr(int ix,int iy,int iz,Catoms2DBlock *ptr)
+		{ gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr; };
+	inline Catoms2DBlock* getGridPtr(int ix,int iy,int iz)
+		{ return gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]; };
 	inline int* getGridSize() {return gridSize;}
-	inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,3*sizeof(int)); return targetGrid; };
-	inline presence getTargetGrid(int ix,int iy,int iz) { return targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]; };
-	inline void setTargetGrid(presence value,int ix,int iy,int iz) { targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value; };
+	inline presence *getTargetGridPtr(int *gs)
+		{ memcpy(gs,gridSize,3*sizeof(int)); return targetGrid; };
+	inline presence getTargetGrid(int ix,int iy,int iz)
+		{ return targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]; };
+	inline void setTargetGrid(presence value,int ix,int iy,int iz)
+		{ targetGrid[(iz*gridSize[1]+iy)*gridSize[0]+ix]=value; };
 	void initTargetGrid();
 
 	inline void setCapabilities(Catoms2DCapabilities *capa) { capabilities=capa; };
