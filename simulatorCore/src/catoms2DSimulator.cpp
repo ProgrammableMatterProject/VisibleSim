@@ -33,8 +33,9 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[],
   
   testMode = false;
 
-  // function pointer cast to generic type, safe according to specifications as it will be used
+  // PTHY: Note: function pointer cast to generic type, safe according to specifications as it will be used
   //  only after reconversion
+  buildNewBlockCode = catoms2DBlockCodeBuildingFunction;
   newBlockCode = (BlockCode *(*)(BuildingBlock *))catoms2DBlockCodeBuildingFunction; 
   parseWorld(argc, argv);
   parseBlockList();

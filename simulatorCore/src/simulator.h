@@ -41,17 +41,17 @@ public:
 protected:
 	static Type type;
 
-	static Simulator *simulator;
-	static Scheduler *scheduler;
+	static Simulator *simulator; //!< Static member for accessing *this* simulator
+	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured
 
-	World *world;
+	World *world; 				//!< Simulation world to be instantiated and configured
 	
-	TiXmlDocument *xmlDoc;
-	TiXmlNode* xmlWorldNode;
+	TiXmlDocument *xmlDoc;		//!< TinyXMLDocument for the configuration file
+	TiXmlNode* xmlWorldNode; //!< world XML node from the configuration file
 
-	BlockCode *(*newBlockCode)(BuildingBlock*);
+	BlockCode *(*newBlockCode)(BuildingBlock*); //!< Function pointer to the target BlockCode
 	
-	CommandLine cmdLine;
+	CommandLine cmdLine;		//!< Utility member for accessing command line arguments
 
 	void parseWorld(int argc, char*argv[]);
 	void parseBlockList();

@@ -263,7 +263,7 @@ void Simulator::parseBlockList() {
 			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 			OUTPUT << "new default color :" << defaultColor << endl;
 		}
-		attr= element->Attribute("blocksize");
+		attr= element->Attribute("blockSize");
 		if (attr) {
 			string str(attr);
 			int pos1 = str.find_first_of(','),
@@ -304,7 +304,7 @@ void Simulator::parseBlockList() {
 					iy = atoi(str.substr(pos+1,pos2-pos-1).c_str()),
 					iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
 
-				cerr << ix << "," << iy << "," << iz << endl;
+				// cerr << ix << "," << iy << "," << iz << endl;
 	
 				position.pt[0] = ix;
 				position.pt[1] = iy;

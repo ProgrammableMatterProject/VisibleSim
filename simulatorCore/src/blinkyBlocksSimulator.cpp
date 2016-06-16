@@ -20,73 +20,24 @@ BlinkyBlocksBlockCode*(* BlinkyBlocksSimulator::buildNewBlockCode)(BlinkyBlocksB
 BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
 
-	int currentID = 1;
+	// PTHY: Note: function pointer cast to generic type, safe according to specifications as it will be used
+	//  only after reconversion
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
+	newBlockCode = (BlockCode *(*)(BuildingBlock *))blinkyBlocksBlockCodeBuildingFunction; 
 
 	parseWorld(argc, argv);
-	
-	// loading the blocks
-	TiXmlNode *nodeBlock = xmlWorldNode->FirstChild("blockList");
-	if (xmlWorldNode) {
-		Color defaultColor = DARKGREY;
-		TiXmlElement* element = nodeBlock->ToElement();
-		const char *attr= element->Attribute("color");
-		if (attr) {
-			string str(attr);
-			int pos1 = str.find_first_of(','),
-				pos2 = str.find_last_of(',');
-			defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
-			defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
-			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
-		}
-		attr= element->Attribute("blockSize");
-		if (attr) {
-			string str(attr);
-			int pos1 = str.find_first_of(','),
-				pos2 = str.find_last_of(',');
-			float siz[3];
-			siz[0] = atof(str.substr(0,pos1).c_str());
-			siz[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-			siz[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			OUTPUT << "blockSize =" << siz[0] <<"," << siz[1] <<"," << siz[2]<< endl;
-			((BlinkyBlocksWorld*)world)->setBlocksSize(siz);
-		}
+	parseBlockList();	
 
-		/* Reading a blinkyblock */
-		OUTPUT << "default color :" << defaultColor << endl;
-		nodeBlock = nodeBlock->FirstChild("block");
-		Cell3DPosition position;
-		Color color;
-		while (nodeBlock) {
-			element = nodeBlock->ToElement();
-			color=defaultColor;
-			attr = element->Attribute("color");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				color.set(atof(str.substr(0,pos1).c_str())/255.0,
-						  atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
-						  atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
-				OUTPUT << "color :" << color << endl;
-			}
-			attr = element->Attribute("position");
-			if (attr) {
-				string str(attr);
-				int pos1 = str.find_first_of(','),
-					pos2 = str.find_last_of(',');
-				position.pt[0] = atoi(str.substr(0,pos1).c_str());
-				position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
-				position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
-				OUTPUT << "position : " << position << endl;
-			}
-			((BlinkyBlocksWorld*)world)->addBlock(currentID++, BlinkyBlocksSimulator::buildNewBlockCode, position, color);
-			nodeBlock = nodeBlock->NextSibling("block");
-		} // end while (nodeBlock)
-	} else { // end if(nodeBlock)
-		ERRPUT << "no Block List" << endl;
-	}
+	((BlinkyBlocksWorld*)world)->linkBlocks();
 
+	//getScheduler()->sem_schedulerStart->post();
+	getScheduler()->setState(Scheduler::NOTSTARTED);
+
+	GlutContext::mainLoop();
+}
+
+// PTHY: TODO: Refactor / Genericize
+void BlinkyBlocksSimulator::parseScenario() {
 	// loading the scenario
 	TiXmlNode *nodeScenario = xmlWorldNode->FirstChild("scenario");
 	if (nodeScenario) {
@@ -166,13 +117,6 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 			nodeScenario = nodeScenario->NextSibling("event");
 		} // while(nodeScenario)
 	}
-	((BlinkyBlocksWorld*)world)->linkBlocks();
-
-	//getScheduler()->sem_schedulerStart->post();
-	getScheduler()->setState(Scheduler::NOTSTARTED);
-
-	GlutContext::mainLoop();
-
 }
 
 BlinkyBlocksSimulator::~BlinkyBlocksSimulator() {
@@ -196,6 +140,23 @@ void BlinkyBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *ar
 void BlinkyBlocksSimulator::loadScheduler() {
 	createScheduler();
 	scheduler = getScheduler();
+}
+
+void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
+									  BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
+									  const Cell3DPosition &pos, const Color &color, bool master) {
+
+	// Any additional configuration file parsing exclusive to this type of block should be performed
+	//  here, using the blockElt TiXmlElement.
+
+	// ...Parsing code...
+  
+	// Finally, add block to the world
+	// PTHY: TODO: add master
+	((BlinkyBlocksWorld*)world)->addBlock(blockId,
+										  (BlinkyBlocksBlockCode *(*)(BlinkyBlocksBlock *))
+										  buildingBlockCodeBuildingFunction,
+										  pos, color);
 }
 
 
