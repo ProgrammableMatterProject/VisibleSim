@@ -63,7 +63,6 @@ void SimpleCatom3DBlockCode::startup() {
 	info << potentiel;
 	scheduler->trace(info.str(),hostBlock->blockId);
 
-/*
 	if (catom->blockId==1) {
         Vecteur position=wrl->gridToWorldPosition(Cell3DPosition(2,1,0));
         int id=1000000;
@@ -91,7 +90,7 @@ void SimpleCatom3DBlockCode::startup() {
         info << "MotionStartEvent(" << t << ") around #" << voisin->blockId;
         scheduler->trace(info.str(),catom->blockId,LIGHTGREY);
 #endif
-	}*/
+	}
 }
 
 void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
@@ -139,10 +138,11 @@ Catoms3DBlockCode* SimpleCatom3DBlockCode::buildNewBlockCode(Catoms3DBlock *host
 	return(new SimpleCatom3DBlockCode(host));
 }
 
-bool SimpleCatom3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
+/*bool SimpleCatom3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
     if (att=="potentiel") {
         sout << potentiel << endl;
         return true;
     }
     return Catoms3DBlockCode::getAttribute(att,sout);
 }
+*/

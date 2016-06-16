@@ -52,7 +52,8 @@ Catoms3DWorld::Catoms3DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
 	blockSize[0]=1.0;
 	blockSize[1]=5.0;
 	blockSize[2]=1.0;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Dsimple.obj");
+	//objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Dsimple.obj");
+	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3DV2connectorID.obj");
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
@@ -247,7 +248,7 @@ void Catoms3DWorld::glDraw() {
 	glPopMatrix();
 
 // material for the grid walls
-/*	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
     gray[]={0.2f,0.2f,0.2f,1.0f};
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
@@ -255,9 +256,11 @@ void Catoms3DWorld::glDraw() {
     glMaterialf(GL_FRONT,GL_SHININESS,40.0);
     glPushMatrix();
     enableTexture(true);
+    float h = ((1+(gridSize[2]-1)*M_SQRT2_2))/1.5;
+    OUTPUT << "h=" << h << endl;
     glBindTexture(GL_TEXTURE_2D,idTextureGrid);
     glTranslatef(0,0,blockSize[2]*(0.5-M_SQRT2_2));
-    glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]*M_SQRT2_2);
+    glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],(1+(gridSize[2]-1)*M_SQRT2_2)*blockSize[2]);
     glBegin(GL_QUADS);
     // bottom
         glNormal3f(0,0,1.0f);
@@ -289,9 +292,9 @@ void Catoms3DWorld::glDraw() {
         glVertex3f(0.0f,0.0f,0.0f);
         glTexCoord2f(gridSize[1]/3.0f,0);
         glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(gridSize[1]/3.0f,gridSize[2]/2.0f);
+        glTexCoord2f(gridSize[1]/3.0f,h);
         glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(0,gridSize[2]/2.0f);
+        glTexCoord2f(0,h);
         glVertex3f(0.0,0.0,1.0f);
     // right
         glNormal3f(-1.0f,0,0);
@@ -328,7 +331,7 @@ void Catoms3DWorld::glDraw() {
 	// draw the axes
 	glPushMatrix();
 		objRepere->glDraw();
-	glPopMatrix();*/
+	glPopMatrix();
 }
 
 void Catoms3DWorld::glDrawId() {
