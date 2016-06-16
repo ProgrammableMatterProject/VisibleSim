@@ -38,11 +38,11 @@ public:
     bool isFree(Cell3DPosition &p);
     BuildingBlock *getBlock(Cell3DPosition &p);
     std::vector<Cell3DPosition> getNeighborCells(BuildingBlock *bb);
+    std::vector<Cell3DPosition> getNeighborhood(BuildingBlock *bb);
     
     virtual Vector3D gridToWorldPosition(Cell3DPosition &pos) = 0;
-    virtual Cell3DPosition worldToGridPosition(Vector3D &pos) = 0;
-    virtual std::vector<Cell3DPosition> getNeighborhood(Cell3DPosition &pos) = 0;
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p) = 0;   
+    virtual Cell3DPosition worldToGridPosition(Vector3D &pos) = 0;    
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p) = 0;
 };
 
 /*! \brief 2-Dimensional Lattice abstract class
@@ -57,7 +57,6 @@ public:
 
     virtual Vector3D gridToWorldPosition(Cell3DPosition &pos) = 0;
     virtual Cell3DPosition worldToGridPosition(Vector3D &pos) = 0;
-    virtual std::vector<Cell3DPosition> getNeighborhood(Cell3DPosition &pos) = 0;
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p) = 0;
 };
 
@@ -73,7 +72,6 @@ public:
 
     virtual Vector3D gridToWorldPosition(Cell3DPosition &pos) = 0;
     virtual Cell3DPosition worldToGridPosition(Vector3D &pos) = 0;
-    virtual std::vector<Cell3DPosition> getNeighborhood(Cell3DPosition &pos) = 0;
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p) = 0;
 };
 
@@ -96,7 +94,6 @@ public:
 
     Vector3D gridToWorldPosition(Cell3DPosition &pos);
     Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getNeighborhood(Cell3DPosition &pos);
     std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
 };
 
@@ -129,7 +126,6 @@ public:
 
     Vector3D gridToWorldPosition(Cell3DPosition &pos);
     Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getNeighborhood(Cell3DPosition &pos);
     std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
 };
 
@@ -181,7 +177,6 @@ public:
 
     Vector3D gridToWorldPosition(Cell3DPosition &pos);
     Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getNeighborhood(Cell3DPosition &pos);
     std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
 };
 
@@ -206,7 +201,6 @@ public:
 
     Vector3D gridToWorldPosition(Cell3DPosition &pos);
     Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getNeighborhood(Cell3DPosition &pos);
     std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
 };
 
