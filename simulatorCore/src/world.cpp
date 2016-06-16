@@ -48,7 +48,6 @@ World::~World() {
 }
 
 
-    
 BuildingBlock* World::getBlockById(int bId) {
 	map<int, BuildingBlock*>::iterator it;
 	it = buildingBlocksMap.find(bId);
@@ -96,22 +95,22 @@ static void swap(int* a, int* b)
 
 void World::generateIds(int n, int* ids) {
 	int a = 0, b = 0;
-	
+
 	//struct timespec t;
 	//clock_gettime(CLOCK_REALTIME, &t);
 	// not implemented in macos
 	//boost::rand48 generator = boost::rand48(t.tv_nsec);
-	
+
 	boost::rand48 generator = boost::rand48(time(NULL));
-	
+
 	for (int i = 0; i < n; i++) {
 		ids[i] = i+1;
 	}
-	
+
 	if (n==1) {
 		return;
 	}
-		
+
 	// randomly switch 2n times
 	for (int i = 0; i < n*2; i++) {
 		do {
@@ -125,9 +124,9 @@ void World::generateIds(int n, int* ids) {
 /**
  * Schedules a tap event for block with id bId, at time date.
  *
- * @param date 
- * @param bId 
- * @return 
+ * @param date
+ * @param bId
+ * @return
  */
 void World::tapBlock(uint64_t date, int bId) {
     BuildingBlock *bb = getBlockById(bId);
@@ -137,27 +136,27 @@ void World::tapBlock(uint64_t date, int bId) {
 /**
  * Displays a popup menu at coordinates (ix, iy)
  *
- * @param ix 
- * @param iy 
- * @return 
+ * @param ix
+ * @param iy
+ * @return
  */
 void World::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
-        GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-        GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
-        GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
-        GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
-        GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-        GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
+	GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
+	GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
+	GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
+	GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
+	GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
+	GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
     cerr << "Block " << numSelectedBlock << ":" << numSelectedFace << " selected" << endl;
-    
+
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
     GlutContext::popupMenu->show(true);
-}    
-    
+}
+
 } // BaseSimulator namespace

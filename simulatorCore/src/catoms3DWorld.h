@@ -95,6 +95,7 @@ public:
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
+    void updateGlData(BuildingBlock *bb);
      void updateGlData(Catoms3DBlock*blc,const Color &color);
      void updateGlData(Catoms3DBlock*blc, bool visible);
      void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
