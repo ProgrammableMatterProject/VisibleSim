@@ -23,10 +23,10 @@ BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlock
 	// PTHY: Note: function pointer cast to generic type, safe according to specifications as it will be used
 	//  only after reconversion
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
-	newBlockCode = (BlockCode *(*)(BuildingBlock *))blinkyBlocksBlockCodeBuildingFunction; 
+	newBlockCode = (BlockCode *(*)(BuildingBlock *))blinkyBlocksBlockCodeBuildingFunction;
 
 	parseWorld(argc, argv);
-	parseBlockList();	
+	parseBlockList();
 
 	((BlinkyBlocksWorld*)world)->linkBlocks();
 
@@ -150,7 +150,7 @@ void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 	//  here, using the blockElt TiXmlElement.
 
 	// ...Parsing code...
-  
+
 	// Finally, add block to the world
 	// PTHY: TODO: add master
 	((BlinkyBlocksWorld*)world)->addBlock(blockId,

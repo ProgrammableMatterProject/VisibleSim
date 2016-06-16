@@ -41,7 +41,10 @@ public:
 
 	void loadScheduler();
 	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
-	
+	void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+		       (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+	void parseSkeleton();
+
 	void printInfo() { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
 	void help();
 };

@@ -20,17 +20,16 @@ namespace SmartBlocks {
     protected:
         SmartBlocksBlock **tabPtrBlocks;
         int gridSize[2];
-        GLfloat blockSize[3];
         Camera *camera;
         presence *targetGrid;
         SmartBlocksCapabilities *capabilities;
         int tabStatsData[10];
         int nbreStats;
-        static const int numPickingTextures = 4; /* The number of picking textures defined for 
-                                                    this type of catom, 
+        static const int numPickingTextures = 4; /* The number of picking textures defined for
+                                                    this type of catom,
                                                     used to deduce selected Block / face */
         ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
-    
+
         SmartBlocksWorld(int gw,int gh,int argc, char *argv[]);
         virtual ~SmartBlocksWorld();
 
@@ -81,8 +80,8 @@ namespace SmartBlocks {
         virtual void menuChoice(int);
 
         bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
-	void deleteBlock(SmartBlocksBlock *bb);
-        
+        void deleteBlock(SmartBlocksBlock *bb);
+
         bool isBorder(int x,int y);
         bool isSingle(int x,int y);
         int nbreWellPlacedBlock();

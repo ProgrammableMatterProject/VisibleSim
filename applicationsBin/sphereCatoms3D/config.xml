@@ -2,7 +2,7 @@
 <world gridSize="210, 210, 210">
     <camera target="100,100,50" directionSpherical="0,30,30" angle="45" near="0.01" far="2500.0" />
     <spotlight target="200,200,120" directionSpherical="125,40,1500" angle="30" near="80.0" far="2500.0"/>
-    <blockList color="128,128,128" blocksize="10,10,10">
+    <blockList color="128,128,128" blockSize="10,10,10">
 
 		<block position="0,0,0" orientation="0"/>
 		<block position="0,0,1" orientation="0"/>

@@ -29,7 +29,6 @@ class Catoms3DWorld : BaseSimulator::World {
 protected:
     int gridSize[3];
     Catoms3DBlock **gridPtrBlocks;
-    GLfloat blockSize[3];
     Camera *camera;
     GLuint idTextureHexa,idTextureGrid;
     Skeleton *skeleton;

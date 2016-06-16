@@ -24,13 +24,12 @@ class RobotBlocksWorld : public BaseSimulator::World {
 protected:
 	int gridSize[3];
 	RobotBlocksBlock **gridPtrBlocks;
-	GLfloat blockSize[3];
 	Camera *camera;
 	GLuint idTextureWall;
 	GLint menuId;
 	presence *targetGrid;
 	RobotBlocksCapabilities *capabilities;
-        ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
+	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
 	RobotBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~RobotBlocksWorld();
@@ -80,7 +79,7 @@ public:
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(RobotBlocksBlock *block);
 	virtual void connectBlock(RobotBlocksBlock *block);
-        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+	virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
 	virtual void exportConfiguration();
 };
 
