@@ -1,0 +1,28 @@
+#!/bin/sh
+
+DIR=$1
+TARGET=$2
+
+if [ -z "$DIR" ]; then
+	echo "No source directory provided"
+	exit 1
+fi
+if [ -z "$TARGET" ]; then
+	echo "No target directory provided"
+	exit 1
+fi
+
+ARG=""
+for file in $PWD/$DIR/*.meld; do
+	base=`basename $file .meld`
+   target="$TARGET/$base.m"
+   if [ "$file" -nt "$target" ]; then
+      ARG="$ARG $file $PWD/$TARGET/$base"
+      echo ">> Compiling $DIR/$base.meld to $target"
+   fi
+done
+if [ -z "$ARG" ]; then
+   echo ">> Files are up-to-date"
+else
+   meld-compile-file $ARG
+fi

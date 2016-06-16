@@ -2,7 +2,7 @@
 #define _capability_h
 
 #include <vector>
-#include "vecteur.h"
+#include "vector3D.h"
 #include <string>
 
 class Block; 

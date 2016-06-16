@@ -197,7 +197,6 @@ NetworkInterfaceStopTransmittingEvent::~NetworkInterfaceStopTransmittingEvent() 
 
 void NetworkInterfaceStopTransmittingEvent::consume() {
 	EVENT_CONSUME_INFO();
-
 	interface->connectedInterface->hostBlock->scheduleLocalEvent(EventPtr(new NetworkInterfaceReceiveEvent(BaseSimulator::getScheduler()->now(), interface->connectedInterface, interface->messageBeingTransmitted)));
 	// TODO add a confirmation event to the sender ?
 

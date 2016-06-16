@@ -48,20 +48,18 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 
     if (pev->eventType == EVENT_RECEIVE_MESSAGE) {
         message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-        
-		cout << "INTERFACE" << block->getDirection(message->destinationInterface) << endl;
 
-        switch (message->type) {
+		switch (message->type) {
             case SEARCH_MASTER_MESSAGE : {
                 SearchMasterMessage_ptr recvMessage = boost::static_pointer_cast<SearchMasterMessage>(message);
                 if (masterId<recvMessage->blockId) {
                     masterColor = recvMessage->blockColor;
                     masterId = recvMessage->blockId;
                 }
-                stringstream info;
+/*                stringstream info;
                 info.str("");
                 info << block->blockId << " recv(" << masterId << ")";
-                scheduler->trace(info.str(),block->blockId);
+                scheduler->trace(info.str(),block->blockId);*/
 
                 if (searchDone) {
                     sendReturnMessageTo(recvMessage->destinationInterface);
@@ -74,10 +72,10 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 
                     if (nbreOfWaitedAnswers==0) {
 
-                        stringstream info;
+/*                        stringstream info;
                         info.str("");
                         info << block->blockId << " Find(" << masterId << ")";
-                        scheduler->trace(info.str(),block->blockId);
+                        scheduler->trace(info.str(),block->blockId);*/
 
                         if (block2answer!=NULL) {
                             sendReturnMessageTo(block2answer);
@@ -101,18 +99,18 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
                     masterId = recvMessage->blockId;
                 }
 
-                stringstream info;
+/*                stringstream info;
                 info.str("");
                 info << block->blockId << " recv(" << masterId << ")";
-                scheduler->trace(info.str(),block->blockId);
+                scheduler->trace(info.str(),block->blockId);*/
 
                 nbreOfWaitedAnswers--;
                 if (nbreOfWaitedAnswers==0) {
 
-                    stringstream info;
+/*                    stringstream info;
                     info.str("");
                     info << block->blockId << " Find(" << masterId << ")";
-                    scheduler->trace(info.str(),block->blockId);
+                    scheduler->trace(info.str(),block->blockId);*/
 
                     if (block2answer!=NULL) {
                         sendReturnMessageTo(block2answer);
@@ -148,10 +146,10 @@ RobotBlocks::RobotBlocksBlockCode* Robot02BlockCode::buildNewBlockCode(RobotBloc
 }
 
 void Robot02BlockCode::sendMasterMessageToAllNeighbors(P2PNetworkInterface *except) {
-    stringstream info;
+/*    stringstream info;
     info.str("");
     info << block->blockId << " Search(" << masterId << ")";
-    scheduler->trace(info.str(),block->blockId);
+    scheduler->trace(info.str(),block->blockId);*/
 
     P2PNetworkInterface * p2p;
     nbreOfWaitedAnswers = 0;

@@ -30,12 +30,8 @@ class RobotBlocksBlock : public BaseSimulator::BuildingBlock {
 	P2PNetworkInterface *tabInterfaces[6];
 protected:
 	boost::interprocess::interprocess_mutex mutex_vm;
-
 public:
 	RobotBlocksGlBlock *ptrGlBlock;
-	Color color; // color of the block
-	Vecteur position; // position of the block;
-	bool isMaster;
 
 	RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
 	RobotBlocksBlock(int bId, RobotBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
@@ -43,8 +39,6 @@ public:
 
 	inline RobotBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
 	inline void setGlBlock(RobotBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
-	void setColor(const Color &);
-	void setPosition(const Vecteur &p);
 	void setPrevNext(int,int);
 	void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
 	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);

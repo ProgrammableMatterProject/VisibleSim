@@ -35,8 +35,15 @@ public:
 		assert(simulator != NULL);
 		return((BlinkyBlocksSimulator*)simulator);
 	}
-   
-   void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
+
+	void loadScheduler();
+	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
+	void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+		       (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+	
+	void parseScenario();
+	
+	void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {

@@ -1,5 +1,5 @@
 /*
- * clock.h
+ * commandLine.h
  *
  *  Created on: 26 march 2015
  *      Author: andre
@@ -24,6 +24,8 @@ private:
 	int schedulerMode;
 	bool meldDebugger;
 	string programPath;
+        string vmPath;
+        int vmPort;
 	string configFile;
 	bool stats;
 	bool fullScreen;
@@ -45,6 +47,8 @@ public:
 	int getSchedulerMode() { return schedulerMode; }
 	bool getMeldDebugger() { return meldDebugger; }
 	string getProgramPath() { return programPath; }
+        string getVMPath() { return vmPath; }
+        int getVMPort() { return vmPort; }
 	string getConfigFile() { return configFile; }
 	bool getStats() { return stats; }
 	bool getFullScreen() { return fullScreen; }

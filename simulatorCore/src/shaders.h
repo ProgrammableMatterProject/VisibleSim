@@ -17,7 +17,7 @@
 #include <GL/glu.h>
 #endif
 
-#include "matrice44.h"
+#include "matrix44.h"
 #include "camera.h"
 
 using namespace std;

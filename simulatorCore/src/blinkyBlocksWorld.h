@@ -10,7 +10,7 @@
 
 #include "openglViewer.h"
 #include "world.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "blinkyBlocksBlock.h"
 #include "objLoader.h"
 #include <boost/asio.hpp>
@@ -22,78 +22,80 @@
 
 namespace BlinkyBlocks {
 
-class BlinkyBlocksWorld : BaseSimulator::World {
+class BlinkyBlocksWorld : public BaseSimulator::World {
 protected:
-  Grid3D<BuildingBlock*> *grid;
+    Grid3D<BuildingBlock*> *grid;
   
-int gridSize[3];
+    int gridSize[3];
   
-	BlinkyBlocksBlock **gridPtrBlocks;
-	GLfloat blockSize[3];
-	Camera *camera;
-	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
-	GLuint idTextureWall;
-	GLushort numSelectedFace;
-	GLuint numSelectedBlock;
-	GLint menuId;
+    BlinkyBlocksBlock **gridPtrBlocks;
+    Camera *camera;
+    GLuint idTextureWall;
+    GLint menuId;
+    ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	
-	vector<ScenarioEvent*> tabEvents;
+    vector<ScenarioEvent*> tabEvents;
 
-	BlinkyBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]);
-	virtual ~BlinkyBlocksWorld();
-	inline BlinkyBlocksBlock* getGridPtr(int ix,int iy,int iz) { return gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]; };
-	inline void setGridPtr(int ix,int iy,int iz,BlinkyBlocksBlock *ptr) { gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr; };
+    BlinkyBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]);
+    virtual ~BlinkyBlocksWorld();
+    inline BlinkyBlocksBlock* getGridPtr(int ix,int iy,int iz) { return gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]; };
+    inline void setGridPtr(int ix,int iy,int iz,BlinkyBlocksBlock *ptr) { gridPtrBlocks[ix+(iy+iz*gridSize[1])*gridSize[0]]=ptr; };
 public:
-	static void createWorld(int slx,int sly,int slz, int argc, char *argv[]);
-	static void deleteWorld();
-	static BlinkyBlocksWorld* getWorld() {
-		assert(world != NULL);
-		return((BlinkyBlocksWorld*)world);
-	}
+    static void createWorld(int slx,int sly,int slz, int argc, char *argv[]);
+    static void deleteWorld();
+    static BlinkyBlocksWorld* getWorld() {
+	assert(world != NULL);
+	return((BlinkyBlocksWorld*)world);
+    }
+
+    inline int* getGridSize() { return gridSize; };
+    inline float* getBlockSize() { return blockSize; };
 	
-	void printInfo() {
-		OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
-	}
+    void printInfo() {
+	OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
+    }
 
-	virtual BlinkyBlocksBlock* getBlockById(int bId) {
-		return((BlinkyBlocksBlock*)World::getBlockById(bId));
-	}
+    virtual BlinkyBlocksBlock* getBlockById(int bId) {
+	return((BlinkyBlocksBlock*)World::getBlockById(bId));
+    }
 
-	virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Vecteur &pos, const Color &col);
-	void deleteBlock(BlinkyBlocksBlock *bb);
-	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
+    virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)(BlinkyBlocksBlock*), const Cell3DPosition &pos, const Color &col);
+    void deleteBlock(BlinkyBlocksBlock *bb);
 
-	void linkBlocks();
-	void loadTextures(const string &str);
-	virtual void glDraw();
-	virtual void glDrawId();
-	virtual void glDrawIdByMaterial();
-	virtual void updateGlData(BlinkyBlocksBlock*blc);
-	virtual void createPopupMenu(int ix, int iy);
-	virtual void createHelpWindow();
-	inline virtual Camera *getCamera() { return camera; };
-	virtual void setSelectedFace(int n);
-	virtual void menuChoice(int n);
+    void linkBlocks();
+    void loadTextures(const string &str);
+    virtual void glDraw();
+    virtual void glDrawId();
+    virtual void glDrawIdByMaterial();
+    virtual void createHelpWindow();
+    inline virtual Camera *getCamera() { return camera; };
+    virtual void setSelectedFace(int n);
+    virtual void menuChoice(int n);
+    virtual void exportConfiguration();
+    virtual inline BuildingBlock* getMenuBlock() { return World::getMenuBlock(); };
 	
-	/* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
-	void tapBlock(uint64_t date, int bId);
-	void accelBlock(uint64_t date, int bId, int x, int y, int z);
-	void shakeBlock(uint64_t date, int bId, int f);	
-	void stopBlock(uint64_t date, int bId);
-	
-	void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
+    /* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
+    void accelBlock(uint64_t date, int bId, int x, int y, int z);
+    void shakeBlock(uint64_t date, int bId, int f);	
+    void stopBlock(uint64_t date, int bId);
 
-   // Prints information about the blocks
-   void dump();
+    virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+    
+    void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
+
+    // Prints information about the blocks
+    void dump();
    
 };
-
+    
+std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);
+    
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
-	BlinkyBlocksWorld::createWorld(slx,sly,slz, argc,argv);
+    BlinkyBlocksWorld::createWorld(slx,sly,slz, argc,argv);
 }
 
 inline void deleteWorld() {
-	BlinkyBlocksWorld::deleteWorld();
+    BlinkyBlocksWorld::deleteWorld();
 }
 
 inline BlinkyBlocksWorld* getWorld() { return(BlinkyBlocksWorld::getWorld()); }

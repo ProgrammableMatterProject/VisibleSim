@@ -10,7 +10,7 @@
 
 #include "openglViewer.h"
 #include "world.h"
-#include "vecteur.h"
+#include "vector3D.h"
 #include "robotBlocksBlock.h"
 #include "robotBlocksCapabilities.h"
 #include "objLoader.h"
@@ -20,19 +20,17 @@
 
 namespace RobotBlocks {
 
-class RobotBlocksWorld : BaseSimulator::World {
+class RobotBlocksWorld : public BaseSimulator::World {
 protected:
 	int gridSize[3];
 	RobotBlocksBlock **gridPtrBlocks;
 	GLfloat blockSize[3];
 	Camera *camera;
-	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureWall;
-	GLushort numSelectedFace;
-	GLuint numSelectedBlock;
 	GLint menuId;
 	presence *targetGrid;
 	RobotBlocksCapabilities *capabilities;
+        ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
 	RobotBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~RobotBlocksWorld();
@@ -54,7 +52,7 @@ public:
 		return((RobotBlocksBlock*)World::getBlockById(bId));
 	}
 
-	virtual void addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*), const Vecteur &pos, const Color &col, bool master=false);
+	virtual void addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*), const Cell3DPosition &pos, const Color &col, bool master=false);
 	void deleteBlock(RobotBlocksBlock *bb);
 	inline void setBlocksSize(float *siz) { blockSize[0] = siz[0]; blockSize[1] = siz[1]; blockSize[2] = siz[2]; };
 	inline const float *getBlocksSize() { return blockSize; };
@@ -75,15 +73,15 @@ public:
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
-	virtual void updateGlData(RobotBlocksBlock*blc);
-	virtual void updateGlData(RobotBlocksBlock*blc,int prev,int next);
-	virtual void createPopupMenu(int ix, int iy);
+	void updateGlData(RobotBlocksBlock*blc,int prev,int next);
 	virtual void createHelpWindow();
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(RobotBlocksBlock *block);
 	virtual void connectBlock(RobotBlocksBlock *block);
+        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+	virtual void exportConfiguration();
 };
 
 inline void createWorld(int slx,int sly,int slz, int argc, char *argv[]) {

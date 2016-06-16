@@ -39,8 +39,7 @@ void SmartBlocksScheduler::deleteScheduler() {
 	delete((SmartBlocksScheduler*)scheduler);
 }
 
-void *SmartBlocksScheduler::startPaused(/*void *param*/) {
-	//MultiCoresScheduler *scheduler = (MultiCoresScheduler*)param;
+void *SmartBlocksScheduler::startPaused(/*void *param*/) {	
 	bool mustStop;
 	uint64_t systemCurrentTime, systemCurrentTimeMax;
 
@@ -143,7 +142,7 @@ void *SmartBlocksScheduler::startPaused(/*void *param*/) {
 	cout << "Number of events processed : " << Event::getNextId() << endl;
 	cout << "Events(s) left in memory before destroying Scheduler : " << Event::getNbLivingEvents() << endl;
 	cout << "Message(s) left in memory before destroying Scheduler : " << Message::getNbMessages() << endl;
-
+cout.flush();
 	return(NULL);
 }
 

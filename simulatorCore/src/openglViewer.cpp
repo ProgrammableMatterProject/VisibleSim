@@ -12,6 +12,7 @@
 #include "trace.h"
 #include "meldProcessDebugger.h"
 
+
 //===========================================================================================================
 //
 //          GlutContext  (class)
@@ -30,11 +31,16 @@ bool GlutContext::fullScreenMode=false;
 bool GlutContext::saveScreenMode=false;
 bool GlutContext::mustSaveImage=false;
 GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
+GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
 GlutPopupWindow *GlutContext::popup=NULL;
 GlutPopupMenuWindow *GlutContext::popupMenu=NULL;
 GlutHelpWindow *GlutContext::helpWindow=NULL;
+int GlutContext::frameCount = 0;
+int GlutContext::previousTime = 0;
+float GlutContext::fps = 0;
 
 void GlutContext::init(int argc, char **argv) {
+#ifdef GLUT
 	glutInit(&argc,argv);
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
@@ -74,14 +80,19 @@ void GlutContext::init(int argc, char **argv) {
 	glutKeyboardFunc(keyboardFunc);
 	glutIdleFunc(idleFunc);
 
-	mainWindow = new GlutSlidingMainWindow(screenWidth-40,50,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
+	mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
+	debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga");
 	popup = new GlutPopupWindow(NULL,0,0,40,30);
+#endif
 }
 
 void GlutContext::deleteContext() {
-	delete mainWindow;
+#ifdef GLUT
+    delete mainWindow;
+	delete debugWindow;
 	delete popup;
-	delete popupMenu;
+	//delete popupMenu;
+#endif
 }
 
 void *GlutContext::lanceScheduler(void *param) {
@@ -95,7 +106,6 @@ void *GlutContext::lanceScheduler(void *param) {
 // - width  : largeur (x) de la zone de visualisation
 // - height : hauteur (y) de la zone de visualisation
 void GlutContext::reshapeFunc(int w,int h) {
-
  	screenWidth=w;
 	screenHeight=h;
 	Camera* camera=getWorld()->getCamera();
@@ -108,7 +118,8 @@ void GlutContext::reshapeFunc(int w,int h) {
 	// camera intrinsic parameters
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	mainWindow->reshapeFunc(w,h);
+	mainWindow->reshapeFunc(w-40,60,40,h-60);
+	debugWindow->reshapeFunc(w-40,60,40,h-60);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -120,6 +131,7 @@ void GlutContext::motionFunc(int x,int y) {
 		popup->show(false);
 	}
 	if (mainWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
+	if (debugWindow->mouseFunc(-1,GLUT_DOWN,x,screenHeight - y)>0) return;
 	if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
 		Camera* camera=getWorld()->getCamera();
 		camera->mouseMove(x,y);
@@ -144,6 +156,10 @@ void GlutContext::passiveMotionFunc(int x,int y) {
 		glutPostRedisplay();
 		return;
 	}
+	if (debugWindow->passiveMotionFunc(x,screenHeight - y)) {
+		glutPostRedisplay();
+		return;
+	}
 	lastMotionTime = glutGet(GLUT_ELAPSED_TIME);
 	lastMousePos[0]=x;
 	lastMousePos[1]=y;
@@ -156,6 +172,10 @@ void GlutContext::passiveMotionFunc(int x,int y) {
 // - x,y : coordonnée du curseur dans la fenêtre
 void GlutContext::mouseFunc(int button,int state,int x,int y) {
 	if (mainWindow->mouseFunc(button,state,x,screenHeight - y)>0) {
+		glutPostRedisplay();
+		return;
+	}
+	if (debugWindow->mouseFunc(button,state,x,screenHeight - y)>0) {
 		glutPostRedisplay();
 		return;
 	}
@@ -233,51 +253,56 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
 {
   //  static int modeScheduler;
 	Camera* camera=getWorld()->getCamera();
+    // si une interface a le focus
+    if (debugWindow->keyFunc(c)) {
 
-	switch(c)
-    { case 27 : case 'q' : case 'Q' : // quit
-			glutLeaveMainLoop();
-      break;
-      case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-      case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
-      case '+' : camera->mouseZoom(0.5); break;
-      case '-' : camera->mouseZoom(-0.5); break;
-	//  case 'l' : showLinks = !showLinks; break;
-      case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
-      //case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
-	  case 'p' : MeldProcess::getDebugger()->handlePauseRequest(); break;
-	  case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
-	  case 'u' : MeldProcess::getDebugger()->unPauseSim(); break;
-	  case 'z' : {
-		  World *world = BaseSimulator::getWorld();
-		  GlBlock *slct=world->getSelectedBlock();
-		  if (slct) {
-			  world->getCamera()->setTarget(slct->getPosition());
-		  }
-	  }
-	  break;
-	  case 'w' : case 'W' :
-          fullScreenMode = !fullScreenMode;
-          if (fullScreenMode) {
-        	  glutFullScreen();
-          } else {
-              glutReshapeWindow(initialScreenWidth,initialScreenHeight);
-              glutPositionWindow(0,0);
-          }
-      break;
-	  case 'h' :
-		  if (!helpWindow) {
-			  BaseSimulator::getWorld()->createHelpWindow();
-		  }
-		  helpWindow->showHide();
-	  break;
-	  case 's' : saveScreenMode=!saveScreenMode;
-	  break;
-	  case 'S' : saveScreen("capture.ppm");
-	  break;
+    } else {
+        switch(c) {
+            case 27 : case 'q' : case 'Q' : // quit
+                glutLeaveMainLoop();
+            break;
+            case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+            case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
+            case '+' : camera->mouseZoom(0.5); break;
+            case '-' : camera->mouseZoom(-0.5); break;
+        //  case 'l' : showLinks = !showLinks; break;
+            case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
+//          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
+          //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
+            case 'd' : getScheduler()->stop(getScheduler()->now()); break;
+            case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
+          //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
+            case 'z' : {
+                World *world = BaseSimulator::getWorld();
+                GlBlock *slct=world->getSelectedBlock();
+                if (slct) {
+                  world->getCamera()->setTarget(slct->getPosition());
+                }
+            }
+            break;
+            case 'w' : case 'W' :
+                fullScreenMode = !fullScreenMode;
+                if (fullScreenMode) {
+                    glutFullScreen();
+                } else {
+                    glutReshapeWindow(initialScreenWidth,initialScreenHeight);
+                    glutPositionWindow(0,0);
+                }
+          break;
+          case 'h' :
+                if (!helpWindow) {
+                    BaseSimulator::getWorld()->createHelpWindow();
+                }
+                helpWindow->showHide();
+            break;
+            case 'i' : case 'I' :
+                mainWindow->openClose();
+            break;
+            case 's' : saveScreenMode=!saveScreenMode; break;
+            case 'S' : saveScreen("capture.ppm"); break;
+        }
     }
-
-  glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 
@@ -289,6 +314,7 @@ void GlutContext::idleFunc(void) {
 #else
 	  usleep(20000);
 #endif
+    //calculateFPS();
 	if (saveScreenMode && mustSaveImage) {
 		static int num=0;
 		char title[16];
@@ -315,6 +341,26 @@ void GlutContext::idleFunc(void) {
 	if (mainWindow->hasSelectedBlock() || getScheduler()->state==Scheduler::RUNNING) {
 		glutPostRedisplay(); // for blinking
 	}
+}
+
+void GlutContext::calculateFPS(void) {
+    frameCount++;
+    int currentTime = glutGet(GLUT_ELAPSED_TIME);
+
+    //  Calculate time passed
+    int timeInterval = currentTime - previousTime;
+    if(timeInterval > 1000)
+    {
+        fps = frameCount / (timeInterval / 1000.0f);
+        previousTime = currentTime;
+        frameCount = 0;
+    }
+}
+
+void GlutContext::showFPS(void) {
+    char fpsStr[50];
+    sprintf(fpsStr, "FPS = %4.2f", fps);
+    GlutWindow::drawString(50, 50, fpsStr);
 }
 
 void GlutContext::drawFunc(void) {
@@ -345,10 +391,13 @@ void GlutContext::drawFunc(void) {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	mainWindow->glDraw();
+	debugWindow->glDraw();
 	popup->glDraw();
 	if (popupMenu) popupMenu->glDraw();
 	if (helpWindow) helpWindow->glDraw();
-	glEnable(GL_DEPTH_TEST);
+    //showFPS();
+
+    glEnable(GL_DEPTH_TEST);
 	glutSwapBuffers();
 }
 
@@ -439,13 +488,33 @@ int GlutContext::processHits(GLint hits, GLuint *buffer) {
 }
 
 void GlutContext::mainLoop() {
+#ifdef GLUT
 	glutMainLoop();
+#else
+//    cout << "r+[ENTER] to run simulation" << endl;
+    sleep(2);
+/*    char c='r';
+    cin >> c;*/
+    Scheduler *s = getScheduler();
+//    if (c=='r') {
+        cout << "Run simulation..." << endl;
+        cout.flush();
+
+//        sleep(2);
+        s->start(SCHEDULER_MODE_FASTEST);
+        s->waitForSchedulerEnd();
+//    }
+#endif
 	getScheduler()->stop(BaseSimulator::getScheduler()->now());
-	deleteContext();
+
+    sleep(2);
+    deleteContext();
 }
 
 void GlutContext::addTrace(const string &message,int id,const Color &color) {
+#ifdef GLUT
 	if (mainWindow) mainWindow->addTrace(id,message,color);
+#endif
 }
 
 bool GlutContext::saveScreen(char *title) {

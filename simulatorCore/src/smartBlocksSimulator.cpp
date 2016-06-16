@@ -14,7 +14,9 @@ namespace SmartBlocks {
 
 SmartBlocksBlockCode*(* SmartBlocksSimulator::buildNewBlockCode)(SmartBlocksBlock*)=NULL;
 
-SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
+SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[],
+					   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
+					   (SmartBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
 	cout << "\033[1;34m" << "SmartBlocksSimulator constructor" << "\033[0m" << endl;
 
 	buildNewBlockCode = smartBlocksBlockCodeBuildingFunction;
@@ -31,18 +33,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 		int largeur = atoi(str.substr(0,pos).c_str());
 		int hauteur = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
 		cout << "grid size : " << largeur << " x " << hauteur << endl;
-
-		const char *attr=worldElement->Attribute("windowSize");
-		if (attr) {
-			str=attr;
-			int pos = str.find_first_of(',');
-			GlutContext::initialScreenWidth = atoi(str.substr(0,pos).c_str());
-			GlutContext::initialScreenHeight = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
-			GlutContext::screenWidth = GlutContext::initialScreenWidth;
-			GlutContext::screenHeight = GlutContext::initialScreenHeight;
-		}
-
-		attr=worldElement->Attribute("maxSimulationTime");
+		const char *attr=worldElement->Attribute("maxSimulationTime");
 		if (attr) {
 			str=attr;
 			uint64_t t = atoi(attr);
@@ -56,6 +47,15 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 			}
 			getScheduler()->setMaximumDate(t);
 		}
+		attr=worldElement->Attribute("windowSize");
+		if (attr) {
+			str=attr;
+			int pos = str.find_first_of(',');
+			GlutContext::initialScreenWidth = atoi(str.substr(0,pos).c_str());
+			GlutContext::initialScreenHeight = atoi(str.substr(pos+1,str.length()-pos-1).c_str());
+			GlutContext::screenWidth = GlutContext::initialScreenWidth;
+			GlutContext::screenHeight = GlutContext::initialScreenHeight;
+		}
 		createWorld(largeur,hauteur,argc,argv);
 		world = getWorld();
 		world->loadTextures("../../simulatorCore/smartBlocksTextures");
@@ -63,7 +63,6 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 		cerr << "ERROR : NO world in XML file" << endl;
 		exit(1);
 	}
-
 	TiXmlNode *nodeConfig = node->FirstChild("camera");
 	if (nodeConfig) {
 		TiXmlElement* cameraElement = nodeConfig->ToElement();
@@ -74,7 +73,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 			string str(attr);
 			int pos1 = str.find_first_of(','),
 			    pos2 = str.find_last_of(',');
-			Vecteur target;
+			Vector3D target;
 			target.pt[0] = atof(str.substr(0,pos1).c_str());
 			target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
@@ -114,7 +113,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 	// loading the spotlight parameters
 	nodeConfig = node->FirstChild("spotlight");
 	if (nodeConfig) {
-		Vecteur target;
+		Vector3D target;
 		float az=0,ele=60,dist=1000,angle=50;
 
 		TiXmlElement* lightElement = nodeConfig->ToElement();
@@ -174,7 +173,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 /* Reading a smartblock */
 		cout << "default color :" << defaultColor << endl;
 		TiXmlNode *block = nodeBlock->FirstChild("block");
-		Vecteur position;
+		Cell3DPosition position;
 		Color color;
 		while (block) {
 		   element = block->ToElement();
@@ -235,6 +234,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 	} else // end if(nodeBlock)
 	{ cerr << "no Block List" << endl;
 	}
+
 	TiXmlNode *nodeGrid = node->FirstChild("targetGrid");
  	if (nodeGrid) {
  		TiXmlNode *block = nodeGrid->FirstChild("targetLine");
@@ -262,6 +262,7 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], SmartBlocksBl
 	if (nodeCapa) {
         world->setCapabilities(new SmartBlocksCapabilities(nodeCapa));
     }
+
  	world->linkBlocks();
 
 	GlutContext::mainLoop();
@@ -273,7 +274,9 @@ SmartBlocksSimulator::~SmartBlocksSimulator() {
 	cout << "\033[1;34m" << "SmartBlocksSimulator destructor" << "\033[0m" <<endl;
 }
 
-void SmartBlocksSimulator::createSimulator(int argc, char *argv[], SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*)) {
+void SmartBlocksSimulator::createSimulator(int argc, char *argv[],
+					   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
+					   (SmartBlocksBlock*)) {
 	simulator =  new SmartBlocksSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
 }
 
@@ -281,5 +284,17 @@ void SmartBlocksSimulator::deleteSimulator() {
 	delete ((SmartBlocksSimulator*)simulator);
 	simulator = NULL;
 }
+
+void SmartBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
+  SmartBlocksWorld::createWorld(lx,ly,argc,argv);
+  world = SmartBlocksWorld::getWorld();
+  world->loadTextures("../../simulatorCore/smartBlocksTextures");
+}
+
+void SmartBlocksSimulator::loadScheduler() {
+  SmartBlocksScheduler::createScheduler();
+  scheduler = SmartBlocksScheduler::getScheduler();
+}
+
 
 } // SmartBlocks namespace

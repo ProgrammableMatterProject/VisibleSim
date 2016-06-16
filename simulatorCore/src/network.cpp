@@ -14,8 +14,10 @@ using namespace std;
 #include "network.h"
 #include "trace.h"
 
-unsigned int Message::nextId = 0;
-unsigned int Message::nbMessages = 0;
+//unsigned int Message::nextId = 0;
+//unsigned int Message::nbMessages = 0;
+uint64_t Message::nextId = 0;
+uint64_t Message::nbMessages = 0;
 
 unsigned int P2PNetworkInterface::nextId = 0;
 double P2PNetworkInterface::defaultDataRate=1000000;
@@ -39,7 +41,7 @@ Message::~Message() {
 	nbMessages--;
 }
 
-unsigned int Message::getNbMessages() {
+uint64_t Message::getNbMessages() {
 	return(nbMessages);
 }
 
@@ -47,6 +49,13 @@ string Message::getMessageName() {
 	return("generic message");
 }
 
+Message* Message::clone() {
+    Message* ptr = new Message();
+    ptr->sourceInterface = sourceInterface;
+    ptr->destinationInterface = destinationInterface;
+    ptr->type = type;
+    return ptr;
+}
 
 //===========================================================================================================
 //
@@ -76,6 +85,10 @@ P2PNetworkInterface::~P2PNetworkInterface() {
 #endif
 }
 
+void P2PNetworkInterface::send(Message *m) {
+  getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now(), m, this));
+}
+
 bool P2PNetworkInterface::addToOutgoingBuffer(MessagePtr msg) {
 	stringstream info;
 
@@ -99,7 +112,7 @@ void P2PNetworkInterface::send() {
 	stringstream info;
 	uint64_t transmissionDuration;
 	double rate;
-	
+
 	if (!connectedInterface) {
 		info << "*** WARNING *** [block " << hostBlock->blockId << ",interface " << globalId <<"] : trying to send a Message but no interface connected";
 		BaseSimulator::getScheduler()->trace(info.str());
@@ -114,7 +127,9 @@ void P2PNetworkInterface::send() {
 
 	msg = outgoingQueue.front();
 	outgoingQueue.pop_front();
-	
+//	transmissionDuration = (msg->size()*8000000ULL)/dataRate;
+    transmissionDuration = 20;
+
 	rate = dataRate - dataRateVariability + (generator()/(double)RAND_MAX) * 2 * dataRateVariability;
 	transmissionDuration = (msg->size()*8000000ULL)/rate;
 	messageBeingTransmitted = msg;
@@ -122,8 +137,8 @@ void P2PNetworkInterface::send() {
 	messageBeingTransmitted->destinationInterface = connectedInterface;
 
 	availabilityDate = BaseSimulator::getScheduler()->now()+transmissionDuration;
-	//info << "*** sending (interface " << localId << " of block " << hostBlock->blockId << ")";
-	//getScheduler()->trace(info.str());
+/*	info << "*** sending (interface " << localId << " of block " << hostBlock->blockId << ")";
+	getScheduler()->trace(info.str());*/
 
 	BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStopTransmittingEvent(BaseSimulator::getScheduler()->now()+transmissionDuration, this));
 }

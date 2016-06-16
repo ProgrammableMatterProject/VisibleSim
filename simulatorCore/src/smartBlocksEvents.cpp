@@ -9,8 +9,9 @@
 #include "smartBlocksScheduler.h"
 #include "smartBlocksWorld.h"
 
-const int ANIMATION_DELAY=20000;
-const int COM_DELAY=2000;
+//const int ANIMATION_DELAY=20000; // 20ms x 5
+const int ANIMATION_DELAY=100000; // 100ms
+const int COM_DELAY=2000; // 2ms
 
 const double EPS=1E-5;
 namespace SmartBlocks {
@@ -21,7 +22,7 @@ namespace SmartBlocks {
 //
 //===========================================================================================================
 
-MotionStartEvent::MotionStartEvent(uint64_t t, SmartBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
+MotionStartEvent::MotionStartEvent(uint64_t t, SmartBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_START;
 	finalPosition = fpos;
@@ -56,15 +57,15 @@ const string MotionStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStepEvent::MotionStepEvent(uint64_t t, SmartBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
+MotionStepEvent::MotionStepEvent(uint64_t t, SmartBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STEP;
 	finalPosition = fpos;
-	motionStep = finalPosition - ((SmartBlocksBlock*)concernedBlock)->position;
+	motionStep = finalPosition - ((SmartBlocksBlock*)concernedBlock)->getPositionVector();
 	motionStep.setLength(0.2);
 }
 
-MotionStepEvent::MotionStepEvent(uint64_t t, SmartBlocksBlock *block,const Vecteur &fpos,const Vecteur &step): BlockEvent(t,block) {
+MotionStepEvent::MotionStepEvent(uint64_t t, SmartBlocksBlock *block,const Vector3D &fpos,const Vector3D &step): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STEP;
 	concernedBlock = block;
@@ -83,17 +84,17 @@ MotionStepEvent::~MotionStepEvent() {
 void MotionStepEvent::consume() {
 	EVENT_CONSUME_INFO();
 	SmartBlocksBlock *rb = (SmartBlocksBlock*)concernedBlock;
-	rb->position+=motionStep;
-	SmartBlocksWorld::getWorld()->updateGlData(rb);
+	rb->setPosition(motionStep + rb->getPositionVector());
+	World::getWorld()->updateGlData(rb);
     SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
 
-    double v=(finalPosition-rb->position)*motionStep;
+// OUTPUT << rb->blockId << ":" << scheduler->now()<< endl;
+    double v=(finalPosition-rb->getPositionVector())*motionStep;
     if (v<EPS) {
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
 	} else {
         scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition,motionStep));
 	}
-	GlutContext::mustSaveImage=true;
 //	OUTPUT << "MotionStepEvent(" << concernedBlock->blockId << "," << rb->position << ")" << endl;
 }
 
@@ -107,7 +108,7 @@ const string MotionStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStopEvent::MotionStopEvent(uint64_t t, SmartBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
+MotionStopEvent::MotionStopEvent(uint64_t t, SmartBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_MOTION_STOP;
 	finalPosition = fpos;
@@ -124,14 +125,15 @@ MotionStopEvent::~MotionStopEvent() {
 void MotionStopEvent::consume() {
 	EVENT_CONSUME_INFO();
 	SmartBlocksBlock *rb = (SmartBlocksBlock*)concernedBlock;
-	rb->position=finalPosition;
-    SmartBlocksWorld::getWorld()->updateGlData(rb);
+	rb->setPosition(finalPosition);
+    World::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     SmartBlocksWorld *wrld=SmartBlocksWorld::getWorld();
     int ix = int(rb->position.pt[0]),
         iy = int(rb->position.pt[1]);
 	wrld->setGridPtr(ix,iy,rb);
-/*	stringstream info;
+/*
+	stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);*/

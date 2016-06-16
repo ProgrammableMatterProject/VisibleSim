@@ -24,7 +24,7 @@ namespace RobotBlocks {
 class RobotBlocksScheduler : public BaseSimulator::Scheduler {
 protected:
 	boost::thread *schedulerThread;
-	int schedulerMode;
+	//int schedulerMode;
 
 	RobotBlocksScheduler();
 	virtual ~RobotBlocksScheduler();

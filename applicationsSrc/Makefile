@@ -1,8 +1,6 @@
-#SUBDIRS = flavio01 blinky01 blinky02 smartBlocks1 leader_election coloration\
-#          coloration_v2
+SUBDIRS = noneCatoms2D bbCycle robot01 smartBlocks1 csgCatoms3D
 
-SUBDIRS = blinky01 bbCycle sbReconf smartBlocks1 robot02 reconfCatoms2D
-#noneCatoms2D
+# SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection robot02 map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB 
 
 .PHONY: subdirs $(SUBDIRS)
 

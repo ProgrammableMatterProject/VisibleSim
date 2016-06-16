@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no" ?>
+
+<world gridSize="10,10,10" windowSize="1800,900">
+	<camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
+	<spotlight target="200,20,200" directionSpherical="45,60,500" angle="40"/>
+	
+	<blockList color="0,255,0" size="1,1,1" blocksize="40,40,41" >
+
+		<block position="5,5,4"/>
+		<block position="5,5,5"/>
+		<block position="5,5,6"/>
+		<block position="5,5,7"/>
+		<block position="5,5,8"/>
+		<block position="5,5,9"/>
+	<!-- Petite croix: -->
+		<block position="4,5,6"/>
+		<block position="6,5,6"/> 
+	<!-- Grande Croix: --> 	
+		<block position="3,5,7"/>
+		<block position="4,5,7"/>
+		<block position="6,5,7"/>
+		<block position="7,5,7"/>  
+		
+	</blockList>
+</world>
+
+

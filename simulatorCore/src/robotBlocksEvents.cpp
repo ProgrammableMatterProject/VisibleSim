@@ -21,31 +21,31 @@ namespace RobotBlocks {
 //
 //===========================================================================================================
 
-MotionStartEvent::MotionStartEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
-	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_MOTION_START;
-	finalPosition = fpos;
+MotionStartEvent::MotionStartEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_MOTION_START;
+    finalPosition = fpos;
 }
 
 MotionStartEvent::MotionStartEvent(MotionStartEvent *ev) : BlockEvent(ev) {
-	EVENT_CONSTRUCTOR_INFO();
+    EVENT_CONSTRUCTOR_INFO();
 }
 
 MotionStartEvent::~MotionStartEvent() {
-	EVENT_DESTRUCTOR_INFO();
+    EVENT_DESTRUCTOR_INFO();
 }
 
 void MotionStartEvent::consume() {
-	EVENT_CONSUME_INFO();
-	RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
-	RobotBlocksBlock *rb = (RobotBlocksBlock *)concernedBlock;
-  RobotBlocksWorld::getWorld()->disconnectBlock(rb);
-  rb->setColor(DARKGREY);
-	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
+    EVENT_CONSUME_INFO();
+    RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
+    RobotBlocksBlock *rb = (RobotBlocksBlock *)concernedBlock;
+    RobotBlocksWorld::getWorld()->disconnectBlock(rb);
+    rb->setColor(DARKGREY);
+    scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
 }
 
 const string MotionStartEvent::getEventName() {
-	return("MotionStart Event");
+    return("MotionStart Event");
 }
 
 //===========================================================================================================
@@ -54,47 +54,47 @@ const string MotionStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
-	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_MOTION_STEP;
-	finalPosition = fpos;
-	motionStep = finalPosition - ((RobotBlocksBlock*)concernedBlock)->position;
-	motionStep.setLength(0.1);
+MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_MOTION_STEP;
+    finalPosition = fpos;
+    motionStep = finalPosition - ((RobotBlocksBlock*)concernedBlock)->getPositionVector();
+    motionStep.setLength(0.1);
 }
 
-MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos,const Vecteur &step): BlockEvent(t,block) {
-	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_MOTION_STEP;
-	concernedBlock = block;
-	finalPosition = fpos;
-	motionStep = step;
+MotionStepEvent::MotionStepEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos,const Vector3D &step): BlockEvent(t,block) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_MOTION_STEP;
+    concernedBlock = block;
+    finalPosition = fpos;
+    motionStep = step;
 }
 
 MotionStepEvent::MotionStepEvent(MotionStepEvent *ev) : BlockEvent(ev) {
-	EVENT_CONSTRUCTOR_INFO();
+    EVENT_CONSTRUCTOR_INFO();
 }
 
 MotionStepEvent::~MotionStepEvent() {
-	EVENT_DESTRUCTOR_INFO();
+    EVENT_DESTRUCTOR_INFO();
 }
 
 void MotionStepEvent::consume() {
-	EVENT_CONSUME_INFO();
-	RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
-	rb->position+=motionStep;
-	RobotBlocksWorld::getWorld()->updateGlData(rb);
+    EVENT_CONSUME_INFO();
+    RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
+    rb->setPosition(rb->getPositionVector() + motionStep);
+    World::getWorld()->updateGlData(rb);
     RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
 
-    double v=(finalPosition-rb->position)*motionStep;
+    double v=(finalPosition-rb->getPositionVector())*motionStep;
     if (v<EPS) {
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
-	} else {
+    } else {
         scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition,motionStep));
-	}
+    }
 }
 
 const string MotionStepEvent::getEventName() {
-	return("MotionStep Event");
+    return("MotionStep Event");
 }
 
 //===========================================================================================================
@@ -103,42 +103,42 @@ const string MotionStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-MotionStopEvent::MotionStopEvent(uint64_t t, RobotBlocksBlock *block,const Vecteur &fpos): BlockEvent(t,block) {
-	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_MOTION_STOP;
-	finalPosition = fpos;
+MotionStopEvent::MotionStopEvent(uint64_t t, RobotBlocksBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_MOTION_STOP;
+    finalPosition = fpos;
 }
 
 MotionStopEvent::MotionStopEvent(MotionStepEvent *ev) : BlockEvent(ev) {
-	EVENT_CONSTRUCTOR_INFO();
+    EVENT_CONSTRUCTOR_INFO();
 }
 
 MotionStopEvent::~MotionStopEvent() {
-	EVENT_DESTRUCTOR_INFO();
+    EVENT_DESTRUCTOR_INFO();
 }
 
 void MotionStopEvent::consume() {
-	EVENT_CONSUME_INFO();
-	RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
-	rb->position=finalPosition;
-    RobotBlocksWorld::getWorld()->updateGlData(rb);
+    EVENT_CONSUME_INFO();
+    RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
+    rb->setPosition(finalPosition);
+    World::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     RobotBlocksWorld *wrld=RobotBlocksWorld::getWorld();
-    int ix = int(rb->position.pt[0]),
-        iy = int(rb->position.pt[1]),
-        iz = int(rb->position.pt[2]);
-	wrld->setGridPtr(ix,iy,iz,rb);
-	stringstream info;
+    int ix = rb->position.pt[0],
+	iy = rb->position.pt[1],
+        iz = rb->position.pt[2];
+    wrld->setGridPtr(ix,iy,iz,rb);
+    stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
-	wrld->connectBlock(rb);
+    wrld->connectBlock(rb);
     RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
     scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));
 }
 
 const string MotionStopEvent::getEventName() {
-	return("MotionStop Event");
+    return("MotionStop Event");
 }
 
 //===========================================================================================================
@@ -148,26 +148,26 @@ const string MotionStopEvent::getEventName() {
 //===========================================================================================================
 
 MotionEndEvent::MotionEndEvent(uint64_t t, RobotBlocksBlock *block): BlockEvent(t,block) {
-	EVENT_CONSTRUCTOR_INFO();
-	eventType = EVENT_MOTION_END;
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_MOTION_END;
 }
 
 MotionEndEvent::MotionEndEvent(MotionEndEvent *ev) : BlockEvent(ev) {
-	EVENT_CONSTRUCTOR_INFO();
+    EVENT_CONSTRUCTOR_INFO();
 }
 
 MotionEndEvent::~MotionEndEvent() {
-	EVENT_DESTRUCTOR_INFO();
+    EVENT_DESTRUCTOR_INFO();
 }
 
 void MotionEndEvent::consume() {
-	EVENT_CONSUME_INFO();
-	RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
-	concernedBlock->blockCode->processLocalEvent(EventPtr(new MotionEndEvent(date+COM_DELAY,rb)));
+    EVENT_CONSUME_INFO();
+    RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
+    concernedBlock->blockCode->processLocalEvent(EventPtr(new MotionEndEvent(date+COM_DELAY,rb)));
 }
 
 const string MotionEndEvent::getEventName() {
-	return("MotionEnd Event");
+    return("MotionEnd Event");
 }
 
 

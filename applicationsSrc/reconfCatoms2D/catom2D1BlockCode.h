@@ -12,23 +12,54 @@
 #include "catoms2DSimulator.h"
 #include "catoms2DScheduler.h"
 #include "catoms2DBlock.h"
+#include "localTupleSpace.hpp"
+#include "tuple.hpp"
+#include "contextTuple.hpp"
+#include "CTuple.hpp"
+//#include "reconfCatoms2DMessages.h"
+#include "segment.h"
+#include "map.h"
+#include "CTuples.h"
+#include "landmarks.h"
+
+#include "reconfiguration.h"
+
+class CTuples;
+class Landmarks;
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
-   
-public:
+ public:
 
-	Catoms2D::Catoms2DScheduler *scheduler;
-	Catoms2D::Catoms2DBlock *catom2D;
+  Catoms2D::Catoms2DScheduler *scheduler;
+  Catoms2D::Catoms2DBlock *catom2D;
 
-	Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
-	~Catoms2D1BlockCode ();
+  Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);
+  ~Catoms2D1BlockCode ();
 
-	void startup();
-	void processLocalEvent(EventPtr pev);
+  // Distributed map construction
+  Map* map;
+
+  // Geo-routing
+  //GPSR gpsr;
+  
+  //Landmark structure
+  Landmarks* landmarks;
+
+  // CTuples system
+  CTuples* ctuples;
+  
+  // Reconfiguration
+  Reconfiguration* reconfiguration;
+
+  bool geoTest;
+  
+  void startup();
+  void processLocalEvent(EventPtr pev);
 	
-	void startMotion(int direction, Catoms2D::Catoms2DBlock *pivot);
-
-	static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
+  //void updateBorder();
+  //bool canMove();
+  
+  static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
 };
 
 #endif /* CATOM2DBLOCKCODE_H_ */

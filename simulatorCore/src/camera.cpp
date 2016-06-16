@@ -79,7 +79,7 @@ void Camera::glLookAt() {
 	gluLookAt(position[0],position[1],position[2],target[0],target[1],target[2], 0.,0.,1.);
 }
 
-void Camera::setLightParameters(const Vecteur &t, double th,double ph,double d,double angle,double nearplane,double farplane) {
+void Camera::setLightParameters(const Vector3D &t, double th,double ph,double d,double angle,double nearplane,double farplane) {
 	ls.target[0] = t[0];
 	ls.target[1] = t[1];
 	ls.target[2] = t[2];
@@ -89,7 +89,7 @@ void Camera::setLightParameters(const Vecteur &t, double th,double ph,double d,d
 	ls.falloffAngle=angle;
 	ls.near_plane=nearplane;
 	ls.far_plane=farplane;
-	ls.calcMatrices();
+	ls.calcMatrixs();
 }
 
 void Camera::glProjection() {
@@ -114,7 +114,7 @@ void Camera::mouseLightUp(int x, int y) {
 	if (ls.phi>M_PI/2) ls.phi=M_PI/2;
 	else if (ls.phi<-M_PI/2) ls.phi=-M_PI/2;
 
-	ls.calcMatrices();
+	ls.calcMatrixs();
 }
 
 void Camera::mouseLightMove(int x, int y) {
@@ -125,14 +125,18 @@ void Camera::mouseLightMove(int x, int y) {
 	mouse[0]=x;
 	mouse[1]=y;
 
-	ls.calcMatrices();
+	ls.calcMatrixs();
 }
 
 void Camera::mouseLightZoom(double pas) {
 	ls.distance+=GLfloat(pas);
-	ls.calcMatrices();
+	ls.calcMatrixs();
 }
 
+
+const Vector3D Camera::getDirectionSpherical() {
+    return Vector3D(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
+}
 
 LightSource::LightSource() {
 	falloffAngle=60.0;
@@ -142,7 +146,7 @@ LightSource::LightSource() {
 	distance=1000;
 }
 
-void LightSource::calcMatrices() {
+void LightSource::calcMatrixs() {
 	dir[0] = -cos(phi)*cos(theta);
 	dir[1] = -cos(phi)*sin(theta);
 	dir[2] = -sin(phi);
@@ -156,7 +160,7 @@ void LightSource::calcMatrices() {
 	glLoadIdentity();
 	gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0,0,1);
 	glGetFloatv(GL_MODELVIEW_MATRIX, matMV);
-	Matrice mat(matMV),mat_1;
+	Matrix mat(matMV),mat_1;
 	mat.inverse(mat_1);
 	mat_1.fillArray(matMV_1);
 	glLoadIdentity ();
@@ -171,6 +175,12 @@ void LightSource::draw() {
 	glutSolidCone(1.0,1.0,10.0,10.0);
 	glPopMatrix();
 }
+
+
+const Vector3D LightSource::getDirectionSpherical() {
+    return Vector3D(90.0 + (theta * 180.0 / M_PI), phi * 180.0 / M_PI, distance, 0);
+}
+
 
 ostream& operator<<(ostream& f,const Camera &c)
 { f << "(" << c.phi*180.0/M_PI << "," << c.theta*180.0/M_PI << "," << c.distance << ")";

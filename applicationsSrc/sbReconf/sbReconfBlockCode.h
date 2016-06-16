@@ -74,9 +74,10 @@ class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 	SmartBlocks::PointCel posGrid;
 	SmartBlocks::PresenceMatrix _pm;
 	P2PNetworkInterface *block2Answer,*_next,*_previous;
-	bool _isTrain,_isHead,_isEnd,_isHeadOfLine;
+	bool _isHead,_isEnd,_isHeadOfLine;
 	bool _activity;
 	int _currentMove,_nbreWellPlacedBlocks,_nbreGoalCells;//_currentStage;
+	int _numPrev;
 	int nbreOfWaitedAnswers;
 	SmartBlocks::SmartBlocksBlock *block;
 	SmartBlocks::SmartBlocksWorld *wrl;
@@ -123,13 +124,17 @@ public:
 	void sendAckInit(P2PNetworkInterface *p2p);
 	void init();
 	bool testIsthmus(int dx,int dy);
+	bool testIsthmusTail(int dx,int dy);
 	P2PNetworkInterface *getBorderPreviousNeightbor(P2PNetworkInterface *next);
-	P2PNetworkInterface *getBorderNextNeightbor();
+	P2PNetworkInterface *getBorderNextNeightbor(P2PNetworkInterface *prev=NULL);
 	P2PNetworkInterface *getBorderPreviousNeightborNoWellPlaced(P2PNetworkInterface *next);
-	P2PNetworkInterface *getBorderNextNeightborNoWellPlaced();
+	P2PNetworkInterface *getBorderNextNeightborNoWellPlaced(P2PNetworkInterface *prev);
+	P2PNetworkInterface *getBorderSinglePrevious();
+	P2PNetworkInterface *getBorderNeighborById(int id);
 
 	void prepareUnlock(const vector<short>&path,int step);
 	void startMotion(uint64_t t,const SmartBlocks::PointCel &mv,int step,const vector<short>&path);
+	void singleMotion(SmartBlocks::Motion *,SmartBlocks::Capability *capa);
 };
 
 class MapMessage : public Message {

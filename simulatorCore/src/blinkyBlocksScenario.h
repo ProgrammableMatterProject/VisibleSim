@@ -7,7 +7,7 @@
 
 #ifndef BLINKYBLOCKSSCENARIO_H_
 #define BLINKYBLOCKSSCENARIO_H_
-#include "vecteur.h"
+#include "vector3D.h"
 #include "blinkyBlocksWorld.h"
 #include "scheduler.h"
 
@@ -22,12 +22,15 @@ public :
 	virtual void exportEventToScheduler()=0;
 };
 
-class ScenarioTappEvent:public ScenarioEvent {
+class ScenarioTapEvent:public ScenarioEvent {
 	int blockId;
 public:
-	ScenarioTappEvent(float t,int id):ScenarioEvent(t),blockId(id) {};
-	~ScenarioTappEvent() {};
-	virtual void exportEventToScheduler() { BaseSimulator::getWorld()->tapBlock(eventTime*1000000+BaseSimulator::getScheduler()->now(),blockId); };
+	ScenarioTapEvent(float t,int id):ScenarioEvent(t),blockId(id) {};
+	~ScenarioTapEvent() {};
+    virtual void exportEventToScheduler() {
+        BaseSimulator::getWorld()->tapBlock(eventTime * 1000000
+                                            + BaseSimulator::getScheduler()->now(),blockId);
+    };
 };
 
 class ScenarioDebugEvent:public ScenarioEvent {
@@ -35,7 +38,9 @@ class ScenarioDebugEvent:public ScenarioEvent {
 public:
 	ScenarioDebugEvent(float t,bool op):ScenarioEvent(t),open(op) {};
 	~ScenarioDebugEvent() {};
-	virtual void exportEventToScheduler() {};
+	virtual void exportEventToScheduler() {
+            (void)open;         // Suppress unused member warnings
+        };
 };
 
 class ScenarioSelectBlockEvent:public ScenarioEvent {
@@ -43,13 +48,15 @@ class ScenarioSelectBlockEvent:public ScenarioEvent {
 public:
 	ScenarioSelectBlockEvent(float t,int id):ScenarioEvent(t),blockId(id) {};
 	~ScenarioSelectBlockEvent() {};
-	virtual void exportEventToScheduler() {};
+        virtual void exportEventToScheduler() {
+            (void)blockId; // Suppress unused member warnings
+        };
 };
 
 class ScenarioAddBlockEvent:public ScenarioEvent {
-	Vecteur position;
+	Vector3D position;
 public:
-	ScenarioAddBlockEvent(float t,const Vecteur &pos):ScenarioEvent(t),position(pos) {};
+	ScenarioAddBlockEvent(float t,const Vector3D &pos):ScenarioEvent(t),position(pos) {};
 	~ScenarioAddBlockEvent() {};
 	virtual void exportEventToScheduler() {};
 };

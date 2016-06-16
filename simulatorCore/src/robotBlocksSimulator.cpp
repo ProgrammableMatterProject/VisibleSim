@@ -35,8 +35,11 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 	TiXmlNode *node = xmlDoc->FirstChild("world");
 	if (node) {
 		TiXmlElement* worldElement = node->ToElement();
-		const char *attr= worldElement->Attribute("gridsize");
-		int lx,ly,lz;
+		const char *attr= worldElement->Attribute("gridSize");
+		int lx = 0;
+                int ly = 0;
+                int lz = 0;
+                
 		if (attr) {
 			string str=attr;
 			int pos1 = str.find_first_of(','),
@@ -80,7 +83,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 			string str(attr);
 			int pos1 = str.find_first_of(','),
 			pos2 = str.find_last_of(',');
-			Vecteur target;
+			Vector3D target;
 			target.pt[0] = atof(str.substr(0,pos1).c_str());
 			target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
@@ -120,7 +123,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 	// loading the spotlight parameters
 	nodeConfig = node->FirstChild("spotlight");
 	if (nodeConfig) {
-		Vecteur target;
+		Vector3D target;
 		float az=0,ele=60,dist=1000,angle=50;
 		TiXmlElement* lightElement = nodeConfig->ToElement();
 		const char *attr=lightElement->Attribute("target");
@@ -179,7 +182,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 
 	/* Reading a robotblock */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
-		Vecteur position;
+		Cell3DPosition position;
 		Color color;
 		bool master;
 		while (block) {
@@ -198,8 +201,8 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBl
 			}
 			attr = element->Attribute("position");
 			if (attr) {
-        string str(attr);
-        int pos1 = str.find_first_of(','),
+                string str(attr);
+                int pos1 = str.find_first_of(','),
 				pos2 = str.find_last_of(',');
 				position.pt[0] = atof(str.substr(0,pos1).c_str());
 				position.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
@@ -315,5 +318,17 @@ void RobotBlocksSimulator::createSimulator(int argc, char *argv[], RobotBlocksBl
 void RobotBlocksSimulator::deleteSimulator() {
 	delete((RobotBlocksSimulator*)simulator);
 }
+
+void RobotBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
+  RobotBlocksWorld::createWorld(lx,ly,lz,argc,argv);
+  world = RobotBlocksWorld::getWorld();
+  world->loadTextures("../../simulatorCore/robotBlocksTextures");
+}
+
+void RobotBlocksSimulator::loadScheduler() {
+  RobotBlocksScheduler::createScheduler();
+  scheduler = RobotBlocksScheduler::getScheduler();
+}
+
 
 } // RobotBlocks namespace
