@@ -2,7 +2,7 @@
 <world gridSize="32,32" windowSize="1800,900" maxSimulationTime="3000mn">
 <camera target="400,400,0" directionSpherical="0,38,949" angle="50"/>
 <spotlight target="400,400,0" directionSpherical="-30,50,1131" angle="45"/>
-<blockList color="0,255,0" blocksize="25.0,25.0,11.0">
+<blockList color="0,255,0" blockSize="25.0,25.0,11.0">
 <blocksLine line="33" values="00000000000000000000000000000000"/>
 <blocksLine line="32" values="00000000000000000000000000000000"/>
 <blocksLine line="31" values="00000000000000000000000000000000"/>

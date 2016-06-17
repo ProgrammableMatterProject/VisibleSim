@@ -1,7 +1,7 @@
 <world gridSize="305,94">
 <camera target="152,46,0" directionSpherical="0,25,349" angle="45"/>
 <spotlight target="152,46,0" directionSpherical="0,25,349" angle="30"/>
-<blockList color="100,100,100" blocksize="1,5,1"> 
+<blockList color="100,100,100" blockSize="1,5,1"> 
 <block position="3,28" color="4,0,0"/>
 <block position="4,29" color="61,65,63"/>
 <block position="3,30" color="5,2,10"/>

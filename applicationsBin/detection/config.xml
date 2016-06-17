@@ -3,7 +3,7 @@
 	<camera target="500,500,0" directionSpherical="0,50,800" angle="60" near="1.0" far="2000.0" />
 	<spotlight target="500,500,0" directionSpherical="-45,80,900" angle="40"/>
 	
-	<blockList color="128,128,128" blocksize="25.0,25.0,11.0">
+	<blockList color="128,128,128" blockSize="25.0,25.0,11.0">
 		<block position="1,1" color="0,128,128"/>
 		<block position="2,1"/>
 		<block position="3,1"/>

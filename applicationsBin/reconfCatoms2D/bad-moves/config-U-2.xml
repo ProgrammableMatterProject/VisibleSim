@@ -6,7 +6,7 @@
   <spotlight target="20,18,0" directionSpherical="-45,40,50" angle="30"/>-->
 
   <!-- x,y -->
-  <blockList color="100,100,100" blocksize="1,5,1">
+  <blockList color="100,100,100" blockSize="1,5,1">
     
     <block position="3,0"/>
     <block position="4,0"/>
