@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="64,78" windowSize="1800,900" maxSimulationTime="3000mn">
+<world gridSize="64,78,1" windowSize="1800,900" maxSimulationTime="3000mn">
 <camera target="862.5,850,0" directionSpherical="0,90,1840" angle="50"/>
 <spotlight target="800,975,0" directionSpherical="-30,50,2522" angle="45"/>
 <blockList color="0,255,0" blocksize="25.0,25.0,11.0">

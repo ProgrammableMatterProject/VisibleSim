@@ -1,67 +1,64 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="15,15">
+<world gridSize="15,1,15">
 <camera target="1,1,0" directionSpherical="5,25,25" angle="45"/>
   <spotlight target="20,18,0" directionSpherical="-45,40,50" angle="30"/>
 
   <!-- x,y -->
-  <blockList color="100,100,100" blocksize="1,5,1">
-    
-    <block position="3,0"/>
-    <block position="4,0"/>
-    <block position="5,0"/>
+  <blockList color="100,100,100" blockSize="1,5,1">
 
-    <block position="3,1"/>
-    <block position="3,2"/>
-    <block position="3,3"/>
-    <block position="3,4"/> 
+    <block position="3,0,0"/>
+    <block position="4,0,0"/>
+    <block position="5,0,0"/>
 
-    <block position="4,4"/>
-    <block position="5,4"/>
-    <block position="6,4"/>
-    <block position="7,4"/>
-    <block position="8,4"/>
-    <block position="9,4"/>
+    <block position="3,0,1"/>
+    <block position="3,0,2"/>
+    <block position="3,0,3"/>
+    <block position="3,0,4"/>
 
-    <block position="8,4"/>
-    <block position="8,3"/>
-    <block position="9,2"/>
-    <block position="8,1"/>
+    <block position="4,0,4"/>
+    <block position="5,0,4"/>
+    <block position="6,0,4"/>
+    <block position="7,0,4"/>
+    <block position="8,0,4"/>
+    <block position="9,0,4"/>
 
-    <block position="7,0"/>
-    <block position="8,0"/>
-    <block position="9,0"/>
-    
-  </blockList>	
+    <block position="8,0,4"/>
+    <block position="8,0,3"/>
+    <block position="9,0,2"/>
+    <block position="8,0,1"/>
+
+    <block position="7,0,0"/>
+    <block position="8,0,0"/>
+    <block position="9,0,0"/>
+
+  </blockList>
   <targetGrid>
-    
-    <block position="3,0"/>
-    <block position="4,0"/>
 
-    <block position="3,1"/>
-    <block position="3,2"/>
-    <block position="3,3"/>
-    <block position="3,4"/> 
+    <block position="3,0,0"/>
+    <block position="4,0,0"/>
 
-    <block position="4,4"/>
-    <block position="5,4"/>
-    <block position="6,4"/>
-    <block position="7,4"/>
-    <block position="8,4"/>
-    <block position="9,4"/>
+    <block position="3,0,1"/>
+    <block position="3,0,2"/>
+    <block position="3,0,3"/>
+    <block position="3,0,4"/>
 
-    <block position="8,4"/>
-    <block position="8,3"/>
-    <block position="9,2"/>
-    <block position="8,1"/>
+    <block position="4,0,4"/>
+    <block position="5,0,4"/>
+    <block position="6,0,4"/>
+    <block position="7,0,4"/>
+    <block position="8,0,4"/>
+    <block position="9,0,4"/>
 
-    <block position="6,0"/>
-    <block position="7,0"/>
-    <block position="8,0"/>
-    <block position="9,0"/>
-	
+    <block position="8,0,4"/>
+    <block position="8,0,3"/>
+    <block position="9,0,2"/>
+    <block position="8,0,1"/>
+
+    <block position="6,0,0"/>
+    <block position="7,0,0"/>
+    <block position="8,0,0"/>
+    <block position="9,0,0"/>
+
   </targetGrid>
-  
+
 </world>
-
-
-
