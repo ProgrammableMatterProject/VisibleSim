@@ -75,6 +75,7 @@ namespace BaseSimulator {
 
 	virtual BuildingBlock* getBlockById(int bId);
 	virtual void updateGlData(BuildingBlock *bb);
+	virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
 	virtual GlBlock* getSelectedBlock() { return selectedBlock; };
 	inline GlBlock* setSelectedBlock(int n) { return (selectedBlock=(n>=0)?tabGlBlocks[n]:NULL); };
 	virtual void setSelectedFace(int n) {};

@@ -90,12 +90,12 @@ void RobotBlocksBlock::setPrevNext(int prev,int next) {
 void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next) {
     int prevId=0,nextId=0;
     if (prev) {
-        RobotBlocksBlock*rb = (RobotBlocksBlock*)(prev->hostBlock);
-        prevId = rb->blockId;
+	RobotBlocksBlock*rb = (RobotBlocksBlock*)(prev->hostBlock);
+	prevId = rb->blockId;
     }
 	  if (next) {
-        RobotBlocksBlock*rb = (RobotBlocksBlock*)(next->hostBlock);
-        nextId = rb->blockId;
+	RobotBlocksBlock*rb = (RobotBlocksBlock*)(next->hostBlock);
+	nextId = rb->blockId;
     }
     //cout << (prev?prev->hostBlock->blockId:-1) << "," << (next?next->hostBlock->blockId:-1) << endl;
 	getWorld()->updateGlData(this,prevId,nextId);
@@ -126,5 +126,5 @@ std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb) {
   stream << bb.blockId << "\tcolor: " << bb.color;
   return stream;
 }
-    
+
 }

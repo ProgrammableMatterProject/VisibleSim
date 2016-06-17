@@ -71,6 +71,18 @@ void World::updateGlData(BuildingBlock *bb) {
     }
 }
 
+void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
+    GlBlock *glblc = blc->getGlBlock();
+    if (glblc) {
+	lock();
+	Vector3D pos(blockSize[0]*p[0],
+		     blockSize[1]*p[1],
+		     blockSize[2]*p[2]);
+	glblc->setPosition(pos);
+	unlock();
+    }
+}
+
 void World::lock() {
 	mutex_gl.lock();
 }

@@ -22,12 +22,12 @@ namespace SmartBlocks {
 class MotionStartEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-	MotionStartEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
-	MotionStartEvent(MotionStartEvent *ev);
-	~MotionStartEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    MotionStartEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
+    MotionStartEvent(MotionStartEvent *ev);
+    ~MotionStartEvent();
+    void consumeBlockEvent() {};
+    void consume();
+    const virtual string getEventName();
 };
 
 //===========================================================================================================
@@ -37,15 +37,18 @@ public:
 //===========================================================================================================
 
 class MotionStepEvent : public BlockEvent {
-    Vector3D finalPosition,motionStep;
+    Vector3D finalPosition;	//!< Target position of the block
+    Vector3D motionStep;		//!< Motion of the block during this step
+    Vector3D motionPosition;		//!< Actual position on the grid of the block in motionPosition
 public:
-	MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
-	MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos,const Vector3D &step);
-	MotionStepEvent(MotionStepEvent *ev);
-	~MotionStepEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
+    MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos,
+		    const Vector3D &step,const Vector3D &motionPosition);
+    MotionStepEvent(MotionStepEvent *ev);
+    ~MotionStepEvent();
+    void consumeBlockEvent() {};
+    void consume();
+    const virtual string getEventName();
 };
 
 //===========================================================================================================
@@ -57,12 +60,12 @@ public:
 class MotionStopEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-	MotionStopEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
-	MotionStopEvent(MotionStepEvent *ev);
-	~MotionStopEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    MotionStopEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
+    MotionStopEvent(MotionStepEvent *ev);
+    ~MotionStopEvent();
+    void consumeBlockEvent() {};
+    void consume();
+    const virtual string getEventName();
 };
 
 //===========================================================================================================
@@ -73,12 +76,12 @@ public:
 
 class MotionEndEvent : public BlockEvent {
 public:
-	MotionEndEvent(uint64_t, SmartBlocksBlock *block);
-	MotionEndEvent(MotionEndEvent *ev);
-	~MotionEndEvent();
-	void consumeBlockEvent() {};
-	void consume();
-	const virtual string getEventName();
+    MotionEndEvent(uint64_t, SmartBlocksBlock *block);
+    MotionEndEvent(MotionEndEvent *ev);
+    ~MotionEndEvent();
+    void consumeBlockEvent() {};
+    void consume();
+    const virtual string getEventName();
 };
 
 }
