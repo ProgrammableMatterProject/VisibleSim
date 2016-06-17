@@ -48,6 +48,7 @@ protected:
 
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
 	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured
+	uint64_t maximumDate = 0;		//!< Simulation time limit for the scheduler
 
 	World *world;				//!< Simulation world to be instantiated and configured
 

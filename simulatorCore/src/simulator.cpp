@@ -147,6 +147,22 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			GlutContext::screenHeight = GlutContext::initialScreenHeight;
 		}
 
+		attr=worldElement->Attribute("maxSimulationTime");
+		if (attr) {
+			string str=attr;
+			uint64_t t = atoi(attr);
+			int l = strlen(attr);
+			if (str.substr(l-2,2)=="mn") {
+				t*=60000000;
+			} else if (str.substr(l-2,2)=="ms") {
+				t*=1000;
+			} else if (str.substr(l-1,1)=="s") {
+				t*=1000000;
+			}
+
+			maximumDate = t;
+		}
+
 		loadWorld(lx, ly, lz, argc, argv);
 
 	} else {
@@ -155,6 +171,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 	}
 
 	loadScheduler();
+	if (maximumDate) scheduler->setMaximumDate(maximumDate);
 
 	// loading the camera parameters
 	TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");

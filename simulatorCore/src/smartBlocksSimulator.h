@@ -36,7 +36,10 @@ public:
 
 	void loadScheduler();
 	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
-	
+	void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+	void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
+
 	void printInfo() { cout << "I'm a SmartBlocksSimulator" << endl; }
 };
 
@@ -52,4 +55,3 @@ inline SmartBlocksSimulator* getSimulator() { return(SmartBlocksSimulator::getSi
 } // SmartBlocks namespace
 
 #endif /* SMARTBLOCKSSIMULATOR_H_ */
-

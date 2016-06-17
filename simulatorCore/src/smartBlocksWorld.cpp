@@ -33,8 +33,7 @@ SmartBlocksWorld::SmartBlocksWorld(int gw,int gh,int argc, char *argv[]):World()
     blockSize[0]=25.0;
     blockSize[1]=25.0;
     blockSize[2]=11.0;
-    targetGrid=new presence[gw*gh];
-    memset(targetGrid,0,gw*gh*sizeof(presence));
+
     GlutContext::init(argc,argv);
     idTextureFloor=0;
     idTextureDigits=0;
@@ -120,7 +119,7 @@ void SmartBlocksWorld::linkBlock(int ix, int iy) {
         } else {
             (ptrBlock)->getInterface(NeighborDirection::North)->connect(NULL);
         }
-                
+
         if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy)) {
             (ptrBlock)->getInterface(NeighborDirection::East)->
                 connect(getGridPtr(ix+1,iy)->getInterface(NeighborDirection::West));
@@ -129,7 +128,7 @@ void SmartBlocksWorld::linkBlock(int ix, int iy) {
         } else {
             (ptrBlock)->getInterface(NeighborDirection::East)->connect(NULL);
         }
-                
+
         if (iy>0 && getGridPtr(ix,iy-1)) {
             (ptrBlock)->getInterface(NeighborDirection::South)->
                 connect(getGridPtr(ix,iy-1)->getInterface(NeighborDirection::North));
@@ -138,7 +137,7 @@ void SmartBlocksWorld::linkBlock(int ix, int iy) {
         } else {
             (ptrBlock)->getInterface(NeighborDirection::South)->connect(NULL);
         }
-                
+
         if (ix>0 && getGridPtr(ix-1,iy)) {
             (ptrBlock)->getInterface(NeighborDirection::West)->
                 connect(getGridPtr(ix-1,iy)->getInterface(NeighborDirection::East));
@@ -225,11 +224,11 @@ void SmartBlocksWorld::glDraw() {
     static const GLfloat white[]={1.0,1.0,1.0,1.0},
         gray[]={0.2,0.2,0.2,1.0};
 
-	glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-	glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-	glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-	glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-	glPushMatrix();
+        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+        glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+        glPushMatrix();
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D,idTextureFloor);
         glNormal3f(0,0,1.0f);
@@ -244,25 +243,25 @@ void SmartBlocksWorld::glDraw() {
         glTexCoord2f(0,gridSize[1]);
         glVertex3f(0.0,1.0,0.0f);
         glEnd();
-	glPopMatrix();
-	// draw the axes
-	objRepere->glDraw();
+        glPopMatrix();
+        // draw the axes
+        objRepere->glDraw();
 
-	glPushMatrix();
-	//glTranslatef(-gridSize[0]/2.0f*blockSize[0],-gridSize[1]/2.0f*blockSize[1],0);
-	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	lock();
-	while (ic!=tabGlBlocks.end()) {
+        glPushMatrix();
+        //glTranslatef(-gridSize[0]/2.0f*blockSize[0],-gridSize[1]/2.0f*blockSize[1],0);
+        glDisable(GL_TEXTURE_2D);
+        vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+        lock();
+        while (ic!=tabGlBlocks.end()) {
             ((SmartBlocksGlBlock*)(*ic))->glDraw(objBlock);
             ic++;
-	}
-	unlock();
+        }
+        unlock();
 
-	/*// drawing the mobiles
+        /*// drawing the mobiles
           Physics::glDraw();
         */
-	glPopMatrix();
+        glPopMatrix();
 
 }
 
@@ -351,7 +350,7 @@ void SmartBlocksWorld::deleteBlock(SmartBlocksBlock *bb) {
 
         // free grid cell
         setGridPtr(int(bb->position.pt[0]), int(bb->position.pt[1]), NULL);
-        
+
         disconnectBlock(bb);
     }
 
@@ -375,7 +374,7 @@ void SmartBlocksWorld::deleteBlock(SmartBlocksBlock *bb) {
 
 void SmartBlocksWorld::menuChoice(int n) {
     SmartBlocksBlock *bb = (SmartBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-        
+
     switch (n) {
     case 1 : {
         OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
@@ -400,7 +399,7 @@ void SmartBlocksWorld::menuChoice(int n) {
 
 bool SmartBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
     SmartBlocksBlock *bb = (SmartBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-        
+
     switch (numSelectedFace) {
         // NeighborDirection { NeighborDirection::North = 0, East, South, West};
     case NeighborDirection::North :
@@ -421,14 +420,14 @@ bool SmartBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFa
     case NeighborDirection::West :
         return (bb->position[0] < gridSize[0] - 1
                 && getGridPtr(int(bb->position[0]) + 1,
-                              int(bb->position[1])));        
-        break;        
+                              int(bb->position[1])));
+        break;
     }
-        
+
     return false;
 }
 
-    
+
 void SmartBlocksWorld::setSelectedFace(int n) {
     numSelectedBlock = n / numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
@@ -438,7 +437,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     if (name == "face_north") numSelectedFace = NeighborDirection::North;
     else if (name == "face_east") numSelectedFace = NeighborDirection::East;
     else if (name == "face_south") numSelectedFace = NeighborDirection::South;
-    else if (name == "face_west") numSelectedFace = NeighborDirection::West;        
+    else if (name == "face_west") numSelectedFace = NeighborDirection::West;
 }
 
 void SmartBlocksWorld::addStat(int n,int v) {
@@ -452,6 +451,13 @@ void SmartBlocksWorld::printStats() {
         OUTPUT << "\t"<< tabStatsData[i] ;
     }
     OUTPUT << "\t" << getScheduler()->getNbreMessages() << endl;
+}
+
+void SmartBlocksWorld::initTargetGrid() {
+    if (targetGrid) delete [] targetGrid;
+    int sz = gridSize[0]*gridSize[1];
+    targetGrid = new presence[sz];
+    memset(targetGrid,emptyCell,sz*sizeof(presence));
 }
 
 } // SmartBlocks namespace
