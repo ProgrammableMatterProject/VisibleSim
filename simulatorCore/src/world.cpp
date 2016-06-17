@@ -121,25 +121,17 @@ void World::generateIds(int n, int* ids) {
 	}
 }
 
-/**
- * Schedules a tap event for block with id bId, at time date.
- *
- * @param date
- * @param bId
- * @return
- */
+void World::createHelpWindow() {
+    if (GlutContext::helpWindow)
+	delete GlutContext::helpWindow;
+    GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
+}
+
 void World::tapBlock(uint64_t date, int bId) {
     BuildingBlock *bb = getBlockById(bId);
     bb->tap(date);
 }
 
-/**
- * Displays a popup menu at coordinates (ix, iy)
- *
- * @param ix
- * @param iy
- * @return
- */
 void World::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
 	GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);

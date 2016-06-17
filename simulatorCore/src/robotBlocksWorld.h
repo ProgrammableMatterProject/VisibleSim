@@ -83,7 +83,6 @@ public:
     virtual void glDrawIdByMaterial();
     void updateGlData(BuildingBlock *bb);
     void updateGlData(RobotBlocksBlock*blc,int prev,int next);
-    virtual void createHelpWindow();
     inline virtual Camera *getCamera() { return camera; };
     virtual void setSelectedFace(int n);
     virtual void menuChoice(int n);

@@ -24,7 +24,7 @@ namespace BlinkyBlocks {
 	BlinkyBlocksWorld::BlinkyBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
 
 		grid = new Grid3D<BuildingBlock*>(slx,sly,slz,NULL);
-    
+
 		OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
 		gridSize[0]=slx;
 		gridSize[1]=sly;
@@ -117,11 +117,11 @@ namespace BlinkyBlocks {
 			exit(1);
 		}
 	}
-    
+
 /**
- * Linearly scans the world for blocks and connects the interfaces of neighbors 
+ * Linearly scans the world for blocks and connects the interfaces of neighbors
  *
- * @return 
+ * @return
  */
 	void BlinkyBlocksWorld::linkBlocks() {
 		int ix,iy,iz;
@@ -416,132 +416,126 @@ namespace BlinkyBlocks {
 		return false;
 	}
 
-    
-    void BlinkyBlocksWorld::menuChoice(int n) {
+
+	void BlinkyBlocksWorld::menuChoice(int n) {
 		switch (n) {
-        case 1 : {
-            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getMenuBlock();
-            OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-            Cell3DPosition pos=bb->position;
-            switch (numSelectedFace) {
-            case NeighborDirection::Left :
-                pos.pt[0]--;
-                break;
-            case NeighborDirection::Right :
-                pos.pt[0]++;
-                break;
-            case NeighborDirection::Front :
-                pos.pt[1]--;
-                break;
-            case NeighborDirection::Back :
-                pos.pt[1]++;
-                break;
-            case NeighborDirection::Bottom :
-                pos.pt[2]--;
-                break;
-            case NeighborDirection::Top :
-                pos.pt[2]++;
-                break;
-            }
-            addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
-            linkBlocks();
-        } break;
-        case 2 : {
-            OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
-            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-            deleteBlock(bb);
-        } break;
-        case 3 : {
-            BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-            tapBlock(getScheduler()->now(), bb->blockId);
-        } break;
-        case 4:                 // Save current configuration
+		case 1 : {
+			BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getMenuBlock();
+			OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
+			Cell3DPosition pos=bb->position;
+			switch (numSelectedFace) {
+			case NeighborDirection::Left :
+				pos.pt[0]--;
+				break;
+			case NeighborDirection::Right :
+				pos.pt[0]++;
+				break;
+			case NeighborDirection::Front :
+				pos.pt[1]--;
+				break;
+			case NeighborDirection::Back :
+				pos.pt[1]++;
+				break;
+			case NeighborDirection::Bottom :
+				pos.pt[2]--;
+				break;
+			case NeighborDirection::Top :
+				pos.pt[2]++;
+				break;
+			}
+			addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
+			linkBlocks();
+		} break;
+		case 2 : {
+			OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
+			BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+			deleteBlock(bb);
+		} break;
+		case 3 : {
+			BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+			tapBlock(getScheduler()->now(), bb->blockId);
+		} break;
+		case 4:                 // Save current configuration
 			exportConfiguration();
-            break;
+			break;
 		}
 	}
-    
-    void BlinkyBlocksWorld::setSelectedFace(int n) {
+
+	void BlinkyBlocksWorld::setSelectedFace(int n) {
 		numSelectedBlock=n/6;
-        cerr << "Face n = " << n << " / " << numSelectedBlock << endl;
+		cerr << "Face n = " << n << " / " << numSelectedBlock << endl;
 		string name = objBlockForPicking->getObjMtlName(n%6);
-        cerr << name << endl;
-        if (name=="face_top") numSelectedFace=NeighborDirection::Top;
-        else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
-        else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
-        else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
-        else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
-        else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
-    }
+		cerr << name << endl;
+		if (name=="face_top") numSelectedFace=NeighborDirection::Top;
+		else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
+		else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
+		else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
+		else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
+		else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
+	}
 
-    void BlinkyBlocksWorld::accelBlock(uint64_t date, int bId, int x, int y, int z) {
-        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
-        bb->accel(date, x,y,z);
-    }
+	void BlinkyBlocksWorld::accelBlock(uint64_t date, int bId, int x, int y, int z) {
+		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
+		bb->accel(date, x,y,z);
+	}
 
-    void BlinkyBlocksWorld::shakeBlock(uint64_t date, int bId, int f) {
-        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
-        bb->shake(date, f);
-    }
+	void BlinkyBlocksWorld::shakeBlock(uint64_t date, int bId, int f) {
+		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
+		bb->shake(date, f);
+	}
 
-    /* We don't want this anymore, to be replaced by tap event from the simulation menu */
-    //
-    // void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
-    //     if (bId < 0) {
-    //         // Delete the block	without deleting the links
-    //         map<int, BaseSimulator::BuildingBlock*>::iterator it;
-    //         for(it = buildingBlocksMap.begin();
-    //             it != buildingBlocksMap.end(); it++) {
-    //             BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-    //             if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
-    //                 bb->stop(date, BlinkyBlocksBlock::STOPPED);
-    //         }
-    //     } else {
-    //         // Delete all the links and then the block
-    //         BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
-    //         if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
-    //             // cut links between bb and others
-    //             for(int i=0; i<6; i++) {
-    //                 P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
-    //                 if (bbi->connectedInterface) {
-    //                     //bb->removeNeighbor(bbi); //Useless
-    //                     bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-    //                     bbi->connectedInterface->connectedInterface=NULL;
-    //                     bbi->connectedInterface=NULL;
-    //                 }
-    //             }
-    //             // free grid cell
-    //             int ix,iy,iz;
-    //             ix = int(bb->position.pt[0]);
-    //             iy = int(bb->position.pt[1]);
-    //             iz = int(bb->position.pt[2]);
-    //             setGridPtr(ix,iy,iz,NULL);
-    //             bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
-    //             linkBlocks();
-    //         }
-    //     }
-    // }
-
-    void BlinkyBlocksWorld::createHelpWindow() {
-        if (GlutContext::helpWindow)
-            delete GlutContext::helpWindow;
-        GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
-    }
+	/* We don't want this anymore, to be replaced by tap event from the simulation menu */
+	//
+	// void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
+	//     if (bId < 0) {
+	//         // Delete the block	without deleting the links
+	//         map<int, BaseSimulator::BuildingBlock*>::iterator it;
+	//         for(it = buildingBlocksMap.begin();
+	//             it != buildingBlocksMap.end(); it++) {
+	//             BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
+	//             if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
+	//                 bb->stop(date, BlinkyBlocksBlock::STOPPED);
+	//         }
+	//     } else {
+	//         // Delete all the links and then the block
+	//         BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
+	//         if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
+	//             // cut links between bb and others
+	//             for(int i=0; i<6; i++) {
+	//                 P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+	//                 if (bbi->connectedInterface) {
+	//                     //bb->removeNeighbor(bbi); //Useless
+	//                     bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
+	//                     bbi->connectedInterface->connectedInterface=NULL;
+	//                     bbi->connectedInterface=NULL;
+	//                 }
+	//             }
+	//             // free grid cell
+	//             int ix,iy,iz;
+	//             ix = int(bb->position.pt[0]);
+	//             iy = int(bb->position.pt[1]);
+	//             iz = int(bb->position.pt[2]);
+	//             setGridPtr(ix,iy,iz,NULL);
+	//             bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
+	//             linkBlocks();
+	//         }
+	//     }
+	// }
 
 	void BlinkyBlocksWorld::exportConfiguration() {
 		// ofstream configFile;
 		// BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 		// string configFilename = ConfigUtils::generateConfigFilename();
-		
+
 		// configFile.open(configFilename);
 		// configFile << ConfigUtils::xmlVersion() << endl;
 		// configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-		// 										GlutContext::screenHeight) << endl;
+		//										GlutContext::screenHeight) << endl;
 		// configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
 		// configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
 		// configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
 		// configFile << ConfigUtils::xmlWorldClose() << endl;
-		
+
 		// configFile.close();
 
 		// OUTPUT << "Configuration exported to: " << configFilename << endl;
@@ -550,7 +544,7 @@ namespace BlinkyBlocks {
 		BlinkyBlocksConfigExporter *exporter = new BlinkyBlocksConfigExporter(this);
 		exporter->exportConfiguration();
 	}
-    
+
 	void BlinkyBlocksWorld::dump() {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
 		cout << "World:" << endl;

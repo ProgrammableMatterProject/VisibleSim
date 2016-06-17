@@ -100,7 +100,6 @@ public:
      void updateGlData(Catoms3DBlock*blc, const Cell3DPosition &position);
      void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
      void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
-    virtual void createHelpWindow();
     inline virtual Camera *getCamera() { return camera; };
     virtual void setSelectedFace(int n);
     virtual void menuChoice(int n);

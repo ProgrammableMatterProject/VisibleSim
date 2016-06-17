@@ -1,5 +1,3 @@
-
-
 /*
  * robotBlockWorld.cpp
  *
@@ -23,15 +21,15 @@
 using namespace std;
 using namespace BaseSimulator::utils;
 
-namespace Catoms2D {   
-    
+namespace Catoms2D {
+
 Catoms2DWorld::Catoms2DWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
     OUTPUT << "\033[1;31mCatoms2DWorld constructor\033[0m" << endl;
     gridSize[0]=slx;
     gridSize[1]=sly;
     gridSize[2]=slz;
     gridPtrBlocks = new Catoms2DBlock*[slx*sly*slz];
-        
+
     // initialise grid of blocks
     int i=slx*sly*slz;
     Catoms2DBlock **ptr = gridPtrBlocks;
@@ -40,7 +38,7 @@ Catoms2DWorld::Catoms2DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
         ptr++;
     }
     targetGrid=NULL;
-        
+
     GlutContext::init(argc,argv);
     idTextureHexa=0;
     idTextureLines=0;
@@ -53,12 +51,12 @@ Catoms2DWorld::Catoms2DWorld(int slx,int sly,int slz, int argc, char *argv[]):Wo
     camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
     camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
     camera->setTarget(Vector3D(0,0,1.0));
-        
+
     menuId=0;
     numSelectedFace=0;
     numSelectedBlock=0;
 }
-    
+
 Catoms2DWorld::~Catoms2DWorld() {
     OUTPUT << "Catoms2DWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
@@ -69,17 +67,17 @@ Catoms2DWorld::~Catoms2DWorld() {
     delete objRepere;
     delete camera;
 }
-    
+
 void Catoms2DWorld::createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
     world = new Catoms2DWorld(slx,sly,slz,argc,argv);
 }
-    
+
 void Catoms2DWorld::deleteWorld() {
     delete((Catoms2DWorld*)world);
 }
-    
+
 void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*),const Cell3DPosition &pos,const Color &color,bool master) {
-        
+
     if (blockId == -1) {
         map<int, BaseSimulator::BuildingBlock*>::iterator it;
         for(it = buildingBlocksMap.begin();
@@ -91,19 +89,19 @@ void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBui
     }
     Catoms2DBlock *robotBlock = new Catoms2DBlock(blockId,robotBlockCodeBuildingFunction);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>(robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
-        
+
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), robotBlock));
-        
+
     Catoms2DGlBlock *glBlock = new Catoms2DGlBlock(blockId);
     tabGlBlocks.push_back(glBlock);
     robotBlock->setGlBlock(glBlock);
-        
+
     robotBlock->setPosition(pos);
     robotBlock->setColor(color);
     robotBlock->isMaster=master;
 
     cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << color << endl;
-    
+
     /*
 ********************************************************************
 A ECRIRE AVEC LE MAILLAGE HEXAGONAL
@@ -121,24 +119,24 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
         exit(1);
     }
 }
-    
+
 void Catoms2DWorld::connectBlock(Catoms2DBlock *block) {
     int ix,iy,iz;
-        
+
     ix = int(block->position.pt[0]);
     iy = int(block->position.pt[1]);
-    iz = int(block->position.pt[2]);    
+    iz = int(block->position.pt[2]);
     setGridPtr(ix,iy,iz,block);
     OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << "," << iz << endl;
-        
+
     linkBlock(ix,iy,iz);
-        
+
     if (ix<gridSize[0]-1) linkBlock(ix+1,iy,iz);
     if (ix>0) linkBlock(ix-1,iy,iz);
-        
+
     if (iz<gridSize[2]-1) linkBlock(ix,iy,iz+1);
     if (iz>0) linkBlock(ix,iy,iz-1);
-        
+
     if (iz%2 == 1) {
         if (ix<gridSize[0]-1) {
             if (iz<gridSize[2]-1) linkBlock(ix+1,iy,iz+1);
@@ -152,10 +150,10 @@ void Catoms2DWorld::connectBlock(Catoms2DBlock *block) {
         }
     }
 }
-    
+
 void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
     P2PNetworkInterface *fromBlock,*toBlock;
-        
+
     for(int i=0; i<6; i++) {
         fromBlock = block->getInterface(NeighborDirection::Direction(i));
         if (fromBlock && fromBlock->connectedInterface) {
@@ -172,7 +170,7 @@ void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
     OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId <<
         " pos ="<< ix << "," << iy << "," << iz << endl;
 }
-    
+
 void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
     Catoms2DBlock *ptrBlock = getGridPtr(ix,iy,iz);
 
@@ -309,7 +307,7 @@ void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
         iy = int(bb->position.pt[1]);
         iz = int(bb->position.pt[2]);
         setGridPtr(ix,iy,iz,NULL);
-        
+
         disconnectBlock(bb);
     }
     if (selectedBlock == bb->ptrGlBlock) {
@@ -340,9 +338,9 @@ void Catoms2DWorld::glDraw() {
     }
     unlock();
     glPopMatrix();
-    
+
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},gray[]={0.2f,0.2f,0.2f,1.0f};
-    
+
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
     glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
@@ -447,7 +445,7 @@ void Catoms2DWorld::glDrawId() {
 void Catoms2DWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
-    
+
     glDisable(GL_TEXTURE_2D);
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
@@ -469,8 +467,8 @@ void Catoms2DWorld::loadTextures(const string &str) {
     idTextureLines = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-void Catoms2DWorld::updateGlData(BuildingBlock*blc) {    
-    cout << "update posgrid:" << blc->position << endl;    
+void Catoms2DWorld::updateGlData(BuildingBlock*blc) {
+    cout << "update posgrid:" << blc->position << endl;
     updateGlData((Catoms2DBlock*)blc,gridToWorldPosition(blc->position));
 }
 
@@ -516,7 +514,7 @@ Cell3DPosition Catoms2DWorld::worldToGridPosition(Vector3D &pos) {
 
 Vector3D Catoms2DWorld::gridToWorldPosition(Cell3DPosition &pos) {
     Vector3D res;
-    
+
     res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
     res.pt[1] = blockSize[1]/2.0;
     res.pt[0] = (pos[0]+((int)(pos[2]+0.01)%2)*0.5)*blockSize[0]; // +0.01 because of round problem
@@ -543,12 +541,13 @@ bool Catoms2DWorld::areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2) {
 bool Catoms2DWorld::areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2) {
     Vector3D wpos1 = gridToWorldPosition(pos1);
     Vector3D wpos2 = gridToWorldPosition(pos2);
+
     return areNeighborsWorldPos(wpos1,wpos2);
 }
 
 void Catoms2DWorld::menuChoice(int n) {
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-        
+
     switch (n) {
     case 1 : {
         OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
@@ -595,7 +594,7 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
     // }
     // cerr << endl;
     // cerr << "bb->blockId = " << bb->blockId << endl;
-        
+
     switch (numSelectedFace) {
     case NeighborDirection::Left :
         return (bb->position[0] > 0
@@ -609,7 +608,7 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
                               int(bb->position[1]),
                               int(bb->position[2])) == NULL);
         break;
-    case NeighborDirection::BottomLeft :            
+    case NeighborDirection::BottomLeft :
         if (IS_EVEN((int)bb->position[2]))
             return (bb->position[2] > 0
                     && bb->position[0] > 0
@@ -620,8 +619,8 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
             return (bb->position[2] > 0
                     && getGridPtr(int(bb->position[0]),
                                   int(bb->position[1]),
-                                  int(bb->position[2]) - 1) == NULL);                
-                
+                                  int(bb->position[2]) - 1) == NULL);
+
         break;
     case NeighborDirection::TopLeft :
         if (IS_EVEN((int)bb->position[2]))
@@ -634,7 +633,7 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
             return (bb->position[2] < gridSize[2] - 1
                     && getGridPtr(int(bb->position[0]),
                                   int(bb->position[1]),
-                                  int(bb->position[2]) + 1) == NULL);                
+                                  int(bb->position[2]) + 1) == NULL);
 
         break;
     case NeighborDirection::BottomRight :
@@ -648,7 +647,7 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
             return (bb->position[2] > 0
                     && getGridPtr(int(bb->position[0]),
                                   int(bb->position[1]),
-                                  int(bb->position[2]) - 1) == NULL);                
+                                  int(bb->position[2]) - 1) == NULL);
         break;
     case NeighborDirection::TopRight :
         if (IS_ODD((int)bb->position[2]))
@@ -661,19 +660,19 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
             return (bb->position[2] < gridSize[2] - 1
                     && getGridPtr(int(bb->position[0]),
                                   int(bb->position[1]),
-                                  int(bb->position[2]) + 1) == NULL);                
+                                  int(bb->position[2]) + 1) == NULL);
         break;
     }
-        
+
     return false;
 }
 
-    
+
 void Catoms2DWorld::setSelectedFace(int n) {
     // cerr << "n = " << n << endl;
     // cerr << "n/7 = " << n/7 << endl;
     // cerr << "n%7 = " << n%7 << endl;
-        
+
     numSelectedBlock = n / numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
     // cerr << "tabGlBlocks:" << endl;
@@ -689,25 +688,19 @@ void Catoms2DWorld::setSelectedFace(int n) {
     else if (name == "face_2") numSelectedFace = NeighborDirection::TopLeft;
     else if (name == "face_3") numSelectedFace = NeighborDirection::Left;
     else if (name == "face_4") numSelectedFace = NeighborDirection::BottomLeft;
-    else if (name == "face_5") numSelectedFace = NeighborDirection::BottomRight;            
-        
-    // cerr << name << " = " << NeighborDirection::getString(numSelectedFace) << endl;
-}
+    else if (name == "face_5") numSelectedFace = NeighborDirection::BottomRight;
 
-void Catoms2DWorld::createHelpWindow() {
-    if (GlutContext::helpWindow)
-        delete GlutContext::helpWindow;
-    GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
+    // cerr << name << " = " << NeighborDirection::getString(numSelectedFace) << endl;
 }
 
 void Catoms2DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
     presence *gpm=pm.grid;
     Catoms2DBlock **grb;
-    
+
     //memset(pm.grid,wall,27*sizeof(presence));
-    
+
     for (int i=0; i<27; i++) { *gpm++ = wallCell; };
-    
+
     int ix0 = (pos.x<1)?1-pos.x:0,
         ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
         iy0 = (pos.y<1)?1-pos.y:0,
@@ -730,9 +723,9 @@ void Catoms2DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) 
  * Displays a popup menu at coordinates (ix, iy)
  *  Overriden for catoms2D to allow for c2d movements
  *
- * @param ix 
- * @param iy 
- * @return 
+ * @param ix
+ * @param iy
+ * @return
  */
 void Catoms2DWorld::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
@@ -750,19 +743,19 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 
     cerr << "Block " << numSelectedBlock << ":" << numSelectedFace << " selected" << endl;
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-		 
+
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
     GlutContext::popupMenu->activate(5, bb->getCCWMovePivotId() != -1);
     GlutContext::popupMenu->activate(6, bb->getCWMovePivotId() != -1);
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
     GlutContext::popupMenu->show(true);
-}    
+}
 
 void Catoms2DWorld::exportConfiguration() {
     throw "configuration export not yet implemented";
 }
 
-    
+
 void Catoms2DWorld::initTargetGrid() {
     if (targetGrid) delete [] targetGrid;
     int sz = gridSize[0]*gridSize[1]*gridSize[2];
@@ -771,4 +764,3 @@ void Catoms2DWorld::initTargetGrid() {
 }
 
 } // Catoms2D namespace
-

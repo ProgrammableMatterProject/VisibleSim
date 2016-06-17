@@ -373,8 +373,8 @@ void RobotBlocksWorld::updateGlData(BuildingBlock *bb) {
     if (glblc) {
 	lock();
 	Vector3D pos(blockSize[0]*bb->position.pt[0],
-		    blockSize[1]*bb->position.pt[1],
-		    blockSize[2]*bb->position.pt[2]);
+		     blockSize[1]*bb->position.pt[1],
+		     blockSize[2]*bb->position.pt[2]);
 	glblc->setPosition(pos);
 	glblc->setColor(bb->color);
 	unlock();
@@ -488,12 +488,6 @@ void RobotBlocksWorld::setSelectedFace(int n) {
     else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
     else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
     else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
-}
-
-void RobotBlocksWorld::createHelpWindow() {
-    if (GlutContext::helpWindow)
-	delete GlutContext::helpWindow;
-    GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
 }
 
 void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {

@@ -28,10 +28,10 @@ protected:
 	ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 	GLuint idTextureHexa,idTextureLines;
 	presence *targetGrid;
-        Catoms2DCapabilities *capabilities;
-        static const int numPickingTextures = 7; /* The number of picking textures defined for 
-                                                         this type of catom, 
-                                                         used to deduce selected Block / face */
+	Catoms2DCapabilities *capabilities;
+	static const int numPickingTextures = 7; /* The number of picking textures defined for
+							 this type of catom,
+							 used to deduce selected Block / face */
 
 	Catoms2DWorld(int slx,int sly,int slz, int argc, char *argv[]);
 	virtual ~Catoms2DWorld();
@@ -85,21 +85,20 @@ public:
 
 	bool areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2);
 	bool areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2);
-	
+
 	virtual void glDraw();
 	virtual void glDrawId();
 	virtual void glDrawIdByMaterial();
 	virtual void updateGlData(BuildingBlock*blc);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
 	virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
-	virtual void createHelpWindow();
 	virtual void createPopupMenu(int ix,int iy);
 	inline virtual Camera *getCamera() { return camera; };
 	virtual void setSelectedFace(int n);
 	virtual void menuChoice(int n);
 	virtual void disconnectBlock(Catoms2DBlock *block);
 	virtual void connectBlock(Catoms2DBlock *block);
-        virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+	virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
 
 	virtual void exportConfiguration();
 };
