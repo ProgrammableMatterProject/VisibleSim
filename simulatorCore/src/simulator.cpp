@@ -56,7 +56,7 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 	if (getType() == MELDPROCESS) {
 		string vmPath = cmdLine.getVMPath();
 		string programPath = cmdLine.getProgramPath();
-		int vmPort = cmdLine.getVMPort();                
+		int vmPort = cmdLine.getVMPort();
 		bool debugging = cmdLine.getMeldDebugger();
 
 		if (vmPath == "") {
@@ -69,7 +69,7 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 			cerr << "error: no Meld program was provided" << endl;
 			exit(1);
 		}
-                
+
 		MeldProcess::setVMConfiguration(vmPath, programPath, debugging);
 		MeldProcess::createVMServer(vmPort);
 		if(debugging) {
@@ -114,10 +114,10 @@ Simulator::~Simulator() {
 }
 
 void Simulator::parseWorld(int argc, char*argv[]) {
-    /* reading the xml file */
-    xmlWorldNode = xmlDoc->FirstChild("world");
-	
-    if (xmlWorldNode) {
+	/* reading the xml file */
+	xmlWorldNode = xmlDoc->FirstChild("world");
+
+	if (xmlWorldNode) {
 		TiXmlElement* worldElement = xmlWorldNode->ToElement();
 		const char *attr= worldElement->Attribute("gridSize");
 
@@ -136,7 +136,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 		} else {
 			OUTPUT << "WARNING No grid size in XML file" << endl;
 		}
-		
+
 		attr = worldElement->Attribute("windowSize");
 		if (attr) {
 			string str=attr;
@@ -147,18 +147,18 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			GlutContext::screenHeight = GlutContext::initialScreenHeight;
 		}
 
-		loadWorld(lx, ly, lz, argc, argv);	   		
-		
-    } else {
+		loadWorld(lx, ly, lz, argc, argv);
+
+	} else {
 		ERRPUT << "ERROR : NO world in XML file" << endl;
 		exit(1);
-    }
+	}
 
-    loadScheduler();
+	loadScheduler();
 
-    // loading the camera parameters
-    TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
-    if (nodeConfig) {
+	// loading the camera parameters
+	TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
+	if (nodeConfig) {
 		TiXmlElement* cameraElement = nodeConfig->ToElement();
 		const char *attr=cameraElement->Attribute("target");
 		double def_near=1,def_far=1500;
@@ -173,7 +173,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 			world->getCamera()->setTarget(target);
 		}
-		
+
 		attr=cameraElement->Attribute("angle");
 		if (attr) {
 			angle = atof(attr);
@@ -195,7 +195,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			// def_near = dist-az;
 			// def_far = dist+az;
 		}
-		
+
 		attr=cameraElement->Attribute("near");
 		if (attr) {
 			def_near = atof(attr);
@@ -205,13 +205,13 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 		if (attr) {
 			def_far = atof(attr);
 		}
-		
-		world->getCamera()->setNearFar(def_near,def_far);
-    }
 
-    // loading the spotlight parameters
-    nodeConfig = xmlWorldNode->FirstChild("spotlight");
-    if (nodeConfig) {
+		world->getCamera()->setNearFar(def_near,def_far);
+	}
+
+	// loading the spotlight parameters
+	nodeConfig = xmlWorldNode->FirstChild("spotlight");
+	if (nodeConfig) {
 		Vector3D target;
 		float az=0,ele=60,dist=1000,angle=50;
 		TiXmlElement* lightElement = nodeConfig->ToElement();
@@ -224,7 +224,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			target.pt[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			target.pt[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 		}
-		
+
 		attr=lightElement->Attribute("directionSpherical");
 		if (attr) {
 			string str(attr);
@@ -234,21 +234,21 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			ele = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
 			dist = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 		}
-		
+
 		attr=lightElement->Attribute("angle");
 		if (attr) {
 			angle = atof(attr);
 		}
-		
+
 		float farplane=2.0*dist*tan(angle*M_PI/180.0);
 		world->getCamera()->setLightParameters(target,az,ele,dist,angle,10.0,farplane);
-    }
+	}
 }
 
 void Simulator::parseBlockList() {
 	float blockSize[3];
 	int currentID = 1;
-		
+
 	TiXmlNode *nodeBlock = xmlWorldNode->FirstChild("blockList");
 	if (nodeBlock) {
 		Color defaultColor = DARKGREY;
@@ -273,8 +273,8 @@ void Simulator::parseBlockList() {
 			blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 			OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
 			world->setBlocksSize(blockSize);
-		}	
-	
+		}
+
 #if 1
 		/* Reading a catoms */
 		TiXmlNode *block = nodeBlock->FirstChild("block");
@@ -305,7 +305,7 @@ void Simulator::parseBlockList() {
 					iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
 
 				// cerr << ix << "," << iy << "," << iz << endl;
-	
+
 				position.pt[0] = ix;
 				position.pt[1] = iy;
 				position.pt[2] = iz;
@@ -320,12 +320,12 @@ void Simulator::parseBlockList() {
 			}
 
 			loadBlock(element, currentID++, newBlockCode, position, color, master);
-			
-			block = block->NextSibling("block");	
+
+			block = block->NextSibling("block");
 		} // end while (block)
-      
-		block = nodeBlock->FirstChild("blocksLine"); // For 2D Catoms only!
-		int line;
+
+		block = nodeBlock->FirstChild("blocksLine");
+		int line = 0, plane = 0;
 		while (block) {
 			line = 0;
 			element = block->ToElement();
@@ -339,18 +339,21 @@ void Simulator::parseBlockList() {
 				color.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
 				color.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 				OUTPUT << "line color :" << color << endl;
-
 			}
-			attr = element->Attribute("line"); 
+			attr = element->Attribute("line");
 			if (attr) {
 				line = atoi(attr);
+			}
+			attr = element->Attribute("plane");
+			if (attr) {
+				plane = atoi(attr);
 			}
 			attr = element->Attribute("values");
 			if (attr) {
 				string str(attr);
 				position.pt[0] = 0;
-				position.pt[1] = 0;
-				position.pt[2] = line;
+				position.pt[1] = line;
+				position.pt[2] = plane;
 				int n = str.length();
 				for(int i=0; i<n; i++) {
 					if  (str[i]=='1') {
@@ -362,13 +365,13 @@ void Simulator::parseBlockList() {
 			}
 			block = block->NextSibling("blocksLine");
 		} // end while (nodeBlock)*/
-#endif	
+#endif
 	} else { // end if(nodeBlock)
 		cerr << "no Block List" << endl;
 	}
 }
 
-void Simulator::parseTarget(int yz) {
+void Simulator::parseTarget() {
 	TiXmlNode *nodeGrid = xmlWorldNode->FirstChild("targetGrid");
 	vector<Cell3DPosition> targetCells; // Locations of all target full cells
 
@@ -394,36 +397,34 @@ void Simulator::parseTarget(int yz) {
 
 				targetCells.push_back(Cell3DPosition(position[0], position[1], position[2]));
 			}
-			
+
 			block = block->NextSibling("block");
 		}
-      
-		block = nodeGrid->FirstChild("blocksLine");
-		int line;
+
+		block = nodeGrid->FirstChild("targetLine");
+		int line = 0, plane = 0;
 		while (block) {
 			TiXmlElement* element = block->ToElement();
 			const char *attr = element->Attribute("line");
 			if (attr) {
 				line = atoi(attr);
 			}
-
+			attr = element->Attribute("plane");
+			if (attr) {
+				plane = atoi(attr);
+			}
 			attr = element->Attribute("values");
 			if (attr) {
 				string str(attr);
 				int n = str.length();
 				for(int i = 0; i < n; i++) {
 					if(str[i] == '1') {
-						// PTHY: TODO: Find a better way to differentiate x,z / x,y 
-						// => yz arg = 1 / 2 index of 2nd dimension
-						if (yz == 1) 
-							targetCells.push_back(Cell3DPosition(i, line, 0));
-						else
-							targetCells.push_back(Cell3DPosition(i, 0, line));
+						targetCells.push_back(Cell3DPosition(i, line, plane));
 					}
 				}
 			}
-			
-			block = block->NextSibling("blocksLine");
+
+			block = block->NextSibling("targetLine");
 		}
 	} else {
 		ERRPUT << "No target grid" << endl;

@@ -1,6 +1,6 @@
 /*! \file simulator.h
  *  \brief Header file for the Abstract class Simulator
- *  
+ *
  *
  *  Created on: 22 mars 2013
  *      Author: dom
@@ -49,13 +49,13 @@ protected:
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
 	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured
 
-	World *world; 				//!< Simulation world to be instantiated and configured
-	
+	World *world;				//!< Simulation world to be instantiated and configured
+
 	TiXmlDocument *xmlDoc;		//!< TinyXMLDocument for the configuration file
 	TiXmlNode* xmlWorldNode; //!< world XML node from the configuration file
 
 	BlockCode *(*newBlockCode)(BuildingBlock*); //!< Function pointer to the target BlockCode
-	
+
 	CommandLine cmdLine;		//!< Utility member for accessing command line arguments
 
 	/*! \fn parseWorld(int argc, char*argv[])
@@ -74,25 +74,22 @@ protected:
 	 *
 	 *  Calls the loadBlock virtual function once for every node to instantiate.
 	 *
-	 */	
+	 */
 	void parseBlockList();
 
 	/*! \fn parseTarget(yz)
 	 *  \brief Parses the configuration for target information common to all blocks
 	 *
-	 *  This function is only used for 2D grids.
-	 *  Stores the positions of all cells to add to the target in a vector, then 
-	 *   calls the loadTargetAndCapabilities virual function to configure the target 
-	 *   attribute of the target world. 
+	 *  Stores the positions of all cells to add to the target in a vector, then
+	 *   calls the loadTargetAndCapabilities virual function to configure the target
+	 *   attribute of the target world.
 	 *
-	 *  \param yz The 2nd dimension: y (yz = 1) OR z (yz = 2), yz is the index of the dimension
+	 *  N.B.: In configuration file: the **line** attribute is for **y** and **plane** for **z**
 	 *
-	 *  \todo find a clever way to mention dimension to consider
-	 *
-	 */	
-	void parseTarget(int yz);   
+	 */
+	void parseTarget();
 
-	/*! \fn virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[])	
+	/*! \fn virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[])
 	 *  \brief Calls the createWorld function from the target world subclass to instantiate it
 	 *
 	 *  \param lx width of the grid
@@ -101,13 +98,13 @@ protected:
 	 *  \param argc The number of command line arguments
 	 *  \param argv The command line arguments
 	 *
-	 */		
+	 */
 	virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[]) = 0;
 
 	/*! \fn virtual void loadScheduler()
 	 *  \brief Calls the createScheduler function from the target scheduler subclass to instantiate it
 	 *
-	 */		
+	 */
 	virtual void loadScheduler() = 0;
 
 	/*! \fn virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master)
@@ -119,20 +116,20 @@ protected:
 	 *  \param pos Position of the block to add
 	 *  \param master True if the block is a master block, false otherwise
 	 *
-	 */		
+	 */
 	virtual void loadBlock(TiXmlElement *blockElt, int blockId,
 						   BlockCode *(*buildingBlockCodeBuildingFunction)
 						   (BuildingBlock*), const Cell3DPosition &pos,
 						   const Color &color, bool master) {};
 
 	/*! \fn virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells)
-	 *  \brief Configures the target from the simulation World with the positions in targetCells 
+	 *  \brief Configures the target from the simulation World with the positions in targetCells
 	 *
 	 *  \param targetCells vector containing all cell positions to add to the target
 	 *
-	 */		
+	 */
 	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {};
-	
+
 	Simulator(int argc, char *argv[]);
 	virtual ~Simulator();
 };

@@ -81,15 +81,17 @@ MotionStepEvent::~MotionStepEvent() {
 void MotionStepEvent::consume() {
     EVENT_CONSUME_INFO();
     RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
-    rb->setPosition(rb->getPositionVector() + motionStep);
-    World::getWorld()->updateGlData(rb);
+    Vector3D stepVector = rb->getPositionVector() + motionStep;
+    rb->setPosition(stepVector);
+    getWorld()->updateGlData(rb);
     RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
 
-    double v=(finalPosition-rb->getPositionVector())*motionStep;
+    double v = (finalPosition - stepVector) * motionStep;
     if (v<EPS) {
-        scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
+	scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition));
     } else {
-        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,finalPosition,motionStep));
+	scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,
+						finalPosition,motionStep));
     }
 }
 
@@ -121,12 +123,12 @@ void MotionStopEvent::consume() {
     EVENT_CONSUME_INFO();
     RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
     rb->setPosition(finalPosition);
-    World::getWorld()->updateGlData(rb);
+    RobotBlocksWorld::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     RobotBlocksWorld *wrld=RobotBlocksWorld::getWorld();
-    int ix = rb->position.pt[0],
-	iy = rb->position.pt[1],
-        iz = rb->position.pt[2];
+    int ix = int(rb->position.pt[0]),
+	iy = int(rb->position.pt[1]),
+	iz = int(rb->position.pt[2]);
     wrld->setGridPtr(ix,iy,iz,rb);
     stringstream info;
     info.str("");

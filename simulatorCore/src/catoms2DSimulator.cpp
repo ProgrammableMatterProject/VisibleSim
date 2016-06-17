@@ -39,7 +39,7 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[],
 	newBlockCode = (BlockCode *(*)(BuildingBlock *))catoms2DBlockCodeBuildingFunction;
 	parseWorld(argc, argv);
 	parseBlockList();
-	parseTarget(2);
+	parseTarget();
 
 	((Catoms2DWorld*)world)->linkBlocks();
 

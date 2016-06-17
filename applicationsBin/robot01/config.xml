@@ -4,7 +4,7 @@
 	<camera target="50,50,0" directionSpherical="30,30,100" angle="45"/>
 	<spotlight target="80,10,80" directionSpherical="60,45,80" angle="60"/>
 
-	<blockList color="128,255,128" blocksize="10.0,10.0,10.0">
+	<blockList color="128,255,128" blockSize="10.0,10.0,10.0">
 		<blocksLine plane="0" line=" 7" values="0000000000"/>
 		<blocksLine plane="0" line=" 6" values="0000000000"/>
 		<blocksLine plane="0" line=" 5" values="0000000110"/>
@@ -34,7 +34,7 @@
 
 	<capabilities>
 <!--	<capability level="1" name="slide" nbrelinks="0">
-        <states>
+	<states>
       8 8 8
       8 0 8
       8 8 8
@@ -46,11 +46,11 @@
       8 8 8
       8 8 8
       8 8 8
-        </states>
-        <this pos="1,1,1" />
-        <motions>
-            <motion obj="0" time="0" from="1,1,1" to="2,1,1"/>
-        </motions>
+	</states>
+	<this pos="1,1,1" />
+	<motions>
+	    <motion obj="0" time="0" from="1,1,1" to="2,1,1"/>
+	</motions>
     </capability> -->
 
 	<capability level="2" name="carry" nbrelinks="1" head="1" end="1">

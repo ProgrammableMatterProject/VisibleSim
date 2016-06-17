@@ -130,12 +130,12 @@ void RobotBlocksWorld::disconnectBlock(RobotBlocksBlock *block) {
     P2PNetworkInterface *fromBlock,*toBlock;
 
     for(int i=0; i<6; i++) {
-        fromBlock = block->getInterface(NeighborDirection::Direction(i));
-        if (fromBlock && fromBlock->connectedInterface) {
-            toBlock = fromBlock->connectedInterface;
-            fromBlock->connectedInterface=NULL;
-            toBlock->connectedInterface=NULL;
-        }
+	fromBlock = block->getInterface(NeighborDirection::Direction(i));
+	if (fromBlock && fromBlock->connectedInterface) {
+	    toBlock = fromBlock->connectedInterface;
+	    fromBlock->connectedInterface=NULL;
+	    toBlock->connectedInterface=NULL;
+	}
     }
     int ix,iy,iz;
     ix = int(block->position.pt[0]);
@@ -164,13 +164,13 @@ void RobotBlocksWorld::linkBlock(int ix, int iy, int iz) {
 	    (ptrBlock)->getInterface(NeighborDirection::Front)->connect(getGridPtr(ix+1,iy,iz)->getInterface(NeighborDirection::Back));
 	    OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz)->blockId << endl;
 	} else {
-            (ptrBlock)->getInterface(NeighborDirection::Front)->connect(NULL);
-        }
+	    (ptrBlock)->getInterface(NeighborDirection::Front)->connect(NULL);
+	}
 	if (iy>0 && getGridPtr(ix,iy-1,iz)) {
 	    (ptrBlock)->getInterface(NeighborDirection::Left)->connect(getGridPtr(ix,iy-1,iz)->getInterface(NeighborDirection::Right));
 	    OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy-1,iz)->blockId << endl;
 	} else {
-            (ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
+	    (ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
 	}
 	if (iz>0 && getGridPtr(ix,iy,iz-1)) {
 	    (ptrBlock)->getInterface(NeighborDirection::Bottom)->connect(getGridPtr(ix,iy,iz-1)->getInterface(NeighborDirection::Top));
@@ -368,6 +368,19 @@ void RobotBlocksWorld::loadTextures(const string &str) {
     idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
+void RobotBlocksWorld::updateGlData(BuildingBlock *bb) {
+    RobotBlocksGlBlock *glblc = (RobotBlocksGlBlock*)bb->getGlBlock();
+    if (glblc) {
+	lock();
+	Vector3D pos(blockSize[0]*bb->position.pt[0],
+		    blockSize[1]*bb->position.pt[1],
+		    blockSize[2]*bb->position.pt[2]);
+	glblc->setPosition(pos);
+	glblc->setColor(bb->color);
+	unlock();
+    }
+}
+
 void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
     RobotBlocksGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
@@ -382,7 +395,7 @@ void RobotBlocksWorld::menuChoice(int n) {
     case 1 : {
 	RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 	OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-        Cell3DPosition pos=bb->position;
+	Cell3DPosition pos=bb->position;
 	switch (numSelectedFace) {
 	case NeighborDirection::Left :
 	    pos.pt[0]--;
@@ -425,41 +438,41 @@ bool RobotBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFa
     RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
     switch (numSelectedFace) {
     case NeighborDirection::Left :
-        return (bb->position[0]>0
-                && getGridPtr(int(bb->position[0])-1,
-                              int(bb->position[1]),
-                              int(bb->position[2])) == NULL);
-        break;
+	return (bb->position[0]>0
+		&& getGridPtr(int(bb->position[0])-1,
+			      int(bb->position[1]),
+			      int(bb->position[2])) == NULL);
+	break;
     case NeighborDirection::Right :
-        return (bb->position[0]<gridSize[0]-1
-                && getGridPtr(int(bb->position[0])+1,
-                              int(bb->position[1]),
-                              int(bb->position[2])) == NULL);
-        break;
+	return (bb->position[0]<gridSize[0]-1
+		&& getGridPtr(int(bb->position[0])+1,
+			      int(bb->position[1]),
+			      int(bb->position[2])) == NULL);
+	break;
     case NeighborDirection::Front :
-        return (bb->position[1]>0
-                && getGridPtr(int(bb->position[0]),
-                              int(bb->position[1])-1,
-                              int(bb->position[2])) == NULL);
-        break;
+	return (bb->position[1]>0
+		&& getGridPtr(int(bb->position[0]),
+			      int(bb->position[1])-1,
+			      int(bb->position[2])) == NULL);
+	break;
     case NeighborDirection::Back :
-        return (bb->position[1]<gridSize[1]-1
-                && getGridPtr(int(bb->position[0]),
-                              int(bb->position[1])+1,
-                              int(bb->position[2])) == NULL);
-        break;
+	return (bb->position[1]<gridSize[1]-1
+		&& getGridPtr(int(bb->position[0]),
+			      int(bb->position[1])+1,
+			      int(bb->position[2])) == NULL);
+	break;
     case NeighborDirection::Bottom :
-        return (bb->position[2]>0
-                && getGridPtr(int(bb->position[0]),
-                              int(bb->position[1]),
-                              int(bb->position[2])-1) == NULL);
-        break;
+	return (bb->position[2]>0
+		&& getGridPtr(int(bb->position[0]),
+			      int(bb->position[1]),
+			      int(bb->position[2])-1) == NULL);
+	break;
     case NeighborDirection::Top :
-        return (bb->position[2]<gridSize[2]-1
-                && getGridPtr(int(bb->position[0]),
-                              int(bb->position[1]),
-                              int(bb->position[2])+1) == NULL);
-        break;
+	return (bb->position[2]<gridSize[2]-1
+		&& getGridPtr(int(bb->position[0]),
+			      int(bb->position[1]),
+			      int(bb->position[2])+1) == NULL);
+	break;
     }
 
     return false;
@@ -492,20 +505,20 @@ void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &p
     for (int i=0; i<27; i++) { *gpm++ = wallCell; };
 
     int ix0 = (pos.x<1)?1-pos.x:0,
-        ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
-        iy0 = (pos.y<1)?1-pos.y:0,
-        iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
-        iz0 = (pos.z<1)?1-pos.z:0,
-        iz1 = (pos.z>gridSize[2]-2)?gridSize[2]-pos.z+1:3,
-        ix,iy,iz;
+	ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
+	iy0 = (pos.y<1)?1-pos.y:0,
+	iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
+	iz0 = (pos.z<1)?1-pos.z:0,
+	iz1 = (pos.z>gridSize[2]-2)?gridSize[2]-pos.z+1:3,
+	ix,iy,iz;
     for (iz=iz0; iz<iz1; iz++) {
-        for (iy=iy0; iy<iy1; iy++) {
-            gpm = pm.grid+((iz*3+iy)*3+ix0);
-            grb = gridPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*gridSize[1])*gridSize[0]);
-            for (ix=ix0; ix<ix1; ix++) {
-                *gpm++ = (*grb++)?fullCell:emptyCell;
-            }
-        }
+	for (iy=iy0; iy<iy1; iy++) {
+	    gpm = pm.grid+((iz*3+iy)*3+ix0);
+	    grb = gridPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*gridSize[1])*gridSize[0]);
+	    for (ix=ix0; ix<ix1; ix++) {
+		*gpm++ = (*grb++)?fullCell:emptyCell;
+	    }
+	}
     }
 }
 
@@ -513,23 +526,23 @@ void RobotBlocksWorld::exportConfiguration() {
     // ofstream configFile;
     // RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
     // string configFilename = ConfigUtils::generateConfigFilename();
-		
+
     // configFile.open(configFilename);
     // configFile << ConfigUtils::xmlVersion() << endl;
     // configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-    // 					    GlutContext::screenHeight) << endl;
+    //					    GlutContext::screenHeight) << endl;
     // configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
     // configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
     // configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
     // configFile << ConfigUtils::xmlWorldClose() << endl;
-		
+
     // configFile.close();
 
     // OUTPUT << "Configuration exported to: " << configFilename << endl;
     // cerr << "Configuration exported to: " << configFilename << endl;
 }
 
-    
+
 void RobotBlocksWorld::initTargetGrid() {
     if (targetGrid) delete [] targetGrid;
     int sz = gridSize[0]*gridSize[1]*gridSize[2];
@@ -538,4 +551,3 @@ void RobotBlocksWorld::initTargetGrid() {
 }
 
 } // RobotBlock namespace
-
