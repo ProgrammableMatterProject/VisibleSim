@@ -85,8 +85,8 @@ void SbReconfBlockCode::startup() {
 	  _nbreGoalCells=0;
 	  presence *ptr=tab;
 	  while (n--) {
-        _nbreGoalCells+=(*ptr==fullCell);
-        ptr++;
+	_nbreGoalCells+=(*ptr==fullCell);
+	ptr++;
 	  }
 
 	  sendMapToNeighbors(NULL);
@@ -120,17 +120,17 @@ void SbReconfBlockCode::printRules() {
     stringstream info;
     info.str("");
     if (!possibleRules || possibleRules->empty()) {
-        info << "No rule!";
+	info << "No rule!";
     } else {
-        if (_isHead) info << "H";
-        if (_isEnd) info << "E";
-        info << possibleRules->size();
-        std::reverse_iterator<vector<Validation*>::iterator> rev_until (possibleRules->begin());
-        std::reverse_iterator<vector<Validation*>::iterator> rev_from (possibleRules->end());
-        while (rev_from!=rev_until) {
-            info  << "/" <<(*rev_from)->isZeroDistance << ","<< (*rev_from)->gain << (*rev_from)->capa->name;
-            rev_from++;
-        }
+	if (_isHead) info << "H";
+	if (_isEnd) info << "E";
+	info << possibleRules->size();
+	std::reverse_iterator<vector<Validation*>::iterator> rev_until (possibleRules->begin());
+	std::reverse_iterator<vector<Validation*>::iterator> rev_from (possibleRules->end());
+	while (rev_from!=rev_until) {
+	    info  << "/" <<(*rev_from)->isZeroDistance << ","<< (*rev_from)->gain << (*rev_from)->capa->name;
+	    rev_from++;
+	}
     }
     scheduler->trace(info.str(),hostBlock->blockId,GOLD);
 #endif
@@ -157,33 +157,33 @@ void SbReconfBlockCode::applyRules() {
     SbReconfBlockCode*bc;
     P2PNetworkInterface *ni;
     /*for (int i=0; i<4; i++) {
-        ni = block->getInterface(NeighborDirection(i));
-        if (ni->connectedInterface!=NULL) {
-            bc = (SbReconfBlockCode*)(ni->connectedInterface->hostBlock->blockCode);
-            neighborsDirection[i]=bc->_motionDir;
-        } else {
-            neighborsDirection[i].set(0,0);
-        }
+	ni = block->getInterface(NeighborDirection::Direction(i));
+	if (ni->connectedInterface!=NULL) {
+	    bc = (SbReconfBlockCode*)(ni->connectedInterface->hostBlock->blockCode);
+	    neighborsDirection[i]=bc->_motionDir;
+	} else {
+	    neighborsDirection[i].set(0,0);
+	}
     }*/
 //    OUTPUT << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1) << endl;
     neighborsDirection[4] = _motionDir;
     for (int i=0; i<4; i++) {
-        ni = block->getInterface(NeighborDirection(i));
-        if (_previous && _previous==ni) {
-            // OUTPUT << "previous=" << i << endl;
-            bc = (SbReconfBlockCode*)(ni->connectedInterface->hostBlock->blockCode);
-            neighborsDirection[i]=bc->_motionDir;
-        } else {
-            if (ni->connectedInterface!=NULL && ((SmartBlocksBlock*)(ni->connectedInterface->hostBlock))->wellPlaced) {
-                neighborsDirection[i].set(0,0);
-            } else {
-                neighborsDirection[i].unSet();
-            }
-        }
+	ni = block->getInterface(NeighborDirection::Direction(i));
+	if (_previous && _previous==ni) {
+	    // OUTPUT << "previous=" << i << endl;
+	    bc = (SbReconfBlockCode*)(ni->connectedInterface->hostBlock->blockCode);
+	    neighborsDirection[i]=bc->_motionDir;
+	} else {
+	    if (ni->connectedInterface!=NULL && ((SmartBlocksBlock*)(ni->connectedInterface->hostBlock))->wellPlaced) {
+		neighborsDirection[i].set(0,0);
+	    } else {
+		neighborsDirection[i].unSet();
+	    }
+	}
     }
     possibleRules = wrl->getCapabilities()->validateDirection(_pm,localTargetGrid,neighborsDirection);
     if (possibleRules && !possibleRules->empty()) {
-        _motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
+	_motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
 //        OUTPUT << "_motionDir =" << _motionDir << endl;
     }
 
@@ -191,8 +191,8 @@ void SbReconfBlockCode::applyRules() {
 #ifdef verbose
     printRules();
     if (!possibleRules || possibleRules->empty()) {
-        OUTPUT << "PM=" << endl;
-        OUTPUT << _pm << endl;
+	OUTPUT << "PM=" << endl;
+	OUTPUT << _pm << endl;
     }
 #endif // verbose
     setRulesColor();
@@ -200,14 +200,14 @@ void SbReconfBlockCode::applyRules() {
 
 void SbReconfBlockCode::setRulesColor() {
     if (block->_isBorder) {
-        if (block->_isTrain) {
-            block->setColor(_isHead?RED:_isEnd?GOLD:ORANGE);
-        } else {
-            block->setColor(_isHead?RED:_isEnd?GREY:PINK);
-        }
+	if (block->_isTrain) {
+	    block->setColor(_isHead?RED:_isEnd?GOLD:ORANGE);
+	} else {
+	    block->setColor(_isHead?RED:_isEnd?GREY:PINK);
+	}
 
     } else {
-        block->setColor(_isHead?RED:block->wellPlaced?YELLOW:GREEN);
+	block->setColor(_isHead?RED:block->wellPlaced?YELLOW:GREEN);
     }
 }
 
@@ -235,29 +235,29 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 			info << "rec.: EVENT_MOTION_END, tabUnlockPathSize=" << unlockPathTabSize << " order=" << unlockMotionStep;
 			scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-            posGrid.x = block->position[0];
-            posGrid.y = block->position[1];
-            wrl->getPresenceMatrix(posGrid,_pm);
-	        block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+	    posGrid.x = block->position[0];
+	    posGrid.y = block->position[1];
+	    wrl->getPresenceMatrix(posGrid,_pm);
+		block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
 
-            SmartBlocksWorld *wrl = SmartBlocks::getWorld();
-            wrl->addStat(2,1);
-            if (_isEnd) { // c'est une fin de train (et de ligne)
-                wrl->addStat(0,1);
-               	GlutContext::mustSaveImage=true;
-            }
-            if (unlockPathTabSize>0) { // c'est une fin de ligne (sauf train)
-                wrl->addStat(1,1);
-                wrl->printStats();
-                //GlutContext::mustSaveImage=true;
-            }
-            //wrl->printStats();
-            block->_isTrain=false;
+	    SmartBlocksWorld *wrl = SmartBlocks::getWorld();
+	    wrl->addStat(2,1);
+	    if (_isEnd) { // c'est une fin de train (et de ligne)
+		wrl->addStat(0,1);
+		GlutContext::mustSaveImage=true;
+	    }
+	    if (unlockPathTabSize>0) { // c'est une fin de ligne (sauf train)
+		wrl->addStat(1,1);
+		wrl->printStats();
+		//GlutContext::mustSaveImage=true;
+	    }
+	    //wrl->printStats();
+	    block->_isTrain=false;
 
 			 // prepare for next motion
 			if (unlockPathTabSize>0) {
 				// envoie le message de déblocage
-				P2PNetworkInterface *p2p = block->getInterface(NeighborDirection(unlockPathTab[0]));
+			    P2PNetworkInterface *p2p = block->getInterface(NeighborDirection::Direction(unlockPathTab[0]));
 				UnlockMessage *message = new UnlockMessage(unlockPathTab+1,unlockPathTabSize-1,unlockMotionStep);
 				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
 #ifdef verbose
@@ -271,11 +271,11 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
  on reconnecte le train !
  Si il existe une règle de fin il reste la fin du train suivant
  ***************************************************************/
-                setRulesColor();
-                if (_isEnd) {
+		setRulesColor();
+		if (_isEnd) {
 
-                    sendAsk4EndToNeighbors(NULL);
-                }
+		    sendAsk4EndToNeighbors(NULL);
+		}
 			}
 		}
 		break;
@@ -367,10 +367,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 #endif // verbose
 							setRulesColor();
 
-                            wrl->addStat(0,0);
-                            wrl->addStat(1,0);
-                            wrl->addStat(2,0);
-                            wrl->printStats();
+			    wrl->addStat(0,0);
+			    wrl->addStat(1,0);
+			    wrl->addStat(2,0);
+			    wrl->printStats();
 
 							//block->setDisplayedValue(-1);
 						}
@@ -406,147 +406,147 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 					info << "rec. SearchBackHeadMsg("<<(recvMessage->exceptionBlock==NULL?-1:recvMessage->exceptionBlock->hostBlock->blockId)<<") from " << sourceId;
 					scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                    if (recvMessage->exceptionBlock!=NULL) {
-                        NeighborDirection dir=North;
-                        int i=4;
-                        while (i-- && block->getInterface(dir)->connectedInterface!=recvMessage->exceptionBlock) {
-                            dir=NeighborDirection((int(dir)+1)%4);
-                        }
-                        OUTPUT << "except dir=" << dir << endl;
-                        dir=NeighborDirection((int(dir)+1)%4);
-                        i=3;
-                        while (i-- && block->getInterface(dir)==NULL) {
-                            dir=NeighborDirection((int(dir)+1)%4);
-                        }
-                        if (i) {
-                            sendSearchBackHeadMessage(block->getInterface(dir));
-                        }
-                    } else {
-                        _previous = recvMessage->sourceInterface->connectedInterface;
-                        _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
-                        applyRules();
-                        if (possibleRules && !possibleRules->empty()) {
-                            // on recherche une règle de tete
-                            //possibleRules->pop_back();
-                            while (!possibleRules->empty() && !possibleRules->back()->capa->isHead) possibleRules->pop_back();
+		    if (recvMessage->exceptionBlock!=NULL) {
+			NeighborDirection::Direction dir=NeighborDirection::NeighborDirection::North;
+			int i=4;
+			while (i-- && block->getInterface(dir)->connectedInterface!=recvMessage->exceptionBlock) {
+			    dir=NeighborDirection::Direction((int(dir)+1)%4);
+			}
+			OUTPUT << "except dir=" << dir << endl;
+			dir=NeighborDirection::Direction((int(dir)+1)%4);
+			i=3;
+			while (i-- && block->getInterface(dir)==NULL) {
+			    dir=NeighborDirection::Direction((int(dir)+1)%4);
+			}
+			if (i) {
+			    sendSearchBackHeadMessage(block->getInterface(dir));
+			}
+		    } else {
+			_previous = recvMessage->sourceInterface->connectedInterface;
+			_numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+			applyRules();
+			if (possibleRules && !possibleRules->empty()) {
+			    // on recherche une règle de tete
+			    //possibleRules->pop_back();
+			    while (!possibleRules->empty() && !possibleRules->back()->capa->isHead) possibleRules->pop_back();
 #ifdef verbose
     OUTPUT << "Cherche head" << endl;
     printRules();
 #endif // verbose
-                            // il existe une regle de tete
-                            if (!possibleRules->empty()) {
-                                printRules();
+			    // il existe une regle de tete
+			    if (!possibleRules->empty()) {
+				printRules();
     /********************************************/
     /*** cas particulier des éléments uniques ***/
     /*** qui sont head et end en meme temps   ***/
-                                if (possibleRules->back()->capa->isEnd) {
-                                    Capability *capa = possibleRules->back()->capa;
+				if (possibleRules->back()->capa->isEnd) {
+				    Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
-                                    info.str("");
-                                    info << "special motion :" << capa->name ;
-                                    scheduler->trace(info.str(),hostBlock->blockId);
+				    info.str("");
+				    info << "special motion :" << capa->name ;
+				    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                                    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
-                                    while (cm!=capa->tabMotions.end()) {
-                                        singleMotion(*cm,capa);
-                                        cm++;
-                                    }
-                                } else {
-                                    // si le block était le block de départ de la recherche (_isEnd)
-                                    if (_isEnd) {
+				    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
+				    while (cm!=capa->tabMotions.end()) {
+					singleMotion(*cm,capa);
+					cm++;
+				    }
+				} else {
+				    // si le block était le block de départ de la recherche (_isEnd)
+				    if (_isEnd) {
     #ifdef verbose
-                                        OUTPUT << "le block de départ de la recherche " << endl;
+					OUTPUT << "le block de départ de la recherche " << endl;
     #endif // verbose
-                                        _previous = getBorderPreviousNeightbor(NULL);
-                                        _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
-                                        _next = getBorderNextNeightbor();
-                                        //block->setDisplayedValue(0);
-                                        block->_isTrain = true;
-                                        _isHead = true;
-                                        _isEnd = false;
-                                        _motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
+					_previous = getBorderPreviousNeightbor(NULL);
+					_numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+					_next = getBorderNextNeightbor();
+					//block->setDisplayedValue(0);
+					block->_isTrain = true;
+					_isHead = true;
+					_isEnd = false;
+					_motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
 
     #ifdef verbose
-                                        info.str("");
-                                        info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                                            << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                                            << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
-                                        scheduler->trace(info.str(),hostBlock->blockId);
+					info.str("");
+					info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
+					    << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+					    << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
+					scheduler->trace(info.str(),hostBlock->blockId);
     #endif // verbose
-                                        SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
-                                        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
+					SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
+					scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
     #ifdef verbose
-                                        info.str("");
-                                        info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
-                                        scheduler->trace(info.str(),hostBlock->blockId);
+					info.str("");
+					info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
+					scheduler->trace(info.str(),hostBlock->blockId);
     #endif // verbose
-                                        setRulesColor();
-                                    } else {
-                                        // on a trouvé la tete on cherche la queue du train
-                                        _motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
-                                        _next = block->getP2PNetworkInterfaceByRelPos(*possibleRules->back()->capa->linkNextPos);
-                                        SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
-                                        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
+					setRulesColor();
+				    } else {
+					// on a trouvé la tete on cherche la queue du train
+					_motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
+					_next = block->getP2PNetworkInterfaceByRelPos(*possibleRules->back()->capa->linkNextPos);
+					SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
+					scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
     #ifdef verbose
-                                        info.str("");
-                                        info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
-                                        scheduler->trace(info.str(),hostBlock->blockId);
+					info.str("");
+					info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
+					scheduler->trace(info.str(),hostBlock->blockId);
     #endif // verbose
-                                        setRulesColor();
-                                        //block->setDisplayedValue(0);
-                                        block->_isTrain = true;
-                                        _isHead = true;
-                                        _isEnd = false;
-                                        _previous = NULL;
-                                    }
-                                }
-                            } else {
-                                // si pas de rule de tete : on demande un retour en arriere
-                                if (_isEnd || _next==NULL) {
+					setRulesColor();
+					//block->setDisplayedValue(0);
+					block->_isTrain = true;
+					_isHead = true;
+					_isEnd = false;
+					_previous = NULL;
+				    }
+				}
+			    } else {
+				// si pas de rule de tete : on demande un retour en arriere
+				if (_isEnd || _next==NULL) {
     #ifdef verbose
-                                    OUTPUT << "le block de départ de la recherche 2" << endl;
+				    OUTPUT << "le block de départ de la recherche 2" << endl;
     #endif // verbose
-                                    setRulesColor();
+				    setRulesColor();
     /**
     On peut envoyer un message searchHeadBack particulier qui demande d'ometre le block courant car il est un isthme !
     on le renvoie au sender
-                                    SearchBackHeadMessage *message = new SearchBackHeadMessage(blockId);
+				    SearchBackHeadMessage *message = new SearchBackHeadMessage(blockId);
 
     **/
-                                    sendSearchBackHeadMessage(_previous,recvMessage->destinationInterface);
-                                } else {
+				    sendSearchBackHeadMessage(_previous,recvMessage->destinationInterface);
+				} else {
 //                        OUTPUT << "case 1" << endl;
-                                    _previous = recvMessage->sourceInterface->connectedInterface;
-                                    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
-                                    applyRules();
-                                    _next = getBorderNextNeightbor(_previous);
+				    _previous = recvMessage->sourceInterface->connectedInterface;
+				    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+				    applyRules();
+				    _next = getBorderNextNeightbor(_previous);
     #ifdef verbose
-                                    info.str("");
-                                    info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                                        << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                                         << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
-                                    scheduler->trace(info.str(),hostBlock->blockId);
+				    info.str("");
+				    info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
+					<< "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+					 << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
+				    scheduler->trace(info.str(),hostBlock->blockId);
     #endif // verbose
-                                    sendSearchBackHeadMessage(_next);
-                                }
-                            }
-                        } else {
+				    sendSearchBackHeadMessage(_next);
+				}
+			    }
+			} else {
 //                        OUTPUT << "case 2" << endl;
-                            _previous = recvMessage->sourceInterface->connectedInterface;
-                            _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
-                            applyRules();
-                            _next = getBorderNextNeightbor(_previous);
+			    _previous = recvMessage->sourceInterface->connectedInterface;
+			    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+			    applyRules();
+			    _next = getBorderNextNeightbor(_previous);
 #ifdef verbose
-                            info.str("");
-                            info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                                << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                                 << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
-                            scheduler->trace(info.str(),hostBlock->blockId);
+			    info.str("");
+			    info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
+				<< "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+				 << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
+			    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                            sendSearchBackHeadMessage(_next);
-                        }
-                    }
-                }
+			    sendSearchBackHeadMessage(_next);
+			}
+		    }
+		}
 				break;
 
 				case END_MSG_ID : {
@@ -557,14 +557,14 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 					info << "rec. SearchEndTrainMessage("<< recvMessage->num <<") from " << sourceId;
 					scheduler->trace(info.str(),hostBlock->blockId);
 
-                    OUTPUT << "isSingle : " << block->_isSingle << endl;
+		    OUTPUT << "isSingle : " << block->_isSingle << endl;
 #endif // verbose
 					if (!tabSteps[1]) {
 						tabMemorisedMessages[3] = message;
-                        tabSteps[3]=true;
+			tabSteps[3]=true;
 					} else {
-                        _previous = recvMessage->sourceInterface->connectedInterface;
-                        _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+			_previous = recvMessage->sourceInterface->connectedInterface;
+			_numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
 						step3(message);
 						tabSteps[3]=false;
 					}
@@ -584,18 +584,18 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 					if (recvMessage->queueFound) {
 #ifdef verbose
 					    info.str("");
-                        info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                                        << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                                        << " _isHead = " << _isHead << " _isEnd = " << _isEnd ;
-                        scheduler->trace(info.str(),hostBlock->blockId);
+			info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
+					<< "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+					<< " _isHead = " << _isHead << " _isEnd = " << _isEnd ;
+			scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                        printRules();
+			printRules();
 //                        Capability *capa = possibleRules->back()->capa;
 
-                        block->_isTrain=true;
+			block->_isTrain=true;
 // si on est à la tete du train on peut créer des lignes
 						if (_isHead) {
-                            createLine(scheduler->now(),true);
+			    createLine(scheduler->now(),true);
 						} else { // sinon on propage
 							TrainReadyMessage *message = new TrainReadyMessage(true);
 							scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
@@ -607,7 +607,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 							_isEnd=false;
 						}
 					} else {
-                        applyRules();
+			applyRules();
 						Capability *capa = possibleRules->back()->capa;
 						if (capa && !capa->isHead) {
 							// il faut chercher une règle de queue dans le bloc courant qui ne forme pas d'isthme
@@ -616,8 +616,8 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 							}
 							bool test=!possibleRules->empty();
 							if (test && !block->_isSingle) {
-                                capa = possibleRules->back()->capa;
-                                test &= !testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
+				capa = possibleRules->back()->capa;
+				test &= !testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
 							}
 							if (test) {
 							    TrainReadyMessage *message = new TrainReadyMessage(true);
@@ -642,8 +642,8 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 								_isEnd = false;
 							}
 						} else {
-                            /*DisableTrainMessage *message = new DisableTrainMessage();
-                            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
+			    /*DisableTrainMessage *message = new DisableTrainMessage();
+			    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 							info.str("");
 							info << "send DisableTrainMessage() to " << _next->connectedInterface->hostBlock->blockId;
 							scheduler->trace(info.str(),hostBlock->blockId);
@@ -682,7 +682,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 						info << "send SetRDVMessage to " << _previous->connectedInterface->hostBlock->blockId;
 						scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                    }
+		    }
 					startMotion(recvMessage->rdvTime,recvMessage->motionVector,0,possibleRules->back()->capa->tabUnlockPath);
 				}
 				break;
@@ -705,8 +705,8 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 							Motion *currentMotion=NULL;
 							while (cm!=capa->tabMotions.end()) {
 								if ((*cm)->time==recvMessage->step) {
-                                    singleMotion(*cm,capa);
-                                    currentMotion = *cm;
+				    singleMotion(*cm,capa);
+				    currentMotion = *cm;
 								}
 								cm++;
 							}
@@ -721,7 +721,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 								printRules();
 
 								_previous = getBorderPreviousNeightbor(NULL);
-                                _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+				_numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
 								_next = NULL;
 								block->_isTrain = false;
 								// envoie le message de reconstruction du train
@@ -738,7 +738,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 						}
 					} else {
 						// envoie le message de déblocage
-						P2PNetworkInterface *p2p = block->getInterface(NeighborDirection(recvMessage->tab[0]));
+					    P2PNetworkInterface *p2p = block->getInterface(NeighborDirection::Direction(recvMessage->tab[0]));
 						UnlockMessage *message = new UnlockMessage(recvMessage->tab+1,recvMessage->sz-1,recvMessage->step);
 						scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
 #ifdef verbose
@@ -762,7 +762,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 						startMotion(recvMessage->startTime,recvMessage->motionVector,recvMessage->step,recvMessage->unlockPath);
 					} else {
 						// envoie le message de déblocage
-						P2PNetworkInterface *p2p = block->getInterface(NeighborDirection(recvMessage->tab[0]));
+						P2PNetworkInterface *p2p = block->getInterface(NeighborDirection::Direction(recvMessage->tab[0]));
 						SingleMoveMessage *message = new SingleMoveMessage(recvMessage->tab+1,recvMessage->sz-1,recvMessage->startTime,recvMessage->motionVector,recvMessage->unlockPath,recvMessage->step);
 						scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
 #ifdef verbose
@@ -782,49 +782,49 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 					info << "rec. ReconnectTrainMsg("<< recvMessage->hasRule <<") from " << sourceId;
 					scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                    if (recvMessage->hasRule) {
-                        _next = recvMessage->sourceInterface->connectedInterface;
-                        _previous = getBorderPreviousNeightbor(_next);
-                        if (_previous==_next) {
-                            _previous=NULL;
-                        }
-                    } else {
-                        _previous = recvMessage->sourceInterface->connectedInterface;
-                        _next = getBorderNextNeightbor();
-                    }
-                    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
-                    reconnect(recvMessage->hasRule);
+		    if (recvMessage->hasRule) {
+			_next = recvMessage->sourceInterface->connectedInterface;
+			_previous = getBorderPreviousNeightbor(_next);
+			if (_previous==_next) {
+			    _previous=NULL;
+			}
+		    } else {
+			_previous = recvMessage->sourceInterface->connectedInterface;
+			_next = getBorderNextNeightbor();
+		    }
+		    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+		    reconnect(recvMessage->hasRule);
 				}
 				break;
 
-                case ASK4END_MSG_ID : {
-                    Ask4EndMessage_ptr recvMessage = boost::static_pointer_cast<Ask4EndMessage>(message);
-                    //block->setDisplayedValue(-1);
+		case ASK4END_MSG_ID : {
+		    Ask4EndMessage_ptr recvMessage = boost::static_pointer_cast<Ask4EndMessage>(message);
+		    //block->setDisplayedValue(-1);
 #ifdef verbose
 					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 					info.str("");
 					info << "rec. Ask4EndMessage(" << recvMessage->currentMove << ") from " << sourceId;
 //					scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-                    if (_currentMove==recvMessage->currentMove) {
+		    if (_currentMove==recvMessage->currentMove) {
 						sendAns4EndMessage(recvInterface,0);
 					} else {
-                        init();
-                        block2Answer=recvInterface;
+			init();
+			block2Answer=recvInterface;
 						sendAsk4EndToNeighbors(block2Answer);
-                        if (nbreOfWaitedAnswers==0) {
-                            if (block2Answer!=NULL) {
-                                sendAns4EndMessage(block2Answer,_nbreWellPlacedBlocks);
-                                block2Answer=NULL;
-                            } else {
-                                setRulesColor();
-                            }
-                        }
+			if (nbreOfWaitedAnswers==0) {
+			    if (block2Answer!=NULL) {
+				sendAns4EndMessage(block2Answer,_nbreWellPlacedBlocks);
+				block2Answer=NULL;
+			    } else {
+				setRulesColor();
+			    }
+			}
 					}
-                }
-                break;
+		}
+		break;
 
-                case ANS4END_MSG_ID : {
+		case ANS4END_MSG_ID : {
 					Ans4EndMessage_ptr recvMessage = boost::static_pointer_cast<Ans4EndMessage>(message);
 #ifdef verbose
 					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
@@ -841,110 +841,110 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 						} else {
 							setRulesColor();
 #ifdef verbose
-                            OUTPUT << _pm << endl;
-                            OUTPUT << block->blockId << "._numPrev =" << _numPrev << endl;
+			    OUTPUT << _pm << endl;
+			    OUTPUT << block->blockId << "._numPrev =" << _numPrev << endl;
 #endif
 
-                            if (block->_isSingle)  {
+			    if (block->_isSingle)  {
 #ifdef verbose
-                                OUTPUT << "isSingle" << endl;
+				OUTPUT << "isSingle" << endl;
 #endif
-                                _next=NULL;
-                                _previous = getBorderSinglePrevious();
-                                _numPrev=-1;
-                            } else {
-                                if (_numPrev!=-1 && (_previous = getBorderNeighborById(_numPrev))!=NULL) {
-                                    _next = getBorderNextNeightborNoWellPlaced(_previous);
-                                } else {
-                                    _next = getBorderNextNeightborNoWellPlaced(NULL);
-                                    _previous = getBorderPreviousNeightborNoWellPlaced(_next);
-                                }
-                                _numPrev = (_previous?_previous->connectedInterface->hostBlock->blockId:-1);
-                            }
+				_next=NULL;
+				_previous = getBorderSinglePrevious();
+				_numPrev=-1;
+			    } else {
+				if (_numPrev!=-1 && (_previous = getBorderNeighborById(_numPrev))!=NULL) {
+				    _next = getBorderNextNeightborNoWellPlaced(_previous);
+				} else {
+				    _next = getBorderNextNeightborNoWellPlaced(NULL);
+				    _previous = getBorderPreviousNeightborNoWellPlaced(_next);
+				}
+				_numPrev = (_previous?_previous->connectedInterface->hostBlock->blockId:-1);
+			    }
 
 #ifdef verbose
-                            info.str("");
-                            info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                                 << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                                 << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
-                            scheduler->trace(info.str(),hostBlock->blockId);
+			    info.str("");
+			    info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
+				 << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+				 << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
+			    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                            applyRules();
+			    applyRules();
 
-                            if (_nbreWellPlacedBlocks!=_nbreGoalCells) {
+			    if (_nbreWellPlacedBlocks!=_nbreGoalCells) {
 
-                                if (possibleRules && possibleRules->back()) {
+				if (possibleRules && possibleRules->back()) {
 #ifdef verbose
-                                    info.str("");
-                                    info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                                        << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                                        << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
-                                    scheduler->trace(info.str(),hostBlock->blockId);
+				    info.str("");
+				    info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
+					<< "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+					<< " _isHead = " << _isHead << " _isEnd = " << _isEnd;
+				    scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-                                }
-            /********************************************/
-            /*** cas particulier des éléments uniques ***/
-            /*** qui sont head et end en meme temps   ***/
-                                if (possibleRules->back()->capa->isEnd && possibleRules->back()->capa->isHead) {
-                                    Capability *capa = possibleRules->back()->capa;
+				}
+	    /********************************************/
+	    /*** cas particulier des éléments uniques ***/
+	    /*** qui sont head et end en meme temps   ***/
+				if (possibleRules->back()->capa->isEnd && possibleRules->back()->capa->isHead) {
+				    Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
-                                    info.str("");
-                                    info << "special motion :" << capa->name ;
-                                    scheduler->trace(info.str(),hostBlock->blockId);
+				    info.str("");
+				    info << "special motion :" << capa->name ;
+				    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                                    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
-                                    while (cm!=capa->tabMotions.end()) {
-                                        singleMotion(*cm,capa);
-                                        cm++;
-                                    }
-                                } else
-                                // on garde en priorité une règle de queue
-                                // il faut que la règle courante soit une regle de fin
-                                if (possibleRules) {
-                                    while (!possibleRules->empty() && !possibleRules->back()->capa->isEnd) {
-                                        possibleRules->pop_back();
-                                    }
-                                    printRules();
-                                    if (!possibleRules->empty()) {
-                /** on peut poursuivre le déplacement du train à partir du meme bloc de fin **/
-                                        _isEnd=true;
-                                        _next=NULL;
-                                        ReconnectTrainMessage *message = new ReconnectTrainMessage(possibleRules && possibleRules->size()>0);
-                                        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+				    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
+				    while (cm!=capa->tabMotions.end()) {
+					singleMotion(*cm,capa);
+					cm++;
+				    }
+				} else
+				// on garde en priorité une règle de queue
+				// il faut que la règle courante soit une regle de fin
+				if (possibleRules) {
+				    while (!possibleRules->empty() && !possibleRules->back()->capa->isEnd) {
+					possibleRules->pop_back();
+				    }
+				    printRules();
+				    if (!possibleRules->empty()) {
+		/** on peut poursuivre le déplacement du train à partir du meme bloc de fin **/
+					_isEnd=true;
+					_next=NULL;
+					ReconnectTrainMessage *message = new ReconnectTrainMessage(possibleRules && possibleRules->size()>0);
+					scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
-                                        info.str("");
-                                        info << "send ReconnectTrainMessage to " << _previous->connectedInterface->hostBlock->blockId;
-                                        scheduler->trace(info.str(),hostBlock->blockId,YELLOW);
+					info.str("");
+					info << "send ReconnectTrainMessage to " << _previous->connectedInterface->hostBlock->blockId;
+					scheduler->trace(info.str(),hostBlock->blockId,YELLOW);
 #endif // verbose
-                                    } else {
-                /** on ne peut pas repartir de la queue courante, on recherche un train complet **/
-                                        applyRules();
+				    } else {
+		/** on ne peut pas repartir de la queue courante, on recherche un train complet **/
+					applyRules();
 
-                                        // send searchHeadMessage
-                                        SearchHeadMessage *message = new SearchHeadMessage();
-                                        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+					// send searchHeadMessage
+					SearchHeadMessage *message = new SearchHeadMessage();
+					scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
-                                        info.str("");
-                                        info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
-                                        scheduler->trace(info.str(),hostBlock->blockId);
+					info.str("");
+					info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
+					scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                                    }
-                                } else {
-                                /** on ne peut pas repartir de la queue courante, on recherche un train complet **/
-                                    applyRules();
+				    }
+				} else {
+				/** on ne peut pas repartir de la queue courante, on recherche un train complet **/
+				    applyRules();
 
-                                    // send searchHeadMessage
-                                    SearchHeadMessage *message = new SearchHeadMessage();
-                                    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+				    // send searchHeadMessage
+				    SearchHeadMessage *message = new SearchHeadMessage();
+				    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
-                                    info.str("");
-                                    info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
-                                    scheduler->trace(info.str(),hostBlock->blockId);
+				    info.str("");
+				    info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
+				    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                                }
-                            } else {
-                                wrl->printStats();
-                            }
+				}
+			    } else {
+				wrl->printStats();
+			    }
 						}
 					}
 				}
@@ -994,14 +994,14 @@ void SbReconfBlockCode::step2(MessagePtr message) {
 	if (possibleRules && !possibleRules->empty()) {
 		Capability *capa = possibleRules->back()->capa;
 		block->_isTrain = false;
-        if (capa->isHead) {
+	if (capa->isHead) {
 			// send searchEndTrainMessage
 #ifdef verbose
-            info.str("");
-            info << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1);
-            scheduler->trace(info.str(),hostBlock->blockId);
+	    info.str("");
+	    info << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1);
+	    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            _previous = NULL;
+	    _previous = NULL;
 			SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
 			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 #ifdef verbose
@@ -1013,15 +1013,15 @@ void SbReconfBlockCode::step2(MessagePtr message) {
 			//block->setDisplayedValue(0);
 			_isHead = true;
 		} else /*if (capa->linkPrevPos)*/ {
-            _previous = getBorderPreviousNeightbor(_next);
-            _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+	    _previous = getBorderPreviousNeightbor(_next);
+	    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
 #ifdef verbose
-            info.str("");
-            info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1);
-            scheduler->trace(info.str(),hostBlock->blockId);
+	    info.str("");
+	    info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1);
+	    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            _isHead = false;
-            //block->setDisplayedValue(-1);
+	    _isHead = false;
+	    //block->setDisplayedValue(-1);
 
 		    // send searchHeadMessage
 			SearchHeadMessage *message = new SearchHeadMessage();
@@ -1033,20 +1033,20 @@ void SbReconfBlockCode::step2(MessagePtr message) {
 #endif // verbose
 		}
 	} else /*if (block->_isBorder && _next) */{
-        // si pas de rule : on demande un retour en arriere
+	// si pas de rule : on demande un retour en arriere
 #ifdef verbose
 		info.str("");
-        info << "send SearchBackHeadMessage to " << _next->connectedInterface->hostBlock->blockId;
-        scheduler->trace(info.str(),hostBlock->blockId);
+	info << "send SearchBackHeadMessage to " << _next->connectedInterface->hostBlock->blockId;
+	scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        _isHead = false;
+	_isHead = false;
 		block->_isTrain = false;
 		block->_isBorder = false;
 		//block->setDisplayedValue(-1);
 
-        setRulesColor();
-        SearchBackHeadMessage *message = new SearchBackHeadMessage();
-        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message,_next));
+	setRulesColor();
+	SearchBackHeadMessage *message = new SearchBackHeadMessage();
+	scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message,_next));
 	}
 }
 
@@ -1061,93 +1061,93 @@ void SbReconfBlockCode::step3(MessagePtr message) {
 on test d'abord si c'est un isthme avant de faire tout déplacement
 **/
     if (possibleRules && !possibleRules->empty()) {
-        Capability *capa = possibleRules->back()->capa;
-        bool test = testIsthmus(capa->linkPrevPos->x,capa->linkPrevPos->y);
-        if (capa->isEnd && !capa->isHead && !block->_isSingle) {
-            test = test || testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
-        }
+	Capability *capa = possibleRules->back()->capa;
+	bool test = testIsthmus(capa->linkPrevPos->x,capa->linkPrevPos->y);
+	if (capa->isEnd && !capa->isHead && !block->_isSingle) {
+	    test = test || testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
+	}
 
-        if (test) {
+	if (test) {
 #ifdef verbose
-            printRules();
-            info.str("");
+	    printRules();
+	    info.str("");
 			info << "isthmus " << capa->name << " en " << posGrid << ": " << capa->isAngle << ";" << _previous->connectedInterface->hostBlock->blockId;
 			scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 			// il faut trouver un bloc de fin de train avant le bloc courant.
-            TrainReadyMessage *message = new TrainReadyMessage(false);
+	    TrainReadyMessage *message = new TrainReadyMessage(false);
 
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+	    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
 			info.str("");
 			info << "send TrainReadyMessage(false) to " << _previous->connectedInterface->hostBlock->blockId;
-            scheduler->trace(info.str(),hostBlock->blockId);
+	    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 			block->_isTrain = false;
-            _isEnd = false;
-            block->_isBorder = false;
-            return;
-        }
+	    _isEnd = false;
+	    block->_isBorder = false;
+	    return;
+	}
     }
 
     if (possibleRules) {
 /** Si il existe une règle de corps, on propage **/
 // il faut que la règle courante soit ni tete ni queue
-        while (!possibleRules->empty() && (possibleRules->back()->capa->isHead || possibleRules->back()->capa->isEnd)) {
-            possibleRules->pop_back();
-        }
-        printRules();
+	while (!possibleRules->empty() && (possibleRules->back()->capa->isHead || possibleRules->back()->capa->isEnd)) {
+	    possibleRules->pop_back();
+	}
+	printRules();
 //        if (possibleRules->empty()) OUTPUT << _pm << endl;
     }
 
     if (!block->_isSingle && possibleRules && !possibleRules->empty()) {
-        Capability *capa = possibleRules->back()->capa;
-        block->setDisplayedValue(block->blockId);
-        // send searchEndTrainMessage
-        PointCel np = *capa->linkNextPos;
-        _next = block->getP2PNetworkInterfaceByRelPos(np); //
-        _motionDir = capa->tabMotions[0]->vect;
+	Capability *capa = possibleRules->back()->capa;
+	block->setDisplayedValue(block->blockId);
+	// send searchEndTrainMessage
+	PointCel np = *capa->linkNextPos;
+	_next = block->getP2PNetworkInterfaceByRelPos(np); //
+	_motionDir = capa->tabMotions[0]->vect;
 #ifdef verbose
-        info.str("");
-        info << "next = " << np << "," << (_next->connectedInterface?_next->connectedInterface->hostBlock->blockId:-1);
-        scheduler->trace(info.str(),hostBlock->blockId);
+	info.str("");
+	info << "next = " << np << "," << (_next->connectedInterface?_next->connectedInterface->hostBlock->blockId:-1);
+	scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        SearchEndTrainMessage *message = new SearchEndTrainMessage(recvMessage->num+1);
-        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
+	SearchEndTrainMessage *message = new SearchEndTrainMessage(recvMessage->num+1);
+	scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 #ifdef verbose
-        info.str("");
-        info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
-        scheduler->trace(info.str(),hostBlock->blockId);
+	info.str("");
+	info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
+	scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        block->_isTrain = true;
-        block->_isBorder = true;
-        _isEnd = false;
+	block->_isTrain = true;
+	block->_isBorder = true;
+	_isEnd = false;
     //}
 	} else {
 /** si echec de propagation, on répond si le bloc peut être une queue **/
-        applyRules();
-        if (possibleRules) {
-            while (!possibleRules->empty() && !possibleRules->back()->capa->isEnd) {
-                possibleRules->pop_back();
-            }
-            printRules();
-        }
-        if (possibleRules && !possibleRules->empty()) {
-            // send trainReadyMessage
-            TrainReadyMessage *message = new TrainReadyMessage(true);
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+	applyRules();
+	if (possibleRules) {
+	    while (!possibleRules->empty() && !possibleRules->back()->capa->isEnd) {
+		possibleRules->pop_back();
+	    }
+	    printRules();
+	}
+	if (possibleRules && !possibleRules->empty()) {
+	    // send trainReadyMessage
+	    TrainReadyMessage *message = new TrainReadyMessage(true);
+	    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
-            info.str("");
-            info << "send TrainReadyMessage(true) to " << _previous->connectedInterface->hostBlock->blockId;
-            scheduler->trace(info.str(),hostBlock->blockId);
+	    info.str("");
+	    info << "send TrainReadyMessage(true) to " << _previous->connectedInterface->hostBlock->blockId;
+	    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            block->_isTrain = true;
-            _isEnd = true;
-            block->_isBorder = true;
-            block->_isSingle = false; /////////// TODO
-        } else {
+	    block->_isTrain = true;
+	    _isEnd = true;
+	    block->_isBorder = true;
+	    block->_isSingle = false; /////////// TODO
+	} else {
 // il faut trouver un bloc de fin de train avant le bloc courant.
-            TrainReadyMessage *message = new TrainReadyMessage(false);
+	    TrainReadyMessage *message = new TrainReadyMessage(false);
 			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
 			info.str("");
@@ -1155,9 +1155,9 @@ on test d'abord si c'est un isthme avant de faire tout déplacement
 			scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 			block->_isTrain = false;
-            _isEnd = false;
-            block->_isBorder = false;
-        }
+	    _isEnd = false;
+	    block->_isBorder = false;
+	}
 	}
 
 }
@@ -1167,44 +1167,44 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
 	stringstream info;
     info.str("");
     info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                        << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                        << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
+			<< "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+			<< " _isHead = " << _isHead << " _isEnd = " << _isEnd;
     scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
     // apply rules
     applyRules();
 
     if (!hasRule) {
-        //if (_previous==_next) {
-        // on recherche une règle de tete et queue (déplacement spéciaux)
-            while (!possibleRules->empty() && (!possibleRules->back()->capa->isHead || !possibleRules->back()->capa->isEnd)) possibleRules->pop_back();
-        //}
+	//if (_previous==_next) {
+	// on recherche une règle de tete et queue (déplacement spéciaux)
+	    while (!possibleRules->empty() && (!possibleRules->back()->capa->isHead || !possibleRules->back()->capa->isEnd)) possibleRules->pop_back();
+	//}
 
-        if (!possibleRules->empty()) {
-            printRules();
-            if (possibleRules->back()->capa->isHead) {
-            // cas particulier des singletons en mouvement
-                if (possibleRules->back()->capa->isEnd) {
-                    Capability *capa = possibleRules->back()->capa;
+	if (!possibleRules->empty()) {
+	    printRules();
+	    if (possibleRules->back()->capa->isHead) {
+	    // cas particulier des singletons en mouvement
+		if (possibleRules->back()->capa->isEnd) {
+		    Capability *capa = possibleRules->back()->capa;
     #ifdef verbose
-                    info.str("");
-                    info << "special motion :" << capa->name ;
-                    scheduler->trace(info.str(),hostBlock->blockId);
+		    info.str("");
+		    info << "special motion :" << capa->name ;
+		    scheduler->trace(info.str(),hostBlock->blockId);
     #endif // verbose
-                    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
-                    while (cm!=capa->tabMotions.end()) {
-                        singleMotion(*cm,capa);
-                        cm++;
-                    }
-                    return;
-                } else {
+		    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
+		    while (cm!=capa->tabMotions.end()) {
+			singleMotion(*cm,capa);
+			cm++;
+		    }
+		    return;
+		} else {
  // cas général on cherche la queue
-                    _isHead = true;
-                    //block->setDisplayedValue(0);
+		    _isHead = true;
+		    //block->setDisplayedValue(0);
 
-                }
-            }
-        }
+		}
+	    }
+	}
 
     }
 
@@ -1212,79 +1212,79 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
 * on remonte le bord jusqu'à la tête
 ********************************************************************************/
     if (!_previous || _isHead) {
-        setRulesColor();
-        // on recherche une rêgle de tete
-        bool headFound=false;
-        if (possibleRules && !possibleRules->empty()) {
-            // on recherche une règle de tete
-            while (!possibleRules->empty() && !possibleRules->back()->capa->isHead) possibleRules->pop_back();
+	setRulesColor();
+	// on recherche une rêgle de tete
+	bool headFound=false;
+	if (possibleRules && !possibleRules->empty()) {
+	    // on recherche une règle de tete
+	    while (!possibleRules->empty() && !possibleRules->back()->capa->isHead) possibleRules->pop_back();
 
-            if (!possibleRules->empty()) {
-                printRules();
-                _isHead = true;
-                _previous = NULL;
-                block->_isTrain = true;
-                //block->setDisplayedValue(0);
+	    if (!possibleRules->empty()) {
+		printRules();
+		_isHead = true;
+		_previous = NULL;
+		block->_isTrain = true;
+//block->setDisplayedValue(0);
 
-                _motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
-                // send searchEndTrainMessage
-                SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
-                scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
+		_motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
+		// send searchEndTrainMessage
+		SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
+		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 #ifdef verbose
-                info.str("");
-                info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
-                scheduler->trace(info.str(),hostBlock->blockId);
+		info.str("");
+		info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
+		scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-                setRulesColor();
-                headFound=true;
-                //block->setDisplayedValue(1);
-            }
-        }
-        if (!headFound) {
-            if (_previous) {
-                _isHead=false;
-                SearchHeadMessage *message = new SearchHeadMessage();
-                scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+		setRulesColor();
+		headFound=true;
+		//block->setDisplayedValue(1);
+	    }
+	}
+	if (!headFound) {
+	    if (_previous) {
+		_isHead=false;
+		SearchHeadMessage *message = new SearchHeadMessage();
+		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
-                info.str("");
-                info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
-                scheduler->trace(info.str(),hostBlock->blockId);
+		info.str("");
+		info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
+		scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            } else {
-                sendSearchBackHeadMessage(_next);
-            }
-        }
+	    } else {
+		sendSearchBackHeadMessage(_next);
+	    }
+	}
     } else {
-        // envoie le message de reconstruction du train
-        //_next = recvMessage->sourceInterface->connectedInterface;
-        _previous = getBorderPreviousNeightbor(_next);
-        _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+	// envoie le message de reconstruction du train
+	//_next = recvMessage->sourceInterface->connectedInterface;
+	_previous = getBorderPreviousNeightbor(_next);
+	_numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
 #ifdef verbose
-        info.str("");
-        info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
-                        << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
-                        << " _isHead = " << _isHead << " _isEnd = " << _isEnd;
-        scheduler->trace(info.str(),hostBlock->blockId);
+	info.str("");
+	info << "_previous =" << (_previous?_previous->connectedInterface->hostBlock->blockId:-1)
+			<< "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1)
+			<< " _isHead = " << _isHead << " _isEnd = " << _isEnd;
+	scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        block->_isTrain = false;
-        if (possibleRules && !possibleRules->empty()) {
-            ReconnectTrainMessage *message = new ReconnectTrainMessage(true);
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+	block->_isTrain = false;
+	if (possibleRules && !possibleRules->empty()) {
+	    ReconnectTrainMessage *message = new ReconnectTrainMessage(true);
+	    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
-            info.str("");
-            info << "send ReconnectTrainMsg(true) to " << _previous->connectedInterface->hostBlock->blockId;
-            scheduler->trace(info.str(),hostBlock->blockId,YELLOW);
+	    info.str("");
+	    info << "send ReconnectTrainMsg(true) to " << _previous->connectedInterface->hostBlock->blockId;
+	    scheduler->trace(info.str(),hostBlock->blockId,YELLOW);
 #endif // verbose
-        } else {
-            ReconnectTrainMessage *message = new ReconnectTrainMessage(false);
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
+	} else {
+	    ReconnectTrainMessage *message = new ReconnectTrainMessage(false);
+	    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 #ifdef verbose
-            info.str("");
-            info << "send ReconnectTrainMsg(false) to " << _next->connectedInterface->hostBlock->blockId;
-            scheduler->trace(info.str(),hostBlock->blockId,YELLOW);
+	    info.str("");
+	    info << "send ReconnectTrainMsg(false) to " << _next->connectedInterface->hostBlock->blockId;
+	    scheduler->trace(info.str(),hostBlock->blockId,YELLOW);
 #endif // verbose
-        }
-        setRulesColor();
+	}
+	setRulesColor();
     }
 
 }
@@ -1309,7 +1309,7 @@ void SbReconfBlockCode::createLine(uint64_t t,bool hol) {
 		}
 		uint64_t t0 = scheduler->now(),
 		t1 = t0+(t0-t)*5.0;
-        if (_previous) {
+	if (_previous) {
 			SetRDVMessage *message = new SetRDVMessage(t1,motionVector);
 			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
@@ -1320,7 +1320,7 @@ void SbReconfBlockCode::createLine(uint64_t t,bool hol) {
 		}
 		startMotion(t1,motionVector,0,capa->tabUnlockPath);
 	} else {
-        CreateLineMessage *message = new CreateLineMessage(t);
+	CreateLineMessage *message = new CreateLineMessage(t);
 		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 #ifdef verbose
 		info.str("");
@@ -1338,8 +1338,8 @@ void SbReconfBlockCode::sendMapToNeighbors(P2PNetworkInterface *p2pExcept) {
 #endif // verbose
 
 	nbreOfWaitedAnswers=0;
-	for(int i = North; i <= West; i++) {
-		p2p = smartBlock->getInterface( NeighborDirection(i));
+	for(int i = NeighborDirection::North; i <= NeighborDirection::West; i++) {
+		p2p = smartBlock->getInterface( NeighborDirection::Direction(i));
 		if(p2p->connectedInterface && p2p!=p2pExcept) {
 				MapMessage *message = new MapMessage(posGrid.x+dirx[i],posGrid.y+diry[i],gridSize[0],gridSize[1],_nbreGoalCells,targetGrid);
 				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
@@ -1363,8 +1363,8 @@ void SbReconfBlockCode::sendAsk4EndToNeighbors(P2PNetworkInterface *p2pExcept) {
 	nbreOfWaitedAnswers=0;
 	_nbreWellPlacedBlocks=int(block->wellPlaced);
 	_currentMove++;
-	for(int i = North; i <= West; i++) {
-		p2p = smartBlock->getInterface( NeighborDirection(i));
+	for(int i = NeighborDirection::North; i <= NeighborDirection::West; i++) {
+		p2p = smartBlock->getInterface( NeighborDirection::Direction(i));
 		if(p2p->connectedInterface && p2p!=p2pExcept) {
 				Ask4EndMessage *message = new Ask4EndMessage(_currentMove);
 				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
@@ -1396,59 +1396,59 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
 //    OUTPUT << "getBorderPreviousNeightbor()" << endl;
 //    OUTPUT << _pm;
 
-    NeighborDirection dir;
+    NeighborDirection::Direction dir;
     int i;
     // on recherche une cellule vide
     if (next) {
     // cherche la direction de next
-        dir=North;
-        i=4;
-        while (i-- && block->getInterface(dir)!=next) {
-            dir=NeighborDirection((int(dir)+1)%4);
-        }
+	dir=NeighborDirection::North;
+	i=4;
+	while (i-- && block->getInterface(dir)!=next) {
+	    dir=NeighborDirection::Direction((int(dir)+1)%4);
+	}
 //        OUTPUT << "next :" << (i==-1?-1:dir) << endl;
-        dir=NeighborDirection((int(dir)+3)%4);
-        // on cherche une cellule pleine
-        i=3;
-        while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-                   || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
-            dir=NeighborDirection((int(dir)+3)%4);
+	dir=NeighborDirection::Direction((int(dir)+3)%4);
+	// on cherche une cellule pleine
+	i=3;
+	while (i-- && (block->getInterface(dir)->connectedInterface==NULL
+		   || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+	    dir=NeighborDirection::Direction((int(dir)+3)%4);
 //		OUTPUT << dir << " ";
-        }
+	}
 
     } else {
 /************ on recherche le cas des isthmes ************/
 /** existe-t-il un voisin avec un vide avant et un après */
-        for (i=0; i<4; i++) {
-            if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
-                _pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
-                _pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
-                dir=NeighborDirection(((8-2*i)%8)/2);
-                return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
-            }
-        }
+	for (i=0; i<4; i++) {
+	    if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
+		_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
+		_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
+		dir=NeighborDirection::Direction(((8-2*i)%8)/2);
+		return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
+	    }
+	}
 
 // on cherche une case vide
-        i=7;
-        while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
-            i--;
-        }
-        if (i==-1) return NULL;
-        dir=NeighborDirection(((8-i)%8)/2);
+	i=7;
+	while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	    i--;
+	}
+	if (i==-1) return NULL;
+	dir=NeighborDirection::Direction(((8-i)%8)/2);
 //OUTPUT << "une case vide = " << i << "(" << border[i][0] << "," << border[i][1]<< ")" << endl;
 // puis on cherche la case non vide la plus eloignée en tournant vers la gauche
-        if (block->wellPlaced) {
-            i=3;
-            while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-                   || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
-                dir=NeighborDirection((int(dir)+3)%4);
-            }
-        } else {
-            i=3;
-            while (i-- && (block->getInterface(dir)->connectedInterface==NULL)) {
-                dir=NeighborDirection((int(dir)+3)%4);
-            }
-        }
+	if (block->wellPlaced) {
+	    i=3;
+	    while (i-- && (block->getInterface(dir)->connectedInterface==NULL
+		   || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+		dir=NeighborDirection::Direction((int(dir)+3)%4);
+	    }
+	} else {
+	    i=3;
+	    while (i-- && (block->getInterface(dir)->connectedInterface==NULL)) {
+		dir=NeighborDirection::Direction((int(dir)+3)%4);
+	    }
+	}
     }
 //OUTPUT << "previous :" << (block->getInterface(dir)->connectedInterface==NULL?-1:dir) << endl;
 	return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
@@ -1460,57 +1460,57 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightbor(P2PNetworkInt
 //    OUTPUT << "getBorderPreviousNeightbor()" << endl;
 //    OUTPUT << _pm;
 
-    NeighborDirection dir;
+    NeighborDirection::Direction dir;
     int i;
     // on recherche une cellule vide
     if (next) {
     // cherche la direction de next
-        dir=North;
-        i=4;
-        while (i-- && block->getInterface(dir)!=next) {
-            dir=NeighborDirection((int(dir)+1)%4);
-        }
+	dir=NeighborDirection::North;
+	i=4;
+	while (i-- && block->getInterface(dir)!=next) {
+	    dir=NeighborDirection::Direction((int(dir)+1)%4);
+	}
 //        OUTPUT << "next :" << (i==-1?-1:dir) << endl;
-        dir=NeighborDirection((int(dir)+3)%4);
-        // on cherche une cellule pleine
-        i=3;
-        while (i-- && block->getInterface(dir)->connectedInterface==NULL) {
-            dir=NeighborDirection((int(dir)+3)%4);
+	dir=NeighborDirection::Direction((int(dir)+3)%4);
+	// on cherche une cellule pleine
+	i=3;
+	while (i-- && block->getInterface(dir)->connectedInterface==NULL) {
+	    dir=NeighborDirection::Direction((int(dir)+3)%4);
 //		OUTPUT << dir << " ";
-        }
+	}
 
     } else {
 /************ on recherche le cas des isthmes ************/
 /** existe-t-il un voisin avec un vide avant et un après */
-        for (i=0; i<4; i++) {
-            if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
-                _pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
-                _pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
-                dir=NeighborDirection(((8-2*i)%8)/2);
-                return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
-            }
-        }
+	for (i=0; i<4; i++) {
+	    if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
+		_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
+		_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
+		dir=NeighborDirection::Direction(((8-2*i)%8)/2);
+		return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
+	    }
+	}
 
 // on cherche une case vide
-        i=7;
-        while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
-            i--;
-        }
-        if (i==-1) return NULL;
-        dir=NeighborDirection(((8-i)%8)/2);
+	i=7;
+	while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	    i--;
+	}
+	if (i==-1) return NULL;
+	dir=NeighborDirection::Direction(((8-i)%8)/2);
 //OUTPUT << "une case vide = " << i << "(" << border[i][0] << "," << border[i][1]<< ")" << endl;
 // puis on cherche la case non vide la plus eloignée en tournant vers la gauche
-        if (block->wellPlaced) {
-            i=3;
-            while (i-- && block->getInterface(dir)->connectedInterface==NULL) {
-                dir=NeighborDirection((int(dir)+3)%4);
-            }
-        } else {
-            i=3;
-            while (i-- && (block->getInterface(dir)->connectedInterface==NULL)) {
-                dir=NeighborDirection((int(dir)+3)%4);
-            }
-        }
+	if (block->wellPlaced) {
+	    i=3;
+	    while (i-- && block->getInterface(dir)->connectedInterface==NULL) {
+		dir=NeighborDirection::Direction((int(dir)+3)%4);
+	    }
+	} else {
+	    i=3;
+	    while (i-- && (block->getInterface(dir)->connectedInterface==NULL)) {
+		dir=NeighborDirection::Direction((int(dir)+3)%4);
+	    }
+	}
     }
 //OUTPUT << "previous :" << (block->getInterface(dir)->connectedInterface==NULL?-1:dir) << endl;
 	return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
@@ -1522,26 +1522,26 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightbor(P2PNetworkInterfa
 //    OUTPUT << _pm;
 
     int i=0;
-    NeighborDirection dir;
+    NeighborDirection::Direction dir;
     if (prev) {
     // cherche la direction de prev
-        dir=North;
-        i=4;
-        while (i-- && block->getInterface(dir)!=prev) {
-            dir=NeighborDirection((int(dir)+1)%4);
-        }
-        dir=NeighborDirection((dir+1)%4);
+	dir=NeighborDirection::North;
+	i=4;
+	while (i-- && block->getInterface(dir)!=prev) {
+	    dir=NeighborDirection::Direction((int(dir)+1)%4);
+	}
+	dir=NeighborDirection::Direction((dir+1)%4);
     } else {
-        // on recherche une cellule vide
-        while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
-            i++;
-        }
-        dir=NeighborDirection((i/2+1)%4);
+	// on recherche une cellule vide
+	while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	    i++;
+	}
+	dir=NeighborDirection::Direction((i/2+1)%4);
     }
 
     i=3;
 	while (i-- && block->getInterface(dir)->connectedInterface==NULL) {
-		dir=NeighborDirection((int(dir)+1)%4);
+		dir=NeighborDirection::Direction((int(dir)+1)%4);
 //		OUTPUT << dir << " ";
 	}
 //	OUTPUT << dir << endl;
@@ -1554,29 +1554,29 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNe
 //    OUTPUT << _pm;
 
     int i=0;
-    NeighborDirection dir;
+    NeighborDirection::Direction dir;
     if (prev) {
     // cherche la direction de prev
-        dir=North;
-        i=4;
-        while (i-- && block->getInterface(dir)!=prev) {
-            dir=NeighborDirection((int(dir)+1)%4);
-        }
-        dir=NeighborDirection((dir+1)%4);
+	dir=NeighborDirection::North;
+	i=4;
+	while (i-- && block->getInterface(dir)!=prev) {
+	    dir=NeighborDirection::Direction((int(dir)+1)%4);
+	}
+	dir=NeighborDirection::Direction((dir+1)%4);
     } else {
-        // on recherche une cellule vide
-        while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
-            i++;
-        }
-        dir=NeighborDirection((i/2+1)%4);
+	// on recherche une cellule vide
+	while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	    i++;
+	}
+	dir=NeighborDirection::Direction((i/2+1)%4);
     }
 //    OUTPUT << i << "," << dir << endl;
 
     i=3;
 	while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-            || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+	    || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
 //            || _pm.get(border[dir*2][0],border[dir*2][1])==borderNotTrainCell)) {
-		dir=NeighborDirection((int(dir)+1)%4);
+		dir=NeighborDirection::Direction((int(dir)+1)%4);
 //		OUTPUT << dir << "(" << _pm.get(border[dir*2][0],border[dir*2][1]) << ") ";
 	}
 //	OUTPUT << dir << endl;
@@ -1584,33 +1584,33 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNe
 }
 
 P2PNetworkInterface *SbReconfBlockCode::getBorderSinglePrevious() {
-    NeighborDirection dir,dirStop;
+    NeighborDirection::Direction dir,dirStop;
 
 //OUTPUT << "motionDir:" <<  _motionDir << endl;
     if (_motionDir.x==0) {
-        if (_motionDir.y==1) {
-            dir = West;
-            dirStop = North;
-        } else {
-            dir = East;
-            dirStop = South;
-        }
+	if (_motionDir.y==1) {
+	    dir = NeighborDirection::West;
+	    dirStop = NeighborDirection::North;
+	} else {
+	    dir = NeighborDirection::East;
+	    dirStop = NeighborDirection::South;
+	}
     } else {
-        if (_motionDir.x==1) {
-            dir = North;
-            dirStop = East;
-        } else {
-            dir = South;
-            dirStop = West;
-        }
+	if (_motionDir.x==1) {
+	    dir = NeighborDirection::North;
+	    dirStop = NeighborDirection::East;
+	} else {
+	    dir = NeighborDirection::South;
+	    dirStop = NeighborDirection::West;
+	}
     }
 //    P2PNetworkInterface *stop = block->getInterface(dirStop);
     //return (stop && stop->connectedInterface && !((SmartBlocksBlock*)(stop->connectedInterface->hostBlock))->wellPlaced)?stop:block->getInterface(dir);
 
     // a partir de cette position on cherche la derniere cellule pleine
     int i=3;
-	while (i-- && block->getInterface(NeighborDirection((int(dir)+1)%4))->connectedInterface!=NULL) {
-		dir=NeighborDirection((int(dir)+1)%4);
+	while (i-- && block->getInterface(NeighborDirection::Direction((int(dir)+1)%4))->connectedInterface!=NULL) {
+		dir=NeighborDirection::Direction((int(dir)+1)%4);
 //		OUTPUT << dir << " ";
 	}
 
@@ -1623,25 +1623,25 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNeighborById(int id) {
     int i=4;
     bool found=false;
     while (i-- && !found) {
-        p2p=block->getInterface(SmartBlocks::NeighborDirection(i));
-        if (p2p->connectedInterface) {
+	p2p=block->getInterface(SmartBlocks::NeighborDirection::Direction(i));
+	if (p2p->connectedInterface) {
 //            OUTPUT << i << " : " << p2p->connectedInterface->hostBlock->blockId << endl;
-            found=p2p->connectedInterface->hostBlock->blockId==id;
-        }
+	    found=p2p->connectedInterface->hostBlock->blockId==id;
+	}
     }
     return found?p2p:NULL;
 }
 
 
 /*
-void SbReconfBlockCode::sendNoActivity(NeighborDirection dir, int id) {
+void SbReconfBlockCode::sendNoActivity(NeighborDirection::Direction dir, int id) {
 	stringstream info;
 
 // on recherche le premier voisin dans le sens horaire
-	dir=NeighborDirection((int(dir)+1)%4);
+	dir=NeighborDirection::Direction((int(dir)+1)%4);
 	int i=3;
 	while (i-- && block->getInterface(dir)->connectedInterface==NULL) {
-		dir=NeighborDirection((int(dir)+1)%4);
+		dir=NeighborDirection::Direction((int(dir)+1)%4);
 	}
 	P2PNetworkInterface *p2p = block->getInterface(dir);
 
@@ -1698,28 +1698,28 @@ il faut aussi interdir <-XB0 ou B est un bord
 	if (dy==1) {
 		support = (posGrid.x>0)?wrl->getGridPtr(posGrid.x-1,posGrid.y):NULL;
 		supportDiag = (posGrid.x>0 && posGrid.y>0)?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
-        voisin = (posGrid.y>0 && wrl->getGridPtr(posGrid.x,posGrid.y-1))?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
-        voisin2 = (posGrid.x>=1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
-        voisin3 = (posGrid.x<lx-1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
+	voisin = (posGrid.y>0 && wrl->getGridPtr(posGrid.x,posGrid.y-1))?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
+	voisin2 = (posGrid.x>=1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
+	voisin3 = (posGrid.x<lx-1 && posGrid.y>1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
 	} else if (dy==-1) {
 		support = (posGrid.x<lx-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y):NULL;
 		supportDiag = (posGrid.x<lx-1 && posGrid.y<ly-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
-        voisin = (posGrid.y<ly-1 && wrl->getGridPtr(posGrid.x,posGrid.y+1))?wrl->getGridPtr(posGrid.x,posGrid.y+1):NULL;
-        voisin2 = (posGrid.x>=1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
-        voisin3 = (posGrid.x<lx-1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
+	voisin = (posGrid.y<ly-1 && wrl->getGridPtr(posGrid.x,posGrid.y+1))?wrl->getGridPtr(posGrid.x,posGrid.y+1):NULL;
+	voisin2 = (posGrid.x>=1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
+	voisin3 = (posGrid.x<lx-1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
 	} else if (dx==1) {
 		support = (posGrid.y<ly-1)?wrl->getGridPtr(posGrid.x,posGrid.y+1):NULL;
 		supportDiag = (posGrid.y<ly-1 && posGrid.x>=1)?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
-        voisin = (posGrid.x>=1 && wrl->getGridPtr(posGrid.x-1,posGrid.y))?wrl->getGridPtr(posGrid.x-1,posGrid.y):NULL;
-        voisin2 = (posGrid.x>=1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
-        voisin3 = (posGrid.x<1 && posGrid.y>=1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
+	voisin = (posGrid.x>=1 && wrl->getGridPtr(posGrid.x-1,posGrid.y))?wrl->getGridPtr(posGrid.x-1,posGrid.y):NULL;
+	voisin2 = (posGrid.x>=1 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x-1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y+2))?wrl->getGridPtr(posGrid.x-1,posGrid.y+1):NULL;
+	voisin3 = (posGrid.x<1 && posGrid.y>=1 && wrl->getGridPtr(posGrid.x-1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x-2,posGrid.y-2))?wrl->getGridPtr(posGrid.x-1,posGrid.y-1):NULL;
     } else {
 	// dx==-1
-        support = (posGrid.y>0)?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
-        supportDiag = (posGrid.y>0 && posGrid.x<lx-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
-        voisin = (posGrid.x<lx-1 && wrl->getGridPtr(posGrid.x+1,posGrid.y))?wrl->getGridPtr(posGrid.x+1,posGrid.y):NULL;
-        voisin2 = (posGrid.x<lx-2 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
-        voisin3 = (posGrid.x<lx-2 && posGrid.y>=1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
+	support = (posGrid.y>0)?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
+	supportDiag = (posGrid.y>0 && posGrid.x<lx-1)?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
+	voisin = (posGrid.x<lx-1 && wrl->getGridPtr(posGrid.x+1,posGrid.y))?wrl->getGridPtr(posGrid.x+1,posGrid.y):NULL;
+	voisin2 = (posGrid.x<lx-2 && posGrid.y<ly-2 && wrl->getGridPtr(posGrid.x+1,posGrid.y+1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y+2))?wrl->getGridPtr(posGrid.x+1,posGrid.y+1):NULL;
+	voisin3 = (posGrid.x<lx-2 && posGrid.y>=1 && wrl->getGridPtr(posGrid.x+1,posGrid.y-1) && !wrl->getGridPtr(posGrid.x+2,posGrid.y-2))?wrl->getGridPtr(posGrid.x+1,posGrid.y-1):NULL;
     }
 #ifdef verbose
     if (support && support->_isTrain) OUTPUT << block->blockId << posGrid << " ISTHME SUPPORT("<< support->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
@@ -1729,10 +1729,10 @@ il faut aussi interdir <-XB0 ou B est un bord
 	if (voisin3 && voisin3->_isTrain) OUTPUT << "ISTHME VOISIN3("<< voisin3->blockId <<")=TRAIN dx,dy=" << dx << "," << dy << endl;
 #endif
 	return (support && support->_isTrain) ||
-           (supportDiag && supportDiag->_isTrain) ||
-           (voisin && voisin->_isTrain) ||
-           (voisin2 && voisin2->_isTrain) ||
-           (voisin3 && voisin3->_isTrain);
+	   (supportDiag && supportDiag->_isTrain) ||
+	   (voisin && voisin->_isTrain) ||
+	   (voisin2 && voisin2->_isTrain) ||
+	   (voisin3 && voisin3->_isTrain);
 }
 
 bool SbReconfBlockCode::testIsthmusTail(int dx,int dy) {
@@ -1756,8 +1756,8 @@ il faut aussi interdir <-XB0
 		support_2 = (posGrid.y<ly-2)?wrl->getGridPtr(posGrid.x,posGrid.y+2):NULL;
     } else {
 	// dx==-1
-        support_1 = (posGrid.y>=1)?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
-        support_2 = (posGrid.y>=2)?wrl->getGridPtr(posGrid.x,posGrid.y-2):NULL;
+	support_1 = (posGrid.y>=1)?wrl->getGridPtr(posGrid.x,posGrid.y-1):NULL;
+	support_2 = (posGrid.y>=2)?wrl->getGridPtr(posGrid.x,posGrid.y-2):NULL;
     }
 	isthmus = support_1!=NULL && support_2==NULL;
 #ifdef verbose
@@ -1782,7 +1782,7 @@ void SbReconfBlockCode::createBorder() {
 	if (block->_isBorder) {
 		setRulesColor();
 		_previous = getBorderPreviousNeightbor(NULL);
-        _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+	_numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
 		applyRules();
 		if (possibleRules && !possibleRules->empty()) {
 			Capability *capa = possibleRules->back()->capa;
@@ -1805,35 +1805,35 @@ void SbReconfBlockCode::createBorder() {
 #endif // verbose
 			} else _next=NULL;
 
-            // recherche une règle pour lequel il est distance 0
+	    // recherche une règle pour lequel il est distance 0
 			if (possibleRules->back()->isZeroDistance) {
-                if (capa->isHead) {
-                    // send searchEndTrainMessage
+		if (capa->isHead) {
+		    // send searchEndTrainMessage
 #ifdef verbose
-                    info.str("");
-                    info << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1);
-                    scheduler->trace(info.str(),hostBlock->blockId);
+		    info.str("");
+		    info << "  _next =" << (_next?_next->connectedInterface->hostBlock->blockId:-1);
+		    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                    _previous = NULL;
-                    SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
-                    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
+		    _previous = NULL;
+		    SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
+		    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 #ifdef verbose
-                    info.str("");
-                    info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
-                    scheduler->trace(info.str(),hostBlock->blockId);
+		    info.str("");
+		    info << "send SearchEndTrainMessage to " << _next->connectedInterface->hostBlock->blockId;
+		    scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-                    setRulesColor();
-                    //block->setDisplayedValue(0);
-                    _isHead = true;
-                } else {
-                    SearchHeadMessage *message = new SearchHeadMessage();
-                    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
+		    setRulesColor();
+		    //block->setDisplayedValue(0);
+		    _isHead = true;
+		} else {
+		    SearchHeadMessage *message = new SearchHeadMessage();
+		    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _previous));
 #ifdef verbose
-                    info.str("");
-                    info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
-                    scheduler->trace(info.str(),hostBlock->blockId);
+		    info.str("");
+		    info << "send SearchHeadMessage to " << _previous->connectedInterface->hostBlock->blockId;
+		    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-                }
+		}
 			}
 			//block->setDisplayedValue(possibleRules->back()->gain);
 
@@ -1848,12 +1848,12 @@ void SbReconfBlockCode::createBorder() {
 			}
 		} else {
 			_previous = getBorderPreviousNeightbor(NULL);
-            _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
-            _next = getBorderNextNeightbor();
+	    _numPrev = ((_previous && !block->_isSingle) ?_previous->connectedInterface->hostBlock->blockId:-1);
+	    _next = getBorderNextNeightbor();
 #ifdef verbose
-            info.str("");
-            info << "no rule, previous = " << ((_previous->connectedInterface)?_previous->connectedInterface->hostBlock->blockId:-1) <<
-                    " next = " << ((_next->connectedInterface)?_next->connectedInterface->hostBlock->blockId:-1);
+	    info.str("");
+	    info << "no rule, previous = " << ((_previous->connectedInterface)?_previous->connectedInterface->hostBlock->blockId:-1) <<
+		    " next = " << ((_next->connectedInterface)?_next->connectedInterface->hostBlock->blockId:-1);
 			scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 		}
@@ -1866,8 +1866,8 @@ void SbReconfBlockCode::sendInitToNeighbors(P2PNetworkInterface *p2pExcept,int s
 	stringstream info;
 
 	nbreOfWaitedAnswers=0;
-	for(int i = North; i <= West; i++) {
-		p2p = smartBlock->getInterface( NeighborDirection(i));
+	for(int i = NeighborDirection::North; i <= NeighborDirection::West; i++) {
+		p2p = smartBlock->getInterface( NeighborDirection::Direction(i));
 		if(p2p->connectedInterface && p2p!=p2pExcept) {
 				ReInitMessage *message = new ReInitMessage(stage);
 				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
@@ -2058,77 +2058,77 @@ void SbReconfBlockCode::getLocalTargetGrid(const PointCel &pos,PresenceMatrix &p
     for (int i=0; i<9; i++) { *gpm++ = wallCell; };
 
     int ix0 = (pos.x<1)?1-pos.x:0,
-        ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
-        iy0 = (pos.y<1)?1-pos.y:0,
-        iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
-        ix,iy;
+	ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
+	iy0 = (pos.y<1)?1-pos.y:0,
+	iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
+	ix,iy;
 
     for (iy=iy0; iy<iy1; iy++) {
-        gpm = pm.grid+(iy*3+ix0);
-        tg = targetGrid+(ix0+pos.x-1+(iy+pos.y-1)*gridSize[0]);
-        for (ix=ix0; ix<ix1; ix++) {
-            *gpm++ = *tg++;
-        }
+	gpm = pm.grid+(iy*3+ix0);
+	tg = targetGrid+(ix0+pos.x-1+(iy+pos.y-1)*gridSize[0]);
+	for (ix=ix0; ix<ix1; ix++) {
+	    *gpm++ = *tg++;
+	}
     }
 }
 
 void SbReconfBlockCode::singleMotion(SmartBlocks::Motion *currentMotion,SmartBlocks::Capability *capa) {
     uint64_t t = scheduler->now(),
-             st = t+20*time_offset;
+	     st = t+20*time_offset;
 #ifdef verbose
 	stringstream info;
 #endif // verbose
 
 //------------------------------------
     if (capa->isEnd && capa->isHead) {
-        block->_isSingle=true;
-        _numPrev=-1;
+	block->_isSingle=true;
+	_numPrev=-1;
 #ifdef verbose
-        OUTPUT << block->blockId << " is single" << endl;
+	OUTPUT << block->blockId << " is single" << endl;
 #endif // verbose
     }
     if (currentMotion->PathToBlock.empty()) {
 #ifdef verbose
-        info.str("");
-        info << "single motion " << currentMotion->vect;
-        scheduler->trace(info.str(),hostBlock->blockId);
+	info.str("");
+	info << "single motion " << currentMotion->vect;
+	scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        startMotion(t+2*time_offset,currentMotion->vect,0,capa->tabUnlockPath);
+	startMotion(t+2*time_offset,currentMotion->vect,0,capa->tabUnlockPath);
     } else {
 #ifdef verbose
-        info.str("");
-        info << "multiple motion :" << capa->name ;
-        scheduler->trace(info.str(),hostBlock->blockId);
+	info.str("");
+	info << "multiple motion :" << capa->name ;
+	scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-        vector<short>::const_iterator cs=currentMotion->PathToBlock.begin();
-        int n = currentMotion->PathToBlock.size();
-        if (n) {
+	vector<short>::const_iterator cs=currentMotion->PathToBlock.begin();
+	int n = currentMotion->PathToBlock.size();
+	if (n) {
 #ifdef verbose
-            info.str("");
+	    info.str("");
 #endif // verbose
-            short *tabDir = new short[n];
-            int i=0;
-            while (cs!=currentMotion->PathToBlock.end()) {
-                tabDir[i++] = *cs;
+	    short *tabDir = new short[n];
+	    int i=0;
+	    while (cs!=currentMotion->PathToBlock.end()) {
+		tabDir[i++] = *cs;
 #ifdef verbose
-                info << *cs << " ";
+		info << *cs << " ";
 #endif // verbose
-                cs++;
-            }
+		cs++;
+	    }
 #ifdef verbose
-            scheduler->trace(info.str(),hostBlock->blockId);
+	    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            // envoie le message de déplacement
-            P2PNetworkInterface *p2p = block->getInterface(NeighborDirection(tabDir[0]));
-            SingleMoveMessage *message = new SingleMoveMessage(tabDir+1,n-1,st,currentMotion->vect,currentMotion->UnlockPath,1);
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
+	    // envoie le message de déplacement
+	    P2PNetworkInterface *p2p = block->getInterface(NeighborDirection::Direction(tabDir[0]));
+	    SingleMoveMessage *message = new SingleMoveMessage(tabDir+1,n-1,st,currentMotion->vect,currentMotion->UnlockPath,1);
+	    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, p2p));
 #ifdef verbose
-            info.str("");
-            info << "send SingleMoveMessage("<<n-1<<") to " << p2p->connectedInterface->hostBlock->blockId;
-            scheduler->trace(info.str(),hostBlock->blockId);
+	    info.str("");
+	    info << "send SingleMoveMessage("<<n-1<<") to " << p2p->connectedInterface->hostBlock->blockId;
+	    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-            delete [] tabDir;
-        }
+	    delete [] tabDir;
+	}
     }
 //------------------------------------
 
