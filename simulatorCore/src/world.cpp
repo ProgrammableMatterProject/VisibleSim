@@ -106,7 +106,6 @@ void World::linkBlocks() {
 }
 
 void World::linkNeighbors(const Cell3DPosition &pos) {
-    cerr << "linkNeibors(" << pos << ")" << endl; 
     vector<Cell3DPosition> nCells = lattice->getActiveNeighborCells(pos);
 					
     // Check neighbors for each interface

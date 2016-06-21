@@ -8,11 +8,11 @@
 #include "robotBlocksEvents.h"
 #include "robotBlocksScheduler.h"
 #include "robotBlocksWorld.h"
+#include "utils.h"
 
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
 
-const double EPS=1E-5;
 namespace RobotBlocks {
 
 //===========================================================================================================

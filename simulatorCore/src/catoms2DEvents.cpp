@@ -9,74 +9,74 @@
 #include "catoms2DScheduler.h"
 #include "catoms2DWorld.h"
 #include "catoms2DMove.h"
+#include "utils.h"
 
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
 const int ANGULAR_STEP=12;
 
-const double EPS=1E-5;
 namespace Catoms2D {
 
-  //===========================================================================================================
-  //
-  //          MotionStartEvent  (class)
-  //
-  //===========================================================================================================
+//===========================================================================================================
+//
+//          MotionStartEvent  (class)
+//
+//===========================================================================================================
 
-  MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block, Catoms2DMove &m): BlockEvent(t,block) {
+MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block, Catoms2DMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_START;
     
     pivot.set(m.getPivot()->ptrGlBlock->position[0],m.getPivot()->ptrGlBlock->position[1],m.getPivot()->ptrGlBlock->position[2]);
     angle = 60;
     sens = m.getDirection();
-  }
+}
 
-  MotionStartEvent::MotionStartEvent(MotionStartEvent *ev) : BlockEvent(ev) {
+MotionStartEvent::MotionStartEvent(MotionStartEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
-  }
+}
 
-  MotionStartEvent::~MotionStartEvent() {
+MotionStartEvent::~MotionStartEvent() {
     EVENT_DESTRUCTOR_INFO();
-  }
+}
 
-  void MotionStartEvent::consume() {
+void MotionStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
     Catoms2DWorld::getWorld()->disconnectBlock(rb);
     rb->setColor(DARKGREY);
     scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,pivot,angle,sens));
-  }
+}
 
-  const string MotionStartEvent::getEventName() {
+const string MotionStartEvent::getEventName() {
     return("MotionStart Event");
-  }
+}
 
-  //===========================================================================================================
-  //
-  //          MotionStepEvent  (class)
-  //
-  //===========================================================================================================
+//===========================================================================================================
+//
+//          MotionStepEvent  (class)
+//
+//===========================================================================================================
 
-  MotionStepEvent::MotionStepEvent(uint64_t t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s): BlockEvent(t,block) {
+MotionStepEvent::MotionStepEvent(uint64_t t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_STEP;
 
     pivot = p;
     angle = angle2goal;
     sens = s;
-  }
+}
 
-  MotionStepEvent::MotionStepEvent(MotionStepEvent *ev) : BlockEvent(ev) {
+MotionStepEvent::MotionStepEvent(MotionStepEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
-  }
+}
 
-  MotionStepEvent::~MotionStepEvent() {
+MotionStepEvent::~MotionStepEvent() {
     EVENT_DESTRUCTOR_INFO();
-  }
+}
 
-  void MotionStepEvent::consume() {
+void MotionStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
 
@@ -84,50 +84,54 @@ namespace Catoms2D {
 
     Matrix roty;
     if (angle<ANGULAR_STEP) {
-      roty.setRotationY(-sens*angle);
-      Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
-      Vector3D BC = roty*BA;
-      Vector3D pos = pivot+BC;
-      rb->angle += angle*sens;
-      Catoms2DWorld::getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
-      scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
+        roty.setRotationY(-sens*angle);
+        Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],
+                    rb->ptrGlBlock->position[1] - pivot[1],
+                    rb->ptrGlBlock->position[2] - pivot[2]);
+        Vector3D BC = roty*BA;
+        Vector3D pos = pivot+BC;
+        rb->angle += angle*sens;
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
+        scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
     } else {
-      roty.setRotationY(-sens*ANGULAR_STEP);
-      Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],rb->ptrGlBlock->position[1] - pivot[1],rb->ptrGlBlock->position[2] - pivot[2]);
-      Vector3D BC = roty*BA;
-      Vector3D pos = pivot+BC;
-      rb->angle += ANGULAR_STEP*sens;
-      Catoms2DWorld::getWorld()->updateGlData(rb,pos,
-                                              ((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+ANGULAR_STEP*sens);
-      scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb,
-                                              pivot,angle-ANGULAR_STEP,sens));
+        roty.setRotationY(-sens*ANGULAR_STEP);
+        Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],
+                    rb->ptrGlBlock->position[1] - pivot[1],
+                    rb->ptrGlBlock->position[2] - pivot[2]);
+        Vector3D BC = roty*BA;
+        Vector3D pos = pivot+BC;
+        rb->angle += ANGULAR_STEP*sens;
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos,
+                                                ((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+ANGULAR_STEP*sens);
+        scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY,rb,
+                                                pivot,angle-ANGULAR_STEP,sens));
     }
-  }
+}
 
-  const string MotionStepEvent::getEventName() {
+const string MotionStepEvent::getEventName() {
     return("MotionStep Event");
-  }
+}
 
-  //===========================================================================================================
-  //
-  //          MotionStepEvent  (class)
-  //
-  //===========================================================================================================
+//===========================================================================================================
+//
+//          MotionStepEvent  (class)
+//
+//===========================================================================================================
 
-  MotionStopEvent::MotionStopEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
+MotionStopEvent::MotionStopEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_STOP;
-  }
+}
 
-  MotionStopEvent::MotionStopEvent(MotionStepEvent *ev) : BlockEvent(ev) {
+MotionStopEvent::MotionStopEvent(MotionStepEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
-  }
+}
 
-  MotionStopEvent::~MotionStopEvent() {
+MotionStopEvent::~MotionStopEvent() {
     EVENT_DESTRUCTOR_INFO();
-  }
+}
 
-  void MotionStopEvent::consume() {
+void MotionStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
     rb->setColor(YELLOW);
@@ -135,14 +139,15 @@ namespace Catoms2D {
     /* Transformer les coordonnées GL en coordonnées grille*/
 
     Catoms2DWorld *wrld=Catoms2DWorld::getWorld();
-    Vector3D worldPos = Vector3D(rb->ptrGlBlock->position[0],rb->ptrGlBlock->position[1],rb->ptrGlBlock->position[2]);
+    Vector3D worldPos = Vector3D(rb->ptrGlBlock->position[0],
+                                 rb->ptrGlBlock->position[1],
+                                 rb->ptrGlBlock->position[2]);
     Cell3DPosition gridPos = wrld->lattice->worldToGridPosition(worldPos);
     cout << "---------------motion end-----------------"<<endl;
     cout << worldPos << endl;
     cout << gridPos << endl;
     cout << "------------------------------------------"<<endl;
-    rb->setPosition(gridPos);
-    
+    rb->setPosition(gridPos);    
 
     stringstream info;
     info.str("");
@@ -151,40 +156,40 @@ namespace Catoms2D {
     wrld->connectBlock(rb);
     Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
     scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));
-  }
+}
 
-  const string MotionStopEvent::getEventName() {
+const string MotionStopEvent::getEventName() {
     return("MotionStop Event");
-  }
+}
 
-  //===========================================================================================================
-  //
-  //          MotionEndEvent  (class)
-  //
-  //===========================================================================================================
+//===========================================================================================================
+//
+//          MotionEndEvent  (class)
+//
+//===========================================================================================================
 
-  MotionEndEvent::MotionEndEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
+MotionEndEvent::MotionEndEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_END;
-  }
+}
 
-  MotionEndEvent::MotionEndEvent(MotionEndEvent *ev) : BlockEvent(ev) {
+MotionEndEvent::MotionEndEvent(MotionEndEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
-  }
+}
 
-  MotionEndEvent::~MotionEndEvent() {
+MotionEndEvent::~MotionEndEvent() {
     EVENT_DESTRUCTOR_INFO();
-  }
+}
 
-  void MotionEndEvent::consume() {
+void MotionEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new MotionEndEvent(date+COM_DELAY,rb)));
-  }
+}
 
-  const string MotionEndEvent::getEventName() {
+const string MotionEndEvent::getEventName() {
     return("MotionEnd Event");
-  }
+}
 
 
 } // Catoms2D namespace

@@ -37,6 +37,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
     }
 
     lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    targetGrid = NULL;
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
@@ -79,16 +80,13 @@ void SmartBlocksWorld::addBlock(int blockId,
 void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {    
     SmartBlocksBlock *ptrNeighbor;
     SmartBlocksBlock *ptrBlock = (SmartBlocksBlock*)lattice->getBlock(pos);
-    vector<Cell3DPosition> nCells = lattice->getNeighborhood(pos);
-    cerr << "neighborhood(" << pos << ") : ";
-
-    for (Cell3DPosition ppp : nCells)
-        cerr << endl << ppp << ",";
-    cerr << endl;
+    vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
+    Cell3DPosition nPos;
     
     // Check neighbors for each interface
     for (int i = 0; i < 4; i++) {
-        ptrNeighbor = (SmartBlocksBlock*)lattice->getBlock(nCells[i]);
+        nPos = pos + nRelCells[i];
+        ptrNeighbor = (SmartBlocksBlock*)lattice->getBlock(nPos);
         if (ptrNeighbor) {
             (ptrBlock)->getInterface(NeighborDirection::Direction(i))->
                 connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
@@ -253,6 +251,7 @@ void SmartBlocksWorld::connectBlock(SmartBlocksBlock *block) {
     
     lattice->insert(block, pos);
 //	OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << endl;
+    linkBlock(pos);
     linkNeighbors(pos);
 }
 
@@ -269,7 +268,7 @@ void SmartBlocksWorld::disconnectBlock(SmartBlocksBlock *block) {
     }
 
     lattice->remove(block->position);
-//	OUTPUT << getScheduler()->now() << " : Disconnection " <<
+    //	OUTPUT << getScheduler()->now() << " : Disconnection " <<
     // block->blockId << " pos ="<< ix << "," << iy << endl;
 }
 

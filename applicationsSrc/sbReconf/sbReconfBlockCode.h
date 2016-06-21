@@ -69,7 +69,7 @@ typedef boost::shared_ptr<Ask4EndMessage> Ask4EndMessage_ptr;
 typedef boost::shared_ptr<Ans4EndMessage> Ans4EndMessage_ptr;
 
 class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
-	int gridSize[2];
+	short gridSize[2];
 	SmartBlocks::presence *targetGrid;
 	SmartBlocks::PointCel posGrid;
 	SmartBlocks::PresenceMatrix _pm;

@@ -223,9 +223,8 @@ int Catoms2DBlock::getCCWMovePivotId() {
 	    bool res = true;
 	    for (int i = 1; i < 4; i++) {
 		int dir = ((j + i) % 6);
-		P2PNetworkInterface *p2pNeighbor = getInterface(dir);
 		Cell3DPosition p = getPosition((NeighborDirection::Direction)dir);
-		if (p2pNeighbor->connectedInterface || (p[2] < 0)) {
+		if (!getWorld()->lattice->isFree(p)) {
 		    res = false;
 		}
 	    }
@@ -246,13 +245,12 @@ int Catoms2DBlock::getCWMovePivotId() {
 	    bool res = true;
 	    for (int i = 1; i < 4; i++) {
 		int dir = ((j - i)%6 + 6)%6;
-		P2PNetworkInterface *p2pNeighbor = getInterface(dir);
 		Cell3DPosition p = getPosition((NeighborDirection::Direction)dir);
-		if (p2pNeighbor->connectedInterface || (p[2] < 0)) {
+		if (!getWorld()->lattice->isFree(p)) {
 		    res = false;
 		}
 	    }
-				
+
 	    if (res)
 		return p2p->getConnectedBlockId();
 	}
@@ -303,9 +301,9 @@ bool Catoms2DBlock::canMove(Catoms2DMove &m) {
 		p2pDirection--;
 	    }
 	}
-	P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)p2pDirection);
-	Cell3DPosition p = getPosition((NeighborDirection::Direction)p2pDirection);
-	if (p2p->connectedInterface || (p[2] < 0)) {
+	
+	Cell3DPosition p = getPosition((NeighborDirection::Direction)p2pDirection);	
+	if (!getWorld()->lattice->isFree(p)) {
 	    //cout << "somebody is connected there" << endl;
 	    res = false;
 	}

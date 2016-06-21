@@ -55,8 +55,8 @@ public:
 			  Catoms2DBlockCode *(*catoms2DCodeBuildingFunction)(Catoms2DBlock*),
 			  const Cell3DPosition &pos, const Color &col, bool master=false);
     void deleteBlock(Catoms2DBlock *bb);
-    inline presence *getTargetGridPtr(int *gs)
-	{ memcpy(gs,lattice->gridSize.pt,3*sizeof(int)); return targetGrid; };
+    inline presence *getTargetGridPtr(short *gs)
+	{ memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
     inline presence getTargetGrid(int ix,int iy,int iz)
 	{ return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
     inline void setTargetGrid(presence value,int ix,int iy,int iz)
@@ -80,9 +80,13 @@ public:
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
+// Explicitly tell clang that the following overriding is intended
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
     virtual void updateGlData(BuildingBlock*blc);
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
+#pragma clang diagnostic pop
     virtual void createPopupMenu(int ix,int iy);
     virtual void setSelectedFace(int n);
     virtual void menuChoice(int n);

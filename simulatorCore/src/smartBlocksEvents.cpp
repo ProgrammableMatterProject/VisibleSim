@@ -8,12 +8,12 @@
 #include "smartBlocksEvents.h"
 #include "smartBlocksScheduler.h"
 #include "smartBlocksWorld.h"
+#include "utils.h"
 
 //const int ANIMATION_DELAY=20000; // 20ms x 5
 const int ANIMATION_DELAY=100000; // 100ms
 const int COM_DELAY=2000; // 2ms
 
-const double EPS=1E-5;
 namespace SmartBlocks {
 
 //===========================================================================================================
@@ -89,9 +89,14 @@ MotionStepEvent::~MotionStepEvent() {
 
 void MotionStepEvent::consume() {
     EVENT_CONSUME_INFO();
+    World *wrl = World::getWorld();
+    Vector3D gridScale = wrl->lattice->gridScale;
     SmartBlocksBlock *rb = (SmartBlocksBlock*)concernedBlock;
     motionPosition += motionStep;
-    World::getWorld()->updateGlData(rb, motionPosition);
+    Vector3D motionGlPos(motionPosition[0] * gridScale[0],
+			 motionPosition[1] * gridScale[1],
+			 motionPosition[2] * gridScale[2]);	
+    wrl->updateGlData(rb, motionGlPos);
     SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
 
     // OUTPUT << rb->blockId << ":" << scheduler->now()<< endl;

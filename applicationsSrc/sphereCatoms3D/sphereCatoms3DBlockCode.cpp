@@ -14,7 +14,7 @@
 #include <boost/shared_ptr.hpp>
 #include <chrono>
 #include <fstream>
-#define MAX 1000
+//#define MAX 1000
 #define INF 2000000000
 
 using namespace std;

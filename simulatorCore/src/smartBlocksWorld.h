@@ -30,8 +30,6 @@ protected:
     ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
     virtual ~SmartBlocksWorld();
-
-    void linkBlock(int ix,int iy);
 public:
     SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                      int argc, char *argv[]);    
@@ -53,8 +51,8 @@ public:
                           const Cell3DPosition &pos,const Color &col);
 
     // PTHY: TODO: May need a fix (2D->3D)
-    inline presence *getTargetGridPtr(int *gs)
-        { memcpy(gs,lattice->gridSize.pt,2*sizeof(int)); return targetGrid; };
+    inline presence *getTargetGridPtr(short *gs)
+        { memcpy(gs,lattice->gridSize.pt,2*sizeof(short)); return targetGrid; };
     inline presence getTargetGrid(int ix,int iy)
         { return targetGrid[iy*lattice->gridSize[0]+ix]; };
     inline void setTargetGrid(presence value,int ix,int iy)

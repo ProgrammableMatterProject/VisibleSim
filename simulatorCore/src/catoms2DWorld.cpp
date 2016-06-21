@@ -117,11 +117,13 @@ void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
 void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
     Catoms2DBlock *ptrNeighbor;
 	Catoms2DBlock *ptrBlock = (Catoms2DBlock*)lattice->getBlock(pos);
-	vector<Cell3DPosition> nCells = lattice->getNeighborhood(pos);
+    vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
+    Cell3DPosition nPos;
 					
 	// Check neighbors for each interface
 	for (int i = 0; i < 6; i++) {
-		ptrNeighbor = (Catoms2DBlock*)lattice->getBlock(nCells[i]);
+        nPos = pos + nRelCells[i];
+		ptrNeighbor = (Catoms2DBlock*)lattice->getBlock(nPos);
 		if (ptrNeighbor) {
 			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->
 				connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
@@ -372,6 +374,7 @@ void Catoms2DWorld::menuChoice(int n) {
     case 2 : {
         OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
         deleteBlock(bb);
+        linkNeighbors(bb->position);
     } break;
     case 3 : {
         tapBlock(getScheduler()->now(), bb->blockId);
@@ -403,8 +406,9 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
 
     // PTHY: TODO: CHECK THIS (that positions are in order in vector)
     if (isInRange(numSelectedFace, 0, 5)) { // Invalid Face
-        vector<Cell3DPosition> nPos = lattice->getNeighborhood(pos);
-        return lattice->isFree(nPos[numSelectedFace]);
+        vector<Cell3DPosition> nPos = lattice->getRelativeConnectivity(pos);
+        Cell3DPosition v(nPos[numSelectedFace] + pos);
+        return lattice->isFree(v);
     }
 
     return false;
@@ -412,18 +416,8 @@ bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
 
 
 void Catoms2DWorld::setSelectedFace(int n) {
-    // cerr << "n = " << n << endl;
-    // cerr << "n/7 = " << n/7 << endl;
-    // cerr << "n%7 = " << n%7 << endl;
-
     numSelectedBlock = n / numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
-    // cerr << "tabGlBlocks:" << endl;
-    // for(int n1 = 0; n1 < 7; n1++) {
-    //     cerr << objBlockForPicking->getObjMtlName(n1) << " | ";
-    // }
-    // cerr << endl;
-
     numSelectedFace = numPickingTextures;   // Undefined NeighborDirection
 
     if (name == "face_0") numSelectedFace = NeighborDirection::Right;
@@ -432,8 +426,6 @@ void Catoms2DWorld::setSelectedFace(int n) {
     else if (name == "face_3") numSelectedFace = NeighborDirection::Left;
     else if (name == "face_4") numSelectedFace = NeighborDirection::BottomLeft;
     else if (name == "face_5") numSelectedFace = NeighborDirection::BottomRight;
-
-    // cerr << name << " = " << NeighborDirection::getString(numSelectedFace) << endl;
 }
 
 void Catoms2DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
@@ -485,7 +477,9 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
-    cerr << "Block " << numSelectedBlock << ":" << numSelectedFace << " selected" << endl;
+    cerr << "Block " << numSelectedBlock << ":" << NeighborDirection::getString(numSelectedFace)
+         << " selected" << endl;
+
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
 
     GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));

@@ -72,7 +72,11 @@ public:
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
+// Explicitly tell clang that the following overriding is intended
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
     void updateGlData(RobotBlocksBlock*blc,int prev,int next);
+#pragma clang diagnostic pop
     virtual void setSelectedFace(int n);
     virtual void menuChoice(int n);
     virtual void disconnectBlock(RobotBlocksBlock *block);
