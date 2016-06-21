@@ -87,9 +87,14 @@ MotionStepEvent::~MotionStepEvent() {
 
 void MotionStepEvent::consume() {
     EVENT_CONSUME_INFO();
+    World *wrl = World::getWorld();
+    Vector3D gridScale = wrl->lattice->gridScale;
     RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
     motionPosition += motionStep;
-    World::getWorld()->updateGlData(rb, motionPosition);
+    Vector3D motionGlPos(motionPosition[0] * gridScale[0],
+			 motionPosition[1] * gridScale[1],
+			 motionPosition[2] * gridScale[2]);
+    wrl->updateGlData(rb, motionGlPos);
     RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
 
     double v = (finalPosition - motionPosition) * motionStep;
@@ -130,13 +135,9 @@ void MotionStopEvent::consume() {
     EVENT_CONSUME_INFO();
     RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
     rb->setPosition(finalPosition);
-    RobotBlocksWorld::getWorld()->updateGlData(rb);
+    World::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     RobotBlocksWorld *wrld=RobotBlocksWorld::getWorld();
-    int ix = rb->position.pt[0],
-	iy = rb->position.pt[1],
-	iz = rb->position.pt[2];
-    wrld->setGridPtr(ix,iy,iz,rb);
     stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;

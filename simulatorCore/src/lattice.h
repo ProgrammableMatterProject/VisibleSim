@@ -22,27 +22,98 @@ namespace BaseSimulator {
  */
 class Lattice {
 
-public:
+public:    
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
     
     Lattice();
-    Lattice(Cell3DPosition &gsz, Vector3D &gsc);
+    /**
+     * \brief Builds a new lattice with the provided parameters 
+     * \param gsz The size of the grid
+     * \param gsc The real size of a block on the grid, also equal to the scale of the grid
+     */
+    Lattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     virtual ~Lattice();
 
-    void insert(BuildingBlock* n, Cell3DPosition &p);
-    void remove(Cell3DPosition &p);
-    bool isInGrid(Cell3DPosition &p); 
-    int getIndex(Cell3DPosition &p);
-    bool isFree(Cell3DPosition &p);
-    BuildingBlock *getBlock(Cell3DPosition &p);
-    std::vector<Cell3DPosition> getNeighborCells(BuildingBlock *bb);
-    std::vector<Cell3DPosition> getNeighborhood(BuildingBlock *bb);
-    
-    virtual Vector3D gridToWorldPosition(Cell3DPosition &pos) = 0;
-    virtual Cell3DPosition worldToGridPosition(Vector3D &pos) = 0;    
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p) = 0;
+    /**
+     * \brief Adds block bb to cell with position p of the grid
+     * \param bb The block to add to the grid
+     * \param p The position of the cell on which the block will be inserted
+     */
+    void insert(BuildingBlock* bb, const Cell3DPosition &p);
+    /**
+     * \brief Removes block on cell p of the grid
+     * \param p The position of the block to remove
+     */
+    void remove(const Cell3DPosition &p);
+    /**
+     * \brief Indicates if cell at position p is inside the grid
+     * \param p The position of the cell to test
+     * \return true if cell at position p is in grid, false otherwise
+     */
+    bool isInGrid(const Cell3DPosition &p);
+    /**
+     * \brief Returns a one-dimensional array index for grid position p
+     * \param p The position of the cell for which the index is needed
+     * \return The index of the cell in the lattice's 1D array of cells
+     */
+    int getIndex(const Cell3DPosition &p);
+    /**
+     * \brief Indicates if cell at position p has a block on it
+     * \param p The position of the cell to test
+     * \return true if cell at position p has a block on it
+     */
+    bool cellHasBlock(const Cell3DPosition &p);
+    /**
+     * \brief Indicates if cell at position p is an empty grid cell
+     * \param p The position of the cell to test
+     * \return true if cell at position p is in grid and empty, false otherwise
+     */
+    bool isFree(const Cell3DPosition &p);
+    /**
+     * \brief Returns a pointer to the block on cell p of the grid
+     * \param p The position of the block to get
+     * \return A pointer to the block on cell p or NULL if p is not in grid or empty
+     */
+    BuildingBlock *getBlock(const Cell3DPosition &p);
+    /**
+     * \brief Returns the location of all alive neighbors for cell pos
+     * \param pos The cell to consider
+     * \return A vector containing the position of all alive neighbors of cell pos
+     */
+    std::vector<Cell3DPosition> getActiveNeighborCells(const Cell3DPosition &pos);
+    /**
+     * \brief Returns the location of all neighbor cells for cell pos
+     * \param pos The cell to consider
+     * \return A vector containing the position of all cells (empty and full) around pos
+     */    
+    std::vector<Cell3DPosition> getNeighborhood(const Cell3DPosition &pos);
+
+    /**
+     * \brief Returns the total number of cells on the grid
+     * \return Total number of cells on the grid
+     */
+    inline int getNumberOfCells() { return gridSize[0] * gridSize[1] * gridSize[2]; };
+
+    /**
+     * \brief Transforms an integer grid position into a real world position
+     * \param pos The grid position to consider
+     * \return The corresponding world position
+     */
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) = 0;
+    /**
+     * \brief Transforms a real world position into its grid equivalent
+     * \param pos The world position to consider
+     * \return The corresponding grid position
+     */
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) = 0;
+    /**
+     * \brief Returns the relative position of all cells around cell p
+     * \param p The position of the cell to consider
+     * \return A vector containing all relative position of neighbor cells
+     */
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
 };
 
 /*! \brief 2-Dimensional Lattice abstract class
@@ -52,12 +123,12 @@ class Lattice2D : public Lattice {
 
 public:
     Lattice2D();
-    Lattice2D(Cell3DPosition &gsz, Vector3D &gridscale);
+    Lattice2D(const Cell3DPosition &gsz, const Vector3D &gsc);
     virtual ~Lattice2D();
 
-    virtual Vector3D gridToWorldPosition(Cell3DPosition &pos) = 0;
-    virtual Cell3DPosition worldToGridPosition(Vector3D &pos) = 0;
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p) = 0;
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) = 0;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) = 0;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
 };
 
 /*! \brief 3-Dimensional Lattice abstract class
@@ -67,12 +138,12 @@ class Lattice3D : public Lattice {
 
 public:
     Lattice3D();
-    Lattice3D(Cell3DPosition &gsz, Vector3D &gridscale);
+    Lattice3D(const Cell3DPosition &gsz, const Vector3D &gsc);
     virtual ~Lattice3D();
 
-    virtual Vector3D gridToWorldPosition(Cell3DPosition &pos) = 0;
-    virtual Cell3DPosition worldToGridPosition(Vector3D &pos) = 0;
-    virtual std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p) = 0;
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos) = 0;
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos) = 0;
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
 };
 
 /*! \brief Square 2D Lattice
@@ -82,19 +153,20 @@ public:
  */
 class SLattice : public Lattice2D {
     vector<Cell3DPosition> nCells{
-        Cell3DPosition(1,0,0),
-            Cell3DPosition(-1,0,0),
-            Cell3DPosition(0,1,0),
-            Cell3DPosition(0,-1,0),
+        Cell3DPosition(0,1,0),  // NORTH
+            Cell3DPosition(1,0,0), // EAST
+            Cell3DPosition(0,-1,0), // SOUTH
+            Cell3DPosition(-1,0,0)  // WEST
             }; //!< Vector containing relative position of neighboring cells
 public:
+
     SLattice();
-    SLattice(Cell3DPosition &gsz, Vector3D &gridscale);
+    SLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     ~SLattice();
 
-    Vector3D gridToWorldPosition(Cell3DPosition &pos);
-    Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
+    Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    Cell3DPosition worldToGridPosition(const Vector3D &pos);
+    std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
 };
 
 /*! \brief Hexagonal 2D Lattice
@@ -103,30 +175,38 @@ public:
  * 
  */
 class HLattice : public Lattice2D {
-    vector<Cell3DPosition> nCellsEven{
-        Cell3DPosition(1,0,0),
-            Cell3DPosition(-1,0,0),
-            Cell3DPosition(0,0,1),
-            Cell3DPosition(0,0,-1),
-            Cell3DPosition(1,0,1),
-            Cell3DPosition(1,0,-1)
+    // This is in the same order as pickingTextures / NeighborDirections
+    vector<Cell3DPosition> nCellsEven{ 
+        Cell3DPosition(1,0,0),  // RIGHT
+            Cell3DPosition(1,0,1), // TOP-RIGHT
+            Cell3DPosition(0,0,1), // TOP-LEFT
+            Cell3DPosition(-1,0,0), // LEFT
+            Cell3DPosition(0,0,-1), // BOTTOM-LEFT
+            Cell3DPosition(1,0,-1)  // BOTTOM-RIGHT
             }; //!< Vector containing relative position of neighboring cells for even(z) cells    
     vector<Cell3DPosition> nCellsOdd{
-        Cell3DPosition(1,0,0),
-            Cell3DPosition(-1,0,0),
-            Cell3DPosition(0,0,1),
-            Cell3DPosition(0,0,-1),
-            Cell3DPosition(-1,0,1),
-            Cell3DPosition(-1,0,-1)
+        Cell3DPosition(1,0,0),  // RIGHT
+            Cell3DPosition(0,0,1), // TOP-RIGHT
+            Cell3DPosition(-1,0,1), // TOP-LEFT
+            Cell3DPosition(-1,0,0), // LEFT
+            Cell3DPosition(-1,0,-1), // BOTTOM-LEFT
+            Cell3DPosition(0,0,-1)   // BOTTOM-RIGHT
             }; //!< Vector containing relative position of neighboring cells for odd(z) cells
 public:
+    class NeighborDirection {
+    public:
+    	enum Direction {Right = 0, TopRight = 1, TopLeft = 2, Left = 3, BottomLeft = 4, BottomRight = 5};
+        static int getOpposite(int d);
+        static string getString(int d);
+    };
+
     HLattice();
-    HLattice(Cell3DPosition &gsz, Vector3D &gridscale);
+    HLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     ~HLattice();
 
-    Vector3D gridToWorldPosition(Cell3DPosition &pos);
-    Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
+    Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    Cell3DPosition worldToGridPosition(const Vector3D &pos);
+    std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
 };
 
 /*! \brief 3D Face-Centered Cubic Lattice
@@ -170,14 +250,14 @@ class FCCLattice : public Lattice3D {
             Cell3DPosition(0,0,-1),
             Cell3DPosition(0,-1,-1)
             }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
-public:
+public:    
     FCCLattice();
-    FCCLattice(Cell3DPosition &gsz, Vector3D &gridscale);
+    FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     ~FCCLattice();
 
-    Vector3D gridToWorldPosition(Cell3DPosition &pos);
-    Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
+    Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    Cell3DPosition worldToGridPosition(const Vector3D &pos);
+    std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
 };
 
 /*! \brief 3D Simple Cubic Lattice
@@ -187,21 +267,21 @@ public:
  */
 class SCLattice : public Lattice3D {
     vector<Cell3DPosition> nCells{
-        Cell3DPosition(1,0,0),
-            Cell3DPosition(-1,0,0),
-            Cell3DPosition(0,0,1),
-            Cell3DPosition(0,0,-1),
-            Cell3DPosition(0,1,0),
-            Cell3DPosition(0,-1,0)
+        Cell3DPosition(0,0,-1), // BOTTOM
+            Cell3DPosition(-1,0,0), // BACK
+            Cell3DPosition(0,1,0),  // RIGHT
+            Cell3DPosition(1,0,0),  // FRONT
+            Cell3DPosition(0,-1,0),  // LEFT
+            Cell3DPosition(0,0,1)  // TOP
             }; //!< Vector containing relative position of neighboring cells 
 public:
     SCLattice();
-    SCLattice(Cell3DPosition &gsz, Vector3D &gridscale);
+    SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     ~SCLattice();
 
-    Vector3D gridToWorldPosition(Cell3DPosition &pos);
-    Cell3DPosition worldToGridPosition(Vector3D &pos);
-    std::vector<Cell3DPosition> getRelativeConnectivity(Cell3DPosition &p);
+    Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    Cell3DPosition worldToGridPosition(const Vector3D &pos);
+    std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
 };
 
 }

@@ -136,9 +136,6 @@ void MotionStopEvent::consume() {
     World::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     SmartBlocksWorld *wrld=SmartBlocksWorld::getWorld();
-    int ix = int(rb->position.pt[0]),
-	iy = int(rb->position.pt[1]);
-    wrld->setGridPtr(ix,iy,rb);
 /*
   stringstream info;
   info.str("");

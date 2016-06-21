@@ -18,7 +18,7 @@ using namespace RobotBlocks;
 
 const int COM_DELAY=1000;
 
-RobotBlocks::presence *initGrid(int gridSize[3],RobotBlocks::presence *init) {
+RobotBlocks::presence *initGrid(short gridSize[3],RobotBlocks::presence *init) {
 	int size = gridSize[0]*gridSize[1]*gridSize[2];
 	RobotBlocks::presence *targetGrid = new RobotBlocks::presence[size];
 	memcpy(targetGrid,init,size);
@@ -53,16 +53,16 @@ void Robot01BlockCode::startup() {
 	//If i am master block
 	if(robotBlock->isMaster)
 	{ RobotBlocksWorld *wrl = RobotBlocksWorld::getWorld();
+		
+		RobotBlocks::presence *tg = wrl->getTargetGridPtr(gridSize);
+		info << " (Master Block at " << robotBlock->position[0] << "," << robotBlock->position[1] << "," << robotBlock->position[2] << ")";
+		scheduler->trace(info.str(),robotBlock->blockId,YELLOW);
+		targetGrid = initGrid(gridSize,tg);
+		nbreOfWaitedAnswers=0;
 
-	  RobotBlocks::presence *tg = wrl->getTargetGridPtr(gridSize);
-	  info << " (Master Block at " << robotBlock->position[0] << "," << robotBlock->position[1] << "," << robotBlock->position[2] << ")";
-    scheduler->trace(info.str(),robotBlock->blockId,YELLOW);
-    targetGrid = initGrid(gridSize,tg);
-    nbreOfWaitedAnswers=0;
-
-	  sendMapToNeighbors(NULL);
+		sendMapToNeighbors(NULL);
 	} else {
-    targetGrid=NULL;
+		targetGrid=NULL;
 		scheduler->trace(info.str(),robotBlock->blockId,BLUE);
 	}
 }
@@ -73,272 +73,272 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
     case EVENT_MOTION_END:
-      robotBlock->setColor(LIGHTBLUE);
-      info.str("");
-      info << robotBlock->blockId << " rec.: EVENT_MOTION_END";
-      scheduler->trace(info.str(),hostBlock->blockId);
-            // prepare for next motion
-			nbreOfWaitedAnswers=0;
-			block2Answer=NULL;
-			if (blockToUnlock!=0) {
-				sendUnlockMessage(blockToUnlock);
-			} else { // dernier élément du train
-				if (trainNext==NULL) {
-					info.str("");
-					info << "rerun " ;//<< trainNextId << "," << trainPreviousId;
-          scheduler->trace(info.str(),hostBlock->blockId);
-          robotBlock->setColor(DARKORANGE);
-          trainPrevious=NULL;
-					PointRel3D pt;
-					calcPossibleMotions(pt);
-					sendReLinkTrainMessage();
-        } else {
-					info.str("");
-          info << "ready " ;//<< trainNextId << "," << trainPreviousId;
-          scheduler->trace(info.str(),hostBlock->blockId);
-					robotBlock->setPrevNext(trainPrevious,trainNext);
-          robotBlock->setColor(BLUE);
-        }
-      }
+		robotBlock->setColor(LIGHTBLUE);
+		info.str("");
+		info << robotBlock->blockId << " rec.: EVENT_MOTION_END";
+		scheduler->trace(info.str(),hostBlock->blockId);
+		// prepare for next motion
+		nbreOfWaitedAnswers=0;
+		block2Answer=NULL;
+		if (blockToUnlock!=0) {
+			sendUnlockMessage(blockToUnlock);
+		} else { // dernier élément du train
+			if (trainNext==NULL) {
+				info.str("");
+				info << "rerun " ;//<< trainNextId << "," << trainPreviousId;
+				scheduler->trace(info.str(),hostBlock->blockId);
+				robotBlock->setColor(DARKORANGE);
+				trainPrevious=NULL;
+				PointRel3D pt;
+				calcPossibleMotions(pt);
+				sendReLinkTrainMessage();
+			} else {
+				info.str("");
+				info << "ready " ;//<< trainNextId << "," << trainPreviousId;
+				scheduler->trace(info.str(),hostBlock->blockId);
+				robotBlock->setPrevNext(trainPrevious,trainNext);
+				robotBlock->setColor(BLUE);
+			}
+		}
 		break;
 
-		case EVENT_NI_RECEIVE:
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-			P2PNetworkInterface * recvInterface = message->destinationInterface;
-			switch(message->id) {
-				case MAP_MSG_ID : {
-					MapMessage_ptr recvMessage = boost::static_pointer_cast<MapMessage>(message);
+	case EVENT_NI_RECEIVE:
+		message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+		P2PNetworkInterface * recvInterface = message->destinationInterface;
+		switch(message->id) {
+		case MAP_MSG_ID : {
+			MapMessage_ptr recvMessage = boost::static_pointer_cast<MapMessage>(message);
 
-					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 
-					cout << "INTERFACE" << robotBlock->getDirection(message->destinationInterface) << endl;
+			cout << "INTERFACE" << robotBlock->getDirection(message->destinationInterface) << endl;
 					
+			info.str("");
+			info << "rec. MapMessage : MAP_MSG from " << sourceId;
+			scheduler->trace(info.str(),hostBlock->blockId);
+
+			if (targetGrid) {
+				sendAckMap(recvInterface);
+			} else {
+				// first message
+				memcpy(gridSize,recvMessage->gridSize,3*sizeof(short));
+				targetGrid = initGrid(gridSize,recvMessage->targetGrid);
+
+				block2Answer=recvInterface;
+				nbreOfWaitedAnswers=0;
+				sendMapToNeighbors(block2Answer);
+
+				if (nbreOfWaitedAnswers==0) {
+					sendAckMap(block2Answer);
+					block2Answer=NULL;
 					info.str("");
-					info << "rec. MapMessage : MAP_MSG from " << sourceId;
-					scheduler->trace(info.str(),hostBlock->blockId);
+					info << " the end";
+					scheduler->trace(info.str(),hostBlock->blockId,GOLD);
+					currentTrainGain=0;
 
-					if (targetGrid) {
-						sendAckMap(recvInterface);
-					} else {
-					// first message
-						memcpy(gridSize,recvMessage->gridSize,3*sizeof(int));
-						targetGrid = initGrid(gridSize,recvMessage->targetGrid);
-
-						block2Answer=recvInterface;
-						nbreOfWaitedAnswers=0;
-						sendMapToNeighbors(block2Answer);
-
-						if (nbreOfWaitedAnswers==0) {
-							sendAckMap(block2Answer);
-							block2Answer=NULL;
-              info.str("");
-              info << " the end";
-							scheduler->trace(info.str(),hostBlock->blockId,GOLD);
-							currentTrainGain=0;
-
-							PointRel3D pt;
-							calcPossibleMotions(pt);
-						}
-					}
+					PointRel3D pt;
+					calcPossibleMotions(pt);
 				}
-				break;
+			}
+		}
+			break;
 
-				case ACKMAP_MSG_ID : {
-					AckMapMessage_ptr recvMessage = boost::static_pointer_cast<AckMapMessage>(message);
-					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+		case ACKMAP_MSG_ID : {
+			AckMapMessage_ptr recvMessage = boost::static_pointer_cast<AckMapMessage>(message);
+			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+			info.str("");
+			info << "rec. AckMapMessage(" << nbreOfWaitedAnswers << ") from " << sourceId;
+			scheduler->trace(info.str(),hostBlock->blockId,LIGHTBLUE);
+
+			nbreOfWaitedAnswers--;
+			if (nbreOfWaitedAnswers==0) {
+				if (block2Answer!=NULL) {
+					sendAckMap(block2Answer);
+					block2Answer=NULL;
 					info.str("");
-					info << "rec. AckMapMessage(" << nbreOfWaitedAnswers << ") from " << sourceId;
-					scheduler->trace(info.str(),hostBlock->blockId,LIGHTBLUE);
-
-					nbreOfWaitedAnswers--;
-					if (nbreOfWaitedAnswers==0) {
-						if (block2Answer!=NULL) {
-							sendAckMap(block2Answer);
-							block2Answer=NULL;
-							info.str("");
-							info << "waits for train message";
-						} else {
+					info << "waits for train message";
+				} else {
 // you are master block because NULL father
-							info.str("");
-							info << " next step";
-						}
-            scheduler->trace(info.str(),hostBlock->blockId,GOLD);
-            currentTrainGain=0;
-
-						PointRel3D pos;
-						pos.x = robotBlock->position[0];
-						pos.y = robotBlock->position[1];
-						pos.z = robotBlock->position[2];
-						goodPlace = targetGrid[(pos.z*gridSize[1]+pos.y)*gridSize[0]+pos.x]==fullCell;
-            PointRel3D pt;
-						calcPossibleMotions(pt);
-					}
-				}
-				break;
-
-				case TRAIN_MSG_ID : {
-					TrainMessage_ptr recvMessage = boost::static_pointer_cast<TrainMessage>(message);
-					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 					info.str("");
-					info << "rec. TrainMessage (" << recvMessage->newPos << "," << recvMessage->gain <<") from " << sourceId;
-					currentTrainGain+=recvMessage->gain;
-					currentTrainGoal= recvMessage->newPos;
-					info << "\ncurrentGain = " << currentTrainGain;
-					scheduler->trace(info.str(),hostBlock->blockId);
-
-					trainPrevious = recvMessage->sourceInterface;
-					robotBlock->setPrevNext(trainPrevious,trainNext);
-
-					if (block2Answer==NULL) {
-					  calcPossibleMotions(recvMessage->newPos);
-						sendLinkTrainMessages(recvMessage->destinationInterface);
-					} else {
-						stringstream info;
-						info.str("");
-						info << "block2answer!=NULL";
-            scheduler->trace(info.str(),hostBlock->blockId,RED);
-					}
+					info << " next step";
 				}
-				break;
+				scheduler->trace(info.str(),hostBlock->blockId,GOLD);
+				currentTrainGain=0;
+
+				PointRel3D pos;
+				pos.x = robotBlock->position[0];
+				pos.y = robotBlock->position[1];
+				pos.z = robotBlock->position[2];
+				goodPlace = targetGrid[(pos.z*gridSize[1]+pos.y)*gridSize[0]+pos.x]==fullCell;
+				PointRel3D pt;
+				calcPossibleMotions(pt);
+			}
+		}
+			break;
+
+		case TRAIN_MSG_ID : {
+			TrainMessage_ptr recvMessage = boost::static_pointer_cast<TrainMessage>(message);
+			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+			info.str("");
+			info << "rec. TrainMessage (" << recvMessage->newPos << "," << recvMessage->gain <<") from " << sourceId;
+			currentTrainGain+=recvMessage->gain;
+			currentTrainGoal= recvMessage->newPos;
+			info << "\ncurrentGain = " << currentTrainGain;
+			scheduler->trace(info.str(),hostBlock->blockId);
+
+			trainPrevious = recvMessage->sourceInterface;
+			robotBlock->setPrevNext(trainPrevious,trainNext);
+
+			if (block2Answer==NULL) {
+				calcPossibleMotions(recvMessage->newPos);
+				sendLinkTrainMessages(recvMessage->destinationInterface);
+			} else {
+				stringstream info;
+				info.str("");
+				info << "block2answer!=NULL";
+				scheduler->trace(info.str(),hostBlock->blockId,RED);
+			}
+		}
+			break;
 
         case ACKTRAIN_MSG_ID : {
-          AckTrainMessage_ptr recvMessage = boost::static_pointer_cast<AckTrainMessage>(message);
-					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
-          info.str("");
-					info << "rec. AckTrainMessage("<< recvMessage->answer << ") from " << sourceId;
-					scheduler->trace(info.str(),hostBlock->blockId);
-					// 2 situations à gérer :
-					// - le voisin ne peut pas se déplacer
-					// - le bloc est en tête
-					if (recvMessage->answer && trainPrevious!=NULL) {
-						AckTrainMessage *message = new AckTrainMessage(true);
-						scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, trainPrevious->connectedInterface));
+			AckTrainMessage_ptr recvMessage = boost::static_pointer_cast<AckTrainMessage>(message);
+			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+			info.str("");
+			info << "rec. AckTrainMessage("<< recvMessage->answer << ") from " << sourceId;
+			scheduler->trace(info.str(),hostBlock->blockId);
+			// 2 situations à gérer :
+			// - le voisin ne peut pas se déplacer
+			// - le bloc est en tête
+			if (recvMessage->answer && trainPrevious!=NULL) {
+				AckTrainMessage *message = new AckTrainMessage(true);
+				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, trainPrevious->connectedInterface));
+				info.str("");
+				info << "send AckTrainMessage(true) to " << trainPrevious->connectedInterface->connectedInterface->hostBlock->blockId;
+				scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+			} else {
+				// gestion de l'échec
+				if (!recvMessage->answer) {
+					trainPrevious=NULL;
+
+					if (possibleMotions && !possibleMotions->empty()) {
+						// il y a eu échec sur la premiere règle
+						// on essaye la suivante :
+						Validation *firstCondition = possibleMotions->back();
+						possibleMotions->pop_back();
+						delete firstCondition;
+
 						info.str("");
-						info << "send AckTrainMessage(true) to " << trainPrevious->connectedInterface->connectedInterface->hostBlock->blockId;
-						scheduler->trace(info.str(),hostBlock->blockId,GREEN);
-					} else {
-						// gestion de l'échec
-						if (!recvMessage->answer) {
-							trainPrevious=NULL;
-
-							if (possibleMotions && !possibleMotions->empty()) {
-							// il y a eu échec sur la premiere règle
-							// on essaye la suivante :
-								Validation *firstCondition = possibleMotions->back();
-								possibleMotions->pop_back();
-								delete firstCondition;
-
-								info.str("");
-								info << possibleMotions->size();
-								std::reverse_iterator<vector<Validation*>::iterator> rev_until (possibleMotions->begin());
-								std::reverse_iterator<vector<Validation*>::iterator> rev_from (possibleMotions->end());
-								while (rev_from!=rev_until) {
-									info  << "/" << (*rev_from)->capa->isHead << ":" << (*rev_from)->capa->isEnd << " " << (*rev_from)->capa->name << " gain=" << (*rev_from)->gain;
-									rev_from++;
-								}
-								scheduler->trace(info.str(),hostBlock->blockId,GOLD);
-
-								/***********************************/
-								/* IL FAUT TESTER SI C'EST UNE FIN */
-
-								if (!possibleMotions->empty()) {
-									sendLinkTrainMessages(trainNext);
-								} /*else {
-									sendLinkTrainMessages(trainNext,NULL);
-									trainNext=NULL;
-									robotBlock->setPrevNext(trainPrevious,trainNext);
-								}*/
-							} else {
-//								sendLinkTrainMessages(block2Answer);
-							}
-						} else {
-							info.str("");
-							info << "Head of train :" << robotBlock->blockId << ", next=" << trainNext->hostBlock->blockId;
-							//info << "\n" << robotBlock->blockId << " mv(" << motionVector.x << "," << motionVector.y << "," << motionVector.z << ")"
-							//		 << " nmv(" << nextMotionVector.x << "," << nextMotionVector.y << "," << nextMotionVector.z << ")";
-          		scheduler->trace(info.str(),hostBlock->blockId,GREEN);
-          		block2Answer=NULL;
-							sendAnswerDelayOrMotionDelayMessage(scheduler->now()-10*COM_DELAY);
+						info << possibleMotions->size();
+						std::reverse_iterator<vector<Validation*>::iterator> rev_until (possibleMotions->begin());
+						std::reverse_iterator<vector<Validation*>::iterator> rev_from (possibleMotions->end());
+						while (rev_from!=rev_until) {
+							info  << "/" << (*rev_from)->capa->isHead << ":" << (*rev_from)->capa->isEnd << " " << (*rev_from)->capa->name << " gain=" << (*rev_from)->gain;
+							rev_from++;
 						}
+						scheduler->trace(info.str(),hostBlock->blockId,GOLD);
+
+						/***********************************/
+						/* IL FAUT TESTER SI C'EST UNE FIN */
+
+						if (!possibleMotions->empty()) {
+							sendLinkTrainMessages(trainNext);
+						} /*else {
+							sendLinkTrainMessages(trainNext,NULL);
+							trainNext=NULL;
+							robotBlock->setPrevNext(trainPrevious,trainNext);
+							}*/
+					} else {
+//								sendLinkTrainMessages(block2Answer);
 					}
+				} else {
+					info.str("");
+					info << "Head of train :" << robotBlock->blockId << ", next=" << trainNext->hostBlock->blockId;
+					//info << "\n" << robotBlock->blockId << " mv(" << motionVector.x << "," << motionVector.y << "," << motionVector.z << ")"
+					//		 << " nmv(" << nextMotionVector.x << "," << nextMotionVector.y << "," << nextMotionVector.z << ")";
+					scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+					block2Answer=NULL;
+					sendAnswerDelayOrMotionDelayMessage(scheduler->now()-10*COM_DELAY);
+				}
+			}
         }
-				break;
+			break;
 
         case MOTIONDELAY_MSG_ID : {
-					MotionDelayMessage_ptr recvMessage = boost::static_pointer_cast<MotionDelayMessage>(message);
-					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
-          info.str("");
-					info << robotBlock->blockId << " rec. MotionDelayMsg(" << recvMessage->unlockMode << ") from " << sourceId;
-					scheduler->trace(info.str(),hostBlock->blockId,GREEN);
-					info.str("");
-          info << robotBlock->blockId << " mv(" << motionVector.x << "," << motionVector.y << "," << motionVector.z << ")"
-							<< " nmv(" << nextMotionVector.x << "," << nextMotionVector.y << "," << nextMotionVector.z << ")";
-          scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+			MotionDelayMessage_ptr recvMessage = boost::static_pointer_cast<MotionDelayMessage>(message);
+			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+			info.str("");
+			info << robotBlock->blockId << " rec. MotionDelayMsg(" << recvMessage->unlockMode << ") from " << sourceId;
+			scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+			info.str("");
+			info << robotBlock->blockId << " mv(" << motionVector.x << "," << motionVector.y << "," << motionVector.z << ")"
+				 << " nmv(" << nextMotionVector.x << "," << nextMotionVector.y << "," << nextMotionVector.z << ")";
+			scheduler->trace(info.str(),hostBlock->blockId,GREEN);
 
-          if (recvMessage->unlockMode) {
-						trainPrevious=NULL;
-            robotBlock->setPrevNext(trainPrevious,trainNext);
-					}
-          sendAnswerDelayOrMotionDelayMessage(recvMessage->globalTime);
-				}
-        break;
+			if (recvMessage->unlockMode) {
+				trainPrevious=NULL;
+				robotBlock->setPrevNext(trainPrevious,trainNext);
+			}
+			sendAnswerDelayOrMotionDelayMessage(recvMessage->globalTime);
+		}
+			break;
         case ANSWERDELAY_MSG_ID : {
-					AnswerDelayMessage_ptr recvMessage = boost::static_pointer_cast<AnswerDelayMessage>(message);
-					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
-          info.str("");
-					info << robotBlock->blockId << " rec. AnswerDelayMsg(" << recvMessage->globalRDVTime << ") from " << sourceId;
-					scheduler->trace(info.str(),hostBlock->blockId);
-					Vector3D finalPosition;
-					finalPosition.set(robotBlock->position.pt[0]+motionVector.x,
-          robotBlock->position.pt[1]+motionVector.y,robotBlock->position.pt[2]+motionVector.z);
-          blockToUnlock=0;
-          scheduler->schedule(new MotionStartEvent(recvMessage->globalRDVTime,robotBlock,finalPosition));
-          stringstream info;
-          info.str("");
-          info << robotBlock->blockId << " MotionStartEvent(" << recvMessage->globalRDVTime << ")";
-          scheduler->trace(info.str(),hostBlock->blockId,LIGHTGREY);
-          if (trainPrevious) {
-						AnswerDelayMessage *adm_message = new AnswerDelayMessage(recvMessage->globalRDVTime,false);
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, adm_message, trainPrevious->connectedInterface));
-            stringstream info;
-            info.str("");
-            info << robotBlock->blockId << " send AnswerDelayMsg("<< adm_message->globalRDVTime << ") to " << trainPrevious->hostBlock->blockId;
-            scheduler->trace(info.str(),hostBlock->blockId,GREEN);
-					}
-				}
-        break;
+			AnswerDelayMessage_ptr recvMessage = boost::static_pointer_cast<AnswerDelayMessage>(message);
+			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+			info.str("");
+			info << robotBlock->blockId << " rec. AnswerDelayMsg(" << recvMessage->globalRDVTime << ") from " << sourceId;
+			scheduler->trace(info.str(),hostBlock->blockId);
+			Vector3D finalPosition;
+			finalPosition.set(robotBlock->position.pt[0]+motionVector.x,
+							  robotBlock->position.pt[1]+motionVector.y,robotBlock->position.pt[2]+motionVector.z);
+			blockToUnlock=0;
+			scheduler->schedule(new MotionStartEvent(recvMessage->globalRDVTime,robotBlock,finalPosition));
+			stringstream info;
+			info.str("");
+			info << robotBlock->blockId << " MotionStartEvent(" << recvMessage->globalRDVTime << ")";
+			scheduler->trace(info.str(),hostBlock->blockId,LIGHTGREY);
+			if (trainPrevious) {
+				AnswerDelayMessage *adm_message = new AnswerDelayMessage(recvMessage->globalRDVTime,false);
+				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, adm_message, trainPrevious->connectedInterface));
+				stringstream info;
+				info.str("");
+				info << robotBlock->blockId << " send AnswerDelayMsg("<< adm_message->globalRDVTime << ") to " << trainPrevious->hostBlock->blockId;
+				scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+			}
+		}
+			break;
 
         case UNLOCK_MSG_ID : {
-					UnlockMessage_ptr recvMessage = boost::static_pointer_cast<UnlockMessage>(message);
-					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
-          info.str("");
-					info << robotBlock->blockId << " rec. UnlockMessage(" << recvMessage->target << ") from " << sourceId;
-					scheduler->trace(info.str(),hostBlock->blockId);
+			UnlockMessage_ptr recvMessage = boost::static_pointer_cast<UnlockMessage>(message);
+			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
+			info.str("");
+			info << robotBlock->blockId << " rec. UnlockMessage(" << recvMessage->target << ") from " << sourceId;
+			scheduler->trace(info.str(),hostBlock->blockId);
 
-					// search if target is directly connected to the block
-          int i=0;
-          P2PNetworkInterface *p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
-          bool found=(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId==recvMessage->target);
-          //cout <<(p2p->connectedInterface?p2p->connectedInterface->hostBlock->blockId:-1) << endl;
-          while (i<6 && !found) {
-						i++;
-            if (i<6) {
-							p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
-              found=(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId==recvMessage->target);
-              //cout <<(p2p->connectedInterface?p2p->connectedInterface->hostBlock->blockId:-1) << endl;
-            }
-          }
-          if (found) {
-						uint64_t time = scheduler->now();
-            MotionDelayMessage *message = new MotionDelayMessage(time,true);
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(time + COM_DELAY, message, p2p));
-            stringstream info;
-            info.str("");
-            info << robotBlock->blockId << " send MotionDelayMsg(unlock) to " << p2p->connectedInterface->hostBlock->blockId;
-            scheduler->trace(info.str(),hostBlock->blockId,GREEN);
-          }
+			// search if target is directly connected to the block
+			int i=0;
+			P2PNetworkInterface *p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
+			bool found=(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId==recvMessage->target);
+			//cout <<(p2p->connectedInterface?p2p->connectedInterface->hostBlock->blockId:-1) << endl;
+			while (i<6 && !found) {
+				i++;
+				if (i<6) {
+					p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
+					found=(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId==recvMessage->target);
+					//cout <<(p2p->connectedInterface?p2p->connectedInterface->hostBlock->blockId:-1) << endl;
+				}
+			}
+			if (found) {
+				uint64_t time = scheduler->now();
+				MotionDelayMessage *message = new MotionDelayMessage(time,true);
+				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(time + COM_DELAY, message, p2p));
+				stringstream info;
+				info.str("");
+				info << robotBlock->blockId << " send MotionDelayMsg(unlock) to " << p2p->connectedInterface->hostBlock->blockId;
+				scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+			}
         }
-        break;
+			break;
 /**************************
 				case RELINKTRAIN_MSG_ID : {
 					ReLinkTrainMessage_ptr recvMessage = boost::static_pointer_cast<ReLinkTrainMessage>(message);
@@ -356,9 +356,9 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
         break;*/
 
         default :
-					cerr << "Block " << hostBlock->blockId << " received an unrecognized message from " << message->sourceInterface->hostBlock->blockId << endl;
-				break;
-			}
+			cerr << "Block " << hostBlock->blockId << " received an unrecognized message from " << message->sourceInterface->hostBlock->blockId << endl;
+			break;
+		}
 		break;
 	}
 	robotBlock->setColor((trainPrevious?(trainNext?MAGENTA:PINK):(trainNext?RED:goodPlace?GREEN:YELLOW)));
@@ -373,14 +373,14 @@ void Robot01BlockCode::sendMapToNeighbors(P2PNetworkInterface *p2pExcept) {
 	stringstream info;
 
 	for(int i = 0; i < 6; i++) {
-    p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
+		p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
 		if( p2p->connectedInterface && p2p!=p2pExcept) {
-				MapMessage *message = new MapMessage(gridSize,targetGrid);
-				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
-				nbreOfWaitedAnswers++;
-				info.str("");
-				info << "send MapMessage to " << p2p->connectedInterface->hostBlock->blockId;
-				scheduler->trace(info.str(),hostBlock->blockId);
+			MapMessage *message = new MapMessage(gridSize,targetGrid);
+			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
+			nbreOfWaitedAnswers++;
+			info.str("");
+			info << "send MapMessage to " << p2p->connectedInterface->hostBlock->blockId;
+			scheduler->trace(info.str(),hostBlock->blockId);
 		}
 	}
 }
@@ -432,10 +432,10 @@ void Robot01BlockCode::calcPossibleMotions(const PointRel3D &posTrainGoal) {
 			info  << "/" << (*rev_from)->capa->isHead << ":" << (*rev_from)->capa->isEnd << (*rev_from)->capa->name;
 			rev_from++;
 		}
-	  scheduler->trace(info.str(),hostBlock->blockId,GOLD);
-	  // critère pour lancer l'étape suivante :
-	  // - le bloc est une tete de train
-	  // - il est blocké par un block en place ?
+		scheduler->trace(info.str(),hostBlock->blockId,GOLD);
+		// critère pour lancer l'étape suivante :
+		// - le bloc est une tete de train
+		// - il est blocké par un block en place ?
 
 		if (possibleMotions->back()->capa->isHead) {
 			info.str("");
@@ -445,7 +445,7 @@ void Robot01BlockCode::calcPossibleMotions(const PointRel3D &posTrainGoal) {
 		}
 	} else {
 		info.str("No motion!");
-	  scheduler->trace(info.str(),hostBlock->blockId,GOLD);
+		scheduler->trace(info.str(),hostBlock->blockId,GOLD);
 	}
 }
 
@@ -486,7 +486,7 @@ void Robot01BlockCode::sendLinkTrainMessages(P2PNetworkInterface *sender) {
 		scheduler->trace(info.str(),hostBlock->blockId,DARKORANGE);
 
 		if (firstCondition->isEnd) {
-		  P2PNetworkInterface *p2p = robotBlock->getP2PNetworkInterfaceByRelPos(*firstCondition->linkPrevPos);
+			P2PNetworkInterface *p2p = robotBlock->getP2PNetworkInterfaceByRelPos(*firstCondition->linkPrevPos);
 			AckTrainMessage *message = new AckTrainMessage(currentTrainGain>0);
 			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message,p2p));
 			stringstream info;
@@ -535,45 +535,45 @@ void Robot01BlockCode::sendLinkTrainMessages(P2PNetworkInterface *sender) {
 }
 
 void Robot01BlockCode::sendAnswerDelayOrMotionDelayMessage(uint64_t gt) {
-  if (motionVector!=nextMotionVector) {
+	if (motionVector!=nextMotionVector) {
 		uint64_t time = scheduler->now(),
-    rdvTime = time+(time-gt)*1.5;
-    if (trainPrevious) {
+			rdvTime = time+(time-gt)*1.5;
+		if (trainPrevious) {
 			AnswerDelayMessage *adm_message = new AnswerDelayMessage(rdvTime,trainNext!=NULL);
-      scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(time + COM_DELAY, adm_message, trainPrevious->connectedInterface));
-      stringstream info;
-      info.str("");
-      info << robotBlock->blockId << " send AnswerDelayMessage(" << adm_message->globalRDVTime << ") to " << trainPrevious->hostBlock->blockId;
-      scheduler->trace(info.str(),hostBlock->blockId,GREEN);
-    }
-    Vector3D finalPosition(robotBlock->position.pt[0]+motionVector.x,
-                              robotBlock->position.pt[1]+motionVector.y,
-															robotBlock->position.pt[2]+motionVector.z);
-    scheduler->schedule(new MotionStartEvent(rdvTime,robotBlock,finalPosition));
-    stringstream info;
-    info.str("");
-    info << robotBlock->blockId << " MotionStartEvent(" << rdvTime << ")";
-    scheduler->trace(info.str(),hostBlock->blockId,LIGHTGREY);
-    if (trainNext) {
+			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(time + COM_DELAY, adm_message, trainPrevious->connectedInterface));
+			stringstream info;
+			info.str("");
+			info << robotBlock->blockId << " send AnswerDelayMessage(" << adm_message->globalRDVTime << ") to " << trainPrevious->hostBlock->blockId;
+			scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+		}
+		Vector3D finalPosition(robotBlock->position.pt[0]+motionVector.x,
+							   robotBlock->position.pt[1]+motionVector.y,
+							   robotBlock->position.pt[2]+motionVector.z);
+		scheduler->schedule(new MotionStartEvent(rdvTime,robotBlock,finalPosition));
+		stringstream info;
+		info.str("");
+		info << robotBlock->blockId << " MotionStartEvent(" << rdvTime << ")";
+		scheduler->trace(info.str(),hostBlock->blockId,LIGHTGREY);
+		if (trainNext) {
 			blockToUnlock=trainNext->hostBlock->blockId;
-      trainNext=NULL;
-      robotBlock->setPrevNext(trainPrevious,trainNext);
-    } else {
-      blockToUnlock=0;
-    }
-  } else {
+			trainNext=NULL;
+			robotBlock->setPrevNext(trainPrevious,trainNext);
+		} else {
+			blockToUnlock=0;
+		}
+	} else {
 		if (motionVector.isZero()) {
 			cout << "erreur, block #"<< robotBlock->blockId << "mv=nmv=0 ?" << endl;
 			return;
 		}
-    MotionDelayMessage *mdm_message = new MotionDelayMessage(gt);
-    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, mdm_message, trainNext->connectedInterface));
-    stringstream info;
-    info.str("");
-    info << " send MotionDelayMsg(" << motionVector.x << "," << motionVector.y << "," << motionVector.z << ") to " << trainNext->hostBlock->blockId;
-    scheduler->trace(info.str(),hostBlock->blockId,GREEN);
-    blockToUnlock=0;
-  }
+		MotionDelayMessage *mdm_message = new MotionDelayMessage(gt);
+		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, mdm_message, trainNext->connectedInterface));
+		stringstream info;
+		info.str("");
+		info << " send MotionDelayMsg(" << motionVector.x << "," << motionVector.y << "," << motionVector.z << ") to " << trainNext->hostBlock->blockId;
+		scheduler->trace(info.str(),hostBlock->blockId,GREEN);
+		blockToUnlock=0;
+	}
 }
 
 void Robot01BlockCode::sendUnlockMessage(int id) {
@@ -583,11 +583,11 @@ void Robot01BlockCode::sendUnlockMessage(int id) {
 	for(int i = 0; i < 6; i++) {
         p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
 		if( p2p->connectedInterface) {
-				UnlockMessage *message = new UnlockMessage(id);
-				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
-				info.str("");
-				info << "send UnlockMessage(" << id << ") to " << p2p->connectedInterface->hostBlock->blockId;
-				scheduler->trace(info.str(),hostBlock->blockId);
+			UnlockMessage *message = new UnlockMessage(id);
+			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
+			info.str("");
+			info << "send UnlockMessage(" << id << ") to " << p2p->connectedInterface->hostBlock->blockId;
+			scheduler->trace(info.str(),hostBlock->blockId);
 		}
 	}
 }
@@ -595,7 +595,7 @@ void Robot01BlockCode::sendUnlockMessage(int id) {
 void Robot01BlockCode::sendReLinkTrainMessage() {
 	stringstream info;
 
-  if (possibleMotions && !possibleMotions->empty()) {
+	if (possibleMotions && !possibleMotions->empty()) {
 		Capability *firstCondition = possibleMotions->back()->capa;
 		if (firstCondition->isHead) {
 			sendLinkTrainMessages(NULL);
@@ -610,7 +610,7 @@ void Robot01BlockCode::sendReLinkTrainMessage() {
 			trainPrevious = p2p->connectedInterface;
 		}
 	} else {
-	  AckTrainMessage *message = new AckTrainMessage(false);
+		AckTrainMessage *message = new AckTrainMessage(false);
 		scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, trainNext));
 		stringstream info;
 		info.str("");
@@ -622,9 +622,9 @@ void Robot01BlockCode::sendReLinkTrainMessage() {
 	}
 }
 
-MapMessage::MapMessage(int *gs,RobotBlocks::presence *tg):Message(){
+MapMessage::MapMessage(short *gs,RobotBlocks::presence *tg):Message(){
 	id = MAP_MSG_ID;
-	memcpy(gridSize,gs,3*sizeof(int));
+	memcpy(gridSize,gs,3*sizeof(short));
 	targetGrid = initGrid(gridSize,tg);
 }
 

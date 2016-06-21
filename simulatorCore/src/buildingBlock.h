@@ -103,7 +103,7 @@ public:
 
 	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
-	virtual void stop() {};
+	virtual void stop(uint64_t date, State s) {};
 	/* No guarantee that state value will remain the same, it just avoids
 	 * date race condition.
 	 */

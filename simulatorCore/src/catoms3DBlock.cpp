@@ -18,35 +18,35 @@ using namespace std;
 namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) : BaseSimulator::BuildingBlock(bId) {
-	OUTPUT << "Catoms3DBlock constructor" << endl;
-	for (int i=0; i<12; i++) {
-		tabInterfaces[i] = new P2PNetworkInterface(this);
-	}
-	buildNewBlockCode = catoms3DBlockCodeBuildingFunction;
-	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+    OUTPUT << "Catoms3DBlock constructor" << endl;
+    for (int i=0; i<12; i++) {
+        tabInterfaces[i] = new P2PNetworkInterface(this);
+    }
+    buildNewBlockCode = catoms3DBlockCodeBuildingFunction;
+    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
 
-	orientationCode=0; // connector 0 is along X axis
- }
+    orientationCode=0; // connector 0 is along X axis
+}
 
 Catoms3DBlock::~Catoms3DBlock() {
-	OUTPUT << "Catoms3DBlock destructor " << blockId << endl;
+    OUTPUT << "Catoms3DBlock destructor " << blockId << endl;
 }
 
 void Catoms3DBlock::setVisible(bool visible) {
-	getWorld()->updateGlData(this,visible);
+    getWorld()->updateGlData(this,visible);
 }
 
 void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code) {
     orientationCode = code;
     position = p;
 
-	Matrix M1,M2,M3,M;
-	M1.setRotationZ(tabOrientationAngles[code][0]);
+    Matrix M1,M2,M3,M;
+    M1.setRotationZ(tabOrientationAngles[code][0]);
     M2.setRotationY(tabOrientationAngles[code][1]);
     M3.setRotationX(tabOrientationAngles[code][2]);
     M = M2*M1;
     M1 = M3*M;
-    M2.setTranslation(getWorld()->gridToWorldPosition(p));
+    M2.setTranslation(getWorld()->lattice->gridToWorldPosition(p));
     M = M2*M1;
     OUTPUT << M << endl;
     getWorld()->updateGlData(this,M);
@@ -75,51 +75,48 @@ short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
 }
 
 int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
-	if( !given_interface) {
-		return -1;
-	}
-	for( int i(0); i < 12; ++i) {
-		if( tabInterfaces[i] == given_interface) return i;
-	}
-	return -1;
+    if( !given_interface) {
+        return -1;
+    }
+    for( int i(0); i < 12; ++i) {
+        if( tabInterfaces[i] == given_interface) return i;
+    }
+    return -1;
 }
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
-  stream << bb.blockId << "\tcolor: " << bb.color;
-  return stream;
+    stream << bb.blockId << "\tcolor: " << bb.color;
+    return stream;
 }
 
 bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
     Vector3D realPos;
 
     Catoms3DWorld *wrl = getWorld();
-    const float *bs = wrl->getBlocksSize();
-    const int *gs = wrl->getGridSize();
+    const Vector3D bs = wrl->lattice->gridScale;
 
     realPos.set(tabConnectorPositions[connectorID],3,1);
-    realPos.pt[0]*=bs[0];
-    realPos.pt[1]*=bs[1];
-    realPos.pt[2]*=bs[2];
+    realPos.pt[0] *= bs[0];
+    realPos.pt[1] *= bs[1];
+    realPos.pt[2] *= bs[2];
     realPos = ((Catoms3DGlBlock*)ptrGlBlock)->mat*realPos;
     if (realPos[2]<0) return false;
-    pos = wrl->worldToGridPosition(realPos);
-    return (pos[0]>=0 && pos[0]<gs[0] &&
-            pos[1]>=0 && pos[1]<gs[1] &&
-            pos[2]>=0 && pos[2]<gs[2]);
+    pos = wrl->lattice->worldToGridPosition(realPos);
+    return wrl->lattice->isInGrid(pos);
 }
 
 P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
     Catoms3DWorld *wrl = getWorld();
-    Vector3D realPos = wrl->gridToWorldPosition(pos);
+    Vector3D realPos = wrl->lattice->gridToWorldPosition(pos);
 
     Matrix m_1;
     ((Catoms3DGlBlock*)ptrGlBlock)->mat.inverse(m_1);
     realPos = m_1*realPos;
 
-    const float *bs = wrl->getBlocksSize();
-    realPos.pt[0]/=bs[0];
-    realPos.pt[1]/=bs[1];
-    realPos.pt[2]/=bs[2];
+    const Vector3D bs = wrl->lattice->gridScale;
+    realPos.pt[0] /= bs[0];
+    realPos.pt[1] /= bs[1];
+    realPos.pt[2] /= bs[2];
 
     double x,y,z,d=1;
     int i=0;

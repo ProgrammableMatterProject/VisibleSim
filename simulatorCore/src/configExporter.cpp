@@ -63,10 +63,10 @@ namespace BaseSimulator {
     
     void BlinkyBlocksConfigExporter::exportWorld() {
         worldElt = new TiXmlElement("world");
-        const int *gridSize = world->getGridSize();
-        worldElt->SetAttribute("gridSize", toXmlAttribute(gridSize[0],
-                                                          gridSize[1],
-                                                          gridSize[2]));
+        // const int *gridSize = world->getGridSize();
+        // worldElt->SetAttribute("gridSize", toXmlAttribute(gridSize[0],
+        //                                                   gridSize[1],
+        //                                                   gridSize[2]));
         worldElt->SetAttribute("windowSize",
                                toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
     }
@@ -75,15 +75,15 @@ namespace BaseSimulator {
         blockListElt = new TiXmlElement("blockList");
         BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)world->getMenuBlock();
         float *color = bb->color.rgba;
-        float *blockSize = world->getBlockSize();
+        // float *blockSize = world->getBlockSize();
         map<int, BaseSimulator::BuildingBlock*> blocks = world->getMap();
         
         blockListElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
                                                            color[1] * 255,
                                                            color[2] * 255));
-        blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize[0],
-                                                               blockSize[1],
-                                                               blockSize[2]));
+        // blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize[0],
+        //                                                        blockSize[1],
+        //                                                        blockSize[2]));
         
         map<int, BaseSimulator::BuildingBlock*>::iterator it;        
         for(it = blocks.begin(); 

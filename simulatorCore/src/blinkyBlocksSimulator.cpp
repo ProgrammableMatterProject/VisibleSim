@@ -19,14 +19,13 @@ BlinkyBlocksBlockCode*(* BlinkyBlocksSimulator::buildNewBlockCode)(BlinkyBlocksB
 
 BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
-
+	
 	// PTHY: Note: function pointer cast to generic type, safe according to specifications as it will be used
 	//  only after reconversion
 	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
 	newBlockCode = (BlockCode *(*)(BuildingBlock *))blinkyBlocksBlockCodeBuildingFunction;
 
 	parseWorld(argc, argv);
-	parseBlockList();
 
 	((BlinkyBlocksWorld*)world)->linkBlocks();
 
@@ -123,7 +122,9 @@ BlinkyBlocksSimulator::~BlinkyBlocksSimulator() {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator destructor" << "\033[0m" <<endl;
 }
 
-void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {
+void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[],
+											BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)
+											(BlinkyBlocksBlock*)) {
 	simulator =  new BlinkyBlocksSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
 }
 
@@ -131,10 +132,11 @@ void BlinkyBlocksSimulator::deleteSimulator() {
 	delete((BlinkyBlocksSimulator*)simulator);
 }
 
-void BlinkyBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
-	BlinkyBlocksWorld::createWorld(lx,ly,lz,argc,argv);
-	world = BlinkyBlocksWorld::getWorld();
+void BlinkyBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+									  int argc, char *argv[]) {
+	world = new BlinkyBlocksWorld(gridSize, gridScale, argc,argv);
 	world->loadTextures("../../simulatorCore/blinkyBlocksTextures");
+	World::setWorld(world);
 }
 
 void BlinkyBlocksSimulator::loadScheduler() {

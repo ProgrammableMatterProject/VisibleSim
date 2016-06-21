@@ -1,9 +1,9 @@
 /*
-* robotBlocksSimulator.cpp
-*
-*  Created on: 12 janvier 2014
-*      Author: Benoît
-*/
+ * robotBlocksSimulator.cpp
+ *
+ *  Created on: 12 janvier 2014
+ *      Author: Benoît
+ */
 
 #include <iostream>
 #include "robotBlocksSimulator.h"
@@ -17,9 +17,9 @@ namespace RobotBlocks {
 RobotBlocksBlockCode*(* RobotBlocksSimulator::buildNewBlockCode)(RobotBlocksBlock*)=NULL;
 
 void RobotBlocksSimulator::help() {
-   cerr << "VisibleSim:" << endl;
+	cerr << "VisibleSim:" << endl;
 	cerr << "Robot01" << endl;
-   exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[],
@@ -32,8 +32,6 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[],
 	buildNewBlockCode = robotBlocksBlockCodeBuildingFunction;
 	newBlockCode = (BlockCode *(*)(BuildingBlock *))robotBlocksBlockCodeBuildingFunction;
 	parseWorld(argc, argv);
-	parseBlockList();
-	parseTarget();
 
 	((RobotBlocksWorld*)world)->linkBlocks();
 
@@ -41,8 +39,8 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[],
 //	getScheduler()->setState(Scheduler::NOTSTARTED);
 
 	if (!testMode) {
-	  GlutContext::mainLoop();
-   }
+		GlutContext::mainLoop();
+	}
 }
 
 RobotBlocksSimulator::~RobotBlocksSimulator() {
@@ -57,20 +55,21 @@ void RobotBlocksSimulator::deleteSimulator() {
 	delete((RobotBlocksSimulator*)simulator);
 }
 
-void RobotBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
-  RobotBlocksWorld::createWorld(lx,ly,lz,argc,argv);
-  world = RobotBlocksWorld::getWorld();
-  world->loadTextures("../../simulatorCore/robotBlocksTextures");
+void RobotBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+									int argc, char *argv[]) {
+    world = new RobotBlocksWorld(gridSize, gridScale, argc,argv);
+    world->loadTextures("../../simulatorCore/robotBlocksTextures");
+    World::setWorld(world);
 }
 
 void RobotBlocksSimulator::loadScheduler() {
-  RobotBlocksScheduler::createScheduler();
-  scheduler = RobotBlocksScheduler::getScheduler();
+	RobotBlocksScheduler::createScheduler();
+	scheduler = RobotBlocksScheduler::getScheduler();
 }
 
 void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
-								  BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
-								  const Cell3DPosition &pos, const Color &color, bool master) {
+									 BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
+									 const Cell3DPosition &pos, const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
 	//  here, using the blockElt TiXmlElement.
@@ -79,9 +78,9 @@ void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 
 	// Finally, add block to the world
 	((RobotBlocksWorld*)world)->addBlock(blockId,
-									  (RobotBlocksBlockCode *(*)(RobotBlocksBlock *))
-									  buildingBlockCodeBuildingFunction,
-									  pos, color, master);
+										 (RobotBlocksBlockCode *(*)(RobotBlocksBlock *))
+										 buildingBlockCodeBuildingFunction,
+										 pos, color, master);
 }
 
 void RobotBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {

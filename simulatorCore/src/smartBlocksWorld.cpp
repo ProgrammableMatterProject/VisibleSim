@@ -17,24 +17,10 @@ using namespace std;
 
 namespace SmartBlocks {
 
-SmartBlocksWorld::SmartBlocksWorld(int gw,int gh,int argc, char *argv[]):World() {
+SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+                                   int argc, char *argv[]):World(argc, argv) {
     cout << "\033[1;31mSmartBlocksWorld constructor\033[0m" << endl;
-    gridSize[0] = gw;
-    gridSize[1] = gh;
-    tabPtrBlocks = new SmartBlocksBlock*[gw*gh];
-    // initialise grid of blocks
-    int i=gw*gh;
-    SmartBlocksBlock **ptr = tabPtrBlocks;
-    while (i--) {
-        *ptr=NULL;
-        ptr++;
-    }
 
-    blockSize[0]=25.0;
-    blockSize[1]=25.0;
-    blockSize[2]=11.0;
-
-    GlutContext::init(argc,argv);
     idTextureFloor=0;
     idTextureDigits=0;
 #ifdef GLUT
@@ -44,30 +30,23 @@ SmartBlocksWorld::SmartBlocksWorld(int gw,int gh,int argc, char *argv[]):World()
     objBlock=NULL;
     objRepere=NULL;
 #endif
-    camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-    camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-    camera->setTarget(Vector3D(0,0,1.0));
 
-    nbreStats=0;
-    for (i=0; i<10; i++) {
-        tabStatsData[i]=0;
+    nbreStats=0;    
+    for (int i = 0; i < 10; i++) {
+        tabStatsData[i] = 0;
     }
+
+    lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
     cout << "\033[1;31mSmartBlocksWorld destructor" << endl;
 
 /*	block linked are deleted by world::~world() */
-    delete [] tabPtrBlocks;
     delete objBlock;
     delete objRepere;
-    delete camera;
     delete [] targetGrid;
     delete capabilities;
-}
-
-void SmartBlocksWorld::createWorld(int gw,int gh,int argc, char *argv[]) {
-    world = new SmartBlocksWorld(gw,gh,argc,argv);
 }
 
 void SmartBlocksWorld::deleteWorld() {
@@ -89,62 +68,36 @@ void SmartBlocksWorld::addBlock(int blockId,
     smartBlock->setPosition(pos);
     smartBlock->setColor(col);
 
-    int x,y;
-    smartBlock->getGridPosition(x,y);
-    if (x>=0 && x<gridSize[0] && y>=0 && y<gridSize[1]) {
-        setGridPtr(x,y,smartBlock);
+    if (lattice->isInGrid(pos)) {
+        lattice->insert(smartBlock, pos);
     } else {
         cerr << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
         exit(1);
     }
 }
 
-void SmartBlocksWorld::linkBlocks() {
-    int ix,iy;
-    for (iy=0; iy<gridSize[1]; iy++) {
-        for(ix=0; ix<gridSize[0]; ix++) {
-            linkBlock(ix,iy);
-        }
-    }
-}
+void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {    
+    SmartBlocksBlock *ptrNeighbor;
+    SmartBlocksBlock *ptrBlock = (SmartBlocksBlock*)lattice->getBlock(pos);
+    vector<Cell3DPosition> nCells = lattice->getNeighborhood(pos);
+    cerr << "neighborhood(" << pos << ") : ";
 
-void SmartBlocksWorld::linkBlock(int ix, int iy) {
-    SmartBlocksBlock *ptrBlock = getGridPtr(ix,iy);
-    if (ptrBlock) {
-        if (iy<gridSize[1]-1 && getGridPtr(ix,iy+1)) {
-            (ptrBlock)->getInterface(NeighborDirection::North)->
-                connect(getGridPtr(ix,iy+1)->getInterface(NeighborDirection::South));
+    for (Cell3DPosition ppp : nCells)
+        cerr << endl << ppp << ",";
+    cerr << endl;
+    
+    // Check neighbors for each interface
+    for (int i = 0; i < 4; i++) {
+        ptrNeighbor = (SmartBlocksBlock*)lattice->getBlock(nCells[i]);
+        if (ptrNeighbor) {
+            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->
+                connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
+                                                      NeighborDirection::getOpposite(i))));
+							
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                " to #" << getGridPtr(ix,iy+1)->blockId << endl;
+                " to #" << ptrNeighbor->blockId << endl;
         } else {
-            (ptrBlock)->getInterface(NeighborDirection::North)->connect(NULL);
-        }
-
-        if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy)) {
-            (ptrBlock)->getInterface(NeighborDirection::East)->
-                connect(getGridPtr(ix+1,iy)->getInterface(NeighborDirection::West));
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                " to #" << getGridPtr(ix+1,iy)->blockId << endl;
-        } else {
-            (ptrBlock)->getInterface(NeighborDirection::East)->connect(NULL);
-        }
-
-        if (iy>0 && getGridPtr(ix,iy-1)) {
-            (ptrBlock)->getInterface(NeighborDirection::South)->
-                connect(getGridPtr(ix,iy-1)->getInterface(NeighborDirection::North));
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                " to #" << getGridPtr(ix,iy-1)->blockId << endl;
-        } else {
-            (ptrBlock)->getInterface(NeighborDirection::South)->connect(NULL);
-        }
-
-        if (ix>0 && getGridPtr(ix-1,iy)) {
-            (ptrBlock)->getInterface(NeighborDirection::West)->
-                connect(getGridPtr(ix-1,iy)->getInterface(NeighborDirection::East));
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                " to #" << getGridPtr(ix-1,iy)->blockId << endl;
-        } else {
-            (ptrBlock)->getInterface(NeighborDirection::West)->connect(NULL);
+            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
         }
     }
 }
@@ -155,13 +108,14 @@ void SmartBlocksWorld::getPresenceMatrix(const PointCel &pos,PresenceMatrix &pm)
 
     for (int i=0; i<9; i++) { *gpm++ = wallCell; };
     int ix0 = (pos.x<1)?1-pos.x:0,
-        ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
+        ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
         iy0 = (pos.y<1)?1-pos.y:0,
-        iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
+        iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
         ix,iy;
     for (iy=iy0; iy<iy1; iy++) {
         gpm = pm.grid+(iy*3+ix0);
-        grb = tabPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1)*gridSize[0]);
+        // PTHY: TODO: idem fix 2D->3D
+        grb = (SmartBlocksBlock **)lattice->grid+(ix0+pos.x-1+(iy+pos.y-1)*lattice->gridSize[0]);
         for (ix=ix0; ix<ix1; ix++) {
             *gpm++ = (*grb)?
                 ((isBorder(ix+pos.x-1,iy+pos.y-1))?
@@ -182,13 +136,13 @@ void SmartBlocksWorld::getPresenceMatrix0(const PointCel &pos,PresenceMatrix &pm
     for (int i=0; i<9; i++) { *gpm++ = wallCell; };
 
     int ix0 = (pos.x<1)?1-pos.x:0,
-        ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
+        ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
         iy0 = (pos.y<1)?1-pos.y:0,
-        iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
+        iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
         ix,iy;
     for (iy=iy0; iy<iy1; iy++) {
         gpm = pm.grid+(iy*3+ix0);
-        grb = tabPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1)*gridSize[0]);
+        grb = (SmartBlocksBlock **)lattice->grid+(ix0+pos.x-1+(iy+pos.y-1)*lattice->gridSize[0]);
         for (ix=ix0; ix<ix1; ix++) {
             *gpm++ = (*grb)?fullCell:emptyCell;
             grb++;
@@ -197,15 +151,15 @@ void SmartBlocksWorld::getPresenceMatrix0(const PointCel &pos,PresenceMatrix &pm
 }
 
 bool SmartBlocksWorld::isBorder(int x,int y) {
-    SmartBlocksBlock **grb=tabPtrBlocks+x+y*gridSize[0];
+    SmartBlocksBlock **grb=(SmartBlocksBlock **)lattice->grid+x+y*lattice->gridSize[0];
     //if ((*grb)->_isBorder) return true;
     int ix0 = (x<1)?1-x:0,
-        ix1 = (x>gridSize[0]-2)?gridSize[0]-x+1:3,
+        ix1 = (x>lattice->gridSize[0]-2)?lattice->gridSize[0]-x+1:3,
         iy0 = (y<1)?1-y:0,
-        iy1 = (y>gridSize[1]-2)?gridSize[1]-y+1:3,
+        iy1 = (y>lattice->gridSize[1]-2)?lattice->gridSize[1]-y+1:3,
         ix,iy;
     for (iy=iy0; iy<iy1; iy++) {
-        grb = tabPtrBlocks+(ix0+x-1+(iy+y-1)*gridSize[0]);
+        grb = (SmartBlocksBlock **)lattice->grid+(ix0+x-1+(iy+y-1)*lattice->gridSize[0]);
         for (ix=ix0; ix<ix1; ix++) {
             //if (*grb==NULL || (*grb)->wellPlaced) return true;
             if (*grb==NULL) return true;
@@ -216,7 +170,7 @@ bool SmartBlocksWorld::isBorder(int x,int y) {
 }
 
 bool SmartBlocksWorld::isSingle(int x,int y) {
-    SmartBlocksBlock **grb=tabPtrBlocks+x+y*gridSize[0];
+    SmartBlocksBlock **grb=(SmartBlocksBlock **)lattice->grid+x+y*lattice->gridSize[0];
     return (*grb)->_isSingle;
 }
 
@@ -232,15 +186,16 @@ void SmartBlocksWorld::glDraw() {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D,idTextureFloor);
         glNormal3f(0,0,1.0f);
-        glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],1.0f);
+        glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+                 lattice->gridSize[1]*lattice->gridScale[1],1.0f);
         glBegin(GL_QUADS);
         glTexCoord2f(0,0);
         glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(gridSize[0],0);
+        glTexCoord2f(lattice->gridSize[0],0);
         glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(gridSize[0],gridSize[1]);
+        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
         glVertex3f(1.0,1.0,0.0f);
-        glTexCoord2f(0,gridSize[1]);
+        glTexCoord2f(0,lattice->gridSize[1]);
         glVertex3f(0.0,1.0,0.0f);
         glEnd();
         glPopMatrix();
@@ -248,7 +203,8 @@ void SmartBlocksWorld::glDraw() {
         objRepere->glDraw();
 
         glPushMatrix();
-        //glTranslatef(-gridSize[0]/2.0f*blockSize[0],-gridSize[1]/2.0f*blockSize[1],0);
+        /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
+          -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
         glDisable(GL_TEXTURE_2D);
         vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
         lock();
@@ -268,7 +224,8 @@ void SmartBlocksWorld::glDraw() {
 void SmartBlocksWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-    //glTranslatef(-gridSize[0]/2.0f*blockSize[0],-gridSize[1]/2.0f*blockSize[1],0);
+    /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
+      -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0);*/
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
     lock();
@@ -292,17 +249,11 @@ void SmartBlocksWorld::loadTextures(const string &str) {
 }
 
 void SmartBlocksWorld::connectBlock(SmartBlocksBlock *block) {
-    int ix,iy;
-    ix = int(block->position.pt[0]);
-    iy = int(block->position.pt[1]);
-
-    setGridPtr(ix,iy,block);
+    Cell3DPosition pos = block->position;
+    
+    lattice->insert(block, pos);
 //	OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << endl;
-    linkBlock(ix,iy);
-    if (ix<gridSize[0]-1) linkBlock(ix+1,iy);
-    if (ix>0) linkBlock(ix-1,iy);
-    if (iy<gridSize[1]-1) linkBlock(ix,iy+1);
-    if (iy>0) linkBlock(ix,iy-1);
+    linkNeighbors(pos);
 }
 
 void SmartBlocksWorld::disconnectBlock(SmartBlocksBlock *block) {
@@ -316,10 +267,8 @@ void SmartBlocksWorld::disconnectBlock(SmartBlocksBlock *block) {
             toBlock->connectedInterface=NULL;
         }
     }
-    int ix,iy;
-    ix = int(block->position.pt[0]);
-    iy = int(block->position.pt[1]);
-    setGridPtr(ix,iy,NULL);
+
+    lattice->remove(block->position);
 //	OUTPUT << getScheduler()->now() << " : Disconnection " <<
     // block->blockId << " pos ="<< ix << "," << iy << endl;
 }
@@ -349,7 +298,7 @@ void SmartBlocksWorld::deleteBlock(SmartBlocksBlock *bb) {
         }
 
         // free grid cell
-        setGridPtr(int(bb->position.pt[0]), int(bb->position.pt[1]), NULL);
+        lattice->remove(bb->position);
 
         disconnectBlock(bb);
     }
@@ -382,11 +331,12 @@ void SmartBlocksWorld::menuChoice(int n) {
         Cell3DPosition pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
 
         addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
-        linkBlocks();
+        linkNeighbors(pos);
     } break;
     case 2 : {
         OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
         deleteBlock(bb);
+        linkNeighbors(bb->position);
     } break;
     case 3 : {
         tapBlock(getScheduler()->now(), bb->blockId);
@@ -399,28 +349,21 @@ void SmartBlocksWorld::menuChoice(int n) {
 
 bool SmartBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
     SmartBlocksBlock *bb = (SmartBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-
+    Cell3DPosition pos = bb->position;
+    
     switch (numSelectedFace) {
         // NeighborDirection { NeighborDirection::North = 0, East, South, West};
     case NeighborDirection::North :
-        return (bb->position[1] < gridSize[1] - 1
-                && getGridPtr(int(bb->position[0]),
-                              int(bb->position[1]) + 1));
+        return lattice->isFree(pos + Cell3DPosition(0, +1, 0));
         break;
     case NeighborDirection::East :
-        return (bb->position[0] > 0
-                && getGridPtr(int(bb->position[0]) - 1,
-                              int(bb->position[1])));
+        return lattice->isFree(pos + Cell3DPosition(-1, 0, 0));
         break;
     case NeighborDirection::South :
-        return (bb->position[1] > 0
-                && getGridPtr(int(bb->position[0]),
-                              int(bb->position[1]) - 1));
+        return lattice->isFree(pos + Cell3DPosition(0, -1, 0));
         break;
     case NeighborDirection::West :
-        return (bb->position[0] < gridSize[0] - 1
-                && getGridPtr(int(bb->position[0]) + 1,
-                              int(bb->position[1])));
+        return lattice->isFree(pos + Cell3DPosition(+1, 0, 0));
         break;
     }
 
@@ -455,7 +398,7 @@ void SmartBlocksWorld::printStats() {
 
 void SmartBlocksWorld::initTargetGrid() {
     if (targetGrid) delete [] targetGrid;
-    int sz = gridSize[0]*gridSize[1];
+    int sz = lattice->gridSize[0]*lattice->gridSize[1];
     targetGrid = new presence[sz];
     memset(targetGrid,emptyCell,sz*sizeof(presence));
 }

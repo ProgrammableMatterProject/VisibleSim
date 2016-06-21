@@ -23,60 +23,36 @@ using namespace BaseSimulator::utils;
 
 namespace Catoms2D {
 
-Catoms2DWorld::Catoms2DWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
+Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+                             int argc, char *argv[]):World(argc, argv) {
     OUTPUT << "\033[1;31mCatoms2DWorld constructor\033[0m" << endl;
-    gridSize[0]=slx;
-    gridSize[1]=sly;
-    gridSize[2]=slz;
-    gridPtrBlocks = new Catoms2DBlock*[slx*sly*slz];
 
-    // initialise grid of blocks
-    int i=slx*sly*slz;
-    Catoms2DBlock **ptr = gridPtrBlocks;
-    while (i--) {
-        *ptr=NULL;
-        ptr++;
-    }
     targetGrid=NULL;
-
-    GlutContext::init(argc,argv);
+    
     idTextureHexa=0;
     idTextureLines=0;
-    blockSize[0]=1.0;
-    blockSize[1]=5.0;
-    blockSize[2]=1.0;
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2D.obj");
     objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2Dpicking.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
-    camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-    camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-    camera->setTarget(Vector3D(0,0,1.0));
 
-    menuId=0;
-    numSelectedFace=0;
-    numSelectedBlock=0;
+    lattice = new HLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
 Catoms2DWorld::~Catoms2DWorld() {
     OUTPUT << "Catoms2DWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
-    delete [] gridPtrBlocks;
     delete [] targetGrid;
     delete objBlock;
     delete objBlockForPicking;
     delete objRepere;
-    delete camera;
-}
-
-void Catoms2DWorld::createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
-    world = new Catoms2DWorld(slx,sly,slz,argc,argv);
 }
 
 void Catoms2DWorld::deleteWorld() {
     delete((Catoms2DWorld*)world);
 }
 
-void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms2DBlock*),const Cell3DPosition &pos,const Color &color,bool master) {
+void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*catom2DCodeBuildingFunction)
+                             (Catoms2DBlock*),const Cell3DPosition &pos,const Color &color,bool master) {
 
     if (blockId == -1) {
         map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -87,33 +63,25 @@ void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*robotBlockCodeBui
         }
         blockId++;
     }
-    Catoms2DBlock *robotBlock = new Catoms2DBlock(blockId,robotBlockCodeBuildingFunction);
-    buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>(robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
 
-    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), robotBlock));
+    Catoms2DBlock *catom2D = new Catoms2DBlock(blockId,catom2DCodeBuildingFunction);
+    buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
+                             (catom2D->blockId, (BaseSimulator::BuildingBlock*)catom2D));
+
+    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom2D));
 
     Catoms2DGlBlock *glBlock = new Catoms2DGlBlock(blockId);
     tabGlBlocks.push_back(glBlock);
-    robotBlock->setGlBlock(glBlock);
+    catom2D->setGlBlock(glBlock);
 
-    robotBlock->setPosition(pos);
-    robotBlock->setColor(color);
-    robotBlock->isMaster=master;
+    catom2D->setPosition(pos);
+    catom2D->setColor(color);
+    catom2D->isMaster=master;
 
     cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << color << endl;
 
-    /*
-********************************************************************
-A ECRIRE AVEC LE MAILLAGE HEXAGONAL
-    */
-    int ix,iy,iz;
-    ix = int(robotBlock->position.pt[0]);
-    iy = int(robotBlock->position.pt[1]);
-    iz = int(robotBlock->position.pt[2]);
-    if (ix>=0 && ix<gridSize[0] &&
-        iy>=0 && iy<gridSize[1] &&
-        iz>=0 && iz<gridSize[2]) {
-        setGridPtr(ix,iy,iz,robotBlock);
+    if (lattice->isInGrid(pos)) {
+        lattice->insert(catom2D, pos);
     } else {
         ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
         exit(1);
@@ -121,34 +89,11 @@ A ECRIRE AVEC LE MAILLAGE HEXAGONAL
 }
 
 void Catoms2DWorld::connectBlock(Catoms2DBlock *block) {
-    int ix,iy,iz;
-
-    ix = int(block->position.pt[0]);
-    iy = int(block->position.pt[1]);
-    iz = int(block->position.pt[2]);
-    setGridPtr(ix,iy,iz,block);
-    OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << "," << iz << endl;
-
-    linkBlock(ix,iy,iz);
-
-    if (ix<gridSize[0]-1) linkBlock(ix+1,iy,iz);
-    if (ix>0) linkBlock(ix-1,iy,iz);
-
-    if (iz<gridSize[2]-1) linkBlock(ix,iy,iz+1);
-    if (iz>0) linkBlock(ix,iy,iz-1);
-
-    if (iz%2 == 1) {
-        if (ix<gridSize[0]-1) {
-            if (iz<gridSize[2]-1) linkBlock(ix+1,iy,iz+1);
-            if (iz>0) linkBlock(ix+1,iy,iz-1);
-        }
-    } else {
-        if (ix>0) {
-            // x-1
-            if (iz<gridSize[2]-1) linkBlock(ix-1,iy,iz+1);
-            if (iz>0) linkBlock(ix-1,iy,iz-1);
-        }
-    }
+    Cell3DPosition pos = block->position;
+    OUTPUT << "Reconnection " << block->blockId << " pos = " << pos << endl;
+    lattice->insert(block, pos);
+    linkBlock(pos);
+    linkNeighbors(pos);
 }
 
 void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
@@ -162,131 +107,32 @@ void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
             toBlock->connectedInterface=NULL;
         }
     }
-    int ix,iy,iz;
-    ix = int(block->position.pt[0]);
-    iy = int(block->position.pt[1]);
-    iz = int(block->position.pt[2]);
-    setGridPtr(ix,iy,iz,NULL);
+
+    lattice->remove(block->position);
+
     OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId <<
-        " pos ="<< ix << "," << iy << "," << iz << endl;
+        " pos =" << block->position << endl;
 }
 
-void Catoms2DWorld::linkBlock(int ix, int iy, int iz) {
-    Catoms2DBlock *ptrBlock = getGridPtr(ix,iy,iz);
-
-    if (ptrBlock) {
-        OUTPUT << "link block " << ptrBlock->blockId << endl;
-
-        if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy,iz)) {
-            (ptrBlock)->getInterface(NeighborDirection::Right)->
-                connect(getGridPtr(ix+1,iy,iz)->getInterface(NeighborDirection::Left));
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                " to #" << getGridPtr(ix+1,iy,iz)->blockId << endl;
-        } else {
-            (ptrBlock)->getInterface(NeighborDirection::Right)->connect(NULL);
-        }
-
-        if (ix>0 && getGridPtr(ix-1,iy,iz)) {
-            (ptrBlock)->getInterface(NeighborDirection::Left)->
-                connect(getGridPtr(ix-1,iy,iz)->getInterface(NeighborDirection::Right));
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                " to #" << getGridPtr(ix-1,iy,iz)->blockId << endl;
-        } else {
-            (ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
-        }
-
-        if (iz%2 == 1) {
-            if (iz<gridSize[2]-1 && getGridPtr(ix,iy,iz+1)) {
-                (ptrBlock)->getInterface(NeighborDirection::TopLeft)->
-                    connect(getGridPtr(ix,iy,iz+1)->getInterface(NeighborDirection::BottomRight));
-                OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                    " to #" << getGridPtr(ix,iy,iz+1)->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(NULL);
-            }
-            if (iz>0 && getGridPtr(ix,iy,iz-1)) {
-                (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->
-                    connect(getGridPtr(ix,iy,iz-1)->getInterface(NeighborDirection::TopRight));
-                OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                    " to #" << getGridPtr(ix,iy,iz-1)->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(NULL);
-            }
-        } else {
-            if (iz<gridSize[2]-1 && getGridPtr(ix,iy,iz+1)) {
-                (ptrBlock)->getInterface(NeighborDirection::TopRight)->
-                    connect(getGridPtr(ix,iy,iz+1)->getInterface(NeighborDirection::BottomLeft));
-                OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                    " to #" << getGridPtr(ix,iy,iz+1)->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(NULL);
-            }
-            if (iz>0 && getGridPtr(ix,iy,iz-1)) {
-                (ptrBlock)->getInterface(NeighborDirection::BottomRight)->
-                    connect(getGridPtr(ix,iy,iz-1)->getInterface(NeighborDirection::TopLeft));
-                OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                    " to #" << getGridPtr(ix,iy,iz-1)->blockId << endl;
-            } else {
-                (ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(NULL);
-            }
-        }
-
-        if (iz%2 == 1) {
-            if (ix<gridSize[0]-1) {
-                // x+1
-                if (iz<gridSize[2]-1 && getGridPtr(ix+1,iy,iz+1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::TopRight)->
-                        connect(getGridPtr(ix+1,iy,iz+1)->getInterface(NeighborDirection::BottomLeft));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                        " to #" << getGridPtr(ix+1,iy,iz+1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::TopRight)->connect(NULL);
-                }
-
-                if (iz>0 && getGridPtr(ix+1,iy,iz-1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomRight)->
-                        connect(getGridPtr(ix+1,iy,iz-1)->getInterface(NeighborDirection::TopLeft));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                        " to #" << getGridPtr(ix+1,iy,iz-1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomRight)->connect(NULL);
-                }
-            }
-        } else {
-            if (ix>0) {
-                // x-1
-                if (iz<gridSize[2]-1 && getGridPtr(ix-1,iy,iz+1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::TopLeft)->
-                        connect(getGridPtr(ix-1,iy,iz+1)->getInterface(NeighborDirection::BottomRight));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                        " to #" << getGridPtr(ix-1,iy,iz+1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::TopLeft)->connect(NULL);
-                }
-
-                if (iz>0 && getGridPtr(ix-1,iy,iz-1)) {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->
-                        connect(getGridPtr(ix-1,iy,iz-1)->getInterface(NeighborDirection::TopRight));
-                    OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                        " to #" << getGridPtr(ix-1,iy,iz-1)->blockId << endl;
-                } else {
-                    (ptrBlock)->getInterface(NeighborDirection::BottomLeft)->connect(NULL);
-                }
-            }
-        }
-    }
-}
-
-
-void Catoms2DWorld::linkBlocks() {
-    int ix,iy,iz;
-    for (iz=0; iz<gridSize[2]; iz++) {
-        for (iy=0; iy<gridSize[1]; iy++) {
-            for(ix=0; ix<gridSize[0]; ix++) {
-                linkBlock(ix,iy,iz);
-            }
-        }
-    }
+void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
+    Catoms2DBlock *ptrNeighbor;
+	Catoms2DBlock *ptrBlock = (Catoms2DBlock*)lattice->getBlock(pos);
+	vector<Cell3DPosition> nCells = lattice->getNeighborhood(pos);
+					
+	// Check neighbors for each interface
+	for (int i = 0; i < 6; i++) {
+		ptrNeighbor = (Catoms2DBlock*)lattice->getBlock(nCells[i]);
+		if (ptrNeighbor) {
+			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->
+				connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
+													  NeighborDirection::getOpposite(i))));
+							
+			OUTPUT << "connection #" << (ptrBlock)->blockId <<
+				" to #" << ptrNeighbor->blockId << endl;
+		} else {
+			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
+		}
+	}
 }
 
 void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
@@ -301,13 +147,8 @@ void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
                 bbi->connectedInterface=NULL;
             }
         }
-        // free grid cell
-        int ix,iy,iz;
-        ix = int(bb->position.pt[0]);
-        iy = int(bb->position.pt[1]);
-        iz = int(bb->position.pt[2]);
-        setGridPtr(ix,iy,iz,NULL);
-
+        
+        lattice->remove(bb->position);
         disconnectBlock(bb);
     }
     if (selectedBlock == bb->ptrGlBlock) {
@@ -328,7 +169,7 @@ void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
 
 void Catoms2DWorld::glDraw() {
     glPushMatrix();
-    glTranslatef(0.5*blockSize[0],0,0.5*blockSize[2]);
+    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
     glDisable(GL_TEXTURE_2D);
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
@@ -348,15 +189,17 @@ void Catoms2DWorld::glDraw() {
     glPushMatrix();
     enableTexture(true);
     glBindTexture(GL_TEXTURE_2D,idTextureLines);
-    glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],blockSize[2]+(gridSize[2]-1)*blockSize[2]*M_SQRT3_2);
+    glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+             lattice->gridSize[1]*lattice->gridScale[1],
+             lattice->gridScale[2]+(lattice->gridSize[2]-1)*lattice->gridScale[2]*M_SQRT3_2);
     glBegin(GL_QUADS);
     // bottom
     glNormal3f(0,0,1.0f);
     glTexCoord2f(1.0f,0.25f);
     glVertex3f(0.0f,0.0f,0.0f);
-    glTexCoord2f(1.0f,gridSize[0]+0.25f);
+    glTexCoord2f(1.0f,lattice->gridSize[0]+0.25f);
     glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(0,gridSize[0]+0.25f);
+    glTexCoord2f(0,lattice->gridSize[0]+0.25f);
     glVertex3f(1.0,1.0,0.0f);
     glTexCoord2f(0,0.25f);
     glVertex3f(0.0,1.0,0.0f);
@@ -366,9 +209,9 @@ void Catoms2DWorld::glDraw() {
     glVertex3f(0.0f,0.0f,1.0f);
     glTexCoord2f(0,0.25f);
     glVertex3f(0.0,1.0,1.0f);
-    glTexCoord2f(0,gridSize[0]+0.25f);
+    glTexCoord2f(0,lattice->gridSize[0]+0.25f);
     glVertex3f(1.0,1.0,1.0f);
-    glTexCoord2f(1.0f,gridSize[0]+0.25f);
+    glTexCoord2f(1.0f,lattice->gridSize[0]+0.25f);
     glVertex3f(1.0f,0.0f,1.0f);
     // left
     glNormal3f(1.0f,0,0);
@@ -376,17 +219,17 @@ void Catoms2DWorld::glDraw() {
     glVertex3f(0.0f,0.0f,0.0f);
     glTexCoord2f(1.0f,0.25f*M_SQRT3_2);
     glVertex3f(0.0f,1.0f,0.0f);
-    glTexCoord2f(1.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
+    glTexCoord2f(1.0f,(lattice->gridSize[2]+0.25f)*M_SQRT3_2);
     glVertex3f(0.0,1.0,1.0f);
-    glTexCoord2f(0.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
+    glTexCoord2f(0.0f,(lattice->gridSize[2]+0.25f)*M_SQRT3_2);
     glVertex3f(0.0,0.0,1.0f);
     // right
     glNormal3f(-1.0f,0,0);
     glTexCoord2f(0,0.25f*M_SQRT3_2);
     glVertex3f(1.0f,0.0f,0.0f);
-    glTexCoord2f(0.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
+    glTexCoord2f(0.0f,(lattice->gridSize[2]+0.25f)*M_SQRT3_2);
     glVertex3f(1.0,0.0,1.0f);
-    glTexCoord2f(1.0f,(gridSize[2]+0.25f)*M_SQRT3_2);
+    glTexCoord2f(1.0f,(lattice->gridSize[2]+0.25f)*M_SQRT3_2);
     glVertex3f(1.0,1.0,1.0f);
     glTexCoord2f(1.0f,0.25f*M_SQRT3_2);
     glVertex3f(1.0f,1.0f,0.0f);
@@ -395,16 +238,18 @@ void Catoms2DWorld::glDraw() {
     // draw hexa
     glPushMatrix();
     glBindTexture(GL_TEXTURE_2D,idTextureHexa);
-    glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],blockSize[2]+(gridSize[2]-1)*blockSize[2]*M_SQRT3_2);
-    float h=((gridSize[2]-1)+1.0/M_SQRT3_2)/2.0;
+    glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+             lattice->gridSize[1]*lattice->gridScale[1],
+             lattice->gridScale[2]+(lattice->gridSize[2]-1)*lattice->gridScale[2]*M_SQRT3_2);
+    float h=((lattice->gridSize[2]-1)+1.0/M_SQRT3_2)/2.0;
     glBegin(GL_QUADS);
     // back
     glNormal3f(0,-1.0,0);
     glTexCoord2f(0,0);
     glVertex3f(0.0f,1.0f,0.0f);
-    glTexCoord2f(gridSize[0]/3.0f,0);
+    glTexCoord2f(lattice->gridSize[0]/3.0f,0);
     glVertex3f(1.0f,1.0f,0.0f);
-    glTexCoord2f(gridSize[0]/3.0f,h);
+    glTexCoord2f(lattice->gridSize[0]/3.0f,h);
     glVertex3f(1.0f,1.0,1.0f);
     glTexCoord2f(0,h);
     glVertex3f(0.0,1.0,1.0f);
@@ -414,9 +259,9 @@ void Catoms2DWorld::glDraw() {
     glVertex3f(0.0f,0.0f,0.0f);
     glTexCoord2f(0,h);
     glVertex3f(0.0,0.0,1.0f);
-    glTexCoord2f(gridSize[0]/3.0f,h);
+    glTexCoord2f(lattice->gridSize[0]/3.0f,h);
     glVertex3f(1.0f,0.0,1.0f);
-    glTexCoord2f(gridSize[0]/3.0f,0);
+    glTexCoord2f(lattice->gridSize[0]/3.0f,0);
     glVertex3f(1.0f,0.0f,0.0f);
     glEnd();
     glPopMatrix();
@@ -429,7 +274,7 @@ void Catoms2DWorld::glDraw() {
 
 void Catoms2DWorld::glDrawId() {
     glPushMatrix();
-    glTranslatef(0.5*blockSize[0],0,0.5*blockSize[2]);
+    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
     glDisable(GL_TEXTURE_2D);
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
@@ -444,7 +289,7 @@ void Catoms2DWorld::glDrawId() {
 
 void Catoms2DWorld::glDrawIdByMaterial() {
     glPushMatrix();
-    glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
+    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 
     glDisable(GL_TEXTURE_2D);
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
@@ -469,7 +314,7 @@ void Catoms2DWorld::loadTextures(const string &str) {
 
 void Catoms2DWorld::updateGlData(BuildingBlock*blc) {
     cout << "update posgrid:" << blc->position << endl;
-    updateGlData((Catoms2DBlock*)blc,gridToWorldPosition(blc->position));
+    updateGlData((Catoms2DBlock*)blc,lattice->gridToWorldPosition(blc->position));
 }
 
 void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vector3D &position) {
@@ -495,52 +340,18 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vector3D &position, do
     }
 }
 
-Cell3DPosition Catoms2DWorld::worldToGridPosition(Vector3D &pos) {
-    Cell3DPosition res;
-    res.pt[2] = round(pos[2] / (M_SQRT3_2 * blockSize[2]));
-    res.pt[1] = 0;
-    res.pt[0] = (int) (pos[0]/blockSize[0] - ((int)res.pt[2]%2)*0.5);
-    /*cout << pos[0]/blockSize[0] << endl;
-      cout << res.pt[0] << endl;
-      cout << res.pt[2] << endl;
-      cout << pos[2] << endl;*/
-    /*
-      cout << "------------computation worldToGridPosition--------------" << endl;
-      cout << pos << endl;
-      cout << res << endl;
-      cout << "---------------------------------------------------------" << endl;*/
-    return res;
-}
-
-Vector3D Catoms2DWorld::gridToWorldPosition(Cell3DPosition &pos) {
-    Vector3D res;
-
-    res.pt[2] = M_SQRT3_2*pos[2]*blockSize[2];
-    res.pt[1] = blockSize[1]/2.0;
-    res.pt[0] = (pos[0]+((int)(pos[2]+0.01)%2)*0.5)*blockSize[0]; // +0.01 because of round problem
-    /*cout << "------------computation gridToWorldPosition--------------" << endl;
-      cout << pos << endl;
-      cout << ((int)pos[2]%2)*0.5 << endl;
-      cout << (int)pos[2]%2 << endl;
-      cout << pos[2] << endl;
-      cout << (int)(pos[2]+0.01) << endl;
-      cout << res << endl;
-      cout << "---------------------------------------------------------" << endl;*/
-    return res;
-}
-
 bool Catoms2DWorld::areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2) {
     float distance = 0;
     for (int i = 0; i < 3; i++) {
         distance += powf(pos2[i] - pos1[i],2);
     }
     distance = sqrt(distance);
-    return (ceil(distance) == blockSize[0]);
+    return (ceil(distance) == lattice->gridScale[0]);
 }
 
 bool Catoms2DWorld::areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2) {
-    Vector3D wpos1 = gridToWorldPosition(pos1);
-    Vector3D wpos2 = gridToWorldPosition(pos2);
+    Vector3D wpos1 = lattice->gridToWorldPosition(pos1);
+    Vector3D wpos2 = lattice->gridToWorldPosition(pos2);
 
     return areNeighborsWorldPos(wpos1,wpos2);
 }
@@ -555,7 +366,8 @@ void Catoms2DWorld::menuChoice(int n) {
         Cell3DPosition pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
 
         addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
-        linkBlocks();
+        linkBlock(pos);
+        linkNeighbors(pos);
     } break;
     case 2 : {
         OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
@@ -587,81 +399,12 @@ void Catoms2DWorld::menuChoice(int n) {
 
 bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    Cell3DPosition pos = bb->position;
 
-    // cerr << "tabGlBlocks:" << endl;
-    // for(auto b: tabGlBlocks) {
-    //     cerr << b->blockId << " | ";
-    // }
-    // cerr << endl;
-    // cerr << "bb->blockId = " << bb->blockId << endl;
-
-    switch (numSelectedFace) {
-    case NeighborDirection::Left :
-        return (bb->position[0] > 0
-                && getGridPtr(int(bb->position[0]) - 1,
-                              int(bb->position[1]),
-                              int(bb->position[2])) == NULL);
-        break;
-    case NeighborDirection::Right :
-        return (bb->position[0] < gridSize[0] - 1
-                && getGridPtr(int(bb->position[0]) + 1,
-                              int(bb->position[1]),
-                              int(bb->position[2])) == NULL);
-        break;
-    case NeighborDirection::BottomLeft :
-        if (IS_EVEN((int)bb->position[2]))
-            return (bb->position[2] > 0
-                    && bb->position[0] > 0
-                    && getGridPtr(int(bb->position[0]) - 1,
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) - 1) == NULL);
-        else
-            return (bb->position[2] > 0
-                    && getGridPtr(int(bb->position[0]),
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) - 1) == NULL);
-
-        break;
-    case NeighborDirection::TopLeft :
-        if (IS_EVEN((int)bb->position[2]))
-            return (bb->position[2] < gridSize[2] - 1
-                    && bb->position[0] > 0
-                    && getGridPtr(int(bb->position[0]) - 1,
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) + 1) == NULL);
-        else
-            return (bb->position[2] < gridSize[2] - 1
-                    && getGridPtr(int(bb->position[0]),
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) + 1) == NULL);
-
-        break;
-    case NeighborDirection::BottomRight :
-        if (IS_ODD((int)bb->position[2]))
-            return (bb->position[2] > 0
-                    && bb->position[0] < gridSize[0] - 1
-                    && getGridPtr(int(bb->position[0]) + 1,
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) - 1) == NULL);
-        else
-            return (bb->position[2] > 0
-                    && getGridPtr(int(bb->position[0]),
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) - 1) == NULL);
-        break;
-    case NeighborDirection::TopRight :
-        if (IS_ODD((int)bb->position[2]))
-            return (bb->position[2] < gridSize[2] - 1
-                    && bb->position[0] < gridSize[0] - 1
-                    && getGridPtr(int(bb->position[0]) + 1,
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) + 1) == NULL);
-        else
-            return (bb->position[2] < gridSize[2] - 1
-                    && getGridPtr(int(bb->position[0]),
-                                  int(bb->position[1]),
-                                  int(bb->position[2]) + 1) == NULL);
-        break;
+    // PTHY: TODO: CHECK THIS (that positions are in order in vector)
+    if (isInRange(numSelectedFace, 0, 5)) { // Invalid Face
+        vector<Cell3DPosition> nPos = lattice->getNeighborhood(pos);
+        return lattice->isFree(nPos[numSelectedFace]);
     }
 
     return false;
@@ -702,16 +445,17 @@ void Catoms2DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) 
     for (int i=0; i<27; i++) { *gpm++ = wallCell; };
 
     int ix0 = (pos.x<1)?1-pos.x:0,
-        ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
+        ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
         iy0 = (pos.y<1)?1-pos.y:0,
-        iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
+        iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
         iz0 = (pos.z<1)?1-pos.z:0,
-        iz1 = (pos.z>gridSize[2]-2)?gridSize[2]-pos.z+1:3,
+        iz1 = (pos.z>lattice->gridSize[2]-2)?lattice->gridSize[2]-pos.z+1:3,
         ix,iy,iz;
     for (iz=iz0; iz<iz1; iz++) {
         for (iy=iy0; iy<iy1; iy++) {
             gpm = pm.grid+((iz*3+iy)*3+ix0);
-            grb = gridPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*gridSize[1])*gridSize[0]);
+            grb = (Catoms2DBlock **)lattice->grid+
+                (ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*lattice->gridSize[1])*lattice->gridSize[0]);
             for (ix=ix0; ix<ix1; ix++) {
                 *gpm++ = (*grb++)?fullCell:emptyCell;
             }
@@ -758,8 +502,8 @@ void Catoms2DWorld::exportConfiguration() {
 
 void Catoms2DWorld::initTargetGrid() {
     if (targetGrid) delete [] targetGrid;
-    int sz = gridSize[0]*gridSize[1]*gridSize[2];
-    targetGrid = new presence[gridSize[0]*gridSize[1]*gridSize[2]];
+    int sz = lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2];
+    targetGrid = new presence[lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2]];
     memset(targetGrid,emptyCell,sz*sizeof(presence));
 }
 

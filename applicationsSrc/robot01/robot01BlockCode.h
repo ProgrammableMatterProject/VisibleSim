@@ -51,7 +51,7 @@ typedef boost::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
 */
 
 class Robot01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
-	int gridSize[3];
+	short gridSize[3];
 	RobotBlocks::presence *targetGrid;
 	P2PNetworkInterface *block2Answer;
 	int nbreOfWaitedAnswers,blockToUnlock;
@@ -92,9 +92,9 @@ public:
 
 class MapMessage : public Message {
 public :
-	int gridSize[3];
+	short gridSize[3];
 	RobotBlocks::presence *targetGrid;
-	MapMessage(int*,RobotBlocks::presence*);
+	MapMessage(short*,RobotBlocks::presence*);
 	~MapMessage();
 };
 

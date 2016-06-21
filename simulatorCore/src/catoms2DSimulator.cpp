@@ -38,8 +38,6 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[],
 	buildNewBlockCode = catoms2DBlockCodeBuildingFunction;
 	newBlockCode = (BlockCode *(*)(BuildingBlock *))catoms2DBlockCodeBuildingFunction;
 	parseWorld(argc, argv);
-	parseBlockList();
-	parseTarget();
 
 	((Catoms2DWorld*)world)->linkBlocks();
 
@@ -66,10 +64,11 @@ void Catoms2DSimulator::deleteSimulator() {
 	delete((Catoms2DSimulator*)simulator);
 }
 
-void Catoms2DSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
-	Catoms2DWorld::createWorld(lx,ly,lz,argc,argv);
-	world = Catoms2DWorld::getWorld();
-	world->loadTextures("../../simulatorCore/catoms2DTextures");
+void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+								  int argc, char *argv[]) {
+    world = new Catoms2DWorld(gridSize, gridScale, argc,argv);
+    world->loadTextures("../../simulatorCore/catoms2DTextures");
+    World::setWorld(world);
 }
 
 void Catoms2DSimulator::loadScheduler() {

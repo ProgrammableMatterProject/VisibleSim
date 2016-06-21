@@ -17,74 +17,74 @@ using namespace std;
 namespace RobotBlocks {
 
 string NeighborDirection::getString(int d) {
-	switch(d) {
-		case Front:
-			return string("Front");
-			break;
-		case Back:
-			return string("Back");
-			break;
-		case Left:
-			return string("Left");
-			break;
-		case Right:
-			return string("Right");
-			break;
-		case Top:
-			return string("Top");
-			break;
-		case Bottom:
-			return string("Bottom");
-			break;
-		default:
-			cerr << "Unknown direction" << endl;
-			return string("Unknown");
-			break;
-	}
+    switch(d) {
+    case Front:
+	return string("Front");
+	break;
+    case Back:
+	return string("Back");
+	break;
+    case Left:
+	return string("Left");
+	break;
+    case Right:
+	return string("Right");
+	break;
+    case Top:
+	return string("Top");
+	break;
+    case Bottom:
+	return string("Bottom");
+	break;
+    default:
+	cerr << "Unknown direction" << endl;
+	return string("Unknown");
+	break;
+    }
 }
 
 int NeighborDirection::getOpposite(int d) {
-switch (Direction(d)) {
-		case Front:
-			return Back;
-			break;
-		case Back:
-			return Front;
-			break;
-		case Left:
-			return Right;
-			break;
-		case Right:
-			return Left;
-			break;
-		case Top:
-			return Bottom;
-			break;
-		case Bottom:
-			return Top;
-			break;
-		default:
-			ERRPUT << "*** ERROR *** : unknown face" << endl;
-			return -1;
-			break;
-	}
+    switch (Direction(d)) {
+    case Front:
+	return Back;
+	break;
+    case Back:
+	return Front;
+	break;
+    case Left:
+	return Right;
+	break;
+    case Right:
+	return Left;
+	break;
+    case Top:
+	return Bottom;
+	break;
+    case Bottom:
+	return Top;
+	break;
+    default:
+	ERRPUT << "*** ERROR *** : unknown face" << endl;
+	return -1;
+	break;
+    }
 }
 
 RobotBlocksBlock::RobotBlocksBlock(int bId, RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) : BaseSimulator::BuildingBlock(bId) {
-	OUTPUT << "RobotBlocksBlock constructor" << endl;
-	for (int i=0; i<6; i++) {
-		tabInterfaces[i] = new P2PNetworkInterface(this);
-	}
-	buildNewBlockCode = robotBlocksBlockCodeBuildingFunction;
-	blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
- }
+    OUTPUT << "RobotBlocksBlock constructor" << endl;
+    for (int i=0; i<6; i++) {
+	tabInterfaces[i] = new P2PNetworkInterface(this);
+    }
+    buildNewBlockCode = robotBlocksBlockCodeBuildingFunction;
+    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+}
 
 RobotBlocksBlock::~RobotBlocksBlock() {
-	OUTPUT << "RobotBlocksBlock destructor " << blockId << endl;
+    OUTPUT << "RobotBlocksBlock destructor " << blockId << endl;
 }
 
 void RobotBlocksBlock::setPrevNext(int prev,int next) {
-	getWorld()->updateGlData(this,prev,next);
+    getWorld()->updateGlData(this,prev,next);
 }
 
 void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next) {
@@ -93,22 +93,22 @@ void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetw
 	RobotBlocksBlock*rb = (RobotBlocksBlock*)(prev->hostBlock);
 	prevId = rb->blockId;
     }
-	  if (next) {
+    if (next) {
 	RobotBlocksBlock*rb = (RobotBlocksBlock*)(next->hostBlock);
 	nextId = rb->blockId;
     }
     //cout << (prev?prev->hostBlock->blockId:-1) << "," << (next?next->hostBlock->blockId:-1) << endl;
-	getWorld()->updateGlData(this,prevId,nextId);
+    getWorld()->updateGlData(this,prevId,nextId);
 }
 
 NeighborDirection::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
-	if( !given_interface) {
-		return NeighborDirection::Direction(0);
-	}
-	for( int i(0); i < 6; ++i) {
-		if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
-	}
+    if( !given_interface) {
 	return NeighborDirection::Direction(0);
+    }
+    for( int i(0); i < 6; ++i) {
+	if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+    }
+    return NeighborDirection::Direction(0);
 }
 
 P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const PointRel3D &pos) {
@@ -123,8 +123,8 @@ P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const Poin
 }
 
 std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb) {
-  stream << bb.blockId << "\tcolor: " << bb.color;
-  return stream;
+    stream << bb.blockId << "\tcolor: " << bb.color;
+    return stream;
 }
 
 }

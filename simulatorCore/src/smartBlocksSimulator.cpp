@@ -22,8 +22,6 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[],
     buildNewBlockCode = smartBlocksBlockCodeBuildingFunction;
     newBlockCode = (BlockCode *(*)(BuildingBlock *))smartBlocksBlockCodeBuildingFunction;
     parseWorld(argc, argv);
-    parseBlockList();
-    parseTarget();
 
     ((SmartBlocksWorld*)world)->linkBlocks();
 
@@ -47,15 +45,17 @@ void SmartBlocksSimulator::deleteSimulator() {
     simulator = NULL;
 }
 
-void SmartBlocksSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
-    SmartBlocksWorld::createWorld(lx,ly,argc,argv);
-    world = SmartBlocksWorld::getWorld();
+void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+				     int argc, char *argv[]) {
+    world = new SmartBlocksWorld(gridSize, gridScale, argc,argv);
     world->loadTextures("../../simulatorCore/smartBlocksTextures");
+    World::setWorld(world);
 }
 
 void SmartBlocksSimulator::loadScheduler() {
     SmartBlocksScheduler::createScheduler();
     scheduler = SmartBlocksScheduler::getScheduler();
+    cerr << "sched" << scheduler << endl;
 }
 
 void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,

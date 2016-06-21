@@ -131,7 +131,7 @@ void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     getScheduler()->scheduleLock(new RemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
 }
 
-void BlinkyBlocksBlock::stop(uint64_t date, State s) {
+void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
     OUTPUT << "Simulator: stop scheduled" << endl;
     lock();
     state = s;

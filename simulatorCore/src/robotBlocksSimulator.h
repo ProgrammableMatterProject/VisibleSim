@@ -21,39 +21,40 @@ namespace RobotBlocks {
 class RobotBlocksSimulator : public BaseSimulator::Simulator {
 protected:
 
-	RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksCodeBuildingFunction)(RobotBlocksBlock*));
-	virtual ~RobotBlocksSimulator();
+    RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksCodeBuildingFunction)(RobotBlocksBlock*));
+    virtual ~RobotBlocksSimulator();
 
 public:
-   bool testMode;
+    bool testMode;
 
-	static void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
-	static void deleteSimulator();
+    static void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
+    static void deleteSimulator();
 
-	static RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
+    static RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
 
-	static RobotBlocksSimulator* getSimulator() {
-		assert(simulator != NULL);
-		return((RobotBlocksSimulator*)simulator);
-	}
+    static RobotBlocksSimulator* getSimulator() {
+	assert(simulator != NULL);
+	return((RobotBlocksSimulator*)simulator);
+    }
 
-	void loadScheduler();
-	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
-	void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		       (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-	void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
+    void loadScheduler();
+    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+		   int argc, char *argv[]);
+    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
 
-	void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
+    void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
 
-   void help();
+    void help();
 };
 
 inline void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) {
-	RobotBlocksSimulator::createSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
+    RobotBlocksSimulator::createSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
 }
 
 inline void deleteSimulator() {
-	RobotBlocksSimulator::deleteSimulator();
+    RobotBlocksSimulator::deleteSimulator();
 }
 
 inline RobotBlocksSimulator* getSimulator() { return(RobotBlocksSimulator::getSimulator()); }

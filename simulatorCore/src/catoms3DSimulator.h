@@ -21,41 +21,42 @@ namespace Catoms3D {
 class Catoms3DSimulator : public BaseSimulator::Simulator {
 protected:
 
-	Catoms3DSimulator(int argc, char *argv[],
-			  Catoms3DBlockCode *(*catoms3DCodeBuildingFunction)(Catoms3DBlock*));
-	virtual ~Catoms3DSimulator();
+    Catoms3DSimulator(int argc, char *argv[],
+		      Catoms3DBlockCode *(*catoms3DCodeBuildingFunction)(Catoms3DBlock*));
+    virtual ~Catoms3DSimulator();
 
 public:
-	bool testMode;
+    bool testMode;
 
-	static void createSimulator(int argc, char *argv[],
-				    Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*));
-	static void deleteSimulator();
+    static void createSimulator(int argc, char *argv[],
+				Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*));
+    static void deleteSimulator();
 
-	static Catoms3DBlockCode *(*buildNewBlockCode)(Catoms3DBlock*);
+    static Catoms3DBlockCode *(*buildNewBlockCode)(Catoms3DBlock*);
 
-	static Catoms3DSimulator* getSimulator() {
-		assert(simulator != NULL);
-		return((Catoms3DSimulator*)simulator);
-	}
+    static Catoms3DSimulator* getSimulator() {
+	assert(simulator != NULL);
+	return((Catoms3DSimulator*)simulator);
+    }
 
-	void loadScheduler();
-	void loadWorld(int lx, int ly, int lz, int argc, char *argv[]);
-	void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		       (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-	void parseSkeleton();
+    void loadScheduler();
+    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+		   int argc, char *argv[]);
+    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    void parseSkeleton();
 
-	void printInfo() { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
-	void help();
+    void printInfo() { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
+    void help();
 };
 
 inline void createSimulator(int argc, char *argv[],
 			    Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) {
-	Catoms3DSimulator::createSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
+    Catoms3DSimulator::createSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
 }
 
 inline void deleteSimulator() {
-	Catoms3DSimulator::deleteSimulator();
+    Catoms3DSimulator::deleteSimulator();
 }
 
 inline Catoms3DSimulator* getSimulator() { return(Catoms3DSimulator::getSimulator()); }

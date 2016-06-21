@@ -41,15 +41,15 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 	bool isLoaded = xmlDoc->LoadFile();
 
 	if (!isLoaded) {
-		cerr << "Could not load configuration file :" << confFileName << endl;
+		cerr << "error: Could not load configuration file :" << confFileName << endl;
 		exit(EXIT_FAILURE);
 	} else {
 		xmlWorldNode = xmlDoc->FirstChild("world");
 		if (xmlWorldNode) {
 			OUTPUT << "\033[1;34m  " << confFileName << " successfully loaded "<< "\033[0m" << endl;
 		} else {
-			ERRPUT << "\033[1;31m" << "Could not find root 'world' element in configuration file" << "\033[0m" << endl;
-			exit(1);
+			ERRPUT << "\033[1;31m" << "error: Could not find root 'world' element in configuration file" << "\033[0m" << endl;
+			exit(EXIT_FAILURE);
 		}
 	}
 
@@ -90,7 +90,6 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 			cerr << "warning: MeldInterpreter debugging not implemented yet" << endl;
 		}
 	}
-
 }
 
 Simulator::~Simulator() {
@@ -109,7 +108,7 @@ Simulator::~Simulator() {
 		//Not sure if there is something to do, i think not
 	}
 
-	deleteScheduler();
+	// deleteScheduler();
 	deleteWorld();
 }
 
@@ -163,16 +162,42 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			maximumDate = t;
 		}
 
-		loadWorld(lx, ly, lz, argc, argv);
+		// Get Blocksize
+		float blockSize[3] = {0.0,0.0,0.0};
+		xmlBlockListNode = xmlWorldNode->FirstChild("blockList");
+		if (xmlBlockListNode) {
+			TiXmlElement *blockListElement = xmlBlockListNode->ToElement();
+			attr = blockListElement->Attribute("blockSize");
+			if (attr) {
+				string str(attr);
+				int pos1 = str.find_first_of(','),
+					pos2 = str.find_last_of(',');
+				blockSize[0] = atof(str.substr(0,pos1).c_str());
+				blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
+				blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
+			}
+		}
 
+		// Create the simulation world and lattice
+		loadWorld(Cell3DPosition(lx,ly,lz),
+				  Vector3D(blockSize[0], blockSize[1], blockSize[2]), argc, argv);
 	} else {
-		ERRPUT << "ERROR : NO world in XML file" << endl;
+		ERRPUT << "ERROR : No world in XML configuration file" << endl;
 		exit(1);
 	}
 
+	// Instantiate and configure the scheduler
 	loadScheduler();
 	if (maximumDate) scheduler->setMaximumDate(maximumDate);
 
+	// Parse the remaining items
+	parseCameraAndSpotlight();
+	parseBlockList();
+	parseTarget();
+}
+
+void Simulator::parseCameraAndSpotlight() {
 	// loading the camera parameters
 	TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
 	if (nodeConfig) {
@@ -263,13 +288,11 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 }
 
 void Simulator::parseBlockList() {
-	float blockSize[3];
 	int currentID = 1;
 
-	TiXmlNode *nodeBlock = xmlWorldNode->FirstChild("blockList");
-	if (nodeBlock) {
+	TiXmlElement* element = xmlBlockListNode->ToElement();
+	if (xmlBlockListNode) {
 		Color defaultColor = DARKGREY;
-		TiXmlElement* element = nodeBlock->ToElement();
 		const char *attr= element->Attribute("color");
 		if (attr) {
 			string str(attr);
@@ -280,21 +303,9 @@ void Simulator::parseBlockList() {
 			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 			OUTPUT << "new default color :" << defaultColor << endl;
 		}
-		attr= element->Attribute("blockSize");
-		if (attr) {
-			string str(attr);
-			int pos1 = str.find_first_of(','),
-				pos2 = str.find_last_of(',');
-			blockSize[0] = atof(str.substr(0,pos1).c_str());
-			blockSize[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str());
-			blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
-			OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
-			world->setBlocksSize(blockSize);
-		}
-
 #if 1
 		/* Reading a catoms */
-		TiXmlNode *block = nodeBlock->FirstChild("block");
+		TiXmlNode *block = xmlBlockListNode->FirstChild("block");
 		Cell3DPosition position;
 		Color color;
 		bool master;
@@ -336,12 +347,13 @@ void Simulator::parseBlockList() {
 				OUTPUT << "master : " << master << endl;
 			}
 
+			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
 			loadBlock(element, currentID++, newBlockCode, position, color, master);
 
 			block = block->NextSibling("block");
 		} // end while (block)
 
-		block = nodeBlock->FirstChild("blocksLine");
+		block = xmlBlockListNode->FirstChild("blocksLine");
 		int line = 0, plane = 0;
 		while (block) {
 			line = 0;
@@ -384,7 +396,7 @@ void Simulator::parseBlockList() {
 		} // end while (nodeBlock)*/
 #endif
 	} else { // end if(nodeBlock)
-		cerr << "no Block List" << endl;
+		cerr << "warning: no Block List in configuration file" << endl;
 	}
 }
 
@@ -444,7 +456,7 @@ void Simulator::parseTarget() {
 			block = block->NextSibling("targetLine");
 		}
 	} else {
-		ERRPUT << "No target grid" << endl;
+		ERRPUT << "warning: No target grid in configuration file" << endl;
 	}
 
 	loadTargetAndCapabilities(targetCells);

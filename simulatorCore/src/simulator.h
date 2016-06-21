@@ -54,6 +54,7 @@ protected:
 
 	TiXmlDocument *xmlDoc;		//!< TinyXMLDocument for the configuration file
 	TiXmlNode* xmlWorldNode; //!< world XML node from the configuration file
+	TiXmlNode* xmlBlockListNode; //!< blockList XML node from the configuration file
 
 	BlockCode *(*newBlockCode)(BuildingBlock*); //!< Function pointer to the target BlockCode
 
@@ -69,6 +70,15 @@ protected:
 	 *
 	 */
 	void parseWorld(int argc, char*argv[]);
+
+	/*! \fn parseCameraAndSpotlight();
+	 *  \brief Parses the configuration file for Camera and Spotlight information
+	 *
+	 *  Calls the loadWorld virtual function to instantiate the right subclass of World with the parsed data.
+	 *
+	 *
+	 */
+	void parseCameraAndSpotlight();
 
 	/*! \fn parseBlockList()
 	 *  \brief Parses the configuration for block information common to all blocks
@@ -93,14 +103,14 @@ protected:
 	/*! \fn virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[])
 	 *  \brief Calls the createWorld function from the target world subclass to instantiate it
 	 *
-	 *  \param lx width of the grid
-	 *  \param ly depth of the grid
-	 *  \param lz height of the grid
+	 *  \param gridSize the size of the simulation grid
+	 *  \param gridScale the real size of a block
 	 *  \param argc The number of command line arguments
 	 *  \param argv The command line arguments
 	 *
 	 */
-	virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[]) = 0;
+	virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+						   int argc, char *argv[]) = 0;
 
 	/*! \fn virtual void loadScheduler()
 	 *  \brief Calls the createScheduler function from the target scheduler subclass to instantiate it

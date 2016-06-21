@@ -1,4 +1,4 @@
-SUBDIRS = noneCatoms2D bbCycle robot02 robot01 smartBlocks1 sbReconf sphereCatoms3D reconfCatoms2D
+SUBDIRS = noneCatoms2D bbCycle robot01 smartBlocks1 sphereCatoms3D sbReconf
 
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection robot02 map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
 

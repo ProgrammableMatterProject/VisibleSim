@@ -30,7 +30,6 @@ Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *
 	buildNewBlockCode = catoms3DBlockCodeBuildingFunction;
 	newBlockCode = (BlockCode *(*)(BuildingBlock *))catoms3DBlockCodeBuildingFunction;
 	parseWorld(argc, argv);
-	parseBlockList();
 
 	testMode = false;
 	((Catoms3DWorld*)world)->linkBlocks();
@@ -51,10 +50,11 @@ void Catoms3DSimulator::createSimulator(int argc, char *argv[], Catoms3DBlockCod
 	simulator =  new Catoms3DSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
 }
 
-void Catoms3DSimulator::loadWorld(int lx, int ly, int lz, int argc, char *argv[]) {
-	Catoms3DWorld::createWorld(lx,ly,lz,argc,argv);
-	world = World::getWorld();
-	world->loadTextures("../../simulatorCore/catoms3DTextures");
+void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+				      int argc, char *argv[]) {
+    world = new Catoms3DWorld(gridSize, gridScale, argc, argv);
+    world->loadTextures("../../simulatorCore/catoms3DTextures");
+    World::setWorld(world);
 }
 
 void Catoms3DSimulator::loadScheduler() {
