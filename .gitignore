@@ -34,6 +34,8 @@
 .\#*
 *.swp
 *.log
+*.bak
+*.old
 
 # External tools config files
 .projectile
