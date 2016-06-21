@@ -8,10 +8,10 @@
 #include <iostream>
 #include <vector>
 #include "world.h"
-#include "BlinkyBlocksWorld.h"
-#include "BlinkyBlocksBlock.h"
-#include "BuildingBlock.h"
-#include "openGlViewer.h"
+#include "blinkyBlocksWorld.h"
+#include "blinkyBlocksBlock.h"
+#include "buildingBlock.h"
+#include "openglViewer.h"
 #include "camera.h"
 
 using namespace std;
@@ -43,23 +43,23 @@ namespace BaseSimulator {
     };
 
     // // class ConfigExporter2D : ConfigExporter {
-        
+
     // // protected:
-        
+
     // // public:
-        
+
     // // };
-    
+
     // class ConfigExporter3D : ConfigExporter {
-        
+
     // protected:
-    //     virtual static ConfigExporter* getConfigExporter() = 0;        
+    //     virtual static ConfigExporter* getConfigExporter() = 0;
     // public:
-        
+
     // };
 
     using namespace BlinkyBlocks;
-    
+
     class BlinkyBlocksConfigExporter : public ConfigExporter { // : ConfigExporter3D
         BlinkyBlocksWorld *world;
     public:
@@ -70,7 +70,7 @@ namespace BaseSimulator {
         virtual void exportBlockList();
         virtual void exportBlock(BuildingBlock *bb);
     };
-    
+
     // class Catoms3DConfigExporter : ConfigExporter3D {
 
     // };
@@ -85,13 +85,13 @@ namespace BaseSimulator {
 
     // class SmartBlocksConfigExporter : ConfigExporter2D {
 
-    // };        
+    // };
 
     template<typename T>
     static string toXmlAttribute(T a, T b) {
         std::ostringstream out;
         out << a << "," << b;
-        return out.str();       
+        return out.str();
     }
     template string toXmlAttribute<int>(int, int);
 
@@ -99,12 +99,12 @@ namespace BaseSimulator {
     static string toXmlAttribute(T a, T b, T c) {
         std::ostringstream out;
         out << a << "," << b << "," << c ;
-        return out.str();       
+        return out.str();
     }
     template string toXmlAttribute<int>(int, int, int);
     template string toXmlAttribute<double>(double, double, double);
     template string toXmlAttribute<short>(short, short, short);
-    template string toXmlAttribute<float>(float, float, float);   
+    template string toXmlAttribute<float>(float, float, float);
 
 }
 #endif // CONFIGEXPORTER_H__

@@ -15,7 +15,7 @@
 #include "scheduler.h"
 #include "world.h"
 #include "commandLine.h"
-#include "BlockCode.h"
+#include "blockCode.h"
 
 using namespace std;
 

@@ -17,7 +17,7 @@
 #include "glBlock.h"
 #include "blockCode.h"
 #include "clock.h"
-#include "Cell3DPosition.h"
+#include "cell3DPosition.h"
 
 class Event;
 typedef boost::shared_ptr<Event> EventPtr;
