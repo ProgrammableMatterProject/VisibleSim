@@ -62,7 +62,7 @@ public:
     /**
      * \brief Indicates if cell at position p has a block on it
      * \param p The position of the cell to test
-     * \return true if cell at position p has a block on it
+     * \return true if cell at position p has a block on it, false otherwise or if p is out of grid
      */
     bool cellHasBlock(const Cell3DPosition &p);
     /**
@@ -176,7 +176,7 @@ public:
  */
 class HLattice : public Lattice2D {
     // This is in the same order as pickingTextures / NeighborDirections
-    vector<Cell3DPosition> nCellsEven{ 
+    vector<Cell3DPosition> nCellsOdd{ 
         Cell3DPosition(1,0,0),  // RIGHT
             Cell3DPosition(1,0,1), // TOP-RIGHT
             Cell3DPosition(0,0,1), // TOP-LEFT
@@ -184,7 +184,7 @@ class HLattice : public Lattice2D {
             Cell3DPosition(0,0,-1), // BOTTOM-LEFT
             Cell3DPosition(1,0,-1)  // BOTTOM-RIGHT
             }; //!< Vector containing relative position of neighboring cells for even(z) cells    
-    vector<Cell3DPosition> nCellsOdd{
+    vector<Cell3DPosition> nCellsEven{
         Cell3DPosition(1,0,0),  // RIGHT
             Cell3DPosition(0,0,1), // TOP-RIGHT
             Cell3DPosition(-1,0,1), // TOP-LEFT
@@ -215,7 +215,7 @@ public:
  * 
  */
 class FCCLattice : public Lattice3D {
-    vector<Cell3DPosition> nCellsEven{
+    vector<Cell3DPosition> nCellsOdd{
         // z + 1
         Cell3DPosition(0,0,1),
             Cell3DPosition(0,1,1),
@@ -233,7 +233,7 @@ class FCCLattice : public Lattice3D {
             Cell3DPosition(1,1,-1)
             }; //!< Vector containing relative position of neighboring cells for even(z) cells;
 
-    vector<Cell3DPosition> nCellsOdd{
+    vector<Cell3DPosition> nCellsEven{
         // z + 1
         Cell3DPosition(-1,-1,1),
             Cell3DPosition(-1,0,1),
