@@ -1,5 +1,5 @@
 /*! \file lattice.h
- * \brief Header file for the lattice simulation environment. 
+ * \brief Header file for the lattice simulation environment.
  *
  * Inspired by github.com/nazandre:VisibleSimConfigGenerator
  *
@@ -13,23 +13,23 @@
 
 #include "buildingBlock.h"
 #include "vector3D.h"
-#include "Cell3DPosition.h"
+#include "cell3DPosition.h"
 
 namespace BaseSimulator {
 
 /*! \brief Abstract class Lattice
- * 
+ *
  */
 class Lattice {
 
-public:    
+public:
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
-    
+
     Lattice();
     /**
-     * \brief Builds a new lattice with the provided parameters 
+     * \brief Builds a new lattice with the provided parameters
      * \param gsz The size of the grid
      * \param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
@@ -87,7 +87,7 @@ public:
      * \brief Returns the location of all neighbor cells for cell pos
      * \param pos The cell to consider
      * \return A vector containing the position of all cells (empty and full) around pos
-     */    
+     */
     std::vector<Cell3DPosition> getNeighborhood(const Cell3DPosition &pos);
 
     /**
@@ -117,7 +117,7 @@ public:
 };
 
 /*! \brief 2-Dimensional Lattice abstract class
- * 
+ *
  */
 class Lattice2D : public Lattice {
 
@@ -132,7 +132,7 @@ public:
 };
 
 /*! \brief 3-Dimensional Lattice abstract class
- * 
+ *
  */
 class Lattice3D : public Lattice {
 
@@ -147,9 +147,9 @@ public:
 };
 
 /*! \brief Square 2D Lattice
- * 
+ *
  * Used by SmartBlocks
- * 
+ *
  */
 class SLattice : public Lattice2D {
     vector<Cell3DPosition> nCells{
@@ -170,20 +170,20 @@ public:
 };
 
 /*! \brief Hexagonal 2D Lattice
- * 
+ *
  * Used by Catoms2D blocks. Be careful, the 2 dimensions are **x and z**.
- * 
+ *
  */
 class HLattice : public Lattice2D {
     // This is in the same order as pickingTextures / NeighborDirections
-    vector<Cell3DPosition> nCellsOdd{ 
+    vector<Cell3DPosition> nCellsOdd{
         Cell3DPosition(1,0,0),  // RIGHT
             Cell3DPosition(1,0,1), // TOP-RIGHT
             Cell3DPosition(0,0,1), // TOP-LEFT
             Cell3DPosition(-1,0,0), // LEFT
             Cell3DPosition(0,0,-1), // BOTTOM-LEFT
             Cell3DPosition(1,0,-1)  // BOTTOM-RIGHT
-            }; //!< Vector containing relative position of neighboring cells for even(z) cells    
+            }; //!< Vector containing relative position of neighboring cells for even(z) cells
     vector<Cell3DPosition> nCellsEven{
         Cell3DPosition(1,0,0),  // RIGHT
             Cell3DPosition(0,0,1), // TOP-RIGHT
@@ -210,9 +210,9 @@ public:
 };
 
 /*! \brief 3D Face-Centered Cubic Lattice
- * 
+ *
  * Used by Catoms3D
- * 
+ *
  */
 class FCCLattice : public Lattice3D {
     vector<Cell3DPosition> nCellsOdd{
@@ -250,7 +250,7 @@ class FCCLattice : public Lattice3D {
             Cell3DPosition(0,0,-1),
             Cell3DPosition(0,-1,-1)
             }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
-public:    
+public:
     FCCLattice();
     FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     ~FCCLattice();
@@ -261,9 +261,9 @@ public:
 };
 
 /*! \brief 3D Simple Cubic Lattice
- * 
+ *
  * Used by BlinkyBlocks and RobotBlocks
- * 
+ *
  */
 class SCLattice : public Lattice3D {
     vector<Cell3DPosition> nCells{
@@ -273,7 +273,7 @@ class SCLattice : public Lattice3D {
             Cell3DPosition(1,0,0),  // FRONT
             Cell3DPosition(0,-1,0),  // LEFT
             Cell3DPosition(0,0,1)  // TOP
-            }; //!< Vector containing relative position of neighboring cells 
+            }; //!< Vector containing relative position of neighboring cells
 public:
     SCLattice();
     SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);

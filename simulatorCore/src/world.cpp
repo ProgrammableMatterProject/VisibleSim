@@ -24,12 +24,12 @@ World::World(int argc, char *argv[]) {
     numSelectedFace=0;
     numSelectedBlock=0;
     menuId = 0;
-    
+
     if (world == NULL) {
 	world = this;
-	
+
 	GlutContext::init(argc,argv);
-	
+
 	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
 	camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
 	camera->setTarget(Vector3D(0,0,1.0));
@@ -97,7 +97,7 @@ void World::linkBlocks() {
 	    for(p.pt[0] = 0; p[0] < lattice->gridSize[0]; p.pt[0]++) { // x
 		if (lattice->cellHasBlock(p)) {
 		    // cerr << "l.cellHasBlock(" << p << "/" << lattice->getIndex(p) << ")  = true ; id: "
-		    // 	 << lattice->getBlock(p)->blockId << endl; 
+		    // 	 << lattice->getBlock(p)->blockId << endl;
 		    linkBlock(p);
 		}
 	    }
@@ -107,7 +107,7 @@ void World::linkBlocks() {
 
 void World::linkNeighbors(const Cell3DPosition &pos) {
     vector<Cell3DPosition> nCells = lattice->getActiveNeighborCells(pos);
-					
+
     // Check neighbors for each interface
     for (Cell3DPosition nPos : nCells) {
 	linkBlock(nPos);
@@ -120,10 +120,10 @@ void World::linkNeighbors(const Cell3DPosition &pos) {
 //     vector<Cell3DPosition> nCells;
 //     Cell3DPosition nP;
 //     BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);
-				
+
 //     // There is a block on cell pos
 //     nCells = lattice->getNeighborhood(ptrBlock);
-					
+
 //     // Check neighbors for each interface
 //     for (int i = 0; i < NeighborDirection::; i++) {
 // 	nP = pos + nCells[i];
@@ -132,7 +132,7 @@ void World::linkNeighbors(const Cell3DPosition &pos) {
 // 	    (ptrBlock)->getInterface(NeighborDirection::Direction(i))->
 // 		connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
 // 						      NeighborDirection::getOpposite(i))));
-							
+
 // 	    OUTPUT << "connection #" << (ptrBlock)->blockId <<
 // 		" to #" << ptrNeighbor->blockId << endl;
 // 	} else {
@@ -174,20 +174,20 @@ void World::generateIds(int n, int* ids) {
     boost::rand48 generator = boost::rand48(time(NULL));
 
     for (int i = 0; i < n; i++) {
-	ids[i] = i+1;
+	    ids[i] = i+1;
     }
 
     if (n==1) {
-	return;
+        return;
     }
 
     // randomly switch 2n times
     for (int i = 0; i < n*2; i++) {
-	do {
-	    a = generator() % n;
-	    b = generator() % n;
-	} while (a == b);
-	swap(&ids[a], &ids[b]);
+        do {
+            a = generator() % n;
+            b = generator() % n;
+        } while (a == b);
+        swap(&ids[a], &ids[b]);
     }
 }
 
@@ -204,12 +204,12 @@ void World::tapBlock(uint64_t date, int bId) {
 
 void World::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
-	GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-	GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
-	GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
-	GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
-	GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-	GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
+        GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
+        GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
+        GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
+        GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
+        GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
+        GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
