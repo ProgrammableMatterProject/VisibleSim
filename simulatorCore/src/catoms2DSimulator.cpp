@@ -72,8 +72,8 @@ void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
 }
 
 void Catoms2DSimulator::loadScheduler() {
-	Catoms2DScheduler::createScheduler();
-	scheduler = Catoms2DScheduler::getScheduler();
+	// CPPScheduler::createScheduler();
+	// scheduler = CPPScheduler::getScheduler();
 }
 
 void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,

@@ -8,39 +8,35 @@
 #ifndef CPPSCHEDULER_H_
 #define CPPSCHEDULER_H_
 
+#include <thread>
+#include <functional>
+
+#include "sema.h"
 #include "scheduler.h"
 #include "network.h"
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "trace.h"
 
-using namespace boost;
-
-namespace cppScheduler {
-
-class CppScheduler : public BaseSimulator::Scheduler {
+class CPPScheduler : public BaseSimulator::Scheduler {
 protected:
-	boost::thread *schedulerThread;
+	std::thread *schedulerThread;
 	int schedulerMode;
 
-	CppScheduler();
-	virtual ~CppScheduler();
+	CPPScheduler();
+	virtual ~CPPScheduler();
 	void* startPaused(/*void *param */);
 
 public:
-	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
+	Semaphore *sem_schedulerStart;
 
 	static void createScheduler();
 	static void deleteScheduler();
-	static CppScheduler* getScheduler() {
+	static CPPScheduler* getScheduler() {
 		assert(scheduler != NULL);
-		return((CppScheduler*)scheduler);
+		return((CPPScheduler*)scheduler);
 	}
 
 	void printInfo() {
-		OUTPUT << "I'm a CppScheduler" << endl;
+		OUTPUT << "I'm a CPPScheduler" << endl;
 	}
 
 	void start(int mode);
@@ -50,19 +46,16 @@ public:
 	}
 
 	inline int getMode() { return schedulerMode; }
-
 };
 
 inline void createScheduler() {
-	CppScheduler::createScheduler();
+	CPPScheduler::createScheduler();
 }
 
 inline void deleteScheduler() {
-	CppScheduler::deleteScheduler();
+	CPPScheduler::deleteScheduler();
 }
 
-inline CppScheduler* getScheduler() { return(CppScheduler::getScheduler()); }
-
-} // CppScheduler namespace
+inline CPPScheduler* getScheduler() { return(CPPScheduler::getScheduler()); }
 
 #endif /* CPPSCHEDULER_H_ */

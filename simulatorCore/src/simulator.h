@@ -48,8 +48,6 @@ protected:
 
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
 	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured
-	uint64_t maximumDate = 0;		//!< Simulation time limit for the scheduler
-
 	World *world;				//!< Simulation world to be instantiated and configured
 
 	TiXmlDocument *xmlDoc;		//!< TinyXMLDocument for the configuration file
@@ -70,6 +68,16 @@ protected:
 	 *
 	 */
 	void parseWorld(int argc, char*argv[]);
+
+	/*! \fn loadScheduler(int maximumDate)
+	 *  \brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock
+	 *
+	 *  MeldProcessScheduler, MeldInterpretScheduler, or CPPScheduler
+	 *
+	 *  \param maximumDate : maximum simulation date none by default
+	 *
+	 */
+	void loadScheduler(int maximumDate = 0);
 
 	/*! \fn parseCameraAndSpotlight();
 	 *  \brief Parses the configuration file for Camera and Spotlight information

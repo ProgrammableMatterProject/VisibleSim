@@ -17,6 +17,7 @@
 #include <boost/bind.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
+
 #include "events.h"
 #include "openglViewer.h"
 
@@ -118,12 +119,12 @@ public:
     }
 };
 
-inline void deleteScheduler() {
+static inline void deleteScheduler() {
 	Scheduler::deleteScheduler();
 }
 
-inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
-
+static inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
+    
 } // BaseSimulator namespace
 
 class ConsoleStream {

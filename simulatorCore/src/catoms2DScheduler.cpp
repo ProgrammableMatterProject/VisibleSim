@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+
 #include "catoms2DScheduler.h"
 #include "catoms2DSimulator.h"
 #include "catoms2DWorld.h"
@@ -16,15 +17,13 @@
 #include "trace.h"
 
 using namespace std;
-using namespace boost;
-using boost::asio::ip::tcp;
 
 namespace Catoms2D {
 
 Catoms2DScheduler::Catoms2DScheduler() {
 	OUTPUT << "Catoms2DScheduler constructor" << endl;
 	state = NOTREADY;
-	sem_schedulerStart = new boost::interprocess::interprocess_semaphore(0);
+	sem_schedulerStart = new Semaphore(0);
 	schedulerMode = SCHEDULER_MODE_REALTIME;
 	schedulerThread = new thread(bind(&Catoms2DScheduler::startPaused, this));
 }
@@ -158,7 +157,7 @@ void *Catoms2DScheduler::startPaused(/*void *param*/) {
 void Catoms2DScheduler::start(int mode) {
 	Catoms2DScheduler* sbs = (Catoms2DScheduler*)scheduler;
 	sbs->schedulerMode = mode;
-	sbs->sem_schedulerStart->post();
+	sbs->sem_schedulerStart->signal();
 }
 
 } // Catoms2D namespace

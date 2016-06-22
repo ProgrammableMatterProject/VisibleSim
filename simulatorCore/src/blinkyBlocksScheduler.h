@@ -22,14 +22,14 @@ namespace BlinkyBlocks {
     
 inline void createScheduler() {
 	switch(BaseSimulator::Simulator::getType()) {
-            case BaseSimulator::Simulator::MELDINTERPRET:
-                  MeldInterpret::MeldInterpretScheduler::createScheduler();
-            break;
-		case BaseSimulator::Simulator::MELDPROCESS:
-			MeldProcess::MeldProcessScheduler::createScheduler();
+	case BaseSimulator::Simulator::MELDINTERPRET:
+		MeldInterpret::MeldInterpretScheduler::createScheduler();
 		break;
-		case BaseSimulator::Simulator::CPP:
-			cppScheduler::CppScheduler::createScheduler();
+	case BaseSimulator::Simulator::MELDPROCESS:
+		MeldProcess::MeldProcessScheduler::createScheduler();
+		break;
+	case BaseSimulator::Simulator::CPP:
+		CPPScheduler::createScheduler();
 		break;
 	}
 
@@ -37,14 +37,14 @@ inline void createScheduler() {
 
 inline void deleteScheduler() {
 	switch(BaseSimulator::Simulator::getType()) {
-            case BaseSimulator::Simulator::MELDINTERPRET:
-                  MeldInterpret::MeldInterpretScheduler::deleteScheduler();
-            break;
-		case BaseSimulator::Simulator::MELDPROCESS:
-			MeldProcess::MeldProcessScheduler::deleteScheduler();
+	case BaseSimulator::Simulator::MELDINTERPRET:
+		MeldInterpret::MeldInterpretScheduler::deleteScheduler();
 		break;
-		case BaseSimulator::Simulator::CPP:
-			cppScheduler::CppScheduler::deleteScheduler();
+	case BaseSimulator::Simulator::MELDPROCESS:
+		MeldProcess::MeldProcessScheduler::deleteScheduler();
+		break;
+	case BaseSimulator::Simulator::CPP:
+		CPPScheduler::deleteScheduler();
 		break;
 	}
 }

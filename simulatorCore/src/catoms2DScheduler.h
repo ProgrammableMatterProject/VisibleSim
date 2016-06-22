@@ -8,22 +8,20 @@
 #ifndef CATOMS2DSCHEDULER_H_
 #define CATOMS2DSCHEDULER_H_
 
+#include <thread>
+#include <functional>
+
+#include "sema.h"
 #include "scheduler.h"
 #include "network.h"
 #include "catoms2DBlock.h"
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "trace.h"
-
-using namespace boost;
 
 namespace Catoms2D {
 
 class Catoms2DScheduler : public BaseSimulator::Scheduler {
 protected:
-	boost::thread *schedulerThread;
+	std::thread *schedulerThread;
 	//int schedulerMode;
 
 	Catoms2DScheduler();
@@ -31,7 +29,7 @@ protected:
 	void* startPaused(/*void *param */);
 
 public:
-	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
+    Semaphore *sem_schedulerStart;
 
 	static void createScheduler();
 	static void deleteScheduler();

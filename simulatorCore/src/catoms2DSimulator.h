@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "catoms2DBlockCode.h"
-#include "catoms2DScheduler.h"
 #include "catoms2DWorld.h"
 #include "trace.h"
 
