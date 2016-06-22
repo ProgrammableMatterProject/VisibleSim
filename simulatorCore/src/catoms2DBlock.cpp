@@ -44,42 +44,11 @@ NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2
     return NeighborDirection::Direction(0);
 }
   
-Cell3DPosition Catoms2DBlock::getPosition(NeighborDirection::Direction d) {
-    Cell3DPosition p = position;
-
-    switch(d) {
-    case NeighborDirection::BottomLeft:
-	if ((abs(p[2])%2) == 0) {
-	    p.pt[0]--;
-	}
-	p.pt[2]--;
-	break;
-    case NeighborDirection::Left:
-	p.pt[0]--;
-	break;
-    case NeighborDirection::TopLeft:    
-	if ((abs(p[2])%2) == 0) {
-	    p.pt[0]--;
-	}
-	p.pt[2]++;
-	break;
-    case NeighborDirection::TopRight:
-	if ((abs(p[2])%2) == 1) {
-	    p.pt[0]++;
-	}
-	p.pt[2]++;
-	break;
-    case NeighborDirection::Right:
-	p.pt[0]++;
-	break;
-    case NeighborDirection::BottomRight: 
-	if ((abs(p[2])%2) == 1) {
-	    p.pt[0]++;
-	}
-	p.pt[2]--;
-	break;
-    }
-    return p;
+Cell3DPosition Catoms2DBlock::getPosition(NeighborDirection::Direction d) {   
+    World *wrl = getWorld();
+    vector<Cell3DPosition> nCells = wrl->lattice->getRelativeConnectivity(position);
+    
+    return position + nCells[d];
 }
 
 Cell3DPosition Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
