@@ -121,6 +121,9 @@ HLattice::HLattice() : Lattice2D() {}
 HLattice::HLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
 HLattice::~HLattice() {}
 
+
+// If new blocks are added with different shapes for the same lattice, we may consider
+//  using a different function again for each block, or at least different sub operations
 Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     Vector3D res;
     
@@ -241,26 +244,16 @@ vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &
     return nCells;
 }
 
-// If new blocks are added with different shapes for the same lattice, we may consider
-//  using a different function again for each block, or at least different sub operations
 Vector3D SCLattice::gridToWorldPosition(const Cell3DPosition &pos) {    
-    Vector3D res;
-
-    res.pt[2] = M_SQRT3_2 * pos[2] * gridScale[2];
-    res.pt[1] = 0;
-    res.pt[0] = (pos[0] + ((int)(pos[2] + 0.01) % 2)) * 0.5 * gridScale[0]; // +0.01 bc of rounding issue
-
-    return res;
+    return Vector3D(pos[0] * gridScale[0],		 
+                    pos[1] * gridScale[1],		 
+                    pos[2] * gridScale[2]);
 }
 
 Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) {
-    Cell3DPosition res;
-
-    res.pt[2] = round(pos[2] / (M_SQRT3_2 * gridScale[2]));
-    res.pt[1] = 0;
-    res.pt[0] = round((pos[0]/gridScale[0] - ((int)res.pt[2]%2)*0.5));
-
-    return res;
+    return Cell3DPosition(pos[0] / gridScale[0],		 
+                          pos[1] / gridScale[1],		 
+                          pos[2] / gridScale[2]);
 }
 
 // std::vector<int> SCLattice::getActiveNeighborDirections(BuildingBlock *bb) {
