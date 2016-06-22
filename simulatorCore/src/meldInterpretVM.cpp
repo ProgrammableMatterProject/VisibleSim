@@ -327,7 +327,6 @@ unsigned char * MeldInterpretVM::arguments = NULL;
             tuple_type type = TUPLE_TYPE(rcvdTuple);
             size_t tuple_size = TYPE_SIZE(type);
             tuple_print(rcvdTuple, stderr);
-            fprintf("\n", stderr);
 
             if(!TYPE_IS_LINEAR(type) && !TYPE_IS_ACTION(type)) {
                   //tuple_queue *queue = receivedTuples + face;
