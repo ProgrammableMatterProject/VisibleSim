@@ -8,17 +8,16 @@
 #ifndef BLINKYBLOCKSWORLD_H_
 #define BLINKYBLOCKSWORLD_H_
 
+#include <blinkyBlocksScenario.h>
+#include <vector>
+#include <boost/asio.hpp>
+
 #include "openglViewer.h"
 #include "world.h"
 #include "vector3D.h"
 #include "blinkyBlocksBlock.h"
 #include "objLoader.h"
-#include <boost/asio.hpp>
 #include "trace.h"
-#include <blinkyBlocksScenario.h>
-#include <vector>
-
-#include "grid3D.h"
 
 namespace BlinkyBlocks {
 

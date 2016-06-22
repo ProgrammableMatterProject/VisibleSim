@@ -8,6 +8,9 @@
 #ifndef CATOMS2DBLOCK_H_
 #define CATOMS2DBLOCK_H_
 
+#include <boost/asio.hpp>
+#include <stdexcept>
+
 #include "buildingBlock.h"
 #include "catoms2DBlockCode.h"
 #include "catoms2DGlBlock.h"
@@ -15,8 +18,6 @@
 #include "catoms2DEvents.h"
 #include "catoms2DDirection.h"
 //#include "catoms2DMove.h"
-#include <boost/asio.hpp>
-#include <stdexcept>
 
 namespace Catoms2D {
 
@@ -26,7 +27,6 @@ class Catoms2DMove;
 class Catoms2DBlock : public BaseSimulator::BuildingBlock {
 	P2PNetworkInterface *tabInterfaces[6];
 protected:
-	boost::interprocess::interprocess_mutex mutex_vm;
 
 public:
 	int angle;

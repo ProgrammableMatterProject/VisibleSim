@@ -8,6 +8,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <boost/asio.hpp>
+
 #include "meldInterpretScheduler.h"
 #include "meldInterpretVM.h"
 //#include "meldInterpretDebugger.h"

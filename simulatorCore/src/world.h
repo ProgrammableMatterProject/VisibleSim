@@ -11,7 +11,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <mutex>
+
 #include "assert.h"
 #include "buildingBlock.h"
 #include "glBlock.h"
@@ -25,7 +26,7 @@ using namespace std;
 namespace BaseSimulator {
 
 class World {
-    boost::interprocess::interprocess_mutex mutex_gl;
+    std::mutex mutex_gl;
 protected:
     static World *world;
     static vector<GlBlock*>tabGlBlocks;
@@ -62,20 +63,16 @@ public:
     map<int, BuildingBlock*>& getMap() {
 	return buildingBlocksMap;
     }
-
-	
+    
     /**
      * \brief Returns the number of blocks in the world
      * \return Number of blocks in the world
      */
-    int getSize() {
-	return buildingBlocksMap.size();
-    }
-
-    void printInfo() {
-	OUTPUT << "I'm a World" << endl;
-    }
-
+    inline int getSize() { return buildingBlocksMap.size(); };
+    /**
+     * \brief Prints a string identifying the world to OUTPUT
+     */
+    inline void printInfo() { OUTPUT << "I'm a World" << endl; };
     /**
      * Returns a boolean indicating if a block can be added to face #numSelectedFace
      *  of block identified by numSelectedBlock
@@ -108,8 +105,14 @@ public:
     virtual void setSelectedFace(int n) {};
     inline GlBlock* getBlockByNum(int n) { return tabGlBlocks[n]; };
     inline int getNbBlocks() { return buildingBlocksMap.size(); };
-    void lock();
-    void unlock();
+    /**
+     * \brief Locks the world mutex to avoid concurrency issues with the gl thread
+     */
+    inline void lock() { mutex_gl.lock(); };
+    /**
+     * \brief Unlocks the world mutex to re-enable access from the gl thread
+     */
+    inline void unlock() { mutex_gl.unlock(); };
     virtual void glDraw() {};
     virtual void glDrawId() {};
     virtual void glDrawIdByMaterial() {};

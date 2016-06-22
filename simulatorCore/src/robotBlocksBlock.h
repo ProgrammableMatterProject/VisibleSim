@@ -8,12 +8,12 @@
 #ifndef ROBOTBLOCKSBLOCK_H_
 #define ROBOTBLOCKSBLOCK_H_
 
+#include <stdexcept>
+
 #include "buildingBlock.h"
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksGlBlock.h"
 #include "robotBlocksCapabilities.h"
-#include <boost/asio.hpp>
-#include <stdexcept>
 
 namespace RobotBlocks {
 
@@ -29,7 +29,6 @@ class RobotBlocksBlockCode;
 class RobotBlocksBlock : public BaseSimulator::BuildingBlock {
     P2PNetworkInterface *tabInterfaces[6];
 protected:
-    boost::interprocess::interprocess_mutex mutex_vm;
 public:
     RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
     RobotBlocksBlock(int bId, RobotBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));

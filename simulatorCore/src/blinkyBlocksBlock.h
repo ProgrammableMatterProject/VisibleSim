@@ -8,12 +8,12 @@
 #ifndef BLINKYBLOCKSBLOCK_H_
 #define BLINKYBLOCKSBLOCK_H_
 
+#include <stdexcept>
+
 #include "buildingBlock.h"
 #include "color.h"
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksGlBlock.h"
-#include <boost/asio.hpp>
-#include <stdexcept>
 
 namespace BlinkyBlocks {
 

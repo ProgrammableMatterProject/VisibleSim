@@ -8,13 +8,14 @@
 #ifndef CATOMS3DBLOCK_H_
 #define CATOMS3DBLOCK_H_
 
+#include <boost/asio.hpp>
+#include <stdexcept>
+
 #include "buildingBlock.h"
 #include "catoms3DBlockCode.h"
 #include "catoms3DGlBlock.h"
 #include "cell3DPosition.h"
 //#include "catoms3DCapabilities.h"
-#include <boost/asio.hpp>
-#include <stdexcept>
 #include "utils.h"
 
 using namespace BaseSimulator::utils;
@@ -38,7 +39,6 @@ class Catoms3DBlockCode;
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
 	P2PNetworkInterface *tabInterfaces[12];
 protected:
-	boost::interprocess::interprocess_mutex mutex_vm;
 
 public:
 	short orientationCode; //!< number of the connector that is along the x axis.
