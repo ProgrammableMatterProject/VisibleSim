@@ -14,7 +14,7 @@ namespace MeldInterpret{
 
 const unsigned char* MeldInterpretVM::meld_prog;
 char** MeldInterpretVM::tuple_names;
-char* rule_names_load[] = {"_init -o node-axioms.", };
+char* rule_names_load[] = {(char*)("_init -o node-axioms."), };
 char** MeldInterpretVM::rule_names = rule_names_load;
 
 map<int, MeldInterpretVM*> MeldInterpretVM::vmMap;
