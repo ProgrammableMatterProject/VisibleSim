@@ -41,7 +41,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
 	case EVENT_NI_RECEIVE: {
-	  message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+	  message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 	  P2PNetworkInterface * recv_interface = message->destinationInterface;
 	}
 	  break;

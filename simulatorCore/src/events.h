@@ -12,7 +12,6 @@
 
 #include <inttypes.h>
 #include <string>
-#include <boost/shared_ptr.hpp>
 #include "buildingBlock.h"
 #include "uniqueEventsId.h"
 #include "network.h"
@@ -22,7 +21,7 @@ using namespace std;
 
 class Event;
 
-typedef boost::shared_ptr<Event> EventPtr;
+typedef std::shared_ptr<Event> EventPtr;
 
 #ifdef DEBUG_EVENTS
 #define EVENT_CONSTRUCTOR_INFO()			(OUTPUT << getEventName() << " constructor (" << id << ")" << endl)
@@ -86,7 +85,7 @@ public:
 	BaseSimulator::BuildingBlock* getConcernedBlock() {return concernedBlock;};
 	virtual void consumeBlockEvent() = 0;
 	virtual void consume() {
-		if (concernedBlock->state >= BaseSimulator::BuildingBlock::ALIVE) {
+		if (concernedBlock->getState() >= BaseSimulator::BuildingBlock::ALIVE) {
 			this->consumeBlockEvent();
 		}
 	};

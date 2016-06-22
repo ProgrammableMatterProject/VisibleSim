@@ -11,18 +11,12 @@
 #include "scheduler.h"
 #include "network.h"
 #include "blinkyBlocksBlock.h"
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "trace.h"
 
 #include "cppScheduler.h"
 #include "meldProcessScheduler.h"
 #include "meldInterpretScheduler.h"
 #include "simulator.h"
-
-using namespace boost;
 
 namespace BlinkyBlocks {
     

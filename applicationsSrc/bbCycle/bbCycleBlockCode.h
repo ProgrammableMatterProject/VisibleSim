@@ -12,11 +12,10 @@
 
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksSimulator.h"
-#include <boost/random.hpp>
 #include "color.h"
 
 class SynchroMessage;
-typedef boost::shared_ptr<SynchroMessage> SynchroMessage_ptr;
+typedef std::shared_ptr<SynchroMessage> SynchroMessage_ptr;
 
 class BbCycleBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;

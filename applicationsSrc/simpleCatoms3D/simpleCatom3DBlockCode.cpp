@@ -126,7 +126,7 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
         }
         break;
         case EVENT_NI_RECEIVE: {
-            message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+            message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
             P2PNetworkInterface * recv_interface = message->destinationInterface;
 
 

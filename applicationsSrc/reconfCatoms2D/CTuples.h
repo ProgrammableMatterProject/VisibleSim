@@ -8,7 +8,7 @@
 
 #define CTUPLES_MSG 15003
 class CTuplesMessage;
-typedef boost::shared_ptr<CTuplesMessage> CTuplesMessage_ptr;
+typedef std::shared_ptr<CTuplesMessage> CTuplesMessage_ptr;
 
 class Catoms2D1BlockCode;
 

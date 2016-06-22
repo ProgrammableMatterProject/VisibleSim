@@ -281,11 +281,11 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	break;
 
     case EVENT_NI_RECEIVE:
-	message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+	message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 	P2PNetworkInterface * recvInterface = message->destinationInterface;
 	switch(message->id) {
 	case MAP_MSG_ID : {
-	    MapMessage_ptr recvMessage = boost::static_pointer_cast<MapMessage>(message);
+	    MapMessage_ptr recvMessage = std::static_pointer_cast<MapMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -342,7 +342,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case ACKMAP_MSG_ID : {
-	    AckMapMessage_ptr recvMessage = boost::static_pointer_cast<AckMapMessage>(message);
+	    AckMapMessage_ptr recvMessage = std::static_pointer_cast<AckMapMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -381,7 +381,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case HEAD_MSG_ID : {
-	    SearchHeadMessage_ptr recvMessage = boost::static_pointer_cast<SearchHeadMessage>(message);
+	    SearchHeadMessage_ptr recvMessage = std::static_pointer_cast<SearchHeadMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -399,7 +399,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case HBCK_MSG_ID : {
-	    SearchBackHeadMessage_ptr recvMessage = boost::static_pointer_cast<SearchBackHeadMessage>(message);
+	    SearchBackHeadMessage_ptr recvMessage = std::static_pointer_cast<SearchBackHeadMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -550,7 +550,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case END_MSG_ID : {
-	    SearchEndTrainMessage_ptr recvMessage = boost::static_pointer_cast<SearchEndTrainMessage>(message);
+	    SearchEndTrainMessage_ptr recvMessage = std::static_pointer_cast<SearchEndTrainMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -573,7 +573,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case TRAIN_READY_MSG_ID : {
-	    TrainReadyMessage_ptr recvMessage = boost::static_pointer_cast<TrainReadyMessage>(message);
+	    TrainReadyMessage_ptr recvMessage = std::static_pointer_cast<TrainReadyMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -655,7 +655,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case CREATE_LINE_MSG_ID : {
-	    CreateLineMessage_ptr recvMessage = boost::static_pointer_cast<CreateLineMessage>(message);
+	    CreateLineMessage_ptr recvMessage = std::static_pointer_cast<CreateLineMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -667,7 +667,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case SET_RDV_MSG_ID : {
-	    SetRDVMessage_ptr recvMessage = boost::static_pointer_cast<SetRDVMessage>(message);
+	    SetRDVMessage_ptr recvMessage = std::static_pointer_cast<SetRDVMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -688,7 +688,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case UNLOCK_MSG_ID : {
-	    UnlockMessage_ptr recvMessage = boost::static_pointer_cast<UnlockMessage>(message);
+	    UnlockMessage_ptr recvMessage = std::static_pointer_cast<UnlockMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -751,7 +751,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case SINGLEMV_MSG_ID : {
-	    SingleMoveMessage_ptr recvMessage = boost::static_pointer_cast<SingleMoveMessage>(message);
+	    SingleMoveMessage_ptr recvMessage = std::static_pointer_cast<SingleMoveMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -775,7 +775,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case RECONNECT_MSG_ID : {
-	    ReconnectTrainMessage_ptr recvMessage = boost::static_pointer_cast<ReconnectTrainMessage>(message);
+	    ReconnectTrainMessage_ptr recvMessage = std::static_pointer_cast<ReconnectTrainMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -798,7 +798,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case ASK4END_MSG_ID : {
-	    Ask4EndMessage_ptr recvMessage = boost::static_pointer_cast<Ask4EndMessage>(message);
+	    Ask4EndMessage_ptr recvMessage = std::static_pointer_cast<Ask4EndMessage>(message);
 	    //block->setDisplayedValue(-1);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
@@ -825,7 +825,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	    break;
 
 	case ANS4END_MSG_ID : {
-	    Ans4EndMessage_ptr recvMessage = boost::static_pointer_cast<Ans4EndMessage>(message);
+	    Ans4EndMessage_ptr recvMessage = std::static_pointer_cast<Ans4EndMessage>(message);
 #ifdef verbose
 	    unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 	    info.str("");
@@ -983,7 +983,7 @@ SmartBlocks::SmartBlocksBlockCode* SbReconfBlockCode::buildNewBlockCode(SmartBlo
 }
 
 void SbReconfBlockCode::step2(MessagePtr message) {
-    SearchHeadMessage_ptr recvMessage = boost::static_pointer_cast<SearchHeadMessage>(message);
+    SearchHeadMessage_ptr recvMessage = std::static_pointer_cast<SearchHeadMessage>(message);
     stringstream info;
 
     block->_isTrain = false;
@@ -1051,7 +1051,7 @@ void SbReconfBlockCode::step2(MessagePtr message) {
 }
 
 void SbReconfBlockCode::step3(MessagePtr message) {
-    SearchEndTrainMessage_ptr recvMessage = boost::static_pointer_cast<SearchEndTrainMessage>(message);
+    SearchEndTrainMessage_ptr recvMessage = std::static_pointer_cast<SearchEndTrainMessage>(message);
 #ifdef verbose
     stringstream info;
 #endif // verbose

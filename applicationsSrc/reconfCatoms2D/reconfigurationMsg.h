@@ -17,17 +17,17 @@
 #define RECONFIGURATION_MSG 15004
 
 class ReconfigurationMsg;
-typedef boost::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
+typedef std::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
 
 /*class ReconfigurationStartMsg;
-typedef boost::shared_ptr<ReconfigurationStartMsg> ReconfigurationStartMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStartMsg> ReconfigurationStartMsg_ptr;
 */
 
 class ReconfigurationStateQueryMsg;
-typedef boost::shared_ptr<ReconfigurationStateQueryMsg> ReconfigurationStateQueryMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStateQueryMsg> ReconfigurationStateQueryMsg_ptr;
 
 class ReconfigurationStateAnswerMsg;
-typedef boost::shared_ptr<ReconfigurationStateAnswerMsg> ReconfigurationStateAnswerMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStateAnswerMsg> ReconfigurationStateAnswerMsg_ptr;
 
 class ReconfigurationMsg : public Message {
    public:

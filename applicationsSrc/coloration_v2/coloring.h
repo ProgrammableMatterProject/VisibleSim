@@ -16,8 +16,8 @@ namespace coloring {
 class ColoringMsg;
 class ColoringAck;
 
-typedef boost::shared_ptr<ColoringMsg> ColoringMsgPtr;
-typedef boost::shared_ptr<ColoringAck> ColoringAckPtr;
+typedef std::shared_ptr<ColoringMsg> ColoringMsgPtr;
+typedef std::shared_ptr<ColoringAck> ColoringAckPtr;
 
 const int cNeighborsQuantity( 8);
 const int cColorQuantity( 10);

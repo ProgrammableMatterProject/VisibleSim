@@ -44,11 +44,11 @@ Reconfiguration::Reconfiguration(Catoms2DBlock *c, Map *m): map(m) {
 Reconfiguration::~Reconfiguration() {}
 
 void Reconfiguration::handle(MessagePtr m) {
-  ReconfigurationMsg_ptr rm = boost::static_pointer_cast<ReconfigurationMsg>(m);
+  ReconfigurationMsg_ptr rm = std::static_pointer_cast<ReconfigurationMsg>(m);
   P2PNetworkInterface *recv = m->destinationInterface;
   switch(rm->subtype) {
   case ReconfigurationMsg::STATE_QUERY: {
-    ReconfigurationStateQueryMsg_ptr rsqm = boost::static_pointer_cast<ReconfigurationStateQueryMsg>(m);
+    ReconfigurationStateQueryMsg_ptr rsqm = std::static_pointer_cast<ReconfigurationStateQueryMsg>(m);
     Coordinate nextCoordinate;
     P2PNetworkInterface *nextP2P;
     // Query goes through the perimeter of the concerned cell following the rotation direction
@@ -65,7 +65,7 @@ void Reconfiguration::handle(MessagePtr m) {
   }
     break;
   case ReconfigurationMsg::STATE_ANSWER: {
-    ReconfigurationStateAnswerMsg_ptr rsam = boost::static_pointer_cast<ReconfigurationStateAnswerMsg>(m);
+    ReconfigurationStateAnswerMsg_ptr rsam = std::static_pointer_cast<ReconfigurationStateAnswerMsg>(m);
     P2PNetworkInterface *nextP2P;
     if (catom->blockId == rsam->destinationId) {
       // answer is for that catom

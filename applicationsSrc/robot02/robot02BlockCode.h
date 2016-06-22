@@ -42,9 +42,9 @@ public :
 	~ColorMessage() {};
 };
 
-typedef boost::shared_ptr<ColorMessage> ColorMessage_ptr;
-typedef boost::shared_ptr<SearchMasterMessage> SearchMasterMessage_ptr;
-typedef boost::shared_ptr<ReturnMasterMessage> ReturnMasterMessage_ptr;
+typedef std::shared_ptr<ColorMessage> ColorMessage_ptr;
+typedef std::shared_ptr<SearchMasterMessage> SearchMasterMessage_ptr;
+typedef std::shared_ptr<ReturnMasterMessage> ReturnMasterMessage_ptr;
 
 using namespace std;
 using namespace RobotBlocks;

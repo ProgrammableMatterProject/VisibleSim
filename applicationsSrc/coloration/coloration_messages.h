@@ -16,7 +16,7 @@
 
 class Color_message;
 
-typedef boost::shared_ptr<Color_message> Color_message_ptr;
+typedef std::shared_ptr<Color_message> Color_message_ptr;
 
 
 class Color_message : public Message {

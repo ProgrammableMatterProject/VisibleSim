@@ -50,23 +50,23 @@ class SingleMoveMessage;
 class Ask4EndMessage;
 class Ans4EndMessage;
 
-typedef boost::shared_ptr<MapMessage> MapMessage_ptr;
-typedef boost::shared_ptr<AckMapMessage> AckMapMessage_ptr;
-typedef boost::shared_ptr<SearchHeadMessage> SearchHeadMessage_ptr;
-typedef boost::shared_ptr<SearchBackHeadMessage> SearchBackHeadMessage_ptr;
-typedef boost::shared_ptr<SearchEndTrainMessage> SearchEndTrainMessage_ptr;
-typedef boost::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
-typedef boost::shared_ptr<CreateLineMessage> CreateLineMessage_ptr;
-typedef boost::shared_ptr<SetRDVMessage> SetRDVMessage_ptr;
-typedef boost::shared_ptr<UnlockMessage> UnlockMessage_ptr;
-typedef boost::shared_ptr<ReconnectTrainMessage> ReconnectTrainMessage_ptr;
-/*typedef boost::shared_ptr<DisableTrainMessage> DisableTrainMessage_ptr;
-typedef boost::shared_ptr<NoActivityMessage> NoActivityMessage_ptr;
-typedef boost::shared_ptr<ReInitMessage> ReInitMessage_ptr;
-typedef boost::shared_ptr<AckInitMessage> AckInitMessage_ptr;*/
-typedef boost::shared_ptr<SingleMoveMessage> SingleMoveMessage_ptr;
-typedef boost::shared_ptr<Ask4EndMessage> Ask4EndMessage_ptr;
-typedef boost::shared_ptr<Ans4EndMessage> Ans4EndMessage_ptr;
+typedef std::shared_ptr<MapMessage> MapMessage_ptr;
+typedef std::shared_ptr<AckMapMessage> AckMapMessage_ptr;
+typedef std::shared_ptr<SearchHeadMessage> SearchHeadMessage_ptr;
+typedef std::shared_ptr<SearchBackHeadMessage> SearchBackHeadMessage_ptr;
+typedef std::shared_ptr<SearchEndTrainMessage> SearchEndTrainMessage_ptr;
+typedef std::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
+typedef std::shared_ptr<CreateLineMessage> CreateLineMessage_ptr;
+typedef std::shared_ptr<SetRDVMessage> SetRDVMessage_ptr;
+typedef std::shared_ptr<UnlockMessage> UnlockMessage_ptr;
+typedef std::shared_ptr<ReconnectTrainMessage> ReconnectTrainMessage_ptr;
+/*typedef std::shared_ptr<DisableTrainMessage> DisableTrainMessage_ptr;
+typedef std::shared_ptr<NoActivityMessage> NoActivityMessage_ptr;
+typedef std::shared_ptr<ReInitMessage> ReInitMessage_ptr;
+typedef std::shared_ptr<AckInitMessage> AckInitMessage_ptr;*/
+typedef std::shared_ptr<SingleMoveMessage> SingleMoveMessage_ptr;
+typedef std::shared_ptr<Ask4EndMessage> Ask4EndMessage_ptr;
+typedef std::shared_ptr<Ans4EndMessage> Ans4EndMessage_ptr;
 
 class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 	short gridSize[2];

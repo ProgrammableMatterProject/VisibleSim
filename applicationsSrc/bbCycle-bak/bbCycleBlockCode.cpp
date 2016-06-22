@@ -57,7 +57,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
 		case EVENT_SET_COLOR:
 			{
-			Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
+			Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
 			bb->setColor(color);
 			info << "set color "<< color << endl;
 			}

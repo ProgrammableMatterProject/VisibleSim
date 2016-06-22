@@ -82,7 +82,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 
 		case EVENT_NI_RECEIVE:
 
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 
 			switch(message->id){
@@ -96,7 +96,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 	        			recieved = true;
 	        			//Now we received the message
 
-						GoMapMessage_ptr recvMessage = boost::static_pointer_cast<GoMapMessage>(message);
+						GoMapMessage_ptr recvMessage = std::static_pointer_cast<GoMapMessage>(message);
 						info.str("");
 
 						tab[nbOfFrame][0] = hostBlock->blockId;
@@ -126,7 +126,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 
 					if(!robotBlock->isMaster){
 
-						GoFrameMessage_ptr recvMessage = boost::static_pointer_cast<GoFrameMessage>(message);
+						GoFrameMessage_ptr recvMessage = std::static_pointer_cast<GoFrameMessage>(message);
 
 						tab[nbOfFrame][0] = recvMessage->mid;
 						tab[nbOfFrame][1] = recvMessage->x;
@@ -144,7 +144,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
 
 						if(robotBlock->isMaster){
 
-							GoFrameMessage_ptr recvMessage = boost::static_pointer_cast<GoFrameMessage>(message);
+							GoFrameMessage_ptr recvMessage = std::static_pointer_cast<GoFrameMessage>(message);
 
 							int id = recvMessage->mid;
 

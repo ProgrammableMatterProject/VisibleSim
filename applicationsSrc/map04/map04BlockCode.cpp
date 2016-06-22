@@ -84,7 +84,7 @@ void Map04BlockCode::processLocalEvent(EventPtr pev) {
 
 		case EVENT_NI_RECEIVE:
 
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 
 			switch(message->id){
@@ -93,7 +93,7 @@ void Map04BlockCode::processLocalEvent(EventPtr pev) {
 
 					if(!received){
 
-						GoMap_ptr recvMessage = boost::static_pointer_cast<GoMap>(message);
+						GoMap_ptr recvMessage = std::static_pointer_cast<GoMap>(message);
 						robotBlock->setColor(BLUE);
 						toMaster = recvInterface;
 						NbOfWaitFrame++;
@@ -123,7 +123,7 @@ void Map04BlockCode::processLocalEvent(EventPtr pev) {
 
 					if(!robotBlock->isMaster){
 					
-						Frame_ptr recvMessage = boost::static_pointer_cast<Frame>(message);
+						Frame_ptr recvMessage = std::static_pointer_cast<Frame>(message);
 						robotBlock->setColor(LIGHTBLUE);
 						info.str("");
 						info << "received frame ";
@@ -131,7 +131,7 @@ void Map04BlockCode::processLocalEvent(EventPtr pev) {
 
 					}else{
 
-						Frame_ptr recvMessage = boost::static_pointer_cast<Frame>(message);
+						Frame_ptr recvMessage = std::static_pointer_cast<Frame>(message);
 
 						if(buffer_c < SIZE){
 

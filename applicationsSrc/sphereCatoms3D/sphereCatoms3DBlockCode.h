@@ -21,7 +21,7 @@
 
 class Distance_message;
 
-typedef boost::shared_ptr<Distance_message> Distance_message_ptr;
+typedef std::shared_ptr<Distance_message> Distance_message_ptr;
 
 class SphereCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:

@@ -97,17 +97,17 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_ADD_NEIGHBOR:
 			{
-			AddNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<AddNeighborEvent>(pev))->target,
-				(boost::static_pointer_cast<AddNeighborEvent>(pev))->face);
+			AddNeighborVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<AddNeighborEvent>(pev))->target,
+				(std::static_pointer_cast<AddNeighborEvent>(pev))->face);
 				sendCommand(command);
-				info << "Add neighbor "<< (boost::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<AddNeighborEvent>(pev))->face));
+				info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((std::static_pointer_cast<AddNeighborEvent>(pev))->face));
 			}
 			break;
 		case EVENT_REMOVE_NEIGHBOR:
 			{
-			RemoveNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
+			RemoveNeighborVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
 			sendCommand(command);
-			info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<RemoveNeighborEvent>(pev))->face));
+			info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((std::static_pointer_cast<RemoveNeighborEvent>(pev))->face));
 			}
 			break;
 		case EVENT_TAP:
@@ -119,15 +119,15 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_SET_COLOR:
 			{
-			Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
+			Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
 			bb->setColor(color);
 			info << "set color "<< color;
 			}
 			break;
 		case EVENT_SEND_MESSAGE:
 			{
-			MessagePtr message = (boost::static_pointer_cast<VMSendMessageEvent>(pev))->message;
-			P2PNetworkInterface *interface = (boost::static_pointer_cast<VMSendMessageEvent>(pev))->sourceInterface;
+			MessagePtr message = (std::static_pointer_cast<VMSendMessageEvent>(pev))->message;
+			P2PNetworkInterface *interface = (std::static_pointer_cast<VMSendMessageEvent>(pev))->sourceInterface;
 			MeldProcess::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(),
 				message, interface));
 			info << "sends a message at face " << NeighborDirection::getString(bb->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
@@ -135,7 +135,7 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_RECEIVE_MESSAGE: /*EVENT_NI_RECEIVE: */
 			{
-			ReceiveMessageVMCommand *command = (ReceiveMessageVMCommand*) (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message.get();
+			ReceiveMessageVMCommand *command = (ReceiveMessageVMCommand*) (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message.get();
 			command->setTimestamp(MeldProcess::getScheduler()->now());
 			sendCommand(*command);
 			info << "message received at face " << NeighborDirection::getString(bb->getDirection(command->sourceInterface->connectedInterface)) << " from " << command->sourceInterface->hostBlock->blockId;
@@ -143,15 +143,15 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_ACCEL:
 			{
-			AccelVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<AccelEvent>(pev))->x, (boost::static_pointer_cast<AccelEvent>(pev))->y,
-			(boost::static_pointer_cast<AccelEvent>(pev))->z);
+			AccelVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<AccelEvent>(pev))->x, (std::static_pointer_cast<AccelEvent>(pev))->y,
+			(std::static_pointer_cast<AccelEvent>(pev))->z);
 			sendCommand(command);
 			info << "accel";
 			}
 			break;
 		case EVENT_SHAKE:
 			{
-			ShakeVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<ShakeEvent>(pev))->force);
+			ShakeVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<ShakeEvent>(pev))->force);
 			sendCommand(command);
 			info << "shake";
 			}

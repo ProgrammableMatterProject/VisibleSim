@@ -54,11 +54,11 @@ void SphereCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
-      message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+      message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
         switch(message->id) {
             case DISTANCE_MSG_ID:
             {
-                Distance_message_ptr recv_message = boost::static_pointer_cast<Distance_message>(message);
+                Distance_message_ptr recv_message = std::static_pointer_cast<Distance_message>(message);
                 if (recv_message->getDistance() < distance) {
                     if (distance != INF) {
                         cout << "hihihi" << endl;

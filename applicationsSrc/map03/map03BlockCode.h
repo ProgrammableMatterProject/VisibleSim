@@ -32,12 +32,12 @@ class DataToStore;
 class DataStored;
 class CTStatus;
 
-typedef boost::shared_ptr<RequestStorage> RequestStorage_ptr;
-typedef boost::shared_ptr<OkStorage> OkStorage_ptr;
-typedef boost::shared_ptr<NOkStorage> NOkStorage_ptr;
-typedef boost::shared_ptr<DataToStore> DataToStore_ptr;
-typedef boost::shared_ptr<DataStored> DataStored_ptr;
-typedef boost::shared_ptr<CTStatus> CTStatus_ptr;
+typedef std::shared_ptr<RequestStorage> RequestStorage_ptr;
+typedef std::shared_ptr<OkStorage> OkStorage_ptr;
+typedef std::shared_ptr<NOkStorage> NOkStorage_ptr;
+typedef std::shared_ptr<DataToStore> DataToStore_ptr;
+typedef std::shared_ptr<DataStored> DataStored_ptr;
+typedef std::shared_ptr<CTStatus> CTStatus_ptr;
 
 class Map03BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 

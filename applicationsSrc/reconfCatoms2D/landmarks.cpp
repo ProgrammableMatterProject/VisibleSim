@@ -158,7 +158,7 @@ bool Landmarks::handle(MessagePtr message) {
   switch(message->type) {
   case LANDMARK_BEACON_MSG:
     {
-      LandmarkBeaconMessage_ptr m = boost::static_pointer_cast<LandmarkBeaconMessage>(message);
+      LandmarkBeaconMessage_ptr m = std::static_pointer_cast<LandmarkBeaconMessage>(message);
       LandmarkEntry l(m->id,m->distance,m->position,0);
       bool isNew = update(l);
 

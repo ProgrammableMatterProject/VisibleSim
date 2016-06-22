@@ -10,8 +10,6 @@
 #include "robot01BlockCode.h"
 #include "scheduler.h"
 #include "robotBlocksEvents.h"
-#include <boost/shared_ptr.hpp>
-
 
 using namespace std;
 using namespace RobotBlocks;
@@ -103,11 +101,11 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 		break;
 
 	case EVENT_NI_RECEIVE:
-		message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+		message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 		P2PNetworkInterface * recvInterface = message->destinationInterface;
 		switch(message->id) {
 		case MAP_MSG_ID : {
-			MapMessage_ptr recvMessage = boost::static_pointer_cast<MapMessage>(message);
+			MapMessage_ptr recvMessage = std::static_pointer_cast<MapMessage>(message);
 
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 
@@ -144,7 +142,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 
 		case ACKMAP_MSG_ID : {
-			AckMapMessage_ptr recvMessage = boost::static_pointer_cast<AckMapMessage>(message);
+			AckMapMessage_ptr recvMessage = std::static_pointer_cast<AckMapMessage>(message);
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 			info.str("");
 			info << "rec. AckMapMessage(" << nbreOfWaitedAnswers << ") from " << sourceId;
@@ -177,7 +175,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 
 		case TRAIN_MSG_ID : {
-			TrainMessage_ptr recvMessage = boost::static_pointer_cast<TrainMessage>(message);
+			TrainMessage_ptr recvMessage = std::static_pointer_cast<TrainMessage>(message);
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 			info.str("");
 			info << "rec. TrainMessage (" << recvMessage->newPos << "," << recvMessage->gain <<") from " << sourceId;
@@ -202,7 +200,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 
         case ACKTRAIN_MSG_ID : {
-			AckTrainMessage_ptr recvMessage = boost::static_pointer_cast<AckTrainMessage>(message);
+			AckTrainMessage_ptr recvMessage = std::static_pointer_cast<AckTrainMessage>(message);
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 			info.str("");
 			info << "rec. AckTrainMessage("<< recvMessage->answer << ") from " << sourceId;
@@ -265,7 +263,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 
         case MOTIONDELAY_MSG_ID : {
-			MotionDelayMessage_ptr recvMessage = boost::static_pointer_cast<MotionDelayMessage>(message);
+			MotionDelayMessage_ptr recvMessage = std::static_pointer_cast<MotionDelayMessage>(message);
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 			info.str("");
 			info << robotBlock->blockId << " rec. MotionDelayMsg(" << recvMessage->unlockMode << ") from " << sourceId;
@@ -283,7 +281,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 		}
 			break;
         case ANSWERDELAY_MSG_ID : {
-			AnswerDelayMessage_ptr recvMessage = boost::static_pointer_cast<AnswerDelayMessage>(message);
+			AnswerDelayMessage_ptr recvMessage = std::static_pointer_cast<AnswerDelayMessage>(message);
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 			info.str("");
 			info << robotBlock->blockId << " rec. AnswerDelayMsg(" << recvMessage->globalRDVTime << ") from " << sourceId;
@@ -309,7 +307,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 
         case UNLOCK_MSG_ID : {
-			UnlockMessage_ptr recvMessage = boost::static_pointer_cast<UnlockMessage>(message);
+			UnlockMessage_ptr recvMessage = std::static_pointer_cast<UnlockMessage>(message);
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 			info.str("");
 			info << robotBlock->blockId << " rec. UnlockMessage(" << recvMessage->target << ") from " << sourceId;
@@ -341,7 +339,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 			break;
 /**************************
 				case RELINKTRAIN_MSG_ID : {
-					ReLinkTrainMessage_ptr recvMessage = boost::static_pointer_cast<ReLinkTrainMessage>(message);
+					ReLinkTrainMessage_ptr recvMessage = std::static_pointer_cast<ReLinkTrainMessage>(message);
 					unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
           info.str("");
 					info << " rec. ReLinkTrainMessage() from " << sourceId;

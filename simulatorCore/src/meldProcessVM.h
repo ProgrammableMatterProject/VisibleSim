@@ -12,7 +12,6 @@
 #include <queue>
 #include <inttypes.h>
 #include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "meldProcessVMCommands.h"
@@ -56,7 +55,7 @@ protected:
 public:
 
 	/* socket connected to the associated VM program */
-	boost::shared_ptr<tcp::socket> socket;
+    std::shared_ptr<tcp::socket> socket;
 	
 	MeldProcessVM(BaseSimulator::BuildingBlock* bb);
 	~MeldProcessVM();

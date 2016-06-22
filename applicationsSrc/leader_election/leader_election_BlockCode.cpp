@@ -68,12 +68,12 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
 		case EVENT_NI_RECEIVE:
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 
 			switch( message->type) {
 				case ID_OUT_MSG_ID : {
 					if( !master_found ) {
-						Id_out_message_ptr recv_message = boost::static_pointer_cast<Id_out_message>(message);
+						Id_out_message_ptr recv_message = std::static_pointer_cast<Id_out_message>(message);
 
 						//Affichage
 						sourceId = recv_message->sourceInterface->hostBlock->blockId;
@@ -128,7 +128,7 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 
 				case ID_ACK_MSG_ID : {
 					if( !master_found ) {
-						Id_ack_message_ptr recv_message = boost::static_pointer_cast<Id_ack_message>(message);
+						Id_ack_message_ptr recv_message = std::static_pointer_cast<Id_ack_message>(message);
 
 						//Affichage
 						sourceId = message->sourceInterface->hostBlock->blockId;
@@ -161,7 +161,7 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 				//Inutilisé
 				//~ case MASTER_DECLARATION_MSG_ID : {
 					//~ if( !master_found ) {
-						//~ Master_declaration_message_ptr recv_message = boost::static_pointer_cast<Master_declaration_message>(message);
+						//~ Master_declaration_message_ptr recv_message = std::static_pointer_cast<Master_declaration_message>(message);
 
 						//~ min_id = recv_message->get_id();
 						//~ master_found = true;

@@ -23,8 +23,8 @@ class GoMapMessage;
 class GoFrameMessage;
 class EndMapMessage;
 
-typedef boost::shared_ptr<GoMapMessage> GoMapMessage_ptr;
-typedef boost::shared_ptr<GoFrameMessage> GoFrameMessage_ptr;
+typedef std::shared_ptr<GoMapMessage> GoMapMessage_ptr;
+typedef std::shared_ptr<GoFrameMessage> GoFrameMessage_ptr;
 
 class Robot02BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 

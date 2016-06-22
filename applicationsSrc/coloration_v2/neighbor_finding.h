@@ -14,8 +14,8 @@ using namespace SmartBlocks;
 class RouteSearchMsg;
 class RouteSearchAck;
 
-typedef boost::shared_ptr<RouteSearchMsg> RouteSearchMsgPtr;
-typedef boost::shared_ptr<RouteSearchAck> RouteSearchAckPtr;
+typedef std::shared_ptr<RouteSearchMsg> RouteSearchMsgPtr;
+typedef std::shared_ptr<RouteSearchAck> RouteSearchAckPtr;
 
 const int cNeighborQuantity( 4);
 

@@ -10,9 +10,6 @@
 #include "catom2D1BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-//MODIF NICO
-#include <boost/shared_ptr.hpp>
-
 
 using namespace std;
 using namespace Catoms2D;
@@ -41,7 +38,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
 	case EVENT_NI_RECEIVE: {
-	  message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+	  message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 	  // P2PNetworkInterface * recv_interface = message->destinationInterface;
 	}
 	  break;

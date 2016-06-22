@@ -97,8 +97,8 @@ public :
 
 	friend ostream& operator<<(ostream& f,const Capability &c);
 	void getCenter(PointRel3D &center);
-  PointRel3D getMotionVector(int id,int time);
-  PointRel3D getMotionVector(int id);
+	PointRel3D getMotionVector(int id,int time);
+	PointRel3D getMotionVector(int id);
 };
 
 class Validation {
@@ -115,10 +115,10 @@ public:
 
 	Catoms2DCapabilities(TiXmlNode *node);
 	~Catoms2DCapabilities();
-  Capability *validate(const PresenceMatrix &sm);
-  Capability *validateWithTarget(const PresenceMatrix &sm,const PresenceMatrix &ltm,int &gain);
-  Capability *validateTrain(const PresenceMatrix &sm,const PresenceMatrix &ltm,int &gain);
-  vector <Validation*> *validateMulti(const PresenceMatrix &sm,const PresenceMatrix &ltm);
+	Capability *validate(const PresenceMatrix &sm);
+	Capability *validateWithTarget(const PresenceMatrix &sm,const PresenceMatrix &ltm,int &gain);
+	Capability *validateTrain(const PresenceMatrix &sm,const PresenceMatrix &ltm,int &gain);
+	vector <Validation*> *validateMulti(const PresenceMatrix &sm,const PresenceMatrix &ltm);
 };
 
 }

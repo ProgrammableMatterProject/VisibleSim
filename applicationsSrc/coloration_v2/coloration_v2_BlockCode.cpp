@@ -161,10 +161,10 @@ void ColorationV2BlockCode::startup() {
 void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
   switch( pev->eventType) {
     case EVENT_NI_RECEIVE: {
-      MessagePtr message( boost::static_pointer_cast<NetworkInterfaceReceiveEvent>( pev)->message);
+      MessagePtr message( std::static_pointer_cast<NetworkInterfaceReceiveEvent>( pev)->message);
       switch( message->type) {
         case cRouteSearchMsgId: {
-          RouteSearchMsgPtr recv_search_msg( boost::static_pointer_cast<RouteSearchMsg>( message));
+          RouteSearchMsgPtr recv_search_msg( std::static_pointer_cast<RouteSearchMsg>( message));
 
           //Affichage
           unsigned int sourceId( recv_search_msg->sourceInterface->hostBlock->blockId);
@@ -206,7 +206,7 @@ void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
           break;
         }
         case cRouteSearchAckId: {
-          RouteSearchAckPtr recv_search_ack( boost::static_pointer_cast<RouteSearchAck>( message));
+          RouteSearchAckPtr recv_search_ack( std::static_pointer_cast<RouteSearchAck>( message));
 
           //Affichage
           unsigned int sourceId( recv_search_ack->sourceInterface->hostBlock->blockId);
@@ -230,7 +230,7 @@ void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
           break;
         }
         case cColoringMsgId:{
-          ColoringMsgPtr recv_msg( boost::static_pointer_cast<ColoringMsg>( message));
+          ColoringMsgPtr recv_msg( std::static_pointer_cast<ColoringMsg>( message));
 
           //Affichage
           unsigned int sourceId( recv_msg->sourceInterface->hostBlock->blockId);
@@ -254,7 +254,7 @@ void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
           break;
         }
         case cColoringAckId:{
-          ColoringAckPtr recv_ack( boost::static_pointer_cast<ColoringAck>( message));
+          ColoringAckPtr recv_ack( std::static_pointer_cast<ColoringAck>( message));
 
           //Affichage
           unsigned int sourceId( recv_ack->sourceInterface->hostBlock->blockId);

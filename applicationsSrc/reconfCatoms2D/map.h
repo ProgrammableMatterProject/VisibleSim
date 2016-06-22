@@ -67,7 +67,7 @@ class Map {
 #define BACK_MAP_MSG 15001
 
 class GoMapMessage;
-typedef boost::shared_ptr<GoMapMessage> GoMapMessage_ptr;
+typedef std::shared_ptr<GoMapMessage> GoMapMessage_ptr;
 
 class GoMapMessage : public Message {
  protected:
@@ -91,7 +91,7 @@ class GoMapMessage : public Message {
 };
 
 class BackMapMessage;
-typedef boost::shared_ptr<BackMapMessage> BackMapMessage_ptr;
+typedef std::shared_ptr<BackMapMessage> BackMapMessage_ptr;
 
 class BackMapMessage : public Message {
  public:

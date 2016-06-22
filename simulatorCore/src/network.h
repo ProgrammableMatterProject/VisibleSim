@@ -10,7 +10,6 @@
 
 #include <deque>
 #include <string.h>
-#include <boost/shared_ptr.hpp>
 #include "buildingBlock.h"
 
 using namespace std;
@@ -18,7 +17,7 @@ using namespace std;
 class Message;
 class P2PNetworkInterface;
 
-typedef boost::shared_ptr<Message> MessagePtr;
+typedef std::shared_ptr<Message> MessagePtr;
 
 #ifdef DEBUG_MESSAGES
 #define MESSAGE_CONSTRUCTOR_INFO()			(cout << getMessageName() << " constructor (" << id << ")" << endl)

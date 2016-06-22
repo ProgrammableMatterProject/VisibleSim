@@ -47,11 +47,11 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
     stringstream info;
 
     if (pev->eventType == EVENT_RECEIVE_MESSAGE) {
-        message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+        message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 
 		switch (message->type) {
             case SEARCH_MASTER_MESSAGE : {
-                SearchMasterMessage_ptr recvMessage = boost::static_pointer_cast<SearchMasterMessage>(message);
+                SearchMasterMessage_ptr recvMessage = std::static_pointer_cast<SearchMasterMessage>(message);
                 if (masterId<recvMessage->blockId) {
                     masterColor = recvMessage->blockColor;
                     masterId = recvMessage->blockId;
@@ -93,7 +93,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
             break;
 
             case RETURN_MASTER_MESSAGE : {
-                ReturnMasterMessage_ptr recvMessage = boost::static_pointer_cast<ReturnMasterMessage>(message);
+                ReturnMasterMessage_ptr recvMessage = std::static_pointer_cast<ReturnMasterMessage>(message);
                 if (masterId<recvMessage->blockId) {
                     masterColor = recvMessage->blockColor;
                     masterId = recvMessage->blockId;
@@ -126,7 +126,7 @@ void Robot02BlockCode::processLocalEvent(EventPtr pev) {
             }
             break;
             case COLOR_MESSAGE : {
-                ColorMessage_ptr recvMessage = boost::static_pointer_cast<ColorMessage>(message);
+                ColorMessage_ptr recvMessage = std::static_pointer_cast<ColorMessage>(message);
                 masterColor = recvMessage->color;
                 if (!colored) {
                     colored = true;

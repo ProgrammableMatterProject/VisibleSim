@@ -123,7 +123,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   stringstream info;
   switch (pev->eventType) {
   case EVENT_NI_RECEIVE: {
-    MessagePtr message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+    MessagePtr message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
     P2PNetworkInterface * recv_interface = message->destinationInterface;
     switch(message->type) {
     case GO_MAP_MSG:
@@ -236,7 +236,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
     break;
   case  EVENT_TUPLE_QUERY_RESPONSE: {
-    /*ContextTuple *tuple = (boost::static_pointer_cast<TupleQueryResponseEvent>(pev))->getTuple();
+    /*ContextTuple *tuple = (std::static_pointer_cast<TupleQueryResponseEvent>(pev))->getTuple();
       if (tuple == NULL) {
       cout << "not found" << endl;
       } else  {

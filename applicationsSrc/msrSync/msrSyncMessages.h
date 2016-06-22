@@ -15,7 +15,7 @@
 
 class SyncMessage;
 
-typedef boost::shared_ptr<SyncMessage> SyncMessagePtr;
+typedef std::shared_ptr<SyncMessage> SyncMessagePtr;
 
 class SyncMessage : public Message {
 	uint64_t time;

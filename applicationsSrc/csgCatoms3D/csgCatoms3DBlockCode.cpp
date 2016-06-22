@@ -89,11 +89,11 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
-      message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+      message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
         switch(message->id) {
             case DISTANCE_MSG_ID:
             {
-                Distance_message_ptr recv_message = boost::static_pointer_cast<Distance_message>(message);
+                Distance_message_ptr recv_message = std::static_pointer_cast<Distance_message>(message);
                 vector<Color> listColors;
                 listColors.push_back(WHITE);
                 listColors.push_back(RED);
@@ -114,7 +114,7 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 if (!hasPosition) {
                     catom->setColor(PINK);
-                    CSG_message_ptr recv_message = boost::static_pointer_cast<CSG_message>(message);
+                    CSG_message_ptr recv_message = std::static_pointer_cast<CSG_message>(message);
 
                     char *csgBuffer = recv_message->getCsgBuffer();
                     int csgBufferSize = recv_message->getCsgBufferSize();

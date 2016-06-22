@@ -30,14 +30,14 @@ namespace BlinkyBlocks {
 	P2PNetworkInterface *tabInterfaces[6];
 
     public:
-	BlinkyBlocksGlBlock *ptrGlBlock;
+	// BlinkyBlocksGlBlock *ptrGlBlock;
     
 	BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
 	BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *
                           (*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
 	~BlinkyBlocksBlock();
 
-	inline BlinkyBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
+	inline BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
 	inline void setGlBlock(BlinkyBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
 	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
 	P2PNetworkInterface *getInterfaceDestId(int id);

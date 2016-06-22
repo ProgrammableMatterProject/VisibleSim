@@ -21,15 +21,15 @@
 #include "robotBlocksBlock.h"
 
 class IdDiffusion;
-typedef boost::shared_ptr<IdDiffusion> IdDiffusion_ptr;
+typedef std::shared_ptr<IdDiffusion> IdDiffusion_ptr;
 class IdAck;
-typedef boost::shared_ptr<IdAck> IdAck_ptr;
+typedef std::shared_ptr<IdAck> IdAck_ptr;
 class IdNAck;
-typedef boost::shared_ptr<IdNAck> IdNAck_ptr;
+typedef std::shared_ptr<IdNAck> IdNAck_ptr;
 class BroadcastID;
-typedef boost::shared_ptr<BroadcastID> BroadcastID_ptr;
+typedef std::shared_ptr<BroadcastID> BroadcastID_ptr;
 class AnswerBroadcast;
-typedef boost::shared_ptr<AnswerBroadcast> AnswerBroadcast_ptr;
+typedef std::shared_ptr<AnswerBroadcast> AnswerBroadcast_ptr;
 
 class MElection01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 

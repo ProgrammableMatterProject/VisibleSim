@@ -90,7 +90,7 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
   switch (pev->eventType) {
   case EVENT_SET_COLOR:
     {
-      Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
+      Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
       bb->setColor(color);
       info << "set color "<< color << endl;
     }
@@ -114,11 +114,11 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
     break;
   case EVENT_NI_RECEIVE:
     {
-      MessagePtr message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+      MessagePtr message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
       P2PNetworkInterface * recvInterface = message->destinationInterface;
       switch(message->type) {
       case SYNC_MSG_ID : {
-	SyncMessagePtr recvMessage = boost::static_pointer_cast<SyncMessage>(message);
+	SyncMessagePtr recvMessage = std::static_pointer_cast<SyncMessage>(message);
 	info << "sync msg " << recvMessage->getRound();
 	//cout << "@" << hostBlock->blockId << ": " << getTime() << "/" << globalTime << endl;
 	if (recvMessage->getRound() > round) {

@@ -10,9 +10,10 @@
 
 #include "buildingBlock.h"
 #include <inttypes.h>
+#include <memory>
 
 class Event;
-typedef boost::shared_ptr<Event> EventPtr;
+typedef std::shared_ptr<Event> EventPtr;
 
 namespace BaseSimulator {
 

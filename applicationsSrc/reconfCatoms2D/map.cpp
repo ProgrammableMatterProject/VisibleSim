@@ -65,7 +65,7 @@ bool Map::handleMessage(MessagePtr message) {
   P2PNetworkInterface * recv_interface = message->destinationInterface;
   switch(message->type) {
   case GO_MAP_MSG: {
-    GoMapMessage_ptr m = boost::static_pointer_cast<GoMapMessage>(message);
+    GoMapMessage_ptr m = std::static_pointer_cast<GoMapMessage>(message);
     if (!positionKnown) {
       toHost = recv_interface;
       Coordinate c = m->getPosition(); //getPosition(toHost, m->getLast());
@@ -108,7 +108,7 @@ bool Map::handleMessage(MessagePtr message) {
   }
     break;
   case BACK_MAP_MSG: {
-    BackMapMessage_ptr m = boost::static_pointer_cast<BackMapMessage>(message);
+    BackMapMessage_ptr m = std::static_pointer_cast<BackMapMessage>(message);
     waiting--;
 #ifdef MAP_DEBUG
     //cout << "@" << catom2D->blockId <<  " back msg " << waiting << endl;

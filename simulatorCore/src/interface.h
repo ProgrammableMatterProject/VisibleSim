@@ -88,7 +88,7 @@ public :
 
 class GlutInputWindow : public GlutWindow {
     string text;
-    GlutWindow *server;
+	// GlutWindow *server; 		// unused
 public :
     bool hasFocus;
     GlutInputWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph);

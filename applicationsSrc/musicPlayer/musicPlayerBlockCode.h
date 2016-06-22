@@ -20,8 +20,8 @@
 class SynchroMessage;
 class ScoreMessage;
 class Note;
-typedef boost::shared_ptr<SynchroMessage> SynchroMessage_ptr;
-typedef boost::shared_ptr<ScoreMessage> ScoreMessage_ptr;
+typedef std::shared_ptr<SynchroMessage> SynchroMessage_ptr;
+typedef std::shared_ptr<ScoreMessage> ScoreMessage_ptr;
 
 class MusicPlayerBlockCode : public BlinkyBlocks::BlinkyBlocksBlockCode {
 	P2PNetworkInterface *block2Answer;

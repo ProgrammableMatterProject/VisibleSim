@@ -133,13 +133,11 @@ void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
 
 void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
     OUTPUT << "Simulator: stop scheduled" << endl;
-    lock();
-    state = s;
+    setState(s);
     if (s == STOPPED) {
 	// patch en attendant l'objet 3D qui modelise un BB stopped
 	color = Color(0.1, 0.1, 0.1, 0.5);
     }
-    unlock();
     getWorld()->updateGlData(this);
     if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
 	getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));

@@ -83,7 +83,7 @@ MeldProcessVM::MeldProcessVM(BuildingBlock* bb){
 	}	
 	ios->notify_fork(boost::asio::io_service::fork_parent);
 	mutex_ios.unlock();
-	socket = boost::shared_ptr<tcp::socket>(new tcp::socket(*ios));
+	socket = std::shared_ptr<tcp::socket>(new tcp::socket(*ios));
 	if (hostBlock->blockId == 1) {
       bool connected = false;
       

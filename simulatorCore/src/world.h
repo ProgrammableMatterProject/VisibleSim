@@ -26,7 +26,6 @@ namespace BaseSimulator {
 
 class World {
     boost::interprocess::interprocess_mutex mutex_gl;
-
 protected:
     static World *world;
     static vector<GlBlock*>tabGlBlocks;

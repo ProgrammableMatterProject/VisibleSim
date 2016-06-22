@@ -37,17 +37,17 @@ class TrainReadyMessage;
 class RunTrainMessage;
 class ReLinkTrainMessage;
 
-typedef boost::shared_ptr<MapMessage> MapMessage_ptr;
-typedef boost::shared_ptr<AckMapMessage> AckMapMessage_ptr;
-typedef boost::shared_ptr<TrainMessage> TrainMessage_ptr;
-typedef boost::shared_ptr<AckTrainMessage> AckTrainMessage_ptr;
-typedef boost::shared_ptr<MotionDelayMessage> MotionDelayMessage_ptr;
-typedef boost::shared_ptr<AnswerDelayMessage> AnswerDelayMessage_ptr;
-typedef boost::shared_ptr<UnlockMessage> UnlockMessage_ptr;
-typedef boost::shared_ptr<ReLinkTrainMessage> ReLinkTrainMessage_ptr;
-/*typedef boost::shared_ptr<PrepareMotionMessage> PrepareMotionMessage_ptr;
-typedef boost::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
-typedef boost::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
+typedef std::shared_ptr<MapMessage> MapMessage_ptr;
+typedef std::shared_ptr<AckMapMessage> AckMapMessage_ptr;
+typedef std::shared_ptr<TrainMessage> TrainMessage_ptr;
+typedef std::shared_ptr<AckTrainMessage> AckTrainMessage_ptr;
+typedef std::shared_ptr<MotionDelayMessage> MotionDelayMessage_ptr;
+typedef std::shared_ptr<AnswerDelayMessage> AnswerDelayMessage_ptr;
+typedef std::shared_ptr<UnlockMessage> UnlockMessage_ptr;
+typedef std::shared_ptr<ReLinkTrainMessage> ReLinkTrainMessage_ptr;
+/*typedef std::shared_ptr<PrepareMotionMessage> PrepareMotionMessage_ptr;
+typedef std::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
+typedef std::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
 */
 
 class Robot01BlockCode : public RobotBlocks::RobotBlocksBlockCode {

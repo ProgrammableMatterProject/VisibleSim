@@ -8,11 +8,9 @@
 #ifndef BUILDINGBLOCK_H_
 #define BUILDINGBLOCK_H_
 
-#include <boost/shared_ptr.hpp>
-#include <boost/random.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
-
 #include <list>
+#include <random>
+#include <atomic>
 
 #include "glBlock.h"
 #include "blockCode.h"
@@ -20,7 +18,7 @@
 #include "cell3DPosition.h"
 
 class Event;
-typedef boost::shared_ptr<Event> EventPtr;
+typedef std::shared_ptr<Event> EventPtr;
 
 using namespace std;
 
@@ -37,31 +35,33 @@ class Clock;
 //
 //===========================================================================================================
 
-
+/**
+ * \brief Abstract parent class of any block
+ */
 class BuildingBlock {
+public:
+	// alive state must be associated to a number >= 2
+	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3}; // Block state is a private attributes
+private:
+	/** 
+	 * \brief state of the block, with atomic access
+	 * Graphical interface and Scheduler can access to the state of
+	 * block. The scheduler only read the state, usually read on int
+	 * can be considered as atomic but it depends on the platform
+	 * architecture. We can also use atomic type (c++11, or boost 1.53)
+	 */
+	std::atomic<State> state;
 protected:
 	static int nextId;
-	//static std::tr1::unordered_set<BuildingBlock*> buildingBlocksSet;
 
 	int P2PNetworkInterfaceNextLocalId;
 	list<P2PNetworkInterface*> P2PNetworkInterfaceList;
 
 	list<EventPtr> localEventsList;
-
-	/* Graphical interface and Scheduler can access to the state of
-	 * block. The scheduler only read the state, usually read on int
-	 * can be considered as atomic but it depends on the platform
-	 * architecture. We can also use atomic type (c++11, or boost 1.53)
-	 */
-	boost::interprocess::interprocess_mutex mutex_state;
-
 public:
-	// alive state must be associated to a number >= 2
-	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3};
-	State state; //!< state of the block
 	int blockId; //!< id of the block
-	// PTHY: MEMO
-	boost::rand48 generator; //!< pseudo-random number generator for BlinkyBlocks determinism
+	std::mt19937 generator; //!< random device to generate random numbers for BlinkyBlocks determinism
+    std::uniform_int_distribution<> dis; //!< random int distribution based on randomDev and generator
 	BlockCode *blockCode; //!< blockcode program executed by the block
 	Clock *clock; //!< internal clock of the block
 	Color color; //!< color of the block
@@ -105,12 +105,9 @@ public:
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
 	virtual void stop(uint64_t date, State s) {};
 	/* No guarantee that state value will remain the same, it just avoids
-	 * date race condition.
-	 */
-	inline void lock() { mutex_state.lock(); }
-	inline void unlock() { mutex_state.unlock(); }
-	inline State getState() { lock(); State s = state; unlock(); return s; }
-	inline void setState(State s) { lock(); state = s; unlock();}
+	 * date race condition. */
+	inline State getState() { return state.load(); } //!< Atomically reads the value of the block's state 
+	inline void setState(State s) { state.store(s); } //!< Atomically sets the value of the block's state
 
 	/* For Blinky Block determinism version */
 	int getNextRandomNumber();
@@ -121,7 +118,6 @@ public:
 
 	uint64_t getTime();
 	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
-
 };
 
 } // BaseSimulator namespace

@@ -89,7 +89,7 @@ void GenericCodeBlock::processLocalEvent(EventPtr pev) {
     stringstream info;
 
     if (pev->eventType == EVENT_NI_RECEIVE) {
-        message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+        message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 // search message id in eventFuncMap
         multimap<int,eventFunc>::iterator im = eventFuncMap.find(message->type);
         if (im!=eventFuncMap.end()) {

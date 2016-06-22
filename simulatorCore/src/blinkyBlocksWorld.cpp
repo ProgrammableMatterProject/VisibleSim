@@ -82,8 +82,6 @@ void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlo
 	}
 }
 
-
-
 void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
     BlinkyBlocksBlock *ptrNeighbor;
 	BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);

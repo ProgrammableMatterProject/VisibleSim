@@ -65,8 +65,8 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 	stringstream info;
 
 	if( pev->eventType == EVENT_NI_RECEIVE) {
-		message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-		Color_message_ptr recv_message = boost::static_pointer_cast<Color_message>(message);
+		message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+		Color_message_ptr recv_message = std::static_pointer_cast<Color_message>(message);
 
 		//Affichage
 		sourceId = recv_message->sourceInterface->hostBlock->blockId;

@@ -75,14 +75,14 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 
 		case EVENT_NI_RECEIVE:
 
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 
 			switch(message->id){
 
 				case ID_DUFFUSION:{
 
-					IdDiffusion_ptr recvMessage = boost::static_pointer_cast<IdDiffusion>(message);
+					IdDiffusion_ptr recvMessage = std::static_pointer_cast<IdDiffusion>(message);
 					stringstream info;
 					info.str("");
 
@@ -129,7 +129,7 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 
 				case ID_BROADCAST:{
 
-					BroadcastID_ptr recvMessage = boost::static_pointer_cast<BroadcastID>(message);
+					BroadcastID_ptr recvMessage = std::static_pointer_cast<BroadcastID>(message);
 
 					if(recvMessage->bestId < bestId){
 
@@ -169,7 +169,7 @@ void MElection01BlockCode::processLocalEvent(EventPtr pev) {
 
 				case ID_BROADCAST_ANSWER:{
 
-					AnswerBroadcast_ptr recvMessage = boost::static_pointer_cast<AnswerBroadcast>(message);
+					AnswerBroadcast_ptr recvMessage = std::static_pointer_cast<AnswerBroadcast>(message);
 					stringstream info;
 					info.str("");
 

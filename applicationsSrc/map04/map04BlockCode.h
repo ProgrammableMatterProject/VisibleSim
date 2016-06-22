@@ -24,15 +24,15 @@
 #include "robotBlocksBlock.h"
 
 class GoMap;
-typedef boost::shared_ptr<GoMap> GoMap_ptr;
+typedef std::shared_ptr<GoMap> GoMap_ptr;
 class EndMap;
-typedef boost::shared_ptr<EndMap> EndMap_ptr;
+typedef std::shared_ptr<EndMap> EndMap_ptr;
 class Frame;
-typedef boost::shared_ptr<Frame> Frame_ptr;
+typedef std::shared_ptr<Frame> Frame_ptr;
 class BufferAck;
-typedef boost::shared_ptr<BufferAck> BufferAck_ptr;
+typedef std::shared_ptr<BufferAck> BufferAck_ptr;
 class BufferNAck;
-typedef boost::shared_ptr<BufferNAck> BufferNAck_ptr;
+typedef std::shared_ptr<BufferNAck> BufferNAck_ptr;
 
 class Map04BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 

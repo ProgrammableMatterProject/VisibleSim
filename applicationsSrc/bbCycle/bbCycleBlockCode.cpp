@@ -7,9 +7,8 @@
 
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
-#include <stdio.h> 
+#include <stdio.h>
+#include <memory>
 #include "scheduler.h"
 #include "network.h"
 #include "bbCycleBlockCode.h"
@@ -63,7 +62,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
 		case EVENT_SET_COLOR:
 			{
-			Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
+			Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
 			bb->setColor(color);
 			info << "set color "<< color << endl;
 			if (cycle){
@@ -81,12 +80,12 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 		//case EVENT_PLAY_NOTE:
 		case EVENT_NI_RECEIVE:
 			{
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 			switch(message->id){
 				case SYNC_MSG_ID: 
 					{
-					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
+					SynchroMessage_ptr recvMessage =  std::static_pointer_cast<SynchroMessage>(message);
 					if (!received[recvMessage->idSync]){
 						received[recvMessage->idSync]=true;
 						block2Answer=recvInterface;

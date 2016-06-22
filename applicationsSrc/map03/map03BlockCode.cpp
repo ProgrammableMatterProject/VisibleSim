@@ -75,14 +75,14 @@ void Map03BlockCode::processLocalEvent(EventPtr pev) {
 
 		case EVENT_NI_RECEIVE:
 
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 
 			switch(message->id){
 
 				case REQUEST_STORAGE:{
 
-					RequestStorage_ptr recvMessage = boost::static_pointer_cast<RequestStorage>(message);
+					RequestStorage_ptr recvMessage = std::static_pointer_cast<RequestStorage>(message);
 
 					if(canStore){
 
@@ -99,7 +99,7 @@ void Map03BlockCode::processLocalEvent(EventPtr pev) {
 
 				case OK_STORAGE:{
 
-					OkStorage_ptr recvMessage = boost::static_pointer_cast<OkStorage>(message);
+					OkStorage_ptr recvMessage = std::static_pointer_cast<OkStorage>(message);
 
 					robotBlock->setColor(GREEN);
 					
@@ -117,7 +117,7 @@ void Map03BlockCode::processLocalEvent(EventPtr pev) {
 
 				case DATA_TO_STORE:{
 
-					DataToStore_ptr recvMessage = boost::static_pointer_cast<DataToStore>(message);
+					DataToStore_ptr recvMessage = std::static_pointer_cast<DataToStore>(message);
 					info.str("");
 
 					robotBlock->setColor(ORANGE);

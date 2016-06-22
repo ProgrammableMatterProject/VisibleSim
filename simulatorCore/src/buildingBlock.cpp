@@ -32,9 +32,11 @@ BuildingBlock::BuildingBlock(int bId) {
 	blockId = bId;
     }
     P2PNetworkInterfaceNextLocalId = 0;
-    state = ALIVE;
-    generator = boost::rand48(50*blockId);
+    state.store(ALIVE);
     clock = NULL;
+    std::random_device rd;
+    generator = std::mt19937(rd());
+    dis = uniform_int_distribution<>(0, 50 * blockId);
 }
 
 BuildingBlock::~BuildingBlock() {
@@ -153,11 +155,9 @@ void BuildingBlock::setColor(int idColor) {
 }    
 
 void BuildingBlock::setColor(const Color &c) {
-    lock();
-    if (state >= ALIVE) {
+    if (state.load() >= ALIVE) {
 	color = c;
     }
-    unlock();
     getWorld()->updateGlData(this);
 }
 
@@ -178,11 +178,7 @@ void BuildingBlock::tap(uint64_t date) {
 }
     
 int BuildingBlock::getNextRandomNumber() {
-    int x = 0;
-    do {
-	x = generator();
-    } while (x <= 0);
-    return x;
+    return dis(generator);
 }
 
 uint64_t BuildingBlock::getTime() {

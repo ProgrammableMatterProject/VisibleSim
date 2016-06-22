@@ -44,7 +44,7 @@ void GPSR::send(GPSRPacket_ptr m, P2PNetworkInterface *p2p) {
 }
 
  MessagePtr GPSR::handleGPSRPacket(MessagePtr msg) {
-  GPSRPacket_ptr m = boost::static_pointer_cast<GPSRPacket>(msg);
+  GPSRPacket_ptr m = std::static_pointer_cast<GPSRPacket>(msg);
   P2PNetworkInterface *recv_interface = msg->destinationInterface;
 
 #ifdef GEO_ROUTING_DEBUG

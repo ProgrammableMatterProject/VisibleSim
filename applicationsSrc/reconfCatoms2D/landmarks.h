@@ -105,7 +105,7 @@ class LandmarkBeaconEvent : public BlockEvent {
 #define LANDMARK_BEACON_MSG 16000
 
 class LandmarkBeaconMessage;
-typedef boost::shared_ptr<LandmarkBeaconMessage> LandmarkBeaconMessage_ptr;
+typedef std::shared_ptr<LandmarkBeaconMessage> LandmarkBeaconMessage_ptr;
 
 class LandmarkBeaconMessage : public Message {
   

@@ -140,12 +140,12 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_NI_RECEIVE:
 			{
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
 			P2PNetworkInterface * recvInterface = message->destinationInterface;
 			switch(message->id){
 				case SYNC_MSG_ID: 
 					{
-					SynchroMessage_ptr recvMessage = boost::static_pointer_cast<SynchroMessage>(message);
+					SynchroMessage_ptr recvMessage = std::static_pointer_cast<SynchroMessage>(message);
 					if (!received[recvMessage->idSync]){//If the block didn't already received the sync message of the wave, it synchronizes 
 						received[recvMessage->idSync]=true;
 						block2Answer=recvInterface;
@@ -157,7 +157,7 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 					break;
 				case SCORE_MSG_ID:
 					{
-					ScoreMessage_ptr recvMessage = boost::static_pointer_cast<ScoreMessage>(message);
+					ScoreMessage_ptr recvMessage = std::static_pointer_cast<ScoreMessage>(message);
 					block2Answer=recvInterface;
 					if(!assigned){
 						toPlay.push_back(recvMessage->score.at(0)); //We pick the first note, then erase it

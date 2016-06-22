@@ -24,8 +24,8 @@ class Dist_message;
 class Ack_message;
 
 
-typedef boost::shared_ptr<Dist_message> Dist_message_ptr;
-typedef boost::shared_ptr<Ack_message> Ack_message_ptr;
+typedef std::shared_ptr<Dist_message> Dist_message_ptr;
+typedef std::shared_ptr<Ack_message> Ack_message_ptr;
 
 
 class SmartBlock1BlockCode : public SmartBlocks::SmartBlocksBlockCode {
