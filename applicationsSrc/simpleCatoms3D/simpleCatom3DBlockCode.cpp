@@ -63,9 +63,9 @@ void SimpleCatom3DBlockCode::startup() {
 	info << potentiel;
 	scheduler->trace(info.str(),hostBlock->blockId);
 
-/*
+
 	if (catom->blockId==1) {
-        Vector3D position=wrl->gridToWorldPosition(Cell3DPosition(2,1,0));
+        Vector3D position=wrl->lattice->gridToWorldPosition(Cell3DPosition(2,1,0));
         int id=1000000;
         int i=0;
         Catoms3DBlock *voisin=NULL;
@@ -91,7 +91,7 @@ void SimpleCatom3DBlockCode::startup() {
         info << "MotionStartEvent(" << t << ") around #" << voisin->blockId;
         scheduler->trace(info.str(),catom->blockId,LIGHTGREY);
 #endif
-	}*/
+	}
 }
 
 void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {

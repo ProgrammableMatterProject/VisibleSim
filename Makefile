@@ -18,7 +18,7 @@ GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework G
 OSX_CCFLAGS = -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
 else
 #Linux, Solaris, ...
-GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lpthread -lGLEW -lGL -lGLU -lglut -lboost_thread -lboost_system -lboost_chrono $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lglut -lGL -lGLEW -lGLU -lboost_thread -lboost_system -lboost_chrono -lpthread $(VSIM_LIBS)"
 endif
 
 #for debug version

@@ -35,12 +35,12 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
     idTextureHexa=0;
     idTextureGrid=0;
-    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3Dsimple.obj");
+    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3DV2connectorID.obj");
     objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
 
     skeleton=NULL;
-    
+
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
@@ -78,7 +78,7 @@ void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuilding
 
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
     tabGlBlocks.push_back(glBlock);
-    
+
     catom->setGlBlock(glBlock);
     catom->setPositionAndOrientation(pos,orientation);
     catom->setColor(color);
@@ -108,8 +108,8 @@ void Catoms3DWorld::disconnectBlock(Catoms3DBlock *block) {
 	    toBlock->connectedInterface=NULL;
 	}
     }
-    
-    lattice->remove(block->position);    
+
+    lattice->remove(block->position);
     OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId << " pos = "
 	   << block->position << endl;
 }
@@ -180,14 +180,14 @@ void Catoms3DWorld::glDraw() {
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
     while (ic!=tabGlBlocks.end()) {
-	((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
-	ic++;
+		((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
+		ic++;
     }
     unlock();
     glPopMatrix();
 
 // material for the grid walls
-/*	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 	gray[]={0.2f,0.2f,0.2f,1.0f};
 	glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
 	glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
@@ -197,9 +197,7 @@ void Catoms3DWorld::glDraw() {
 	enableTexture(true);
 	glBindTexture(GL_TEXTURE_2D,idTextureGrid);
 	glTranslatef(0,0,lattice->gridScale[2]*(0.5-M_SQRT2_2));
-	glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-	lattice->gridSize[1]*lattice->gridScale[1],
-	lattice->gridSize[2]*lattice->gridScale[2]*M_SQRT2_2);
+	glScalef(lattice->gridSize[0]*lattice->gridScale[0],lattice->gridSize[1]*lattice->gridScale[1],lattice->gridSize[2]*lattice->gridScale[2]*M_SQRT2_2);
 	glBegin(GL_QUADS);
 	// bottom
 	glNormal3f(0,0,1.0f);
@@ -231,17 +229,17 @@ void Catoms3DWorld::glDraw() {
 	glVertex3f(0.0f,0.0f,0.0f);
 	glTexCoord2f(lattice->gridSize[1]/3.0f,0);
 	glVertex3f(0.0f,1.0f,0.0f);
-	glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
 	glVertex3f(0.0,1.0,1.0f);
-	glTexCoord2f(0,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(0,lattice->gridSize[2]/1.5f);
 	glVertex3f(0.0,0.0,1.0f);
 	// right
 	glNormal3f(-1.0f,0,0);
 	glTexCoord2f(0,0);
 	glVertex3f(1.0f,0.0f,0.0f);
-	glTexCoord2f(0,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(0,lattice->gridSize[2]/1.5f);
 	glVertex3f(1.0,0.0,1.0f);
-	glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
 	glVertex3f(1.0,1.0,1.0f);
 	glTexCoord2f(lattice->gridSize[1]/3.0f,0);
 	glVertex3f(1.0f,1.0f,0.0f);
@@ -251,17 +249,17 @@ void Catoms3DWorld::glDraw() {
 	glVertex3f(0.0f,1.0f,0.0f);
 	glTexCoord2f(lattice->gridSize[0]/3.0f,0);
 	glVertex3f(1.0f,1.0f,0.0f);
-	glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
 	glVertex3f(1.0f,1.0,1.0f);
-	glTexCoord2f(0,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(0,lattice->gridSize[2]/1.5f);
 	glVertex3f(0.0,1.0,1.0f);
 	// front
 	glNormal3f(0,1.0,0);
 	glTexCoord2f(0,0);
 	glVertex3f(0.0f,0.0f,0.0f);
-	glTexCoord2f(0,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(0,lattice->gridSize[2]/1.5f);
 	glVertex3f(0.0,0.0,1.0f);
-	glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/2.0f);
+	glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
 	glVertex3f(1.0f,0.0,1.0f);
 	glTexCoord2f(lattice->gridSize[0]/3.0f,0);
 	glVertex3f(1.0f,0.0f,0.0f);
@@ -270,7 +268,7 @@ void Catoms3DWorld::glDraw() {
 	// draw the axes
 	glPushMatrix();
 	objRepere->glDraw();
-	glPopMatrix();*/
+	glPopMatrix();
 }
 
 void Catoms3DWorld::glDrawId() {

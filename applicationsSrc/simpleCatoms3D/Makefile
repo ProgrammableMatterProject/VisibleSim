@@ -1,6 +1,6 @@
 SRCS = simpleCatom3D.cpp simpleCatom3DBlockCode.cpp
 
-OUT = simpleCatom3D 
+OUT = simpleCatom3D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -11,9 +11,9 @@ INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 #for macOSX
 #LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimMultiCores -lm -framework GLUT -framework OpenGL -L/usr/X11/lib -lboost_thread-mt -lboost_system-mt
 #for linux
-#LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimMultiCores -lm -L/usr/X11/lib -lboost_thread  -lglut -lpthread
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimCatoms3D -lm -L/usr/X11/lib -lboost_system -lboost_thread  -lglut -lGL -lGLU -lGLEW -lpthread
 
-LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
+#LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
 
 SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms3D.a
 

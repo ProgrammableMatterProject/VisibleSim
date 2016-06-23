@@ -1,0 +1,28 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 15.06.2016 08:46:23
+
+newmtl connector
+	Ns 9.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.3780 0.3780 0.3780
+	Ke 0.0000 0.0000 0.0000
+	map_Ka H:\2-Recherche\LIFC\svn\VisibleSimGM\VisibleSim\simulatorCore\catoms3DTextures\numbers.tga
+	map_Kd H:\2-Recherche\LIFC\svn\VisibleSimGM\VisibleSim\simulatorCore\catoms3DTextures\numbers.tga
+
+newmtl lighted
+	Ns 23.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 1.0000 0.0000
+	Kd 0.0000 1.0000 0.0000
+	Ks 0.5040 0.5040 0.5040
+	Ke 0.0000 0.0000 0.0000
