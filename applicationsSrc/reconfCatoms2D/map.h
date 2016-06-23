@@ -13,7 +13,7 @@
 
 #include "catoms2DBlock.h"
 #include "network.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "coordinate.h"
 #include "border.h"
 

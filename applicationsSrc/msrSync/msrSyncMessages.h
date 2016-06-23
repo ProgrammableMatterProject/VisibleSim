@@ -11,7 +11,7 @@
 #define SYNC_MSG_ID	15000
 
 #include "network.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class SyncMessage;
 

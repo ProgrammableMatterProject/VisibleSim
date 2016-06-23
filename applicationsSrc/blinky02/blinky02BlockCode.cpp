@@ -10,7 +10,7 @@
 #include "blinky02BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 using namespace std;

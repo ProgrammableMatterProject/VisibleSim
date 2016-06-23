@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/timeb.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <map>
 
 #include "color.h"

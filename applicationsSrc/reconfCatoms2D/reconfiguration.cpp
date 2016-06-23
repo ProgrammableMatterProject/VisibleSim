@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "catoms2DWorld.h"
 #include "scheduler.h"

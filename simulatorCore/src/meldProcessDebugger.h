@@ -9,7 +9,7 @@
 #define MELDPROCESSDEBUGGER_H_
 
 #include <iostream>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <inttypes.h>
 
 #include "simulator.h"

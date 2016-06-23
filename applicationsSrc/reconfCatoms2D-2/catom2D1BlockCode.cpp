@@ -11,7 +11,7 @@
 #include "scheduler.h"
 #include "events.h"
 //MODIF NICO
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 using namespace std;

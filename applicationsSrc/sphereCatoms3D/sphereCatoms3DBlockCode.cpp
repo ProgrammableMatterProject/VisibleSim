@@ -11,7 +11,7 @@
 #include "catoms3DBlock.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <chrono>
 #include <fstream>
 //#define MAX 1000

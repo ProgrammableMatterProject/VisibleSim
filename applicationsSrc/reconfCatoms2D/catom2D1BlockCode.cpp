@@ -12,7 +12,7 @@
 #include "events.h"
 #include "catoms2DEvents.h"
 //MODIF NICO
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "reconfigurationMsg.h"
 #include "reconfCatoms2DEvents.h"

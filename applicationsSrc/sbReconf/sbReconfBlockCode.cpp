@@ -10,7 +10,7 @@
 #include "sbReconfBlockCode.h"
 #include "scheduler.h"
 #include "smartBlocksEvents.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 /*************************
 STEP 0: get map

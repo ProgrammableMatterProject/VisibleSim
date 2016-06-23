@@ -12,7 +12,7 @@
 #define EVENT_TRY_TO_MOVE 15000
 
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "contextTuple.hpp"
 
 class TryToMoveEvent : public BlockEvent {

@@ -2,7 +2,7 @@
 #define NEIGHBOR_FINDING_H_
 
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "network.h"
 #include "coordinates.h"
 #include "smartBlocksBlock.h"

@@ -11,7 +11,7 @@
 #define EVENT_SYNC   15001
 
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class SynchronizeEvent : public BlockEvent {
 public:

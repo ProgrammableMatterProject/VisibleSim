@@ -12,7 +12,7 @@
 #define EVENT_PLAY_NOTE 15015
 
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class SynchronizeEvent : public BlockEvent {
 public:

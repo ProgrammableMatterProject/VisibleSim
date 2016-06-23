@@ -11,7 +11,7 @@
 #include "simpleCatom3DBlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #define verbose 1
 

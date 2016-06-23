@@ -10,7 +10,7 @@
 #include "robot02BlockCode.h"
 #include "scheduler.h"
 #include "robotBlocksEvents.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 Robot02BlockCode::Robot02BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {

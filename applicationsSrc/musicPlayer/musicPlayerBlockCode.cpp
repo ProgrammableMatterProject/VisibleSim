@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <stdio.h>
 #include <SFML/Audio.hpp> 
 #include "scheduler.h"

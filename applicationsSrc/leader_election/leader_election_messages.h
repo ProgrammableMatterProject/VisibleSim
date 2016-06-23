@@ -14,7 +14,7 @@
 #define MASTER_DECLARATION_MSG_ID	9006
 
 #include "network.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Id_out_message;
 class Id_ack_message;

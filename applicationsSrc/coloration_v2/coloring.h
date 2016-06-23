@@ -3,7 +3,7 @@
 
 #include <list>
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "network.h"
 #include "coordinates.h"
 #include <boost/array.hpp>

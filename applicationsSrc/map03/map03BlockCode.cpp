@@ -10,7 +10,7 @@
 #include "map03BlockCode.h"
 #include "scheduler.h"
 #include "robotBlocksEvents.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 const int COM_DELAY=1000000;
 using namespace std;
