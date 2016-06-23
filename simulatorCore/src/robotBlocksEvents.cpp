@@ -7,7 +7,6 @@
 
 #include "robotBlocksEvents.h"
 #include "robotBlocksWorld.h"
-#include "scheduler.h"
 #include "utils.h"
 
 const int ANIMATION_DELAY=40000;

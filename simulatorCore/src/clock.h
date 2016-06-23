@@ -9,9 +9,10 @@
 #define CLOCK_H_
 
 #include "buildingBlock.h"
+
 #include <stdint.h>
 #include <iostream> 
-#include <boost/random.hpp>
+#include <random>
 #include <list>
 
 using namespace std;
@@ -71,7 +72,8 @@ protected:
 	double y0;
 	double x0;
 	double sigma;
-	boost::rand48 generator;
+	std::ranlux48 noiseGenerator;
+    std::uniform_int_distribution<> dis; //!< random int distribution based on generator
 	list<ReferencePoint> referencePoints;
 
 	void setClockProperties(ClockType clockType);

@@ -72,7 +72,7 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 //	localId = block->getNextP2PInterfaceLocalId();
 	connectedInterface = NULL;
 	availabilityDate = 0;
-	generator = boost::rand48(nextId);
+	generator = std::ranlux48(nextId);
 	globalId = nextId;
 	nextId++;
 //	messageBeingTransmitted.reset();
