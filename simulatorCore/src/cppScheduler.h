@@ -11,23 +11,17 @@
 #include <thread>
 #include <functional>
 
-#include "sema.h"
 #include "scheduler.h"
 #include "network.h"
 #include "trace.h"
 
 class CPPScheduler : public BaseSimulator::Scheduler {
 protected:
-	std::thread *schedulerThread;
-	int schedulerMode;
-
 	CPPScheduler();
 	virtual ~CPPScheduler();
 	void* startPaused(/*void *param */);
 
 public:
-	Semaphore *sem_schedulerStart;
-
 	static void createScheduler();
 	static void deleteScheduler();
 	static CPPScheduler* getScheduler() {

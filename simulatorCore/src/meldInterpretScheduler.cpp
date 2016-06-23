@@ -29,7 +29,6 @@ namespace MeldInterpret {
 MeldInterpretScheduler::MeldInterpretScheduler() {
     OUTPUT << "MeldInterpretScheduler constructor" << endl;
     state = NOTREADY;
-    sem_schedulerStart = new boost::interprocess::interprocess_semaphore(0);
     schedulerMode = SCHEDULER_MODE_REALTIME;
     schedulerThread = new thread(bind(&MeldInterpretScheduler::startPaused, this));
 }

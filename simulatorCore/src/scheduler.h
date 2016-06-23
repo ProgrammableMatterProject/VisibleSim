@@ -15,9 +15,9 @@
 #include <assert.h>
 #include <thread>
 #include <functional>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "events.h"
 
 using namespace std;

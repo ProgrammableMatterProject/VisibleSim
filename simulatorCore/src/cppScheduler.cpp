@@ -19,7 +19,6 @@ using namespace std;
 CPPScheduler::CPPScheduler() {
 	OUTPUT << "CPPScheduler constructor" << endl;
 	state = NOTREADY;
-	sem_schedulerStart = new Semaphore(0);
 	schedulerMode = SCHEDULER_MODE_REALTIME;
 	schedulerThread = new thread(bind(&CPPScheduler::startPaused, this));
 }
@@ -149,5 +148,5 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 void CPPScheduler::start(int mode) {
 	CPPScheduler* sbs = (CPPScheduler*)scheduler;
 	sbs->schedulerMode = mode;
-	sbs->sem_schedulerStart->signal();
+	sbs->sem_schedulerStart->post();
 }

@@ -8,12 +8,11 @@
 #ifndef MELDPROCESS_SCHEDULER_H_
 #define MELDPROCESS_SCHEDULER_H_
 
-#include "scheduler.h"
-#include "network.h"
 #include <thread>
 #include <functional>
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
+
+#include "scheduler.h"
+#include "network.h"
 #include "trace.h"
 
 using namespace boost;
@@ -22,16 +21,11 @@ namespace MeldProcess {
 
 class MeldProcessScheduler : public BaseSimulator::Scheduler {
 protected:
-	std::thread *schedulerThread;
-	int schedulerMode;
-	
 	MeldProcessScheduler();
 	virtual ~MeldProcessScheduler();
 	void* startPaused(/*void *param */);
 	
-public:
-	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
-	
+public:	
 	static void createScheduler();
 	static void deleteScheduler();
 	static MeldProcessScheduler* getScheduler() {
