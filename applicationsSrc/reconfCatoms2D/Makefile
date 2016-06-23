@@ -51,7 +51,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 generator: configGenerator.cpp
 	$(CC) -o $@ $^
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

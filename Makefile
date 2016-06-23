@@ -14,7 +14,7 @@ VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsim
 
 ifeq ($(OS),Darwin)
 #MacOS
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib  -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib  -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt $(VSIM_LIBS)"
 OSX_CCFLAGS = -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
 else
 #Linux, Solaris, ...
