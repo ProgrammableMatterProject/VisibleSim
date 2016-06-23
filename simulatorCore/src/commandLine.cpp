@@ -3,7 +3,7 @@
 
 #include "commandLine.h"
 #include "scheduler.h"
-#include "openGlViewer.h"
+#include "openglViewer.h"
 
 #define CMD_LINE_UNDEFINED -1
 
