@@ -35,8 +35,8 @@ SbReconfBlockCode::SbReconfBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCod
 
 SbReconfBlockCode::~SbReconfBlockCode() {
     OUTPUT << "SbReconfBlockCode destructor" << endl;
-    delete [] targetGrid;
-    delete [] unlockPathTab;
+    // delete [] targetGrid; // Handled by smartBlocksSimulator
+    // delete [] unlockPathTab;
 }
 
 void SbReconfBlockCode::startup() {

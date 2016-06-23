@@ -1,6 +1,6 @@
 SRCS = smartblock1.cpp smartblock1BlockCode.cpp
 
-OUT = smartblock1
+OUT = smartBlocks1
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -27,7 +27,7 @@ CC = g++
 
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-	
+
 all: $(OUT) 
 
 autoinstall: $(OUT) 
