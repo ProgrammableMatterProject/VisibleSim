@@ -27,7 +27,6 @@ public:
 	static void createSimulator(int argc, char *argv[],
 								SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
 								(SmartBlocksBlock*));
-	static void deleteSimulator();
 
 	static SmartBlocksBlockCode *(*buildNewBlockCode)(SmartBlocksBlock*);
 
@@ -47,9 +46,6 @@ public:
 inline void createSimulator(int argc, char *argv[],
 							SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*)) {
 	SmartBlocksSimulator::createSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
-}
-inline void deleteSimulator() {
-	SmartBlocksSimulator::deleteSimulator();
 }
 
 inline SmartBlocksSimulator* getSimulator() { return(SmartBlocksSimulator::getSimulator()); }

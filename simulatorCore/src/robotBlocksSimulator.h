@@ -27,7 +27,6 @@ public:
     bool testMode;
 
     static void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
-    static void deleteSimulator();
 
     static RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
 
@@ -48,10 +47,6 @@ public:
 
 inline void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) {
     RobotBlocksSimulator::createSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
-}
-
-inline void deleteSimulator() {
-    RobotBlocksSimulator::deleteSimulator();
 }
 
 inline RobotBlocksSimulator* getSimulator() { return(RobotBlocksSimulator::getSimulator()); }

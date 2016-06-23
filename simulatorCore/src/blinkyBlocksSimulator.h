@@ -26,7 +26,6 @@ protected:
 public:
 
     static void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
-    static void deleteSimulator();
 
     static BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
 
@@ -45,9 +44,6 @@ public:
 
 inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {
     BlinkyBlocksSimulator::createSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
-}
-inline void deleteSimulator() {
-    BlinkyBlocksSimulator::deleteSimulator();
 }
 
 inline BlinkyBlocksSimulator* getSimulator() { return(BlinkyBlocksSimulator::getSimulator()); }

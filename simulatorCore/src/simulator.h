@@ -32,10 +32,16 @@ extern Simulator *simulator;
 class Simulator {
 public:
 	enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
+
 	static Simulator* getSimulator() {
 		assert(simulator != NULL);
 		return(simulator);
 	}
+
+	/*! 
+	 *  \brief Statically deletes this instance of the simulator
+	 */
+	static void deleteSimulator();
 
 	inline static void setType (Type t) { type = t; };
 	inline static Type getType () { return type; };
@@ -45,7 +51,7 @@ public:
 
 protected:
 	static Type type;			//!< Type of simulation, i.e. language of the user program
-
+	
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
 	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured
 	World *world;				//!< Simulation world to be instantiated and configured
@@ -57,7 +63,7 @@ protected:
 	BlockCode *(*newBlockCode)(BuildingBlock*); //!< Function pointer to the target BlockCode
 
 	CommandLine cmdLine;		//!< Utility member for accessing command line arguments
-
+   
 	/*! \fn parseWorld(int argc, char*argv[])
 	 *  \brief Parses the configuration file for World information common to all blocks.
 	 *
@@ -146,6 +152,11 @@ protected:
 	Simulator(int argc, char *argv[]);
 	virtual ~Simulator();
 };
-} // Simulator namespace
+
+inline void deleteSimulator() {
+	Simulator::deleteSimulator();
+}
+
+} // BaseSimulator namespace
 
 #endif /* SIMULATOR_H_ */

@@ -60,10 +60,6 @@ void Catoms2DSimulator::createSimulator(int argc, char *argv[],
 	simulator =  new Catoms2DSimulator(argc, argv, catoms2DBlockCodeBuildingFunction);
 }
 
-void Catoms2DSimulator::deleteSimulator() {
-	delete((Catoms2DSimulator*)simulator);
-}
-
 void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 								  int argc, char *argv[]) {
     world = new Catoms2DWorld(gridSize, gridScale, argc,argv);

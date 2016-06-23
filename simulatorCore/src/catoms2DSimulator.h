@@ -29,7 +29,6 @@ public:
 
     static void createSimulator(int argc, char *argv[],
 				Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*));
-    static void deleteSimulator();
 
     static Catoms2DBlockCode *(*buildNewBlockCode)(Catoms2DBlock*);
 
@@ -50,10 +49,6 @@ public:
 inline void createSimulator(int argc, char *argv[],
 			    Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*)) {
     Catoms2DSimulator::createSimulator(argc, argv, catoms2DBlockCodeBuildingFunction);
-}
-
-inline void deleteSimulator() {
-    Catoms2DSimulator::deleteSimulator();
 }
 
 inline Catoms2DSimulator* getSimulator() { return(Catoms2DSimulator::getSimulator()); }

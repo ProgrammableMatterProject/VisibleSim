@@ -127,10 +127,6 @@ void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[],
 	simulator =  new BlinkyBlocksSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
 }
 
-void BlinkyBlocksSimulator::deleteSimulator() {
-	delete((BlinkyBlocksSimulator*)simulator);
-}
-
 void BlinkyBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									  int argc, char *argv[]) {
 	world = new BlinkyBlocksWorld(gridSize, gridScale, argc,argv);

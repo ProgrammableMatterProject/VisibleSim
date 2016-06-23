@@ -103,7 +103,7 @@ public:
 	inline int getNbreMessages() { return Event::getNextId(); };
 
 	inline void waitForSchedulerEnd() {
-			schedulerThread->join();
+		schedulerThread->join();
     }
     void addKeyword(Keyword *kw) {
         tabKeywords.push_back(kw);

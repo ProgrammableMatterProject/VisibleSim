@@ -117,6 +117,11 @@ Simulator::~Simulator() {
 	deleteWorld();
 }
 
+void Simulator::deleteSimulator() {
+    delete simulator;
+    simulator = NULL;
+}
+
 void Simulator::loadScheduler(int maximumDate) {
 	switch(getType()) {
 	case MELDINTERPRET:

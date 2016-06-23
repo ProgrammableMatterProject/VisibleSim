@@ -51,10 +51,6 @@ void RobotBlocksSimulator::createSimulator(int argc, char *argv[], RobotBlocksBl
 	simulator =  new RobotBlocksSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
 }
 
-void RobotBlocksSimulator::deleteSimulator() {
-	delete((RobotBlocksSimulator*)simulator);
-}
-
 void RobotBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									int argc, char *argv[]) {
     world = new RobotBlocksWorld(gridSize, gridScale, argc,argv);

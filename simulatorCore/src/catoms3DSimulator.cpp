@@ -162,8 +162,4 @@ void Catoms3DSimulator::parseSkeleton() {
 	}
 }
 
-void Catoms3DSimulator::deleteSimulator() {
-	delete((Catoms3DSimulator*)simulator);
-}
-
 } // Catoms3D namespace
