@@ -11,6 +11,7 @@
 #include <list>
 #include <random>
 #include <atomic>
+#include <memory>
 
 #include "glBlock.h"
 #include "blockCode.h"
