@@ -69,10 +69,9 @@ CCFLAGS = $(GLOBAL_CCFLAGS)
 
 CC = g++
 
-
 .PHONY: clean all directories
 
-all: directories $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a
 
 $(OBJDIR)/%.o: %.cpp
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
@@ -83,10 +82,10 @@ $(OBJDIR)/%.o: %.cpp
 #	ar rcs $(OUT) $(OBJS)
 #	cp $(OUT) ../lib
 
-directories: ${OUTDIRS}
+directories: $(OUTDIRS)
 
 ${OUTDIRS}: 
-	mkdir -p $@
+	@mkdir -p $@
 
 $(LDIR)/libsimBlinkyBlocks.a: $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
 	ar rcs $(LDIR)/libsimBlinkyBlocks.a $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
@@ -103,7 +102,7 @@ $(LDIR)/libsimCatoms3D.a: $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
 $(LDIR)/libsimSmartBlocks.a: $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
 	ar rcs $(LDIR)/libsimSmartBlocks.a $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
 
-ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), clean directories))
 -include $(DEPS)
 endif
 
