@@ -6,9 +6,10 @@ SUBDIRS = noneCatoms2D bbCycle robot01 sphereCatoms3D sbReconf smartBlocks1
 
 subdirs: $(SUBDIRS)
 
+# autoinstall not needed anymore
 $(SUBDIRS):
 	@mkdir -p ../applicationsBin/$@
-	$(MAKE) -C $@ autoinstall APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)"
+	$(MAKE) -C $@ APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)"
 
 #subdirs:
 #	@for dir in $(SUBDIRS); do \

@@ -1,6 +1,6 @@
 SRCS = leader_election_main.cpp leader_election_BlockCode.cpp
 
-OUT = leader_election
+OUT = $(APPDIR)/leader_election
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

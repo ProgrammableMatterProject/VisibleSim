@@ -1,6 +1,6 @@
 SRCS = sbReconf.cpp sbReconfBlockCode.cpp
 
-OUT = sbReconf
+OUT = $(APPDIR)/sbReconf
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

@@ -1,6 +1,6 @@
 SRCS = bbCycle.cpp bbCycleBlockCode.cpp
 
-OUT = bbCycle
+OUT = $(APPDIR)/bbCycle
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

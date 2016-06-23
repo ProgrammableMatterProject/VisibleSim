@@ -1,6 +1,6 @@
 SRCS = coloration_main.cpp coloration_BlockCode.cpp colors.cpp
 
-OUT = coloration
+OUT = $(APPDIR)/coloration
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

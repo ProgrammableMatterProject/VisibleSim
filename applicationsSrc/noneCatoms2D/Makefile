@@ -1,6 +1,6 @@
 SRCS = noneCatoms2D.cpp noneCatoms2DBlockCode.cpp
 
-OUT = noneCatoms2D
+OUT = $(APPDIR)/noneCatoms2D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

@@ -1,6 +1,6 @@
 SRCS = coloration_v2_main.cpp coloration_v2_BlockCode.cpp neighbor_finding.cpp coloring.cpp coordinates.cpp
 
-OUT = coloration_v2
+OUT = $(APPDIR)/coloration_v2
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

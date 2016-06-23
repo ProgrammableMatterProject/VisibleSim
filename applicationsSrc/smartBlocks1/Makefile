@@ -1,6 +1,6 @@
 SRCS = smartblock1.cpp smartblock1BlockCode.cpp
 
-OUT = smartBlocks1
+OUT = $(APPDIR)/smartBlocks1
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

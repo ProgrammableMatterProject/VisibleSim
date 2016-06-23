@@ -1,6 +1,6 @@
 SRCS = musicPlayer.cpp musicPlayerBlockCode.cpp
 
-OUT = musicPlayer
+OUT = $(APPDIR)/musicPlayer
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

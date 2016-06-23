@@ -1,6 +1,6 @@
 SRCS = catom2D1.cpp catom2D1BlockCode.cpp
 
-OUT = catom2D1
+OUT = $(APPDIR)/catom2D1
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

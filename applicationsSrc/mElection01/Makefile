@@ -1,6 +1,6 @@
 SRCS = mElection01.cpp mElection01BlockCode.cpp
 
-OUT = mElection01
+OUT = $(APPDIR)/mElection01
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

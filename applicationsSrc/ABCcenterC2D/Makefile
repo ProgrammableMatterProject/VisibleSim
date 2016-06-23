@@ -1,6 +1,6 @@
 SRCS = ABCcenter.cpp ABCcenterCode.cpp
 
-OUT = ABCcenter
+OUT = $(APPDIR)/ABCcenter
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

@@ -1,6 +1,6 @@
 SRCS = map04.cpp map04BlockCode.cpp
 
-OUT = map04
+OUT = $(APPDIR)/map04
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

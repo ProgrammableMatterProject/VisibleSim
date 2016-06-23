@@ -1,6 +1,6 @@
 SRCS = simpleColor.cpp  simpleColorCode.cpp
 
-OUT = simpleColor
+OUT = $(APPDIR)/simpleColor
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

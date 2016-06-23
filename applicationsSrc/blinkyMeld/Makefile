@@ -1,6 +1,6 @@
 SRCS = blinkyMeld.cpp blinkyMeldBlockCode.cpp
 
-OUT = blinkyMeld
+OUT = $(APPDIR)/blinkyMeld
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

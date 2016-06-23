@@ -1,6 +1,6 @@
 SRCS = robot01.cpp robot01BlockCode.cpp
 
-OUT = robot01
+OUT = $(APPDIR)/robot01
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

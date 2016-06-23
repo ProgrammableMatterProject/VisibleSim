@@ -1,6 +1,6 @@
 SRCS = detection.cpp detectionBlockCode.cpp
 
-OUT = detection
+OUT = $(APPDIR)/detection
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

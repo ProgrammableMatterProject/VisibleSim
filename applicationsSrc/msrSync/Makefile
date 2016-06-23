@@ -1,6 +1,6 @@
 SRCS = msrSync.cpp msrSyncBlockCode.cpp
 
-OUT = msrSync
+OUT = $(APPDIR)/msrSync
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

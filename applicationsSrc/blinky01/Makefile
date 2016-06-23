@@ -1,6 +1,6 @@
 SRCS = blinky01.cpp blinky01BlockCode.cpp
 
-OUT = blinky01
+OUT = $(APPDIR)/blinky01
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

@@ -1,6 +1,6 @@
 SRCS = simpleCatom3D.cpp simpleCatom3DBlockCode.cpp
 
-OUT = simpleCatom3D 
+OUT = $(APPDIR)/simpleCatom3D 
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)

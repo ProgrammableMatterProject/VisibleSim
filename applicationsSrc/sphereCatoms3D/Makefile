@@ -1,6 +1,6 @@
 SRCS = sphereCatoms3D.cpp sphereCatoms3DBlockCode.cpp
 
-OUT = sphereCatoms3D
+OUT = $(APPDIR)/sphereCatoms3D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
