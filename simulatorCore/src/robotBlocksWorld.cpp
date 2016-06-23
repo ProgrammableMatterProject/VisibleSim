@@ -8,13 +8,13 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "robotBlocksWorld.h"
-#include "robotBlocksBlock.h"
-#include "robotBlocksScheduler.h"
-#include "trace.h"
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
+
+#include "robotBlocksWorld.h"
+#include "robotBlocksBlock.h"
+#include "trace.h"
 
 using namespace std;
 

@@ -16,7 +16,7 @@ using namespace Catoms2D;
 
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
 	cout << "Catoms2D1BlockCode constructor" << endl;
-	scheduler = Catoms2D::getScheduler();
+	scheduler = getScheduler();
 	catom2D = (Catoms2DBlock*)hostBlock;
 }
 

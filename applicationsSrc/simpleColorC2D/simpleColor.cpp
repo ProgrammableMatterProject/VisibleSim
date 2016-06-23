@@ -8,7 +8,7 @@ using namespace Catoms2D;
 
 int main(int argc, char **argv) {
 	createSimulator(argc, argv, SimpleColorCode::buildNewBlockCode);
-	Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
+	Scheduler *scheduler = getScheduler();
 
 	getSimulator()->printInfo();
 	scheduler->printInfo();

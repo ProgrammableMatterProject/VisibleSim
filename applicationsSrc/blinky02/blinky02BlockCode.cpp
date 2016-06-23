@@ -18,7 +18,7 @@ using namespace BlinkyBlocks;
 
 Blinky02BlockCode::Blinky02BlockCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) {
 	cout << "Blinky02BlockCode constructor" << endl;
-	scheduler = BlinkyBlocks::getScheduler();
+	scheduler = getScheduler();
 	block = (BlinkyBlocksBlock*)hostBlock;
 }
 

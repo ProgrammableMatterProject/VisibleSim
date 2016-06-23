@@ -6,7 +6,6 @@
  */
 
 #include "catoms3DEvents.h"
-#include "catoms3DScheduler.h"
 #include "catoms3DWorld.h"
 
 const int ANIMATION_DELAY=100000;
@@ -36,7 +35,7 @@ MotionStartEvent::~MotionStartEvent() {
 
 void MotionStartEvent::consume() {
     EVENT_CONSUME_INFO();
-    Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
+    Scheduler *scheduler = getScheduler();
     Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
     catom->setColor(DARKGREY);
@@ -72,7 +71,7 @@ MotionStepEvent::~MotionStepEvent() {
 void MotionStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
+    Scheduler *scheduler = getScheduler();
 
     Matrix mat;
     bool rotationEnd=rot.nextStep(mat);
@@ -129,7 +128,7 @@ void MotionStopEvent::consume() {
     info << "connect Block " << catom->blockId;
     getScheduler()->trace(info.str(),catom->blockId,LIGHTBLUE);
     wrld->connectBlock(catom);
-    Catoms3DScheduler *scheduler = Catoms3D::getScheduler();
+    Scheduler *scheduler = getScheduler();
     scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, catom));
 }
 

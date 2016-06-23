@@ -16,6 +16,7 @@ int Event::nextId = 0;
 unsigned int Event::nbLivingEvents = 0;
 
 using namespace std;
+using namespace BaseSimulator;
 
 //===========================================================================================================
 //

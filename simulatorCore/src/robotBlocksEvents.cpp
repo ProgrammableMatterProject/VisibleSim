@@ -6,8 +6,8 @@
  */
 
 #include "robotBlocksEvents.h"
-#include "robotBlocksScheduler.h"
 #include "robotBlocksWorld.h"
+#include "scheduler.h"
 #include "utils.h"
 
 const int ANIMATION_DELAY=40000;
@@ -37,7 +37,7 @@ MotionStartEvent::~MotionStartEvent() {
 
 void MotionStartEvent::consume() {
     EVENT_CONSUME_INFO();
-    RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
+    Scheduler *scheduler = getScheduler();
     RobotBlocksBlock *rb = (RobotBlocksBlock *)concernedBlock;
     RobotBlocksWorld::getWorld()->disconnectBlock(rb);
     rb->setColor(DARKGREY);
@@ -95,7 +95,7 @@ void MotionStepEvent::consume() {
 			 motionPosition[1] * gridScale[1],
 			 motionPosition[2] * gridScale[2]);
     wrl->updateGlData(rb, motionGlPos);
-    RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
+    Scheduler *scheduler = getScheduler();
 
     double v = (finalPosition - motionPosition) * motionStep;
     if (v<EPS) {
@@ -143,7 +143,7 @@ void MotionStopEvent::consume() {
     info << "connect Block " << rb->blockId;
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
     wrld->connectBlock(rb);
-    RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
+    Scheduler *scheduler = getScheduler();
     scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));
 }
 

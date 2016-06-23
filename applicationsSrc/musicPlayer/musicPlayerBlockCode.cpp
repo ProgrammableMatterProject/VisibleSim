@@ -56,13 +56,13 @@ void MusicPlayerBlockCode::init() {
 		idMessage=0;
 		std::vector<Note> song(Score());
 		sendSongToNeighbors(NULL,song);
-		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now()+SYNC_PERIOD,hostBlock));
+		getScheduler()->schedule(new SynchronizeEvent(getScheduler()->now()+SYNC_PERIOD,hostBlock));
 		info << "This block is the Master Block" << endl;
 	}
 	
-	BlinkyBlocks::getScheduler()->schedule(new PlayNoteEvent(BlinkyBlocks::getScheduler()->now()+1.2*SYNC_PERIOD,hostBlock));
+	getScheduler()->schedule(new PlayNoteEvent(getScheduler()->now()+1.2*SYNC_PERIOD,hostBlock));
 	toPlay.push_back(Note(0,0,4));	
-	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+	getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 void MusicPlayerBlockCode::startup() {
@@ -126,7 +126,7 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			}
 			toPlay.erase(toPlay.begin());
 			if (!toPlay.empty()){
-				BlinkyBlocks::getScheduler()->schedule(new PlayNoteEvent(bb->getTime()+delay+(60000/TEMPO)*float((toPlay.at(0).startTime-rel)*1000),bb));
+				getScheduler()->schedule(new PlayNoteEvent(bb->getTime()+delay+(60000/TEMPO)*float((toPlay.at(0).startTime-rel)*1000),bb));
 				info<<"Note scheduled at: "<<toPlay.at(0).startTime-rel<<endl;
 			}
 			sf::Sound Sound;
@@ -188,7 +188,7 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			sendClockToNeighbors(NULL,1,bb->getTime(),idMessage);
 			idMessage++;
 			uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
-			BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
+			getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
 			info << "scheduled synchro" << endl;
 			}
 			break;
@@ -196,7 +196,7 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			ERRPUT << "*** ERROR *** : unknown local event" << endl;
 			break;
 		}
-		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* MusicPlayerBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
@@ -211,7 +211,7 @@ void MusicPlayerBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept,
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){	
 			SynchroMessage *message = new SynchroMessage(clock, hop, id);
-			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
+			getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (getScheduler()->now(), message, p2p));
 		}
 	}
 }
@@ -226,7 +226,7 @@ void MusicPlayerBlockCode::sendSongToNeighbors (P2PNetworkInterface *p2pExcept, 
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 
 		if (p2p->connectedInterface && p2p!=p2pExcept && !b[i] && !sent){
-			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
+			getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (getScheduler()->now(), message, p2p));
 			sent=true;
 			b[i]=true;
 		}
@@ -239,7 +239,7 @@ void MusicPlayerBlockCode::sendSongToNeighbors (P2PNetworkInterface *p2pExcept, 
 	}
 
 	if(!sent && hostBlock->blockId!=1)
-		BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, bb->getInterface(NeighborDirection::Direction(rootInterface))));
+		getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (getScheduler()->now(), message, bb->getInterface(NeighborDirection::Direction(rootInterface))));
 }
 
 std::vector<Note> MusicPlayerBlockCode::Score(){ //We can take a midi file and break it down or just fill the score manually

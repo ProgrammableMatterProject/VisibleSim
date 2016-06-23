@@ -6,7 +6,6 @@
  */
 
 #include "catoms2DEvents.h"
-#include "catoms2DScheduler.h"
 #include "catoms2DWorld.h"
 #include "catoms2DMove.h"
 #include "utils.h"
@@ -42,7 +41,7 @@ MotionStartEvent::~MotionStartEvent() {
 
 void MotionStartEvent::consume() {
     EVENT_CONSUME_INFO();
-    Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
+    Scheduler *scheduler = getScheduler();
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
     Catoms2DWorld::getWorld()->disconnectBlock(rb);
     rb->setColor(DARKGREY);
@@ -80,7 +79,7 @@ void MotionStepEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
 
-    Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
+    Scheduler *scheduler = getScheduler();
 
     Matrix roty;
     if (angle<ANGULAR_STEP) {
@@ -154,7 +153,7 @@ void MotionStopEvent::consume() {
     info << "connect Block " << rb->blockId;
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
     wrld->connectBlock(rb);
-    Catoms2DScheduler *scheduler = Catoms2D::getScheduler();
+    Scheduler *scheduler = getScheduler();
     scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));
 }
 

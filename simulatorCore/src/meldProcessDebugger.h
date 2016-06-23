@@ -11,11 +11,15 @@
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <inttypes.h>
+
 #include "simulator.h"
 #include "meldProcessScheduler.h"
 #include "meldProcessVMCommands.h"
+#include "scheduler.h"
+#include "trace.h"
 
 using namespace std;
+using namespace BaseSimulator;
 
 namespace MeldProcess {
 

@@ -18,7 +18,8 @@
 #define ID_SD_INPUT			2004
 
 
-GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture)
+GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,
+					   GLint pw,GLint ph,const char *titreTexture)
 :id(pid) {
 	if (parent) parent->addChild(this);
 	setGeometry(px,py,pw,ph);

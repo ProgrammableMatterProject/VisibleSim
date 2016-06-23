@@ -5,7 +5,6 @@
  *      Author: dom
  */
 
-#include "simulator.h"
 #include "trace.h"
 #include "meldProcessVM.h"
 #include "meldProcessDebugger.h"
@@ -13,6 +12,7 @@
 #include "meldInterpretScheduler.h"
 #include "meldProcessScheduler.h"
 #include "cppScheduler.h"
+#include "simulator.h"
 
 using namespace std;
 

@@ -26,7 +26,7 @@ class Leader_election_BlockCode : public SmartBlocks::SmartBlocksBlockCode {
 
 public:
 
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	SmartBlocks::Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	Leader_election_BlockCode (SmartBlocks::SmartBlocksBlock *host);

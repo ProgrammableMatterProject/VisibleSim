@@ -71,11 +71,6 @@ void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
     World::setWorld(world);
 }
 
-void Catoms2DSimulator::loadScheduler() {
-	// CPPScheduler::createScheduler();
-	// scheduler = CPPScheduler::getScheduler();
-}
-
 void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 								  BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
 								  const Cell3DPosition &pos, const Color &color, bool master) {

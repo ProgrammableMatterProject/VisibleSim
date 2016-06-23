@@ -61,7 +61,7 @@ void BlinkyMeldBlockCode::init() {
 			/*SetDeterministicModeVMCommand determinismCommand(c, bb->blockId);
 			vm->sendCommand(determinismCommand);*/
 			info << "deterministic mode set";
-			BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+			getScheduler()->trace(info.str(),hostBlock->blockId);
 			OUTPUT << "deterministic mode enable on the VM " << hostBlock->blockId << endl;
 		}
 	}
@@ -72,7 +72,7 @@ void BlinkyMeldBlockCode::startup() {
 
 	currentLocalDate = BaseSimulator::getScheduler()->now();
 	info << "  Starting BlinkyMeldBlockCode in block " << hostBlock->blockId;
-	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+	getScheduler()->trace(info.str(),hostBlock->blockId);
 	init();
 }
 
@@ -163,7 +163,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			{
                         MessagePtr message = (std::static_pointer_cast<VMSendMessageEvent>(pev))->message;
                         P2PNetworkInterface *interface = (std::static_pointer_cast<VMSendMessageEvent>(pev))->sourceInterface;
-                        BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(), message, interface));
+                        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(), message, interface));
                         //info << "sends a message at face " << NeighborDirection::getString(bb->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
 			}
 			break;
@@ -172,10 +172,10 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			      MessagePtr mes = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
                         switch(mes->type){
                         case ADD_TUPLE_MSG_ID:
-                              BlinkyBlocks::getScheduler()->schedule(new AddTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, std::static_pointer_cast<AddTupleMessage>(mes)->tuple, bb->getDirection(mes->sourceInterface->connectedInterface)));
+                              getScheduler()->schedule(new AddTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, std::static_pointer_cast<AddTupleMessage>(mes)->tuple, bb->getDirection(mes->sourceInterface->connectedInterface)));
                               break;
                         case REMOVE_TUPLE_MSG_ID:
-                              BlinkyBlocks::getScheduler()->schedule(new RemoveTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, std::static_pointer_cast<RemoveTupleMessage>(mes)->tuple, bb->getDirection(mes->sourceInterface->connectedInterface)));
+                              getScheduler()->schedule(new RemoveTupleEvent(BaseSimulator::getScheduler()->now(), hostBlock, std::static_pointer_cast<RemoveTupleMessage>(mes)->tuple, bb->getDirection(mes->sourceInterface->connectedInterface)));
                               break;
                         }
 #ifdef TEST_DETER
@@ -227,7 +227,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		}
 		if(info.str() != "") {
-                        BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+                        getScheduler()->trace(info.str(),hostBlock->blockId);
 		}
 }
 

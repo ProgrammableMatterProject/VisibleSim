@@ -43,7 +43,7 @@ public:
     static int side_size;
     static bool bitmap[27000];
 
-	Catoms3D::Catoms3DScheduler *scheduler;
+	Catoms3D::Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
     Vector3D myPosition; // has relative position from the master
     bool hasPosition; // flag position

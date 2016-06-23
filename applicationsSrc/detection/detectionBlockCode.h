@@ -35,7 +35,7 @@ class DetectionBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 
 public:
 
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	SmartBlocks::Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	DetectionBlockCode (SmartBlocks::SmartBlocksBlock *host);

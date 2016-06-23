@@ -37,7 +37,7 @@ using namespace Catoms2D;
 //#define SEND_TARGET_TUPLES
 
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
-  scheduler = Catoms2D::getScheduler();
+  scheduler = getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
   geoTest = false;
   map = new Map(host);

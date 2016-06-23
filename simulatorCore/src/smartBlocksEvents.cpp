@@ -6,7 +6,6 @@
  */
 
 #include "smartBlocksEvents.h"
-#include "smartBlocksScheduler.h"
 #include "smartBlocksWorld.h"
 #include "utils.h"
 
@@ -38,7 +37,7 @@ MotionStartEvent::~MotionStartEvent() {
 
 void MotionStartEvent::consume() {
     EVENT_CONSUME_INFO();
-    SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
+    Scheduler *scheduler = getScheduler();
     SmartBlocksBlock *sb = (SmartBlocksBlock *)concernedBlock;
     SmartBlocksWorld::getWorld()->disconnectBlock(sb);
     sb->setColor(DARKGREY);
@@ -97,7 +96,7 @@ void MotionStepEvent::consume() {
 			 motionPosition[1] * gridScale[1],
 			 motionPosition[2] * gridScale[2]);	
     wrl->updateGlData(rb, motionGlPos);
-    SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
+    Scheduler *scheduler = getScheduler();
 
     // OUTPUT << rb->blockId << ":" << scheduler->now()<< endl;
     double v = (finalPosition - motionPosition) * motionStep;
@@ -147,7 +146,7 @@ void MotionStopEvent::consume() {
   info << "connect Block " << rb->blockId;
   getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);*/
     wrld->connectBlock(rb);
-    SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
+    Scheduler *scheduler = getScheduler();
     scheduler->schedule(new MotionEndEvent(scheduler->now() + ANIMATION_DELAY, rb));
 }
 

@@ -8,15 +8,17 @@
 #ifndef ROBOTBLOCKSWORLD_H_
 #define ROBOTBLOCKSWORLD_H_
 
+#include <vector>
+#include <boost/asio.hpp>
+
 #include "openglViewer.h"
 #include "world.h"
 #include "vector3D.h"
 #include "robotBlocksBlock.h"
 #include "robotBlocksCapabilities.h"
 #include "objLoader.h"
-#include <boost/asio.hpp>
+#include "scheduler.h"
 #include "trace.h"
-#include <vector>
 
 namespace RobotBlocks {
 

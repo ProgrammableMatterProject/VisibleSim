@@ -52,12 +52,6 @@ void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
     World::setWorld(world);
 }
 
-void SmartBlocksSimulator::loadScheduler() {
-    SmartBlocksScheduler::createScheduler();
-    scheduler = SmartBlocksScheduler::getScheduler();
-    cerr << "sched" << scheduler << endl;
-}
-
 void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 				     BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
 				     const Cell3DPosition &pos, const Color &color, bool master) {

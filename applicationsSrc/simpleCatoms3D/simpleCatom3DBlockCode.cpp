@@ -20,7 +20,7 @@ using namespace Catoms3D;
 
 SimpleCatom3DBlockCode::SimpleCatom3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "SimpleCatom3DBlockCode constructor" << endl;
-	scheduler = Catoms3D::getScheduler();
+	scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
 }
 

@@ -20,7 +20,7 @@ class Coloration_BlockCode : public SmartBlocks::SmartBlocksBlockCode {
 	bool colored;
 
 public:
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	SmartBlocks::Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	Coloration_BlockCode( SmartBlocks::SmartBlocksBlock *host );

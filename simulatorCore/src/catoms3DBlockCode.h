@@ -8,11 +8,14 @@
 #ifndef CATOMS3DBLOCKCODE_H_
 #define CATOMS3DBLOCKCODE_H_
 
+#include <ostream>
+
 #include "blockCode.h"
 #include "catoms3DBlock.h"
 #include "network.h"
 #include "scheduler.h"
-#include <ostream>
+
+using namespace BaseSimulator;
 
 namespace Catoms3D {
 

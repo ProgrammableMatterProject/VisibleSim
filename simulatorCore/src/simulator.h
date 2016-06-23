@@ -120,12 +120,6 @@ protected:
 	virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 						   int argc, char *argv[]) = 0;
 
-	/*! \fn virtual void loadScheduler()
-	 *  \brief Calls the createScheduler function from the target scheduler subclass to instantiate it
-	 *
-	 */
-	virtual void loadScheduler() = 0;
-
 	/*! \fn virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master)
 	 *  \brief Parses the config file for any required additional block attribute, and add it to the world
 	 *

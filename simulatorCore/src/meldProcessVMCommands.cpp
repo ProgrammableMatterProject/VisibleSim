@@ -7,6 +7,7 @@
 
 #include "meldProcessVMCommands.h"
 #include "scheduler.h"
+#include "trace.h"
 
 // Format: <content size (in bytes)> <type> <timestamp> <src> <parameter1> ...
 

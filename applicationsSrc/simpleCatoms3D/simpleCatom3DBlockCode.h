@@ -16,7 +16,7 @@
 
 class SimpleCatom3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-	Catoms3D::Catoms3DScheduler *scheduler;
+	Catoms3D::Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
 
     double potentiel;

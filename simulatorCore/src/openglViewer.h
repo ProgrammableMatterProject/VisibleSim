@@ -8,15 +8,17 @@
 #ifndef OPENGLVIEWER_H_
 #define OPENGLVIEWER_H_
 
-#include "shaders.h"
-
 #include <pthread.h>
+
+#include "shaders.h"
 #include "matrix44.h"
 #include "camera.h"
 #include "glBlock.h"
 #include "interface.h"
 
+#ifndef GLUT
 #define GLUT
+#endif
 
 class GlutContext;
 //===========================================================================================================

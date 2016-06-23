@@ -57,11 +57,6 @@ void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
     World::setWorld(world);
 }
 
-void Catoms3DSimulator::loadScheduler() {
-	Catoms3DScheduler::createScheduler();
-	scheduler = Catoms3DScheduler::getScheduler();
-}
-
 void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 								  BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
 								  const Cell3DPosition &pos, const Color &color, bool master) {

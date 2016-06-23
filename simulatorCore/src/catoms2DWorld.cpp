@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include "catoms2DWorld.h"
 #include "catoms2DBlock.h"
-#include "catoms2DScheduler.h"
 #include "trace.h"
 #include <sys/wait.h>
 #include <sys/types.h>

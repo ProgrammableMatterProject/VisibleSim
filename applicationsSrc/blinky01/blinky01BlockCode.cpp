@@ -176,7 +176,7 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 			ERRPUT << "*** ERROR *** : unknown local event" << endl;
 			break;
 		}
-		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* Blinky01BlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {

@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "blinkyBlocksBlockCode.h"
-#include "blinkyBlocksScheduler.h"
 #include "blinkyBlocksWorld.h"
 #include "trace.h"
 
@@ -36,15 +35,12 @@ public:
 	return((BlinkyBlocksSimulator*)simulator);
     }
 
-    void loadScheduler();
-    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 		   int argc, char *argv[]);
-    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-
-    void parseScenario();
-
-    void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void parseScenario();
+    virtual void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {

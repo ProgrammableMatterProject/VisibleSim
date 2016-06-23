@@ -28,7 +28,6 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
 #include "smartBlocksBlock.h"
 #include "smartBlocksCapabilities.h"
 
@@ -90,7 +89,7 @@ class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 	int unlockPathTabSize;
 	int unlockMotionStep;
 public:
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	SbReconfBlockCode (SmartBlocks::SmartBlocksBlock *host);

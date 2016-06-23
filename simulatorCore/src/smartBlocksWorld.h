@@ -13,6 +13,7 @@
 #include "vector3D.h"
 #include "smartBlocksBlock.h"
 #include "smartBlocksCapabilities.h"
+#include "scheduler.h"
 
 namespace SmartBlocks {
 

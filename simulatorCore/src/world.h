@@ -19,6 +19,7 @@
 #include "trace.h"
 #include "utils.h"
 #include "lattice.h"
+#include "scheduler.h"
 
 using namespace BaseSimulator::utils;
 using namespace std;
@@ -188,9 +189,9 @@ inline void deleteWorld() {
     World::deleteWorld();
 }
 
-inline World* getWorld() { return(World::getWorld()); }
+static inline World* getWorld() { return(World::getWorld()); }
 
-inline void setWorld(World* _world) { World::setWorld(_world); }
+static inline void setWorld(World* _world) { World::setWorld(_world); }
 
 } // BaseSimulator namespace
 

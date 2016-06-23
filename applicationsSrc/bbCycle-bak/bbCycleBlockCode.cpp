@@ -36,7 +36,7 @@ void BbCycleBlockCode::init() {
 	while (time<SIMULATION_DURATION_USEC) {
 		uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
 		Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
-		BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
+		getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
 		time += COLOR_CHANGE_PERIOD_USEC;
 	}
 }
@@ -66,7 +66,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			ERRPUT << "*** ERROR *** : unknown local event" << endl;
 			break;
 		}
-		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 

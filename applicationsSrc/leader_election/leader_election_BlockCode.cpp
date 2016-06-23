@@ -22,7 +22,7 @@ using namespace SmartBlocks;
 Leader_election_BlockCode::Leader_election_BlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
 	cout << "leader_election_BlockCode constructor" << endl;
 
-	scheduler = SmartBlocks::getScheduler();
+	scheduler = getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
@@ -80,7 +80,7 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 						info.str("");
 						info << "Block " << hostBlock->blockId << " (" << min_id << ")" << " received a Id_message '" << recv_message->get_transmitted_id() << "' from " << sourceId;
 						//info << "data : " << msg->data();
-						SmartBlocks::getScheduler()->trace(info.str());
+						getScheduler()->trace(info.str());
 						//
 
 						//If i already knew this min_id, it means that i already flooded it, i only acknowledge
@@ -135,7 +135,7 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 						info.str("");
 						info << "Block #" << hostBlock->blockId << " (" << min_id << ")" << " received a Ack_message '" << recv_message->get_transmitted_id() << "' from " << sourceId;
 						//info << "data : " << msg->data();
-						SmartBlocks::getScheduler()->trace(info.str());
+						getScheduler()->trace(info.str());
 						//
 
 						//If my neighbor already knew the min_id i sent to him

@@ -33,7 +33,7 @@ bool CsgCatoms3DBlockCode::bitmap[27000] = {0};
 
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "CsgCatoms3DBlockCode constructor" << endl;
-	scheduler = Catoms3D::getScheduler();
+	scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
     distance = INF;
 }

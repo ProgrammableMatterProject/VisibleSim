@@ -19,7 +19,6 @@
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
 #include "events.h"
-#include "openglViewer.h"
 
 using namespace std;
 
@@ -128,13 +127,13 @@ static inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
 } // BaseSimulator namespace
 
 class ConsoleStream {
-    Scheduler *scheduler;
+	BaseSimulator::Scheduler *scheduler;
     int blockId;
     stringstream stream;
     public :
 
     ConsoleStream() { stream.str(""); };
-    void setInfo(Scheduler*s,int id) {
+    void setInfo(BaseSimulator::Scheduler*s,int id) {
         scheduler=s;
         blockId=id;
     }

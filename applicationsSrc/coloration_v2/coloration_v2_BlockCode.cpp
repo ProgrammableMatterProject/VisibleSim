@@ -25,7 +25,7 @@ typedef pair<Coordinates, BlockRoutingInfos> RouteMapElement;
 
 ColorationV2BlockCode::ColorationV2BlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
   cout << "neighbor_finding_BlockCode constructor" << endl;
-  scheduler = SmartBlocks::getScheduler();
+  scheduler = getScheduler();
   smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
@@ -172,7 +172,7 @@ void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
           info.str("");
           info << endl << endl << "Block #" << hostBlock->blockId << " received a RouteSearchMsg from block #" << sourceId << endl;
           //info << "data : " << msg->data();
-          //~ SmartBlocks::getScheduler()->trace(info.str());
+          //~ getScheduler()->trace(info.str());
           //Fin affichage
 //GRAPHICS
 //V1
@@ -214,7 +214,7 @@ void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
           info.str("");
           info << endl << endl << "Block #" << hostBlock->blockId << " received a RouteSearchAck from block #" << sourceId << endl;
           //info << "data : " << msg->data();
-          //~ SmartBlocks::getScheduler()->trace(info.str());
+          //~ getScheduler()->trace(info.str());
           //Fin affichage
 
           TreatRouteSearchAck( recv_search_ack);
@@ -238,7 +238,7 @@ void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
           info.str("");
           info << endl << endl << "Block #" << hostBlock->blockId << " received a ColoringMsg from block #" << sourceId;
           //info << "data : " << msg->data();
-          SmartBlocks::getScheduler()->trace(info.str());
+          getScheduler()->trace(info.str());
           //Fin affichage
 
           TreatColoringMsg( recv_msg);
@@ -262,7 +262,7 @@ void ColorationV2BlockCode::processLocalEvent( EventPtr pev) {
           info.str("");
           info << endl << endl << "Block #" << hostBlock->blockId << " received a ColoringAck from block #" << sourceId << endl;
           //info << "data : " << msg->data();
-          SmartBlocks::getScheduler()->trace(info.str());
+          getScheduler()->trace(info.str());
           //Fin affichage
 
           TreatColoringAck( recv_ack);

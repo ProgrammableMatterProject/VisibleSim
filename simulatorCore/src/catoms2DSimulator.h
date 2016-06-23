@@ -38,14 +38,12 @@ public:
 	return((Catoms2DSimulator*)simulator);
     }
 
-    void loadScheduler();
-    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		   int argc, char *argv[]);
-    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-    void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
-		
-    void printInfo() { OUTPUT << "I'm a Catoms2DSimulator" << endl; }
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+			   int argc, char *argv[]);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);		
+    virtual void printInfo() { OUTPUT << "I'm a Catoms2DSimulator" << endl; }
     void help();
 };
 

@@ -62,11 +62,6 @@ void RobotBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
     World::setWorld(world);
 }
 
-void RobotBlocksSimulator::loadScheduler() {
-	RobotBlocksScheduler::createScheduler();
-	scheduler = RobotBlocksScheduler::getScheduler();
-}
-
 void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 									 BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
 									 const Cell3DPosition &pos, const Color &color, bool master) {

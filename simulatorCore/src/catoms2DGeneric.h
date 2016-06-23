@@ -3,7 +3,6 @@
 
 #include "catoms2DBlockCode.h"
 #include "catoms2DSimulator.h"
-#include "catoms2DScheduler.h"
 #include "catoms2DEvents.h"
 #include "catoms2DBlock.h"
 #include <map>
@@ -20,12 +19,12 @@ const int nbreNeighborsMax=6;
 class GenericCodeBlock : public Catoms2DBlockCode {
 protected:
     multimap<int,eventFunc> eventFuncMap;
-	Catoms2DScheduler *scheduler;
+	Scheduler *scheduler;
 	Catoms2DBlock *module;
 	ConsoleStream console;
 
     GenericCodeBlock(Catoms2DBlock *host):Catoms2DBlockCode(host) {
-        scheduler = Catoms2D::getScheduler();
+        scheduler = getScheduler();
         module = (Catoms2DBlock*)hostBlock;
         console.setInfo(scheduler,hostBlock->blockId);
         addDebugAttributes(scheduler);

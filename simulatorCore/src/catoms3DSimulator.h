@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "catoms3DBlockCode.h"
-#include "catoms3DScheduler.h"
 #include "catoms3DWorld.h"
 #include "trace.h"
 
@@ -38,15 +37,13 @@ public:
 	assert(simulator != NULL);
 	return((Catoms3DSimulator*)simulator);
     }
-
-    void loadScheduler();
-    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		   int argc, char *argv[]);
-    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-    void parseSkeleton();
-
-    void printInfo() { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
+   
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+			   int argc, char *argv[]);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void parseSkeleton();
+    virtual void printInfo() { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
     void help();
 };
 

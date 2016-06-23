@@ -13,7 +13,6 @@
 
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
-#include "catoms3DScheduler.h"
 #include "catoms3DEvents.h"
 #include "catoms3DBlock.h"
 #include "scheduler.h"
@@ -26,7 +25,7 @@ typedef std::shared_ptr<Distance_message> Distance_message_ptr;
 class SphereCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
     static int radius[1000000];
-	Catoms3D::Catoms3DScheduler *scheduler;
+	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
     int distance;
 

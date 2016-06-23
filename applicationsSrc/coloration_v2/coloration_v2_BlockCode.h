@@ -55,7 +55,7 @@ class ColorationV2BlockCode : public SmartBlocks::SmartBlocksBlockCode {
   //DEBUG
   void PrintRoutesMap();
 public:
-  SmartBlocks::SmartBlocksScheduler *scheduler;
+  SmartBlocks::Scheduler *scheduler;
   SmartBlocks::SmartBlocksBlock *smartBlock;
 
   ColorationV2BlockCode( SmartBlocks::SmartBlocksBlock *host);

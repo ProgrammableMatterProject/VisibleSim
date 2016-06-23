@@ -7,8 +7,10 @@
 
 #ifndef BLINKYBLOCKSSCENARIO_H_
 #define BLINKYBLOCKSSCENARIO_H_
+
 #include "vector3D.h"
 #include "blinkyBlocksWorld.h"
+#include "world.h"
 #include "scheduler.h"
 
 class ScenarioEvent {

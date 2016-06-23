@@ -8,11 +8,12 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #include "scheduler.h"
 #include "network.h"
 #include "trace.h"
+
+using namespace std;
+using namespace BaseSimulator;
 
 //unsigned int Message::nextId = 0;
 //unsigned int Message::nbMessages = 0;

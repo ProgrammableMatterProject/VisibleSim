@@ -16,7 +16,6 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
 #include "smartBlocksBlock.h"
 
 
@@ -36,7 +35,7 @@ class SmartBlock1BlockCode : public SmartBlocks::SmartBlocksBlockCode {
 
 public:
 
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	SmartBlock1BlockCode (SmartBlocks::SmartBlocksBlock *host);
@@ -48,7 +47,8 @@ public:
 	static SmartBlocks::SmartBlocksBlockCode *buildNewBlockCode( SmartBlocks::SmartBlocksBlock *host);
 
 	void send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
-	void send_ack( unsigned int path,  unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
+	void send_ack( unsigned int path,  unsigned int distance,
+				   P2PNetworkInterface * by_interface, uint64_t time_offset);
 
 	bool i_can_ack();
 };

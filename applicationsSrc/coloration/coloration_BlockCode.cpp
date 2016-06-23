@@ -19,7 +19,7 @@ using namespace SmartBlocks;
 
 Coloration_BlockCode::Coloration_BlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
 	cout << "coloration_BlockCode constructor" << endl;
-	scheduler = SmartBlocks::getScheduler();
+	scheduler = getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
@@ -73,7 +73,7 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 		info.str("");
 		info << "received a Color_message (" << recv_message->get_my_color() << "," << recv_message->get_horizontal_color() << "," << recv_message->get_vertical_color() << ") from " << sourceId;
 		//info << "data : " << msg->data();
-		SmartBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		getScheduler()->trace(info.str(),hostBlock->blockId);
 
 		if( !colored ) {
 			colored = true;

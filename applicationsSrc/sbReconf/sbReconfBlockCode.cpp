@@ -29,7 +29,7 @@ const int time_offset=100;
 
 SbReconfBlockCode::SbReconfBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
     OUTPUT << "SbReconfBlockCode constructor" << endl;
-    scheduler = SmartBlocks::getScheduler();
+    scheduler = getScheduler();
     smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 

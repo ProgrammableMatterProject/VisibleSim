@@ -19,7 +19,7 @@ using namespace SmartBlocks;
 
 DetectionBlockCode::DetectionBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
 	cout << "DetectionBlockCode constructor" << endl;
-	scheduler = SmartBlocks::getScheduler();
+	scheduler = getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
