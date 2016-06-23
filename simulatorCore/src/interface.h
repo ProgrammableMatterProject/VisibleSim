@@ -17,6 +17,10 @@
 #include "world.h"
 #include "color.h"
 
+#ifndef GLUT
+#define GLUT
+#endif
+
 using namespace std;
 using namespace BaseSimulator;
 

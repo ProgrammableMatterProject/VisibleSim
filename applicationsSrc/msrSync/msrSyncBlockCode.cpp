@@ -54,7 +54,7 @@ void msrSyncBlockCode::init() {
     while (time<SIMULATION_DURATION_USEC) {
     uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
     Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
-    BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
+    getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
     time += COLOR_CHANGE_PERIOD_USEC;
     }*/
   // empty the file if it exists
@@ -65,7 +65,7 @@ void msrSyncBlockCode::init() {
 
 #ifdef SYNCHRONIZATION
   if(hostBlock->blockId == 1) { // Time leader
-    BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(BaseSimulator::getScheduler()->now(),hostBlock));
+    getScheduler()->schedule(new MsrSyncEvent(BaseSimulator::getScheduler()->now(),hostBlock));
   }
 #endif
 }
@@ -75,7 +75,7 @@ void msrSyncBlockCode::startup() {
   //BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
   info << "  Starting msrSyncBlockCode in block " << hostBlock->blockId;
-  BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+  getScheduler()->trace(info.str(),hostBlock->blockId);
   init();
 
 }
@@ -108,7 +108,7 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 	uint64_t nextSync = hostBlock->getSchedulerTimeForLocalTime(hostBlock->getTime()+SYNC_PERIOD_US);
 	//cout << nextSync << " " << BaseSimulator::getScheduler()->now() << endl;
 	// or based on global time now ? BaseSimulator::getScheduler()->now()+SYNC_PERIOD
-	BlinkyBlocks::getScheduler()->schedule(new MsrSyncEvent(nextSync,hostBlock));
+	getScheduler()->schedule(new MsrSyncEvent(nextSync,hostBlock));
       }
     }
     break;
@@ -181,7 +181,7 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
   }
 		
   if (info.str() != "") {
-    BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+    getScheduler()->trace(info.str(),hostBlock->blockId);
   }
 }
 

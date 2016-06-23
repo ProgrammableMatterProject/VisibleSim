@@ -35,7 +35,7 @@ BuildingBlock::BuildingBlock(int bId) {
     state.store(ALIVE);
     clock = NULL;
     std::random_device rd;
-    generator = std::mt19937(rd());
+    generator = std::ranlux48(rd());
     dis = uniform_int_distribution<>(0, 50 * blockId);
 }
 

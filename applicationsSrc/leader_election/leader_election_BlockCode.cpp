@@ -22,7 +22,7 @@ using namespace SmartBlocks;
 Leader_election_BlockCode::Leader_election_BlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
 	cout << "leader_election_BlockCode constructor" << endl;
 
-	scheduler = SmartBlocks::getScheduler();
+	scheduler = getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
@@ -47,9 +47,9 @@ void Leader_election_BlockCode::startup() {
 	int i;
 	uint64_t time_offset = 0;
 	P2PNetworkInterface *p2p;
-	for( i = North; i <= West; i++ )
+	for( i = NeighborDirection::North; i <= NeighborDirection::West; i++ )
 	{
-		p2p = smartBlock->getInterface( (NeighborDirection)i );
+		p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
 		if( p2p->connectedInterface ) {
 			n_answers_needed++;
 			time_offset += TIMESCALE + ( rand() % 25 ) * TIMESCALE ;
@@ -80,7 +80,7 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 						info.str("");
 						info << "Block " << hostBlock->blockId << " (" << min_id << ")" << " received a Id_message '" << recv_message->get_transmitted_id() << "' from " << sourceId;
 						//info << "data : " << msg->data();
-						SmartBlocks::getScheduler()->trace(info.str());
+						getScheduler()->trace(info.str());
 						//
 
 						//If i already knew this min_id, it means that i already flooded it, i only acknowledge
@@ -102,8 +102,8 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 								n_answers_needed = 0;
 								int i;
 								P2PNetworkInterface *p2p;
-								for( i = North; i <= West; i++ ) {
-									p2p = smartBlock->getInterface( (NeighborDirection)i );
+								for( i = NeighborDirection::North; i <= NeighborDirection::West; i++ ) {
+									p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
 									if( p2p->connectedInterface ) {
 										if( p2p != min_id_sender ) {
 											n_answers_needed++;
@@ -135,7 +135,7 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 						info.str("");
 						info << "Block #" << hostBlock->blockId << " (" << min_id << ")" << " received a Ack_message '" << recv_message->get_transmitted_id() << "' from " << sourceId;
 						//info << "data : " << msg->data();
-						SmartBlocks::getScheduler()->trace(info.str());
+						getScheduler()->trace(info.str());
 						//
 
 						//If my neighbor already knew the min_id i sent to him
@@ -187,8 +187,8 @@ void Leader_election_BlockCode::master_routine() {
 	master_found = true;
 	uint64_t time_offset = 0;
 	P2PNetworkInterface *p2p;
-	for( int i = North; i <= West; i++ ) {
-		p2p = smartBlock->getInterface( (NeighborDirection)i );
+	for( int i = NeighborDirection::North; i <= NeighborDirection::West; i++ ) {
+		p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
 		if( p2p->connectedInterface ) {
 			time_offset += TIMESCALE + ( rand() % 25 ) * TIMESCALE ;
 			Master_declaration_message * master_msg = new Master_declaration_message( min_id );

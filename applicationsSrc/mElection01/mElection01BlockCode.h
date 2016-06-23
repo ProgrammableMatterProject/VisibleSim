@@ -17,7 +17,7 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
+
 #include "robotBlocksBlock.h"
 
 class IdDiffusion;
@@ -43,7 +43,7 @@ class MElection01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
     
 public:
 
-	RobotBlocks::RobotBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *robotBlock;
 
 	MElection01BlockCode (RobotBlocks::RobotBlocksBlock *host);

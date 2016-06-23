@@ -5,12 +5,14 @@
  *      Author: dom
  */
 
-#include "simulator.h"
 #include "trace.h"
 #include "meldProcessVM.h"
 #include "meldProcessDebugger.h"
 #include "meldInterpretVM.h"
-//#include "meldInterpretDebugger.h"
+#include "meldInterpretScheduler.h"
+#include "meldProcessScheduler.h"
+#include "cppScheduler.h"
+#include "simulator.h"
 
 using namespace std;
 
@@ -28,7 +30,8 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 		simulator = this;
 		BaseSimulator::simulator = simulator;
 	} else {
-		ERRPUT << "\033[1;31m" << "Only one Simulator instance can be created, aborting !" << "\033[0m" << endl;
+		ERRPUT << "\033[1;31m" << "Only one Simulator instance can be created, aborting !"
+			   << "\033[0m" << endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -46,9 +49,11 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 	} else {
 		xmlWorldNode = xmlDoc->FirstChild("world");
 		if (xmlWorldNode) {
-			OUTPUT << "\033[1;34m  " << confFileName << " successfully loaded "<< "\033[0m" << endl;
+			OUTPUT << "\033[1;34m  " << confFileName << " successfully loaded "
+				   << "\033[0m" << endl;
 		} else {
-			ERRPUT << "\033[1;31m" << "error: Could not find root 'world' element in configuration file" << "\033[0m" << endl;
+			ERRPUT << "\033[1;31m" << "error: Could not find root 'world' element in configuration file"
+				   << "\033[0m" << endl;
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -112,7 +117,31 @@ Simulator::~Simulator() {
 	deleteWorld();
 }
 
+void Simulator::deleteSimulator() {
+    delete simulator;
+    simulator = NULL;
+}
+
+void Simulator::loadScheduler(int maximumDate) {
+	switch(getType()) {
+	case MELDINTERPRET:
+		MeldInterpret::MeldInterpretScheduler::createScheduler();
+		break;
+	case MELDPROCESS:
+		MeldProcess::MeldProcessScheduler::createScheduler();
+		break;
+	case CPP:
+		CPPScheduler::createScheduler();
+		break;
+	}
+
+	scheduler = getScheduler();
+	if (maximumDate) scheduler->setMaximumDate(maximumDate);	   
+}
+
 void Simulator::parseWorld(int argc, char*argv[]) {
+	int maximumDate = 0;		//!< Maximum simulation date
+		
 	/* reading the xml file */
 	xmlWorldNode = xmlDoc->FirstChild("world");
 
@@ -187,9 +216,8 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 		exit(1);
 	}
 
-	// Instantiate and configure the scheduler
-	loadScheduler();
-	if (maximumDate) scheduler->setMaximumDate(maximumDate);
+	// Instantiate and configure the Scheduler
+	loadScheduler(maximumDate);
 
 	// Parse the remaining items
 	parseCameraAndSpotlight();

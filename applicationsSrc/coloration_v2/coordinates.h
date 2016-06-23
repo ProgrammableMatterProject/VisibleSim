@@ -10,9 +10,9 @@ struct Coordinates {
   int y;
 
   Coordinates( int, int);
-  Coordinates( int, int, NeighborDirection);
+  Coordinates( int, int, NeighborDirection::Direction);
 
-  void AdaptToBeSentBy( NeighborDirection);
+  void AdaptToBeSentBy( NeighborDirection::Direction);
 
   bool operator==( const Coordinates) const;
   bool operator!=( const Coordinates) const;

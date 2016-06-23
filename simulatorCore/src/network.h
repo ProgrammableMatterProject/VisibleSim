@@ -10,6 +10,7 @@
 
 #include <deque>
 #include <string.h>
+
 #include "buildingBlock.h"
 
 using namespace std;
@@ -84,7 +85,7 @@ protected:
 	static double defaultDataRateVariability;
 	double dataRate; // bit/s
 	double dataRateVariability;
-	boost::rand48 generator;
+	std::ranlux48 generator;
 public:
 	
 	unsigned int globalId;

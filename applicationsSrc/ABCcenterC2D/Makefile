@@ -1,6 +1,6 @@
 SRCS = ABCcenter.cpp ABCcenterCode.cpp
 
-OUT = ABCcenter
+OUT = $(APPDIR)/ABCcenter
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -46,7 +46,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

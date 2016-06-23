@@ -1,7 +1,9 @@
-#include "commandLine.h"
-#include "scheduler.h"
 #include <iostream>
 #include <cstdlib>
+
+#include "commandLine.h"
+#include "scheduler.h"
+#include "openglViewer.h"
 
 #define CMD_LINE_UNDEFINED -1
 

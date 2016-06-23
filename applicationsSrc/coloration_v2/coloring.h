@@ -3,7 +3,7 @@
 
 #include <list>
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "network.h"
 #include "coordinates.h"
 #include <boost/array.hpp>
@@ -36,8 +36,8 @@ class ColoringMsg : public Message {
   Coordinates origine_;
   Coordinates destination_;
 public:
-  ColoringMsg( Coordinates, Coordinates, ColorQuantityArray, NeighborDirection);
-  ColoringMsg( const ColoringMsgPtr, NeighborDirection);
+  ColoringMsg( Coordinates, Coordinates, ColorQuantityArray, NeighborDirection::Direction);
+  ColoringMsg( const ColoringMsgPtr, NeighborDirection::Direction);
   ~ColoringMsg() {}
 
   ColorQuantityArray scores() { return scores_; };
@@ -52,8 +52,8 @@ class ColoringAck : public Message {
   Coordinates destination_;
   int color_;
 public:
-  ColoringAck( Coordinates, Coordinates, int, NeighborDirection);
-  ColoringAck( const ColoringAckPtr, NeighborDirection);
+  ColoringAck( Coordinates, Coordinates, int, NeighborDirection::Direction);
+  ColoringAck( const ColoringAckPtr, NeighborDirection::Direction);
   ~ColoringAck() {}
 
   Coordinates origine() { return origine_; };

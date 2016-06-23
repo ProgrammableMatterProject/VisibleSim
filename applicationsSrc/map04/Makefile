@@ -1,6 +1,6 @@
 SRCS = map04.cpp map04BlockCode.cpp
 
-OUT = map04
+OUT = $(APPDIR)/map04
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -27,7 +27,7 @@ CC = g++
 
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-	
+
 all: $(OUT) 
 
 autoinstall: $(OUT) 
@@ -46,7 +46,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

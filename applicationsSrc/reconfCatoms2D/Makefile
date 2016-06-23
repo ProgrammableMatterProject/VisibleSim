@@ -1,6 +1,6 @@
 SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp border.cpp landmarks.cpp
 
-OUT = catom2D1
+OUT = $(APPDIR)/catom2D1
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -51,7 +51,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 generator: configGenerator.cpp
 	$(CC) -o $@ $^
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

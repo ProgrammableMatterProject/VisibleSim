@@ -11,6 +11,7 @@
 #include <list>
 #include <random>
 #include <atomic>
+#include <memory>
 
 #include "glBlock.h"
 #include "blockCode.h"
@@ -60,8 +61,8 @@ protected:
 	list<EventPtr> localEventsList;
 public:
 	int blockId; //!< id of the block
-	std::mt19937 generator; //!< random device to generate random numbers for BlinkyBlocks determinism
-    std::uniform_int_distribution<> dis; //!< random int distribution based on randomDev and generator
+	std::ranlux48 generator; //!< random device to generate random numbers for BlinkyBlocks determinism
+    std::uniform_int_distribution<> dis; //!< random int distribution based on generator
 	BlockCode *blockCode; //!< blockcode program executed by the block
 	Clock *clock; //!< internal clock of the block
 	Color color; //!< color of the block

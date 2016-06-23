@@ -3,28 +3,28 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
 #include "robotBlocksEvents.h"
 #include "robotBlocksBlock.h"
+
 #include <map>
 #include <ostream>
-
+#include <functional>
 
 namespace RobotBlocks {
 
 class GenericCodeBlock;
 
-typedef boost::function<void (GenericCodeBlock*,MessagePtr,P2PNetworkInterface*)> eventFunc;
+typedef std::function<void (GenericCodeBlock*,MessagePtr,P2PNetworkInterface*)> eventFunc;
 
 class GenericCodeBlock : public RobotBlocksBlockCode {
 protected:
     multimap<int,eventFunc> eventFuncMap;
-	RobotBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	RobotBlocksBlock *module;
 	ConsoleStream console;
 
     GenericCodeBlock(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
-        scheduler = RobotBlocks::getScheduler();
+        scheduler = getScheduler();
         module = (RobotBlocksBlock*)hostBlock;
         console.setInfo(scheduler,hostBlock->blockId);
         addDebugAttributes(scheduler);

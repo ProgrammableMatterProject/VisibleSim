@@ -10,7 +10,7 @@
 #include "sbReconfBlockCode.h"
 #include "scheduler.h"
 #include "smartBlocksEvents.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 /*************************
 STEP 0: get map
@@ -29,14 +29,14 @@ const int time_offset=100;
 
 SbReconfBlockCode::SbReconfBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
     OUTPUT << "SbReconfBlockCode constructor" << endl;
-    scheduler = SmartBlocks::getScheduler();
+    scheduler = getScheduler();
     smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
 SbReconfBlockCode::~SbReconfBlockCode() {
     OUTPUT << "SbReconfBlockCode destructor" << endl;
-    delete [] targetGrid;
-    delete [] unlockPathTab;
+		// delete [] targetGrid; // Handled by smartBlocksSimulator
+    // delete [] unlockPathTab;
 }
 
 void SbReconfBlockCode::startup() {

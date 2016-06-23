@@ -9,7 +9,6 @@
 #include "blinkyBlocksSimulator.h"
 #include <string.h>
 #include "trace.h"
-#include "blinkyBlocksScheduler.cpp"
 
 using namespace std;
 
@@ -128,20 +127,11 @@ void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[],
 	simulator =  new BlinkyBlocksSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
 }
 
-void BlinkyBlocksSimulator::deleteSimulator() {
-	delete((BlinkyBlocksSimulator*)simulator);
-}
-
 void BlinkyBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									  int argc, char *argv[]) {
 	world = new BlinkyBlocksWorld(gridSize, gridScale, argc,argv);
 	world->loadTextures("../../simulatorCore/blinkyBlocksTextures");
 	World::setWorld(world);
-}
-
-void BlinkyBlocksSimulator::loadScheduler() {
-	createScheduler();
-	scheduler = getScheduler();
 }
 
 void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,

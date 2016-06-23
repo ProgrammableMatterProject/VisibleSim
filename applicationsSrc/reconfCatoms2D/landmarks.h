@@ -6,7 +6,7 @@
 //#include "time.h"
 #include "network.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/random.hpp>
 #include "catom2D1BlockCode.h"
 

@@ -11,7 +11,7 @@
 #include "scheduler.h"
 #include "events.h"
 //MODIF NICO
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 using namespace std;
@@ -19,7 +19,7 @@ using namespace SmartBlocks;
 
 SmartBlock1BlockCode::SmartBlock1BlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
     cout << "SmartBlock1BlockCode constructor" << endl;
-    scheduler = SmartBlocks::getScheduler();
+    scheduler = getScheduler();
     smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 

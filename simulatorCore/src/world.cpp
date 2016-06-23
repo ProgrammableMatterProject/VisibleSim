@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+
 #include "world.h"
 #include "trace.h"
 #include "openglViewer.h"
@@ -163,7 +164,8 @@ void World::generateIds(int n, int* ids) {
     // not implemented in macos
     //boost::rand48 generator = boost::rand48(t.tv_nsec);
 
-    boost::rand48 generator = boost::rand48(time(NULL));
+    std::random_device rd;
+    std::ranlux48 generator = std::ranlux48(rd());
 
     for (int i = 0; i < n; i++) {
 	    ids[i] = i+1;

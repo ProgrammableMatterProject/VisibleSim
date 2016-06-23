@@ -1,6 +1,6 @@
 SRCS = csgCatoms3D.cpp csgCatoms3DBlockCode.cpp csg.cpp csgUtils.cpp stoyUtils.cpp meshUtils.cpp bitmapUtils.cpp mesh/geometrics.cpp mesh/obj_file.cpp mesh/polygon.cpp mesh/triangle.cpp mesh/world.cpp
 
-OUT = csgCatoms3D
+OUT = $(APPDIR)/csgCatoms3D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -46,7 +46,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

@@ -25,7 +25,7 @@ RobotBlocks::presence *initGrid(short gridSize[3],RobotBlocks::presence *init) {
 
 Robot01BlockCode::Robot01BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
 	cout << "Robot01BlockCode constructor" << endl;
-	scheduler = RobotBlocks::getScheduler();
+	scheduler = getScheduler();
 	robotBlock = (RobotBlocksBlock*)hostBlock;
 
 // initialize object deleted in destructor

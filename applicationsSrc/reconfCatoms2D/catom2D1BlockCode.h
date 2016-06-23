@@ -10,7 +10,7 @@
 
 #include "catoms2DBlockCode.h"
 #include "catoms2DSimulator.h"
-#include "catoms2DScheduler.h"
+
 #include "catoms2DBlock.h"
 #include "localTupleSpace.hpp"
 #include "tuple.hpp"
@@ -30,7 +30,7 @@ class Landmarks;
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  public:
 
-  Catoms2D::Catoms2DScheduler *scheduler;
+  Scheduler *scheduler;
   Catoms2D::Catoms2DBlock *catom2D;
 
   Catoms2D1BlockCode (Catoms2D::Catoms2DBlock *host);

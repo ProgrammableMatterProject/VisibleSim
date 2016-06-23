@@ -8,10 +8,13 @@
 #ifndef WORLD_H_
 #define WORLD_H_
 
+#include <random>
 #include <iostream>
 #include <map>
 #include <vector>
 #include <mutex>
+
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
 
 #include "assert.h"
 #include "buildingBlock.h"
@@ -19,6 +22,7 @@
 #include "trace.h"
 #include "utils.h"
 #include "lattice.h"
+#include "scheduler.h"
 
 using namespace BaseSimulator::utils;
 using namespace std;
@@ -26,7 +30,7 @@ using namespace std;
 namespace BaseSimulator {
 
 class World {
-    std::mutex mutex_gl;
+    boost::interprocess::interprocess_mutex mutex_gl;
 protected:
     static World *world;
     static vector<GlBlock*>tabGlBlocks;
@@ -106,11 +110,11 @@ public:
     inline GlBlock* getBlockByNum(int n) { return tabGlBlocks[n]; };
     inline int getNbBlocks() { return buildingBlocksMap.size(); };
     /**
-     * \brief Locks the world mutex to avoid concurrency issues with the gl thread
+     * \brief Locks the world mutex to avoid concurrency issues with the gl process
      */
     inline void lock() { mutex_gl.lock(); };
     /**
-     * \brief Unlocks the world mutex to re-enable access from the gl thread
+     * \brief Unlocks the world mutex to re-enable access from the gl process
      */
     inline void unlock() { mutex_gl.unlock(); };
     virtual void glDraw() {};
@@ -188,9 +192,9 @@ inline void deleteWorld() {
     World::deleteWorld();
 }
 
-inline World* getWorld() { return(World::getWorld()); }
+static inline World* getWorld() { return(World::getWorld()); }
 
-inline void setWorld(World* _world) { World::setWorld(_world); }
+static inline void setWorld(World* _world) { World::setWorld(_world); }
 
 } // BaseSimulator namespace
 

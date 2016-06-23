@@ -11,7 +11,7 @@
 #define COLOR_MSG	  9006
 
 #include "network.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "colors.h"
 
 class Color_message;

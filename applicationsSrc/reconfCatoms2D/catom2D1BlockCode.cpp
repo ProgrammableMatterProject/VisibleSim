@@ -12,7 +12,7 @@
 #include "events.h"
 #include "catoms2DEvents.h"
 //MODIF NICO
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "reconfigurationMsg.h"
 #include "reconfCatoms2DEvents.h"
@@ -37,7 +37,7 @@ using namespace Catoms2D;
 //#define SEND_TARGET_TUPLES
 
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
-  scheduler = Catoms2D::getScheduler();
+  scheduler = getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
   geoTest = false;
   map = new Map(host);

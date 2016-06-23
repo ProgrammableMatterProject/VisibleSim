@@ -38,6 +38,8 @@ Scheduler::Scheduler() {
 	maximumDate = UINT_MAX; // no time limitation by default
 	eventsMapSize = 0;
 	largestEventsMapSize = 0;
+
+	sem_schedulerStart = new boost::interprocess::interprocess_semaphore(0);
 }
 
 Scheduler::~Scheduler() {

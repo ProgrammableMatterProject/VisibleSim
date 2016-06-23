@@ -37,11 +37,11 @@ void BbCycleBlockCode::init() {
 	cycle=true;
 	if(hostBlock->blockId==1){
 		idMessage=0;	
-		BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(BlinkyBlocks::getScheduler()->now()+SYNC_PERIOD,hostBlock));	
+		getScheduler()->schedule(new SynchronizeEvent(getScheduler()->now()+SYNC_PERIOD,hostBlock));	
 		info << "This block is the Master Block" << endl;
 	}
-	BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(COLOR_CHANGE_PERIOD_USEC,bb,c));
-	BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+	getScheduler()->schedule(new SetColorEvent(COLOR_CHANGE_PERIOD_USEC,bb,c));
+	getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 void BbCycleBlockCode::startup() {
@@ -73,7 +73,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 				color = RED;
 				cycle = true;
 			}
-			BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
+			getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
 			info << "Setcolor scheduled" << endl;
 			}
 			break;
@@ -95,11 +95,11 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 						delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;  
 
 						/*else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
-							info << "Paused for : " << ((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop))-BlinkyBlocks::getScheduler()->now()) << endl;
-							BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+							info << "Paused for : " << ((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop))-getScheduler()->now()) << endl;
+							getScheduler()->trace(info.str(),hostBlock->blockId);
 							while (bb->getTime() > recvMessage->time+6000*recvMessage->nbhop);
-							//while(BlinkyBlocks::getScheduler()->now() < (bb->getTime()-(recvMessage->time + 60000*recvMessage->nbhop)));
-							//bb->pauseClock((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop)),BlinkyBlocks::getScheduler()->now()); 
+							//while(getScheduler()->now() < (bb->getTime()-(recvMessage->time + 60000*recvMessage->nbhop)));
+							//bb->pauseClock((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop)),getScheduler()->now()); 
 						}*/
 						info<<"synchronized with delay : "<< delay << endl;
 						}
@@ -116,7 +116,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			sendClockToNeighbors(NULL,1,bb->getTime(),idMessage);
 			idMessage++;
 			uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
-			BlinkyBlocks::getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
+			getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
 			info << "scheduled synchro" << endl;
 			}
 			break;
@@ -124,7 +124,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 			ERRPUT << "*** ERROR *** : unknown local event" << endl;
 			break;
 		}
-		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
@@ -139,7 +139,7 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int
 	p2p = bb->getInterface(NeighborDirection::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){	
 			SynchroMessage *message = new SynchroMessage(clock, hop, id);
-			BlinkyBlocks::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (BlinkyBlocks::getScheduler()->now(), message, p2p));
+			getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (getScheduler()->now(), message, p2p));
 		}
 	}
 }

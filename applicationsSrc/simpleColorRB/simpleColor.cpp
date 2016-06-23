@@ -8,7 +8,7 @@ using namespace RobotBlocks;
 
 int main(int argc, char **argv) {
 	createSimulator(argc, argv, SimpleColorCode::buildNewBlockCode);
-	RobotBlocksScheduler *scheduler = RobotBlocks::getScheduler();
+	Scheduler *scheduler = getScheduler();
 
 	getSimulator()->printInfo();
 	scheduler->printInfo();

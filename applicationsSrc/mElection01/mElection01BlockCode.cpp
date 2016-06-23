@@ -13,7 +13,7 @@
 #include "mElection01BlockCode.h"
 #include "scheduler.h"
 #include "robotBlocksEvents.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 const int COM_DELAY=700000;
 using namespace std;
@@ -21,7 +21,7 @@ using namespace RobotBlocks;
 
 MElection01BlockCode::MElection01BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
 	cout << "MElection01BlockCode constructor" << endl;
-	scheduler = RobotBlocks::getScheduler();
+	scheduler = getScheduler();
 	robotBlock = (RobotBlocksBlock*)hostBlock;
 	
 	// initialize object deleted in destructor

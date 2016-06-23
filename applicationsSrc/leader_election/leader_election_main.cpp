@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	srand( time(NULL));
 
 	createSimulator(argc, argv, Leader_election_BlockCode::buildNewBlockCode);
-	SmartBlocksScheduler *scheduler = SmartBlocks::getScheduler();
+	Scheduler *scheduler = getScheduler();
 
 
 	getSimulator()->printInfo();

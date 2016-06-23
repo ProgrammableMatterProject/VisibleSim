@@ -11,7 +11,7 @@
 #include "catoms3DBlock.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <chrono>
 #include <fstream>
 //#define MAX 1000
@@ -24,7 +24,7 @@ int SphereCatoms3DBlockCode::radius[1000000] = {0};
 
 SphereCatoms3DBlockCode::SphereCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "SphereCatoms3DBlockCode constructor" << endl;
-	scheduler = Catoms3D::getScheduler();
+	scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
     distance = INF;
 }

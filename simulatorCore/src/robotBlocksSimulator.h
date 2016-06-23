@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "robotBlocksBlockCode.h"
-#include "robotBlocksScheduler.h"
 #include "robotBlocksWorld.h"
 #include "trace.h"
 
@@ -28,7 +27,6 @@ public:
     bool testMode;
 
     static void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
-    static void deleteSimulator();
 
     static RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
 
@@ -37,24 +35,18 @@ public:
 	return((RobotBlocksSimulator*)simulator);
     }
 
-    void loadScheduler();
-    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		   int argc, char *argv[]);
-    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-    void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
-
-    void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+			   int argc, char *argv[]);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
+    virtual void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
 
     void help();
 };
 
 inline void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) {
     RobotBlocksSimulator::createSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
-}
-
-inline void deleteSimulator() {
-    RobotBlocksSimulator::deleteSimulator();
 }
 
 inline RobotBlocksSimulator* getSimulator() { return(RobotBlocksSimulator::getSimulator()); }

@@ -1,7 +1,12 @@
+
+#include <map>
+
 #include "configStat.h"
 #include "scheduler.h"
-#include <map>
 #include "network.h"
+
+using namespace std;
+using namespace BaseSimulator;
 
 ConfigStat::ConfigStat(BaseSimulator::World *w) {
 	diameter = 0; 

@@ -10,12 +10,12 @@
 #include "robot02BlockCode.h"
 #include "scheduler.h"
 #include "robotBlocksEvents.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 Robot02BlockCode::Robot02BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
 	cout << "Robot02BlockCode constructor" << endl;
-	scheduler = RobotBlocks::getScheduler();
+	scheduler = getScheduler();
 	block = (RobotBlocksBlock*)hostBlock;
 // initialize object deleted in destructor
 }

@@ -11,7 +11,7 @@
 #include "scheduler.h"
 #include "events.h"
 //MODIF NICO
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 using namespace std;
@@ -19,7 +19,7 @@ using namespace SmartBlocks;
 
 DetectionBlockCode::DetectionBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
 	cout << "DetectionBlockCode constructor" << endl;
-	scheduler = SmartBlocks::getScheduler();
+	scheduler = getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
@@ -47,9 +47,9 @@ void DetectionBlockCode::startup() {
 
 		//I send distance to all of my neighbors
 		uint64_t time_offset;
-		for( int i=North; i<=West; i++)
+		for( int i=NeighborDirection::North; i<=NeighborDirection::West; i++)
 		{
-			P2PNetworkInterface *p2p = smartBlock->getInterface(NeighborDirection(i));
+			P2PNetworkInterface *p2p = smartBlock->getInterface(NeighborDirection::Direction(i));
 			if( p2p->connectedInterface)
 			{
 				time_offset = (i+1)*1000;
@@ -96,9 +96,10 @@ void DetectionBlockCode::processLocalEvent(EventPtr pev) {
 						distance_dealer = recv_message->destinationInterface;
 
 						//I send my new distance to all my neighbors except to its sender
-						for( i = North; i <= West; i++)
+						for( i = NeighborDirection::North; i <= NeighborDirection::West; i++)
 						{
-							P2PNetworkInterface * p2p = smartBlock->getInterface( NeighborDirection(i));
+							P2PNetworkInterface * p2p =
+								smartBlock->getInterface(NeighborDirection::Direction(i));
 							if( p2p->connectedInterface) {
 								//except to the sender
 								if( p2p != recv_interface) {
@@ -183,8 +184,8 @@ void DetectionBlockCode::send_ack( unsigned int distance,  P2PNetworkInterface *
 
 bool DetectionBlockCode::i_can_ack(){
 	bool result = true;
-	int i = North;
-	while( i <= West && result == true)
+	int i = NeighborDirection::North;
+	while( i <= NeighborDirection::West && result == true)
 	{
 		 if( isAck[ i] == false){ result = false; }
 		 i++;

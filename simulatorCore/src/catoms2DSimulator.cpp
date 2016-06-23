@@ -60,20 +60,11 @@ void Catoms2DSimulator::createSimulator(int argc, char *argv[],
 	simulator =  new Catoms2DSimulator(argc, argv, catoms2DBlockCodeBuildingFunction);
 }
 
-void Catoms2DSimulator::deleteSimulator() {
-	delete((Catoms2DSimulator*)simulator);
-}
-
 void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 								  int argc, char *argv[]) {
     world = new Catoms2DWorld(gridSize, gridScale, argc,argv);
     world->loadTextures("../../simulatorCore/catoms2DTextures");
     World::setWorld(world);
-}
-
-void Catoms2DSimulator::loadScheduler() {
-	Catoms2DScheduler::createScheduler();
-	scheduler = Catoms2DScheduler::getScheduler();
 }
 
 void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,

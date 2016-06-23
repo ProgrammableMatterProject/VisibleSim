@@ -1,6 +1,6 @@
 SRCS = msrSync.cpp msrSyncBlockCode.cpp
 
-OUT = msrSync
+OUT = $(APPDIR)/msrSync
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -39,7 +39,9 @@ $(APPDIR)/$(OUT): $(OUT)
 $(OUT): $(SIMULATORLIB) $(OBJS) 
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

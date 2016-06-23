@@ -22,7 +22,6 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
 #include "robotBlocksBlock.h"
 
 class MapMessage;
@@ -64,7 +63,7 @@ class Robot01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 	vector <RobotBlocks::Validation*> *possibleMotions;
 public:
 
-	RobotBlocks::RobotBlocksScheduler *scheduler;
+    Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *robotBlock;
 
 	Robot01BlockCode (RobotBlocks::RobotBlocksBlock *host);

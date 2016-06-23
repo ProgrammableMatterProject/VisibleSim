@@ -13,12 +13,12 @@
 #include <map>
 #include <inttypes.h>
 #include <assert.h>
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <thread>
+#include <functional>
+
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "events.h"
-#include "openglViewer.h"
 
 using namespace std;
 
@@ -46,7 +46,7 @@ protected:
 	static Scheduler *scheduler;
 	int schedulerMode;
 	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
-	boost::thread *schedulerThread;
+	std::thread *schedulerThread;
 	vector <Keyword*> tabKeywords;
 
 	uint64_t currentDate;
@@ -103,7 +103,7 @@ public:
 	inline int getNbreMessages() { return Event::getNextId(); };
 
 	inline void waitForSchedulerEnd() {
-			schedulerThread->join();
+		schedulerThread->join();
     }
     void addKeyword(Keyword *kw) {
         tabKeywords.push_back(kw);
@@ -118,22 +118,22 @@ public:
     }
 };
 
-inline void deleteScheduler() {
+static inline void deleteScheduler() {
 	Scheduler::deleteScheduler();
 }
 
-inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
-
+static inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
+    
 } // BaseSimulator namespace
 
 class ConsoleStream {
-    Scheduler *scheduler;
+	BaseSimulator::Scheduler *scheduler;
     int blockId;
     stringstream stream;
     public :
 
     ConsoleStream() { stream.str(""); };
-    void setInfo(Scheduler*s,int id) {
+    void setInfo(BaseSimulator::Scheduler*s,int id) {
         scheduler=s;
         blockId=id;
     }

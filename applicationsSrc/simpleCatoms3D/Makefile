@@ -1,6 +1,6 @@
 SRCS = simpleCatom3D.cpp simpleCatom3DBlockCode.cpp
 
-OUT = simpleCatom3D
+OUT = $(APPDIR)/simpleCatom3D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -46,7 +46,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

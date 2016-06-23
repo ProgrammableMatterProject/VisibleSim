@@ -16,7 +16,7 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
+
 #include "smartBlocksBlock.h"
 
 
@@ -35,7 +35,7 @@ class DetectionBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 
 public:
 
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	DetectionBlockCode (SmartBlocks::SmartBlocksBlock *host);

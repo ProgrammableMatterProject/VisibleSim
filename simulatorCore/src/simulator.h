@@ -32,10 +32,16 @@ extern Simulator *simulator;
 class Simulator {
 public:
 	enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
+
 	static Simulator* getSimulator() {
 		assert(simulator != NULL);
 		return(simulator);
 	}
+
+	/*! 
+	 *  \brief Statically deletes this instance of the simulator
+	 */
+	static void deleteSimulator();
 
 	inline static void setType (Type t) { type = t; };
 	inline static Type getType () { return type; };
@@ -45,11 +51,9 @@ public:
 
 protected:
 	static Type type;			//!< Type of simulation, i.e. language of the user program
-
+	
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
 	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured
-	uint64_t maximumDate = 0;		//!< Simulation time limit for the scheduler
-
 	World *world;				//!< Simulation world to be instantiated and configured
 
 	TiXmlDocument *xmlDoc;		//!< TinyXMLDocument for the configuration file
@@ -59,7 +63,7 @@ protected:
 	BlockCode *(*newBlockCode)(BuildingBlock*); //!< Function pointer to the target BlockCode
 
 	CommandLine cmdLine;		//!< Utility member for accessing command line arguments
-
+   
 	/*! \fn parseWorld(int argc, char*argv[])
 	 *  \brief Parses the configuration file for World information common to all blocks.
 	 *
@@ -70,6 +74,16 @@ protected:
 	 *
 	 */
 	void parseWorld(int argc, char*argv[]);
+
+	/*! \fn loadScheduler(int maximumDate)
+	 *  \brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock
+	 *
+	 *  MeldProcessScheduler, MeldInterpretScheduler, or CPPScheduler
+	 *
+	 *  \param maximumDate : maximum simulation date none by default
+	 *
+	 */
+	void loadScheduler(int maximumDate = 0);
 
 	/*! \fn parseCameraAndSpotlight();
 	 *  \brief Parses the configuration file for Camera and Spotlight information
@@ -112,12 +126,6 @@ protected:
 	virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 						   int argc, char *argv[]) = 0;
 
-	/*! \fn virtual void loadScheduler()
-	 *  \brief Calls the createScheduler function from the target scheduler subclass to instantiate it
-	 *
-	 */
-	virtual void loadScheduler() = 0;
-
 	/*! \fn virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master)
 	 *  \brief Parses the config file for any required additional block attribute, and add it to the world
 	 *
@@ -144,6 +152,11 @@ protected:
 	Simulator(int argc, char *argv[]);
 	virtual ~Simulator();
 };
-} // Simulator namespace
+
+inline void deleteSimulator() {
+	Simulator::deleteSimulator();
+}
+
+} // BaseSimulator namespace
 
 #endif /* SIMULATOR_H_ */

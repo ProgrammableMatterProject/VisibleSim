@@ -1,6 +1,6 @@
-SRCS = catom2D1.cpp catom2D1BlockCode.cpp
+SRCS = noneCatoms2D.cpp noneCatoms2DBlockCode.cpp
 
-OUT = catom2D1
+OUT = $(APPDIR)/noneCatoms2D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -27,7 +27,7 @@ CC = g++
 
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-	
+
 all: $(OUT) 
 
 autoinstall: $(OUT) 
@@ -46,7 +46,10 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
+
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

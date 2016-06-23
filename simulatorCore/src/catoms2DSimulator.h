@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "catoms2DBlockCode.h"
-#include "catoms2DScheduler.h"
 #include "catoms2DWorld.h"
 #include "trace.h"
 
@@ -30,7 +29,6 @@ public:
 
     static void createSimulator(int argc, char *argv[],
 				Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*));
-    static void deleteSimulator();
 
     static Catoms2DBlockCode *(*buildNewBlockCode)(Catoms2DBlock*);
 
@@ -39,24 +37,18 @@ public:
 	return((Catoms2DSimulator*)simulator);
     }
 
-    void loadScheduler();
-    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		   int argc, char *argv[]);
-    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-    void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
-		
-    void printInfo() { OUTPUT << "I'm a Catoms2DSimulator" << endl; }
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+			   int argc, char *argv[]);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);		
+    virtual void printInfo() { OUTPUT << "I'm a Catoms2DSimulator" << endl; }
     void help();
 };
 
 inline void createSimulator(int argc, char *argv[],
 			    Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*)) {
     Catoms2DSimulator::createSimulator(argc, argv, catoms2DBlockCodeBuildingFunction);
-}
-
-inline void deleteSimulator() {
-    Catoms2DSimulator::deleteSimulator();
 }
 
 inline Catoms2DSimulator* getSimulator() { return(Catoms2DSimulator::getSimulator()); }

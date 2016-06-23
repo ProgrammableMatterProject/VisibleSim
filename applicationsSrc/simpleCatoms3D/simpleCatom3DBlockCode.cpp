@@ -11,7 +11,7 @@
 #include "simpleCatom3DBlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #define verbose 1
 
@@ -20,7 +20,7 @@ using namespace Catoms3D;
 
 SimpleCatom3DBlockCode::SimpleCatom3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "SimpleCatom3DBlockCode constructor" << endl;
-	scheduler = Catoms3D::getScheduler();
+	scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
 }
 

@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string>
 #include "smartBlocksWorld.h"
-#include "smartBlocksScheduler.h"
 #include "smartBlocksBlock.h"
 #include "scheduler.h"
 
@@ -43,7 +42,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 SmartBlocksWorld::~SmartBlocksWorld() {
     cout << "\033[1;31mSmartBlocksWorld destructor" << endl;
 
-/*	block linked are deleted by world::~world() */
+/* block linked are deleted by world::~world() */
     delete objBlock;
     delete objRepere;
     delete [] targetGrid;

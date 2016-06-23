@@ -12,7 +12,6 @@
 #include "simulator.h"
 #include "smartBlocksBlock.h"
 #include "smartBlocksBlockCode.h"
-#include "smartBlocksScheduler.h"
 
 using namespace std;
 
@@ -28,7 +27,6 @@ public:
 	static void createSimulator(int argc, char *argv[],
 								SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
 								(SmartBlocksBlock*));
-	static void deleteSimulator();
 
 	static SmartBlocksBlockCode *(*buildNewBlockCode)(SmartBlocksBlock*);
 
@@ -37,22 +35,17 @@ public:
 		return((SmartBlocksSimulator*)simulator);
 	}
 
-	void loadScheduler();
-    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-				   int argc, char *argv[]);
-	void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-				   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-	void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
-
-	void printInfo() { cout << "I'm a SmartBlocksSimulator" << endl; }
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+						   int argc, char *argv[]);
+	virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+						   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
+	virtual void printInfo() { cout << "I'm a SmartBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[],
 							SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*)) {
 	SmartBlocksSimulator::createSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
-}
-inline void deleteSimulator() {
-	SmartBlocksSimulator::deleteSimulator();
 }
 
 inline SmartBlocksSimulator* getSimulator() { return(SmartBlocksSimulator::getSimulator()); }

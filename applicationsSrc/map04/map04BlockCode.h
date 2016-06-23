@@ -20,7 +20,7 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
+
 #include "robotBlocksBlock.h"
 
 class GoMap;
@@ -49,7 +49,7 @@ class Map04BlockCode : public RobotBlocks::RobotBlocksBlockCode {
     
 public:
 
-	RobotBlocks::RobotBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *robotBlock;
 
 	Map04BlockCode (RobotBlocks::RobotBlocksBlock *host);

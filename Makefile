@@ -14,7 +14,7 @@ VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsim
 
 ifeq ($(OS),Darwin)
 #MacOS
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/opt/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib  -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib  -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt $(VSIM_LIBS)"
 OSX_CCFLAGS = -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
 else
 #Linux, Solaris, ...
@@ -45,11 +45,15 @@ SUBDIRS = simulatorCore/src applicationsSrc
 
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
-.PHONY: subdirs $(SUBDIRS)
+.PHONY: subdirs $(SUBDIRS) subdirectories test
 
 subdirs: $(SUBDIRS)
 
-$(SUBDIRS):
+# ensure output subdirectories are created before actually dealing with the dependencies
+subdirectories:
+	$(MAKE) -C simulatorCore/src/ directories;
+
+$(SUBDIRS): subdirectories
 	$(MAKE) -C $@ APPDIR=../../applicationsBin/ GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS)
 
 #subdirs:
@@ -57,6 +61,8 @@ $(SUBDIRS):
 #	$(MAKE) -C $$dir; \
 #	done
 
+test: subdirs
+	$(MAKE) -C applicationsSrc test;
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \

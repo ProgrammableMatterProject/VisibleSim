@@ -10,13 +10,13 @@
 
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
-#include "catoms3DScheduler.h"
+
 #include "catoms3DEvents.h"
 #include "catoms3DBlock.h"
 
 class SimpleCatom3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-	Catoms3D::Catoms3DScheduler *scheduler;
+	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
 
     double potentiel;

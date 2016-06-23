@@ -1,7 +1,18 @@
+# VisibleSim local libraries directory
+LDIR = ../lib
+# Depends files directory
+DEPDIR = ../deps
+# Objects files directory
+OBJDIR = ../obj
+
+OUTDIRS = $(LDIR) $(DEPDIR) $(OBJDIR)
+
 TINYXMLSRCS = TinyXML/tinyxml.cpp TinyXML/tinyxmlerror.cpp TinyXML/tinyxmlparser.cpp
+OUTDIRS += $(OBJDIR)/TinyXML $(DEPDIR)/TinyXML
 
 MELDDEBUGGER_SRCS = Debugger/debug_Simhandler.cpp Debugger/debug_Simprompt.cpp Debugger/types.cpp
 # Note : when using TIXML_USE_STL flag, TinyXML/tinystr.cpp produce no code, so I removed it from the source list as ar was complaining
+OUTDIRS += $(OBJDIR)/Debugger $(DEPDIR)/Debugger
 
 MELDPROCESS_SRCS = $(MELDDEBUGGER_SRCS) meldProcessScheduler.cpp meldProcessVM.cpp meldProcessVMCommands.cpp meldProcessDebugger.cpp meldProcessEvents.cpp
 
@@ -9,35 +20,35 @@ MELDINTERPRET_SRCS = meldInterpretScheduler.cpp meldInterpretVM.cpp meldInterpre
 
 BASESIMULATOR_SRCS = $(MELDPROCESS_SRCS) $(MELDINTERPRET_SRCS) $(TINYXMLSRCS) simulator.cpp buildingBlock.cpp blockCode.cpp scheduler.cpp world.cpp network.cpp events.cpp glBlock.cpp interface.cpp openglViewer.cpp shaders.cpp vector3D.cpp matrix44.cpp color.cpp camera.cpp objLoader.cpp vertexArray.cpp trace.cpp clock.cpp configStat.cpp commandLine.cpp cppScheduler.cpp cell3DPosition.cpp configExporter.cpp lattice.cpp
 
-BASESIMULATOR_OBJS = $(BASESIMULATOR_SRCS:.cpp=.o)
-BASESIMULATOR_DEPS = $(BASESIMULATOR_SRCS:.cpp=.depends)
+BASESIMULATOR_OBJS = $(BASESIMULATOR_SRCS:%.cpp=$(OBJDIR)/%.o)
+BASESIMULATOR_DEPS = $(BASESIMULATOR_SRCS:%.cpp=$(DEPDIR)/%.depends)
 
-BLINKYBLOCKS_SRCS = $(DEBUGGER) blinkyBlocksSimulator.cpp blinkyBlocksBlock.cpp blinkyBlocksBlockCode.cpp blinkyBlocksScheduler.cpp blinkyBlocksWorld.cpp blinkyBlocksGlBlock.cpp
-BLINKYBLOCKS_OBJS = $(BLINKYBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
-BLINKYBLOCKS_DEPS = $(BLINKYBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
+BLINKYBLOCKS_SRCS = $(DEBUGGER) blinkyBlocksSimulator.cpp blinkyBlocksBlock.cpp blinkyBlocksBlockCode.cpp blinkyBlocksWorld.cpp blinkyBlocksGlBlock.cpp
+BLINKYBLOCKS_OBJS = $(BLINKYBLOCKS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+BLINKYBLOCKS_DEPS = $(BLINKYBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-ROBOTBLOCKS_SRCS = robotBlocksSimulator.cpp robotBlocksBlock.cpp robotBlocksBlockCode.cpp robotBlocksScheduler.cpp robotBlocksWorld.cpp robotBlocksGlBlock.cpp robotBlocksCapabilities.cpp robotBlocksEvents.cpp robotBlocksGeneric.cpp
-ROBOTBLOCKS_OBJS = $(ROBOTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
-ROBOTBLOCKS_DEPS = $(ROBOTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
+ROBOTBLOCKS_SRCS = robotBlocksSimulator.cpp robotBlocksBlock.cpp robotBlocksBlockCode.cpp robotBlocksWorld.cpp robotBlocksGlBlock.cpp robotBlocksCapabilities.cpp robotBlocksEvents.cpp robotBlocksGeneric.cpp
+ROBOTBLOCKS_OBJS = $(ROBOTBLOCKS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+ROBOTBLOCKS_DEPS = $(ROBOTBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DDirection.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DScheduler.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DCapabilities.cpp catoms2DEvents.cpp catoms2DMove.cpp catoms2DGeneric.cpp
-CATOMS2D_OBJS = $(CATOMS2D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
-CATOMS2D_DEPS = $(CATOMS2D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
+CATOMS2D_SRCS = catoms2DSimulator.cpp catoms2DDirection.cpp catoms2DBlock.cpp catoms2DBlockCode.cpp catoms2DWorld.cpp catoms2DGlBlock.cpp catoms2DCapabilities.cpp catoms2DEvents.cpp catoms2DMove.cpp catoms2DGeneric.cpp
+CATOMS2D_OBJS = $(CATOMS2D_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+CATOMS2D_DEPS = $(CATOMS2D_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-CATOMS3D_SRCS = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DScheduler.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DCapabilities.cpp catoms3DEvents.cpp skeleton.cpp
-CATOMS3D_OBJS = $(CATOMS3D_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
-CATOMS3D_DEPS = $(CATOMS3D_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
+CATOMS3D_SRCS = catoms3DSimulator.cpp catoms3DBlock.cpp catoms3DBlockCode.cpp catoms3DWorld.cpp catoms3DGlBlock.cpp catoms3DCapabilities.cpp catoms3DEvents.cpp skeleton.cpp
+CATOMS3D_OBJS = $(CATOMS3D_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+CATOMS3D_DEPS = $(CATOMS3D_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SMARTBLOCKS_SRCS = smartBlocksSimulator.cpp smartBlocksBlock.cpp smartBlocksBlockCode.cpp smartBlocksScheduler.cpp smartBlocksWorld.cpp smartBlocksGlBlock.cpp smartBlocksCapabilities.cpp smartBlocksEvents.cpp skeleton.cpp
-SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:.cpp=.o) $(BASESIMULATOR_OBJS)
-SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:.cpp=.depends) $(BASESIMULATOR_DEPS)
+SMARTBLOCKS_SRCS = smartBlocksSimulator.cpp smartBlocksBlock.cpp smartBlocksBlockCode.cpp smartBlocksWorld.cpp smartBlocksGlBlock.cpp smartBlocksCapabilities.cpp smartBlocksEvents.cpp
+SMARTBLOCKS_OBJS = $(SMARTBLOCKS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
+SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(MELDPROCESS_SRCS) $(MELDINTERPRET_SRCS) $(CATOMS3D_SRCS)
-OBJS = $(SRCS:.cpp=.o)
-DEPS = $(SRCS:.cpp=.depends)
+SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS)
+OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
+DEPS = $(SRCS:%.cpp=$(DEPDIR)/%.depends)
 
-OUT = libsimRobotBlocks.a libsimBlinkyBlocks.a libsimSmartBlocks.a libsimCatoms2D.a libsimCatom3D.a
-#OUT = libsimCatom3D.a libsimRobotBlocks.a
+OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a \
+	$(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -58,14 +69,12 @@ CCFLAGS = $(GLOBAL_CCFLAGS)
 
 CC = g++
 
+.PHONY: clean all directories
 
-.PHONY: clean all
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a
 
-.cpp.o:
+$(OBJDIR)/%.o: %.cpp
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
-
-all: libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2D.a libsimCatoms3D.a
-#all: libsimCatoms3D.a libsimRobotBlocks.a
 
 #$(OUT)
 
@@ -73,36 +82,33 @@ all: libsimBlinkyBlocks.a libsimSmartBlocks.a libsimRobotBlocks.a  libsimCatoms2
 #	ar rcs $(OUT) $(OBJS)
 #	cp $(OUT) ../lib
 
-libsimBlinkyBlocks.a: $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
-	mkdir -p ../lib
-	ar rcs libsimBlinkyBlocks.a $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
-	cp libsimBlinkyBlocks.a ../lib
+directories: $(OUTDIRS)
 
-libsimRobotBlocks.a: $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
-	mkdir -p ../lib
-	ar rcs libsimRobotBlocks.a $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
-	cp libsimRobotBlocks.a ../lib
+${OUTDIRS}: 
+	@mkdir -p $@
 
-libsimCatoms2D.a: $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
-	mkdir -p ../lib
-	ar rcs libsimCatoms2D.a $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
-	cp libsimCatoms2D.a ../lib
+$(LDIR)/libsimBlinkyBlocks.a: $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
+	ar rcs $(LDIR)/libsimBlinkyBlocks.a $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
 
-libsimCatoms3D.a: $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
-	mkdir -p ../lib
-	ar rcs libsimCatoms3D.a $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
-	cp libsimCatoms3D.a ../lib
+$(LDIR)/libsimRobotBlocks.a: $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
+	ar rcs $(LDIR)/libsimRobotBlocks.a $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
 
-libsimSmartBlocks.a: $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
-	mkdir -p ../lib
-	ar rcs libsimSmartBlocks.a $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
-	cp libsimSmartBlocks.a ../lib
+$(LDIR)/libsimCatoms2D.a: $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
+	ar rcs $(LDIR)/libsimCatoms2D.a $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
 
+$(LDIR)/libsimCatoms3D.a: $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
+	ar rcs $(LDIR)/libsimCatoms3D.a $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
+
+$(LDIR)/libsimSmartBlocks.a: $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
+	ar rcs $(LDIR)/libsimSmartBlocks.a $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
+
+ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), clean directories))
 -include $(DEPS)
+endif
 
 clean:
-	rm -f *~ $(OBJS) $(OUT) $(DEPS) ../lib/*.a ../include/*.h
-	rm -rf ../lib
+	rm -f *~ $(OBJS) $(OUT) $(DEPS) ../include/*.h
+	rm -rf $(OUTDIRS)
 
-%.depends: %.cpp
+$(DEPDIR)/%.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@

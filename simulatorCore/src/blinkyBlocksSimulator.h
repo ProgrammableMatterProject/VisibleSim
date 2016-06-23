@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "blinkyBlocksBlockCode.h"
-#include "blinkyBlocksScheduler.h"
 #include "blinkyBlocksWorld.h"
 #include "trace.h"
 
@@ -27,7 +26,6 @@ protected:
 public:
 
     static void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
-    static void deleteSimulator();
 
     static BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
 
@@ -36,22 +34,16 @@ public:
 	return((BlinkyBlocksSimulator*)simulator);
     }
 
-    void loadScheduler();
-    void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 		   int argc, char *argv[]);
-    void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-		   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-
-    void parseScenario();
-
-    void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
+			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void parseScenario();
+    virtual void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
 inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {
     BlinkyBlocksSimulator::createSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
-}
-inline void deleteSimulator() {
-    BlinkyBlocksSimulator::deleteSimulator();
 }
 
 inline BlinkyBlocksSimulator* getSimulator() { return(BlinkyBlocksSimulator::getSimulator()); }

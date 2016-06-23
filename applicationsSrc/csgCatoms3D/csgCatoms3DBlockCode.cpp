@@ -11,7 +11,7 @@
 #include "catoms3DBlock.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <chrono>
 #include <fstream>
 #define MAX 1000
@@ -33,7 +33,7 @@ bool CsgCatoms3DBlockCode::bitmap[27000] = {0};
 
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "CsgCatoms3DBlockCode constructor" << endl;
-	scheduler = Catoms3D::getScheduler();
+	scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
     distance = INF;
 }

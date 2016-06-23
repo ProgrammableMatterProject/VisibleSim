@@ -1,6 +1,6 @@
 #include "simpleColorCode.h"
 
-Color tabColors[8]={RED,ORANGE,YELLOW,GREEN,CYAN,BLUE,MAGENTA,GREY};
+Color myTabColors[8]={RED,ORANGE,YELLOW,GREEN,CYAN,BLUE,MAGENTA,GREY};
 
 void SimpleColorCode::startup() {
 	addMessageEventFunc(BROADCAST_MSG,_myBroadcastFunc);
@@ -26,7 +26,7 @@ void SimpleColorCode::myBroadcastFunc(const MessageOf<int>*msg, P2PNetworkInterf
     if (distance==-1) {
         distance = d; // new distance
         parent = sender; // new parent in the spinning tree
-        setColor(tabColors[distance%8]);
+        setColor(myTabColors[distance%8]);
         nbWaitedAnswers = sendMessageToAllNeighbors("Broadcast",new MessageOf<int>(BROADCAST_MSG,distance),100,200,1,sender);
         if (nbWaitedAnswers==0) { // lead of the spinning tree
 //            sendMessage("Ack",new MessageOf<int>(ACK_MSG,distance),parent,100,200);
@@ -44,7 +44,7 @@ void SimpleColorCode::myAckFunc(const MessageOf<int>*msg, P2PNetworkInterface*se
 //    console << "receives. ACK d=" << d << " from " << sender->getConnectedBlockId() << "\n";
     if (d<distance) {
         distance=d; // update distance
-        setColor(tabColors[distance%8]);
+        setColor(myTabColors[distance%8]);
     }
     nbWaitedAnswers--;
     if (nbWaitedAnswers==0) { // lead of the spinning tree

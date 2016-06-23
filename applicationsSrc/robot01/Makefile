@@ -1,6 +1,6 @@
 SRCS = robot01.cpp robot01BlockCode.cpp
 
-OUT = robot01
+OUT = $(APPDIR)/robot01
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -27,7 +27,7 @@ CC = g++
 
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-	
+
 all: $(OUT) 
 
 autoinstall: $(OUT) 
@@ -46,7 +46,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

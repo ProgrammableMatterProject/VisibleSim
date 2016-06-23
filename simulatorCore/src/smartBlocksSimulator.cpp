@@ -40,22 +40,11 @@ void SmartBlocksSimulator::createSimulator(int argc, char *argv[],
     simulator =  new SmartBlocksSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
 }
 
-void SmartBlocksSimulator::deleteSimulator() {
-    delete ((SmartBlocksSimulator*)simulator);
-    simulator = NULL;
-}
-
 void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 				     int argc, char *argv[]) {
     world = new SmartBlocksWorld(gridSize, gridScale, argc,argv);
     world->loadTextures("../../simulatorCore/smartBlocksTextures");
     World::setWorld(world);
-}
-
-void SmartBlocksSimulator::loadScheduler() {
-    SmartBlocksScheduler::createScheduler();
-    scheduler = SmartBlocksScheduler::getScheduler();
-    cerr << "sched" << scheduler << endl;
 }
 
 void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,

@@ -1,6 +1,6 @@
 SRCS = sphereCatoms3D.cpp sphereCatoms3DBlockCode.cpp
 
-OUT = sphereCatoms3D
+OUT = $(APPDIR)/sphereCatoms3D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -46,7 +46,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

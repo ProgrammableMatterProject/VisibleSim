@@ -6,10 +6,11 @@
  */
 
 #include <iostream>
+#include <trace.h>
+
 #include "blinkyBlocksSimulator.h"
 #include "blinkyBlocksBlockCode.h"
 #include "bbCycleBlockCode.h"
-#include <trace.h> 
 
 using namespace std;
 using namespace BlinkyBlocks;
@@ -28,10 +29,10 @@ int main(int argc, char **argv) {
 	}
 
 	getSimulator()->printInfo();
-	BlinkyBlocks::getScheduler()->printInfo();
+    getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 		
-	BlinkyBlocks::getScheduler()->waitForSchedulerEnd();
+    // getScheduler()->waitForSchedulerEnd();
 		
 	deleteSimulator();
 	

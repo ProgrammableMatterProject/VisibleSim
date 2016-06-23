@@ -10,7 +10,7 @@
 #include "blinky02BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 using namespace std;
@@ -18,7 +18,7 @@ using namespace BlinkyBlocks;
 
 Blinky02BlockCode::Blinky02BlockCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) {
 	cout << "Blinky02BlockCode constructor" << endl;
-	scheduler = BlinkyBlocks::getScheduler();
+	scheduler = getScheduler();
 	block = (BlinkyBlocksBlock*)hostBlock;
 }
 

@@ -13,7 +13,7 @@ RouteSearchMsg::RouteSearchMsg(
     Coordinates origine,
     unsigned int distance,
     unsigned int n_jumps,
-    NeighborDirection direction,
+    NeighborDirection::Direction direction,
     int origine_id)
     : searched_blocks_( searched_blocks_list),
       origine_( origine),
@@ -29,7 +29,7 @@ RouteSearchMsg::RouteSearchMsg(
   origine_.AdaptToBeSentBy( direction);
 }
 
-RouteSearchMsg::RouteSearchMsg( const RouteSearchMsgPtr message, NeighborDirection direction)
+RouteSearchMsg::RouteSearchMsg( const RouteSearchMsgPtr message, NeighborDirection::Direction direction)
     : searched_blocks_( message->searched_blocks_),
       origine_( message->origine_),
       distance_( message->distance_ + 1),
@@ -60,7 +60,7 @@ void RouteSearchMsg::print() {
 //////////////////////////
 RouteSearchAck::RouteSearchAck( list<BlockAckInfos> blocks_d,
                                 Coordinates origine, bool dead_end,
-                                NeighborDirection direction,
+                                NeighborDirection::Direction direction,
                                 int origine_id)
     : blocks_infos_( blocks_d),
       origine_( origine),

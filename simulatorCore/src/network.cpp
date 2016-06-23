@@ -8,11 +8,12 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #include "scheduler.h"
 #include "network.h"
 #include "trace.h"
+
+using namespace std;
+using namespace BaseSimulator;
 
 //unsigned int Message::nextId = 0;
 //unsigned int Message::nbMessages = 0;
@@ -71,7 +72,7 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 //	localId = block->getNextP2PInterfaceLocalId();
 	connectedInterface = NULL;
 	availabilityDate = 0;
-	generator = boost::rand48(nextId);
+	generator = std::ranlux48(nextId);
 	globalId = nextId;
 	nextId++;
 //	messageBeingTransmitted.reset();

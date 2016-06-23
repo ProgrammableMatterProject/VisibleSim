@@ -14,7 +14,7 @@ SRCS = 	tuple.cpp \
 
 OBJS = $(patsubst %.cpp,%.o,$(SRCS))
 
-OUT = libTS.a
+OUT = $(APPDIR)/libTS.a
 TARGETS = test
 
 all: $(TARGETS)
