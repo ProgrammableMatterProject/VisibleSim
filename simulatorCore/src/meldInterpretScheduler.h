@@ -10,8 +10,8 @@
 
 #include "scheduler.h"
 #include "network.h"
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
+#include <thread>
+#include <functional>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include "trace.h"
@@ -22,7 +22,7 @@ namespace MeldInterpret {
 
 class MeldInterpretScheduler : public BaseSimulator::Scheduler {
 protected:
-	boost::thread *schedulerThread;
+	std::thread *schedulerThread;
 	int schedulerMode;
 
 	MeldInterpretScheduler();

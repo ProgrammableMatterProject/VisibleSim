@@ -13,8 +13,8 @@
 #include <map>
 #include <inttypes.h>
 #include <assert.h>
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
+#include <thread>
+#include <functional>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
@@ -46,7 +46,7 @@ protected:
 	static Scheduler *scheduler;
 	int schedulerMode;
 	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
-	boost::thread *schedulerThread;
+	std::thread *schedulerThread;
 	vector <Keyword*> tabKeywords;
 
 	uint64_t currentDate;

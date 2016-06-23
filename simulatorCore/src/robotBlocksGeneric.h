@@ -5,15 +5,16 @@
 #include "robotBlocksSimulator.h"
 #include "robotBlocksEvents.h"
 #include "robotBlocksBlock.h"
+
 #include <map>
 #include <ostream>
-
+#include <functional>
 
 namespace RobotBlocks {
 
 class GenericCodeBlock;
 
-typedef boost::function<void (GenericCodeBlock*,MessagePtr,P2PNetworkInterface*)> eventFunc;
+typedef std::function<void (GenericCodeBlock*,MessagePtr,P2PNetworkInterface*)> eventFunc;
 
 class GenericCodeBlock : public RobotBlocksBlockCode {
 protected:

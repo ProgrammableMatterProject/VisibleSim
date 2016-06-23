@@ -5,6 +5,8 @@
 #include "catoms2DSimulator.h"
 #include "catoms2DEvents.h"
 #include "catoms2DBlock.h"
+
+#include <functional>
 #include <map>
 #include <ostream>
 
@@ -12,7 +14,7 @@ namespace Catoms2D {
 
 class GenericCodeBlock;
 
-typedef boost::function<void (GenericCodeBlock*,MessagePtr,P2PNetworkInterface*)> eventFunc;
+typedef std::function<void (GenericCodeBlock*,MessagePtr,P2PNetworkInterface*)> eventFunc;
 
 const int nbreNeighborsMax=6;
 
