@@ -8,7 +8,7 @@
 #include <iostream>
 #include "catoms2DSimulator.h"
 #include "catoms2DBlockCode.h"
-#include "catom2D1BlockCode.h"
+#include "noneCatoms2DBlockCode.h"
 
 using namespace std;
 using namespace Catoms2D;
@@ -16,7 +16,7 @@ using namespace Catoms2D;
 int main(int argc, char **argv) {
 	cout << "\033[1;33m" << "Starting Smart Blocks simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulator(argc, argv, Catoms2D1BlockCode::buildNewBlockCode);
+	createSimulator(argc, argv, NoneCatoms2DBlockCode::buildNewBlockCode);
 	Scheduler *scheduler = getScheduler();
 	getSimulator()->printInfo();
 	scheduler->printInfo();

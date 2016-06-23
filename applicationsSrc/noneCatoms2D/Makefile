@@ -1,6 +1,6 @@
-SRCS = catom2D1.cpp catom2D1BlockCode.cpp
+SRCS = noneCatoms2D.cpp noneCatoms2DBlockCode.cpp
 
-OUT = catom2D1
+OUT = noneCatoms2D
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
