@@ -4,7 +4,7 @@ using namespace coloring;
 
 ColoringMsg::ColoringMsg( Coordinates origine, Coordinates destination,
                           ColorQuantityArray scores,
-                          NeighborDirection direction)
+                          NeighborDirection::Direction direction)
     : scores_( scores), origine_( origine), destination_( destination) {
   type = cColoringMsgId;
   origine_.AdaptToBeSentBy( direction);
@@ -12,7 +12,7 @@ ColoringMsg::ColoringMsg( Coordinates origine, Coordinates destination,
 print();
 }
 
-ColoringMsg::ColoringMsg( const ColoringMsgPtr msg, NeighborDirection direction)
+ColoringMsg::ColoringMsg( const ColoringMsgPtr msg, NeighborDirection::Direction direction)
     : scores_( msg->scores_), origine_( msg->origine_), destination_( msg->destination_) {
   type = cColoringMsgId;
   origine_.AdaptToBeSentBy( direction);
@@ -22,7 +22,7 @@ print();
 
 ColoringAck::ColoringAck( Coordinates origine, Coordinates destination,
                           int color,
-                          NeighborDirection direction)
+                          NeighborDirection::Direction direction)
     : origine_( origine), destination_( destination), color_( color) {
   type = cColoringAckId;
   origine_.AdaptToBeSentBy( direction);
@@ -30,7 +30,7 @@ ColoringAck::ColoringAck( Coordinates origine, Coordinates destination,
 print();
 }
 
-ColoringAck::ColoringAck( const ColoringAckPtr ack, NeighborDirection direction)
+ColoringAck::ColoringAck( const ColoringAckPtr ack, NeighborDirection::Direction direction)
     : origine_( ack->origine_), destination_( ack->destination_),
       color_( ack->color_) {
   type = cColoringAckId;

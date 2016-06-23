@@ -10,7 +10,7 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
+
 #include "robotBlocksBlock.h"
 
 #define COLOR_MESSAGE	1001
@@ -57,7 +57,7 @@ class Robot02BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 	P2PNetworkInterface *block2answer;
 	bool colored;
 public:
-	RobotBlocks::RobotBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *block;
 
 	Robot02BlockCode (RobotBlocks::RobotBlocksBlock *host);

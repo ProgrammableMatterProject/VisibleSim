@@ -5,27 +5,27 @@ Coordinates::Coordinates( int arg_x, int arg_y) {
   y = arg_y;
 }
 
-Coordinates::Coordinates( int arg_x, int arg_y, NeighborDirection arg_dir) {
+Coordinates::Coordinates( int arg_x, int arg_y, NeighborDirection::Direction arg_dir) {
   x = arg_x;
   y = arg_y;
   AdaptToBeSentBy( arg_dir);
 }
 
-void Coordinates::AdaptToBeSentBy( NeighborDirection direction) {
+void Coordinates::AdaptToBeSentBy( NeighborDirection::Direction direction) {
   switch( direction) {
-    case North: {
+    case NeighborDirection::North: {
       y--;
       break;
     }
-    case East: {
+    case NeighborDirection::East: {
       x--;
       break;
     }
-    case South: {
+    case NeighborDirection::South: {
       y++;
       break;
     }
-    case West: {
+    case NeighborDirection::West: {
       x++;
       break;
     }

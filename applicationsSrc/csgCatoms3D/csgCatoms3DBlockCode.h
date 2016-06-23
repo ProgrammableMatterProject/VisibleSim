@@ -13,7 +13,7 @@
 
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
-#include "catoms3DScheduler.h"
+
 #include "catoms3DEvents.h"
 #include "catoms3DBlock.h"
 #include "scheduler.h"
@@ -43,7 +43,7 @@ public:
     static int side_size;
     static bool bitmap[27000];
 
-	Catoms3D::Scheduler *scheduler;
+	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
     Vector3D myPosition; // has relative position from the master
     bool hasPosition; // flag position

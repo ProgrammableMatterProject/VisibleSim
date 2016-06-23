@@ -19,7 +19,7 @@ using namespace RobotBlocks;
 
 Map03BlockCode::Map03BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
 	cout << "Map03BlockCode constructor" << endl;
-	scheduler = RobotBlocks::getScheduler();
+	scheduler = getScheduler();
 	robotBlock = (RobotBlocksBlock*)hostBlock;
 	
 	// initialize object deleted in destructor
@@ -38,8 +38,6 @@ void Map03BlockCode::startup() {
 	direction = 1;
 
 	if(robotBlock->isMaster) {
-
-        RobotBlocksWorld *wrl = RobotBlocksWorld::getWorld();
         canStore = 0;
 
 

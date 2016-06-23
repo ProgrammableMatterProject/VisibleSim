@@ -22,7 +22,7 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
+
 #include "robotBlocksBlock.h"
 
 class RequestStorage;
@@ -51,7 +51,7 @@ class Map03BlockCode : public RobotBlocks::RobotBlocksBlockCode {
     
 public:
 
-	RobotBlocks::RobotBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *robotBlock;
 
 	Map03BlockCode (RobotBlocks::RobotBlocksBlock *host);

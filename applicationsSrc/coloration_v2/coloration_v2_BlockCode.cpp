@@ -75,9 +75,9 @@ void ColorationV2BlockCode::startup() {
   routes_map_.insert(RouteMapElement(cMyCoordinates, infos));
   // Infos about my direct neighbors:
   bool i_got_neighbors( false);
-  for( int i( North); i <= West; i++) {
+  for( int i( NeighborDirection::North); i <= NeighborDirection::West; i++) {
     dead_end_neighbors_[ i] = false;
-    P2PNetworkInterface *interface( smartBlock->getInterface( NeighborDirection( i)));
+    P2PNetworkInterface *interface( smartBlock->getInterface( NeighborDirection::Direction(i)));
     bool connected( interface->connectedInterface);
     if( connected) {
       i_got_neighbors = true;
@@ -101,39 +101,39 @@ void ColorationV2BlockCode::startup() {
     //~ //***Donc là les deux prochain tests c'est juste une petite "optim" pas vitale, mais je pense qu'elle fera gagner pas mal d'échanges de messages
     //~ //*** dans les configurations dense, et puis sinon bin c'est juste 2 tests dans lesquels on n'entre pas
     //~ //If i have two neighbors facing each other, i can find all of my diagonal neighbors in one search message round :
-    //~ if( smartBlock->getInterface( SmartBlocks::East )->connectedInterface && smartBlock->getInterface( SmartBlocks::West )->connectedInterface ) {
-      //~ //Preparing a message specially for East
+    //~ if( smartBlock->getInterface( SmartBlocks::NeighborDirection::East )->connectedInterface && smartBlock->getInterface( SmartBlocks::NeighborDirection::West )->connectedInterface ) {
+      //~ //Preparing a message specially for NeighborDirection::East
 //~ cout << "Voisins horizontaux détectés :" << endl;
-      //~ list< Coordinates> my_list( 1, Coordinates( 1, -1, Neighbor_finding::East ) );
-      //~ my_list.push_back( Coordinates( 1, 1, Neighbor_finding::East ) );
-      //~ RouteSearchMsg* msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::East ], 1, n_round );
+      //~ list< Coordinates> my_list( 1, Coordinates( 1, -1, Neighbor_finding::NeighborDirection::East ) );
+      //~ my_list.push_back( Coordinates( 1, 1, Neighbor_finding::NeighborDirection::East ) );
+      //~ RouteSearchMsg* msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::NeighborDirection::East ], 1, n_round );
 //~ msg->print();
-      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::East ) ) ) );
-      //~ //And one for West
+      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::NeighborDirection::East ) ) ) );
+      //~ //And one for NeighborDirection::West
       //~ time_offset += 10000 + ( rand() % 25 ) * 10000;
-      //~ list< Coordinates> my_list2( 1, Coordinates( -1, -1, Neighbor_finding::West ) );
-      //~ my_list2.push_back( Coordinates( -1, 1, Neighbor_finding::West ) );
-      //~ msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::West ], 1, n_round );
+      //~ list< Coordinates> my_list2( 1, Coordinates( -1, -1, Neighbor_finding::NeighborDirection::West ) );
+      //~ my_list2.push_back( Coordinates( -1, 1, Neighbor_finding::NeighborDirection::West ) );
+      //~ msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::NeighborDirection::West ], 1, n_round );
 //~ msg->print();
-      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::East ) ) ) );
+      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::NeighborDirection::East ) ) ) );
 //~
       //~ acks_map_entry->second.n_ack_waited = 2;
     //~ }
-    //~ else if( smartBlock->getInterface( SmartBlocks::North )->connectedInterface && smartBlock->getInterface( SmartBlocks::South )->connectedInterface ) {
+    //~ else if( smartBlock->getInterface( SmartBlocks::NeighborDirection::North )->connectedInterface && smartBlock->getInterface( SmartBlocks::NeighborDirection::South )->connectedInterface ) {
 //~ cout << "Voisins verticaux détectés :" << endl;
-      //~ //Preparing a message specially for North
-      //~ list< Coordinates> my_list( 1, Coordinates( -1, 1, Neighbor_finding::North ) );
-      //~ my_list.push_back( Coordinates( 1, 1, Neighbor_finding::North ) );
-      //~ RouteSearchMsg* msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::North ], 1, n_round );
+      //~ //Preparing a message specially for NeighborDirection::North
+      //~ list< Coordinates> my_list( 1, Coordinates( -1, 1, Neighbor_finding::NeighborDirection::North ) );
+      //~ my_list.push_back( Coordinates( 1, 1, Neighbor_finding::NeighborDirection::North ) );
+      //~ RouteSearchMsg* msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::NeighborDirection::North ], 1, n_round );
 //~ msg->print();
-      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::North ) ) ) );
-      //~ //And one for South
+      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::NeighborDirection::North ) ) ) );
+      //~ //And one for NeighborDirection::South
       //~ time_offset += 10000 + ( rand() % 25 ) * 10000;
-      //~ list< Coordinates> my_list2( 1, Coordinates( -1, -1, Neighbor_finding::South ) );
-      //~ my_list2.push_back( Coordinates( 1, -1, Neighbor_finding::South ) );
-      //~ msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::South ], 1, n_round );
+      //~ list< Coordinates> my_list2( 1, Coordinates( -1, -1, Neighbor_finding::NeighborDirection::South ) );
+      //~ my_list2.push_back( Coordinates( 1, -1, Neighbor_finding::NeighborDirection::South ) );
+      //~ msg = new RouteSearchMsg( my_list, cMyCoordinatesFromNeighbor[ Neighbor_finding::NeighborDirection::South ], 1, n_round );
 //~ msg->print();
-      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::South ) ) ) );
+      //~ scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( SmartBlocks::NeighborDirection::South ) ) ) );
 //~
       //~ acks_map_entry->second.n_ack_waited = 2;
     //~ }
@@ -143,11 +143,11 @@ void ColorationV2BlockCode::startup() {
 //~ cout << "Pas de voisins face à face détectés :" << endl;
       uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
       map<Coordinates, BlockRoutingInfos>::iterator routes_map_iterator( routes_map_.find( cMyCoordinates));
-      for( int i( North); i <= West; i++) {
-        bool connected (smartBlock->getInterface( NeighborDirection(i))->connectedInterface);
+      for( int i( NeighborDirection::North); i <= NeighborDirection::West; i++) {
+        bool connected (smartBlock->getInterface( NeighborDirection::Direction(i))->connectedInterface);
         if( connected) {
-          RouteSearchMsg *msg( new RouteSearchMsg( diagonal_neighbors, cMyCoordinates, 1, n_round_, NeighborDirection( i), hostBlock->blockId));
-          scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection( i))));
+          RouteSearchMsg *msg( new RouteSearchMsg( diagonal_neighbors, cMyCoordinates, 1, n_round_, NeighborDirection::Direction(i), hostBlock->blockId));
+          scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection::Direction(i))));
           time_offset += 10000 + ( rand() % 25) * 10000;
           routes_map_iterator->second.n_ack_waited++;
           routes_map_iterator->second.dead_end = true;
@@ -339,13 +339,13 @@ void ColorationV2BlockCode::TreatRouteSearchMsg( RouteSearchMsgPtr recv_msg){
   // Case 2: forward flooding:
   } else {
     uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
-    for( int i( North); i <= West; i++) {
-      if( smartBlock->getInterface( NeighborDirection(i))->connectedInterface &&
-          smartBlock->getInterface( NeighborDirection(i)) != recv_msg->destinationInterface) {
-        RouteSearchMsg *new_msg( new RouteSearchMsg(recv_msg, NeighborDirection(i)));
+    for( int i( NeighborDirection::North); i <= NeighborDirection::West; i++) {
+      if( smartBlock->getInterface( NeighborDirection::Direction(i))->connectedInterface &&
+          smartBlock->getInterface( NeighborDirection::Direction(i)) != recv_msg->destinationInterface) {
+        RouteSearchMsg *new_msg( new RouteSearchMsg(recv_msg, NeighborDirection::Direction(i)));
         scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset,
                                                                      new_msg,
-                                                                     smartBlock->getInterface(NeighborDirection(i))));
+                                                                     smartBlock->getInterface(NeighborDirection::Direction(i))));
         time_offset += 10000 + (rand() % 25) * 10000;
         routes_map_iterator->second.n_ack_waited++;
         routes_map_iterator->second.dead_end = true;
@@ -455,7 +455,7 @@ void ColorationV2BlockCode::StartNextRound() {
   ++n_round_;
   // Listing the diagonal neighbor i haven't found yet:
   list<Coordinates> missing_neighbors;
-  for( int i( North); i <= West; ++i) {
+  for( int i( NeighborDirection::North); i <= NeighborDirection::West; ++i) {
     if( routes_map_.find( cDiagonalNeighborsCoordinates[ i]) == routes_map_.end()) {
       missing_neighbors.push_back( cDiagonalNeighborsCoordinates[ i]);
     }
@@ -463,12 +463,12 @@ void ColorationV2BlockCode::StartNextRound() {
   if( !missing_neighbors.empty()) {
     map<Coordinates, BlockRoutingInfos>::iterator routes_map_iterator( routes_map_.find( cMyCoordinates));
     uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
-    for( int i( North); i <= West; ++i) {
+    for( int i( NeighborDirection::North); i <= NeighborDirection::West; ++i) {
       // I send next round message only to connected neighbors wich weren't dead-ends in previous round.
-      if( !dead_end_neighbors_[ i] && smartBlock->getInterface( NeighborDirection( i))->connectedInterface) {
+      if( !dead_end_neighbors_[ i] && smartBlock->getInterface( NeighborDirection::Direction(i))->connectedInterface) {
         /*/!\ Il sera peut être intéressant de faire n_jumps = 2^n_round plutot que n_jumps = n_round */
-        RouteSearchMsg *msg( new RouteSearchMsg( missing_neighbors, cMyCoordinates, 1, n_round_, NeighborDirection( i), hostBlock->blockId));
-        scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection(i))));
+        RouteSearchMsg *msg( new RouteSearchMsg( missing_neighbors, cMyCoordinates, 1, n_round_, NeighborDirection::Direction(i), hostBlock->blockId));
+        scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, smartBlock->getInterface( NeighborDirection::Direction(i))));
         time_offset += 10000 + ( rand() % 25) * 10000;
         routes_map_iterator->second.n_ack_waited++;
         routes_map_iterator->second.dead_end = true;
@@ -587,7 +587,7 @@ void ColorationV2BlockCode::DrawAndSendColorScores() {
        ++neighbor_iterator) {
     Coordinates tmpDestination( neighbor_iterator->first);
     P2PNetworkInterface * tmpInterface( routes_map_.find( neighbor_iterator->first)->second.route_network_interface);
-    NeighborDirection tmpDirection( smartBlock->getDirection( tmpInterface));
+    NeighborDirection::Direction tmpDirection( smartBlock->getDirection( tmpInterface));
     ColoringMsg *msg( new ColoringMsg( cMyCoordinates, tmpDestination, my_scores_, tmpDirection));
     scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, msg, tmpInterface));
     time_offset += 10000 + ( rand() % 25) * 10000;
@@ -623,7 +623,7 @@ void ColorationV2BlockCode::ProcessScores() {
              ++neighbor_iterator) {
           Coordinates tmpDestination( neighbor_iterator->first);
           P2PNetworkInterface * tmpInterface( routes_map_.find( neighbor_iterator->first)->second.route_network_interface);
-          NeighborDirection tmpDirection( smartBlock->getDirection( tmpInterface));
+          NeighborDirection::Direction tmpDirection( smartBlock->getDirection( tmpInterface));
           ColoringAck *ack( new ColoringAck( cMyCoordinates, tmpDestination, my_color_, tmpDirection));
           scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, ack, tmpInterface));
           time_offset += 10000 + ( rand() % 25) * 10000;

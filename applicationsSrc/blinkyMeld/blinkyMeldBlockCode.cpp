@@ -56,7 +56,7 @@ void BlinkyMeldBlockCode::init() {
 		//vm->setLED(128,0,128,32);
             //BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 
-		if((MeldInterpret::getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
+		if((getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) && !vm->deterministicSet) {
 			vm->deterministicSet = true;
 			/*SetDeterministicModeVMCommand determinismCommand(c, bb->blockId);
 			vm->sendCommand(determinismCommand);*/

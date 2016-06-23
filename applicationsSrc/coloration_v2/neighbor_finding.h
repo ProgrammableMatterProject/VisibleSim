@@ -87,9 +87,9 @@ class RouteSearchMsg : public Message {
   //
 public:
   RouteSearchMsg( std::list<Coordinates>,
-                  Coordinates, unsigned int, unsigned int, NeighborDirection,
+                  Coordinates, unsigned int, unsigned int, NeighborDirection::Direction,
                   int origine_id);
-  RouteSearchMsg( const RouteSearchMsgPtr, NeighborDirection);
+  RouteSearchMsg( const RouteSearchMsgPtr, NeighborDirection::Direction);
   ~RouteSearchMsg() {}
 
   std::list<Coordinates> searched_blocks() { return searched_blocks_; }
@@ -109,7 +109,7 @@ class RouteSearchAck : public Message {
   int origine_id_;
 public:
   RouteSearchAck( std::list<BlockAckInfos>, Coordinates, bool,
-                  NeighborDirection, int);
+                  NeighborDirection::Direction, int);
   ~RouteSearchAck() {}
 
   std::list<BlockAckInfos> blocks_infos() { return blocks_infos_; }

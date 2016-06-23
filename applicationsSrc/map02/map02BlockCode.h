@@ -16,7 +16,7 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
+
 #include "robotBlocksBlock.h"
 
 class GoMapMessage;
@@ -28,19 +28,19 @@ typedef std::shared_ptr<GoFrameMessage> GoFrameMessage_ptr;
 
 class Robot02BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 
-	P2PNetworkInterface *block2Answer;
+	// P2PNetworkInterface *block2Answer; // UNUSED
 	P2PNetworkInterface *pmid;
 	Color myColor;
 	int nbOfEnd;
 	int nbOfFrame;
-	int px,py,pz;
+	// int px,py,pz;
     bool recieved;
     bool lockEnd;
     int tab[SIZE][4];
 
 public:
 
-	RobotBlocks::RobotBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *robotBlock;
 
 	Robot02BlockCode (RobotBlocks::RobotBlocksBlock *host);

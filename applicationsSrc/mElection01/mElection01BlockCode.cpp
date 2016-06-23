@@ -21,7 +21,7 @@ using namespace RobotBlocks;
 
 MElection01BlockCode::MElection01BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
 	cout << "MElection01BlockCode constructor" << endl;
-	scheduler = RobotBlocks::getScheduler();
+	scheduler = getScheduler();
 	robotBlock = (RobotBlocksBlock*)hostBlock;
 	
 	// initialize object deleted in destructor

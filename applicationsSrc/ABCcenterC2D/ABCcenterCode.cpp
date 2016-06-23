@@ -2,7 +2,7 @@
 
 //#define verbose
 
-Color tabColors[8]={RED,ORANGE,YELLOW,GREEN,CYAN,BLUE,MAGENTA,GREY};
+Color myTabColors[8]={RED,ORANGE,YELLOW,GREEN,CYAN,BLUE,MAGENTA,GREY};
 const int delayMin=100;
 const int delayDelta=20;
 

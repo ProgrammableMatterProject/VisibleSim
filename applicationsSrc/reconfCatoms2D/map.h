@@ -10,7 +10,7 @@
 
 #include "catoms2DBlockCode.h"
 #include "catoms2DSimulator.h"
-#include "catoms2DScheduler.h"
+
 #include "catoms2DBlock.h"
 #include "network.h"
 #include <boost/shared_ptr.hpp>

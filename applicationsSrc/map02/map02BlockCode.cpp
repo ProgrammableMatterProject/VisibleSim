@@ -22,7 +22,7 @@ using namespace RobotBlocks;
 
 Robot02BlockCode::Robot02BlockCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {
 	cout << "Robot02BlockCode constructor" << endl;
-	scheduler = RobotBlocks::getScheduler();
+	scheduler = getScheduler();
 	robotBlock = (RobotBlocksBlock*)hostBlock;
 	
 	// initialize object deleted in destructor
@@ -46,9 +46,6 @@ void Robot02BlockCode::startup() {
     //Initialization of variables 
 
 	if(robotBlock->isMaster) {
-
-        RobotBlocksWorld *wrl = RobotBlocksWorld::getWorld();
-
         info << "(Master Block at " << robotBlock->position[0] << "," << robotBlock->position[1] << "," << robotBlock->position[2] << ")";
         scheduler->trace(info.str(),robotBlock->blockId,YELLOW);
 

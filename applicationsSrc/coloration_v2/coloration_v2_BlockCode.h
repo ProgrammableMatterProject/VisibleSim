@@ -8,12 +8,12 @@
 #ifndef coloration_v2_BlockCode_H_
 #define coloration_v2_BlockCode_H_
 
-#include "smartBlocksBlockCode.h"
-#include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
-#include "smartBlocksBlock.h"
 #include <map>
 #include <boost/array.hpp>
+
+#include "smartBlocksBlockCode.h"
+#include "smartBlocksSimulator.h"
+#include "smartBlocksBlock.h"
 #include "neighbor_finding.h"
 #include "coloring.h"
 
@@ -55,7 +55,7 @@ class ColorationV2BlockCode : public SmartBlocks::SmartBlocksBlockCode {
   //DEBUG
   void PrintRoutesMap();
 public:
-  SmartBlocks::Scheduler *scheduler;
+  Scheduler *scheduler;
   SmartBlocks::SmartBlocksBlock *smartBlock;
 
   ColorationV2BlockCode( SmartBlocks::SmartBlocksBlock *host);
