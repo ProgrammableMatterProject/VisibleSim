@@ -62,7 +62,7 @@ struct _tuple_entry { struct _tuple_entry *next; record_type records; void *tupl
 typedef struct _tuple_pentry { Time priority; struct _tuple_pentry *next; record_type records; void *tuple; NodeID rt;} tuple_pentry;
 typedef struct {struct _tuple_pentry *queue;} tuple_pqueue;
 
-enum portReferences { DOWN, NORTH, EAST, SOUTH, WEST, UP, NUM_PORTS };
+enum portReferences { DOWN = 0, NORTH, WEST, SOUTH, EAST, UP, NUM_PORTS };
 
 typedef int Node;
 

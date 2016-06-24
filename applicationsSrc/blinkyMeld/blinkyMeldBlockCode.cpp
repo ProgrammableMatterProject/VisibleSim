@@ -121,8 +121,8 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_ADD_NEIGHBOR:
 			{
-			      //Should not be used by itself, presence of another block is tested by P2PNetworkInterface
-			      unsigned int face = (boost::static_pointer_cast<AddNeighborEvent>(pev))->face;
+			  //Should not be used by itself, presence of another block is tested by P2PNetworkInterface
+			  unsigned int face = NeighborDirection::getOpposite((boost::static_pointer_cast<AddNeighborEvent>(pev))->face); //
                         vm->neighbors[face] = (boost::static_pointer_cast<AddNeighborEvent>(pev))->target;
                         vm->enqueue_face(vm->neighbors[face], face, 1);
                         BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
@@ -131,7 +131,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 			break;
 		case EVENT_REMOVE_NEIGHBOR:
 			{
-			      unsigned int face = (boost::static_pointer_cast<AddNeighborEvent>(pev))->face;
+			unsigned int face = NeighborDirection::getOpposite((boost::static_pointer_cast<RemoveNeighborEvent>(pev))->face); //
                         vm->neighbors[face] = 0;
                         vm->enqueue_face(vm->neighbors[face], face, -1);
                         BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
