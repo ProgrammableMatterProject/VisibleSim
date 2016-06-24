@@ -57,10 +57,7 @@ void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
     // ...Parsing code...
 
     // Finally, add block to the world
-    ((SmartBlocksWorld*)world)->addBlock(blockId,
-					 (SmartBlocksBlockCode *(*)(SmartBlocksBlock *))
-					 buildingBlockCodeBuildingFunction,
-					 pos, color);
+    ((SmartBlocksWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color);
 }
 
 void SmartBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {

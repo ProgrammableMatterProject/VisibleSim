@@ -30,8 +30,7 @@ class RobotBlocksBlock : public BaseSimulator::BuildingBlock {
     P2PNetworkInterface *tabInterfaces[6];
 protected:
 public:
-    RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
-    RobotBlocksBlock(int bId, RobotBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
+    RobotBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~RobotBlocksBlock();
 
     inline RobotBlocksGlBlock* getGlBlock() { return (RobotBlocksGlBlock*)ptrGlBlock; };

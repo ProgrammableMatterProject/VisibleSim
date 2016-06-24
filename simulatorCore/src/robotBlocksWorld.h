@@ -50,10 +50,10 @@ public:
     return((RobotBlocksBlock*)World::getBlockById(bId));
     }
 
-    virtual void addBlock(int blockId,
-              RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*),
-              const Cell3DPosition &pos, const Color &col, bool master=false);
-    void deleteBlock(RobotBlocksBlock *bb);
+    virtual void addBlock(int blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
+                          const Cell3DPosition &pos, const Color &col,
+                          short orientation = 0, bool master = false);
+    virtual void deleteBlock(BuildingBlock *blc);
     inline presence *getTargetGridPtr(short *gs)
     { memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
     inline presence getTargetGrid(int ix,int iy,int iz)

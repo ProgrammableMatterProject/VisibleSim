@@ -56,13 +56,10 @@ string NeighborDirection::getString(int d) {
     }
 }
     
-SmartBlocksBlock::SmartBlocksBlock(int bId,
-                                   SmartBlocksBlockCode *
-                                   (*smartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock*))
-    : BaseSimulator::BuildingBlock(bId) {
+SmartBlocksBlock::SmartBlocksBlock(int bId, BlockCodeBuilder bcb)
+    : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
-    buildNewBlockCode = smartBlocksBlockCodeBuildingFunction;
-    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+    blockCode = (BaseSimulator::BlockCode*)bcb(this);
     for (int i=NeighborDirection::North; i<=NeighborDirection::West; i++) {
         tabInterfaces[i] = new P2PNetworkInterface(this);
     }

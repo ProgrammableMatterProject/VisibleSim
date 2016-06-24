@@ -58,8 +58,7 @@ void RobotBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
     World::setWorld(world);
 }
 
-void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
-									 BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
+void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
 									 const Cell3DPosition &pos, const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
@@ -68,10 +67,7 @@ void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 	// ...Parsing code...
 
 	// Finally, add block to the world
-	((RobotBlocksWorld*)world)->addBlock(blockId,
-										 (RobotBlocksBlockCode *(*)(RobotBlocksBlock *))
-										 buildingBlockCodeBuildingFunction,
-										 pos, color, master);
+	((RobotBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, master);
 }
 
 void RobotBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {

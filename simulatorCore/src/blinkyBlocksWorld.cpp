@@ -52,8 +52,9 @@ void BlinkyBlocksWorld::deleteWorld() {
 	delete((BlinkyBlocksWorld*)world);
 }
 
-void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)
-								 (BlinkyBlocksBlock*), const Cell3DPosition &pos, const Color &col) {
+void BlinkyBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
+								 const Cell3DPosition &pos, const Color &col,
+								 short orientation, bool master) {
 	if (blockId == -1) {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
 		for(it = buildingBlocksMap.begin();
@@ -63,7 +64,7 @@ void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlo
 		}
 		blockId++;
 	}
-	BlinkyBlocksBlock *blinkyBlock = new BlinkyBlocksBlock(blockId, blinkyBlockCodeBuildingFunction);
+	BlinkyBlocksBlock *blinkyBlock = new BlinkyBlocksBlock(blockId, bcb);
 	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (blinkyBlock->blockId, (BaseSimulator::BuildingBlock*)blinkyBlock));
 	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), blinkyBlock));
@@ -103,7 +104,9 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	}
 }
 
-void BlinkyBlocksWorld::deleteBlock(BlinkyBlocksBlock *bb) {
+void BlinkyBlocksWorld::deleteBlock(BuildingBlock *blc) {
+	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)blc;
+	
 	if (bb->getState() >= BlinkyBlocksBlock::ALIVE ) {
 		// cut links between bb and others
 		for(int i=0; i<6; i++) {
@@ -320,33 +323,6 @@ void BlinkyBlocksWorld::loadTextures(const string &str) {
 	string path = str+"/texture_plane.tga";
 	int lx,ly;
 	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
-}
-
-void BlinkyBlocksWorld::menuChoice(int n) {
-	switch (n) {
-	case 1 : {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getMenuBlock();
-		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
-		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
-		
-		addBlock(-1, bb->buildNewBlockCode, nPos, bb->color);
-		linkBlock(nPos);
-		linkNeighbors(nPos);
-	} break;
-	case 2 : {
-		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-		deleteBlock(bb);
-	} break;
-	case 3 : {
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-		tapBlock(getScheduler()->now(), bb->blockId);
-	} break;
-	case 4:                 // Save current configuration
-		exportConfiguration();
-		break;
-	}
 }
 
 void BlinkyBlocksWorld::setSelectedFace(int n) {

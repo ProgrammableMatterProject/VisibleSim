@@ -8,23 +8,24 @@
 #ifndef BLOCKCODE_H_
 #define BLOCKCODE_H_
 
-#include "buildingBlock.h"
 #include <inttypes.h>
 #include <memory>
+
+#include "buildingBlock.h"
 
 class Event;
 typedef std::shared_ptr<Event> EventPtr;
 
 namespace BaseSimulator {
 
-class BuildingBlock;
 class Scheduler;
+class BuildingBlock;
 
 class BlockCode {
 public:
 	BuildingBlock *hostBlock;
 	uint64_t availabilityDate;
-
+	
 	BlockCode(BuildingBlock *host);
 	virtual ~BlockCode();
 

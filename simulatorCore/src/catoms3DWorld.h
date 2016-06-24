@@ -8,6 +8,10 @@
 #ifndef CATOMS3DWORLD_H_
 #define CATOMS3DWORLD_H_
 
+#include <boost/asio.hpp>
+#include <vector>
+
+#include "buildingBlock.h"
 #include "openglViewer.h"
 #include "world.h"
 #include "vector3D.h"
@@ -15,9 +19,7 @@
 #include "catoms3DBlock.h"
 #include "objLoader.h"
 #include "skeleton.h"
-#include <boost/asio.hpp>
 #include "trace.h"
-#include <vector>
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
@@ -38,27 +40,26 @@ protected:
     virtual ~Catoms3DWorld();
 public:
     Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		  int argc, char *argv[]);    
+                  int argc, char *argv[]);    
 
     static void deleteWorld();
     static Catoms3DWorld* getWorld() {
-	assert(world != NULL);
-	return((Catoms3DWorld*)world);
+        assert(world != NULL);
+        return((Catoms3DWorld*)world);
     }
 
     void printInfo() {
-	OUTPUT << "I'm a Catoms3DWorld" << endl;
+        OUTPUT << "I'm a Catoms3DWorld" << endl;
     }
 
     virtual Catoms3DBlock* getBlockById(int bId) {
-	return((Catoms3DBlock*)World::getBlockById(bId));
+        return((Catoms3DBlock*)World::getBlockById(bId));
     }
 
-    virtual void addBlock(int blockId,
-			  Catoms3DBlockCode *(*robotBlockCodeBuildingFunction)(Catoms3DBlock*),
-			  const Cell3DPosition&pos, short orientation,
-			  const Color &col, bool master=false);
-    void deleteBlock(Catoms3DBlock *bb);
+
+    virtual void addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+                          short orientation, bool master);
+    virtual void deleteBlock(BuildingBlock *blc);
 
     //inline presence *getTargetGridPtr(int *gs) { memcpy(gs,gridSize,3*sizeof(int)); return targetGrid; };
     //inline presence getTargetGrid(int ix,int iy,int iz) { return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };

@@ -17,13 +17,13 @@ using namespace std;
 //! \namespace Catoms3D
 namespace Catoms3D {
 
-Catoms3DBlock::Catoms3DBlock(int bId, Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) : BaseSimulator::BuildingBlock(bId) {
+Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "Catoms3DBlock constructor" << endl;
     for (int i=0; i<12; i++) {
         tabInterfaces[i] = new P2PNetworkInterface(this);
     }
-    buildNewBlockCode = catoms3DBlockCodeBuildingFunction;
-    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+
+    blockCode = (BaseSimulator::BlockCode*)bcb(this);
 
     orientationCode=0; // connector 0 is along X axis
 }

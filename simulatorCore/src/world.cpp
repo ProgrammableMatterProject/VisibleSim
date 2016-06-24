@@ -207,6 +207,31 @@ bool World::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
 							 lattice->isFree(pos + nCells[numSelectedFace]) : false;
 }
 
+void World::menuChoice(int n) {
+    BuildingBlock *bb = getMenuBlock();
+	
+	switch (n) {
+	case 1 : {
+		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
+		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
+		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
+		
+		addBlock(-1, (BlockCode *(*)(BuildingBlock *))bb->buildNewBlockCode, nPos, bb->color);
+		linkBlock(nPos);
+		linkNeighbors(nPos);
+	} break;
+	case 2 : {
+		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
+		deleteBlock(bb);
+	} break;
+	case 3 : {
+		tapBlock(getScheduler()->now(), bb->blockId);
+	} break;
+	case 4:                 // Save current configuration
+		exportConfiguration();
+		break;
+	}
+}
 
 void World::createHelpWindow() {
 	if (GlutContext::helpWindow)

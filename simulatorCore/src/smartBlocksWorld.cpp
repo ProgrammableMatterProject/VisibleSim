@@ -25,9 +25,12 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 #ifdef GLUT
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+    objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
+                                                  "smartBlockPicking.obj");
 #else
     objBlock=NULL;
     objRepere=NULL;
+    objBlockForPicking=NULL;
 #endif
 
     nbreStats=0;
@@ -54,10 +57,10 @@ void SmartBlocksWorld::deleteWorld() {
     world=NULL;
 }
 
-void SmartBlocksWorld::addBlock(int blockId,
-                                SmartBlocksBlockCode *(*smartBlockCodeBuildingFunction)(SmartBlocksBlock*),
-                                const Cell3DPosition &pos,const Color &col) {
-    SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId,smartBlockCodeBuildingFunction);
+void SmartBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
+                                const Cell3DPosition &pos, const Color &col,
+                                short orientation, bool master) {
+    SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (smartBlock->blockId, (BaseSimulator::BuildingBlock*)smartBlock) );
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), smartBlock));
@@ -215,7 +218,6 @@ void SmartBlocksWorld::glDraw() {
           Physics::glDraw();
         */
         glPopMatrix();
-
 }
 
 void SmartBlocksWorld::glDrawId() {
@@ -282,7 +284,9 @@ int SmartBlocksWorld::nbreWellPlacedBlock() {
     return n;
 }
 
-void SmartBlocksWorld::deleteBlock(SmartBlocksBlock *bb) {
+void SmartBlocksWorld::deleteBlock(BuildingBlock *blc) {
+    SmartBlocksBlock *bb = (SmartBlocksBlock *)blc;
+    
     if (bb->getState() >= SmartBlocksBlock::ALIVE ) {
         // cut links between bb and others
         for(int i=0; i<4; i++) {
@@ -319,36 +323,12 @@ void SmartBlocksWorld::deleteBlock(SmartBlocksBlock *bb) {
 }
 
 
-void SmartBlocksWorld::menuChoice(int n) {
-    SmartBlocksBlock *bb = (SmartBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-
-    switch (n) {
-    case 1 : {
-        OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-
-        Cell3DPosition pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
-
-        addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
-        linkNeighbors(pos);
-    } break;
-    case 2 : {
-        OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
-        deleteBlock(bb);
-        linkNeighbors(bb->position);
-    } break;
-    case 3 : {
-        tapBlock(getScheduler()->now(), bb->blockId);
-    } break;
-    case 4:                 // Save current configuration
-        exportConfiguration();
-        break;
-    }
-}
-
 void SmartBlocksWorld::setSelectedFace(int n) {
     numSelectedBlock = n / numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
 
+	cerr << name << endl;
+    
     numSelectedFace = numPickingTextures;   // Undefined NeighborDirection
 
     if (name == "face_north") numSelectedFace = NeighborDirection::North;

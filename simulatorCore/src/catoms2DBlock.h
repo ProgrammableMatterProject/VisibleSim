@@ -31,19 +31,18 @@ protected:
 public:
 	int angle;
 	
-	Catoms2DBlockCode *(*buildNewBlockCode)(Catoms2DBlock*);
-	Catoms2DBlock(int bId, Catoms2DBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(Catoms2DBlock*));
+	Catoms2DBlock(int bId, BlockCodeBuilder bcb);
 	~Catoms2DBlock();
 
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
-        inline P2PNetworkInterface *getInterface(int d) {
-            return tabInterfaces[(NeighborDirection::Direction)d];
-        }
-        P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
+	inline P2PNetworkInterface *getInterface(int d) {
+		return tabInterfaces[(NeighborDirection::Direction)d];
+	}
+	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 
-        Cell3DPosition getPosition(NeighborDirection::Direction d);
-        Cell3DPosition getPosition(P2PNetworkInterface *p2p);
+	Cell3DPosition getPosition(NeighborDirection::Direction d);
+	Cell3DPosition getPosition(P2PNetworkInterface *p2p);
 
 	NeighborDirection::Direction getDirection(P2PNetworkInterface* p2p);
 	int nbNeighbors(bool groundIsNeighbor = false);
@@ -54,7 +53,7 @@ public:
 
 	//inline direction_t getOpposite(direction_t d) { return (direction_t) (d * (-1));}  
 	P2PNetworkInterface* getNextInterface(RelativeDirection::Direction dir,
-                                              P2PNetworkInterface *p2p, bool connected = false);
+										  P2PNetworkInterface *p2p, bool connected = false);
 
 	// Motion
 	bool isBlocked();

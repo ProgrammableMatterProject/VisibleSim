@@ -70,13 +70,12 @@ int NeighborDirection::getOpposite(int d) {
     }
 }
 
-RobotBlocksBlock::RobotBlocksBlock(int bId, RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) : BaseSimulator::BuildingBlock(bId) {
+RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "RobotBlocksBlock constructor" << endl;
     for (int i=0; i<6; i++) {
 		tabInterfaces[i] = new P2PNetworkInterface(this);
     }
-    buildNewBlockCode = robotBlocksBlockCodeBuildingFunction;
-    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+    blockCode = (BaseSimulator::BlockCode*)bcb(this);
 }
 
 RobotBlocksBlock::~RobotBlocksBlock() {

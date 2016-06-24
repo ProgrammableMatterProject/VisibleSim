@@ -27,71 +27,70 @@ namespace BlinkyBlocks {
 string NeighborDirection::getString(int d) {
     switch(d) {
     case Front:
-	return string("Front");
-	break;
+		return string("Front");
+		break;
     case Back:
-	return string("Back");
-	break;
+		return string("Back");
+		break;
     case Left:
-	return string("Left");
-	break;
+		return string("Left");
+		break;
     case Right:
-	return string("Right");
-	break;
+		return string("Right");
+		break;
     case Top:
-	return string("Top");
-	break;
+		return string("Top");
+		break;
     case Bottom:
-	return string("Bottom");
-	break;
+		return string("Bottom");
+		break;
     default:
-	cerr << "Unknown direction" << endl;
-	return string("Unknown");
-	break;
+		cerr << "Unknown direction" << endl;
+		return string("Unknown");
+		break;
     }
 }
 
 int NeighborDirection::getOpposite(int d) {
     switch (Direction(d)) {
     case Front:
-	return Back;
-	break;
+		return Back;
+		break;
     case Back:
-	return Front;
-	break;
+		return Front;
+		break;
     case Left:
-	return Right;
-	break;
+		return Right;
+		break;
     case Right:
-	return Left;
-	break;
+		return Left;
+		break;
     case Top:
-	return Bottom;
-	break;
+		return Bottom;
+		break;
     case Bottom:
-	return Top;
-	break;
+		return Top;
+		break;
     default:
-	ERRPUT << "*** ERROR *** : unknown face" << endl;
-	return -1;
-	break;
+		ERRPUT << "*** ERROR *** : unknown face" << endl;
+		return -1;
+		break;
     }
 }
 
-BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::BuildingBlock(bId) {
+BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "BlinkyBlocksBlock constructor" << endl;
     double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
     double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
 
     for (int i=0; i<6; i++) {
-	tabInterfaces[i] = new P2PNetworkInterface(this);
-	getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
-	tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
-	tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
+		tabInterfaces[i] = new P2PNetworkInterface(this);
+		getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
+		tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
+		tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
     }
     clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
-    buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
-    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+    blockCode = (BaseSimulator::BlockCode*)bcb(this);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {
@@ -105,10 +104,10 @@ void BlinkyBlocksBlock::pauseClock(uint64_t delay, uint64_t start){
     
 NeighborDirection::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     if( !given_interface) {
-	return NeighborDirection::Direction(0);
+		return NeighborDirection::Direction(0);
     }
     for( int i(0); i < 6; ++i) {
-	if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+		if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
     }
     return NeighborDirection::Direction(0);
 }
@@ -135,14 +134,14 @@ void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
     OUTPUT << "Simulator: stop scheduled" << endl;
     setState(s);
     if (s == STOPPED) {
-	// patch en attendant l'objet 3D qui modelise un BB stopped
-	color = Color(0.1, 0.1, 0.1, 0.5);
+		// patch en attendant l'objet 3D qui modelise un BB stopped
+		color = Color(0.1, 0.1, 0.1, 0.5);
     }
     getWorld()->updateGlData(this);
     if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
-	getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
+		getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
     } else if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
-	getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
+		getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
 }
 
@@ -153,11 +152,11 @@ std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {
 
 P2PNetworkInterface* BlinkyBlocksBlock::getInterfaceDestId(int id) {
     for (int i=0; i<6; i++) {
-	if (tabInterfaces[i]->connectedInterface != NULL) {
-	    if (tabInterfaces[i]->connectedInterface->hostBlock->blockId == id) {
-		return tabInterfaces[i];
-	    }
-	}
+		if (tabInterfaces[i]->connectedInterface != NULL) {
+			if (tabInterfaces[i]->connectedInterface->hostBlock->blockId == id) {
+				return tabInterfaces[i];
+			}
+		}
     }
     return NULL;
 }

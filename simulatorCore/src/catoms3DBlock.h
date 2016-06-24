@@ -42,13 +42,12 @@ protected:
 
 public:
 	short orientationCode; //!< number of the connector that is along the x axis.
-	Catoms3DBlockCode *(*buildNewBlockCode)(Catoms3DBlock*);
 /**
    \brief Constructor
    \param bId: id of the block
    \param catoms3DBlockCodeBuildingFunction : code block function
 */
-	Catoms3DBlock(int bId, Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*));
+	Catoms3DBlock(int bId, BlockCodeBuilder bcb);
 	~Catoms3DBlock();
 
 	inline virtual Catoms3DGlBlock* getGlBlock() { return static_cast<Catoms3DGlBlock*>(ptrGlBlock); };

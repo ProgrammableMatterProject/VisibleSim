@@ -56,9 +56,8 @@ void Catoms3DWorld::deleteWorld() {
     delete((Catoms3DWorld*)world);
 }
 
-void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuildingFunction)(Catoms3DBlock*),
-			     const Cell3DPosition &pos,short orientation,const Color &color,bool master) {
-
+void Catoms3DWorld::addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+							 short orientation, bool master) {	
     // if blockID==-1, search the maximum id
     if (blockId == -1) {
 	map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -69,7 +68,7 @@ void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuilding
 	blockId++;
     }
 
-    Catoms3DBlock *catom = new Catoms3DBlock(blockId,catomCodeBuildingFunction);
+    Catoms3DBlock *catom = new Catoms3DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 			     (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
 
@@ -80,7 +79,7 @@ void Catoms3DWorld::addBlock(int blockId, Catoms3DBlockCode *(*catomCodeBuilding
 
     catom->setGlBlock(glBlock);
     catom->setPositionAndOrientation(pos,orientation);
-    catom->setColor(color);
+    catom->setColor(col);
     lattice->insert(catom, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
 }
@@ -136,7 +135,9 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
     }
 }
 
-void Catoms3DWorld::deleteBlock(Catoms3DBlock *bb) {
+void Catoms3DWorld::deleteBlock(BuildingBlock *blc) {
+	Catoms3DBlock *bb = (Catoms3DBlock *)blc;
+		
     if (bb->getState() >= Catoms3DBlock::ALIVE ) {
 	// cut links between bb and others
 	for(int i=0; i<12; i++) {

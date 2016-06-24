@@ -48,8 +48,9 @@ void RobotBlocksWorld::deleteWorld() {
 	delete((RobotBlocksWorld*)world);
 }
 
-void RobotBlocksWorld::addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)
-								(RobotBlocksBlock*),const Cell3DPosition &pos,const Color &color,bool master) {
+void RobotBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
+								const Cell3DPosition &pos, const Color &col,
+								short orientation, bool master) {
 
 	if (blockId == -1) {
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -60,7 +61,7 @@ void RobotBlocksWorld::addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockC
 		}
 		blockId++;
 	}
-	RobotBlocksBlock *robotBlock = new RobotBlocksBlock(blockId,robotBlockCodeBuildingFunction);
+	RobotBlocksBlock *robotBlock = new RobotBlocksBlock(blockId, bcb);
 	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
 
@@ -70,7 +71,7 @@ void RobotBlocksWorld::addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockC
 	tabGlBlocks.push_back(glBlock);
 	robotBlock->setGlBlock(glBlock);
 	robotBlock->setPosition(pos);
-	robotBlock->setColor(color);
+	robotBlock->setColor(col);
 	robotBlock->isMaster=master;
 
 	if (lattice->isInGrid(pos)) {
@@ -130,7 +131,9 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	}
 }
 
-void RobotBlocksWorld::deleteBlock(RobotBlocksBlock *bb) {
+void RobotBlocksWorld::deleteBlock(BuildingBlock *blc) {
+	RobotBlocksBlock *bb = (RobotBlocksBlock *)blc;
+		
 	if (bb->getState() >= RobotBlocksBlock::ALIVE ) {
 		// cut links between bb and others
 		for(int i=0; i<6; i++) {

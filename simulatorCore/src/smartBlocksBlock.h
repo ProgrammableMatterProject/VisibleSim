@@ -31,8 +31,7 @@ public:
     bool wellPlaced,_isBorder,_isTrain,_isSingle;
     SmartBlocksBlockCode *(*buildNewBlockCode)(SmartBlocksBlock*);
     
-    SmartBlocksBlock(int bId,
-                     SmartBlocksBlockCode *(*SmartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock *));
+    SmartBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~SmartBlocksBlock();
     inline void setDisplayedValue(int n) { static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n); };
     inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }

@@ -105,6 +105,11 @@ public:
      */
     virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
 
+    virtual void addBlock(int blockId, BlockCodeBuilder bcb,
+                          const Cell3DPosition &pos, const Color &col,
+                          short orientation = 0, bool master = false) = 0;
+    virtual void deleteBlock(BuildingBlock *blc) = 0;
+    
     virtual GlBlock* getSelectedBlock() { return selectedBlock; };
     inline GlBlock* setSelectedBlock(int n) { return (selectedBlock=(n>=0)?tabGlBlocks[n]:NULL); };
 
@@ -151,7 +156,7 @@ public:
     void createHelpWindow();
 
     virtual Camera *getCamera() { return camera; };
-    virtual void menuChoice(int) {};
+    virtual void menuChoice(int);
     virtual void exportConfiguration() {};
     virtual inline BuildingBlock* getMenuBlock() {
         return getBlockById(tabGlBlocks[numSelectedBlock]->blockId);

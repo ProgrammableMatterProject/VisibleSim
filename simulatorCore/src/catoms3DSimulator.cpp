@@ -57,8 +57,7 @@ void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
     World::setWorld(world);
 }
 
-void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
-								  BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
+void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
 								  const Cell3DPosition &pos, const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
@@ -75,10 +74,7 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 	// Finally, add block to the world
 	// PTHY: TODO: add master
 	cerr << "pos: " << pos << " orientation: " << orientation << endl;
-	((Catoms3DWorld*)world)->addBlock(blockId,
-									  (Catoms3DBlockCode *(*)(Catoms3DBlock *))
-									  buildingBlockCodeBuildingFunction,
-									  pos, orientation, color);
+	((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
 }
 
 // PTHY: TODO: Refactor / Genericize

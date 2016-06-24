@@ -25,9 +25,8 @@ static const Vector3D defaultBlockSize{40.0, 40.0, 41.0};
 
 class BlinkyBlocksWorld : public BaseSimulator::World {
 protected:
-    GLuint idTextureWall;
     ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
-
+    GLuint idTextureWall;
     vector<ScenarioEvent*> tabEvents;
 
     virtual ~BlinkyBlocksWorld();
@@ -48,9 +47,10 @@ public:
     return((BlinkyBlocksBlock*)World::getBlockById(bId));
     }
 
-    virtual void addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlockCodeBuildingFunction)
-              (BlinkyBlocksBlock*), const Cell3DPosition &pos, const Color &col);
-    void deleteBlock(BlinkyBlocksBlock *bb);
+    virtual void addBlock(int blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
+                          const Cell3DPosition &pos, const Color &col,
+                          short orientation = 0, bool master = false);
+    virtual void deleteBlock(BuildingBlock *blc);
 
     virtual void linkBlock(const Cell3DPosition &pos);
     virtual void loadTextures(const string &str);
@@ -59,7 +59,6 @@ public:
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
     virtual void setSelectedFace(int n);
-    virtual void menuChoice(int n);
     virtual void exportConfiguration();
     virtual inline BuildingBlock* getMenuBlock() { return World::getMenuBlock(); };
 

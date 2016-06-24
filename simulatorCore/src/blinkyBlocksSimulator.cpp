@@ -145,10 +145,7 @@ void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 
 	// Finally, add block to the world
 	// PTHY: TODO: add master
-	((BlinkyBlocksWorld*)world)->addBlock(blockId,
-										  (BlinkyBlocksBlockCode *(*)(BlinkyBlocksBlock *))
-										  buildingBlockCodeBuildingFunction,
-										  pos, color);
+	((BlinkyBlocksWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color);
 }
 
 

@@ -47,11 +47,10 @@ public:
         cout << "I'm a SmartBlocksWorld" << endl;
     }
 
-    virtual void addBlock(int blockId,
-                          SmartBlocksBlockCode *(*smartBlockCodeBuildingFunction)(SmartBlocksBlock*),
-                          const Cell3DPosition &pos,const Color &col);
+    virtual void addBlock(int blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
+                          const Cell3DPosition &pos, const Color &col,
+                          short orientation = 0, bool master = false);
 
-    // PTHY: TODO: May need a fix (2D->3D)
     inline presence *getTargetGridPtr(short *gs)
         { memcpy(gs,lattice->gridSize.pt,2*sizeof(short)); return targetGrid; };
     inline presence getTargetGrid(int ix,int iy)
@@ -74,9 +73,8 @@ public:
     virtual void connectBlock(SmartBlocksBlock *block);
 
     virtual void setSelectedFace(int n);
-    virtual void menuChoice(int);
 
-    void deleteBlock(SmartBlocksBlock *bb);
+    virtual void deleteBlock(BuildingBlock *blc);
 
     bool isBorder(int x,int y);
     bool isSingle(int x,int y);

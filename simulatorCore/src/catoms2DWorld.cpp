@@ -49,10 +49,9 @@ Catoms2DWorld::~Catoms2DWorld() {
 void Catoms2DWorld::deleteWorld() {
     delete((Catoms2DWorld*)world);
 }
-
-void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*catom2DCodeBuildingFunction)
-                             (Catoms2DBlock*),const Cell3DPosition &pos,const Color &color,bool master) {
-
+void Catoms2DWorld::addBlock(int blockId, BlockCodeBuilder bcb,
+                             const Cell3DPosition &pos, const Color &col,
+                             short orientation, bool master) {
     if (blockId == -1) {
         map<int, BaseSimulator::BuildingBlock*>::iterator it;
         for(it = buildingBlocksMap.begin();
@@ -63,7 +62,7 @@ void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*catom2DCodeBuildi
         blockId++;
     }
 
-    Catoms2DBlock *catom2D = new Catoms2DBlock(blockId,catom2DCodeBuildingFunction);
+    Catoms2DBlock *catom2D = new Catoms2DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (catom2D->blockId, (BaseSimulator::BuildingBlock*)catom2D));
 
@@ -74,10 +73,10 @@ void Catoms2DWorld::addBlock(int blockId, Catoms2DBlockCode *(*catom2DCodeBuildi
     catom2D->setGlBlock(glBlock);
 
     catom2D->setPosition(pos);
-    catom2D->setColor(color);
+    catom2D->setColor(col);
     catom2D->isMaster=master;
 
-    cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << color << endl;
+    cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << col << endl;
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(catom2D, pos);
@@ -136,7 +135,9 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
     }
 }
 
-void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
+void Catoms2DWorld::deleteBlock(BuildingBlock *blc) {
+    Catoms2DBlock *bb = (Catoms2DBlock *)blc;
+        
     if (bb->getState() >= Catoms2DBlock::ALIVE ) {
         // cut links between bb and others
         for(int i=0; i<6; i++) {

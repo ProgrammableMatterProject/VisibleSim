@@ -16,14 +16,13 @@ using namespace std;
 
 namespace Catoms2D {
 
-Catoms2DBlock::Catoms2DBlock(int bId, Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*)) : BaseSimulator::BuildingBlock(bId) {
+Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "Catoms2DBlock constructor" << endl;
     for (int i=0; i<MAX_NB_NEIGHBORS; i++) {
 	tabInterfaces[i] = new P2PNetworkInterface(this);
 	getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
     }
-    buildNewBlockCode = catoms2DBlockCodeBuildingFunction;
-    blockCode = (BaseSimulator::BlockCode*)buildNewBlockCode(this);
+    blockCode = (BaseSimulator::BlockCode*)bcb(this);
     angle = 0;
 }
 

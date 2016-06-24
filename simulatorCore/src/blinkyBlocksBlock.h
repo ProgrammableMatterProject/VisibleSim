@@ -29,12 +29,8 @@ namespace BlinkyBlocks {
     class BlinkyBlocksBlock : public BaseSimulator::BuildingBlock {
 	P2PNetworkInterface *tabInterfaces[6];
 
-    public:
-	// BlinkyBlocksGlBlock *ptrGlBlock;
-    
-	BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
-	BlinkyBlocksBlock(int bId, BlinkyBlocksBlockCode *
-                          (*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
+    public:    
+	BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb);
 	~BlinkyBlocksBlock();
 
 	inline BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };

@@ -77,10 +77,7 @@ void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 	// ...Parsing code...
 
 	// Finally, add block to the world
-	((Catoms2DWorld*)world)->addBlock(blockId,
-									  (Catoms2DBlockCode *(*)(Catoms2DBlock *))
-									  buildingBlockCodeBuildingFunction,
-									  pos, color, master);
+	((Catoms2DWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color, master);
 }
 
 void Catoms2DSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {

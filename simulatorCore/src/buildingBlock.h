@@ -29,6 +29,9 @@ namespace BaseSimulator {
 
 class BlockCode;
 class Clock;
+class BuildingBlock;
+
+typedef BlockCode *(*BlockCodeBuilder)(BuildingBlock*);
 
 //===========================================================================================================
 //
@@ -41,7 +44,7 @@ class Clock;
  */
 class BuildingBlock {
 public:
-	// alive state must be associated to a number >= 2
+	// alive state must be associated to a number >= 2	
 	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3}; // Block state is a private attributes
 private:
 	/** 
@@ -69,8 +72,9 @@ public:
 	Cell3DPosition position; //!< position of the block in the grid of cells;
 	bool isMaster; //!< indicates is the block is a master block
 	GlBlock *ptrGlBlock; //!< ptr to the GL object corresponding to this block
-
-	BuildingBlock(int bId);
+	BlockCodeBuilder buildNewBlockCode; //!< function ptr to the block's blockCodeBuilder
+	
+	BuildingBlock(int bId, BlockCodeBuilder blockCode);
 	virtual ~BuildingBlock();
 
 	unsigned int getNextP2PInterfaceLocalId();
