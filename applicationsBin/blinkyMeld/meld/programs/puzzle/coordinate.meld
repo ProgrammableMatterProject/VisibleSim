@@ -1,0 +1,12 @@
+include #direction.meld
+
+type route neighbor(node,node,int).
+type coordinate(node,int,int,int).
+
+/* Relative Map Construction */
+!coordinate(A,X,Y,Z), !neighbor(A,B,east) -o !coordinate(B,X,Y - 1,Z).
+!coordinate(A,X,Y,Z), !neighbor(A,B,west) -o !coordinate(B,X,Y + 1,Z).
+!coordinate(A,X,Y,Z), !neighbor(A,B,north) -o !coordinate(B,X - 1,Y,Z).
+!coordinate(A,X,Y,Z), !neighbor(A,B,south) -o !coordinate(B,X + 1,Y,Z).
+!coordinate(A,X,Y,Z), !neighbor(A,B,up) -o !coordinate(B,X,Y,Z + 1).
+!coordinate(A,X,Y,Z), !neighbor(A,B,bottom) -o !coordinate(B,X,Y,Z - 1).
