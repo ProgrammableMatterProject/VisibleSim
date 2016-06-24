@@ -268,10 +268,10 @@ public:
 class SCLattice : public Lattice3D {
     vector<Cell3DPosition> nCells{
         Cell3DPosition(0,0,-1), // BOTTOM
-            Cell3DPosition(-1,0,0), // BACK
-            Cell3DPosition(0,1,0),  // RIGHT
-            Cell3DPosition(1,0,0),  // FRONT
-            Cell3DPosition(0,-1,0),  // LEFT
+            Cell3DPosition(0,1,0), // BACK
+            Cell3DPosition(1,0,0),  // RIGHT
+            Cell3DPosition(0,-1,0),  // FRONT
+            Cell3DPosition(-1,0,0),  // LEFT
             Cell3DPosition(0,0,1)  // TOP
             }; //!< Vector containing relative position of neighboring cells
 public:

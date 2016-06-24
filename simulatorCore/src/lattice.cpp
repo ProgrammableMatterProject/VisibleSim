@@ -22,7 +22,7 @@ Lattice::Lattice(const Cell3DPosition &gsz, const Vector3D &gsc) {
     if (gsz[0] <= 0 || gsz[1] <= 0 || gsz[2] <= 0) {
         cerr << "error: Incorrect lattice size: size in any direction cannot be negative or null)" << endl;
     }
-    
+
     grid = new BuildingBlock*[gridSize[0] * gridSize[1] * gridSize[2]]{NULL};
 
 #ifdef LATTICE_LOG
@@ -43,8 +43,16 @@ int Lattice::getIndex(const Cell3DPosition &p) {
 }
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
-    grid[getIndex(p)] = bb;
-
+    int index = getIndex(p);
+    
+    if (!grid[index]) {
+        grid[index] = bb;
+    } else {
+        cerr << "error: trying to add block of id " << bb->blockId << " on non-empty cell " << p << endl;
+        throw "here";
+        exit(EXIT_FAILURE);
+    }
+        
 #ifdef LATTICE_LOG
     cerr << "l.insert(" << bb->blockId << ") on " << p << " = i:" << getIndex(p) << endl; 
 #endif

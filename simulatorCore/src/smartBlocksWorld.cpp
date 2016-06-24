@@ -30,7 +30,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
     objRepere=NULL;
 #endif
 
-    nbreStats=0;    
+    nbreStats=0;
     for (int i = 0; i < 10; i++) {
         tabStatsData[i] = 0;
     }
@@ -76,12 +76,12 @@ void SmartBlocksWorld::addBlock(int blockId,
     }
 }
 
-void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {    
+void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
     SmartBlocksBlock *ptrNeighbor;
     SmartBlocksBlock *ptrBlock = (SmartBlocksBlock*)lattice->getBlock(pos);
     vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
     Cell3DPosition nPos;
-    
+
     // Check neighbors for each interface
     for (int i = 0; i < 4; i++) {
         nPos = pos + nRelCells[i];
@@ -90,7 +90,7 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
             (ptrBlock)->getInterface(NeighborDirection::Direction(i))->
                 connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
                                                       NeighborDirection::getOpposite(i))));
-							
+
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
         } else {
@@ -247,7 +247,7 @@ void SmartBlocksWorld::loadTextures(const string &str) {
 
 void SmartBlocksWorld::connectBlock(SmartBlocksBlock *block) {
     Cell3DPosition pos = block->position;
-    
+
     lattice->insert(block, pos);
 //	OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << endl;
     linkBlock(pos);
@@ -344,30 +344,6 @@ void SmartBlocksWorld::menuChoice(int n) {
         break;
     }
 }
-
-bool SmartBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
-    SmartBlocksBlock *bb = (SmartBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-    Cell3DPosition pos = bb->position;
-    
-    switch (numSelectedFace) {
-        // NeighborDirection { NeighborDirection::North = 0, East, South, West};
-    case NeighborDirection::North :
-        return lattice->isFree(pos + Cell3DPosition(0, +1, 0));
-        break;
-    case NeighborDirection::East :
-        return lattice->isFree(pos + Cell3DPosition(-1, 0, 0));
-        break;
-    case NeighborDirection::South :
-        return lattice->isFree(pos + Cell3DPosition(0, -1, 0));
-        break;
-    case NeighborDirection::West :
-        return lattice->isFree(pos + Cell3DPosition(+1, 0, 0));
-        break;
-    }
-
-    return false;
-}
-
 
 void SmartBlocksWorld::setSelectedFace(int n) {
     numSelectedBlock = n / numPickingTextures;

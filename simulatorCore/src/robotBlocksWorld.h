@@ -34,32 +34,32 @@ protected:
     virtual ~RobotBlocksWorld();
 public:
     RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		     int argc, char *argv[]);    
+             int argc, char *argv[]);
 
     static void deleteWorld();
     static RobotBlocksWorld* getWorld() {
-	assert(world != NULL);
-	return((RobotBlocksWorld*)world);
+    assert(world != NULL);
+    return((RobotBlocksWorld*)world);
     }
 
     void printInfo() {
-	OUTPUT << "I'm a RobotBlocksWorld" << endl;
+    OUTPUT << "I'm a RobotBlocksWorld" << endl;
     }
 
     virtual RobotBlocksBlock* getBlockById(int bId) {
-	return((RobotBlocksBlock*)World::getBlockById(bId));
+    return((RobotBlocksBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(int blockId,
-			  RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*),
-			  const Cell3DPosition &pos, const Color &col, bool master=false);
+              RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*),
+              const Cell3DPosition &pos, const Color &col, bool master=false);
     void deleteBlock(RobotBlocksBlock *bb);
     inline presence *getTargetGridPtr(short *gs)
-	{ memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
+    { memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
     inline presence getTargetGrid(int ix,int iy,int iz)
-	{ return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
+    { return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
     inline void setTargetGrid(presence value,int ix,int iy,int iz)
-	{ targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
+    { targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
     void initTargetGrid();
 
     inline void setCapabilities(RobotBlocksCapabilities *capa) { capabilities=capa; };
@@ -79,7 +79,6 @@ public:
     virtual void menuChoice(int n);
     virtual void disconnectBlock(RobotBlocksBlock *block);
     virtual void connectBlock(RobotBlocksBlock *block);
-    virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
     virtual void exportConfiguration();
 };
 

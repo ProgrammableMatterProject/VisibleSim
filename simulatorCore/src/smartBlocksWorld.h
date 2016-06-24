@@ -33,8 +33,8 @@ protected:
     virtual ~SmartBlocksWorld();
 public:
     SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-                     int argc, char *argv[]);    
-        
+                     int argc, char *argv[]);
+
     GLuint idTextureFloor,idTextureDigits;
 
     static void deleteWorld();
@@ -76,7 +76,6 @@ public:
     virtual void setSelectedFace(int n);
     virtual void menuChoice(int);
 
-    bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
     void deleteBlock(SmartBlocksBlock *bb);
 
     bool isBorder(int x,int y);

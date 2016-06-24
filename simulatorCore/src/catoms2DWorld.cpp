@@ -27,7 +27,7 @@ Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     OUTPUT << "\033[1;31mCatoms2DWorld constructor\033[0m" << endl;
 
     targetGrid=NULL;
-    
+
     idTextureHexa=0;
     idTextureLines=0;
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2D.obj");
@@ -115,25 +115,25 @@ void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
 
 void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
     Catoms2DBlock *ptrNeighbor;
-	Catoms2DBlock *ptrBlock = (Catoms2DBlock*)lattice->getBlock(pos);
+    Catoms2DBlock *ptrBlock = (Catoms2DBlock*)lattice->getBlock(pos);
     vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
     Cell3DPosition nPos;
-					
-	// Check neighbors for each interface
-	for (int i = 0; i < 6; i++) {
+
+    // Check neighbors for each interface
+    for (int i = 0; i < 6; i++) {
         nPos = pos + nRelCells[i];
-		ptrNeighbor = (Catoms2DBlock*)lattice->getBlock(nPos);
-		if (ptrNeighbor) {
-			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->
-				connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
-													  NeighborDirection::getOpposite(i))));
-							
-			OUTPUT << "connection #" << (ptrBlock)->blockId <<
-				" to #" << ptrNeighbor->blockId << endl;
-		} else {
-			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
-		}
-	}
+        ptrNeighbor = (Catoms2DBlock*)lattice->getBlock(nPos);
+        if (ptrNeighbor) {
+            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->
+                connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
+                                                      NeighborDirection::getOpposite(i))));
+
+            OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                " to #" << ptrNeighbor->blockId << endl;
+        } else {
+            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
+        }
+    }
 }
 
 void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
@@ -148,7 +148,7 @@ void Catoms2DWorld::deleteBlock(Catoms2DBlock *bb) {
                 bbi->connectedInterface=NULL;
             }
         }
-        
+
         lattice->remove(bb->position);
         disconnectBlock(bb);
     }
@@ -398,21 +398,6 @@ void Catoms2DWorld::menuChoice(int n) {
     }
 
 }
-
-bool Catoms2DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
-    Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-    Cell3DPosition pos = bb->position;
-
-    // PTHY: TODO: CHECK THIS (that positions are in order in vector)
-    if (isInRange(numSelectedFace, 0, 5)) { // Invalid Face
-        vector<Cell3DPosition> nPos = lattice->getRelativeConnectivity(pos);
-        Cell3DPosition v(nPos[numSelectedFace] + pos);
-        return lattice->isFree(v);
-    }
-
-    return false;
-}
-
 
 void Catoms2DWorld::setSelectedFace(int n) {
     numSelectedBlock = n / numPickingTextures;

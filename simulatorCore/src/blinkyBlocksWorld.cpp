@@ -8,21 +8,22 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <signal.h>
+
 #include "blinkyBlocksWorld.h"
 #include "blinkyBlocksBlock.h"
 #include "blinkyBlocksEvents.h"
 #include "configExporter.h"
 #include "trace.h"
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <signal.h>
 
 using namespace std;
 
 namespace BlinkyBlocks {
 
 BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-									 int argc, char *argv[]):World(argc, argv) {	
+									 int argc, char *argv[]):World(argc, argv) {
 	OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
 	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures","blinkyBlockSimple.obj");
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures",
@@ -65,7 +66,6 @@ void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlo
 	BlinkyBlocksBlock *blinkyBlock = new BlinkyBlocksBlock(blockId, blinkyBlockCodeBuildingFunction);
 	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (blinkyBlock->blockId, (BaseSimulator::BuildingBlock*)blinkyBlock));
-	lattice->insert(blinkyBlock, pos);
 	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), blinkyBlock));
 
 	BlinkyBlocksGlBlock *glBlock = new BlinkyBlocksGlBlock(blockId);
@@ -83,10 +83,10 @@ void BlinkyBlocksWorld::addBlock(int blockId, BlinkyBlocksBlockCode *(*blinkyBlo
 }
 
 void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
-    BlinkyBlocksBlock *ptrNeighbor;
+	BlinkyBlocksBlock *ptrNeighbor;
 	BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);
 	vector<Cell3DPosition> nCells = lattice->getNeighborhood(pos);
-					
+
 	// Check neighbors for each interface
 	for (int i = 0; i < 6; i++) {
 		ptrNeighbor = (BlinkyBlocksBlock*)lattice->getBlock(nCells[i]);
@@ -94,7 +94,7 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->
 				connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
 													  NeighborDirection::getOpposite(i))));
-							
+
 			OUTPUT << "connection #" << (ptrBlock)->blockId <<
 				" to #" << ptrNeighbor->blockId << endl;
 		} else {
@@ -117,7 +117,7 @@ void BlinkyBlocksWorld::deleteBlock(BlinkyBlocksBlock *bb) {
 		}
 		// free grid cell
 		lattice->remove(bb->position);
-		
+
 		// remove the block from the lists
 		//buildingBlocksMap.erase(bb->blockId);
 		// remove event from the list
@@ -126,12 +126,12 @@ void BlinkyBlocksWorld::deleteBlock(BlinkyBlocksBlock *bb) {
 		bb->stop(getScheduler()->now(), BlinkyBlocksBlock::REMOVED); // schedule stop event, set REMOVED state
 		linkBlocks();
 	}
-	
+
 	if (selectedBlock == bb->ptrGlBlock) {
 		selectedBlock = NULL;
 		GlutContext::mainWindow->select(NULL);
 	}
-	
+
 	// remove the associated glBlock
 	std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
 	if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
@@ -322,63 +322,17 @@ void BlinkyBlocksWorld::loadTextures(const string &str) {
 	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-bool BlinkyBlocksWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
-	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-	Cell3DPosition pos = bb->position;
-
-	switch (numSelectedFace) {
-	case NeighborDirection::Left :
-		return lattice->isFree(pos + Cell3DPosition(-1, 0, 0));
-		break;
-	case NeighborDirection::Right :
-		return lattice->isFree(pos + Cell3DPosition(+1, 0, 0));
-		break;
-	case NeighborDirection::Front :
-		return lattice->isFree(pos + Cell3DPosition(0, -1, 0));
-	case NeighborDirection::Back :
-		return lattice->isFree(pos + Cell3DPosition(0, +1, 0));
-		break;
-	case NeighborDirection::Bottom :
-		return lattice->isFree(pos + Cell3DPosition(0, 0, -1));
-		break;
-	case NeighborDirection::Top :
-		return lattice->isFree(pos + Cell3DPosition(0, 0, +1));
-		break;
-	}
-
-	return false;
-}
-
-
 void BlinkyBlocksWorld::menuChoice(int n) {
 	switch (n) {
 	case 1 : {
 		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getMenuBlock();
 		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-		Cell3DPosition pos=bb->position;
-		switch (numSelectedFace) {
-		case NeighborDirection::Left :
-			pos.pt[0]--;
-			break;
-		case NeighborDirection::Right :
-			pos.pt[0]++;
-			break;
-		case NeighborDirection::Front :
-			pos.pt[1]--;
-			break;
-		case NeighborDirection::Back :
-			pos.pt[1]++;
-			break;
-		case NeighborDirection::Bottom :
-			pos.pt[2]--;
-			break;
-		case NeighborDirection::Top :
-			pos.pt[2]++;
-			break;
-		}
-		addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
-		linkBlock(pos);
-		linkNeighbors(pos);
+		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
+		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
+		
+		addBlock(-1, bb->buildNewBlockCode, nPos, bb->color);
+		linkBlock(nPos);
+		linkNeighbors(nPos);
 	} break;
 	case 2 : {
 		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
@@ -408,48 +362,70 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
 	else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
 }
 
+/**
+ * @brief Schedules an accel change event for block with id bId, at time date,
+ *  and with the coordinates (x,y,z).
+ *
+ * @param date : the date at which the tap event must be consumed
+ * @param bId : the id of the target block
+ * @param x : x coordinate of accelerometer change
+ * @param y : y coordinate of accelerometer change
+ * @param z : z coordinate of accelerometer change
+ */
 void BlinkyBlocksWorld::accelBlock(uint64_t date, int bId, int x, int y, int z) {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
 	bb->accel(date, x,y,z);
 }
 
+/**
+ * @brief Schedules an accel change event for block with id bId, at time date,
+ *  and with force f.
+ *
+ * @param date : the date at which the tap event must be consumed
+ * @param bId : the id of the target block
+ * @param f : force of the shake
+ */
 void BlinkyBlocksWorld::shakeBlock(uint64_t date, int bId, int f) {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
 	bb->shake(date, f);
 }
 
-/* We don't want this anymore, to be replaced by tap event from the simulation menu */
-//
+/**
+ * @brief Schedules the stopping of block with id bId at a given date
+ *
+ * @param date : the date at which the tap event must be consumed
+ * @param bId : the id of the target block
+ */
 void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
-    if (bId < 0) {
-        // Delete the block	without deleting the links
-        map<int, BaseSimulator::BuildingBlock*>::iterator it;
-        for(it = buildingBlocksMap.begin();
-            it != buildingBlocksMap.end(); it++) {
-            BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-            if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
-                bb->stop(date, BlinkyBlocksBlock::STOPPED);
-        }
-    } else {
-        // Delete all the links and then the block
-        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
-        if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
-            // cut links between bb and others
-            for(int i=0; i<6; i++) {
-                P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
-                if (bbi->connectedInterface) {
-                    //bb->removeNeighbor(bbi); //Useless
-                    bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-                    bbi->connectedInterface->connectedInterface=NULL;
-                    bbi->connectedInterface=NULL;
-                }
-            }
-            // free grid cell
+	if (bId < 0) {
+		// Delete the block	without deleting the links
+		map<int, BaseSimulator::BuildingBlock*>::iterator it;
+		for(it = buildingBlocksMap.begin();
+			it != buildingBlocksMap.end(); it++) {
+			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
+			if (bb->getState() >= BlinkyBlocksBlock::ALIVE )
+				bb->stop(date, BlinkyBlocksBlock::STOPPED);
+		}
+	} else {
+		// Delete all the links and then the block
+		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
+		if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
+			// cut links between bb and others
+			for(int i=0; i<6; i++) {
+				P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+				if (bbi->connectedInterface) {
+					//bb->removeNeighbor(bbi); //Useless
+					bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
+					bbi->connectedInterface->connectedInterface=NULL;
+					bbi->connectedInterface=NULL;
+				}
+			}
+			// free grid cell
 			lattice->remove(bb->position);
-            bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
-            linkNeighbors(bb->position);
-        }
-    }
+			bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state
+			linkNeighbors(bb->position);
+		}
+	}
 }
 
 void BlinkyBlocksWorld::exportConfiguration() {
@@ -475,6 +451,10 @@ void BlinkyBlocksWorld::exportConfiguration() {
 	exporter->exportConfiguration();
 }
 
+/**
+ * @brief Dumps the content of the world (all blocks) to *stdout*
+ *
+ */
 void BlinkyBlocksWorld::dump() {
 	map<int, BaseSimulator::BuildingBlock*>::iterator it;
 	cout << "World:" << endl;

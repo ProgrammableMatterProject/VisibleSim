@@ -109,7 +109,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 
 			unsigned int sourceId = recvMessage->sourceInterface->hostBlock->blockId;
 
-			cout << "INTERFACE" << robotBlock->getDirection(message->destinationInterface) << endl;
+			// cout << "INTERFACE" << robotBlock->getDirection(message->destinationInterface) << endl;
 					
 			info.str("");
 			info << "rec. MapMessage : MAP_MSG from " << sourceId;

@@ -29,38 +29,38 @@ protected:
     presence *targetGrid;
     Catoms2DCapabilities *capabilities;
     static const int numPickingTextures = 7; /* The number of picking textures defined for
-						this type of catom,
-						used to deduce selected Block / face */
+                        this type of catom,
+                        used to deduce selected Block / face */
 
     virtual ~Catoms2DWorld();
 public:
     Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-		  int argc, char *argv[]);    
+          int argc, char *argv[]);
 
     static void deleteWorld();
     static Catoms2DWorld* getWorld() {
-	assert(world != NULL);
-	return((Catoms2DWorld*)world);
+    assert(world != NULL);
+    return((Catoms2DWorld*)world);
     }
 
     void printInfo() {
-	OUTPUT << "I'm a Catoms2DWorld" << endl;
+    OUTPUT << "I'm a Catoms2DWorld" << endl;
     }
 
     virtual Catoms2DBlock* getBlockById(int bId) {
-	return((Catoms2DBlock*)World::getBlockById(bId));
+    return((Catoms2DBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(int blockId,
-			  Catoms2DBlockCode *(*catoms2DCodeBuildingFunction)(Catoms2DBlock*),
-			  const Cell3DPosition &pos, const Color &col, bool master=false);
+              Catoms2DBlockCode *(*catoms2DCodeBuildingFunction)(Catoms2DBlock*),
+              const Cell3DPosition &pos, const Color &col, bool master=false);
     void deleteBlock(Catoms2DBlock *bb);
     inline presence *getTargetGridPtr(short *gs)
-	{ memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
+    { memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
     inline presence getTargetGrid(int ix,int iy,int iz)
-	{ return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
+    { return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
     inline void setTargetGrid(presence value,int ix,int iy,int iz)
-	{ targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
+    { targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
     void initTargetGrid();
 
     inline void setCapabilities(Catoms2DCapabilities *capa) { capabilities=capa; };
@@ -77,20 +77,27 @@ public:
     bool areNeighborsWorldPos(Vector3D &pos1, Vector3D &pos2);
     bool areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &pos2);
 
-    virtual void glDraw();
-    virtual void glDrawId();
-    virtual void glDrawIdByMaterial();
     virtual void updateGlData(BuildingBlock*blc);
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position);
     virtual void updateGlData(Catoms2DBlock*blc, const Vector3D &position, double angle);
-    virtual void createPopupMenu(int ix,int iy);
-    virtual void setSelectedFace(int n);
-    virtual void menuChoice(int n);
-    virtual void disconnectBlock(Catoms2DBlock *block);
-    virtual void connectBlock(Catoms2DBlock *block);
-    virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
 
+    /** @copydoc World::glDraw() */
+    virtual void glDraw();
+    /** @copydoc World::glDrawId() */
+    virtual void glDrawId();
+    /** @copydoc World::glDrawIdByMaterial() */
+    virtual void glDrawIdByMaterial();
+    /** @copydoc World::createPopupMenu(int ix,int iy) */
+    virtual void createPopupMenu(int ix,int iy);
+    /** @copydoc World::setSelectedFace(int n) */
+    virtual void setSelectedFace(int n);
+    /** @copydoc World::menuChoice(int n) */
+    virtual void menuChoice(int n);
+    /** @copydoc World::exportConfiguration() */
     virtual void exportConfiguration();
+
+    void disconnectBlock(Catoms2DBlock *block);
+    void connectBlock(Catoms2DBlock *block);
 };
 
 inline void deleteWorld() {
