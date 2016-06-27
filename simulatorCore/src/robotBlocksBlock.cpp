@@ -73,7 +73,7 @@ int NeighborDirection::getOpposite(int d) {
 RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "RobotBlocksBlock constructor" << endl;
     for (int i=0; i<6; i++) {
-		tabInterfaces[i] = new P2PNetworkInterface(this);
+		P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
     }
     blockCode = (BaseSimulator::BlockCode*)bcb(this);
 }
@@ -105,18 +105,18 @@ NeighborDirection::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface 
 		return NeighborDirection::Direction(0);
     }
     for( int i(0); i < 6; ++i) {
-		if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+		if(P2PNetworkInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
     }
     return NeighborDirection::Direction(0);
 }
 
 P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const PointRel3D &pos) {
-    if (pos.x==-1) return tabInterfaces[NeighborDirection::Left];
-    else if (pos.x==1) return tabInterfaces[NeighborDirection::Right];
-    else if (pos.y==-1) return tabInterfaces[NeighborDirection::Front];
-    else if (pos.y==1) return tabInterfaces[NeighborDirection::Back];
-    else if (pos.z==-1) return tabInterfaces[NeighborDirection::Bottom];
-    else if (pos.z==1) return tabInterfaces[NeighborDirection::Top];
+    if (pos.x==-1) return P2PNetworkInterfaces[NeighborDirection::Left];
+    else if (pos.x==1) return P2PNetworkInterfaces[NeighborDirection::Right];
+    else if (pos.y==-1) return P2PNetworkInterfaces[NeighborDirection::Front];
+    else if (pos.y==1) return P2PNetworkInterfaces[NeighborDirection::Back];
+    else if (pos.z==-1) return P2PNetworkInterfaces[NeighborDirection::Bottom];
+    else if (pos.z==1) return P2PNetworkInterfaces[NeighborDirection::Top];
 
     return NULL;
 }

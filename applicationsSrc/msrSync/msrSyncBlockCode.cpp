@@ -197,8 +197,8 @@ uint64_t msrSyncBlockCode::getTime() {
 }
 
 void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t globalTime) {
-  list <P2PNetworkInterface*>::iterator it;
-  for (it = hostBlock->getP2PNetworkInterfaceList().begin(); it !=hostBlock->getP2PNetworkInterfaceList().end(); it++) {
+  vector<P2PNetworkInterface*>::iterator it;
+  for (it = hostBlock->getP2PNetworkInterfaces().begin(); it !=hostBlock->getP2PNetworkInterfaces().end(); it++) {
     if ((*it)->connectedInterface && (*it != exception)) {
       SyncMessage *message = new SyncMessage(globalTime,round);
       BaseSimulator::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(), message,*it));

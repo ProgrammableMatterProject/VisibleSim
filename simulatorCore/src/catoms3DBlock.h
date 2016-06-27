@@ -37,7 +37,6 @@ const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_
 class Catoms3DBlockCode;
 
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
-	P2PNetworkInterface *tabInterfaces[12];
 protected:
 
 public:
@@ -61,7 +60,7 @@ public:
    \return return interface if it exists one connected, NULL otherwise
 */
 	P2PNetworkInterface *getInterface(const Cell3DPosition &pos);
-	inline P2PNetworkInterface *getInterface(int d) { return tabInterfaces[d]; };
+	inline P2PNetworkInterface *getInterface(int d) { return P2PNetworkInterfaces[d]; };
 /**
    \brief Get the position of the gridcell in the direction of the given connector
    \param connectorId: id of connector (0..11)

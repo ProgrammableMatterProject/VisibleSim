@@ -61,22 +61,22 @@ SmartBlocksBlock::SmartBlocksBlock(int bId, BlockCodeBuilder bcb)
     OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
     blockCode = (BaseSimulator::BlockCode*)bcb(this);
     for (int i=NeighborDirection::North; i<=NeighborDirection::West; i++) {
-        tabInterfaces[i] = new P2PNetworkInterface(this);
+        P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
     }
 }
 
 SmartBlocksBlock::~SmartBlocksBlock() {
     for (int i = NeighborDirection::North; i <= NeighborDirection::West; i++) {
-        delete tabInterfaces[i];
+        delete P2PNetworkInterfaces[i];
     }
     OUTPUT << "SmartBlocksBlock #" << blockId << " destructor" << endl;
 }
 
 P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByRelPos(const PointCel &pos) {
-    if (pos.x==-1) return tabInterfaces[NeighborDirection::West];
-    else if (pos.x==1) return tabInterfaces[NeighborDirection::East];
-    else if (pos.y==-1) return tabInterfaces[NeighborDirection::South];
-    else if (pos.y==1) return tabInterfaces[NeighborDirection::North];
+    if (pos.x==-1) return P2PNetworkInterfaces[NeighborDirection::West];
+    else if (pos.x==1) return P2PNetworkInterfaces[NeighborDirection::East];
+    else if (pos.y==-1) return P2PNetworkInterfaces[NeighborDirection::South];
+    else if (pos.y==1) return P2PNetworkInterfaces[NeighborDirection::North];
 
     return NULL;
 }
@@ -86,7 +86,7 @@ NeighborDirection::Direction SmartBlocksBlock::getDirection(P2PNetworkInterface 
       return NeighborDirection::Direction(0);
       }*/
     for( int i( NeighborDirection::North); i <= NeighborDirection::West; ++i) {
-        P2PNetworkInterface* p2p = tabInterfaces[ i];
+        P2PNetworkInterface* p2p = P2PNetworkInterfaces[ i];
         if( p2p == given_interface) {
             return NeighborDirection::Direction(i);
         }
@@ -118,11 +118,11 @@ Cell3DPosition SmartBlocksBlock::getPosition(NeighborDirection::Direction d) {
 
 P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(int id) {
     int i=0;
-    while (i<4 && (tabInterfaces[i]->connectedInterface == NULL
-                   || tabInterfaces[i]->connectedInterface->hostBlock->blockId != id)) {
+    while (i<4 && (P2PNetworkInterfaces[i]->connectedInterface == NULL
+                   || P2PNetworkInterfaces[i]->connectedInterface->hostBlock->blockId != id)) {
         i++;
     }
-    return (i<4?tabInterfaces[i]:NULL);
+    return (i<4?P2PNetworkInterfaces[i]:NULL);
 }
     
 }

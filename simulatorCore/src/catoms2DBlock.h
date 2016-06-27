@@ -25,7 +25,6 @@ class Catoms2DBlockCode;
 class Catoms2DMove;
 
 class Catoms2DBlock : public BaseSimulator::BuildingBlock {
-	P2PNetworkInterface *tabInterfaces[6];
 protected:
 
 public:
@@ -37,7 +36,7 @@ public:
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
 	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
 	inline P2PNetworkInterface *getInterface(int d) {
-		return tabInterfaces[(NeighborDirection::Direction)d];
+		return P2PNetworkInterfaces[(NeighborDirection::Direction)d];
 	}
 	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 

@@ -20,7 +20,7 @@ namespace Catoms3D {
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "Catoms3DBlock constructor" << endl;
     for (int i=0; i<12; i++) {
-        tabInterfaces[i] = new P2PNetworkInterface(this);
+        P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
     }
 
     blockCode = (BaseSimulator::BlockCode*)bcb(this);
@@ -79,7 +79,7 @@ int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
         return -1;
     }
     for( int i(0); i < 12; ++i) {
-        if( tabInterfaces[i] == given_interface) return i;
+        if(P2PNetworkInterfaces[i] == given_interface) return i;
     }
     return -1;
 }
@@ -128,7 +128,7 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
         d=x*x+y*y+z*z;
         i++;
     }
-    return (d>0.1)?NULL:tabInterfaces[i-1];
+    return (d>0.1)?NULL:P2PNetworkInterfaces[i-1];
 }
 
 }
