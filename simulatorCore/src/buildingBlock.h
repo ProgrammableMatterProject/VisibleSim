@@ -59,9 +59,9 @@ protected:
 	static int nextId;
 
 	int P2PNetworkInterfaceNextLocalId;
-	list<P2PNetworkInterface*> P2PNetworkInterfaceList;
+	vector<P2PNetworkInterface*> P2PNetworkInterfaces; //!< Vector of size equal to the number of interfaces of the block, contains pointers to the block's interfaces
 
-	list<EventPtr> localEventsList;
+	list<EventPtr> localEventsList; //!< List of local events scheduled for this block
 public:
 	int blockId; //!< id of the block
 	std::ranlux48 generator; //!< random device to generate random numbers for BlinkyBlocks determinism
@@ -79,7 +79,7 @@ public:
 
 	unsigned int getNextP2PInterfaceLocalId();
 
-	list<P2PNetworkInterface*>& getP2PNetworkInterfaceList() {return P2PNetworkInterfaceList;}
+    vector<P2PNetworkInterface*>& getP2PNetworkInterfaces() {return P2PNetworkInterfaces;}
 	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int destBlockId);
 	bool addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock);
 	bool addP2PNetworkInterfaceAndConnectTo(int destBlockId);
@@ -95,8 +95,13 @@ public:
 	void setColor(const Color &);
 	void setColor(int idColor);
 
+	
+	/**
+	 * @brief Sets the grid position of the block
+	 *
+	 * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
+	 */
 	void setPosition(const Cell3DPosition &p);
-	void setPosition(const Vector3D &p);
 
 	/**
 	 * Returns a Vector3D corresponding to the Cell3DPosition of the current block.
@@ -104,7 +109,6 @@ public:
 	 * @return the position of the block represented as a double Vector3D
 	 */
 	inline Vector3D getPositionVector() { return Vector3D(position[0], position[1], position[2]);};
-	// void setColor(int num);
 
 	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};

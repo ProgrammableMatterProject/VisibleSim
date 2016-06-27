@@ -27,15 +27,14 @@ namespace BlinkyBlocks {
     class BlinkyBlocksBlockCode;
 
     class BlinkyBlocksBlock : public BaseSimulator::BuildingBlock {
-	P2PNetworkInterface *tabInterfaces[6];
-
     public:    
 	BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb);
 	~BlinkyBlocksBlock();
 
 	inline BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
 	inline void setGlBlock(BlinkyBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
-	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
+	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d)
+			{ return P2PNetworkInterfaces[d]; }
 	P2PNetworkInterface *getInterfaceDestId(int id);
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
 

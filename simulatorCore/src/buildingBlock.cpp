@@ -62,14 +62,14 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock)
 		// creation of the new network interface
 		OUTPUT << "adding a new interface to block " << destBlock->blockId << endl;
 		ni1 = new P2PNetworkInterface(this);
-		P2PNetworkInterfaceList.push_back(ni1);
+		P2PNetworkInterfaces.push_back(ni1);
     }
 
     if (!destBlock->getP2PNetworkInterfaceByBlockRef(this)) {
 		// creation of the new network interface
 		OUTPUT << "adding a new interface to block " << this->blockId << endl;
 		ni2 = new P2PNetworkInterface(destBlock);
-		destBlock->P2PNetworkInterfaceList.push_back(ni2);
+		destBlock->P2PNetworkInterfaces.push_back(ni2);
     }
 
     if (ni1!=NULL && ni2!=NULL) {
@@ -87,7 +87,7 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(int destBlockId) {
     if (!getP2PNetworkInterfaceByBlockRef(destBlock)) {
 		// creation of the new network interface
 		P2PNetworkInterface* ni1 = new P2PNetworkInterface(this);
-		P2PNetworkInterfaceList.push_back(ni1);
+		P2PNetworkInterfaces.push_back(ni1);
 		// if the corresponding interface exists in the connected block, we link the two interfaces
 		if (destBlock->addP2PNetworkInterfaceAndConnectTo(this)) {
 			P2PNetworkInterface* ni2 = destBlock->getP2PNetworkInterfaceByBlockRef(this);
@@ -98,10 +98,10 @@ bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(int destBlockId) {
 }
 
 P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock) {
-    for(list <P2PNetworkInterface*>::const_iterator it=P2PNetworkInterfaceList.begin(); it != P2PNetworkInterfaceList.end(); it++) {
-		if ((*it)->connectedInterface) {
-			if ((*it)->connectedInterface->hostBlock == destBlock) {
-				return (*it);
+    for(P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
+		if (p2p->connectedInterface) {
+			if (p2p->connectedInterface->hostBlock == destBlock) {
+				return p2p;
 			}
 		}
     }
@@ -109,10 +109,10 @@ P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlo
 }
 
 P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(int destBlockId) {
-    for(list <P2PNetworkInterface*>::const_iterator it=P2PNetworkInterfaceList.begin(); it != P2PNetworkInterfaceList.end(); it++) {
-		if ((*it)->connectedInterface) {
-			if ((*it)->connectedInterface->hostBlock->blockId == destBlockId) {
-				return (*it);
+    for(P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
+		if (p2p->connectedInterface) {
+			if (p2p->connectedInterface->hostBlock->blockId == destBlockId) {
+				return p2p;
 			}
 		}
     }
@@ -166,12 +166,6 @@ void BuildingBlock::setPosition(const Cell3DPosition &p) {
     position = p;
     getWorld()->updateGlData(this);
 }
-
-void BuildingBlock::setPosition(const Vector3D &p) {
-    position = Cell3DPosition(short(p[0]), short(p[1]), short(p[2]));
-    getWorld()->updateGlData(this);
-}
-
     
 void BuildingBlock::tap(uint64_t date) {
     OUTPUT << "tap scheduled" << endl;

@@ -47,8 +47,7 @@ public:
     return((BlinkyBlocksBlock*)World::getBlockById(bId));
     }
 
-    virtual void addBlock(int blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
-                          const Cell3DPosition &pos, const Color &col,
+    virtual void addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false);
     virtual void deleteBlock(BuildingBlock *blc);
 

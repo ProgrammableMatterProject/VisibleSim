@@ -84,11 +84,12 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimula
     double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
 
     for (int i=0; i<6; i++) {
-		tabInterfaces[i] = new P2PNetworkInterface(this);
-		getP2PNetworkInterfaceList().push_back(tabInterfaces[i]);
-		tabInterfaces[i]->setDataRate((dataRateMax+dataRateMin)/2);
-		tabInterfaces[i]->setDataRateVariability((dataRateMax-dataRateMin)/2);
+		P2PNetworkInterface *p2p = new P2PNetworkInterface(this);
+		getP2PNetworkInterfaces().push_back(p2p);
+		p2p->setDataRate((dataRateMax+dataRateMin)/2);
+		p2p->setDataRateVariability((dataRateMax-dataRateMin)/2);
     }
+
     clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
     blockCode = (BaseSimulator::BlockCode*)bcb(this);
 }
@@ -106,9 +107,11 @@ NeighborDirection::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface
     if( !given_interface) {
 		return NeighborDirection::Direction(0);
     }
-    for( int i(0); i < 6; ++i) {
-		if( tabInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+
+	for(int i(0); i < 6; ++i) {
+		if(P2PNetworkInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
     }
+
     return NeighborDirection::Direction(0);
 }
 
@@ -121,13 +124,19 @@ void BlinkyBlocksBlock::shake(uint64_t date, int f) {
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
-    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on " << NeighborDirection::getString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(new AddNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
+    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
+		   << NeighborDirection::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new AddNeighborEvent(getScheduler()->now(), this,
+							 NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
-    OUTPUT << "Simulator: "<< blockId << " remove neighbor on " << NeighborDirection::getString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(new RemoveNeighborEvent(getScheduler()->now(), this, NeighborDirection::getOpposite(getDirection(ni))));
+    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
+		   << NeighborDirection::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new RemoveNeighborEvent(getScheduler()->now(), this,
+								NeighborDirection::getOpposite(getDirection(ni))));
 }
 
 void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
@@ -151,20 +160,14 @@ std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {
 }
 
 P2PNetworkInterface* BlinkyBlocksBlock::getInterfaceDestId(int id) {
-    for (int i=0; i<6; i++) {
-		if (tabInterfaces[i]->connectedInterface != NULL) {
-			if (tabInterfaces[i]->connectedInterface->hostBlock->blockId == id) {
-				return tabInterfaces[i];
+    for (P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
+		if (p2p->connectedInterface != NULL) {
+			if (p2p->connectedInterface->hostBlock->blockId == id) {
+				return p2p;
 			}
 		}
     }
     return NULL;
 }
 
-// inline string BlinkyBlocksBlock::xmlBuildingBlock() {       
-// 	return "\t\t<block position=" + ConfigUtils::Vector3D3DToXmlString(position)
-// 		+ " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
-// }
-    
-    
 }

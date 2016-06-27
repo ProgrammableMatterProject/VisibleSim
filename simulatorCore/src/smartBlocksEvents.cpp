@@ -136,7 +136,7 @@ MotionStopEvent::~MotionStopEvent() {
 void MotionStopEvent::consume() {
     EVENT_CONSUME_INFO();
     SmartBlocksBlock *rb = (SmartBlocksBlock*)concernedBlock;
-    rb->setPosition(finalPosition);
+    rb->setPosition(Cell3DPosition(finalPosition.pt[0], finalPosition.pt[1], finalPosition.pt[2]));
     World::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     SmartBlocksWorld *wrld=SmartBlocksWorld::getWorld();

@@ -15,8 +15,8 @@ namespace SmartBlocks {
 SmartBlocksBlockCode*(* SmartBlocksSimulator::buildNewBlockCode)(SmartBlocksBlock*)=NULL;
 
 SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[],
-					   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
-					   (SmartBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
+										   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
+										   (SmartBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
     cout << "\033[1;34m" << "SmartBlocksSimulator constructor" << "\033[0m" << endl;
 
     buildNewBlockCode = smartBlocksBlockCodeBuildingFunction;
@@ -35,21 +35,20 @@ SmartBlocksSimulator::~SmartBlocksSimulator() {
 }
 
 void SmartBlocksSimulator::createSimulator(int argc, char *argv[],
-					   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
-					   (SmartBlocksBlock*)) {
+										   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
+										   (SmartBlocksBlock*)) {
     simulator =  new SmartBlocksSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
 }
 
 void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-				     int argc, char *argv[]) {
+									 int argc, char *argv[]) {
     world = new SmartBlocksWorld(gridSize, gridScale, argc,argv);
     world->loadTextures("../../simulatorCore/smartBlocksTextures");
     World::setWorld(world);
 }
 
-void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
-				     BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
-				     const Cell3DPosition &pos, const Color &color, bool master) {
+void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+									 const Cell3DPosition &pos, const Color &color, bool master) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed
     //  here, using the blockElt TiXmlElement.
@@ -57,7 +56,7 @@ void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
     // ...Parsing code...
 
     // Finally, add block to the world
-    ((SmartBlocksWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color);
+    ((SmartBlocksWorld*)world)->addBlock(blockId, bcb, pos, color);
 }
 
 void SmartBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {
@@ -65,13 +64,13 @@ void SmartBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targ
     // Add target cells to world
     ((SmartBlocksWorld*)world)->initTargetGrid();
     for (Cell3DPosition p : targetCells) {
-	((SmartBlocksWorld*)world)->setTargetGrid(fullCell, p[0], p[1]);
+		((SmartBlocksWorld*)world)->setTargetGrid(fullCell, p[0], p[1]);
     }
 
     // then parse and load capabilities...
     TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
     if (nodeCapa) {
-	((SmartBlocksWorld*)world)->setCapabilities(new SmartBlocksCapabilities(nodeCapa));
+		((SmartBlocksWorld*)world)->setCapabilities(new SmartBlocksCapabilities(nodeCapa));
     }
 }
 

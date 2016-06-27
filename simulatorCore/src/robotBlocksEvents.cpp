@@ -133,7 +133,7 @@ MotionStopEvent::~MotionStopEvent() {
 void MotionStopEvent::consume() {
     EVENT_CONSUME_INFO();
     RobotBlocksBlock *rb = (RobotBlocksBlock*)concernedBlock;
-    rb->setPosition(finalPosition);
+    rb->setPosition(Cell3DPosition(finalPosition.pt[0], finalPosition.pt[1], finalPosition.pt[2]));
     World::getWorld()->updateGlData(rb);
     rb->setColor(YELLOW);
     RobotBlocksWorld *wrld=RobotBlocksWorld::getWorld();

@@ -25,8 +25,8 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 #ifdef GLUT
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
-    objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
-                                                  "smartBlockPicking.obj");
+    // objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
+    //                                               "smartBlockPicking.obj");
 #else
     objBlock=NULL;
     objRepere=NULL;
