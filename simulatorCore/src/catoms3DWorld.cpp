@@ -57,7 +57,7 @@ void Catoms3DWorld::deleteWorld() {
 }
 
 void Catoms3DWorld::addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
-							 short orientation, bool master) {	
+							 short orientation, bool master) {
     // if blockID==-1, search the maximum id
     if (blockId == -1) {
 	map<int, BaseSimulator::BuildingBlock*>::iterator it;
@@ -137,7 +137,7 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 
 void Catoms3DWorld::deleteBlock(BuildingBlock *blc) {
 	Catoms3DBlock *bb = (Catoms3DBlock *)blc;
-		
+
     if (bb->getState() >= Catoms3DBlock::ALIVE ) {
 	// cut links between bb and others
 	for(int i=0; i<12; i++) {
@@ -415,55 +415,6 @@ void Catoms3DWorld::menuChoice(int n) {
 	break;
     }
 }
-
-bool Catoms3DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
-    // Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-    // switch (numSelectedFace) {
-    //     // FALSE: depends on the parity of the line
-    // case NeighborDirection::Left :
-    //     return (bb->position[0]>0
-    //             && getGridPtr(int(bb->position[0])-1,
-    //                           int(bb->position[1]),
-    //                           int(bb->position[2])) == NULL);
-    //     break;
-    // case NeighborDirection::Right :
-    //     return (bb->position[0]<lattice->gridSize[0]-1
-    //             && getGridPtr(int(bb->position[0])+1,
-    //                           int(bb->position[1]),
-    //                           int(bb->position[2])) == NULL);
-    //     break;
-    // case NeighborDirection::BottomLeft :
-    //     return (bb->position[2]>0
-    //             && getGridPtr(int(bb->position[0]),
-    //                           int(bb->position[1]),
-    //                           int(bb->position[2])-1) == NULL);
-    //     break;
-    // case NeighborDirection::TopLeft :
-    //     return (bb->position[2]<lattice->gridSize[2]-1
-    //             && getGridPtr(int(bb->position[0]),
-    //                           int(bb->position[1]),
-    //                           int(bb->position[2])+1) == NULL);
-    //     break;
-    // case NeighborDirection::BottomRight :
-    //     return (bb->position[0]<lattice->gridSize[0]-1
-    //             && bb->position[2]>0
-    //             && getGridPtr(int(bb->position[0]+1),
-    //                           int(bb->position[1]),
-    //                           int(bb->position[2])-1) == NULL);
-    //     break;
-    // case NeighborDirection::TopRight :
-    //     return (bb->position[0]<lattice->gridSize[0]-1
-    //             && bb->position[2]<lattice->gridSize[2]-1
-    //             && getGridPtr(int(bb->position[0])+1,
-    //                           int(bb->position[1]),
-    //                           int(bb->position[2])+1) == NULL);
-    //     break;
-    // }
-
-    // TODO
-    return false;
-}
-
 
 void Catoms3DWorld::setSelectedFace(int n) {
     numSelectedBlock=n/6;

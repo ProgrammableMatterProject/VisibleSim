@@ -1,6 +1,6 @@
 [1;34mSimulator constructor[0m
-[1;34m  config_pyramide2.xml successfully loaded [0m
-grid size : 7 x 7 x 7
+[1;34m  config_pub.xml successfully loaded [0m
+grid size : 5 x 5 x 4
 blocksize =10,10,10
 World constructor
 initShaders
@@ -37,8 +37,118 @@ No 'lighted' texture in obj file :repereCatom3D.obj
 loading ../../simulatorCore/catoms3DTextures//hexa.tga
 loading ../../simulatorCore/catoms3DTextures//textureCarre.tga
 Scheduler constructor
-Catoms3DScheduler constructor
-new default color :(0.501961,0.501961,0.501961,1)
+CPPScheduler constructor
+new default color :(0.501961,0.25098,0.25098,1)
+orientation : 0
+BuildingBlock constructor (id:0)
+Catoms3DBlock constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+BlockCode constructor
+Catoms3DBlockCode constructor
+|1,0,0,5|
+|0,1,0,5|
+|0,0,1,3.53553|
+|0,0,0,1|
+
+orientation : 0
+BuildingBlock constructor (id:0)
+Catoms3DBlock constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+BlockCode constructor
+Catoms3DBlockCode constructor
+|1,0,0,15|
+|0,1,0,5|
+|0,0,1,3.53553|
+|0,0,0,1|
+
+orientation : 0
+BuildingBlock constructor (id:0)
+Catoms3DBlock constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+BlockCode constructor
+Catoms3DBlockCode constructor
+|1,0,0,25|
+|0,1,0,5|
+|0,0,1,3.53553|
+|0,0,0,1|
+
+orientation : 0
+BuildingBlock constructor (id:0)
+Catoms3DBlock constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+BlockCode constructor
+Catoms3DBlockCode constructor
+|1,0,0,35|
+|0,1,0,5|
+|0,0,1,3.53553|
+|0,0,0,1|
+
+orientation : 0
+BuildingBlock constructor (id:0)
+Catoms3DBlock constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+BlockCode constructor
+Catoms3DBlockCode constructor
+|1,0,0,5|
+|0,1,0,15|
+|0,0,1,3.53553|
+|0,0,0,1|
+
 orientation : 0
 BuildingBlock constructor (id:0)
 Catoms3DBlock constructor
@@ -122,119 +232,9 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 BlockCode constructor
 Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,15|
+|1,0,0,5|
+|0,1,0,25|
 |0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,55|
-|0,1,0,15|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,20|
-|0,1,0,20|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,30|
-|0,1,0,20|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,40|
-|0,1,0,20|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,50|
-|0,1,0,20|
-|0,0,1,10.6066|
 |0,0,0,1|
 
 orientation : 0
@@ -320,119 +320,9 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 BlockCode constructor
 Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,25|
+|1,0,0,5|
+|0,1,0,35|
 |0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,55|
-|0,1,0,25|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,20|
-|0,1,0,30|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,30|
-|0,1,0,30|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,40|
-|0,1,0,30|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,50|
-|0,1,0,30|
-|0,0,1,10.6066|
 |0,0,0,1|
 
 orientation : 0
@@ -501,7 +391,8 @@ Catoms3DBlockCode constructor
 |0,0,1,3.53553|
 |0,0,0,1|
 
-orientation : 0
+new color :(0.501961,0.25098,0.25098,1)
+orientation : 4
 BuildingBlock constructor (id:0)
 Catoms3DBlock constructor
 P2PNetworkInterface constructor
@@ -518,12 +409,13 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 BlockCode constructor
 Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,35|
-|0,0,1,3.53553|
+|-0.5,-0.5,0.707107,10|
+|0.5,0.5,0.707107,20|
+|-0.707107,0.707107,4.32978e-17,10.6066|
 |0,0,0,1|
 
-orientation : 0
+new color :(0.501961,0.25098,0.25098,1)
+orientation : 3
 BuildingBlock constructor (id:0)
 Catoms3DBlock constructor
 P2PNetworkInterface constructor
@@ -540,12 +432,13 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 BlockCode constructor
 Catoms3DBlockCode constructor
-|1,0,0,55|
-|0,1,0,35|
-|0,0,1,3.53553|
+|-0.5,0.5,0.707107,20|
+|-0.5,0.5,-0.707107,30|
+|-0.707107,-0.707107,4.32978e-17,10.6066|
 |0,0,0,1|
 
-orientation : 0
+new color :(0.501961,0.25098,0.25098,1)
+orientation : 2
 BuildingBlock constructor (id:0)
 Catoms3DBlock constructor
 P2PNetworkInterface constructor
@@ -562,1231 +455,107 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 BlockCode constructor
 Catoms3DBlockCode constructor
-|1,0,0,20|
-|0,1,0,40|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,30|
-|0,1,0,40|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,40|
-|0,1,0,40|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,50|
-|0,1,0,40|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,15|
-|0,1,0,45|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,25|
-|0,1,0,45|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,35|
-|0,1,0,45|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,45|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,55|
-|0,1,0,45|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,20|
-|0,1,0,50|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,30|
-|0,1,0,50|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,40|
-|0,1,0,50|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,50|
-|0,1,0,50|
-|0,0,1,10.6066|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,15|
-|0,1,0,55|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,25|
-|0,1,0,55|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,35|
-|0,1,0,55|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,55|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,55|
-|0,1,0,55|
-|0,0,1,3.53553|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,25|
-|0,1,0,25|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,35|
-|0,1,0,25|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,25|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,25|
-|0,1,0,35|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,35|
-|0,1,0,35|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,35|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,25|
-|0,1,0,45|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,35|
-|0,1,0,45|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-orientation : 0
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|1,0,0,45|
-|0,1,0,45|
-|0,0,1,17.6777|
-|0,0,0,1|
-
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 7
-BuildingBlock constructor (id:0)
-Catoms3DBlock constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-BlockCode constructor
-Catoms3DBlockCode constructor
-|6.12323e-17,-1,0,25|
-|-1,-6.12323e-17,-1.22465e-16,15|
-|1.22465e-16,7.4988e-33,-1,17.6777|
+|0.5,0.5,0.707107,30|
+|-0.5,-0.5,0.707107,30|
+|0.707107,-0.707107,4.32978e-17,10.6066|
 |0,0,0,1|
 
 warning: No target grid in configuration file
 link catom 1
 connection #1(0) to #2
-connection #1(1) to #10
-connection #1(2) to #6
+connection #1(1) to #5
 link catom 2
 connection #2(0) to #3
-connection #2(1) to #11
-connection #2(2) to #7
-connection #2(3) to #6
+connection #2(1) to #6
 connection #2(6) to #1
 link catom 3
 connection #3(0) to #4
-connection #3(1) to #12
-connection #3(2) to #8
-connection #3(3) to #7
+connection #3(1) to #7
 connection #3(6) to #2
 link catom 4
-connection #4(0) to #5
-connection #4(1) to #13
-connection #4(2) to #9
-connection #4(3) to #8
+connection #4(1) to #8
 connection #4(6) to #3
 link catom 5
-connection #5(1) to #14
-connection #5(3) to #9
-connection #5(6) to #4
-link catom 10
-connection #10(0) to #11
-connection #10(1) to #19
-connection #10(2) to #15
-connection #10(5) to #6
-connection #10(7) to #1
-link catom 11
-connection #11(0) to #12
-connection #11(1) to #20
-connection #11(2) to #16
-connection #11(3) to #15
-connection #11(4) to #6
-connection #11(5) to #7
-connection #11(6) to #10
-connection #11(7) to #2
-link catom 12
-connection #12(0) to #13
-connection #12(1) to #21
-connection #12(2) to #17
-connection #12(3) to #16
-connection #12(4) to #7
-connection #12(5) to #8
-connection #12(6) to #11
-connection #12(7) to #3
-link catom 13
-connection #13(0) to #14
-connection #13(1) to #22
-connection #13(2) to #18
-connection #13(3) to #17
-connection #13(4) to #8
-connection #13(5) to #9
-connection #13(6) to #12
-connection #13(7) to #4
-link catom 14
-connection #14(1) to #23
-connection #14(3) to #18
-connection #14(4) to #9
-connection #14(6) to #13
-connection #14(7) to #5
-link catom 19
-connection #19(0) to #20
-connection #19(1) to #28
-connection #19(2) to #24
-connection #19(5) to #15
-connection #19(7) to #10
-link catom 20
-connection #20(0) to #21
-connection #20(1) to #29
-connection #20(2) to #25
-connection #20(3) to #24
-connection #20(4) to #15
-connection #20(5) to #16
-connection #20(6) to #19
-connection #20(7) to #11
-link catom 21
-connection #21(0) to #22
-connection #21(1) to #30
-connection #21(2) to #26
-connection #21(3) to #25
-connection #21(4) to #16
-connection #21(5) to #17
-connection #21(6) to #20
-connection #21(7) to #12
-link catom 22
-connection #22(0) to #23
-connection #22(1) to #31
-connection #22(2) to #27
-connection #22(3) to #26
-connection #22(4) to #17
-connection #22(5) to #18
-connection #22(6) to #21
-connection #22(7) to #13
-link catom 23
-connection #23(1) to #32
-connection #23(3) to #27
-connection #23(4) to #18
-connection #23(6) to #22
-connection #23(7) to #14
-link catom 28
-connection #28(0) to #29
-connection #28(1) to #37
-connection #28(2) to #33
-connection #28(5) to #24
-connection #28(7) to #19
-link catom 29
-connection #29(0) to #30
-connection #29(1) to #38
-connection #29(2) to #34
-connection #29(3) to #33
-connection #29(4) to #24
-connection #29(5) to #25
-connection #29(6) to #28
-connection #29(7) to #20
-link catom 30
-connection #30(0) to #31
-connection #30(1) to #39
-connection #30(2) to #35
-connection #30(3) to #34
-connection #30(4) to #25
-connection #30(5) to #26
-connection #30(6) to #29
-connection #30(7) to #21
-link catom 31
-connection #31(0) to #32
-connection #31(1) to #40
-connection #31(2) to #36
-connection #31(3) to #35
-connection #31(4) to #26
-connection #31(5) to #27
-connection #31(6) to #30
-connection #31(7) to #22
-link catom 32
-connection #32(1) to #41
-connection #32(3) to #36
-connection #32(4) to #27
-connection #32(6) to #31
-connection #32(7) to #23
-link catom 37
-connection #37(0) to #38
-connection #37(5) to #33
-connection #37(7) to #28
-link catom 38
-connection #38(0) to #39
-connection #38(4) to #33
-connection #38(5) to #34
-connection #38(6) to #37
-connection #38(7) to #29
-link catom 39
-connection #39(0) to #40
-connection #39(4) to #34
-connection #39(5) to #35
-connection #39(6) to #38
-connection #39(7) to #30
-link catom 40
-connection #40(0) to #41
-connection #40(4) to #35
-connection #40(5) to #36
-connection #40(6) to #39
-connection #40(7) to #31
-link catom 41
-connection #41(4) to #36
-connection #41(6) to #40
-connection #41(7) to #32
+connection #5(0) to #6
+connection #5(1) to #9
+connection #5(2) to #17
+connection #5(7) to #1
 link catom 6
 connection #6(0) to #7
-connection #6(1) to #15
-connection #6(2) to #42
-connection #6(5) to #51
-connection #6(8) to #1
-connection #6(9) to #2
-connection #6(10) to #11
-connection #6(11) to #10
+connection #6(1) to #10
+connection #6(3) to #17
+connection #6(6) to #5
+connection #6(7) to #2
 link catom 7
 connection #7(0) to #8
-connection #7(1) to #16
-connection #7(2) to #43
-connection #7(3) to #42
-connection #7(4) to #51
+connection #7(1) to #11
 connection #7(6) to #6
-connection #7(8) to #2
-connection #7(9) to #3
-connection #7(10) to #12
-connection #7(11) to #11
+connection #7(7) to #3
 link catom 8
-connection #8(0) to #9
-connection #8(1) to #17
-connection #8(2) to #44
-connection #8(3) to #43
+connection #8(1) to #12
 connection #8(6) to #7
-connection #8(8) to #3
-connection #8(9) to #4
-connection #8(10) to #13
-connection #8(11) to #12
+connection #8(7) to #4
 link catom 9
-connection #9(1) to #18
-connection #9(3) to #44
-connection #9(6) to #8
-connection #9(8) to #4
-connection #9(9) to #5
-connection #9(10) to #14
-connection #9(11) to #13
+connection #9(0) to #10
+connection #9(1) to #13
+connection #9(5) to #17
+connection #9(7) to #5
+link catom 10
+connection #10(0) to #11
+connection #10(1) to #14
+connection #10(2) to #18
+connection #10(4) to #17
+connection #10(6) to #9
+connection #10(7) to #6
+link catom 11
+connection #11(0) to #12
+connection #11(1) to #15
+connection #11(2) to #19
+connection #11(3) to #18
+connection #11(6) to #10
+connection #11(7) to #7
+link catom 12
+connection #12(1) to #16
+connection #12(3) to #19
+connection #12(6) to #11
+connection #12(7) to #8
+link catom 13
+connection #13(0) to #14
+connection #13(7) to #9
+link catom 14
+connection #14(0) to #15
+connection #14(5) to #18
+connection #14(6) to #13
+connection #14(7) to #10
 link catom 15
 connection #15(0) to #16
-connection #15(1) to #24
-connection #15(2) to #45
-connection #15(5) to #42
-connection #15(7) to #6
-connection #15(8) to #10
-connection #15(9) to #11
-connection #15(10) to #20
-connection #15(11) to #19
+connection #15(4) to #18
+connection #15(5) to #19
+connection #15(6) to #14
+connection #15(7) to #11
 link catom 16
-connection #16(0) to #17
-connection #16(1) to #25
-connection #16(2) to #46
-connection #16(3) to #45
-connection #16(4) to #42
-connection #16(5) to #43
+connection #16(4) to #19
 connection #16(6) to #15
-connection #16(7) to #7
-connection #16(8) to #11
-connection #16(9) to #12
-connection #16(10) to #21
-connection #16(11) to #20
+connection #16(7) to #12
 link catom 17
-connection #17(0) to #18
-connection #17(1) to #26
-connection #17(2) to #47
-connection #17(3) to #46
-connection #17(4) to #43
-connection #17(5) to #44
-connection #17(6) to #16
-connection #17(7) to #8
-connection #17(8) to #12
-connection #17(9) to #13
-connection #17(10) to #22
-connection #17(11) to #21
+connection #17(0) to #9
+connection #17(5) to #10
+connection #17(7) to #6
+connection #17(9) to #5
 link catom 18
-connection #18(1) to #27
-connection #18(3) to #47
-connection #18(4) to #44
-connection #18(6) to #17
-connection #18(7) to #9
-connection #18(8) to #13
-connection #18(9) to #14
-connection #18(10) to #23
-connection #18(11) to #22
-link catom 24
-connection #24(0) to #25
-connection #24(1) to #33
-connection #24(2) to #48
-connection #24(5) to #45
-connection #24(7) to #15
-connection #24(8) to #19
-connection #24(9) to #20
-connection #24(10) to #29
-connection #24(11) to #28
-link catom 25
-connection #25(0) to #26
-connection #25(1) to #34
-connection #25(2) to #49
-connection #25(3) to #48
-connection #25(4) to #45
-connection #25(5) to #46
-connection #25(6) to #24
-connection #25(7) to #16
-connection #25(8) to #20
-connection #25(9) to #21
-connection #25(10) to #30
-connection #25(11) to #29
-link catom 26
-connection #26(0) to #27
-connection #26(1) to #35
-connection #26(2) to #50
-connection #26(3) to #49
-connection #26(4) to #46
-connection #26(5) to #47
-connection #26(6) to #25
-connection #26(7) to #17
-connection #26(8) to #21
-connection #26(9) to #22
-connection #26(10) to #31
-connection #26(11) to #30
-link catom 27
-connection #27(1) to #36
-connection #27(3) to #50
-connection #27(4) to #47
-connection #27(6) to #26
-connection #27(7) to #18
-connection #27(8) to #22
-connection #27(9) to #23
-connection #27(10) to #32
-connection #27(11) to #31
-link catom 33
-connection #33(0) to #34
-connection #33(5) to #48
-connection #33(7) to #24
-connection #33(8) to #28
-connection #33(9) to #29
-connection #33(10) to #38
-connection #33(11) to #37
-link catom 34
-connection #34(0) to #35
-connection #34(4) to #48
-connection #34(5) to #49
-connection #34(6) to #33
-connection #34(7) to #25
-connection #34(8) to #29
-connection #34(9) to #30
-connection #34(10) to #39
-connection #34(11) to #38
-link catom 35
-connection #35(0) to #36
-connection #35(4) to #49
-connection #35(5) to #50
-connection #35(6) to #34
-connection #35(7) to #26
-connection #35(8) to #30
-connection #35(9) to #31
-connection #35(10) to #40
-connection #35(11) to #39
-link catom 36
-connection #36(4) to #50
-connection #36(6) to #35
-connection #36(7) to #27
-connection #36(8) to #31
-connection #36(9) to #32
-connection #36(10) to #41
-connection #36(11) to #40
-link catom 51
-connection #51(3) to #6
-connection #51(4) to #7
-connection #51(6) to #42
-link catom 42
-connection #42(0) to #43
-connection #42(1) to #45
-connection #42(7) to #51
-connection #42(8) to #6
-connection #42(9) to #7
-connection #42(10) to #16
-connection #42(11) to #15
-link catom 43
-connection #43(0) to #44
-connection #43(1) to #46
-connection #43(6) to #42
-connection #43(8) to #7
-connection #43(9) to #8
-connection #43(10) to #17
-connection #43(11) to #16
-link catom 44
-connection #44(1) to #47
-connection #44(6) to #43
-connection #44(8) to #8
-connection #44(9) to #9
-connection #44(10) to #18
-connection #44(11) to #17
-link catom 45
-connection #45(0) to #46
-connection #45(1) to #48
-connection #45(7) to #42
-connection #45(8) to #15
-connection #45(9) to #16
-connection #45(10) to #25
-connection #45(11) to #24
-link catom 46
-connection #46(0) to #47
-connection #46(1) to #49
-connection #46(6) to #45
-connection #46(7) to #43
-connection #46(8) to #16
-connection #46(9) to #17
-connection #46(10) to #26
-connection #46(11) to #25
-link catom 47
-connection #47(1) to #50
-connection #47(6) to #46
-connection #47(7) to #44
-connection #47(8) to #17
-connection #47(9) to #18
-connection #47(10) to #27
-connection #47(11) to #26
-link catom 48
-connection #48(0) to #49
-connection #48(7) to #45
-connection #48(8) to #24
-connection #48(9) to #25
-connection #48(10) to #34
-connection #48(11) to #33
-link catom 49
-connection #49(0) to #50
-connection #49(6) to #48
-connection #49(7) to #46
-connection #49(8) to #25
-connection #49(9) to #26
-connection #49(10) to #35
-connection #49(11) to #34
-link catom 50
-connection #50(6) to #49
-connection #50(7) to #47
-connection #50(8) to #26
-connection #50(9) to #27
-connection #50(10) to #36
-connection #50(11) to #35
+connection #18(0) to #10
+connection #18(1) to #15
+connection #18(2) to #11
+connection #18(3) to #19
+connection #18(10) to #14
+link catom 19
+connection #19(1) to #12
+connection #19(3) to #16
+connection #19(6) to #15
+connection #19(8) to #18
+connection #19(11) to #11
 loading ../../simulatorCore/catoms3DTextures/numbers.tga
-0.000000 #1: Starting -1
-0.000000 #1: MotionStartEvent(2000) around #2
-0.000000 #2: Starting -1
-0.000000 #3: Starting -1
-0.000000 #4: Starting -1
-0.000000 #5: Starting -1
-0.000000 #6: Starting -1
-0.000000 #7: Starting -1
-0.000000 #8: Starting -1
-0.000000 #9: Starting -1
-0.000000 #10: Starting -1
-0.000000 #11: Starting -1
-0.000000 #12: Starting -1
-0.000000 #13: Starting -1
-0.000000 #14: Starting -1
-0.000000 #15: Starting -1
-0.000000 #16: Starting -1
-0.000000 #17: Starting -1
-0.000000 #18: Starting -1
-0.000000 #19: Starting -1
-0.000000 #20: Starting -1
-0.000000 #21: Starting -1
-0.000000 #22: Starting -1
-0.000000 #23: Starting -1
-0.000000 #24: Starting -1
-0.000000 #25: Starting -1
-0.000000 #26: Starting -1
-0.000000 #27: Starting -1
-0.000000 #28: Starting -1
-0.000000 #29: Starting -1
-0.000000 #30: Starting -1
-0.000000 #31: Starting -1
-0.000000 #32: Starting -1
-0.000000 #33: Starting -1
-0.000000 #34: Starting -1
-0.000000 #35: Starting -1
-0.000000 #36: Starting -1
-0.000000 #37: Starting -1
-0.000000 #38: Starting -1
-0.000000 #39: Starting -1
-0.000000 #40: Starting -1
-0.000000 #41: Starting -1
-0.000000 #42: Starting -1
-0.000000 #43: Starting -1
-0.000000 #44: Starting -1
-0.000000 #45: Starting -1
-0.000000 #46: Starting -1
-0.000000 #47: Starting -1
-0.000000 #48: Starting -1
-0.000000 #49: Starting -1
-0.000000 #50: Starting -1
-0.000000 #51: Starting -1
-2000 : Disconnection 1 pos = (1,1,0)
-step=1   angle=0.450000
-step=2   angle=0.900000
-step=3   angle=1.350000
-step=4   angle=1.800000
-step=5   angle=2.250000
-step=6   angle=2.700000
-step=7   angle=3.150000
-step=8   angle=3.600000
-step=9   angle=4.050000
-step=10   angle=4.500000
-step=11   angle=4.950000
-step=12   angle=5.400000
-step=13   angle=5.850000
-step=14   angle=6.300000
-step=15   angle=6.750000
-step=16   angle=7.200000
-step=17   angle=7.650000
-step=18   angle=8.100000
-step=19   angle=8.550000
-step=20   angle=9.000000
-step=21   angle=9.450000
-step=22   angle=9.900000
-step=23   angle=10.350000
-step=24   angle=10.800000
-step=25   angle=11.250000
-step=26   angle=11.700000
-step=27   angle=12.150000
-step=28   angle=12.600000
-step=29   angle=13.050000
-step=30   angle=13.500000
-step=31   angle=13.950000
-step=32   angle=14.400000
-step=33   angle=14.850000
-step=34   angle=15.300000
-step=35   angle=15.750000
-step=36   angle=16.200000
-step=37   angle=16.650000
-step=38   angle=17.100000
-step=39   angle=17.550000
-step=40   angle=18.000000
-step=41   angle=18.450000
-step=42   angle=18.900000
-step=43   angle=19.350000
-step=44   angle=19.800000
-step=45   angle=20.250000
-step=46   angle=20.700000
-step=47   angle=21.150000
-step=48   angle=21.600000
-step=49   angle=22.050000
-step=50   angle=22.500000
-step=51   angle=22.950000
-step=52   angle=23.400000
-step=53   angle=23.850000
-step=54   angle=24.300000
-step=55   angle=24.750000
-step=56   angle=25.200000
-step=57   angle=25.650000
-step=58   angle=26.100000
-step=59   angle=26.550000
-step=60   angle=27.000000
-step=61   angle=27.450000
-step=62   angle=27.900000
-step=63   angle=28.350000
-step=64   angle=28.800000
-step=65   angle=29.250000
-step=66   angle=29.700000
-step=67   angle=30.150000
-step=68   angle=30.600000
-step=69   angle=31.050000
-step=70   angle=31.500000
-step=71   angle=31.950000
-step=72   angle=32.400000
-step=73   angle=32.850000
-step=74   angle=33.300000
-step=75   angle=33.750000
-step=76   angle=34.200000
-step=77   angle=34.650000
-step=78   angle=35.100000
-step=79   angle=35.550000
-step=80   angle=36.000000
-step=81   angle=36.450000
-step=82   angle=36.900000
-step=83   angle=37.350000
-step=84   angle=37.800000
-step=85   angle=38.250000
-step=86   angle=38.700000
-step=87   angle=39.150000
-step=88   angle=39.600000
-step=89   angle=40.050000
-step=90   angle=40.500000
-step=91   angle=40.950000
-step=92   angle=41.400000
-step=93   angle=41.850000
-step=94   angle=42.300000
-step=95   angle=42.750000
-step=96   angle=43.200000
-step=97   angle=43.650000
-step=98   angle=44.100000
-step=99   angle=44.550000
-step=100   angle=45.000000
-final=(20.000000,10.000000,10.606602,1.000000)
-final grid=(1,0,1)
-|-0.500000,-0.500000,0.707107,20.000000|
-|0.500000,0.500000,0.707107,10.000000|
-|-0.707107,0.707107,0.000000,10.606602|
-|0.000000,0.000000,0.000000,1.000000|
-
-Reconnection 1 pos =(1,0,1)
-link catom 1
-connection #1(2) to #6
-connection #1(3) to #51
-connection #1(5) to #2
-link catom 51
-connection #51(2) to #1
-connection #51(3) to #6
-connection #51(4) to #7
-connection #51(6) to #42
-link catom 6
-connection #6(0) to #7
-connection #6(1) to #15
-connection #6(2) to #42
-connection #6(5) to #51
-connection #6(7) to #1
-connection #6(9) to #2
-connection #6(10) to #11
-connection #6(11) to #10
-link catom 2
-connection #2(0) to #3
-connection #2(1) to #11
-connection #2(2) to #7
-connection #2(3) to #6
-connection #2(4) to #1
-20.102000 #1: connect Block 1
-Reconnection 1 pos =(1,0,1)
-link catom 1
-connection #1(2) to #6
-connection #1(3) to #51
-connection #1(5) to #2
-link catom 51
-connection #51(2) to #1
-connection #51(3) to #6
-connection #51(4) to #7
-connection #51(6) to #42
-link catom 6
-connection #6(0) to #7
-connection #6(1) to #15
-connection #6(2) to #42
-connection #6(5) to #51
-connection #6(7) to #1
-connection #6(9) to #2
-connection #6(10) to #11
-connection #6(11) to #10
-link catom 2
-connection #2(0) to #3
-connection #2(1) to #11
-connection #2(2) to #7
-connection #2(3) to #6
-connection #2(4) to #1
-20.202000 #1: rec.: EVENT_MOTION_END
 I'm a Catoms3DSimulator
-I'm a Catoms3DScheduler
 I'm a World
 [1;34mCatoms3DSimulator destructor[0m
 [1;34mSimulator destructor[0m
@@ -1864,134 +633,6 @@ Catoms3DBlockCode destructor
 BlockCode destructor
 BuildingBlock destructor
 Catoms3DBlock destructor 19
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 20
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 21
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 22
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 23
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 24
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 25
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 26
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 27
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 28
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 29
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 30
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 31
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 32
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 33
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 34
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 35
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 36
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 37
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 38
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 39
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 40
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 41
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 42
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 43
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 44
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 45
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 46
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 47
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 48
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 49
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 50
-Catoms3DBlockCode destructor
-BlockCode destructor
-BuildingBlock destructor
-Catoms3DBlock destructor 51
 Catoms3DBlockCode destructor
 BlockCode destructor
 BuildingBlock destructor

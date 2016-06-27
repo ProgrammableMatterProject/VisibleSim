@@ -11,9 +11,9 @@ INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 #for macOSX
 #LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimMultiCores -lm -framework GLUT -framework OpenGL -L/usr/X11/lib -lboost_thread-mt -lboost_system-mt
 #for linux
-#LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimMultiCores -lm -L/usr/X11/lib -lboost_thread  -lglut -lpthread
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimCatoms2D -lm -L/usr/X11/lib -lboost_system -lboost_thread  -lglut -lGL -lGLU -lGLEW -lpthread
 
-LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib -lsimCatoms2D
+#LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib -lsimCatoms2D
 
 SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a
 

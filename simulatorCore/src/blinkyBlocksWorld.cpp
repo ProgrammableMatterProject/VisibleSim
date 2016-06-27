@@ -25,9 +25,9 @@ namespace BlinkyBlocks {
 BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									 int argc, char *argv[]):World(argc, argv) {
 	OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures","blinkyBlockSimple.obj");
+	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures","blinkyBlockCentered.obj");
 	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures",
-												  "blinkyBlockPicking.obj");
+												  "blinkyBlockPickingCentered.obj");
 	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
 
 	lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
@@ -106,7 +106,7 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 
 void BlinkyBlocksWorld::deleteBlock(BuildingBlock *blc) {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)blc;
-	
+
 	if (bb->getState() >= BlinkyBlocksBlock::ALIVE ) {
 		// cut links between bb and others
 		for(int i=0; i<6; i++) {
@@ -149,8 +149,8 @@ void BlinkyBlocksWorld::deleteBlock(BuildingBlock *blc) {
 
 
 void BlinkyBlocksWorld::glDraw() {
-	static const GLfloat white[]={1.0,1.0,1.0,1.0},
-		gray[]={0.6,0.6,0.6,1.0};
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+		gray[]={0.2f,0.2f,0.2f,1.0};
 
 		glPushMatrix();
 		glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
@@ -180,106 +180,61 @@ void BlinkyBlocksWorld::glDraw() {
 		glNormal3f(0,0,1.0f);
 		glTexCoord2f(0,0);
 		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0],0);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
 		glVertex3f(1.0f,0.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
 		glVertex3f(1.0,1.0,0.0f);
-		glTexCoord2f(0,lattice->gridSize[1]);
+		glTexCoord2f(0,lattice->gridSize[1]/4.0f);
 		glVertex3f(0.0,1.0,0.0f);
 		// top
 		glNormal3f(0,0,-1.0f);
 		glTexCoord2f(0,0);
 		glVertex3f(0.0f,0.0f,1.0f);
-		glTexCoord2f(0,lattice->gridSize[1]);
+		glTexCoord2f(0,lattice->gridSize[1]/4.0f);
 		glVertex3f(0.0,1.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[1]/4.0f);
 		glVertex3f(1.0,1.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0],0);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
 		glVertex3f(1.0f,0.0f,1.0f);
 		// left
 		glNormal3f(1.0,0,0);
 		glTexCoord2f(0,0);
 		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(lattice->gridScale[1],0);
+		glTexCoord2f(lattice->gridSize[1]/4.0f,0);
 		glVertex3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridScale[1],lattice->gridScale[2]);
+		glTexCoord2f(lattice->gridSize[1]/4.0f,lattice->gridSize[2]/4.0f);
 		glVertex3f(0.0,1.0,1.0f);
-		glTexCoord2f(0,lattice->gridScale[2]);
+		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
 		glVertex3f(0.0,0.0,1.0f);
 		// right
 		glNormal3f(-1.0,0,0);
 		glTexCoord2f(0,0);
 		glVertex3f(1.0f,0.0f,0.0f);
-		glTexCoord2f(0,lattice->gridScale[2]);
+		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
 		glVertex3f(1.0,0.0,1.0f);
-		glTexCoord2f(lattice->gridScale[1],lattice->gridScale[2]);
+		glTexCoord2f(lattice->gridSize[1]/4.0f,lattice->gridSize[2]/4.0f);
 		glVertex3f(1.0,1.0,1.0f);
-		glTexCoord2f(lattice->gridScale[1],0);
+		glTexCoord2f(lattice->gridSize[1]/4.0f,0);
 		glVertex3f(1.0f,1.0f,0.0f);
 		// back
 		glNormal3f(0,-1.0,0);
 		glTexCoord2f(0,0);
 		glVertex3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridScale[0],0);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
 		glVertex3f(1.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridScale[0],lattice->gridScale[2]);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[2]/4.0f);
 		glVertex3f(1.0f,1.0,1.0f);
-		glTexCoord2f(0,lattice->gridScale[2]);
+		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
 		glVertex3f(0.0,1.0,1.0f);
 		// front
 		glNormal3f(0,1.0,0);
 		glTexCoord2f(0,0);
 		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(0,lattice->gridScale[2]);
+		glTexCoord2f(0,lattice->gridSize[2]/4.0f);
 		glVertex3f(0.0,0.0,1.0f);
-		glTexCoord2f(lattice->gridScale[0],lattice->gridScale[2]);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,lattice->gridSize[2]/4.0f);
 		glVertex3f(1.0f,0.0,1.0f);
-		glTexCoord2f(lattice->gridScale[0],0);
-		glVertex3f(1.0f,0.0f,0.0f);
-		glEnd();
-		glPopMatrix();
-		// draw the axes
-		objRepere->glDraw();
-
-		// left
-		glNormal3f(1.0,0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[1],0);
-		glVertex3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-		glVertex3f(0.0,1.0,1.0f);
-		glTexCoord2f(0,lattice->gridSize[2]);
-		glVertex3f(0.0,0.0,1.0f);
-		// right
-		glNormal3f(-1.0,0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(1.0f,0.0f,0.0f);
-		glTexCoord2f(0,lattice->gridSize[2]);
-		glVertex3f(1.0,0.0,1.0f);
-		glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
-		glVertex3f(1.0,1.0,1.0f);
-		glTexCoord2f(lattice->gridSize[1],0);
-		glVertex3f(1.0f,1.0f,0.0f);
-		// back
-		glNormal3f(0,-1.0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0],0);
-		glVertex3f(1.0f,1.0f,0.0f);
-		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-		glVertex3f(1.0f,1.0,1.0f);
-		glTexCoord2f(0,lattice->gridSize[2]);
-		glVertex3f(0.0,1.0,1.0f);
-		// front
-		glNormal3f(0,1.0,0);
-		glTexCoord2f(0,0);
-		glVertex3f(0.0f,0.0f,0.0f);
-		glTexCoord2f(0,lattice->gridSize[2]);
-		glVertex3f(0.0,0.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
-		glVertex3f(1.0f,0.0,1.0f);
-		glTexCoord2f(lattice->gridSize[0],0);
+		glTexCoord2f(lattice->gridSize[0]/4.0f,0);
 		glVertex3f(1.0f,0.0f,0.0f);
 		glEnd();
 		glPopMatrix();

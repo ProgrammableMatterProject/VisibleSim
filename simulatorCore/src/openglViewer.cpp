@@ -56,7 +56,7 @@ void GlutContext::init(int argc, char **argv) {
     if(fullScreenMode) {
 		glutFullScreen();
 	}
-    
+
 	initShaders();
 
 	////// GL parameters /////////////////////////////////////
@@ -237,7 +237,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 				int n=selectFaceFunc(x,y);
 				if (n) {
 					BaseSimulator::getWorld()->setSelectedFace(n-1);
-					BaseSimulator::getWorld()->createPopupMenu(x,y);
+					//BaseSimulator::getWorld()->createPopupMenu(x,y);
 				}
 		  	}
 		}

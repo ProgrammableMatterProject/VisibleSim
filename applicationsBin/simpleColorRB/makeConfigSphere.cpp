@@ -40,7 +40,7 @@ int main(int argc,char **argv) {
 
     fout << "<?xml version=\"1.0\" standalone=\"no\" ?>"<< endl;
     fout << "<world gridSize=\""<< areaLx+1 << "," << areaLy+1 << "," << areaLz+1 << "\" windowSize=\"1800,900\" maxSimulationTime=\"" << maxTimeSimulation << "mn\">" << endl;
-  	fout << "<camera target=\""<< radius << "," << radius << "," << radius <<"\" directionSpherical=\"0,38," << cameraDist << "\" angle=\"50\" far=" << cameraDist*2 << "/>" << endl;
+  	fout << "<camera target=\""<< radius << "," << radius << "," << radius <<"\" directionSpherical=\"0,38," << cameraDist << "\" angle=\"50\" far=\"" << cameraDist*2 << "\"/>" << endl;
   	fout << "<spotlight target=\""<< radius << "," << radius << "," << radius << "\" directionSpherical=\"-30,50," << srcDist << "\" angle=\"45\"/>" << endl;
   	fout << "<blockList color=\"128,128,128\" blocksize=\"10.0,10.0,10.0\">" << endl;
 

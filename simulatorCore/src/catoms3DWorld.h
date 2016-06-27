@@ -40,7 +40,7 @@ protected:
     virtual ~Catoms3DWorld();
 public:
     Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-                  int argc, char *argv[]);    
+                  int argc, char *argv[]);
 
     static void deleteWorld();
     static Catoms3DWorld* getWorld() {
@@ -77,7 +77,7 @@ public:
      * \param pos : Position of the block to connect
      */
     virtual void linkBlock(const Cell3DPosition &pos);
-    
+
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
@@ -91,7 +91,6 @@ public:
     virtual void menuChoice(int n);
     virtual void disconnectBlock(Catoms3DBlock *block);
     virtual void connectBlock(Catoms3DBlock *block);
-    virtual bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
 
 /**
  * \brief load the background textures (internal)

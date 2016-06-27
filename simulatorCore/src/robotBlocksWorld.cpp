@@ -133,7 +133,7 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 
 void RobotBlocksWorld::deleteBlock(BuildingBlock *blc) {
 	RobotBlocksBlock *bb = (RobotBlocksBlock *)blc;
-		
+
 	if (bb->getState() >= RobotBlocksBlock::ALIVE ) {
 		// cut links between bb and others
 		for(int i=0; i<6; i++) {
@@ -315,7 +315,7 @@ void RobotBlocksWorld::menuChoice(int n) {
 		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
 		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
-		
+
 		addBlock(-1, bb->buildNewBlockCode, nPos, bb->color);
 		linkBlock(nPos);
 		linkNeighbors(nPos);
@@ -332,7 +332,6 @@ void RobotBlocksWorld::menuChoice(int n) {
 		break;
 	}
 }
-
 
 void RobotBlocksWorld::setSelectedFace(int n) {
 	numSelectedBlock=n/6;
