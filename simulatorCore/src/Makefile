@@ -88,19 +88,24 @@ ${OUTDIRS}:
 	@mkdir -p $@
 
 $(LDIR)/libsimBlinkyBlocks.a: $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
-	ar rcs $(LDIR)/libsimBlinkyBlocks.a $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
+	@echo "Compiling BlinkyBlocks library"
+	@ar rcs $(LDIR)/libsimBlinkyBlocks.a $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
 
 $(LDIR)/libsimRobotBlocks.a: $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
-	ar rcs $(LDIR)/libsimRobotBlocks.a $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
+	@echo "Compiling RobotBlocks library"
+	@ar rcs $(LDIR)/libsimRobotBlocks.a $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
 
 $(LDIR)/libsimCatoms2D.a: $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
-	ar rcs $(LDIR)/libsimCatoms2D.a $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
+	@echo "Compiling Catoms2D library"
+	@ar rcs $(LDIR)/libsimCatoms2D.a $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
 
 $(LDIR)/libsimCatoms3D.a: $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
-	ar rcs $(LDIR)/libsimCatoms3D.a $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
+	@echo "Compiling Catoms3D library"
+	@ar rcs $(LDIR)/libsimCatoms3D.a $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
 
 $(LDIR)/libsimSmartBlocks.a: $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
-	ar rcs $(LDIR)/libsimSmartBlocks.a $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
+	@echo "Compiling SmartBlocks library"
+	@ar rcs $(LDIR)/libsimSmartBlocks.a $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
 
 ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), clean directories))
 -include $(DEPS)
@@ -110,5 +115,5 @@ clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS) ../include/*.h
 	rm -rf $(OUTDIRS)
 
-$(DEPDIR)/%.depends: %.cpp
+$(DEPDIR)/%.depends: %.cpp %.h
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
