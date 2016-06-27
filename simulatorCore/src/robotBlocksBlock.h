@@ -27,7 +27,6 @@ public:
 class RobotBlocksBlockCode;
 
 class RobotBlocksBlock : public BaseSimulator::BuildingBlock {
-    P2PNetworkInterface *tabInterfaces[6];
 protected:
 public:
     RobotBlocksBlock(int bId, BlockCodeBuilder bcb);
@@ -38,7 +37,7 @@ public:
     void setPrevNext(int,int);
     void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
-    inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
+    inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return P2PNetworkInterfaces[d]; }
 
     NeighborDirection::Direction getDirection(P2PNetworkInterface*);
 };

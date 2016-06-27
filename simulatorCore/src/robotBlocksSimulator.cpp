@@ -67,7 +67,7 @@ void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockC
 	// ...Parsing code...
 
 	// Finally, add block to the world
-	((RobotBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, master);
+	((RobotBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
 }
 
 void RobotBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {

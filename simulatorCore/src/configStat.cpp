@@ -90,8 +90,8 @@ void ConfigStat::computeDistanceMatrix() {
 	
 	map<int, BuildingBlock*>::iterator bit;
 	for (bit = world->getMap().begin() ; bit != world->getMap().end() ; bit++) {
-		list <P2PNetworkInterface*>::iterator niit;
-		for (niit = bit->second->getP2PNetworkInterfaceList().begin(); niit != bit->second->getP2PNetworkInterfaceList().end(); niit++) {
+		vector<P2PNetworkInterface*>::iterator niit;
+		for (niit = bit->second->getP2PNetworkInterfaces().begin(); niit != bit->second->getP2PNetworkInterfaces().end(); niit++) {
 			if ((*niit)->connectedInterface) {
 				adjacencyMatrix[bit->second->blockId][(*niit)->connectedInterface->hostBlock->blockId] = true;
 			}
@@ -99,7 +99,7 @@ void ConfigStat::computeDistanceMatrix() {
 	}
 	
 	bool changed = false;
-	 for (int s = 1; s < size; s++) {
+	for (int s = 1; s < size; s++) {
 		distanceMatrix->set(s,s,0);
 		for (int i = 1; i < size; i++ ) {
 			changed = false;
@@ -111,21 +111,21 @@ void ConfigStat::computeDistanceMatrix() {
 							//distTmp = distance[s][u] + 1;
 							distTmp = distanceMatrix->get(s,u) + 1;
 							//if (distTmp < distance[s][v]) {
-								//cout << "distTmp" << 
-								if (distTmp < distanceMatrix->get(s,v)) {
-									//cout << "set: " << s << "," << v << ": " << v << endl;
-									distanceMatrix->set(s,v,distTmp);
-									distanceMatrix->set(v,s,distTmp);
-									changed = true;
+							//cout << "distTmp" << 
+							if (distTmp < distanceMatrix->get(s,v)) {
+								//cout << "set: " << s << "," << v << ": " << v << endl;
+								distanceMatrix->set(s,v,distTmp);
+								distanceMatrix->set(v,s,distTmp);
+								changed = true;
 								//distance[s][v] = distTmp;
-								}
+							}
 						}
 					}
 				}
 			}
 			if(!changed) break;
 		}
-	 }
+	}
 }
 
 void ConfigStat::computeCenter() {
@@ -145,7 +145,7 @@ void ConfigStat::computeCenter() {
 		if (eccentricity[i] == radius) {
 			center.push_back(world->getBlockById(i));
 		}
-	 }
+	}
 }
 	
 void ConfigStat::computeCentroid() {

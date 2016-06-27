@@ -74,10 +74,10 @@ void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 	// Any additional configuration file parsing exclusive to this type of block should be performed
 	//  here, using the blockElt TiXmlElement.
 
-	// ...Parsing code...
+	// @todo: parse angle orientation
 
 	// Finally, add block to the world
-	((Catoms2DWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color, master);
+	((Catoms2DWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color, 0, master);
 }
 
 void Catoms2DSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {

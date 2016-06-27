@@ -26,7 +26,6 @@ public:
 class SmartBlocksBlockCode;
 
 class SmartBlocksBlock : public BaseSimulator::BuildingBlock {
-    P2PNetworkInterface *tabInterfaces[4];
 public:
     bool wellPlaced,_isBorder,_isTrain,_isSingle;
     SmartBlocksBlockCode *(*buildNewBlockCode)(SmartBlocksBlock*);
@@ -34,7 +33,7 @@ public:
     SmartBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~SmartBlocksBlock();
     inline void setDisplayedValue(int n) { static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n); };
-    inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return tabInterfaces[d]; }
+    inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return P2PNetworkInterfaces[d]; }
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointCel &pos);
     P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int id);
     

@@ -134,8 +134,7 @@ void BlinkyBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vect
 	World::setWorld(world);
 }
 
-void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
-									  BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
+void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
 									  const Cell3DPosition &pos, const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
@@ -145,7 +144,7 @@ void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 
 	// Finally, add block to the world
 	// PTHY: TODO: add master
-	((BlinkyBlocksWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color);
+	((BlinkyBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
 }
 
 
