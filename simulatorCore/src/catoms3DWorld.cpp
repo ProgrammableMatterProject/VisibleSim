@@ -35,7 +35,8 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     idTextureHexa=0;
     idTextureGrid=0;
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3DV2connectorID.obj");
-    objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
+    objBlockForPicking =
+		new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
 
     skeleton=NULL;
@@ -466,17 +467,16 @@ bool Catoms3DWorld::canAddBlockToFace(int numSelectedBlock, int numSelectedFace)
 
 
 void Catoms3DWorld::setSelectedFace(int n) {
-    numSelectedBlock=n/6;
-    string name = objBlockForPicking->getObjMtlName(n%6);
+    numSelectedBlock=n/12;
+    string name = objBlockForPicking->getObjMtlName(n%12);
     numSelectedFace=0;
-    /*
-      if (name=="face_top") numSelectedFace=NeighborDirection::Top;
-      else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
-      else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
-      else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
-      else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
-      else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
-    */
+    
+	// if (name=="face_top") numSelectedFace=;
+	// else if (name=="face_bottom") numSelectedFace=;
+	// else if (name=="face_right") numSelectedFace=;
+	// else if (name=="face_left") numSelectedFace=;
+	// else if (name=="face_front") numSelectedFace=;
+	// else if (name=="face_back") numSelectedFace=;
 }
 
 /*

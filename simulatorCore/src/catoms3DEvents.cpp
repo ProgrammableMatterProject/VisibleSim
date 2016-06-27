@@ -121,8 +121,6 @@ void MotionStopEvent::consume() {
     Catoms3DWorld *wrld=Catoms3DWorld::getWorld();
 
     catom->setPositionAndOrientation(position,orientation);
-
-    wrld->connectBlock(catom);
     stringstream info;
     info.str("");
     info << "connect Block " << catom->blockId;
