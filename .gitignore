@@ -4,6 +4,7 @@
 *.o
 *.o-*
 #*.obj // graphic files can have this extension.
+simulatorCore/obj/
 
 # Precompiled Headers
 *.gch
@@ -22,6 +23,7 @@
 *.la
 *.a
 *.lib
+simulatorCore/lib/
 
 # Executables
 *.exe
@@ -29,6 +31,7 @@
 *.app
 
 # Temporary files
+simulatorCode/deps/
 *.depends
 *~
 .\#*
@@ -51,7 +54,6 @@ applications*/*
 ## And files with extension
 !*.*
 ## Hence, all extension-less files from these directories are ignored => No binaries
-
 
 # Doxyfile documentation output
 doc/xml/
