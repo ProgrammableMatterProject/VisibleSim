@@ -285,12 +285,12 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
 	cerr << "Face n = " << n << " / " << numSelectedBlock << endl;
 	string name = objBlockForPicking->getObjMtlName(n%6);
 	cerr << name << endl;
-	if (name=="face_top") numSelectedFace=NeighborDirection::Top;
-	else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
-	else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
-	else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
-	else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
-	else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
+	if (name=="_blinkyBlockPickingface_top") numSelectedFace=NeighborDirection::Top;
+	else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=NeighborDirection::Bottom;
+	else if (name=="_blinkyBlockPickingface_right") numSelectedFace=NeighborDirection::Right;
+	else if (name=="_blinkyBlockPickingface_left") numSelectedFace=NeighborDirection::Left;
+	else if (name=="_blinkyBlockPickingface_front") numSelectedFace=NeighborDirection::Front;
+	else if (name=="_blinkyBlockPickingface_back") numSelectedFace=NeighborDirection::Back;
 }
 
 /**
