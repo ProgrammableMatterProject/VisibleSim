@@ -44,8 +44,8 @@ typedef BlockCode *(*BlockCodeBuilder)(BuildingBlock*);
  */
 class BuildingBlock {
 public:
-	// alive state must be associated to a number >= 2	
-	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3}; // Block state is a private attributes
+	//!< Enumeration of possible values for the state of a BuildingBlock. The block is considered alive if its state is >= 2
+	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3};
 private:
 	/** 
 	 * \brief state of the block, with atomic access
@@ -58,7 +58,7 @@ private:
 protected:
 	static int nextId;
 
-	int P2PNetworkInterfaceNextLocalId;
+	int P2PNetworkInterfaceNextLocalId; // @todo
 	vector<P2PNetworkInterface*> P2PNetworkInterfaces; //!< Vector of size equal to the number of interfaces of the block, contains pointers to the block's interfaces
 
 	list<EventPtr> localEventsList; //!< List of local events scheduled for this block
@@ -74,28 +74,76 @@ public:
 	GlBlock *ptrGlBlock; //!< ptr to the GL object corresponding to this block
 	BlockCodeBuilder buildNewBlockCode; //!< function ptr to the block's blockCodeBuilder
 	
-	BuildingBlock(int bId, BlockCodeBuilder blockCode);
+	/**
+	 * @brief BuildingBlock constructor
+	 * @param bId : the block id of the block to create
+	 * @param bcb : function pointer to the getter for the block's CodeBlock
+	 */
+	BuildingBlock(int bId, BlockCodeBuilder bcb);
+    /**
+	 * @brief BuildingBlock destructor
+	 */
 	virtual ~BuildingBlock();
 
 	unsigned int getNextP2PInterfaceLocalId();
 
+	/**
+	 * @brief Getter for P2PNetworkInterfaces attribute
+	 * @return A vector containing pointers to the block's interfaces
+	 */
     vector<P2PNetworkInterface*>& getP2PNetworkInterfaces() {return P2PNetworkInterfaces;}
+	/**
+	 * @brief Returns the interface from this block that is connected to block of id destBlockId
+	 * @param destBlockId : id of the block connected to the interface we are looking for
+	 * @return a pointer to the interface connected to the requested block, or NULL
+	 */
 	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int destBlockId);
+	/**
+	 * @brief Creates a new interface to this block and connects it to destBlock
+	 * @param destBlock : pointer to the building block to connect to the newly created interface
+	 * @return true if connection succeeded, false otherwise
+	 */
 	bool addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock);
+	/**
+	 * @brief Creates a new interface to this block and connects it to block of id destBlockId
+	 * @param destBlockId : Id of the building block to connect to the newly created interface
+	 * @return true if connection succeeded, false otherwise
+	 */
 	bool addP2PNetworkInterfaceAndConnectTo(int destBlockId);
+	/**
+	 * @brief Finds the block's interface that is connected to destBlock 
+	 * @param destBlock : pointer to a connected block 
+	 * @return a pointer to the interface connected to destBlock if there is one, NULL otherwise
+	 */
 	P2PNetworkInterface *getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock);
-
+	/**
+	 * @brief Schedules a local event for this block to process when available
+	 * @param pev : pointer to the event to schedule
+	 */
 	void scheduleLocalEvent(EventPtr pev);
+	/**
+	 * @brief Processes the first event from the event queue
+	 */
 	void processLocalEvent();
-
-	virtual void updateGlData() {};
+	/**
+	 * @brief Returns the GlBlock corresponding to this BuildingBlock
+	 */
 	inline virtual GlBlock* getGlBlock() { return ptrGlBlock; };
+	/**
+	 * @brief Setter for ptrGlBlock
+	 * @param ptr : a ptr to a GlBlock corresponding to this block
+	 */
 	inline void setGlBlock(GlBlock*ptr) { ptrGlBlock=ptr;};
-
+	/**
+	 * @brief Sets the color for this block with the referenced color parameter
+	 * @param c : a reference to the new color of the block
+	 */
 	void setColor(const Color &);
-	void setColor(int idColor);
-
-	
+	/**
+	 * @brief Sets the color for this block with the color of id idColor
+	 * @param idColor : id of the Color as defined in color.h
+	 */
+	void setColor(int idColor);	
 	/**
 	 * @brief Sets the grid position of the block
 	 *
@@ -104,28 +152,60 @@ public:
 	void setPosition(const Cell3DPosition &p);
 
 	/**
-	 * Returns a Vector3D corresponding to the Cell3DPosition of the current block.
+	 * @brief Returns a Vector3D corresponding to the Cell3DPosition of the current block.
 	 *
 	 * @return the position of the block represented as a double Vector3D
 	 */
 	inline Vector3D getPositionVector() { return Vector3D(position[0], position[1], position[2]);};
-
+	/**
+	 * @brief Adds block targer as neighbor for this block on interface ni
+	 * @param ni : pointer to the interface to connect
+	 * @param target : pointer to the BuildingBlock to connect to interface ni
+	 */
 	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
+	/**
+	 * @brief Disconnect interface ni
+	 * @param ni : pointer to the interface to disconnect
+	 */
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
+	/**
+	 * @brief Schedules a stop event for this block at a given date and update its state
+	 * @param date : date at which the stop event must be processed
+	 * @param s : new state of the block
+	 */
 	virtual void stop(uint64_t date, State s) {};
-	/* No guarantee that state value will remain the same, it just avoids
-	 * date race condition. */
-	inline State getState() { return state.load(); } //!< Atomically reads the value of the block's state 
-	inline void setState(State s) { state.store(s); } //!< Atomically sets the value of the block's state
-
+	/**
+	 * @brief Atomic getter for the block's state
+	 * No guarantee that state value will remain the same, it just avoids
+	 * date race condition.
+	 * @return the state of the block
+	 */
+	inline State getState() { return state.load(); }
+	/**
+	 * @brief Atomically sets the state of the block
+	 * No guarantee that state value will remain the same, it just avoids
+	 * date race condition.
+	 * @param s : new state of the block
+	 */   	
+	inline void setState(State s) { state.store(s); }
 	/* For Blinky Block determinism version */
 	int getNextRandomNumber();
-
-	/* When triggered from the simulation menu,
-	   can be used as an interactive event for debug on all catom types */
+	/**
+	 * @brief Schedules a tap event at a given date for this blocks
+	 * When triggered from the simulation menu,
+	 *  can be used as an interactive event for debug on all catom types
+	 * @param date : date of the tap event
+	 */   	
 	void tap(uint64_t date);
-
+	/**
+	 * @brief Returns the local time of the block according to its internal clock
+	 * @return local time of the block according to its internal clock
+	 */   	
 	uint64_t getTime();
+	/**
+	 * @brief Converts the block's local time into the global time of the simulation and returns it
+	 * @return global time corresponding to the local time in parameter
+	 */   	
 	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
 };
 

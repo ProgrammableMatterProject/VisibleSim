@@ -88,23 +88,23 @@ ${OUTDIRS}:
 	@mkdir -p $@
 
 $(LDIR)/libsimBlinkyBlocks.a: $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
-	@echo "Compiling BlinkyBlocks library"
+	@echo "Archiving BlinkyBlocks library..."
 	@ar rcs $(LDIR)/libsimBlinkyBlocks.a $(BASESIMULATOR_OBJS) $(BLINKYBLOCKS_OBJS)
 
 $(LDIR)/libsimRobotBlocks.a: $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
-	@echo "Compiling RobotBlocks library"
+	@echo "Archiving RobotBlocks library..."
 	@ar rcs $(LDIR)/libsimRobotBlocks.a $(BASESIMULATOR_OBJS) $(ROBOTBLOCKS_OBJS)
 
 $(LDIR)/libsimCatoms2D.a: $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
-	@echo "Compiling Catoms2D library"
+	@echo "Archiving Catoms2D library..."
 	@ar rcs $(LDIR)/libsimCatoms2D.a $(BASESIMULATOR_OBJS) $(CATOMS2D_OBJS)
 
 $(LDIR)/libsimCatoms3D.a: $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
-	@echo "Compiling Catoms3D library"
+	@echo "Archiving Catoms3D library..."
 	@ar rcs $(LDIR)/libsimCatoms3D.a $(BASESIMULATOR_OBJS) $(CATOMS3D_OBJS)
 
 $(LDIR)/libsimSmartBlocks.a: $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
-	@echo "Compiling SmartBlocks library"
+	@echo "Archiving SmartBlocks library..."
 	@ar rcs $(LDIR)/libsimSmartBlocks.a $(BASESIMULATOR_OBJS) $(SMARTBLOCKS_OBJS)
 
 ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), clean directories))
