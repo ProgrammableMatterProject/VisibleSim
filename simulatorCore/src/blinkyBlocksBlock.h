@@ -17,24 +17,25 @@
 
 namespace BlinkyBlocks {
 
-    class NeighborDirection {
-    public:
+class NeighborDirection {
+public:
 	enum Direction { Bottom = 0, Back = 1, Right, Front, Left, Top };
 	static int getOpposite(int d);
 	static string getString(int d);
-    };
+};
 
-    class BlinkyBlocksBlockCode;
+class BlinkyBlocksBlockCode;
 
-    class BlinkyBlocksBlock : public BaseSimulator::BuildingBlock {
-    public:    
+class BlinkyBlocksBlock : public BaseSimulator::BuildingBlock {
+public:    
 	BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb);
 	~BlinkyBlocksBlock();
 
-	inline BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
-	inline void setGlBlock(BlinkyBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
+	inline virtual BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
+
 	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d)
-			{ return P2PNetworkInterfaces[d]; }
+		{ return P2PNetworkInterfaces[d]; }
+
 	P2PNetworkInterface *getInterfaceDestId(int id);
 	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
 
@@ -47,9 +48,9 @@ namespace BlinkyBlocks {
 	void removeNeighbor(P2PNetworkInterface *ni);
 	void stopBlock(uint64_t date, State s);
 	void pauseClock(uint64_t delay, uint64_t start);
-    };
+};
 
-    std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);
+std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb);
 
 }
 

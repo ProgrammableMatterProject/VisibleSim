@@ -18,10 +18,11 @@ namespace Catoms2D {
 
 Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "Catoms2DBlock constructor" << endl;
+
     for (int i=0; i<MAX_NB_NEIGHBORS; i++) {
 		getP2PNetworkInterfaces().push_back(new P2PNetworkInterface(this));
     }
-    blockCode = (BaseSimulator::BlockCode*)bcb(this);
+
     angle = 0;
 }
 

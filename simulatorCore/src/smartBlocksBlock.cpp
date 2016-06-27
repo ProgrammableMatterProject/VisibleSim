@@ -59,16 +59,13 @@ string NeighborDirection::getString(int d) {
 SmartBlocksBlock::SmartBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
-    blockCode = (BaseSimulator::BlockCode*)bcb(this);
+
     for (int i=NeighborDirection::North; i<=NeighborDirection::West; i++) {
         P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
     }
 }
 
 SmartBlocksBlock::~SmartBlocksBlock() {
-    for (int i = NeighborDirection::North; i <= NeighborDirection::West; i++) {
-        delete P2PNetworkInterfaces[i];
-    }
     OUTPUT << "SmartBlocksBlock #" << blockId << " destructor" << endl;
 }
 

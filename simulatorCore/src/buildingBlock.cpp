@@ -38,14 +38,19 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb) {
     generator = std::ranlux48(rd());
     dis = uniform_int_distribution<>(0, 50 * blockId);
     buildNewBlockCode = bcb;
+	blockCode = (BaseSimulator::BlockCode*)bcb(this);
 }
 
 BuildingBlock::~BuildingBlock() {
     delete blockCode;
-    OUTPUT << "BuildingBlock destructor" << endl;
-    if (clock != NULL) {
+	OUTPUT << "BuildingBlock destructor" << endl;    
+
+	if (clock != NULL) {
 		delete clock;
     }
+
+	for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
+		delete p2p;
 }
 
 unsigned int BuildingBlock::getNextP2PInterfaceLocalId() {

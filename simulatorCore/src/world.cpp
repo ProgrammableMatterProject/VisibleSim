@@ -216,7 +216,7 @@ void World::menuChoice(int n) {
 		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
 		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
 		
-		addBlock(-1, (BlockCode *(*)(BuildingBlock *))bb->buildNewBlockCode, nPos, bb->color);
+		addBlock(-1, bb->buildNewBlockCode, nPos, bb->color);
 		linkBlock(nPos);
 		linkNeighbors(nPos);
 	} break;

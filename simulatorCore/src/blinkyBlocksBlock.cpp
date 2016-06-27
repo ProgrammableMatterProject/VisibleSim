@@ -80,8 +80,10 @@ int NeighborDirection::getOpposite(int d) {
 
 BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "BlinkyBlocksBlock constructor" << endl;
-    double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
-    double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)/(BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
+    double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)
+						  / (BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
+    double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)
+						  / (BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
 
     for (int i=0; i<6; i++) {
 		P2PNetworkInterface *p2p = new P2PNetworkInterface(this);
@@ -91,7 +93,6 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimula
     }
 
     clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
-    blockCode = (BaseSimulator::BlockCode*)bcb(this);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {
@@ -146,7 +147,9 @@ void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
 		// patch en attendant l'objet 3D qui modelise un BB stopped
 		color = Color(0.1, 0.1, 0.1, 0.5);
     }
-    getWorld()->updateGlData(this);
+
+	getWorld()->updateGlData(this);
+
     if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
 		getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
     } else if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
@@ -157,17 +160,6 @@ void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
 std::ostream& operator<<(std::ostream &stream, BlinkyBlocksBlock const& bb) {
     stream << bb.blockId << "\tcolor: " << bb.color;
     return stream;
-}
-
-P2PNetworkInterface* BlinkyBlocksBlock::getInterfaceDestId(int id) {
-    for (P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
-		if (p2p->connectedInterface != NULL) {
-			if (p2p->connectedInterface->hostBlock->blockId == id) {
-				return p2p;
-			}
-		}
-    }
-    return NULL;
 }
 
 }
