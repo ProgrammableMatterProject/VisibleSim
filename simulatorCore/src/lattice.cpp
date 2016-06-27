@@ -18,7 +18,7 @@ Lattice::Lattice() {
 Lattice::Lattice(const Cell3DPosition &gsz, const Vector3D &gsc) {
     gridSize = gsz;
     gridScale = gsc;
-    
+
     if (gsz[0] <= 0 || gsz[1] <= 0 || gsz[2] <= 0) {
         cerr << "error: Incorrect lattice size: size in any direction cannot be negative or null)" << endl;
     }
@@ -36,7 +36,7 @@ Lattice::~Lattice() {
 
 int Lattice::getIndex(const Cell3DPosition &p) {
     int index = p[0] + (p[1] + p[2] * gridSize[1]) * gridSize[0];
-#ifdef LATTICE_LOG    
+#ifdef LATTICE_LOG
     // cerr << "index: " << index << "(/total = " << gridSize[0]*gridSize[1]*gridSize[2] << ")" << endl;
 #endif
     return index;
@@ -44,7 +44,7 @@ int Lattice::getIndex(const Cell3DPosition &p) {
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
     int index = getIndex(p);
-    
+
     if (!grid[index]) {
         grid[index] = bb;
     } else {
@@ -52,9 +52,9 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
         throw new InvalidInsertion;
         // exit(EXIT_FAILURE);
     }
-        
+
 #ifdef LATTICE_LOG
-    cerr << "l.insert(" << bb->blockId << ") on " << p << " = i:" << getIndex(p) << endl; 
+    cerr << "l.insert(" << bb->blockId << ") on " << p << " = i:" << getIndex(p) << endl;
 #endif
 }
 
@@ -62,20 +62,20 @@ void Lattice::remove(const Cell3DPosition &p) {
     grid[getIndex(p)] = NULL;
 }
 
-BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) {    
+BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) {
     return isInGrid(p) ? grid[getIndex(p)] : NULL;
 }
 
 bool Lattice::isFree(const Cell3DPosition &p) {
     if (!isInGrid(p))
         return false;
-    else 
+    else
         return (getBlock(p) == NULL);
 }
 
 bool Lattice::cellHasBlock(const Cell3DPosition &p) {
     if (!isInGrid(p)) {
-        return false;        
+        return false;
     } else {
         return (getBlock(p) != NULL);
     }
@@ -89,20 +89,20 @@ bool Lattice::isInGrid(const Cell3DPosition &p) {
 
 vector<Cell3DPosition> Lattice::getActiveNeighborCells(const Cell3DPosition &pos) {
     vector<Cell3DPosition> activeNeighborCells;
-  
+
     for (Cell3DPosition p : getNeighborhood(pos)) { // Check if each neighbor cell has an active node on it
         if (!isFree(p)) {
             activeNeighborCells.push_back(p);         // Add its position to the result
         }
     }
-  
+
     return activeNeighborCells;
 }
 
 vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
     vector<Cell3DPosition> neighborhood;
     vector<Cell3DPosition> relativeNCells =
-        getRelativeConnectivity(pos); 
+        getRelativeConnectivity(pos);
 
     for (Cell3DPosition p : relativeNCells) { // Check if each neighbor cell is in grid
         Cell3DPosition v = pos + p;
@@ -110,7 +110,7 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
             neighborhood.push_back(v);         // Add its position to the result
         }
     }
-  
+
     return neighborhood;
 }
 
@@ -134,9 +134,9 @@ HLattice::~HLattice() {}
 //  using a different function again for each block, or at least different sub operations
 Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     Vector3D res;
-    
+
     res.pt[2] = M_SQRT3_2 * pos[2] * gridScale[2];
-    res.pt[1] = gridScale[1] / 2.0; // Catoms are centered on grid cells
+    res.pt[1] = 2.5;//-gridScale[1] / 2.0; // Catoms are centered on grid cells
     res.pt[0] = (pos[0] + ((int)(pos[2] + 0.01) % 2) * 0.5) * gridScale[0]; // +0.01 because of round problem
 
 /*cout << "------------computation gridToWorldPosition--------------" << endl;
@@ -148,7 +148,7 @@ Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) {
   cout << res << endl;
   cout << "---------------------------------------------------------" << endl;*/
 
-    return res;  
+    return res;
 }
 
 Cell3DPosition HLattice::worldToGridPosition(const Vector3D &pos) {
@@ -164,7 +164,7 @@ Cell3DPosition HLattice::worldToGridPosition(const Vector3D &pos) {
       cout << res << endl;
       cout << "---------------------------------------------------------" << endl;*/
 
-    return res;  
+    return res;
 }
 
 vector<Cell3DPosition> HLattice::getRelativeConnectivity(const Cell3DPosition &p) {
@@ -180,7 +180,7 @@ vector<Cell3DPosition> SLattice::getRelativeConnectivity(const Cell3DPosition &p
     return nCells;
 }
 
-Vector3D SLattice::gridToWorldPosition(const Cell3DPosition &pos) {    
+Vector3D SLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     return Vector3D(pos[0] * gridScale[0],
                     pos[1] * gridScale[1],
                     0);
@@ -252,30 +252,30 @@ vector<Cell3DPosition> SCLattice::getRelativeConnectivity(const Cell3DPosition &
     return nCells;
 }
 
-Vector3D SCLattice::gridToWorldPosition(const Cell3DPosition &pos) {    
-    return Vector3D(pos[0] * gridScale[0],		 
-                    pos[1] * gridScale[1],		 
+Vector3D SCLattice::gridToWorldPosition(const Cell3DPosition &pos) {
+    return Vector3D(pos[0] * gridScale[0],
+                    pos[1] * gridScale[1],
                     pos[2] * gridScale[2]);
 }
 
 Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) {
-    return Cell3DPosition(pos[0] / gridScale[0],		 
-                          pos[1] / gridScale[1],		 
+    return Cell3DPosition(pos[0] / gridScale[0],
+                          pos[1] / gridScale[1],
                           pos[2] / gridScale[2]);
 }
 
 // std::vector<int> SCLattice::getActiveNeighborDirections(BuildingBlock *bb) {
 //     vector<int> neighborDirections;
 //     vector<Cell3DPosition> relativeNCells =
-//         getRelativeConnectivity(bb->position); 
+//         getRelativeConnectivity(bb->position);
 
 //     // Check if each neighbor cell is in grid and if it is, determine the corresponding direction
-//     for (Cell3DPosition p : relativeNCells) { 
+//     for (Cell3DPosition p : relativeNCells) {
 //         Cell3DPosition v = bb->position + p;
 //         if (isInGrid(v) && !isFree(v)) {
 //             neighborDirections.push_back(NeighborDirection::determineDirection(p));
 //         }
 //     }
-  
-//     return neighborDirections;    
+
+//     return neighborDirections;
 // }
