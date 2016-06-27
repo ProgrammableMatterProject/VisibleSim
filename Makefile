@@ -66,5 +66,5 @@ test: subdirs
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
-	$(MAKE) -C $$dir clean; \
+	$(MAKE) -C $$dir APPDIR=../../applicationsBin clean; \
 	done

@@ -1,5 +1,4 @@
-SUBDIRS = simpleCatoms3D
-#SUBDIRS = noneCatoms2D bbCycle robot01 sphereCatoms3D sbReconf smartBlocks1
+SUBDIRS = noneCatoms2D bbCycle robot01 sphereCatoms3D sbReconf smartBlocks1 simpleCatoms3D
 
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
 
@@ -27,5 +26,5 @@ test:	subdirs
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
-	$(MAKE) -C $$dir clean; \
+	$(MAKE) -C $$dir APPDIR=../../applicationsBin/$$dir clean; \
 	done
