@@ -21,7 +21,9 @@ namespace BaseSimulator {
  *
  */
 class Lattice {
-
+    struct InvalidInsertion : std::exception {
+        const char* what() const noexcept {return "Ooops!\n";}
+    };
 public:
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)

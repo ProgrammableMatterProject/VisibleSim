@@ -49,8 +49,8 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
         grid[index] = bb;
     } else {
         cerr << "error: trying to add block of id " << bb->blockId << " on non-empty cell " << p << endl;
-        throw "here";
-        exit(EXIT_FAILURE);
+        throw new InvalidInsertion;
+        // exit(EXIT_FAILURE);
     }
         
 #ifdef LATTICE_LOG
