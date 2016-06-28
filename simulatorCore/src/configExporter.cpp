@@ -73,7 +73,7 @@ namespace BaseSimulator {
 
     void BlinkyBlocksConfigExporter::exportBlockList() {
         blockListElt = new TiXmlElement("blockList");
-        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)world->getMenuBlock();
+        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)world->getSelectedBuildingBlock();
         float *color = bb->color.rgba;
         // float *blockSize = world->getBlockSize();
         map<int, BaseSimulator::BuildingBlock*> blocks = world->getMap();
