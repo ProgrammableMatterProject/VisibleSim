@@ -45,7 +45,7 @@ SUBDIRS = simulatorCore/src applicationsSrc
 
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
-.PHONY: subdirs $(SUBDIRS) subdirectories test
+.PHONY: subdirs $(SUBDIRS) subdirectories test doc
 
 subdirs: $(SUBDIRS)
 
@@ -63,6 +63,10 @@ $(SUBDIRS): subdirectories
 
 test: subdirs
 	$(MAKE) -C applicationsSrc test;
+
+doc:
+	$(MAKE) -C doc doc;
+
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
