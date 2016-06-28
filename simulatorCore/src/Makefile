@@ -47,8 +47,7 @@ SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLO
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
 DEPS = $(SRCS:%.cpp=$(DEPDIR)/%.depends)
 
-OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a \
-	$(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a
+OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a
 
 INCLUDES = $(GLOBAL_INCLUDES) -I.
 
@@ -71,10 +70,10 @@ CC = g++
 
 .PHONY: clean all directories
 
-all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a
-
 $(OBJDIR)/%.o: %.cpp
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
+
+all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a
 
 #$(OUT)
 
