@@ -282,15 +282,18 @@ void BlinkyBlocksWorld::loadTextures(const string &str) {
 
 void BlinkyBlocksWorld::setSelectedFace(int n) {
 	numSelectedBlock=n/6;
-	cerr << "Face n = " << n << " / " << numSelectedBlock << endl;
 	string name = objBlockForPicking->getObjMtlName(n%6);
-	cerr << name << endl;
+
 	if (name=="_blinkyBlockPickingface_top") numSelectedFace=NeighborDirection::Top;
 	else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=NeighborDirection::Bottom;
 	else if (name=="_blinkyBlockPickingface_right") numSelectedFace=NeighborDirection::Right;
 	else if (name=="_blinkyBlockPickingface_left") numSelectedFace=NeighborDirection::Left;
 	else if (name=="_blinkyBlockPickingface_front") numSelectedFace=NeighborDirection::Front;
 	else if (name=="_blinkyBlockPickingface_back") numSelectedFace=NeighborDirection::Back;
+	else {
+		cerr << "warning: Unrecognized picking face" << endl;
+		numSelectedFace = 7;	// UNDEFINED
+	}
 }
 
 /**
