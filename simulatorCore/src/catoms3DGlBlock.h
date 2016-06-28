@@ -11,7 +11,6 @@
 #include <objLoader.h>
 #include "matrix44.h"
 #include "glBlock.h"
-#include "catoms3DCapabilities.h"
 
 namespace Catoms3D {
 class Catoms3DGlBlock:public GlBlock {
