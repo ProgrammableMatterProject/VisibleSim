@@ -10,7 +10,6 @@
 #include <string>
 #include <objLoader.h>
 #include "glBlock.h"
-#include "robotBlocksCapabilities.h"
 
 namespace RobotBlocks {
 class RobotBlocksGlBlock:public GlBlock {
