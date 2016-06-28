@@ -128,7 +128,7 @@ GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
 	buttonOpen = new GlutButton(this,ID_SW_BUTTON_OPEN,5,68,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fg.tga");
 	buttonClose = new GlutButton(this,ID_SW_BUTTON_CLOSE,5,26,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fd.tga",false);
 	slider = new GlutSlider(this,ID_SW_SLD,pw+400-20,5,ph-60,"../../simulatorCore/smartBlocksTextures/slider.tga",(ph-60)/13);
-	selectedBlock=NULL;
+	selectedGlBlock=NULL;
 }
 
 GlutSlidingMainWindow::~GlutSlidingMainWindow() {
@@ -181,8 +181,8 @@ void GlutSlidingMainWindow::glDraw() {
 		glColor3f(1.0,1.0,0.0);
 		drawString(42.0,h-20.0,str);
 		glColor3f(1.0,1.0,1.0);
-		if (selectedBlock) {
-			sprintf(str,"Selected Block : %s",selectedBlock->getInfo().c_str());
+		if (selectedGlBlock) {
+			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
 			drawString(42.0,h-40.0,str);
 			multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
 			GLfloat posy = h-65;
@@ -190,7 +190,7 @@ void GlutSlidingMainWindow::glDraw() {
 			int pos=slider->getPosition();
 			int s,cs;
 			while (it != traces.end() && posy>0) {
-				if (((*it).second)->blockId==selectedBlock->blockId) {
+				if (((*it).second)->blockId==selectedGlBlock->blockId) {
 					if (pos) {
 						pos--;
 					} else {
@@ -278,20 +278,20 @@ void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
 void GlutSlidingMainWindow::addTrace(int id,const string &str,const Color &color) {
 	BlockDebugData *bdd = new BlockDebugData(id,str,color);
 	traces.insert(pair<uint64_t,BlockDebugData*>(BaseSimulator::getScheduler()->now(),bdd));
-	if (selectedBlock) {
-		if (selectedBlock->blockId==id) slider->incDataTextLines();
+	if (selectedGlBlock) {
+		if (selectedGlBlock->blockId==id) slider->incDataTextLines();
 	} else {
 		slider->incDataTextLines();
 	}
 }
 
 void GlutSlidingMainWindow::select(GlBlock *sb) {
-	selectedBlock=sb;
-	if (selectedBlock) {
+	selectedGlBlock=sb;
+	if (selectedGlBlock) {
 		int n=0;
 		multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
 		while (it != traces.end()) {
-			if (((*it).second)->blockId==selectedBlock->blockId) {
+			if (((*it).second)->blockId==selectedGlBlock->blockId) {
 				n++;
 			}
 			++it;

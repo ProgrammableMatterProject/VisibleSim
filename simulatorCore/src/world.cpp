@@ -21,9 +21,9 @@ vector <GlBlock*>World::tabGlBlocks;
 
 World::World(int argc, char *argv[]) {
 	OUTPUT << "World constructor" << endl;
-	selectedBlock = NULL;
+	selectedGlBlock = NULL;
 	numSelectedFace=0;
-	numSelectedBlock=0;
+	numSelectedGlBlock=0;
 	menuId = 0;
 
 	if (world == NULL) {
@@ -186,15 +186,15 @@ void World::generateIds(int n, int* ids) {
 }
 
 /**
- * @brief Indicates if a block can be added to face numSelectedFace of block with id numSelectedBlock
+ * @brief Indicates if a block can be added to face numSelectedFace of block with id numSelectedGlBlock
  *
  *
  * @param numSeletectedBlock : id of the block to consider
  * @param numSelectedFace : id of the face to consider on the block
  * @return true if a block can be added to the cell corresponding to the face of the block
  */
-bool World::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
-	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+bool World::canAddBlockToFace(int numSelectedGlBlock, int numSelectedFace) {
+	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	Cell3DPosition pos = bb->position;
 	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(pos);
 	if (numSelectedFace < nCells.size())
@@ -207,7 +207,7 @@ bool World::canAddBlockToFace(int numSelectedBlock, int numSelectedFace) {
 }
 
 void World::menuChoice(int n) {
-    BuildingBlock *bb = getMenuBlock();
+    BuildingBlock *bb = getSelectedBuildingBlock();
 
 	switch (n) {
 	case 1 : {
@@ -220,7 +220,7 @@ void World::menuChoice(int n) {
 		linkNeighbors(nPos);
 	} break;
 	case 2 : {
-		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
+		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
 		deleteBlock(bb);
 	} break;
 	case 3 : {
@@ -238,12 +238,6 @@ void World::createHelpWindow() {
 	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
 }
 
-/**
- * @brief Schedules a tap event for block with id bId, at time date.
- *
- * @param date the date at which the tap event must be consumed
- * @param bId the id of the target block
- */
 void World::tapBlock(uint64_t date, int bId) {
 	BuildingBlock *bb = getBlockById(bId);
 	bb->tap(date);
@@ -261,9 +255,9 @@ void World::createPopupMenu(int ix, int iy) {
 
 	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
-	cerr << "Block " << numSelectedBlock << ":" << numSelectedFace << " selected" << endl;
+	cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
-	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
+	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
 }

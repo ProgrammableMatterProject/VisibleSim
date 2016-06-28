@@ -153,8 +153,8 @@ void Catoms2DWorld::deleteBlock(BuildingBlock *blc) {
         lattice->remove(bb->position);
         disconnectBlock(bb);
     }
-    if (selectedBlock == bb->ptrGlBlock) {
-        selectedBlock = NULL;
+    if (selectedGlBlock == bb->ptrGlBlock) {
+        selectedGlBlock = NULL;
         GlutContext::mainWindow->select(NULL);
     }
     // remove the associated glBlock
@@ -359,7 +359,7 @@ bool Catoms2DWorld::areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &po
 }
 
 void Catoms2DWorld::menuChoice(int n) {
-    Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 
     switch (n) {
     case 1 : {
@@ -372,7 +372,7 @@ void Catoms2DWorld::menuChoice(int n) {
         linkNeighbors(pos);
     } break;
     case 2 : {
-        OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
+        OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
         deleteBlock(bb);
         linkNeighbors(bb->position);
     } break;
@@ -401,7 +401,7 @@ void Catoms2DWorld::menuChoice(int n) {
 }
 
 void Catoms2DWorld::setSelectedFace(int n) {
-    numSelectedBlock = n / numPickingTextures;
+    numSelectedGlBlock = n / numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
     numSelectedFace = numPickingTextures;   // Undefined NeighborDirection
 
@@ -462,12 +462,12 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
-    cerr << "Block " << numSelectedBlock << ":" << NeighborDirection::getString(numSelectedFace)
+    cerr << "Block " << numSelectedGlBlock << ":" << NeighborDirection::getString(numSelectedFace)
          << " selected" << endl;
 
-    Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+    Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 
-    GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedBlock, (int)numSelectedFace));
+    GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
     GlutContext::popupMenu->activate(5, bb->getCCWMovePivotId() != -1);
     GlutContext::popupMenu->activate(6, bb->getCWMovePivotId() != -1);
     GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);

@@ -27,7 +27,7 @@ static const Vector3D defaultBlockSize{39.0, 39.0, 40.0};
 class RobotBlocksWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureWall;
-    presence *targetGrid;
+    presence *targetGrid; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
     RobotBlocksCapabilities *capabilities;
     ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 

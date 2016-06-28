@@ -155,8 +155,8 @@ void Catoms3DWorld::deleteBlock(BuildingBlock *blc) {
 
 	disconnectBlock(bb);
     }
-    if (selectedBlock == bb->ptrGlBlock) {
-	selectedBlock = NULL;
+    if (selectedGlBlock == bb->ptrGlBlock) {
+	selectedGlBlock = NULL;
 	GlutContext::mainWindow->select(NULL);
     }
     // remove the associated glBlock
@@ -374,7 +374,7 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
 void Catoms3DWorld::menuChoice(int n) {
     switch (n) {
     case 1 : {
-	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 	/*Vector3D pos=bb->position;
 	  switch (numSelectedFace) {
@@ -401,14 +401,14 @@ void Catoms3DWorld::menuChoice(int n) {
 	  linkBlocks();*/
     } break;
     case 2 : {
-	OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
-	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+	OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
+	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	deleteBlock(bb);
 	linkBlock(bb->position);
 	linkNeighbors(bb->position);
     } break;
     case 3 : {
-	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+	Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	tapBlock(getScheduler()->now(), bb->blockId);
     } break;
     case 4:                 // Save current configuration
@@ -418,7 +418,7 @@ void Catoms3DWorld::menuChoice(int n) {
 }
 
 void Catoms3DWorld::setSelectedFace(int n) {
-    numSelectedBlock=n/12;
+    numSelectedGlBlock=n/12;
     string name = objBlockForPicking->getObjMtlName(n%12);
     numSelectedFace=0;
     

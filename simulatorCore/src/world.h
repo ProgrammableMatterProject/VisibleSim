@@ -1,5 +1,5 @@
 /*
- * world.h
+ * @file world.h
  *
  *  Created on: 23 mars 2013
  *      Author: dom
@@ -29,23 +29,44 @@ using namespace std;
 
 namespace BaseSimulator {
 
+/**
+ * @class World 
+ * @brief Represents the simulation world and manages all blocks 
+ */
 class World {
     boost::interprocess::interprocess_mutex mutex_gl;
 protected:
-    static World *world;
-    static vector<GlBlock*>tabGlBlocks;
-    static map<int, BuildingBlock*>buildingBlocksMap;
-    GlBlock *selectedBlock;
-    GLushort numSelectedFace;
-    GLuint numSelectedBlock;
-    GLint menuId;
-    Camera *camera;
+    /************************************************************
+     *   Global variable
+     ************************************************************/    
+    static World *world;        //!< Global variable to access the single simulation instance of World 
+    static vector<GlBlock*>tabGlBlocks; //!< A vector containing pointers to all graphical blocks
+    static map<int, BuildingBlock*>buildingBlocksMap; //!< A map containing all BuildingBlocks in the world, indexed by their blockId
 
+    /************************************************************
+     *   Graphical / UI Attributes
+     ************************************************************/    
+
+    GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
+    GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
+    GLuint numSelectedGlBlock; //!< The id of the block selected by the used
+    GLint menuId; 
+    Camera *camera; //!< Pointer to the camera object for the graphical simulation, also includes the light source
+
+    /**
+     * @brief World constructor, initializes the camera, light, and user interaction attributes
+     */
     World(int argc, char *argv[]);
+    /**
+     * @brief World destructor, deletes the blocks and their GL counterparts, the lattice and camera
+     */
     virtual ~World();
 public:
-    Lattice *lattice;
+    Lattice *lattice;           //!< The lattice on which the blocks are placed, manages the blocks positions and neighborhoods
 
+    /**
+     * @brief Returns the global instance of world, or raises an error if it has not been allocated
+     */    
     static World* getWorld() {
         assert(world != NULL);
         return(world);
@@ -59,11 +80,17 @@ public:
         world = _world;
     }
 
+    /**
+     * @brief Global function to call the world destructor
+     */    
     static void deleteWorld() {
         delete(world);
         world=NULL;
     }
 
+    /**
+     * @brief Getter for the map containing all blocks of the world
+     */    
     map<int, BuildingBlock*>& getMap() {
         return buildingBlocksMap;
     }
@@ -79,14 +106,19 @@ public:
     inline void printInfo() { OUTPUT << "I'm a World" << endl; };
     /**
      * Returns a boolean indicating if a block can be added to face #numSelectedFace
-     *  of block identified by numSelectedBlock
+     *  of block identified by numSelectedGlBlock
      *
-     * @param numSelectedBlock id of selected block
+     * @param numSelectedGlBlock id of selected block
      * @param numSelectedFace id of face to consider
      * @return true if corresponding cell is free and inside the grid, false otherwise
      */
-    bool canAddBlockToFace(int numSelectedBlock, int numSelectedFace);
+    bool canAddBlockToFace(int numSelectedGlBlock, int numSelectedFace);
 
+    /**
+     * @brief Returns a pointer to the block of id BId 
+     * @param bId : id of the block to get
+     * @return a pointer to block of id bId, or NULL if it does not exist
+     */    
     virtual BuildingBlock* getBlockById(int bId);
     /**
      * @brief Updates color and position of glBlock associated with block bb
@@ -104,18 +136,53 @@ public:
      * @param p : Position to set to blc's glBlock
      */
     virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
-
+    /**
+     * @brief Creates a block and add it to the simulation
+     *
+     * @param blockId : id of the block to be created. If -1, its id will be set to the MAX_CURRENT_ID + 1
+     * @param bcb : a pointer to the user fonction return the CodeBlock to execute on the block
+     * @param pos : the position of the block on the lattice grid
+     * @param col : the color of the block
+     * @param orientation : For C2D, the rotation angle of the block on its axis. \\
+     *                      For C3D, the number of the block's connector on the x axis. \\
+     *                      0 by default and for all other blocks
+     * @param master : indicates if the block is a master block. false by default
+     */
     virtual void addBlock(int blockId, BlockCodeBuilder bcb,
                           const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false) = 0;
+    /**
+     * @brief Deletes a block from the simulation
+     *
+     * @param blc : a pointer to the block to remove from the world
+     */
     virtual void deleteBlock(BuildingBlock *blc) = 0;
-    
-    virtual GlBlock* getSelectedBlock() { return selectedBlock; };
-    inline GlBlock* setSelectedBlock(int n) { return (selectedBlock=(n>=0)?tabGlBlocks[n]:NULL); };
-
+    /**
+     * @brief Getter for selectedGlBlock
+     *
+     * @return pointer to the block selected by the user, or NULL
+     */
+    virtual GlBlock* getselectedGlBlock() { return selectedGlBlock; };
+    /**
+     * @brief Setter for selectedGlBlock, updates the value of selected block with the block of id n, and returns it
+     * @param n : id of the new selectedGlBlock
+     * @return a pointer to the selected GlBlock
+     */
+    inline GlBlock* setselectedGlBlock(int n) { return (selectedGlBlock=(n>=0)?tabGlBlocks[n]:NULL); };
+    /**
+     * @brief Setter for selectedFace
+     * @param n : id of the new selectedFace
+     */
     virtual void setSelectedFace(int n) = 0;
-
+    /**
+     * @brief Returns the Glblock of id n 
+     * @param n : id of the Glblock to retrieve
+     */
     inline GlBlock* getBlockByNum(int n) { return tabGlBlocks[n]; };
+    /**
+     * @brief Returns the total number of blocks in the world
+     * @return the number of blocks in the world
+     */
     inline int getNbBlocks() { return buildingBlocksMap.size(); };
     /**
      * @brief Locks the world mutex to avoid concurrency issues with the gl process
@@ -125,12 +192,20 @@ public:
      * @brief Unlocks the world mutex to re-enable access from the gl process
      */
     inline void unlock() { mutex_gl.unlock(); };
+    /**
+     * @brief Draws the environment of the world and all included blocks
+     */
     virtual void glDraw() {};
+    /**
+     * @brief Draws the block ids of the block contained in the world
+     */
     virtual void glDrawId() {};
+    /**
+     * @brief Draws the blocks material used for user interactions
+     */
     virtual void glDrawIdByMaterial() {};
     /**
      * @brief Linearly scans the grid for blocks and calls linkBlock to connect the interfaces of neighbors
-     *
      */
     void linkBlocks();
     /**
@@ -154,35 +229,65 @@ public:
      * @brief Creates a new help window at a fixed location of the screen
      */
     void createHelpWindow();
-
-    virtual Camera *getCamera() { return camera; };
-    virtual void menuChoice(int);
-    virtual void exportConfiguration() {};
-    virtual inline BuildingBlock* getMenuBlock() {
-        return getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-    };
-
-    virtual void loadTextures(const string &str) { };
-
-    string generateConfigName();
-
     /**
-     * @copydoc
+     * @brief Getter for the camera instance of the simulation
+     * @return a pointer to the camera instance of the simulation
+     */
+    virtual Camera *getCamera() { return camera; };
+    /**
+     * @brief Handles a user click on one of the options from the menu
+     * @param id of the clicked menu button
+     */
+    virtual void menuChoice(int);
+    /**
+     * @brief Exports the current world configuration to an XML file. Triggered from the menu.
+     */
+    virtual void exportConfiguration() {};
+    /**
+     * @brief Sets the path to the texture folder for drawing
+     */
+    virtual void loadTextures(const string &str) { };
+    /**
+     * @brief Returns the BuildingBlock corresponding to the selected GlBlock 
+     * @return a pointer to the BuildingBlock corresponding to the selected GlBlock, or NULL if there is none
+     */
+    inline BuildingBlock *getSelectedBuildingBlock()
+        { return getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId); };
+    /**
+     * @brief Schedules a tap event for block with id bId, at time date.
+     *
+     * @param date the date at which the tap event must be consumed
+     * @param bId the id of the target block
      */
     void tapBlock(uint64_t date, int bId);
-
-    /* Stop the block execution */
+    /**
+     * @brief Stops all block in the world
+     */
     void stopSimulation();
-
+    /**
+     * @brief Generate an array of n random ids 
+     *
+     * @param n : number of ids to generate
+     * @param ids : array in which the ids will be stored, must have a size >= n
+     */
     void generateIds(int n, int *ids);
 };
 
+/**
+ * @brief Global function to call the world destructor
+ */
 inline void deleteWorld() {
     World::deleteWorld();
 }
 
+/**
+ * @brief Global getter for the world
+ */
 static inline World* getWorld() { return(World::getWorld()); }
 
+/**
+ * @brief Global setter for the world
+ */
 static inline void setWorld(World* _world) { World::setWorld(_world); }
 
 } // BaseSimulator namespace

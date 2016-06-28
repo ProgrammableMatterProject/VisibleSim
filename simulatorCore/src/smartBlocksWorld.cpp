@@ -305,8 +305,8 @@ void SmartBlocksWorld::deleteBlock(BuildingBlock *blc) {
         disconnectBlock(bb);
     }
 
-    if (selectedBlock == bb->ptrGlBlock) {
-        selectedBlock = NULL;
+    if (selectedGlBlock == bb->ptrGlBlock) {
+        selectedGlBlock = NULL;
         GlutContext::mainWindow->select(NULL);
     }
 
@@ -324,7 +324,7 @@ void SmartBlocksWorld::deleteBlock(BuildingBlock *blc) {
 
 
 void SmartBlocksWorld::setSelectedFace(int n) {
-    numSelectedBlock = n / numPickingTextures;
+    numSelectedGlBlock = n / numPickingTextures;
     string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
 
 	cerr << name << endl;

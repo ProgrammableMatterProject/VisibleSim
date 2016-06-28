@@ -32,19 +32,19 @@ protected:
     virtual ~BlinkyBlocksWorld();
 public:
     BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-              int argc, char *argv[]);
+                      int argc, char *argv[]);
 
     static void deleteWorld();
     static BlinkyBlocksWorld* getWorld() {
-    assert(world != NULL);
-    return((BlinkyBlocksWorld*)world);
+        assert(world != NULL);
+        return((BlinkyBlocksWorld*)world);
     }
     void printInfo() {
-    OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
+        OUTPUT << "I'm a BlinkyBlocksWorld" << endl;
     }
 
     virtual BlinkyBlocksBlock* getBlockById(int bId) {
-    return((BlinkyBlocksBlock*)World::getBlockById(bId));
+        return((BlinkyBlocksBlock*)World::getBlockById(bId));
     }
 
     virtual void addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
@@ -59,7 +59,6 @@ public:
     virtual void glDrawIdByMaterial();
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
-    virtual inline BuildingBlock* getMenuBlock() { return World::getMenuBlock(); };
 
     /* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
     void accelBlock(uint64_t date, int bId, int x, int y, int z);

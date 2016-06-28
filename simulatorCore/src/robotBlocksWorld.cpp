@@ -148,8 +148,8 @@ void RobotBlocksWorld::deleteBlock(BuildingBlock *blc) {
 
 		disconnectBlock(bb);
 	}
-	if (selectedBlock == bb->ptrGlBlock) {
-		selectedBlock = NULL;
+	if (selectedGlBlock == bb->ptrGlBlock) {
+		selectedGlBlock = NULL;
 		GlutContext::mainWindow->select(NULL);
 	}
 	// remove the associated glBlock
@@ -309,7 +309,7 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
 }
 
 void RobotBlocksWorld::menuChoice(int n) {
-	RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+	RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	switch (n) {
 	case 1 : {
 		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
@@ -321,7 +321,7 @@ void RobotBlocksWorld::menuChoice(int n) {
 		linkNeighbors(nPos);
 	} break;
 	case 2 : {
-		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
+		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
 		deleteBlock(bb);
 	} break;
 	case 3 : {
@@ -334,7 +334,7 @@ void RobotBlocksWorld::menuChoice(int n) {
 }
 
 void RobotBlocksWorld::setSelectedFace(int n) {
-	numSelectedBlock=n/6;
+	numSelectedGlBlock=n/6;
 	string name = objBlockForPicking->getObjMtlName(n%6);
 	if (name=="face_top") numSelectedFace=NeighborDirection::Top;
 	else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
@@ -373,7 +373,7 @@ void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &p
 
 void RobotBlocksWorld::exportConfiguration() {
 	// ofstream configFile;
-	// RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+	// RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	// string configFilename = ConfigUtils::generateConfigFilename();
 
 	// configFile.open(configFilename);

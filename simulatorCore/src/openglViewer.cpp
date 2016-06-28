@@ -197,7 +197,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 				camera->mouseDown(x,y);
 				int n=selectFunc(x,y);
 				GlBlock *glb = BaseSimulator::getWorld()->getBlockByNum(n-1);
-				GlBlock *glbs = BaseSimulator::getWorld()->getSelectedBlock();
+				GlBlock *glbs = BaseSimulator::getWorld()->getselectedGlBlock();
 				if (glbs != NULL && glbs == glb) {
 					BaseSimulator::getWorld()->tapBlock(BaseSimulator::getScheduler()->now(), glb->blockId);
 				}
@@ -226,13 +226,13 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 		if (state==GLUT_UP) {
 			if (button==GLUT_LEFT_BUTTON) {
 				int n=selectFunc(x,y);
-				GlBlock *slct=BaseSimulator::getWorld()->getSelectedBlock();
+				GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
 				// unselect current if exists
 				if (slct) slct->toggleHighlight();
 				// set n-1 block selected block (no selected block if n=0
-				if (n) BaseSimulator::getWorld()->setSelectedBlock(n-1)->toggleHighlight();
-				else BaseSimulator::getWorld()->setSelectedBlock(-1);
-				mainWindow->select(BaseSimulator::getWorld()->getSelectedBlock());
+				if (n) BaseSimulator::getWorld()->setselectedGlBlock(n-1)->toggleHighlight();
+				else BaseSimulator::getWorld()->setselectedGlBlock(-1);
+				mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
 		  	} else if (button==GLUT_RIGHT_BUTTON) {
 				int n=selectFaceFunc(x,y);
 				if (n) {
@@ -274,7 +274,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
 			//case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
 		case 'z' : {
 			World *world = BaseSimulator::getWorld();
-			GlBlock *slct=world->getSelectedBlock();
+			GlBlock *slct=world->getselectedGlBlock();
 			if (slct) {
 				world->getCamera()->setTarget(slct->getPosition());
 			}
@@ -338,7 +338,7 @@ void GlutContext::idleFunc(void) {
 		 	glutPostRedisplay();
 		}
 	}
-	if (mainWindow->hasSelectedBlock() || getScheduler()->state==Scheduler::RUNNING) {
+	if (mainWindow->hasselectedGlBlock() || getScheduler()->state==Scheduler::RUNNING) {
 		glutPostRedisplay(); // for blinking
 	}
 }

@@ -130,8 +130,8 @@ void BlinkyBlocksWorld::deleteBlock(BuildingBlock *blc) {
 		linkBlocks();
 	}
 
-	if (selectedBlock == bb->ptrGlBlock) {
-		selectedBlock = NULL;
+	if (selectedGlBlock == bb->ptrGlBlock) {
+		selectedGlBlock = NULL;
 		GlutContext::mainWindow->select(NULL);
 	}
 
@@ -281,7 +281,7 @@ void BlinkyBlocksWorld::loadTextures(const string &str) {
 }
 
 void BlinkyBlocksWorld::setSelectedFace(int n) {
-	numSelectedBlock=n/6;
+	numSelectedGlBlock=n/6;
 	string name = objBlockForPicking->getObjMtlName(n%6);
 
 	if (name=="_blinkyBlockPickingface_top") numSelectedFace=NeighborDirection::Top;
@@ -364,7 +364,7 @@ void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
 
 void BlinkyBlocksWorld::exportConfiguration() {
 	// ofstream configFile;
-	// BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
+	// BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	// string configFilename = ConfigUtils::generateConfigFilename();
 
 	// configFile.open(configFilename);

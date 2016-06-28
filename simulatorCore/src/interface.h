@@ -109,7 +109,7 @@ class GlutSlidingMainWindow : public GlutWindow {
 	GlutButton* buttonOpen, *buttonClose;
 	multimap<uint64_t,BlockDebugData*> traces;
 	GlutSlider *slider;
-	GlBlock *selectedBlock;
+	GlBlock *selectedGlBlock;
 public :
 	GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutSlidingMainWindow();
@@ -122,7 +122,7 @@ public :
 	void glDraw();
 	void addTrace(int id,const string &str,const Color &color);
 	void select(GlBlock *sb);
-	inline bool hasSelectedBlock()  { return selectedBlock!=NULL; };
+	inline bool hasselectedGlBlock()  { return selectedGlBlock!=NULL; };
 	inline bool isOpened() { return openingLevel!=0; }
 };
 
