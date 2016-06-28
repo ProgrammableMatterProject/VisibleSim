@@ -39,6 +39,7 @@ simulatorCode/deps/
 *.log
 *.bak
 *.old
+.DS_Store
 
 # External tools config files
 .projectile
