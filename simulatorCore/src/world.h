@@ -23,6 +23,7 @@
 #include "utils.h"
 #include "lattice.h"
 #include "scheduler.h"
+#include "capabilities.h"
 
 using namespace BaseSimulator::utils;
 using namespace std;
@@ -53,6 +54,13 @@ protected:
     GLint menuId; 
     Camera *camera; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
+    /************************************************************
+     *   Simulation Attributes
+     ************************************************************/    
+
+    presence *targetGrid; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
+    Capabilities *capabilities; //!< The capabilities available for the blocks simulated in this world
+    
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
      */
@@ -95,6 +103,21 @@ public:
         return buildingBlocksMap;
     }
 
+    /************************************************************
+     *   Reconfiguration Target Methods
+     ************************************************************/    
+
+    inline presence *getTargetGridPtr(short *gs)
+        { memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
+    inline presence getTargetGrid(int ix,int iy,int iz)
+        { return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
+    inline void setTargetGrid(presence value,int ix,int iy,int iz)
+        { targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
+    void initTargetGrid();
+    inline void setCapabilities(Capabilities *capa) { capabilities=capa; };
+    void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
+    inline Capabilities* getCapabilities() { return capabilities; };
+    
     /**
      * @brief Returns the number of blocks in the world
      * @return Number of blocks in the world
@@ -137,14 +160,14 @@ public:
      */
     virtual void updateGlData(BuildingBlock*blc, Vector3D &p);
     /**
-     * @brief Creates a block and add it to the simulation
+     * @brief Creates a block and adds it to the simulation
      *
      * @param blockId : id of the block to be created. If -1, its id will be set to the MAX_CURRENT_ID + 1
      * @param bcb : a pointer to the user fonction return the CodeBlock to execute on the block
      * @param pos : the position of the block on the lattice grid
      * @param col : the color of the block
-     * @param orientation : For C2D, the rotation angle of the block on its axis. \\
-     *                      For C3D, the number of the block's connector on the x axis. \\
+     * @param orientation : For C2D, the rotation angle of the block on its axis. 
+     *                      For C3D, the number of the block's connector on the x axis. 
      *                      0 by default and for all other blocks
      * @param master : indicates if the block is a master block. false by default
      */

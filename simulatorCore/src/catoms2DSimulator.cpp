@@ -83,15 +83,15 @@ void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 void Catoms2DSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {
 
 	// Add target cells to world
-	((Catoms2DWorld*)world)->initTargetGrid();
+	world->initTargetGrid();
 	for (Cell3DPosition p : targetCells) {
-		((Catoms2DWorld*)world)->setTargetGrid(fullCell, p[0], p[1], p[2]);
+		world->setTargetGrid(fullCell, p[0], p[1], p[2]);
 	}
 
 	// then parse and load capabilities...
 	TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
 	if (nodeCapa) {
-		((Catoms2DWorld*)world)->setCapabilities(new Catoms2DCapabilities(nodeCapa));
+		// ((Catoms2DWorld*)world)->setCapabilities(new Catoms2DCapabilities(nodeCapa));
 	}
 }
 

@@ -6,8 +6,9 @@
  */
 
 #include <iostream>
-#include "robotBlocksSimulator.h"
 #include <string.h>
+
+#include "robotBlocksSimulator.h"
 #include "trace.h"
 
 using namespace std;
@@ -73,15 +74,15 @@ void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockC
 void RobotBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {
 
 	// Add target cells to world
-	((RobotBlocksWorld*)world)->initTargetGrid();
+	world->initTargetGrid();
 	for (Cell3DPosition p : targetCells) {
-		((RobotBlocksWorld*)world)->setTargetGrid(fullCell, p[0], p[1], p[2]);
+		world->setTargetGrid(BaseSimulator::fullCell, p[0], p[1], p[2]);
 	}
 
 	// then parse and load capabilities...
 	TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
 	if (nodeCapa) {
-		((RobotBlocksWorld*)world)->setCapabilities(new RobotBlocksCapabilities(nodeCapa));
+		world->setCapabilities(new Capabilities(nodeCapa));
 	}
 }
 

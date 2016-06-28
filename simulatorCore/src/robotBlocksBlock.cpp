@@ -6,8 +6,8 @@
  */
 
 #include <iostream>
+
 #include "robotBlocksBlock.h"
-#include "buildingBlock.h"
 #include "robotBlocksWorld.h"
 #include "robotBlocksSimulator.h"
 #include "trace.h"

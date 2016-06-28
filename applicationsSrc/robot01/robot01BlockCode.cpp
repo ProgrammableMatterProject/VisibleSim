@@ -7,18 +7,20 @@
 
 #include <iostream>
 #include <sstream>
+
 #include "robot01BlockCode.h"
 #include "scheduler.h"
 #include "robotBlocksEvents.h"
+#include "capabilities.h"
 
 using namespace std;
 using namespace RobotBlocks;
 
 const int COM_DELAY=1000;
 
-RobotBlocks::presence *initGrid(short gridSize[3],RobotBlocks::presence *init) {
+presence *initGrid(short gridSize[3],presence *init) {
 	int size = gridSize[0]*gridSize[1]*gridSize[2];
-	RobotBlocks::presence *targetGrid = new RobotBlocks::presence[size];
+	presence *targetGrid = new presence[size];
 	memcpy(targetGrid,init,size);
 	return targetGrid;
 }
@@ -50,9 +52,10 @@ void Robot01BlockCode::startup() {
 	currentTrainGain=0;
 	//If i am master block
 	if(robotBlock->isMaster)
-	{ RobotBlocksWorld *wrl = RobotBlocksWorld::getWorld();
+	{
+		RobotBlocksWorld *wrl = RobotBlocksWorld::getWorld();
 		
-		RobotBlocks::presence *tg = wrl->getTargetGridPtr(gridSize);
+	    presence *tg = wrl->getTargetGridPtr(gridSize);
 		info << " (Master Block at " << robotBlock->position[0] << "," << robotBlock->position[1] << "," << robotBlock->position[2] << ")";
 		scheduler->trace(info.str(),robotBlock->blockId,YELLOW);
 		targetGrid = initGrid(gridSize,tg);
@@ -362,7 +365,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 	robotBlock->setColor((trainPrevious?(trainNext?MAGENTA:PINK):(trainNext?RED:goodPlace?GREEN:YELLOW)));
 }
 
-RobotBlocks::RobotBlocksBlockCode* Robot01BlockCode::buildNewBlockCode(RobotBlocksBlock *host) {
+RobotBlocksBlockCode* Robot01BlockCode::buildNewBlockCode(RobotBlocksBlock *host) {
 	return(new Robot01BlockCode(host));
 }
 
@@ -620,7 +623,7 @@ void Robot01BlockCode::sendReLinkTrainMessage() {
 	}
 }
 
-MapMessage::MapMessage(short *gs,RobotBlocks::presence *tg):Message(){
+MapMessage::MapMessage(short *gs,presence *tg):Message(){
 	id = MAP_MSG_ID;
 	memcpy(gridSize,gs,3*sizeof(short));
 	targetGrid = initGrid(gridSize,tg);
@@ -637,7 +640,7 @@ AckMapMessage::AckMapMessage():Message(){
 AckMapMessage::~AckMapMessage() {
 }
 
-TrainMessage::TrainMessage(const RobotBlocks::PointRel3D &p,int g):Message(){
+TrainMessage::TrainMessage(const PointRel3D &p,int g):Message(){
 	id = TRAIN_MSG_ID;
 	newPos = p;
 	gain=g;

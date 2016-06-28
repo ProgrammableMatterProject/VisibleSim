@@ -16,6 +16,7 @@
 #include "world.h"
 #include "commandLine.h"
 #include "blockCode.h"
+#include "capabilities.h"
 
 using namespace std;
 

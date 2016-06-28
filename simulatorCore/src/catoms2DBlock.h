@@ -14,7 +14,6 @@
 #include "buildingBlock.h"
 #include "catoms2DBlockCode.h"
 #include "catoms2DGlBlock.h"
-#include "catoms2DCapabilities.h"
 #include "catoms2DEvents.h"
 #include "catoms2DDirection.h"
 //#include "catoms2DMove.h"

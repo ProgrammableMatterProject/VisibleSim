@@ -45,22 +45,22 @@ typedef std::shared_ptr<AnswerDelayMessage> AnswerDelayMessage_ptr;
 typedef std::shared_ptr<UnlockMessage> UnlockMessage_ptr;
 typedef std::shared_ptr<ReLinkTrainMessage> ReLinkTrainMessage_ptr;
 /*typedef std::shared_ptr<PrepareMotionMessage> PrepareMotionMessage_ptr;
-typedef std::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
-typedef std::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
+  typedef std::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
+  typedef std::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
 */
 
 class Robot01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 	short gridSize[3];
-	RobotBlocks::presence *targetGrid;
+	presence *targetGrid;
 	P2PNetworkInterface *block2Answer;
 	int nbreOfWaitedAnswers,blockToUnlock;
 
-  int currentTrainGain;
-  RobotBlocks::PointRel3D currentTrainGoal;
+	int currentTrainGain;
+	PointRel3D currentTrainGoal;
 	bool goodPlace;
-	RobotBlocks::PointRel3D motionVector,nextMotionVector;
+	PointRel3D motionVector,nextMotionVector;
 	P2PNetworkInterface *trainNext,*trainPrevious;
-	vector <RobotBlocks::Validation*> *possibleMotions;
+	vector <Validation*> *possibleMotions;
 public:
 
     Scheduler *scheduler;
@@ -77,12 +77,12 @@ public:
 	void sendMapToNeighbors(P2PNetworkInterface *except);
 	void sendAckMap(P2PNetworkInterface *p2p);
 	void sendLinkTrainMessages(P2PNetworkInterface *sender);
-	void getLocalTargetGrid(const RobotBlocks::PointRel3D &pos,RobotBlocks::PresenceMatrix &pm);
+	void getLocalTargetGrid(const PointRel3D &pos,PresenceMatrix &pm);
 	void sendAnswerDelayOrMotionDelayMessage(uint64_t gt);
 	void sendUnlockMessage(int id);
-	void calcPossibleMotions(const RobotBlocks::PointRel3D &np);
+	void calcPossibleMotions(const PointRel3D &np);
 	void sendReLinkTrainMessage();
-/*	void sendTrainMessage(P2PNetworkInterface *p2p,const RobotBlocks::PointRel3D &motion,bool ar);
+/*	void sendTrainMessage(P2PNetworkInterface *p2p,const PointRel3D &motion,bool ar);
 	void sendTrainReadyMessage(P2PNetworkInterface *p2p);
 	void sendPrepareMotionMessageToNeighbors(P2PNetworkInterface *except);
 	void sendRunTrainToNeighbors(P2PNetworkInterface *except);
@@ -92,8 +92,8 @@ public:
 class MapMessage : public Message {
 public :
 	short gridSize[3];
-	RobotBlocks::presence *targetGrid;
-	MapMessage(short*,RobotBlocks::presence*);
+	presence *targetGrid;
+	MapMessage(short*,presence*);
 	~MapMessage();
 };
 
@@ -105,9 +105,9 @@ public :
 
 class TrainMessage : public Message {
 public :
-	RobotBlocks::PointRel3D newPos;
+	PointRel3D newPos;
 	int gain;
-	TrainMessage(const RobotBlocks::PointRel3D &p,int g);
+	TrainMessage(const PointRel3D &p,int g);
 	~TrainMessage();
 };
 
@@ -143,7 +143,7 @@ public :
 
 class ReLinkTrainMessage : public Message {
 public :
-		ReLinkTrainMessage();
+	ReLinkTrainMessage();
     ~ReLinkTrainMessage();
 };
 

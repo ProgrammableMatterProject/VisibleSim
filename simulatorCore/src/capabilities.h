@@ -1,20 +1,21 @@
 /*
- * catoms2DCapability.h
+ * Capabilities.h
  *
- *  Created on: 15 janvier 2014
- *      Author: Benoît
+ *  Created on: 28 june 2016
+ *      Author: Pierre
  */
-#ifndef CATOMS2DCAPABILITY_H_
-#define CATOMS2DCAPABILITY_H_
+#ifndef CAPABILITIES_H_
+#define CAPABILITIES_H_
 
 #include <vector>
-#include <climits>
-#include "vector3D.h"
-#include "trace.h"
 #include <string>
+#include <climits>
 #include <TinyXML/tinyxml.h>
 
-namespace Catoms2D {
+#include "vector3D.h"
+#include "trace.h"
+
+namespace BaseSimulator {
 
 class PointRel3D {
 public :
@@ -109,12 +110,12 @@ public:
 	Validation(Capability *c,short g,short n);
 };
 
-class Catoms2DCapabilities {
+class Capabilities {
 public:
 	vector <Capability*> tabCapabilities;
 
-	Catoms2DCapabilities(TiXmlNode *node);
-	~Catoms2DCapabilities();
+    Capabilities(TiXmlNode *node);
+	~Capabilities();
 	Capability *validate(const PresenceMatrix &sm);
 	Capability *validateWithTarget(const PresenceMatrix &sm,const PresenceMatrix &ltm,int &gain);
 	Capability *validateTrain(const PresenceMatrix &sm,const PresenceMatrix &ltm,int &gain);

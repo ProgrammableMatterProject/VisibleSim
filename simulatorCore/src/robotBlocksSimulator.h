@@ -31,14 +31,14 @@ public:
     static RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
 
     static RobotBlocksSimulator* getSimulator() {
-	assert(simulator != NULL);
-	return((RobotBlocksSimulator*)simulator);
+        assert(simulator != NULL);
+        return((RobotBlocksSimulator*)simulator);
     }
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-			   int argc, char *argv[]);
+                           int argc, char *argv[]);
     virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+                           (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
     virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
     virtual void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
 

@@ -1,158 +1,165 @@
-#include "robotBlocksCapabilities.h"
+
 #include <algorithm>
 
-static int localNum=0;
-const bool truthTable[9][4]={ {1,0,0,1}, {0,0,0,0}, {0,0,0,0}, {0,1,0,0}, {0,0,0,0}, {1,0,0,0}, {0,1,0,0}, {0,1,0,0}, {1,1,1,1} };
-const short gainTable[9][4]={ {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {1,0,0,0}, {0,-1,0,0}, {-1,0,0,0}, {0,0,0,0} };
+#include "capabilities.h"
 
-namespace RobotBlocks {
+static int localNum = 0;
+const bool truthTable[9][4]={ {1,0,0,1}, {0,0,0,0}, {0,0,0,0},
+							  {0,1,0,0}, {0,0,0,0}, {1,0,0,0},
+							  {0,1,0,0}, {0,1,0,0}, {1,1,1,1} };
+const short gainTable[9][4]={ {0,0,0,0}, {0,0,0,0}, {0,0,0,0},
+							  {0,0,0,0}, {0,0,0,0}, {1,0,0,0},
+							  {0,-1,0,0}, {-1,0,0,0}, {0,0,0,0} };
+
+namespace BaseSimulator {
+
 Capability::Capability(const string& sid):name(sid) {
 	cout << "new capability: "<< name << endl;
-	num=localNum++;
+	num = localNum++;
 
-	linkNextPos=linkPrevPos=NULL;
+	linkNextPos = linkPrevPos = NULL;
 }
 
 Capability::Capability(const string& sid,const Capability*ref,int n):name(sid) {
-	num=localNum++;
+	num = localNum++;
 
 	cout << "new capability: "<< name << endl;
 	ValidationMatrix tmp,tmp2;
 	PointRel3D tmppt;
-  level = ref->level;
-  nbreConditions = ref->nbreConditions;
-	linkNextPos=linkPrevPos=NULL;
-  isHead = ref->isHead;
-  isEnd = ref->isEnd;
+	level  =  ref->level;
+	nbreConditions  =  ref->nbreConditions;
+	linkNextPos = linkPrevPos = NULL;
+	isHead = ref->isHead;
+	isEnd = ref->isEnd;
 	switch (n) {
-		case 1 : case 2 : case 3 : // rotation around Z axis
+	case 1 : case 2 : case 3 : // rotation around Z axis
 
-			validationMatrix.fromRotationZ(ref->validationMatrix,n);
-			refPos = ref->refPos.rotateZ(n);
-			if (ref->linkPrevPos) {
-				linkPrevPos = new PointRel3D(ref->linkPrevPos->rotateZ(n));
-			} else {
-				linkPrevPos = NULL;
-			}
-			if (ref->linkNextPos) {
-				linkNextPos = new PointRel3D(ref->linkNextPos->rotateZ(n));
-			} else {
-				linkNextPos = NULL;
-			}
-			// copy the tabMotion vector with rotation
-			vector <Motion*>::const_iterator cm = ref->tabMotions.begin();
-			Motion *nm;
-			while (cm!=ref->tabMotions.end()) {
-				nm = new Motion(*cm);
-				nm->init = (*cm)->init.rotateZ(n);
-				nm->final = (*cm)->final.rotateZ(n);
-				tabMotions.push_back(nm);
-				cm++;
-			}
+		validationMatrix.fromRotationZ(ref->validationMatrix,n);
+		refPos = ref->refPos.rotateZ(n);
+		if (ref->linkPrevPos) {
+			linkPrevPos = new PointRel3D(ref->linkPrevPos->rotateZ(n));
+		} else {
+			linkPrevPos = NULL;
+		}
+		if (ref->linkNextPos) {
+			linkNextPos = new PointRel3D(ref->linkNextPos->rotateZ(n));
+		} else {
+			linkNextPos = NULL;
+		}
+		// copy the tabMotion vector with rotation
+		vector <Motion*>::const_iterator cm = ref->tabMotions.begin();
+		Motion *nm;
+		while (cm!=ref->tabMotions.end()) {
+			nm = new Motion(*cm);
+			nm->init = (*cm)->init.rotateZ(n);
+			nm->final = (*cm)->final.rotateZ(n);
+			tabMotions.push_back(nm);
+			cm++;
+		}
 
 		break;
 /*		case 4 : case 5 : case 6 : case 7 :
-			tmp.fromRotationY(ref->init,1);
-			init.fromRotationZ(tmp,n-4);
-			tmppt = ref->borderRelPos.rotateY(1);
-			borderRelPos = tmppt.rotateZ(n-4);
-			tmppt = ref->neighborRelPos.rotateY(1);
-			neighborRelPos = tmppt.rotateZ(n-4);
-			tmppt = ref->finalRelPos.rotateY(1);
-			finalRelPos = tmppt.rotateZ(n-4);
-			if (ref->friendRelInitPos) {
-				tmppt = ref->friendRelInitPos->rotateY(1);
-				friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-4));
-			} else friendRelInitPos=NULL;
-			if (ref->friendRelFinalPos) {
-				tmppt = ref->friendRelFinalPos->rotateY(1);
-				friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-4));
-			} else friendRelFinalPos=NULL;
+		tmp.fromRotationY(ref->init,1);
+		init.fromRotationZ(tmp,n-4);
+		tmppt = ref->borderRelPos.rotateY(1);
+		borderRelPos = tmppt.rotateZ(n-4);
+		tmppt = ref->neighborRelPos.rotateY(1);
+		neighborRelPos = tmppt.rotateZ(n-4);
+		tmppt = ref->finalRelPos.rotateY(1);
+		finalRelPos = tmppt.rotateZ(n-4);
+		if (ref->friendRelInitPos) {
+		tmppt = ref->friendRelInitPos->rotateY(1);
+		friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-4));
+		} else friendRelInitPos=NULL;
+		if (ref->friendRelFinalPos) {
+		tmppt = ref->friendRelFinalPos->rotateY(1);
+		friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-4));
+		} else friendRelFinalPos=NULL;
 		break;
 		case 8 : case 9 : case 10 : case 11 :
-			tmp.fromRotationY(ref->init,2);
-			init.fromRotationZ(tmp,n-8);
-			tmppt = ref->borderRelPos.rotateY(2);
-			borderRelPos = tmppt.rotateZ(n-8);
-			tmppt = ref->neighborRelPos.rotateY(2);
-			neighborRelPos = tmppt.rotateZ(n-8);
-			tmppt = ref->finalRelPos.rotateY(2);
-			finalRelPos = tmppt.rotateZ(n-8);
-			if (ref->friendRelInitPos) {
-				tmppt = ref->friendRelInitPos->rotateY(2);
-				friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-8));
-			} else friendRelInitPos=NULL;
-			if (ref->friendRelFinalPos) {
-				tmppt = ref->friendRelFinalPos->rotateY(2);
-				friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-8));
-			} else friendRelFinalPos=NULL;
+		tmp.fromRotationY(ref->init,2);
+		init.fromRotationZ(tmp,n-8);
+		tmppt = ref->borderRelPos.rotateY(2);
+		borderRelPos = tmppt.rotateZ(n-8);
+		tmppt = ref->neighborRelPos.rotateY(2);
+		neighborRelPos = tmppt.rotateZ(n-8);
+		tmppt = ref->finalRelPos.rotateY(2);
+		finalRelPos = tmppt.rotateZ(n-8);
+		if (ref->friendRelInitPos) {
+		tmppt = ref->friendRelInitPos->rotateY(2);
+		friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-8));
+		} else friendRelInitPos=NULL;
+		if (ref->friendRelFinalPos) {
+		tmppt = ref->friendRelFinalPos->rotateY(2);
+		friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-8));
+		} else friendRelFinalPos=NULL;
 		break;
 		case 12 : case 13 : case 14 : case 15 :
-			tmp.fromRotationY(ref->init,3);
-			init.fromRotationZ(tmp,n-12);
-			tmppt = ref->borderRelPos.rotateY(3);
-			borderRelPos = tmppt.rotateZ(n-12);
-			tmppt = ref->neighborRelPos.rotateY(3);
-			neighborRelPos = tmppt.rotateZ(n-12);
-			tmppt = ref->finalRelPos.rotateY(3);
-			finalRelPos = tmppt.rotateZ(n-12);
-			if (ref->friendRelInitPos) {
-				tmppt = ref->friendRelInitPos->rotateY(3);
-				friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-12));
-			} else friendRelInitPos=NULL;
-			if (ref->friendRelFinalPos) {
-				tmppt = ref->friendRelFinalPos->rotateY(3);
-				friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-12));
-			} else friendRelFinalPos=NULL;
+		tmp.fromRotationY(ref->init,3);
+		init.fromRotationZ(tmp,n-12);
+		tmppt = ref->borderRelPos.rotateY(3);
+		borderRelPos = tmppt.rotateZ(n-12);
+		tmppt = ref->neighborRelPos.rotateY(3);
+		neighborRelPos = tmppt.rotateZ(n-12);
+		tmppt = ref->finalRelPos.rotateY(3);
+		finalRelPos = tmppt.rotateZ(n-12);
+		if (ref->friendRelInitPos) {
+		tmppt = ref->friendRelInitPos->rotateY(3);
+		friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-12));
+		} else friendRelInitPos=NULL;
+		if (ref->friendRelFinalPos) {
+		tmppt = ref->friendRelFinalPos->rotateY(3);
+		friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-12));
+		} else friendRelFinalPos=NULL;
 		break;
 		case 16 : case 17 : case 18 : case 19 :
-			tmp.fromRotationZ(ref->init,1);
-			tmp2.fromRotationY(tmp,3);
-			init.fromRotationZ(tmp2,n-16);
-			tmppt = ref->borderRelPos.rotateZ(1);
-			tmppt = tmppt.rotateY(3);
-			borderRelPos = tmppt.rotateZ(n-16);
-			tmppt = ref->neighborRelPos.rotateZ(1);
-			tmppt = tmppt.rotateY(3);
-			neighborRelPos = tmppt.rotateZ(n-16);
-			tmppt = ref->finalRelPos.rotateZ(1);
-			tmppt = tmppt.rotateY(3);
-			finalRelPos = tmppt.rotateZ(n-16);
-			if (ref->friendRelInitPos) {
-				tmppt = ref->friendRelInitPos->rotateZ(1);
-				tmppt = tmppt.rotateY(3);
-				friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-16));
-			} else friendRelInitPos=NULL;
-			if (ref->friendRelFinalPos) {
-				tmppt = ref->friendRelFinalPos->rotateZ(1);
-				tmppt = tmppt.rotateY(3);
-				friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-16));
-			} else friendRelFinalPos=NULL;
+		tmp.fromRotationZ(ref->init,1);
+		tmp2.fromRotationY(tmp,3);
+		init.fromRotationZ(tmp2,n-16);
+		tmppt = ref->borderRelPos.rotateZ(1);
+		tmppt = tmppt.rotateY(3);
+		borderRelPos = tmppt.rotateZ(n-16);
+		tmppt = ref->neighborRelPos.rotateZ(1);
+		tmppt = tmppt.rotateY(3);
+		neighborRelPos = tmppt.rotateZ(n-16);
+		tmppt = ref->finalRelPos.rotateZ(1);
+		tmppt = tmppt.rotateY(3);
+		finalRelPos = tmppt.rotateZ(n-16);
+		if (ref->friendRelInitPos) {
+		tmppt = ref->friendRelInitPos->rotateZ(1);
+		tmppt = tmppt.rotateY(3);
+		friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-16));
+		} else friendRelInitPos=NULL;
+		if (ref->friendRelFinalPos) {
+		tmppt = ref->friendRelFinalPos->rotateZ(1);
+		tmppt = tmppt.rotateY(3);
+		friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-16));
+		} else friendRelFinalPos=NULL;
 
 		break;
 		case 20 : case 21 : case 22 : case 23 :
-			tmp.fromRotationZ(ref->init,3);
-			tmp2.fromRotationY(tmp,3);
-			init.fromRotationZ(tmp2,n-20);
-			tmppt = ref->borderRelPos.rotateZ(3);
-			tmppt = tmppt.rotateY(3);
-			borderRelPos = tmppt.rotateZ(n-20);
-			tmppt = ref->neighborRelPos.rotateZ(3);
-			tmppt = tmppt.rotateY(3);
-			neighborRelPos = tmppt.rotateZ(n-20);
-			tmppt = ref->finalRelPos.rotateZ(3);
-			tmppt = tmppt.rotateY(3);
-			finalRelPos = tmppt.rotateZ(n-20);
-			if (ref->friendRelInitPos) {
-				tmppt = ref->friendRelInitPos->rotateZ(3);
-				tmppt = tmppt.rotateY(3);
-				friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-20));
-			} else friendRelInitPos=NULL;
-			if (ref->friendRelFinalPos) {
-				tmppt = ref->friendRelFinalPos->rotateZ(3);
-				tmppt = tmppt.rotateY(3);
-				friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-20));
-			} else friendRelFinalPos=NULL;
+		tmp.fromRotationZ(ref->init,3);
+		tmp2.fromRotationY(tmp,3);
+		init.fromRotationZ(tmp2,n-20);
+		tmppt = ref->borderRelPos.rotateZ(3);
+		tmppt = tmppt.rotateY(3);
+		borderRelPos = tmppt.rotateZ(n-20);
+		tmppt = ref->neighborRelPos.rotateZ(3);
+		tmppt = tmppt.rotateY(3);
+		neighborRelPos = tmppt.rotateZ(n-20);
+		tmppt = ref->finalRelPos.rotateZ(3);
+		tmppt = tmppt.rotateY(3);
+		finalRelPos = tmppt.rotateZ(n-20);
+		if (ref->friendRelInitPos) {
+		tmppt = ref->friendRelInitPos->rotateZ(3);
+		tmppt = tmppt.rotateY(3);
+		friendRelInitPos=new PointRel3D(tmppt.rotateZ(n-20));
+		} else friendRelInitPos=NULL;
+		if (ref->friendRelFinalPos) {
+		tmppt = ref->friendRelFinalPos->rotateZ(3);
+		tmppt = tmppt.rotateY(3);
+		friendRelFinalPos=new PointRel3D(tmppt.rotateZ(n-20));
+		} else friendRelFinalPos=NULL;
 		break;*/
 	}
 }
@@ -201,7 +208,7 @@ ostream& operator<<(ostream& f,const Capability &c) {
 	f << c.validationMatrix;
 /*	f << "From : " << c.initRelPos << endl;
 	f << "To : " << c.finalRelPos << endl;*/
-  return f;
+	return f;
 }
 
 void Capability::getCenter(PointRel3D &center) {
@@ -212,8 +219,7 @@ void Capability::getCenter(PointRel3D &center) {
 
 /*************************************BPi*************************************/
 /* Capabilities                                                              */
-RobotBlocksCapabilities::RobotBlocksCapabilities(TiXmlNode *node) {
-
+Capabilities::Capabilities(TiXmlNode *node) {
 	TiXmlElement *capaElem = node->FirstChildElement("capability");
 	Capability *currentCapa=NULL;
 	TiXmlElement *matrixElem;
@@ -241,9 +247,9 @@ RobotBlocksCapabilities::RobotBlocksCapabilities(TiXmlNode *node) {
 
 		const char *str_c = capaElem->Attribute("head");
 		if (!str_c) {
-      currentCapa->isHead = false;
+			currentCapa->isHead = false;
 		} else {
-      currentCapa->isHead = (bool)(atoi(str_c));
+			currentCapa->isHead = (bool)(atoi(str_c));
 		}
 
 		str_c = capaElem->Attribute("end");
@@ -266,11 +272,11 @@ RobotBlocksCapabilities::RobotBlocksCapabilities(TiXmlNode *node) {
 			str = matrixElem->Attribute("pos");
 			currentCapa->refPos.fromString(str);
 			/*const char *str_c = matrixElem->Attribute("helperPos");
-			if (str_c) {
-				currentCapa->helperPos=new PointRel3D(str_c);
-			} else {
-				currentCapa->helperPos=NULL;
-			}*/
+			  if (str_c) {
+			  currentCapa->helperPos=new PointRel3D(str_c);
+			  } else {
+			  currentCapa->helperPos=NULL;
+			  }*/
 			const char *str_c = matrixElem->Attribute("linkPrevPos");
 			if (str_c) {
 				currentCapa->linkPrevPos=new PointRel3D(str_c);
@@ -329,7 +335,7 @@ RobotBlocksCapabilities::RobotBlocksCapabilities(TiXmlNode *node) {
 	}
 }
 
-RobotBlocksCapabilities::~RobotBlocksCapabilities() {
+Capabilities::~Capabilities() {
 	vector<Capability*>::const_iterator it = tabCapabilities.begin();
 	while (it!=tabCapabilities.end()) {
 		delete (*it);
@@ -338,7 +344,7 @@ RobotBlocksCapabilities::~RobotBlocksCapabilities() {
 	tabCapabilities.clear();
 }
 
-Capability *RobotBlocksCapabilities::validate(const PresenceMatrix &pm) {
+Capability *Capabilities::validate(const PresenceMatrix &pm) {
 	vector<Capability*>::const_iterator it = tabCapabilities.begin();
 	Capability *best=NULL;
 	while (it!=tabCapabilities.end()) {
@@ -350,7 +356,7 @@ Capability *RobotBlocksCapabilities::validate(const PresenceMatrix &pm) {
     return best;
 }
 
-Capability *RobotBlocksCapabilities::validateWithTarget(const PresenceMatrix &pm, const PresenceMatrix &ltm,int &gain) {
+Capability *Capabilities::validateWithTarget(const PresenceMatrix &pm, const PresenceMatrix &ltm,int &gain) {
 	vector<Capability*>::const_iterator it = tabCapabilities.begin();
 	Capability *best=NULL;
 	gain=-1;
@@ -367,7 +373,7 @@ Capability *RobotBlocksCapabilities::validateWithTarget(const PresenceMatrix &pm
     return best;
 }
 
-Capability *RobotBlocksCapabilities::validateTrain(const PresenceMatrix &pm, const PresenceMatrix &ltm,int &gain) {
+Capability *Capabilities::validateTrain(const PresenceMatrix &pm, const PresenceMatrix &ltm,int &gain) {
 	vector<Capability*>::const_iterator it = tabCapabilities.begin();
 	Capability *best=NULL;
 	gain=-1;
@@ -390,7 +396,7 @@ bool compare(Validation* a,Validation* b) {
 	return (a->nbreConditions<b->nbreConditions || (a->gain<b->gain && a->nbreConditions==b->nbreConditions));
 }
 
-vector <Validation*> *RobotBlocksCapabilities::validateMulti(const PresenceMatrix &pm,const PresenceMatrix &ltm) {
+vector <Validation*> *Capabilities::validateMulti(const PresenceMatrix &pm,const PresenceMatrix &ltm) {
 	vector<Capability*>::const_iterator it = tabCapabilities.begin();
 	vector<Validation*> *tabValid = new vector<Validation*>();
 	while (it!=tabCapabilities.end()) {
@@ -399,26 +405,26 @@ vector <Validation*> *RobotBlocksCapabilities::validateMulti(const PresenceMatri
 			cout << ltm;
 			cout << (*it)->validationMatrix;*/
 			int g=0;
-		  if ((*it)->linkNextPos) {
+			if ((*it)->linkNextPos) {
 				g-=gainTable[(*it)->validationMatrix.get(*(*it)->linkNextPos)][ltm.get(*(*it)->linkNextPos)];
 //		    cout << "next = " << *(*it)->linkNextPos << endl;
 			}
-		  if ((*it)->linkPrevPos) {
+			if ((*it)->linkPrevPos) {
 				g+=gainTable[(*it)->validationMatrix.get(*(*it)->linkPrevPos)][ltm.get(*(*it)->linkPrevPos)];
 //		    cout << "prev = " << *(*it)->linkPrevPos << endl;
 			}
 			Validation *v = new Validation(*it,g,(*it)->nbreConditions);
 			tabValid->push_back(v);
 //			cout << "gain =" << g << endl;
-    }
-    it++;
+		}
+		it++;
 	}
 	if (tabValid->empty()) {
 		delete tabValid;
 		return NULL;
 	}
 	std::sort(tabValid->begin(),tabValid->end(),compare);
-  return tabValid;
+	return tabValid;
 }
 
 /**************************************BPi************************************/
@@ -512,7 +518,7 @@ ostream& operator<<(ostream& f,const ValidationMatrix &sm) {
 	f << sm.grid[24] << " " << sm.grid[25] << " " << sm.grid[26] << " | " << sm.grid[15] << " " << sm.grid[16] << " " << sm.grid[17] << " | " << sm.grid[6] << " " << sm.grid[7] << " " << sm.grid[8] << endl;
 	f << sm.grid[21] << " " << sm.grid[22] << " " << sm.grid[23] << " | " << sm.grid[12] << " " << sm.grid[13] << " " << sm.grid[14] << " | " << sm.grid[3] << " " << sm.grid[4] << " " << sm.grid[5] << endl;
 	f << sm.grid[18] << " " << sm.grid[19] << " " << sm.grid[20] << " | " << sm.grid[9] << " " << sm.grid[10] << " " << sm.grid[11] << " | " << sm.grid[0] << " " << sm.grid[1] << " " << sm.grid[2] << endl;
-  return f;
+	return f;
 }
 
 bool ValidationMatrix::validate(const PresenceMatrix &pm) {
@@ -588,7 +594,7 @@ void PointRel3D::fromString(const string &str,const PointRel3D &ref) {
 // write PointRel3D values into a flux
 ostream& operator<<(ostream& f,const PointRel3D &pt) {
 	f << "(" << pt.x << "," << pt.y << "," << pt.z << ")";
-  return f;
+	return f;
 }
 
 PointRel3D PointRel3D::rotateY(int a) const {
@@ -629,21 +635,21 @@ bool PointRel3D::isInBoundingBox(short x0,short x1,short y0,short y1,short z0,sh
 	return (x>=x0 && x<=x1 && y>=y0 && y<=y1 && z>=z0 && z<=z1);
 }
 /*
-bool operator <=(const PointRel3D p1,const PointRel3D p2) {
-	if (p1.x<p2.x) return true;
-	if (p1.x>p2.x) return false;
-	if (p1.y<p2.y) return true;
-	if (p1.y>p2.y) return false;
-	return (p1.z<=p2.z);
-}
+  bool operator <=(const PointRel3D p1,const PointRel3D p2) {
+  if (p1.x<p2.x) return true;
+  if (p1.x>p2.x) return false;
+  if (p1.y<p2.y) return true;
+  if (p1.y>p2.y) return false;
+  return (p1.z<=p2.z);
+  }
 
-bool operator >(const PointRel3D p1,const PointRel3D p2) {
-	if (p1.x>p2.x) return true;
-	if (p1.x<p2.x) return false;
-	if (p1.y>p2.y) return true;
-	if (p1.y<p2.y) return false;
-	return (p1.z>p2.z);
-}
+  bool operator >(const PointRel3D p1,const PointRel3D p2) {
+  if (p1.x>p2.x) return true;
+  if (p1.x<p2.x) return false;
+  if (p1.y>p2.y) return true;
+  if (p1.y<p2.y) return false;
+  return (p1.z>p2.z);
+  }
 */
 bool operator !=(const PointRel3D p1,const PointRel3D p2) {
 	return (p1.x!=p2.x || p1.y!=p2.y || p1.z!=p2.z);
@@ -673,34 +679,34 @@ PresenceMatrix::PresenceMatrix() {
 
 void PresenceMatrix::add(presence v,const PointRel3D &posAdd,const PointRel3D &origine) {
 	PointRel3D p;
-	p.x = posAdd.x-origine.x;
-	if (p.x>=-1 && p.x<=1) {
-		p.y = posAdd.y-origine.y;
-		if (p.y>=-1 && p.y<=1) {
-			p.z = posAdd.z-origine.z;
-			if (p.z>=-1 && p.z<=1) {
-				*(grid+p.x+p.y*3+p.z*9+13)=v;
+	p.x  =  posAdd.x-origine.x;
+	if (p.x >= -1 && p.x <= 1) {
+		p.y = posAdd.y - origine.y;
+		if (p.y >= -1 && p.y <= 1) {
+			p.z = posAdd.z - origine.z;
+			if (p.z >= -1 && p.z <= 1) {
+				*(grid + p.x + p.y * 3 + p.z * 9 + 13) = v;
 			}
 		}
 	}
 }
 
 presence PresenceMatrix::get(const PointRel3D& pt) const {
-	return grid[pt.x+pt.y*3+pt.z*9+13];
+	return grid[pt.x + pt.y * 3 + pt.z * 9 + 13];
 }
 
 void PresenceMatrix::set(const PointRel3D& pt,presence v) {
-	presence *ptr = grid+pt.x+pt.y*3+pt.z*9+13;
-	*ptr=v;
+	presence *ptr = grid + pt.x + pt.y * 3 + pt.z * 9+13;
+	*ptr = v;
 }
 
 
 // write PresenceMatrix values into a flux
- ostream& operator<<(ostream& f,const PresenceMatrix &sm) {
+ostream& operator<<(ostream& f,const PresenceMatrix &sm) {
 	f << sm.grid[24] << " " << sm.grid[25] << " " << sm.grid[26] << " | " << sm.grid[15] << " " << sm.grid[16] << " " << sm.grid[17] << " | " << sm.grid[6] << " " << sm.grid[7] << " " << sm.grid[8] << endl;
 	f << sm.grid[21] << " " << sm.grid[22] << " " << sm.grid[23] << " | " << sm.grid[12] << " " << sm.grid[13] << " " << sm.grid[14] << " | " << sm.grid[3] << " " << sm.grid[4] << " " << sm.grid[5] << endl;
 	f << sm.grid[18] << " " << sm.grid[19] << " " << sm.grid[20] << " | " << sm.grid[9] << " " << sm.grid[10] << " " << sm.grid[11] << " | " << sm.grid[0] << " " << sm.grid[1] << " " << sm.grid[2] << endl;
-  return f;
+	return f;
 }
 
 /**************************************BPi************************************/

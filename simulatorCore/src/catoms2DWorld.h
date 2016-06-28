@@ -12,7 +12,6 @@
 #include "world.h"
 #include "vector3D.h"
 #include "catoms2DBlock.h"
-#include "catoms2DCapabilities.h"
 #include "objLoader.h"
 #include <boost/asio.hpp>
 #include "trace.h"
@@ -26,8 +25,6 @@ class Catoms2DWorld : public BaseSimulator::World {
 protected:
     ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
     GLuint idTextureHexa,idTextureLines;
-    presence *targetGrid;
-    Catoms2DCapabilities *capabilities;
     static const int numPickingTextures = 7; /* The number of picking textures defined for
                         this type of catom,
                         used to deduce selected Block / face */
@@ -55,17 +52,6 @@ public:
                           const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false);
     virtual void deleteBlock(BuildingBlock *blc);
-    inline presence *getTargetGridPtr(short *gs)
-    { memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
-    inline presence getTargetGrid(int ix,int iy,int iz)
-    { return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
-    inline void setTargetGrid(presence value,int ix,int iy,int iz)
-    { targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
-    void initTargetGrid();
-
-    inline void setCapabilities(Catoms2DCapabilities *capa) { capabilities=capa; };
-    void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
-    inline Catoms2DCapabilities* getCapabilities() { return capabilities; };
     void loadTextures(const string &str);
 
     /**

@@ -13,7 +13,6 @@
 #include "buildingBlock.h"
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksGlBlock.h"
-#include "robotBlocksCapabilities.h"
 
 namespace RobotBlocks {
 

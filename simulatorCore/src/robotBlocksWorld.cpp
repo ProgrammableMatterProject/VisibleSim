@@ -344,33 +344,6 @@ void RobotBlocksWorld::setSelectedFace(int n) {
 	else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
 }
 
-void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
-	presence *gpm=pm.grid;
-	RobotBlocksBlock **grb;
-
-	//memset(pm.grid,wall,27*sizeof(presence));
-
-	for (int i=0; i<27; i++) { *gpm++ = wallCell; };
-
-	int ix0 = (pos.x<1)?1-pos.x:0,
-		ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
-		iy0 = (pos.y<1)?1-pos.y:0,
-		iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
-		iz0 = (pos.z<1)?1-pos.z:0,
-		iz1 = (pos.z>lattice->gridSize[2]-2)?lattice->gridSize[2]-pos.z+1:3,
-		ix,iy,iz;
-	for (iz=iz0; iz<iz1; iz++) {
-		for (iy=iy0; iy<iy1; iy++) {
-			gpm = pm.grid+((iz*3+iy)*3+ix0);
-			grb = (RobotBlocksBlock **)lattice->grid+
-				(ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*lattice->gridSize[1])*lattice->gridSize[0]);
-			for (ix=ix0; ix<ix1; ix++) {
-				*gpm++ = (*grb++)?fullCell:emptyCell;
-			}
-		}
-	}
-}
-
 void RobotBlocksWorld::exportConfiguration() {
 	// ofstream configFile;
 	// RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
@@ -389,14 +362,6 @@ void RobotBlocksWorld::exportConfiguration() {
 
 	// OUTPUT << "Configuration exported to: " << configFilename << endl;
 	// cerr << "Configuration exported to: " << configFilename << endl;
-}
-
-
-void RobotBlocksWorld::initTargetGrid() {
-	if (targetGrid) delete [] targetGrid;
-	int sz = lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2];
-	targetGrid = new presence[lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2]];
-	memset(targetGrid,0,sz*sizeof(presence));
 }
 
 } // RobotBlock namespace

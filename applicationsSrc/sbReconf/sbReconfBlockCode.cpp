@@ -71,21 +71,21 @@ void SbReconfBlockCode::startup() {
     if(block->blockId == 1)
     { posGrid.x = block->position[0];
 	posGrid.y = block->position[1];
-	presence *tab = wrl->getTargetGridPtr(gridSize);
+	SmartBlocks::presence *tab = wrl->getTargetGridPtr(gridSize);
 #ifdef verbose
 	scheduler->trace(info.str(),block->blockId);
 #endif
-	targetGrid = new presence[gridSize[0]*gridSize[1]];
-	memcpy(targetGrid,tab,gridSize[0]*gridSize[1]*sizeof(presence));
-	block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+	targetGrid = new SmartBlocks::presence[gridSize[0]*gridSize[1]];
+	memcpy(targetGrid,tab,gridSize[0]*gridSize[1]*sizeof(SmartBlocks::presence));
+	block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
 	tabSteps[0] = true;
 
 	// compte le nombre de cellules pleines
 	int n=gridSize[0]*gridSize[1];
 	_nbreGoalCells=0;
-	presence *ptr=tab;
+	SmartBlocks::presence *ptr=tab;
 	while (n--) {
-	    _nbreGoalCells+=(*ptr==fullCell);
+	    _nbreGoalCells+=(*ptr==SmartBlocks::fullCell);
 	    ptr++;
 	}
 
@@ -150,7 +150,7 @@ void SbReconfBlockCode::applyRules() {
     posGrid.x = block->position[0];
     posGrid.y = block->position[1];
     wrl->getPresenceMatrix(posGrid,_pm);
-    PresenceMatrix localTargetGrid;
+    SmartBlocks::PresenceMatrix localTargetGrid;
     getLocalTargetGrid(posGrid,localTargetGrid);
     // OUTPUT << localTargetGrid;
     SmartBlocks::PointCel neighborsDirection[5];
@@ -215,11 +215,11 @@ void SbReconfBlockCode::startMotion(uint64_t t,const SmartBlocks::PointCel &mv,i
     prepareUnlock(path,step);
     Vector3D finalPosition;
     finalPosition.set(block->position.pt[0]+mv.x,block->position.pt[1]+mv.y,0);
-    scheduler->schedule(new MotionStartEvent(t,block,finalPosition));
+    scheduler->schedule(new SmartBlocks::MotionStartEvent(t,block,finalPosition));
 #ifdef verbose
     stringstream info;
     info.str("");
-    info << "MotionStartEvent(" << t << ") vect=" << mv << "  unlock=" << path.size() << " step=" << step;
+    info << "SmartBlocks::MotionStartEvent(" << t << ") vect=" << mv << "  unlock=" << path.size() << " step=" << step;
     scheduler->trace(info.str(),block->blockId,LIGHTGREY);
 #endif
 }
@@ -238,7 +238,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 	posGrid.x = block->position[0];
 	posGrid.y = block->position[1];
 	wrl->getPresenceMatrix(posGrid,_pm);
-	block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+	block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
 
 	SmartBlocksWorld *wrl = SmartBlocks::getWorld();
 	wrl->addStat(2,1);
@@ -301,10 +301,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 		gridSize[0] = recvMessage->gridw;
 		gridSize[1] = recvMessage->gridh;
 		_nbreGoalCells = recvMessage->nbreGoalCells;
-		targetGrid = new presence[gridSize[0]*gridSize[1]];
-		memcpy(targetGrid,recvMessage->targetGrid,gridSize[0]*gridSize[1]*sizeof(presence));
+		targetGrid = new SmartBlocks::presence[gridSize[0]*gridSize[1]];
+		memcpy(targetGrid,recvMessage->targetGrid,gridSize[0]*gridSize[1]*sizeof(SmartBlocks::presence));
 
-		block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+		block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
 		//block->setDisplayedValue(-1);
 		setRulesColor();
 		block2Answer=recvInterface;
@@ -440,13 +440,13 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 			/*** cas particulier des éléments uniques ***/
 			/*** qui sont head et end en meme temps   ***/
 			if (possibleRules->back()->capa->isEnd) {
-			    Capability *capa = possibleRules->back()->capa;
+			    SmartBlocks::Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
 			    info.str("");
 			    info << "special motion :" << capa->name ;
 			    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-			    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
+			    vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
 			    while (cm!=capa->tabMotions.end()) {
 				singleMotion(*cm,capa);
 				cm++;
@@ -590,7 +590,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 		scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 		printRules();
-//                        Capability *capa = possibleRules->back()->capa;
+//                        SmartBlocks::Capability *capa = possibleRules->back()->capa;
 
 		block->_isTrain=true;
 // si on est à la tete du train on peut créer des lignes
@@ -608,7 +608,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 		}
 	    } else {
 		applyRules();
-		Capability *capa = possibleRules->back()->capa;
+		SmartBlocks::Capability *capa = possibleRules->back()->capa;
 		if (capa && !capa->isHead) {
 		    // il faut chercher une règle de queue dans le bloc courant qui ne forme pas d'isthme
 		    while (!possibleRules->empty() && !possibleRules->back()->capa->isEnd) {
@@ -699,10 +699,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 		//_previous = NULL;
 		_isHeadOfLine = true;
 		// case ou le bloc de fin est lui meme sur un angle
-		Capability *capa = possibleRules->back()->capa;
+		SmartBlocks::Capability *capa = possibleRules->back()->capa;
 		if (capa->isAngle || capa->isEnd) {
-		    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
-		    Motion *currentMotion=NULL;
+		    vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
+		    SmartBlocks::Motion *currentMotion=NULL;
 		    while (cm!=capa->tabMotions.end()) {
 			if ((*cm)->time==recvMessage->step) {
 			    singleMotion(*cm,capa);
@@ -886,13 +886,13 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 			/*** cas particulier des éléments uniques ***/
 			/*** qui sont head et end en meme temps   ***/
 			if (possibleRules->back()->capa->isEnd && possibleRules->back()->capa->isHead) {
-			    Capability *capa = possibleRules->back()->capa;
+			    SmartBlocks::Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
 			    info.str("");
 			    info << "special motion :" << capa->name ;
 			    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-			    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
+			    vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
 			    while (cm!=capa->tabMotions.end()) {
 				singleMotion(*cm,capa);
 				cm++;
@@ -966,7 +966,7 @@ void SbReconfBlockCode::init() {
       tabSteps[3] = false;*/
     posGrid.x = block->position[0];
     posGrid.y = block->position[1];
-    block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
+    block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
     setRulesColor();
     //block->setDisplayedValue(-1);
     block->_isTrain = false;
@@ -992,7 +992,7 @@ void SbReconfBlockCode::step2(MessagePtr message) {
     _isEnd=false;
     applyRules();
     if (possibleRules && !possibleRules->empty()) {
-	Capability *capa = possibleRules->back()->capa;
+	SmartBlocks::Capability *capa = possibleRules->back()->capa;
 	block->_isTrain = false;
 	if (capa->isHead) {
 	    // send searchEndTrainMessage
@@ -1061,7 +1061,7 @@ void SbReconfBlockCode::step3(MessagePtr message) {
     on test d'abord si c'est un isthme avant de faire tout déplacement
 **/
     if (possibleRules && !possibleRules->empty()) {
-	Capability *capa = possibleRules->back()->capa;
+	SmartBlocks::Capability *capa = possibleRules->back()->capa;
 	bool test = testIsthmus(capa->linkPrevPos->x,capa->linkPrevPos->y);
 	if (capa->isEnd && !capa->isHead && !block->_isSingle) {
 	    test = test || testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
@@ -1101,7 +1101,7 @@ void SbReconfBlockCode::step3(MessagePtr message) {
     }
 
     if (!block->_isSingle && possibleRules && !possibleRules->empty()) {
-	Capability *capa = possibleRules->back()->capa;
+	SmartBlocks::Capability *capa = possibleRules->back()->capa;
 	block->setDisplayedValue(block->blockId);
 	// send searchEndTrainMessage
 	PointCel np = *capa->linkNextPos;
@@ -1185,13 +1185,13 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
 	    if (possibleRules->back()->capa->isHead) {
 		// cas particulier des singletons en mouvement
 		if (possibleRules->back()->capa->isEnd) {
-		    Capability *capa = possibleRules->back()->capa;
+		    SmartBlocks::Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
 		    info.str("");
 		    info << "special motion :" << capa->name ;
 		    scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-		    vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
+		    vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
 		    while (cm!=capa->tabMotions.end()) {
 			singleMotion(*cm,capa);
 			cm++;
@@ -1294,7 +1294,7 @@ void SbReconfBlockCode::createLine(uint64_t t,bool hol) {
 #ifdef verbose
     stringstream info;
 #endif // verbose
-    Capability *capa = possibleRules->back()->capa;
+    SmartBlocks::Capability *capa = possibleRules->back()->capa;
     /*info.str("");
       info << "capa " << capa->name << " " << capa->isAngle;
       scheduler->trace(info.str(),hostBlock->blockId);*/
@@ -1420,9 +1420,9 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
 /************ on recherche le cas des isthmes ************/
 /** existe-t-il un voisin avec un vide avant et un après */
 	for (i=0; i<4; i++) {
-	    if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
-		_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
-		_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
+	    if (_pm.get(border[i*2][0],border[i*2][1])!=SmartBlocks::emptyCell &&
+		_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==SmartBlocks::emptyCell &&
+		_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==SmartBlocks::emptyCell) {
 		dir=NeighborDirection::Direction(((8-2*i)%8)/2);
 		return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
 	    }
@@ -1430,7 +1430,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
 
 // on cherche une case vide
 	i=7;
-	while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	while (i>=0 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
 	    i--;
 	}
 	if (i==-1) return NULL;
@@ -1483,9 +1483,9 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightbor(P2PNetworkInt
 /************ on recherche le cas des isthmes ************/
 /** existe-t-il un voisin avec un vide avant et un après */
 	for (i=0; i<4; i++) {
-	    if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
-		_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
-		_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
+	    if (_pm.get(border[i*2][0],border[i*2][1])!=SmartBlocks::emptyCell &&
+		_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==SmartBlocks::emptyCell &&
+		_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==SmartBlocks::emptyCell) {
 		dir=NeighborDirection::Direction(((8-2*i)%8)/2);
 		return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
 	    }
@@ -1493,7 +1493,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightbor(P2PNetworkInt
 
 // on cherche une case vide
 	i=7;
-	while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	while (i>=0 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
 	    i--;
 	}
 	if (i==-1) return NULL;
@@ -1533,7 +1533,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightbor(P2PNetworkInterfa
 	dir=NeighborDirection::Direction((dir+1)%4);
     } else {
 	// on recherche une cellule vide
-	while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	while (i<8 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
 	    i++;
 	}
 	dir=NeighborDirection::Direction((i/2+1)%4);
@@ -1565,7 +1565,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNe
 	dir=NeighborDirection::Direction((dir+1)%4);
     } else {
 	// on recherche une cellule vide
-	while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
+	while (i<8 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
 	    i++;
 	}
 	dir=NeighborDirection::Direction((i/2+1)%4);
@@ -1816,7 +1816,7 @@ void SbReconfBlockCode::createBorder() {
 	_numPrev = ((_previous && !block->_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
 	applyRules();
 	if (possibleRules && !possibleRules->empty()) {
-	    Capability *capa = possibleRules->back()->capa;
+	    SmartBlocks::Capability *capa = possibleRules->back()->capa;
 	    if (!capa->isHead && capa->linkPrevPos) {
 		_previous = block->getP2PNetworkInterfaceByRelPos(*capa->linkPrevPos);
 		_numPrev = ((_previous && !block->_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
@@ -2082,11 +2082,11 @@ Ans4EndMessage::~Ans4EndMessage() {
 }
 
 /****************************************************/
-void SbReconfBlockCode::getLocalTargetGrid(const PointCel &pos,PresenceMatrix &pm) {
-    presence *gpm=pm.grid;
-    presence *tg = targetGrid;
+void SbReconfBlockCode::getLocalTargetGrid(const PointCel &pos,SmartBlocks::PresenceMatrix &pm) {
+    SmartBlocks::presence *gpm=pm.grid;
+    SmartBlocks::presence *tg = targetGrid;
 
-    for (int i=0; i<9; i++) { *gpm++ = wallCell; };
+    for (int i=0; i<9; i++) { *gpm++ = SmartBlocks::wallCell; };
 
     int ix0 = (pos.x<1) ? 1-pos.x : 0,
 	ix1 = (pos.x>gridSize[0]-2) ? gridSize[0]-pos.x+1 : 3,
