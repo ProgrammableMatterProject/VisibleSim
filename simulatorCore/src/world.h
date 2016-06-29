@@ -50,7 +50,7 @@ protected:
 
     GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
     GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
-    GLuint numSelectedGlBlock; //!< The id of the block selected by the used
+    GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlocks (== idBlock - 1)
     GLint menuId; 
     Camera *camera; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
@@ -60,6 +60,7 @@ protected:
 
     presence *targetGrid; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
     Capabilities *capabilities; //!< The capabilities available for the blocks simulated in this world
+    int maxBlockId = 0; //!< The block id of the block with the highest id in the world
     
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
@@ -294,6 +295,11 @@ public:
      * @param ids : array in which the ids will be stored, must have a size >= n
      */
     void generateIds(int n, int *ids);
+    /**
+     * @brief Increment the maximum block id present the world by one and returns it
+     * @return the maximum block id present in the world + 1
+     */
+    inline int incrementBlockId() { return ++maxBlockId; }
 };
 
 /**

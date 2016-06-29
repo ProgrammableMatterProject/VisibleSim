@@ -51,16 +51,11 @@ void RobotBlocksWorld::deleteWorld() {
 void RobotBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
 								const Cell3DPosition &pos, const Color &col,
 								short orientation, bool master) {
+	if (blockId > maxBlockId)
+		maxBlockId = blockId;
+	else if (blockId == -1)
+		blockId = incrementBlockId();
 
-	if (blockId == -1) {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-			it != buildingBlocksMap.end(); it++) {
-			RobotBlocksBlock* bb = (RobotBlocksBlock*) it->second;
-			if (it->second->blockId > blockId) blockId = bb->blockId;
-		}
-		blockId++;
-	}
 	RobotBlocksBlock *robotBlock = new RobotBlocksBlock(blockId, bcb);
 	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
