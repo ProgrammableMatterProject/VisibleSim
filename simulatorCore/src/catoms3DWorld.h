@@ -88,7 +88,6 @@ public:
     void updateGlData(Catoms3DBlock*blc, const Vector3D &position);
     void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
     virtual void setSelectedFace(int n);
-    virtual void menuChoice(int n);
     virtual void disconnectBlock(Catoms3DBlock *block);
     virtual void connectBlock(Catoms3DBlock *block);
 

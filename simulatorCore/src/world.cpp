@@ -272,6 +272,7 @@ void World::createHelpWindow() {
 
 void World::tapBlock(uint64_t date, int bId) {
 	BuildingBlock *bb = getBlockById(bId);
+	cerr << bb->blockId << " : " << bb->position << endl;
 	bb->tap(date, true);
 }
 

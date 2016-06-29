@@ -365,73 +365,28 @@ void Catoms3DWorld::updateGlData(Catoms3DBlock*blc, const Matrix &mat) {
     }
 }
 
-
-void Catoms3DWorld::menuChoice(int n) {
-    switch (n) {
-    case 1 : {
-		Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-		/*Vector3D pos=bb->position;
-		  switch (numSelectedFace) {
-		  case NeighborDirection::Left :
-		  pos.pt[0]--;
-		  break;
-		  case NeighborDirection::Right :
-		  pos.pt[0]++;
-		  break;
-		  case NeighborDirection::Front :
-		  pos.pt[1]--;
-		  break;
-		  case NeighborDirection::Back :
-		  pos.pt[1]++;
-		  break;
-		  case NeighborDirection::Bottom :
-		  pos.pt[2]--;
-		  break;
-		  case NeighborDirection::Top :
-		  pos.pt[2]++;
-		  break;
-		  }
-		  addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
-		  linkBlocks();*/
-    } break;
-    case 2 : {
-		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
-		Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-		deleteBlock(bb);
-		linkBlock(bb->position);
-		linkNeighbors(bb->position);
-    } break;
-    case 3 : {
-		Catoms3DBlock *bb = (Catoms3DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-		tapBlock(getScheduler()->now(), bb->blockId);
-    } break;
-    case 4:                 // Save current configuration
-		exportConfiguration();
-		break;
-    }
-}
-
 void Catoms3DWorld::setSelectedFace(int n) {
     numSelectedGlBlock = n / 13;
     string name = objBlockForPicking->getObjMtlName(n%13);
 
-	if (name == "Material__70") numSelectedFace = 0;
-	else if (name == "Material__74") numSelectedFace = 1;
-	else if (name == "Material__69") numSelectedFace = 2;
-	else if (name == "Material__73") numSelectedFace = 3;
-	else if (name == "Material__68") numSelectedFace = 4;
-	else if (name == "Material__76") numSelectedFace = 5;
-	else if (name == "Material__66") numSelectedFace = 6;
-	else if (name == "Material__75") numSelectedFace = 7;
+	if (name == "Material__66") numSelectedFace = 0;
+	else if (name == "Material__68") numSelectedFace = 1;
+	else if (name == "Material__71") numSelectedFace = 2;
+	else if (name == "Material__72") numSelectedFace = 3;
+	else if (name == "Material__73") numSelectedFace = 4;
+	else if (name == "Material__74") numSelectedFace = 5;
+	else if (name == "Material__75") numSelectedFace = 6;
+	else if (name == "Material__76") numSelectedFace = 7;
 	else if (name == "Material__77") numSelectedFace = 8;
-	else if (name == "Material__71") numSelectedFace = 9;
-	else if (name == "Material__78") numSelectedFace = 10;
-	else if (name == "Material__72") numSelectedFace = 11;
+	else if (name == "Material__78") numSelectedFace = 9;
+	else if (name == "Material__69") numSelectedFace = 10;
+	else if (name == "Material__70") numSelectedFace = 11;
 	else {
 		cerr << "warning: Unrecognized picking face" << endl;
 		numSelectedFace = 13;	// UNDEFINED
 	}
+
+	cerr << name << " = " << numSelectedFace << " = " << endl;
 }
 
 /*

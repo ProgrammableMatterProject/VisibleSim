@@ -328,41 +328,36 @@ public:
  *
  */
 class FCCLattice : public Lattice3D {
+    // The index i of the relative position in the vector corresponds to the cell on interface i of a block
     vector<Cell3DPosition> nCellsOdd{
-        // z + 1
-        Cell3DPosition(0,0,1),
-            Cell3DPosition(0,1,1),
-            Cell3DPosition(1,0,1),
-            Cell3DPosition(1,1,1),
-            // z
-            Cell3DPosition(-1,0,0),
-            Cell3DPosition(1,0,0),
-            Cell3DPosition(0,-1,0),
-            Cell3DPosition(0,1,0),
-            // z - 1
-            Cell3DPosition(0,0,-1),
-            Cell3DPosition(0,1,-1),
-            Cell3DPosition(1,0,-1),
-            Cell3DPosition(1,1,-1)
+        Cell3DPosition(1,0,0),  // 0
+            Cell3DPosition(0,1,0), // 1
+            Cell3DPosition(1,1,1), // 2
+            Cell3DPosition(0,1,1), // 3
+            Cell3DPosition(0,0,1), // 4
+            Cell3DPosition(1,0,1), // 5
+            Cell3DPosition(-1,0,0), // 6
+            Cell3DPosition(0,-1,0), // 7
+            Cell3DPosition(0,0,-1), // 8
+            Cell3DPosition(1,0,-1), // 9
+            Cell3DPosition(1,1,-1), // 10
+            Cell3DPosition(0,1,-1), // 11
             }; //!< Vector containing relative position of neighboring cells for even(z) cells;
 
     vector<Cell3DPosition> nCellsEven{
-        // z + 1
-        Cell3DPosition(-1,-1,1),
-            Cell3DPosition(-1,0,1),
-            Cell3DPosition(0,0,1),
-            Cell3DPosition(0,-1,1),
-            // z
-            Cell3DPosition(-1,0,0),
-            Cell3DPosition(1,0,0),
-            Cell3DPosition(0,-1,0),
-            Cell3DPosition(0,1,0),
-            // z - 1
-            Cell3DPosition(-1,-1,-1),
-            Cell3DPosition(-1,0,-1),
-            Cell3DPosition(0,0,-1),
-            Cell3DPosition(0,-1,-1)
-            }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
+        Cell3DPosition(1,0,0), // 0
+            Cell3DPosition(0,1,0),  // 1
+            Cell3DPosition(0,0,1),  // 2
+            Cell3DPosition(-1,0,1), // 3
+            Cell3DPosition(-1,-1,1), // 4
+            Cell3DPosition(0,-1,1), // 5
+            Cell3DPosition(-1,0,0), // 6
+            Cell3DPosition(0,-1,0), // 7
+            Cell3DPosition(-1,-1,-1), // 8
+            Cell3DPosition(0,-1,-1),  // 9
+            Cell3DPosition(0,0,-1),   // 10
+            Cell3DPosition(-1,0,-1) // 11
+      }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
 
     const int maxNeighbors = 12; //!< The maximum number of neighbors every cell on a lattice can have
 public:
