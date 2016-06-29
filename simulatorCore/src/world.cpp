@@ -272,7 +272,7 @@ void World::createHelpWindow() {
 
 void World::tapBlock(uint64_t date, int bId) {
 	BuildingBlock *bb = getBlockById(bId);
-	bb->tap(date);
+	bb->tap(date, true);
 }
 
 void World::createPopupMenu(int ix, int iy) {
