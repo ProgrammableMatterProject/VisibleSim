@@ -25,8 +25,8 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 #ifdef GLUT
     objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
     objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
-    // objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
-    //                                               "smartBlockPicking.obj");
+    objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
+                                                  "smartBlockPicking.obj");
 #else
     objBlock=NULL;
     objRepere=NULL;
@@ -60,6 +60,11 @@ void SmartBlocksWorld::deleteWorld() {
 void SmartBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
                                 const Cell3DPosition &pos, const Color &col,
                                 short orientation, bool master) {
+	if (blockId > maxBlockId)
+		maxBlockId = blockId;
+	else if (blockId == -1)
+		blockId = incrementBlockId();
+        
     SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (smartBlock->blockId, (BaseSimulator::BuildingBlock*)smartBlock) );
@@ -220,6 +225,23 @@ void SmartBlocksWorld::glDraw() {
         glPopMatrix();
 }
 
+void SmartBlocksWorld::glDrawIdByMaterial() {
+    glPushMatrix();
+    glDisable(GL_TEXTURE_2D);
+    /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
+      -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0);*/
+    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+    int n=1;
+    lock();
+    while (ic!=tabGlBlocks.end()) {
+        glLoadName(n++);
+        ((SmartBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking, n);
+        ic++;
+    }
+    unlock();
+    glPopMatrix();
+}
+
 void SmartBlocksWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
@@ -324,17 +346,21 @@ void SmartBlocksWorld::deleteBlock(BuildingBlock *blc) {
 
 
 void SmartBlocksWorld::setSelectedFace(int n) {
-    numSelectedGlBlock = n / numPickingTextures;
-    string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
+    numSelectedGlBlock = n / 5;
+    string name = objBlockForPicking->getObjMtlName(n % 5);
 
-	cerr << name << endl;
-    
-    numSelectedFace = numPickingTextures;   // Undefined NeighborDirection
+    if (name == "Material__73") numSelectedFace = NeighborDirection::South;
+    else if (name == "Material__68") numSelectedFace = NeighborDirection::East;
+    else if (name == "Material__72") numSelectedFace = NeighborDirection::West;
+    else if (name == "Material__71") numSelectedFace = NeighborDirection::North;
+    else {
+		cerr << "warning: Unrecognized picking face" << endl;
+		numSelectedFace = 5;	// UNDEFINED
+        return;
+    }
 
-    if (name == "face_north") numSelectedFace = NeighborDirection::North;
-    else if (name == "face_east") numSelectedFace = NeighborDirection::East;
-    else if (name == "face_south") numSelectedFace = NeighborDirection::South;
-    else if (name == "face_west") numSelectedFace = NeighborDirection::West;
+    cerr << name << " = " << numSelectedFace << " = "
+         << NeighborDirection::getString(numSelectedFace) << endl;       
 }
 
 void SmartBlocksWorld::addStat(int n,int v) {

@@ -197,7 +197,7 @@ public:
 	 *  can be used as an interactive event for debug on all catom types
 	 * @param date : date of the tap event
 	 */   	
-	void tap(uint64_t date);
+	void tap(uint64_t date, bool debug = false);// PTHY: TEMPORARY! Debug event should be handled by user
 	/**
 	 * @brief Returns the local time of the block according to its internal clock
 	 * @return local time of the block according to its internal clock

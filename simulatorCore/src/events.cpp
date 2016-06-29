@@ -381,9 +381,10 @@ const string RemoveNeighborEvent::getEventName() {
 //
 //===========================================================================================================
 
-TapEvent::TapEvent(uint64_t t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+TapEvent::TapEvent(uint64_t t, BuildingBlock *conBlock, const bool debug): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_TAP;
+	isDebugEvent = debug;
 }
 
 TapEvent::TapEvent(TapEvent *ev) : BlockEvent(ev) {
@@ -397,6 +398,9 @@ TapEvent::~TapEvent() {
 void TapEvent::consumeBlockEvent() {
 	EVENT_CONSUME_INFO();
 	concernedBlock->scheduleLocalEvent(EventPtr(new TapEvent(this)));
+	// PTHY: TEMPORARY! Debug event should be handled by user
+	if (isDebugEvent)
+		concernedBlock->setColor(WHITE);
 }
 
 const string TapEvent::getEventName() {

@@ -55,15 +55,11 @@ void BlinkyBlocksWorld::deleteWorld() {
 void BlinkyBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
 								 const Cell3DPosition &pos, const Color &col,
 								 short orientation, bool master) {
-	if (blockId == -1) {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-		for(it = buildingBlocksMap.begin();
-			it != buildingBlocksMap.end(); it++) {
-			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
-			if (it->second->blockId > blockId) blockId = bb->blockId;
-		}
-		blockId++;
-	}
+	if (blockId > maxBlockId)
+		maxBlockId = blockId;
+	else if (blockId == -1)
+		blockId = incrementBlockId();
+		
 	BlinkyBlocksBlock *blinkyBlock = new BlinkyBlocksBlock(blockId, bcb);
 	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (blinkyBlock->blockId, (BaseSimulator::BuildingBlock*)blinkyBlock));

@@ -46,14 +46,11 @@ SUBDIRS = simulatorCore/src applicationsSrc
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
 .PHONY: subdirs $(SUBDIRS) subdirectories test
+#.PHONY: subdirs $(SUBDIRS) test doc
 
 subdirs: $(SUBDIRS)
 
-# ensure output subdirectories are created before actually dealing with the dependencies
-subdirectories:
-	$(MAKE) -C simulatorCore/src/ directories;
-
-$(SUBDIRS): subdirectories
+$(SUBDIRS):
 	$(MAKE) -C $@ APPDIR=../../applicationsBin/ GLOBAL_INCLUDES=$(GLOBAL_INCLUDES) GLOBAL_LIBS=$(GLOBAL_LIBS) GLOBAL_CCFLAGS=$(GLOBAL_CCFLAGS)
 
 #subdirs:

@@ -8,7 +8,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
-#include <boost/asio.hpp>
 
 #include "meldInterpretScheduler.h"
 #include "meldInterpretVM.h"
@@ -21,8 +20,6 @@
 #include "trace.h"
 
 using namespace std;
-using namespace boost;
-using boost::asio::ip::tcp;
 
 namespace MeldInterpret {
 
@@ -50,10 +47,11 @@ void MeldInterpretScheduler::deleteScheduler() {
 
 void MeldInterpretScheduler::SemWaitOrReadDebugMessage() {
     if (MeldInterpretVM::isInDebuggingMode()) {
-        while(!sem_schedulerStart->try_wait()) {
+        while(!sem_schedulerStart->tryWait()) {
             //waitForOneVMCommand();
             //checkForReceivedVMCommands();
-            usleep(10000);
+            std::chrono::milliseconds timespan(10);
+            std::this_thread::sleep_for(timespan);
         }
     } else {
         sem_schedulerStart->wait();
@@ -130,16 +128,17 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 s << "Equilibrium reached at "<< now() << "us ...";
                 //MeldInterpretDebugger::print(s.str(), false);
                 /*if (BaseSimulator::getSimulator()->testMode) {
-                BlinkyBlocks::getWorld()->dump();
-                stop(0);
-                return 0;
-                }*/
+                  BlinkyBlocks::getWorld()->dump();
+                  stop(0);
+                  return 0;
+                  }*/
                 if (MeldInterpretVM::isInDebuggingMode()) {
                     //getDebugger()->handlePauseRequest();
                 }
             }
             //checkForReceivedVMCommands();
-            usleep(5000);
+            std::chrono::milliseconds timespan(5);
+            std::this_thread::sleep_for(timespan);			
         }
 #ifdef TEST_DETER
         getWorld()->killAllVMs();
@@ -187,11 +186,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 setState(RUNNING);
                 pausedTime += ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
             }
-#ifdef WIN32
-            Sleep(5);
-#else
-            usleep(5000);
-#endif
+            std::chrono::milliseconds timespan(5);
+            std::this_thread::sleep_for(timespan);			
         }
         break;
     default:
@@ -218,7 +214,7 @@ void MeldInterpretScheduler::start(int mode) {
         done = true;
         MeldInterpretScheduler* sbs = (MeldInterpretScheduler*)scheduler;
         sbs->schedulerMode = mode;
-        sbs->sem_schedulerStart->post();
+        sbs->sem_schedulerStart->signal();
     }
 }
 
@@ -229,7 +225,7 @@ void MeldInterpretScheduler::pause(uint64_t date) {
 void MeldInterpretScheduler::unPause() {
     MeldInterpretScheduler* sbs = (MeldInterpretScheduler*)scheduler;
     if (state != RUNNING) {
-        sbs->sem_schedulerStart->post();
+        sbs->sem_schedulerStart->signal();
     }
     OUTPUT << "unpause sim" << endl;
 }

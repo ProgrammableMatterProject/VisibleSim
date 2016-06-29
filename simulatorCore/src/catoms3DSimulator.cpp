@@ -72,8 +72,6 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCode
 	}
 
 	// Finally, add block to the world
-	// PTHY: TODO: add master
-	cerr << "pos: " << pos << " orientation: " << orientation << endl;
 	((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
 }
 

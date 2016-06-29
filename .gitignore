@@ -33,6 +33,7 @@ simulatorCore/lib/
 # Temporary files
 simulatorCode/deps/
 *.depends
+*.Td
 *~
 .\#*
 *.swp
@@ -43,7 +44,8 @@ simulatorCode/deps/
 
 # External tools config files
 .projectile
-*.xcodeproj/
+*.xcodeproj
+*.xcworkspace
 *.cbp
 *.layout
 

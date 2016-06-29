@@ -69,6 +69,13 @@ void SmartBlocksGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj) {
 	glPopMatrix();
 }
 
+void SmartBlocksGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
+	glPushMatrix();
+	glTranslatef(position[0],position[1],position[2]);
+	ptrObj->glDrawIdByMaterial(n);
+	glPopMatrix();
+}
+
 string SmartBlocksGlBlock::getInfo() {
 	return GlBlock::getInfo();
 }

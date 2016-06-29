@@ -15,8 +15,6 @@
 #include "network.h"
 #include "trace.h"
 
-using namespace boost;
-
 namespace MeldInterpret {
 
 class MeldInterpretScheduler : public BaseSimulator::Scheduler {
@@ -49,9 +47,9 @@ public:
 
 	// NOT TESTED
 	bool isPaused() {
-		bool r = sem_schedulerStart->try_wait();
+		bool r = sem_schedulerStart->tryWait();
 		if (r) {
-			sem_schedulerStart->post();
+			sem_schedulerStart->signal();
 		}
 		return !r;
 	}

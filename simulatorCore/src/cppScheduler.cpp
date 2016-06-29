@@ -115,11 +115,9 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 				  dureeAttenteTimeval.tv_usec = (dureeAttente%1000000);
 				  select(0,NULL,NULL,NULL,&dureeAttenteTimeval);
 				*/
-#ifdef WIN32
-				Sleep(5);
-#else
-				usleep(5000);
-#endif
+
+				std::chrono::milliseconds timespan(5);
+				std::this_thread::sleep_for(timespan);
 			}
 	    }
 
@@ -148,5 +146,5 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 void CPPScheduler::start(int mode) {
 	CPPScheduler* sbs = (CPPScheduler*)scheduler;
 	sbs->schedulerMode = mode;
-	sbs->sem_schedulerStart->post();
+	sbs->sem_schedulerStart->signal();
 }

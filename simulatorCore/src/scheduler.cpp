@@ -40,7 +40,7 @@ Scheduler::Scheduler() {
 	eventsMapSize = 0;
 	largestEventsMapSize = 0;
 
-	sem_schedulerStart = new boost::interprocess::interprocess_semaphore(0);
+	sem_schedulerStart = new LightweightSemaphore(0);
 }
 
 Scheduler::~Scheduler() {

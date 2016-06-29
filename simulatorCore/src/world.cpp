@@ -229,13 +229,13 @@ bool World::canAddBlockToFace(int numSelectedGlBlock, int numSelectedFace) {
 	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	Cell3DPosition pos = bb->position;
 	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(pos);
-	if (numSelectedFace < nCells.size())
+	if (numSelectedFace < lattice->getMaxNumNeighbors())
 		cerr << "numSelectedFace: " << numSelectedFace << " f"
 			 << pos << "+" << nCells[numSelectedFace]
 			 << " = " << lattice->isFree(pos + nCells[numSelectedFace]) << endl;
 
-	return numSelectedFace < nCells.size() ?
-							 lattice->isFree(pos + nCells[numSelectedFace]) : false;
+	return numSelectedFace < lattice->getMaxNumNeighbors() ?
+		lattice->isFree(pos + nCells[numSelectedFace]) : false;
 }
 
 void World::menuChoice(int n) {
@@ -246,7 +246,7 @@ void World::menuChoice(int n) {
 		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
 		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
-//		addBlock(-1, (BlockCode *(*)(BuildingBlock *))bb->buildNewBlockCode, nPos, bb->color);
+		
 		addBlock(-1, bb->buildNewBlockCode, nPos, bb->color);
 		linkBlock(nPos);
 		linkNeighbors(nPos);
@@ -272,7 +272,8 @@ void World::createHelpWindow() {
 
 void World::tapBlock(uint64_t date, int bId) {
 	BuildingBlock *bb = getBlockById(bId);
-	bb->tap(date);
+	cerr << bb->blockId << " : " << bb->position << endl;
+	bb->tap(date, true);
 }
 
 void World::createPopupMenu(int ix, int iy) {
