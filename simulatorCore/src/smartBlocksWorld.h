@@ -25,9 +25,6 @@ protected:
     SmartBlocksCapabilities *capabilities;
     int tabStatsData[10];
     int nbreStats;
-    static const int numPickingTextures = 4; /* The number of picking textures defined for
-                                                this type of catom,
-                                                used to deduce selected Block / face */
     ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
     virtual ~SmartBlocksWorld();
@@ -68,7 +65,8 @@ public:
     void loadTextures(const string &str);
     virtual void glDraw();
     virtual void glDrawId();
-
+    virtual void glDrawIdByMaterial();
+        
     virtual void disconnectBlock(SmartBlocksBlock *block);
     virtual void connectBlock(SmartBlocksBlock *block);
 
