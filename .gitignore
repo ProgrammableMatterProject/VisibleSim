@@ -44,8 +44,8 @@ simulatorCode/deps/
 
 # External tools config files
 .projectile
-*.xcodeproj/
-*.xcbworkspace/
+*.xcodeproj
+*.xcworkspace
 *.cbp
 *.layout
 
