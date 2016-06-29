@@ -45,7 +45,6 @@ SMARTBLOCKS_DEPS = $(SMARTBLOCKS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR
 
 SRCS = $(BASESIMULATOR_SRCS) $(BLINKYBLOCKS_SRCS) $(SMARTBLOCKS_SRCS) $(ROBOTBLOCKS_SRCS) $(CATOMS2D_SRCS) $(CATOMS3D_SRCS)
 OBJS = $(SRCS:%.cpp=$(OBJDIR)/%.o)
-DEPS = $(SRCS:%.cpp=$(DEPDIR)/%.depends)
 
 OUT = $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatom3D.a
 
@@ -65,23 +64,22 @@ LIBS = $(GLOBAL_LIBS)
 #CCFLAGS = -O2 -NDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL
 
 CCFLAGS = $(GLOBAL_CCFLAGS)
-
+DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
+POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.depends
 CC = g++
 
-.PHONY: clean all directories
+# Create compilation directories if they don't exist
+$(shell mkdir -p $(OUTDIRS) >/dev/null)
+
+.PHONY: clean all
 
 $(OBJDIR)/%.o: %.cpp
-	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "-> Compiling $@"
+	@$(CC) $(CCFLAGS) $(DEPFLAGS) $(INCLUDES) -c $< -o $@
+	$(POSTCOMPILE)
+
 
 all: $(LDIR)/libsimBlinkyBlocks.a $(LDIR)/libsimSmartBlocks.a $(LDIR)/libsimRobotBlocks.a $(LDIR)/libsimCatoms2D.a $(LDIR)/libsimCatoms3D.a
-
-#$(OUT)
-
-#$(OUT): $(OBJS)
-#	ar rcs $(OUT) $(OBJS)
-#	cp $(OUT) ../lib
-
-directories: $(OUTDIRS)
 
 ${OUTDIRS}:
 	@mkdir -p $@
@@ -106,13 +104,11 @@ $(LDIR)/libsimSmartBlocks.a: $(SMARTBLOCKS_OBJS)
 	@echo "Archiving SmartBlocks library..."
 	@ar rcs $(LDIR)/libsimSmartBlocks.a $(SMARTBLOCKS_OBJS)
 
-ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), clean directories))
--include $(DEPS)
-endif
+$(DEPDIR)/%.depends: ;
+.PRECIOUS: $(DEPDIR)/%.depends
+
+-include $(patsubst %,$(DEPDIR)/%.depends,$(basename $(SRCS)))
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS) ../include/*.h
 	rm -rf $(OUTDIRS)
-
-$(DEPDIR)/%.depends: %.cpp %.h
-	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@

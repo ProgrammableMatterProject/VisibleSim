@@ -33,6 +33,7 @@ simulatorCore/lib/
 # Temporary files
 simulatorCode/deps/
 *.depends
+*.Td
 *~
 .\#*
 *.swp
