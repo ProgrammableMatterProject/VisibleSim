@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <stdlib.h>
+#include "openglViewer.h"
 #include "assert.h"
 #include "scheduler.h"
 #include "trace.h"

@@ -22,7 +22,6 @@ int GenericCodeBlock::sendMessage(const char*msgString,Message*msg,P2PNetworkInt
     return 0;
 }
 
-
 int GenericCodeBlock::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int nexcept,...) {
     va_list ap;
     P2PNetworkInterface *tabExceptions[6];
@@ -55,7 +54,7 @@ int GenericCodeBlock::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int ne
 
 int GenericCodeBlock::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt,int nexcept,...) {
     va_list ap;
-    P2PNetworkInterface *tabExceptions[12];
+    P2PNetworkInterface *tabExceptions[6];
 //    int n = va_arg(vl,int);
     va_start(ap,nexcept);
     for (int i=0; i<nexcept; i++) {
@@ -84,8 +83,6 @@ int GenericCodeBlock::sendMessageToAllNeighbors(const char*msgString, Message*ms
     return n;
 }
 
-
-
 void GenericCodeBlock::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
@@ -100,7 +97,6 @@ void GenericCodeBlock::processLocalEvent(EventPtr pev) {
         } else {
             OUTPUT << "ERROR: message Id #"<< message->type << " unknown!" << endl;
         }
-
     }
 }
 

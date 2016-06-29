@@ -64,7 +64,7 @@ protected:
 public:
 	enum State {NOTREADY = 0, NOTSTARTED = 1, ENDED = 2, PAUSED = 3, RUNNING = 4};
 	State state;
-	
+
 	static Scheduler* getScheduler() {
 		assert(scheduler != NULL);
 		return(scheduler);
@@ -81,9 +81,9 @@ public:
 
 	virtual bool schedule(Event *ev);
 	virtual bool scheduleLock(Event *ev);
-	
+
 	uint64_t now();
-	
+
 	virtual void trace(string message,int id=-1,const Color &color=WHITE);
 	void removeEventsToBlock(BuildingBlock *bb);
 
@@ -99,7 +99,7 @@ public:
 
 	inline void setState (State s) { state = s; };
 	inline State getState () { return state; };
-	
+
 	inline int getNbreMessages() { return Event::getNextId(); };
 
 	inline void waitForSchedulerEnd() {
@@ -123,14 +123,14 @@ static inline void deleteScheduler() {
 }
 
 static inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
-    
+
 } // BaseSimulator namespace
 
 class ConsoleStream {
 	BaseSimulator::Scheduler *scheduler;
     int blockId;
     stringstream stream;
-    public :
+public:
 
     ConsoleStream() { stream.str(""); };
     void setInfo(BaseSimulator::Scheduler*s,int id) {
@@ -161,6 +161,5 @@ class ConsoleStream {
         return *this;
     }
 };
-
 
 #endif /* SCHEDULER_H_ */
