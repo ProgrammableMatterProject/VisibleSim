@@ -64,8 +64,6 @@ void SmartBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
 		maxBlockId = blockId;
 	else if (blockId == -1)
 		blockId = incrementBlockId();
-
-	cerr << blockId << endl;
         
     SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>

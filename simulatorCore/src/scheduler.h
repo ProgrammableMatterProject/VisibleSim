@@ -15,9 +15,9 @@
 #include <assert.h>
 #include <thread>
 #include <functional>
+#include <mutex>
 
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include "sema.h"
 #include "events.h"
 
 using namespace std;
@@ -45,7 +45,7 @@ class Scheduler {
 protected:
 	static Scheduler *scheduler;
 	int schedulerMode;
-	boost::interprocess::interprocess_semaphore *sem_schedulerStart;
+	LightweightSemaphore *sem_schedulerStart;
 	std::thread *schedulerThread;
 	vector <Keyword*> tabKeywords;
 
@@ -53,8 +53,8 @@ protected:
 	uint64_t maximumDate;
 	multimap<uint64_t,EventPtr> eventsMap;
 	int eventsMapSize, largestEventsMapSize;
-	boost::interprocess::interprocess_mutex mutex_schedule;
-	boost::interprocess::interprocess_mutex mutex_trace;
+	std::mutex mutex_schedule;
+	std::mutex mutex_trace;
 
 	Scheduler();
 	virtual ~Scheduler();
