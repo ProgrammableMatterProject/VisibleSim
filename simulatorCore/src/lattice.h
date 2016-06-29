@@ -127,7 +127,7 @@ public:
      * @brief Overriden getter to get the maximum number of neighbor a lattice cell can have
      * @return the maximum number of neighbor for the callee lattice
      */
-    virtual inline const int getNumNeighbors() = 0;
+    virtual inline const int getMaxNumNeighbors() = 0;
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
@@ -164,9 +164,9 @@ public:
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
     /**
-     * @copydoc Lattice::getNumNeighbors
+     * @copydoc Lattice::getMaxNumNeighbors
      */    
-    virtual inline const int getNumNeighbors() = 0;
+    virtual inline const int getMaxNumNeighbors() = 0;
 };
 
 /*! @brief 3-Dimensional Lattice abstract class
@@ -203,9 +203,9 @@ public:
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
     /**
-     * @copydoc Lattice::getNumNeighbors
+     * @copydoc Lattice::getMaxNumNeighbors
      */    
-    virtual inline const int getNumNeighbors() = 0;
+    virtual inline const int getMaxNumNeighbors() = 0;
 };
 
 /*! @brief Square 2D Lattice
@@ -251,9 +251,9 @@ public:
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
-     * @copydoc Lattice::getNumNeighbors
+     * @copydoc Lattice::getMaxNumNeighbors
      */    
-    virtual inline const int getNumNeighbors() { return maxNeighbors; }
+    virtual inline const int getMaxNumNeighbors() { return maxNeighbors; }
 };
 
 /*! @brief Hexagonal 2D Lattice
@@ -317,9 +317,9 @@ public:
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
-     * @copydoc Lattice::getNumNeighbors
+     * @copydoc Lattice::getMaxNumNeighbors
      */    
-    virtual inline const int getNumNeighbors() { return maxNeighbors; }
+    virtual inline const int getMaxNumNeighbors() { return maxNeighbors; }
 };
 
 /*! @brief 3D Face-Centered Cubic Lattice
@@ -394,9 +394,9 @@ public:
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
-     * @copydoc Lattice::getNumNeighbors
+     * @copydoc Lattice::getMaxNumNeighbors
      */    
-    virtual inline const int getNumNeighbors() { return maxNeighbors; }
+    virtual inline const int getMaxNumNeighbors() { return maxNeighbors; }
 };
 
 /*! @brief 3D Simple Cubic Lattice
@@ -444,9 +444,9 @@ public:
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
-     * @copydoc Lattice::getNumNeighbors
+     * @copydoc Lattice::getMaxNumNeighbors
      */    
-    virtual inline const int getNumNeighbors() { return maxNeighbors; }
+    virtual inline const int getMaxNumNeighbors() { return maxNeighbors; }
 };
 
 }
