@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+
 #include "smartBlocksWorld.h"
 #include "smartBlocksBlock.h"
 #include "scheduler.h"
@@ -95,14 +96,14 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
         nPos = pos + nRelCells[i];
         ptrNeighbor = (SmartBlocksBlock*)lattice->getBlock(nPos);
         if (ptrNeighbor) {
-            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->
-                connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
-                                                      NeighborDirection::getOpposite(i))));
+            (ptrBlock)->getInterface(SLattice::Direction(i))->
+                connect(ptrNeighbor->getInterface(SLattice::Direction(
+                                                      SLattice::getOpposite(i))));
 
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
         } else {
-            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
+            (ptrBlock)->getInterface(SLattice::Direction(i))->connect(NULL);
         }
     }
 }
@@ -282,7 +283,7 @@ void SmartBlocksWorld::disconnectBlock(SmartBlocksBlock *block) {
     P2PNetworkInterface *fromBlock,*toBlock;
 
     for(int i=0; i<4; i++) {
-        fromBlock = block->getInterface(NeighborDirection::Direction(i));
+        fromBlock = block->getInterface(SLattice::Direction(i));
         if (fromBlock && fromBlock->connectedInterface) {
             toBlock = fromBlock->connectedInterface;
             fromBlock->connectedInterface=NULL;
@@ -312,7 +313,7 @@ void SmartBlocksWorld::deleteBlock(BuildingBlock *blc) {
     if (bb->getState() >= SmartBlocksBlock::ALIVE ) {
         // cut links between bb and others
         for(int i=0; i<4; i++) {
-            P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+            P2PNetworkInterface *bbi = bb->getInterface(SLattice::Direction(i));
             if (bbi->connectedInterface) {
                 //bb->removeNeighbor(bbi); //Useless
                 bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
@@ -349,10 +350,10 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     numSelectedGlBlock = n / 5;
     string name = objBlockForPicking->getObjMtlName(n % 5);
 
-    if (name == "Material__73") numSelectedFace = NeighborDirection::South;
-    else if (name == "Material__68") numSelectedFace = NeighborDirection::East;
-    else if (name == "Material__72") numSelectedFace = NeighborDirection::West;
-    else if (name == "Material__71") numSelectedFace = NeighborDirection::North;
+    if (name == "Material__73") numSelectedFace = SLattice::South;
+    else if (name == "Material__68") numSelectedFace = SLattice::East;
+    else if (name == "Material__72") numSelectedFace = SLattice::West;
+    else if (name == "Material__71") numSelectedFace = SLattice::North;
     else {
 		cerr << "warning: Unrecognized picking face" << endl;
 		numSelectedFace = 5;	// UNDEFINED
@@ -360,7 +361,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     }
 
     cerr << name << " = " << numSelectedFace << " = "
-         << NeighborDirection::getString(numSelectedFace) << endl;       
+         << SLattice::getString(numSelectedFace) << endl;       
 }
 
 void SmartBlocksWorld::addStat(int n,int v) {

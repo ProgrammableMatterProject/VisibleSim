@@ -14,14 +14,18 @@
 #include "buildingBlock.h"
 #include "catoms2DBlockCode.h"
 #include "catoms2DGlBlock.h"
-#include "catoms2DEvents.h"
-#include "catoms2DDirection.h"
-//#include "catoms2DMove.h"
+#include "lattice.h"
 
 namespace Catoms2D {
 
 class Catoms2DBlockCode;
 class Catoms2DMove;
+
+class RelativeDirection {
+ public:
+  enum Direction {CW = -1, CCW =1};
+  static inline Direction getOpposite(Direction d) { return (Direction) ((-1)*d); }
+};
 
 class Catoms2DBlock : public BaseSimulator::BuildingBlock {
 protected:
@@ -33,20 +37,20 @@ public:
 	~Catoms2DBlock();
 
 	inline void setGlBlock(Catoms2DGlBlock*ptr) { ptrGlBlock=ptr;};
-	P2PNetworkInterface *getInterface(NeighborDirection::Direction d);
+	P2PNetworkInterface *getInterface(HLattice::Direction d);
 	inline P2PNetworkInterface *getInterface(int d) {
-		return P2PNetworkInterfaces[(NeighborDirection::Direction)d];
+		return P2PNetworkInterfaces[(HLattice::Direction)d];
 	}
 	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 
-	Cell3DPosition getPosition(NeighborDirection::Direction d);
+	Cell3DPosition getPosition(HLattice::Direction d);
 	Cell3DPosition getPosition(P2PNetworkInterface *p2p);
 
-	NeighborDirection::Direction getDirection(P2PNetworkInterface* p2p);
+	HLattice::Direction getDirection(P2PNetworkInterface* p2p);
 	int nbNeighbors(bool groundIsNeighbor = false);
 	int nbConsecutiveNeighbors(bool groundIsNeighbor = false);
 	int nbConsecutiveEmptyFaces(bool groundIsNeighbor = false);
-	bool hasANeighbor(NeighborDirection::Direction n, bool groundIsNeighbor = false);
+	bool hasANeighbor(HLattice::Direction n, bool groundIsNeighbor = false);
 	bool hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor = false);
 
 	//inline direction_t getOpposite(direction_t d) { return (direction_t) (d * (-1));}  

@@ -47,9 +47,9 @@ void SmartBlock1BlockCode::startup() {
 
         //I send distance to all of my neighbors
         uint64_t time_offset;
-        for( int i=NeighborDirection::North; i<=NeighborDirection::West; i++)
+        for( int i=SLattice::North; i<=SLattice::West; i++)
         {
-            P2PNetworkInterface *p2p = smartBlock->getInterface(NeighborDirection::Direction(i));
+            P2PNetworkInterface *p2p = smartBlock->getInterface(SLattice::Direction(i));
             if( p2p->connectedInterface)
             {
                 time_offset = (i+1)*1000;
@@ -94,8 +94,8 @@ void SmartBlock1BlockCode::processLocalEvent(EventPtr pev) {
                 distance_dealer = recv_message->destinationInterface;
 
                 //I send my new distance to all my neighbors except to its sender
-                for( i = NeighborDirection::North; i <= NeighborDirection::West; i++) {
-                    P2PNetworkInterface * p2p = smartBlock->getInterface( NeighborDirection::Direction(i));
+                for( i = SLattice::North; i <= SLattice::West; i++) {
+                    P2PNetworkInterface * p2p = smartBlock->getInterface( SLattice::Direction(i));
                     if( p2p->connectedInterface) {
                         //except to the sender
                         if( p2p != recv_interface) {
@@ -142,8 +142,8 @@ void SmartBlock1BlockCode::processLocalEvent(EventPtr pev) {
             if (recv_message->getPath() && recv_message->getDistance()==my_distance+1) {
                 smartBlock->setColor(recv_message->getPath());
                 //I send my new distance to all my neighbors except to its sender
-                for( i = NeighborDirection::North; i <= NeighborDirection::West; i++) {
-                    P2PNetworkInterface * p2p = smartBlock->getInterface( NeighborDirection::Direction(i));
+                for( i = SLattice::North; i <= SLattice::West; i++) {
+                    P2PNetworkInterface * p2p = smartBlock->getInterface( SLattice::Direction(i));
                     if( p2p->connectedInterface) {
                         //except to the sender
                         if( p2p != recv_interface) {
@@ -206,8 +206,8 @@ void SmartBlock1BlockCode::send_ack(unsigned int path, unsigned int distance,  P
 
 bool SmartBlock1BlockCode::i_can_ack(){
     bool result = true;
-    int i = NeighborDirection::North;
-    while( i <= NeighborDirection::West && result == true)
+    int i = SLattice::North;
+    while( i <= SLattice::West && result == true)
     {
         if( isAck[ i] == false){ result = false; }
         i++;

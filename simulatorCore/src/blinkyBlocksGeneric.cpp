@@ -36,7 +36,7 @@ int GenericCodeBlock::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int ne
     P2PNetworkInterface *p2p;
     int j,n=0,t1;
     for (int i=0; i<6; i++) {
-        p2p = module->getInterface((NeighborDirection::Direction)(i));
+        p2p = module->getInterface((SCLattice::Direction)(i));
         if(p2p && p2p->connectedInterface) { // on regarde si elle n'est pas dans les interdits
             j=0;
             while (j<nexcept && p2p!=tabExceptions[j]) j++;
@@ -66,7 +66,7 @@ int GenericCodeBlock::sendMessageToAllNeighbors(const char*msgString, Message*ms
     P2PNetworkInterface *p2p;
     int j,n=0,t1;
     for (int i=0; i<6; i++) {
-        p2p = module->getInterface((NeighborDirection::Direction)(i));
+        p2p = module->getInterface((SCLattice::Direction)(i));
         if(p2p->connectedInterface) { // on regarde si elle n'est pas dans les interdits
             j=0;
             while (j<nexcept && p2p!=tabExceptions[j]) j++;

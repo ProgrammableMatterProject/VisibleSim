@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+
 #include "smartBlocksSimulator.h"
 
 using namespace std;

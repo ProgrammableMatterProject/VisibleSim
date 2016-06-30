@@ -5,6 +5,7 @@
 #include "robotBlocksSimulator.h"
 #include "robotBlocksEvents.h"
 #include "robotBlocksBlock.h"
+#include "lattice.h"
 
 #include <map>
 #include <ostream>

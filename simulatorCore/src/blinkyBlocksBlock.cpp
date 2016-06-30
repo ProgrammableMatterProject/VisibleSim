@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+
 #include "blinkyBlocksBlock.h"
 #include "buildingBlock.h"
 #include "blinkyBlocksWorld.h"
@@ -23,60 +24,6 @@ using namespace std;
 #define BLINKYBLOCKS_TRANSMISSION_MAX_TIME 6.11
 
 namespace BlinkyBlocks {
-
-string NeighborDirection::getString(int d) {
-    switch(d) {
-    case Front:
-		return string("Front");
-		break;
-    case Back:
-		return string("Back");
-		break;
-    case Left:
-		return string("Left");
-		break;
-    case Right:
-		return string("Right");
-		break;
-    case Top:
-		return string("Top");
-		break;
-    case Bottom:
-		return string("Bottom");
-		break;
-    default:
-		cerr << "Unknown direction" << endl;
-		return string("Unknown");
-		break;
-    }
-}
-
-int NeighborDirection::getOpposite(int d) {
-    switch (Direction(d)) {
-    case Front:
-		return Back;
-		break;
-    case Back:
-		return Front;
-		break;
-    case Left:
-		return Right;
-		break;
-    case Right:
-		return Left;
-		break;
-    case Top:
-		return Bottom;
-		break;
-    case Bottom:
-		return Top;
-		break;
-    default:
-		ERRPUT << "*** ERROR *** : unknown face" << endl;
-		return -1;
-		break;
-    }
-}
 
 BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "BlinkyBlocksBlock constructor" << endl;
@@ -104,16 +51,16 @@ void BlinkyBlocksBlock::pauseClock(uint64_t delay, uint64_t start){
 
 }
     
-NeighborDirection::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
+SCLattice::Direction BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     if( !given_interface) {
-		return NeighborDirection::Direction(0);
+		return SCLattice::Direction(0);
     }
 
 	for(int i(0); i < 6; ++i) {
-		if(P2PNetworkInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+		if(P2PNetworkInterfaces[i] == given_interface) return SCLattice::Direction(i);
     }
 
-    return NeighborDirection::Direction(0);
+    return SCLattice::Direction(0);
 }
 
 void BlinkyBlocksBlock::accel(uint64_t date, int x, int y, int z) {
@@ -126,18 +73,18 @@ void BlinkyBlocksBlock::shake(uint64_t date, int f) {
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << NeighborDirection::getString(getDirection(ni)) << endl;
+		   << SCLattice::getString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new AddNeighborEvent(getScheduler()->now(), this,
-							 NeighborDirection::getOpposite(getDirection(ni)), target->blockId));
+							 SCLattice::getOpposite(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << NeighborDirection::getString(getDirection(ni)) << endl;
+		   << SCLattice::getString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
-								NeighborDirection::getOpposite(getDirection(ni))));
+								SCLattice::getOpposite(getDirection(ni))));
 }
 
 void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {

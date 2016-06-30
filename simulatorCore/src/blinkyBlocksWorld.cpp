@@ -88,14 +88,14 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	for (int i = 0; i < 6; i++) {
 		ptrNeighbor = (BlinkyBlocksBlock*)lattice->getBlock(nCells[i]);
 		if (ptrNeighbor) {
-			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->
-				connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
-													  NeighborDirection::getOpposite(i))));
+			(ptrBlock)->getInterface(SCLattice::Direction(i))->
+				connect(ptrNeighbor->getInterface(SCLattice::Direction(
+													  SCLattice::getOpposite(i))));
 
 			OUTPUT << "connection #" << (ptrBlock)->blockId <<
 				" to #" << ptrNeighbor->blockId << endl;
 		} else {
-			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
+			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}
 	}
 }
@@ -106,7 +106,7 @@ void BlinkyBlocksWorld::deleteBlock(BuildingBlock *blc) {
 	if (bb->getState() >= BlinkyBlocksBlock::ALIVE ) {
 		// cut links between bb and others
 		for(int i=0; i<6; i++) {
-			P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+			P2PNetworkInterface *bbi = bb->getInterface(SCLattice::Direction(i));
 			if (bbi->connectedInterface) {
 				//bb->removeNeighbor(bbi); //Useless
 				bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
@@ -280,12 +280,12 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
 	numSelectedGlBlock=n/6;
 	string name = objBlockForPicking->getObjMtlName(n%6);
 
-	if (name=="_blinkyBlockPickingface_top") numSelectedFace=NeighborDirection::Top;
-	else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=NeighborDirection::Bottom;
-	else if (name=="_blinkyBlockPickingface_right") numSelectedFace=NeighborDirection::Right;
-	else if (name=="_blinkyBlockPickingface_left") numSelectedFace=NeighborDirection::Left;
-	else if (name=="_blinkyBlockPickingface_front") numSelectedFace=NeighborDirection::Front;
-	else if (name=="_blinkyBlockPickingface_back") numSelectedFace=NeighborDirection::Back;
+	if (name=="_blinkyBlockPickingface_top") numSelectedFace=SCLattice::Top;
+	else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=SCLattice::Bottom;
+	else if (name=="_blinkyBlockPickingface_right") numSelectedFace=SCLattice::Right;
+	else if (name=="_blinkyBlockPickingface_left") numSelectedFace=SCLattice::Left;
+	else if (name=="_blinkyBlockPickingface_front") numSelectedFace=SCLattice::Front;
+	else if (name=="_blinkyBlockPickingface_back") numSelectedFace=SCLattice::Back;
 	else {
 		cerr << "warning: Unrecognized picking face" << endl;
 		numSelectedFace = 7;	// UNDEFINED
@@ -342,7 +342,7 @@ void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
 		if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
 			// cut links between bb and others
 			for(int i=0; i<6; i++) {
-				P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+				P2PNetworkInterface *bbi = bb->getInterface(SCLattice::Direction(i));
 				if (bbi->connectedInterface) {
 					//bb->removeNeighbor(bbi); //Useless
 					bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);

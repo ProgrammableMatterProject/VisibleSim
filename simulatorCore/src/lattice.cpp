@@ -49,7 +49,7 @@ void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
         grid[index] = bb;
     } else {
         cerr << "error: trying to add block of id " << bb->blockId << " on non-empty cell " << p << endl;
-        throw new InvalidInsertion;
+        throw new InvalidInsertionException;
         // exit(EXIT_FAILURE);
     }
 
@@ -171,6 +171,44 @@ vector<Cell3DPosition> HLattice::getRelativeConnectivity(const Cell3DPosition &p
     return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
 }
 
+/************************************************************
+ *   HLattice::NeighborDirections
+ ************************************************************/
+
+const string HLattice::directionName[] = {"Right","TopRight","TopLeft",
+                                                             "Left","BottomLeft","BottomRight"};
+
+int HLattice::getOpposite(int d) {
+    switch (Direction(d)) {
+    case BottomLeft:
+        return TopRight;
+        break;
+    case Left:
+        return Right;
+        break;
+    case TopLeft:
+        return BottomRight;
+        break;
+    case BottomRight:
+        return TopLeft;
+        break;
+    case Right:
+        return Left;
+        break;
+    case TopRight:
+        return BottomLeft;
+        break;
+    default:
+        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+        return -1;
+        break;
+    }
+}
+
+string HLattice::getString(int d) {
+    return directionName[d];
+}
+
 /********************* SLattice *********************/
 SLattice::SLattice() : Lattice2D() {}
 SLattice::SLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
@@ -191,6 +229,38 @@ Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) {
                           pos[1] / gridScale[1],
                           0);
 }
+
+/************************************************************
+ *   SLattice::NeighborDirections
+ ************************************************************/
+
+const string SLattice::directionName[] = {"North","East","South","West"};
+
+int SLattice::getOpposite(int d) {
+    switch(d) {
+    case North :
+        return South;
+        break;
+    case East :
+        return West;
+        break;
+    case South :
+        return North;
+        break;
+    case West :
+        return East;
+        break;
+    default:
+        ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+        return -1;
+        break;
+    }
+}
+
+string SLattice::getString(int d) {
+    return directionName[d];
+}
+
 
 /********************* FCCLattice *********************/
 FCCLattice::FCCLattice() : Lattice3D() {}
@@ -243,6 +313,41 @@ Cell3DPosition FCCLattice::worldToGridPosition(const Vector3D &pos) {
     return res;
 }
 
+/************************************************************
+ *   FCCLattice::NeighborDirections
+ ************************************************************/
+
+const string FCCLattice::directionName[] = {"Con0", "Con1", "Con2",
+                                                               "Con3", "Con4", "Con5",
+                                                               "Con6", "Con7", "Con8",
+                                                               "Con9", "Con10", "Con11"};
+
+int FCCLattice::getOpposite(int d) {
+    switch (Direction(d)) {
+    case Con0:	return Con6; break;
+    case Con1:	return Con7; break;
+    case Con2:	return Con8; break;
+    case Con3:	return Con9; break;
+    case Con4:	return Con10; break;
+    case Con5:	return Con11; break;
+    case Con6:	return Con0; break;
+    case Con7:	return Con1; break;
+    case Con8:	return Con2; break;
+    case Con9:	return Con3; break;
+    case Con10:	return Con4; break;
+    case Con11:	return Con5; break;
+    default:
+		ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+		return -1;
+		break;
+    }
+}
+
+string FCCLattice::getString(int d) {
+    return directionName[d];
+}
+
+
 /********************* SCLattice *********************/
 SCLattice::SCLattice() : Lattice3D() {}
 SCLattice::SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
@@ -264,6 +369,27 @@ Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) {
                           pos[2] / gridScale[2]);
 }
 
+const string SCLattice::directionName[] = {"Bottom", "Back", "Right","Front", "Left", "Top"};
+
+int SCLattice::getOpposite(int d) {
+    switch (Direction(d)) {
+    case Front:	return Back; break;
+    case Back:	return Front; break;
+    case Left:	return Right; break;
+    case Right:	return Left; break;
+    case Top:	return Bottom; break;
+    case Bottom:	return Top; break;
+    default:
+		ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+		return -1;
+		break;
+    }
+}
+
+string SCLattice::getString(int d) {
+    return directionName[d];
+}
+
 // std::vector<int> SCLattice::getActiveNeighborDirections(BuildingBlock *bb) {
 //     vector<int> neighborDirections;
 //     vector<Cell3DPosition> relativeNCells =
@@ -273,7 +399,7 @@ Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) {
 //     for (Cell3DPosition p : relativeNCells) {
 //         Cell3DPosition v = bb->position + p;
 //         if (isInGrid(v) && !isFree(v)) {
-//             neighborDirections.push_back(NeighborDirection::determineDirection(p));
+//             neighborDirections.push_back(determineDirection(p));
 //         }
 //     }
 

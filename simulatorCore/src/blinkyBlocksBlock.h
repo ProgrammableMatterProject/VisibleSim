@@ -14,15 +14,9 @@
 #include "color.h"
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksGlBlock.h"
+#include "lattice.h"
 
 namespace BlinkyBlocks {
-
-class NeighborDirection {
-public:
-	enum Direction { Bottom = 0, Back = 1, Right, Front, Left, Top };
-	static int getOpposite(int d);
-	static string getString(int d);
-};
 
 class BlinkyBlocksBlockCode;
 
@@ -33,11 +27,11 @@ public:
 
 	inline virtual BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
 
-	inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d)
+	inline P2PNetworkInterface *getInterface(SCLattice::Direction d)
 		{ return P2PNetworkInterfaces[d]; }
 
 	P2PNetworkInterface *getInterfaceDestId(int id);
-	NeighborDirection::Direction getDirection(P2PNetworkInterface*);
+	SCLattice::Direction getDirection(P2PNetworkInterface*);
 
 	/* schedule the appropriate event for this action */
 	/* void tap(uint64_t date); Now a generic event in buildingBlock.cpp */

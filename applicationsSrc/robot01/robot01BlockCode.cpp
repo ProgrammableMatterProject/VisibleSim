@@ -318,13 +318,13 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 
 			// search if target is directly connected to the block
 			int i=0;
-			P2PNetworkInterface *p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
+			P2PNetworkInterface *p2p = robotBlock->getInterface(SCLattice::Direction(i));
 			bool found=(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId==recvMessage->target);
 			//cout <<(p2p->connectedInterface?p2p->connectedInterface->hostBlock->blockId:-1) << endl;
 			while (i<6 && !found) {
 				i++;
 				if (i<6) {
-					p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
+					p2p = robotBlock->getInterface(SCLattice::Direction(i));
 					found=(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId==recvMessage->target);
 					//cout <<(p2p->connectedInterface?p2p->connectedInterface->hostBlock->blockId:-1) << endl;
 				}
@@ -374,7 +374,7 @@ void Robot01BlockCode::sendMapToNeighbors(P2PNetworkInterface *p2pExcept) {
 	stringstream info;
 
 	for(int i = 0; i < 6; i++) {
-		p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
+		p2p = robotBlock->getInterface(SCLattice::Direction(i));
 		if( p2p->connectedInterface && p2p!=p2pExcept) {
 			MapMessage *message = new MapMessage(gridSize,targetGrid);
 			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));
@@ -582,7 +582,7 @@ void Robot01BlockCode::sendUnlockMessage(int id) {
 	stringstream info;
 
 	for(int i = 0; i < 6; i++) {
-        p2p = robotBlock->getInterface(NeighborDirection::Direction(i));
+        p2p = robotBlock->getInterface(SCLattice::Direction(i));
 		if( p2p->connectedInterface) {
 			UnlockMessage *message = new UnlockMessage(id);
 			scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + COM_DELAY, message, p2p));

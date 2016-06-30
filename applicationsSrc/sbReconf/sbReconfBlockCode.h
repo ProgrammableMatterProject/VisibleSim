@@ -30,6 +30,7 @@
 #include "smartBlocksSimulator.h"
 #include "smartBlocksBlock.h"
 #include "smartBlocksCapabilities.h"
+#include "lattice.h"
 
 class MapMessage;
 class AckMapMessage;
@@ -118,7 +119,7 @@ public:
 	void step3(MessagePtr message);
 	void reconnect(bool hasRule);
 	void createLine(uint64_t t,bool hol);
-	void sendNoActivity(SmartBlocks::NeighborDirection dir,int id);
+	void sendNoActivity(SLattice::Direction dir,int id);
 	void sendInitToNeighbors(P2PNetworkInterface *except,int stage);
 	void sendAckInit(P2PNetworkInterface *p2p);
 	void init();

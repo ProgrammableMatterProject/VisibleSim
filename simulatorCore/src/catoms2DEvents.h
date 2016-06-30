@@ -8,8 +8,8 @@
 #ifndef CATOMS2DEVENTS_H_
 #define CATOMS2DEVENTS_H_
 
-//#include "catoms2DBlock.h"
 #include "events.h"
+#include "catoms2DBlock.h"
 #include "catoms2DMove.h"
 
 namespace Catoms2D {

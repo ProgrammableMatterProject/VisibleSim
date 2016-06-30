@@ -13,6 +13,7 @@
 #include "buildingBlock.h"
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksGlBlock.h"
+#include "lattice.h"
 
 namespace RobotBlocks {
 
@@ -36,9 +37,9 @@ public:
     void setPrevNext(int,int);
     void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
-    inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return P2PNetworkInterfaces[d]; }
+    inline P2PNetworkInterface *getInterface(SCLattice::Direction d) { return P2PNetworkInterfaces[d]; }
 
-    NeighborDirection::Direction getDirection(P2PNetworkInterface*);
+    SCLattice::Direction getDirection(P2PNetworkInterface*);
 };
 
 std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb);

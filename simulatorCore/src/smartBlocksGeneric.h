@@ -5,6 +5,7 @@
 #include "smartBlocksSimulator.h"
 #include "smartBlocksEvents.h"
 #include "smartBlocksBlock.h"
+#include "lattice.h"
 
 #include <map>
 #include <ostream>

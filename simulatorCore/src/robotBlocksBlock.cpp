@@ -16,60 +16,6 @@ using namespace std;
 
 namespace RobotBlocks {
 
-string NeighborDirection::getString(int d) {
-    switch(d) {
-    case Front:
-		return string("Front");
-		break;
-    case Back:
-		return string("Back");
-		break;
-    case Left:
-		return string("Left");
-		break;
-    case Right:
-		return string("Right");
-		break;
-    case Top:
-		return string("Top");
-		break;
-    case Bottom:
-		return string("Bottom");
-		break;
-    default:
-		cerr << "Unknown direction" << endl;
-		return string("Unknown");
-		break;
-    }
-}
-
-int NeighborDirection::getOpposite(int d) {
-    switch (Direction(d)) {
-    case Front:
-		return Back;
-		break;
-    case Back:
-		return Front;
-		break;
-    case Left:
-		return Right;
-		break;
-    case Right:
-		return Left;
-		break;
-    case Top:
-		return Bottom;
-		break;
-    case Bottom:
-		return Top;
-		break;
-    default:
-		ERRPUT << "*** ERROR *** : unknown face" << endl;
-		return -1;
-		break;
-    }
-}
-
 RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "RobotBlocksBlock constructor" << endl;
 
@@ -101,23 +47,23 @@ void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetw
     getWorld()->updateGlData(this,prevId,nextId);
 }
 
-NeighborDirection::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
+SCLattice::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     if( !given_interface) {
-		return NeighborDirection::Direction(0);
+		return SCLattice::Direction(0);
     }
     for( int i(0); i < 6; ++i) {
-		if(P2PNetworkInterfaces[i] == given_interface) return NeighborDirection::Direction(i);
+		if(P2PNetworkInterfaces[i] == given_interface) return SCLattice::Direction(i);
     }
-    return NeighborDirection::Direction(0);
+    return SCLattice::Direction(0);
 }
 
 P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const PointRel3D &pos) {
-    if (pos.x==-1) return P2PNetworkInterfaces[NeighborDirection::Left];
-    else if (pos.x==1) return P2PNetworkInterfaces[NeighborDirection::Right];
-    else if (pos.y==-1) return P2PNetworkInterfaces[NeighborDirection::Front];
-    else if (pos.y==1) return P2PNetworkInterfaces[NeighborDirection::Back];
-    else if (pos.z==-1) return P2PNetworkInterfaces[NeighborDirection::Bottom];
-    else if (pos.z==1) return P2PNetworkInterfaces[NeighborDirection::Top];
+    if (pos.x==-1) return P2PNetworkInterfaces[SCLattice::Left];
+    else if (pos.x==1) return P2PNetworkInterfaces[SCLattice::Right];
+    else if (pos.y==-1) return P2PNetworkInterfaces[SCLattice::Front];
+    else if (pos.y==1) return P2PNetworkInterfaces[SCLattice::Back];
+    else if (pos.z==-1) return P2PNetworkInterfaces[SCLattice::Bottom];
+    else if (pos.z==1) return P2PNetworkInterfaces[SCLattice::Top];
 
     return NULL;
 }

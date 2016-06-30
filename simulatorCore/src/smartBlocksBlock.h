@@ -13,15 +13,9 @@
 #include "smartBlocksGlBlock.h"
 #include "smartBlocksCapabilities.h"
 #include "network.h"
+#include "lattice.h"
 
 namespace SmartBlocks {
-
-class NeighborDirection {
-public:
-    enum Direction { North = 0, East, South, West};
-    static int getOpposite(int d);
-    static string getString(int d);
-};
 
 class SmartBlocksBlockCode;
 
@@ -33,12 +27,12 @@ public:
     SmartBlocksBlock(int bId, BlockCodeBuilder bcb);
     ~SmartBlocksBlock();
     inline void setDisplayedValue(int n) { static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n); };
-    inline P2PNetworkInterface *getInterface(NeighborDirection::Direction d) { return P2PNetworkInterfaces[d]; }
+    inline P2PNetworkInterface *getInterface(SLattice::Direction d) { return P2PNetworkInterfaces[d]; }
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointCel &pos);
     P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int id);
     
-    Cell3DPosition getPosition(NeighborDirection::Direction d);
-    NeighborDirection::Direction getDirection( P2PNetworkInterface*);
+    Cell3DPosition getPosition(SLattice::Direction d);
+    SLattice::Direction getDirection( P2PNetworkInterface*);
     inline void getGridPosition(int &x,int &y) { x = int(position[0]); y=int(position[1]); };
 };
 

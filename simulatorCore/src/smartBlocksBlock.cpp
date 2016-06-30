@@ -12,55 +12,12 @@
 using namespace std;
 
 namespace SmartBlocks {
-
-int NeighborDirection::getOpposite(int d) {
-    switch(d) {
-    case NeighborDirection::North :
-        return South;
-        break;
-    case NeighborDirection::East :
-        return West;
-        break;
-    case NeighborDirection::South :
-        return North;
-        break;
-    case NeighborDirection::West :
-        return East;
-        break;
-    default:
-        ERRPUT << "*** ERROR *** : unknown face" << endl;
-        return -1;
-        break;
-    }
-
-}
-    
-string NeighborDirection::getString(int d) {
-    switch(d) {
-    case NeighborDirection::North :
-        return string("North");
-        break;
-    case NeighborDirection::East :
-        return string("East");
-        break;
-    case NeighborDirection::South :
-        return string("South");
-        break;
-    case NeighborDirection::West :
-        return string("West");
-        break;
-    default:
-        cerr << "Unknown direction" << endl;
-        return string("Unknown");
-        break;
-    }
-}
     
 SmartBlocksBlock::SmartBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
 
-    for (int i=NeighborDirection::North; i<=NeighborDirection::West; i++) {
+    for (int i=SLattice::North; i<=SLattice::West; i++) {
         P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
     }
 }
@@ -70,43 +27,46 @@ SmartBlocksBlock::~SmartBlocksBlock() {
 }
 
 P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByRelPos(const PointCel &pos) {
-    if (pos.x==-1) return P2PNetworkInterfaces[NeighborDirection::West];
-    else if (pos.x==1) return P2PNetworkInterfaces[NeighborDirection::East];
-    else if (pos.y==-1) return P2PNetworkInterfaces[NeighborDirection::South];
-    else if (pos.y==1) return P2PNetworkInterfaces[NeighborDirection::North];
+    if (pos.x==-1) return P2PNetworkInterfaces[SLattice::West];
+    else if (pos.x==1) return P2PNetworkInterfaces[SLattice::East];
+    else if (pos.y==-1) return P2PNetworkInterfaces[SLattice::South];
+    else if (pos.y==1) return P2PNetworkInterfaces[SLattice::North];
 
     return NULL;
 }
 
-NeighborDirection::Direction SmartBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
+SLattice::Direction SmartBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     /*if( !given_interface) {
-      return NeighborDirection::Direction(0);
+      return SLattice::Direction(0);
       }*/
-    for( int i( NeighborDirection::North); i <= NeighborDirection::West; ++i) {
+    for( int i( SLattice::North); i <= SLattice::West; ++i) {
         P2PNetworkInterface* p2p = P2PNetworkInterfaces[ i];
         if( p2p == given_interface) {
-            return NeighborDirection::Direction(i);
+            return SLattice::Direction(i);
         }
     }
     assert(0);			// should never get here
 }
 
-Cell3DPosition SmartBlocksBlock::getPosition(NeighborDirection::Direction d) {
+Cell3DPosition SmartBlocksBlock::getPosition(SLattice::Direction d) {
     Cell3DPosition p = position;
 
     switch (d) {
-    case NeighborDirection::North :
+    case SLattice::North :
         p.pt[1]++;
         break;
-    case NeighborDirection::East :
+    case SLattice::East :
         p.pt[0]--;
         break;
-    case NeighborDirection::South :
+    case SLattice::South :
         p.pt[1]--;
         break;
-    case NeighborDirection::West :
+    case SLattice::West :
         p.pt[0]++;
-        break;        
+        break;
+    default :
+        cerr << "error: getPosition: Undefined position " << d << endl;
+        exit(EXIT_FAILURE);
     }
 
     

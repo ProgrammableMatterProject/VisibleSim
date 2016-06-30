@@ -5,6 +5,7 @@
 #include "blinkyBlocksSimulator.h"
 #include "blinkyBlocksEvents.h"
 #include "blinkyBlocksBlock.h"
+#include "lattice.h"
 
 #include <map>
 #include <ostream>

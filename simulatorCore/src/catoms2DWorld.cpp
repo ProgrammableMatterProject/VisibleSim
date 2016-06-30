@@ -8,13 +8,15 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "catoms2DWorld.h"
-#include "catoms2DBlock.h"
-#include "trace.h"
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
+
 #include "catoms2DSimulator.h"
+#include "catoms2DWorld.h"
+#include "catoms2DBlock.h"
+#include "catoms2DMove.h"
+#include "trace.h"
 #include "utils.h"
 
 using namespace std;
@@ -93,7 +95,7 @@ void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
     P2PNetworkInterface *fromBlock,*toBlock;
 
     for(int i=0; i<6; i++) {
-        fromBlock = block->getInterface(NeighborDirection::Direction(i));
+        fromBlock = block->getInterface(HLattice::Direction(i));
         if (fromBlock && fromBlock->connectedInterface) {
             toBlock = fromBlock->connectedInterface;
             fromBlock->connectedInterface=NULL;
@@ -118,14 +120,14 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
         nPos = pos + nRelCells[i];
         ptrNeighbor = (Catoms2DBlock*)lattice->getBlock(nPos);
         if (ptrNeighbor) {
-            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->
-                connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
-                                                      NeighborDirection::getOpposite(i))));
+            (ptrBlock)->getInterface(HLattice::Direction(i))->
+                connect(ptrNeighbor->getInterface(HLattice::Direction(
+                                                      HLattice::getOpposite(i))));
 
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
         } else {
-            (ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
+            (ptrBlock)->getInterface(HLattice::Direction(i))->connect(NULL);
         }
     }
 }
@@ -136,7 +138,7 @@ void Catoms2DWorld::deleteBlock(BuildingBlock *blc) {
     if (bb->getState() >= Catoms2DBlock::ALIVE ) {
         // cut links between bb and others
         for(int i=0; i<6; i++) {
-            P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+            P2PNetworkInterface *bbi = bb->getInterface(HLattice::Direction(i));
             if (bbi->connectedInterface) {
                 //bb->removeNeighbor(bbi); //Useless
                 bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
@@ -360,7 +362,7 @@ void Catoms2DWorld::menuChoice(int n) {
     case 1 : {
         OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 
-        Cell3DPosition pos = bb->getPosition(NeighborDirection::Direction(numSelectedFace));
+        Cell3DPosition pos = bb->getPosition(HLattice::Direction(numSelectedFace));
 
         addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
         linkBlock(pos);
@@ -400,12 +402,12 @@ void Catoms2DWorld::setSelectedFace(int n) {
     string name = objBlockForPicking->getObjMtlName(n % numPickingTextures);
     numSelectedFace = numPickingTextures;   // Undefined NeighborDirection
 
-    if (name == "face_0") numSelectedFace = NeighborDirection::Right;
-    else if (name == "face_1") numSelectedFace = NeighborDirection::TopRight;
-    else if (name == "face_2") numSelectedFace = NeighborDirection::TopLeft;
-    else if (name == "face_3") numSelectedFace = NeighborDirection::Left;
-    else if (name == "face_4") numSelectedFace = NeighborDirection::BottomLeft;
-    else if (name == "face_5") numSelectedFace = NeighborDirection::BottomRight;
+    if (name == "face_0") numSelectedFace = HLattice::Right;
+    else if (name == "face_1") numSelectedFace = HLattice::TopRight;
+    else if (name == "face_2") numSelectedFace = HLattice::TopLeft;
+    else if (name == "face_3") numSelectedFace = HLattice::Left;
+    else if (name == "face_4") numSelectedFace = HLattice::BottomLeft;
+    else if (name == "face_5") numSelectedFace = HLattice::BottomRight;
 }
 
 /**
@@ -430,7 +432,7 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
-    cerr << "Block " << numSelectedGlBlock << ":" << NeighborDirection::getString(numSelectedFace)
+    cerr << "Block " << numSelectedGlBlock << ":" << HLattice::getString(numSelectedFace)
          << " selected" << endl;
 
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);

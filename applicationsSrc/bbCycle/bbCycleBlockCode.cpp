@@ -9,11 +9,13 @@
 #include <sstream>
 #include <stdio.h>
 #include <memory>
+
 #include "scheduler.h"
 #include "network.h"
 #include "bbCycleBlockCode.h"
 #include "bbCycleEvents.h"
 #include "trace.h"
+#include "lattice.h"
 
 using namespace std;
 using namespace BlinkyBlocks;
@@ -136,7 +138,7 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
 	for (int i=0; i<6 ; i++) {
-	p2p = bb->getInterface(NeighborDirection::Direction(i));
+	p2p = bb->getInterface(SCLattice::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){	
 			SynchroMessage *message = new SynchroMessage(clock, hop, id);
 			getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (getScheduler()->now(), message, p2p));

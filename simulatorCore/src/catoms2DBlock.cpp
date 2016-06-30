@@ -10,6 +10,8 @@
 #include "buildingBlock.h"
 #include "catoms2DWorld.h"
 #include "catoms2DSimulator.h"
+#include "catoms2DMove.h"
+#include "catoms2DEvents.h"
 #include "trace.h"
 
 using namespace std;
@@ -19,7 +21,7 @@ namespace Catoms2D {
 Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
     OUTPUT << "Catoms2DBlock constructor" << endl;
 
-    for (int i=0; i<MAX_NB_NEIGHBORS; i++) {
+    for (int i=0; i<HLattice::MAX_NB_NEIGHBORS; i++) {
 		getP2PNetworkInterfaces().push_back(new P2PNetworkInterface(this));
     }
 
@@ -30,21 +32,21 @@ Catoms2DBlock::~Catoms2DBlock() {
     OUTPUT << "Catoms2DBlock destructor " << blockId << endl;
 }
 
-NeighborDirection::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
+HLattice::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
     if (!p2p) {
-		return NeighborDirection::Direction(0);
+		return HLattice::Direction(0);
     }
 
-    for (int i = 0; i < MAX_NB_NEIGHBORS; ++i) {
-		if (getInterface(NeighborDirection::Direction(i)) == p2p) {
-			return NeighborDirection::Direction(i);
+    for (int i = 0; i < HLattice::MAX_NB_NEIGHBORS; ++i) {
+		if (getInterface(HLattice::Direction(i)) == p2p) {
+			return HLattice::Direction(i);
 		}
     }
-    return NeighborDirection::Direction(0);
+    return HLattice::Direction(0);
 }
   
 // PTHY: TODO: Can be genericized in BuildingBlocks
-Cell3DPosition Catoms2DBlock::getPosition(NeighborDirection::Direction d) {   
+Cell3DPosition Catoms2DBlock::getPosition(HLattice::Direction d) {   
     World *wrl = getWorld();
     vector<Cell3DPosition> nCells = wrl->lattice->getRelativeConnectivity(position);
     
@@ -61,7 +63,7 @@ std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {
     return stream;
 }
 
-P2PNetworkInterface *Catoms2DBlock::getInterface(NeighborDirection::Direction d) {
+P2PNetworkInterface *Catoms2DBlock::getInterface(HLattice::Direction d) {
     int alpha = angle;
     int beta = d*60;
     int t = beta-alpha;
@@ -73,7 +75,7 @@ P2PNetworkInterface *Catoms2DBlock::getInterface(NeighborDirection::Direction d)
     }
 }
 
-bool Catoms2DBlock::hasANeighbor(NeighborDirection::Direction n, bool groundIsNeighbor) {
+bool Catoms2DBlock::hasANeighbor(HLattice::Direction n, bool groundIsNeighbor) {
     return hasANeighbor(getInterface(n),groundIsNeighbor);
 }
 
@@ -89,8 +91,8 @@ bool Catoms2DBlock::hasANeighbor(P2PNetworkInterface *p2p, bool groundIsNeighbor
 
 int Catoms2DBlock::nbNeighbors(bool groundIsNeighbor) {
     int cnt = 0;
-    for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {
-		if (hasANeighbor((NeighborDirection::Direction)i, groundIsNeighbor)) {
+    for (int i = 0; i < HLattice::MAX_NB_NEIGHBORS; i++) {
+		if (hasANeighbor((HLattice::Direction)i, groundIsNeighbor)) {
 			cnt++;
 		}
     }
@@ -101,20 +103,20 @@ int Catoms2DBlock::nbConsecutiveNeighbors(bool groundIsNeighbor) {
     int empty = -1;
     int m = 0;
     int cnt = 0;
-    for(int i = 0; i < MAX_NB_NEIGHBORS; i++) {
-		if (!hasANeighbor((NeighborDirection::Direction)i, groundIsNeighbor)) {
+    for(int i = 0; i < HLattice::MAX_NB_NEIGHBORS; i++) {
+		if (!hasANeighbor((HLattice::Direction)i, groundIsNeighbor)) {
 			empty = i;
 			break;
 		}
     }
 
     if (empty == -1) {
-		return MAX_NB_NEIGHBORS;
+		return HLattice::MAX_NB_NEIGHBORS;
     }
 
-    for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
-		int j = (empty+i)%MAX_NB_NEIGHBORS;
-		if (hasANeighbor((NeighborDirection::Direction)j, groundIsNeighbor)) {
+    for( int i = 0; i < HLattice::MAX_NB_NEIGHBORS; i++) {
+		int j = (empty+i)%HLattice::MAX_NB_NEIGHBORS;
+		if (hasANeighbor((HLattice::Direction)j, groundIsNeighbor)) {
 			cnt++;
 		} else {
 			m = max(m,cnt);
@@ -129,8 +131,8 @@ int Catoms2DBlock::nbConsecutiveEmptyFaces(bool groundIsNeighbor) {
     int notEmpty = -1;
     int m = 0;
     int cnt = 0;
-    for(int i = 0; i < MAX_NB_NEIGHBORS; i++) {
-		if (hasANeighbor((NeighborDirection::Direction)i, groundIsNeighbor)) {
+    for(int i = 0; i < HLattice::MAX_NB_NEIGHBORS; i++) {
+		if (hasANeighbor((HLattice::Direction)i, groundIsNeighbor)) {
 			notEmpty = i;
 			break;
 		}
@@ -140,9 +142,9 @@ int Catoms2DBlock::nbConsecutiveEmptyFaces(bool groundIsNeighbor) {
 		return 0;
     }
 
-    for( int i = 0; i < MAX_NB_NEIGHBORS; i++) {
-		int j = (notEmpty+i)%MAX_NB_NEIGHBORS;
-		if (!hasANeighbor((NeighborDirection::Direction)j, groundIsNeighbor)) {
+    for( int i = 0; i < HLattice::MAX_NB_NEIGHBORS; i++) {
+		int j = (notEmpty+i)%HLattice::MAX_NB_NEIGHBORS;
+		if (!hasANeighbor((HLattice::Direction)j, groundIsNeighbor)) {
 			cnt++;
 		} else {
 			m = max(m,cnt);
@@ -166,15 +168,15 @@ P2PNetworkInterface* Catoms2DBlock::getNextInterface(RelativeDirection::Directio
 
     do {
 		if (dir == RelativeDirection::CW) {
-			if (d == NeighborDirection::Right) {
-				d= NeighborDirection::BottomRight;
+			if (d == HLattice::Right) {
+				d= HLattice::BottomRight;
 			} else {
 				d--;
 			}
 		} else {
-			d = (d+1)%MAX_NB_NEIGHBORS;
+			d = (d+1)%HLattice::MAX_NB_NEIGHBORS;
 		}
-		next = getInterface((NeighborDirection::Direction)d);
+		next = getInterface((HLattice::Direction)d);
 		if (!connected)  {
 			break;
 		}
@@ -187,13 +189,13 @@ P2PNetworkInterface* Catoms2DBlock::getNextInterface(RelativeDirection::Directio
 
 int Catoms2DBlock::getCCWMovePivotId() {
     for (int j = 0; j < 6; j++) {
-		P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)j);
+		P2PNetworkInterface *p2p = getInterface((HLattice::Direction)j);
 
 		if (p2p->connectedInterface) {
 			bool res = true;
 			for (int i = 1; i < 4; i++) {
 				int dir = ((j + i) % 6);
-				Cell3DPosition p = getPosition((NeighborDirection::Direction)dir);
+				Cell3DPosition p = getPosition((HLattice::Direction)dir);
 				if (!getWorld()->lattice->isFree(p)) {
 					res = false;
 				}
@@ -209,13 +211,13 @@ int Catoms2DBlock::getCCWMovePivotId() {
 
 int Catoms2DBlock::getCWMovePivotId() {
     for (int j = 5; j > 0; j--) {
-		P2PNetworkInterface *p2p = getInterface((NeighborDirection::Direction)j);
+		P2PNetworkInterface *p2p = getInterface((HLattice::Direction)j);
 
 		if (p2p->connectedInterface) {
 			bool res = true;
 			for (int i = 1; i < 4; i++) {
 				int dir = ((j - i)%6 + 6)%6;
-				Cell3DPosition p = getPosition((NeighborDirection::Direction)dir);
+				Cell3DPosition p = getPosition((HLattice::Direction)dir);
 				if (!getWorld()->lattice->isFree(p)) {
 					res = false;
 				}
@@ -259,20 +261,20 @@ bool Catoms2DBlock::canMove(Catoms2DMove &m) {
 
     for (int i = 0; i < 3; i++) {
 		if (direction == RelativeDirection::CW) {
-			if (p2pDirection == NeighborDirection::BottomRight) {
-				p2pDirection = NeighborDirection::Right;
+			if (p2pDirection == HLattice::BottomRight) {
+				p2pDirection = HLattice::Right;
 			} else {
 				p2pDirection++;
 			}
 		} else if (direction == RelativeDirection::CCW) {
-			if (p2pDirection == NeighborDirection::Right) {
-				p2pDirection = NeighborDirection::BottomRight;
+			if (p2pDirection == HLattice::Right) {
+				p2pDirection = HLattice::BottomRight;
 			} else {
 				p2pDirection--;
 			}
 		}
 
-		Cell3DPosition p = getPosition((NeighborDirection::Direction)p2pDirection);
+		Cell3DPosition p = getPosition((HLattice::Direction)p2pDirection);
 		if (!getWorld()->lattice->isFree(p)) {
 			//cout << "somebody is connected there" << endl;
 			res = false;

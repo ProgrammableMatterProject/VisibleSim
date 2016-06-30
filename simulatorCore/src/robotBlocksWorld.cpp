@@ -48,9 +48,8 @@ void RobotBlocksWorld::deleteWorld() {
 	delete((RobotBlocksWorld*)world);
 }
 
-void RobotBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
-								const Cell3DPosition &pos, const Color &col,
-								short orientation, bool master) {
+void RobotBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
+								const Color &col, short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
 	else if (blockId == -1)
@@ -89,7 +88,7 @@ void RobotBlocksWorld::disconnectBlock(RobotBlocksBlock *block) {
 	P2PNetworkInterface *fromBlock,*toBlock;
 
 	for(int i=0; i<6; i++) {
-		fromBlock = block->getInterface(NeighborDirection::Direction(i));
+		fromBlock = block->getInterface(SCLattice::Direction(i));
 		if (fromBlock && fromBlock->connectedInterface) {
 			toBlock = fromBlock->connectedInterface;
 			fromBlock->connectedInterface=NULL;
@@ -113,15 +112,15 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 		nPos = pos + nRelCells[i];
 		ptrNeighbor = (RobotBlocksBlock*)lattice->getBlock(nPos);
 		if (ptrNeighbor) {
-			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->
-				connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
-													  NeighborDirection::getOpposite(i))));
+			(ptrBlock)->getInterface(SCLattice::Direction(i))->
+				connect(ptrNeighbor->getInterface(SCLattice::Direction(
+													  SCLattice::getOpposite(i))));
 
-			OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << NeighborDirection::getString(i) <<
+			OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << SCLattice::getString(i) <<
 				" to #" << ptrNeighbor->blockId << ":"
-				   << NeighborDirection::getString(NeighborDirection::getOpposite(i)) << endl;
+				   << SCLattice::getString(SCLattice::getOpposite(i)) << endl;
 		} else {
-			(ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
+			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}
 	}
 }
@@ -132,7 +131,7 @@ void RobotBlocksWorld::deleteBlock(BuildingBlock *blc) {
 	if (bb->getState() >= RobotBlocksBlock::ALIVE ) {
 		// cut links between bb and others
 		for(int i=0; i<6; i++) {
-			P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
+			P2PNetworkInterface *bbi = bb->getInterface(SCLattice::Direction(i));
 			if (bbi->connectedInterface) {
 				//bb->removeNeighbor(bbi); //Useless
 				bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
@@ -331,12 +330,12 @@ void RobotBlocksWorld::menuChoice(int n) {
 void RobotBlocksWorld::setSelectedFace(int n) {
 	numSelectedGlBlock=n/6;
 	string name = objBlockForPicking->getObjMtlName(n%6);
-	if (name=="face_top") numSelectedFace=NeighborDirection::Top;
-	else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
-	else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
-	else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
-	else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
-	else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
+	if (name=="face_top") numSelectedFace=SCLattice::Top;
+	else if (name=="face_bottom") numSelectedFace=SCLattice::Bottom;
+	else if (name=="face_right") numSelectedFace=SCLattice::Right;
+	else if (name=="face_left") numSelectedFace=SCLattice::Left;
+	else if (name=="face_front") numSelectedFace=SCLattice::Front;
+	else if (name=="face_back") numSelectedFace=SCLattice::Back;
 }
 
 void RobotBlocksWorld::exportConfiguration() {
