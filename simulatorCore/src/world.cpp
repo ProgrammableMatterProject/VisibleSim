@@ -41,13 +41,11 @@ World::World(int argc, char *argv[]) {
 }
 
 World::~World() {
-	//MODIF NICO
 	std::map<int, BuildingBlock*>::iterator it;
 	for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; ++it) {
 		delete it->second;
 	}
-	//FIN MODIF NICO
-
+	
 	std::vector<GlBlock*>::const_iterator cit=tabGlBlocks.begin();
 	while (cit!=tabGlBlocks.end()) {
 		delete *cit;
@@ -187,7 +185,7 @@ void World::generateIds(int n, int* ids) {
 
 /************************************************************
  *   Targets
- ************************************************************/    
+ ************************************************************/
 
 
 void World::initTargetGrid() {
@@ -215,7 +213,7 @@ void World::getPresenceMatrix(const PointRel3D &pos, PresenceMatrix &pm) {
 	for (iz = iz0; iz < iz1; iz++) {
 		for (iy = iy0; iy < iy1; iy++) {
 			gpm = pm.grid + ((iz * 3 + iy) * 3 + ix0);
-			grb = (BuildingBlock **)lattice->grid + 
+			grb = (BuildingBlock **)lattice->grid +
 				(ix0 + pos.x - 1 + (iy + pos.y - 1 +
 									(iz + pos.z - 1) * lattice->gridSize[1]) * lattice->gridSize[0]);
 			for (ix = ix0; ix < ix1; ix++) {
@@ -246,7 +244,7 @@ void World::menuChoice(int n) {
 		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
 		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
 		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
-		
+
 		addBlock(-1, bb->buildNewBlockCode, nPos, bb->color);
 		linkBlock(nPos);
 		linkNeighbors(nPos);

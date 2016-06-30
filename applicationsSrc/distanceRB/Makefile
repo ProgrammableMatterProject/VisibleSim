@@ -8,7 +8,6 @@ DEPS = $(SRCS:.cpp=.depends)
 INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 
 LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimRobotBlocks -lm -L/usr/X11/lib -lboost_system -lboost_thread  -lglut -lGL -lGLU -lGLEW -lpthread
-
 SIMULATORLIB = ../../simulatorCore/lib/libsimRobotBlocks.a
 
 CCFLAGS = $(GLOBAL_CCFLAGS)
