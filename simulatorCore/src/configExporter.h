@@ -7,9 +7,8 @@
 
 #include <iostream>
 #include <vector>
+
 #include "world.h"
-#include "blinkyBlocksWorld.h"
-#include "blinkyBlocksBlock.h"
 #include "buildingBlock.h"
 #include "openglViewer.h"
 #include "camera.h"
@@ -18,93 +17,107 @@ using namespace std;
 
 namespace BaseSimulator {
 
-    static int configCounter = 0;
+static int configCounter = 0;
 
-    class ConfigExporter {      // Follows the Singleton pattern
-        static inline string generateConfigFilename() {
-            return "config" + to_string(configCounter++) + ".xml";
-        };
-    protected:
-        Camera *camera;
-        TiXmlDocument *config;
-        string configName;
-        TiXmlElement *worldElt;
-        TiXmlElement *blockListElt;
-    public:
-        ConfigExporter();
-        virtual ~ConfigExporter();
 
-        void exportConfiguration();
-        void exportCameraAndLightSource();
+/************************************************************
+ *   Abstract Configuration Exporter
+ ************************************************************/    
 
-        virtual void exportWorld() = 0;
-        virtual void exportBlockList() = 0;
-        virtual void exportBlock(BuildingBlock *bb) = 0;
+class ConfigExporter {      // Follows the Singleton pattern
+    static inline string generateConfigFilename() {
+        return "config" + to_string(configCounter++) + ".xml";
     };
+protected:
+    World *world;
+    TiXmlDocument *config;
+    string configName;
+    TiXmlElement *worldElt;
+    TiXmlElement *blockListElt;
+public:
+    ConfigExporter(World *world);
+    virtual ~ConfigExporter();
 
-    // // class ConfigExporter2D : ConfigExporter {
+    void exportConfiguration();
+    void exportCameraAndLightSource();
+    void exportWorld();
+    void exportBlockList();
+    void exportBlock(BuildingBlock *bb);
 
-    // // protected:
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {};
+};
 
-    // // public:
 
-    // // };
+/************************************************************
+ *   Subclasses
+ ************************************************************/    
 
-    // class ConfigExporter3D : ConfigExporter {
+class BlinkyBlocksConfigExporter : public ConfigExporter {
 
-    // protected:
-    //     virtual static ConfigExporter* getConfigExporter() = 0;
-    // public:
+public:
+    BlinkyBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
+    virtual ~BlinkyBlocksConfigExporter() { };
+};
 
-    // };
+class Catoms3DConfigExporter : public ConfigExporter {
+public:
+    Catoms3DConfigExporter(World *_world) : ConfigExporter(_world) {};
+    virtual ~Catoms3DConfigExporter() { };
 
-    using namespace BlinkyBlocks;
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
+};
 
-    class BlinkyBlocksConfigExporter : public ConfigExporter { // : ConfigExporter3D
-        BlinkyBlocksWorld *world;
-    public:
-        BlinkyBlocksConfigExporter(BlinkyBlocksWorld *_world);
-        virtual ~BlinkyBlocksConfigExporter() { };
+class RobotBlocksConfigExporter : public ConfigExporter {
+public:
+    RobotBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
+    virtual ~RobotBlocksConfigExporter() { };
+};
 
-        virtual void exportWorld();
-        virtual void exportBlockList();
-        virtual void exportBlock(BuildingBlock *bb);
-    };
+class Catoms2DConfigExporter : public ConfigExporter {
+public:
+    Catoms2DConfigExporter(World *_world) : ConfigExporter(_world) {};
+    virtual ~Catoms2DConfigExporter() { };
 
-    // class Catoms3DConfigExporter : ConfigExporter3D {
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
+};
 
-    // };
+class SmartBlocksConfigExporter : public ConfigExporter {
+public:
+    SmartBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
+    virtual ~SmartBlocksConfigExporter() { };
+};
 
-    // class RobotBlocksConfigExporter : ConfigExporter3D {
+/************************************************************
+ *   XML Utilities
+ ************************************************************/    
 
-    // };
+template<typename T>
+static string toXmlAttribute(T a, T b) {
+    std::ostringstream out;
+    out << a << "," << b;
+    return out.str();
+}
+template string toXmlAttribute<int>(int, int);
 
-    // class Catoms2DConfigExporter : ConfigExporter2D {
+template<typename T>
+static string toXmlAttribute(T a, T b, T c) {
+    std::ostringstream out;
+    out << a << "," << b << "," << c ;
+    return out.str();
+}
 
-    // };
+template string toXmlAttribute<int>(int, int, int);
+template string toXmlAttribute<double>(double, double, double);
+template string toXmlAttribute<short>(short, short, short);
+template string toXmlAttribute<float>(float, float, float);
 
-    // class SmartBlocksConfigExporter : ConfigExporter2D {
+static string toXmlAttribute(Cell3DPosition &pos) {
+    return toXmlAttribute(pos[0], pos[1], pos[2]);
+}
 
-    // };
-
-    template<typename T>
-    static string toXmlAttribute(T a, T b) {
-        std::ostringstream out;
-        out << a << "," << b;
-        return out.str();
-    }
-    template string toXmlAttribute<int>(int, int);
-
-    template<typename T>
-    static string toXmlAttribute(T a, T b, T c) {
-        std::ostringstream out;
-        out << a << "," << b << "," << c ;
-        return out.str();
-    }
-    template string toXmlAttribute<int>(int, int, int);
-    template string toXmlAttribute<double>(double, double, double);
-    template string toXmlAttribute<short>(short, short, short);
-    template string toXmlAttribute<float>(float, float, float);
+static string toXmlAttribute(Vector3D &pos) {
+    return toXmlAttribute(pos[0], pos[1], pos[2]);
+}
 
 }
 #endif // CONFIGEXPORTER_H__

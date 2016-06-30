@@ -18,6 +18,7 @@
 #include "catoms2DMove.h"
 #include "trace.h"
 #include "utils.h"
+#include "configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -445,7 +446,9 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 }
 
 void Catoms2DWorld::exportConfiguration() {
-    throw "configuration export not yet implemented";
+	Catoms2DConfigExporter *exporter = new Catoms2DConfigExporter(this);
+	exporter->exportConfiguration();
+	delete exporter;
 }
 
 } // Catoms2D namespace

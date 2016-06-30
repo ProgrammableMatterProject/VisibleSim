@@ -15,6 +15,7 @@
 #include "robotBlocksWorld.h"
 #include "robotBlocksBlock.h"
 #include "trace.h"
+#include "configExporter.h"
 
 using namespace std;
 
@@ -339,23 +340,9 @@ void RobotBlocksWorld::setSelectedFace(int n) {
 }
 
 void RobotBlocksWorld::exportConfiguration() {
-	// ofstream configFile;
-	// RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	// string configFilename = ConfigUtils::generateConfigFilename();
-
-	// configFile.open(configFilename);
-	// configFile << ConfigUtils::xmlVersion() << endl;
-	// configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-	//						GlutContext::screenHeight) << endl;
-	// configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
-	// configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
-	// configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
-	// configFile << ConfigUtils::xmlWorldClose() << endl;
-
-	// configFile.close();
-
-	// OUTPUT << "Configuration exported to: " << configFilename << endl;
-	// cerr << "Configuration exported to: " << configFilename << endl;
+	RobotBlocksConfigExporter *exporter = new RobotBlocksConfigExporter(this);
+	exporter->exportConfiguration();
+	delete exporter;
 }
 
 } // RobotBlock namespace

@@ -8,12 +8,14 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "catoms3DWorld.h"
-#include "catoms3DBlock.h"
-#include "trace.h"
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
+
+#include "catoms3DWorld.h"
+#include "catoms3DBlock.h"
+#include "trace.h"
+#include "configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -388,6 +390,13 @@ void Catoms3DWorld::setSelectedFace(int n) {
 
 	cerr << name << " = " << numSelectedFace << " = " << endl;
 }
+
+void Catoms3DWorld::exportConfiguration() {
+	Catoms3DConfigExporter *exporter = new Catoms3DConfigExporter(this);
+	exporter->exportConfiguration();
+	delete exporter;
+}
+
 
 /*
   void Catoms3DWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {

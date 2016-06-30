@@ -65,14 +65,12 @@ public:
     void loadTextures(const string &str);
     virtual void glDraw();
     virtual void glDrawId();
-    virtual void glDrawIdByMaterial();
-        
+    virtual void glDrawIdByMaterial();       
     virtual void disconnectBlock(SmartBlocksBlock *block);
     virtual void connectBlock(SmartBlocksBlock *block);
-
     virtual void setSelectedFace(int n);
-
     virtual void deleteBlock(BuildingBlock *blc);
+    virtual void exportConfiguration();
 
     bool isBorder(int x,int y);
     bool isSingle(int x,int y);

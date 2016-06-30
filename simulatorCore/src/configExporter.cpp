@@ -1,112 +1,117 @@
 
 #include "configExporter.h"
 
-using namespace BlinkyBlocks;
+#include "Catoms3DBlock.h"
+#include "Catoms2DBlock.h"
 
 namespace BaseSimulator {
 
-    ConfigExporter::ConfigExporter() {
-        config = new TiXmlDocument();
-        configName = generateConfigFilename();
-        config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
-    }
+ConfigExporter::ConfigExporter(World *_world) {
+    world = _world;
+    config = new TiXmlDocument();
+    configName = generateConfigFilename();
+    config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
+}
 
-    ConfigExporter::~ConfigExporter() {
-        delete config;
-    }
+ConfigExporter::~ConfigExporter() {
+    delete config;
+}
 
-    BlinkyBlocksConfigExporter::BlinkyBlocksConfigExporter(BlinkyBlocksWorld *_world)
-        : ConfigExporter() {
-        world = _world;
-        camera = world->getCamera();
-    }
+void ConfigExporter::exportConfiguration() {
+    exportWorld();
+    exportCameraAndLightSource();
+    exportBlockList();
+    config->SaveFile(configName);
 
-    void ConfigExporter::exportConfiguration() {
-        exportWorld();
-        exportCameraAndLightSource();
-        exportBlockList();
-        config->SaveFile(configName);
+    cerr << "Configuration exported to file: " << configName << endl;
+}
 
-        cerr << "Configuration exported to file: " << configName << endl;
-    }
-
-    void ConfigExporter::exportCameraAndLightSource() {
-        // Export Camera
-        TiXmlElement *cam = new TiXmlElement("camera");
-        Vector3D target = camera->getTarget();
-        Vector3D ds = camera->getDirectionSpherical();
-        cam->SetAttribute("target", toXmlAttribute(target.pt[0],
-                                                   target.pt[1],
-                                                   target.pt[2]));
-        cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
-                                                               ds.pt[1],
-                                                               ds.pt[2]));
-        cam->SetAttribute("angle", camera->getAngle());        
-        worldElt->LinkEndChild(cam);
+void ConfigExporter::exportCameraAndLightSource() {
+    // Export Camera
+    Camera *camera = world->getCamera();
+        
+    TiXmlElement *cam = new TiXmlElement("camera");
+    Vector3D target = camera->getTarget();
+    Vector3D ds = camera->getDirectionSpherical();
+    cam->SetAttribute("target", toXmlAttribute(target.pt[0],
+                                               target.pt[1],
+                                               target.pt[2]));
+    cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
+                                                           ds.pt[1],
+                                                           ds.pt[2]));
+    cam->SetAttribute("angle", camera->getAngle());        
+    worldElt->LinkEndChild(cam);
                                   
-        // Export LightSource
-        TiXmlElement *spotlight = new TiXmlElement("spotlight");
-        LightSource *ls = &camera->ls;
-        float *lsTarget = ls->getTarget();
-        ds = ls->getDirectionSpherical();       
+    // Export LightSource
+    TiXmlElement *spotlight = new TiXmlElement("spotlight");
+    LightSource *ls = &camera->ls;
+    float *lsTarget = ls->getTarget();
+    ds = ls->getDirectionSpherical();       
         
-        spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0],
-                                                         lsTarget[1],
-                                                         lsTarget[2]));
-        spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
-                                                                     ds.pt[1],
-                                                                     ds.pt[2]));
-        spotlight->SetAttribute("angle", ls->getAngle());        
-        worldElt->LinkEndChild(spotlight);
-        config->LinkEndChild(worldElt);
-    }
+    spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0],
+                                                     lsTarget[1],
+                                                     lsTarget[2]));
+    spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
+                                                                 ds.pt[1],
+                                                                 ds.pt[2]));
+    spotlight->SetAttribute("angle", ls->getAngle());        
+    worldElt->LinkEndChild(spotlight);
+    config->LinkEndChild(worldElt);
+}
     
-    void BlinkyBlocksConfigExporter::exportWorld() {
-        worldElt = new TiXmlElement("world");
-        // const int *gridSize = world->getGridSize();
-        // worldElt->SetAttribute("gridSize", toXmlAttribute(gridSize[0],
-        //                                                   gridSize[1],
-        //                                                   gridSize[2]));
-        worldElt->SetAttribute("windowSize",
-                               toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
-    }
+void ConfigExporter::exportWorld() {
+    worldElt = new TiXmlElement("world");
+    worldElt->SetAttribute("gridSize", toXmlAttribute(world->lattice->gridSize));
+    worldElt->SetAttribute("windowSize",
+                           toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
+}
 
-    void BlinkyBlocksConfigExporter::exportBlockList() {
-        blockListElt = new TiXmlElement("blockList");
-        BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)world->getSelectedBuildingBlock();
-        float *color = bb->color.rgba;
-        // float *blockSize = world->getBlockSize();
-        map<int, BaseSimulator::BuildingBlock*> blocks = world->getMap();
+void ConfigExporter::exportBlockList() {
+    blockListElt = new TiXmlElement("blockList");
+    BuildingBlock *bb = world->getSelectedBuildingBlock();
+    float *color = bb->color.rgba;
+    Vector3D blockSize = world->lattice->gridScale;
+    map<int, BaseSimulator::BuildingBlock*> blocks = world->getMap();
         
-        blockListElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
-                                                           color[1] * 255,
-                                                           color[2] * 255));
-        // blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize[0],
-        //                                                        blockSize[1],
-        //                                                        blockSize[2]));
+    blockListElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
+                                                       color[1] * 255,
+                                                       color[2] * 255));
+    blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
         
-        map<int, BaseSimulator::BuildingBlock*>::iterator it;        
-        for(it = blocks.begin(); 
-            it != blocks.end(); it++) {
-            exportBlock(it->second);
-        }
-        
-        worldElt->LinkEndChild(blockListElt);
+    map<int, BaseSimulator::BuildingBlock*>::iterator it;        
+    for(it = blocks.begin(); 
+        it != blocks.end(); it++) {
+        exportBlock(it->second);
     }
-
-    void BlinkyBlocksConfigExporter::exportBlock(BuildingBlock *bb) {
-        BlinkyBlocksBlock *blc = (BlinkyBlocksBlock *)bb;
-        TiXmlElement *bbElt = new TiXmlElement("block");
-        float *color = blc->color.rgba;
-        Cell3DPosition pos = blc->position;
         
-        bbElt->SetAttribute("position", toXmlAttribute(pos.pt[0],
-                                                       pos.pt[1],
-                                                       pos.pt[2]));
-        bbElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
-                                                    color[1] * 255,
-                                                    color[2] * 255));
+    worldElt->LinkEndChild(blockListElt);
+}
 
-        blockListElt->LinkEndChild(bbElt);
-    }
+void ConfigExporter::exportBlock(BuildingBlock *bb) {
+    BuildingBlock *blc = bb;
+    TiXmlElement *bbElt = new TiXmlElement("block");
+    float *color = blc->color.rgba;
+    Cell3DPosition pos = blc->position;
+        
+    bbElt->SetAttribute("position", toXmlAttribute(pos));
+    bbElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
+                                                color[1] * 255,
+                                                color[2] * 255));
+    if (bb->isMaster)
+            bbElt->SetAttribute("master", "true");
+
+    exportAdditionalAttribute(bbElt, bb);
+    
+    blockListElt->LinkEndChild(bbElt);
+}
+
+void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
+    bbElt->SetAttribute("rotation", ((Catoms3D::Catoms3DBlock *)bb)->orientationCode);
+}
+
+void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
+    bbElt->SetAttribute("angle", ((Catoms2D::Catoms2DBlock *)bb)->angle);    
+}
+
+
 }

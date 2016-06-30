@@ -90,7 +90,9 @@ public:
     virtual void setSelectedFace(int n);
     virtual void disconnectBlock(Catoms3DBlock *block);
     virtual void connectBlock(Catoms3DBlock *block);
+    virtual void exportConfiguration();
 
+    
 /**
  * \brief load the background textures (internal)
  */

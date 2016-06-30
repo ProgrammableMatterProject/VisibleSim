@@ -266,7 +266,7 @@ public:
     /**
      * @brief Exports the current world configuration to an XML file. Triggered from the menu.
      */
-    virtual void exportConfiguration() {};
+    virtual void exportConfiguration() = 0;
     /**
      * @brief Sets the path to the texture folder for drawing
      */

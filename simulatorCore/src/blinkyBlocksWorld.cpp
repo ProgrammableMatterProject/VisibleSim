@@ -359,26 +359,9 @@ void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
 }
 
 void BlinkyBlocksWorld::exportConfiguration() {
-	// ofstream configFile;
-	// BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	// string configFilename = ConfigUtils::generateConfigFilename();
-
-	// configFile.open(configFilename);
-	// configFile << ConfigUtils::xmlVersion() << endl;
-	// configFile << ConfigUtils::xmlWorldOpen(gridSize, GlutContext::screenWidth,
-	//										GlutContext::screenHeight) << endl;
-	// configFile << ConfigUtils::xmlCamera(getCamera()) << endl;
-	// configFile << ConfigUtils::xmlSpotlight(&getCamera()->ls) << endl;
-	// configFile << ConfigUtils::xmlBlockList(bb->color, (float*)blockSize, getMap()) << endl;
-	// configFile << ConfigUtils::xmlWorldClose() << endl;
-
-	// configFile.close();
-
-	// OUTPUT << "Configuration exported to: " << configFilename << endl;
-	// cerr << "Configuration exported to: " << configFilename << endl;
-
 	BlinkyBlocksConfigExporter *exporter = new BlinkyBlocksConfigExporter(this);
 	exporter->exportConfiguration();
+	delete exporter;
 }
 
 /**

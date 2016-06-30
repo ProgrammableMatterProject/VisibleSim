@@ -12,6 +12,7 @@
 #include "smartBlocksWorld.h"
 #include "smartBlocksBlock.h"
 #include "scheduler.h"
+#include "configExporter.h"
 
 using namespace std;
 
@@ -383,5 +384,12 @@ void SmartBlocksWorld::initTargetGrid() {
     targetGrid = new presence[sz];
     memset(targetGrid,emptyCell,sz*sizeof(presence));
 }
+
+void SmartBlocksWorld::exportConfiguration() {
+	SmartBlocksConfigExporter *exporter = new SmartBlocksConfigExporter(this);
+	exporter->exportConfiguration();
+	delete exporter;
+}
+
 
 } // SmartBlocks namespace
