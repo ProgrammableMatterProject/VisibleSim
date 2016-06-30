@@ -5,9 +5,6 @@
 #define TIXML_USE_STL	1
 #include "TinyXML/tinyxml.h"
 
-#include <iostream>
-#include <vector>
-
 #include "world.h"
 #include "buildingBlock.h"
 #include "openglViewer.h"
@@ -24,10 +21,7 @@ static int configCounter = 0;
  *   Abstract Configuration Exporter
  ************************************************************/    
 
-class ConfigExporter {      // Follows the Singleton pattern
-    static inline string generateConfigFilename() {
-        return "config" + to_string(configCounter++) + ".xml";
-    };
+class ConfigExporter {      
 protected:
     World *world;
     TiXmlDocument *config;

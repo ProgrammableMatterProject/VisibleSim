@@ -1,6 +1,10 @@
 
 #include "configExporter.h"
 
+#include <iostream>
+#include <vector>
+#include <ctime>
+
 #include "catoms3DBlock.h"
 #include "catoms2DBlock.h"
 
@@ -9,6 +13,16 @@ namespace BaseSimulator {
 /************************************************************
  *   XML Utilities
  ************************************************************/    
+
+static string generateConfigFilename() {
+    std::ostringstream out;
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    
+    out << "config_" << ltm->tm_hour << "_" << ltm->tm_min << "_" << ltm->tm_sec << ".xml";
+
+    return out.str();
+};
 
 template<typename T>
 static string toXmlAttribute(T a, T b) {
