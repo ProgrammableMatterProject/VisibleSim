@@ -14,6 +14,10 @@ namespace BaseSimulator {
  *   XML Utilities
  ************************************************************/    
 
+/** 
+ * @brief Generates a configuration file name from the current time
+ * @return a string with format config_hh_mm_ss.xml
+ */
 static string generateConfigFilename() {
     std::ostringstream out;
     time_t now = time(0);
@@ -24,6 +28,10 @@ static string generateConfigFilename() {
     return out.str();
 };
 
+/** 
+ * @brief Formats two variable for XML attribute export
+ * @return a string with format "x,y"
+ */
 template<typename T>
 static string toXmlAttribute(T a, T b) {
     std::ostringstream out;
@@ -32,6 +40,10 @@ static string toXmlAttribute(T a, T b) {
 }
 template string toXmlAttribute<int>(int, int);
 
+/** 
+ * @brief Formats three variable for XML attribute export
+ * @return a string with format "x,y,z"
+ */
 template<typename T>
 static string toXmlAttribute(T a, T b, T c) {
     std::ostringstream out;
@@ -44,10 +56,18 @@ template string toXmlAttribute<double>(double, double, double);
 template string toXmlAttribute<short>(short, short, short);
 template string toXmlAttribute<float>(float, float, float);
 
+/** 
+ * @brief Formats a Cell3DPosition variable for XML attribute export
+ * @return a string with format "pos.x,pos.y,pos.z"
+ */
 string toXmlAttribute(Cell3DPosition &pos) {
     return toXmlAttribute(pos[0], pos[1], pos[2]);
 }
 
+/** 
+ * @brief Formats a Vector3D variable for XML attribute export
+ * @return a string with format "pos.x,pos.y,pos.z"
+ */
 string toXmlAttribute(Vector3D &pos) {
     return toXmlAttribute(pos[0], pos[1], pos[2]);
 }
@@ -127,11 +147,9 @@ void ConfigExporter::exportBlockList() {
                                                        color[1] * 255,
                                                        color[2] * 255));
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
-        
-    map<int, BaseSimulator::BuildingBlock*>::iterator it;        
-    for(it = blocks.begin(); 
-        it != blocks.end(); it++) {
-        exportBlock(it->second);
+
+    for(auto const& idBBPair : world->getMap()) {
+        exportBlock(idBBPair.second);
     }
         
     worldElt->LinkEndChild(blockListElt);
