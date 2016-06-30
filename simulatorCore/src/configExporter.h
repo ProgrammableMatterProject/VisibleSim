@@ -87,37 +87,6 @@ public:
     virtual ~SmartBlocksConfigExporter() { };
 };
 
-/************************************************************
- *   XML Utilities
- ************************************************************/    
+} // BASESIMULATOR_NAMESPACE
 
-template<typename T>
-static string toXmlAttribute(T a, T b) {
-    std::ostringstream out;
-    out << a << "," << b;
-    return out.str();
-}
-template string toXmlAttribute<int>(int, int);
-
-template<typename T>
-static string toXmlAttribute(T a, T b, T c) {
-    std::ostringstream out;
-    out << a << "," << b << "," << c ;
-    return out.str();
-}
-
-template string toXmlAttribute<int>(int, int, int);
-template string toXmlAttribute<double>(double, double, double);
-template string toXmlAttribute<short>(short, short, short);
-template string toXmlAttribute<float>(float, float, float);
-
-static string toXmlAttribute(Cell3DPosition &pos) {
-    return toXmlAttribute(pos[0], pos[1], pos[2]);
-}
-
-static string toXmlAttribute(Vector3D &pos) {
-    return toXmlAttribute(pos[0], pos[1], pos[2]);
-}
-
-}
 #endif // CONFIGEXPORTER_H__

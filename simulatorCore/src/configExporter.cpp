@@ -1,10 +1,46 @@
 
 #include "configExporter.h"
 
-#include "Catoms3DBlock.h"
-#include "Catoms2DBlock.h"
+#include "catoms3DBlock.h"
+#include "catoms2DBlock.h"
 
 namespace BaseSimulator {
+
+/************************************************************
+ *   XML Utilities
+ ************************************************************/    
+
+template<typename T>
+static string toXmlAttribute(T a, T b) {
+    std::ostringstream out;
+    out << a << "," << b;
+    return out.str();
+}
+template string toXmlAttribute<int>(int, int);
+
+template<typename T>
+static string toXmlAttribute(T a, T b, T c) {
+    std::ostringstream out;
+    out << a << "," << b << "," << c ;
+    return out.str();
+}
+
+template string toXmlAttribute<int>(int, int, int);
+template string toXmlAttribute<double>(double, double, double);
+template string toXmlAttribute<short>(short, short, short);
+template string toXmlAttribute<float>(float, float, float);
+
+string toXmlAttribute(Cell3DPosition &pos) {
+    return toXmlAttribute(pos[0], pos[1], pos[2]);
+}
+
+string toXmlAttribute(Vector3D &pos) {
+    return toXmlAttribute(pos[0], pos[1], pos[2]);
+}
+
+/************************************************************
+ *   Configuration Exporters Implementation
+ ************************************************************/    
 
 ConfigExporter::ConfigExporter(World *_world) {
     world = _world;
@@ -112,6 +148,5 @@ void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, Buil
 void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
     bbElt->SetAttribute("angle", ((Catoms2D::Catoms2DBlock *)bb)->angle);    
 }
-
 
 }
