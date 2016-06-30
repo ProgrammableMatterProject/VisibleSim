@@ -26,6 +26,10 @@ using namespace std;
 #define SCHEDULER_MODE_REALTIME		2
 #define SCHEDULER_MODE_DEBUG		3
 
+#define SCHEDULER_LENGTH_DEFAULT		1
+#define SCHEDULER_LENGTH_BOUNDED		2
+#define SCHEDULER_LENGTH_INFINITE		3
+
 namespace BaseSimulator {
 
 class Keyword {
@@ -44,7 +48,7 @@ public:
 class Scheduler {
 protected:
 	static Scheduler *scheduler;
-	int schedulerMode;
+	int schedulerMode, schedulerLength;
 	LightweightSemaphore *sem_schedulerStart;
 	std::thread *schedulerThread;
 	vector <Keyword*> tabKeywords;
@@ -73,12 +77,17 @@ public:
     	delete(scheduler);
 		scheduler=NULL;
 	}
-	void setMaximumDate(uint64_t tmax) { maximumDate=tmax; };
+	void setMaximumDate(uint64_t tmax) {
+		maximumDate=tmax;
+		cout << "scheduler: MaximumDate set to " << tmax << endl;
+	};
 	void printInfo() {
 		cout << "I'm a Scheduler" << endl;
 	}
 	int getMode() { return schedulerMode; };
-
+	inline void setSchedulerLength(int sl) { schedulerLength = sl; }
+	inline int getSchedulerLength() { return schedulerLength; }
+	
 	virtual bool schedule(Event *ev);
 	virtual bool scheduleLock(Event *ev);
 

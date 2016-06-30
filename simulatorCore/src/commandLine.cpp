@@ -8,34 +8,38 @@
 #define CMD_LINE_UNDEFINED -1
 
 void CommandLine::help() {
-   cerr << "VisibleSim options:" << endl;
-   cerr << "\t -f \t\t\tfull screen" << endl;
-   cerr << "\t -p <name>\t\tprogram file (Meld for instance) (Meld in only supported on Blinky Blocks for now)" << endl;
-   cerr << "\t -D \t\t\tdebugging mode (used in Meld only)" << endl;
-   cerr << "\t -c <name>\t\txml configuration file" << endl;
-   //cerr << "\t -r \t\trun realtime mode on startup" << endl;
-   //cerr << "\t -R \t\trun fastest mode on startup" << endl;
-   //cerr << "\t -t \t\tterminal only (no graphic)" << endl;
-   //cerr << "\t -i \t\tprint world informations (size, diameter, centers etc.)" << endl;
-   /*cerr << "\t -g <topology code> <n or d>\t\t generate a random configuration: random 2d " << 
-   TOPOLOGY_RANDOM_2D << ", random 3d " << TOPOLOGY_RANDOM_3D << ", line " << TOPOLOGY_LINE <<
-   	", grid " << TOPOLOGY_GRID << ", torus " << TOPOLOGY_TORUS <<", cube" << TOPOLOGY_CUBE << endl;
-   */
-   //cerr << "\t -s <length>\tgrid side lentgh (square or cubic grid)" << endl;
-   cerr << "\t -m <VMpath>:<VMport>\tpath to the MeldVM directory and port" << endl;
-   cerr << "\t -h \t\t\thelp" << endl;
-   exit(EXIT_SUCCESS);
+    cerr << "VisibleSim options:" << endl;
+    cerr << "\t -f \t\t\tfull screen" << endl;
+    cerr << "\t -p <name>\t\tprogram file (Meld for instance) (Meld in only supported on Blinky Blocks for now)" << endl;
+    cerr << "\t -D \t\t\tdebugging mode (used in Meld only)" << endl;
+    cerr << "\t -c <name>\t\txml configuration file" << endl;
+    //cerr << "\t -r \t\trun realtime mode on startup" << endl;
+    //cerr << "\t -R \t\trun fastest mode on startup" << endl;
+    //cerr << "\t -t \t\tterminal only (no graphic)" << endl;
+    //cerr << "\t -i \t\tprint world informations (size, diameter, centers etc.)" << endl;
+    /*cerr << "\t -g <topology code> <n or d>\t\t generate a random configuration: random 2d " << 
+      TOPOLOGY_RANDOM_2D << ", random 3d " << TOPOLOGY_RANDOM_3D << ", line " << TOPOLOGY_LINE <<
+      ", grid " << TOPOLOGY_GRID << ", torus " << TOPOLOGY_TORUS <<", cube" << TOPOLOGY_CUBE << endl;
+    */
+    //cerr << "\t -s <length>\tgrid side lentgh (square or cubic grid)" << endl;
+    cerr << "\t -s [<maximumDate> | inf] \tScheduler mode:\tBy default, stops when event list is empty\n"
+         << "\t\t maximumDate (ms) : the scheduler will stop when even list is empty, or when the maximum date is reach\n"
+         << "\t\t inf : the scheduler will have an infinite duration and can only be stopped by the user" << endl;
+    cerr << "\t -m <VMpath>:<VMport>\tpath to the MeldVM directory and port" << endl;
+    cerr << "\t -h \t\t\thelp" << endl;
+    exit(EXIT_SUCCESS);
 }
 
 CommandLine::CommandLine(int argc, char *argv[]) {
 	schedulerMode = CMD_LINE_UNDEFINED;
+    schedulerLength = SCHEDULER_LENGTH_DEFAULT;
 	topology = CMD_LINE_UNDEFINED;
 	topologyParameter = CMD_LINE_UNDEFINED;
 	meldDebugger = false;
 	terminalOnly = false;
 	stats = false;
-        vmPort = 0;
-        vmPath = "";
+    vmPort = 0;
+    vmPath = "";
 	configFile = "config.xml";
 	read(argc,argv);
 }
@@ -101,13 +105,33 @@ void CommandLine::read(int argc, char *argv[]) {
         case 'c': {
             // Configuration file, already managed in Simulator constructor
             if (argc < 1) {
-                cerr << "Provide a configuration file after -c" << endl;
+                cerr << "error: No configuration file provided after -c" << endl;
                 help();
             }
             configFile= argv[1];
             argc--;
             argv++;
         } break;
+        case 's': {
+            char *p; // Used to check if argv[1] is a number, the maximum date
+            maximumDate = strtol(argv[1], &p, 10);
+            cout << "maximumDate : " << maximumDate << " | argv[1] = " << argv[1] << endl;
+                
+            if (strcmp(argv[1], "inf") == 0)
+                schedulerLength = SCHEDULER_LENGTH_INFINITE;
+            else if (!*p) {      // P is pointing to null, hence the number in argv[1] has been entirely read
+                // argv[1] is a number
+                schedulerLength = SCHEDULER_LENGTH_BOUNDED;
+            } else {
+                cerr << "error: Found unknown parameter after option -s. Expected <MaximumDate> or \"inf\""
+                     << endl;
+                help();
+            }
+            
+            argc--;
+            argv++;
+        } break;
+
             /*case 't': {
               terminalOnly = true;
               }

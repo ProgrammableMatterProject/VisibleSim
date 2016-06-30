@@ -42,6 +42,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 
 	//usleep(1000000);
 	cout << "\033[1;33mScheduler Mode :" << schedulerMode << "\033[0m"  << endl;
+	cout << "\033[1;33mScheduler Length :" << schedulerLength << "\033[0m"  << endl;
 	sem_schedulerStart->wait();
 
     state = RUNNING;
@@ -54,9 +55,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 
 	switch (schedulerMode) {
 	case SCHEDULER_MODE_FASTEST:
-
-
-		while ( (!eventsMap.empty() ) && currentDate < maximumDate) {
+		while(!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
 			//JUSTE POUR DEBUG
 			//~ cout << endl << "Contenu du scheduler :" << endl;
 			//~ first=eventsMap.begin();
@@ -66,60 +65,72 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 			//~ } while( first != eventsMap.end());
 			//~ cout << endl;
 			//
-	    	first=eventsMap.begin();
-	    	pev = (*first).second;
-	    	currentDate = pev->date;
-			pev->consume();
-			eventsMap.erase(first);
-			eventsMapSize--;
+
+			// Check that we have not reached the maximum simulation date, if there is one
+			if (currentDate > maximumDate) {
+				cout << "\033[1;33m" << "Scheduler : maximum simulation date has been reached. Terminating..."
+					 << "\033[0m" << endl;
+				break;
+			}
+
+			if (!eventsMap.empty()) {
+				first=eventsMap.begin();
+				pev = (*first).second;
+				currentDate = pev->date;
+				pev->consume();
+				eventsMap.erase(first);
+				eventsMapSize--;
+			}
 	    }
 		break;
 	case SCHEDULER_MODE_REALTIME:
-
 		cout << "Realtime mode scheduler\n";
-	    while(state != ENDED && !eventsMap.empty()) {
+	    while((state != ENDED && !eventsMap.empty()) || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
 			//gettimeofday(&heureGlobaleActuelle,NULL);
 	    	systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
 	    	systemCurrentTimeMax = systemCurrentTime - systemStartTime;
 			//ev = *(listeEvenements.begin());
-	    	first=eventsMap.begin();
-	    	pev = (*first).second;
-	    	while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
-	    		first=eventsMap.begin();
-	    		pev = (*first).second;
+			if (!eventsMap.empty()) {
+				first=eventsMap.begin();
+				pev = (*first).second;
+				while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
+					first=eventsMap.begin();
+					pev = (*first).second;
 
-				/* traitement du mouvement des objets physiques*/
-				//Physics::update(ev->heureEvenement);
-	    		currentDate = pev->date;
-	    		//lock();
-	    		pev->consume();
-	    		//unlock();
-	    		//pev->nbRef--;
+					/* traitement du mouvement des objets physiques*/
+					//Physics::update(ev->heureEvenement);
+					currentDate = pev->date;
+					//lock();
+					pev->consume();
+					//unlock();
+					//pev->nbRef--;
 
-	    		//listeEvenements.pop_front();
-	    		eventsMap.erase(first);
-	    		eventsMapSize--;
-	    		//	    	  ev = *(listeEvenements.begin());
-	    		//first=eventsMap.begin();
-	    		//pev = (*first).second;
+					//listeEvenements.pop_front();
+					eventsMap.erase(first);
+					eventsMapSize--;
+					//	    	  ev = *(listeEvenements.begin());
+					//first=eventsMap.begin();
+					//pev = (*first).second;
+				}
 			}
 	    	systemCurrentTime = systemCurrentTimeMax;
 			if (!eventsMap.empty()) {
 				//ev = *(listeEvenements.begin());
 				first=eventsMap.begin();
 				pev = (*first).second;
-
-				/*
-				  dureeAttente = ev->heureEvenement - heureActuelle;
-				  dureeAttenteTimeval.tv_sec = floor(dureeAttente / 1000000);
-				  dureeAttenteTimeval.tv_usec = (dureeAttente%1000000);
-				  select(0,NULL,NULL,NULL,&dureeAttenteTimeval);
-				*/
-
+			}
+			
+			/*
+			  dureeAttente = ev->heureEvenement - heureActuelle;
+			  dureeAttenteTimeval.tv_sec = floor(dureeAttente / 1000000);
+			  dureeAttenteTimeval.tv_usec = (dureeAttente%1000000);
+			  select(0,NULL,NULL,NULL,&dureeAttenteTimeval);
+			*/
+			if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
 				std::chrono::milliseconds timespan(5);
 				std::this_thread::sleep_for(timespan);
 			}
-	    }
+		}
 
 		break;
 	default:

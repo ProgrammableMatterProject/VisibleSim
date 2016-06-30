@@ -5,9 +5,10 @@
  *      Author: dom
  */
 
-#include <stdint.h>
+#include <cstdint>
 #include <iostream>
 #include <stdlib.h>
+
 #include "openglViewer.h"
 #include "assert.h"
 #include "scheduler.h"
@@ -36,7 +37,7 @@ Scheduler::Scheduler() {
 	}
 
 	currentDate = 0;
-	maximumDate = UINT_MAX; // no time limitation by default
+	maximumDate = UINT64_MAX; // no time limitation by default
 	eventsMapSize = 0;
 	largestEventsMapSize = 0;
 
@@ -55,8 +56,7 @@ bool Scheduler::schedule(Event *ev) {
 	EventPtr pev(ev);
 
 	info << "Schedule a " << pev->getEventName() << " (" << ev->id << ")";
-	//MODIF NICO : cette ligne me spam trop l'affichage^^
-	//~ trace(info.str());
+	trace(info.str());
 
 	if (pev->date < Scheduler::currentDate) {
 		OUTPUT << "ERROR : An event cannot be scheduled in the past !\n";
