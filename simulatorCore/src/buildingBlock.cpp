@@ -39,6 +39,7 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb) {
     dis = uniform_int_distribution<>(0, 50 * blockId);
     buildNewBlockCode = bcb;
 	blockCode = (BaseSimulator::BlockCode*)bcb(this);
+	isMaster = false;
 }
 
 BuildingBlock::~BuildingBlock() {
