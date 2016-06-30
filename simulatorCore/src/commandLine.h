@@ -22,10 +22,12 @@ private:
 	int topologyParameter;
 	bool terminalOnly;
 	int schedulerMode;
+	int schedulerLength;
+	uint64_t maximumDate;
 	bool meldDebugger;
 	string programPath;
-        string vmPath;
-        int vmPort;
+	string vmPath;
+	int vmPort;
 	string configFile;
 	bool stats;
 	bool fullScreen;
@@ -33,7 +35,6 @@ private:
 	
 	void help();
 	void read(int argc, char *argv[]);
-
 public:
 	CommandLine(int argc, char *argv[]);
 	~CommandLine() {};
@@ -47,12 +48,14 @@ public:
 	int getSchedulerMode() { return schedulerMode; }
 	bool getMeldDebugger() { return meldDebugger; }
 	string getProgramPath() { return programPath; }
-        string getVMPath() { return vmPath; }
-        int getVMPort() { return vmPort; }
+	string getVMPath() { return vmPath; }
+	int getVMPort() { return vmPort; }
 	string getConfigFile() { return configFile; }
 	bool getStats() { return stats; }
 	bool getFullScreen() { return fullScreen; }
 	int getGridSize() { return gridSize; }
+	int getSchedulerLength() { return schedulerLength; }
+	uint64_t getMaximumDate() { return maximumDate; }
 };
 
 #endif // CONFIGSTAT_H_

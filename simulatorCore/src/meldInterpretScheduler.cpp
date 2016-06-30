@@ -258,7 +258,8 @@ bool MeldInterpretScheduler::schedule(Event *ev) {
         break;
     case SCHEDULER_MODE_FASTEST:
         if (eventsMap.count(pev->date) > 0) {
-            std::pair<multimap<uint64_t, EventPtr>::iterator,multimap<uint64_t, EventPtr>::iterator> range = eventsMap.equal_range(pev->date);
+            std::pair<multimap<uint64_t, EventPtr>::iterator,
+                      multimap<uint64_t, EventPtr>::iterator> range = eventsMap.equal_range(pev->date);
             multimap<uint64_t, EventPtr>::iterator it = range.first;
             while (it != range.second) {
                 if (it->second->randomNumber == 0) {

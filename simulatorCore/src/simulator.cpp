@@ -123,6 +123,9 @@ void Simulator::deleteSimulator() {
 }
 
 void Simulator::loadScheduler(int maximumDate) {
+	int sl = cmdLine.getSchedulerLength();
+
+	// Create a scheduler of the same type as target BlockCode
 	switch(getType()) {
 	case MELDINTERPRET:
 		MeldInterpret::MeldInterpretScheduler::createScheduler();
@@ -135,8 +138,13 @@ void Simulator::loadScheduler(int maximumDate) {
 		break;
 	}
 
+	// Set the scheduler termination mode
 	scheduler = getScheduler();
-	if (maximumDate) scheduler->setMaximumDate(maximumDate);	   
+	scheduler->setSchedulerLength(sl);
+
+	if (sl == SCHEDULER_LENGTH_BOUNDED) {
+		scheduler->setMaximumDate(cmdLine.getMaximumDate());
+	}
 }
 
 void Simulator::parseWorld(int argc, char*argv[]) {
@@ -189,6 +197,8 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 			}
 
 			maximumDate = t;
+			cerr << "warning: maxSimulationTime in the configuration is not supported anymore,"
+				 << " please use the command line option [-s <maxTime>]" << endl;
 		}
 
 		// Get Blocksize
