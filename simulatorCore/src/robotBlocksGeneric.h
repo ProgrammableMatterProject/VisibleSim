@@ -32,13 +32,14 @@ protected:
     };
     ~GenericCodeBlock() { eventFuncMap.clear(); };
 
+    virtual void onTap();
+
     void processLocalEvent(EventPtr pev);
     void addMessageEventFunc(int type,eventFunc);
     int sendMessageToAllNeighbors(Message*,int t0,int dt,int nexcept,...);
     int sendMessage(Message*,P2PNetworkInterface *,int t0,int dt);
     int sendMessageToAllNeighbors(const char*,Message*,int t0,int dt,int nexcept,...);
     int sendMessage(const char*,Message*,P2PNetworkInterface *,int t0,int dt);
-
     void setColor(const Color &c) { module->setColor(c); };
 };
 

@@ -55,8 +55,8 @@ bool Scheduler::schedule(Event *ev) {
 
 	EventPtr pev(ev);
 
-	info << "Schedule a " << pev->getEventName() << " (" << ev->id << ")";
-	trace(info.str());
+	/*info << "Schedule a " << pev->getEventName() << " (" << ev->id << ")";
+	trace(info.str());*/
 
 	if (pev->date < Scheduler::currentDate) {
 		OUTPUT << "ERROR : An event cannot be scheduled in the past !\n";
