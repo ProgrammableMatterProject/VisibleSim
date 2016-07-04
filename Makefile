@@ -60,6 +60,9 @@ $(SUBDIRS):
 
 test: subdirs
 	$(MAKE) -C applicationsSrc test;
+
+doc: 
+	$(MAKE) -C doc;
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
