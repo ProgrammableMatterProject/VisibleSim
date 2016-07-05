@@ -130,8 +130,6 @@ HLattice::HLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(g
 HLattice::~HLattice() {}
 
 
-// If new blocks are added with different shapes for the same lattice, we may consider
-//  using a different function again for each block, or at least different sub operations
 Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     Vector3D res;
 

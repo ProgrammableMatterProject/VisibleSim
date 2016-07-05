@@ -189,20 +189,33 @@ P2PNetworkInterface* Catoms2DBlock::getNextInterface(RelativeDirection::Directio
 
 int Catoms2DBlock::getCCWMovePivotId() {
     for (int j = 0; j < 6; j++) {
-		P2PNetworkInterface *p2p = getInterface((HLattice::Direction)j);
-
-		if (p2p->connectedInterface) {
+		P2PNetworkInterface *p2pPivot = getInterface((HLattice::Direction)j);
+		
+		if (p2pPivot->connectedInterface) {
+			cout << j << ".isConnected: ";
+					
 			bool res = true;
 			for (int i = 1; i < 4; i++) {
-				int dir = ((j + i) % 6);
-				Cell3DPosition p = getPosition((HLattice::Direction)dir);
-				if (!getWorld()->lattice->isFree(p)) {
+				// Indexes are shifted by n / 60 degrees due to the rotation of the block
+				// int rotOffset = angle / 60;
+				// int index = (((i + j) % 6) + rotOffset) % 6;
+				int index = ((j - i)%6 + 6)%6;
+				// Cell3DPosition p = getPosition((HLattice::Direction)index);
+				P2PNetworkInterface *p2pIf = getInterface((HLattice::Direction)index);
+				if (p2pIf->connectedInterface) {
+					cout << index << ".false ";
 					res = false;
+				} else {
+					cout << index << ".true ";
 				}
 			}
 
-			if (res)
-				return p2p->getConnectedBlockId();
+			cout << endl;
+
+			if (res) {
+				cout << "Block " << position << " wants to CCW MOVEP: " << getPosition(p2pPivot) << endl;
+				return p2pPivot->getConnectedBlockId();
+			}
 		}
     }
 
@@ -210,21 +223,28 @@ int Catoms2DBlock::getCCWMovePivotId() {
 }
 
 int Catoms2DBlock::getCWMovePivotId() {
-    for (int j = 5; j > 0; j--) {
-		P2PNetworkInterface *p2p = getInterface((HLattice::Direction)j);
+    for (int j = 5; j >= 0; j--) {
+		P2PNetworkInterface *p2pPivot = getInterface((HLattice::Direction)j);
 
-		if (p2p->connectedInterface) {
+		if (p2pPivot->connectedInterface) {
+			cout << j << ".isConnected: ";
+						
 			bool res = true;
 			for (int i = 1; i < 4; i++) {
-				int dir = ((j - i)%6 + 6)%6;
-				Cell3DPosition p = getPosition((HLattice::Direction)dir);
-				if (!getWorld()->lattice->isFree(p)) {
+				int index = ((j + i)%6 + 6)%6;
+				P2PNetworkInterface *p2pIf = getInterface((HLattice::Direction)index);
+				if (p2pIf->connectedInterface) {
+					cout << index << ".false ";
 					res = false;
+				} else {
+					cout << index << ".true ";
 				}
 			}
 
-			if (res)
-				return p2p->getConnectedBlockId();
+			if (res) {
+				cout << "Block " << position << " wants to CW MOVEP: " << getPosition(p2pPivot) << endl;
+				return p2pPivot->getConnectedBlockId();
+			}
 		}
     }
 
@@ -291,10 +311,5 @@ void Catoms2DBlock::startMove(Catoms2DMove &m, uint64_t t) {
 void Catoms2DBlock::startMove(Catoms2DMove &m) {
     startMove(m,getScheduler()->now());
 }
-
-// inline string Catoms2DBlock::xmlBuildingBlock() {
-//   return "\t\t<block position=" + ConfigUtils::Vector3D3DToXmlString(position)
-//     + " color=" + ConfigUtils::colorToXmlString(color) + " />\n";
-// }
 
 }

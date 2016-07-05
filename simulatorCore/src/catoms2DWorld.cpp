@@ -313,7 +313,6 @@ void Catoms2DWorld::loadTextures(const string &str) {
 }
 
 void Catoms2DWorld::updateGlData(BuildingBlock*blc) {
-    cout << "update posgrid:" << blc->position << endl;
     updateGlData((Catoms2DBlock*)blc,lattice->gridToWorldPosition(blc->position));
 }
 
@@ -321,7 +320,6 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vector3D &position) {
     Catoms2DGlBlock *glblc = (Catoms2DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
-        cout << "update pos:" << position << endl;
         glblc->setPosition(position);
         glblc->setColor(blc->color);
         unlock();
@@ -332,7 +330,6 @@ void Catoms2DWorld::updateGlData(Catoms2DBlock*blc, const Vector3D &position, do
     Catoms2DGlBlock *glblc = (Catoms2DGlBlock*)blc->getGlBlock();
     if (glblc) {
         lock();
-        cout << "update pos:" << position << endl;
         glblc->setAngle(angle);
         glblc->setPosition(position);
         glblc->setColor(blc->color);

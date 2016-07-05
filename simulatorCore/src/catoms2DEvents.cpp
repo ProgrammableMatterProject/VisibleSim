@@ -133,7 +133,6 @@ MotionStopEvent::~MotionStopEvent() {
 void MotionStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
-    rb->setColor(YELLOW);
 
     /* Transformer les coordonnées GL en coordonnées grille*/
 
@@ -142,12 +141,13 @@ void MotionStopEvent::consume() {
                                  rb->ptrGlBlock->position[1],
                                  rb->ptrGlBlock->position[2]);
     Cell3DPosition gridPos = wrld->lattice->worldToGridPosition(worldPos);
-    cout << "---------------motion end-----------------"<<endl;
-    cout << worldPos << endl;
-    cout << gridPos << endl;
-    cout << "------------------------------------------"<<endl;
+    // cout << "---------------motion end-----------------"<<endl;
+    // cout << worldPos << endl;
+    // cout << gridPos << endl;
+    // cout << "------------------------------------------"<<endl;
     rb->setPosition(gridPos);    
-
+    rb->setColor(YELLOW);
+    
     stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;
