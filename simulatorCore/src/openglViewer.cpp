@@ -50,7 +50,7 @@ void GlutContext::init(int argc, char **argv) {
 	// creation of a new graphic window
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(screenWidth,screenHeight);
-	if (glutCreateWindow("OpenGL BlockSimulator") == GL_FALSE) {
+	if (glutCreateWindow("VisibleSim") == GL_FALSE) {
 		puts("ERREUR : echec à la création de la fenêtre graphique");
 		exit(EXIT_FAILURE);
 	}

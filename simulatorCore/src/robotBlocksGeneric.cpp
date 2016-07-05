@@ -87,7 +87,7 @@ void GenericCodeBlock::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 
-cout << "event #" << pev->id << ":" << pev->eventType << endl;
+//cout << "event #" << pev->id << ":" << pev->eventType << endl;
     switch (pev->eventType) {
         case EVENT_NI_RECEIVE: {
             message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
