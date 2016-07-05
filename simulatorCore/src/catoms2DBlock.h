@@ -8,7 +8,6 @@
 #ifndef CATOMS2DBLOCK_H_
 #define CATOMS2DBLOCK_H_
 
-#include <boost/asio.hpp>
 #include <stdexcept>
 
 #include "buildingBlock.h"

@@ -8,14 +8,14 @@
 #ifndef CATOMS2DWORLD_H_
 #define CATOMS2DWORLD_H_
 
+#include <vector>
+
 #include "openglViewer.h"
 #include "world.h"
 #include "vector3D.h"
 #include "catoms2DBlock.h"
 #include "objLoader.h"
-#include <boost/asio.hpp>
 #include "trace.h"
-#include <vector>
 
 namespace Catoms2D {
 

@@ -6,12 +6,14 @@
  */
 
 #include "openglViewer.h"
+
+#include <chrono>
+
 #include "world.h"
 #include "scheduler.h"
 #include "events.h"
 #include "trace.h"
 #include "meldProcessDebugger.h"
-
 
 //===========================================================================================================
 //
@@ -309,11 +311,9 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
 //////////////////////////////////////////////////////////////////////////////
 // fonction de mise à jour des données pour l'animation
 void GlutContext::idleFunc(void) {
-#ifdef _WIN32
-	Sleep(20);
-#else
-	usleep(20000);
-#endif
+	std::chrono::milliseconds timespan(20);
+	std::this_thread::sleep_for(timespan);
+
     //calculateFPS();
 	if (saveScreenMode && mustSaveImage) {
 		static int num=0;
@@ -492,7 +492,8 @@ void GlutContext::mainLoop() {
 	glutMainLoop();
 #else
 //    cout << "r+[ENTER] to run simulation" << endl;
-    sleep(2);
+	std::chrono::milliseconds timespan(2);
+	std::this_thread::sleep_for(timespan);
 /*    char c='r';
 	  cin >> c;*/
     Scheduler *s = getScheduler();
@@ -507,7 +508,9 @@ void GlutContext::mainLoop() {
 #endif
 	getScheduler()->stop(BaseSimulator::getScheduler()->now());
 
-    sleep(2);
+	std::chrono::milliseconds timespan(2);
+	std::this_thread::sleep_for(timespan);
+	
     deleteContext();
 }
 

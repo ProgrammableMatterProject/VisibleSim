@@ -9,7 +9,6 @@
 #define ROBOTBLOCKSWORLD_H_
 
 #include <vector>
-#include <boost/asio.hpp>
 
 #include "openglViewer.h"
 #include "world.h"

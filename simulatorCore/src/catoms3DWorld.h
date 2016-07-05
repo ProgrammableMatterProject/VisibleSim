@@ -8,7 +8,6 @@
 #ifndef CATOMS3DWORLD_H_
 #define CATOMS3DWORLD_H_
 
-#include <boost/asio.hpp>
 #include <vector>
 
 #include "buildingBlock.h"

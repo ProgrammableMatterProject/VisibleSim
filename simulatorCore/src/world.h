@@ -14,8 +14,6 @@
 #include <vector>
 #include <mutex>
 
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
-
 #include "assert.h"
 #include "buildingBlock.h"
 #include "glBlock.h"
@@ -35,7 +33,7 @@ namespace BaseSimulator {
  * @brief Represents the simulation world and manages all blocks 
  */
 class World {
-    boost::interprocess::interprocess_mutex mutex_gl;
+    std::mutex mutex_gl;
 protected:
     /************************************************************
      *   Global variable
