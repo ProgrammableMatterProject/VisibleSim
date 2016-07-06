@@ -14,7 +14,7 @@
 #include "meldInterpretScheduler.h"
 #include "meldProcessScheduler.h"
 #include "cppScheduler.h"
-#include "openGlViewer.h"
+#include "openglViewer.h"
 
 using namespace std;
 
