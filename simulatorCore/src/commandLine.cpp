@@ -68,8 +68,9 @@ void CommandLine::read(int argc, char *argv[]) {
             std::getline(vm, portStr, ':');
             try {
                 vmPort = stoi(portStr);
-            } catch(std::invalid_argument&) {
+            } catch(std::invalid_argument&) {                
                 cerr << "error: MeldVM port must be a number!" << endl;
+                help();
                 exit(EXIT_FAILURE);
             }
             

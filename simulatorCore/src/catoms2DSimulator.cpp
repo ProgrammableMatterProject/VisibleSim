@@ -42,7 +42,7 @@ Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[],
 	((Catoms2DWorld*)world)->linkBlocks();
 
 //	getScheduler()->sem_schedulerStart->post();
-//	getScheduler()->setState(Scheduler::NOTSTARTED);
+	getScheduler()->setState(Scheduler::NOTSTARTED);
 
 	if (!testMode) {
 		GlutContext::mainLoop();

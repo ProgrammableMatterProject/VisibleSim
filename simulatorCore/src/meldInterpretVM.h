@@ -11,8 +11,7 @@
 #include <map>
 
 #include "color.h"
-#include "blinkyBlocksBlock.h"
-
+#include "buildingBlock.h"
 
 #include <sys/timeb.h>
 
@@ -42,20 +41,20 @@ typedef struct _tuple_queue { tuple_entry *head = NULL; tuple_entry *tail = NULL
 
 class record_type{
 public:
-      int count;
-      tuple_queue *agg_queue = NULL;
-      record_type(int i){
-            count = i;
-      }
-      record_type(tuple_queue *q){
-            agg_queue = q;
-      }
-      operator int () const{
-            return count;
-      }
-      operator tuple_queue* () const{
-            return agg_queue;
-      }
+    int count;
+    tuple_queue *agg_queue = NULL;
+    record_type(int i){
+        count = i;
+    }
+    record_type(tuple_queue *q){
+        agg_queue = q;
+    }
+    operator int () const{
+        return count;
+    }
+    operator tuple_queue* () const{
+        return agg_queue;
+    }
 };
 
 struct _tuple_entry { struct _tuple_entry *next; record_type records; void *tuple;};
@@ -77,10 +76,8 @@ typedef int Node;
 #define PUSH_NEW_TUPLE(tuple) (enqueueNewTuple(tuple, (record_type)1))
 #define TERMINATE_CURRENT() /* NOT IMPLEMENTED FOR BBs */
 
-#define VACANT 0
-
 /******************************************************************************
-@Description: api.h contains useful macros for casting or dereferencing
+@brief: api.h contains useful macros for casting or dereferencing
 meld values.
 *******************************************************************************/
 
@@ -105,10 +102,9 @@ typedef Register meld_value;
 #define MELD_CONVERT_PTR_TO_REG(x)   ((Register)(void *)(x))
 
 /******************************************************************************
-@Description: core.h contains all the constants, external function headers, and
+@brief: core.h contains all the constants, external function headers, and
 macros, needed by the VM to parse the byte code, manage queues, and process
 instructions.
-@note: Tuple type is the same as predicate!
 *******************************************************************************/
 
 /* DEBUG flags */
@@ -396,7 +392,7 @@ instructions.
 #define OP_ARG2(x)    (((*(const unsigned char*)((x)+1)) & 0xfc) >> 2)
 #define OP_OP(x)      ((*(const unsigned char*)((x)+2)) & 0x1f)
 #define OP_DST(x)     ((((*(const unsigned char*)((x)+1)) & 0x03) << 3) | \
-                      (((*(const unsigned char*)((x)+2)) & 0xe0) >> 5))
+                       (((*(const unsigned char*)((x)+2)) & 0xe0) >> 5))
 
 /* Returns a byte which is the value of the
    address program counter x is pointing at */
@@ -405,14 +401,14 @@ instructions.
 #define MOVE_SRC(x)   (*(const unsigned char*)((x)+1))
 #define MOVE_DST(x)   (((*(const unsigned char*)((x)+1))&0x3f))
 
-#define ALLOC_TYPE(x) ((((*(const unsigned char *)(x))&0x1f) << 2) | \
-		       (((*(const unsigned char *)(x+1))&0xc0) >> 6))
+#define ALLOC_TYPE(x) ((((*(const unsigned char *)(x))&0x1f) << 2) |    \
+                       (((*(const unsigned char *)(x+1))&0xc0) >> 6))
 #define ALLOC_DST(x)  ((*(const unsigned char *)((x)+1))&0x3f)
 
 #define CALL_VAL(x)   (*(const unsigned char *)(x))
 #define CALL_DST(x)   ((*(const unsigned char *)((x)+1)) & 0x1f)
 #define CALL_ID(x)    ((((*(const unsigned char *)((x))) & 0x0f) << 3) | \
-		       (((*(const unsigned char *)((x)+1)) & 0xe0) >> 5))
+                       (((*(const unsigned char *)((x)+1)) & 0xe0) >> 5))
 
 #define CALL_ARGS(x)  (extern_functs_args[CALL_ID(x)])
 #define CALL_FUNC(x)  (extern_functs[CALL_ID(x)])
@@ -433,8 +429,8 @@ instructions.
 /* Return the typeid (first byte of a tuple) of tuple x */
 #define TUPLE_TYPE(x)   (*(TYPE_FIELD_TYPE *)(x))
 /* Returns a pointer to argument at offset (off) of a tuple */
-#define TUPLE_FIELD(x,off)					\
-      ((Register *)(((unsigned char*)(x)) + TYPE_FIELD_SIZE + (off)))
+#define TUPLE_FIELD(x,off)                                          \
+    ((Register *)(((unsigned char*)(x)) + TYPE_FIELD_SIZE + (off)))
 
 /* ************* BYTE CODE FILE PARSING ************* */
 
@@ -454,11 +450,11 @@ instructions.
 #define TYPE_DESCRIPTOR(x) ((unsigned char *)(meld_prog + TYPE_OFFSET(x)))
 
 /* Returns address of byte code for type x */
-#define TYPE_START(x)							\
-  ((unsigned char*)(meld_prog + *(unsigned short *)TYPE_DESCRIPTOR(x)))
+#define TYPE_START(x)                                                   \
+    ((unsigned char*)(meld_prog + *(unsigned short *)TYPE_DESCRIPTOR(x)))
 /* Returns fist byte of byte code for type x */
-#define TYPE_START_CHECK(x)			\
-  (*(unsigned short *)TYPE_DESCRIPTOR(x))
+#define TYPE_START_CHECK(x)                     \
+    (*(unsigned short *)TYPE_DESCRIPTOR(x))
 // Contain tuple's properties (linear/persistent...)
 #define TYPE_PROPERTIES(x) (*(TYPE_DESCRIPTOR(x) + 2))
 // If tuple is aggregate, contains its aggregate type, 0 otherwise
@@ -468,8 +464,8 @@ instructions.
 // Number of arguments
 #define TYPE_NUMARGS(x)     (*(TYPE_DESCRIPTOR(x) + 5))
 // Argument descriptor
-#define TYPE_ARGS_DESC(x)					\
-  ((unsigned char*)(TYPE_DESCRIPTOR(x)+TYPE_DESCRIPTOR_SIZE))
+#define TYPE_ARGS_DESC(x)                                       \
+    ((unsigned char*)(TYPE_DESCRIPTOR(x)+TYPE_DESCRIPTOR_SIZE))
 // Returns type of argument number f for type x
 #define TYPE_ARG_DESC(x, f) ((unsigned char *)(TYPE_ARGS_DESC(x)+1*(f)))
 
@@ -478,11 +474,11 @@ instructions.
 #define RULE_DESCRIPTOR(x) ((unsigned char*)(meld_prog + RULE_OFFSET(x)))
 
 /* Returns address of byte code for rule x */
-#define RULE_START(x)							\
-  ((unsigned char*)(meld_prog + *(unsigned short*)(RULE_DESCRIPTOR(x))))
+#define RULE_START(x)                                                   \
+    ((unsigned char*)(meld_prog + *(unsigned short*)(RULE_DESCRIPTOR(x))))
 /* Returns first byte of byte code for rule x */
-#define RULE_START_CHECK(x)						\
-  (*(unsigned char*)(meld_prog + *(unsigned short*)(RULE_DESCRIPTOR(x))))
+#define RULE_START_CHECK(x)                                             \
+    (*(unsigned char*)(meld_prog + *(unsigned short*)(RULE_DESCRIPTOR(x))))
 /* Offset to rule byte code, pred 0 byte code start is reference */
 /* Returns 1 if rule is persistent, 0 otherwise */
 #define RULE_ISPERSISTENT(x) (*(RULE_DESCRIPTOR(x) + 2))
@@ -512,15 +508,15 @@ instructions.
 #define TYPE_ARG_OFFSET(x, f)   (*(TYPE_ARG(x, f) + 1))
 
 /* Set the value of a tuple's field */
-#define SET_TUPLE_FIELD(tuple, field, data) \
-		memcpy(TUPLE_FIELD(tuple, TYPE_ARG_OFFSET(TUPLE_TYPE(tuple), field)), \
-				data, TYPE_ARG_SIZE(TUPLE_TYPE(tuple), field))
+#define SET_TUPLE_FIELD(tuple, field, data)                             \
+    memcpy(TUPLE_FIELD(tuple, TYPE_ARG_OFFSET(TUPLE_TYPE(tuple), field)), \
+           data, TYPE_ARG_SIZE(TUPLE_TYPE(tuple), field))
 /* Get the value of a tuple's field */
-#define GET_TUPLE_FIELD(tuple, field) \
-		TUPLE_FIELD(tuple, TYPE_ARG_OFFSET(TUPLE_TYPE(tuple), field))
+#define GET_TUPLE_FIELD(tuple, field)                               \
+    TUPLE_FIELD(tuple, TYPE_ARG_OFFSET(TUPLE_TYPE(tuple), field))
 /* Get total size of a tuple */
-#define GET_TUPLE_SIZE(tuple, field) \
-		TYPE_ARG_SIZE(TUPLE_TYPE(tuple), field)
+#define GET_TUPLE_SIZE(tuple, field)            \
+    TYPE_ARG_SIZE(TUPLE_TYPE(tuple), field)
 
 /* Macros to test the property of a type */
 #define TYPE_IS_AGG(x)        (TYPE_PROPERTIES(x) & 0x01)
@@ -605,8 +601,11 @@ instructions.
 
 typedef Register (*extern_funct_type)();
 
+//!< VACANT as NodeID is used to designate an absence of neighbor
+#define VACANT 0
+
 /******************************************************************************
-@Description: MeldInterpretVM is the VM's main file, it initializes the VM,
+@brief: MeldInterpretVM is the VM's main file, it initializes the VM,
 introduces and updates axioms, sends tuples to other blocks, and triggers
 the execution of all tuples and rules through the scheduler loop.
 *******************************************************************************/
@@ -616,243 +615,237 @@ namespace MeldInterpret {
 class MeldInterpretVM;
 
 class MeldInterpretVM {
-	private:
+private:
 
-		/* This block's ID */
-		NodeID blockId;
-		/* An array of 32 registers (pointers) */
-		Register reg[32];
+    /* This block's ID */
+    NodeID blockId;
+    /* An array of 32 registers (pointers) */
+    Register reg[32];
 
-		int numNeighbors;
-		int waiting;
-		static bool debugging;
-		static bool configured;
-		bool firstStart;
+    int numNeighbors;
+    int waiting;
+    static bool debugging;
+    static bool configured;
+    bool firstStart;
 
-      public:
-            static map<int, MeldInterpretVM*> vmMap;
-            static const unsigned char * meld_prog;
-            static char **tuple_names;
-            static char **rule_names;
+public:
+    static map<int, MeldInterpretVM*> vmMap;
+    static const unsigned char * meld_prog;
+    static char **tuple_names;
+    static char **rule_names;
 
-            uint64_t currentLocalDate;
-            bool hasWork, polling, deterministicSet;
-            NodeID neighbors[6];
-            tuple_type TYPE_INIT;
-            tuple_type TYPE_EDGE;
-            tuple_type TYPE_TERMINATE;
-            tuple_type TYPE_NEIGHBORCOUNT;
-            tuple_type TYPE_NEIGHBOR;
-            tuple_type TYPE_VACANT;
-            tuple_type TYPE_TAP;
-            tuple_type TYPE_SETCOLOR;
-            tuple_type TYPE_SETCOLOR2;
+    uint64_t currentLocalDate;
+    bool hasWork, polling, deterministicSet;
+    NodeID *neighbors;
+    tuple_type TYPE_INIT;
+    tuple_type TYPE_EDGE;
+    tuple_type TYPE_TERMINATE;
+    tuple_type TYPE_NEIGHBORCOUNT;
+    tuple_type TYPE_NEIGHBOR;
+    tuple_type TYPE_VACANT;
+    tuple_type TYPE_TAP;
+    tuple_type TYPE_SETCOLOR;
+    tuple_type TYPE_SETCOLOR2;
 
-            BlinkyBlocks::BlinkyBlocksBlock *host;
+    BaseSimulator::BuildingBlock *host;
 
-		MeldInterpretVM(BlinkyBlocks::BlinkyBlocksBlock *b);
-		~MeldInterpretVM();
-		void processOneRule();
-		bool isWaiting();
-		static bool equilibrium();
-		inline static bool isInDebuggingMode() { return debugging; };
-		static void setConfiguration(string path, bool d);
-		static void readProgram(string path);
-		static int characterCount(string in, char character);
+    MeldInterpretVM(BaseSimulator::BuildingBlock *b);
+    ~MeldInterpretVM();
+    void processOneRule();
+    bool isWaiting();
+    static bool equilibrium();
+    inline static bool isInDebuggingMode() { return debugging; };
+    static void setConfiguration(string path, bool d);
+    static void readProgram(string path);
+    static int characterCount(string in, char character);
 
-		byte updateRuleState(byte rid);
-		Time myGetTime();
-		void __myassert(string file, int line, string exp);
-		NodeID get_neighbor_ID(int face);
-		void enqueueNewTuple(tuple_t tuple, record_type isNew);
-		void enqueue_face(NodeID neighbor, meld_int face, int isNew);
-		void enqueue_count(meld_int count, int isNew);
-		void enqueue_tap();
-		void enqueue_init();
-		void init_all_consts();
-		void userRegistration();
-		void receive_tuple(int isNew, tuple_t tpl, byte face);
-		void free_chunk();
-		void tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew);
-		void tuple_handle(tuple_t tuple, int isNew, Register *registers);
-		void vm_init();
-		void vm_alloc();
-		byte getNeighborCount();
-		Uid down(void);
-            Uid up(void);
-            Uid north(void);
-            Uid south(void);
-            Uid east(void);
-            Uid west(void);
-            void setColor(byte color);
-            void setColor(Color color);
-            void setLED(byte r, byte g, byte b, byte intensity);
-            inline void setColorWrapper(byte color){
-                  setColor(color);
-            }
-		inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
-                  setLED(r, g, b, intensity);
-		}
-            NodeID getGUID();
-            extern_funct_type *extern_functs;
-            int *extern_functs_args;
-            static unsigned char * arguments;
+    byte updateRuleState(byte rid);
+    Time myGetTime();
+    void __myassert(string file, int line, string exp);
+    NodeID get_neighbor_ID(int face);
+    void enqueueNewTuple(tuple_t tuple, record_type isNew);
+    void enqueue_face(NodeID neighbor, meld_int face, int isNew);
+    void enqueue_count(meld_int count, int isNew);
+    void enqueue_tap();
+    void enqueue_init();
+    void init_all_consts();
+    void userRegistration();
+    void receive_tuple(int isNew, tuple_t tpl, byte face);
+    void free_chunk();
+    void tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew);
+    void tuple_handle(tuple_t tuple, int isNew, Register *registers);
+    void vm_init();
+    void vm_alloc();
+    byte getNeighborCount();
+    void setColor(byte color);
+    void setColor(Color color);
+    void setLED(byte r, byte g, byte b, byte intensity);
+    inline void setColorWrapper(byte color){
+        setColor(color);
+    }
+    inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
+        setLED(r, g, b, intensity);
+    }
+    NodeID getGUID();
+    extern_funct_type *extern_functs;
+    int *extern_functs_args;
+    static unsigned char * arguments;
 
-            void print_newTuples ();
-            void print_newStratTuples ();
-            void printDebug(string str);
-            NodeID getBlockId();
-            	/* ************* TUPLE HANDLING FUNCTIONS  ************* */
+    void print_newTuples ();
+    void print_newStratTuples ();
+    void printDebug(string str);
+    NodeID getBlockId();
+    /* ************* TUPLE HANDLING FUNCTIONS  ************* */
 
-            /* Queue for tuples to send with delay */
-            tuple_pqueue *delayedTuples;
-            /* Contains a queue for each type, this is essentially the database */
-            tuple_queue *tuples;
-            /* Where stratified tuples are enqueued for execution  */
-            tuple_pqueue *newStratTuples;
-            /* Where non-stratified tuples are enqueued for execution */
-            tuple_queue *newTuples;
-            /* Received tuples are enqueued both to a normal queue
-             * and to this one. Tuples store in this one will be used to remove
-             * remove tuples from the database.*/
-            tuple_queue receivedTuples[NUM_PORTS];
+    /* Queue for tuples to send with delay */
+    tuple_pqueue *delayedTuples;
+    /* Contains a queue for each type, this is essentially the database */
+    tuple_queue *tuples;
+    /* Where stratified tuples are enqueued for execution  */
+    tuple_pqueue *newStratTuples;
+    /* Where non-stratified tuples are enqueued for execution */
+    tuple_queue *newTuples;
+    /* Received tuples are enqueued both to a normal queue
+     * and to this one. Tuples store in this one will be used to remove
+     * remove tuples from the database.*/
+    tuple_queue *receivedTuples;
 
-            /*static Why static again ?*/ inline tuple_t
-            tuple_alloc(tuple_type type)
-            {
-            #ifdef TUPLE_ALLOC_CHECKS
-              if(type >= NUM_TYPES || type < 0) {
+    /*static Why static again ?*/ inline tuple_t
+    tuple_alloc(tuple_type type)
+        {
+#ifdef TUPLE_ALLOC_CHECKS
+            if(type >= NUM_TYPES || type < 0) {
                 fprintf(stderr, "Unrecognized type: %d\n", type);
                 exit(EXIT_FAILURE);
-              }
-            #endif
+            }
+#endif
 
-              tuple_t tuple = ALLOC_TUPLE(TYPE_SIZE(type));
+            tuple_t tuple = ALLOC_TUPLE(TYPE_SIZE(type));
 
-              TUPLE_TYPE(tuple) = type;
+            TUPLE_TYPE(tuple) = type;
 
-            #ifdef TUPLE_ALLOC_DEBUG
-              printf("New %s(%d) tuple -- size: %d\n", tuple_names[type],
+#ifdef TUPLE_ALLOC_DEBUG
+            printf("New %s(%d) tuple -- size: %d\n", tuple_names[type],
                    type, TYPE_SIZE(type));
-            #endif
+#endif
 
-                  return tuple;
-            }
+            return tuple;
+        }
 
-            void tuple_do_handle(tuple_type type,	void *tuple, int isNew, Register *reg);
-            void tuple_print(tuple_t tuple, FILE *fp);
+    void tuple_do_handle(tuple_type type,	void *tuple, int isNew, Register *reg);
+    void tuple_print(tuple_t tuple, FILE *fp);
 
-            //static inline void tuple_dump(void *tuple) Why static ?
-            inline void tuple_dump(void *tuple)
-            {
-                  tuple_print(tuple, stderr);
-                  fprintf(stderr, "\n");
-            }
+    //static inline void tuple_dump(void *tuple) Why static ?
+    inline void tuple_dump(void *tuple)
+        {
+            tuple_print(tuple, stderr);
+            fprintf(stderr, "\n");
+        }
 
-            /* ************* MISC FUNCTION PROTOTYPES ************* */
-            int process_bytecode(tuple_t tuple, const unsigned char *pc, int isNew, int isLinear, Register *reg, byte state);
+    /* ************* MISC FUNCTION PROTOTYPES ************* */
+    int process_bytecode(tuple_t tuple, const unsigned char *pc, int isNew, int isLinear, Register *reg, byte state);
 
-            void init_fields(void);
-            void init_consts(void);
+    void init_fields(void);
+    void init_consts(void);
 
-            void facts_dump(void);
-            void print_program_info(void);
-            char* arg2String(tuple_t tuple, byte index);
-
-
-            /* ************* LOW LEVEL INSTRUCTION FUNCTION ************* */
-            byte val_is_float(const byte x);
-            byte val_is_int(const byte x);
-            byte val_is_field(const byte x);
-            void * eval_field (tuple_t tuple, const unsigned char **pc);
-            int execute_iter (const unsigned char *pc, Register *reg, int isNew, int isLinear);
-            void execute_run_action (const unsigned char *pc, Register *reg, int isNew);
-            void * eval_reg(const unsigned char value, const unsigned char **pc, Register *reg);
-            void * eval_int (const unsigned char **pc);
-            void * eval_float (const unsigned char **pc);
-            void moveTupleToReg (const unsigned char reg_index, tuple_t tuple, Register *reg);
-            void execute_addtuple (const unsigned char *pc, Register *reg, int isNew);
-            void execute_send_delay (const unsigned char *pc, Register *reg, int isNew);
-            void execute_alloc (const unsigned char *pc, Register *reg);
-            void execute_update (const unsigned char *pc, Register *reg);
-            void execute_send (const unsigned char *pc, Register *reg, int isNew);
-            void execute_call1 (const unsigned char *pc, Register *reg);
-            void execute_run_action0 (tuple_t action_tuple, tuple_type type, int isNew);
-            void execute_remove (const unsigned char *pc, Register *reg, int isNew);
-            void execute_mvintfield (const unsigned char *pc, Register *reg);
-            void execute_mvintreg (const unsigned char *pc, Register *reg);
-            void execute_mvfloatreg (const unsigned char *pc, Register *reg);
-            void execute_mvfloatfield (const unsigned char *pc, Register *reg);
-            void execute_mvfieldreg (const unsigned char *pc, Register *reg);
-            void execute_mvfieldfield (const unsigned char *pc, Register *reg);
-            void execute_mvregfield (const unsigned char *pc, Register *reg);
-            void execute_mvhostfield (const unsigned char *pc, Register *reg);
-            void execute_mvhostreg (const unsigned char *pc, Register *reg);
-            void execute_mvregreg (const unsigned char *pc, Register *reg);
-            void execute_not (const unsigned char *pc, Register *reg);
-            void execute_boolor (const unsigned char *pc, Register *reg);
-            void execute_boolequal (const unsigned char *pc, Register *reg);
-            void execute_boolnotequal (const unsigned char *pc, Register *reg);
-            void execute_addrequal (const unsigned char *pc, Register *reg);
-            void execute_addrnotequal (const unsigned char *pc, Register *reg);
-            void execute_intequal (const unsigned char *pc, Register *reg);
-            void execute_intnotequal (const unsigned char *pc, Register *reg);
-            void execute_intgreater (const unsigned char *pc, Register *reg);
-            void execute_intgreaterequal (const unsigned char *pc, Register *reg);
-            void execute_intlesser (const unsigned char *pc, Register *reg);
-            void execute_intlesserequal (const unsigned char *pc, Register *reg);
-            void execute_intmul (const unsigned char *pc, Register *reg);
-            void execute_intdiv (const unsigned char *pc, Register *reg);
-            void execute_intmod (const unsigned char *pc, Register *reg);
-            void execute_intplus (const unsigned char *pc, Register *reg);
-            void execute_intminus (const unsigned char *pc, Register *reg);
-            void execute_floatplus (const unsigned char *pc, Register *reg);
-            void execute_floatminus (const unsigned char *pc, Register *reg);
-            void execute_floatmul (const unsigned char *pc, Register *reg);
-            void execute_floatdiv (const unsigned char *pc, Register *reg);
-            void execute_floatequal (const unsigned char *pc, Register *reg);
-            void execute_floatnotequal (const unsigned char *pc, Register *reg);
-            void execute_floatlesser (const unsigned char *pc, Register *reg);
-            void execute_floatlesserequal (const unsigned char *pc, Register *reg);
-            void execute_floatgreater (const unsigned char *pc, Register *reg);
-            void execute_floatgreaterequal (const unsigned char *pc, Register *reg);
-            bool aggregate_accumulate(int agg_type, void *acc, void *obj, int count);
-            bool aggregate_changed(int agg_type, void *v1, void *v2);
-            void aggregate_seed(int agg_type, void *acc, void *start, int count, size_t size);
-            void aggregate_free(tuple_t tuple, unsigned char field_aggregate, unsigned char type_aggregate);
-            void aggregate_recalc(tuple_entry *agg, Register *reg, bool first_run);
-            void databaseConsistencyChecker();
+    void facts_dump(void);
+    void print_program_info(void);
+    char* arg2String(tuple_t tuple, byte index);
 
 
+    /* ************* LOW LEVEL INSTRUCTION FUNCTION ************* */
+    byte val_is_float(const byte x);
+    byte val_is_int(const byte x);
+    byte val_is_field(const byte x);
+    void * eval_field (tuple_t tuple, const unsigned char **pc);
+    int execute_iter (const unsigned char *pc, Register *reg, int isNew, int isLinear);
+    void execute_run_action (const unsigned char *pc, Register *reg, int isNew);
+    void * eval_reg(const unsigned char value, const unsigned char **pc, Register *reg);
+    void * eval_int (const unsigned char **pc);
+    void * eval_float (const unsigned char **pc);
+    void moveTupleToReg (const unsigned char reg_index, tuple_t tuple, Register *reg);
+    void execute_addtuple (const unsigned char *pc, Register *reg, int isNew);
+    void execute_send_delay (const unsigned char *pc, Register *reg, int isNew);
+    void execute_alloc (const unsigned char *pc, Register *reg);
+    void execute_update (const unsigned char *pc, Register *reg);
+    void execute_send (const unsigned char *pc, Register *reg, int isNew);
+    void execute_call1 (const unsigned char *pc, Register *reg);
+    void execute_run_action0 (tuple_t action_tuple, tuple_type type, int isNew);
+    void execute_remove (const unsigned char *pc, Register *reg, int isNew);
+    void execute_mvintfield (const unsigned char *pc, Register *reg);
+    void execute_mvintreg (const unsigned char *pc, Register *reg);
+    void execute_mvfloatreg (const unsigned char *pc, Register *reg);
+    void execute_mvfloatfield (const unsigned char *pc, Register *reg);
+    void execute_mvfieldreg (const unsigned char *pc, Register *reg);
+    void execute_mvfieldfield (const unsigned char *pc, Register *reg);
+    void execute_mvregfield (const unsigned char *pc, Register *reg);
+    void execute_mvhostfield (const unsigned char *pc, Register *reg);
+    void execute_mvhostreg (const unsigned char *pc, Register *reg);
+    void execute_mvregreg (const unsigned char *pc, Register *reg);
+    void execute_not (const unsigned char *pc, Register *reg);
+    void execute_boolor (const unsigned char *pc, Register *reg);
+    void execute_boolequal (const unsigned char *pc, Register *reg);
+    void execute_boolnotequal (const unsigned char *pc, Register *reg);
+    void execute_addrequal (const unsigned char *pc, Register *reg);
+    void execute_addrnotequal (const unsigned char *pc, Register *reg);
+    void execute_intequal (const unsigned char *pc, Register *reg);
+    void execute_intnotequal (const unsigned char *pc, Register *reg);
+    void execute_intgreater (const unsigned char *pc, Register *reg);
+    void execute_intgreaterequal (const unsigned char *pc, Register *reg);
+    void execute_intlesser (const unsigned char *pc, Register *reg);
+    void execute_intlesserequal (const unsigned char *pc, Register *reg);
+    void execute_intmul (const unsigned char *pc, Register *reg);
+    void execute_intdiv (const unsigned char *pc, Register *reg);
+    void execute_intmod (const unsigned char *pc, Register *reg);
+    void execute_intplus (const unsigned char *pc, Register *reg);
+    void execute_intminus (const unsigned char *pc, Register *reg);
+    void execute_floatplus (const unsigned char *pc, Register *reg);
+    void execute_floatminus (const unsigned char *pc, Register *reg);
+    void execute_floatmul (const unsigned char *pc, Register *reg);
+    void execute_floatdiv (const unsigned char *pc, Register *reg);
+    void execute_floatequal (const unsigned char *pc, Register *reg);
+    void execute_floatnotequal (const unsigned char *pc, Register *reg);
+    void execute_floatlesser (const unsigned char *pc, Register *reg);
+    void execute_floatlesserequal (const unsigned char *pc, Register *reg);
+    void execute_floatgreater (const unsigned char *pc, Register *reg);
+    void execute_floatgreaterequal (const unsigned char *pc, Register *reg);
+    bool aggregate_accumulate(int agg_type, void *acc, void *obj, int count);
+    bool aggregate_changed(int agg_type, void *v1, void *v2);
+    void aggregate_seed(int agg_type, void *acc, void *start, int count, size_t size);
+    void aggregate_free(tuple_t tuple, unsigned char field_aggregate, unsigned char type_aggregate);
+    void aggregate_recalc(tuple_entry *agg, Register *reg, bool first_run);
+    void databaseConsistencyChecker();
 
-            /* ************* QUEUE MANAGEMENT PROTOTYPES ************* */
 
-            tuple_entry* queue_enqueue(tuple_queue *queue, tuple_t tuple, record_type isNew);
-            bool queue_is_empty(tuple_queue *queue);
-            tuple_t queue_dequeue(tuple_queue *queue, int *isNew);
-            tuple_t queue_dequeue_pos(tuple_queue *queue, tuple_entry **pos);
-            tuple_t queue_pop_tuple(tuple_queue *queue);
-            void queue_push_tuple(tuple_queue *queue, tuple_entry *entry);
 
-            static inline void queue_init(tuple_queue *queue)
-            {
-              queue->head = NULL;
-              queue->tail = NULL;
-            }
+    /* ************* QUEUE MANAGEMENT PROTOTYPES ************* */
 
-            static inline bool p_empty(tuple_pqueue *q)
-            {
-                  return q->queue == NULL;
-            }
+    tuple_entry* queue_enqueue(tuple_queue *queue, tuple_t tuple, record_type isNew);
+    bool queue_is_empty(tuple_queue *queue);
+    tuple_t queue_dequeue(tuple_queue *queue, int *isNew);
+    tuple_t queue_dequeue_pos(tuple_queue *queue, tuple_entry **pos);
+    tuple_t queue_pop_tuple(tuple_queue *queue);
+    void queue_push_tuple(tuple_queue *queue, tuple_entry *entry);
 
-            static inline tuple_pentry* p_peek(tuple_pqueue *q)
-            {
-                  return q->queue;
-            }
+    static inline void queue_init(tuple_queue *queue)
+        {
+            queue->head = NULL;
+            queue->tail = NULL;
+        }
 
-            tuple_pentry *p_dequeue(tuple_pqueue *q);
-            void p_enqueue(tuple_pqueue *q, Time priority, tuple_t tuple, NodeID rt, record_type isNew);
-            int queue_length (tuple_queue *queue);
+    static inline bool p_empty(tuple_pqueue *q)
+        {
+            return q->queue == NULL;
+        }
+
+    static inline tuple_pentry* p_peek(tuple_pqueue *q)
+        {
+            return q->queue;
+        }
+
+    tuple_pentry *p_dequeue(tuple_pqueue *q);
+    void p_enqueue(tuple_pqueue *q, Time priority, tuple_t tuple, NodeID rt, record_type isNew);
+    int queue_length (tuple_queue *queue);
 };
 
 }

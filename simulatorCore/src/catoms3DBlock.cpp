@@ -17,12 +17,9 @@ using namespace std;
 //! \namespace Catoms3D
 namespace Catoms3D {
 
-Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
+Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
+    : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "Catoms3DBlock constructor" << endl;
-
-    for (int i=0; i<12; i++) {
-        P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
-    }
 
     orientationCode=0; // connector 0 is along X axis
 }
@@ -128,6 +125,22 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
         i++;
     }
     return (d>0.1)?NULL:P2PNetworkInterfaces[i-1];
+}
+
+void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
+		   << FCCLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new AddNeighborEvent(getScheduler()->now(), this,
+							 FCCLattice::getOpposite(getDirection(ni)), target->blockId));
+}
+
+void Catoms3DBlock::removeNeighbor(P2PNetworkInterface *ni) {
+    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
+		   << FCCLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new RemoveNeighborEvent(getScheduler()->now(), this,
+								FCCLattice::getOpposite(getDirection(ni))));
 }
 
 }

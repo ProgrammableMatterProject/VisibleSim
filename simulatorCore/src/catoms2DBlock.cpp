@@ -18,12 +18,9 @@ using namespace std;
 
 namespace Catoms2D {
 
-Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
+Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb)
+	: BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "Catoms2DBlock constructor" << endl;
-
-    for (int i=0; i<HLattice::MAX_NB_NEIGHBORS; i++) {
-		getP2PNetworkInterfaces().push_back(new P2PNetworkInterface(this));
-    }
 
     angle = 0;
 }
@@ -310,6 +307,22 @@ void Catoms2DBlock::startMove(Catoms2DMove &m, uint64_t t) {
 
 void Catoms2DBlock::startMove(Catoms2DMove &m) {
     startMove(m,getScheduler()->now());
+}
+
+void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
+		   << HLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new AddNeighborEvent(getScheduler()->now(), this,
+							 HLattice::getOpposite(getDirection(ni)), target->blockId));
+}
+
+void Catoms2DBlock::removeNeighbor(P2PNetworkInterface *ni) {
+    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
+		   << HLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new RemoveNeighborEvent(getScheduler()->now(), this,
+								HLattice::getOpposite(getDirection(ni))));
 }
 
 }

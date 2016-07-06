@@ -23,14 +23,16 @@ int BuildingBlock::nextId = 0;
 //
 //===========================================================================================================
 
-BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb) {
+BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
     OUTPUT << "BuildingBlock constructor (id:" << nextId << ")" << endl;
+	
     if (bId < 0) {
 		blockId = nextId;
 		nextId++;
     } else {
 		blockId = bId;
     }
+
     P2PNetworkInterfaceNextLocalId = 0;
     state.store(ALIVE);
     clock = NULL;
@@ -38,6 +40,11 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb) {
     generator = std::ranlux48(rd());
     dis = uniform_int_distribution<>(0, 50 * blockId);
     buildNewBlockCode = bcb;
+
+	for (int i = 0; i < nbInterfaces; i++) {
+        P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
+    }
+	
 	blockCode = (BaseSimulator::BlockCode*)bcb(this);
 	isMaster = false;
 }
@@ -197,5 +204,25 @@ uint64_t BuildingBlock::getSchedulerTimeForLocalTime(uint64_t localTime) {
     }
     return clock->getSchedulerTimeForLocalTime(localTime);
 }
+
+/*************************************************
+ *            MeldInterpreter Functions  
+ *************************************************/
+
+unsigned short BuildingBlock::getNeighborIDForFace(int faceNum) {
+    short nodeID = P2PNetworkInterfaces[faceNum]->getConnectedBlockId();
+	
+	return nodeID > 0  ? (unsigned short)nodeID : 0;
+}
+
+int BuildingBlock::getFaceForNeighborID(int nId) {
+	for (int face = 0; face < P2PNetworkInterfaces.size(); face++) {
+		if (nId == getNeighborIDForFace(face))
+			return face;
+	}
+
+	return -1;
+}
+
 
 } // BaseSimulator namespace

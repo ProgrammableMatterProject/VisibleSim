@@ -179,6 +179,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 //checkForReceivedVMCommands();
                 //cout << "ok" << endl;
             }
+
             if (state == PAUSED) {
                 cout << "paused" << endl;
                 int pauseBeginning = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
@@ -186,6 +187,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 setState(RUNNING);
                 pausedTime += ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
             }
+
             std::chrono::milliseconds timespan(5);
             std::this_thread::sleep_for(timespan);			
         }
@@ -209,6 +211,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 }
 
 void MeldInterpretScheduler::start(int mode) {
+
+    
     static bool done = false;
     if ((state == NOTSTARTED) && !done) {
         done = true;

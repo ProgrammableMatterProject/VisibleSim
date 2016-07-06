@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 
-	getScheduler()->waitForSchedulerEnd();
+	// getScheduler()->waitForSchedulerEnd();
 
 	deleteSimulator();
 

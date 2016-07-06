@@ -71,6 +71,17 @@ public:
 	int getDirection(P2PNetworkInterface*);
 
 	static short getOrientationFromMatrix(const Matrix &mat);
+	
+	// MeldInterpreter
+	/**
+	 * @copydoc BuildingBlock::addNeighbor
+	 */
+	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
+	/**
+	 * @copydoc BuildingBlock::removeNeighbor
+	 */
+	virtual void removeNeighbor(P2PNetworkInterface *ni);
+
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb);

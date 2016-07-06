@@ -37,7 +37,7 @@ RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[],
 	((RobotBlocksWorld*)world)->linkBlocks();
 
 //	getScheduler()->sem_schedulerStart->post();
-//	getScheduler()->setState(Scheduler::NOTSTARTED);
+	getScheduler()->setState(Scheduler::NOTSTARTED);
 
 	if (!testMode) {
 		GlutContext::mainLoop();

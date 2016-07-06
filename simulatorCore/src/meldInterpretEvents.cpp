@@ -9,6 +9,8 @@
 #include "meldInterpretScheduler.h"
 #include "meldInterpretVM.h"
 
+using namespace BaseSimulator;
+
 namespace MeldInterpret{
 
 //===========================================================================================================

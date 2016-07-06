@@ -34,6 +34,15 @@ public:
     Cell3DPosition getPosition(SLattice::Direction d);
     SLattice::Direction getDirection( P2PNetworkInterface*);
     inline void getGridPosition(int &x,int &y) { x = int(position[0]); y=int(position[1]); };
+
+    /**
+	 * @copydoc BuildingBlock::addNeighbor
+	 */
+	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
+	/**
+	 * @copydoc BuildingBlock::removeNeighbor
+	 */
+	virtual void removeNeighbor(P2PNetworkInterface *ni);
 };
 
 }

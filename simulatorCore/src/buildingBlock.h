@@ -79,8 +79,9 @@ public:
 	 * @brief BuildingBlock constructor
 	 * @param bId : the block id of the block to create
 	 * @param bcb : function pointer to the getter for the block's CodeBlock
+	 * @param nbInterfaces : number of initial interfaces of the block (Necessary for MeldInterpretVM init)
 	 */
-	BuildingBlock(int bId, BlockCodeBuilder bcb);
+	BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces);
     /**
 	 * @brief BuildingBlock destructor
 	 */
@@ -159,16 +160,21 @@ public:
 	 */
 	inline Vector3D getPositionVector() { return Vector3D(position[0], position[1], position[2]);};
 	/**
-	 * @brief Adds block targer as neighbor for this block on interface ni
-	 * @param ni : pointer to the interface to connect
-	 * @param target : pointer to the BuildingBlock to connect to interface ni
+	 * @brief Schedules an AddNewNeighbor event
+	 * @param ni : pointer to the interface that was just connected
+	 * @param target : pointer to the BuildingBlock connected to interface ni
 	 */
-	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
+	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};	
 	/**
-	 * @brief Disconnect interface ni
-	 * @param ni : pointer to the interface to disconnect
+	 * @brief Schedules a RemoveNeighborEvent
+	 * @param ni : pointer to the disconnected interface
 	 */
 	virtual void removeNeighbor(P2PNetworkInterface *ni) {};
+	/**
+	 * @brief Returns the number of interfaces for this block
+	 * @return number of interface for this block
+	 */
+	inline unsigned short getNbInterfaces() {	return P2PNetworkInterfaces.size(); };
 	/**
 	 * @brief Schedules a stop event for this block at a given date and update its state
 	 * @param date : date at which the stop event must be processed
@@ -208,6 +214,22 @@ public:
 	 * @return global time corresponding to the local time in parameter
 	 */   	
 	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+
+	/*************************************************
+	 *            MeldInterpreter Functions  
+	 *************************************************/
+	/**
+	 * @brief Returns the id of the block connected on interface #faceNum of this block
+	 * @param faceNum : id of the connected interface
+	 * @return id of the block connected to interface faceNum 
+	 */
+	unsigned short getNeighborIDForFace(int faceNum);
+	/**
+	 * @brief Returns the id of the face from this block connected to block of id nId
+	 * @param nId : id of the connected block 
+	 * @return the id of the face connected to block nId, or -1 if the two blocks are not neighbors
+	 */
+	int getFaceForNeighborID(int nId);
 };
 
 } // BaseSimulator namespace

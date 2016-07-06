@@ -10,19 +10,16 @@
 #include "robotBlocksBlock.h"
 #include "robotBlocksWorld.h"
 #include "robotBlocksSimulator.h"
+#include "lattice.h"
 #include "trace.h"
 
 using namespace std;
 
 namespace RobotBlocks {
 
-RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
+RobotBlocksBlock::RobotBlocksBlock(int bId, BlockCodeBuilder bcb)
+	: BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "RobotBlocksBlock constructor" << endl;
-
-    for (int i=0; i<6; i++) {
-		P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
-    }
-
 }
 
 RobotBlocksBlock::~RobotBlocksBlock() {
@@ -45,6 +42,22 @@ void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetw
     }
     //cout << (prev?prev->hostBlock->blockId:-1) << "," << (next?next->hostBlock->blockId:-1) << endl;
     getWorld()->updateGlData(this,prevId,nextId);
+}
+
+void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
+		   << SCLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new AddNeighborEvent(getScheduler()->now(), this,
+							 SCLattice::getOpposite(getDirection(ni)), target->blockId));
+}
+
+void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
+    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
+		   << SCLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new RemoveNeighborEvent(getScheduler()->now(), this,
+								SCLattice::getOpposite(getDirection(ni))));
 }
 
 SCLattice::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {

@@ -20,7 +20,7 @@
 
 namespace RobotBlocks {
 
-static const Vector3D defaultBlockSize{39.0, 39.0, 40.0};
+static const Vector3D defaultBlockSize{40.0, 40.0, 40.0};
 
 class RobotBlocksWorld : public BaseSimulator::World {
 protected:

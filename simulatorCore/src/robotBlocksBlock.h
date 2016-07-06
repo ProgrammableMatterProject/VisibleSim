@@ -38,7 +38,14 @@ public:
     void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
     inline P2PNetworkInterface *getInterface(SCLattice::Direction d) { return P2PNetworkInterfaces[d]; }
-
+	/**
+	 * @copydoc BuildingBlock::addNeighbor
+	 */
+	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
+	/**
+	 * @copydoc BuildingBlock::removeNeighbor
+	 */
+	virtual void removeNeighbor(P2PNetworkInterface *ni);
     SCLattice::Direction getDirection(P2PNetworkInterface*);
 };
 

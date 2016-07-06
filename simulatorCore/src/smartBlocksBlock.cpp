@@ -14,12 +14,8 @@ using namespace std;
 namespace SmartBlocks {
     
 SmartBlocksBlock::SmartBlocksBlock(int bId, BlockCodeBuilder bcb)
-    : BaseSimulator::BuildingBlock(bId, bcb) {
+    : BaseSimulator::BuildingBlock(bId, bcb, SLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
-
-    for (int i=SLattice::North; i<=SLattice::West; i++) {
-        P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
-    }
 }
 
 SmartBlocksBlock::~SmartBlocksBlock() {
@@ -81,5 +77,22 @@ P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(int i
     }
     return (i<4?P2PNetworkInterfaces[i]:NULL);
 }
-    
+
+
+void SmartBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
+		   << SLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new AddNeighborEvent(getScheduler()->now(), this,
+							 SLattice::getOpposite(getDirection(ni)), target->blockId));
+}
+
+void SmartBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
+    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
+		   << SLattice::getString(getDirection(ni)) << endl;
+    getScheduler()->scheduleLock(
+		new RemoveNeighborEvent(getScheduler()->now(), this,
+								SLattice::getOpposite(getDirection(ni))));
+}
+
 }

@@ -62,7 +62,18 @@ public:
 	int getCCWMovePivotId();
 	int getCWMovePivotId();
 	void startMove(Catoms2DMove &m, uint64_t t);
-	void startMove(Catoms2DMove &m);   
+	void startMove(Catoms2DMove &m);
+
+	// MeldInterpreter
+	/**
+	 * @copydoc BuildingBlock::addNeighbor
+	 */
+	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
+	/**
+	 * @copydoc BuildingBlock::removeNeighbor
+	 */
+	virtual void removeNeighbor(P2PNetworkInterface *ni);
+
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb);

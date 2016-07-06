@@ -24,6 +24,8 @@ SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[],
     newBlockCode = (BlockCode *(*)(BuildingBlock *))smartBlocksBlockCodeBuildingFunction;
     parseWorld(argc, argv);
 
+	getScheduler()->setState(Scheduler::NOTSTARTED);
+	
     ((SmartBlocksWorld*)world)->linkBlocks();
 
     GlutContext::mainLoop();

@@ -16,6 +16,7 @@
 #include "clock.h"
 #include "meldProcessEvents.h"
 #include "meldInterpretEvents.h"
+#include "lattice.h"
 
 using namespace std;
 
@@ -25,16 +26,16 @@ using namespace std;
 
 namespace BlinkyBlocks {
 
-BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb) : BaseSimulator::BuildingBlock(bId, bcb) {
+BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
+	: BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "BlinkyBlocksBlock constructor" << endl;
     double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)
 						  / (BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
     double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)
 						  / (BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
-
-    for (int i=0; i<6; i++) {
-		P2PNetworkInterface *p2p = new P2PNetworkInterface(this);
-		getP2PNetworkInterfaces().push_back(p2p);
+	
+    for (int i = 0; i < SCLattice::MAX_NB_NEIGHBORS; i++) {
+		P2PNetworkInterface *p2p = P2PNetworkInterfaces[i];
 		p2p->setDataRate((dataRateMax+dataRateMin)/2);
 		p2p->setDataRateVariability((dataRateMax-dataRateMin)/2);
     }
