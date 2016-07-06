@@ -1,0 +1,37 @@
+type vacant(node, int).
+type linear tap(node).
+type route neighbor(node, node, int).
+type neighborCount(node, int).
+
+type level(node, max int).
+type route bottomNeighbor(node, node).
+type noBottomNeighbor(node).
+type route topNeighbor(node, node).
+type route sideNeighbor(node, node).
+type neighbor-level(node, node, int).
+
+// Bottom-Left
+!neighbor(N, X, 4) -o !bottomNeighbor(N, X).
+// Bottom-Right
+!neighbor(N, X, 5) -o !bottomNeighbor(N, X).
+
+!vacant(N, 4), !vacant(N, 5) -o !noBottomNeighbor(N).
+
+// Top-Right
+!neighbor(N, X, 1) -o !topNeighbor(N, X).
+// Top-Left
+!neighbor(N, X, 2) -o !topNeighbor(N, X).
+
+// Right
+!neighbor(N, X, 0) -o !sideNeighbor(N, X).
+// Left
+!neighbor(N, X, 3) -o !sideNeighbor(N, X).
+
+!neighbor(A, B, _), !level(A, H) -o !neighbor-level(B, A, H).
+
+!noBottomNeighbor(N) -o !level(N, 0).
+!neighbor-level(N, X, H), !sideNeighbor(N, X) -o !level(N, H).
+!neighbor-level(N, X, BH), !bottomNeighbor(N, X) -o !level(N, BH + 1).
+!topNeighbor(N, X), !neighbor-level(N, X, TH) -o !level(N, TH - 1).
+
+!level(N, Color) -o !setColor2(N, Color).

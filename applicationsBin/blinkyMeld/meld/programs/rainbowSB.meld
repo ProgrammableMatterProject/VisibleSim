@@ -1,0 +1,31 @@
+type vacant(node, int).
+type linear tap(node).
+type route neighbor(node, node, int).
+type neighborCount(node, int).
+
+type level(node, max int).
+type route southNeighbor(node, node).
+type noSouthNeighbor(node).
+type route northNeighbor(node, node).
+type route sideNeighbor(node, node).
+type neighbor-level(node, node, int).
+
+// South
+!neighbor(N, X, 2) -o !southNeighbor(N, X).
+!vacant(N, 2) -o !noSouthNeighbor(N).
+
+// North
+!neighbor(N, X, 0) -o !northNeighbor(N, X).
+
+// Sides
+!neighbor(N, X, P), P <> 0, P <> 2
+   -o !sideNeighbor(N, X).
+
+!neighbor(A, B, _), !level(A, H) -o !neighbor-level(B, A, H).
+
+!noSouthNeighbor(N) -o !level(N, 0).
+!neighbor-level(N, X, H), !sideNeighbor(N, X) -o !level(N, H).
+!neighbor-level(N, X, BH), !southNeighbor(N, X) -o !level(N, BH + 1).
+!northNeighbor(N, X), !neighbor-level(N, X, TH) -o !level(N, TH - 1).
+
+!level(N, Color) -o !setColor2(N, Color).
