@@ -2,8 +2,8 @@
 #include <trace.h>
 
 #include "SBMeldBlockCode.h"
-#include "SmartBlocksSimulator.h"
-#include "SmartBlocksBlockCode.h"
+#include "smartBlocksSimulator.h"
+#include "smartBlocksBlockCode.h"
 #include "meldInterpretVM.h"
 #include "configStat.h"
 

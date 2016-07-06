@@ -2,8 +2,8 @@
 #include <trace.h>
 
 #include "RBMeldBlockCode.h"
-#include "RobotBlocksSimulator.h"
-#include "RobotBlocksBlockCode.h"
+#include "robotBlocksSimulator.h"
+#include "robotBlocksBlockCode.h"
 #include "meldInterpretVM.h"
 #include "configStat.h"
 
