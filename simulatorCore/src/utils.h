@@ -21,6 +21,8 @@ const float M_SQRT2_2 = sqrt(2.0) / 2.0; //!< $\frac{\sqrt{2}}{2}$
 const double M_SQRT3_2 = sqrt(3.0) / 2.0; //!< $\frac{\sqrt{3}}{2}$
 const double EPS = 1E-5;
 
+inline static bool file_exists(const string fileName) { std::ifstream infile(fileName); return infile.good(); }
+
 }
 
 }

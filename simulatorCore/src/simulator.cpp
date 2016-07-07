@@ -15,6 +15,7 @@
 #include "meldProcessScheduler.h"
 #include "cppScheduler.h"
 #include "openglViewer.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -72,8 +73,9 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 		} else if (!vmPort) {
 			cerr << "error: no port defined for Meld VM" << endl;
 			exit(1);
-		} else if (programPath == "") {
-			cerr << "error: no Meld program was provided" << endl;
+		} else if (!file_exists(programPath)) {
+			cerr << "error: no Meld program was provided, or default file \"./program.bb\" does not exist"
+				 << endl;
 			exit(1);
 		}
 
@@ -86,8 +88,9 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 		string programPath = cmdLine.getProgramPath();
 		bool debugging = cmdLine.getMeldDebugger();
 
-		if (programPath == "") {
-			cerr << "error: no Meld program was provided" << endl;
+		if (!file_exists(programPath)) {
+			cerr << "error: no Meld program was provided, or default file \"./program.bb\" does not exist"
+				 << endl;
 			exit(1);
 		}
 		OUTPUT << "Loading " << programPath << " with MeldInterpretVM" << endl;

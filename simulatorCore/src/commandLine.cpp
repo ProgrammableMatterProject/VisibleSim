@@ -10,7 +10,7 @@
 void CommandLine::help() {
     cerr << "VisibleSim options:" << endl;
     cerr << "\t -f \t\t\tfull screen" << endl;
-    cerr << "\t -p <name>\t\tprogram file (Meld for instance) (Meld in only supported on Blinky Blocks for now)" << endl;
+    cerr << "\t -p <name>\t\tprogram file (Meld for instance)" << endl;
     cerr << "\t -D \t\t\tdebugging mode (used in Meld only)" << endl;
     cerr << "\t -c <name>\t\txml configuration file" << endl;
     //cerr << "\t -r \t\trun realtime mode on startup" << endl;
@@ -41,6 +41,7 @@ CommandLine::CommandLine(int argc, char *argv[]) {
     vmPort = 0;
     vmPath = "";
 	configFile = "config.xml";
+    programPath = "program.bb";
 	read(argc,argv);
 }
 
@@ -53,7 +54,8 @@ void CommandLine::read(int argc, char *argv[]) {
         case 'p':   {
             //if (programPath != "")
             //   help();
-            if (argc < 1) { 
+            if (argc < 1) {
+                cerr << "error: No meld program provided after -p" << endl;
                 help();
             }
             programPath = argv[1];
@@ -164,5 +166,5 @@ void CommandLine::read(int argc, char *argv[]) {
 }
 
 bool CommandLine::randomWorldRequested() {
-	return topology != CMD_LINE_UNDEFINED;
+    return topology != CMD_LINE_UNDEFINED;
 }
