@@ -25,7 +25,6 @@ static const Vector3D defaultBlockSize{40.0, 40.0, 40.0};
 class RobotBlocksWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureWall;
-    ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
     virtual ~RobotBlocksWorld();
 public:

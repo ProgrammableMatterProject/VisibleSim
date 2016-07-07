@@ -23,7 +23,6 @@ static const Vector3D defaultBlockSize{1.0, 5.0, 1.0};
 
 class Catoms2DWorld : public BaseSimulator::World {
 protected:
-    ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
     GLuint idTextureHexa,idTextureLines;
     static const int numPickingTextures = 7; /* The number of picking textures defined for
                         this type of catom,

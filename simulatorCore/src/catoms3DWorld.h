@@ -32,9 +32,6 @@ class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     Skeleton *skeleton;
-/*	presence *targetGrid;
-	Catoms3DCapabilities *capabilities;*/
-    ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
     virtual ~Catoms3DWorld();
 public:

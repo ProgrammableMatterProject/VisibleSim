@@ -25,7 +25,6 @@ protected:
     SmartBlocksCapabilities *capabilities;
     int tabStatsData[10];
     int nbreStats;
-    ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
 
     virtual ~SmartBlocksWorld();
 public:

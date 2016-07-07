@@ -12,14 +12,17 @@
 #include <iostream>
 #include <fstream>
 #include <memory.h>
+#include <map>
 
 #include "glBlock.h"
-#include "world.h"
 #include "color.h"
 
 #ifndef GLUT
 #define GLUT
 #endif
+
+// Forward declare the BaseSimulator namespace
+namespace BaseSimulator {};
 
 using namespace std;
 using namespace BaseSimulator;

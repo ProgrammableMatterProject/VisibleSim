@@ -10,11 +10,10 @@
 
 #include <vector>
 
-#include "openglViewer.h"
 #include "world.h"
+#include "openglViewer.h"
 #include "vector3D.h"
 #include "blinkyBlocksBlock.h"
-#include "objLoader.h"
 #include "trace.h"
 #include "blinkyBlocksScenario.h"
 
@@ -23,8 +22,7 @@ namespace BlinkyBlocks {
 static const Vector3D defaultBlockSize{40.0, 40.0, 41.0};
 
 class BlinkyBlocksWorld : public BaseSimulator::World {
-protected:
-    ObjLoader::ObjLoader *objBlock,*objBlockForPicking,*objRepere;
+protected:   
     GLuint idTextureWall;
     vector<ScenarioEvent*> tabEvents;
 
