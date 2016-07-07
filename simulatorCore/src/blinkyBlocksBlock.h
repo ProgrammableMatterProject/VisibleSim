@@ -27,9 +27,6 @@ public:
 
 	inline virtual BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
 
-	inline P2PNetworkInterface *getInterface(SCLattice::Direction d)
-		{ return P2PNetworkInterfaces[d]; }
-
 	P2PNetworkInterface *getInterfaceDestId(int id);
 	SCLattice::Direction getDirection(P2PNetworkInterface*);
 

@@ -174,11 +174,24 @@ public:
                           const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false) = 0;
     /**
-     * @brief Deletes a block from the simulation
+     * @brief Deletes a block from the simulation after disconnecting it and all of 
+     *  its neighbors and notifying them
      *
      * @param blc : a pointer to the block to remove from the world
      */
-    virtual void deleteBlock(BuildingBlock *blc) = 0;
+    void deleteBlock(BuildingBlock *blc);
+    /**
+     * @brief Connects the interfaces of a block to all of its neighbors and notifiy them
+     *
+     * @param blc : a pointer to the block to connect to its neighborhood
+     */
+    void connectBlock(BuildingBlock *block);
+    /**
+     * @brief Disconnects the interfaces of a block from all of its neighbors and notify them
+     *
+     * @param blc : a pointer to the block to disconnect from its neighborhood
+     */
+    void disconnectBlock(BuildingBlock *block);
     /**
      * @brief Getter for selectedGlBlock
      *

@@ -93,7 +93,13 @@ public:
 	 * @brief Getter for P2PNetworkInterfaces attribute
 	 * @return A vector containing pointers to the block's interfaces
 	 */
-    vector<P2PNetworkInterface*>& getP2PNetworkInterfaces() {return P2PNetworkInterfaces;}
+    vector<P2PNetworkInterface*>& getP2PNetworkInterfaces() { return P2PNetworkInterfaces; }
+	/**
+	 * @brief Getter for a specific P2PNetworkInterface
+	 * @param i : index of interface to return
+	 * @return A pointer to the P2PNeighborInterface at index i of interface vector
+	 */
+    P2PNetworkInterface *getInterface(int i) { return P2PNetworkInterfaces[i]; }
 	/**
 	 * @brief Returns the interface from this block that is connected to block of id destBlockId
 	 * @param destBlockId : id of the block connected to the interface we are looking for

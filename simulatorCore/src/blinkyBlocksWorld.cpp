@@ -100,50 +100,6 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	}
 }
 
-void BlinkyBlocksWorld::deleteBlock(BuildingBlock *blc) {
-	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)blc;
-
-	if (bb->getState() >= BlinkyBlocksBlock::ALIVE ) {
-		// cut links between bb and others
-		for(int i=0; i<6; i++) {
-			P2PNetworkInterface *bbi = bb->getInterface(SCLattice::Direction(i));
-			if (bbi->connectedInterface) {
-				//bb->removeNeighbor(bbi); //Useless
-				bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-				bbi->connectedInterface->connectedInterface=NULL;
-				bbi->connectedInterface=NULL;
-			}
-		}
-		// free grid cell
-		lattice->remove(bb->position);
-
-		// remove the block from the lists
-		//buildingBlocksMap.erase(bb->blockId);
-		// remove event from the list
-		//getScheduler()->removeEventsToBlock(bb);
-
-		bb->stop(getScheduler()->now(), BlinkyBlocksBlock::REMOVED); // schedule stop event, set REMOVED state
-		linkBlocks();
-	}
-
-	if (selectedGlBlock == bb->ptrGlBlock) {
-		selectedGlBlock = NULL;
-		GlutContext::mainWindow->select(NULL);
-	}
-
-	// remove the associated glBlock
-	std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
-	if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-	else {
-		while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
-			cit++;
-		}
-		if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-	}
-	delete bb->ptrGlBlock;
-}
-
-
 void BlinkyBlocksWorld::glDraw() {
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0};
@@ -341,15 +297,7 @@ void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
 		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
 		if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
 			// cut links between bb and others
-			for(int i=0; i<6; i++) {
-				P2PNetworkInterface *bbi = bb->getInterface(SCLattice::Direction(i));
-				if (bbi->connectedInterface) {
-					//bb->removeNeighbor(bbi); //Useless
-					bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-					bbi->connectedInterface->connectedInterface=NULL;
-					bbi->connectedInterface=NULL;
-				}
-			}
+			disconnectBlock(bb);
 			// free grid cell
 			lattice->remove(bb->position);
 			bb->stop(date, BlinkyBlocksBlock::STOPPED); // schedule stop event, set STOPPED state

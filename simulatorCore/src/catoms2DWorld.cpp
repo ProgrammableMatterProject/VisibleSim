@@ -84,32 +84,6 @@ void Catoms2DWorld::addBlock(int blockId, BlockCodeBuilder bcb,
     }
 }
 
-void Catoms2DWorld::connectBlock(Catoms2DBlock *block) {
-    Cell3DPosition pos = block->position;
-    OUTPUT << "Reconnection " << block->blockId << " pos = " << pos << endl;
-    lattice->insert(block, pos);
-    linkBlock(pos);
-    linkNeighbors(pos);
-}
-
-void Catoms2DWorld::disconnectBlock(Catoms2DBlock *block) {
-    P2PNetworkInterface *fromBlock,*toBlock;
-
-    for(int i=0; i<6; i++) {
-        fromBlock = block->getInterface(HLattice::Direction(i));
-        if (fromBlock && fromBlock->connectedInterface) {
-            toBlock = fromBlock->connectedInterface;
-            fromBlock->connectedInterface=NULL;
-            toBlock->connectedInterface=NULL;
-        }
-    }
-
-    lattice->remove(block->position);
-
-    OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId <<
-        " pos =" << block->position << endl;
-}
-
 void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
     Catoms2DBlock *ptrNeighbor;
     Catoms2DBlock *ptrBlock = (Catoms2DBlock*)lattice->getBlock(pos);
@@ -131,40 +105,6 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
             (ptrBlock)->getInterface(HLattice::Direction(i))->connect(NULL);
         }
     }
-}
-
-void Catoms2DWorld::deleteBlock(BuildingBlock *blc) {
-    Catoms2DBlock *bb = (Catoms2DBlock *)blc;
-        
-    if (bb->getState() >= Catoms2DBlock::ALIVE ) {
-        // cut links between bb and others
-        for(int i=0; i<6; i++) {
-            P2PNetworkInterface *bbi = bb->getInterface(HLattice::Direction(i));
-            if (bbi->connectedInterface) {
-                //bb->removeNeighbor(bbi); //Useless
-                bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-                bbi->connectedInterface->connectedInterface=NULL;
-                bbi->connectedInterface=NULL;
-            }
-        }
-
-        lattice->remove(bb->position);
-        disconnectBlock(bb);
-    }
-    if (selectedGlBlock == bb->ptrGlBlock) {
-        selectedGlBlock = NULL;
-        GlutContext::mainWindow->select(NULL);
-    }
-    // remove the associated glBlock
-    std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
-    if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    else {
-        while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
-            cit++;
-        }
-        if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    }
-    delete bb->ptrGlBlock;
 }
 
 void Catoms2DWorld::glDraw() {

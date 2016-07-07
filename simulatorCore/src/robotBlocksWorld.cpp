@@ -77,31 +77,6 @@ void RobotBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DP
 	}
 }
 
-void RobotBlocksWorld::connectBlock(RobotBlocksBlock *block) {
-	Cell3DPosition pos = block->position;
-	lattice->insert(block, pos);
-	OUTPUT << "Reconnection " << block->blockId << " pos = " << pos << endl;
-	linkBlock(pos);
-	linkNeighbors(pos);
-}
-
-void RobotBlocksWorld::disconnectBlock(RobotBlocksBlock *block) {
-	P2PNetworkInterface *fromBlock,*toBlock;
-
-	for(int i=0; i<6; i++) {
-		fromBlock = block->getInterface(SCLattice::Direction(i));
-		if (fromBlock && fromBlock->connectedInterface) {
-			toBlock = fromBlock->connectedInterface;
-			fromBlock->connectedInterface=NULL;
-			toBlock->connectedInterface=NULL;
-		}
-	}
-
-	lattice->remove(block->position);
-	OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId
-		   << " pos =" << block->position << endl;
-}
-
 void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	RobotBlocksBlock *ptrNeighbor;
 	RobotBlocksBlock *ptrBlock = (RobotBlocksBlock*)lattice->getBlock(pos);
@@ -124,39 +99,6 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}
 	}
-}
-
-void RobotBlocksWorld::deleteBlock(BuildingBlock *blc) {
-	RobotBlocksBlock *bb = (RobotBlocksBlock *)blc;
-
-	if (bb->getState() >= RobotBlocksBlock::ALIVE ) {
-		// cut links between bb and others
-		for(int i=0; i<6; i++) {
-			P2PNetworkInterface *bbi = bb->getInterface(SCLattice::Direction(i));
-			if (bbi->connectedInterface) {
-				//bb->removeNeighbor(bbi); //Useless
-				bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-				bbi->connectedInterface->connectedInterface=NULL;
-				bbi->connectedInterface=NULL;
-			}
-		}
-
-		disconnectBlock(bb);
-	}
-	if (selectedGlBlock == bb->ptrGlBlock) {
-		selectedGlBlock = NULL;
-		GlutContext::mainWindow->select(NULL);
-	}
-	// remove the associated glBlock
-	std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
-	if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-	else {
-		while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
-			cit++;
-		}
-		if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-	}
-	delete bb->ptrGlBlock;
 }
 
 void RobotBlocksWorld::glDraw() {

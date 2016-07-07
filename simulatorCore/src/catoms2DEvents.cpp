@@ -43,7 +43,7 @@ void MotionStartEvent::consume() {
     EVENT_CONSUME_INFO();
     Scheduler *scheduler = getScheduler();
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
-    Catoms2DWorld::getWorld()->disconnectBlock(rb);
+    getWorld()->disconnectBlock(rb);
     rb->setColor(DARKGREY);
     scheduler->schedule(new MotionStepEvent(scheduler->now() + ANIMATION_DELAY, rb,pivot,angle,sens));
 }
@@ -90,7 +90,7 @@ void MotionStepEvent::consume() {
         Vector3D BC = roty*BA;
         Vector3D pos = pivot+BC;
         rb->angle += angle*sens;
-        Catoms2DWorld::getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
+        getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
     } else {
         roty.setRotationY(-sens*ANGULAR_STEP);

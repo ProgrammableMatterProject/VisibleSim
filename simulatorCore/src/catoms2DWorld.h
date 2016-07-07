@@ -50,7 +50,6 @@ public:
 
     virtual void addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false);
-    virtual void deleteBlock(BuildingBlock *blc);
     void loadTextures(const string &str);
 
     /**
@@ -80,9 +79,6 @@ public:
     virtual void menuChoice(int n);
     /** @copydoc World::exportConfiguration() */
     virtual void exportConfiguration();
-
-    void disconnectBlock(Catoms2DBlock *block);
-    void connectBlock(Catoms2DBlock *block);
 };
 
 inline void deleteWorld() {

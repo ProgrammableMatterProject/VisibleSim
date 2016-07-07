@@ -113,6 +113,62 @@ void World::linkNeighbors(const Cell3DPosition &pos) {
 	}
 }
 
+
+void World::connectBlock(BuildingBlock *block) {
+    Cell3DPosition pos = block->position;
+    OUTPUT << "Connect Block " << block->blockId << " pos = " << pos << endl;
+    lattice->insert(block, pos);
+    linkBlock(pos);
+    linkNeighbors(pos);
+}
+
+void World::disconnectBlock(BuildingBlock *block) {
+    P2PNetworkInterface *fromBlock,*toBlock;
+
+    for(int i = 0; i < block->getNbInterfaces(); i++) {
+        fromBlock = block->getInterface(i);
+        if (fromBlock && fromBlock->connectedInterface) {
+			// Notify respective codeBlocks
+			block->removeNeighbor(fromBlock);
+			fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
+			// Disconnect the interfaces
+            toBlock = fromBlock->connectedInterface;
+            fromBlock->connectedInterface = NULL;
+            toBlock->connectedInterface = NULL;
+        }
+    }
+
+    lattice->remove(block->position);
+	
+    OUTPUT << getScheduler()->now() << " : Disconnect Block " << block->blockId <<
+        " pos = " << block->position << endl;
+}
+
+void World::deleteBlock(BuildingBlock *bb) {        
+    if (bb->getState() >= BuildingBlock::ALIVE ) {
+        // cut links between bb and others and remove it from the grid
+		disconnectBlock(bb);		
+    }
+	
+    if (selectedGlBlock == bb->ptrGlBlock) {
+        selectedGlBlock = NULL;
+        GlutContext::mainWindow->select(NULL);
+    }
+	
+    // remove the associated glBlock
+    std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
+    if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
+    else {
+        while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
+            cit++;
+        }
+        if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
+    }
+	
+    delete bb->ptrGlBlock;
+}
+
+
 // PTHY: TODO - interface refactoring
 // void World::linkBlock(const Cell3DPosition &pos) {
 //     BlinkyBlocksBlock *ptrNeighbor;

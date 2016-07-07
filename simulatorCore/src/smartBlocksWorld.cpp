@@ -271,32 +271,6 @@ void SmartBlocksWorld::loadTextures(const string &str) {
     idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-void SmartBlocksWorld::connectBlock(SmartBlocksBlock *block) {
-    Cell3DPosition pos = block->position;
-
-    lattice->insert(block, pos);
-//	OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << endl;
-    linkBlock(pos);
-    linkNeighbors(pos);
-}
-
-void SmartBlocksWorld::disconnectBlock(SmartBlocksBlock *block) {
-    P2PNetworkInterface *fromBlock,*toBlock;
-
-    for(int i=0; i<4; i++) {
-        fromBlock = block->getInterface(SLattice::Direction(i));
-        if (fromBlock && fromBlock->connectedInterface) {
-            toBlock = fromBlock->connectedInterface;
-            fromBlock->connectedInterface=NULL;
-            toBlock->connectedInterface=NULL;
-        }
-    }
-
-    lattice->remove(block->position);
-    //	OUTPUT << getScheduler()->now() << " : Disconnection " <<
-    // block->blockId << " pos ="<< ix << "," << iy << endl;
-}
-
 int SmartBlocksWorld::nbreWellPlacedBlock() {
     std::map<int, BuildingBlock*>::iterator it;
     int n=0;
@@ -308,45 +282,6 @@ int SmartBlocksWorld::nbreWellPlacedBlock() {
     return n;
 }
 
-void SmartBlocksWorld::deleteBlock(BuildingBlock *blc) {
-    SmartBlocksBlock *bb = (SmartBlocksBlock *)blc;
-    
-    if (bb->getState() >= SmartBlocksBlock::ALIVE ) {
-        // cut links between bb and others
-        for(int i=0; i<4; i++) {
-            P2PNetworkInterface *bbi = bb->getInterface(SLattice::Direction(i));
-            if (bbi->connectedInterface) {
-                //bb->removeNeighbor(bbi); //Useless
-                bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-                bbi->connectedInterface->connectedInterface=NULL;
-                bbi->connectedInterface=NULL;
-            }
-        }
-
-        // free grid cell
-        lattice->remove(bb->position);
-
-        disconnectBlock(bb);
-    }
-
-    if (selectedGlBlock == bb->ptrGlBlock) {
-        selectedGlBlock = NULL;
-        GlutContext::mainWindow->select(NULL);
-    }
-
-    // remove the associated glBlock
-    std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
-    if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    else {
-        while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
-            cit++;
-        }
-        if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    }
-    delete bb->ptrGlBlock;
-}
-
-
 void SmartBlocksWorld::setSelectedFace(int n) {
     numSelectedGlBlock = n / 5;
     string name = objBlockForPicking->getObjMtlName(n % 5);
@@ -357,7 +292,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     else if (name == "Material__71") numSelectedFace = SLattice::North;
     else {
 		cerr << "warning: Unrecognized picking face" << endl;
-		numSelectedFace = 5;	// UNDEFINED
+		numSelectedFace = 4;	// UNDEFINED
         return;
     }
 
