@@ -36,9 +36,9 @@
 #define EVENT_EXPECTED_COMPUTATION_PAUSE			1062
 #define EVENT_EFFECTIVE_COMPUTATION_PAUSE			1063
 #define EVENT_END_POLL								1064
-#define EVENT_COMPUTE_PREDICATE                             1065
-#define EVENT_ADD_TUPLE                                     1066
-#define EVENT_REMOVE_TUPLE                                  1067
+#define EVENT_COMPUTE_PREDICATE                     1065
+#define EVENT_ADD_TUPLE                             1066
+#define EVENT_REMOVE_TUPLE                          1067
 
 // General
 #define EVENT_ADD_NEIGHBOR							1052
@@ -50,11 +50,16 @@
 #define EVENT_ACCEL									1056
 #define EVENT_SHAKE									1057
 
-// ROBOT BLOCKS
+// Rotation 2D / 3D
 #define EVENT_MOTION_START							1101
 #define EVENT_MOTION_STOP							1102
 #define EVENT_MOTION_STEP							1103
 #define EVENT_MOTION_END							1104
+// Translation
+#define EVENT_TRANSLATION_START							1105
+#define EVENT_TRANSLATION_STOP							1106
+#define EVENT_TRANSLATION_STEP							1103
+#define EVENT_TRANSLATION_END							1104
 
 
 #endif /* UNIQUEEVENTSID_H_ */
