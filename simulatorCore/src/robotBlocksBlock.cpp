@@ -46,18 +46,18 @@ void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetw
 
 void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << SCLattice::getString(getDirection(ni)) << endl;
+		   << SCLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new AddNeighborEvent(getScheduler()->now(), this,
-							 SCLattice::getOpposite(getDirection(ni)), target->blockId));
+							 SCLattice::getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << SCLattice::getString(getDirection(ni)) << endl;
+		   << SCLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
-								SCLattice::getOpposite(getDirection(ni))));
+								SCLattice::getOppositeDirection(getDirection(ni))));
 }
 
 SCLattice::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {

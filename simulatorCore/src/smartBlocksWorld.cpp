@@ -99,7 +99,7 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
         if (ptrNeighbor) {
             (ptrBlock)->getInterface(SLattice::Direction(i))->
                 connect(ptrNeighbor->getInterface(SLattice::Direction(
-                                                      SLattice::getOpposite(i))));
+                                                      SLattice::getOppositeDirection(i))));
 
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
@@ -297,7 +297,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     }
 
     cerr << name << " = " << numSelectedFace << " = "
-         << SLattice::getString(numSelectedFace) << endl;       
+         << SLattice::getDirectionString(numSelectedFace) << endl;       
 }
 
 void SmartBlocksWorld::addStat(int n,int v) {

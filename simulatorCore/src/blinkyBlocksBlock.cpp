@@ -74,18 +74,18 @@ void BlinkyBlocksBlock::shake(uint64_t date, int f) {
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << SCLattice::getString(getDirection(ni)) << endl;
+		   << SCLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new AddNeighborEvent(getScheduler()->now(), this,
-							 SCLattice::getOpposite(getDirection(ni)), target->blockId));
+							 SCLattice::getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << SCLattice::getString(getDirection(ni)) << endl;
+		   << SCLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
-								SCLattice::getOpposite(getDirection(ni))));
+								SCLattice::getOppositeDirection(getDirection(ni))));
 }
 
 void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {

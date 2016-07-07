@@ -123,7 +123,7 @@ void RBMeldBlockCode::processLocalEvent(EventPtr pev) {
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 		info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target
 			 << " at face "
-			 << SCLattice::getString(SCLattice::getOpposite(
+			 << SCLattice::getDirectionString(SCLattice::getOppositeDirection(
 										 (std::static_pointer_cast<AddNeighborEvent>(pev))->face));
 	}
 	break;
@@ -134,7 +134,7 @@ void RBMeldBlockCode::processLocalEvent(EventPtr pev) {
 		vm->enqueue_face(vm->neighbors[face], face, -1);
 		BaseSimulator::getScheduler()->schedule(
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-		info << "Remove neighbor at face " << SCLattice::getString(SCLattice::getOpposite(face));
+		info << "Remove neighbor at face " << SCLattice::getDirectionString(SCLattice::getOppositeDirection(face));
 	}
 	break;
 	case EVENT_TAP:

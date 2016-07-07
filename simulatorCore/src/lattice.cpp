@@ -176,7 +176,7 @@ vector<Cell3DPosition> HLattice::getRelativeConnectivity(const Cell3DPosition &p
 const string HLattice::directionName[] = {"Right","TopRight","TopLeft",
                                                              "Left","BottomLeft","BottomRight"};
 
-int HLattice::getOpposite(int d) {
+int HLattice::getOppositeDirection(int d) {
     switch (Direction(d)) {
     case BottomLeft:
         return TopRight;
@@ -203,7 +203,7 @@ int HLattice::getOpposite(int d) {
     }
 }
 
-string HLattice::getString(int d) {
+string HLattice::getDirectionString(int d) {
     return directionName[d];
 }
 
@@ -234,7 +234,7 @@ Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) {
 
 const string SLattice::directionName[] = {"North","East","South","West"};
 
-int SLattice::getOpposite(int d) {
+int SLattice::getOppositeDirection(int d) {
     switch(d) {
     case North :
         return South;
@@ -255,7 +255,7 @@ int SLattice::getOpposite(int d) {
     }
 }
 
-string SLattice::getString(int d) {
+string SLattice::getDirectionString(int d) {
     return directionName[d];
 }
 
@@ -320,7 +320,7 @@ const string FCCLattice::directionName[] = {"Con0", "Con1", "Con2",
                                                                "Con6", "Con7", "Con8",
                                                                "Con9", "Con10", "Con11"};
 
-int FCCLattice::getOpposite(int d) {
+int FCCLattice::getOppositeDirection(int d) {
     switch (Direction(d)) {
     case Con0:	return Con6; break;
     case Con1:	return Con7; break;
@@ -341,7 +341,7 @@ int FCCLattice::getOpposite(int d) {
     }
 }
 
-string FCCLattice::getString(int d) {
+string FCCLattice::getDirectionString(int d) {
     return directionName[d];
 }
 
@@ -369,7 +369,7 @@ Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) {
 
 const string SCLattice::directionName[] = {"Bottom", "Back", "Right","Front", "Left", "Top"};
 
-int SCLattice::getOpposite(int d) {
+int SCLattice::getOppositeDirection(int d) {
     switch (Direction(d)) {
     case Front:	return Back; break;
     case Back:	return Front; break;
@@ -384,7 +384,7 @@ int SCLattice::getOpposite(int d) {
     }
 }
 
-string SCLattice::getString(int d) {
+string SCLattice::getDirectionString(int d) {
     return directionName[d];
 }
 

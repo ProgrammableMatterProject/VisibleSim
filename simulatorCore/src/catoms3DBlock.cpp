@@ -129,18 +129,18 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
 
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << FCCLattice::getString(getDirection(ni)) << endl;
+		   << FCCLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new AddNeighborEvent(getScheduler()->now(), this,
-							 FCCLattice::getOpposite(getDirection(ni)), target->blockId));
+							 FCCLattice::getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms3DBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << FCCLattice::getString(getDirection(ni)) << endl;
+		   << FCCLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
-								FCCLattice::getOpposite(getDirection(ni))));
+								FCCLattice::getOppositeDirection(getDirection(ni))));
 }
 
 }

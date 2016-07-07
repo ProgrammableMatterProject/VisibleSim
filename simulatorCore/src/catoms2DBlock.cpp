@@ -311,18 +311,18 @@ void Catoms2DBlock::startMove(Catoms2DMove &m) {
 
 void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << HLattice::getString(getDirection(ni)) << endl;
+		   << HLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new AddNeighborEvent(getScheduler()->now(), this,
-							 HLattice::getOpposite(getDirection(ni)), target->blockId));
+							 HLattice::getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms2DBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << HLattice::getString(getDirection(ni)) << endl;
+		   << HLattice::getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
-								HLattice::getOpposite(getDirection(ni))));
+								HLattice::getOppositeDirection(getDirection(ni))));
 }
 
 }

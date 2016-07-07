@@ -97,7 +97,7 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
         if (ptrNeighbor) {
             (ptrBlock)->getInterface(HLattice::Direction(i))->
                 connect(ptrNeighbor->getInterface(HLattice::Direction(
-                                                      HLattice::getOpposite(i))));
+                                                      HLattice::getOppositeDirection(i))));
 
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
@@ -370,7 +370,7 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
-    cerr << "Block " << numSelectedGlBlock << ":" << HLattice::getString(numSelectedFace)
+    cerr << "Block " << numSelectedGlBlock << ":" << HLattice::getDirectionString(numSelectedFace)
          << " selected" << endl;
 
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);

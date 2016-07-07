@@ -90,7 +90,7 @@ void MotionStepEvent::consume() {
         Vector3D BC = roty*BA;
         Vector3D pos = pivot+BC;
         rb->angle += angle*sens;
-        getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
+        Catoms2DWorld::getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
         scheduler->schedule(new MotionStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
     } else {
         roty.setRotationY(-sens*ANGULAR_STEP);

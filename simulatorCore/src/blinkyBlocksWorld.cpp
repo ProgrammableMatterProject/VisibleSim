@@ -88,14 +88,13 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	for (int i = 0; i < 6; i++) {
 		ptrNeighbor = (BlinkyBlocksBlock*)lattice->getBlock(nCells[i]);
 		if (ptrNeighbor) {
-			(ptrBlock)->getInterface(SCLattice::Direction(i))->
-				connect(ptrNeighbor->getInterface(SCLattice::Direction(
-													  SCLattice::getOpposite(i))));
+			(ptrBlock)->getInterface(i)->
+				connect(ptrNeighbor->getInterface(lattice->getOpposite(i)));
 
 			OUTPUT << "connection #" << (ptrBlock)->blockId <<
 				" to #" << ptrNeighbor->blockId << endl;
 		} else {
-			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
+			(ptrBlock)->getInterface(i)->connect(NULL);
 		}
 	}
 }
