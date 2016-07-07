@@ -12,7 +12,7 @@
 #include <sstream>
 #include "map02BlockCode.h"
 #include "scheduler.h"
-#include "robotBlocksEvents.h"
+#include "translationEvents.h"
 #include <memory>
 
 const int COM_DELAY=1200000;

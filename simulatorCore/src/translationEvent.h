@@ -1,17 +1,19 @@
-/*
- * smartBlocksEvents.h
+/**
+ * @file translationEvents.h
+ * @brief This file implements the realization of a translation motion events
+ *  (created from refactoring of smartBlocksEvents and robotBlocksEvents)
  *
- *  Created on: 2014 febrary 1st
- *      Author: Benoît
+ *  Created on: 07/07/16
+ *      Author: Pierre
  */
 
-#ifndef SMARTBLOCKSEVENTS_H_
-#define SMARTBLOCKSEVENTS_H_
+#ifndef TRANSLATIONEVENTS_H_
+#define TRANSLATIONEVENTS_H_
 
-#include "smartBlocksBlock.h"
+#include "BuildingBlock.h"
 #include "events.h"
 
-namespace SmartBlocks {
+namespace BaseSimulator {
 
 //===========================================================================================================
 //
@@ -22,7 +24,7 @@ namespace SmartBlocks {
 class MotionStartEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-    MotionStartEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
+    MotionStartEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
     MotionStartEvent(MotionStartEvent *ev);
     ~MotionStartEvent();
     void consumeBlockEvent() {};
@@ -39,11 +41,11 @@ public:
 class MotionStepEvent : public BlockEvent {
     Vector3D finalPosition;	//!< Target position of the block
     Vector3D motionStep;		//!< Motion of the block during this step
-    Vector3D motionPosition;		//!< Actual position on the grid of the block in motionPosition
+    Vector3D motionPosition;		//!< Actual position on the grid of the block in motion
 public:
-    MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
-    MotionStepEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos,
-		    const Vector3D &step,const Vector3D &motionPosition);
+    MotionStepEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
+    MotionStepEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos,
+		    const Vector3D &step, const Vector3D &mpos);
     MotionStepEvent(MotionStepEvent *ev);
     ~MotionStepEvent();
     void consumeBlockEvent() {};
@@ -60,7 +62,7 @@ public:
 class MotionStopEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-    MotionStopEvent(uint64_t, SmartBlocksBlock *block,const Vector3D &fpos);
+    MotionStopEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
     MotionStopEvent(MotionStepEvent *ev);
     ~MotionStopEvent();
     void consumeBlockEvent() {};
@@ -76,7 +78,7 @@ public:
 
 class MotionEndEvent : public BlockEvent {
 public:
-    MotionEndEvent(uint64_t, SmartBlocksBlock *block);
+    MotionEndEvent(uint64_t, BuildingBlock *block);
     MotionEndEvent(MotionEndEvent *ev);
     ~MotionEndEvent();
     void consumeBlockEvent() {};
@@ -85,4 +87,4 @@ public:
 };
 
 }
-#endif /* ROBOTBLOCKSEVENTS_H_ */
+#endif /* TRANSLATIONEVENTS_H_ */

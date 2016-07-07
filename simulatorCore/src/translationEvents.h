@@ -1,30 +1,32 @@
-/*
- * robotBlocksEvents.h
+/**
+ * @file translationEvents.h
+ * @brief This file implements the realization of a translation motion events
+ *  (created from refactoring of smartBlocksEvents and robotBlocksEvents)
  *
- *  Created on: 2014 febrary 1st
- *      Author: Benoît
+ *  Created on: 07/07/16
+ *      Author: Pierre
  */
 
-#ifndef ROBOTBLOCKSEVENTS_H_
-#define ROBOTBLOCKSEVENTS_H_
+#ifndef TRANSLATIONEVENTS_H_
+#define TRANSLATIONEVENTS_H_
 
-#include "robotBlocksBlock.h"
+#include "BuildingBlock.h"
 #include "events.h"
 
-namespace RobotBlocks {
+namespace BaseSimulator {
 
 //===========================================================================================================
 //
-//          MotionStartEvent  (class)
+//          TranslationStartEvent  (class)
 //
 //===========================================================================================================
 
-class MotionStartEvent : public BlockEvent {
+class TranslationStartEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-    MotionStartEvent(uint64_t, RobotBlocksBlock *block,const Vector3D &fpos);
-    MotionStartEvent(MotionStartEvent *ev);
-    ~MotionStartEvent();
+    TranslationStartEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStartEvent(TranslationStartEvent *ev);
+    ~TranslationStartEvent();
     void consumeBlockEvent() {};
     void consume();
     const virtual string getEventName();
@@ -32,20 +34,20 @@ public:
 
 //===========================================================================================================
 //
-//          MotionStepEvent  (class)
+//          TranslationStepEvent  (class)
 //
 //===========================================================================================================
 
-class MotionStepEvent : public BlockEvent {
+class TranslationStepEvent : public BlockEvent {
     Vector3D finalPosition;	//!< Target position of the block
-    Vector3D motionStep;		//!< Motion of the block during this step
+    Vector3D motionStep;		//!< Translation of the block during this step
     Vector3D motionPosition;		//!< Actual position on the grid of the block in motion
 public:
-    MotionStepEvent(uint64_t, RobotBlocksBlock *block,const Vector3D &fpos);
-    MotionStepEvent(uint64_t, RobotBlocksBlock *block,const Vector3D &fpos,
+    TranslationStepEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStepEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos,
 		    const Vector3D &step, const Vector3D &mpos);
-    MotionStepEvent(MotionStepEvent *ev);
-    ~MotionStepEvent();
+    TranslationStepEvent(TranslationStepEvent *ev);
+    ~TranslationStepEvent();
     void consumeBlockEvent() {};
     void consume();
     const virtual string getEventName();
@@ -53,16 +55,16 @@ public:
 
 //===========================================================================================================
 //
-//          MotionStopEvent  (class)
+//          TranslationStopEvent  (class)
 //
 //===========================================================================================================
 
-class MotionStopEvent : public BlockEvent {
+class TranslationStopEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-    MotionStopEvent(uint64_t, RobotBlocksBlock *block,const Vector3D &fpos);
-    MotionStopEvent(MotionStepEvent *ev);
-    ~MotionStopEvent();
+    TranslationStopEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStopEvent(TranslationStepEvent *ev);
+    ~TranslationStopEvent();
     void consumeBlockEvent() {};
     void consume();
     const virtual string getEventName();
@@ -70,19 +72,19 @@ public:
 
 //===========================================================================================================
 //
-//          MotionEndEvent  (class)
+//          TranslationEndEvent  (class)
 //
 //===========================================================================================================
 
-class MotionEndEvent : public BlockEvent {
+class TranslationEndEvent : public BlockEvent {
 public:
-    MotionEndEvent(uint64_t, RobotBlocksBlock *block);
-    MotionEndEvent(MotionEndEvent *ev);
-    ~MotionEndEvent();
+    TranslationEndEvent(uint64_t, BuildingBlock *block);
+    TranslationEndEvent(TranslationEndEvent *ev);
+    ~TranslationEndEvent();
     void consumeBlockEvent() {};
     void consume();
     const virtual string getEventName();
 };
 
 }
-#endif /* ROBOTBLOCKSEVENTS_H_ */
+#endif /* TRANSLATIONEVENTS_H_ */

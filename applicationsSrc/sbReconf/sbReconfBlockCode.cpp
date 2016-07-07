@@ -11,7 +11,7 @@
 
 #include "sbReconfBlockCode.h"
 #include "scheduler.h"
-#include "smartBlocksEvents.h"
+#include "translationEvents.h"
 
 /*************************
 STEP 0: get map
@@ -216,11 +216,11 @@ void SbReconfBlockCode::startMotion(uint64_t t,const SmartBlocks::PointCel &mv,i
     prepareUnlock(path,step);
     Vector3D finalPosition;
     finalPosition.set(block->position.pt[0]+mv.x,block->position.pt[1]+mv.y,0);
-    scheduler->schedule(new SmartBlocks::MotionStartEvent(t,block,finalPosition));
+    scheduler->schedule(new TranslationStartEvent(t,block,finalPosition));
 #ifdef verbose
     stringstream info;
     info.str("");
-    info << "SmartBlocks::MotionStartEvent(" << t << ") vect=" << mv << "  unlock=" << path.size() << " step=" << step;
+    info << "SmartBlocks::TranslationStartEvent(" << t << ") vect=" << mv << "  unlock=" << path.size() << " step=" << step;
     scheduler->trace(info.str(),block->blockId,LIGHTGREY);
 #endif
 }

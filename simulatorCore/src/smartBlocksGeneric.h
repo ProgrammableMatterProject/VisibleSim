@@ -3,7 +3,7 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksEvents.h"
+#include "translationEvents.h"
 #include "smartBlocksBlock.h"
 #include "lattice.h"
 

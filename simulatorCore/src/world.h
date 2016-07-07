@@ -22,6 +22,7 @@
 #include "lattice.h"
 #include "scheduler.h"
 #include "capabilities.h"
+#include "objLoader.h"
 
 using namespace BaseSimulator::utils;
 using namespace std;
@@ -48,7 +49,12 @@ protected:
 
     GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
     GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
-    GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlocks (== idBlock - 1)
+    GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlock
+    vector<string> pickingFacesNames; //!< The name of every picking texture of the current block type indexed in the same order as their interfaces and directions (see nCells attribute in its corresponding Lattice)
+    ObjLoader::ObjLoader *objBlock;   //!< Object loader for a block
+    ObjLoader::ObjLoader *objBlockForPicking; //!< Object loader for a used during picking
+    ObjLoader::ObjLoader *objRepere;          //!< Object loader for the frame
+    
     GLint menuId; 
     Camera *camera; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
@@ -205,8 +211,10 @@ public:
      */
     inline GlBlock* setselectedGlBlock(int n) { return (selectedGlBlock=(n>=0)?tabGlBlocks[n]:NULL); };
     /**
-     * @brief Setter for selectedFace
-     * @param n : id of the new selectedFace
+     * @brief Setter for selected picking face
+     * @param n : id of the texture that has been clicked by the user
+     *  This function retrieves the names of the picking textures for the compares it to set the 
+     *   numSelectedFace variable to the corresponding face
      */
     virtual void setSelectedFace(int n) = 0;
     /**

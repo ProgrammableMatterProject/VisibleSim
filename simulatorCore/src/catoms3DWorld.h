@@ -75,7 +75,6 @@ public:
     void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
-
     
 /**
  * \brief load the background textures (internal)

@@ -10,7 +10,7 @@
 
 #include "robot01BlockCode.h"
 #include "scheduler.h"
-#include "robotBlocksEvents.h"
+#include "translationEvents.h"
 #include "capabilities.h"
 
 using namespace std;
@@ -293,10 +293,10 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 			finalPosition.set(robotBlock->position.pt[0]+motionVector.x,
 							  robotBlock->position.pt[1]+motionVector.y,robotBlock->position.pt[2]+motionVector.z);
 			blockToUnlock=0;
-			scheduler->schedule(new MotionStartEvent(recvMessage->globalRDVTime,robotBlock,finalPosition));
+			scheduler->schedule(new TranslationStartEvent(recvMessage->globalRDVTime,robotBlock,finalPosition));
 			stringstream info;
 			info.str("");
-			info << robotBlock->blockId << " MotionStartEvent(" << recvMessage->globalRDVTime << ")";
+			info << robotBlock->blockId << " TranslationStartEvent(" << recvMessage->globalRDVTime << ")";
 			scheduler->trace(info.str(),hostBlock->blockId,LIGHTGREY);
 			if (trainPrevious) {
 				AnswerDelayMessage *adm_message = new AnswerDelayMessage(recvMessage->globalRDVTime,false);
@@ -550,10 +550,10 @@ void Robot01BlockCode::sendAnswerDelayOrMotionDelayMessage(uint64_t gt) {
 		Vector3D finalPosition(robotBlock->position.pt[0]+motionVector.x,
 							   robotBlock->position.pt[1]+motionVector.y,
 							   robotBlock->position.pt[2]+motionVector.z);
-		scheduler->schedule(new MotionStartEvent(rdvTime,robotBlock,finalPosition));
+		scheduler->schedule(new TranslationStartEvent(rdvTime,robotBlock,finalPosition));
 		stringstream info;
 		info.str("");
-		info << robotBlock->blockId << " MotionStartEvent(" << rdvTime << ")";
+		info << robotBlock->blockId << " TranslationStartEvent(" << rdvTime << ")";
 		scheduler->trace(info.str(),hostBlock->blockId,LIGHTGREY);
 		if (trainNext) {
 			blockToUnlock=trainNext->hostBlock->blockId;
