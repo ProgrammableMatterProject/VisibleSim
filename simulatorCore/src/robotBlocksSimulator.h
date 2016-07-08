@@ -28,8 +28,6 @@ public:
 
     static void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
 
-    static RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
-
     static RobotBlocksSimulator* getSimulator() {
         assert(simulator != NULL);
         return((RobotBlocksSimulator*)simulator);

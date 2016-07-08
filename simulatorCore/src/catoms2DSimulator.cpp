@@ -17,8 +17,6 @@ using namespace BaseSimulator::utils;
 
 namespace Catoms2D {
 
-Catoms2DBlockCode*(* Catoms2DSimulator::buildNewBlockCode)(Catoms2DBlock*)=NULL;
-
 void Catoms2DSimulator::help() {
 	cerr << "VisibleSim: " << endl;
 	cerr << "Catoms2D" << endl;
@@ -26,28 +24,9 @@ void Catoms2DSimulator::help() {
 }
 
 Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[],
-									 Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)
-									 (Catoms2DBlock*)) : BaseSimulator::Simulator(argc, argv) {
-
+									 Catoms2DBlockCode *(*bcb)(Catoms2DBlock*))
+	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
 	OUTPUT << "\033[1;34m" << "Catoms2DSimulator constructor" << "\033[0m" << endl;
-
-	testMode = false;
-
-	// PTHY: Note: function pointer cast to generic type, safe according to specifications as it will be used
-	//  only after reconversion
-	buildNewBlockCode = catoms2DBlockCodeBuildingFunction;
-	newBlockCode = (BlockCode *(*)(BuildingBlock *))catoms2DBlockCodeBuildingFunction;
-	parseWorld(argc, argv);
-
-	((Catoms2DWorld*)world)->linkBlocks();
-
-//	getScheduler()->sem_schedulerStart->post();
-	getScheduler()->setState(Scheduler::NOTSTARTED);
-
-	if (!testMode) {
-		GlutContext::mainLoop();
-	}
-
 }
 
 Catoms2DSimulator::~Catoms2DSimulator() {
@@ -58,6 +37,8 @@ void Catoms2DSimulator::createSimulator(int argc, char *argv[],
 										Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)
 										(Catoms2DBlock*)) {
 	simulator =  new Catoms2DSimulator(argc, argv, catoms2DBlockCodeBuildingFunction);
+	simulator->parseConfiguration(argc, argv);
+	simulator->startSimulation();
 }
 
 void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,

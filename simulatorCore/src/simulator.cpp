@@ -27,8 +27,12 @@ Simulator* Simulator::simulator = NULL;
 
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 
-Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
+Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): cmdLine(argc,argv) {
+	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
 
+	bcb = _bcb;
+	
+	// Ensure that only one instance of simulator is running at once
 	if (simulator == NULL) {
 		simulator = this;
 		BaseSimulator::simulator = simulator;
@@ -38,9 +42,8 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 		exit(EXIT_FAILURE);
 	}
 
-	xmlWorldNode = NULL;
+	// Ensure that the configuration file exists and is well-formed
 
-	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
 	string confFileName = cmdLine.getConfigFile();
 
 	xmlDoc = new TiXmlDocument(confFileName.c_str());
@@ -60,7 +63,83 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 			exit(EXIT_FAILURE);
 		}
 	}
+}
 
+Simulator::~Simulator() {
+	OUTPUT << "\033[1;34m"  << "Simulator destructor" << "\033[0m" << endl;
+	//MODIF NICO : le mieux serait de faire ce delete juste après avoir fini de lire le fichier xml
+	delete xmlDoc;
+	//FIN MODIF NICO
+
+	if (getType() == MELDPROCESS) {
+		if(MeldProcess::MeldProcessVM::isInDebuggingMode()) {
+			MeldProcess::deleteDebugger();
+		}
+		MeldProcess::deleteVMServer();
+	}
+	else if (getType() == MELDINTERPRET){
+		//Not sure if there is something to do, i think not
+	}
+
+	// deleteScheduler();
+	deleteWorld();
+}
+
+void Simulator::deleteSimulator() {
+    delete simulator;
+    simulator = NULL;
+}
+
+void Simulator::loadScheduler(int schedulerMaxDate) {
+	int sl = cmdLine.getSchedulerLength();
+	int sm = cmdLine.getSchedulerMode();
+	
+	// Create a scheduler of the same type as target BlockCode
+	switch(getType()) {
+	case MELDINTERPRET:
+		MeldInterpret::MeldInterpretScheduler::createScheduler();
+		break;
+	case MELDPROCESS:
+		MeldProcess::MeldProcessScheduler::createScheduler();
+		break;
+	case CPP:
+		CPPScheduler::createScheduler();
+		break;
+	}
+
+	scheduler = getScheduler();
+	
+	// Set the scheduler execution mode on start, if enabled	
+	if (sm != CMD_LINE_UNDEFINED) {
+		scheduler->setSchedulerMode(sm);
+		scheduler->setAutoStart(true);
+	}
+	
+	// Set the scheduler termination mode
+	scheduler->setSchedulerLength(sl);
+
+	if (sl == SCHEDULER_LENGTH_BOUNDED) {
+		scheduler->setMaximumDate(cmdLine.getMaximumDate());
+	}
+}
+
+void Simulator::parseConfiguration(int argc, char*argv[]) {
+	// Identify the type of the simulation (CPP / Meld Process / MeldInterpret)
+	readSimulationType(argc, argv);	
+
+	// Configure the simulation world
+	parseWorld(argc, argv);	
+	
+	// Instantiate and configure the Scheduler
+	loadScheduler(schedulerMaxDate);
+
+	// Parse and configure the remaining items
+	parseCameraAndSpotlight();
+	parseBlockList();
+	parseTarget();
+}
+
+void Simulator::readSimulationType(int argc, char*argv[]) {
 	if (getType() == MELDPROCESS) {
 		string vmPath = cmdLine.getVMPath();
 		string programPath = cmdLine.getProgramPath();
@@ -102,59 +181,7 @@ Simulator::Simulator(int argc, char *argv[]): cmdLine(argc,argv) {
 	}
 }
 
-Simulator::~Simulator() {
-	OUTPUT << "\033[1;34m"  << "Simulator destructor" << "\033[0m" << endl;
-	//MODIF NICO : le mieux serait de faire ce delete juste après avoir fini de lire le fichier xml
-	delete xmlDoc;
-	//FIN MODIF NICO
-
-	if (getType() == MELDPROCESS) {
-		if(MeldProcess::MeldProcessVM::isInDebuggingMode()) {
-			MeldProcess::deleteDebugger();
-		}
-		MeldProcess::deleteVMServer();
-	}
-	else if (getType() == MELDINTERPRET){
-		//Not sure if there is something to do, i think not
-	}
-
-	// deleteScheduler();
-	deleteWorld();
-}
-
-void Simulator::deleteSimulator() {
-    delete simulator;
-    simulator = NULL;
-}
-
-void Simulator::loadScheduler(int maximumDate) {
-	int sl = cmdLine.getSchedulerLength();
-
-	// Create a scheduler of the same type as target BlockCode
-	switch(getType()) {
-	case MELDINTERPRET:
-		MeldInterpret::MeldInterpretScheduler::createScheduler();
-		break;
-	case MELDPROCESS:
-		MeldProcess::MeldProcessScheduler::createScheduler();
-		break;
-	case CPP:
-		CPPScheduler::createScheduler();
-		break;
-	}
-
-	// Set the scheduler termination mode
-	scheduler = getScheduler();
-	scheduler->setSchedulerLength(sl);
-
-	if (sl == SCHEDULER_LENGTH_BOUNDED) {
-		scheduler->setMaximumDate(cmdLine.getMaximumDate());
-	}
-}
-
-void Simulator::parseWorld(int argc, char*argv[]) {
-	int maximumDate = 0;		//!< Maximum simulation date
-		
+void Simulator::parseWorld(int argc, char*argv[]) {		
 	/* reading the xml file */
 	xmlWorldNode = xmlDoc->FirstChild("world");
 
@@ -201,7 +228,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 				t*=1000000;
 			}
 
-			maximumDate = t;
+			schedulerMaxDate = t;
 			cerr << "warning: maxSimulationTime in the configuration is not supported anymore,"
 				 << " please use the command line option [-s <maxTime>]" << endl;
 		}
@@ -230,14 +257,6 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 		ERRPUT << "ERROR : No world in XML configuration file" << endl;
 		exit(1);
 	}
-
-	// Instantiate and configure the Scheduler
-	loadScheduler(maximumDate);
-
-	// Parse the remaining items
-	parseCameraAndSpotlight();
-	parseBlockList();
-	parseTarget();
 }
 
 void Simulator::parseCameraAndSpotlight() {
@@ -391,7 +410,7 @@ void Simulator::parseBlockList() {
 			}
 
 			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
-			loadBlock(element, currentID++, newBlockCode, position, color, master);
+			loadBlock(element, currentID++, bcb, position, color, master);
 
 			block = block->NextSibling("block");
 		} // end while (block)
@@ -430,8 +449,7 @@ void Simulator::parseBlockList() {
 				for(int i=0; i<n; i++) {
 					if  (str[i]=='1') {
 						position.pt[0]=i;
-						loadBlock(element, currentID++, newBlockCode,
-								  position, color, false);
+						loadBlock(element, currentID++, bcb, position, color, false);
 					}
 				}
 			}
@@ -503,6 +521,21 @@ void Simulator::parseTarget() {
 	}
 
 	loadTargetAndCapabilities(targetCells);
+}
+
+void Simulator::startSimulation(void) {
+	// Connect all blocks – TODO: Check if needed to do it here (maybe all blocks are linked on addition)
+	world->linkBlocks();
+	
+	// Finalize scheduler configuration and start simulation if autoStart is enabled
+	Scheduler *scheduler = getScheduler();
+	//scheduler->sem_schedulerStart->post();
+	scheduler->setState(Scheduler::NOTSTARTED);
+	if (scheduler->willAutoStart())
+		scheduler->start(scheduler->getSchedulerMode()); 
+
+	// Enter graphical main loop
+	GlutContext::mainLoop();
 }
 
 } // Simulator namespace

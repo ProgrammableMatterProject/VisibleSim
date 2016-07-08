@@ -30,8 +30,6 @@ public:
     static void createSimulator(int argc, char *argv[],
 				Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*));
 
-    static Catoms2DBlockCode *(*buildNewBlockCode)(Catoms2DBlock*);
-
     static Catoms2DSimulator* getSimulator() {
 	assert(simulator != NULL);
 	return((Catoms2DSimulator*)simulator);

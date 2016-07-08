@@ -20,10 +20,5 @@ RobotBlocksBlockCode::RobotBlocksBlockCode(RobotBlocksBlock *host):BlockCode(hos
 RobotBlocksBlockCode::~RobotBlocksBlockCode() {
 	OUTPUT << "RobotBlocksBlockCode destructor" << endl;
 }
-/*
-RobotBlocksBlockCode* RobotBlocksBlockCode::buildNewBlockCode(RobotBlocksBlock *host) {
-	return(new RobotBlocksBlockCode(host));
-}
-*/
 
 }

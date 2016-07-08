@@ -15,8 +15,6 @@ using namespace std;
 
 namespace RobotBlocks {
 
-RobotBlocksBlockCode*(* RobotBlocksSimulator::buildNewBlockCode)(RobotBlocksBlock*)=NULL;
-
 void RobotBlocksSimulator::help() {
 	cerr << "VisibleSim:" << endl;
 	cerr << "Robot01" << endl;
@@ -24,24 +22,9 @@ void RobotBlocksSimulator::help() {
 }
 
 RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[],
-										   RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)
-										   (RobotBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
+										   RobotBlocksBlockCode *(*bcb)(RobotBlocksBlock*))
+	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
 	OUTPUT << "\033[1;34m" << "RobotBlocksSimulator constructor" << "\033[0m" << endl;
-
-	testMode = false;
-
-	buildNewBlockCode = robotBlocksBlockCodeBuildingFunction;
-	newBlockCode = (BlockCode *(*)(BuildingBlock *))robotBlocksBlockCodeBuildingFunction;
-	parseWorld(argc, argv);
-
-	((RobotBlocksWorld*)world)->linkBlocks();
-
-//	getScheduler()->sem_schedulerStart->post();
-	getScheduler()->setState(Scheduler::NOTSTARTED);
-
-	if (!testMode) {
-		GlutContext::mainLoop();
-	}
 }
 
 RobotBlocksSimulator::~RobotBlocksSimulator() {
@@ -50,6 +33,8 @@ RobotBlocksSimulator::~RobotBlocksSimulator() {
 
 void RobotBlocksSimulator::createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) {
 	simulator =  new RobotBlocksSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
+	simulator->parseConfiguration(argc, argv);
+	simulator->startSimulation();
 }
 
 void RobotBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,

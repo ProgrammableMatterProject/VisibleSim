@@ -23,7 +23,6 @@ public:
 
 	virtual void init() {};
 	
-	//static BlinkyBlocksBlockCode* buildNewBlockCode(BlinkyBlocksBlock *host);
 	virtual void processLocalEvent(EventPtr pev) = 0;
 };
 

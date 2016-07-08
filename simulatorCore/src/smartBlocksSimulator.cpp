@@ -13,22 +13,10 @@ using namespace std;
 
 namespace SmartBlocks {
 
-SmartBlocksBlockCode*(* SmartBlocksSimulator::buildNewBlockCode)(SmartBlocksBlock*)=NULL;
-
 SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[],
-										   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
-										   (SmartBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
+										   SmartBlocksBlockCode *(*bcb)(SmartBlocksBlock*))
+	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
     cout << "\033[1;34m" << "SmartBlocksSimulator constructor" << "\033[0m" << endl;
-
-    buildNewBlockCode = smartBlocksBlockCodeBuildingFunction;
-    newBlockCode = (BlockCode *(*)(BuildingBlock *))smartBlocksBlockCodeBuildingFunction;
-    parseWorld(argc, argv);
-
-	getScheduler()->setState(Scheduler::NOTSTARTED);
-	
-    ((SmartBlocksWorld*)world)->linkBlocks();
-
-    GlutContext::mainLoop();
 }
 
 SmartBlocksSimulator::~SmartBlocksSimulator() {
@@ -41,6 +29,8 @@ void SmartBlocksSimulator::createSimulator(int argc, char *argv[],
 										   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
 										   (SmartBlocksBlock*)) {
     simulator =  new SmartBlocksSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
+	simulator->parseConfiguration(argc, argv);
+	simulator->startSimulation();
 }
 
 void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,

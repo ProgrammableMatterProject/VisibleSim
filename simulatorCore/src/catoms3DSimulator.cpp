@@ -16,30 +16,15 @@ using namespace BaseSimulator::utils;
 
 namespace Catoms3D {
 
-Catoms3DBlockCode*(* Catoms3DSimulator::buildNewBlockCode)(Catoms3DBlock*)=NULL;
-
 void Catoms3DSimulator::help() {
 	cerr << "VisibleSim:" << endl;
 	cerr << "Catoms3D" << endl;
 	exit(EXIT_SUCCESS);
 }
 
-Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) : BaseSimulator::Simulator(argc, argv) {
-//	OUTPUT << "\033[1;34m" << "Catoms3DSimulator constructor" << "\033[0m" << endl;
-
-	buildNewBlockCode = catoms3DBlockCodeBuildingFunction;
-	newBlockCode = (BlockCode *(*)(BuildingBlock *))catoms3DBlockCodeBuildingFunction;
-	parseWorld(argc, argv);
-
-	testMode = false;
-	((Catoms3DWorld*)world)->linkBlocks();
-
-//	getScheduler()->sem_schedulerStart->post();
-	getScheduler()->setState(Scheduler::NOTSTARTED);
-
-	if (!testMode) {
-		GlutContext::mainLoop();
-	}
+Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *(*bcb)(Catoms3DBlock*))
+	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
+	OUTPUT << "\033[1;34m" << "Catoms3DSimulator constructor" << "\033[0m" << endl;
 }
 
 Catoms3DSimulator::~Catoms3DSimulator() {
@@ -48,6 +33,8 @@ Catoms3DSimulator::~Catoms3DSimulator() {
 
 void Catoms3DSimulator::createSimulator(int argc, char *argv[], Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) {
 	simulator =  new Catoms3DSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
+	simulator->parseConfiguration(argc, argv);
+	simulator->startSimulation();
 }
 
 void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,

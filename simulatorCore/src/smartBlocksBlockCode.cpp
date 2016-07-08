@@ -19,10 +19,5 @@ SmartBlocksBlockCode::SmartBlocksBlockCode(SmartBlocksBlock *host):BlockCode(hos
 SmartBlocksBlockCode::~SmartBlocksBlockCode() {
 	OUTPUT << "SmartBlocksBlockCode destructor" << endl;
 }
-/*
-SmartBlocksBlockCode* SmartBlocksBlockCode::buildNewBlockCode(SmartBlocksBlock *host) {
-	return(new SmartBlocksBlockCode(host));
-}
-*/
 
 }

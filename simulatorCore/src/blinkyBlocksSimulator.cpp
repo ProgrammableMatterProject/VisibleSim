@@ -6,32 +6,19 @@
  */
 
 #include <iostream>
-#include "blinkyBlocksSimulator.h"
 #include <string.h>
+
+#include "blinkyBlocksSimulator.h"
 #include "trace.h"
 
 using namespace std;
 
 namespace BlinkyBlocks {
 
-BlinkyBlocksBlockCode*(* BlinkyBlocksSimulator::buildNewBlockCode)(BlinkyBlocksBlock*)=NULL;
-
-BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) : BaseSimulator::Simulator(argc, argv) {
+BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[],
+											 BlinkyBlocksBlockCode *(*bcb)(BlinkyBlocksBlock*))
+	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
-	
-	// PTHY: Note: function pointer cast to generic type, safe according to specifications as it will be used
-	//  only after reconversion
-	buildNewBlockCode = blinkyBlocksBlockCodeBuildingFunction;
-	newBlockCode = (BlockCode *(*)(BuildingBlock *))blinkyBlocksBlockCodeBuildingFunction;
-
-	parseWorld(argc, argv);
-
-	((BlinkyBlocksWorld*)world)->linkBlocks();
-
-	//getScheduler()->sem_schedulerStart->post();
-	getScheduler()->setState(Scheduler::NOTSTARTED);
-
-	GlutContext::mainLoop();
 }
 
 // PTHY: TODO: Refactor / Genericize
@@ -125,6 +112,8 @@ void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[],
 											BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)
 											(BlinkyBlocksBlock*)) {
 	simulator =  new BlinkyBlocksSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
+	simulator->parseConfiguration(argc, argv);
+	simulator->startSimulation();
 }
 
 void BlinkyBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,

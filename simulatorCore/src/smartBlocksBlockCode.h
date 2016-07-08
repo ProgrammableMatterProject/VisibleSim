@@ -20,9 +20,7 @@ public:
 	SmartBlocksBlockCode(SmartBlocksBlock *host);
 	virtual ~SmartBlocksBlockCode();
 
-	//static SmartBlocksBlockCode* buildNewBlockCode(SmartBlocksBlock *host);
 	virtual void processLocalEvent(EventPtr pev) = 0;
-	SmartBlocksBlockCode* buildNewBlockCode(SmartBlocksBlock *host);
 };
 
 }

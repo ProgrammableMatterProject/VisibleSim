@@ -26,9 +26,7 @@ protected:
 public:
 	static void createSimulator(int argc, char *argv[],
 								SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
-								(SmartBlocksBlock*));
-
-	static SmartBlocksBlockCode *(*buildNewBlockCode)(SmartBlocksBlock*);
+								(SmartBlocksBlock*));   
 
 	static SmartBlocksSimulator* getSimulator() {
 		assert(simulator != NULL);

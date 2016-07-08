@@ -25,9 +25,7 @@ protected:
 
 public:
 
-    static void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
-
-    static BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
+    static void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));   
 
     static BlinkyBlocksSimulator* getSimulator() {
 	assert(simulator != NULL);
