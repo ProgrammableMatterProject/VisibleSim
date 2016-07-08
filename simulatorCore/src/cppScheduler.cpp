@@ -151,6 +151,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 	cout << "Events(s) left in memory before destroying Scheduler : " << Event::getNbLivingEvents() << endl;
 	cout << "Message(s) left in memory before destroying Scheduler : " << Message::getNbMessages() << endl;
 
+	// if autoStop is enabled, terminate simulation
+	if (willAutoStop())
+		glutLeaveMainLoop();
+	
 	return(NULL);
 }
 

@@ -2,7 +2,6 @@
 #include <cstdlib>
 
 #include "commandLine.h"
-#include "scheduler.h"
 #include "openglViewer.h"
 
 void CommandLine::help() {
@@ -13,6 +12,7 @@ void CommandLine::help() {
     cerr << "\t -c <name>\t\txml configuration file" << endl;
     cerr << "\t -r \t\trun realtime mode on startup" << endl;
     cerr << "\t -R \t\trun fastest mode on startup" << endl;
+    cerr << "\t -x \t\tterminate simulation when scheduler ends" << endl;
     //cerr << "\t -t \t\tterminal only (no graphic)" << endl;
     //cerr << "\t -i \t\tprint world informations (size, diameter, centers etc.)" << endl;
     /*cerr << "\t -g <topology code> <n or d>\t\t generate a random configuration: random 2d " << 
@@ -29,17 +29,6 @@ void CommandLine::help() {
 }
 
 CommandLine::CommandLine(int argc, char *argv[]) {
-	schedulerMode = CMD_LINE_UNDEFINED;
-    schedulerLength = SCHEDULER_LENGTH_DEFAULT;
-	topology = CMD_LINE_UNDEFINED;
-	topologyParameter = CMD_LINE_UNDEFINED;
-	meldDebugger = false;
-	terminalOnly = false;
-	stats = false;
-    vmPort = 0;
-    vmPath = "";
-	configFile = "config.xml";
-    programPath = "program.bb";
 	read(argc,argv);
 }
 
@@ -88,8 +77,7 @@ void CommandLine::read(int argc, char *argv[]) {
                 help();
             }
                 
-        }
-            break;
+        } break;
         case 'R': {
             if (schedulerMode == CMD_LINE_UNDEFINED)                           
                 schedulerMode = SCHEDULER_MODE_FASTEST;
@@ -97,8 +85,11 @@ void CommandLine::read(int argc, char *argv[]) {
                 cerr << "error: -r and -R options cannot be enabled at the same time" << endl;
                 help();
             }
-        }
-            break;
+        } break;
+        case 'x': {
+            schedulerAutoStop = true;
+        } break;
+
             // case 'a' : {
             // if (argc < 1) { 
             // help();

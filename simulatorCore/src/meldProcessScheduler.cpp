@@ -213,6 +213,11 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 	OUTPUT << "Number of events processed : " << Event::getNextId() << endl;
 	OUTPUT << "Events(s) left in memory before destroying Scheduler : " << Event::getNbLivingEvents() << endl;
 	OUTPUT << "Message(s) left in memory before destroying Scheduler : " << Message::getNbMessages() << endl;
+
+	// if autoStop is enabled, terminate simulation
+	if (willAutoStop())
+		glutLeaveMainLoop();
+
 	return(NULL);
 }
 

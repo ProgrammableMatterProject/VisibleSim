@@ -117,6 +117,7 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 	
 	// Set the scheduler termination mode
 	scheduler->setSchedulerLength(sl);
+	scheduler->setAutoStop(cmdLine.getSchedulerAutoStop());
 
 	if (sl == SCHEDULER_LENGTH_BOUNDED) {
 		scheduler->setMaximumDate(cmdLine.getMaximumDate());

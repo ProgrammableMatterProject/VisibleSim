@@ -61,6 +61,7 @@ protected:
 	std::mutex mutex_trace;
 
 	bool autoStart = false;
+	bool autoStop = false;
 	
 	Scheduler();
 	virtual ~Scheduler();
@@ -95,7 +96,10 @@ public:
 
 	inline void setAutoStart(bool as) { autoStart = as; }	
 	inline bool willAutoStart() { return autoStart; }
-	
+
+	inline void setAutoStop(bool as) { autoStop = as; }	
+	inline bool willAutoStop() { return autoStop; }
+
 	virtual bool schedule(Event *ev);
 	virtual bool scheduleLock(Event *ev);
 
