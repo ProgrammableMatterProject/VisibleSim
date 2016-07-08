@@ -60,6 +60,8 @@ protected:
 	std::mutex mutex_schedule;
 	std::mutex mutex_trace;
 
+	bool autoStart = false;
+	
 	Scheduler();
 	virtual ~Scheduler();
 
@@ -85,8 +87,14 @@ public:
 		cout << "I'm a Scheduler" << endl;
 	}
 	int getMode() { return schedulerMode; };
-	inline void setSchedulerLength(int sl) { schedulerLength = sl; }
+	inline void setSchedulerLength(int sl) { schedulerLength = sl; }	
 	inline int getSchedulerLength() { return schedulerLength; }
+
+	inline void setSchedulerMode(int sm) { schedulerMode = sm; }
+	inline int getSchedulerMode() { return schedulerMode; }
+
+	inline void setAutoStart(bool as) { autoStart = as; }	
+	inline bool willAutoStart() { return autoStart; }
 	
 	virtual bool schedule(Event *ev);
 	virtual bool scheduleLock(Event *ev);

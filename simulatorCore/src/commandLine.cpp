@@ -5,16 +5,14 @@
 #include "scheduler.h"
 #include "openglViewer.h"
 
-#define CMD_LINE_UNDEFINED -1
-
 void CommandLine::help() {
     cerr << "VisibleSim options:" << endl;
     cerr << "\t -f \t\t\tfull screen" << endl;
     cerr << "\t -p <name>\t\tprogram file (Meld for instance)" << endl;
     cerr << "\t -D \t\t\tdebugging mode (used in Meld only)" << endl;
     cerr << "\t -c <name>\t\txml configuration file" << endl;
-    //cerr << "\t -r \t\trun realtime mode on startup" << endl;
-    //cerr << "\t -R \t\trun fastest mode on startup" << endl;
+    cerr << "\t -r \t\trun realtime mode on startup" << endl;
+    cerr << "\t -R \t\trun fastest mode on startup" << endl;
     //cerr << "\t -t \t\tterminal only (no graphic)" << endl;
     //cerr << "\t -i \t\tprint world informations (size, diameter, centers etc.)" << endl;
     /*cerr << "\t -g <topology code> <n or d>\t\t generate a random configuration: random 2d " << 
@@ -82,29 +80,40 @@ void CommandLine::read(int argc, char *argv[]) {
         case 'D': {
             meldDebugger = true;
         } break;
-            /*case 'r': {
-              schedulerMode = SCHEDULER_MODE_REALTIME;
-              }
-              break;
-              case 'R': {
-              schedulerMode = SCHEDULER_MODE_FASTEST;
-              }
-              break;
-              case 'a' : {
-              if (argc < 1) { 
-              help();
-              }
-              topology = atoi(argv[1]);
-              argc--;
-              argv++;
-              if (argc < 1) { 
-              help();
-              }
-              topologyParameter = atoi(argv[1]);
-              argc--;
-              argv++;
-              } 
-              break;*/
+        case 'r': {
+            if (schedulerMode == CMD_LINE_UNDEFINED)
+                schedulerMode = SCHEDULER_MODE_REALTIME;
+            else {
+                cerr << "error: -r and -R options cannot be enabled at the same time" << endl;
+                help();
+            }
+                
+        }
+            break;
+        case 'R': {
+            if (schedulerMode == CMD_LINE_UNDEFINED)                           
+                schedulerMode = SCHEDULER_MODE_FASTEST;
+            else {
+                cerr << "error: -r and -R options cannot be enabled at the same time" << endl;
+                help();
+            }
+        }
+            break;
+            // case 'a' : {
+            // if (argc < 1) { 
+            // help();
+            // }
+            // topology = atoi(argv[1]);
+            // argc--;
+            // argv++;
+            // if (argc < 1) { 
+            // help();
+            // }
+            // topologyParameter = atoi(argv[1]);
+            // argc--;
+            // argv++;
+            // } 
+            // break;
         case 'c': {
             // Configuration file, already managed in Simulator constructor
             if (argc < 1) {

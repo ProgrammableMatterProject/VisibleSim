@@ -12,10 +12,11 @@
 
 using namespace std;
 
+#define CMD_LINE_UNDEFINED -1
+
 /**
  * CommandLine
- */
- 
+ */ 
 class CommandLine {
 private:
 	int topology;
