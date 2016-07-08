@@ -23,7 +23,7 @@ int BuildingBlock::nextId = 0;
 //
 //===========================================================================================================
 
-BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
+BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces, Clock::ClockType clockType) {
     OUTPUT << "BuildingBlock constructor (id:" << nextId << ")" << endl;
 	
     if (bId < 0) {
@@ -35,7 +35,7 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
 
     P2PNetworkInterfaceNextLocalId = 0;
     state.store(ALIVE);
-    clock = NULL;
+    clock = new Clock(clockType, this);
     std::random_device rd;
     generator = std::ranlux48(rd());
     dis = uniform_int_distribution<>(0, 50 * blockId);

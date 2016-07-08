@@ -1,5 +1,6 @@
 #include "clock.h"
 #include "scheduler.h"
+#include "buildingBlock.h"
 
 #include <limits>
 #include <functional>
@@ -18,6 +19,12 @@ Clock::Clock(ClockType clockType, BuildingBlock *h) {
 	
 void Clock::setClockProperties(ClockType clockType) {
     switch (clockType) {
+    case DEFAULT_CLOCK:
+        resolution = RESOLUTION_1MS;
+        accuracy = ACCURACY_320000PPM;
+        D=0;
+        y0=1;
+        break;
     case XMEGA_RTC_OSC1K_ULPRC:
         resolution = RESOLUTION_1MS;
         accuracy = ACCURACY_320000PPM;
@@ -97,6 +104,11 @@ uint64_t Clock::getTimeMS(uint64_t simTime) {
 }
 
 uint64_t Clock::getTimeUS(uint64_t simTime) {
+    // If using a perfect clock, no need to waste time computing a non-existent drift
+    if (type == DEFAULT_CLOCK) {
+        return simTime;
+    }
+
     double localTime = 0;
     double noise = 0;
 
@@ -139,6 +151,10 @@ uint64_t Clock::getTimeUS(uint64_t simTime) {
 }
   
 uint64_t Clock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+    if (type == DEFAULT_CLOCK) {
+        return localTime;
+    }
+        
     double noise = 0;
     double simTime = 0;
 

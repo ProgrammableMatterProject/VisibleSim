@@ -40,7 +40,7 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
 		p2p->setDataRateVariability((dataRateMax-dataRateMin)/2);
     }
 
-    clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
+    // clock = new Clock(Clock::XMEGA_RTC_OSC1K_CRC, this);
 }
 
 BlinkyBlocksBlock::~BlinkyBlocksBlock() {

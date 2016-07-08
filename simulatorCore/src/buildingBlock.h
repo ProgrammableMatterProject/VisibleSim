@@ -29,8 +29,8 @@ class P2PNetworkInterface;
 namespace BaseSimulator {
 
 class BlockCode;
-class Clock;
 class BuildingBlock;
+class Clock;
 
 typedef BlockCode *(*BlockCodeBuilder)(BuildingBlock*);
 
@@ -80,8 +80,10 @@ public:
 	 * @param bId : the block id of the block to create
 	 * @param bcb : function pointer to the getter for the block's CodeBlock
 	 * @param nbInterfaces : number of initial interfaces of the block (Necessary for MeldInterpretVM init)
+	 * @param clockType : type of the block's internal clock as defined in clock.h, no clock drift by default
 	 */
-	BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces);
+	BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces,
+				  Clock::ClockType clockType = Clock::DEFAULT_CLOCK);
     /**
 	 * @brief BuildingBlock destructor
 	 */
