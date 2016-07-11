@@ -58,8 +58,7 @@ private:
 	std::atomic<State> state;
 protected:
 	static int nextId;
-
-	int P2PNetworkInterfaceNextLocalId; // @todo
+	
 	vector<P2PNetworkInterface*> P2PNetworkInterfaces; //!< Vector of size equal to the number of interfaces of the block, contains pointers to the block's interfaces
 
 	list<EventPtr> localEventsList; //!< List of local events scheduled for this block
@@ -87,9 +86,7 @@ public:
     /**
 	 * @brief BuildingBlock destructor
 	 */
-	virtual ~BuildingBlock();
-
-	unsigned int getNextP2PInterfaceLocalId();
+	virtual ~BuildingBlock();  
 
 	/**
 	 * @brief Getter for P2PNetworkInterfaces attribute

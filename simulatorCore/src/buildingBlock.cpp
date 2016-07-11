@@ -33,7 +33,6 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces, Cl
 		blockId = bId;
     }
 
-    P2PNetworkInterfaceNextLocalId = 0;
     state.store(ALIVE);
     clock = new Clock(clockType, this);
     std::random_device rd;
@@ -59,12 +58,6 @@ BuildingBlock::~BuildingBlock() {
 
 	for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
 		delete p2p;
-}
-
-unsigned int BuildingBlock::getNextP2PInterfaceLocalId() {
-    int id = P2PNetworkInterfaceNextLocalId;
-    P2PNetworkInterfaceNextLocalId++;
-    return(id);
 }
 
 bool BuildingBlock::addP2PNetworkInterfaceAndConnectTo(BuildingBlock *destBlock) {

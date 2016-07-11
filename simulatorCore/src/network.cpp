@@ -69,7 +69,6 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 	OUTPUT << "P2PNetworkInterface constructor" << endl;
 #endif
 	hostBlock = b;
-//	localId = block->getNextP2PInterfaceLocalId();
 	connectedInterface = NULL;
 	availabilityDate = 0;
 	generator = std::ranlux48(nextId);
