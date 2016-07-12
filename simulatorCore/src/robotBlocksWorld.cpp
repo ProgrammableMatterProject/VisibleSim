@@ -25,14 +25,13 @@ RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 								   int argc, char *argv[]):World(argc, argv) {
 	OUTPUT << "\033[1;31mRobotBlocksWorld constructor\033[0m" << endl;
 
-	targetGrid=NULL;
-
-	idTextureWall=0;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
-	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures",
-												  "robotBlockPicking.obj");
-	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
-
+	if (GlutContext::GUIisEnabled) {
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures",
+													  "robotBlockPicking.obj");
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+	}
+	
 	lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
