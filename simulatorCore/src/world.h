@@ -55,7 +55,7 @@ protected:
     ObjLoader::ObjLoader *objRepere = NULL;          //!< Object loader for the frame
     
     GLint menuId; 
-    Camera *camera; //!< Pointer to the camera object for the graphical simulation, also includes the light source
+    Camera *camera = NULL; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
     /************************************************************
      *   Simulation Attributes

@@ -53,10 +53,11 @@ protected:
 	std::thread *schedulerThread;
 	vector <Keyword*> tabKeywords;
 
-	uint64_t currentDate;
-	uint64_t maximumDate;
+	uint64_t currentDate = 0;
+	uint64_t maximumDate = UINT64_MAX;
 	multimap<uint64_t,EventPtr> eventsMap;
-	int eventsMapSize, largestEventsMapSize;
+	int eventsMapSize = 0;
+	int largestEventsMapSize = 0;
 	std::mutex mutex_schedule;
 	std::mutex mutex_trace;
 

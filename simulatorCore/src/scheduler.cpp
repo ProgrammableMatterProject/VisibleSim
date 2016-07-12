@@ -36,11 +36,6 @@ Scheduler::Scheduler() {
 		exit(EXIT_FAILURE);
 	}
 
-	currentDate = 0;
-	maximumDate = UINT64_MAX; // no time limitation by default
-	eventsMapSize = 0;
-	largestEventsMapSize = 0;
-
 	sem_schedulerStart = new LightweightSemaphore(0);
 }
 

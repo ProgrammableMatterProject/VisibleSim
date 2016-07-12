@@ -21,8 +21,8 @@ static const Vector3D defaultBlockSize{25.0, 25.0, 11.0};
 
 class SmartBlocksWorld : public BaseSimulator::World {
 protected:
-    presence *targetGrid;
-    SmartBlocksCapabilities *capabilities;
+    presence *targetGrid = NULL;
+    SmartBlocksCapabilities *capabilities = NULL;
     int tabStatsData[10];
     int nbreStats;
 
