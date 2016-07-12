@@ -45,15 +45,14 @@ protected:
 
     /************************************************************
      *   Graphical / UI Attributes
-     ************************************************************/    
-
+     ************************************************************/        
     GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
     GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
     GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlock
 
-    ObjLoader::ObjLoader *objBlock;   //!< Object loader for a block
-    ObjLoader::ObjLoader *objBlockForPicking; //!< Object loader for a used during picking
-    ObjLoader::ObjLoader *objRepere;          //!< Object loader for the frame
+    ObjLoader::ObjLoader *objBlock = NULL;           //!< Object loader for a block
+    ObjLoader::ObjLoader *objBlockForPicking = NULL; //!< Object loader for a block used during picking
+    ObjLoader::ObjLoader *objRepere = NULL;          //!< Object loader for the frame
     
     GLint menuId; 
     Camera *camera; //!< Pointer to the camera object for the graphical simulation, also includes the light source
@@ -62,7 +61,7 @@ protected:
      *   Simulation Attributes
      ************************************************************/    
 
-    presence *targetGrid; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
+    presence *targetGrid = NULL; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
     Capabilities *capabilities; //!< The capabilities available for the blocks simulated in this world
     int maxBlockId = 0; //!< The block id of the block with the highest id in the world
     

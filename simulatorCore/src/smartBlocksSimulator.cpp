@@ -36,7 +36,10 @@ void SmartBlocksSimulator::createSimulator(int argc, char *argv[],
 void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									 int argc, char *argv[]) {
     world = new SmartBlocksWorld(gridSize, gridScale, argc,argv);
-    world->loadTextures("../../simulatorCore/smartBlocksTextures");
+
+	if (GlutContext::GUIisEnabled)
+		world->loadTextures("../../simulatorCore/smartBlocksTextures");
+	
     World::setWorld(world);
 }
 

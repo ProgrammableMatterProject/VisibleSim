@@ -215,9 +215,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     return(NULL);
 }
 
-void MeldInterpretScheduler::start(int mode) {
-
-    
+void MeldInterpretScheduler::start(int mode) {    
     static bool done = false;
     if ((state == NOTSTARTED) && !done) {
         done = true;

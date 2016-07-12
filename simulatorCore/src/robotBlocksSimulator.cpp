@@ -40,7 +40,10 @@ void RobotBlocksSimulator::createSimulator(int argc, char *argv[], RobotBlocksBl
 void RobotBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									int argc, char *argv[]) {
     world = new RobotBlocksWorld(gridSize, gridScale, argc,argv);
-    world->loadTextures("../../simulatorCore/robotBlocksTextures");
+
+    if (GlutContext::GUIisEnabled)
+		world->loadTextures("../../simulatorCore/robotBlocksTextures");
+	
     World::setWorld(world);
 }
 

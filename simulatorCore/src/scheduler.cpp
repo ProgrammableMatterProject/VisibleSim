@@ -117,11 +117,12 @@ bool Scheduler::scheduleLock(Event *ev) {
 }
 
 void Scheduler::trace(string message,int id,const Color &color) {
-#ifdef GLUT
-	mutex_trace.lock();
-	GlutContext::addTrace(message,id,color);
-	mutex_trace.unlock();
-#endif
+	if (GlutContext::GUIisEnabled) {
+		mutex_trace.lock();
+		GlutContext::addTrace(message,id,color);
+		mutex_trace.unlock();
+	}
+	
 	OUTPUT.precision(6);
 	OUTPUT << fixed << (double)(currentDate)/1000000 << " #" << id << ": " << message << endl;
 }

@@ -29,6 +29,7 @@ class GlutContext;
 class GlutContext {
     static int keyboardModifier;
 public :
+    static bool GUIisEnabled; //!< Enable / Disable GLUT graphical simulation, enabled by default
     static GlutSlidingMainWindow *mainWindow;
     static GlutSlidingDebugWindow *debugWindow;
     static GlutPopupWindow *popup;

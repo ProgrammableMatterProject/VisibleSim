@@ -29,11 +29,12 @@ World::World(int argc, char *argv[]) {
 	if (world == NULL) {
 		world = this;
 
-		GlutContext::init(argc,argv);
-
-		camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-		camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-		camera->setTarget(Vector3D(0,0,1.0));
+		if (GlutContext::GUIisEnabled) {
+			GlutContext::init(argc,argv);
+			camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
+			camera->setLightParameters(Vector3D(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
+			camera->setTarget(Vector3D(0,0,1.0));
+		}
 	} else {
 		ERRPUT << "\033[1;31m" << "Only one World instance can be created, aborting !" << "\033[0m" << endl;
 		exit(EXIT_FAILURE);

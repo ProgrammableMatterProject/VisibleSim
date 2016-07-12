@@ -505,7 +505,6 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 // loadTextures
 // lecture de l'identifiant de texture
 GLuint GlutWindow::loadTexture(const char *titre,int &tw,int &th) {
-#ifdef GLUT
 	unsigned char *image;
 	GLuint id=0;
 	OUTPUT << "loading " << titre << endl;
@@ -523,7 +522,6 @@ GLuint GlutWindow::loadTexture(const char *titre,int &tw,int &th) {
 		delete [] image;
 	}
 	return id;
-#endif
 }
 
 unsigned char *GlutWindow::lectureTarga(const char *titre, int& width, int& height ,bool retourner)

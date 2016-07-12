@@ -25,10 +25,13 @@ namespace BlinkyBlocks {
 BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									 int argc, char *argv[]):World(argc, argv) {
 	OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures","blinkyBlockCentered.obj");
-	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures",
-												  "blinkyBlockPickingCentered.obj");
-	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+
+	if (GlutContext::GUIisEnabled) {
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures","blinkyBlockCentered.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures",
+													  "blinkyBlockPickingCentered.obj");
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+	}
 
 	lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }

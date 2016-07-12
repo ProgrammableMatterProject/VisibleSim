@@ -119,7 +119,10 @@ void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[],
 void BlinkyBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 									  int argc, char *argv[]) {
 	world = new BlinkyBlocksWorld(gridSize, gridScale, argc,argv);
-	world->loadTextures("../../simulatorCore/blinkyBlocksTextures");
+
+	if (GlutContext::GUIisEnabled)
+		world->loadTextures("../../simulatorCore/blinkyBlocksTextures");
+
 	World::setWorld(world);
 }
 
@@ -132,7 +135,6 @@ void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, Block
 	// ...Parsing code...
 
 	// Finally, add block to the world
-	// PTHY: TODO: add master
 	((BlinkyBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
 }
 

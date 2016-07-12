@@ -11,6 +11,7 @@
 
 #include "world.h"
 #include "scheduler.h"
+#include "simulator.h"
 #include "events.h"
 #include "trace.h"
 #include "meldProcessDebugger.h"
@@ -20,6 +21,8 @@
 //          GlutContext  (class)
 //
 //===========================================================================================================
+
+bool GlutContext::GUIisEnabled = true;
 
 int GlutContext::screenWidth = 1024;
 int GlutContext::screenHeight = 800;
@@ -42,59 +45,61 @@ int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
 
 void GlutContext::init(int argc, char **argv) {
-#ifdef GLUT
-	glutInit(&argc,argv);
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+	if (GUIisEnabled) {
+		glutInit(&argc,argv);
+		glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 
-	// creation of a new graphic window
-	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(screenWidth,screenHeight);
-	if (glutCreateWindow("VisibleSim") == GL_FALSE) {
-		puts("ERREUR : echec à la création de la fenêtre graphique");
-		exit(EXIT_FAILURE);
+		// creation of a new graphic window
+		glutInitWindowPosition(0, 0);
+		glutInitWindowSize(screenWidth,screenHeight);
+		if (glutCreateWindow("VisibleSim") == GL_FALSE) {
+			puts("ERREUR : echec à la création de la fenêtre graphique");
+			exit(EXIT_FAILURE);
+		}
+
+		if(fullScreenMode) {
+			glutFullScreen();
+		}
+
+		initShaders();
+
+		////// GL parameters /////////////////////////////////////
+		glEnable(GL_DEPTH_TEST);
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glEnable(GL_NORMALIZE);
+
+		glClearColor(0.3f,0.3f,0.8f,0.0f);
+
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glEnable(GL_NORMALIZE);
+
+		glutReshapeFunc(reshapeFunc);
+		glutDisplayFunc(drawFunc);
+		glutMouseFunc(mouseFunc);
+		glutMotionFunc(motionFunc);
+		glutPassiveMotionFunc(passiveMotionFunc);
+		glutKeyboardFunc(keyboardFunc);
+		glutIdleFunc(idleFunc);
+
+		mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,
+											   "../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
+		debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,
+												 "../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga");
+		popup = new GlutPopupWindow(NULL,0,0,40,30);
 	}
-
-    if(fullScreenMode) {
-		glutFullScreen();
-	}
-
-	initShaders();
-
-	////// GL parameters /////////////////////////////////////
-	glEnable(GL_DEPTH_TEST);
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glEnable(GL_NORMALIZE);
-
-	glClearColor(0.3f,0.3f,0.8f,0.0f);
-
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_NORMALIZE);
-
-	glutReshapeFunc(reshapeFunc);
-	glutDisplayFunc(drawFunc);
-	glutMouseFunc(mouseFunc);
-	glutMotionFunc(motionFunc);
-	glutPassiveMotionFunc(passiveMotionFunc);
-	glutKeyboardFunc(keyboardFunc);
-	glutIdleFunc(idleFunc);
-
-	mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
-	debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,"../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga");
-	popup = new GlutPopupWindow(NULL,0,0,40,30);
-#endif
 }
 
 void GlutContext::deleteContext() {
-#ifdef GLUT
-    delete mainWindow;
-	delete debugWindow;
-	delete popup;
-	//delete popupMenu;
-#endif
+	if (GUIisEnabled) {
+		delete mainWindow;
+		delete debugWindow;
+		delete popup;
+		//delete popupMenu;
+	}
 }
 
 void *GlutContext::lanceScheduler(void *param) {
@@ -488,24 +493,25 @@ int GlutContext::processHits(GLint hits, GLuint *buffer) {
 }
 
 void GlutContext::mainLoop() {
-#ifdef GLUT
-	glutMainLoop();
-#else
+	if (GUIisEnabled) {
+		glutMainLoop();
+	} else {
 //    cout << "r+[ENTER] to run simulation" << endl;
-	std::chrono::milliseconds timespan(2);
-	std::this_thread::sleep_for(timespan);
+		std::chrono::milliseconds timespan(2);
+		std::this_thread::sleep_for(timespan);
 /*    char c='r';
 	  cin >> c;*/
-    Scheduler *s = getScheduler();
+		Scheduler *s = getScheduler();
 //    if (c=='r') {
-	cout << "Run simulation..." << endl;
-	cout.flush();
+		cout << "Run simulation..." << endl;
+		cout.flush();
 
 //        sleep(2);
-	s->start(SCHEDULER_MODE_FASTEST);
-	s->waitForSchedulerEnd();
+		s->start(s->getSchedulerMode());
+		s->waitForSchedulerEnd();
 //    }
-#endif
+	}
+	
 	getScheduler()->stop(BaseSimulator::getScheduler()->now());
 
 	std::chrono::milliseconds timespan(2);
@@ -515,9 +521,8 @@ void GlutContext::mainLoop() {
 }
 
 void GlutContext::addTrace(const string &message,int id,const Color &color) {
-#ifdef GLUT
-	if (mainWindow) mainWindow->addTrace(id,message,color);
-#endif
+	if (GUIisEnabled && mainWindow)
+		mainWindow->addTrace(id,message,color);
 }
 
 bool GlutContext::saveScreen(char *title) {

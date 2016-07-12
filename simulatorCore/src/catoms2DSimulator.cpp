@@ -44,8 +44,11 @@ void Catoms2DSimulator::createSimulator(int argc, char *argv[],
 void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 								  int argc, char *argv[]) {
     world = new Catoms2DWorld(gridSize, gridScale, argc,argv);
-    world->loadTextures("../../simulatorCore/catoms2DTextures");
-    World::setWorld(world);
+	
+	if (GlutContext::GUIisEnabled)
+		world->loadTextures("../../simulatorCore/catoms2DTextures");
+	
+	World::setWorld(world);
 }
 
 void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,

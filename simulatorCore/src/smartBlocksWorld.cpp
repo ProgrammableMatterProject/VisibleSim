@@ -22,26 +22,19 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
                                    int argc, char *argv[]):World(argc, argv) {
     cout << "\033[1;31mSmartBlocksWorld constructor\033[0m" << endl;
 
-    idTextureFloor=0;
-    idTextureDigits=0;
-#ifdef GLUT
-    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
-    objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
-    objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
-                                                  "smartBlockPicking.obj");
-#else
-    objBlock=NULL;
-    objRepere=NULL;
-    objBlockForPicking=NULL;
-#endif
-
+    if (GlutContext::GUIisEnabled) {
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
+        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
+                                                      "smartBlockPicking.obj");
+    }
+    
     nbreStats=0;
     for (int i = 0; i < 10; i++) {
         tabStatsData[i] = 0;
     }
 
     lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
-    targetGrid = NULL;
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
@@ -118,7 +111,6 @@ void SmartBlocksWorld::getPresenceMatrix(const PointCel &pos,PresenceMatrix &pm)
         ix,iy;
     for (iy=iy0; iy<iy1; iy++) {
         gpm = pm.grid+(iy*3+ix0);
-        // PTHY: TODO: idem fix 2D->3D
         grb = (SmartBlocksBlock **)lattice->grid+(ix0+pos.x-1+(iy+pos.y-1)*lattice->gridSize[0]);
         for (ix=ix0; ix<ix1; ix++) {
             *gpm++ = (*grb)?
@@ -259,13 +251,15 @@ void SmartBlocksWorld::glDrawId() {
 }
 
 void SmartBlocksWorld::loadTextures(const string &str) {
-    //string path = str+"/circuit.tga";
-    string path = str+"/bois.tga";
-    int lx,ly;
-    idTextureFloor = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    if (GlutContext::GUIisEnabled) {
+        //string path = str+"/circuit.tga";
+        string path = str+"/bois.tga";
+        int lx,ly;
+        idTextureFloor = GlutWindow::loadTexture(path.c_str(),lx,ly);
 
-    path=str+"/digits.tga";
-    idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
+        path=str+"/digits.tga";
+        idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
+    }
 }
 
 int SmartBlocksWorld::nbreWellPlacedBlock() {

@@ -31,7 +31,7 @@ static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
-    Skeleton *skeleton;
+    Skeleton *skeleton = NULL;
 
     virtual ~Catoms3DWorld();
 public:

@@ -29,6 +29,7 @@ Catoms2DBlock::~Catoms2DBlock() {
     OUTPUT << "Catoms2DBlock destructor " << blockId << endl;
 }
 
+// PTHY: TODO: Can be genericized in BuildingBlocks
 HLattice::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
     if (!p2p) {
 		return HLattice::Direction(0);
@@ -42,7 +43,7 @@ HLattice::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
     return HLattice::Direction(0);
 }
   
-// PTHY: TODO: Can be genericized in BuildingBlocks
+// PTHY: TODO: Take rotation into account
 Cell3DPosition Catoms2DBlock::getPosition(HLattice::Direction d) {   
     World *wrl = getWorld();
     vector<Cell3DPosition> nCells = wrl->lattice->getRelativeConnectivity(position);

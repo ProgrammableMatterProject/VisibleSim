@@ -29,13 +29,11 @@ Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
                              int argc, char *argv[]):World(argc, argv) {
     OUTPUT << "\033[1;31mCatoms2DWorld constructor\033[0m" << endl;
 
-    targetGrid=NULL;
-
-    idTextureHexa=0;
-    idTextureLines=0;
-    objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2D.obj");
-    objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2Dpicking.obj");
-    objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+    if (GlutContext::GUIisEnabled) {
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2D.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/catoms2DTextures","catom2Dpicking.obj");
+        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+    }
 
     lattice = new HLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }

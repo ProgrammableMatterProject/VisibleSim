@@ -40,7 +40,10 @@ void Catoms3DSimulator::createSimulator(int argc, char *argv[], Catoms3DBlockCod
 void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 				      int argc, char *argv[]) {
     world = new Catoms3DWorld(gridSize, gridScale, argc, argv);
-    world->loadTextures("../../simulatorCore/catoms3DTextures");
+
+	if (GlutContext::GUIisEnabled) 
+		world->loadTextures("../../simulatorCore/catoms3DTextures");
+	
     World::setWorld(world);
 }
 
@@ -62,7 +65,6 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCode
 	((Catoms3DWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
 }
 
-// PTHY: TODO: Refactor / Genericize
 void Catoms3DSimulator::parseSkeleton() {
 /* loading skeleton*/
 	TiXmlNode *nodeGrid = xmlWorldNode->FirstChild("skeleton");
