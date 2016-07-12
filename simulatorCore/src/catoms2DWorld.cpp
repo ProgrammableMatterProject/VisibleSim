@@ -43,10 +43,6 @@ Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 Catoms2DWorld::~Catoms2DWorld() {
     OUTPUT << "Catoms2DWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
-    delete [] targetGrid;
-    delete objBlock;
-    delete objBlockForPicking;
-    delete objRepere;
 }
 
 void Catoms2DWorld::deleteWorld() {

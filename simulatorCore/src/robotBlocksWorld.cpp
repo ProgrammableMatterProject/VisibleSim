@@ -39,10 +39,6 @@ RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 RobotBlocksWorld::~RobotBlocksWorld() {
 	OUTPUT << "RobotBlocksWorld destructor" << endl;
 	/*	block linked are deleted by world::~world() */
-	delete [] targetGrid;
-	delete objBlock;
-	delete objBlockForPicking;
-	delete objRepere;
 }
 
 void RobotBlocksWorld::deleteWorld() {

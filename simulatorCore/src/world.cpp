@@ -54,7 +54,11 @@ World::~World() {
 
 	delete lattice;
 	delete camera;
-
+	delete [] targetGrid;
+	delete objBlock;
+    delete objBlockForPicking;
+    delete objRepere;
+	
 	OUTPUT << "World destructor" << endl;
 }
 

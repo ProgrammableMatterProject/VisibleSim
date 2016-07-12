@@ -48,9 +48,6 @@ SmartBlocksWorld::~SmartBlocksWorld() {
     cout << "\033[1;31mSmartBlocksWorld destructor" << endl;
 
 /* block linked are deleted by world::~world() */
-    delete objBlock;
-    delete objRepere;
-    delete [] targetGrid;
     delete capabilities;
 }
 
