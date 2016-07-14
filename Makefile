@@ -19,10 +19,10 @@ TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_
 # ================
 #
 # MeldProcess: Uncomment this block to enable
-TEMP_CCFLAGS += -DENABLE_MELDPROCESS # Enable MeldProcess source files compilation,
-				       # required by any MeldProcess CodeBlock.
-				       # if this flag is not set, the boost libraries will not be included,
-				       # since they are the only source files using them.
+# TEMP_CCFLAGS += -DENABLE_MELDPROCESS # Enable MeldProcess source files compilation,
+# 				       # required by any MeldProcess CodeBlock.
+# 				       # if this flag is not set, the boost libraries will not be included,
+# 				       # since they are the only source files using them.
 
 # You can add those constant definitions to get a more verbose output
 # -DDEBUG_EVENTS          :  trace creation and destruction of all events
