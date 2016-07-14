@@ -39,13 +39,6 @@ BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vecto
 BlinkyBlocksWorld::~BlinkyBlocksWorld() {
 	OUTPUT << "BlinkyBlocksWorld destructor" << endl;
 	/*	block linked are deleted by world::~world() */
-	/* free Scenario Events */
-	vector<ScenarioEvent*>::const_iterator it=tabEvents.begin();
-	while (it!=tabEvents.end()) {
-		delete (*it);
-		it++;
-	}
-	tabEvents.clear();
 }
 
 void BlinkyBlocksWorld::deleteWorld() {

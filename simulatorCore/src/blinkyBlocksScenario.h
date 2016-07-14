@@ -63,5 +63,13 @@ public:
 	virtual void exportEventToScheduler() {};
 };
 
+class ScenarioRemoveBlockEvent:public ScenarioEvent {
+	Vector3D position;
+public:
+	ScenarioRemoveBlockEvent(float t,const Vector3D &pos):ScenarioEvent(t),position(pos) {};
+	~ScenarioRemoveBlockEvent() {};
+	virtual void exportEventToScheduler() {};
+};
+
 
 #endif /* BLINKYBLOCKSSCENARIO_H_ */

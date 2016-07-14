@@ -15,7 +15,6 @@
 #include "vector3D.h"
 #include "blinkyBlocksBlock.h"
 #include "trace.h"
-#include "blinkyBlocksScenario.h"
 
 namespace BlinkyBlocks {
 
@@ -24,7 +23,6 @@ static const Vector3D defaultBlockSize{40.0, 40.0, 41.0};
 class BlinkyBlocksWorld : public BaseSimulator::World {
 protected:   
     GLuint idTextureWall;
-    vector<ScenarioEvent*> tabEvents;
 
     virtual ~BlinkyBlocksWorld();
 public:
@@ -61,7 +59,7 @@ public:
     void shakeBlock(uint64_t date, int bId, int f);
     virtual void stopBlock(uint64_t date, int bId);
 
-    void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
+    // void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
 
     // Prints information about the blocks
     void dump();
