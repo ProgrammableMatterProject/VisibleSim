@@ -126,6 +126,9 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 	if (sm != CMD_LINE_UNDEFINED) {
 		scheduler->setSchedulerMode(sm);
 		scheduler->setAutoStart(true);
+	} else if (!GlutContext::GUIisEnabled) {
+		// If GUI disabled, and no mode specified, set fastest mode by default (Normally REALTIME)
+		scheduler->setSchedulerMode(SCHEDULER_MODE_FASTEST);
 	}
 	
 	// Set the scheduler termination mode
