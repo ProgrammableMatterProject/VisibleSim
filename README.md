@@ -7,6 +7,13 @@ Dependencies:
  - GLEW
  - SBCL - to compile Meld programs
 
+### Installing Submodules
+There are a number of other repositories included as [git submodules] in VisibleSim and used as utilities (e.g. a configuration generator). They need to be fetched from their respective repositories before they can be used. This can be done with the following commands, from the project's root:
+```
+git submodule init
+git submodule update
+```
+
 ### Mac Installation
 
 1\. Install dependencies:
@@ -82,3 +89,4 @@ Press '<kbd>r</kbd>' to run the simulation.
 Meld program examples are available in `applicationsBin/blinkyMeld/meld/programs`. All programs were not tested.
 
 [boost1.56-ticket]:https://svn.boost.org/trac/boost/ticket/11154
+[git submodules]:https://git-scm.com/book/en/v2/Git-Tools-Submodules
