@@ -49,9 +49,9 @@ protected:
 	static unsigned int nbLivingEvents;
 
 public:
-	int id;				// unique ID of the event (mainly for debugging purpose)
-	uint64_t date;		// time at which the event will be processed. 0 means simulation start
-	int eventType;		// see the various types at the beginning of this file
+	int id;				//!< unique ID of the event (mainly for debugging purpose)
+	uint64_t date;		//!< time at which the event will be processed. 0 means simulation start
+	int eventType;		//!< see the various types at the beginning of this file
 	int randomNumber;
 
 	Event(uint64_t t);

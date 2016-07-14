@@ -8,12 +8,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <list>
+
 #include "debug_Simprompt.hpp"
 #include "debug_Simhandler.hpp"
 #include "serialization.hpp"
 #include "types.hpp"
-//#include "meldProcessVM.h"
-#include <list>
+
+// #ifdef ENABLE_MELDPROCESS
+// #include "meldProcessVM.h"
+// #endif
 
 using namespace std;
 using namespace debugger;

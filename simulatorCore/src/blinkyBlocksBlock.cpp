@@ -14,9 +14,12 @@
 #include "blinkyBlocksEvents.h"
 #include "trace.h"
 #include "clock.h"
-#include "meldProcessEvents.h"
 #include "meldInterpretEvents.h"
 #include "lattice.h"
+
+#ifdef ENABLE_MELDPROCESS
+#include "meldProcessEvents.h"
+#endif
 
 using namespace std;
 
@@ -98,9 +101,13 @@ void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
 
 	getWorld()->updateGlData(this);
 
+#ifdef ENABLE_MELDPROCESS
     if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
 		getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
-    } else if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
+    } 
+#endif
+
+	if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
 		getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
 }

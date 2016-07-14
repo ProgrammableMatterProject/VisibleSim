@@ -14,7 +14,10 @@
 #include "simulator.h"
 #include "events.h"
 #include "trace.h"
+
+#ifdef ENABLE_MELDPROCESS
 #include "meldProcessDebugger.h"
+#endif
 
 //===========================================================================================================
 //

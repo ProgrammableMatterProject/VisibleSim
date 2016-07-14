@@ -42,17 +42,27 @@ World::World(int argc, char *argv[]) {
 }
 
 World::~World() {
+	// free building blocks
 	std::map<int, BuildingBlock*>::iterator it;
 	for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; ++it) {
 		delete it->second;
 	}
-	
+
+	// free glBlocks
 	std::vector<GlBlock*>::const_iterator cit=tabGlBlocks.begin();
 	while (cit!=tabGlBlocks.end()) {
 		delete *cit;
 		cit++;
 	}
 
+	// /* free Scenario Events */
+	// vector<ScenarioEvent*>::const_iterator it=tabEvents.begin();
+	// while (it!=tabEvents.end()) {
+	// 	delete (*it);
+	// 	it++;
+	// }
+	// tabEvents.clear();	
+	
 	delete lattice;
 	delete camera;
 	delete [] targetGrid;

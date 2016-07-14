@@ -8,14 +8,17 @@
 #include "simulator.h"
 
 #include "trace.h"
-#include "meldProcessVM.h"
-#include "meldProcessDebugger.h"
 #include "meldInterpretVM.h"
 #include "meldInterpretScheduler.h"
-#include "meldProcessScheduler.h"
 #include "cppScheduler.h"
 #include "openglViewer.h"
 #include "utils.h"
+
+#ifdef ENABLE_MELDPROCESS
+#include "meldProcessVM.h"
+#include "meldProcessDebugger.h"
+#include "meldProcessScheduler.h"
+#endif
 
 using namespace std;
 
@@ -71,13 +74,16 @@ Simulator::~Simulator() {
 	delete xmlDoc;
 	//FIN MODIF NICO
 
+#ifdef ENABLE_MELDPROCESS
 	if (getType() == MELDPROCESS) {
 		if(MeldProcess::MeldProcessVM::isInDebuggingMode()) {
 			MeldProcess::deleteDebugger();
 		}
 		MeldProcess::deleteVMServer();
 	}
-	else if (getType() == MELDINTERPRET){
+#endif
+	
+	if (getType() == MELDINTERPRET){
 		//Not sure if there is something to do, i think not
 	}
 
@@ -100,7 +106,14 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 		MeldInterpret::MeldInterpretScheduler::createScheduler();
 		break;
 	case MELDPROCESS:
+#ifdef MELDPROCESSVM
 		MeldProcess::MeldProcessScheduler::createScheduler();
+#else
+		cerr << "error: MeldProcess not compiled in this version. "
+			 << "Please enable MELDPROCESS in simulatorCore/src/Makefile to enable it, and try again"
+			 << endl;
+		exit(EXIT_FAILURE);
+#endif
 		break;
 	case CPP:
 		CPPScheduler::createScheduler();
@@ -141,6 +154,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
+#ifdef ENABLE_MELDPROCESS
 	if (getType() == MELDPROCESS) {
 		string vmPath = cmdLine.getVMPath();
 		string programPath = cmdLine.getProgramPath();
@@ -158,13 +172,18 @@ void Simulator::readSimulationType(int argc, char*argv[]) {
 				 << endl;
 			exit(1);
 		}
-
+		
 		MeldProcess::setVMConfiguration(vmPath, programPath, debugging);
 		MeldProcess::createVMServer(vmPort);
 		if(debugging) {
 			MeldProcess::createDebugger();
 		}
-	} else if(getType() == MELDINTERPRET) {
+
+		return;
+	}
+#endif
+	
+	if(getType() == MELDINTERPRET) {
 		string programPath = cmdLine.getProgramPath();
 		bool debugging = cmdLine.getMeldDebugger();
 

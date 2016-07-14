@@ -64,6 +64,7 @@ protected:
     presence *targetGrid = NULL; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
     Capabilities *capabilities; //!< The capabilities available for the blocks simulated in this world
     int maxBlockId = 0; //!< The block id of the block with the highest id in the world
+    // vector<ScenarioEvent&> tabEvents;
     
     /**
      * @brief World constructor, initializes the camera, light, and user interaction attributes
