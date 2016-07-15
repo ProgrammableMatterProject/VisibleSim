@@ -14,3 +14,4 @@
 (deftuple set-affinity (:type-addr :type-addr) :action :linear)
 (deftuple set-cpu (:type-addr :type-int) :action :linear)
 (deftuple remove-priority (:type-addr) :action :linear)
+(deftuple moveTo (:type-addr :type-int :type-int :type-int) :action)
