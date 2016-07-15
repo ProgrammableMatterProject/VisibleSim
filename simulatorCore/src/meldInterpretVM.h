@@ -61,7 +61,7 @@ struct _tuple_entry { struct _tuple_entry *next; record_type records; void *tupl
 typedef struct _tuple_pentry { Time priority; struct _tuple_pentry *next; record_type records; void *tuple; NodeID rt;} tuple_pentry;
 typedef struct {struct _tuple_pentry *queue;} tuple_pqueue;
 
-enum portReferences { DOWN, NORTH, EAST, SOUTH, WEST, UP, NUM_PORTS };
+// enum portReferences { DOWN, NORTH, EAST, SOUTH, WEST, UP, NUM_PORTS };
 
 typedef int Node;
 
@@ -646,6 +646,8 @@ public:
     tuple_type TYPE_TAP;
     tuple_type TYPE_SETCOLOR;
     tuple_type TYPE_SETCOLOR2;
+    tuple_type TYPE_AT;
+    tuple_type TYPE_MOVETO;
 
     BaseSimulator::BuildingBlock *host;
 
@@ -665,6 +667,8 @@ public:
     NodeID get_neighbor_ID(int face);
     void enqueueNewTuple(tuple_t tuple, record_type isNew);
     void enqueue_face(NodeID neighbor, meld_int face, int isNew);
+    void enqueue_at(meld_int x, meld_int y, meld_int z, int isNew);
+    void enqueue_edge(NodeID neighbor, int isNew);
     void enqueue_count(meld_int count, int isNew);
     void enqueue_tap();
     void enqueue_init();
@@ -686,6 +690,7 @@ public:
     inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
         setLED(r, g, b, intensity);
     }
+    void moveTo(meld_int x, meld_int y, meld_int z);   
     NodeID getGUID();
     extern_funct_type *extern_functs;
     int *extern_functs_args;

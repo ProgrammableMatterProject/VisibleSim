@@ -7,6 +7,7 @@
 #include "meldInterpretMessages.h"
 #include "meldInterpretScheduler.h"
 #include "events.h"
+#include "translationEvents.h"
 
 //#define DEBUG_INSTRS
 //#define LOG_DEBUG
@@ -39,6 +40,8 @@ MeldInterpretVM::MeldInterpretVM(BaseSimulator::BuildingBlock *b){
     TYPE_TAP = -1;
     TYPE_SETCOLOR = -1;
     TYPE_SETCOLOR2 = -1;
+    TYPE_AT = -1;
+    TYPE_MOVETO = -1;
 
     OUTPUT << "MeldInterpretVM constructor" << endl;
     host = b;
@@ -158,6 +161,33 @@ void MeldInterpretVM::enqueue_face(NodeID neighbor, meld_int face, int isNew){
     enqueueNewTuple(tuple, (record_type) isNew);
 }
 
+/** Enqueue a position tuple */
+void MeldInterpretVM::enqueue_at(meld_int x, meld_int y, meld_int z, int isNew){
+    tuple_t tuple = NULL;
+
+    if(TYPE_AT == -1) { /** no such predicate in the program */
+        cerr << "error: Undefined predicate at!" << endl;
+        return;
+    }
+    
+    tuple = tuple_alloc(TYPE_AT);
+    SET_TUPLE_FIELD(tuple, 0, &x);
+    SET_TUPLE_FIELD(tuple, 1, &y);
+    SET_TUPLE_FIELD(tuple, 2, &z);
+
+    enqueueNewTuple(tuple, (record_type) isNew);
+}
+
+/** Enqueue a edge tuple */
+void MeldInterpretVM::enqueue_edge(NodeID neighbor, int isNew){
+    if(TYPE_EDGE == -1) return;
+
+    tuple_t tuple = tuple_alloc(TYPE_EDGE);
+    SET_TUPLE_FIELD(tuple, 0, &neighbor);
+
+    enqueueNewTuple(tuple, isNew);
+}
+
 /** Enqueue a neighborCount tuple */
 void MeldInterpretVM::enqueue_count(meld_int count, int isNew){
     if(TYPE_NEIGHBORCOUNT == -1) /** no such predicate in the program */
@@ -207,6 +237,10 @@ void MeldInterpretVM::init_all_consts(void) {
             TYPE_SETCOLOR = i;
         else if (strcmp(TYPE_NAME(i), "setcolor2") == 0 )
             TYPE_SETCOLOR2 = i;
+        else if (strcmp(TYPE_NAME(i), "at") == 0)
+            TYPE_AT = i;
+        else if (strcmp(TYPE_NAME(i), "moveTo") == 0)
+            TYPE_MOVETO = i;
     }
 }
 
@@ -466,13 +500,21 @@ NodeID MeldInterpretVM::getGUID(){
 void MeldInterpretVM::setColor(Color color){
     setLED(color[0]*255, color[1]*255, color[2]*255, color[3]*255);
 }
+
 void MeldInterpretVM::setColor(byte color){
     setLED(Colors[color][0]*255, Colors[color][1]*255, Colors[color][2]*255, Colors[color][3]*255);
 }
+
 void MeldInterpretVM::setLED(byte r, byte g, byte b, byte intensity){
     BaseSimulator::getScheduler()->schedule(new SetColorEvent(BaseSimulator::getScheduler()->now(), host , (float)r/255, (float)g/255, (float)b/255, (float)intensity/255));
 }
 
+void MeldInterpretVM::moveTo(meld_int x, meld_int y, meld_int z) {
+    enqueue_at((meld_int)host->position.pt[0], (meld_int)host->position.pt[1],
+               (meld_int)host->position.pt[2], -1);
+    BaseSimulator::getScheduler()->schedule(new TranslationStartEvent(BaseSimulator::getScheduler()->now(),
+                                                                      host, Vector3D(x, y, z)));
+}
 
 bool MeldInterpretVM::equilibrium() {
     map<int, MeldInterpretVM*>::iterator it;
