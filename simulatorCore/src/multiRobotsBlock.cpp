@@ -21,7 +21,7 @@ using namespace std;
 namespace MultiRobots {
 
 MultiRobotsBlock::MultiRobotsBlock(int bId, BlockCodeBuilder bcb)
-	: BaseSimulator::BuildingBlock(bId, bcb, SLattice::MAX_NB_NEIGHBORS) { // PTHY: INCONSISTENCY
+	: BaseSimulator::BuildingBlock(bId, bcb, BCLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "MultiRobotsBlock constructor" << endl;
 }
 
@@ -29,21 +29,8 @@ MultiRobotsBlock::~MultiRobotsBlock() {
     OUTPUT << "MultiRobotsBlock destructor " << blockId << endl;
 }
 
-SLattice::Direction MultiRobotsBlock::getDirection(P2PNetworkInterface *given_interface) {
-
-    return SLattice::Direction(0);// PTHY: INCONSISTENCY
-}
-
-void MultiRobotsBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
-    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << SCLattice::getDirectionString(getDirection(ni)) << endl;
-    // PTHY: INCONSISTENCY
-}
-
-void MultiRobotsBlock::removeNeighbor(P2PNetworkInterface *ni) {
-    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << SCLattice::getDirectionString(getDirection(ni)) << endl;
-    // PTHY: INCONSISTENCY
+BCLattice::Direction MultiRobotsBlock::getDirection(P2PNetworkInterface *given_interface) {
+    return BCLattice::Direction(0); // NONE
 }
 
 void MultiRobotsBlock::stopBlock(uint64_t date, State s) {

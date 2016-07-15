@@ -37,7 +37,7 @@ void MultiRobotsSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
 	world = new MultiRobotsWorld(gridSize, gridScale, argc,argv);
 
 	if (GlutContext::GUIisEnabled) // PTHY: INCONSISTENCY
-		world->loadTextures("../../simulatorCore/blinkyBlocksTextures");
+		world->loadTextures("../../simulatorCore/multiRobotsTextures");
 
 	World::setWorld(world);
 }

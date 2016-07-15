@@ -29,15 +29,15 @@ MultiRobotsWorld::MultiRobotsWorld(const Cell3DPosition &gridSize, const Vector3
 
     // PTHY: INCONSISTENCY
 	if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures",
-                                            "blinkyBlockCentered.obj");
-		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures",
-													  "blinkyBlockPickingCentered.obj");
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
+                                            "multiRobotSimple.obj");
+		objBlockForPicking = NULL; // new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
+							 //    					  "multiRobotPicking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
                                              "repere25.obj");
 	}
 
-	lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+	lattice = new BCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
 MultiRobotsWorld::~MultiRobotsWorld() {
@@ -76,27 +76,7 @@ void MultiRobotsWorld::addBlock(int blockId, BlockCodeBuilder bcb,
 }
 
 void MultiRobotsWorld::linkBlock(const Cell3DPosition &pos) {
-	// MultiRobotsBlock *ptrNeighbor;
-	// MultiRobotsBlock *ptrBlock = (MultiRobotsBlock*)lattice->getBlock(pos);
-	// vector<Cell3DPosition> nCells = lattice->getNeighborhood(pos);
-
-    // ptrBlock->addEdge(another);
-    // ptrBlock->connected.push_back(another);
-    
-    // PTHY: TODO
-	// // Check neighbors for each interface
-	// for (int i = 0; i < 6; i++) {
-	// 	ptrNeighbor = (MultiRobotsBlock*)lattice->getBlock(nCells[i]);
-	// 	if (ptrNeighbor) {
-	// 		(ptrBlock)->getInterface(i)->
-	// 			connect(ptrNeighbor->getInterface(lattice->getOpposite(i)));
-
-	// 		OUTPUT << "connection #" << (ptrBlock)->blockId <<
-	// 			" to #" << ptrNeighbor->blockId << endl;
-	// 	} else {
-	// 		(ptrBlock)->getInterface(i)->connect(NULL);
-	// 	}
-	// }
+    // Linked by lattice
 }
 
 void MultiRobotsWorld::glDraw() {
@@ -237,12 +217,12 @@ void MultiRobotsWorld::setSelectedFace(int n) {
 	// numSelectedGlBlock=n/6;
 	// string name = objBlockForPicking->getObjMtlName(n%6);
 
-	// if (name=="_blinkyBlockPickingface_top") numSelectedFace=SCLattice::Top;
-	// else if (name=="_blinkyBlockPickingface_bottom") numSelectedFace=SCLattice::Bottom;
-	// else if (name=="_blinkyBlockPickingface_right") numSelectedFace=SCLattice::Right;
-	// else if (name=="_blinkyBlockPickingface_left") numSelectedFace=SCLattice::Left;
-	// else if (name=="_blinkyBlockPickingface_front") numSelectedFace=SCLattice::Front;
-	// else if (name=="_blinkyBlockPickingface_back") numSelectedFace=SCLattice::Back;
+	// if (name=="_multiRobotPickingface_top") numSelectedFace=SCLattice::Top;
+	// else if (name=="_multiRobotPickingface_bottom") numSelectedFace=SCLattice::Bottom;
+	// else if (name=="_multiRobotPickingface_right") numSelectedFace=SCLattice::Right;
+	// else if (name=="_multiRobotPickingface_left") numSelectedFace=SCLattice::Left;
+	// else if (name=="_multiRobotPickingface_front") numSelectedFace=SCLattice::Front;
+	// else if (name=="_multiRobotPickingface_back") numSelectedFace=SCLattice::Back;
 	// else {
 	// 	cerr << "warning: Unrecognized picking face" << endl;
 	// 	numSelectedFace = 7;	// UNDEFINED
