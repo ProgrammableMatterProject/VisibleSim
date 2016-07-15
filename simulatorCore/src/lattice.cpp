@@ -394,7 +394,7 @@ BCLattice::BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D
 BCLattice::~BCLattice() {}
 
 vector<Cell3DPosition> BCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
-    return connected;
+    return vector<Cell3DPosition>();
 }
 
 Vector3D BCLattice::gridToWorldPosition(const Cell3DPosition &pos) {

@@ -8,6 +8,7 @@
 #include "meldInterpretScheduler.h"
 #include "events.h"
 #include "translationEvents.h"
+#include "world.h"
 
 //#define DEBUG_INSTRS
 //#define LOG_DEBUG
@@ -416,9 +417,36 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
                 new VMSendMessageEvent(MeldInterpret::getScheduler()->now(), host, ptr, p2p));
 	    }
 	    else {
-            /** This may happen when you delete a block in the simulator */
-            fprintf(stderr, "--%d--\tUNABLE TO ROUTE MESSAGE! To %d\n", (int)blockId, (int)target);
-            //exit(EXIT_FAILURE);
+            // PTHY: TEMPORARY WORKAROUND, until broadcast communication is natively supported in VS
+            if (host->getNbInterfaces() == 0) { // This is a broadcast message
+                MessagePtr ptr;
+                if (isNew > 0) {
+                    ptr = (MessagePtr)(new AddTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
+                }
+                else {
+                    ptr = (MessagePtr)(new RemoveTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
+                }
+
+                BuildingBlock* toblock = NULL;
+                for (BuildingBlock *bb : static_cast<BCLattice*>(getWorld()->lattice)->connected) {
+                    if(bb->blockId == target) {
+                        toblock = bb;
+                        break;
+                    }
+                }
+                
+                if (toblock != NULL) {
+                    MeldInterpret::getScheduler()->schedule(
+                        new VMSendMessageEvent2(MeldInterpret::getScheduler()->now(), host, ptr, toblock));
+                } else {
+                    cerr << "error: Unable to send message, recipient does not exist\n";
+                }
+
+            } else {            
+                /** This may happen when you delete a block in the simulator */
+                fprintf(stderr, "--%d--\tUNABLE TO ROUTE MESSAGE! To %d\n", (int)blockId, (int)target);
+                //exit(EXIT_FAILURE);
+            }
 	    }
     }
 }
@@ -2110,6 +2138,8 @@ void MeldInterpretVM::tuple_do_handle(tuple_type type, tuple_t tuple, int isNew,
         FREE_TUPLE(tuple);
         TERMINATE_CURRENT();
         return;
+    } else {
+        cerr << "host " << host->blockId << " type " << type << endl;
     }
 
 #ifdef DEBUG_INSTRS
@@ -3058,7 +3088,7 @@ void MeldInterpretVM::tuple_print(tuple_t tuple, FILE *fp) {
     char str[MAX_STRING_SIZE];
     char tmp[MAX_STRING_SIZE];
 
-    sprintf(str,"@%d: %s(", getBlockId(), TYPE_NAME(tuple_type));
+    sprintf(str,"@%d: %s(r", getBlockId(), TYPE_NAME(tuple_type));
 
     for(j = 0; j < TYPE_NUMARGS(tuple_type); ++j) {
         void *field = GET_TUPLE_FIELD(tuple, j);

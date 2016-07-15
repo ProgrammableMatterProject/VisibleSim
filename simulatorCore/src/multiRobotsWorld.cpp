@@ -70,7 +70,7 @@ void MultiRobotsWorld::addBlock(int blockId, BlockCodeBuilder bcb,
 
 	if (lattice->isInGrid(pos)) {
 		lattice->insert(mrb, pos);
-        static_cast<BCLattice*>(lattice)->connected.push_back(pos);
+        static_cast<BCLattice*>(lattice)->connected.push_back(mrb);
 	} else {
 		ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
 		exit(1);

@@ -107,6 +107,74 @@ const string VMSendMessageEvent::getEventName() {
 
 //===========================================================================================================
 //
+//          VMSendMessageEvent2  (class)
+//
+//===========================================================================================================
+
+VMSendMessageEvent2::VMSendMessageEvent2(uint64_t t, BuildingBlock *conBlock, MessagePtr mes,
+										 BaseSimulator::BuildingBlock* _sentto):BlockEvent(t, conBlock) {
+	eventType = EVENT_SEND_MESSAGE_TO_BLOCK;
+	message = mes;
+	target = _sentto;
+	randomNumber = conBlock->getNextRandomNumber();
+	EVENT_CONSTRUCTOR_INFO();
+}
+
+VMSendMessageEvent2::VMSendMessageEvent2(VMSendMessageEvent2 *ev) : BlockEvent(ev) {
+	message = ev->message;
+	target = ev->target;
+	//randomNumber = ev->randomNumber;
+	EVENT_CONSTRUCTOR_INFO();
+}
+
+VMSendMessageEvent2::~VMSendMessageEvent2() {
+	message.reset();
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void VMSendMessageEvent2::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	//concernedBlock->processLocalEvent();
+	concernedBlock->scheduleLocalEvent(EventPtr(new VMSendMessageEvent2(this)));
+}
+
+const string VMSendMessageEvent2::getEventName() {
+	return("VMSendMessage Event 2");
+}
+
+//===========================================================================================================
+//
+//          VMReceiveMessageEvent2  (class)
+//
+//===========================================================================================================
+VMReceiveMessageEvent2::VMReceiveMessageEvent2(uint64_t t, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes): BlockEvent(t, conBlock) {
+  EVENT_CONSTRUCTOR_INFO();
+  eventType = EVENT_RECEIVE_MESSAGE_FROM_BLOCK;
+  message = mes;
+  randomNumber = conBlock->getNextRandomNumber();
+}
+
+VMReceiveMessageEvent2::VMReceiveMessageEvent2(VMReceiveMessageEvent2* ev) : BlockEvent(ev) {
+  EVENT_CONSTRUCTOR_INFO();
+  message = ev->message;
+}
+
+VMReceiveMessageEvent2::~VMReceiveMessageEvent2() {
+  message.reset();
+  EVENT_DESTRUCTOR_INFO();
+}
+
+void VMReceiveMessageEvent2::consumeBlockEvent() {
+  EVENT_CONSUME_INFO();
+  concernedBlock->scheduleLocalEvent(EventPtr(new VMReceiveMessageEvent2(this)));
+}
+
+const string VMReceiveMessageEvent2::getEventName() {
+  return("VMReceiveMessage Event2");
+}
+
+//===========================================================================================================
+//
 //          VMHandleDebugMessageEvent  (class)
 //
 //===========================================================================================================

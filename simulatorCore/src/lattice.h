@@ -527,11 +527,11 @@ public:
  */
 class BCLattice : public Lattice3D {
 public:
-    enum Direction {MAX_NB_NEIGHBORS};
+    enum Direction {BROADCAST = 0, MAX_NB_NEIGHBORS};
     static int getOppositeDirection(int d);
     static string getDirectionString(int d);
 
-    vector<Cell3DPosition> connected; //!< contains all cells with a block on it
+    list<BuildingBlock*> connected; //!< contains all cells with a block on it
     
     /**
      * @brief BCLattice constructor. 
