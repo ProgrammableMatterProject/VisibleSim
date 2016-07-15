@@ -519,6 +519,72 @@ public:
     virtual inline const string getString(int i) { return getDirectionString(i); }
 };
 
+/*! @brief 3D Broadcast Lattice
+ *
+ * Used by MultiRobots. All blocks are connected to each other.
+ *
+ *
+ */
+class BCLattice : public Lattice3D {
+public:
+    enum Direction {MAX_NB_NEIGHBORS};
+    static int getOppositeDirection(int d);
+    static string getDirectionString(int d);
+
+    vector<Cell3DPosition> connected; //!< contains all cells with a block on it
+    
+    /**
+     * @brief BCLattice constructor. 
+     */
+    BCLattice();
+    /**
+     * @brief BCLattice constructor. 
+     * @param gsz The size of the grid
+     * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+     */
+    BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
+    /**
+     * @brief BCLattice destructor. 
+     */
+    ~BCLattice();
+
+    /**
+     * @copydoc Lattice::insert
+     * Also insert to list of connected blocks
+     */
+    void insert(BuildingBlock* bb, const Cell3DPosition &p);
+    /**
+     * @copydoc Lattice::remove
+     * Also remove from list of connected blocks
+     */
+    void remove(const Cell3DPosition &p);    
+    /**
+     * @copydoc Lattice::gridToWorldPosition
+     */
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    /**
+     * @copydoc Lattice::worldToGridPosition
+     */
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos);
+    /**
+     * @copydoc Lattice::getRelativeConnectivity
+     */
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
+    /**
+     * @copydoc Lattice::getMaxNumNeighbors
+     */    
+    virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+    /**
+     * @copydoc Lattice::getOpposite
+     */
+    virtual inline const int getOpposite(int i) { return getOppositeDirection(i); }
+    /**
+     * @copydoc Lattice::getString
+     */
+    virtual inline const string getString(int i) { return getDirectionString(i); }
+};
+
+
 }
 
 #endif
