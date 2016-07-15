@@ -180,7 +180,10 @@ void MeldInterpretVM::enqueue_at(meld_int x, meld_int y, meld_int z, int isNew){
 
 /** Enqueue a edge tuple */
 void MeldInterpretVM::enqueue_edge(NodeID neighbor, int isNew){
-    if(TYPE_EDGE == -1) return;
+    if(TYPE_EDGE == -1) {
+        cerr << "error: Undefined predicate edge!" << endl;
+        return;
+    }
 
     tuple_t tuple = tuple_alloc(TYPE_EDGE);
     SET_TUPLE_FIELD(tuple, 0, &neighbor);
@@ -239,7 +242,7 @@ void MeldInterpretVM::init_all_consts(void) {
             TYPE_SETCOLOR2 = i;
         else if (strcmp(TYPE_NAME(i), "at") == 0)
             TYPE_AT = i;
-        else if (strcmp(TYPE_NAME(i), "moveTo") == 0)
+        else if (strcmp(TYPE_NAME(i), "moveto") == 0)
             TYPE_MOVETO = i;
     }
 }
@@ -973,6 +976,17 @@ inline void MeldInterpretVM::execute_run_action0 (tuple_t action_tuple, tuple_ty
             setColorWrapper(MELD_INT(GET_TUPLE_FIELD(action_tuple, 0)));
         }
         FREE_TUPLE(action_tuple);
+    } else if (type == TYPE_MOVETO) {
+        if (isNew > 0) {
+            cerr << "moveTo: (" << MELD_INT(GET_TUPLE_FIELD(action_tuple, 0)) << ","
+                 << MELD_INT(GET_TUPLE_FIELD(action_tuple, 1)) << ","
+                 << MELD_INT(GET_TUPLE_FIELD(action_tuple, 2)) << ")" << endl;
+            moveTo(MELD_INT(GET_TUPLE_FIELD(action_tuple, 0)),
+                   MELD_INT(GET_TUPLE_FIELD(action_tuple, 1)),
+                   MELD_INT(GET_TUPLE_FIELD(action_tuple, 2)));
+        }
+    } else {
+        cerr << "warning: trying to execure an unkown action fact! (type: " << type << ")" << endl;
     }
 }
 

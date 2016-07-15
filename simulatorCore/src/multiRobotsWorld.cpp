@@ -31,8 +31,9 @@ MultiRobotsWorld::MultiRobotsWorld(const Cell3DPosition &gridSize, const Vector3
 	if (GlutContext::GUIisEnabled) {
 		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
                                             "multiRobotSimple.obj");
-		objBlockForPicking = NULL; // new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
-							 //    					  "multiRobotPicking.obj");
+		objBlockForPicking = NULL;
+        // = new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
+        //    					  "multiRobotPicking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
                                              "repere25.obj");
 	}
@@ -69,6 +70,7 @@ void MultiRobotsWorld::addBlock(int blockId, BlockCodeBuilder bcb,
 
 	if (lattice->isInGrid(pos)) {
 		lattice->insert(mrb, pos);
+        static_cast<BCLattice*>(lattice)->connected.push_back(pos);
 	} else {
 		ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
 		exit(1);
@@ -190,18 +192,18 @@ void MultiRobotsWorld::glDrawId() {
 
 void MultiRobotsWorld::glDrawIdByMaterial() {
 	glPushMatrix();
-	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
+	// glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0);
 
-	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	int n=1;
-	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((MultiRobotsGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-		ic++;
-	}
-	unlock();
-	glPopMatrix();
+	// glDisable(GL_TEXTURE_2D);
+	// vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+	// int n=1;
+	// lock();
+	// while (ic!=tabGlBlocks.end()) {
+	// 	((MultiRobotsGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
+	// 	ic++;
+	// }
+	// unlock();
+	// glPopMatrix();
 }
 
 

@@ -397,17 +397,6 @@ vector<Cell3DPosition> BCLattice::getRelativeConnectivity(const Cell3DPosition &
     return connected;
 }
 
-void BCLattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
-    Lattice::insert(bb, p);
-    connected.push_back(p);
-}
-
-void BCLattice::remove(const Cell3DPosition &p) {
-    Lattice::remove(p);
-    // connected.remove(p); PTHY: TODO
-}
-
-
 Vector3D BCLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     return Vector3D(pos[0] * gridScale[0],
                     pos[1] * gridScale[1],

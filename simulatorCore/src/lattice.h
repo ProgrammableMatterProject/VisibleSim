@@ -549,16 +549,6 @@ public:
     ~BCLattice();
 
     /**
-     * @copydoc Lattice::insert
-     * Also insert to list of connected blocks
-     */
-    void insert(BuildingBlock* bb, const Cell3DPosition &p);
-    /**
-     * @copydoc Lattice::remove
-     * Also remove from list of connected blocks
-     */
-    void remove(const Cell3DPosition &p);    
-    /**
      * @copydoc Lattice::gridToWorldPosition
      */
     virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos);
