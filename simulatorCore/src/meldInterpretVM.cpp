@@ -2138,9 +2138,7 @@ void MeldInterpretVM::tuple_do_handle(tuple_type type, tuple_t tuple, int isNew,
         FREE_TUPLE(tuple);
         TERMINATE_CURRENT();
         return;
-    } else {
-        cerr << "host " << host->blockId << " type " << type << endl;
-    }
+    } 
 
 #ifdef DEBUG_INSTRS
     if (isNew == 1) {

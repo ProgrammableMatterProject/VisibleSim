@@ -52,16 +52,7 @@ public:
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
     virtual void setSelectedFace(int n);
-    virtual void exportConfiguration();
-    
-    // void BlinkyBlocksWorld::addObstacle(const Vecteur &pos,const Color &col) {
-	// 	GlBlock *glBlock = new GlBlock(-1);
-	// 	Vecteur position(blockSize[0]*pos[0],blockSize[1]*pos[1],blockSize[2]*pos[2]);
-	// 	glBlock->setPosition(position);
-	// 	glBlock->setColor(col);
-	// 	tabGlBlocks.push_back(glBlock);
-	// }
-	
+    virtual void exportConfiguration();	
 };
 
 std::ostream& operator<<(std::ostream &stream, MultiRobotsBlock const& bb);
