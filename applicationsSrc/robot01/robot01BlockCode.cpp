@@ -73,10 +73,10 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 	MessagePtr message;
 
 	switch (pev->eventType) {
-    case EVENT_MOTION_END:
+    case EVENT_TRANSLATION_END:
 		robotBlock->setColor(LIGHTBLUE);
 		info.str("");
-		info << robotBlock->blockId << " rec.: EVENT_MOTION_END";
+		info << robotBlock->blockId << " rec.: EVENT_TRANSLATION_END";
 		scheduler->trace(info.str(),hostBlock->blockId);
 		// prepare for next motion
 		nbreOfWaitedAnswers=0;

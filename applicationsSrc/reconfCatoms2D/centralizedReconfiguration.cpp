@@ -3,7 +3,7 @@
 #include "bfs.h"
 #include "catoms2DWorld.h"
 #include "coordinate.h"
-#include "catoms2DMove.h"
+
 #include "catoms2DDirection.h"
 #include "map.h"
 
@@ -247,17 +247,17 @@ static Catoms2DBlock* previousCatomPerimeter(Catoms2DBlock  *c) {
 	return (Catoms2DBlock*)previousInterfacePerimeter(c)->connectedInterface->hostBlock;
 }
 
-static Catoms2DMove* nextMove(Catoms2DBlock  *c) {
+static Rotation2DMove* nextMove(Catoms2DBlock  *c) {
 	Catoms2DBlock* pivot = nextCatomPerimeter(c);
-	Catoms2DMove m(pivot,ROTATION_DIRECTION);
+	Rotation2DMove m(pivot,ROTATION_DIRECTION);
 	if (c->canMove(m)) {
 		//cout << c->blockId << " can move arround " << pivot->blockId << endl;
-		return new Catoms2DMove(m);
+		return new Rotation2DMove(m);
 	}
 	return NULL;
 }
 
-static Coordinate getPosition(Catoms2DBlock* c, Catoms2DMove &m) {
+static Coordinate getPosition(Catoms2DBlock* c, Rotation2DMove &m) {
 	P2PNetworkInterface *p2p = m.getPivot()->getP2PNetworkInterfaceByBlockRef(c);
 	Coordinate position(m.getPivot()->position[0], m.getPivot()->position[2]);
 	p2p = nextInterface(m.getPivot(),m.getDirection(),p2p);
@@ -300,7 +300,7 @@ static bool isInTarget(Coordinate &p) {
 
   }*/
 
-static bool canMove(Catoms2DBlock *c, Catoms2DMove &m, state_t states[]) {
+static bool canMove(Catoms2DBlock *c, Rotation2DMove &m, state_t states[]) {
 	Coordinate g = getPosition(c,m);
 	Catoms2DBlock *next = m.getPivot();
 	Catoms2DBlock *previous = c;
@@ -523,7 +523,7 @@ static void updateState(state_t states[], int gradient[]) {
 		} else {
 			if (canMove(c,gradient)) {
 				Coordinate p1(c->position[0], c->position[2]);
-				Catoms2DMove *mv = nextMove(c);
+				Rotation2DMove *mv = nextMove(c);
 
 				if (mv == NULL && isInTarget(p1)) {
 					states[c->blockId] = STABLE;
@@ -544,7 +544,7 @@ static void updateState(state_t states[], int gradient[]) {
 	}
 }
 
-static void move(Catoms2DBlock* c, Catoms2DMove &m) {
+static void move(Catoms2DBlock* c, Rotation2DMove &m) {
 	if (!c->canMove(m)) {
 		cerr << "error illegal move" << endl;
 		return;
@@ -637,7 +637,7 @@ void centralized_reconfiguration() {
 			if (canMove(c,gradient)) {
 				//cout << "c satisfies gradient condition" << endl;
 				//cout << "@" << c->blockId << " can physically move" << endl;
-				Catoms2DMove *mv = nextMove(c);
+				Rotation2DMove *mv = nextMove(c);
 				if (mv != NULL) {
 					Coordinate p1(c->position[0], c->position[2]);
 					Coordinate p2 = getPosition(c,*mv);
@@ -657,7 +657,7 @@ void centralized_reconfiguration() {
 						updateState(states,gradient);
 						cout << " done" << endl;
 
-						//Catoms2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
+						//Rotation2DMove counterMV(mv->getPivot(),reverseDirection(mv->getDirection()));
 						//if (!c->canMove(counterMV)) {
 						if (c->isBlocked()) {
 							//c->setColor(BLUE);

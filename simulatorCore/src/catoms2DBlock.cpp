@@ -10,8 +10,8 @@
 #include "buildingBlock.h"
 #include "catoms2DWorld.h"
 #include "catoms2DSimulator.h"
-#include "catoms2DMove.h"
-#include "catoms2DEvents.h"
+
+#include "rotation2DEvents.h"
 #include "trace.h"
 
 using namespace std;
@@ -251,7 +251,7 @@ int Catoms2DBlock::getCWMovePivotId() {
 
 
 // Motion
-bool Catoms2DBlock::canMove(Catoms2DMove &m) {
+bool Catoms2DBlock::canMove(Rotation2DMove &m) {
     // physical moving condition
     // pivot is a neighbor (physically connected)
     // move CW around i connector: i+1, i+2 and i+3 should be free
@@ -302,11 +302,11 @@ bool Catoms2DBlock::canMove(Catoms2DMove &m) {
     return res;
 }
 
-void Catoms2DBlock::startMove(Catoms2DMove &m, uint64_t t) {
-    getScheduler()->schedule(new MotionStartEvent(t,this,m));
+void Catoms2DBlock::startMove(Rotation2DMove &m, uint64_t t) {
+    getScheduler()->schedule(new Rotation2DStartEvent(t,this,m));
 }
 
-void Catoms2DBlock::startMove(Catoms2DMove &m) {
+void Catoms2DBlock::startMove(Rotation2DMove &m) {
     startMove(m,getScheduler()->now());
 }
 

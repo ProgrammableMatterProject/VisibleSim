@@ -15,10 +15,11 @@
 #include "catoms2DGlBlock.h"
 #include "lattice.h"
 
+class Rotation2DMove;
+
 namespace Catoms2D {
 
 class Catoms2DBlockCode;
-class Catoms2DMove;
 
 class RelativeDirection {
  public:
@@ -58,11 +59,11 @@ public:
 
 	// Motion
 	bool isBlocked();
-	bool canMove(Catoms2DMove &m);
+	bool canMove(Rotation2DMove &m);
 	int getCCWMovePivotId();
 	int getCWMovePivotId();
-	void startMove(Catoms2DMove &m, uint64_t t);
-	void startMove(Catoms2DMove &m);
+	void startMove(Rotation2DMove &m, uint64_t t);
+	void startMove(Rotation2DMove &m);
 
 	// MeldInterpreter
 	/**

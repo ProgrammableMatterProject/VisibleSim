@@ -1,22 +1,25 @@
 /*!
- * \file catoms3DEvents.h
- * \brief Motion events for 2D Catoms
+ * \file rotation3DEvents.h
+ * \brief Motion events for 3D rotating blocks
  * \date 15/02/2015
- * \author Benoît Piranda
+ * \author Benoît Piranda, Pierre Thalamy
+ *
+ * For now, only Catoms3D implement this kind of movements, if other blocks are added, we may consider creating subclasses of BuildingBlocks depending on the type of motion they implement.
+ *
  */
 
-#ifndef CATOMS3DEVENTS_H_
-#define CATOMS3DEVENTS_H_
+#ifndef ROTATION3DEVENTS_H_
+#define ROTATION3DEVENTS_H_
 
 #include "matrix44.h"
 #include "catoms3DBlock.h"
 #include "events.h"
 
-namespace Catoms3D {
+const int nbRotationSteps = 100;
 
-const int nbRotationSteps=100;
+using namespace Catoms3D;
 
-class Rotations {
+class Rotations3D {
 public :
 /**
     \brief Create a couple of rotations
@@ -26,8 +29,8 @@ public :
     \param ax2 : rotation axe for the second rotation
     \param ang2 : rotation angle for the second rotation
 */
-    Rotations(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2);
-    Rotations() {};
+    Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2);
+    Rotations3D() {};
 
     void init(const Matrix& m) {
         firstRotation=true;
@@ -63,16 +66,16 @@ protected :
 
 //===========================================================================================================
 //
-//          MotionStartEvent  (class)
+//          Rotation3DStartEvent  (class)
 //
 //===========================================================================================================
 
-class MotionStartEvent : public BlockEvent {
-    Rotations rot;
+class Rotation3DStartEvent : public BlockEvent {
+    Rotations3D rot;
 public:
-	MotionStartEvent(uint64_t, Catoms3DBlock *block,const Rotations& r);
-	MotionStartEvent(MotionStartEvent *ev);
-	~MotionStartEvent();
+	Rotation3DStartEvent(uint64_t, Catoms3DBlock *block,const Rotations3D& r);
+	Rotation3DStartEvent(Rotation3DStartEvent *ev);
+	~Rotation3DStartEvent();
 	void consumeBlockEvent() {};
 	void consume();
 	const virtual string getEventName();
@@ -80,16 +83,16 @@ public:
 
 //===========================================================================================================
 //
-//          MotionStepEvent  (class)
+//          Rotation3DStepEvent  (class)
 //
 //===========================================================================================================
 
-class MotionStepEvent : public BlockEvent {
-    Rotations rot;
+class Rotation3DStepEvent : public BlockEvent {
+    Rotations3D rot;
 public:
-	MotionStepEvent(uint64_t, Catoms3DBlock *block,const Rotations& r);
-	MotionStepEvent(MotionStepEvent *ev);
-	~MotionStepEvent();
+	Rotation3DStepEvent(uint64_t, Catoms3DBlock *block,const Rotations3D& r);
+	Rotation3DStepEvent(Rotation3DStepEvent *ev);
+	~Rotation3DStepEvent();
 	void consumeBlockEvent() {};
 	void consume();
 	const virtual string getEventName();
@@ -97,16 +100,16 @@ public:
 
 //===========================================================================================================
 //
-//          MotionStopEvent  (class)
+//          Rotation3DStopEvent  (class)
 //
 //===========================================================================================================
 
-class MotionStopEvent : public BlockEvent {
-    Rotations rot;
+class Rotation3DStopEvent : public BlockEvent {
+    Rotations3D rot;
 public:
-	MotionStopEvent(uint64_t, Catoms3DBlock *block,const Rotations& r);
-	MotionStopEvent(MotionStepEvent *ev);
-	~MotionStopEvent();
+	Rotation3DStopEvent(uint64_t, Catoms3DBlock *block,const Rotations3D& r);
+	Rotation3DStopEvent(Rotation3DStepEvent *ev);
+	~Rotation3DStopEvent();
 	void consumeBlockEvent() {};
 	void consume();
 	const virtual string getEventName();
@@ -114,19 +117,18 @@ public:
 
 //===========================================================================================================
 //
-//          MotionEndEvent  (class)
+//          Rotation3DEndEvent  (class)
 //
 //===========================================================================================================
 
-class MotionEndEvent : public BlockEvent {
+class Rotation3DEndEvent : public BlockEvent {
 public:
-	MotionEndEvent(uint64_t, Catoms3DBlock *block);
-	MotionEndEvent(MotionEndEvent *ev);
-	~MotionEndEvent();
+	Rotation3DEndEvent(uint64_t, Catoms3DBlock *block);
+	Rotation3DEndEvent(Rotation3DEndEvent *ev);
+	~Rotation3DEndEvent();
 	void consumeBlockEvent() {};
 	void consume();
 	const virtual string getEventName();
 };
 
-}
-#endif /* CATOMS3DEVENTS_H_ */
+#endif /* ROTATIONS3DEVENTS_H_ */

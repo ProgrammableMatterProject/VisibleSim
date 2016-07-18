@@ -21,7 +21,7 @@ $(SUBDIRS):
 test:	subdirs
 	@for dir in $(SUBDIRS); do \
 		echo "(cd ../applicationsBin/$$dir; ./$$dir)"; \
-		(cd ../applicationsBin/$$dir; ./$$dir -R -t -s 500000); \
+		(cd ../applicationsBin/$$dir; ./$$dir -R); \
 	done
 
 clean:

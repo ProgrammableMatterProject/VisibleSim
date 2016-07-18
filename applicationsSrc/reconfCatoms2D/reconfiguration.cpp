@@ -15,7 +15,7 @@
 #include "reconfiguration.h"
 #include "reconfigurationMsg.h"
 
-#include "catoms2DMove.h"
+
 
 #include <set>
 
@@ -110,10 +110,10 @@ bool Reconfiguration::isFree() {
     return (catom->nbConsecutiveEmptyFaces(true) >= 3);
 }
 
-Catoms2DMove* Reconfiguration::nextMove() {
+Rotation2DMove* Reconfiguration::nextMove() {
     if (isFree()) {
         Catoms2DBlock* pivot = map->getOnBorderNeighbor(ROTATION_DIRECTION);
-        return new Catoms2DMove(pivot,ROTATION_DIRECTION);
+        return new Rotation2DMove(pivot,ROTATION_DIRECTION);
     }
     return NULL;
 }

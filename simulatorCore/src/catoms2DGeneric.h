@@ -3,7 +3,7 @@
 
 #include "catoms2DBlockCode.h"
 #include "catoms2DSimulator.h"
-#include "catoms2DEvents.h"
+#include "rotation2DEvents.h"
 #include "catoms2DBlock.h"
 
 #include <functional>

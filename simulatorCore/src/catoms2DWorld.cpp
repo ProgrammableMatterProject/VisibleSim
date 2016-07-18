@@ -15,7 +15,8 @@
 #include "catoms2DSimulator.h"
 #include "catoms2DWorld.h"
 #include "catoms2DBlock.h"
-#include "catoms2DMove.h"
+#include "rotation2DEvents.h"
+
 #include "trace.h"
 #include "utils.h"
 #include "configExporter.h"
@@ -315,14 +316,14 @@ void Catoms2DWorld::menuChoice(int n) {
         // Identify pivot
         int pivotId = bb->getCCWMovePivotId();
         Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
-        Catoms2DMove move = Catoms2DMove(pivot, RelativeDirection::CCW);
+        Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CCW);
         bb->startMove(move);
     } break;
     case 6:                 // Move Right
         // Identify pivot
         int pivotId = bb->getCWMovePivotId();
         Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
-        Catoms2DMove move = Catoms2DMove(pivot, RelativeDirection::CW);
+        Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CW);
         bb->startMove(move);
         break;
     }

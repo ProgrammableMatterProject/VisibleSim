@@ -84,11 +84,11 @@ void SimpleCatom3DBlockCode::startup() {
         //Rotations rotations(catom,voisin,m_1*Vector3D(0,1,0),35.2643896828,m_1*Vector3D(-1,1, -M_SQRT2),35.2643896828);
         Rotations rotations(catom,voisin,m_1*Vector3D(0,0,1),45.0,m_1*Vector3D(-1,1,0),45.0);
         uint64_t t = scheduler->now()+2000;
-        scheduler->schedule(new MotionStartEvent(t,catom,rotations));
+        scheduler->schedule(new Rotation2DStartEvent(t,catom,rotations));
 #ifdef verbose
         stringstream info;
         info.str("");
-        info << "MotionStartEvent(" << t << ") around #" << voisin->blockId;
+        info << "Rotation2DStartEvent(" << t << ") around #" << voisin->blockId;
         scheduler->trace(info.str(),catom->blockId,LIGHTGREY);
 #endif
 	}
@@ -122,7 +122,7 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
             // Rotations rotations(catom,voisin,m_1*Vector3D(-1,1,M_SQRT2),35.26,m_1*Vector3D(-1,-1, -M_SQRT2),35.26);
             Rotations rotations(catom,voisin,m_1*Vector3D(-1,-1,0),45.0,m_1*Vector3D(0,0,1),45.0);
             uint64_t t = scheduler->now()+1002000;
-            // scheduler->schedule(new MotionStartEvent(t,catom,rotations));
+            // scheduler->schedule(new Rotation2DStartEvent(t,catom,rotations));
         }
         break;
         case EVENT_NI_RECEIVE: {

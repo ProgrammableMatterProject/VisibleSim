@@ -10,7 +10,7 @@
 #include "catom2D1BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include "catoms2DEvents.h"
+#include "rotation2DEvents.h"
 //MODIF NICO
 #include <memory>
 
@@ -81,7 +81,7 @@ void Catoms2D1BlockCode::startup() {
 #ifdef CENTRALIZED_COMP
   if (catom2D->blockId == 1) {
     centralized_reconfiguration();
-    //Catoms2DMove mv(Catoms2DWorld::getWorld()->getBlockById(5),Catoms2DMove::ROTATE_CW);
+    //Rotation2DMove mv(Catoms2DWorld::getWorld()->getBlockById(5),Rotation2DMove::ROTATE_CW);
     //catom2D->startMove(mv);
   }
 #else

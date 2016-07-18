@@ -29,7 +29,7 @@ private:
    bool isInTarget();
    bool isOnBorder();
 
-   Catoms2D::Catoms2DMove* nextMove();
+   Catoms2D::Rotation2DMove* nextMove();
 
 public:
    

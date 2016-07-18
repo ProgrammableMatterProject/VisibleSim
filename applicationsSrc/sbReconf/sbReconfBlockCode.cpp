@@ -230,10 +230,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
 
     switch (pev->eventType) {
-    case EVENT_MOTION_END: {
+    case EVENT_TRANSLATION_END: {
 #ifdef verbose
 		info.str("");
-		info << "rec.: EVENT_MOTION_END, tabUnlockPathSize=" << unlockPathTabSize << " order=" << unlockMotionStep;
+		info << "rec.: EVENT_TRANSLATION_END, tabUnlockPathSize=" << unlockPathTabSize << " order=" << unlockMotionStep;
 		scheduler->trace(info.str(),hostBlock->blockId);
 #endif
 		posGrid.x = block->position[0];
