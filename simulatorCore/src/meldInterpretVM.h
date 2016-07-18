@@ -28,7 +28,7 @@ typedef void* tuple_t;
 typedef short tuple_type;
 typedef int32_t meld_int;
 typedef double meld_float;
-typedef unsigned long int Register;
+typedef uintptr_t Register;
 typedef uint8_t byte;
 typedef uint16_t NodeID;
 typedef uint16_t Uid;
@@ -748,7 +748,8 @@ public:
         }
 
     /* ************* MISC FUNCTION PROTOTYPES ************* */
-    int process_bytecode(tuple_t tuple, const unsigned char *pc, int isNew, int isLinear, Register *reg, byte state);
+    int process_bytecode(tuple_t tuple, const unsigned char *pc, int isNew, int isLinear,
+                         Register *reg, byte state);
 
     void init_fields(void);
     void init_consts(void);

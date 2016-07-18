@@ -595,9 +595,7 @@ void Simulator::parseObstacles() {
 			world->addObstacle(position, color);
 			nodeObstacle = nodeObstacle->NextSibling("obstacle");
 		} // end while (nodeObstacle)
-	} else { // end if(nodeObstacle)
-		ERRPUT << "no obstacleList" << endl;
-	}
+	} 
 }
 
 void Simulator::startSimulation(void) {

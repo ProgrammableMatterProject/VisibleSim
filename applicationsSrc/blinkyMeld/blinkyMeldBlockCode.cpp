@@ -1,6 +1,8 @@
+
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp>
+#include <memory>
+
 #include "scheduler.h"
 #include "network.h"
 
@@ -202,12 +204,14 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 	break;
 	case EVENT_ADD_TUPLE:
-		this->vm->receive_tuple(1, std::static_pointer_cast<AddTupleEvent>(pev)->tuple, std::static_pointer_cast<AddTupleEvent>(pev)->face);
+		this->vm->receive_tuple(1, std::static_pointer_cast<AddTupleEvent>(pev)->tuple,
+								std::static_pointer_cast<AddTupleEvent>(pev)->face);
 		BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 		//info << "Adding tuple";
 		break;
 	case EVENT_REMOVE_TUPLE:
-		this->vm->receive_tuple(-1, std::static_pointer_cast<RemoveTupleEvent>(pev)->tuple, std::static_pointer_cast<RemoveTupleEvent>(pev)->face);
+		this->vm->receive_tuple(-1, std::static_pointer_cast<RemoveTupleEvent>(pev)->tuple,
+								std::static_pointer_cast<RemoveTupleEvent>(pev)->face);
 		BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 		//info << "Removing tuple";
 		break;
