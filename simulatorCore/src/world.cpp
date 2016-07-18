@@ -345,6 +345,17 @@ void World::tapBlock(uint64_t date, int bId) {
 	bb->tap(date, true);
 }
 
+void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
+	GlBlock *glBlock = new GlBlock(-1);
+    Vector3D position(lattice->gridScale[0]*pos[0],
+					  lattice->gridScale[1]*pos[1],
+					  lattice->gridScale[2]*pos[2]);
+	glBlock->setPosition(position);
+	glBlock->setColor(col);
+	tabGlBlocks.push_back(glBlock);
+}
+
+
 void World::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
 		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);

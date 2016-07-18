@@ -198,6 +198,14 @@ public:
      * @param blc : a pointer to the block to disconnect from its neighborhood
      */
     void disconnectBlock(BuildingBlock *block);
+
+    /**
+     * @brief add an obstacle to the grid as a disabled block
+     * @param pos : position of the inactive block
+     * @param col : color of the obstacle
+     */
+    void addObstacle(const Cell3DPosition &pos,const Color &col);
+
     /**
      * @brief Getter for selectedGlBlock
      *

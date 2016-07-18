@@ -388,18 +388,31 @@ string SCLattice::getDirectionString(int d) {
     return directionName[d];
 }
 
-// std::vector<int> SCLattice::getActiveNeighborDirections(BuildingBlock *bb) {
-//     vector<int> neighborDirections;
-//     vector<Cell3DPosition> relativeNCells =
-//         getRelativeConnectivity(bb->position);
+/********************* BCLattice *********************/
+BCLattice::BCLattice() : Lattice3D() {}
+BCLattice::BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
+BCLattice::~BCLattice() {}
 
-//     // Check if each neighbor cell is in grid and if it is, determine the corresponding direction
-//     for (Cell3DPosition p : relativeNCells) {
-//         Cell3DPosition v = bb->position + p;
-//         if (isInGrid(v) && !isFree(v)) {
-//             neighborDirections.push_back(determineDirection(p));
-//         }
-//     }
+vector<Cell3DPosition> BCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
+    return vector<Cell3DPosition>();
+}
 
-//     return neighborDirections;
-// }
+Vector3D BCLattice::gridToWorldPosition(const Cell3DPosition &pos) {
+    return Vector3D(pos[0] * gridScale[0],
+                    pos[1] * gridScale[1],
+                    pos[2] * gridScale[2]);
+}
+
+Cell3DPosition BCLattice::worldToGridPosition(const Vector3D &pos) {
+    return Cell3DPosition(pos[0] / gridScale[0],
+                          pos[1] / gridScale[1],
+                          pos[2] / gridScale[2]);
+}
+
+int BCLattice::getOppositeDirection(int d) {
+    return -1;
+}
+
+string BCLattice::getDirectionString(int d) {
+    return "NONE";
+}

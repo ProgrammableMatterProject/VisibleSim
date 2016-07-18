@@ -140,7 +140,13 @@ protected:
 	 *
 	 */
 	void parseTarget();
-
+	
+	/*! 
+	 *  @brief Parses the configuration for obstacles information 
+	 *
+	 */
+	void parseObstacles();
+	
 	/*! @fn virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[])
 	 *  @brief Calls the createWorld function from the target world subclass to instantiate it
 	 *

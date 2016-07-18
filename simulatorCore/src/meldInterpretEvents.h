@@ -66,6 +66,41 @@ public:
 
 //===========================================================================================================
 //
+//          VMSendMessageEvent2  (class)
+//
+//===========================================================================================================
+// PTHY: TEMPORARY: FOR WIRELESS
+class VMSendMessageEvent2 : public BlockEvent {
+public:
+	MessagePtr message;
+	BaseSimulator::BuildingBlock* target;
+
+	VMSendMessageEvent2(uint64_t, BaseSimulator::BuildingBlock *conBlock,
+						MessagePtr mes, BaseSimulator::BuildingBlock* sento);
+	VMSendMessageEvent2(VMSendMessageEvent2 *ev);
+	~VMSendMessageEvent2();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+//===========================================================================================================
+//
+//          VMReceiveMessageEvent2  (class)
+//
+//===========================================================================================================
+// PTHY: TEMPORARY: FOR WIRELESS
+class VMReceiveMessageEvent2 : public BlockEvent {
+public:
+	MessagePtr message;
+	VMReceiveMessageEvent2(uint64_t, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes);
+	VMReceiveMessageEvent2(VMReceiveMessageEvent2* ev);
+	~VMReceiveMessageEvent2();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
+
+//===========================================================================================================
+//
 //          VMHandleDebugCommandEvent  (class)
 //
 //===========================================================================================================

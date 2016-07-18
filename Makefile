@@ -10,7 +10,7 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots
 
 #for debug version
 TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES

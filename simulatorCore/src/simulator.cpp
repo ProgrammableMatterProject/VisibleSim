@@ -153,6 +153,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	// Parse and configure the remaining items
 	parseCameraAndSpotlight();
 	parseBlockList();
+	parseObstacles();
 	parseTarget();
 }
 
@@ -546,6 +547,55 @@ void Simulator::parseTarget() {
 	}
 
 	loadTargetAndCapabilities(targetCells);
+}
+
+void Simulator::parseObstacles() {
+// loading the obstacles
+	TiXmlNode *nodeObstacle = xmlWorldNode->FirstChild("obstacleList");
+	if (nodeObstacle) {
+		Color defaultColor = DARKGREY;
+		TiXmlElement* element = nodeObstacle->ToElement();
+		const char *attr= element->Attribute("color");
+		if (attr) {
+			string str(attr);
+			int pos1 = str.find_first_of(','),
+				pos2 = str.find_last_of(',');
+			defaultColor.rgba[0] = atof(str.substr(0,pos1).c_str())/255.0;
+			defaultColor.rgba[1] = atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0;
+			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
+		}
+
+		nodeObstacle = nodeObstacle->FirstChild("obstacle");
+		Cell3DPosition position;
+		Color color;
+		while (nodeObstacle) {
+			element = nodeObstacle->ToElement();
+			color=defaultColor;
+			attr = element->Attribute("color");
+			if (attr) {
+				string str(attr);
+				int pos1 = str.find_first_of(','),
+					pos2 = str.find_last_of(',');
+				color.set(atof(str.substr(0,pos1).c_str())/255.0,
+						  atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
+						  atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+				OUTPUT << "color :" << color << endl;
+			}
+			attr = element->Attribute("position");
+			if (attr) {
+				string str(attr);
+				int pos1 = str.find_first_of(','),
+					pos2 = str.find_last_of(',');
+				position.pt[0] = atoi(str.substr(0,pos1).c_str());
+				position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
+				position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+				OUTPUT << "position : " << position << endl;
+			}
+
+			world->addObstacle(position, color);
+			nodeObstacle = nodeObstacle->NextSibling("obstacle");
+		} // end while (nodeObstacle)
+	} 
 }
 
 void Simulator::startSimulation(void) {

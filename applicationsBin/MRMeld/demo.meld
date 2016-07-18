@@ -1,0 +1,44 @@
+type route edge(node, node).
+type route at(node, int, int, int).
+type linear ready(node, node).
+type linear readycount(node, int).
+type linear stage1(node).
+type linear stage2(node).
+type linear stage3(node).
+type linear stage4(node).
+type linear stage5(node).
+
+const corridor = 3.
+const total = 4.
+const targety = 7.
+const targetx = 0.
+
+readycount(A, 0).
+stage1(A).
+
+stage1(A), !at(A, X, Y, Z), X <> corridor
+  -o stage1(A), !moveTo(A, corridor, Y, 0).
+
+stage1(A), !at(A, X, Y, Z), X = corridor
+  -o stage2(A).
+
+stage2(A)
+  -o {B | !edge(A, B) | ready(B, A)}.
+
+ready(A, B), readycount(A, N), N < total - 1
+  -o readycount(A,N+1).
+
+ready(A, B), readycount(A, N), N = total - 1
+  -o stage3(A).
+
+stage3(A), !at(A, X, Y, Z), Y <> targety + node2int(A) - 1
+  -o stage3(A), !moveTo(A, X, targety + node2int(A) - 1, 0).
+
+stage3(A), !at(A, X, Y, Z), Y = targety + node2int(A) - 1
+  -o stage4(A).
+
+stage4(A), !at(A, X, Y, Z), X <> targetx + node2int(A) || Y <> targety + 1
+  -o stage4(A), !moveTo(A, targetx + node2int(A), targety + 1, 0).
+
+stage4(A), !at(A, X, Y, Z), X = targetx + node2int(A), Y = targety + 1
+  -o stage5(A).
