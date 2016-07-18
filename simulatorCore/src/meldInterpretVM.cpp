@@ -2,6 +2,7 @@
 #include "meldInterpretVM.h"
 
 #include <iostream>
+#include <cassert>
 
 #include "meldInterpretEvents.h"
 #include "meldInterpretMessages.h"
@@ -12,7 +13,7 @@
 
 //#define DEBUG_INSTRS
 //#define LOG_DEBUG
-#define myassert(e)	((e) ? (void)0 : __myassert(__FILE__, __LINE__,#e))
+// #define assert(e)	((e) ? (void)0 : __assert(__FILE__, __LINE__,#e))
 
 using namespace BaseSimulator;
 
@@ -130,7 +131,7 @@ NodeID MeldInterpretVM::get_neighbor_ID(int face){
 
 /** Enqueue a tuple for execution */
 void MeldInterpretVM::enqueueNewTuple(tuple_t tuple, record_type isNew){
-    myassert (TUPLE_TYPE(tuple) < NUM_TYPES);
+    assert (TUPLE_TYPE(tuple) < NUM_TYPES);
 
     if (TYPE_IS_STRATIFIED(TUPLE_TYPE(tuple))) {
         p_enqueue(newStratTuples, TYPE_STRATIFICATION_ROUND(TUPLE_TYPE(tuple)), tuple, 0, isNew);
@@ -357,7 +358,6 @@ void MeldInterpretVM::receive_tuple(int isNew, tuple_t tpl, byte face) {
     tuple_t tuple;
     tuple_type type = TUPLE_TYPE(rcvdTuple);
     size_t tuple_size = TYPE_SIZE(type);
-    tuple_print(rcvdTuple, stderr);
 
     if(!TYPE_IS_LINEAR(type) && !TYPE_IS_ACTION(type)) {
         //tuple_queue *queue = receivedTuples + face;
@@ -385,7 +385,7 @@ void MeldInterpretVM::receive_tuple(int isNew, tuple_t tpl, byte face) {
 
 /** Sends a tuple to Block of ID rt, with or without delay */
 void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int isNew) {
-    myassert (TUPLE_TYPE(tuple) < NUM_TYPES);
+    assert (TUPLE_TYPE(tuple) < NUM_TYPES);
     if (delay > 0) {
 	    p_enqueue(delayedTuples, myGetTime() + delay, tuple, rt, (record_type) isNew);
 	    return;
@@ -400,7 +400,7 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
 	    int face = host->getFaceForNeighborID(target);
 
 	    if (face != -1) {
-            myassert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= 17);
+            assert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= 17);
             MessagePtr ptr;
             if (isNew > 0) {
                 ptr = (MessagePtr)(new AddTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
@@ -418,7 +418,8 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
 	    }
 	    else {
             // PTHY: TEMPORARY WORKAROUND, until broadcast communication is natively supported in VS
-            if (host->getNbInterfaces() == 0) { // This is a broadcast message
+            if (host->getNbInterfaces() == 1) { // This is a broadcast message
+                assert(TUPLE_TYPE(tuple) < NUM_TYPES);
                 MessagePtr ptr;
                 if (isNew > 0) {
                     ptr = (MessagePtr)(new AddTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
@@ -435,7 +436,7 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
                     }
                 }
                 
-                if (toblock != NULL) {
+                if (toblock != NULL) {                    
                     MeldInterpret::getScheduler()->schedule(
                         new VMSendMessageEvent2(MeldInterpret::getScheduler()->now(), host, ptr, toblock));
                 } else {
@@ -468,7 +469,7 @@ byte MeldInterpretVM::updateRuleState(byte rid) {
 /** Simply calls tuple_do_handle located in core.c to handle tuple  */
 void MeldInterpretVM::tuple_handle(tuple_t tuple, int isNew, Register *registers) {
     tuple_type type = TUPLE_TYPE(tuple);
-    myassert (type < NUM_TYPES);
+    assert (type < NUM_TYPES);
     tuple_do_handle(type, tuple, isNew, registers);
 }
 
@@ -490,17 +491,17 @@ void MeldInterpretVM::vm_alloc(void) {
     delayedTuples = (tuple_pqueue*)calloc(1, sizeof(tuple_pqueue));
     receivedTuples = (tuple_queue*)calloc(host->getNbInterfaces(), sizeof(tuple_queue));
     
-    myassert(tuples!=NULL);
-    myassert(newTuples!=NULL);
-    myassert(newStratTuples!=NULL);
-    myassert(delayedTuples!=NULL);
+    assert(tuples!=NULL);
+    assert(newTuples!=NULL);
+    assert(newStratTuples!=NULL);
+    assert(delayedTuples!=NULL);
 }
 
 void MeldInterpretVM::__myassert(string file, int line, string exp) {
 #ifdef LOG_DEBUG
     //{
     char str[50];
-    sprintf(str, "myassert %s:%d %s", file, line, exp);
+    sprintf(str, "assert %s:%d %s", file, line, exp);
     printDebug(str);
     //}
 #endif
@@ -932,7 +933,7 @@ int MeldInterpretVM::execute_iter (const unsigned char *pc, Register *reg, int i
             }  else {
                 /** Don't know what to do */
                 fprintf (stderr, "Type %d not supported yet - don't know what to do.\n", fieldtype);
-                myassert (0);
+                assert (0);
                 exit (2);
             }
 
@@ -1904,7 +1905,7 @@ void MeldInterpretVM::init_fields(void) {
                 break;
 
             default:
-                myassert(0);
+                assert(0);
                 size = 0;
                 break;
             }
@@ -1936,7 +1937,7 @@ inline bool MeldInterpretVM::aggregate_accumulate(int agg_type, void *acc, void 
     switch (agg_type) {
     case AGG_SET_UNION_INT:
     case AGG_SET_UNION_FLOAT:
-        myassert(false);
+        assert(false);
         return false;
 
     case AGG_FIRST:
@@ -1980,11 +1981,11 @@ inline bool MeldInterpretVM::aggregate_accumulate(int agg_type, void *acc, void 
 
     case AGG_SUM_LIST_INT:
     case AGG_SUM_LIST_FLOAT:
-        myassert(false);
+        assert(false);
         return false;
     }
 
-    myassert(0);
+    assert(0);
     while(1);
 }
 
@@ -2012,11 +2013,11 @@ inline bool MeldInterpretVM::aggregate_changed(int agg_type, void *v1, void *v2)
         return false;
 
     default:
-        myassert(0);
+        assert(0);
         return true;
     }
 
-    myassert(0);
+    assert(0);
     while(1);
 }
 
@@ -2043,11 +2044,11 @@ inline void MeldInterpretVM::aggregate_seed(int agg_type, void *acc, void *start
     case AGG_SET_UNION_FLOAT:
     case AGG_SUM_LIST_INT:
     case AGG_SUM_LIST_FLOAT:
-        myassert(false);
+        assert(false);
         return;
     }
 
-    myassert(0);
+    assert(0);
     while(1);
 }
 
@@ -2067,11 +2068,11 @@ inline void MeldInterpretVM::aggregate_free(tuple_t tuple, unsigned char field_a
     case AGG_SET_UNION_FLOAT:
     case AGG_SUM_LIST_INT:
     case AGG_SUM_LIST_FLOAT:
-        myassert(false);
+        assert(false);
         break;
 
     default:
-        myassert(0);
+        assert(0);
         break;
     }
 }
@@ -2518,7 +2519,8 @@ MeldInterpretVM::print_bytecode(const unsigned char *pc) {
 }
 #endif
 
-int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, int isNew, int isLinear, Register *reg, byte state) {
+int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, int isNew, int isLinear,
+                                       Register *reg, byte state) {
 #ifdef DEBUG_INSTRS
 
     /** if (PROCESS_TYPE(state) == PROCESS_TUPLE) { */
@@ -3081,20 +3083,20 @@ int MeldInterpretVM::process_bytecode (tuple_t tuple, const unsigned char *pc, i
 #define MAX_STRING_SIZE 200
 /** Prints a tuple */
 void MeldInterpretVM::tuple_print(tuple_t tuple, FILE *fp) {
-    unsigned char tuple_type = TUPLE_TYPE(tuple);
+    tuple_type type = TUPLE_TYPE(tuple);
     int j;
     char str[MAX_STRING_SIZE];
     char tmp[MAX_STRING_SIZE];
 
-    sprintf(str,"@%d: %s(r", getBlockId(), TYPE_NAME(tuple_type));
+    sprintf(str,"@%d: %s(r", getBlockId(), TYPE_NAME(type));
 
-    for(j = 0; j < TYPE_NUMARGS(tuple_type); ++j) {
+    for(j = 0; j < TYPE_NUMARGS(type); ++j) {
         void *field = GET_TUPLE_FIELD(tuple, j);
 
         if (j > 0)
             strcat(str, ", ");
 
-        switch(TYPE_ARG_TYPE(tuple_type, j)) {
+        switch(TYPE_ARG_TYPE(type, j)) {
         case FIELD_INT:
             sprintf(tmp, "%d", MELD_INT(field));
             break;
@@ -3109,7 +3111,7 @@ void MeldInterpretVM::tuple_print(tuple_t tuple, FILE *fp) {
         case FIELD_LIST_ADDR:
         case FIELD_SET_INT:
         case FIELD_SET_FLOAT:
-            myassert(false);
+            assert(false);
             break;
         case FIELD_TYPE:
             sprintf(tmp, "%s", TYPE_NAME(MELD_INT(field)));
@@ -3121,7 +3123,7 @@ void MeldInterpretVM::tuple_print(tuple_t tuple, FILE *fp) {
                 sprintf(tmp, "false");
             break;
         default:
-            myassert(0);
+            assert(0);
             break;
         }
         strcat(str,tmp);
@@ -3144,7 +3146,7 @@ void MeldInterpretVM::facts_dump(void) {
         // don't print fact types that don't exist
         if (TUPLES[i].head == NULL)
             continue;
-
+        
         // don't print artificial tuple types
         /**
           if (tuple_names[i][0] == '_')

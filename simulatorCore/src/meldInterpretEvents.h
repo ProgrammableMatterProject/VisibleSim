@@ -69,7 +69,7 @@ public:
 //          VMSendMessageEvent2  (class)
 //
 //===========================================================================================================
-// PTHY: TEMPORARY: FOR BROADCAST
+// PTHY: TEMPORARY: FOR WIRELESS
 class VMSendMessageEvent2 : public BlockEvent {
 public:
 	MessagePtr message;
@@ -88,7 +88,7 @@ public:
 //          VMReceiveMessageEvent2  (class)
 //
 //===========================================================================================================
-// PTHY: TEMPORARY: FOR BROADCAST
+// PTHY: TEMPORARY: FOR WIRELESS
 class VMReceiveMessageEvent2 : public BlockEvent {
 public:
 	MessagePtr message;
