@@ -124,9 +124,16 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 	
 	// Set the scheduler execution mode on start, if enabled	
 	if (sm != CMD_LINE_UNDEFINED) {
+		if (!GlutContext::GUIisEnabled && sm == SCHEDULER_MODE_REALTIME) {
+			cerr << "error: Realtime mode cannot be used when in terminal mode" << endl;
+			exit(EXIT_FAILURE);
+		}				   
+
 		scheduler->setSchedulerMode(sm);
-		scheduler->setAutoStart(true);
-	} else if (!GlutContext::GUIisEnabled) {
+		scheduler->setAutoStart(true);		
+	}
+
+	if (!GlutContext::GUIisEnabled) {
 		// If GUI disabled, and no mode specified, set fastest mode by default (Normally REALTIME)
 		scheduler->setSchedulerMode(SCHEDULER_MODE_FASTEST);
 	}
