@@ -207,8 +207,9 @@ public:
 	 * When triggered from the simulation menu,
 	 *  can be used as an interactive event for debug on all catom types
 	 * @param date : date of the tap event
+	 * @param face : id of the tapped face
 	 */   	
-	void tap(uint64_t date, bool debug = false);// PTHY: TEMPORARY! Debug event should be handled by user
+	void tap(uint64_t date, int face);
 	/**
 	 * @brief Returns the local time of the block according to its internal clock
 	 * @return local time of the block according to its internal clock

@@ -240,31 +240,6 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
 	}
 }
 
-void RobotBlocksWorld::menuChoice(int n) {
-	RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	switch (n) {
-	case 1 : {
-		OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-		vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(bb->position);
-		Cell3DPosition nPos = bb->position + nCells[numSelectedFace];
-
-		addBlock(-1, bb->buildNewBlockCode, nPos, bb->color);
-		linkBlock(nPos);
-		linkNeighbors(nPos);
-	} break;
-	case 2 : {
-		OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
-		deleteBlock(bb);
-	} break;
-	case 3 : {
-		tapBlock(getScheduler()->now(), bb->blockId);
-	} break;
-	case 4:                 // Save current configuration
-		exportConfiguration();
-		break;
-	}
-}
-
 void RobotBlocksWorld::setSelectedFace(int n) {
 	numSelectedGlBlock=n/6;
 	string name = objBlockForPicking->getObjMtlName(n%6);

@@ -62,71 +62,75 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	OUTPUT << bb->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now() << " process event " << pev->getEventName() << "(" << pev->eventType << ")" << ", random number : " << pev->randomNumber << endl;
 	
 	switch (pev->eventType) {
-		case EVENT_SET_COLOR:
-			{
-			Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
-			bb->setColor(color);
-			info << "set color "<< color << endl;
-			if (cycle){
-				color = BLUE;
-				cycle = false;
-			}
-			else{
-				color = RED;
-				cycle = true;
-			}
-			getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
-			info << "Setcolor scheduled" << endl;
-			}
-			break;
-		//case EVENT_PLAY_NOTE:
-		case EVENT_NI_RECEIVE:
-			{
-			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
-			P2PNetworkInterface * recvInterface = message->destinationInterface;
-			switch(message->id){
-				case SYNC_MSG_ID: 
-					{
-					SynchroMessage_ptr recvMessage =  std::static_pointer_cast<SynchroMessage>(message);
-					if (!received[recvMessage->idSync]){
-						received[recvMessage->idSync]=true;
-						block2Answer=recvInterface;
-						sendClockToNeighbors(block2Answer,recvMessage->nbhop+1,recvMessage->time,recvMessage->idSync); 	
-						//if ((recvMessage->time + 6000*recvMessage->nbhop) >= bb->getTime())
+	case EVENT_SET_COLOR:
+	{
+		Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
+		bb->setColor(color);
+		info << "set color "<< color << endl;
+		if (cycle){
+			color = BLUE;
+			cycle = false;
+		}
+		else{
+			color = RED;
+			cycle = true;
+		}
+		getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
+		info << "Setcolor scheduled" << endl;
+	}
+	break;
+	//case EVENT_PLAY_NOTE:
+	case EVENT_NI_RECEIVE:
+	{
+		message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message; 
+		P2PNetworkInterface * recvInterface = message->destinationInterface;
+		switch(message->id){
+		case SYNC_MSG_ID: 
+		{
+			SynchroMessage_ptr recvMessage =  std::static_pointer_cast<SynchroMessage>(message);
+			if (!received[recvMessage->idSync]){
+				received[recvMessage->idSync]=true;
+				block2Answer=recvInterface;
+				sendClockToNeighbors(block2Answer,recvMessage->nbhop+1,recvMessage->time,recvMessage->idSync); 	
+				//if ((recvMessage->time + 6000*recvMessage->nbhop) >= bb->getTime())
 
-						delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;  
+				delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;  
 
-						/*else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
-							info << "Paused for : " << ((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop))-getScheduler()->now()) << endl;
-							getScheduler()->trace(info.str(),hostBlock->blockId);
-							while (bb->getTime() > recvMessage->time+6000*recvMessage->nbhop);
-							//while(getScheduler()->now() < (bb->getTime()-(recvMessage->time + 60000*recvMessage->nbhop)));
-							//bb->pauseClock((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop)),getScheduler()->now()); 
-						}*/
-						info<<"synchronized with delay : "<< delay << endl;
-						}
-					}
-					break;					
-				default:
-					break;
-				}
+				/*else if ((recvMessage->time + 6000*recvMessage->nbhop) < bb->getTime()){
+				  info << "Paused for : " << ((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop))-getScheduler()->now()) << endl;
+				  getScheduler()->trace(info.str(),hostBlock->blockId);
+				  while (bb->getTime() > recvMessage->time+6000*recvMessage->nbhop);
+				  //while(getScheduler()->now() < (bb->getTime()-(recvMessage->time + 60000*recvMessage->nbhop)));
+				  //bb->pauseClock((bb->getTime()-(recvMessage->time+6000*recvMessage->nbhop)),getScheduler()->now()); 
+				  }*/
+				info<<"synchronized with delay : "<< delay << endl;
 			}
-			break;
-		case EVENT_SYNC:
-			{
-			received[idMessage]=true;
-			sendClockToNeighbors(NULL,1,bb->getTime(),idMessage);
-			idMessage++;
-			uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
-			getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
-			info << "scheduled synchro" << endl;
-			}
-			break;
+		}
+		break;					
 		default:
-			ERRPUT << "*** ERROR *** : unknown local event" << endl;
 			break;
 		}
-		getScheduler()->trace(info.str(),hostBlock->blockId);
+	}
+	break;
+	case EVENT_SYNC:
+	{
+		received[idMessage]=true;
+		sendClockToNeighbors(NULL,1,bb->getTime(),idMessage);
+		idMessage++;
+		uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
+		getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
+		info << "scheduled synchro" << endl;
+	}
+	break;
+	case EVENT_TAP: {
+	    int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
+		info << "tapped on face " << SCLattice::getDirectionString(face);
+	} break;
+	default:
+		ERRPUT << "*** ERROR *** : unknown local event" << endl;
+		break;
+	}
+	getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
@@ -138,7 +142,7 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
 	for (int i=0; i<6 ; i++) {
-	p2p = bb->getInterface(SCLattice::Direction(i));
+		p2p = bb->getInterface(SCLattice::Direction(i));
 		if (p2p->connectedInterface && p2p!=p2pExcept){	
 			SynchroMessage *message = new SynchroMessage(clock, hop, id);
 			getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent (getScheduler()->now(), message, p2p));

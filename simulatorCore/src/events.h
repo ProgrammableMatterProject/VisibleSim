@@ -264,9 +264,10 @@ public:
 //===========================================================================================================
 
 class TapEvent : public BlockEvent {
-    bool isDebugEvent = false;	// PTHY: TEMPORARY! Debug event should be handled by user
 public:
-	TapEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, const bool debug = false);
+	const int tappedFace;
+
+	TapEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, const int face);
 	TapEvent(TapEvent *ev);
 	~TapEvent();
 	void consumeBlockEvent();

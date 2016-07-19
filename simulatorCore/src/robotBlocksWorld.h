@@ -79,10 +79,6 @@ public:
      */
     virtual void setSelectedFace(int n);
     /**
-     * @copydoc World::menuChoice
-     */
-    virtual void menuChoice(int n);
-    /**
      * @copydoc World::exportConfiguration
      */
     virtual void exportConfiguration();

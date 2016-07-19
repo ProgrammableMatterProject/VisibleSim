@@ -173,9 +173,9 @@ void BuildingBlock::setPosition(const Cell3DPosition &p) {
     getWorld()->updateGlData(this);
 }
     
-void BuildingBlock::tap(uint64_t date, bool debug) {
+void BuildingBlock::tap(uint64_t date, int face) {
     OUTPUT << "tap scheduled" << endl;
-    getScheduler()->scheduleLock(new TapEvent(date, this, debug));
+    getScheduler()->scheduleLock(new TapEvent(date, this, (uint8_t)face));
 }
     
 int BuildingBlock::getNextRandomNumber() {

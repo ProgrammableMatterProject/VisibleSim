@@ -325,7 +325,7 @@ void World::menuChoice(int n) {
 		deleteBlock(bb);
 	} break;
 	case 3 : {
-		tapBlock(getScheduler()->now(), bb->blockId);
+		tapBlock(getScheduler()->now(), bb->blockId, numSelectedFace);
 	} break;
 	case 4:                 // Save current configuration
 		exportConfiguration();
@@ -339,10 +339,10 @@ void World::createHelpWindow() {
 	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
 }
 
-void World::tapBlock(uint64_t date, int bId) {
+void World::tapBlock(uint64_t date, int bId, int face) {
 	BuildingBlock *bb = getBlockById(bId);
-	cerr << bb->blockId << " : " << bb->position << endl;
-	bb->tap(date, true);
+	cerr << bb->blockId << " : " << bb->position << " : " << face << endl;
+	bb->tap(date, face < lattice->getMaxNumNeighbors() ? face : -1);
 }
 
 void World::addObstacle(const Cell3DPosition &pos,const Color &col) {

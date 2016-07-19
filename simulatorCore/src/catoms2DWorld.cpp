@@ -292,26 +292,6 @@ void Catoms2DWorld::menuChoice(int n) {
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 
     switch (n) {
-    case 1 : {
-        OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-
-        Cell3DPosition pos = bb->getPosition(HLattice::Direction(numSelectedFace));
-
-        addBlock(-1, bb->buildNewBlockCode, pos, bb->color);
-        linkBlock(pos);
-        linkNeighbors(pos);
-    } break;
-    case 2 : {
-        OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedGlBlock]->blockId << endl;
-        deleteBlock(bb);
-        linkNeighbors(bb->position);
-    } break;
-    case 3 : {
-        tapBlock(getScheduler()->now(), bb->blockId);
-    } break;
-    case 4:                 // Save current configuration
-        exportConfiguration();
-        break;
     case 5: {                 // Move Left
         // Identify pivot
         int pivotId = bb->getCCWMovePivotId();
@@ -319,15 +299,15 @@ void Catoms2DWorld::menuChoice(int n) {
         Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CCW);
         bb->startMove(move);
     } break;
-    case 6:                 // Move Right
+    case 6: {                // Move Right
         // Identify pivot
         int pivotId = bb->getCWMovePivotId();
         Catoms2DBlock *pivot = (Catoms2DBlock *)getBlockById(pivotId);
         Rotation2DMove move = Rotation2DMove(pivot, RelativeDirection::CW);
         bb->startMove(move);
-        break;
+    } break;
+    default: World::menuChoice(n); break; // For all non-catoms2D-specific cases
     }
-
 }
 
 void Catoms2DWorld::setSelectedFace(int n) {
