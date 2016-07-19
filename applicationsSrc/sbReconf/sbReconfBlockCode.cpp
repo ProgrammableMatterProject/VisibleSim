@@ -29,23 +29,41 @@ using namespace SmartBlocks;
 const int time_offset=100;
 
 SbReconfBlockCode::SbReconfBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
-    OUTPUT << "SbReconfBlockCode constructor" << endl;
+    // OUTPUT << "SbReconfBlockCode constructor" << endl;
     scheduler = getScheduler();
-    smartBlock = (SmartBlocksBlock*)hostBlock;
+    smartBlock = (SmartBlocks::SmartBlocksBlock*)hostBlock;
+
+	targetGrid=NULL;
+	lattice = BaseSimulator::getWorld()->lattice;
+	nbreStats=0;
+    for (int i = 0; i < 10; i++) {
+        tabStatsData[i] = 0;
+    }
 }
 
 SbReconfBlockCode::~SbReconfBlockCode() {
-    OUTPUT << "SbReconfBlockCode destructor" << endl;
-	// delete [] targetGrid; // Handled by smartBlocksSimulator
+    // OUTPUT << "SbReconfBlockCode destructor" << endl;
     // delete [] unlockPathTab;
+	
+	if (targetGrid) {
+		delete [] targetGrid;
+		targetGrid = NULL;
+	}
+	
+	if (capabilities){
+		delete capabilities;
+	    capabilities = NULL;
+	}
 }
 
 void SbReconfBlockCode::startup() {
     stringstream info;
-    block = (SmartBlocksBlock*)(hostBlock);
-    wrl = SmartBlocksWorld::getWorld();
+    block = (SmartBlocks::SmartBlocksBlock*)(hostBlock);
+    wrl = SmartBlocks::getWorld();
     OUTPUT << "Starting " << block->blockId << endl;
 
+	lattice = BaseSimulator::getWorld()->lattice;
+	
     nbreOfWaitedAnswers=0;
     block2Answer = NULL;
     _next = NULL;
@@ -72,21 +90,21 @@ void SbReconfBlockCode::startup() {
     if(block->blockId == 1)
     { posGrid.x = block->position[0];
 		posGrid.y = block->position[1];
-		SmartBlocks::presence *tab = wrl->getTargetGridPtr(gridSize);
+		presence *tab = getTargetGridPtr(gridSize);
 #ifdef verbose
 		scheduler->trace(info.str(),block->blockId);
 #endif
-		targetGrid = new SmartBlocks::presence[gridSize[0]*gridSize[1]];
-		memcpy(targetGrid,tab,gridSize[0]*gridSize[1]*sizeof(SmartBlocks::presence));
-		block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
+		targetGrid = new presence[gridSize[0]*gridSize[1]];
+		memcpy(targetGrid,tab,gridSize[0]*gridSize[1]*sizeof(presence));
+		block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
 		tabSteps[0] = true;
 
 		// compte le nombre de cellules pleines
 		int n=gridSize[0]*gridSize[1];
 		_nbreGoalCells=0;
-		SmartBlocks::presence *ptr=tab;
+		presence *ptr=tab;
 		while (n--) {
-			_nbreGoalCells+=(*ptr==SmartBlocks::fullCell);
+			_nbreGoalCells+=(*ptr==fullCell);
 			ptr++;
 		}
 
@@ -150,11 +168,11 @@ void SbReconfBlockCode::applyRules() {
 // apply rules
     posGrid.x = block->position[0];
     posGrid.y = block->position[1];
-    wrl->getPresenceMatrix(posGrid,_pm);
-    SmartBlocks::PresenceMatrix localTargetGrid;
+    getPresenceMatrix(posGrid,_pm);
+    PresenceMatrix localTargetGrid;
     getLocalTargetGrid(posGrid,localTargetGrid);
     // OUTPUT << localTargetGrid;
-    SmartBlocks::PointCel neighborsDirection[5];
+    PointCel neighborsDirection[5];
     SbReconfBlockCode*bc;
     P2PNetworkInterface *ni;
     /*for (int i=0; i<4; i++) {
@@ -175,14 +193,14 @@ void SbReconfBlockCode::applyRules() {
 			bc = (SbReconfBlockCode*)(ni->connectedInterface->hostBlock->blockCode);
 			neighborsDirection[i]=bc->_motionDir;
 		} else {
-			if (ni->connectedInterface!=NULL && ((SmartBlocksBlock*)(ni->connectedInterface->hostBlock))->wellPlaced) {
+			if (ni->connectedInterface!=NULL && ((SmartBlocks::SmartBlocksBlock*)(ni->connectedInterface->hostBlock))->wellPlaced) {
 				neighborsDirection[i].set(0,0);
 			} else {
 				neighborsDirection[i].unSet();
 			}
 		}
     }
-    possibleRules = wrl->getCapabilities()->validateDirection(_pm,localTargetGrid,neighborsDirection);
+    possibleRules = getCapabilities()->validateDirection(_pm,localTargetGrid,neighborsDirection);
     if (possibleRules && !possibleRules->empty()) {
 		_motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
 //        OUTPUT << "_motionDir =" << _motionDir << endl;
@@ -212,7 +230,7 @@ void SbReconfBlockCode::setRulesColor() {
     }
 }
 
-void SbReconfBlockCode::startMotion(uint64_t t,const SmartBlocks::PointCel &mv,int step,const vector<short>&path) {
+void SbReconfBlockCode::startMotion(uint64_t t,const PointCel &mv,int step,const vector<short>&path) {
     prepareUnlock(path,step);
     Vector3D finalPosition;
     finalPosition.set(block->position.pt[0]+mv.x,block->position.pt[1]+mv.y,0);
@@ -220,7 +238,7 @@ void SbReconfBlockCode::startMotion(uint64_t t,const SmartBlocks::PointCel &mv,i
 #ifdef verbose
     stringstream info;
     info.str("");
-    info << "SmartBlocks::TranslationStartEvent(" << t << ") vect=" << mv << "  unlock=" << path.size() << " step=" << step;
+    info << "TranslationStartEvent(" << t << ") vect=" << mv << "  unlock=" << path.size() << " step=" << step;
     scheduler->trace(info.str(),block->blockId,LIGHTGREY);
 #endif
 }
@@ -238,21 +256,20 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 #endif
 		posGrid.x = block->position[0];
 		posGrid.y = block->position[1];
-		wrl->getPresenceMatrix(posGrid,_pm);
-		block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
+		getPresenceMatrix(posGrid,_pm);
+		block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
 
-		SmartBlocksWorld *wrl = SmartBlocks::getWorld();
-		wrl->addStat(2,1);
+		addStat(2,1);
 		if (_isEnd) { // c'est une fin de train (et de ligne)
-			wrl->addStat(0,1);
+			addStat(0,1);
 			GlutContext::mustSaveImage=true;
 		}
 		if (unlockPathTabSize>0) { // c'est une fin de ligne (sauf train)
-			wrl->addStat(1,1);
-			wrl->printStats();
+			addStat(1,1);
+			printStats();
 			//GlutContext::mustSaveImage=true;
 		}
-		//wrl->printStats();
+		//printStats();
 		block->_isTrain=false;
 
 		// prepare for next motion
@@ -302,10 +319,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 				gridSize[0] = recvMessage->gridw;
 				gridSize[1] = recvMessage->gridh;
 				_nbreGoalCells = recvMessage->nbreGoalCells;
-				targetGrid = new SmartBlocks::presence[gridSize[0]*gridSize[1]];
-				memcpy(targetGrid,recvMessage->targetGrid,gridSize[0]*gridSize[1]*sizeof(SmartBlocks::presence));
+				targetGrid = new presence[gridSize[0]*gridSize[1]];
+				memcpy(targetGrid,recvMessage->targetGrid,gridSize[0]*gridSize[1]*sizeof(presence));
 
-				block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
+				block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
 				//block->setDisplayedValue(-1);
 				setRulesColor();
 				block2Answer=recvInterface;
@@ -368,10 +385,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 #endif // verbose
 					setRulesColor();
 
-					wrl->addStat(0,0);
-					wrl->addStat(1,0);
-					wrl->addStat(2,0);
-					wrl->printStats();
+					addStat(0,0);
+					addStat(1,0);
+					addStat(2,0);
+					printStats();
 
 					//block->setDisplayedValue(-1);
 				}
@@ -441,13 +458,13 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 						/*** cas particulier des éléments uniques ***/
 						/*** qui sont head et end en meme temps   ***/
 						if (possibleRules->back()->capa->isEnd) {
-							SmartBlocks::Capability *capa = possibleRules->back()->capa;
+							Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
 							info.str("");
 							info << "special motion :" << capa->name ;
 							scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-							vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
+							vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
 							while (cm!=capa->tabMotions.end()) {
 								singleMotion(*cm,capa);
 								cm++;
@@ -485,7 +502,8 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 							} else {
 								// on a trouvé la tete on cherche la queue du train
 								_motionDir = possibleRules->back()->capa->tabMotions[0]->vect;
-								_next = block->getP2PNetworkInterfaceByRelPos(*possibleRules->back()->capa->linkNextPos);
+								PointCel pos = *possibleRules->back()->capa->linkNextPos;
+								_next = block->getP2PNetworkInterfaceByRelPos(Cell3DPosition(pos.x, pos.y, 0));
 								SearchEndTrainMessage *message = new SearchEndTrainMessage(1);
 								scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, message, _next));
 #ifdef verbose
@@ -591,7 +609,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 				scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
 				printRules();
-//                        SmartBlocks::Capability *capa = possibleRules->back()->capa;
+//                        Capability *capa = possibleRules->back()->capa;
 
 				block->_isTrain=true;
 // si on est à la tete du train on peut créer des lignes
@@ -609,7 +627,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 				}
 			} else {
 				applyRules();
-				SmartBlocks::Capability *capa = possibleRules->back()->capa;
+				Capability *capa = possibleRules->back()->capa;
 				if (capa && !capa->isHead) {
 					// il faut chercher une règle de queue dans le bloc courant qui ne forme pas d'isthme
 					while (!possibleRules->empty() && !possibleRules->back()->capa->isEnd) {
@@ -700,10 +718,10 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 				//_previous = NULL;
 				_isHeadOfLine = true;
 				// case ou le bloc de fin est lui meme sur un angle
-				SmartBlocks::Capability *capa = possibleRules->back()->capa;
+				Capability *capa = possibleRules->back()->capa;
 				if (capa->isAngle || capa->isEnd) {
-					vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
-					SmartBlocks::Motion *currentMotion=NULL;
+					vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
+					Motion *currentMotion=NULL;
 					while (cm!=capa->tabMotions.end()) {
 						if ((*cm)->time==recvMessage->step) {
 							singleMotion(*cm,capa);
@@ -887,13 +905,13 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 						/*** cas particulier des éléments uniques ***/
 						/*** qui sont head et end en meme temps   ***/
 						if (possibleRules->back()->capa->isEnd && possibleRules->back()->capa->isHead) {
-							SmartBlocks::Capability *capa = possibleRules->back()->capa;
+							Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
 							info.str("");
 							info << "special motion :" << capa->name ;
 							scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-							vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
+							vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
 							while (cm!=capa->tabMotions.end()) {
 								singleMotion(*cm,capa);
 								cm++;
@@ -944,7 +962,7 @@ void SbReconfBlockCode::processLocalEvent(EventPtr pev) {
 #endif // verbose
 							}
 					} else {
-						wrl->printStats();
+						printStats();
 					}
 				}
 			}
@@ -967,7 +985,7 @@ void SbReconfBlockCode::init() {
       tabSteps[3] = false;*/
     posGrid.x = block->position[0];
     posGrid.y = block->position[1];
-    block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==SmartBlocks::fullCell;
+    block->wellPlaced = targetGrid[posGrid.y*gridSize[0]+posGrid.x]==fullCell;
     setRulesColor();
     //block->setDisplayedValue(-1);
     block->_isTrain = false;
@@ -979,7 +997,7 @@ void SbReconfBlockCode::init() {
     setRulesColor();
 }
 
-SmartBlocks::SmartBlocksBlockCode* SbReconfBlockCode::buildNewBlockCode(SmartBlocksBlock *host) {
+SmartBlocks::SmartBlocksBlockCode* SbReconfBlockCode::buildNewBlockCode(SmartBlocks::SmartBlocksBlock *host) {
     return(new SbReconfBlockCode(host));
 }
 
@@ -993,7 +1011,7 @@ void SbReconfBlockCode::step2(MessagePtr message) {
     _isEnd=false;
     applyRules();
     if (possibleRules && !possibleRules->empty()) {
-		SmartBlocks::Capability *capa = possibleRules->back()->capa;
+		Capability *capa = possibleRules->back()->capa;
 		block->_isTrain = false;
 		if (capa->isHead) {
 			// send searchEndTrainMessage
@@ -1062,7 +1080,7 @@ void SbReconfBlockCode::step3(MessagePtr message) {
     on test d'abord si c'est un isthme avant de faire tout déplacement
 **/
     if (possibleRules && !possibleRules->empty()) {
-		SmartBlocks::Capability *capa = possibleRules->back()->capa;
+		Capability *capa = possibleRules->back()->capa;
 		bool test = testIsthmus(capa->linkPrevPos->x,capa->linkPrevPos->y);
 		if (capa->isEnd && !capa->isHead && !block->_isSingle) {
 			test = test || testIsthmusTail(capa->linkPrevPos->x,capa->linkPrevPos->y);
@@ -1102,11 +1120,11 @@ void SbReconfBlockCode::step3(MessagePtr message) {
     }
 
     if (!block->_isSingle && possibleRules && !possibleRules->empty()) {
-		SmartBlocks::Capability *capa = possibleRules->back()->capa;
+		Capability *capa = possibleRules->back()->capa;
 		block->setDisplayedValue(block->blockId);
 		// send searchEndTrainMessage
 		PointCel np = *capa->linkNextPos;
-		_next = block->getP2PNetworkInterfaceByRelPos(np); //
+		_next = block->getP2PNetworkInterfaceByRelPos(Cell3DPosition(np.x, np.y, 0)); //
 		_motionDir = capa->tabMotions[0]->vect;
 #ifdef verbose
 		info.str("");
@@ -1186,13 +1204,13 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
 			if (possibleRules->back()->capa->isHead) {
 				// cas particulier des singletons en mouvement
 				if (possibleRules->back()->capa->isEnd) {
-					SmartBlocks::Capability *capa = possibleRules->back()->capa;
+					Capability *capa = possibleRules->back()->capa;
 #ifdef verbose
 					info.str("");
 					info << "special motion :" << capa->name ;
 					scheduler->trace(info.str(),hostBlock->blockId);
 #endif // verbose
-					vector<SmartBlocks::Motion*>::const_iterator cm = capa->tabMotions.begin();
+					vector<Motion*>::const_iterator cm = capa->tabMotions.begin();
 					while (cm!=capa->tabMotions.end()) {
 						singleMotion(*cm,capa);
 						cm++;
@@ -1295,7 +1313,7 @@ void SbReconfBlockCode::createLine(uint64_t t,bool hol) {
 #ifdef verbose
     stringstream info;
 #endif // verbose
-    SmartBlocks::Capability *capa = possibleRules->back()->capa;
+    Capability *capa = possibleRules->back()->capa;
     /*info.str("");
       info << "capa " << capa->name << " " << capa->isAngle;
       scheduler->trace(info.str(),hostBlock->blockId);*/
@@ -1412,7 +1430,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
 		// on cherche une cellule pleine
 		i=3;
 		while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-					   || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+					   || ((SmartBlocks::SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
 			dir=SLattice::Direction((int(dir)+3)%4);
 //		OUTPUT << dir << " ";
 		}
@@ -1421,9 +1439,9 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
 /************ on recherche le cas des isthmes ************/
 /** existe-t-il un voisin avec un vide avant et un après */
 		for (i=0; i<4; i++) {
-			if (_pm.get(border[i*2][0],border[i*2][1])!=SmartBlocks::emptyCell &&
-				_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==SmartBlocks::emptyCell &&
-				_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==SmartBlocks::emptyCell) {
+			if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
+				_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
+				_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
 				dir=SLattice::Direction(((8-2*i)%8)/2);
 				return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
 			}
@@ -1431,7 +1449,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
 
 // on cherche une case vide
 		i=7;
-		while (i>=0 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
+		while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
 			i--;
 		}
 		if (i==-1) return NULL;
@@ -1441,7 +1459,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightborNoWellPlaced(P
 		if (block->wellPlaced) {
 			i=3;
 			while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-						   || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+						   || ((SmartBlocks::SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
 				dir=SLattice::Direction((int(dir)+3)%4);
 			}
 		} else {
@@ -1484,9 +1502,9 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightbor(P2PNetworkInt
 /************ on recherche le cas des isthmes ************/
 /** existe-t-il un voisin avec un vide avant et un après */
 		for (i=0; i<4; i++) {
-			if (_pm.get(border[i*2][0],border[i*2][1])!=SmartBlocks::emptyCell &&
-				_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==SmartBlocks::emptyCell &&
-				_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==SmartBlocks::emptyCell) {
+			if (_pm.get(border[i*2][0],border[i*2][1])!=emptyCell &&
+				_pm.get(border[(i*2+7)%8][0],border[(i*2+7)%8][1])==emptyCell &&
+				_pm.get(border[(i*2+1)%8][0],border[(i*2+1)%8][1])==emptyCell) {
 				dir=SLattice::Direction(((8-2*i)%8)/2);
 				return (block->getInterface(dir)->connectedInterface==NULL?NULL:block->getInterface(dir));
 			}
@@ -1494,7 +1512,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderPreviousNeightbor(P2PNetworkInt
 
 // on cherche une case vide
 		i=7;
-		while (i>=0 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
+		while (i>=0 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
 			i--;
 		}
 		if (i==-1) return NULL;
@@ -1534,7 +1552,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightbor(P2PNetworkInterfa
 		dir=SLattice::Direction((dir+1)%4);
     } else {
 		// on recherche une cellule vide
-		while (i<8 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
+		while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
 			i++;
 		}
 		dir=SLattice::Direction((i/2+1)%4);
@@ -1566,7 +1584,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNe
 		dir=SLattice::Direction((dir+1)%4);
     } else {
 		// on recherche une cellule vide
-		while (i<8 && _pm.get(border[i][0],border[i][1])!=SmartBlocks::emptyCell) {
+		while (i<8 && _pm.get(border[i][0],border[i][1])!=emptyCell) {
 			i++;
 		}
 		dir=SLattice::Direction((i/2+1)%4);
@@ -1575,7 +1593,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderNextNeightborNoWellPlaced(P2PNe
 
     i=3;
     while (i-- && (block->getInterface(dir)->connectedInterface==NULL
-				   || ((SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
+				   || ((SmartBlocks::SmartBlocksBlock*)(block->getInterface(dir)->connectedInterface->hostBlock))->wellPlaced)) {
 //            || _pm.get(border[dir*2][0],border[dir*2][1])==borderNotTrainCell)) {
 		dir=SLattice::Direction((int(dir)+1)%4);
 //		OUTPUT << dir << "(" << _pm.get(border[dir*2][0],border[dir*2][1]) << ") ";
@@ -1606,7 +1624,7 @@ P2PNetworkInterface *SbReconfBlockCode::getBorderSinglePrevious() {
 		}
     }
 //    P2PNetworkInterface *stop = block->getInterface(dirStop);
-    //return (stop && stop->connectedInterface && !((SmartBlocksBlock*)(stop->connectedInterface->hostBlock))->wellPlaced)?stop:block->getInterface(dir);
+    //return (stop && stop->connectedInterface && !((SmartBlocks::SmartBlocksBlock*)(stop->connectedInterface->hostBlock))->wellPlaced)?stop:block->getInterface(dir);
 
     // a partir de cette position on cherche la derniere cellule pleine
     int i=3;
@@ -1684,70 +1702,70 @@ void SbReconfBlockCode::sendSearchBackHeadMessage(P2PNetworkInterface *dest,P2PN
 }
 
 bool SbReconfBlockCode::testIsthmus(int dx,int dy) {
-    Cell3DPosition gridSize = wrl->lattice->gridSize;
+    Cell3DPosition gridSize = lattice->gridSize;
     
 /*
   il faut aussi interdir <-XB0 ou B est un bord
 */
-    SmartBlocksBlock *support;
-    SmartBlocksBlock *supportDiag;
-    SmartBlocksBlock *voisin;
-    SmartBlocksBlock *voisin2=NULL;
-    SmartBlocksBlock *voisin3=NULL;
+    SmartBlocks::SmartBlocksBlock *support;
+    SmartBlocks::SmartBlocksBlock *supportDiag;
+    SmartBlocks::SmartBlocksBlock *voisin;
+    SmartBlocks::SmartBlocksBlock *voisin2=NULL;
+    SmartBlocks::SmartBlocksBlock *voisin3=NULL;
     // recherche la présence d'isthme de niveau 1
     if (dy==1) {
 		support = (posGrid.x>0) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0)) : NULL;
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0)) : NULL;
 		supportDiag = (posGrid.x>0 && posGrid.y>0) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0)) : NULL;
-		voisin = (posGrid.y>0 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0)) : NULL;
-		voisin2 = (posGrid.x>=1 && posGrid.y>1 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0))
-				   && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y-2,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0)) : NULL;
-		voisin3 = (posGrid.x<gridSize[0]-1 && posGrid.y>1 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0))
-				   && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y-2,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0)) : NULL;
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0)) : NULL;
+		voisin = (posGrid.y>0 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0)) : NULL;
+		voisin2 = (posGrid.x>=1 && posGrid.y>1 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0))
+				   && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y-2,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0)) : NULL;
+		voisin3 = (posGrid.x<gridSize[0]-1 && posGrid.y>1 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0))
+				   && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y-2,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0)) : NULL;
     } else if (dy==-1) {
 		support = (posGrid.x<gridSize[0]-1) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0)) : NULL;
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0)) : NULL;
 		supportDiag = (posGrid.x<gridSize[0]-1 && posGrid.y<gridSize[1]-1) ?
-								 (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) : NULL;
-		voisin = (posGrid.y<gridSize[1]-1 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0)) : NULL;
-		voisin2 = (posGrid.x>=1 && posGrid.y<gridSize[1]-2 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0))
-				   && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y+2,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0)) : NULL;
+								 (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) : NULL;
+		voisin = (posGrid.y<gridSize[1]-1 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0)) : NULL;
+		voisin2 = (posGrid.x>=1 && posGrid.y<gridSize[1]-2 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0))
+				   && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y+2,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0)) : NULL;
 		voisin3 = (posGrid.x<gridSize[0]-1 && posGrid.y<gridSize[1]-2
-				   && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y+2,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) : NULL;
+				   && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y+2,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) : NULL;
     } else if (dx==1) {
 		support = (posGrid.y<gridSize[1]-1) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0)) : NULL;
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0)) : NULL;
 		supportDiag = (posGrid.y<gridSize[1]-1 && posGrid.x>=1) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0)) : NULL;
-		voisin = (posGrid.x>=1 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0)) : NULL;
-		voisin2 = (posGrid.x>=1 && posGrid.y<gridSize[1]-2 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0))
-				   && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y+2,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0)) : NULL;
-		voisin3 = (posGrid.x<1 && posGrid.y>=1 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0))
-				   && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y-2,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0)) : NULL;
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0)) : NULL;
+		voisin = (posGrid.x>=1 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0)) : NULL;
+		voisin2 = (posGrid.x>=1 && posGrid.y<gridSize[1]-2 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0))
+				   && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y+2,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y+1,0)) : NULL;
+		voisin3 = (posGrid.x<1 && posGrid.y>=1 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0))
+				   && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y-2,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y-1,0)) : NULL;
     } else {
 		// dx==-1
 		support = (posGrid.y>0) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0)) : NULL;
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0)) : NULL;
 		supportDiag = (posGrid.y>0 && posGrid.x<gridSize[0]-1) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0)) : NULL;
-		voisin = (posGrid.x<gridSize[0]-1 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0)) : NULL;
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0)) : NULL;
+		voisin = (posGrid.x<gridSize[0]-1 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0)) : NULL;
 		voisin2 = (posGrid.x<gridSize[0]-2 && posGrid.y<gridSize[1]-2
-				   && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y+2,0)))?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) : NULL;
-		voisin3 = (posGrid.x<gridSize[0]-2 && posGrid.y>=1 && (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0))
-				   && !(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y-2,0))) ?
-			(SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0)) : NULL;
+				   && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y+2,0)))?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y+1,0)) : NULL;
+		voisin3 = (posGrid.x<gridSize[0]-2 && posGrid.y>=1 && (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0))
+				   && !(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y-2,0))) ?
+			(SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y-1,0)) : NULL;
     }
 #ifdef verbose
     if (support && support->_isTrain) OUTPUT << block->blockId << posGrid << " ISTHME SUPPORT("
@@ -1770,26 +1788,26 @@ bool SbReconfBlockCode::testIsthmus(int dx,int dy) {
 }
 
 bool SbReconfBlockCode::testIsthmusTail(int dx,int dy) {
-    Cell3DPosition gridSize = wrl->lattice->gridSize;
+    Cell3DPosition gridSize = lattice->gridSize;
 /*
   il faut aussi interdir <-XB0
 */
-    SmartBlocksBlock *support_1,*support_2;
+    SmartBlocks::SmartBlocksBlock *support_1,*support_2;
     bool isthmus=false;
     // recherche la présence d'isthme de niveau 1
     if (dy==1) {
-		support_1 = (posGrid.x>=1) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0)) : NULL;
-		support_2 = (posGrid.x>=2) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y,0)) : NULL;
+		support_1 = (posGrid.x>=1) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-1,posGrid.y,0)) : NULL;
+		support_2 = (posGrid.x>=2) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x-2,posGrid.y,0)) : NULL;
     } else if (dy==-1) {
-		support_1 = (posGrid.x<gridSize[0]-1) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0)) : NULL;
-		support_2 = (posGrid.x<gridSize[0]-2) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y,0)) : NULL;
+		support_1 = (posGrid.x<gridSize[0]-1) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+1,posGrid.y,0)) : NULL;
+		support_2 = (posGrid.x<gridSize[0]-2) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x+2,posGrid.y,0)) : NULL;
     } else if (dx==1) {
-		support_1 = (posGrid.y<gridSize[1]-1) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0)) : NULL;
-		support_2 = (posGrid.y<gridSize[1]-2) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+2,0)) : NULL;
+		support_1 = (posGrid.y<gridSize[1]-1) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+1,0)) : NULL;
+		support_2 = (posGrid.y<gridSize[1]-2) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y+2,0)) : NULL;
     } else {
 		// dx==-1
-		support_1 = (posGrid.y>=1) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0)) : NULL;
-		support_2 = (posGrid.y>=2) ? (SmartBlocksBlock *)wrl->lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-2,0)) : NULL;
+		support_1 = (posGrid.y>=1) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-1,0)) : NULL;
+		support_2 = (posGrid.y>=2) ? (SmartBlocks::SmartBlocksBlock *)lattice->getBlock(Cell3DPosition(posGrid.x,posGrid.y-2,0)) : NULL;
     }
     isthmus = support_1!=NULL && support_2==NULL;
 #ifdef verbose
@@ -1800,7 +1818,7 @@ bool SbReconfBlockCode::testIsthmusTail(int dx,int dy) {
 
 
 void SbReconfBlockCode::createBorder() {
-    wrl->getPresenceMatrix(posGrid,_pm);
+    getPresenceMatrix(posGrid,_pm);
     block->_isBorder = _pm.isBorder();
 
     //block->setDisplayedValue(-1);
@@ -1817,9 +1835,10 @@ void SbReconfBlockCode::createBorder() {
 		_numPrev = ((_previous && !block->_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
 		applyRules();
 		if (possibleRules && !possibleRules->empty()) {
-			SmartBlocks::Capability *capa = possibleRules->back()->capa;
+			Capability *capa = possibleRules->back()->capa;
 			if (!capa->isHead && capa->linkPrevPos) {
-				_previous = block->getP2PNetworkInterfaceByRelPos(*capa->linkPrevPos);
+				PointCel pos = *capa->linkPrevPos;
+				_previous = block->getP2PNetworkInterfaceByRelPos(Cell3DPosition(pos.x, pos.y, 0));
 				_numPrev = ((_previous && !block->_isSingle)  ? _previous->connectedInterface->hostBlock->blockId : -1);
 #ifdef verbose
 				info.str("");
@@ -1829,7 +1848,7 @@ void SbReconfBlockCode::createBorder() {
 			} else _previous=NULL;
 			if (!capa->isEnd && capa->linkNextPos) {
 				PointCel np = *capa->linkNextPos;
-				_next = block->getP2PNetworkInterfaceByRelPos(np);
+				_next = block->getP2PNetworkInterfaceByRelPos(Cell3DPosition(np.x, np.y, 0));
 #ifdef verbose
 				info.str("");
 				info << "next = " << np << "," << (_next->connectedInterface ? _next->connectedInterface->hostBlock->blockId : -1);
@@ -1921,7 +1940,7 @@ void SbReconfBlockCode::createBorder() {
   }
 */
 
-MapMessage::MapMessage(int x,int y,int w,int h,int n,SmartBlocks::presence *tg):Message(){
+MapMessage::MapMessage(int x,int y,int w,int h,int n,presence *tg):Message(){
     id = MAP_MSG_ID;
     posx = x;
     posy = y;
@@ -1980,7 +1999,7 @@ CreateLineMessage::CreateLineMessage(uint64_t t):Message(){
 CreateLineMessage::~CreateLineMessage() {
 }
 
-SetRDVMessage::SetRDVMessage(uint64_t t,const SmartBlocks::PointCel &v):Message(){
+SetRDVMessage::SetRDVMessage(uint64_t t,const PointCel &v):Message(){
     id = SET_RDV_MSG_ID;
     rdvTime = t;
     motionVector = v;
@@ -2045,7 +2064,7 @@ ReconnectTrainMessage::~ReconnectTrainMessage() {
   AckInitMessage::~AckInitMessage() {
   }*/
 
-SingleMoveMessage::SingleMoveMessage(short *t,int n,uint64_t st,const SmartBlocks::PointCel &mv,const vector<short>&up,int s):Message() {
+SingleMoveMessage::SingleMoveMessage(short *t,int n,uint64_t st,const PointCel &mv,const vector<short>&up,int s):Message() {
     id = SINGLEMV_MSG_ID;
     if (n>0) {
 		tab = new short[n];
@@ -2083,11 +2102,11 @@ Ans4EndMessage::~Ans4EndMessage() {
 }
 
 /****************************************************/
-void SbReconfBlockCode::getLocalTargetGrid(const PointCel &pos,SmartBlocks::PresenceMatrix &pm) {
-    SmartBlocks::presence *gpm=pm.grid;
-    SmartBlocks::presence *tg = targetGrid;
+void SbReconfBlockCode::getLocalTargetGrid(const PointCel &pos,PresenceMatrix &pm) {
+    presence *gpm=pm.grid;
+    presence *tg = targetGrid;
 
-    for (int i=0; i<9; i++) { *gpm++ = SmartBlocks::wallCell; };
+    for (int i=0; i<9; i++) { *gpm++ = wallCell; };
 
     int ix0 = (pos.x<1) ? 1-pos.x : 0,
 		ix1 = (pos.x>gridSize[0]-2) ? gridSize[0]-pos.x+1 : 3,
@@ -2104,7 +2123,7 @@ void SbReconfBlockCode::getLocalTargetGrid(const PointCel &pos,SmartBlocks::Pres
     }
 }
 
-void SbReconfBlockCode::singleMotion(SmartBlocks::Motion *currentMotion,SmartBlocks::Capability *capa) {
+void SbReconfBlockCode::singleMotion(Motion *currentMotion,Capability *capa) {
     uint64_t t = scheduler->now(),
 		st = t+20*time_offset;
 #ifdef verbose
@@ -2167,11 +2186,180 @@ void SbReconfBlockCode::singleMotion(SmartBlocks::Motion *currentMotion,SmartBlo
 
 void SbReconfBlockCode::parseUserElements(TiXmlDocument *config) {
 	TiXmlNode *xmlWorldNode = config->FirstChild("world");
-	
+
+	TiXmlNode *nodeGrid = xmlWorldNode->FirstChild("targetGrid");
+	vector<Cell3DPosition> targetCells; // Locations of all target full cells
+
+	if (nodeGrid) {
+		TiXmlNode *block = nodeGrid->FirstChild("block");
+		Cell3DPosition position;
+		const char *attr;
+		TiXmlElement* element;
+		while (block) {
+			element = block->ToElement();
+			attr = element->Attribute("position");
+			if (attr) {
+				string str(attr);
+				int pos = str.find_first_of(',');
+				int pos2 = str.find_last_of(',');
+				int ix = atof(str.substr(0,pos).c_str()),
+					iy = atoi(str.substr(pos+1,pos2-pos-1).c_str()),
+					iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
+
+				position.pt[0] = ix;
+				position.pt[1] = iy;
+				position.pt[2] = iz;
+
+				targetCells.push_back(Cell3DPosition(position[0], position[1], position[2]));
+			}
+
+			block = block->NextSibling("block");
+		}
+
+		block = nodeGrid->FirstChild("targetLine");
+		int line = 0, plane = 0;
+		while (block) {
+			TiXmlElement* element = block->ToElement();
+			const char *attr = element->Attribute("line");
+			if (attr) {
+				line = atoi(attr);
+			}
+			attr = element->Attribute("plane");
+			if (attr) {
+				plane = atoi(attr);
+			}
+			attr = element->Attribute("values");
+			if (attr) {
+				string str(attr);
+				int n = str.length();
+				for(int i = 0; i < n; i++) {
+					if(str[i] == '1') {
+						targetCells.push_back(Cell3DPosition(i, line, plane));
+					}
+				}
+			}
+
+			block = block->NextSibling("targetLine");
+		}
+	} else {
+		ERRPUT << "warning: No target grid in configuration file" << endl;
+	}
+
+	// Add target cells to world
+    initTargetGrid();
+	for (Cell3DPosition p : targetCells) {
+	    setTargetGrid(fullCell, p[0], p[1]);
+	}
+
 	// then parse and load capabilities...
 	TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
 	if (nodeCapa) {
-		// world->setCapabilities(new Capabilities(nodeCapa));
-		cout << "PARSING CAPABILITIES" << endl;
+		setCapabilities(new SmartBlocksCapabilities(nodeCapa));
 	}
+}
+
+
+void SbReconfBlockCode::initTargetGrid() {
+    if (targetGrid) delete [] targetGrid;
+    int sz = lattice->gridSize[0]*lattice->gridSize[1];
+    targetGrid = new presence[sz];
+    memset(targetGrid,emptyCell,sz*sizeof(presence));
+}
+
+int SbReconfBlockCode::nbreWellPlacedBlock() {
+	std::map<int, BuildingBlock*> buildingBlocksMap = SmartBlocks::getWorld()->getMap();
+    std::map<int, BuildingBlock*>::iterator it;
+    int n=0;
+    SmartBlocks::SmartBlocksBlock *sb;
+    for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; ++it) {
+        sb = (SmartBlocks::SmartBlocksBlock *)(it->second);
+        if (sb->wellPlaced) n++;
+    }
+    return n;
+}
+
+
+void SbReconfBlockCode::getPresenceMatrix0(const PointCel &pos,PresenceMatrix &pm) {
+    presence *gpm=pm.grid;
+    SmartBlocks::SmartBlocksBlock **grb;
+
+    for (int i=0; i<9; i++) { *gpm++ = wallCell; };
+
+    int ix0 = (pos.x<1)?1-pos.x:0,
+        ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
+        iy0 = (pos.y<1)?1-pos.y:0,
+        iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
+        ix,iy;
+    for (iy=iy0; iy<iy1; iy++) {
+        gpm = pm.grid+(iy*3+ix0);
+        grb = (SmartBlocks::SmartBlocksBlock **)lattice->grid+(ix0+pos.x-1+(iy+pos.y-1)*lattice->gridSize[0]);
+        for (ix=ix0; ix<ix1; ix++) {
+            *gpm++ = (*grb)?fullCell:emptyCell;
+            grb++;
+        }
+    }
+}
+
+bool SbReconfBlockCode::isBorder(int x,int y) {
+    SmartBlocks::SmartBlocksBlock **grb=(SmartBlocks::SmartBlocksBlock **)lattice->grid+x+y*lattice->gridSize[0];
+    //if ((*grb)->_isBorder) return true;
+    int ix0 = (x<1)?1-x:0,
+        ix1 = (x>lattice->gridSize[0]-2)?lattice->gridSize[0]-x+1:3,
+        iy0 = (y<1)?1-y:0,
+        iy1 = (y>lattice->gridSize[1]-2)?lattice->gridSize[1]-y+1:3,
+        ix,iy;
+    for (iy=iy0; iy<iy1; iy++) {
+        grb = (SmartBlocks::SmartBlocksBlock **)lattice->grid+(ix0+x-1+(iy+y-1)*lattice->gridSize[0]);
+        for (ix=ix0; ix<ix1; ix++) {
+            //if (*grb==NULL || (*grb)->wellPlaced) return true;
+            if (*grb==NULL) return true;
+            grb++;
+        }
+    }
+    return false;
+}
+
+bool SbReconfBlockCode::isSingle(int x,int y) {
+    SmartBlocks::SmartBlocksBlock **grb=(SmartBlocks::SmartBlocksBlock **)lattice->grid+x+y*lattice->gridSize[0];
+    return (*grb)->_isSingle;
+}
+
+void SbReconfBlockCode::getPresenceMatrix(const PointCel &pos,PresenceMatrix &pm) {
+    presence *gpm=pm.grid;
+    SmartBlocks::SmartBlocksBlock **grb;
+
+    for (int i=0; i<9; i++) { *gpm++ = wallCell; };
+    int ix0 = (pos.x<1)?1-pos.x:0,
+        ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
+        iy0 = (pos.y<1)?1-pos.y:0,
+        iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
+        ix,iy;
+    for (iy=iy0; iy<iy1; iy++) {
+        gpm = pm.grid+(iy*3+ix0);
+        grb = (SmartBlocks::SmartBlocksBlock **)lattice->grid+(ix0+pos.x-1+(iy+pos.y-1)*lattice->gridSize[0]);
+        for (ix=ix0; ix<ix1; ix++) {
+            *gpm++ = (*grb)?
+                ((isBorder(ix+pos.x-1,iy+pos.y-1))?
+                 (isSingle(ix+pos.x-1,iy+pos.y-1)?
+                  singleCell
+                  :borderCell)
+                 :fullCell)
+                :emptyCell;
+            grb++;
+        }
+    }
+}
+
+
+void SbReconfBlockCode::addStat(int n,int v) {
+    tabStatsData[n]+=v;
+    if (nbreStats<=n) nbreStats=n+1;
+}
+
+void SbReconfBlockCode::printStats() {
+    OUTPUT << "stats: \t" << nbreWellPlacedBlock();
+    for (int i=0;i<nbreStats; i++) {
+        OUTPUT << "\t"<< tabStatsData[i] ;
+    }
+    OUTPUT << "\t" << getScheduler()->getNbreMessages() << endl;
 }

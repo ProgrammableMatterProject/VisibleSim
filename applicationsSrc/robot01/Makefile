@@ -1,4 +1,4 @@
-SRCS = robot01.cpp robot01BlockCode.cpp
+SRCS = robot01.cpp robot01BlockCode.cpp capabilities.cpp
 
 OUT = $(APPDIR)/robot01
 

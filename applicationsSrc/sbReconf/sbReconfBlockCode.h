@@ -68,11 +68,14 @@ typedef std::shared_ptr<SingleMoveMessage> SingleMoveMessage_ptr;
 typedef std::shared_ptr<Ask4EndMessage> Ask4EndMessage_ptr;
 typedef std::shared_ptr<Ans4EndMessage> Ans4EndMessage_ptr;
 
+static presence *targetGrid = NULL; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
+static SmartBlocksCapabilities *capabilities; //!< The capabilities available for the blocks simulated in this world
+
 class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 	short gridSize[2];
-	SmartBlocks::presence *targetGrid;
-	SmartBlocks::PointCel posGrid;
-	SmartBlocks::PresenceMatrix _pm;
+	presence *targetGrid;
+	PointCel posGrid;
+	PresenceMatrix _pm;
 	P2PNetworkInterface *block2Answer,*_next,*_previous;
 	bool _isHead,_isEnd,_isHeadOfLine;
 	bool _activity;
@@ -81,14 +84,19 @@ class SbReconfBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 	int nbreOfWaitedAnswers;
 	SmartBlocks::SmartBlocksBlock *block;
 	SmartBlocks::SmartBlocksWorld *wrl;
-	SmartBlocks::PointCel _motionDir;
-	vector <SmartBlocks::Validation*> *possibleRules;
+	PointCel _motionDir;
+	vector <Validation*> *possibleRules;
 	bool tabSteps[4];
 	MessagePtr tabMemorisedMessages[4];
 
 	short *unlockPathTab;
 	int unlockPathTabSize;
 	int unlockMotionStep;
+
+	Lattice *lattice;
+	
+	int tabStatsData[10];
+    int nbreStats;
 public:
 	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
@@ -110,7 +118,7 @@ public:
 
     void sendSearchBackHeadMessage(P2PNetworkInterface *dest,P2PNetworkInterface *except=NULL);
 
-	void getLocalTargetGrid(const SmartBlocks::PointCel &pos,SmartBlocks::PresenceMatrix &pm);
+	void getLocalTargetGrid(const PointCel &pos,PresenceMatrix &pm);
 
     void applyRules();
     void printRules();
@@ -133,19 +141,37 @@ public:
 	P2PNetworkInterface *getBorderNeighborById(int id);
 
 	void prepareUnlock(const vector<short>&path,int step);
-	void startMotion(uint64_t t,const SmartBlocks::PointCel &mv,int step,const vector<short>&path);
-	void singleMotion(SmartBlocks::Motion *,SmartBlocks::Capability *capa);
+	void startMotion(uint64_t t,const PointCel &mv,int step,const vector<short>&path);
+	void singleMotion(Motion *,Capability *capa);
 
 	virtual void parseUserElements(TiXmlDocument *config);
+	
+	inline presence *getTargetGridPtr(short *gs)
+		{ memcpy(gs, BaseSimulator::getWorld()->lattice->gridSize.pt,2*sizeof(short)); return targetGrid; };
+	inline presence getTargetGrid(int ix,int iy)
+		{ return targetGrid[iy*BaseSimulator::getWorld()->lattice->gridSize[0]+ix]; };
+	inline void setTargetGrid(presence value,int ix,int iy)
+		{ targetGrid[iy*BaseSimulator::getWorld()->lattice->gridSize[0]+ix]=value; };
+	void initTargetGrid();
+	inline void setCapabilities(SmartBlocksCapabilities *capa) { capabilities=capa; };
+	void getPresenceMatrix0(const PointCel &pos,PresenceMatrix &pm);
+	void getPresenceMatrix(const PointCel &pos,PresenceMatrix &pm);
+	inline SmartBlocksCapabilities* getCapabilities() { return capabilities; };
+    bool isBorder(int x,int y);
+    bool isSingle(int x,int y);
+    int nbreWellPlacedBlock();	
+    void createStats(int);
+    void addStat(int n,int v);
+    void printStats();
 };
 
 class MapMessage : public Message {
 public :
 	int gridw,gridh;
-	SmartBlocks::presence *targetGrid;
+	presence *targetGrid;
 	int posx,posy;
 	int nbreGoalCells;
-	MapMessage(int,int,int,int,int,SmartBlocks::presence*);
+	MapMessage(int,int,int,int,int,presence*);
 	~MapMessage();
 };
 
@@ -192,8 +218,8 @@ public :
 class SetRDVMessage : public Message {
 public :
 	uint64_t rdvTime;
-	SmartBlocks::PointCel motionVector;
-    SetRDVMessage(uint64_t t,const SmartBlocks::PointCel &);
+	PointCel motionVector;
+    SetRDVMessage(uint64_t t,const PointCel &);
 	~SetRDVMessage();
 };
 
@@ -245,11 +271,11 @@ public :
 	int sz;
 	short *tab;
 	uint64_t startTime;
-	SmartBlocks::PointCel motionVector;
+	PointCel motionVector;
 	vector<short>unlockPath;
 	int step;
 
-    SingleMoveMessage(short *,int,uint64_t,const SmartBlocks::PointCel &,const vector<short>&up,int);
+    SingleMoveMessage(short *,int,uint64_t,const PointCel &,const vector<short>&up,int);
 	~SingleMoveMessage();
 };
 

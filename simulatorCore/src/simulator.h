@@ -16,7 +16,6 @@
 #include "world.h"
 #include "commandLine.h"
 #include "blockCode.h"
-#include "capabilities.h"
 
 using namespace std;
 
@@ -131,6 +130,7 @@ protected:
 
 	/*! @fn parseTarget(yz)
 	 *  @brief Parses the configuration for target information common to all blocks
+	 *  @deprecated {}
 	 *
 	 *  Stores the positions of all cells to add to the target in a vector, then
 	 *   calls the loadTargetAndCapabilities virual function to configure the target
@@ -178,11 +178,10 @@ protected:
 	 *  @brief Configures the target from the simulation World with the positions in targetCells
 	 *
 	 *  @param targetCells vector containing all cell positions to add to the target
+	 *  @deprecated { Used for legacy targets and capabilities, moved to the user program space. }
 	 *
 	 */
-	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {};
-
-	
+	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {};	
 	
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
 	virtual ~Simulator();

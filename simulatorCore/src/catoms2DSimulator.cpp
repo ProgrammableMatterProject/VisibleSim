@@ -64,19 +64,4 @@ void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 	((Catoms2DWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color, 0, master);
 }
 
-void Catoms2DSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {
-
-	// Add target cells to world
-	world->initTargetGrid();
-	for (Cell3DPosition p : targetCells) {
-		world->setTargetGrid(fullCell, p[0], p[1], p[2]);
-	}
-
-	// then parse and load capabilities...
-	TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
-	if (nodeCapa) {
-		// ((Catoms2DWorld*)world)->setCapabilities(new Catoms2DCapabilities(nodeCapa));
-	}
-}
-
 } // catoms2D namespace

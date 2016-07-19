@@ -22,11 +22,11 @@ SmartBlocksBlock::~SmartBlocksBlock() {
     OUTPUT << "SmartBlocksBlock #" << blockId << " destructor" << endl;
 }
 
-P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByRelPos(const PointCel &pos) {
-    if (pos.x==-1) return P2PNetworkInterfaces[SLattice::West];
-    else if (pos.x==1) return P2PNetworkInterfaces[SLattice::East];
-    else if (pos.y==-1) return P2PNetworkInterfaces[SLattice::South];
-    else if (pos.y==1) return P2PNetworkInterfaces[SLattice::North];
+P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) {
+    if (pos[0]==-1) return P2PNetworkInterfaces[SLattice::West];
+    else if (pos[0]==1) return P2PNetworkInterfaces[SLattice::East];
+    else if (pos[1]==-1) return P2PNetworkInterfaces[SLattice::South];
+    else if (pos[1]==1) return P2PNetworkInterfaces[SLattice::North];
 
     return NULL;
 }

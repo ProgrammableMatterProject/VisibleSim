@@ -70,13 +70,13 @@ SCLattice::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface *given_i
     return SCLattice::Direction(0);
 }
 
-P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const PointRel3D &pos) {
-    if (pos.x==-1) return P2PNetworkInterfaces[SCLattice::Left];
-    else if (pos.x==1) return P2PNetworkInterfaces[SCLattice::Right];
-    else if (pos.y==-1) return P2PNetworkInterfaces[SCLattice::Front];
-    else if (pos.y==1) return P2PNetworkInterfaces[SCLattice::Back];
-    else if (pos.z==-1) return P2PNetworkInterfaces[SCLattice::Bottom];
-    else if (pos.z==1) return P2PNetworkInterfaces[SCLattice::Top];
+P2PNetworkInterface *RobotBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) {
+    if (pos[0]==-1) return P2PNetworkInterfaces[SCLattice::Left];
+    else if (pos[0]==1) return P2PNetworkInterfaces[SCLattice::Right];
+    else if (pos[1]==-1) return P2PNetworkInterfaces[SCLattice::Front];
+    else if (pos[1]==1) return P2PNetworkInterfaces[SCLattice::Back];
+    else if (pos[2]==-1) return P2PNetworkInterfaces[SCLattice::Bottom];
+    else if (pos[2]==1) return P2PNetworkInterfaces[SCLattice::Top];
 
     return NULL;
 }

@@ -17,7 +17,6 @@
 #include "blockCode.h"
 #include "clock.h"
 #include "cell3DPosition.h"
-#include "capabilities.h"
 
 class Event;
 typedef std::shared_ptr<Event> EventPtr;

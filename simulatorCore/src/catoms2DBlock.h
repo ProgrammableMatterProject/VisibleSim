@@ -41,7 +41,6 @@ public:
 	inline P2PNetworkInterface *getInterface(int d) {
 		return P2PNetworkInterfaces[(HLattice::Direction)d];
 	}
-	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
 
 	Cell3DPosition getPosition(HLattice::Direction d);
 	Cell3DPosition getPosition(P2PNetworkInterface *p2p);

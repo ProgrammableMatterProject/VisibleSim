@@ -159,7 +159,6 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseCameraAndSpotlight();
 	parseBlockList();
 	parseObstacles();
-	parseTarget();
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
@@ -490,68 +489,6 @@ void Simulator::parseBlockList() {
 	} else { // end if(nodeBlock)
 		cerr << "warning: no Block List in configuration file" << endl;
 	}
-}
-
-void Simulator::parseTarget() {
-	TiXmlNode *nodeGrid = xmlWorldNode->FirstChild("targetGrid");
-	vector<Cell3DPosition> targetCells; // Locations of all target full cells
-
-	if (nodeGrid) {
-		TiXmlNode *block = nodeGrid->FirstChild("block");
-		Cell3DPosition position;
-		const char *attr;
-		TiXmlElement* element;
-		while (block) {
-			element = block->ToElement();
-			attr = element->Attribute("position");
-			if (attr) {
-				string str(attr);
-				int pos = str.find_first_of(',');
-				int pos2 = str.find_last_of(',');
-				int ix = atof(str.substr(0,pos).c_str()),
-					iy = atoi(str.substr(pos+1,pos2-pos-1).c_str()),
-					iz = atoi(str.substr(pos2+1,str.length()-pos2-1).c_str());
-
-				position.pt[0] = ix;
-				position.pt[1] = iy;
-				position.pt[2] = iz;
-
-				targetCells.push_back(Cell3DPosition(position[0], position[1], position[2]));
-			}
-
-			block = block->NextSibling("block");
-		}
-
-		block = nodeGrid->FirstChild("targetLine");
-		int line = 0, plane = 0;
-		while (block) {
-			TiXmlElement* element = block->ToElement();
-			const char *attr = element->Attribute("line");
-			if (attr) {
-				line = atoi(attr);
-			}
-			attr = element->Attribute("plane");
-			if (attr) {
-				plane = atoi(attr);
-			}
-			attr = element->Attribute("values");
-			if (attr) {
-				string str(attr);
-				int n = str.length();
-				for(int i = 0; i < n; i++) {
-					if(str[i] == '1') {
-						targetCells.push_back(Cell3DPosition(i, line, plane));
-					}
-				}
-			}
-
-			block = block->NextSibling("targetLine");
-		}
-	} else {
-		ERRPUT << "warning: No target grid in configuration file" << endl;
-	}
-
-	loadTargetAndCapabilities(targetCells);
 }
 
 void Simulator::parseObstacles() {

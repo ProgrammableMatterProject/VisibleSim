@@ -23,6 +23,7 @@
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
 #include "robotBlocksBlock.h"
+#include "capabilities.h"
 
 class MapMessage;
 class AckMapMessage;
@@ -49,6 +50,9 @@ typedef std::shared_ptr<ReLinkTrainMessage> ReLinkTrainMessage_ptr;
   typedef std::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
 */
 
+static presence *targetGrid = NULL; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
+static Capabilities *capabilities; //!< The capabilities available for the blocks simulated in this world
+
 class Robot01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 	short gridSize[3];
 	presence *targetGrid;
@@ -61,8 +65,8 @@ class Robot01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
 	PointRel3D motionVector,nextMotionVector;
 	P2PNetworkInterface *trainNext,*trainPrevious;
 	vector <Validation*> *possibleMotions;
+	Lattice *lattice;
 public:
-
     Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *robotBlock;
 
@@ -87,6 +91,19 @@ public:
 	void sendPrepareMotionMessageToNeighbors(P2PNetworkInterface *except);
 	void sendRunTrainToNeighbors(P2PNetworkInterface *except);
 	bool linkTrain(bool head,bool ar);*/
+
+	inline presence *getTargetGridPtr(short *gs)
+        { memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
+    inline presence getTargetGrid(int ix,int iy,int iz)
+        { return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
+    inline void setTargetGrid(presence value,int ix,int iy,int iz)
+        { targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
+    void initTargetGrid();
+    inline void setCapabilities(Capabilities *capa) { capabilities=capa; };
+    void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
+    inline Capabilities* getCapabilities() { return capabilities; };
+
+	virtual void parseUserElements(TiXmlDocument *config);
 };
 
 class MapMessage : public Message {

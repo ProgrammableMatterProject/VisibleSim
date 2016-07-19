@@ -58,15 +58,15 @@ void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockC
 void SmartBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {
 
     // Add target cells to world
-    ((SmartBlocksWorld*)world)->initTargetGrid();
+    // ((SmartBlocksWorld*)world)->initTargetGrid();
     for (Cell3DPosition p : targetCells) {
-		((SmartBlocksWorld*)world)->setTargetGrid(fullCell, p[0], p[1]);
+		// ((SmartBlocksWorld*)world)->setTargetGrid(fullCell, p[0], p[1]);
     }
 
     // then parse and load capabilities...
     TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
     if (nodeCapa) {
-		((SmartBlocksWorld*)world)->setCapabilities(new SmartBlocksCapabilities(nodeCapa));
+		// ((SmartBlocksWorld*)world)->setCapabilities(new SmartBlocksCapabilities(nodeCapa));
     }
 }
 

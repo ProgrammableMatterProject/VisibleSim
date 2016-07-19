@@ -59,20 +59,4 @@ void RobotBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockC
 	((RobotBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
 }
 
-void RobotBlocksSimulator::loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {
-
-	// Add target cells to world
-	world->initTargetGrid();
-	for (Cell3DPosition p : targetCells) {
-		world->setTargetGrid(BaseSimulator::fullCell, p[0], p[1], p[2]);
-	}
-
-	// then parse and load capabilities...
-	TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
-	if (nodeCapa) {
-		world->setCapabilities(new Capabilities(nodeCapa));
-	}
-}
-
-
 } // RobotBlocks namespace

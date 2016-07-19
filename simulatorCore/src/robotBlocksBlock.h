@@ -36,7 +36,7 @@ public:
     inline void setGlBlock(RobotBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
     void setPrevNext(int,int);
     void setPrevNext(const P2PNetworkInterface *prev,const P2PNetworkInterface *next);
-    P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointRel3D &pos);
+    P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos);
     inline P2PNetworkInterface *getInterface(SCLattice::Direction d) { return P2PNetworkInterfaces[d]; }
 	/**
 	 * @copydoc BuildingBlock::addNeighbor

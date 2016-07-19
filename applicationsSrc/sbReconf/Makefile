@@ -1,4 +1,4 @@
-SRCS = sbReconf.cpp sbReconfBlockCode.cpp
+SRCS = sbReconf.cpp sbReconfBlockCode.cpp smartBlocksCapabilities.cpp
 
 OUT = $(APPDIR)/sbReconf
 
