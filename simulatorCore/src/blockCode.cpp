@@ -13,14 +13,4 @@ using namespace std;
 
 namespace BaseSimulator {
 
-BlockCode::BlockCode(BuildingBlock *host) {
-	OUTPUT << "BlockCode constructor" << endl;
-	hostBlock = host;
-	availabilityDate = 0;
-}
-
-BlockCode::~BlockCode() {
-	OUTPUT << "BlockCode destructor" << endl;
-}
-
 } // BaseSimulator namespace

@@ -182,12 +182,24 @@ protected:
 	 */
 	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {};
 
+	
+	
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
 	virtual ~Simulator();
+public:
+	/**
+	 *  @brief Getter for the configuration file TiXmlDocument
+	 *  @return a pointer to the configuration file TinyXml doc 
+	 */
+	inline TiXmlDocument *getConfigDocument() { return xmlDoc; }	
 };
 
 inline void deleteSimulator() {
 	Simulator::deleteSimulator();
+}
+
+inline Simulator* getSimulator() {	
+	return Simulator::getSimulator();
 }
 
 } // BaseSimulator namespace

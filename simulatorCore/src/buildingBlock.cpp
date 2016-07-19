@@ -6,8 +6,10 @@
  */
 
 #include <iostream>
-#include "world.h"
+
 #include "buildingBlock.h"
+#include "world.h"
+#include "simulator.h"
 #include "scheduler.h"
 #include "trace.h"
 
@@ -16,6 +18,7 @@ using namespace std;
 namespace BaseSimulator {
 
 int BuildingBlock::nextId = 0;
+bool BuildingBlock::userConfigHasBeenParsed = false;
 
 //===========================================================================================================
 //
@@ -45,6 +48,13 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces, Cl
     }
 	
 	blockCode = (BaseSimulator::BlockCode*)bcb(this);
+
+	// Parse user configuration from configuration file, only performed once
+	if (!userConfigHasBeenParsed) {
+		userConfigHasBeenParsed = true;
+		blockCode->parseUserElements(getSimulator()->getConfigDocument());
+	}
+	
 	isMaster = false;
 }
 

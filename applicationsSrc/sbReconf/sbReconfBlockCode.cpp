@@ -2162,6 +2162,16 @@ void SbReconfBlockCode::singleMotion(SmartBlocks::Motion *currentMotion,SmartBlo
 			delete [] tabDir;
 		}
     }
-//------------------------------------
+//------------------------------------   	
+}
 
+void SbReconfBlockCode::parseUserElements(TiXmlDocument *config) {
+	TiXmlNode *xmlWorldNode = config->FirstChild("world");
+	
+	// then parse and load capabilities...
+	TiXmlNode *nodeCapa = xmlWorldNode->FirstChild("capabilities");
+	if (nodeCapa) {
+		// world->setCapabilities(new Capabilities(nodeCapa));
+		cout << "PARSING CAPABILITIES" << endl;
+	}
 }

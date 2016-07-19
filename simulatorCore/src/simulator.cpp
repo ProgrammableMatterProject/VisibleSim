@@ -30,10 +30,8 @@ Simulator* Simulator::simulator = NULL;
 
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 
-Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): cmdLine(argc,argv) {
+Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
 	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
-
-	bcb = _bcb;
 	
 	// Ensure that only one instance of simulator is running at once
 	if (simulator == NULL) {

@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
 	createSimulator(argc, argv, Robot01BlockCode::buildNewBlockCode);
     Scheduler *scheduler = getScheduler();
-	getSimulator()->printInfo();
+	BaseSimulator::getSimulator()->printInfo();
 	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 /*

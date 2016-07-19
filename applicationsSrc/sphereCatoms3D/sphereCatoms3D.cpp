@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 
 	createSimulator(argc, argv, SphereCatoms3DBlockCode::buildNewBlockCode);
 	Scheduler *scheduler = getScheduler();
-	getSimulator()->printInfo();
+	BaseSimulator::getSimulator()->printInfo();
 	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 /*

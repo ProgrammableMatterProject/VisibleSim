@@ -12,12 +12,4 @@ using namespace std;
 
 namespace SmartBlocks {
 
-SmartBlocksBlockCode::SmartBlocksBlockCode(SmartBlocksBlock *host):BlockCode(host) {
-	OUTPUT << "SmartBlocksBlockCode constructor" << endl;
-}
-
-SmartBlocksBlockCode::~SmartBlocksBlockCode() {
-	OUTPUT << "SmartBlocksBlockCode destructor" << endl;
-}
-
 }

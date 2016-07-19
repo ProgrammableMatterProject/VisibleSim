@@ -135,6 +135,8 @@ public:
 	void prepareUnlock(const vector<short>&path,int step);
 	void startMotion(uint64_t t,const SmartBlocks::PointCel &mv,int step,const vector<short>&path);
 	void singleMotion(SmartBlocks::Motion *,SmartBlocks::Capability *capa);
+
+	virtual void parseUserElements(TiXmlDocument *config);
 };
 
 class MapMessage : public Message {

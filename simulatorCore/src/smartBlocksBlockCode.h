@@ -11,16 +11,16 @@
 #include "blockCode.h"
 #include "smartBlocksBlock.h"
 
+using namespace BaseSimulator;
+
 namespace SmartBlocks {
 
 class SmartBlocksBlock;
 
-class SmartBlocksBlockCode : public BaseSimulator::BlockCode {
+class SmartBlocksBlockCode : public BlockCode {
 public:
-	SmartBlocksBlockCode(SmartBlocksBlock *host);
-	virtual ~SmartBlocksBlockCode();
-
-	virtual void processLocalEvent(EventPtr pev) = 0;
+	SmartBlocksBlockCode(SmartBlocksBlock *host) : BlockCode((BuildingBlock*)host) {};
+	virtual ~SmartBlocksBlockCode() {};
 };
 
 }
