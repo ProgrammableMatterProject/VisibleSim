@@ -50,10 +50,10 @@ else
 
 #Linux, Solaris, ...
 ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
-INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono -lpthread
+INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
 
-GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lglut -lGL -lGLEW -lGLU $(INC_BOOST_IF_NEEDED) $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lglut -lGL -lGLEW -lGLU -lpthread $(INC_BOOST_IF_NEEDED) $(VSIM_LIBS)"
 endif
 
 GLOBAL_CCFLAGS = "$(TEMP_CCFLAGS) $(OSX_CCFLAGS)"
