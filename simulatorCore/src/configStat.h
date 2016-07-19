@@ -8,10 +8,11 @@
 #ifndef CONFIGSTAT_H_
 #define CONFIGSTAT_H_
 
-#include "buildingBlock.h"
-#include  <list>
-#include "world.h"
+#include <list>
 #include <string>
+
+#include "buildingBlock.h"
+#include "world.h"
 
 using namespace std;
 

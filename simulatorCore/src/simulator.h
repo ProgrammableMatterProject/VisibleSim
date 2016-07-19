@@ -127,19 +127,6 @@ protected:
 	 *
 	 */
 	void parseBlockList();
-
-	/*! @fn parseTarget(yz)
-	 *  @brief Parses the configuration for target information common to all blocks
-	 *  @deprecated {}
-	 *
-	 *  Stores the positions of all cells to add to the target in a vector, then
-	 *   calls the loadTargetAndCapabilities virual function to configure the target
-	 *   attribute of the target world.
-	 *
-	 *  N.B.: In configuration file: the **line** attribute is for **y** and **plane** for **z**
-	 *
-	 */
-	void parseTarget();
 	
 	/*! 
 	 *  @brief Parses the configuration for obstacles information 
@@ -173,15 +160,6 @@ protected:
 						   BlockCode *(*buildingBlockCodeBuildingFunction)
 						   (BuildingBlock*), const Cell3DPosition &pos,
 						   const Color &color, bool master) {};
-
-	/*! @fn virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells)
-	 *  @brief Configures the target from the simulation World with the positions in targetCells
-	 *
-	 *  @param targetCells vector containing all cell positions to add to the target
-	 *  @deprecated { Used for legacy targets and capabilities, moved to the user program space. }
-	 *
-	 */
-	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells) {};	
 	
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
 	virtual ~Simulator();

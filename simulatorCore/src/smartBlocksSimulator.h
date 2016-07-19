@@ -37,7 +37,6 @@ public:
 						   int argc, char *argv[]);
 	virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
 						   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
-	virtual void loadTargetAndCapabilities(vector<Cell3DPosition> targetCells);
 	virtual void printInfo() { cout << "I'm a SmartBlocksSimulator" << endl; }
 };
 

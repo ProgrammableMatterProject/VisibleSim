@@ -1,5 +1,6 @@
 
 #include <map>
+#include <climits>
 
 #include "configStat.h"
 #include "scheduler.h"
