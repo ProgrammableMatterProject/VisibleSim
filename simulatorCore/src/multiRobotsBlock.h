@@ -28,7 +28,7 @@ public:
 	inline virtual MultiRobotsGlBlock* getGlBlock() { return (MultiRobotsGlBlock *)ptrGlBlock; };
 
 	P2PNetworkInterface *getInterfaceDestId(int id);
-	BCLattice::Direction getDirection(P2PNetworkInterface*);
+	int getDirection(P2PNetworkInterface*);
 
 	void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	void removeNeighbor(P2PNetworkInterface *ni) {};

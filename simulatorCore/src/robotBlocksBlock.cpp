@@ -60,7 +60,7 @@ void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
 								SCLattice::getOppositeDirection(getDirection(ni))));
 }
 
-SCLattice::Direction RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
+int RobotBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     if( !given_interface) {
 		return SCLattice::Direction(0);
     }

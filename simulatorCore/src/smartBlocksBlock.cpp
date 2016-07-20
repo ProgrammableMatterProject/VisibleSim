@@ -31,7 +31,7 @@ P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell
     return NULL;
 }
 
-SLattice::Direction SmartBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
+int SmartBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     /*if( !given_interface) {
       return SLattice::Direction(0);
       }*/

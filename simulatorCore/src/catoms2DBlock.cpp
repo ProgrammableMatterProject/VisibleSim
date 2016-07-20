@@ -30,7 +30,7 @@ Catoms2DBlock::~Catoms2DBlock() {
 }
 
 // PTHY: TODO: Can be genericized in BuildingBlocks
-HLattice::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
+int Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
     if (!p2p) {
 		return HLattice::Direction(0);
     }
@@ -53,7 +53,7 @@ Cell3DPosition Catoms2DBlock::getPosition(HLattice::Direction d) {
 
 // PTHY: TODO: Can be genericized in BuildingBlocks
 Cell3DPosition Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
-    return getPosition(getDirection(p2p));
+    return getPosition((HLattice::Direction)getDirection(p2p));
 }
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {

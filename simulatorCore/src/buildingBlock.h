@@ -187,6 +187,12 @@ public:
 	 */
 	virtual void stop(uint64_t date, State s) {};
 	/**
+	 * @brief Returns the direction (defined in lattice.h) corresponding to the interface p2p
+	 * @param p2p interface to consider
+	 * @return direction on which p2p is
+	 */	
+	virtual int getDirection(P2PNetworkInterface *p2p) = 0;
+	/**
 	 * @brief Atomic getter for the block's state
 	 * No guarantee that state value will remain the same, it just avoids
 	 * date race condition.

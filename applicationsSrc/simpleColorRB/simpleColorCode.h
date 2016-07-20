@@ -18,7 +18,7 @@ public :
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static RobotBlocksBlockCode *buildNewBlockCode(RobotBlocksBlock *host) {
+	static BlockCodeBuilder *buildNewBlockCode(BuildingBlock *host) {
 	    return(new SimpleColorCode(host));
 	};
 /*****************************************************************************/

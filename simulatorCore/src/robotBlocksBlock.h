@@ -46,7 +46,7 @@ public:
 	 * @copydoc BuildingBlock::removeNeighbor
 	 */
 	virtual void removeNeighbor(P2PNetworkInterface *ni);
-    SCLattice::Direction getDirection(P2PNetworkInterface*);
+    int getDirection(P2PNetworkInterface*);
 };
 
 std::ostream& operator<<(std::ostream &stream, RobotBlocksBlock const& bb);
