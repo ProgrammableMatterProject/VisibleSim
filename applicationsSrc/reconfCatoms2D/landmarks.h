@@ -7,7 +7,7 @@
 #include "network.h"
 #include "events.h"
 #include <memory>
-#include <boost/random.hpp>
+
 #include "catom2D1BlockCode.h"
 
 #define Time uint64_t

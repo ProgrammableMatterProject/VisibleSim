@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp> 
+
 #include "scheduler.h"
 #include "network.h"
 #include "msrSyncBlockCode.h"

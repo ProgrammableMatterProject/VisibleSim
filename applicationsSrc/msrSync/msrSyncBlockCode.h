@@ -10,7 +10,7 @@
 
 #include "blinkyBlocksBlockCode.h"
 #include "blinkyBlocksSimulator.h"
-#include <boost/random.hpp>
+
 #include "color.h"
 #include "network.h"
 #include <vector>
