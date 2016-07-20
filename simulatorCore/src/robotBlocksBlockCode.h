@@ -19,8 +19,6 @@ class RobotBlocksBlockCode : public BaseSimulator::BlockCode {
 public:	
 	RobotBlocksBlockCode(RobotBlocksBlock *host);
 	virtual ~RobotBlocksBlockCode();
-
-	virtual void processLocalEvent(EventPtr pev) = 0;
 };
 
 }

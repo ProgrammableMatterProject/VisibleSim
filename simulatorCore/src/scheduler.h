@@ -148,40 +148,4 @@ static inline Scheduler* getScheduler() { return(Scheduler::getScheduler()); }
 
 } // BaseSimulator namespace
 
-class ConsoleStream {
-	BaseSimulator::Scheduler *scheduler;
-    int blockId;
-    stringstream stream;
-public:
-
-    ConsoleStream() { stream.str(""); };
-    void setInfo(BaseSimulator::Scheduler*s,int id) {
-        scheduler=s;
-        blockId=id;
-    }
-    void flush() {
-        scheduler->trace(stream.str(),blockId);
-        stream.str("");
-    };
-
-    ConsoleStream& operator<<(const char* value ) {
-        int l=strlen(value);
-        if (value[l-1]=='\n') {
-            string s(value);
-            s = s.substr(0,l-1);
-            stream << s;
-            flush();
-        } else {
-            stream << value;
-        }
-        return *this;
-    }
-
-    template<typename T>
-    ConsoleStream& operator<<( T const& value ) {
-        stream << value;
-        return *this;
-    }
-};
-
 #endif /* SCHEDULER_H_ */
