@@ -25,8 +25,20 @@ class Lattice {
         const char* what() const noexcept {return "Ooops!\n";}
     };    
 public:
-    enum Direction {};
-    
+    enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)
+    /**
+     * @brief Returns an integer corresponding to the direction opposite to d
+     * @param d id of the direction from which we want the opposite
+     * @return id of direction opposite to d
+     */
+    virtual int getOppositeDirection(int d) { return -1; };
+    /**
+     * @brief Returns the name string corresponding to direction d
+     * @param d id of the direction from which we want the name
+     * @return name string corresponding to direction d
+     */
+    virtual string getDirectionString(int d) { return "UNDEFINED"; };
+
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
@@ -149,7 +161,7 @@ public:
 class Lattice2D : public Lattice {
 
 public:
-    enum Direction {};
+    enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
     /**
      * @brief Abstract Lattice 2D constructor. 
@@ -198,7 +210,7 @@ public:
 class Lattice3D : public Lattice {
 
 public:
-    enum Direction {};
+    enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
     /**
      * @brief Abstract Lattice 3D constructor. 
@@ -256,9 +268,11 @@ class SLattice : public Lattice2D {
 
     static const string directionName[];
 public:
-    enum Direction {North = 0, East, South, West, MAX_NB_NEIGHBORS};
-    static int getOppositeDirection(int d);
-    static string getDirectionString(int d);
+    enum Direction {North = 0, East, South, West, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    //!< @copydoc Lattice::getOppositeDirection
+    virtual int getOppositeDirection(int d);
+    //!< @copydoc Lattice::getDirectionString
+    virtual string getDirectionString(int d);
     
     /**
      * @brief SLattice constructor. 
@@ -328,9 +342,11 @@ class HLattice : public Lattice2D {
     static const string directionName[];
 public:   
     enum Direction {Right = 0, TopRight = 1, TopLeft = 2,
-                    Left = 3, BottomLeft = 4, BottomRight = 5, MAX_NB_NEIGHBORS};
-    static int getOppositeDirection(int d);
-    static string getDirectionString(int d);
+                    Left = 3, BottomLeft = 4, BottomRight = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    //!< @copydoc Lattice::getOppositeDirection
+    virtual int getOppositeDirection(int d);
+    //!< @copydoc Lattice::getDirectionString
+    virtual string getDirectionString(int d);
 
     /**
      * @brief HLattice constructor. 
@@ -413,9 +429,11 @@ class FCCLattice : public Lattice3D {
     static const string directionName[];
 public:
     enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
-                    Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS};
-    static int getOppositeDirection(int d);
-    static string getDirectionString(int d);
+                    Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    //!< @copydoc Lattice::getOppositeDirection
+    virtual int getOppositeDirection(int d);
+    //!< @copydoc Lattice::getDirectionString
+    virtual string getDirectionString(int d);
     
     /**
      * @brief FCCLattice constructor. 
@@ -474,9 +492,11 @@ class SCLattice : public Lattice3D {
             }; //!< Vector containing relative position of neighboring cells
     static const string directionName[];
 public:
-    enum Direction { Bottom = 0, Back = 1, Right, Front, Left, Top, MAX_NB_NEIGHBORS};
-    static int getOppositeDirection(int d);
-    static string getDirectionString(int d);
+    enum Direction { Bottom = 0, Back = 1, Right, Front, Left, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    //!< @copydoc Lattice::getOppositeDirection
+    virtual int getOppositeDirection(int d);
+    //!< @copydoc Lattice::getDirectionString
+    virtual string getDirectionString(int d);
     
     /**
      * @brief SCLattice constructor. 
@@ -527,9 +547,11 @@ public:
  */
 class BCLattice : public Lattice3D {
 public:
-    enum Direction {BROADCAST = 0, MAX_NB_NEIGHBORS};
-    static int getOppositeDirection(int d);
-    static string getDirectionString(int d);
+    enum Direction {BROADCAST = 0, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    //!< @copydoc Lattice::getOppositeDirection
+    virtual int getOppositeDirection(int d);
+    //!< @copydoc Lattice::getDirectionString
+    virtual string getDirectionString(int d);
 
     list<BuildingBlock*> connected; //!< contains all cells with a block on it
     

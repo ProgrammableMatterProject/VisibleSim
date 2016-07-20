@@ -116,7 +116,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 		vm->neighbors[face] = (std::static_pointer_cast<AddNeighborEvent>(pev))->target;
 		vm->enqueue_face(vm->neighbors[face], face, 1);
 		BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-		info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << SCLattice::getDirectionString(SCLattice::getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face));
+		info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << lattice->getDirectionString(lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face));
 	}
 	break;
 	case EVENT_REMOVE_NEIGHBOR:
@@ -125,7 +125,7 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 		vm->neighbors[face] = VACANT;
 		vm->enqueue_face(vm->neighbors[face], face, -1);
 		BaseSimulator::getScheduler()->schedule(new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-		info << "Remove neighbor at face " << SCLattice::getDirectionString(SCLattice::getOppositeDirection(face));
+		info << "Remove neighbor at face " << lattice->getDirectionString(lattice->getOppositeDirection(face));
 	}
 	break;
 	case EVENT_TAP:

@@ -126,7 +126,7 @@ void MeldBlockCode::processLocalEvent(EventPtr pev) {
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), hostBlock));
 		info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target
 			 << " at face "
-			 << SCLattice::getDirectionString(SCLattice::getOppositeDirection(
+			 << lattice->getDirectionString(lattice->getOppositeDirection(
 										 (std::static_pointer_cast<AddNeighborEvent>(pev))->face));
 	}
 	break;
@@ -137,7 +137,7 @@ void MeldBlockCode::processLocalEvent(EventPtr pev) {
 		vm->enqueue_face(vm->neighbors[face], face, -1);
 		BaseSimulator::getScheduler()->schedule(
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), hostBlock));
-		info << "Remove neighbor at face " << SCLattice::getDirectionString(SCLattice::getOppositeDirection(face));
+		info << "Remove neighbor at face " << lattice->getDirectionString(lattice->getOppositeDirection(face));
 	}
 	break;
 	case EVENT_TAP:
@@ -169,7 +169,7 @@ void MeldBlockCode::processLocalEvent(EventPtr pev) {
 		getScheduler()->schedule(
 			new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(),
 													 message, interface));
-		//info << "sends a message at face " << NeighborDirection::getString(hostBlock->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
+		info << "sends a message at face " << lattice->getString(hostBlock->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
 	}
 	break;
 	case EVENT_RECEIVE_MESSAGE: /*EVENT_NI_RECEIVE: */

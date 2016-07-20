@@ -81,18 +81,18 @@ P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(int i
 
 void SmartBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << SLattice::getDirectionString(getDirection(ni)) << endl;
+		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new AddNeighborEvent(getScheduler()->now(), this,
-							 SLattice::getOppositeDirection(getDirection(ni)), target->blockId));
+							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void SmartBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << SLattice::getDirectionString(getDirection(ni)) << endl;
+		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
-								SLattice::getOppositeDirection(getDirection(ni))));
+								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
 }

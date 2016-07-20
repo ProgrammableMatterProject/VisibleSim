@@ -414,5 +414,5 @@ int BCLattice::getOppositeDirection(int d) {
 }
 
 string BCLattice::getDirectionString(int d) {
-    return "NONE";
+    return "Wireless";
 }

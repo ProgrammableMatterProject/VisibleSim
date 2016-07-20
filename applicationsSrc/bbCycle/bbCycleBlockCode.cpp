@@ -124,7 +124,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	break;
 	case EVENT_TAP: {
 	    int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
-		info << "tapped on face " << SCLattice::getDirectionString(face);
+		info << "tapped on face " << lattice->getDirectionString(face);
 	} break;
 	default:
 		ERRPUT << "*** ERROR *** : unknown local event" << endl;

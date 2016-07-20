@@ -10,6 +10,7 @@
 #include "trace.h"
 #include "scheduler.h"
 #include "buildingBlock.h"
+#include "world.h"
 #include "lattice.h"
 
 using namespace std;
@@ -18,6 +19,7 @@ namespace BaseSimulator {
 
 BlockCode::BlockCode(BuildingBlock *host) : hostBlock(host) {
 	scheduler = getScheduler();
+	lattice = getWorld()->lattice;
 	console.setInfo(scheduler, hostBlock->blockId);
 	addDebugAttributes(scheduler);
 }
