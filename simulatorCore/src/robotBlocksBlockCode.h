@@ -10,6 +10,7 @@
 
 #include "blockCode.h"
 #include "robotBlocksBlock.h"
+#include "network.h"
 
 namespace RobotBlocks {
 
