@@ -14,7 +14,6 @@
 #include <inttypes.h>
 #include <boost/asio.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include "meldProcessVMCommands.h"
 #include "buildingBlock.h"
 
