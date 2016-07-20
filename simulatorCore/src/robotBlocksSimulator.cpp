@@ -21,9 +21,8 @@ void RobotBlocksSimulator::help() {
 	exit(EXIT_SUCCESS);
 }
 
-RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[],
-										   RobotBlocksBlockCode *(*bcb)(RobotBlocksBlock*))
-	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
+RobotBlocksSimulator::RobotBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+	: BaseSimulator::Simulator(argc, argv, bcb) {
 	OUTPUT << "\033[1;34m" << "RobotBlocksSimulator constructor" << "\033[0m" << endl;
 }
 
@@ -31,8 +30,8 @@ RobotBlocksSimulator::~RobotBlocksSimulator() {
 	OUTPUT << "\033[1;34m" << "RobotBlocksSimulator destructor" << "\033[0m" <<endl;
 }
 
-void RobotBlocksSimulator::createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) {
-	simulator =  new RobotBlocksSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
+void RobotBlocksSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+	simulator =  new RobotBlocksSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();
 }

@@ -183,34 +183,6 @@ void World::deleteBlock(BuildingBlock *bb) {
     delete bb->ptrGlBlock;
 }
 
-
-// PTHY: TODO - interface refactoring
-// void World::linkBlock(const Cell3DPosition &pos) {
-//     BlinkyBlocksBlock *ptrNeighbor;
-//     vector<Cell3DPosition> nCells;
-//     Cell3DPosition nP;
-//     BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);
-
-//     // There is a block on cell pos
-//     nCells = lattice->getNeighborhood(ptrBlock);
-
-//     // Check neighbors for each interface
-//     for (int i = 0; i < NeighborDirection::; i++) {
-//	nP = pos + nCells[i];
-//	ptrNeighbor = (BlinkyBlocksBlock*)lattice->getBlock(nP);
-//	if (ptrNeighbor) {
-//		(ptrBlock)->getInterface(NeighborDirection::Direction(i))->
-//		connect(ptrNeighbor->getInterface(NeighborDirection::Direction(
-//							  NeighborDirection::getOpposite(i))));
-
-//		OUTPUT << "connection #" << (ptrBlock)->blockId <<
-//		" to #" << ptrNeighbor->blockId << endl;
-//	} else {
-//		(ptrBlock)->getInterface(NeighborDirection::Direction(i))->connect(NULL);
-//	}
-//     }
-// }
-
 void World::stopSimulation() {
 	map<int, BuildingBlock*>::iterator it;
 	for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; it++) {
@@ -258,10 +230,10 @@ bool World::canAddBlockToFace(int numSelectedGlBlock, int numSelectedFace) {
 	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	Cell3DPosition pos = bb->position;
 	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(pos);
-	if (numSelectedFace < lattice->getMaxNumNeighbors())
-		cerr << "numSelectedFace: " << numSelectedFace << " f"
-			 << pos << "+" << nCells[numSelectedFace]
-			 << " = " << lattice->isFree(pos + nCells[numSelectedFace]) << endl;
+	// if (numSelectedFace < lattice->getMaxNumNeighbors())
+	// 	cerr << "numSelectedFace: " << numSelectedFace << " f"
+	// 		 << pos << "+" << nCells[numSelectedFace]
+	// 		 << " = " << lattice->isFree(pos + nCells[numSelectedFace]) << endl;
 
 	return numSelectedFace < lattice->getMaxNumNeighbors() ?
 		lattice->isFree(pos + nCells[numSelectedFace]) : false;
@@ -301,7 +273,7 @@ void World::createHelpWindow() {
 
 void World::tapBlock(uint64_t date, int bId, int face) {
 	BuildingBlock *bb = getBlockById(bId);
-	cerr << bb->blockId << " : " << bb->position << " : " << face << endl;
+	// cerr << bb->blockId << " : " << bb->position << " : " << face << endl;
 	bb->tap(date, face < lattice->getMaxNumNeighbors() ? face : -1);
 }
 
@@ -328,7 +300,7 @@ void World::createPopupMenu(int ix, int iy) {
 
 	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
-	cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
+	// cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
 	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);

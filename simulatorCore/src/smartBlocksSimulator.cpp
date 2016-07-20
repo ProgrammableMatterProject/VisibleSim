@@ -13,9 +13,8 @@ using namespace std;
 
 namespace SmartBlocks {
 
-SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[],
-										   SmartBlocksBlockCode *(*bcb)(SmartBlocksBlock*))
-	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
+SmartBlocksSimulator::SmartBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+	: BaseSimulator::Simulator(argc, argv, bcb) {
     cout << "\033[1;34m" << "SmartBlocksSimulator constructor" << "\033[0m" << endl;
 }
 
@@ -25,10 +24,8 @@ SmartBlocksSimulator::~SmartBlocksSimulator() {
     cout << "\033[1;34m" << "SmartBlocksSimulator destructor" << "\033[0m" <<endl;
 }
 
-void SmartBlocksSimulator::createSimulator(int argc, char *argv[],
-										   SmartBlocksBlockCode *(*smartBlocksBlockCodeBuildingFunction)
-										   (SmartBlocksBlock*)) {
-    simulator =  new SmartBlocksSimulator(argc, argv, smartBlocksBlockCodeBuildingFunction);
+void SmartBlocksSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    simulator =  new SmartBlocksSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();
 }

@@ -20,15 +20,12 @@ namespace MultiRobots {
 class MultiRobotsSimulator : public BaseSimulator::Simulator {
 protected:
 
-    MultiRobotsSimulator(int argc, char *argv[],
-                         MultiRobotsBlockCode *(*blinkyBlocksCodeBuildingFunction)(MultiRobotsBlock*));
+    MultiRobotsSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
     virtual ~MultiRobotsSimulator();
 
 public:
 
-    static void createSimulator(int argc, char *argv[],
-                                MultiRobotsBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)
-                                (MultiRobotsBlock*));   
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);   
 
     static MultiRobotsSimulator* getSimulator() {
 	assert(simulator != NULL);
@@ -42,7 +39,7 @@ public:
     virtual void printInfo() { OUTPUT << "I'm a MultiRobotsSimulator" << endl; }
 };
 
-inline void createSimulator(int argc, char *argv[], MultiRobotsBlockCode *(*bcb)(MultiRobotsBlock*)) {
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
     MultiRobotsSimulator::createSimulator(argc, argv, bcb);
 }
 
