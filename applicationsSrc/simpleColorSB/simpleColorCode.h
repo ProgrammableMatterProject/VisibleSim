@@ -1,16 +1,16 @@
 #ifndef simpleColorCode_H_
 #define simpleColorCode_H_
-#include "smartBlocksGeneric.h"
+#include "smartBlocksBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 
 using namespace SmartBlocks;
 
-class SimpleColorCode : public GenericCodeBlock {
+class SimpleColorCode : public SmartBlocksBlockCode {
 private:
     int distance;
 public :
-	SimpleColorCode(SmartBlocksBlock *host):GenericCodeBlock(host) {};
+	SimpleColorCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {};
 	~SimpleColorCode() {};
 
 	void startup();
@@ -23,5 +23,5 @@ public :
 	};
 /*****************************************************************************/
 };
-	void _myBroadcastFunc(GenericCodeBlock *,MessagePtr,P2PNetworkInterface *sender);
+	void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */

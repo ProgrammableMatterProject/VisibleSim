@@ -6,13 +6,13 @@ void SimpleColorCode::startup() {
 	addMessageEventFunc(BROADCAST_MSG,_myBroadcastFunc);
 	console << "start\n";
     srand(time(NULL));
-	if (module->blockId==1) { // master id is 1
-        setColor(RED);
+	if (hostBlock->blockId==1) { // master id is 1
+        hostBlock->setColor(RED);
         distance=0;
         sendMessageToAllNeighbors("Broadcast",new MessageOf<int>(BROADCAST_MSG,distance),100,200,0);
 	} else {
         distance=-1; // unknown
-        setColor(LIGHTGREY);
+        hostBlock->setColor(LIGHTGREY);
 	}
 }
 
@@ -22,12 +22,12 @@ void SimpleColorCode::myBroadcastFunc(const MessageOf<int>*msg, P2PNetworkInterf
     if (distance==-1 || distance>d) {
         console << "update distance=" << d << "\n";
         distance = d;
-        setColor(myTabColors[distance%8]);
+        hostBlock->setColor(myTabColors[distance%8]);
         sendMessageToAllNeighbors("Broadcast",new MessageOf<int>(BROADCAST_MSG,distance),100,200,1,sender);
     }
 };
 
-void _myBroadcastFunc(GenericCodeBlock *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+void _myBroadcastFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	SimpleColorCode *cb = (SimpleColorCode*)codebloc;
 	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
 	cb->myBroadcastFunc(msgType,sender);

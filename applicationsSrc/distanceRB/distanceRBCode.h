@@ -1,7 +1,6 @@
 #ifndef distanceRBCode_H_
 #define distanceRBCode_H_
 #include "robotBlocksBlockCode.h"
-#include "network.h"
 
 static const int BROADCAST_MSG=1001;
 
