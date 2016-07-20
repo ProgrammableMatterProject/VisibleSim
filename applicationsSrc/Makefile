@@ -1,6 +1,6 @@
-SUBDIRS = noneCatoms2D bbCycle robot01 sphereCatoms3D sbReconf smartBlocks1 
-# SUBDIRS = RBMeld C2DMeld C3DMeld blinkyMeld SBMeld
+SUBDIRS = distanceRB
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
+# SUBDIRS = RBMeld C2DMeld C3DMeld blinkyMeld SBMeld
 
 .PHONY: subdirs $(SUBDIRS) test
 
@@ -21,7 +21,7 @@ $(SUBDIRS):
 test:	subdirs
 	@for dir in $(SUBDIRS); do \
 		echo "(cd ../applicationsBin/$$dir; ./$$dir)"; \
-		(cd ../applicationsBin/$$dir; ./$$dir -R); \
+		(cd ../applicationsBin/$$dir; ./$$dir -r); \
 	done
 
 clean:
