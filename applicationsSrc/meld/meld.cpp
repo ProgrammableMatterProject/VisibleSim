@@ -21,7 +21,7 @@ using namespace std;
 
 ModuleType readModuleType(int argc, char **argv) {
     // Locate -k command line argument
-    for (uint i = 0; i < argc; i++) {
+    for (int i = 0; i < argc; i++) {
         if (argv[i][0] == '-' && argv[i][1] == 'k') {
             if (!argv[i+1]) break;
             

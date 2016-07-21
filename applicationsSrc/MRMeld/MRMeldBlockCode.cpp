@@ -269,6 +269,6 @@ void MRMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-MultiRobots::MultiRobotsBlockCode* MRMeldBlockCode::buildNewBlockCode(MultiRobotsBlock *host) {
-	return(new MRMeldBlockCode(host));
+BlockCode* MRMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new MRMeldBlockCode((MultiRobotsBlock*)host));
 }

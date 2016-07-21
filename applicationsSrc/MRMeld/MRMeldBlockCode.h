@@ -21,7 +21,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
 	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
-	static MultiRobots::MultiRobotsBlockCode *buildNewBlockCode(MultiRobots::MultiRobotsBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* MRMELDBLOCKCODE_H_ */
