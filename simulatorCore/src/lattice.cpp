@@ -11,6 +11,8 @@ using namespace std;
 
 /********************* Lattice *********************/
 
+const string Lattice::directionName[] = {};
+
 Lattice::Lattice() {
     grid = NULL;
 }
@@ -114,21 +116,24 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
     return neighborhood;
 }
 
+string Lattice::getDirectionString(int d) {
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ? directionName[d] : "undefined";
+}
+
 /********************* Lattice2D *********************/
 Lattice2D::Lattice2D() : Lattice() {}
 Lattice2D::Lattice2D(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice(gsz,gsc) {}
 Lattice2D::~Lattice2D() {}
-
+const string Lattice2D::directionName[] = {};
 /********************* Lattice3D *********************/
 Lattice3D::Lattice3D() : Lattice() {}
 Lattice3D::Lattice3D(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice(gsz,gsc) {}
 Lattice3D::~Lattice3D() {}
-
+const string Lattice3D::directionName[] = {};
 /********************* HLattice *********************/
 HLattice::HLattice() : Lattice2D() {}
 HLattice::HLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice2D(gsz,gsc) {}
 HLattice::~HLattice() {}
-
 
 Vector3D HLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     Vector3D res;

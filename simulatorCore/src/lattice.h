@@ -23,7 +23,8 @@ namespace BaseSimulator {
 class Lattice {
     struct InvalidInsertionException : std::exception {
         const char* what() const noexcept {return "Ooops!\n";}
-    };    
+    };
+    static const string directionName[];    
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)
     /**
@@ -37,7 +38,7 @@ public:
      * @param d id of the direction from which we want the name
      * @return name string corresponding to direction d
      */
-    virtual string getDirectionString(int d) { return "UNDEFINED"; };
+    virtual string getDirectionString(int d);
 
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
@@ -140,7 +141,7 @@ public:
      * @brief Overriden getter to get the maximum number of neighbor a lattice cell can have
      * @return the maximum number of neighbor for the callee lattice
      */
-    virtual inline const int getMaxNumNeighbors() { return 0; };
+    virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; };
     /**
      * @brief Polymorphic function to get an opposite direction
      * @param i : initial direction
@@ -159,7 +160,7 @@ public:
  *
  */
 class Lattice2D : public Lattice {
-
+    static const string directionName[];    
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
@@ -208,7 +209,7 @@ public:
  *
  */
 class Lattice3D : public Lattice {
-
+    static const string directionName[];
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
