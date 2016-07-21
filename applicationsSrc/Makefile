@@ -1,8 +1,8 @@
 
 # GENERIC BlockCodes
-SUBDIRS = simpleColorBB simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D
+# SUBDIRS = simpleColorBB simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D
 # MELD BlockCodes
-# SUBDIRS = RBMeld C2DMeld C3DMeld blinkyMeld SBMeld
+SUBDIRS = meld MRMeld 
 # TESTED Legacy codeBlocks
 # SUBDIRS = noneCatoms2D bbCycle robot01 sphereCatoms3D sbReconf smartBlocks1
 # ALL
