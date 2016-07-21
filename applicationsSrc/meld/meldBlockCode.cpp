@@ -22,6 +22,8 @@
 using namespace std;
 using namespace MeldInterpret;
 
+ModuleType MeldBlockCode::moduleType;
+
 MeldBlockCode::MeldBlockCode(BuildingBlock *host): BlockCode(host) {
 	OUTPUT << "MeldBlockCode constructor" << endl;
 	vm = new MeldInterpretVM(hostBlock);

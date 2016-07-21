@@ -24,6 +24,7 @@ void CommandLine::help() {
          << "\t\t maximumDate (ms) : the scheduler will stop when even list is empty, or when the maximum date is reach\n"
          << "\t\t inf : the scheduler will have an infinite duration and can only be stopped by the user" << endl;
     cerr << "\t -m <VMpath>:<VMport>\tpath to the MeldVM directory and port" << endl;
+    cerr << "\t -k {\"BB\", \"RB\", \"SB\", \"C2D\", \"C3D\"}\t module type for meld execution" << endl;
     cerr << "\t -h \t\t\thelp" << endl;
     exit(EXIT_SUCCESS);
 }
@@ -123,6 +124,9 @@ void CommandLine::read(int argc, char *argv[]) {
         case 'f' : {
             //fullScreen = true;
             GlutContext::setFullScreenMode(true);
+        } break;
+        case 'k' : {
+            // Already handled by meld blockCode, nothing to do
         } break;
             
             // case 'a' : {
