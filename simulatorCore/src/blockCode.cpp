@@ -17,6 +17,9 @@ using namespace std;
 
 namespace BaseSimulator {
 
+Target *BlockCode::target = NULL;
+// TiXmlNode *BlockCode::xmlTargetListNode = NULL;
+
 BlockCode::BlockCode(BuildingBlock *host) : hostBlock(host) {
 	scheduler = getScheduler();
 	lattice = getWorld()->lattice;
@@ -25,6 +28,11 @@ BlockCode::BlockCode(BuildingBlock *host) : hostBlock(host) {
 }
 
 BlockCode::~BlockCode() {
+	if (target) {
+		delete target;
+		target = NULL;
+	}
+		
 	eventFuncMap.clear();
 }
 

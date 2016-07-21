@@ -9,7 +9,10 @@
 #define TARGET_H__
 
 #include <map>
+#include <iostream>
+#include <fstream>
 
+#include "TinyXml/tinyxml.h"
 #include "color.h"
 #include "cell3DPosition.h"
 
@@ -20,6 +23,12 @@ namespace BaseSimulator {
 //<! @brief Abstract Target. Provides the user with functions for checking a target position and color.
 class Target {
 protected:
+    //<! @brief Exception thrown if an error as occured during parsing
+    struct TargetParsingException : std::exception {
+        const char* what() const noexcept {
+            return "Invalid target description in configuration file\n";
+        }
+    };
     //<! @brief Exception thrown if the user is attempting to check a position that is not part of the target
     struct InvalidPositionException : std::exception {
         const char* what() const noexcept {
@@ -33,7 +42,7 @@ protected:
         }
     };
 public:    
-    Target() {};
+    Target(TiXmlNode *targetNode) {};
     virtual ~Target() {};
     
     /**
@@ -54,7 +63,14 @@ public:
      * @return true if a target has been loaded 
      */
     // virtual bool readNextTarget();
+
+    /**
+     * @brief prints target to an ouput string
+     * @param where ostream on which to print the object
+     */
+    virtual void print(ostream& where) const {};
     
+    friend ostream& operator<<(ostream& out,const Target &t);
 };  // class Target
 
 //<! @brief A target modeled as a container of unique positions and colors.c
@@ -62,7 +78,7 @@ class TargetGrid : public Target {
     // Only store target cells instead of the entire grid to save memory
     map<const Cell3DPosition, const Color> tCells; //!< the target cells as Cell/Color key-value pairs 
 public:
-    TargetGrid() : Target() {};
+    TargetGrid(TiXmlNode *targetNode);
     virtual ~TargetGrid() {};
 
     /**
@@ -79,19 +95,22 @@ public:
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
     virtual const Color getTargetColor(const Cell3DPosition &pos);
 
+    //!< @copydoc Target::print
+    virtual void print(ostream& where) const;
 };  // class TargetGrid
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
 public:
-    TargetCSG() : Target() {};
+    TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {};
     virtual ~TargetCSG() {};
 
     //!< @copydoc Target::isInTarget
     virtual bool isInTarget(const Cell3DPosition &pos);
     //!< @copydoc Target::getTargetColor
     virtual const Color getTargetColor(const Cell3DPosition &pos);
-
+    //!< @copydoc Target::print
+    virtual void print(ostream& where) const {};    
 };  // class TargetCSG
 
 } // namespace BaseSimulator

@@ -133,7 +133,10 @@ protected:
 	 *
 	 */
 	void parseObstacles();
-	
+
+	//<! @brief Parses the configuration for target information, and instantiate them
+	void parseTarget();
+
 	/*! @fn virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[])
 	 *  @brief Calls the createWorld function from the target world subclass to instantiate it
 	 *
@@ -158,7 +161,7 @@ protected:
 	 */
 	virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
 						   const Cell3DPosition &pos, const Color &color, bool master) {};
-	
+   
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
 	virtual ~Simulator();
 public:

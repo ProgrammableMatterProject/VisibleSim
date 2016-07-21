@@ -13,6 +13,7 @@
 #include <map>
 
 #include "trace.h"
+#include "target.h"
 #include "TinyXML/tinyxml.h"
 
 class Event;
@@ -36,21 +37,23 @@ class BlockCode {
 public:
     BuildingBlock *hostBlock; 	//!< The block to which this instance of the user program belongs 
     uint64_t availabilityDate = 0; //!< If the host is busy, the date at which it will be available
-    std::multimap<int,eventFunc> eventFuncMap;
-    Scheduler *scheduler;
-    Lattice *lattice;
-    ConsoleStream console;
-
+    std::multimap<int,eventFunc> eventFuncMap; //!< 
+    Scheduler *scheduler; //!< pointer to the single instance of scheduler of the simulation
+    Lattice *lattice;  //!< pointer to the single instance of lattice of the simulation
+    ConsoleStream console;  //!< pointer to the single instance of ConsoleStream of the simulation
+    static Target *target; //!< pointer shared by all blockCodes to the current target configuration    
+	// static TiXmlNode* xmlTargetListNode; //!< targetList XML node from the configuration file
+    
 /**
  * @brief BlockCode constructor
- * @paran host The block on which this instance of the codeBlock will be executed
+ * @para, host The block on which this instance of the blockCode will be executed
  */ 
-    BlockCode(BuildingBlock *host);
-    
+    BlockCode(BuildingBlock *host);    
 /**
  * @brief BlockCode destructor
  */ 
     virtual ~BlockCode();
+    
 /**
  * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it. Has to be overriden in the child class.
  * @param config : pointer to the TiXmlDocument representing the configuration file, all information related to VisibleSim's core have already been parsed
@@ -63,7 +66,7 @@ public:
  */ 
     virtual void processLocalEvent(EventPtr pev);
 /**
- * @brief This function is called on startup of the codeBlock, 
+ * @brief This function is called on startup of the blockCode, 
  it can be used to perform initial configuration of the host or this instance of the program
 */ 
     virtual void startup() = 0;
