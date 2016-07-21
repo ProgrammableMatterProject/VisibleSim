@@ -997,8 +997,8 @@ void SbReconfBlockCode::init() {
     setRulesColor();
 }
 
-SmartBlocks::SmartBlocksBlockCode* SbReconfBlockCode::buildNewBlockCode(SmartBlocks::SmartBlocksBlock *host) {
-    return(new SbReconfBlockCode(host));
+BlockCode* SbReconfBlockCode::buildNewBlockCode(BuildingBlock *host) {
+    return(new SbReconfBlockCode((SmartBlocksBlock*)host));
 }
 
 void SbReconfBlockCode::step2(MessagePtr message) {

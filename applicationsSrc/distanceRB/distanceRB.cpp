@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 	createSimulator(argc, argv, DistanceRBCode::buildNewBlockCode);
 	Scheduler *scheduler = getScheduler();
 
-	BaseSimulator::getSimulator()->printInfo();
+	getSimulator()->printInfo();
 	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 	BaseSimulator::deleteSimulator();

@@ -18,8 +18,8 @@ public :
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static Catoms2DBlockCode *buildNewBlockCode(Catoms2DBlock *host) {
-	    return(new SimpleColorCode(host));
+	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+	    return (new SimpleColorCode((Catoms2DBlock*)host));
 	};
 /*****************************************************************************/
 };

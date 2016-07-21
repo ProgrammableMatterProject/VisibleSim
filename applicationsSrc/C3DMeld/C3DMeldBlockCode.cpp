@@ -242,6 +242,6 @@ void C3DMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-Catoms3D::Catoms3DBlockCode* C3DMeldBlockCode::buildNewBlockCode(Catoms3DBlock *host) {
-	return(new C3DMeldBlockCode(host));
+BlockCode* C3DMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new C3DMeldBlockCode((Catoms3DBlock*)host));
 }

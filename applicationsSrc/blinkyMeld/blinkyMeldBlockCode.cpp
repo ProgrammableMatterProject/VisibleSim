@@ -224,6 +224,6 @@ void BlinkyMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-BlinkyBlocks::BlinkyBlocksBlockCode* BlinkyMeldBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
-	return(new BlinkyMeldBlockCode(host));
+BlockCode* BlinkyMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new BlinkyMeldBlockCode((BlinkyBlocksBlock*)host));
 }

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp>
 
 #include "scheduler.h"
 #include "network.h"
@@ -243,6 +242,6 @@ void SBMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-SmartBlocks::SmartBlocksBlockCode* SBMeldBlockCode::buildNewBlockCode(SmartBlocksBlock *host) {
-	return(new SBMeldBlockCode(host));
+BlockCode* SBMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new SBMeldBlockCode((SmartBlocksBlock*)host));
 }

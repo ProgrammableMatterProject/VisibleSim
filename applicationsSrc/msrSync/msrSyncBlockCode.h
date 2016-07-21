@@ -37,7 +37,7 @@ public:
 	void synchronize(P2PNetworkInterface *exception, uint64_t globalTime);
 	void adjust();
 	
-	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* MSRSYNCBLOCKCODE_H_ */

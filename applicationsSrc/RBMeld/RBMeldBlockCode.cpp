@@ -242,6 +242,6 @@ void RBMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-RobotBlocks::RobotBlocksBlockCode* RBMeldBlockCode::buildNewBlockCode(RobotBlocksBlock *host) {
-	return(new RBMeldBlockCode(host));
+BlockCode* RBMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new RBMeldBlockCode((RobotBlocksBlock*)host));
 }

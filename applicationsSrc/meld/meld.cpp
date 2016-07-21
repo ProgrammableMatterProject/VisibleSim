@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
         break;
     }
     
-	getSimulator()->printInfo();
+    Simulator::getSimulator()->printInfo();
 	getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 

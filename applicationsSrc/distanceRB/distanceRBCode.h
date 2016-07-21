@@ -18,8 +18,8 @@ public:
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static RobotBlocksBlockCode *buildNewBlockCode(RobotBlocksBlock *host) {
-	    return(new DistanceRBCode(host));
+	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+	    return (new DistanceRBCode((RobotBlocksBlock*)host));
 	};
 /*****************************************************************************/
 };

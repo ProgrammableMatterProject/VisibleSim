@@ -101,8 +101,8 @@ void SphereCatoms3DBlockCode::sendDistanceMessage() {
     }
 }
 
-Catoms3DBlockCode* SphereCatoms3DBlockCode::buildNewBlockCode(Catoms3DBlock *host) {
-	return(new SphereCatoms3DBlockCode(host));
+BlockCode* SphereCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new SphereCatoms3DBlockCode((Catoms3DBlock*)host));
 }
 
 Distance_message::Distance_message(int _distance) {

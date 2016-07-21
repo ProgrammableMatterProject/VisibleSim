@@ -374,8 +374,8 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 	robotBlock->setColor((trainPrevious?(trainNext?MAGENTA:PINK):(trainNext?RED:goodPlace?GREEN:YELLOW)));
 }
 
-RobotBlocksBlockCode* Robot01BlockCode::buildNewBlockCode(RobotBlocksBlock *host) {
-	return(new Robot01BlockCode(host));
+BlockCode* Robot01BlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new Robot01BlockCode((RobotBlocksBlock*)host));
 }
 
 void Robot01BlockCode::sendMapToNeighbors(P2PNetworkInterface *p2pExcept) {

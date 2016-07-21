@@ -253,6 +253,6 @@ void C2DMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-Catoms2D::Catoms2DBlockCode* C2DMeldBlockCode::buildNewBlockCode(Catoms2DBlock *host) {
-	return(new C2DMeldBlockCode(host));
+BlockCode* C2DMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new C2DMeldBlockCode((Catoms2DBlock*)host));
 }

@@ -245,6 +245,6 @@ void msrSyncBlockCode::adjust() {
   x0 = yAvg - y0 * xAvg;
 }
 
-BlinkyBlocks::BlinkyBlocksBlockCode* msrSyncBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
-  return(new msrSyncBlockCode(host));
+BlockCode* msrSyncBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new msrSyncBlockCode((BlinkyBlocksBlock*)host));
 }

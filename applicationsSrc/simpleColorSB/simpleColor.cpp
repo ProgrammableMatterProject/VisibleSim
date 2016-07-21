@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
 	createSimulator(argc, argv, SimpleColorCode::buildNewBlockCode);
 	Scheduler *scheduler = getScheduler();
 
-	BaseSimulator::getSimulator()->printInfo();
+	getSimulator()->printInfo();
 	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 	deleteSimulator();

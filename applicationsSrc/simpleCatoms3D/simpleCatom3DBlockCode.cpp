@@ -135,10 +135,6 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-Catoms3DBlockCode* SimpleCatom3DBlockCode::buildNewBlockCode(Catoms3DBlock *host) {
-	return(new SimpleCatom3DBlockCode(host));
-}
-
 // bool SimpleCatom3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
 //     if (att=="potentiel") {
 //         sout << potentiel << endl;
