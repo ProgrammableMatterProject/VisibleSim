@@ -12,7 +12,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "tinyXml/tinyxml.h"
+#define TIXML_USE_STL	1
+#include "TinyXML/tinyxml.h"
+
 #include "color.h"
 #include "cell3DPosition.h"
 
