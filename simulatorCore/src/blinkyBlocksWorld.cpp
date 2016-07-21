@@ -82,7 +82,7 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 		ptrNeighbor = (BlinkyBlocksBlock*)lattice->getBlock(nCells[i]);
 		if (ptrNeighbor) {
 			(ptrBlock)->getInterface(i)->
-				connect(ptrNeighbor->getInterface(lattice->getOpposite(i)));
+				connect(ptrNeighbor->getInterface(lattice->getOppositeDirection(i)));
 
 			OUTPUT << "connection #" << (ptrBlock)->blockId <<
 				" to #" << ptrNeighbor->blockId << endl;

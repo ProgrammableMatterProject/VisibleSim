@@ -142,18 +142,6 @@ public:
      * @return the maximum number of neighbor for the callee lattice
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; };
-    /**
-     * @brief Polymorphic function to get an opposite direction
-     * @param i : initial direction
-     * @return the id of the opposite direction to i
-     */
-    virtual inline const int getOpposite(int i) = 0;
-    /**
-     * @brief Polymorphic function to get the string associated with direction i
-     * @param i : a direction
-     * @return the string corresponding to direction i
-     */
-    virtual inline const string getString(int i) = 0;   
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
@@ -195,14 +183,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */    
     virtual inline const int getMaxNumNeighbors() = 0;
-    /**
-     * @copydoc Lattice::getOppositeDirection
-     */
-    virtual inline const int getOpposite(int i) = 0;
-    /**
-     * @copydoc Lattice::getString
-     */
-    virtual inline const string getString(int i) = 0;
 };
 
 /*! @brief 3-Dimensional Lattice abstract class
@@ -244,14 +224,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */    
     virtual inline const int getMaxNumNeighbors() = 0;
-    /**
-     * @copydoc Lattice::getOppositeDirection
-     */
-    virtual inline const int getOpposite(int i) = 0;
-    /**
-     * @copydoc Lattice::getString
-     */
-    virtual inline const string getString(int i) = 0;
 };
 
 /*! @brief Square 2D Lattice
@@ -306,14 +278,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */    
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
-    /**
-     * @copydoc Lattice::getOpposite
-     */
-    virtual inline const int getOpposite(int i) { return getOppositeDirection(i); }
-    /**
-     * @copydoc Lattice::getString
-     */
-    virtual inline const string getString(int i) { return getDirectionString(i); }
 };
 
 /*! @brief Hexagonal 2D Lattice
@@ -380,14 +344,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */    
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
-    /**
-     * @copydoc Lattice::getOpposite
-     */
-    virtual inline const int getOpposite(int i) { return getOppositeDirection(i); }
-    /**
-     * @copydoc Lattice::getString
-     */
-    virtual inline const string getString(int i) { return getDirectionString(i); }
 };
 
 /*! @brief 3D Face-Centered Cubic Lattice
@@ -467,14 +423,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */    
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
-    /**
-     * @copydoc Lattice::getOpposite
-     */
-    virtual inline const int getOpposite(int i) { return getOppositeDirection(i); }
-    /**
-     * @copydoc Lattice::getString
-     */
-    virtual inline const string getString(int i) { return getDirectionString(i); }
 };
 
 /*! @brief 3D Simple Cubic Lattice
@@ -530,14 +478,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */    
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
-    /**
-     * @copydoc Lattice::getOpposite
-     */
-    virtual inline const int getOpposite(int i) { return getOppositeDirection(i); }
-    /**
-     * @copydoc Lattice::getString
-     */
-    virtual inline const string getString(int i) { return getDirectionString(i); }
 };
 
 /*! @brief 3D Broadcast Lattice
@@ -587,14 +527,6 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */    
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
-    /**
-     * @copydoc Lattice::getOpposite
-     */
-    virtual inline const int getOpposite(int i) { return getOppositeDirection(i); }
-    /**
-     * @copydoc Lattice::getString
-     */
-    virtual inline const string getString(int i) { return getDirectionString(i); }
 };
 
 

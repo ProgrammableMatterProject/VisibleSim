@@ -171,7 +171,7 @@ void MeldBlockCode::processLocalEvent(EventPtr pev) {
 		getScheduler()->schedule(
 			new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(),
 													 message, interface));
-		info << "sends a message at face " << lattice->getString(hostBlock->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
+		info << "sends a message at face " << lattice->getDirectionString(hostBlock->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
 	}
 	break;
 	case EVENT_RECEIVE_MESSAGE: /*EVENT_NI_RECEIVE: */
