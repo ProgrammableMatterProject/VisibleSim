@@ -22,8 +22,16 @@ namespace BaseSimulator {
  */
 class Lattice {
     struct InvalidInsertionException : std::exception {
-        const char* what() const noexcept {return "Ooops!\n";}
+        const char* what() const noexcept {
+            return "trying to insert a block out of the lattice\n";
+        }
     };
+    struct InvalidDimensionsException : std::exception {
+        const char* what() const noexcept {
+            return "lattice size in any direction cannot be negative or null\n";
+        }
+    };
+
     static const string directionName[];    
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)

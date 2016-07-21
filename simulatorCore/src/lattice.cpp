@@ -22,7 +22,8 @@ Lattice::Lattice(const Cell3DPosition &gsz, const Vector3D &gsc) {
     gridScale = gsc;
 
     if (gsz[0] <= 0 || gsz[1] <= 0 || gsz[2] <= 0) {
-        cerr << "error: Incorrect lattice size: size in any direction cannot be negative or null)" << endl;
+        cerr << "error: Incorrect lattice size: size in any direction cannot be negative or null" << endl;
+        throw new InvalidDimensionsException();
     }
 
     grid = new BuildingBlock*[gridSize[0] * gridSize[1] * gridSize[2]]{NULL};
