@@ -1,0 +1,17 @@
+
+type linear tap(node).
+type linear color(node, int).
+type linear change-color(node, int).
+type route neighbor(node, node, int).
+
+color(A, 0).
+
+tap(A) -o change-color(A, node2int(A)).
+
+change-color(A, C1), color(A, C2), C1 <> C2
+   -o {B, F | !neighbor(A, B, F) | change-color(B, C1)},
+      color(A, C1),
+      !setColor2(A, C1).
+
+change-color(A, C1), color(A, C1)
+   -o color(A, C1).
