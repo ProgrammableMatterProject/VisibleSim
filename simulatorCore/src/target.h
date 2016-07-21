@@ -41,7 +41,11 @@ protected:
             return "Target dimensions are invalid\n";
         }
     };
-public:    
+public:
+    /**
+     * @brief Target constructor. Where parsing occurs thanks to the targetNode parameter
+     * @param targetNode XML Node containing target description from configuration file
+     */
     Target(TiXmlNode *targetNode) {};
     virtual ~Target() {};
     
@@ -78,6 +82,14 @@ class TargetGrid : public Target {
     // Only store target cells instead of the entire grid to save memory
     map<const Cell3DPosition, const Color> tCells; //!< the target cells as Cell/Color key-value pairs 
 public:
+    /**
+     * @copydoc Target::Target 
+     * XML Description Format:
+     * <target format="grid">
+     *   <cell position="x,y,z" color="r,g,b"/>
+     *   ...
+     * </target>
+     */    
     TargetGrid(TiXmlNode *targetNode);
     virtual ~TargetGrid() {};
 
