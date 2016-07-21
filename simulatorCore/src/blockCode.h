@@ -75,7 +75,7 @@ public:
 //virtual bool getAttribute(const string &att,ostringstream &sout) { sout << "no debugging"; return false; };
     virtual void addDebugAttributes(Scheduler *scheduler){};
 
-    virtual void onTap();
+    virtual void onTap(int face);
     
     void addMessageEventFunc(int type,eventFunc);
     int sendMessageToAllNeighbors(Message*,int t0,int dt,int nexcept,...);

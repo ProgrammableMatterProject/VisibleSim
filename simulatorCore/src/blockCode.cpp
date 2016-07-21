@@ -129,13 +129,17 @@ void BlockCode::processLocalEvent(EventPtr pev) {
             startup();
         } break;
         case EVENT_TAP: {
-            onTap();
+			int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
+            onTap(face);
         } break;
     }
 }
 
-void BlockCode::onTap() {
-    cout << "Tap, not overloaded" << endl;
+void BlockCode::onTap(int face) {
+	stringstream info;
+	info.str("");
+	info << "Tapped on face " << lattice->getDirectionString(face);
+	scheduler->trace(info.str(),hostBlock->blockId);	
 }
 
 } // BaseSimulator namespace
