@@ -33,7 +33,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
-    cout << "\033[1;31mSmartBlocksWorld destructor" << endl;
+    cout << "\033[1;31mSmartBlocksWorld destructor\033[0m" << endl;
 }
 
 void SmartBlocksWorld::deleteWorld() {
