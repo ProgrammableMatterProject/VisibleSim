@@ -19,6 +19,19 @@ ostream& operator<<(ostream& f,const Cell3DPosition&p) {
     return f;
 }
 
+bool Cell3DPosition::operator<(const Cell3DPosition &o) const {
+    if (pt[0] < o.pt[0]) return true;
+    else if (pt[0] > o.pt[0]) return false;
+    else {
+        if (pt[1] < o.pt[1]) return true;
+        else if (pt[1] > o.pt[1]) return false;
+        else {
+            if (pt[0] < o.pt[0]) return true;
+            else return false;
+        }
+    }
+}
+
 const Cell3DPosition operator +(const Cell3DPosition p1, const Cell3DPosition p2)
 {
     Cell3DPosition r;
