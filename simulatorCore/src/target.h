@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "TinyXml/tinyxml.h"
+#include "tinyXml/tinyxml.h"
 #include "color.h"
 #include "cell3DPosition.h"
 
