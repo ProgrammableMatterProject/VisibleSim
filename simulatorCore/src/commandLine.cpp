@@ -127,6 +127,8 @@ void CommandLine::read(int argc, char *argv[]) {
         } break;
         case 'k' : {
             // Already handled by meld blockCode, nothing to do
+            argc--;
+            argv++;
         } break;
             
             // case 'a' : {

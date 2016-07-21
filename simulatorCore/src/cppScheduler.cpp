@@ -96,21 +96,12 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 				while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
 					first=eventsMap.begin();
 					pev = (*first).second;
-
-					/* traitement du mouvement des objets physiques*/
-					//Physics::update(ev->heureEvenement);
 					currentDate = pev->date;
 					//lock();
 					pev->consume();
 					//unlock();
-					//pev->nbRef--;
-
-					//listeEvenements.pop_front();
 					eventsMap.erase(first);
 					eventsMapSize--;
-					//	    	  ev = *(listeEvenements.begin());
-					//first=eventsMap.begin();
-					//pev = (*first).second;
 				}
 			}
 	    	systemCurrentTime = systemCurrentTimeMax;

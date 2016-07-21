@@ -98,7 +98,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
         //MeldInterpretDebugger::print("Simulation starts in deterministic mode");
         while (state != ENDED) {
             do {
-                  while (!eventsMap.empty()) {
+                  while (!eventsMap.empty()  || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
                         hasProcessed = true;
                         lock();
                         first = eventsMap.begin();
@@ -116,9 +116,23 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                               }
                               setState(RUNNING);
                         }
+
+                        // Check that we have not reached the maximum simulation date, if there is one
+                        if (currentDate > maximumDate) {
+                            cout << "\033[1;33m" << "Scheduler : maximum simulation date has been reached. "
+                                 << "Terminating..." << "\033[0m" << endl;
+                            break;
+                        }
+
                         //checkForReceivedVMCommands();
                   }
                   OUTPUT << "EventMap is empty" << endl;
+                  // PTHY: Equilibrium doesn't seem to be working, use SCHEDULER_LENGTH_INFINITE
+                  //       to keep looping
+                  if (eventsMap.empty() && schedulerLength != SCHEDULER_LENGTH_INFINITE) {
+                      state = ENDED;
+                      break;
+                  }
                 //checkForReceivedVMCommands();
             } while (!MeldInterpretVM::equilibrium() || !eventsMap.empty());
 
@@ -136,9 +150,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                     //getDebugger()->handlePauseRequest();
                 }
             }
+
             //checkForReceivedVMCommands();
-            std::chrono::milliseconds timespan(5);
-            std::this_thread::sleep_for(timespan);			
         }
 #ifdef TEST_DETER
         getWorld()->killAllVMs();
@@ -149,36 +162,57 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     case SCHEDULER_MODE_REALTIME:
         OUTPUT << "Realtime mode scheduler\n" << endl;
         //MeldInterpretDebugger::print("Simulation starts in real time mode");
-        while (state != ENDED) {
+	    while((state != ENDED && !eventsMap.empty()) || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
             systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
             systemCurrentTimeMax = systemCurrentTime - systemStartTime;
-            currentDate = systemCurrentTimeMax;
+            // currentDate = systemCurrentTimeMax;
             //checkForReceivedVMCommands();
-            while (true) {
-                // Lock from here, to be sure that the element
-                // is not destroyed in another thread
-                // (previously the graphic interface was doing
-                // it).
-                lock();
-                if (eventsMap.empty()) {
-                    unlock();
-                    break;
-                }
-                first=eventsMap.begin();
-                pev = (*first).second;
-                if(pev->date > systemCurrentTimeMax) {
-                    unlock();
-                    break;
-                }
-                currentDate = pev->date;
-                pev->consume();
-                eventsMap.erase(first);
-                eventsMapSize--;
-                unlock();
-                //cout << "check to send" << endl;
-                //checkForReceivedVMCommands();
-                //cout << "ok" << endl;
-            }
+            // while (true) {
+            //     // Lock from here, to be sure that the element
+            //     // is not destroyed in another thread
+            //     // (previously the graphic interface was doing
+            //     // it).
+            //     lock();
+            //     if (eventsMap.empty()) {
+            //         unlock();
+            //         break;
+            //     }
+            //     first=eventsMap.begin();
+            //     pev = (*first).second;
+            //     if(pev->date > systemCurrentTimeMax) {
+            //         unlock();
+            //         break;
+            //     }
+            //     currentDate = pev->date;
+            //     pev->consume();
+            //     eventsMap.erase(first);
+            //     eventsMapSize--;
+            //     unlock();
+            //     //cout << "check to send" << endl;
+            //     //checkForReceivedVMCommands();
+            //     //cout << "ok" << endl;
+            // }
+            
+			if (!eventsMap.empty()) {
+				first=eventsMap.begin();
+				pev = (*first).second;
+				while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
+					first=eventsMap.begin();
+					pev = (*first).second;
+					currentDate = pev->date;
+					//lock();
+					pev->consume();
+					//unlock();
+					eventsMap.erase(first);
+					eventsMapSize--;
+				}
+			}
+	    	systemCurrentTime = systemCurrentTimeMax;
+			if (!eventsMap.empty()) {
+				//ev = *(listeEvenements.begin());
+				first=eventsMap.begin();
+				pev = (*first).second;
+			}
 
             if (state == PAUSED) {
                 cout << "paused" << endl;
@@ -188,8 +222,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 pausedTime += ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
             }
 
-            std::chrono::milliseconds timespan(5);
-            std::this_thread::sleep_for(timespan);			
+			if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
+				std::chrono::milliseconds timespan(5);
+				std::this_thread::sleep_for(timespan);
+			}
         }
         break;
     default:
@@ -216,13 +252,13 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 }
 
 void MeldInterpretScheduler::start(int mode) {    
-    static bool done = false;
-    if ((state == NOTSTARTED) && !done) {
-        done = true;
+    // static bool done = false;
+    // if ((state == NOTSTARTED) && !done) {
+    //     done = true;
         MeldInterpretScheduler* sbs = (MeldInterpretScheduler*)scheduler;
         sbs->schedulerMode = mode;
         sbs->sem_schedulerStart->signal();
-    }
+    // }
 }
 
 void MeldInterpretScheduler::pause(uint64_t date) {
@@ -238,8 +274,8 @@ void MeldInterpretScheduler::unPause() {
 }
 
 void MeldInterpretScheduler::stop(uint64_t date) {
-    //getWorld()->killAllVMs();
-    schedulerThread->detach();
+    if (GlutContext::GUIisEnabled)
+        schedulerThread->detach();
     setState(ENDED);
 }
 
