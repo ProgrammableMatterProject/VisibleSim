@@ -173,10 +173,6 @@ inline void deleteSimulator() {
 	Simulator::deleteSimulator();
 }
 
-inline Simulator* getSimulator() {	
-	return Simulator::getSimulator();
-}
-
 } // BaseSimulator namespace
 
 #endif /* SIMULATOR_H_ */

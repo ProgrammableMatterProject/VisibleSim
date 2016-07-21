@@ -127,7 +127,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                 ostringstream s;
                 s << "Equilibrium reached at "<< now() << "us ...";
                 //MeldInterpretDebugger::print(s.str(), false);
-                /*if (BaseSimulator::getSimulator()->testMode) {
+                /*if (getSimulator()->testMode) {
                   BlinkyBlocks::getWorld()->dump();
                   stop(0);
                   return 0;
