@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
 	createSimulator(argc, argv, NoneCatoms2DBlockCode::buildNewBlockCode);
 	Scheduler *scheduler = getScheduler();
-	BaseSimulator::getSimulator()->printInfo();
+	getSimulator()->printInfo();
 	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 /*

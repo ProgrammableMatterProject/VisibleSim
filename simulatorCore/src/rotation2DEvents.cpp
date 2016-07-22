@@ -10,6 +10,8 @@
 #include "catoms2DWorld.h"
 #include "utils.h"
 
+using namespace BaseSimulator::utils;
+
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
 const int ANGULAR_STEP=12;
@@ -208,6 +210,7 @@ void Rotation2DEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(date+COM_DELAY,rb)));
+    StatsCollector::getInstance().incMotionCount();
 }
 
 const string Rotation2DEndEvent::getEventName() {

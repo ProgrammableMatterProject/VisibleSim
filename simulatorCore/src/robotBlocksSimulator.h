@@ -20,13 +20,13 @@ namespace RobotBlocks {
 class RobotBlocksSimulator : public BaseSimulator::Simulator {
 protected:
 
-    RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksCodeBuildingFunction)(RobotBlocksBlock*));
+    RobotBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
     virtual ~RobotBlocksSimulator();
 
 public:
     bool testMode;
 
-    static void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
     static RobotBlocksSimulator* getSimulator() {
         assert(simulator != NULL);
@@ -35,15 +35,15 @@ public:
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
                            int argc, char *argv[]);
-    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-                           (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+                           const Cell3DPosition &pos, const Color &color, bool master);
     virtual void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
 
     void help();
 };
 
-inline void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) {
-    RobotBlocksSimulator::createSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    RobotBlocksSimulator::createSimulator(argc, argv, bcb);
 }
 
 inline RobotBlocksSimulator* getSimulator() { return(RobotBlocksSimulator::getSimulator()); }

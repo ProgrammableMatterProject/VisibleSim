@@ -34,7 +34,7 @@ public:
 	Color getColor(uint64_t time);
 	
 	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, uint64_t clock, int id);	
-	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 class SynchroMessage : public Message {

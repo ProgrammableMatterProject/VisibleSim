@@ -16,6 +16,7 @@
 #include "stdint.h"
 
 using namespace std;
+using namespace BaseSimulator::utils;
 
 namespace BaseSimulator {
 
@@ -74,7 +75,7 @@ bool Scheduler::schedule(Event *ev) {
 
 	eventsMapSize++;
 
-	if (largestEventsMapSize < eventsMapSize) largestEventsMapSize = eventsMapSize;
+	StatsCollector::getInstance().updateLargestEventsQueueSize(eventsMapSize);
 
 	unlock();
 

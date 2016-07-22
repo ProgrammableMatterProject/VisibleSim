@@ -76,8 +76,8 @@ public:
 	void startup();
 	void processLocalEvent(EventPtr pev);
 
-	static RobotBlocks::RobotBlocksBlockCode *buildNewBlockCode( RobotBlocks::RobotBlocksBlock *host);
-
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
+	
 	void sendMapToNeighbors(P2PNetworkInterface *except);
 	void sendAckMap(P2PNetworkInterface *p2p);
 	void sendLinkTrainMessages(P2PNetworkInterface *sender);

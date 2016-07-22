@@ -1,7 +1,7 @@
 #ifndef C3DMELDBLOCKCODE_H_
 #define C3DMELDBLOCKCODE_H_
 
-#include <boost/random.hpp>
+
 
 #include "catoms3DBlock.h"
 #include "meldInterpretVM.h"
@@ -24,7 +24,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
 	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
-	static Catoms3D::Catoms3DBlockCode *buildNewBlockCode(Catoms3D::Catoms3DBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* C3DMELDBLOCKCODE_H_ */

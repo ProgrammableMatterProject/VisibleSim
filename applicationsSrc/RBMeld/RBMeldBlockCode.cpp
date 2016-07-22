@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp>
 
 #include "scheduler.h"
 #include "network.h"
@@ -123,7 +122,7 @@ void RBMeldBlockCode::processLocalEvent(EventPtr pev) {
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 		info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target
 			 << " at face "
-			 << SCLattice::getDirectionString(SCLattice::getOppositeDirection(
+			 << lattice->getDirectionString(lattice->getOppositeDirection(
 										 (std::static_pointer_cast<AddNeighborEvent>(pev))->face));
 	}
 	break;
@@ -134,7 +133,7 @@ void RBMeldBlockCode::processLocalEvent(EventPtr pev) {
 		vm->enqueue_face(vm->neighbors[face], face, -1);
 		BaseSimulator::getScheduler()->schedule(
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-		info << "Remove neighbor at face " << SCLattice::getDirectionString(SCLattice::getOppositeDirection(face));
+		info << "Remove neighbor at face " << lattice->getDirectionString(lattice->getOppositeDirection(face));
 	}
 	break;
 	case EVENT_TAP:
@@ -243,6 +242,6 @@ void RBMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-RobotBlocks::RobotBlocksBlockCode* RBMeldBlockCode::buildNewBlockCode(RobotBlocksBlock *host) {
-	return(new RBMeldBlockCode(host));
+BlockCode* RBMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new RBMeldBlockCode((RobotBlocksBlock*)host));
 }

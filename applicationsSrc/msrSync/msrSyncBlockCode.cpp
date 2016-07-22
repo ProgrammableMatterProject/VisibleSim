@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp> 
+
 #include "scheduler.h"
 #include "network.h"
 #include "msrSyncBlockCode.h"
@@ -245,6 +245,6 @@ void msrSyncBlockCode::adjust() {
   x0 = yAvg - y0 * xAvg;
 }
 
-BlinkyBlocks::BlinkyBlocksBlockCode* msrSyncBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
-  return(new msrSyncBlockCode(host));
+BlockCode* msrSyncBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new msrSyncBlockCode((BlinkyBlocksBlock*)host));
 }

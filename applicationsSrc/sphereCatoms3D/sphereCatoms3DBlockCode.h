@@ -36,7 +36,7 @@ public:
 	void processLocalEvent(EventPtr pev);
     void sendDistanceMessage();
 
-	static Catoms3D::Catoms3DBlockCode *buildNewBlockCode(Catoms3D::Catoms3DBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
 };
 

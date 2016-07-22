@@ -45,6 +45,6 @@ void NoneCatoms2DBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-Catoms2D::Catoms2DBlockCode* NoneCatoms2DBlockCode::buildNewBlockCode(Catoms2DBlock *host) {
-	return(new NoneCatoms2DBlockCode(host));
+BlockCode* NoneCatoms2DBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new NoneCatoms2DBlockCode((Catoms2DBlock*)host));
 }

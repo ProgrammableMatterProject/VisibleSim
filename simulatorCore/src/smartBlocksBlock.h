@@ -30,7 +30,7 @@ public:
     P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int id);
     
     Cell3DPosition getPosition(SLattice::Direction d);
-    SLattice::Direction getDirection( P2PNetworkInterface*);
+	int getDirection( P2PNetworkInterface*);
     inline void getGridPosition(int &x,int &y) { x = int(position[0]); y=int(position[1]); };
 
     /**

@@ -52,7 +52,7 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces, Cl
 	// Parse user configuration from configuration file, only performed once
 	if (!userConfigHasBeenParsed) {
 		userConfigHasBeenParsed = true;
-		blockCode->parseUserElements(getSimulator()->getConfigDocument());
+		blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
 	}
 	
 	isMaster = false;

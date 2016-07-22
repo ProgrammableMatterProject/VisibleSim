@@ -30,7 +30,7 @@ Catoms2DBlock::~Catoms2DBlock() {
 }
 
 // PTHY: TODO: Can be genericized in BuildingBlocks
-HLattice::Direction Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
+int Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
     if (!p2p) {
 		return HLattice::Direction(0);
     }
@@ -53,7 +53,7 @@ Cell3DPosition Catoms2DBlock::getPosition(HLattice::Direction d) {
 
 // PTHY: TODO: Can be genericized in BuildingBlocks
 Cell3DPosition Catoms2DBlock::getPosition(P2PNetworkInterface *p2p) {
-    return getPosition(getDirection(p2p));
+    return getPosition((HLattice::Direction)getDirection(p2p));
 }
 
 std::ostream& operator<<(std::ostream &stream, Catoms2DBlock const& bb) {
@@ -312,18 +312,18 @@ void Catoms2DBlock::startMove(Rotation2DMove &m) {
 
 void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << HLattice::getDirectionString(getDirection(ni)) << endl;
+		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new AddNeighborEvent(getScheduler()->now(), this,
-							 HLattice::getOppositeDirection(getDirection(ni)), target->blockId));
+							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms2DBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << HLattice::getDirectionString(getDirection(ni)) << endl;
+		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
     getScheduler()->scheduleLock(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
-								HLattice::getOppositeDirection(getDirection(ni))));
+								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
 }

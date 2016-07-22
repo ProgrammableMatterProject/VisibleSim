@@ -1,7 +1,7 @@
 #ifndef RBMELDBLOCKCODE_H_
 #define RBMELDBLOCKCODE_H_
 
-#include <boost/random.hpp>
+
 
 #include "robotBlocksBlock.h"
 #include "meldInterpretVM.h"
@@ -24,7 +24,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
 	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
-	static RobotBlocks::RobotBlocksBlockCode *buildNewBlockCode(RobotBlocks::RobotBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* RBMELDBLOCKCODE_H_ */

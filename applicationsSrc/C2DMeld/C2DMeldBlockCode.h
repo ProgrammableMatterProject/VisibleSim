@@ -1,7 +1,7 @@
 #ifndef C2DMELDBLOCKCODE_H_
 #define C2DMELDBLOCKCODE_H_
 
-#include <boost/random.hpp>
+
 
 #include "catoms2DBlock.h"
 #include "meldInterpretVM.h"
@@ -24,7 +24,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
 	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
-	static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* C2DMELDBLOCKCODE_H_ */

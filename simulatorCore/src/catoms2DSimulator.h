@@ -20,15 +20,13 @@ namespace Catoms2D {
 class Catoms2DSimulator : public BaseSimulator::Simulator {
 protected:
 
-    Catoms2DSimulator(int argc, char *argv[],
-		      Catoms2DBlockCode *(*catoms2DCodeBuildingFunction)(Catoms2DBlock*));
+    Catoms2DSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
     virtual ~Catoms2DSimulator();
 
 public:
     bool testMode;
 
-    static void createSimulator(int argc, char *argv[],
-				Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*));
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
     static Catoms2DSimulator* getSimulator() {
 	assert(simulator != NULL);
@@ -43,9 +41,8 @@ public:
     void help();
 };
 
-inline void createSimulator(int argc, char *argv[],
-			    Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)(Catoms2DBlock*)) {
-    Catoms2DSimulator::createSimulator(argc, argv, catoms2DBlockCodeBuildingFunction);
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    Catoms2DSimulator::createSimulator(argc, argv, bcb);
 }
 
 inline Catoms2DSimulator* getSimulator() { return(Catoms2DSimulator::getSimulator()); }

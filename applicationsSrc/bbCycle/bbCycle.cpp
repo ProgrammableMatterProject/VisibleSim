@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 		s->printInfo();
 	}
 
-	BaseSimulator::getSimulator()->printInfo();
+	getSimulator()->printInfo();
     getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 		

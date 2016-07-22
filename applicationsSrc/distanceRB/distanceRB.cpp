@@ -12,6 +12,6 @@ int main(int argc, char **argv) {
 	getSimulator()->printInfo();
 	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
-	deleteSimulator();
+	BaseSimulator::deleteSimulator();
 	return(0);
 }

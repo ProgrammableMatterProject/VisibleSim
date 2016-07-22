@@ -13,7 +13,7 @@ OS = $(shell uname -s)
 VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES
+TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 # ADDITIONAL CCFLAGS
 # ================
@@ -44,7 +44,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt
 endif
 
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(INC_BOOST_IF_NEEDED) $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
 
 else
 
@@ -53,7 +53,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
 
-GLOBAL_LIBS = "-L./ -L/usr/local/lib  -L/usr/X11/lib -lglut -lGL -lGLEW -lGLU -lpthread $(INC_BOOST_IF_NEEDED) $(VSIM_LIBS)"
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib -lglut -lGL -lGLEW -lGLU -lpthread $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
 endif
 
 GLOBAL_CCFLAGS = "$(TEMP_CCFLAGS) $(OSX_CCFLAGS)"

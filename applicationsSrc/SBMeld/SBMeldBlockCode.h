@@ -1,7 +1,7 @@
 #ifndef SBMELDBLOCKCODE_H_
 #define SBMELDBLOCKCODE_H_
 
-#include <boost/random.hpp>
+
 
 #include "smartBlocksBlock.h"
 #include "meldInterpretVM.h"
@@ -24,7 +24,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
 	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
-	static SmartBlocks::SmartBlocksBlockCode *buildNewBlockCode(SmartBlocks::SmartBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* SBMELDBLOCKCODE_H_ */

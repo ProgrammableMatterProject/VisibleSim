@@ -14,6 +14,7 @@
 
 using namespace std;
 using namespace BaseSimulator;
+using namespace BaseSimulator::utils;
 
 //unsigned int Message::nextId = 0;
 //unsigned int Message::nbMessages = 0;
@@ -141,6 +142,8 @@ void P2PNetworkInterface::send() {
 	getScheduler()->trace(info.str());*/
 
 	BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStopTransmittingEvent(BaseSimulator::getScheduler()->now()+transmissionDuration, this));
+	
+	StatsCollector::getInstance().incMsgCount();
 }
 
 void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {

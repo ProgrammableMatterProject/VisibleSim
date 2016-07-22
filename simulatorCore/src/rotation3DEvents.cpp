@@ -10,6 +10,8 @@
 #include "rotation3DEvents.h"
 #include "catoms3DWorld.h"
 
+using namespace BaseSimulator::utils;
+
 const int ANIMATION_DELAY=100000;
 const int COM_DELAY=2000;
 
@@ -157,6 +159,7 @@ void Rotation3DEndEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+COM_DELAY,rb)));
+    StatsCollector::getInstance().incMotionCount();
 }
 
 const string Rotation3DEndEvent::getEventName() {

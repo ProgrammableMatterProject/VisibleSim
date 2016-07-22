@@ -20,12 +20,12 @@ namespace BlinkyBlocks {
 class BlinkyBlocksSimulator : public BaseSimulator::Simulator {
 protected:
 
-    BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksCodeBuildingFunction)(BlinkyBlocksBlock*));
+    BlinkyBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
     virtual ~BlinkyBlocksSimulator();
 
 public:
 
-    static void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));   
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);   
 
     static BlinkyBlocksSimulator* getSimulator() {
 	assert(simulator != NULL);
@@ -34,14 +34,14 @@ public:
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 		   int argc, char *argv[]);
-    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+                           const Cell3DPosition &pos, const Color &color, bool master);
     virtual void parseScenario();
     virtual void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
-inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {
-    BlinkyBlocksSimulator::createSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    BlinkyBlocksSimulator::createSimulator(argc, argv, bcb);
 }
 
 inline BlinkyBlocksSimulator* getSimulator() { return(BlinkyBlocksSimulator::getSimulator()); }

@@ -1,0 +1,103 @@
+/*! @file target.cpp
+ * @brief Defines a target configuration for reconfiguration algorithms, 
+ * several ways of defining the configuration are provided to the user.
+ * @author Pierre Thalamy
+ * @date 21/07/2016
+ */
+
+#include "target.h"
+#include "utils.h"
+
+namespace BaseSimulator {
+
+/************************************************************
+ *                         Target
+ ************************************************************/
+
+ostream& operator<<(ostream& out,const Target &t) {
+    t.print(out);
+    return out;
+}   
+
+/************************************************************
+ *                      TargetGrid
+ ************************************************************/
+
+TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {    
+    TiXmlNode *cellNode = targetNode->FirstChild("cell");
+    const char* attr;
+    TiXmlElement *element;
+    Cell3DPosition position;
+    Color defaultColor = Color();
+    Color color;
+    
+    while (cellNode) {
+        element = cellNode->ToElement();
+        color = defaultColor;
+        
+        attr = element->Attribute("position");
+        if (attr) {
+            string str(attr);
+            int pos1 = str.find_first_of(','),
+                pos2 = str.find_last_of(',');
+            position.pt[0] = atoi(str.substr(0,pos1).c_str());
+            position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
+            position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+        } else {
+            cerr << "error: position attribute missing for target cell" << endl;
+            throw new TargetParsingException();
+        }
+        
+        attr = element->Attribute("color");
+        if (attr) {
+            string str(attr);
+            int pos1 = str.find_first_of(','),
+                pos2 = str.find_last_of(',');
+            color.set(atof(str.substr(0,pos1).c_str())/255.0,
+                      atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
+                      atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+        }
+
+        addTargetCell(position, color);
+        cellNode = cellNode->NextSibling("cell");
+    } // end while (cellNode)
+
+}
+
+bool TargetGrid::isInTarget(const Cell3DPosition &pos) {
+    return tCells.count(pos);
+}
+
+const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) {
+    if (!isInTarget(pos)) {
+        cerr << "error: attempting to get color of undefined target cell" << endl;
+        throw new InvalidPositionException();
+    }
+                
+    return tCells[pos];
+}
+
+void TargetGrid::addTargetCell(const Cell3DPosition &pos, const Color c) {
+    tCells.insert(std::pair<const Cell3DPosition, const Color>(pos, c));
+}
+
+void TargetGrid::print(ostream& where) const {
+    for(auto const& pair : tCells) {
+        where << "<cell position=" << pair.first << " color=" << pair.second << " />" << endl;
+    }
+}
+
+/************************************************************
+ *                      TargetCSG
+ ************************************************************/
+
+
+bool TargetCSG::isInTarget(const Cell3DPosition &pos) {
+    throw new utils::NotImplementedException();
+}
+
+const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
+    throw new utils::NotImplementedException();
+}
+
+} // namespace BaseSimulator

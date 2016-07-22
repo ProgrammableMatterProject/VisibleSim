@@ -20,15 +20,13 @@ namespace Catoms3D {
 class Catoms3DSimulator : public BaseSimulator::Simulator {
 protected:
 
-    Catoms3DSimulator(int argc, char *argv[],
-		      Catoms3DBlockCode *(*catoms3DCodeBuildingFunction)(Catoms3DBlock*));
+    Catoms3DSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
     virtual ~Catoms3DSimulator();
 
 public:
     bool testMode;
 
-    static void createSimulator(int argc, char *argv[],
-				Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*));
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
     static Catoms3DSimulator* getSimulator() {
 	assert(simulator != NULL);
@@ -37,16 +35,15 @@ public:
    
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 			   int argc, char *argv[]);
-    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)
-			   (BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+						   const Cell3DPosition &pos, const Color &color, bool master);
     virtual void parseSkeleton();
     virtual void printInfo() { OUTPUT << "I'm a Catoms3DSimulator" << endl; }
     void help();
 };
 
-inline void createSimulator(int argc, char *argv[],
-			    Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) {
-    Catoms3DSimulator::createSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    Catoms3DSimulator::createSimulator(argc, argv, bcb);
 }
 
 inline Catoms3DSimulator* getSimulator() { return(Catoms3DSimulator::getSimulator()); }

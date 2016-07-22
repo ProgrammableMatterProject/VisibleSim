@@ -45,7 +45,7 @@ public:
 	Cell3DPosition getPosition(HLattice::Direction d);
 	Cell3DPosition getPosition(P2PNetworkInterface *p2p);
 
-	HLattice::Direction getDirection(P2PNetworkInterface* p2p);
+	int getDirection(P2PNetworkInterface* p2p);
 	int nbNeighbors(bool groundIsNeighbor = false);
 	int nbConsecutiveNeighbors(bool groundIsNeighbor = false);
 	int nbConsecutiveEmptyFaces(bool groundIsNeighbor = false);

@@ -107,7 +107,7 @@ public:
 	void startup();
 	void processLocalEvent(EventPtr pev);
 
-	static SmartBlocks::SmartBlocksBlockCode *buildNewBlockCode( SmartBlocks::SmartBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
 	void sendMapToNeighbors(P2PNetworkInterface *except);
 	void sendAckMap(P2PNetworkInterface *p2p);

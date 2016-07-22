@@ -81,14 +81,14 @@ void SimpleCatom3DBlockCode::startup() {
         Matrix m_1;
         voisin->getGlBlock()->mat.inverse(m_1);
         // recherche le voisin d'indice minimum
-        //Rotations rotations(catom,voisin,m_1*Vector3D(0,1,0),35.2643896828,m_1*Vector3D(-1,1, -M_SQRT2),35.2643896828);
-        Rotations rotations(catom,voisin,m_1*Vector3D(0,0,1),45.0,m_1*Vector3D(-1,1,0),45.0);
+        //Rotations3D rotations(catom,voisin,m_1*Vector3D(0,1,0),35.2643896828,m_1*Vector3D(-1,1, -M_SQRT2),35.2643896828);
+        Rotations3D rotations(catom,voisin,m_1*Vector3D(0,0,1),45.0,m_1*Vector3D(-1,1,0),45.0);
         uint64_t t = scheduler->now()+2000;
-        scheduler->schedule(new Rotation2DStartEvent(t,catom,rotations));
+        scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
 #ifdef verbose
         stringstream info;
         info.str("");
-        info << "Rotation2DStartEvent(" << t << ") around #" << voisin->blockId;
+        info << "Rotation3DStartEvent(" << t << ") around #" << voisin->blockId;
         scheduler->trace(info.str(),catom->blockId,LIGHTGREY);
 #endif
 	}
@@ -99,7 +99,7 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
 	stringstream info;
 
 	switch (pev->eventType) {
-        case EVENT_MOTION_END: {
+        case EVENT_ROTATION3D_END: {
 #ifdef verbose
 			info.str("");
 			info << "rec.: EVENT_MOTION_END";
@@ -119,10 +119,10 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             Matrix m_1;
             voisin->getGlBlock()->mat.inverse(m_1);
-            // Rotations rotations(catom,voisin,m_1*Vector3D(-1,1,M_SQRT2),35.26,m_1*Vector3D(-1,-1, -M_SQRT2),35.26);
-            Rotations rotations(catom,voisin,m_1*Vector3D(-1,-1,0),45.0,m_1*Vector3D(0,0,1),45.0);
+            // Rotations3D rotations(catom,voisin,m_1*Vector3D(-1,1,M_SQRT2),35.26,m_1*Vector3D(-1,-1, -M_SQRT2),35.26);
+            Rotations3D rotations(catom,voisin,m_1*Vector3D(-1,-1,0),45.0,m_1*Vector3D(0,0,1),45.0);
             uint64_t t = scheduler->now()+1002000;
-            // scheduler->schedule(new Rotation2DStartEvent(t,catom,rotations));
+            // scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
         case EVENT_NI_RECEIVE: {
@@ -133,10 +133,6 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
         }
         break;
 	}
-}
-
-Catoms3DBlockCode* SimpleCatom3DBlockCode::buildNewBlockCode(Catoms3DBlock *host) {
-	return(new SimpleCatom3DBlockCode(host));
 }
 
 // bool SimpleCatom3DBlockCode::getAttribute(const string &att,ostringstream &sout) {

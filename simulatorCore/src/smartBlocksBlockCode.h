@@ -10,6 +10,7 @@
 
 #include "blockCode.h"
 #include "smartBlocksBlock.h"
+#include "network.h"
 
 using namespace BaseSimulator;
 

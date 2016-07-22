@@ -33,7 +33,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 SmartBlocksWorld::~SmartBlocksWorld() {
-    cout << "\033[1;31mSmartBlocksWorld destructor" << endl;
+    cout << "\033[1;31mSmartBlocksWorld destructor\033[0m" << endl;
 }
 
 void SmartBlocksWorld::deleteWorld() {
@@ -81,7 +81,7 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
         if (ptrNeighbor) {
             (ptrBlock)->getInterface(SLattice::Direction(i))->
                 connect(ptrNeighbor->getInterface(SLattice::Direction(
-                                                      SLattice::getOppositeDirection(i))));
+                                                      lattice->getOppositeDirection(i))));
 
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
@@ -198,7 +198,7 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     }
 
     cerr << name << " = " << numSelectedFace << " = "
-         << SLattice::getDirectionString(numSelectedFace) << endl;       
+         << lattice->getDirectionString(numSelectedFace) << endl;       
 }
 
 void SmartBlocksWorld::exportConfiguration() {

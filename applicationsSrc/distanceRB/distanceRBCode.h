@@ -1,16 +1,16 @@
 #ifndef distanceRBCode_H_
 #define distanceRBCode_H_
-#include "robotBlocksGeneric.h"
+#include "robotBlocksBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 
 using namespace RobotBlocks;
 
-class DistanceRBCode : public GenericCodeBlock {
+class DistanceRBCode : public RobotBlocksBlockCode {
 private:
 	uint16_t distance;
 public:
-	DistanceRBCode(RobotBlocksBlock *host):GenericCodeBlock(host) {};
+	DistanceRBCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) {};
 	~DistanceRBCode() {};
 
 	void startup();
@@ -18,12 +18,12 @@ public:
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static RobotBlocksBlockCode *buildNewBlockCode(RobotBlocksBlock *host) {
-	    return(new DistanceRBCode(host));
+	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+	    return (new DistanceRBCode((RobotBlocksBlock*)host));
 	};
 /*****************************************************************************/
 };
 
-void _myBROADCAST_MSGFunc(GenericCodeBlock *,MessagePtr,P2PNetworkInterface *sender);
+void _myBROADCAST_MSGFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 
 #endif /* distanceRBCode_H_ */

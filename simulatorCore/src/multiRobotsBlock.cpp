@@ -29,7 +29,7 @@ MultiRobotsBlock::~MultiRobotsBlock() {
     OUTPUT << "MultiRobotsBlock destructor " << blockId << endl;
 }
 
-BCLattice::Direction MultiRobotsBlock::getDirection(P2PNetworkInterface *given_interface) {
+int MultiRobotsBlock::getDirection(P2PNetworkInterface *given_interface) {
     return BCLattice::Direction(0); // NONE
 }
 

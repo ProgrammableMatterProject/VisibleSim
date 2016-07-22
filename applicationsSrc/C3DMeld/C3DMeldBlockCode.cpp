@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp>
+#
 
 #include "scheduler.h"
 #include "network.h"
@@ -122,7 +122,7 @@ void C3DMeldBlockCode::processLocalEvent(EventPtr pev) {
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
 		info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target
 			 << " at face "
-			 << HLattice::getDirectionString(HLattice::getOppositeDirection(
+			 << lattice->getDirectionString(lattice->getOppositeDirection(
 										 (std::static_pointer_cast<AddNeighborEvent>(pev))->face));
 	}
 	break;
@@ -133,7 +133,7 @@ void C3DMeldBlockCode::processLocalEvent(EventPtr pev) {
 		vm->enqueue_face(vm->neighbors[face], face, -1);
 		BaseSimulator::getScheduler()->schedule(
 			new ComputePredicateEvent(BaseSimulator::getScheduler()->now(), bb));
-		info << "Remove neighbor at face " << HLattice::getDirectionString(HLattice::getOppositeDirection(face));
+		info << "Remove neighbor at face " << lattice->getDirectionString(lattice->getOppositeDirection(face));
 	}
 	break;
 	case EVENT_TAP:
@@ -242,6 +242,6 @@ void C3DMeldBlockCode::processLocalEvent(EventPtr pev) {
 	}
 }
 
-Catoms3D::Catoms3DBlockCode* C3DMeldBlockCode::buildNewBlockCode(Catoms3DBlock *host) {
-	return(new C3DMeldBlockCode(host));
+BlockCode* C3DMeldBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new C3DMeldBlockCode((Catoms3DBlock*)host));
 }

@@ -23,9 +23,8 @@ void Catoms2DSimulator::help() {
 	exit(EXIT_SUCCESS);
 }
 
-Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[],
-									 Catoms2DBlockCode *(*bcb)(Catoms2DBlock*))
-	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
+Catoms2DSimulator::Catoms2DSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+	: BaseSimulator::Simulator(argc, argv, bcb) {
 	OUTPUT << "\033[1;34m" << "Catoms2DSimulator constructor" << "\033[0m" << endl;
 }
 
@@ -33,10 +32,8 @@ Catoms2DSimulator::~Catoms2DSimulator() {
 	OUTPUT << "\033[1;34m" << "Catoms2DSimulator destructor" << "\033[0m" <<endl;
 }
 
-void Catoms2DSimulator::createSimulator(int argc, char *argv[],
-										Catoms2DBlockCode *(*catoms2DBlockCodeBuildingFunction)
-										(Catoms2DBlock*)) {
-	simulator =  new Catoms2DSimulator(argc, argv, catoms2DBlockCodeBuildingFunction);
+void Catoms2DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+	simulator =  new Catoms2DSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();
 }
@@ -51,8 +48,7 @@ void Catoms2DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
 	World::setWorld(world);
 }
 
-void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
-								  BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*),
+void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
 								  const Cell3DPosition &pos, const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
@@ -61,7 +57,7 @@ void Catoms2DSimulator::loadBlock(TiXmlElement *blockElt, int blockId,
 	// @todo: parse angle orientation
 
 	// Finally, add block to the world
-	((Catoms2DWorld*)world)->addBlock(blockId, buildingBlockCodeBuildingFunction, pos, color, 0, master);
+	((Catoms2DWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
 }
 
 } // catoms2D namespace

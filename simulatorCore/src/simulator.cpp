@@ -159,6 +159,8 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseCameraAndSpotlight();
 	parseBlockList();
 	parseObstacles();
+	parseTarget();
+	// BlockCode::xmlTargetListNode = xmlWorldNode->FirstChild("TargetList");
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
@@ -489,6 +491,26 @@ void Simulator::parseBlockList() {
 	} else { // end if(nodeBlock)
 		cerr << "warning: no Block List in configuration file" << endl;
 	}
+}
+
+void Simulator::parseTarget() {	
+	TiXmlNode *targetNode = xmlWorldNode->FirstChild("target");
+	TiXmlElement* element;
+	if (targetNode) {
+		element = targetNode->ToElement();
+		const char *attr = element->Attribute("format");
+		if (attr) {
+			string str(attr);
+			if (str.compare("grid") == 0) {
+				BlockCode::target = new TargetGrid(targetNode);
+				cerr << "Parsed TargetGrid:" << endl;
+				cerr << *BlockCode::target << endl;
+			} else if (str.compare("csg") == 0) {
+					throw new NotImplementedException();
+					// BlockCode::target = new TargetCSG(targetNode);
+			}
+		}
+	} 
 }
 
 void Simulator::parseObstacles() {

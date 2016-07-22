@@ -28,7 +28,7 @@ public:
 	inline virtual BlinkyBlocksGlBlock* getGlBlock() { return (BlinkyBlocksGlBlock *)ptrGlBlock; };
 
 	P2PNetworkInterface *getInterfaceDestId(int id);
-	SCLattice::Direction getDirection(P2PNetworkInterface*);
+	int getDirection(P2PNetworkInterface*);
 
 	/* schedule the appropriate event for this action */
 	/* void tap(uint64_t date); Now a generic event in buildingBlock.cpp */

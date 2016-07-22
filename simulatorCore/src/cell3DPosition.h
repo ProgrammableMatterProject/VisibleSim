@@ -23,7 +23,10 @@ public:
     void set(short x,short y,short z);
 
     inline const short operator[](const int i) const { return pt[i]; };
-
+    bool operator<(const Cell3DPosition &o) const;
+    bool operator==(const Cell3DPosition &o) const
+        { return (pt[0] == o.pt[0]) && (pt[1] == o.pt[1]) && (pt[2] == o.pt[2]) ; };
+    
     friend ostream& operator<<(ostream& f,const Cell3DPosition&p);
     friend const Cell3DPosition operator +(const Cell3DPosition,const Cell3DPosition);
     friend const Cell3DPosition operator -(const Cell3DPosition,const Cell3DPosition);

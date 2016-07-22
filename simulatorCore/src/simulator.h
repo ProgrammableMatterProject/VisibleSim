@@ -133,7 +133,10 @@ protected:
 	 *
 	 */
 	void parseObstacles();
-	
+
+	//<! @brief Parses the configuration for target information, and instantiate them
+	void parseTarget();
+
 	/*! @fn virtual void loadWorld(int lx, int ly, int lz, int argc, char *argv[])
 	 *  @brief Calls the createWorld function from the target world subclass to instantiate it
 	 *
@@ -146,7 +149,7 @@ protected:
 	virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 						   int argc, char *argv[]) = 0;
 
-	/*! @fn virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCode *(*buildingBlockCodeBuildingFunction)(BuildingBlock*), const Cell3DPosition &pos, const Color &color, bool master)
+	/*! 
 	 *  @brief Parses the config file for any required additional block attribute, and add it to the world
 	 *
 	 *  @param blockElt The current block XML element for parsing additional attributes
@@ -156,11 +159,9 @@ protected:
 	 *  @param master True if the block is a master block, false otherwise
 	 *
 	 */
-	virtual void loadBlock(TiXmlElement *blockElt, int blockId,
-						   BlockCode *(*buildingBlockCodeBuildingFunction)
-						   (BuildingBlock*), const Cell3DPosition &pos,
-						   const Color &color, bool master) {};
-	
+	virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+						   const Cell3DPosition &pos, const Color &color, bool master) {};
+   
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);
 	virtual ~Simulator();
 public:
@@ -173,10 +174,6 @@ public:
 
 inline void deleteSimulator() {
 	Simulator::deleteSimulator();
-}
-
-inline Simulator* getSimulator() {	
-	return Simulator::getSimulator();
 }
 
 } // BaseSimulator namespace

@@ -15,9 +15,8 @@ using namespace std;
 
 namespace MultiRobots {
 
-MultiRobotsSimulator::MultiRobotsSimulator(int argc, char *argv[],
-                                           MultiRobotsBlockCode *(*bcb)(MultiRobotsBlock*))
-	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
+MultiRobotsSimulator::MultiRobotsSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+	: BaseSimulator::Simulator(argc, argv, bcb) {
 	OUTPUT << "\033[1;34m" << "MultiRobotsSimulator constructor" << "\033[0m" << endl;
 }
 
@@ -25,8 +24,7 @@ MultiRobotsSimulator::~MultiRobotsSimulator() {
 	OUTPUT << "\033[1;34m" << "MultiRobotsSimulator destructor" << "\033[0m" <<endl;
 }
 
-void MultiRobotsSimulator::createSimulator(int argc, char *argv[],
-                                           MultiRobotsBlockCode *(*bcb)(MultiRobotsBlock*)) {
+void MultiRobotsSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
 	simulator =  new MultiRobotsSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();

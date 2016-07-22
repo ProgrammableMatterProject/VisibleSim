@@ -10,6 +10,7 @@
 
 #include "blockCode.h"
 #include "blinkyBlocksBlock.h"
+#include "network.h"
 
 namespace BlinkyBlocks {
 
@@ -20,10 +21,6 @@ public:
 	
 	BlinkyBlocksBlockCode(BlinkyBlocksBlock *host);
 	virtual ~BlinkyBlocksBlockCode();
-
-	virtual void init() {};
-	
-	virtual void processLocalEvent(EventPtr pev) = 0;
 };
 
 }

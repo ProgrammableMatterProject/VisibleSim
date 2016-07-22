@@ -22,8 +22,8 @@ void Catoms3DSimulator::help() {
 	exit(EXIT_SUCCESS);
 }
 
-Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], Catoms3DBlockCode *(*bcb)(Catoms3DBlock*))
-	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
+Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+	: BaseSimulator::Simulator(argc, argv, bcb) {
 	OUTPUT << "\033[1;34m" << "Catoms3DSimulator constructor" << "\033[0m" << endl;
 }
 
@@ -31,8 +31,8 @@ Catoms3DSimulator::~Catoms3DSimulator() {
 	OUTPUT << "\033[1;34m" << "Catoms3DSimulator destructor" << "\033[0m" <<endl;
 }
 
-void Catoms3DSimulator::createSimulator(int argc, char *argv[], Catoms3DBlockCode *(*catoms3DBlockCodeBuildingFunction)(Catoms3DBlock*)) {
-	simulator =  new Catoms3DSimulator(argc, argv, catoms3DBlockCodeBuildingFunction);
+void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+	simulator =  new Catoms3DSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();
 }

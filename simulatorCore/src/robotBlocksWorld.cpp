@@ -85,11 +85,11 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 		if (ptrNeighbor) {
 			(ptrBlock)->getInterface(SCLattice::Direction(i))->
 				connect(ptrNeighbor->getInterface(SCLattice::Direction(
-													  SCLattice::getOppositeDirection(i))));
+													  lattice->getOppositeDirection(i))));
 
-			OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << SCLattice::getDirectionString(i) <<
+			OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << lattice->getDirectionString(i) <<
 				" to #" << ptrNeighbor->blockId << ":"
-				   << SCLattice::getDirectionString(SCLattice::getOppositeDirection(i)) << endl;
+				   << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
 		} else {
 			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}

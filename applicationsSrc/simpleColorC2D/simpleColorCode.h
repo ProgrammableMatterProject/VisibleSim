@@ -1,16 +1,16 @@
 #ifndef simpleColorCode_H_
 #define simpleColorCode_H_
-#include "catoms2DGeneric.h"
+#include "catoms2DBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 
 using namespace Catoms2D;
 
-class SimpleColorCode : public GenericCodeBlock {
+class SimpleColorCode : public Catoms2DBlockCode {
 private:
     int distance;
 public :
-	SimpleColorCode(Catoms2DBlock *host):GenericCodeBlock(host) {};
+	SimpleColorCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {};
 	~SimpleColorCode() {};
 
 	void startup();
@@ -18,10 +18,10 @@ public :
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
-	static Catoms2DBlockCode *buildNewBlockCode(Catoms2DBlock *host) {
-	    return(new SimpleColorCode(host));
+	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+	    return (new SimpleColorCode((Catoms2DBlock*)host));
 	};
 /*****************************************************************************/
 };
-	void _myBroadcastFunc(GenericCodeBlock *,MessagePtr,P2PNetworkInterface *sender);
+	void _myBroadcastFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 #endif /* simpleColorCode_H_ */

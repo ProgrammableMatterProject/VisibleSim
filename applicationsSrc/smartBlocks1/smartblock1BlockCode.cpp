@@ -188,8 +188,8 @@ else{	send_ack( my_distance, distance_dealer, 100000); }
     }
 }
 
-SmartBlocks::SmartBlocksBlockCode* SmartBlock1BlockCode::buildNewBlockCode(SmartBlocksBlock *host) {
-    return(new SmartBlock1BlockCode(host));
+BlockCode* SmartBlock1BlockCode::buildNewBlockCode(BuildingBlock *host) {
+    return(new SmartBlock1BlockCode((SmartBlocksBlock*)host));
 }
 
 

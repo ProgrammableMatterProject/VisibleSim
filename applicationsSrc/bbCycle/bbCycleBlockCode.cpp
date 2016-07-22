@@ -124,7 +124,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	break;
 	case EVENT_TAP: {
 	    int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
-		info << "tapped on face " << SCLattice::getDirectionString(face);
+		info << "tapped on face " << lattice->getDirectionString(face);
 	} break;
 	default:
 		ERRPUT << "*** ERROR *** : unknown local event" << endl;
@@ -133,8 +133,8 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
-BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
-	return(new BbCycleBlockCode(host));
+BlockCode* BbCycleBlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new BbCycleBlockCode((BlinkyBlocksBlock*)host));
 }
 
 void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, uint64_t clock, int id){

@@ -15,9 +15,8 @@ using namespace std;
 
 namespace BlinkyBlocks {
 
-BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[],
-											 BlinkyBlocksBlockCode *(*bcb)(BlinkyBlocksBlock*))
-	: BaseSimulator::Simulator(argc, argv, (BlockCodeBuilder)bcb) {
+BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+	: BaseSimulator::Simulator(argc, argv, bcb) {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
 }
 
@@ -108,10 +107,8 @@ BlinkyBlocksSimulator::~BlinkyBlocksSimulator() {
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator destructor" << "\033[0m" <<endl;
 }
 
-void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[],
-											BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)
-											(BlinkyBlocksBlock*)) {
-	simulator =  new BlinkyBlocksSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
+void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+	simulator =  new BlinkyBlocksSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();
 }

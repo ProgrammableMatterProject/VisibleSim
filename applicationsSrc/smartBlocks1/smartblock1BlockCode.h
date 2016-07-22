@@ -44,7 +44,7 @@ public:
 	void startup();
 	void processLocalEvent(EventPtr pev);
 
-	static SmartBlocks::SmartBlocksBlockCode *buildNewBlockCode( SmartBlocks::SmartBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
 	void send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
 	void send_ack( unsigned int path,  unsigned int distance,
