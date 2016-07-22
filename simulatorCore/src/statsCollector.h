@@ -29,7 +29,7 @@ public:
         return instance;
     };
 private:
-    StatsCollector() {};
+    StatsCollector() {};        //!< Constructor. Nothing to be done.
     StatsCollector(StatsCollector const&); //<! Disable copy constructor. (Copying instance is not allowed)
     void operator=(StatsCollector const&); //<! Disable assignment operator. (Copying instance is not allowed)
 
@@ -39,11 +39,15 @@ private:
 private:
     // Messages
     uint64_t messagesProcessed = 0; //!< Total number of messages processed by VisibleSim
+    uint64_t nbLivingMessages = 0; //!< Total number of messages still in memory at scheduler end
     // uint64_t maxiMessageQueueDepth = 0; //!< Total number of messages processed by VisibleSim
     // Motions
     uint64_t motionsProcessed = 0; //!< Total number of motion events processed by VisibleSim
     // Events
     uint64_t eventsProcessed = 0; //!< Total number of events processed by VisibleSim
+    uint64_t nbLivingEvents = 0; //!< Total number of events still in memory at scheduler end
+    uint64_t largestEventsQueueSize = 0; //!< Largest size of the scheduler's event
+    uint64_t endEventsQueueSize = 0; //!< Size of the events queue at scheduler end
     // Time
     uint64_t simulatedElapsedTime = 0; //!< Duration of simulation in discrete simulator time
     double realElapsedTime = 0; //!< Duration of simulation in real time
@@ -57,6 +61,14 @@ public:
     //!< Updates both elapsed times
     inline void updateElapsedTime(uint64_t simTime, uint64_t realTime)
         { simulatedElapsedTime = simTime; realElapsedTime = realTime; };
+    //!< Called before scheduler destruction to collect the state of important queues at end time
+    inline void setLivingCounters(uint64_t livingEvents, uint64_t livingMessages)
+        { nbLivingEvents = livingEvents; nbLivingMessages = livingMessages; };
+    //!< Updates the max events queue size counter if new size is greater than previous size
+    inline void updateLargestEventsQueueSize(uint64_t newSize) 
+        {  largestEventsQueueSize = largestEventsQueueSize < newSize ? newSize : largestEventsQueueSize; };
+    inline void setEndEventsQueueSize(uint64_t endSize) 
+        {  endEventsQueueSize = endSize; };
 
     //!< Prints collected statistics to an ouput stream
     friend std::ostream& operator<<(std::ostream& out,const StatsCollector &sc);

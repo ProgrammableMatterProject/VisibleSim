@@ -11,6 +11,8 @@
 #include "world.h"
 #include "utils.h"
 
+using namespace BaseSimulator::utils;
+
 const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
 
@@ -179,6 +181,7 @@ void TranslationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     BuildingBlock *bb = concernedBlock;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new TranslationEndEvent(date + COM_DELAY,bb)));
+    StatsCollector::getInstance().incMotionCount();
 }
 
 const string TranslationEndEvent::getEventName() {

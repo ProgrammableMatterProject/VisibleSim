@@ -15,6 +15,7 @@
 #include "trace.h"
 
 using namespace std;
+using namespace BaseSimulator::utils;
 
 CPPScheduler::CPPScheduler() {
 	OUTPUT << "CPPScheduler constructor" << endl;
@@ -78,6 +79,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 				pev = (*first).second;
 				currentDate = pev->date;
 				pev->consume();
+				StatsCollector::getInstance().incEventsCount();
 				eventsMap.erase(first);
 				eventsMapSize--;
 			}
@@ -99,6 +101,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 					currentDate = pev->date;
 					//lock();
 					pev->consume();
+					StatsCollector::getInstance().incEventsCount();
 					//unlock();
 					eventsMap.erase(first);
 					eventsMapSize--;
@@ -134,13 +137,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 
 	pev.reset();
 
-	cout << "end time : " << currentDate << endl;
-	cout << "real time elapsed : " << ((double)(systemStopTime-systemStartTime))/1000000 << endl;
-	cout << "Maximum sized reached by the events list : " << largestEventsMapSize << endl;
-	cout << "Size of the events list at the end : " << eventsMap.size() << endl;
-	cout << "Number of events processed : " << Event::getNextId() << endl;
-	cout << "Events(s) left in memory before destroying Scheduler : " << Event::getNbLivingEvents() << endl;
-	cout << "Message(s) left in memory before destroying Scheduler : " << Message::getNbMessages() << endl;
+	StatsCollector::getInstance().updateElapsedTime(currentDate,
+													((double)(systemStopTime-systemStartTime))/1000000);
+	StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
+	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
 	// if autoStop is enabled, terminate simulation
 	if (willAutoStop())

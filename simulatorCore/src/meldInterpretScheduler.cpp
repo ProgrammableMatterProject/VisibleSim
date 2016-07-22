@@ -105,6 +105,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                         pev = (*first).second;
                         currentDate = pev->date;
                         pev->consume();
+                        StatsCollector::getInstance().incEventsCount();
                         eventsMap.erase(first);
                         eventsMapSize--;
                         unlock();
@@ -202,6 +203,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 					currentDate = pev->date;
 					//lock();
 					pev->consume();
+                    StatsCollector::getInstance().incEventsCount();
 					//unlock();
 					eventsMap.erase(first);
 					eventsMapSize--;
@@ -234,16 +236,11 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     systemStopTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
     OUTPUT << "\033[1;33m" << "Scheduler end : " << systemStopTime << "\033[0m" << endl;
     pev.reset();
-    OUTPUT << "end time : " << currentDate << endl;
-    OUTPUT << "real time elapsed : " << ((double)(systemStopTime-systemStartTime))/1000000 << endl;
-    //	OUTPUT << "Nombre d'événements restants en mémoire : " << Evenement::nbEvenements << endl;
-    //	OUTPUT << "Nombre de messages restants en mémoire : " << Message::nbMessages << endl;
-    OUTPUT << "Maximum sized reached by the events list : " << largestEventsMapSize << endl;
-    OUTPUT << "Size of the events list at the end : " << eventsMap.size() << endl;
-    OUTPUT << "Number of events processed : " << Event::getNextId() << endl;
-    OUTPUT << "Events(s) left in memory before destroying Scheduler : " << Event::getNbLivingEvents() << endl;
-    OUTPUT << "Message(s) left in memory before destroying Scheduler : " << Message::getNbMessages() << endl;
-
+    StatsCollector::getInstance().updateElapsedTime(currentDate,
+													((double)(systemStopTime-systemStartTime))/1000000);   
+    StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
+	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
+    
 	// if autoStop is enabled, terminate simulation
 	if (willAutoStop())
 		glutLeaveMainLoop();
