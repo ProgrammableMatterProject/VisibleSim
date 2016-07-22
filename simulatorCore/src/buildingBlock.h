@@ -79,11 +79,10 @@ public:
 	 * @param bId : the block id of the block to create
 	 * @param bcb : function pointer to the getter for the block's CodeBlock
 	 * @param nbInterfaces : number of initial interfaces of the block (Necessary for MeldInterpretVM init)
-	 * @param clockType : type of the block's internal clock as defined in clock.h, no clock drift by default
 	 */
-	BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces,
-				  Clock::ClockType clockType = Clock::DEFAULT_CLOCK);
-    /**
+	BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces);
+	
+	/**
 	 * @brief BuildingBlock destructor
 	 */
 	virtual ~BuildingBlock();  
@@ -216,6 +215,11 @@ public:
 	 * @param face : id of the tapped face
 	 */   	
 	void tap(uint64_t date, int face);
+	/**
+	 * @brief Set the internal clock to the clock in parameter
+	 * @param c clock which the internal clock will be set
+	 */
+	void setClock(Clock *c);
 	/**
 	 * @brief Returns the local time of the block according to its internal clock
 	 * @return local time of the block according to its internal clock

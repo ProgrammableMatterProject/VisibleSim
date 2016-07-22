@@ -26,7 +26,7 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 //
 //===========================================================================================================
 
-BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces, Clock::ClockType clockType) {
+BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
     OUTPUT << "BuildingBlock constructor (id:" << nextId << ")" << endl;
 	
     if (bId < 0) {
@@ -37,7 +37,7 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces, Cl
     }
 
     state.store(ALIVE);
-    clock = new Clock(clockType, this);
+    clock = new PerfectClock();
     std::random_device rd;
     generator = std::ranlux48(rd());
     dis = uniform_int_distribution<>(0, 50 * blockId);
@@ -192,6 +192,13 @@ int BuildingBlock::getNextRandomNumber() {
     return dis(generator);
 }
 
+void BuildingBlock::setClock(Clock *c) {
+  if (clock == NULL) {
+    delete clock;
+  }
+  clock = c;
+}
+  
 uint64_t BuildingBlock::getTime() {
     if (clock == NULL) {
 		cerr << "device has no internal clock" << endl;
