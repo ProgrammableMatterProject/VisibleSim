@@ -19,6 +19,7 @@
 
 #include "sema.h"
 #include "events.h"
+#include "statsCollector.h"
 
 using namespace std;
 
