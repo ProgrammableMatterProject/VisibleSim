@@ -1,15 +1,10 @@
-/*
- * blinky01.cpp
- *
- *  Created on: 23 mars 2013
- *      Author: dom
- */
-
 #include <iostream>
+#include <trace.h>
+
 #include "blinkyBlocksSimulator.h"
 #include "blinkyBlocksBlockCode.h"
 #include "msrSyncBlockCode.h"
-#include <trace.h> 
+
 
 using namespace std;
 using namespace BlinkyBlocks;
@@ -27,11 +22,9 @@ int main(int argc, char **argv) {
 		s->printInfo();
 	}
 
-	getSimulator()->printInfo();
-	getScheduler()->printInfo();
+	Simulator::getSimulator()->printInfo();
+	BaseSimulator::getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
-		
-	getScheduler()->waitForSchedulerEnd();
 		
 	deleteSimulator();
 	

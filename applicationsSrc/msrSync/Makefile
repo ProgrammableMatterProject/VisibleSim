@@ -1,4 +1,4 @@
-SRCS = msrSync.cpp msrSyncBlockCode.cpp
+SRCS = msrSync.cpp msrSyncBlockCode.cpp noise.cpp
 
 OUT = $(APPDIR)/msrSync
 
