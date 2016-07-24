@@ -19,8 +19,8 @@ uint64_t Clock::getTime() {
 //          PerfectBlock  (class)
 //
 //===========================================================================================================
-  
-PerfectClock::PerfectClock() {}
+
+PerfectClock::PerfectClock(): Clock() {}
 
 PerfectClock::~PerfectClock() {}
 
