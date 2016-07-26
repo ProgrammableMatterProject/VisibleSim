@@ -323,9 +323,8 @@ void Catoms3DWorld::setSelectedFace(int n) {
 }
 
 void Catoms3DWorld::exportConfiguration() {
-	Catoms3DConfigExporter *exporter = new Catoms3DConfigExporter(this);
-	exporter->exportConfiguration();
-	delete exporter;
+	Catoms3DConfigExporter exporter = Catoms3DConfigExporter(this);
+	exporter.exportConfiguration();
 }
 
 
