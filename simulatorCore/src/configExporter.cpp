@@ -23,7 +23,7 @@ static string generateConfigFilename() {
     std::ostringstream out;
 
     if (Simulator::regrTesting)
-        out << "confcheck" << ".xml";
+        out << ".confCheck" << ".xml";
     else {
         time_t now = time(0);
         tm *ltm = localtime(&now);
