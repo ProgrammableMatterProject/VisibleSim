@@ -1,8 +1,8 @@
 
 # GENERIC BlockCodes
-# SUBDIRS = simpleColorBB simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D
+SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB 
 # MELD BlockCodes
-SUBDIRS = meld MRMeld 
+# SUBDIRS = meld MRMeld 
 # TESTED Legacy codeBlocks
 # SUBDIRS = noneCatoms2D bbCycle robot01 sphereCatoms3D sbReconf smartBlocks1
 # ALL
@@ -25,11 +25,10 @@ $(SUBDIRS):
 #	done
 
 test:	subdirs
+	@echo "\nCodeBlocks Regression Testing:"
 	@for dir in $(SUBDIRS); do \
-		echo "(cd ../applicationsBin/$$dir; ./$$dir)"; \
-		(cd ../applicationsBin/$$dir; ./$$dir -r); \
+		(../utilities/blockCodeTest.sh ../applicationsBin/$$dir/$$dir)\
 	done
-
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
