@@ -493,24 +493,12 @@ void Simulator::parseBlockList() {
 	}
 }
 
-void Simulator::parseTarget() {	
-	TiXmlNode *targetNode = xmlWorldNode->FirstChild("target");
-	TiXmlElement* element;
-	if (targetNode) {
-		element = targetNode->ToElement();
-		const char *attr = element->Attribute("format");
-		if (attr) {
-			string str(attr);
-			if (str.compare("grid") == 0) {
-				BlockCode::target = new TargetGrid(targetNode);
-				cerr << "Parsed TargetGrid:" << endl;
-				cerr << *BlockCode::target << endl;
-			} else if (str.compare("csg") == 0) {
-					throw new NotImplementedException();
-					// BlockCode::target = new TargetCSG(targetNode);
-			}
-		}
-	} 
+void Simulator::parseTarget() {
+	Target::targetListNode = xmlWorldNode->FirstChild("targetList");
+	if (Target::targetListNode) {
+		// Load initial target (BlockCode::target = NULL if no target specified)
+		BlockCode::target = Target::loadNextTarget();
+	}
 }
 
 void Simulator::parseObstacles() {
