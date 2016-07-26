@@ -33,6 +33,9 @@ class Simulator {
 public:
 	enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
 
+	static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
+	//!< (causes configuration export before simulator termination) 
+
 	static Simulator* getSimulator() {
 		assert(simulator != NULL);
 		return(simulator);
@@ -66,8 +69,6 @@ public:
 
 protected:
 	static Type type;			//!< Type of simulation, i.e. language of the user program
-	static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
-	                                //!< (causes configuration export before simulator termination) 
 	
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
 	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured

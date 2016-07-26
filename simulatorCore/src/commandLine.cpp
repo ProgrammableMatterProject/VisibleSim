@@ -3,6 +3,7 @@
 
 #include "commandLine.h"
 #include "openglViewer.h"
+#include "simulator.h"
 
 void CommandLine::help() {
     cerr << "VisibleSim options:" << endl;

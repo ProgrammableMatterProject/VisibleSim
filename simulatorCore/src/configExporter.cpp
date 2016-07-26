@@ -5,6 +5,7 @@
 #include <vector>
 #include <ctime>
 
+#include "simulator.h"
 #include "catoms3DBlock.h"
 #include "catoms2DBlock.h"
 
@@ -132,7 +133,6 @@ void ConfigExporter::exportCameraAndLightSource() {
                                                                      ds.pt[2]));
         spotlight->SetAttribute("angle", ls->getAngle());        
         worldElt->LinkEndChild(spotlight);
-        config->LinkEndChild(worldElt);
     }
 }
     
@@ -143,21 +143,17 @@ void ConfigExporter::exportWorld() {
         worldElt->SetAttribute("windowSize",
                                toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
     }
+
+    config->LinkEndChild(worldElt);
 }
 
 void ConfigExporter::exportBlockList() {
     blockListElt = new TiXmlElement("blockList");
-    BuildingBlock *bb = world->getSelectedBuildingBlock();
-    float *color = bb->color.rgba;
     Vector3D blockSize = world->lattice->gridScale;
     map<int, BaseSimulator::BuildingBlock*> blocks = world->getMap();
-        
-    blockListElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
-                                                       color[1] * 255,
-                                                       color[2] * 255));
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
 
-    for(auto const& idBBPair : world->getMap()) {
+    for(auto const& idBBPair : blocks) {
         exportBlock(idBBPair.second);
     }
         

@@ -233,9 +233,8 @@ void MultiRobotsWorld::setSelectedFace(int n) {
 
 void MultiRobotsWorld::exportConfiguration() {
     // PTHY: INCONSISTENCY
-	// MultiRobotsConfigExporter *exporter = new MultiRobotsConfigExporter(this);
-	// exporter->exportConfiguration();
-	// delete exporter;
+	// MultiRobotsConfigExporter exporter = MultiRobotsConfigExporter(this);
+	// exporter.exportConfiguration();
 }
 
 } // MultiRobots namespace
