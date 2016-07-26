@@ -23,7 +23,7 @@ ostream& operator<<(ostream& out,const StatsCollector &sc) {
     out << "Size of the events list at the end : " << sc.endEventsQueueSize << endl;
 	out << "Events(s) left in memory before destroying Scheduler : " << sc.nbLivingEvents << endl;
 	out << "Message(s) left in memory before destroying Scheduler : " << sc.nbLivingMessages << endl;
-
+	out << "Number of events processed per second : " << sc.computeEventPerSec() << endl;
     
     return out;
 }
