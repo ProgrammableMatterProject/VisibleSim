@@ -11,7 +11,7 @@
 #define EVENT_MSRSYNC	15000
 
 #include "events.h"
-#include <memory>
+#include <boost/shared_ptr.hpp>
 
 class MsrSyncEvent : public BlockEvent {
 public:
