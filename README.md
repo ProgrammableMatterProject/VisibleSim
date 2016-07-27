@@ -2,7 +2,7 @@ VisibleSim
 ==================
 
 Dependencies:
- - Boost C++ Libraries >= 1.47.0
+ - Boost C++ Libraries >= 1.47.0 (If using Meld Process only)
  - GLUT
  - GLEW
  - SBCL - to compile Meld programs
@@ -74,19 +74,19 @@ is loaded, but you can provide another configuration file with `-c` option.
 
 #### Running a Meld application
 
-Meld programs only run on Blinky Blocks for now. To execute a Meld program on VisibleSim, ensure that `blinkyMeld` application is compiled (`blinkyMeld` 
-had belong to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the repository 
+Meld programs only run on Blinky Blocks for now. To execute a Meld program on VisibleSim, ensure that `meld` application is compiled (`meld` 
+had belonged to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the repository 
 root folder was performed). Then, `cd` into
-`applicationsBin/blinkyMeld/` and run:
+`applicationsBin/meld/` and run:
 
 ```
 ./compile-meld.sh [path to your Meld program] // to compile your Meld program.
-./blinkyMeld -c configuration.xml // to run your Meld program.
+./meld -c configuration.xml -k {BB | RB | SB | C2D | C3D} // to run your Meld program. Specify target block after -k.
 ```
 
 Press '<kbd>r</kbd>' to run the simulation.
 
-Meld program examples are available in `applicationsBin/blinkyMeld/meld/programs`. All programs were not tested.
+Meld program examples are available in `applicationsBin/meld/programs`. All programs were not tested.
 
 [boost1.56-ticket]:https://svn.boost.org/trac/boost/ticket/11154
 [git submodules]:https://git-scm.com/book/en/v2/Git-Tools-Submodules
