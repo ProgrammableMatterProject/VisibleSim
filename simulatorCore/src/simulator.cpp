@@ -7,6 +7,8 @@
 
 #include "simulator.h"
 
+#include <unordered_set>
+
 #include "trace.h"
 #include "meldInterpretVM.h"
 #include "meldInterpretScheduler.h"
@@ -184,7 +186,7 @@ Simulator::IDScheme Simulator::determineIDScheme() {
 		else if (str.compare("SEED_RANDOM_CONTIGUOUS") == 0)
 			return SEED_RANDOM_CONTIGUOUS;
 		else {
-			cerr << "error: unknown ID distribution scheme: " << str << endl;
+			cerr << "error:  unknown ID distribution scheme in configuration file: " << str << endl;
 			cerr << "\texpected values: [ORDERED, MANUAL, FULL_RANDOM, FULL_RANDOM_CONTIGUOUS, "
 				 << "SEED_RANDOM, SEED_RANDOM_CONTIGUOUS]" << endl;
 			throw ParsingException();
@@ -209,6 +211,7 @@ void Simulator::initializeIDPool() {
 
 	// Determine what assignment model to use, and initialize IDPool according to it
 	ids = determineIDScheme();
+	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
 	switch (ids) {
 	case ORDERED:
 		for (int id = 1; id <= numModules; id++)
@@ -223,14 +226,27 @@ void Simulator::initializeIDPool() {
 		    attr = element->Attribute("id");
 			
 			if (attr) {
-				string str(attr);
-				id =  stoi(str);
+				try {
+					string str(attr);
+					id =  stoi(str);
+				} catch (const std::invalid_argument& e) {
+					cerr << "error: invalid id attribute value in configuration file" << endl;
+					throw ParsingException();				
+				}
 			} else {
-				cerr << "error: missing id attribute for a block while in MANUAL mode" << endl;
+				cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
 				throw ParsingException();
 			}
 
-			IDPool.push_back(id);
+			// Ensure unicity of the ID, by inserting id to the set and checking that insertion took place
+			//  (insertion does not take place if there is a duplicate, and false is returned)
+			if (dupCheck.insert(id).second)
+				IDPool.push_back(id);
+			else {
+				cerr << "error: duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode"
+					 << endl;
+				throw ParsingException();
+			}
 		}
 		
 	} break;
