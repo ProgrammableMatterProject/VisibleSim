@@ -8,9 +8,9 @@ usage() {
 
 print_result() {
     if [ $2 == true ]; then
-        echo -e "$1: \033[33;32mPASS\x1B[0m"
+        echo -e "$1:\t\t\t[\033[33;32mPASS\x1B[0m]"
     else
-        echo -e "$1: \033[33;31mFAILED\x1B[0m"
+        echo -e "$1:\t\t\t[\033[33;31mFAILED\x1B[0m]"
     fi
 
     exit 0
