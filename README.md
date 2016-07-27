@@ -74,14 +74,14 @@ is loaded, but you can provide another configuration file with `-c` option.
 
 #### Running a Meld application
 
-Meld programs only run on Blinky Blocks for now. To execute a Meld program on VisibleSim, ensure that `meld` application is compiled (`meld` 
+To execute a Meld program on VisibleSim, ensure that `meld` application is compiled (`meld` 
 had belonged to `SUBDIR` macro in `applicationsSrc/Makefile` when the last `make` in the repository 
 root folder was performed). Then, `cd` into
 `applicationsBin/meld/` and run:
 
 ```
-./compile-meld.sh [path to your Meld program] // to compile your Meld program.
-./meld -c configuration.xml -k {BB | RB | SB | C2D | C3D} // to run your Meld program. Specify target block after -k.
+./compile-meld.sh <path to your Meld program> // to compile your Meld program.
+./meld -c configuration.xml -p <path to .bb program> -k {BB | RB | SB | C2D | C3D} // to run your Meld program. Specify target block after -k.
 ```
 
 Press '<kbd>r</kbd>' to run the simulation.
