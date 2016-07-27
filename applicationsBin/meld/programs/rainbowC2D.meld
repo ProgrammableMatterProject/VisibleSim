@@ -1,3 +1,5 @@
+include #include/C2D.meld
+
 type vacant(node, int).
 type linear tap(node).
 type route neighbor(node, node, int).
@@ -10,22 +12,16 @@ type route topNeighbor(node, node).
 type route sideNeighbor(node, node).
 type neighbor-level(node, node, int).
 
-// Bottom-Left
-!neighbor(N, X, 4) -o !bottomNeighbor(N, X).
-// Bottom-Right
-!neighbor(N, X, 5) -o !bottomNeighbor(N, X).
+!neighbor(N, X, bottom-left) -o !bottomNeighbor(N, X).
+!neighbor(N, X, bottom-right) -o !bottomNeighbor(N, X).
 
-!vacant(N, 4), !vacant(N, 5) -o !noBottomNeighbor(N).
+!vacant(N, bottom-left), !vacant(N, bottom-right) -o !noBottomNeighbor(N).
 
-// Top-Right
-!neighbor(N, X, 1) -o !topNeighbor(N, X).
-// Top-Left
-!neighbor(N, X, 2) -o !topNeighbor(N, X).
+!neighbor(N, X, top-right) -o !topNeighbor(N, X).
+!neighbor(N, X, top-left) -o !topNeighbor(N, X).
 
-// Right
-!neighbor(N, X, 0) -o !sideNeighbor(N, X).
-// Left
-!neighbor(N, X, 3) -o !sideNeighbor(N, X).
+!neighbor(N, X, right) -o !sideNeighbor(N, X).
+!neighbor(N, X, left) -o !sideNeighbor(N, X).
 
 !neighbor(A, B, _), !level(A, H) -o !neighbor-level(B, A, H).
 
