@@ -32,6 +32,7 @@ ts/libTS.a:
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT) generator
+	@:
 
 autoinstall: $(OUT) generator 
 	cp $(OUT) $(APPDIR)

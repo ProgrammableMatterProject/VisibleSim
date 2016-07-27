@@ -28,7 +28,8 @@ CC = g++
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
-all: $(OUT) 
+all: $(OUT)
+	@:
 
 autoinstall: $(OUT) 
 	cp $(OUT)  $(APPDIR)

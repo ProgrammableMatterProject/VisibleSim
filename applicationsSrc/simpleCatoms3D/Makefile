@@ -68,6 +68,7 @@ CC = g++
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT)
+	@:
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

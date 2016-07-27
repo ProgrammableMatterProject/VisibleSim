@@ -69,7 +69,7 @@ SUBDIRS = simulatorCore/src applicationsSrc
 
 GLOBAL_INCLUDES = "-I/usr/local/include -I/opt/local/include -I/usr/X11/include"
 
-.PHONY: subdirs $(SUBDIRS) subdirectories test doc
+.PHONY: subdirs $(SUBDIRS) test doc
 #.PHONY: subdirs $(SUBDIRS) test doc
 
 subdirs: $(SUBDIRS)
@@ -82,7 +82,7 @@ $(SUBDIRS):
 #	$(MAKE) -C $$dir; \
 #	done
 
-test: subdirs
+test: 
 	@$(MAKE) -C applicationsSrc test;
 
 doc: 	
