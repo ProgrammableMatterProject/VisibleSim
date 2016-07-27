@@ -152,6 +152,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 
 	// Configure the simulation world
 	parseWorld(argc, argv);	
+	initializeIDPool();
 	
 	// Instantiate and configure the Scheduler
 	loadScheduler(schedulerMaxDate);
@@ -162,6 +163,89 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseObstacles();
 	parseTarget();
 	// BlockCode::xmlTargetListNode = xmlWorldNode->FirstChild("TargetList");
+}
+
+Simulator::IDScheme Simulator::determineIDScheme() {
+	TiXmlElement* element = xmlBlockListNode->ToElement();
+	const char *attr= element->Attribute("ids");
+	if (attr) {
+		string str(attr);
+
+		if (str.compare("MANUAL") == 0)
+			return MANUAL;
+		else if (str.compare("ORDERED") == 0)
+			return ORDERED;
+		else if (str.compare("FULL_RANDOM") == 0)
+			return FULL_RANDOM;
+		else if (str.compare("FULL_RANDOM") == 0)
+			return FULL_RANDOM_CONTIGUOUS;
+		else if (str.compare("SEED_RANDOM") == 0)
+			return SEED_RANDOM;
+		else if (str.compare("SEED_RANDOM_CONTIGUOUS") == 0)
+			return SEED_RANDOM_CONTIGUOUS;
+		else {
+			cerr << "error: unknown ID distribution scheme: " << str << endl;
+			cerr << "\texpected values: [ORDERED, MANUAL, FULL_RANDOM, FULL_RANDOM_CONTIGUOUS, "
+				 << "SEED_RANDOM, SEED_RANDOM_CONTIGUOUS]" << endl;
+			throw ParsingException();
+		}
+	}
+
+	return ORDERED;
+}
+
+void Simulator::initializeIDPool() {
+	// Simulator.xmlBlockListNode has to be initialized at this point!
+	
+	// Count number of modules in configuration file
+	int numModules = 0;
+	for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
+		numModules++;
+
+	cerr << "There are " << numModules << " modules in the configuration" << endl;
+	
+	// Initialize capacity of IDPool consequently
+    // IDPool = vector<int>(numModules);
+
+	// Determine what assignment model to use, and initialize IDPool according to it
+	ids = determineIDScheme();
+	switch (ids) {
+	case ORDERED:
+		for (int id = 1; id <= numModules; id++)
+			IDPool.push_back(id);
+		break;
+	case MANUAL: {
+		int id;
+		TiXmlElement *element;
+		const char *attr;
+		for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block")) {
+			element = child->ToElement();
+		    attr = element->Attribute("id");
+			
+			if (attr) {
+				string str(attr);
+				id =  stoi(str);
+			} else {
+				cerr << "error: missing id attribute for a block while in MANUAL mode" << endl;
+				throw ParsingException();
+			}
+
+			IDPool.push_back(id);
+		}
+		
+	} break;
+	case FULL_RANDOM:
+	case FULL_RANDOM_CONTIGUOUS:
+	case SEED_RANDOM:
+	case SEED_RANDOM_CONTIGUOUS:
+		throw NotImplementedException();
+		break;
+	}
+
+	cerr << "{";
+	for (int id : IDPool)
+		cerr << id << ", ";
+	cerr << "}" << endl;
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
@@ -398,6 +482,7 @@ void Simulator::parseBlockList() {
 			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 			OUTPUT << "new default color :" << defaultColor << endl;
 		}
+		
 #if 1
 		/* Reading a catoms */
 		TiXmlNode *block = xmlBlockListNode->FirstChild("block");
@@ -442,7 +527,7 @@ void Simulator::parseBlockList() {
 				OUTPUT << "master : " << master << endl;
 			}
 
-			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
+			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;			
 			loadBlock(element, currentID++, bcb, position, color, master);
 
 			block = block->NextSibling("block");
