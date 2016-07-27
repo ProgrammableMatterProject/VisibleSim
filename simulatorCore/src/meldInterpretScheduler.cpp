@@ -242,7 +242,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
     // if simulation is a regression testing run, export configuration before leaving
-	getWorld()->exportConfiguration();
+    if (Simulator::regrTesting)
+        getWorld()->exportConfiguration();
 
 	// if autoStop is enabled, terminate simulation
 	if (willAutoStop())
