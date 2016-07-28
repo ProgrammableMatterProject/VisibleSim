@@ -27,7 +27,7 @@ $(SUBDIRS):
 test:	subdirs
 	@echo "\nCodeBlocks Regression Testing:"
 	@for dir in $(SUBDIRS); do \
-		(../utilities/blockCodeTest.sh ../applicationsBin/$$dir/$$dir)\
+		$(MAKE) -C $$dir test;\
 	done
 clean:
 	rm -f *~ *.o

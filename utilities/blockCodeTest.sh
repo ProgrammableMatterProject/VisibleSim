@@ -1,8 +1,9 @@
 #!/bin/bash
 
 usage() {
-    echo "Usage: $0 <path-to-blockCode-binary>"
-    echo "Example: $0 ../applicationsBin/bbCycle"
+    echo "Usage: $0 <test-ID> <path-to-blockCode-binary> <VisibleSim-arguments>"
+    echo "Example: $0 bbCycle ../applicationsBin/bbCycle -c config123.xml"
+    echo "Test-ID can be used to distinguish between 2 control XML files from the same directory"
     exit 1
 }
 
@@ -16,52 +17,57 @@ print_result() {
     exit 0
 }
 
-# Check parameters
-[ $# -eq 0 ] && usage
+# Check parameters and parse potential arguments
+[ $# -lt 2 ] && usage
 
 # Check BlockCode
-if [ ! -x "$1" ]; then
-    echo "error: invalid BlockCode $1"
+if [ ! -x "$2" ]; then
+    echo "error: invalid BlockCode $2"
     exit 1
 fi
+
+# Save Test ID
+testID="$1"
+shift                           # Shift past Test-ID
 
 # Save work directory
 bcDir="$(dirname $1)"
 bcID="$(basename $bcDir)"
-control="$bcDir/.controlConf.xml"
+check="$bcDir/.confCheck.xml"
+control="$bcDir/.controlConf_$testID.xml"
 
 # Check that a control output has been generated
 if [ ! -r "$control" ]; then
-    echo "error: $control does not exist. Please export a control xml file with VisibleSim's -g option first and try again."
+    echo "warning: $control does not exist. Please export a control xml file with VisibleSim's -g option first and try again."
     while true; do
-        read -p "Do you wish to export it now? (y/n)" yn    
+        read -n 1 -rep $'Do you wish to export it now? (y/n) ' yn
         case $yn in
-            [Yy]* ) (./$1 -t -g -c $bcDir/config.xml &> /dev/null; mv .confCheck.xml $control); break;;
-            [Nn]* ) exit 1;;
+            [Yy]* ) (cd "$bcDir" && ./"$@" -t -g &>/dev/null; mv "$check" "$control" 2>/dev/null); break;;
+            [Nn]* ) print_result "$testID" false;;
             * ) echo "Please answer yes or no.";;
         esac
     done
 fi
 
 # Execute BlockCode in test mode
-(./$1 -t -g -c $bcDir/config.xml &> /dev/null)
+(cd "$bcDir" && ./"$@" -t -g &>/dev/null)
 
 # Check simulation status (FAIL if != EXIT_SUCCESS (0))
 status=$?
 
 if [ $status != 0 ]; then
-    print_result "$bcID" false
+    print_result "$testID" false
 fi
 
 # Compare output and expected output
-DIFF=$(echo `diff ".confCheck.xml" "$control"`)
+DIFF=$(echo `diff "$check" "$control" 2> /dev/null`)
 
 # Clean outputs
 rm -f ".confCheck.xml"
 
-# Interpret diff result
+# Interpret diff result (test succeeds if both output and control are identical)
 if [ "$DIFF" == "" ]; then
-    print_result "$bcID" true
+    print_result "$testID" true
 else
-    print_result "$bcID" false
+    print_result "$testID" false
 fi
