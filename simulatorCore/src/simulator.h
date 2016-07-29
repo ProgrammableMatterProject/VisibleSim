@@ -128,7 +128,30 @@ protected:
 	 */
 	void initializeIDPool();
 
+	/*!
+	 *  @brief Initializes IDPool with non-consecutive randomly generated IDs
+	 *  @param n the number of IDs to generate
+	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
+	 *  @attention { INEFFICIENT FOR A VERY LARGE NUMBER OF MODULES! (Since the algorithm has to explicitely check for
+	 *   duplicates, if 99% of all possible IDs have already been assigned, it is going to take close to forever to 
+	 *   generate the remaining IDs) }
+	 */
+	void generateRandomIDs(int n, int seed);
+	
+	/*!
+	 *  @brief Initializes IDPool with consecutive randomly generated IDs
+	 *  @param n the number of IDs to generate
+	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
+	 *  @attention {As opposed to Simulator::generateRandomIDs, this function is safe for a large number of modules}
+	 */
 	void generateContiguousIDs(int n, int seed);
+	
+	/*!
+	 *  @brief Parses the configuration file's blockList attribute for the random seed attribute
+	 *  @return The integer seed specified in the configuration file, or -1 if unspecified
+	 *  @throw ParsingException in case the seed is not a valid integer number
+	 */
+	int parseRandomSeed();
 	
 	/*! @fn loadScheduler(int maximumDate)
 	 *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock

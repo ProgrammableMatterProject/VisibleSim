@@ -191,30 +191,46 @@ Simulator::IDScheme Simulator::determineIDScheme() {
 	return ORDERED;
 }
 
-// void Simulator::generateRandomIDs(int n, int seed) {
-// 	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
-// 	std::uniform_int_distribution<int> dis(1, INT_MAX);
-	   
-// 	std::ranlux48 generator;
-// 	if (seed == -1) {
-// 	    OUTPUT << "Generating fully random ID distribution" <<  endl;
-// 		std::random_device rd;
-// 		generator = std::ranlux48(rd());
-// 	} else {
-// 	    OUTPUT << "Generating random ID distribution with seed: " << seed <<  endl;
-// 		generator = std::ranlux48(seed);
-// 	}	
+int Simulator::parseRandomSeed() {
+	TiXmlElement *element = xmlBlockListNode->ToElement();
+	const char *attr = element->Attribute("seed"); 			
+	if (attr) {				// READ Seed
+		try {
+			string str(attr);
+			return stoi(str);
+		} catch (const std::invalid_argument& e) {
+			cerr << "error: invalid seed attribute value in configuration file" << endl;
+			throw ParsingException();				
+		}
+	} else {				// No seed, generate distribution with random seed		   
+		return -1;
+	}
+}
 
-// 	// Generate n IDs and add them to the IDPool. If the ID has already been assigned, generate a new one.
-// 	int id;
-// 	for (int i = 0; i < n; i++) {
-// 		do {					// Generate new ID as long as we end up getting duplicate
-// 			id = dis(generator);
-// 		} while (!dupCheck.insert(id).second);
-// 		// There
-// 		IDPool.push_back(id);
-// 	}
-// }
+void Simulator::generateRandomIDs(int n, int seed) {
+	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
+	std::uniform_int_distribution<int> dis(1, INT_MAX);
+	   
+	std::ranlux48 generator;
+	if (seed == -1) {
+	    OUTPUT << "Generating fully random ID distribution" <<  endl;
+		std::random_device rd;
+		generator = std::ranlux48(rd());
+	} else {
+	    OUTPUT << "Generating random ID distribution with seed: " << seed <<  endl;
+		generator = std::ranlux48(seed);
+	}	
+
+	// Generate n IDs and add them to the IDPool. If the ID has already been assigned, generate a new one.
+	int id;
+	for (int i = 0; i < n; i++) {
+		do {					// Generate new ID as long as we end up getting duplicate
+			id = dis(generator);
+		} while (!dupCheck.insert(id).second);
+		// There
+		IDPool.push_back(id);
+	}
+}
 
 void Simulator::generateContiguousIDs(int n, int seed) {
 	// Fill vector with n consecutive numbers {1..N}
@@ -290,25 +306,10 @@ void Simulator::initializeIDPool() {
 		
 	} break;
 	case RANDOM:
-		throw NotImplementedException();
+	    generateRandomIDs(numModules, parseRandomSeed());
 		break;
 	case RANDOM_CONTIGUOUS: {
-		int seed;
-		TiXmlElement *element = xmlBlockListNode->ToElement();
-		const char *attr = element->Attribute("seed"); 			
-		if (attr) {				// READ Seed
-			try {
-				string str(attr);
-				seed =  stoi(str);
-			} catch (const std::invalid_argument& e) {
-				cerr << "error: invalid seed attribute value in configuration file" << endl;
-				throw ParsingException();				
-			}
-		} else {				// No seed, generate distribution with random seed		   
-			seed = -1;
-		}
-
-		generateContiguousIDs(numModules, seed);		
+		generateContiguousIDs(numModules, parseRandomSeed());
 	} break;
 
 	} // switch
