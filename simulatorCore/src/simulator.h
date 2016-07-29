@@ -32,7 +32,7 @@ extern Simulator *simulator;
 class Simulator {
 public:
 	enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
-	enum IDScheme {ORDERED = 0, MANUAL, FULL_RANDOM, FULL_RANDOM_CONTIGUOUS, SEED_RANDOM, SEED_RANDOM_CONTIGUOUS};
+	enum IDScheme {ORDERED = 0, MANUAL, RANDOM, RANDOM_CONTIGUOUS};
 
 	static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
 	//!< (causes configuration export before simulator termination) 
@@ -127,6 +127,8 @@ protected:
 	 *  @attention The xmlBlockListNode attribute has to be initialized before calling this function.
 	 */
 	void initializeIDPool();
+
+	void generateContiguousIDs(int n, int seed);
 	
 	/*! @fn loadScheduler(int maximumDate)
 	 *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock

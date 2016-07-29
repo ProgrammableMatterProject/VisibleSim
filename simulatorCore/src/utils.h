@@ -33,6 +33,13 @@ struct NotImplementedException : std::exception {
     const char* what() const noexcept { return "not yet implemented!\n"; }
 };
 
+//!< @brief Swaps the value of two pointers a and b
+inline static void swap(int* a, int* b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
 
 } // namespace utils
 

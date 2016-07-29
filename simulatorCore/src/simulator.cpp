@@ -177,23 +177,52 @@ Simulator::IDScheme Simulator::determineIDScheme() {
 			return MANUAL;
 		else if (str.compare("ORDERED") == 0)
 			return ORDERED;
-		else if (str.compare("FULL_RANDOM") == 0)
-			return FULL_RANDOM;
-		else if (str.compare("FULL_RANDOM") == 0)
-			return FULL_RANDOM_CONTIGUOUS;
-		else if (str.compare("SEED_RANDOM") == 0)
-			return SEED_RANDOM;
-		else if (str.compare("SEED_RANDOM_CONTIGUOUS") == 0)
-			return SEED_RANDOM_CONTIGUOUS;
+		else if (str.compare("RANDOM") == 0)
+			return RANDOM;
+		else if (str.compare("RANDOM_CONTIGUOUS") == 0)
+			return RANDOM_CONTIGUOUS;
 		else {
 			cerr << "error:  unknown ID distribution scheme in configuration file: " << str << endl;
-			cerr << "\texpected values: [ORDERED, MANUAL, FULL_RANDOM, FULL_RANDOM_CONTIGUOUS, "
-				 << "SEED_RANDOM, SEED_RANDOM_CONTIGUOUS]" << endl;
+			cerr << "\texpected values: [ORDERED, MANUAL, RANDOM, RANDOM_CONTIGUOUS]" << endl;
 			throw ParsingException();
 		}
 	}
 
 	return ORDERED;
+}
+
+void Simulator::generateContiguousIDs(int n, int seed) {
+	int a = 0, b = 0;
+
+    IDPool = vector<int>(n);
+	
+
+	std::ranlux48 generator;
+	if (seed == -1) {
+	    OUTPUT << "Generating fully random contiguous ID distribution" <<  endl;
+		std::random_device rd;
+		generator = std::ranlux48(rd());
+	} else {
+	    OUTPUT << "Generating random contiguous ID distribution with seed: " << seed <<  endl;
+		generator = std::ranlux48(seed);
+	}	
+
+	for (int i = 0; i < n; i++) {
+		IDPool[i] = i+1;
+	}
+
+	if (n==1) {
+		return;
+	}
+
+	// randomly switch 2n times
+	for (int i = 0; i < n*2; i++) {
+		do {
+			a = generator() % n;
+			b = generator() % n;
+		} while (a == b);
+		swap(&IDPool[a], &IDPool[b]);
+	}
 }
 
 void Simulator::initializeIDPool() {
@@ -250,18 +279,34 @@ void Simulator::initializeIDPool() {
 		}
 		
 	} break;
-	case FULL_RANDOM:
-	case FULL_RANDOM_CONTIGUOUS:
-	case SEED_RANDOM:
-	case SEED_RANDOM_CONTIGUOUS:
+	case RANDOM:
 		throw NotImplementedException();
 		break;
-	}
+	case RANDOM_CONTIGUOUS: {
+		int seed;
+		TiXmlElement *element = xmlBlockListNode->ToElement();
+		const char *attr = element->Attribute("seed"); 			
+		if (attr) {				// READ Seed
+			try {
+				string str(attr);
+				seed =  stoi(str);
+			} catch (const std::invalid_argument& e) {
+				cerr << "error: invalid seed attribute value in configuration file" << endl;
+				throw ParsingException();				
+			}
+		} else {				// No seed, generate distribution with random seed		   
+			seed = -1;
+		}
 
-	// cerr << "{";
-	// for (int id : IDPool)
-	// 	cerr << id << ", ";
-	// cerr << "}" << endl;
+		generateContiguousIDs(numModules, seed);		
+	} break;
+
+	} // switch
+
+	cerr << "{";
+	for (int id : IDPool)
+		cerr << id << ", ";
+	cerr << "}" << endl;
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
