@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a ts/libTS.a
 CCFLAGS = $(GLOBAL_CCFLAGS) -std=c++1y
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 ts/libTS.a:
 	$(MAKE) -C ts

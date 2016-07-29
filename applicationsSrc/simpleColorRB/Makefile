@@ -59,7 +59,7 @@ endif
 
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@

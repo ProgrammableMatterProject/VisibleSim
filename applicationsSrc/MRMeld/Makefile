@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimMultiRobots.a
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@

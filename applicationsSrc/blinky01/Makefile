@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimBlinkyBlocks.a
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
@@ -30,6 +30,9 @@ CC = g++
 
 all: $(OUT)
 	@:
+
+test:
+	@../../utilities/blockCodeTest.sh blinky01 $(OUT)
 
 autoinstall: $(OUT)
 	cp $(OUT) $(APPDIR)

@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms3D.a
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
