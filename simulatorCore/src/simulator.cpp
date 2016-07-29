@@ -191,38 +191,48 @@ Simulator::IDScheme Simulator::determineIDScheme() {
 	return ORDERED;
 }
 
+// void Simulator::generateRandomIDs(int n, int seed) {
+// 	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
+// 	std::uniform_int_distribution<int> dis(1, INT_MAX);
+	   
+// 	std::ranlux48 generator;
+// 	if (seed == -1) {
+// 	    OUTPUT << "Generating fully random ID distribution" <<  endl;
+// 		std::random_device rd;
+// 		generator = std::ranlux48(rd());
+// 	} else {
+// 	    OUTPUT << "Generating random ID distribution with seed: " << seed <<  endl;
+// 		generator = std::ranlux48(seed);
+// 	}	
+
+// 	// Generate n IDs and add them to the IDPool. If the ID has already been assigned, generate a new one.
+// 	int id;
+// 	for (int i = 0; i < n; i++) {
+// 		do {					// Generate new ID as long as we end up getting duplicate
+// 			id = dis(generator);
+// 		} while (!dupCheck.insert(id).second);
+// 		// There
+// 		IDPool.push_back(id);
+// 	}
+// }
+
 void Simulator::generateContiguousIDs(int n, int seed) {
-	int a = 0, b = 0;
+	// Fill vector with n consecutive numbers {1..N}
+	IDPool = vector<int>(n);
+    std::iota(begin(IDPool), end(IDPool), 1);
 
-    IDPool = vector<int>(n);
-	
-
-	std::ranlux48 generator;
+	// Properly seed random number generator
+	std::mt19937 generator;
 	if (seed == -1) {
 	    OUTPUT << "Generating fully random contiguous ID distribution" <<  endl;
-		std::random_device rd;
-		generator = std::ranlux48(rd());
+		generator = std::mt19937(std::random_device{}());
 	} else {
 	    OUTPUT << "Generating random contiguous ID distribution with seed: " << seed <<  endl;
-		generator = std::ranlux48(seed);
+		generator = std::mt19937(seed);
 	}	
 
-	for (int i = 0; i < n; i++) {
-		IDPool[i] = i+1;
-	}
-
-	if (n==1) {
-		return;
-	}
-
-	// randomly switch 2n times
-	for (int i = 0; i < n*2; i++) {
-		do {
-			a = generator() % n;
-			b = generator() % n;
-		} while (a == b);
-		swap(&IDPool[a], &IDPool[b]);
-	}
+	// Shuffle the elements using the rng
+	std::shuffle(begin(IDPool), end(IDPool), generator);
 }
 
 void Simulator::initializeIDPool() {
