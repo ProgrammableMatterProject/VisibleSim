@@ -70,6 +70,9 @@ CC = g++
 all: $(OUT)
 	@:
 
+test:
+	@../../utilities/blockCodeTest.sh distanceRB $(OUT)
+
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
 

@@ -70,6 +70,9 @@ CC = g++
 all: $(OUT)
 	@:
 
+test:				
+	@../../utilities/blockCodeTest.sh simpleColorBB $(OUT)
+
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
 

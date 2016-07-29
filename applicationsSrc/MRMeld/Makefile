@@ -31,6 +31,9 @@ CC = g++
 all: $(OUT)
 	@:
 
+test:				#TODO
+	@../../utilities/blockCodeTest.sh MRMeld $(OUT)
+
 autoinstall: $(OUT)
 	cp $(OUT) $(APPDIR)
 

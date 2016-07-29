@@ -31,6 +31,9 @@ CC = g++
 all: $(OUT)
 	@:
 
+test:
+	@../../utilities/blockCodeTest.sh blinky02 $(OUT)
+
 autoinstall: $(OUT) 
 	cp $(OUT)  $(APPDIR)
 

@@ -36,6 +36,8 @@ autoinstall: $(OUT)
 
 $(APPDIR)/$(OUT): $(OUT)
 
+test:				
+	@../../utilities/blockCodeTest.sh smartBlocks1 $(OUT)
 
 #autoinstall: $(OUT) VMEmulator $(APPDIR)/$(OUT)
 #	echo toto

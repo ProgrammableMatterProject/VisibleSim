@@ -34,6 +34,9 @@ ts/libTS.a:
 all: $(OUT) generator
 	@:
 
+test:
+	@../../utilities/blockCodeTest.sh reconfCatoms2D $(OUT)
+
 autoinstall: $(OUT) generator 
 	cp $(OUT) $(APPDIR)
 	cp generator $(APPDIR)

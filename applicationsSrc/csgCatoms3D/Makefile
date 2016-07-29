@@ -31,6 +31,9 @@ CC = g++
 all: $(OUT)
 	@:
 
+test:				#TODO
+	@../../utilities/blockCodeTest.sh csgCatoms3D $(OUT)
+
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
 

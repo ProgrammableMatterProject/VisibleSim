@@ -70,6 +70,9 @@ CC = g++
 all: $(OUT)
 	@:
 
+test:				
+	@../../utilities/blockCodeTest.sh simpleColorC2D $(OUT)
+
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
 
