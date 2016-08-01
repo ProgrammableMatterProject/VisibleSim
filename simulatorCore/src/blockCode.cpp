@@ -41,79 +41,61 @@ void BlockCode::addMessageEventFunc(int type,eventFunc func) {
 }
 
 int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,int t0,int dt) {
-    int t1 = scheduler->now() + t0 + (int)(((double)dt*rand())/RAND_MAX);
-
-    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
-    return 0;
+	return sendMessage(NULL, msg, dest, t0, dt);
 }
 
 int BlockCode::sendMessage(const char*msgString,Message*msg,P2PNetworkInterface *dest,int t0,int dt) {
     int t1 = scheduler->now() + t0 + (int)(((double)dt*rand())/RAND_MAX);
 
-    console << " sends " << msgString << " to " << dest->getConnectedBlockId() << " at " << t1 << "\n";
+	if (msgString)
+		console << " sends " << msgString << " to " << dest->getConnectedBlockId() << " at " << t1 << "\n";
+
+	OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
+		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
+	
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
     return 0;
 }
 
 int BlockCode::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int nexcept,...) {
-    va_list ap;
-    P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
-//    int n = va_arg(vl,int);
-    va_start(ap,nexcept);
-    for (int i=0; i<nexcept; i++) {
-        tabExceptions[i] = va_arg(ap,P2PNetworkInterface*);
-    }
-    va_end(ap);
+	va_list args;
+	va_start(args,nexcept);
+	int ret = sendMessageToAllNeighbors(NULL, msg, t0, dt, nexcept, args);
+	va_end(args);
 
-    P2PNetworkInterface *p2p;
-    int j,n=0,t1;
-    for (int i=0; i<hostBlock->getNbInterfaces(); i++) {
-        p2p = hostBlock->getInterface(i);
-        if(p2p && p2p->connectedInterface) { // on regarde si elle n'est pas dans les interdits
-            j=0;
-            while (j<nexcept && p2p!=tabExceptions[j]) j++;
-            if (j==nexcept) {
-                t1 = scheduler->now() + t0 + (int)(((double)dt*rand())/RAND_MAX);
-                OUTPUT << hostBlock->blockId << " sends " << msg->type << " to " << p2p->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
-                Message* msg_clone = msg->clone();
-                scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg_clone, p2p));
-                n++;
-            }
-        }
-    }
-    delete msg;
-    return n;
+	return ret;
 }
 
 int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt,int nexcept,...) {
-    va_list ap;
+	va_list args;
+	va_start(args,nexcept);
+	int ret = sendMessageToAllNeighbors(msgString, msg, t0, dt, nexcept, args);
+	va_end(args);
+
+	return ret;
+}
+
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt, int nexcept, va_list args) {
     P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
-//    int n = va_arg(vl,int);
-    va_start(ap,nexcept);
     for (int i=0; i<nexcept; i++) {
-        tabExceptions[i] = va_arg(ap,P2PNetworkInterface*);
+        tabExceptions[i] = va_arg(args,P2PNetworkInterface*);
     }
-    va_end(ap);
 
     P2PNetworkInterface *p2p;
-    int j,n=0,t1;
+    int j,n=0;
     for (int i=0; i<hostBlock->getNbInterfaces(); i++) {
         p2p = hostBlock->getInterface(i);
         if(p2p->connectedInterface) { // on regarde si elle n'est pas dans les interdits
             j=0;
             while (j<nexcept && p2p!=tabExceptions[j]) j++;
             if (j==nexcept) {
-                t1 = scheduler->now() + t0 + (int)(((double)dt*rand())/RAND_MAX);
-                console << " sends " << msgString << " to " << p2p->getConnectedBlockId() << " at " << t1 << "\n";
-                OUTPUT << hostBlock->blockId << " sends " << msg->type << " to " << p2p->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
-                Message* msg_clone = msg->clone();
-                scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg_clone, p2p));
+				sendMessage(msgString, msg->clone(), p2p, t0, dt);
                 n++;
             }
         }
     }
     delete msg;
-    return n;
+    return n;	
 }
 
 void BlockCode::processLocalEvent(EventPtr pev) {

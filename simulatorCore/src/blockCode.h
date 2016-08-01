@@ -1,8 +1,8 @@
 /*
  * @file blockCode.h
- *
- *  Created on: 22 mars 2013
- *      Author: dom
+ * @date 22 mars 2013
+ * @author dom
+ * @brief Defines a single instance of the distributed program that is executed independantly by each module
  */
 
 #ifndef BLOCKCODE_H_
@@ -34,15 +34,16 @@ typedef std::function<void (BlockCode*,std::shared_ptr<Message>,P2PNetworkInterf
  * @brief A distributed user program, will be executed by each module 
  */ 
 class BlockCode {
+private:
+    int sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt, int nexcept, va_list args);
 public:
     BuildingBlock *hostBlock; 	//!< The block to which this instance of the user program belongs 
     uint64_t availabilityDate = 0; //!< If the host is busy, the date at which it will be available
-    std::multimap<int,eventFunc> eventFuncMap; //!< 
+    std::multimap<int,eventFunc> eventFuncMap; //!< container of function pointers to message handlers, indexed by message typeID
     Scheduler *scheduler; //!< pointer to the single instance of scheduler of the simulation
     Lattice *lattice;  //!< pointer to the single instance of lattice of the simulation
     ConsoleStream console;  //!< pointer to the single instance of ConsoleStream of the simulation
     static Target *target; //!< pointer shared by all blockCodes to the current target configuration    
-	// static TiXmlNode* xmlTargetListNode; //!< targetList XML node from the configuration file
     
 /**
  * @brief BlockCode constructor
@@ -78,13 +79,45 @@ public:
 //virtual bool getAttribute(const string &att,ostringstream &sout) { sout << "no debugging"; return false; };
     virtual void addDebugAttributes(Scheduler *scheduler){};
 
+    /**
+     * @brief This function is called when a module is tapped by the user. Prints a message to the console by default. 
+     Can be overloaded in the user blockCode
+     * @param face face that has been tapped */
     virtual void onTap(int face);
-    
+
+    /**
+     * @brief Add a new message handler to the block code, for message with message type type
+     * @param type ID of the message for which a handler needs to be registered
+     * @param eventFunc the message handling function as a std::function */
     void addMessageEventFunc(int type,eventFunc);
-    int sendMessageToAllNeighbors(Message*,int t0,int dt,int nexcept,...);
-    int sendMessage(Message*,P2PNetworkInterface *,int t0,int dt);
-    int sendMessageToAllNeighbors(const char*,Message*,int t0,int dt,int nexcept,...);
-    int sendMessage(const char*,Message*,P2PNetworkInterface *,int t0,int dt);
+    /**
+     * @brief Send message to all connected interface interfaces, except those in the variadic parameters ignore list.
+     *        Sending time randomly drawn as follow: tt = t0 + (rand * dt), where rand is either {0, 1}
+     * @param msg message to be sent
+     * @param t0 time of transmission
+     * @param dt delta time between two transmissions
+     * @param nexcept number of interfaces to ignore
+     * @param ... variadic parameters: pointer to the nexcept interfaces to ignore
+     * @return Number of messages effectively sent
+     */
+    int sendMessageToAllNeighbors(Message *msg,int t0,int dt,int nexcept,...);
+    /**
+     * @copydoc BlockCode::sendMessageToAllNeighbors
+     * Identical to sendMessageToAllNeighbors, but prints msgString to the console when the message is sent
+     * @param msgString string of the message to be printed when sent
+     */
+    int sendMessageToAllNeighbors(const char *msgString,Message *msg,int t0,int dt,int nexcept,...);    
+    /**
+     * @brief Send message to interface dest at time t0 + [0,1]dt
+     * @param msg message to be sent
+     * @param dest destination interface. 
+     * @param t0 base sending time
+     * @param dt potential delay in sending time */
+    int sendMessage(Message *msg,P2PNetworkInterface *dest,int t0,int dt);
+    /**
+     * @copydoc BlockCode::sendMessage
+     * @param msgString string to be printed to the console upon sending */
+    int sendMessage(const char *msgString,Message *msg,P2PNetworkInterface *dest,int t0,int dt);
 };
 
 } // BaseSimulator namespace
