@@ -11,66 +11,172 @@
 #include <stdint.h> 
 #include <random>
 #include <list>
+#include <vector>
+#include <string>
 
 #include "clock.h"
+#include "clockNoise.h"
 
 using namespace std;
 
 namespace BaseSimulator {
+  
 /**
  * \brief class to simulate clock with quadratic model: x(t) = (1/2)*d*t^2 + y0*t + x0
  */
 class QClock: public Clock {
 protected:
-  double d;
-  double y0;
-  double x0;
-
+  double d; //!< d parameter of the quadratic clock model
+  double y0; //!< y0 parameter of the quadratic clock model
+  double x0; //!< x0 parameter of the quadratic clock model
+  
 public:
+
+  /**
+   * @brief QClock constructor.
+   * @para _d d parameter of the clock model
+   * @para _y0 y0 parameter of the clock model
+   * @para _x0 x0 parameter of the clock model
+   */ 
   QClock(double _d, double _y0, double _x0);
+
+  /**
+   * @brief QClock constructor. Parameters d and y0 of the clock model are 
+   * randomly generated using a Gaussian distribution.
+   * @para mean array of the mean of the parameters d and y0 (in that order).
+   * @para sd array of the standard deviation of the parameters d and y0 (in 
+   that order).
+   * @para seed seed to use in the random generation of d and y0.
+   */ 
   QClock(double mean[], double sd[], unsigned int seed);
-  ~QClock() {};
+
+  /**
+   * QClock destructor.
+   */
+  virtual ~QClock() {};
 
   virtual uint64_t getTime(uint64_t simTime);
   virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
 };
 
- class ReferencePoint {
- public:
-   uint64_t local;
-   uint64_t simulation;
-   
-   ReferencePoint(uint64_t l, uint64_t s) {local = l; simulation = s;}
-   ReferencePoint(const ReferencePoint &p) {local = p.local; simulation = p.simulation;}
-   ~ReferencePoint() {};
-  };
- 
 /**
  * \brief class to simulate clock with quadratic model and gaussian noise 
  * x(t) = (1/2)*d*t^2 + y0*t + x0 + N(0,sigma)
  * Simulation Method: 
  */
 class GNoiseQClock : public QClock {  
+  /**
+   * \brief class to record reference point that associate local time to 
+   * simulation time
+   */
+  class ReferencePoint {
+  public:
+    uint64_t local;
+    uint64_t simulation;
+
+    
+    ReferencePoint(uint64_t l, uint64_t s) {local = l; simulation = s;}
+    ReferencePoint(const ReferencePoint &p) {local = p.local; simulation = p.simulation;}
+    ~ReferencePoint() {};
+  };
+
 protected:
-  unsigned int seed;
-  double sigma;
-  list<ReferencePoint> referencePoints;
-  ranlux48 noiseGenerator;
-  uniform_int_distribution<> dis;
+  GClockNoise *noise; //!< Gaussian noise
+  list<ReferencePoint> referencePoints; //!< list of reference points that associate local time to simulation time 
 
 public:
+
+  /**
+   * @brief GNoiseQClock constructor.
+   * @para _d d parameter of the clock model
+   * @para _y0 y0 parameter of the clock model
+   * @para _x0 x0 parameter of the clock model
+   * @para _sigma sigma parameter of the clock model
+   * @para _seed seed to use in random noise generation
+   */ 
   GNoiseQClock(double _d, double _y0, double _x0, double _sigma, unsigned int _seed);
+
+  /**
+   * @brief GNoiseClock constructor. Parameters d, y0 and sigma of the clock 
+   * model are  randomly generated using a Gaussian distribution.
+   * @para mean array of the mean of the parameters d, y0 and sigma (in that 
+   * order).
+   * @para sd array of the standard deviation of the parameters d, y0 and sigma 
+   * (in that order).
+   * @para seed seed to use in the random generation of d, y0, sigma and 
+   * noise(t) ~ N(0,sigma).
+   */ 
   GNoiseQClock(double mean[], double sd[], unsigned int _seed);
-  ~GNoiseQClock() {};
+
+  /**
+   * @brief GNoiseClock destructor.
+   */
+  ~GNoiseQClock();
 
   uint64_t getTime(uint64_t simTime);
   uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
 
  protected:
+   /**
+   * @brief Remove past reference points that are now uselessy.
+   */
   void cleanReferencePoints();
+
+  /**
+   * @brief Insert a new reference point.
+   * @para local local time.
+   * @para simulation simulation time.
+   * @para pos position where to insert the reference point in referencePoints
+   */
   void insertReferencePoint(uint64_t local, uint64_t simulation, list<ReferencePoint>::iterator pos);
 };
- 
+
+/**
+ * \brief class to simulate clock with quadratic model and noise replayed 
+ * from data: x(t) = (1/2)*d*t^2 + y0*t + x0 + noise(t)
+ */
+class DNoiseQClock: public QClock {
+    
+ protected:
+  DClockNoise *noise; //!< Noise replay from data
+  
+public:
+
+  /**
+   * @brief DNoiseQClock constructor.
+   * @para _d d parameter of the clock model
+   * @para _y0 y0 parameter of the clock model
+   * @para _x0 x0 parameter of the clock model
+   * @para _seed seed to use in the random choice of the noise signal to replay
+   */ 
+  DNoiseQClock(double _d, double _y0, double _x0, unsigned int _seed);
+
+  /**
+   * @brief DNoiseClock constructor. Parameters d and y0 of the clock 
+   * model are randomly generated using a Gaussian distribution.
+   * @para mean array of the mean of the parameters d and y0 (in that 
+   * order).
+   * @para sd array of the standard deviation of the parameters d and y0 
+   * (in that order).
+   * @para seed seed to use in the random generation of d, y0 and the choice 
+   * of the noise signal to replay.
+   */ 
+  DNoiseQClock(double mean[], double sd[], unsigned int _seed);
+  
+  /**
+   * @brief DNoiseClock destructor. 
+   */
+  ~DNoiseQClock();
+
+  uint64_t getTime(uint64_t simTime);
+  uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+
+  /**
+   * @brief Load the noise signal data from files.
+   * @para files path to noise signal files.
+   */ 
+  static void loadNoiseData(vector<string> &files);
+};
  
 }
 

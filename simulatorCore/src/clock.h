@@ -24,6 +24,11 @@ class Clock {
 public:
 
   /**
+   * @brief Clock default constructor.
+   */
+  Clock() {};
+
+  /**
    * @brief Clock destructor.
    */
   virtual ~Clock() {};

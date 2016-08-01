@@ -18,8 +18,8 @@ QClock::QClock(double _d, double _y0, double _x0): Clock() {
 QClock::QClock(double mean[], double sd[], unsigned int seed): Clock() {
   double values[2];
   for (int i = 0; i < 2; i++) {
-    std::mt19937 uGenerator(seed);
-    std::normal_distribution<double> normalDist(mean[i],sd[i]);
+    mt19937 uGenerator(seed);
+    normal_distribution<double> normalDist(mean[i],sd[i]);
     auto generator = std::bind(normalDist, uGenerator);
     values[i] = generator();
   }
@@ -57,31 +57,31 @@ uint64_t QClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
   return (uint64_t) simTime;
 }
 
-//==================================================================================================
+//==============================================================================
 //
 //          GNoiseQClock  (class)
 //
-//==================================================================================================
+//==============================================================================
 
 GNoiseQClock::GNoiseQClock(double _d, double _y0, double _x0, double _sigma, unsigned int _seed): QClock(_d,_y0,_x0) {
-  sigma = _sigma;
-  seed = _seed;
+  noise = new GClockNoise(_seed,0,_sigma);
 }
 
 GNoiseQClock::GNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed) {
-  seed = _seed;
-  std::mt19937 uGenerator(seed);
-  std::normal_distribution<double> normalDist(mean[2],sd[2]);
+  mt19937 uGenerator(_seed);
+  normal_distribution<double> normalDist(mean[2],sd[2]);
   auto generator = std::bind(normalDist, uGenerator);
-  sigma = generator();
+  double sigma = generator();
+  noise = new GClockNoise(_seed,0,sigma);
+}
+
+GNoiseQClock::~GNoiseQClock () {
+  delete noise;
 }
 
 uint64_t GNoiseQClock::getTime(uint64_t simTime) {
   double localTime = 0;
-  double noise = 0;
-
-  std::mt19937 uGenerator(simTime*seed);
-  std::normal_distribution<double> normalDist(0,sigma);
+  double noise_SimTime = 0;
   
   double minL = 0;
   double maxL = numeric_limits<double>::max();
@@ -100,10 +100,10 @@ uint64_t GNoiseQClock::getTime(uint64_t simTime) {
       break; //sorted list
     }
   }
+
+  noise_SimTime = noise->getNoise(simTime);
   
-  noise = noiseGenerator();
-  
-  localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise;
+  localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise_SimTime;
   localTime = max(minL,localTime);
   localTime = min(maxL,localTime);
 
@@ -113,11 +113,8 @@ uint64_t GNoiseQClock::getTime(uint64_t simTime) {
 }
 
 uint64_t GNoiseQClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
-  double noise = 0;
+  double noise_LocalTime = 0;
   double simTime = 0;
-
-  mt19937 uGenerator(localTime*seed);
-  normal_distribution<double> normalDist(0,sigma);
     
   double minL = 0;
   double maxL = numeric_limits<double>::max();
@@ -139,9 +136,9 @@ uint64_t GNoiseQClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
     }
   }
  
-  noise = noiseGenerator();
+  noise_LocalTime = noise->getNoise(localTime);
   
-  double delta =  pow(y0,2) - 4 * (1.0/2.0)*d * (x0+noise-(double)localTime);
+  double delta =  pow(y0,2) - 4 * (1.0/2.0)*d * (x0+noise_LocalTime-(double)localTime);
   if (delta > 0) {
     double s1 = (-y0 + sqrt(delta)) / d;
     double s2 = (-y0 - sqrt(delta)) / d;
@@ -192,4 +189,54 @@ void GNoiseQClock::cleanReferencePoints() {
   for (list<ReferencePoint>::iterator it = referencePoints.begin();
        it != referencePoints.end(); it++) {
   }
+}
+
+//==============================================================================
+//
+//          DNoiseQClock  (class)
+//
+//==============================================================================
+
+DNoiseQClock::DNoiseQClock(double _d, double _y0, double _x0, unsigned int _seed): QClock(_d,_y0,_x0) {
+  noise = new DClockNoise(_seed);
+}
+
+DNoiseQClock::DNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed) {
+  noise = new DClockNoise(_seed);
+}
+
+DNoiseQClock::~DNoiseQClock() {
+  delete noise;
+}
+
+void loadNoiseData(vector<string> &noiseData) {
+  DClockNoise::loadData(noiseData);
+}
+
+uint64_t DNoiseQClock::getTime(uint64_t simTime) {
+  uint64_t noise_SimTime = noise->getNoise(simTime);
+  uint64_t localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise_SimTime;
+  return localTime;
+}
+
+uint64_t DNoiseQClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+  uint64_t l = localTime;
+  uint64_t s = QClock::getSchedulerTimeForLocalTime(localTime);
+
+  while (l < localTime) {
+    s++;
+    l = getTime(s);
+    if (l >= localTime) {
+      return s;
+    }
+  }
+  
+  while(l > localTime) {
+    s--;
+    l = getTime(s);
+    if (l < localTime) {
+      return s+1;
+    }
+  }
+  return s;
 }
