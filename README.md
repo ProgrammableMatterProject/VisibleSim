@@ -1,6 +1,6 @@
 VisibleSim
 ==================
-
+<kbd>shift</kbd> + <kbd>command</kbd> + <kbd>3</kbd>
 Dependencies:
  - Boost C++ Libraries >= 1.47.0 (If using Meld Process only)
  - GLUT
