@@ -16,6 +16,7 @@ int Event::nextId = 0;
 unsigned int Event::nbLivingEvents = 0;
 
 using namespace std;
+using namespace BaseSimulator;
 
 //===========================================================================================================
 //
@@ -197,12 +198,10 @@ NetworkInterfaceStopTransmittingEvent::~NetworkInterfaceStopTransmittingEvent() 
 
 void NetworkInterfaceStopTransmittingEvent::consume() {
 	EVENT_CONSUME_INFO();
-
 	if (!interface->connectedInterface) {
 	  cerr << "Warning: connection loss, untransmitted message!" << endl;
 	} else {
 	  interface->connectedInterface->hostBlock->scheduleLocalEvent(EventPtr(new NetworkInterfaceReceiveEvent(BaseSimulator::getScheduler()->now(), interface->connectedInterface, interface->messageBeingTransmitted)));
-	// TODO add a confirmation event to the sender ?
 	}
 	
 	interface->messageBeingTransmitted.reset();
@@ -386,12 +385,13 @@ const string RemoveNeighborEvent::getEventName() {
 //
 //===========================================================================================================
 
-TapEvent::TapEvent(uint64_t t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+TapEvent::TapEvent(uint64_t t, BuildingBlock *conBlock, const int face):
+	BlockEvent(t, conBlock), tappedFace(face) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_TAP;
 }
 
-TapEvent::TapEvent(TapEvent *ev) : BlockEvent(ev) {
+TapEvent::TapEvent(TapEvent *ev) : BlockEvent(ev), tappedFace(ev->tappedFace) {
 	EVENT_CONSTRUCTOR_INFO();
 }
 

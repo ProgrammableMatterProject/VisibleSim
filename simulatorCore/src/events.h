@@ -12,7 +12,6 @@
 
 #include <inttypes.h>
 #include <string>
-#include <boost/shared_ptr.hpp>
 #include "buildingBlock.h"
 #include "uniqueEventsId.h"
 #include "network.h"
@@ -22,11 +21,11 @@ using namespace std;
 
 class Event;
 
-typedef boost::shared_ptr<Event> EventPtr;
+typedef std::shared_ptr<Event> EventPtr;
 
 #ifdef DEBUG_EVENTS
-#define EVENT_CONSTRUCTOR_INFO()			(cout << getEventName() << " constructor (" << id << ")" << endl)
-#define EVENT_DESTRUCTOR_INFO()				(cout << getEventName() << " destructor (" << id << ")" << endl)
+#define EVENT_CONSTRUCTOR_INFO()			(OUTPUT << getEventName() << " constructor (" << id << ")" << endl)
+#define EVENT_DESTRUCTOR_INFO()				(OUTPUT << getEventName() << " destructor (" << id << ")" << endl)
 #else
 #define EVENT_CONSTRUCTOR_INFO()
 #define EVENT_DESTRUCTOR_INFO()
@@ -38,13 +37,11 @@ typedef boost::shared_ptr<Event> EventPtr;
 #define EVENT_CONSUME_INFO()
 #endif
 
-
 //===========================================================================================================
 //
 //          Event  (class)
 //
 //===========================================================================================================
-
 
 class Event {
 protected:
@@ -52,11 +49,11 @@ protected:
 	static unsigned int nbLivingEvents;
 
 public:
-	int id;				// unique ID of the event (mainly for debugging purpose)
-	uint64_t date;		// time at which the event will be processed. 0 means simulation start
-	int eventType;		// see the various types at the beginning of this file
+	int id;				//!< unique ID of the event (mainly for debugging purpose)
+	uint64_t date;		//!< time at which the event will be processed. 0 means simulation start
+	int eventType;		//!< see the various types at the beginning of this file
 	int randomNumber;
-	
+
 	Event(uint64_t t);
 	Event(Event *ev);
 	virtual ~Event();
@@ -76,19 +73,19 @@ public:
 //===========================================================================================================
 
 class BlockEvent : public Event {
-	
+
 protected:
 	BaseSimulator::BuildingBlock *concernedBlock;
 	BlockEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock);
 	BlockEvent(BlockEvent *ev);
 	virtual ~BlockEvent();
 	virtual const string getEventName();
-	
+
 public:
 	BaseSimulator::BuildingBlock* getConcernedBlock() {return concernedBlock;};
 	virtual void consumeBlockEvent() = 0;
 	virtual void consume() {
-		if (concernedBlock->state >= BaseSimulator::BuildingBlock::ALIVE) {
+		if (concernedBlock->getState() >= BaseSimulator::BuildingBlock::ALIVE) {
 			this->consumeBlockEvent();
 		}
 	};
@@ -235,7 +232,7 @@ class AddNeighborEvent : public BlockEvent {
 public:
 	uint64_t face;
 	uint64_t target;
-	
+
 	AddNeighborEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f, uint64_t ta);
 	AddNeighborEvent(AddNeighborEvent *ev);
 	~AddNeighborEvent();
@@ -252,7 +249,7 @@ public:
 class RemoveNeighborEvent : public BlockEvent {
 public:
 	uint64_t face;
-	
+
 	RemoveNeighborEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
 	RemoveNeighborEvent(RemoveNeighborEvent *ev);
 	~RemoveNeighborEvent();
@@ -268,8 +265,9 @@ public:
 
 class TapEvent : public BlockEvent {
 public:
+	const int tappedFace;
 
-	TapEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	TapEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, const int face);
 	TapEvent(TapEvent *ev);
 	~TapEvent();
 	void consumeBlockEvent();
@@ -288,7 +286,7 @@ public:
 	uint64_t x;
 	uint64_t y;
 	uint64_t z;
-	
+
 	AccelEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz);
 	AccelEvent(AccelEvent *ev);
 	~AccelEvent();
@@ -305,7 +303,7 @@ public:
 class ShakeEvent : public BlockEvent {
 public:
 	uint64_t force;
-	
+
 	ShakeEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
 	ShakeEvent(ShakeEvent *ev);
 	~ShakeEvent();

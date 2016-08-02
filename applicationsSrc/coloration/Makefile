@@ -1,6 +1,6 @@
 SRCS = coloration_main.cpp coloration_BlockCode.cpp colors.cpp
 
-OUT = coloration
+OUT = $(APPDIR)/coloration
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimSmartBlocks.a
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
@@ -29,6 +29,10 @@ CC = g++
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT)
+	@:
+
+test:				#TODO
+	@../../utilities/blockCodeTest.sh coloration $(OUT)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
@@ -46,7 +50,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

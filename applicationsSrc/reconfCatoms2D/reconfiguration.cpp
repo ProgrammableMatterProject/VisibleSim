@@ -6,8 +6,8 @@
  */
 #include <set>
 #include <iostream>
-#include <boost/shared_ptr.hpp>
 #include <cstring>
+#include <memory>
 
 #include "catoms2DWorld.h"
 #include "scheduler.h"
@@ -79,7 +79,6 @@ Reconfiguration::Reconfiguration(Catoms2DBlock *c, Map *m): map(m) {
       std::cout << ' ' << *it;
     std::cout << '\n';
     }*/
-  
 }
 
 Reconfiguration::~Reconfiguration() {}
@@ -147,7 +146,7 @@ void Reconfiguration::handleStopMovingEvent() {
 }
 
 void Reconfiguration::handle(MessagePtr m) {
-  ReconfigurationMsg_ptr rm = boost::static_pointer_cast<ReconfigurationMsg>(m);
+  ReconfigurationMsg_ptr rm = std::static_pointer_cast<ReconfigurationMsg>(m);
   P2PNetworkInterface *recv = m->destinationInterface;
  
 #ifdef RECONFIGURATION_MSG_DEBUG
@@ -161,7 +160,7 @@ void Reconfiguration::handle(MessagePtr m) {
   
   switch(rm->subtype) {
   case ReconfigurationMsg::STATE_QUERY: {
-    ReconfigurationStateQueryMsg_ptr rsqm = boost::static_pointer_cast<ReconfigurationStateQueryMsg>(m);
+    ReconfigurationStateQueryMsg_ptr rsqm = std::static_pointer_cast<ReconfigurationStateQueryMsg>(m);
     Coordinate nextCoordinate;
     P2PNetworkInterface *nextP2P;
     // Query goes through the perimeter of the concerned cell following the rotation direction
@@ -186,7 +185,7 @@ void Reconfiguration::handle(MessagePtr m) {
   }
     break;
   case ReconfigurationMsg::STATE_UPDATE: {
-    ReconfigurationStateUpdateMsg_ptr rsum = boost::static_pointer_cast<ReconfigurationStateUpdateMsg>(m);
+    ReconfigurationStateUpdateMsg_ptr rsum = std::static_pointer_cast<ReconfigurationStateUpdateMsg>(m);
     P2PNetworkInterface *nextP2P = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, recv, true);
     Coordinate nextCoordinate = map->getPosition(nextP2P);
 
@@ -258,7 +257,7 @@ void Reconfiguration::handle(MessagePtr m) {
     // This module was the pivot
     // Update state for the cell of interet for the next rolling
     // catoms on the perimeter
-    ReconfigurationStopMovingMsg_ptr rsmm = boost::static_pointer_cast<ReconfigurationStopMovingMsg>(m);
+    ReconfigurationStopMovingMsg_ptr rsmm = std::static_pointer_cast<ReconfigurationStopMovingMsg>(m);
     P2PNetworkInterface *oppd = NULL;
     Coordinate celloppd;
     
@@ -489,21 +488,17 @@ P2PNetworkInterface* Reconfiguration::canMove(PerimeterCaseState &pcs) {
 }
 
 bool Reconfiguration::isInTarget() {
-  return Map::isInTarget(map->getPosition());
+    return Map::isInTarget(map->getPosition());
 }
 
 bool Reconfiguration::isOnBorder() {
-  return (catom->nbNeighbors(true) <= 5);
+    return (catom->nbNeighbors(true) <= 5);
 }
 
 bool Reconfiguration::isFree() {
-  // at least 3 empty faces!
-  return (catom->nbConsecutiveEmptyFaces(true) >= 3);
+    // at least 3 empty faces!
+    return (catom->nbConsecutiveEmptyFaces(true) >= 3);
 }
-
-//int Reconfiguration::getFaceNum(P2PNetworkInterface *p) {
-//  return (int) catom->getDirection(p);
-//}
 
 P2PNetworkInterface* Reconfiguration::getPivot() {
   return map->getOnBorderNeighborInterface(ROTATION_DIRECTION);
@@ -533,18 +528,18 @@ void Reconfiguration::forwardStopMoving(P2PNetworkInterface *p2p, Coordinate &c)
 }
 
 bool Reconfiguration::isDone() {
-  Catoms2DWorld *world = Catoms2DWorld::getWorld();
-  int *gridSize = world->getGridSize();
-  for (int iy = 0; iy < gridSize[2]; iy++) {
-    for (int ix = 0; ix < gridSize[0]; ix++) {
-      if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-	if (!world->getGridPtr(ix,0,iy)) {
-	  return false;
-	}
-      }
+    Catoms2DWorld *world = Catoms2DWorld::getWorld();
+    Cell3DPosition gridSize = world->lattice->gridSize;
+    for (int iy = 0; iy < gridSize[2]; iy++) {
+        for (int ix = 0; ix < gridSize[0]; ix++) {
+            if (world->getTargetGrid(ix,0,iy) == fullCell ) {
+                if (!world->lattice->getBlock(Cell3DPosition(ix,0,iy))) {
+                    return false;
+                }
+            }
+        }
     }
-  }
-  return true;
+    return true;
 }
 
 bool Reconfiguration::isMoving(Coordinate &c) {

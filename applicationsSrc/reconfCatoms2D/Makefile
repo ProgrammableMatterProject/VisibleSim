@@ -1,6 +1,6 @@
 SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp border.cpp landmarks.cpp
 
-OUT = catom2D1
+OUT = $(APPDIR)/catom2D1
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a ts/libTS.a
 CCFLAGS = $(GLOBAL_CCFLAGS) -std=c++1y
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 ts/libTS.a:
 	$(MAKE) -C ts
@@ -32,6 +32,10 @@ ts/libTS.a:
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT) generator
+	@:
+
+test:
+	@../../utilities/blockCodeTest.sh reconfCatoms2D $(OUT)
 
 autoinstall: $(OUT) generator 
 	cp $(OUT) $(APPDIR)
@@ -51,7 +55,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 generator: configGenerator.cpp
 	$(CC) -o $@ $^
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

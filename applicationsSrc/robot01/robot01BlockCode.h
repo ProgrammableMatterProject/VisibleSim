@@ -22,8 +22,8 @@
 
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
-#include "robotBlocksScheduler.h"
 #include "robotBlocksBlock.h"
+#include "capabilities.h"
 
 class MapMessage;
 class AckMapMessage;
@@ -37,34 +37,37 @@ class TrainReadyMessage;
 class RunTrainMessage;
 class ReLinkTrainMessage;
 
-typedef boost::shared_ptr<MapMessage> MapMessage_ptr;
-typedef boost::shared_ptr<AckMapMessage> AckMapMessage_ptr;
-typedef boost::shared_ptr<TrainMessage> TrainMessage_ptr;
-typedef boost::shared_ptr<AckTrainMessage> AckTrainMessage_ptr;
-typedef boost::shared_ptr<MotionDelayMessage> MotionDelayMessage_ptr;
-typedef boost::shared_ptr<AnswerDelayMessage> AnswerDelayMessage_ptr;
-typedef boost::shared_ptr<UnlockMessage> UnlockMessage_ptr;
-typedef boost::shared_ptr<ReLinkTrainMessage> ReLinkTrainMessage_ptr;
-/*typedef boost::shared_ptr<PrepareMotionMessage> PrepareMotionMessage_ptr;
-typedef boost::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
-typedef boost::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
+typedef std::shared_ptr<MapMessage> MapMessage_ptr;
+typedef std::shared_ptr<AckMapMessage> AckMapMessage_ptr;
+typedef std::shared_ptr<TrainMessage> TrainMessage_ptr;
+typedef std::shared_ptr<AckTrainMessage> AckTrainMessage_ptr;
+typedef std::shared_ptr<MotionDelayMessage> MotionDelayMessage_ptr;
+typedef std::shared_ptr<AnswerDelayMessage> AnswerDelayMessage_ptr;
+typedef std::shared_ptr<UnlockMessage> UnlockMessage_ptr;
+typedef std::shared_ptr<ReLinkTrainMessage> ReLinkTrainMessage_ptr;
+/*typedef std::shared_ptr<PrepareMotionMessage> PrepareMotionMessage_ptr;
+  typedef std::shared_ptr<TrainReadyMessage> TrainReadyMessage_ptr;
+  typedef std::shared_ptr<RunTrainMessage> RunTrainMessage_ptr;
 */
 
+static presence *targetGrid = NULL; //!< An array representing the target grid of the simulation, i.e. the shape to produce (can be 2D / 3D)
+static Capabilities *capabilities; //!< The capabilities available for the blocks simulated in this world
+
 class Robot01BlockCode : public RobotBlocks::RobotBlocksBlockCode {
-	int gridSize[3];
-	RobotBlocks::presence *targetGrid;
+	short gridSize[3];
+	presence *targetGrid;
 	P2PNetworkInterface *block2Answer;
 	int nbreOfWaitedAnswers,blockToUnlock;
 
-  int currentTrainGain;
-  RobotBlocks::PointRel3D currentTrainGoal;
+	int currentTrainGain;
+	PointRel3D currentTrainGoal;
 	bool goodPlace;
-	RobotBlocks::PointRel3D motionVector,nextMotionVector;
+	PointRel3D motionVector,nextMotionVector;
 	P2PNetworkInterface *trainNext,*trainPrevious;
-	vector <RobotBlocks::Validation*> *possibleMotions;
+	vector <Validation*> *possibleMotions;
+	Lattice *lattice;
 public:
-
-	RobotBlocks::RobotBlocksScheduler *scheduler;
+    Scheduler *scheduler;
 	RobotBlocks::RobotBlocksBlock *robotBlock;
 
 	Robot01BlockCode (RobotBlocks::RobotBlocksBlock *host);
@@ -73,28 +76,41 @@ public:
 	void startup();
 	void processLocalEvent(EventPtr pev);
 
-	static RobotBlocks::RobotBlocksBlockCode *buildNewBlockCode( RobotBlocks::RobotBlocksBlock *host);
-
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
+	
 	void sendMapToNeighbors(P2PNetworkInterface *except);
 	void sendAckMap(P2PNetworkInterface *p2p);
 	void sendLinkTrainMessages(P2PNetworkInterface *sender);
-	void getLocalTargetGrid(const RobotBlocks::PointRel3D &pos,RobotBlocks::PresenceMatrix &pm);
+	void getLocalTargetGrid(const PointRel3D &pos,PresenceMatrix &pm);
 	void sendAnswerDelayOrMotionDelayMessage(uint64_t gt);
 	void sendUnlockMessage(int id);
-	void calcPossibleMotions(const RobotBlocks::PointRel3D &np);
+	void calcPossibleMotions(const PointRel3D &np);
 	void sendReLinkTrainMessage();
-/*	void sendTrainMessage(P2PNetworkInterface *p2p,const RobotBlocks::PointRel3D &motion,bool ar);
+/*	void sendTrainMessage(P2PNetworkInterface *p2p,const PointRel3D &motion,bool ar);
 	void sendTrainReadyMessage(P2PNetworkInterface *p2p);
 	void sendPrepareMotionMessageToNeighbors(P2PNetworkInterface *except);
 	void sendRunTrainToNeighbors(P2PNetworkInterface *except);
 	bool linkTrain(bool head,bool ar);*/
+
+	inline presence *getTargetGridPtr(short *gs)
+        { memcpy(gs,lattice->gridSize.pt,3*sizeof(short)); return targetGrid; };
+    inline presence getTargetGrid(int ix,int iy,int iz)
+        { return targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]; };
+    inline void setTargetGrid(presence value,int ix,int iy,int iz)
+        { targetGrid[(iz*lattice->gridSize[1]+iy)*lattice->gridSize[0]+ix]=value; };
+    void initTargetGrid();
+    inline void setCapabilities(Capabilities *capa) { capabilities=capa; };
+    void getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm);
+    inline Capabilities* getCapabilities() { return capabilities; };
+
+	virtual void parseUserElements(TiXmlDocument *config);
 };
 
 class MapMessage : public Message {
 public :
-	int gridSize[3];
-	RobotBlocks::presence *targetGrid;
-	MapMessage(int*,RobotBlocks::presence*);
+	short gridSize[3];
+	presence *targetGrid;
+	MapMessage(short*,presence*);
 	~MapMessage();
 };
 
@@ -106,9 +122,9 @@ public :
 
 class TrainMessage : public Message {
 public :
-	RobotBlocks::PointRel3D newPos;
+	PointRel3D newPos;
 	int gain;
-	TrainMessage(const RobotBlocks::PointRel3D &p,int g);
+	TrainMessage(const PointRel3D &p,int g);
 	~TrainMessage();
 };
 
@@ -144,7 +160,7 @@ public :
 
 class ReLinkTrainMessage : public Message {
 public :
-		ReLinkTrainMessage();
+	ReLinkTrainMessage();
     ~ReLinkTrainMessage();
 };
 

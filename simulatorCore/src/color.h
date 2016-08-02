@@ -12,7 +12,7 @@
 
 class Color {
 public :
-GLfloat rgba[4];
+    GLfloat rgba[4];
     Color();
     Color(float r,float g,float b,float a=1.0);
 
@@ -20,7 +20,7 @@ GLfloat rgba[4];
 //    Color(unsigned char r,unsigned char g,unsigned char b,unsigned char a=255) { color[0]=r/255.0; color[1]=g/255.0; color[2]=b/255.0; color[3]=a/255.0; };
     inline void glColor() { glColor4fv(rgba); };
     inline const GLfloat operator[](const int i) const { return rgba[i]; };
-    friend ostream& operator<<(ostream& f,const Color &c);
+    friend ostream& operator<<(ostream& f,const Color &c);        
 };
 
 const Color WHITE(1.0f,1.0f,1.0f);
@@ -40,5 +40,14 @@ const Color DARKGREY(0.25,0.25,0.25);
 const Color ORANGE(1.0,0.64706,0.0);
 const Color DARKORANGE(1.0,0.549,0.0);
 
+static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
+                                         {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},
+                                         {0.274509804,0.509803922,0.705882353,1.0},
+                                         {0.815686275,0.125490196,0.564705882,1.0},{0.5,0.5,0.5,1.0},
+                                         {0.980392157,0.5,0.456,1.0},{0.549019608,0.5,0.5,1.0},
+                                         {0.980392157,0.843137255,0.0,1.0},
+                                         {0.094117647,0.545098039,0.094117647,1.0}};
+
+const Color Colors[9] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK};
 
 #endif // COLOR_H_

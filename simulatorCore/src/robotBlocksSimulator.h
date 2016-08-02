@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "robotBlocksBlockCode.h"
-#include "robotBlocksScheduler.h"
 #include "robotBlocksWorld.h"
 #include "trace.h"
 
@@ -21,33 +20,30 @@ namespace RobotBlocks {
 class RobotBlocksSimulator : public BaseSimulator::Simulator {
 protected:
 
-	RobotBlocksSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksCodeBuildingFunction)(RobotBlocksBlock*));
-	virtual ~RobotBlocksSimulator();
+    RobotBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
+    virtual ~RobotBlocksSimulator();
 
 public:
-   bool testMode;
+    bool testMode;
 
-	static void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*));
-	static void deleteSimulator();
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
 
-	static RobotBlocksBlockCode *(*buildNewBlockCode)(RobotBlocksBlock*);
+    static RobotBlocksSimulator* getSimulator() {
+        assert(simulator != NULL);
+        return((RobotBlocksSimulator*)simulator);
+    }
 
-	static RobotBlocksSimulator* getSimulator() {
-		assert(simulator != NULL);
-		return((RobotBlocksSimulator*)simulator);
-	}
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+                           int argc, char *argv[]);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+                           const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
 
-	void printInfo() { OUTPUT << "I'm a RobotBlocksSimulator" << endl; }
-
-   void help();
+    void help();
 };
 
-inline void createSimulator(int argc, char *argv[], RobotBlocksBlockCode *(*robotBlocksBlockCodeBuildingFunction)(RobotBlocksBlock*)) {
-	RobotBlocksSimulator::createSimulator(argc, argv, robotBlocksBlockCodeBuildingFunction);
-}
-
-inline void deleteSimulator() {
-	RobotBlocksSimulator::deleteSimulator();
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    RobotBlocksSimulator::createSimulator(argc, argv, bcb);
 }
 
 inline RobotBlocksSimulator* getSimulator() { return(RobotBlocksSimulator::getSimulator()); }

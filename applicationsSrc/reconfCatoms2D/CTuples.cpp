@@ -13,7 +13,7 @@ CTuples::CTuples(CTuples const &c): blockCode(c.blockCode), map(c.map) {}
 CTuples::~CTuples() {}
 
 void CTuples::handleCTuplesMessage(MessagePtr msg) {
-  CTuplesMessage_ptr m = boost::static_pointer_cast<CTuplesMessage>(msg);
+  CTuplesMessage_ptr m = std::static_pointer_cast<CTuplesMessage>(msg);
   switch(m->getMode()) {
   case CTuplesMessage::OUT: {
     localOut(m->getCTuple());

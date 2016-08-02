@@ -10,7 +10,6 @@
 
 #include "simulator.h"
 #include "blinkyBlocksBlockCode.h"
-#include "blinkyBlocksScheduler.h"
 #include "blinkyBlocksWorld.h"
 #include "trace.h"
 
@@ -21,29 +20,28 @@ namespace BlinkyBlocks {
 class BlinkyBlocksSimulator : public BaseSimulator::Simulator {
 protected:
 
-	BlinkyBlocksSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksCodeBuildingFunction)(BlinkyBlocksBlock*));
-	virtual ~BlinkyBlocksSimulator();
+    BlinkyBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb);
+    virtual ~BlinkyBlocksSimulator();
 
 public:
 
-	static void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*));
-	static void deleteSimulator();
+    static void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb);   
 
-	static BlinkyBlocksBlockCode *(*buildNewBlockCode)(BlinkyBlocksBlock*);
+    static BlinkyBlocksSimulator* getSimulator() {
+	assert(simulator != NULL);
+	return((BlinkyBlocksSimulator*)simulator);
+    }
 
-	static BlinkyBlocksSimulator* getSimulator() {
-		assert(simulator != NULL);
-		return((BlinkyBlocksSimulator*)simulator);
-	}
-   
-   void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
+    virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+		   int argc, char *argv[]);
+    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+                           const Cell3DPosition &pos, const Color &color, bool master);
+    virtual void parseScenario();
+    virtual void printInfo() { OUTPUT << "I'm a BlinkyBlocksSimulator" << endl; }
 };
 
-inline void createSimulator(int argc, char *argv[], BlinkyBlocksBlockCode *(*blinkyBlocksBlockCodeBuildingFunction)(BlinkyBlocksBlock*)) {
-	BlinkyBlocksSimulator::createSimulator(argc, argv, blinkyBlocksBlockCodeBuildingFunction);
-}
-inline void deleteSimulator() {
-	BlinkyBlocksSimulator::deleteSimulator();
+inline void createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+    BlinkyBlocksSimulator::createSimulator(argc, argv, bcb);
 }
 
 inline BlinkyBlocksSimulator* getSimulator() { return(BlinkyBlocksSimulator::getSimulator()); }

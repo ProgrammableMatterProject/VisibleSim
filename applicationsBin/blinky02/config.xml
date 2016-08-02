@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridsize="10,10,10">
+<world gridSize="10,10,10">
 	<camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
 	<spotlight target="200,20,200" directionSpherical="45,60,500" angle="40"/>
 	
-	<blockList color="128,255,128" size="1,1,1" blocksize="40,40,41">
+	<blockList color="128,255,128" size="1,1,1" blockSize="40,40,41">
 
 		<block position="5,5,5"/>
 		<block position="6,5,5" color="128,0,0"/>

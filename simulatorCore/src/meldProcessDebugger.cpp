@@ -2,8 +2,8 @@
 #include "meldProcessVM.h"
 #include "Debugger/debug_Simprompt.hpp"
 #include <stdio.h>
-#include <boost/thread/thread.hpp>
-#include <boost/bind.hpp>
+#include <thread>
+#include <functional>
 
 
 namespace MeldProcess {

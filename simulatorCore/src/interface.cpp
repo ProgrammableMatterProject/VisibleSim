@@ -12,9 +12,14 @@
 #define ID_SW_BUTTON_OPEN	1001
 #define ID_SW_BUTTON_CLOSE	1002
 #define ID_SW_SLD			1003
+#define ID_SD_BUTTON_OPEN	2001
+#define ID_SD_BUTTON_CLOSE	2002
+#define ID_SD_SLD			2003
+#define ID_SD_INPUT			2004
 
 
-GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture)
+GlutWindow::GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,
+					   GLint pw,GLint ph,const char *titreTexture)
 :id(pid) {
 	if (parent) parent->addChild(this);
 	setGeometry(px,py,pw,ph);
@@ -52,6 +57,19 @@ void GlutWindow::glDraw() {
 		cw++;
 	}
 }
+
+int GlutWindow::keyFunc(int charcode) {
+	int id=0;
+
+	vector <GlutWindow*>::const_iterator cw = children.begin();
+	while (cw!=children.end()) {
+        id = (*cw)->keyFunc(charcode);
+		if (id!=0) return id;
+		cw++;
+	}
+	return id;
+}
+
 
 int GlutWindow::mouseFunc(int button,int state,int mx,int my) {
 	int id=0;
@@ -110,7 +128,7 @@ GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
 	buttonOpen = new GlutButton(this,ID_SW_BUTTON_OPEN,5,68,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fg.tga");
 	buttonClose = new GlutButton(this,ID_SW_BUTTON_CLOSE,5,26,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fd.tga",false);
 	slider = new GlutSlider(this,ID_SW_SLD,pw+400-20,5,ph-60,"../../simulatorCore/smartBlocksTextures/slider.tga",(ph-60)/13);
-	selectedBlock=NULL;
+	selectedGlBlock=NULL;
 }
 
 GlutSlidingMainWindow::~GlutSlidingMainWindow() {
@@ -163,8 +181,8 @@ void GlutSlidingMainWindow::glDraw() {
 		glColor3f(1.0,1.0,0.0);
 		drawString(42.0,h-20.0,str);
 		glColor3f(1.0,1.0,1.0);
-		if (selectedBlock) {
-			sprintf(str,"Selected Block : %s",selectedBlock->getInfo().c_str());
+		if (selectedGlBlock) {
+			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
 			drawString(42.0,h-40.0,str);
 			multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
 			GLfloat posy = h-65;
@@ -172,7 +190,7 @@ void GlutSlidingMainWindow::glDraw() {
 			int pos=slider->getPosition();
 			int s,cs;
 			while (it != traces.end() && posy>0) {
-				if (((*it).second)->blockId==selectedBlock->blockId) {
+				if (((*it).second)->blockId==selectedGlBlock->blockId) {
 					if (pos) {
 						pos--;
 					} else {
@@ -234,28 +252,46 @@ int GlutSlidingMainWindow::mouseFunc(int button,int state,int mx,int my)
   return n;
 }
 
-void GlutSlidingMainWindow::reshapeFunc(int mw,int mh)
-{ int sz = 40+200*openingLevel;
-  setGeometry(mw-sz,50,sz,mh-60);
+void GlutSlidingMainWindow::openClose() {
+    if (buttonOpen->isActivated()) {
+        openingLevel++;
+		x-=400;
+		w+=400;
+		buttonOpen->activate(false);
+		buttonClose->activate(true);
+	} else {
+        openingLevel--;
+		x+=400;
+		w-=400;
+        buttonOpen->activate(true);
+        buttonClose->activate(false);
+    }
+}
+
+void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
+    int sz = 400*openingLevel;
+    setGeometry(mx-sz,my,mw+sz,mh);
+    slider->setGeometry(mw+400-20,5,11,mh-60);
+    slider->update();
 }
 
 void GlutSlidingMainWindow::addTrace(int id,const string &str,const Color &color) {
 	BlockDebugData *bdd = new BlockDebugData(id,str,color);
 	traces.insert(pair<uint64_t,BlockDebugData*>(BaseSimulator::getScheduler()->now(),bdd));
-	if (selectedBlock) {
-		if (selectedBlock->blockId==id) slider->incDataTextLines();
+	if (selectedGlBlock) {
+		if (selectedGlBlock->blockId==id) slider->incDataTextLines();
 	} else {
 		slider->incDataTextLines();
 	}
 }
 
 void GlutSlidingMainWindow::select(GlBlock *sb) {
-	selectedBlock=sb;
-	if (selectedBlock) {
+	selectedGlBlock=sb;
+	if (selectedGlBlock) {
 		int n=0;
 		multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
 		while (it != traces.end()) {
-			if (((*it).second)->blockId==selectedBlock->blockId) {
+			if (((*it).second)->blockId==selectedGlBlock->blockId) {
 				n++;
 			}
 			++it;
@@ -265,6 +301,143 @@ void GlutSlidingMainWindow::select(GlBlock *sb) {
 		slider->setDataTextLines(traces.size());
 	}
 };
+
+/***************************************************************************************/
+/* GlutSlidingDebugWindow */
+/***************************************************************************************/
+GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture):
+GlutWindow(NULL,2,px,py,pw,ph,titreTexture) {
+	openingLevel=0;
+	buttonOpen = new GlutButton(this,ID_SD_BUTTON_OPEN,5,168,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fg.tga");
+	buttonClose = new GlutButton(this,ID_SD_BUTTON_CLOSE,5,126,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fd.tga",false);
+	slider = new GlutSlider(this,ID_SD_SLD,pw+400-20,5,ph-75,"../../simulatorCore/smartBlocksTextures/slider.tga",(ph-60)/13);
+	input = new GlutInputWindow(this,ID_SD_INPUT,pw+10,ph-66,380,36);
+	debugId=1;
+}
+
+GlutSlidingDebugWindow::~GlutSlidingDebugWindow() {
+	// clean the vector
+	vector<BlockDebugData*>::iterator it = tabDebug.begin();
+	while (it != tabDebug.end()) {
+		delete (*it);
+		++it;
+	}
+	tabDebug.clear();
+}
+
+void GlutSlidingDebugWindow::glDraw() {
+    // drawing of the tab
+	bindTexture();
+	glPushMatrix();
+	glTranslatef(x,y,0.0);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0,0.0);
+	glVertex2i(0,100);
+	glTexCoord2f(0.3125,0.);
+	glVertex2i(40,100);
+	glTexCoord2f(0.3125,1);
+	glVertex2i(40,228);
+	glTexCoord2f(0,1);
+	glVertex2i(0,228);
+	glEnd();
+
+	if (openingLevel) {
+		glDisable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+		glColor4f(0.7,0.1,0.1,0.75);
+		glBegin(GL_QUADS);
+		glVertex2i(40,0);
+		glVertex2i(w,0);
+		glVertex2i(w,h);
+		glVertex2i(40,h);
+		glEnd();
+
+        glColor3f(0.25,0.25,0.25);
+        glBegin(GL_QUADS);
+		glVertex2i(50,5);
+		glVertex2i(w-25,5);
+		glVertex2i(w-25,h-70);
+		glVertex2i(50,h-70);
+		glEnd();
+
+		char str[256];
+		uint64_t t = BaseSimulator::getScheduler()->now();
+		sprintf(str,"Current time : %d:%d",int(t/1000),int((t%1000)));
+        glColor3f(1.0,1.0,0.0);
+		drawString(45.0,h-20.0,str);
+		if (input->hasFocus) {
+            drawString(w-85,h-20.0,"DEBUG MODE");
+            char c[6];
+            sprintf(c,"%d",debugId);
+            drawString(w/2-45,h-20.0,c);
+		}
+
+        GLfloat posy = h-80;
+        vector<BlockDebugData*>::reverse_iterator ci = tabDebug.rbegin();
+        while (ci!=tabDebug.rend() && posy>0) {
+            (*ci)->color.glColor();
+            posy = drawString(55.0,posy,(*ci)->str.c_str());
+			ci++;
+        }
+	}
+	glPopMatrix();
+	GlutWindow::glDraw();
+}
+
+int GlutSlidingDebugWindow::mouseFunc(int button,int state,int mx,int my) {
+    int n = GlutWindow::mouseFunc(button,state,mx,my);
+    switch (n) {
+          case ID_SD_BUTTON_OPEN :
+              openingLevel++;
+              x-=400;
+              w+=400;
+              buttonOpen->activate(false);
+              buttonClose->activate(true);
+          break;
+          case ID_SD_BUTTON_CLOSE :
+              openingLevel--;
+              x+=400;
+              w-=400;
+              buttonOpen->activate(true);
+              buttonClose->activate(false);
+          break;
+          case ID_SD_INPUT :
+                input->hasFocus=(getScheduler()->getMode()==SCHEDULER_MODE_DEBUG);
+          break;
+    }
+    return n;
+}
+
+int GlutSlidingDebugWindow::keyFunc(int charcode) {
+	int id=0;
+
+	vector <GlutWindow*>::const_iterator cw = children.begin();
+	while (cw!=children.end()) {
+        id = (*cw)->keyFunc(charcode);
+		if (id==1) return id;
+		if (id==2) { // validation
+            string str = input->getTextAndClear();
+            if (!str.empty()) {
+                string result;
+                input->hasFocus=getScheduler()->debug(str,debugId,result);
+                BlockDebugData *bdd = new BlockDebugData(debugId,result,LIGHTBLUE);
+                tabDebug.push_back(bdd);
+                bdd = new BlockDebugData(debugId,str,YELLOW);
+                tabDebug.push_back(bdd);
+            }
+		}
+		cw++;
+	}
+	return id;
+}
+
+void GlutSlidingDebugWindow::reshapeFunc(int mx,int my,int mw,int mh) {
+    int sz = 400*openingLevel;
+    setGeometry(mx-sz,my,mw+sz,mh);
+    slider->setGeometry(mw+400-20,5,11,mh-75);
+    slider->update();
+    input->setGeometry(mw+10,mh-66,380,30);
+}
 
 /***************************************************************************************/
 /* GlutButton */
@@ -740,3 +913,97 @@ int GlutSlider::mouseFunc(int button,int state,int mx,int my) {
 	return 3;
 }
 
+/***************************************************************************************/
+/* GlutInputWindow */
+/***************************************************************************************/
+
+GlutInputWindow::GlutInputWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph):
+GlutWindow(parent,pid,px,py,pw,ph,NULL) {
+	hasFocus=false;
+}
+
+GlutInputWindow::~GlutInputWindow() {
+
+}
+
+void GlutInputWindow::glDraw() {
+    glDisable(GL_TEXTURE_2D);
+    glPushMatrix();
+	glTranslatef(x,y,0.0);
+	if (hasFocus) {
+        glColor3f(0.5,0.5,0.5);
+    } else {
+        glColor3f(0.25,0.25,0.25);
+    }
+    // petite fenetre de saisie
+	glBegin(GL_QUADS);
+	glVertex2i(0,0);
+	glVertex2i(w,0);
+	glVertex2i(w,h);
+	glVertex2i(0,h);
+	glEnd();
+
+	// tour de la fenetre
+    glBegin(GL_LINES);
+	glColor3f(0.0,0.0,0.0);
+    glVertex2i(0,h);
+	glVertex2i(0,0);
+	glVertex2i(w,h);
+	glVertex2i(0,h);
+	glColor3f(1.0,1.0,1.0);
+    glVertex2i(w,0);
+	glVertex2i(w,h);
+	glVertex2i(0,0);
+	glVertex2i(w,0);
+    glEnd();
+
+    glColor3f(1.0f,1.0f,0);
+    drawString(5,8,text.c_str(),GLUT_BITMAP_9_BY_15);
+    if (hasFocus) {
+        int cx=text.length()*9+5;
+        glBegin(GL_QUADS);
+            glVertex2i(cx,6);
+            glVertex2i(cx+9,6);
+            glVertex2i(cx+9,21);
+            glVertex2i(cx,21);
+        glEnd();
+
+    }
+	glPopMatrix();
+	GlutWindow::glDraw();
+}
+
+int GlutInputWindow::mouseFunc(int button,int state,int mx,int my) {
+    if (button==GLUT_DOWN && mx>x && mx<x+w && my>y && my<y+h) {
+        hasFocus=true;
+        return id;
+    }
+    return 0;
+}
+
+int GlutInputWindow::keyFunc(int keyCode) {
+    if (hasFocus) {
+        cout << keyCode << endl;
+        switch (keyCode) {
+            case 8 : text=text.substr(0,text.length()-1);
+            break;
+            case 13 :
+                return 2;
+            break;
+            case 27 :
+                hasFocus=false;
+            break;
+            default :
+                text.append(1,keyCode);
+        }
+
+        return 1;
+    }
+    return 0;
+}
+
+string GlutInputWindow::getTextAndClear() {
+    string v=text;
+    text.clear();
+    return v;
+}

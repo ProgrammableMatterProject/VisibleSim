@@ -10,7 +10,6 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
 #include "smartBlocksBlock.h"
 
 
@@ -26,7 +25,7 @@ class Leader_election_BlockCode : public SmartBlocks::SmartBlocksBlockCode {
 
 public:
 
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	Leader_election_BlockCode (SmartBlocks::SmartBlocksBlock *host);

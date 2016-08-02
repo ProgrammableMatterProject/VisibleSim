@@ -107,8 +107,8 @@ void Landmarks::scheduleAdvertise(Time t) {
 }
 
 void Landmarks::advertise(LandmarkEntry &l, P2PNetworkInterface *ignore) {
-  list<P2PNetworkInterface*> &p2pList = blockCode->hostBlock->getP2PNetworkInterfaceList();
-  list<P2PNetworkInterface*>::iterator it;
+  vector<P2PNetworkInterface*> &p2pList = blockCode->hostBlock->getP2PNetworkInterfaces();
+  vector<P2PNetworkInterface*>::iterator it;
   P2PNetworkInterface *p2p;
   for (it = p2pList.begin(); it != p2pList.end(); it++) {
     p2p = *it;
@@ -158,7 +158,7 @@ bool Landmarks::handle(MessagePtr message) {
   switch(message->type) {
   case LANDMARK_BEACON_MSG:
     {
-      LandmarkBeaconMessage_ptr m = boost::static_pointer_cast<LandmarkBeaconMessage>(message);
+      LandmarkBeaconMessage_ptr m = std::static_pointer_cast<LandmarkBeaconMessage>(message);
       LandmarkEntry l(m->id,m->distance,m->position,0);
       bool isNew = update(l);
 

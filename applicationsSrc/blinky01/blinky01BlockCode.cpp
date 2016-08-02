@@ -81,102 +81,103 @@ void Blinky01BlockCode::processLocalEvent(EventPtr pev) {
 	OUTPUT << bb->blockId << " processLocalEvent: date: "<< BaseSimulator::getScheduler()->now() << " process event " << pev->getEventName() << "(" << pev->eventType << ")" << ", random number : " << pev->randomNumber << endl;
 
 	switch (pev->eventType) {
-		case EVENT_STOP:
-			{
-			if(MeldProcessVM::isInDebuggingMode()) {
-				//getDebugger()->sendTerminateMsg(bb->blockId);
-				delete vm;
-				vm = NULL;
-			} else {
-				StopVMCommand command(outBuffer, bb->blockId);
-				sendCommand(command);
-				killVM();
-			}			
-			info << "VM stopped";
-			}
-			break;
-		case EVENT_ADD_NEIGHBOR:
-			{
-			AddNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<AddNeighborEvent>(pev))->target,
-				(boost::static_pointer_cast<AddNeighborEvent>(pev))->face);
-				sendCommand(command);
-				info << "Add neighbor "<< (boost::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<AddNeighborEvent>(pev))->face));
-			}
-			break;
-		case EVENT_REMOVE_NEIGHBOR:
-			{
-			RemoveNeighborVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
+	case EVENT_STOP:
+	{
+		if(MeldProcessVM::isInDebuggingMode()) {
+			//getDebugger()->sendTerminateMsg(bb->blockId);
+			delete vm;
+			vm = NULL;
+		} else {
+			StopVMCommand command(outBuffer, bb->blockId);
 			sendCommand(command);
-			info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((boost::static_pointer_cast<RemoveNeighborEvent>(pev))->face));
-			}
-			break;
-		case EVENT_TAP:
-			{
-			TapVMCommand command(outBuffer, bb->blockId);
-			sendCommand(command);
-			info << "tapped";
-			}
-			break;
-		case EVENT_SET_COLOR:
-			{
-			Color color = (boost::static_pointer_cast<SetColorEvent>(pev))->color;
-			bb->setColor(color);
-			info << "set color "<< color;
-			}
-			break;
-		case EVENT_SEND_MESSAGE:
-			{
-			MessagePtr message = (boost::static_pointer_cast<VMSendMessageEvent>(pev))->message;
-			P2PNetworkInterface *interface = (boost::static_pointer_cast<VMSendMessageEvent>(pev))->sourceInterface;
-			MeldProcess::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(),
-				message, interface));
-			info << "sends a message at face " << NeighborDirection::getString(bb->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
-			}
-			break;
-		case EVENT_RECEIVE_MESSAGE: /*EVENT_NI_RECEIVE: */
-			{
-			ReceiveMessageVMCommand *command = (ReceiveMessageVMCommand*) (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message.get();
-			command->setTimestamp(MeldProcess::getScheduler()->now());
-			sendCommand(*command);
-			info << "message received at face " << NeighborDirection::getString(bb->getDirection(command->sourceInterface->connectedInterface)) << " from " << command->sourceInterface->hostBlock->blockId;
-			}
-			break;
-		case EVENT_ACCEL:
-			{
-			AccelVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<AccelEvent>(pev))->x, (boost::static_pointer_cast<AccelEvent>(pev))->y,
-			(boost::static_pointer_cast<AccelEvent>(pev))->z);
-			sendCommand(command);
-			info << "accel";
-			}
-			break;
-		case EVENT_SHAKE:
-			{
-			ShakeVMCommand command(outBuffer, bb->blockId, (boost::static_pointer_cast<ShakeEvent>(pev))->force);
-			sendCommand(command);
-			info << "shake";
-			}
-			break;
-		case EVENT_SET_DETERMINISTIC:
-			{
-			SetDeterministicModeVMCommand command(outBuffer, bb->blockId);
-			sendCommand(command);
-			OUTPUT << "VM set in deterministic mode " << hostBlock->blockId << endl;
-			info << "VM set in deterministic mode";
-			}
-			break;
-		case EVENT_END_POLL: 
-			{
-			vm->setPolling(false);
-			EndPollVMCommand command(outBuffer, bb->blockId);
-			sendCommand(command);
-			info << "Polling time period ended" << endl;
-			}
-			break;
-		default:
-			ERRPUT << "*** ERROR *** : unknown local event" << endl;
-			break;
-		}
-		BlinkyBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+			killVM();
+		}			
+		info << "VM stopped";
+	}
+	break;
+	case EVENT_ADD_NEIGHBOR:
+	{
+		AddNeighborVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<AddNeighborEvent>(pev))->target,
+									 (std::static_pointer_cast<AddNeighborEvent>(pev))->face);
+		sendCommand(command);
+		info << "Add neighbor "<< (std::static_pointer_cast<AddNeighborEvent>(pev))->target << " at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((std::static_pointer_cast<AddNeighborEvent>(pev))->face));
+	}
+	break;
+	case EVENT_REMOVE_NEIGHBOR:
+	{
+		RemoveNeighborVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<RemoveNeighborEvent>(pev))->face);
+		sendCommand(command);
+		info << "Remove neighbor at face " << BlinkyBlocks::NeighborDirection::getString(BlinkyBlocks::NeighborDirection::getOpposite((std::static_pointer_cast<RemoveNeighborEvent>(pev))->face));
+	}
+	break;
+	case EVENT_TAP:
+	{
+		TapVMCommand command(outBuffer, bb->blockId);
+		sendCommand(command);
+		info << "tapped";
+	}
+	break;
+	case EVENT_SET_COLOR:
+	{
+		Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
+		bb->setColor(color);
+		info << "set color "<< color;
+	}
+	break;
+	case EVENT_SEND_MESSAGE:
+	{
+		MessagePtr message = (std::static_pointer_cast<VMSendMessageEvent>(pev))->message;
+		P2PNetworkInterface *interface = (std::static_pointer_cast<VMSendMessageEvent>(pev))->sourceInterface;
+		MeldProcess::getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(BaseSimulator::getScheduler()->now(),
+																					   message, interface));
+		info << "sends a message at face " << NeighborDirection::getString(bb->getDirection(interface))  << " to " << interface->connectedInterface->hostBlock->blockId;
+	}
+	break;
+	case EVENT_RECEIVE_MESSAGE: /*EVENT_NI_RECEIVE: */
+	{
+		ReceiveMessageVMCommand *command = (ReceiveMessageVMCommand*) (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message.get();
+		command->setTimestamp(MeldProcess::getScheduler()->now());
+		sendCommand(*command);
+		info << "message received at face " << NeighborDirection::getString(bb->getDirection(command->sourceInterface->connectedInterface)) << " from " << command->sourceInterface->hostBlock->blockId;
+	}
+	break;
+	case EVENT_ACCEL:
+	{
+		AccelVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<AccelEvent>(pev))->x, (std::static_pointer_cast<AccelEvent>(pev))->y,
+							   (std::static_pointer_cast<AccelEvent>(pev))->z);
+		sendCommand(command);
+		info << "accel";
+	}
+	break;
+	case EVENT_SHAKE:
+	{
+		ShakeVMCommand command(outBuffer, bb->blockId, (std::static_pointer_cast<ShakeEvent>(pev))->force);
+		sendCommand(command);
+		info << "shake";
+	}
+	break;
+	case EVENT_SET_DETERMINISTIC:
+	{
+		SetDeterministicModeVMCommand command(outBuffer, bb->blockId);
+		sendCommand(command);
+		OUTPUT << "VM set in deterministic mode " << hostBlock->blockId << endl;
+		info << "VM set in deterministic mode";
+	}
+	break;
+	case EVENT_END_POLL: 
+	{
+		vm->setPolling(false);
+		EndPollVMCommand command(outBuffer, bb->blockId);
+		sendCommand(command);
+		info << "Polling time period ended" << endl;
+	}
+	break;
+	default:
+		ERRPUT << "*** ERROR *** : unknown local event" << endl;
+		break;
+	}
+
+	MeldProcess::getScheduler()->trace(info.str(),hostBlock->blockId);
 }
 
 BlinkyBlocks::BlinkyBlocksBlockCode* Blinky01BlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
@@ -200,7 +201,7 @@ int Blinky01BlockCode::sendCommand(VMCommand &c) {
 	int ret = 0;
 	lockVM();
 	if(vm != NULL) {
-		if ((hostBlock->state == BuildingBlock::ALIVE) || (c.getType() == VM_COMMAND_STOP)) {
+		if ((hostBlock->getState() == BuildingBlock::ALIVE) || (c.getType() == VM_COMMAND_STOP)) {
 			ret = vm->sendCommand(c);
 		}
 	}

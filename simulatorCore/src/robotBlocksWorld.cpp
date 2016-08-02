@@ -8,84 +8,52 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "robotBlocksWorld.h"
-#include "robotBlocksBlock.h"
-#include "robotBlocksScheduler.h"
-#include "trace.h"
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
+
+#include "robotBlocksWorld.h"
+#include "robotBlocksBlock.h"
+#include "trace.h"
+#include "configExporter.h"
 
 using namespace std;
 
 namespace RobotBlocks {
 
-RobotBlocksWorld::RobotBlocksWorld(int slx,int sly,int slz, int argc, char *argv[]):World() {
+RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+								   int argc, char *argv[]):World(argc, argv) {
 	OUTPUT << "\033[1;31mRobotBlocksWorld constructor\033[0m" << endl;
-	gridSize[0]=slx;
-	gridSize[1]=sly;
-	gridSize[2]=slz;
-	gridPtrBlocks = new RobotBlocksBlock*[slx*sly*slz];
 
-	// initialise grid of blocks
-	int i=slx*sly*slz;
-	RobotBlocksBlock **ptr = gridPtrBlocks;
-	while (i--) {
-		*ptr=NULL;
-		ptr++;
+	if (GlutContext::GUIisEnabled) {
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures",
+													  "robotBlockPicking.obj");
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
 	}
-	targetGrid=NULL;
-
-	GlutContext::init(argc,argv);
-	idTextureWall=0;
-	blockSize[0]=39.0;
-	blockSize[1]=39.0;
-	blockSize[2]=40.0;
-	objBlock = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
-	objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/robotBlocksTextures","robotBlock.obj");
-	objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
-	camera = new Camera(-M_PI/2.0,M_PI/3.0,750.0);
-	camera->setLightParameters(Vecteur(0,0,0),45.0,80.0,800.0,45.0,10.0,1500.0);
-	camera->setTarget(Vecteur(0,0,1.0));
-
-	menuId=0;
-	numSelectedFace=0;
-	numSelectedBlock=0;
-
+	
+	lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
 RobotBlocksWorld::~RobotBlocksWorld() {
 	OUTPUT << "RobotBlocksWorld destructor" << endl;
 	/*	block linked are deleted by world::~world() */
-	delete [] gridPtrBlocks;
-	delete [] targetGrid;
-	delete objBlock;
-	delete objBlockForPicking;
-	delete objRepere;
-	delete camera;
-}
-
-void RobotBlocksWorld::createWorld(int slx,int sly,int slz, int argc, char *argv[]) {
-	world = new RobotBlocksWorld(slx,sly,slz,argc,argv);
 }
 
 void RobotBlocksWorld::deleteWorld() {
 	delete((RobotBlocksWorld*)world);
 }
 
-void RobotBlocksWorld::addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockCodeBuildingFunction)(RobotBlocksBlock*),const Vecteur &pos,const Color &color,bool master) {
+void RobotBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
+								const Color &col, short orientation, bool master) {
+	if (blockId > maxBlockId)
+		maxBlockId = blockId;
+	else if (blockId == -1)
+		blockId = incrementBlockId();
 
-	if (blockId == -1) {
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
-			for(it = buildingBlocksMap.begin();
-					it != buildingBlocksMap.end(); it++) {
-				RobotBlocksBlock* bb = (RobotBlocksBlock*) it->second;
-				if (it->second->blockId > blockId) blockId = bb->blockId;
-			}
-		blockId++;
-	}
-	RobotBlocksBlock *robotBlock = new RobotBlocksBlock(blockId,robotBlockCodeBuildingFunction);
-	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>(robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
+	RobotBlocksBlock *robotBlock = new RobotBlocksBlock(blockId, bcb);
+	buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
+							 (robotBlock->blockId, (BaseSimulator::BuildingBlock*)robotBlock));
 
 	getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), robotBlock));
 
@@ -93,253 +61,148 @@ void RobotBlocksWorld::addBlock(int blockId, RobotBlocksBlockCode *(*robotBlockC
 	tabGlBlocks.push_back(glBlock);
 	robotBlock->setGlBlock(glBlock);
 	robotBlock->setPosition(pos);
-	robotBlock->setColor(color);
+	robotBlock->setColor(col);
 	robotBlock->isMaster=master;
 
-	int ix,iy,iz;
-	ix = int(robotBlock->position.pt[0]);
-	iy = int(robotBlock->position.pt[1]);
-	iz = int(robotBlock->position.pt[2]);
-	if (ix>=0 && ix<gridSize[0] &&
-		iy>=0 && iy<gridSize[1] &&
-		iz>=0 && iz<gridSize[2]) {
-		setGridPtr(ix,iy,iz,robotBlock);
+	if (lattice->isInGrid(pos)) {
+		lattice->insert(robotBlock, pos);
 	} else {
 		ERRPUT << "ERROR : BLOCK #" << blockId << " out of the grid !!!!!" << endl;
 		exit(1);
 	}
 }
 
-void RobotBlocksWorld::connectBlock(RobotBlocksBlock *block) {
-    int ix,iy,iz;
-    ix = int(block->position.pt[0]);
-	iy = int(block->position.pt[1]);
-	iz = int(block->position.pt[2]);
-	setGridPtr(ix,iy,iz,block);
-	OUTPUT << "Reconnection " << block->blockId << " pos ="<< ix << "," << iy << "," << iz << endl;
-	linkBlock(ix,iy,iz);
-	if (ix<gridSize[0]-1) linkBlock(ix+1,iy,iz);
-	if (ix>0) linkBlock(ix-1,iy,iz);
-	if (iy<gridSize[1]-1) linkBlock(ix,iy+1,iz);
-	if (iy>0) linkBlock(ix,iy-1,iz);
-	if (iz<gridSize[2]-1) linkBlock(ix,iy,iz+1);
-	if (iz>0) linkBlock(ix,iy,iz-1);
-}
+void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
+	RobotBlocksBlock *ptrNeighbor;
+	RobotBlocksBlock *ptrBlock = (RobotBlocksBlock*)lattice->getBlock(pos);
+	vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
+	Cell3DPosition nPos;
 
-void RobotBlocksWorld::disconnectBlock(RobotBlocksBlock *block) {
-    P2PNetworkInterface *fromBlock,*toBlock;
+	// Check neighbors for each interface
+	for (int i = 0; i < 6; i++) {
+		nPos = pos + nRelCells[i];
+		ptrNeighbor = (RobotBlocksBlock*)lattice->getBlock(nPos);
+		if (ptrNeighbor) {
+			(ptrBlock)->getInterface(SCLattice::Direction(i))->
+				connect(ptrNeighbor->getInterface(SCLattice::Direction(
+													  lattice->getOppositeDirection(i))));
 
-    for(int i=0; i<6; i++) {
-        fromBlock = block->getInterface(NeighborDirection::Direction(i));
-        if (fromBlock && fromBlock->connectedInterface) {
-            toBlock = fromBlock->connectedInterface;
-            fromBlock->connectedInterface=NULL;
-            toBlock->connectedInterface=NULL;
-        }
-    }
-    int ix,iy,iz;
-    ix = int(block->position.pt[0]);
-	iy = int(block->position.pt[1]);
-	iz = int(block->position.pt[2]);
-	setGridPtr(ix,iy,iz,NULL);
-	OUTPUT << getScheduler()->now() << " : Disconnection " << block->blockId << " pos ="<< ix << "," << iy << "," << iz << endl;
-}
-
-void RobotBlocksWorld::linkBlock(int ix, int iy, int iz) {
-    RobotBlocksBlock *ptrBlock = getGridPtr(ix,iy,iz);
-	if (ptrBlock) {
-		if (iz<gridSize[2]-1 && getGridPtr(ix,iy,iz+1)) {
-			(ptrBlock)->getInterface(NeighborDirection::Top)->connect(getGridPtr(ix,iy,iz+1)->getInterface(NeighborDirection::Bottom));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy,iz+1)->blockId << endl;
+			OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << lattice->getDirectionString(i) <<
+				" to #" << ptrNeighbor->blockId << ":"
+				   << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
 		} else {
-			(ptrBlock)->getInterface(NeighborDirection::Top)->connect(NULL);
-		}
-		if (iy<gridSize[1]-1 && getGridPtr(ix,iy+1,iz)) {
-			(ptrBlock)->getInterface(NeighborDirection::Right)->connect(getGridPtr(ix,iy+1,iz)->getInterface(NeighborDirection::Left));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy+1,iz)->blockId << endl;
-		} else {
-			(ptrBlock)->getInterface(NeighborDirection::Right)->connect(NULL);
-		}
-		if (ix<gridSize[0]-1 && getGridPtr(ix+1,iy,iz)) {
-			(ptrBlock)->getInterface(NeighborDirection::Front)->connect(getGridPtr(ix+1,iy,iz)->getInterface(NeighborDirection::Back));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix+1,iy,iz)->blockId << endl;
-		} else {
-            (ptrBlock)->getInterface(NeighborDirection::Front)->connect(NULL);
-        }
-	    if (iy>0 && getGridPtr(ix,iy-1,iz)) {
-			(ptrBlock)->getInterface(NeighborDirection::Left)->connect(getGridPtr(ix,iy-1,iz)->getInterface(NeighborDirection::Right));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy-1,iz)->blockId << endl;
-		} else {
-            (ptrBlock)->getInterface(NeighborDirection::Left)->connect(NULL);
-		}
-		if (iz>0 && getGridPtr(ix,iy,iz-1)) {
-			(ptrBlock)->getInterface(NeighborDirection::Bottom)->connect(getGridPtr(ix,iy,iz-1)->getInterface(NeighborDirection::Top));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix,iy,iz-1)->blockId << endl;
-		} else {
-			(ptrBlock)->getInterface(NeighborDirection::Bottom)->connect(NULL);
-		}
-		if (ix>0 && getGridPtr(ix-1,iy,iz)) {
-			(ptrBlock)->getInterface(NeighborDirection::Back)->connect(getGridPtr(ix-1,iy,iz)->getInterface(NeighborDirection::Front));
-			OUTPUT << "connection #" << (ptrBlock)->blockId << " to #" << getGridPtr(ix-1,iy,iz)->blockId << endl;
-		} else {
-			(ptrBlock)->getInterface(NeighborDirection::Back)->connect(NULL);
+			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}
 	}
-}
-
-void RobotBlocksWorld::linkBlocks() {
-	int ix,iy,iz;
-	for (iz=0; iz<gridSize[2]; iz++) {
-		for (iy=0; iy<gridSize[1]; iy++) {
-			for(ix=0; ix<gridSize[0]; ix++) {
-				linkBlock(ix,iy,iz);
-			}
-		}
-	}
-}
-
-void RobotBlocksWorld::deleteBlock(RobotBlocksBlock *bb) {
-	if (bb->getState() >= RobotBlocksBlock::ALIVE ) {
-		// cut links between bb and others
-		for(int i=0; i<6; i++) {
-			P2PNetworkInterface *bbi = bb->getInterface(NeighborDirection::Direction(i));
-			if (bbi->connectedInterface) {
-				//bb->removeNeighbor(bbi); //Useless
-				bbi->connectedInterface->hostBlock->removeNeighbor(bbi->connectedInterface);
-				bbi->connectedInterface->connectedInterface=NULL;
-				bbi->connectedInterface=NULL;
-			}
-		}
-		// free grid cell
-		int ix,iy,iz;
-		ix = int(bb->position.pt[0]);
-		iy = int(bb->position.pt[1]);
-		iz = int(bb->position.pt[2]);
-		setGridPtr(ix,iy,iz,NULL);
-
-		disconnectBlock(bb);
-	}
-	if (selectedBlock == bb->ptrGlBlock) {
-      selectedBlock = NULL;
-      GlutContext::mainWindow->select(NULL);
-   }
-	// remove the associated glBlock
-	std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
-	if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-	else {
-		while (cit!=tabGlBlocks.end() && (*cit)!=bb->ptrGlBlock) {
-			cit++;
-		}
-		if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-	}
-	delete bb->ptrGlBlock;
 }
 
 void RobotBlocksWorld::glDraw() {
-	static const GLfloat white[]={1.0,1.0,1.0,1.0},
-			gray[]={0.6,0.6,0.6,1.0};
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+		gray[]={0.2f,0.2f,0.2f,1.0f};
 
 
-	glPushMatrix();
-	glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
-	glDisable(GL_TEXTURE_2D);
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-	lock();
-	while (ic!=tabGlBlocks.end()) {
-		((RobotBlocksGlBlock*)(*ic))->glDraw(objBlock);
-	   	ic++;
-	}
-	unlock();
+		glPushMatrix();
+		glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+		glDisable(GL_TEXTURE_2D);
+		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+		lock();
+		while (ic!=tabGlBlocks.end()) {
+			((RobotBlocksGlBlock*)(*ic))->glDraw(objBlock);
+			ic++;
+		}
+		unlock();
 
-	glPopMatrix();
-	glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-	glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-	glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-	glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-	glPushMatrix();
+		glPopMatrix();
+		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+		glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+		glPushMatrix();
 		enableTexture(true);
 		glBindTexture(GL_TEXTURE_2D,idTextureWall);
-		glScalef(gridSize[0]*blockSize[0],gridSize[1]*blockSize[1],gridSize[2]*blockSize[2]);
+		glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+				 lattice->gridSize[1]*lattice->gridScale[1],
+				 lattice->gridSize[2]*lattice->gridScale[2]);
 		glBegin(GL_QUADS);
 		// bottom
-			glNormal3f(0,0,1.0f);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(gridSize[0],0);
-			glVertex3f(1.0f,0.0f,0.0f);
-			glTexCoord2f(gridSize[0],gridSize[1]);
-			glVertex3f(1.0,1.0,0.0f);
-			glTexCoord2f(0,gridSize[1]);
-			glVertex3f(0.0,1.0,0.0f);
+		glNormal3f(0,0,1.0f);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0],0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+		glVertex3f(1.0,1.0,0.0f);
+		glTexCoord2f(0,lattice->gridSize[1]);
+		glVertex3f(0.0,1.0,0.0f);
 		// top
-			glNormal3f(0,0,-1.0f);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,1.0f);
-			glTexCoord2f(0,gridSize[1]);
-			glVertex3f(0.0,1.0,1.0f);
-			glTexCoord2f(gridSize[0],gridSize[1]);
-			glVertex3f(1.0,1.0,1.0f);
-			glTexCoord2f(gridSize[0],0);
-			glVertex3f(1.0f,0.0f,1.0f);
+		glNormal3f(0,0,-1.0f);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,1.0f);
+		glTexCoord2f(0,lattice->gridSize[1]);
+		glVertex3f(0.0,1.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+		glVertex3f(1.0,1.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0],0);
+		glVertex3f(1.0f,0.0f,1.0f);
 		// left
-			glNormal3f(1.0,0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(gridSize[1],0);
-			glVertex3f(0.0f,1.0f,0.0f);
-			glTexCoord2f(gridSize[1],gridSize[2]);
-			glVertex3f(0.0,1.0,1.0f);
-			glTexCoord2f(0,gridSize[2]);
-			glVertex3f(0.0,0.0,1.0f);
+		glNormal3f(1.0,0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[1],0);
+		glVertex3f(0.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
+		glVertex3f(0.0,1.0,1.0f);
+		glTexCoord2f(0,lattice->gridSize[2]);
+		glVertex3f(0.0,0.0,1.0f);
 		// right
-			glNormal3f(-1.0,0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(1.0f,0.0f,0.0f);
-			glTexCoord2f(0,gridSize[2]);
-			glVertex3f(1.0,0.0,1.0f);
-			glTexCoord2f(gridSize[1],gridSize[2]);
-			glVertex3f(1.0,1.0,1.0f);
-			glTexCoord2f(gridSize[1],0);
-			glVertex3f(1.0f,1.0f,0.0f);
+		glNormal3f(-1.0,0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glTexCoord2f(0,lattice->gridSize[2]);
+		glVertex3f(1.0,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[1],lattice->gridSize[2]);
+		glVertex3f(1.0,1.0,1.0f);
+		glTexCoord2f(lattice->gridSize[1],0);
+		glVertex3f(1.0f,1.0f,0.0f);
 		// back
-			glNormal3f(0,-1.0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,1.0f,0.0f);
-			glTexCoord2f(gridSize[0],0);
-			glVertex3f(1.0f,1.0f,0.0f);
-			glTexCoord2f(gridSize[0],gridSize[2]);
-			glVertex3f(1.0f,1.0,1.0f);
-			glTexCoord2f(0,gridSize[2]);
-			glVertex3f(0.0,1.0,1.0f);
+		glNormal3f(0,-1.0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0],0);
+		glVertex3f(1.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
+		glVertex3f(1.0f,1.0,1.0f);
+		glTexCoord2f(0,lattice->gridSize[2]);
+		glVertex3f(0.0,1.0,1.0f);
 		// front
-			glNormal3f(0,1.0,0);
-			glTexCoord2f(0,0);
-			glVertex3f(0.0f,0.0f,0.0f);
-			glTexCoord2f(0,gridSize[2]);
-			glVertex3f(0.0,0.0,1.0f);
-			glTexCoord2f(gridSize[0],gridSize[2]);
-			glVertex3f(1.0f,0.0,1.0f);
-			glTexCoord2f(gridSize[0],0);
-			glVertex3f(1.0f,0.0f,0.0f);
+		glNormal3f(0,1.0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,0.0f);
+		glTexCoord2f(0,lattice->gridSize[2]);
+		glVertex3f(0.0,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0],lattice->gridSize[2]);
+		glVertex3f(1.0f,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0],0);
+		glVertex3f(1.0f,0.0f,0.0f);
 		glEnd();
-	glPopMatrix();
-	// draw the axes
-	glPushMatrix();
+		glPopMatrix();
+		// draw the axes
+		glPushMatrix();
 		glScalef(0.2f,0.2f,0.2f);
 		objRepere->glDraw();
-	glPopMatrix();
+		glPopMatrix();
 }
 
 void RobotBlocksWorld::glDrawId() {
 	glPushMatrix();
-	glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
+	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 	glDisable(GL_TEXTURE_2D);
 	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 	int n=1;
 	lock();
 	while (ic!=tabGlBlocks.end()) {
 		((RobotBlocksGlBlock*)(*ic))->glDrawId(objBlock,n);
-	   	ic++;
+		ic++;
 	}
 	unlock();
 	glPopMatrix();
@@ -347,7 +210,7 @@ void RobotBlocksWorld::glDrawId() {
 
 void RobotBlocksWorld::glDrawIdByMaterial() {
 	glPushMatrix();
-	glTranslatef(0.5*blockSize[0],0.5*blockSize[1],0.5*blockSize[2]);
+	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 
 	glDisable(GL_TEXTURE_2D);
 	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
@@ -355,7 +218,7 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
 	lock();
 	while (ic!=tabGlBlocks.end()) {
 		((RobotBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-	   	ic++;
+		ic++;
 	}
 	unlock();
 	glPopMatrix();
@@ -363,20 +226,9 @@ void RobotBlocksWorld::glDrawIdByMaterial() {
 
 
 void RobotBlocksWorld::loadTextures(const string &str) {
-	string path = str+"//texture_plane.tga";
+	string path = str+"/texture_plane.tga";
 	int lx,ly;
 	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
-}
-
-void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc) {
-	RobotBlocksGlBlock *glblc = blc->getGlBlock();
-	if (glblc) {
-		lock();
-		Vecteur pos(blockSize[0]*blc->position.pt[0],blockSize[1]*blc->position.pt[1],blockSize[2]*blc->position.pt[2]);
-		glblc->setPosition(pos);
-		glblc->setColor(blc->color);
-		unlock();
-	}
 }
 
 void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
@@ -388,130 +240,20 @@ void RobotBlocksWorld::updateGlData(RobotBlocksBlock*blc,int prev,int next) {
 	}
 }
 
-void RobotBlocksWorld::createPopupMenu(int ix, int iy) {
-	if (!GlutContext::popupMenu) {
-		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-		GlutContext::popupMenu->addButton(1,"../../simulatorCore/robotBlocksTextures/menu_add.tga");
-		GlutContext::popupMenu->addButton(2,"../../simulatorCore/robotBlocksTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/robotBlocksTextures/menu_stop.tga");
-		GlutContext::popupMenu->addButton(4,"../../simulatorCore/robotBlocksTextures/menu_save.tga");
-		GlutContext::popupMenu->addButton(5,"../../simulatorCore/robotBlocksTextures/menu_cancel.tga");
-	}
-	if (iy<GlutContext::popupMenu->h) iy=GlutContext::popupMenu->h;
-	// verify if add is possible for this face
-	RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-	bool valid=true;
-	switch (numSelectedFace) {
-		case NeighborDirection::Left :
-			valid=(bb->position[0]>0 && getGridPtr(int(bb->position[0])-1,int(bb->position[1]),int(bb->position[2]))==NULL);
-			break;
-		case NeighborDirection::Right :
-			valid=(bb->position[0]<gridSize[0]-1 && getGridPtr(int(bb->position[0])+1,int(bb->position[1]),int(bb->position[2]))==NULL);
-		break;
-		case NeighborDirection::Front :
-			valid=(bb->position[1]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1])-1,int(bb->position[2]))==NULL);
-			break;
-		case NeighborDirection::Back :
-			valid=(bb->position[1]<gridSize[1]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1])+1,int(bb->position[2]))==NULL);
-		break;
-		case NeighborDirection::Bottom :
-			valid=(bb->position[2]>0 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])-1)==NULL);
-			break;
-		case NeighborDirection::Top :
-			valid=(bb->position[2]<gridSize[2]-1 && getGridPtr(int(bb->position[0]),int(bb->position[1]),int(bb->position[2])+1)==NULL);
-		break;
-	}
-	GlutContext::popupMenu->activate(1,valid);
-	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
-	GlutContext::popupMenu->show(true);
-}
-
-void RobotBlocksWorld::menuChoice(int n) {
-	switch (n) {
-		case 1 : {
-			RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-			OUTPUT << "ADD block link to : " << bb->blockId << "     num Face : " << numSelectedFace << endl;
-			Vecteur pos=bb->position;
-			switch (numSelectedFace) {
-				case NeighborDirection::Left :
-					pos.pt[0]--;
-					break;
-				case NeighborDirection::Right :
-					pos.pt[0]++;
-				break;
-				case NeighborDirection::Front :
-					pos.pt[1]--;
-					break;
-				case NeighborDirection::Back :
-					pos.pt[1]++;
-				break;
-				case NeighborDirection::Bottom :
-					pos.pt[2]--;
-					break;
-				case NeighborDirection::Top :
-					pos.pt[2]++;
-				break;
-			}
-			addBlock(-1, bb->buildNewBlockCode,pos,bb->color);
-			linkBlocks();
-		} break;
-		case 2 : {
-			OUTPUT << "DEL num block : " << tabGlBlocks[numSelectedBlock]->blockId << endl;
-			RobotBlocksBlock *bb = (RobotBlocksBlock *)getBlockById(tabGlBlocks[numSelectedBlock]->blockId);
-			deleteBlock(bb);
-		} break;
-	}
-}
-
 void RobotBlocksWorld::setSelectedFace(int n) {
-	numSelectedBlock=n/6;
+	numSelectedGlBlock=n/6;
 	string name = objBlockForPicking->getObjMtlName(n%6);
-    if (name=="face_top") numSelectedFace=NeighborDirection::Top;
-    else if (name=="face_bottom") numSelectedFace=NeighborDirection::Bottom;
-    else if (name=="face_right") numSelectedFace=NeighborDirection::Right;
-    else if (name=="face_left") numSelectedFace=NeighborDirection::Left;
-    else if (name=="face_front") numSelectedFace=NeighborDirection::Front;
-    else if (name=="face_back") numSelectedFace=NeighborDirection::Back;
+	if (name=="face_top") numSelectedFace=SCLattice::Top;
+	else if (name=="face_bottom") numSelectedFace=SCLattice::Bottom;
+	else if (name=="face_right") numSelectedFace=SCLattice::Right;
+	else if (name=="face_left") numSelectedFace=SCLattice::Left;
+	else if (name=="face_front") numSelectedFace=SCLattice::Front;
+	else if (name=="face_back") numSelectedFace=SCLattice::Back;
 }
 
-void RobotBlocksWorld::createHelpWindow() {
-	if (GlutContext::helpWindow)
-		delete GlutContext::helpWindow;
-	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/robotBlocksHelp.txt");
-}
-
-void RobotBlocksWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
-    presence *gpm=pm.grid;
-    RobotBlocksBlock **grb;
-
-    //memset(pm.grid,wall,27*sizeof(presence));
-
-    for (int i=0; i<27; i++) { *gpm++ = wallCell; };
-
-    int ix0 = (pos.x<1)?1-pos.x:0,
-        ix1 = (pos.x>gridSize[0]-2)?gridSize[0]-pos.x+1:3,
-        iy0 = (pos.y<1)?1-pos.y:0,
-        iy1 = (pos.y>gridSize[1]-2)?gridSize[1]-pos.y+1:3,
-        iz0 = (pos.z<1)?1-pos.z:0,
-        iz1 = (pos.z>gridSize[2]-2)?gridSize[2]-pos.z+1:3,
-        ix,iy,iz;
-    for (iz=iz0; iz<iz1; iz++) {
-        for (iy=iy0; iy<iy1; iy++) {
-            gpm = pm.grid+((iz*3+iy)*3+ix0);
-            grb = gridPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*gridSize[1])*gridSize[0]);
-            for (ix=ix0; ix<ix1; ix++) {
-                *gpm++ = (*grb++)?fullCell:emptyCell;
-            }
-        }
-    }
-}
-
-void RobotBlocksWorld::initTargetGrid() {
-    if (targetGrid) delete [] targetGrid;
-    int sz = gridSize[0]*gridSize[1]*gridSize[2];
-    targetGrid = new presence[gridSize[0]*gridSize[1]*gridSize[2]];
-    memset(targetGrid,0,sz*sizeof(presence));
+void RobotBlocksWorld::exportConfiguration() {
+	RobotBlocksConfigExporter exporter = RobotBlocksConfigExporter(this);
+	exporter.exportConfiguration();
 }
 
 } // RobotBlock namespace
-

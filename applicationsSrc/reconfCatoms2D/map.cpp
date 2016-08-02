@@ -4,7 +4,7 @@
 #include "contextTuple.hpp"
 
 #include "catoms2DWorld.h"
-#include "vecteur.h"
+#include "vector3D.h"
 
 //#define VIRTUAL_COORDINATES
 #define REAL_COORDINATES
@@ -40,13 +40,13 @@ void Map::connectToHost() {
     toHost = NULL;
 
     cout << "@" << catom2D->blockId << " is connected to host" << endl;
-#ifdef VIRTUAL_COORDINATES  
+#ifdef VIRTUAL_COORDINATES
     // virtual coordinate
     Coordinate c = Coordinate(0,0);
     ccth.x = catom2D->position[0];
     ccth.y = catom2D->position[2];
 #endif
-    
+
 #ifdef REAL_COORDINATES
     // real coordinate
     Coordinate c(catom2D->position[0], catom2D->position[2]);
@@ -65,7 +65,7 @@ bool Map::handleMessage(MessagePtr message) {
   P2PNetworkInterface * recv_interface = message->destinationInterface;
   switch(message->type) {
   case GO_MAP_MSG: {
-    GoMapMessage_ptr m = boost::static_pointer_cast<GoMapMessage>(message);
+    GoMapMessage_ptr m = std::static_pointer_cast<GoMapMessage>(message);
     if (!positionKnown) {
       toHost = recv_interface;
       Coordinate c = m->getPosition(); //getPosition(toHost, m->getLast());
@@ -76,8 +76,8 @@ bool Map::handleMessage(MessagePtr message) {
       p.y = catom2D->position[2];
       Coordinate real =  real2Virtual(p,ccth);
       cout << "@" << catom2D->blockId <<  " position " << position << " vs " << real << "(diff: " << position.x - real.x << "," <<  position.y - real.y << ")" << endl;
-      if( real != position) { // not relevant (odd/even line of the leader)  
-	catom2D->setColor(BLUE);
+      if( real != position) { // not relevant (odd/even line of the leader)
+    catom2D->setColor(BLUE);
       }
 #endif
 
@@ -87,12 +87,12 @@ bool Map::handleMessage(MessagePtr message) {
       Coordinate dest(5,4);
       cout << "@" << catom2D->blockId << " " << position << endl;
       if (position == src) {
-	catom2D->setColor(BLUE);
-	cout << "sending from " << src << " to " << dest << endl;
-	//out(new ContextTuple(dest, string("testGeoRoutingOneToOne")));
+    catom2D->setColor(BLUE);
+    cout << "sending from " << src << " to " << dest << endl;
+    //out(new ContextTuple(dest, string("testGeoRoutingOneToOne")));
       }
       if (position == dest) {
-	catom2D->setColor(GREEN);
+    catom2D->setColor(GREEN);
       }
 #endif
 
@@ -110,14 +110,14 @@ bool Map::handleMessage(MessagePtr message) {
   }
     break;
   case BACK_MAP_MSG: {
-    BackMapMessage_ptr m = boost::static_pointer_cast<BackMapMessage>(message);
+    BackMapMessage_ptr m = std::static_pointer_cast<BackMapMessage>(message);
     waiting--;
 #ifdef MAP_DEBUG
     //cout << "@" << catom2D->blockId <<  " back msg " << waiting << endl;
 #endif
     if (!waiting) {
       if (!connectedToHost) {
-	mapBuilt(toHost);
+    mapBuilt(toHost);
       }
       return true;
     }
@@ -151,7 +151,7 @@ void Map::setPosition(Coordinate p) {
   position = p;
   positionKnown = true;
 }
- 
+
 Coordinate Map::getPosition() {
   return position;
 }
@@ -168,7 +168,7 @@ Coordinate Map::real2Virtual(Coordinate o, Coordinate p) {
   Coordinate real = p;
   real.x -= o.x;
   real.y -= o.y;
-  
+
   if ( (o.y%2) == 1) {
     if ((p.y%2) == 0) {
       real.x--;
@@ -182,7 +182,7 @@ Coordinate Map::virtual2Real(Coordinate o, Coordinate p) {
   Coordinate vir = p;
   vir.x += o.x;
   vir.y += o.y;
-  
+
   if ( (o.y%2) == 1) {
     if ((p.y%2) == 0) {
       vir.x++;
@@ -203,7 +203,7 @@ Coordinate Map::getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PN
   case NeighborDirection::Left:
     p.x--;
     break;
-  case NeighborDirection::TopLeft:    
+  case NeighborDirection::TopLeft:
     if ((abs(p.y)%2) == 0) {
       p.x--;
     }
@@ -218,7 +218,7 @@ Coordinate Map::getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PN
   case NeighborDirection::Right:
     p.x++;
     break;
-  case NeighborDirection::BottomRight: 
+  case NeighborDirection::BottomRight:
     if ((abs(p.y)%2) == 1) {
       p.x++;
     }
@@ -262,7 +262,7 @@ P2PNetworkInterface* Map::getInterface(Coordinate &pos) {
 }
 
 int Map::distance(Coordinate p1, Coordinate p2) {
-  return abs(p2.x - p1.x) +  abs(p2.y - p1.y); 
+  return abs(p2.x - p1.x) +  abs(p2.y - p1.y);
 }
 
 int Map::distance(Coordinate p2) {
@@ -270,12 +270,12 @@ int Map::distance(Coordinate p2) {
 }
 
 bool Map::areNeighbors(Coordinate p1, Coordinate p2) {
-  Vecteur pos1 = Vecteur(p1.x, 0, p1.y);
-  Vecteur pos2 = Vecteur(p2.x, 0, p2.y);
+  Cell3DPosition pos1 = Cell3DPosition(p1.x, 0, p1.y);
+  Cell3DPosition pos2 = Cell3DPosition(p2.x, 0, p2.y);
   return Catoms2DWorld::getWorld()->areNeighborsGridPos(pos1,pos2);
 }
 
-bool Map::isInTarget(Coordinate p) { 
+bool Map::isInTarget(Coordinate p) {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
   return (world->getTargetGrid(p.x,0,p.y) == fullCell);
 }

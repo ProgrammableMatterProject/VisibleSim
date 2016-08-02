@@ -1,13 +1,14 @@
 /*
-* MeldProcessScheduler.cpp
-*
-*  Created on: 23 mars 2013
-*      Author: dom
-*/
+ * MeldProcessScheduler.cpp
+ *
+ *  Created on: 23 mars 2013
+ *      Author: dom
+ */
 
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+
 #include "meldProcessScheduler.h"
 #include "meldProcessVM.h"
 #include "meldProcessDebugger.h"
@@ -19,15 +20,12 @@
 #include "trace.h"
 
 using namespace std;
-using namespace boost;
-using boost::asio::ip::tcp;
 
 namespace MeldProcess {
 
 MeldProcessScheduler::MeldProcessScheduler() {
 	OUTPUT << "MeldProcessScheduler constructor" << endl;
 	state = NOTREADY;
-	sem_schedulerStart = new boost::interprocess::interprocess_semaphore(0);
 	schedulerMode = SCHEDULER_MODE_REALTIME;
 	schedulerThread = new thread(bind(&MeldProcessScheduler::startPaused, this));
 }
@@ -49,10 +47,11 @@ void MeldProcessScheduler::deleteScheduler() {
 
 void MeldProcessScheduler::SemWaitOrReadDebugMessage() {
 	if (MeldProcessVM::isInDebuggingMode()) {
-		while(!sem_schedulerStart->try_wait()) {
+		while(!sem_schedulerStart->tryWait()) {
 			//waitForOneVMCommand();
 			checkForReceivedVMCommands();
-			usleep(10000);
+            std::chrono::milliseconds timespan(10);
+            std::this_thread::sleep_for(timespan);
 		}
 	} else {
 		sem_schedulerStart->wait();
@@ -65,7 +64,7 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 	pausedTime = 0;
 	int seed = 500;
 	srand (seed);
-   bool hasProcessed = false;
+	bool hasProcessed = false;
 	
 	// 1) world ready
 	// 2) user start order
@@ -93,115 +92,114 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 	systemStartTime = (glutGet(GLUT_ELAPSED_TIME))*1000;
 	OUTPUT << "\033[1;33m" << "Scheduler : start order received " << systemStartTime << "\033[0m" << endl;
 	switch (schedulerMode) {
-		case SCHEDULER_MODE_FASTEST:
-			OUTPUT << "fastest mode scheduler\n" << endl;
-			MeldProcessDebugger::print("Simulation starts in deterministic mode");
-			while (state != ENDED) {
+	case SCHEDULER_MODE_FASTEST:
+		OUTPUT << "fastest mode scheduler\n" << endl;
+		MeldProcessDebugger::print("Simulation starts in deterministic mode");
+		while (state != ENDED) {
             do {
-            while (!eventsMap.empty()) {
-               hasProcessed = true;
-               do {
-                  lock();
-                  first = eventsMap.begin();		
-                  pev = (*first).second;
-                  if (pev->date == now()) {
-                     break;
-                  }
-                  if (MeldProcessVM::dateHasBeenReachedByAll(pev->date)) {
-                     break;
-                  }
-                  unlock();
-                  waitForOneVMCommand();
-               } while (true);
-               currentDate = pev->date;
-               pev->consume();
-               eventsMap.erase(first);
-               eventsMapSize--;
-               unlock();
-               if (state == PAUSED) {
-                  if (MeldProcessVM::isInDebuggingMode()) {
-                     getDebugger()->handleBreakAtTimeReached(currentDate);
-                  } else {
-                     sem_schedulerStart->wait();
-                  }
-                  setState(RUNNING);
-               }
-               checkForReceivedVMCommands();
-            }
-            checkForReceivedVMCommands();
-         } while (!MeldProcessVM::equilibrium() || !eventsMap.empty());
+				while (!eventsMap.empty()) {
+					hasProcessed = true;
+					do {
+						lock();
+						first = eventsMap.begin();		
+						pev = (*first).second;
+						if (pev->date == now()) {
+							break;
+						}
+						if (MeldProcessVM::dateHasBeenReachedByAll(pev->date)) {
+							break;
+						}
+						unlock();
+						waitForOneVMCommand();
+					} while (true);
+					currentDate = pev->date;
+					pev->consume();
+					eventsMap.erase(first);
+					eventsMapSize--;
+					unlock();
+					if (state == PAUSED) {
+						if (MeldProcessVM::isInDebuggingMode()) {
+							getDebugger()->handleBreakAtTimeReached(currentDate);
+						} else {
+							sem_schedulerStart->wait();
+						}
+						setState(RUNNING);
+					}
+					checkForReceivedVMCommands();
+				}
+				checkForReceivedVMCommands();
+			} while (!MeldProcessVM::equilibrium() || !eventsMap.empty());
          
-         if(hasProcessed) {
-            hasProcessed = false;
-            ostringstream s;
-            s << "Equilibrium reached at "<< now() << "us ...";
-            MeldProcessDebugger::print(s.str(), false);
-            /*if (BaseSimulator::getSimulator()->testMode) {
-               BlinkyBlocks::getWorld()->dump();
-               stop(0);
-               return 0;
-            }*/
-            if (MeldProcessVM::isInDebuggingMode()) {
-               getDebugger()->handlePauseRequest();
-            }
-         }
-         checkForReceivedVMCommands();
-         usleep(5000);
-      }
+			if(hasProcessed) {
+				hasProcessed = false;
+				ostringstream s;
+				s << "Equilibrium reached at "<< now() << "us ...";
+				MeldProcessDebugger::print(s.str(), false);
+				/*if (getSimulator()->testMode) {
+				  BlinkyBlocks::getWorld()->dump();
+				  stop(0);
+				  return 0;
+				  }*/
+				if (MeldProcessVM::isInDebuggingMode()) {
+					getDebugger()->handlePauseRequest();
+				}
+			}
+			checkForReceivedVMCommands();
+			std::chrono::milliseconds timespan(5);
+			std::this_thread::sleep_for(timespan);							
+		}
 #ifdef TEST_DETER
 		getWorld()->killAllVMs();
 		exit(0);
 #endif
 		break;
-		case SCHEDULER_MODE_REALTIME:
-			OUTPUT << "Realtime mode scheduler\n" << endl;
-			MeldProcessDebugger::print("Simulation starts in real time mode");
-			while (state != ENDED) {
-				systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
-				systemCurrentTimeMax = systemCurrentTime - systemStartTime;
-				currentDate = systemCurrentTimeMax;
-				checkForReceivedVMCommands();
-				while (true) {
-						// Lock from here, to be sure that the element
-						// is not destroyed in antother thread
-						// (previously the graphic interface was doing
-						// it).
-						lock();
-						if (eventsMap.empty()) {
-							unlock();
-							break;
-						}
-						first=eventsMap.begin();
-						pev = (*first).second;
-						if(pev->date > systemCurrentTimeMax) { 
-							unlock();
-							break;
-						}
-						currentDate = pev->date;
-						pev->consume();
-						eventsMap.erase(first);
-						eventsMapSize--;
-						unlock();
-						//cout << "check to send" << endl;
-						checkForReceivedVMCommands();
-						//cout << "ok" << endl;
+	case SCHEDULER_MODE_REALTIME:
+		OUTPUT << "Realtime mode scheduler\n" << endl;
+		MeldProcessDebugger::print("Simulation starts in real time mode");
+		while (state != ENDED) {
+			systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
+			systemCurrentTimeMax = systemCurrentTime - systemStartTime;
+			currentDate = systemCurrentTimeMax;
+			checkForReceivedVMCommands();
+			while (true) {
+				// Lock from here, to be sure that the element
+				// is not destroyed in antother thread
+				// (previously the graphic interface was doing
+				// it).
+				lock();
+				if (eventsMap.empty()) {
+					unlock();
+					break;
 				}
-				if (state == PAUSED) {
+				first=eventsMap.begin();
+				pev = (*first).second;
+				if(pev->date > systemCurrentTimeMax) { 
+					unlock();
+					break;
+				}
+				currentDate = pev->date;
+				pev->consume();
+				eventsMap.erase(first);
+				eventsMapSize--;
+				unlock();
+				//cout << "check to send" << endl;
+				checkForReceivedVMCommands();
+				//cout << "ok" << endl;
+			}
+			if (state == PAUSED) {
 				cout << "paused" << endl;
             	int pauseBeginning = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
-					SemWaitOrReadDebugMessage();
-					setState(RUNNING);
-					pausedTime += ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
-				}
-#ifdef WIN32
-				Sleep(5);
-#else
-				usleep(5000);
-#endif
+				SemWaitOrReadDebugMessage();
+				setState(RUNNING);
+				pausedTime += ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
 			}
-			break;
-		default:
-			OUTPUT << "ERROR : Scheduler mode not recognized !!" << endl;
+
+			std::chrono::milliseconds timespan(5);
+			std::this_thread::sleep_for(timespan);			
+		}
+		break;
+	default:
+		OUTPUT << "ERROR : Scheduler mode not recognized !!" << endl;
 	}
 	systemStopTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
 	OUTPUT << "\033[1;33m" << "Scheduler end : " << systemStopTime << "\033[0m" << endl;
@@ -215,6 +213,11 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 	OUTPUT << "Number of events processed : " << Event::getNextId() << endl;
 	OUTPUT << "Events(s) left in memory before destroying Scheduler : " << Event::getNbLivingEvents() << endl;
 	OUTPUT << "Message(s) left in memory before destroying Scheduler : " << Message::getNbMessages() << endl;
+
+	// if autoStop is enabled, terminate simulation
+	if (willAutoStop())
+		glutLeaveMainLoop();
+
 	return(NULL);
 }
 
@@ -224,7 +227,7 @@ void MeldProcessScheduler::start(int mode) {
 		done = true;
 		MeldProcessScheduler* sbs = (MeldProcessScheduler*)scheduler;
 		sbs->schedulerMode = mode;
-		sbs->sem_schedulerStart->post();
+		sbs->sem_schedulerStart->signal();
 	}
 }
 
@@ -233,9 +236,9 @@ void MeldProcessScheduler::pause(uint64_t date) {
 }
 
 void MeldProcessScheduler::unPause() {
-   MeldProcessScheduler* sbs = (MeldProcessScheduler*)scheduler;
+	MeldProcessScheduler* sbs = (MeldProcessScheduler*)scheduler;
 	if (state != RUNNING) {
-		sbs->sem_schedulerStart->post();
+		sbs->sem_schedulerStart->signal();
 	}
 	OUTPUT << "unpause sim" << endl;
 }

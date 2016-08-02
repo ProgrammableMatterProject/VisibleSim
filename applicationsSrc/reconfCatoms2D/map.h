@@ -10,10 +10,10 @@
 
 #include "catoms2DBlockCode.h"
 #include "catoms2DSimulator.h"
-#include "catoms2DScheduler.h"
+
 #include "catoms2DBlock.h"
 #include "network.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "coordinate.h"
 #include "border.h"
 
@@ -68,7 +68,7 @@ class Map {
 #define BACK_MAP_MSG 15001
 
 class GoMapMessage;
-typedef boost::shared_ptr<GoMapMessage> GoMapMessage_ptr;
+typedef std::shared_ptr<GoMapMessage> GoMapMessage_ptr;
 
 class GoMapMessage : public Message {
  protected:
@@ -92,7 +92,7 @@ class GoMapMessage : public Message {
 };
 
 class BackMapMessage;
-typedef boost::shared_ptr<BackMapMessage> BackMapMessage_ptr;
+typedef std::shared_ptr<BackMapMessage> BackMapMessage_ptr;
 
 class BackMapMessage : public Message {
  public:

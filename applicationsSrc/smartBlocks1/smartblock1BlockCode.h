@@ -16,7 +16,6 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
 #include "smartBlocksBlock.h"
 
 
@@ -24,8 +23,8 @@ class Dist_message;
 class Ack_message;
 
 
-typedef boost::shared_ptr<Dist_message> Dist_message_ptr;
-typedef boost::shared_ptr<Ack_message> Ack_message_ptr;
+typedef std::shared_ptr<Dist_message> Dist_message_ptr;
+typedef std::shared_ptr<Ack_message> Ack_message_ptr;
 
 
 class SmartBlock1BlockCode : public SmartBlocks::SmartBlocksBlockCode {
@@ -36,7 +35,7 @@ class SmartBlock1BlockCode : public SmartBlocks::SmartBlocksBlockCode {
 
 public:
 
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	SmartBlock1BlockCode (SmartBlocks::SmartBlocksBlock *host);
@@ -45,10 +44,11 @@ public:
 	void startup();
 	void processLocalEvent(EventPtr pev);
 
-	static SmartBlocks::SmartBlocksBlockCode *buildNewBlockCode( SmartBlocks::SmartBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
 	void send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
-	void send_ack( unsigned int path,  unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
+	void send_ack( unsigned int path,  unsigned int distance,
+				   P2PNetworkInterface * by_interface, uint64_t time_offset);
 
 	bool i_can_ack();
 };

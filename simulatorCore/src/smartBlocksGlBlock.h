@@ -24,6 +24,7 @@ public :
 	void setDisplayedValue(int n) { displayedValue=n; }
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
 	void glDrawId(ObjLoader::ObjLoader *ptrObj);
+	void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n);
 };
 }
 #endif /* SMARTBLOCKSGLBLOCK_H_ */

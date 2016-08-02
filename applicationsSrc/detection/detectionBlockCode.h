@@ -16,7 +16,7 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
+
 #include "smartBlocksBlock.h"
 
 
@@ -24,8 +24,8 @@ class Dist_message;
 class Ack_message;
 
 
-typedef boost::shared_ptr<Dist_message> Dist_message_ptr;
-typedef boost::shared_ptr<Ack_message> Ack_message_ptr;
+typedef std::shared_ptr<Dist_message> Dist_message_ptr;
+typedef std::shared_ptr<Ack_message> Ack_message_ptr;
 
 
 class DetectionBlockCode : public SmartBlocks::SmartBlocksBlockCode {
@@ -35,7 +35,7 @@ class DetectionBlockCode : public SmartBlocks::SmartBlocksBlockCode {
 
 public:
 
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	DetectionBlockCode (SmartBlocks::SmartBlocksBlock *host);

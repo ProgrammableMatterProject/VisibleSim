@@ -1,6 +1,6 @@
 SRCS = robot02.cpp robot02BlockCode.cpp
 
-OUT = robot02
+OUT = $(APPDIR)/robot02
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -20,15 +20,19 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimRobotBlocks.a
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
 
 %.depends: %.cpp
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-	
-all: $(OUT) 
+
+all: $(OUT)
+	@:
+
+test:				#TODO
+	@../../utilities/blockCodeTest.sh robot02 $(OUT)
 
 autoinstall: $(OUT) 
 	cp $(OUT)  $(APPDIR)
@@ -46,7 +50,9 @@ $(OUT): $(SIMULATORLIB) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

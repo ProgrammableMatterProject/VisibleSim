@@ -10,7 +10,7 @@
 
 // GEO MESSAGE
 class GPSRPacket;
-typedef boost::shared_ptr<GPSRPacket> GPSRPacket_ptr;
+typedef std::shared_ptr<GPSRPacket> GPSRPacket_ptr;
 
 class GPSR {
  private:

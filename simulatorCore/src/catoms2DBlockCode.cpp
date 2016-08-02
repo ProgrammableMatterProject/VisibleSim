@@ -20,10 +20,5 @@ Catoms2DBlockCode::Catoms2DBlockCode(Catoms2DBlock *host):BlockCode(host) {
 Catoms2DBlockCode::~Catoms2DBlockCode() {
 	OUTPUT << "Catoms2DBlockCode destructor" << endl;
 }
-/*
-Catoms2DBlockCode* Catoms2DBlockCode::buildNewBlockCode(Catoms2DBlock *host) {
-	return(new Catoms2DBlockCode(host));
-}
-*/
 
 }

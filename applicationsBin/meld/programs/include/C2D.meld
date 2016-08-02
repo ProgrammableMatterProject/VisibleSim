@@ -1,0 +1,7 @@
+// interfaceIDs
+const right = 0.
+const top-right = 1.
+const top-left = 2.
+const left = 3.
+const bottom-left = 4.
+const bottom-right = 5.

@@ -1,0 +1,203 @@
+<?xml version="1.0" standalone="no" ?>
+
+<world gridSize="20,20,20" windowSize="1800,900">
+	<camera target="50,50,0" directionSpherical="30,30,100" angle="45" far="2000"/>
+	<spotlight target="80,10,80" directionSpherical="60,45,80" angle="60"/>
+
+	<blockList color="128,255,128" blockSize="10.0,10.0,10.0">
+		 <blocksLine plane="2" line=" 6" values="0010111100"/>
+		 <blocksLine plane="3" line=" 4" values="1111100000"/>
+		 <blocksLine plane="3" line=" 6" values="0011100000"/>
+		 <blocksLine plane="2" line=" 6" values="0010100000"/>
+		 <blocksLine plane="1" line=" 4" values="1110111000"/>
+		 <blocksLine plane="1" line=" 5" values="1010101000"/>
+		 <blocksLine plane="3" line=" 3" values="1000000000"/>
+		 <blocksLine plane="2" line=" 4" values="1000000000"/>
+	
+
+		<blocksLine plane="6" line=" 4" values="0000111000"/>
+		<blocksLine plane="5" line=" 4" values="0011101110"/>
+		<blocksLine plane="2" line=" 5" values="0010111000"/>
+		<blocksLine plane="3" line=" 5" values="1010100000"/>
+		<blocksLine plane="4" line=" 5" values="0010110000"/>
+		<blocksLine plane="4" line=" 4" values="0011100000"/>
+		<blocksLine plane="0" line=" 2" values="0011111000"/>
+		<blocksLine plane="0" line=" 5" values="1111100000"/>
+		<blocksLine plane="1" line=" 2" values="1111111000"/>
+		<blocksLine plane="0" line=" 4" values="0011110000"/>
+		<blocksline plane="1" line=" 4" values="0011110000"/>
+		<blocksLine plane="0" line=" 3" values="0011000000"/>
+		<block position="6,4,7" color="255,0,0" master="true"/>;
+	</blockList>
+
+	<capabilities>
+<!--	<capability level="2" name="carry" nbrelinks="1" head="1" end="1">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      8 3 8
+      6 7 5
+      0 0 8
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="2,1,1"/>
+      <motion obj="1" time="0" from="0,1,1" to="1,1,1"/>
+    </motions>
+  </capability>
+
+    <capability level="3" name="carryTurn" nbrelinks="1" head="1" end="1">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      3 5 8
+      6 7 0
+      0 0 8
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="1,2,1"/>
+      <motion obj="1" time="1" from="0,1,1" to="1,1,1"/>
+    </motions>
+  </capability>
+-->
+  <capability level="11" name="carry_train" nbrelinks="2" head="1">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      8 3 8
+      7 7 5
+      0 8 0
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1" linkNextPos="0,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="2,1,1"/>
+      <motion obj="1" time="0" from="0,1,1" to="1,1,1"/>
+    </motions>
+  </capability>
+
+<capability level="11" name="carry_train_end" nbrelinks="1" end="1">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      8 3 3
+      8 6 7
+      8 8 0
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1" linkPrevPos="2,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="2,1,1"/>
+    </motions>
+  </capability>
+
+<capability level="11" name="carry_train_end2" nbrelinks="1" end="1">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      8 0 3
+      8 6 7
+      8 8 0
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1" linkPrevPos="2,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="2,1,1"/>
+    </motions>
+  </capability>
+
+<capability level="12" name="turn_train" nbrelinks="2" head="1">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      3 5 0
+      7 7 0
+      0 0 8
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1" linkNextPos="0,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="1,2,1"/>
+      <motion obj="1" time="1" from="0,1,1" to="1,1,1"/>
+    </motions>
+  </capability>
+
+  <capability level="13" name="carry_train2" nbrelinks="3">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      8 3 8
+      7 7 7
+      0 8 0
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1" linkPrevPos="2,1,1" linkNextPos="0,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="2,1,1"/>
+      <motion obj="1" time="0" from="0,1,1" to="1,1,1"/>
+    </motions>
+  </capability>
+
+
+<capability level="14" name="turn_train2" nbrelinks="3">
+    <states>
+      8 8 8
+      8 0 8
+      8 8 8
+
+      3 7 0
+      7 7 0
+      0 0 8
+
+      8 8 8
+      8 8 8
+      8 8 8
+    </states>
+    <this pos="1,1,1" linkPrevPos="1,2,1" linkNextPos="0,1,1"/>
+    <motions>
+      <motion obj="0" time="0" from="1,1,1" to="1,2,1"/>
+      <motion obj="1" time="1" from="0,1,1" to="1,1,1"/>
+    </motions>
+  </capability>
+
+
+</capabilities>
+</world>

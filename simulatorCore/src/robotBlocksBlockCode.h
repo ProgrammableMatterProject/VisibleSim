@@ -10,20 +10,16 @@
 
 #include "blockCode.h"
 #include "robotBlocksBlock.h"
+#include "network.h"
 
 namespace RobotBlocks {
 
 class RobotBlocksBlock;
 
 class RobotBlocksBlockCode : public BaseSimulator::BlockCode {
-public:
-	
+public:	
 	RobotBlocksBlockCode(RobotBlocksBlock *host);
 	virtual ~RobotBlocksBlockCode();
-
-	RobotBlocksBlockCode* buildNewBlockCode(RobotBlocksBlock *host);
-	virtual void processLocalEvent(EventPtr pev) = 0;
-
 };
 
 }

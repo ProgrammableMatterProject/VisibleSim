@@ -1,6 +1,6 @@
 SRCS = blinky01.cpp blinky01BlockCode.cpp
 
-OUT = blinky01
+OUT = $(APPDIR)/blinky01
 
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimBlinkyBlocks.a
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
@@ -29,6 +29,10 @@ CC = g++
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT)
+	@:
+
+test:
+	@../../utilities/blockCodeTest.sh blinky01 $(OUT)
 
 autoinstall: $(OUT)
 	cp $(OUT) $(APPDIR)
@@ -39,7 +43,9 @@ $(APPDIR)/$(OUT): $(OUT)
 $(OUT): $(SIMULATORLIB) $(OBJS) 
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
 
+ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
+endif
 
 clean:
 	rm -f *~ $(OBJS) $(OUT) $(DEPS)

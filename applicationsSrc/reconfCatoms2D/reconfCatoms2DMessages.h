@@ -9,7 +9,7 @@
 #define RECONFCATOMS2DMESSAGES_H_
 
 #include "network.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "tuple.hpp"
 #include "contextTuple.hpp"
 

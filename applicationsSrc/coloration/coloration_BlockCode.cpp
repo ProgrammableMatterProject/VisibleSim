@@ -19,7 +19,7 @@ using namespace SmartBlocks;
 
 Coloration_BlockCode::Coloration_BlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
 	cout << "coloration_BlockCode constructor" << endl;
-	scheduler = SmartBlocks::getScheduler();
+	scheduler = getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
@@ -48,8 +48,8 @@ OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_col
 
 		uint64_t time_offset = 0;
 		P2PNetworkInterface * p2p;
-		for( int i = North ; i <= West ; i++ ) {
-			p2p = smartBlock->getInterface( (NeighborDirection)i );
+		for( int i = NeighborDirection::North ; i <= NeighborDirection::West ; i++ ) {
+			p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
 			if( p2p->connectedInterface ) {
 				time_offset += 10000 + (rand() % 25) * 2000;
 				Color_message * color_msg = new Color_message( my_color, vertical_neighbors_color, horizontal_neighbors_color );
@@ -65,15 +65,15 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 	stringstream info;
 
 	if( pev->eventType == EVENT_NI_RECEIVE) {
-		message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-		Color_message_ptr recv_message = boost::static_pointer_cast<Color_message>(message);
+		message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+		Color_message_ptr recv_message = std::static_pointer_cast<Color_message>(message);
 
 		//Affichage
 		sourceId = recv_message->sourceInterface->hostBlock->blockId;
 		info.str("");
 		info << "received a Color_message (" << recv_message->get_my_color() << "," << recv_message->get_horizontal_color() << "," << recv_message->get_vertical_color() << ") from " << sourceId;
 		//info << "data : " << msg->data();
-		SmartBlocks::getScheduler()->trace(info.str(),hostBlock->blockId);
+		getScheduler()->trace(info.str(),hostBlock->blockId);
 
 		if( !colored ) {
 			colored = true;
@@ -85,7 +85,7 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 			color vertical_neighbors_color;
 			color horizontal_neighbors_color;
 
-			if( recv_message->destinationInterface == smartBlock->getInterface( North ) || recv_message->destinationInterface == smartBlock->getInterface( South )) {
+			if( recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::North ) || recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::South )) {
 				info.str("");
 				info << "I am " << color_to_string(my_color) << endl;
 				vertical_neighbors_color = recv_message->get_my_color();
@@ -98,8 +98,8 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 				}
 
 				//Informing my neighbors
-				for( i = North ; i <= West ; i++ ) {
-				p2p = smartBlock->getInterface( (NeighborDirection)i );
+				for( i = NeighborDirection::North ; i <= NeighborDirection::West ; i++ ) {
+				p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
 					if( p2p->connectedInterface ) {
 						if( p2p != recv_message->destinationInterface ) {
 							time_offset += 10000 + (rand() % 25) * 2000;
@@ -109,7 +109,7 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 					}
 				}
 			}
-			else if( recv_message->destinationInterface == smartBlock->getInterface( East ) || recv_message->destinationInterface == smartBlock->getInterface( West )) {
+			else if( recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::East ) || recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::West )) {
 				my_color = recv_message->get_horizontal_color();
 OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_color );
 				horizontal_neighbors_color = recv_message->get_my_color();
@@ -121,8 +121,8 @@ OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_col
 					}
 				}
 				//Informing my neighbors
-				for( i = North ; i <= West ; i++ ) {
-				p2p = smartBlock->getInterface( (NeighborDirection)i );
+				for( i = NeighborDirection::North ; i <= NeighborDirection::West ; i++ ) {
+				p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
 					if( p2p->connectedInterface ) {
 						if( p2p != recv_message->destinationInterface ) {
 							time_offset += 10000 + (rand() % 25) * 2000;

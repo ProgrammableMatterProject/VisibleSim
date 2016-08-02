@@ -20,10 +20,5 @@ BlinkyBlocksBlockCode::BlinkyBlocksBlockCode(BlinkyBlocksBlock *host):BlockCode(
 BlinkyBlocksBlockCode::~BlinkyBlocksBlockCode() {
 	OUTPUT << "BlinkyBlocksBlockCode destructor" << endl;
 }
-/*
-BlinkyBlocksBlockCode* BlinkyBlocksBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
-	return(new BlinkyBlocksBlockCode(host));
-}
-*/
 
 }

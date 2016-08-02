@@ -7,10 +7,11 @@
 
 #ifndef CATOMS2DGLBLOCK_H_
 #define CATOMS2DGLBLOCK_H_
+
 #include <string>
 #include <objLoader.h>
+
 #include "glBlock.h"
-#include "catoms2DCapabilities.h"
 
 namespace Catoms2D {
 class Catoms2DGlBlock:public GlBlock {

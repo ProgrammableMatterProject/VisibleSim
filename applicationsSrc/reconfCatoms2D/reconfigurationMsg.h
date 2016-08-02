@@ -10,6 +10,7 @@
 
 #include <map>
 #include <string>
+#include <memory>
 #include "reconfiguration.h"
 #include "network.h"
 #include "coordinate.h"
@@ -17,11 +18,7 @@
 #define RECONFIGURATION_MSG 15004
 
 class ReconfigurationMsg;
-typedef boost::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
-
-/*class ReconfigurationStartMsg;
-typedef boost::shared_ptr<ReconfigurationStartMsg> ReconfigurationStartMsg_ptr;
-*/
+typedef std::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
 
 class ReconfigurationMsg : public Message {
    public:
@@ -45,7 +42,7 @@ class ReconfigurationMsg : public Message {
 };
 
 class ReconfigurationStateQueryMsg;
-typedef boost::shared_ptr<ReconfigurationStateQueryMsg> ReconfigurationStateQueryMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStateQueryMsg> ReconfigurationStateQueryMsg_ptr;
 
 class ReconfigurationStateQueryMsg : public ReconfigurationMsg {
    public:
@@ -68,7 +65,7 @@ class ReconfigurationStateQueryMsg : public ReconfigurationMsg {
 };
 
 class ReconfigurationStateUpdateMsg;
-typedef boost::shared_ptr<ReconfigurationStateUpdateMsg> ReconfigurationStateUpdateMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStateUpdateMsg> ReconfigurationStateUpdateMsg_ptr;
 
 class ReconfigurationStateUpdateMsg : public ReconfigurationMsg {
    public:
@@ -89,7 +86,7 @@ class ReconfigurationStateUpdateMsg : public ReconfigurationMsg {
 };
 
 class ReconfigurationStartMovingMsg;
-typedef boost::shared_ptr<ReconfigurationStartMovingMsg> ReconfigurationStartMovingMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStartMovingMsg> ReconfigurationStartMovingMsg_ptr;
 
 class ReconfigurationStartMovingMsg : public ReconfigurationMsg {
    public:
@@ -106,7 +103,7 @@ class ReconfigurationStartMovingMsg : public ReconfigurationMsg {
 };
 
 class ReconfigurationStartMovingAckMsg;
-typedef boost::shared_ptr<ReconfigurationStartMovingAckMsg> ReconfigurationStartMovingAckMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStartMovingAckMsg> ReconfigurationStartMovingAckMsg_ptr;
 
 class ReconfigurationStartMovingAckMsg : public ReconfigurationMsg {
    public:
@@ -124,7 +121,7 @@ class ReconfigurationStartMovingAckMsg : public ReconfigurationMsg {
 
 
 class ReconfigurationStopMovingMsg;
-typedef boost::shared_ptr<ReconfigurationStopMovingMsg> ReconfigurationStopMovingMsg_ptr;
+typedef std::shared_ptr<ReconfigurationStopMovingMsg> ReconfigurationStopMovingMsg_ptr;
 
 class ReconfigurationStopMovingMsg : public ReconfigurationMsg {
    public:

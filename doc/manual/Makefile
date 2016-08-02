@@ -10,5 +10,5 @@ manual.pdf: manual.tex manual.bib
 clean:
 	rm -f *.toc *.log *.aux *.bbl *.blg *.out *.brf *.synctex.gz
 
-reallyclean: clean
+realclean: clean
 	rm -f manual.pdf

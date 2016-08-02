@@ -1,0 +1,42 @@
+include #include/C3D.meld
+
+type vacant(node, int).
+type linear tap(node).
+type route neighbor(node, node, int).
+type neighborCount(node, int).
+
+type level(node, max int).
+type route bottomNeighbor(node, node).
+type noBottomNeighbor(node).
+type route topNeighbor(node, node).
+type route sideNeighbor(node, node).
+type neighbor-level(node, node, int).
+
+// Bottom
+!neighbor(N, X, bottom8) -o !bottomNeighbor(N, X).
+!neighbor(N, X, bottom9) -o !bottomNeighbor(N, X).
+!neighbor(N, X, bottom10) -o !bottomNeighbor(N, X).
+!neighbor(N, X, bottom11) -o !bottomNeighbor(N, X).
+
+!vacant(N, bottom8), !vacant(N, bottom9), !vacant(N, bottom10), !vacant(N, bottom11) -o !noBottomNeighbor(N).
+
+// Top
+!neighbor(N, X, top2) -o !topNeighbor(N, X).
+!neighbor(N, X, top3) -o !topNeighbor(N, X).
+!neighbor(N, X, top4) -o !topNeighbor(N, X).
+!neighbor(N, X, top5) -o !topNeighbor(N, X).
+
+// Side
+!neighbor(N, X, side0) -o !sideNeighbor(N, X).
+!neighbor(N, X, side1) -o !sideNeighbor(N, X).
+!neighbor(N, X, side6) -o !sideNeighbor(N, X).
+!neighbor(N, X, side7) -o !sideNeighbor(N, X).
+
+!neighbor(A, B, _), !level(A, H) -o !neighbor-level(B, A, H).
+
+!noBottomNeighbor(N) -o !level(N, 0).
+!neighbor-level(N, X, H), !sideNeighbor(N, X) -o !level(N, H).
+!neighbor-level(N, X, BH), !bottomNeighbor(N, X) -o !level(N, BH + 1).
+!topNeighbor(N, X), !neighbor-level(N, X, TH) -o !level(N, TH - 1).
+
+!level(N, Color) -o !setColor2(N, Color).

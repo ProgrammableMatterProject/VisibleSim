@@ -1,0 +1,359 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="12,11" windowSize="1800,900" maxSimulationTime="20mn">
+<camera target="150,137.5,0" directionSpherical="0,38,341" angle="50"/>
+<spotlight target="150,137.5,0" directionSpherical="-30,50,406" angle="45"/>
+<blockList color="0,255,0" blockSize="25.0,25.0,11.0">
+<blocksLine line="5" values="001111100000"/>
+<blocksLine line="4" values="001111100000"/>
+<blocksLine line="3" values="001111100000"/>
+<blocksLine line="2" values="001111100000"/>
+</blockList>
+<targetGrid>
+<targetLine line="8" values="000000111100"/>
+<targetLine line="7" values="000000111100"/>
+<targetLine line="6" values="000000111100"/>
+<targetLine line="5" values="000000111100"/>
+</targetGrid>
+<capabilities>
+
+<capability name="head_Ahead_Train" head="1">
+    <states>
+      8 7 8
+      7 7 5
+      8 0 0
+    </states>
+    <this linkNextPos="0,1" linkPrevPos="2,1"/>
+    <motions>
+      <motion objPath="X" vect="1,0" />
+    </motions>
+</capability>
+
+<capability name="spe1" head="1" end="1">
+    <states>
+      7 5 0
+      7 6 0
+      7 0 0
+    </states>
+    <this linkPrevPos="0,1" />
+    <motions>
+      <motion objPath="WE" time="0" vect="0,1" />
+    </motions>
+</capability>
+
+<capability name="spe2" head="1" end="1">
+    <states>
+      7 5 1
+      7 6 0
+      7 0 0
+    </states>
+    <this linkPrevPos="0,1" />
+    <motions>
+      <motion objPath="WE" time="0" vect="0,1" />
+    </motions>
+</capability>
+
+<capability name="spe3" head="1" end="1">
+    <states>
+      7 5 1
+      7 6 1
+      7 0 0
+    </states>
+    <this linkPrevPos="0,1" linkNextPos="2,1"/>
+    <motions>
+      <motion objPath="WE" time="0" vect="0,1" />
+    </motions>
+</capability>
+
+<capability name="spe4" head="1" end="1">
+    <states>
+      7 5 1
+      7 6 1
+      7 0 1
+    </states>
+    <this linkPrevPos="0,1" linkNextPos="2,1"/>
+    <motions>
+      <motion objPath="WE" time="0" vect="0,1" />
+    </motions>
+</capability>
+
+<capability name="spe5" end="1">
+    <states>
+      0 0 8
+      7 6 1
+      7 0 8
+    </states>
+    <this linkPrevPos="0,1" linkNextPos="2,1"/>
+    <motions>
+      <motion objPath="X" time="0" vect="-1,0" />
+    </motions>
+</capability>
+
+<capability name="end_Train_1" end="1">
+    <states>
+      8 8 3
+      8 6 7
+      8 0 8
+    </states>
+    <this linkPrevPos="2,1" />
+    <motions>
+      <motion objPath="X" vect="1,0"/>
+    </motions>
+  </capability>
+
+<capability name="end_Train_2" end="1">
+    <states>
+      8 3 7
+      3 6 7
+      8 0 0
+    </states>
+    <this linkPrevPos="2,1" />
+    <motions>
+      <motion objPath="X" vect="1,0"/>
+    </motions>
+  </capability>
+
+<capability name="end_Train_3" end="1">
+    <states>
+      8 7 0
+      8 6 7
+      8 0 0
+    </states>
+    <this linkPrevPos="2,1" />
+    <motions>
+      <motion objPath="X" vect="1,0"/>
+    </motions>
+  </capability>
+
+<capability name="end_Train_4" end="1">
+    <states>
+      7 7 7
+      0 6 7
+      0 0 0
+    </states>
+    <this linkPrevPos="2,1" />
+    <motions>
+      <motion objPath="X" vect="1,0"/>
+    </motions>
+</capability>
+
+<capability name="end_Train_5" end="1">
+    <states>
+      0 8 7
+      0 6 7
+      0 0 0
+    </states>
+    <this linkPrevPos="2,1" />
+    <motions>
+      <motion objPath="X" vect="1,0"/>
+    </motions>
+  </capability>
+
+
+<capability name="head_Turn_Left" head="1">
+    <states>
+      7 5 0
+      7 7 0
+      0 0 8
+   </states>
+    <this linkNextPos="0,1" linkPrevPos="1,2" isAngle="1" unlockPath="WS"/>
+    <motions>
+      <motion objPath="X" vect="0,1"/>
+    </motions>
+</capability>
+
+<capability name="Ahead_Train" >
+    <states>
+      8 3 8
+      7 7 7
+      8 0 8
+    </states>
+    <this linkPrevPos="2,1" linkNextPos="0,1" />
+    <motions>
+      <motion objPath="X" vect="1,0" />
+    </motions>
+  </capability>
+
+<capability name="Ahead_Train_2" >
+    <states>
+      8 7 8
+      7 7 7
+      8 0 8
+    </states>
+    <this linkPrevPos="2,1" linkNextPos="0,1" />
+    <motions>
+      <motion objPath="X" vect="1,0" />
+    </motions>
+  </capability>
+
+<capability name="trnL_1">
+    <states>
+      3 7 8
+      7 7 0
+      8 0 8
+    </states>
+    <this linkPrevPos="1,2" linkNextPos="0,1" isAngle="1" unlockPath="WS" />
+    <motions>
+      <motion objPath="X" vect="0,1"/>
+    </motions>
+  </capability>
+
+<capability name="trnL_2">
+    <states>
+      7 7 0
+      7 7 0
+      8 0 8
+    </states>
+    <this linkPrevPos="1,2" linkNextPos="0,1" isAngle="1" unlockPath="WS" />
+    <motions>
+      <motion objPath="X" vect="0,1"/>
+    </motions>
+</capability>
+
+<capability name="trnL_3">
+    <states>
+      7 7 7
+      7 7 0
+      8 0 8
+    </states>
+    <this linkPrevPos="1,2" linkNextPos="0,1" isAngle="1" unlockPath="WS" />
+    <motions>
+      <motion objPath="X" vect="0,1"/>
+    </motions>
+  </capability>
+
+<capability name="trnR_1">
+    <states>
+      3 3 3
+      7 7 3
+      0 7 3
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+</capability>
+
+<capability name="trnR_2">
+    <states>
+      3 3 3
+      7 7 3
+      0 7 7
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+</capability>
+
+<capability name="trnR_3">
+    <states>
+      3 3 3
+      3 7 7
+      7 7 0
+    </states>
+    <this linkPrevPos="2,1" linkNextPos="1,0" isAngle="1" unlockPath="NWWSSE" />
+    <motions>
+      <motion objPath="X" vect="1,0"/>
+    </motions>
+</capability>
+
+<capability name="trnR_4">
+    <states>
+      3 3 7
+      3 7 7
+      7 7 0
+    </states>
+    <this linkPrevPos="2,1" linkNextPos="1,0" isAngle="1" unlockPath="NWWSSE" />
+    <motions>
+      <motion objPath="X" vect="1,0"/>
+    </motions>
+  </capability>
+
+<capability name="trnR_5">
+    <states>
+      3 3 3
+      7 7 7
+      0 7 7
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+</capability>
+
+<capability name="trnR_6">
+    <states>
+      3 3 7
+      7 7 7
+      0 7 7
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+  </capability>
+
+<capability name="trnR_7">
+    <states>
+      3 7 7
+      7 7 7
+      0 7 7
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+</capability>
+
+<capability name="trnR_8">
+    <states>
+      7 7 7
+      7 7 7
+      0 7 7
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+  </capability>
+
+<capability name="head_trnR" head="1">
+    <states>
+      3 3 3
+      7 7 3
+      0 5 3
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+</capability>
+
+
+<capability name="head_trnR1" head="1">
+    <states>
+      3 3 3
+      7 7 7
+      0 5 7
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+  </capability>
+
+<capability name="head_trnR2" head="1">
+    <states>
+      7 3 3
+      7 7 7
+      0 5 7
+    </states>
+    <this linkPrevPos="1,0" linkNextPos="0,1" isAngle="1" unlockPath="ENNWWS" />
+    <motions>
+      <motion objPath="X" vect="0,-1"/>
+    </motions>
+  </capability>
+
+</capabilities>
+
+</world>

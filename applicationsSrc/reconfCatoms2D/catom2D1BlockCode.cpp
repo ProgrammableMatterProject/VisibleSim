@@ -10,9 +10,9 @@
 #include "catom2D1BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include "catoms2DEvents.h"
+#include "rotation2DEvents.h"
 //MODIF NICO
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include "reconfigurationMsg.h"
 #include "reconfCatoms2DEvents.h"
@@ -39,7 +39,7 @@ using namespace Catoms2D;
 //#define RECONFIGURATION_DEBUG
 
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
-  scheduler = Catoms2D::getScheduler();
+  scheduler = getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
   geoTest = false;
   map = new Map(host);
@@ -83,7 +83,7 @@ void Catoms2D1BlockCode::startup() {
 #ifdef CENTRALIZED_COMP
   if (catom2D->blockId == 1) {
     centralized_reconfiguration();
-    //Catoms2DMove mv(Catoms2DWorld::getWorld()->getBlockById(5),Catoms2DMove::ROTATE_CW);
+    //Rotation2DMove mv(Catoms2DWorld::getWorld()->getBlockById(5),Rotation2DMove::ROTATE_CW);
     //catom2D->startMove(mv);
   }
 #else
@@ -125,7 +125,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   stringstream info;
   switch (pev->eventType) {
   case EVENT_NI_RECEIVE: {
-    MessagePtr message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+    MessagePtr message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
     P2PNetworkInterface * recv_interface = message->destinationInterface;
     switch(message->type) {
     case GO_MAP_MSG:
@@ -238,7 +238,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
     break;
   case  EVENT_TUPLE_QUERY_RESPONSE: {
-    /*ContextTuple *tuple = (boost::static_pointer_cast<TupleQueryResponseEvent>(pev))->getTuple();
+    /*ContextTuple *tuple = (std::static_pointer_cast<TupleQueryResponseEvent>(pev))->getTuple();
       if (tuple == NULL) {
       cout << "not found" << endl;
       } else  {

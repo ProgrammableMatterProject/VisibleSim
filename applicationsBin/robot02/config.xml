@@ -1,17 +1,10 @@
 <?xml version="1.0" standalone="no" ?>
 
-<!-- to disable debugging mode
-<vm serverport="5000" vmPath="/home/ubuntu/Bureau/CMU/meld/meld" programPath="/home/ubuntu/Bureau/CMU/meld/examples/ends.m"  />
-<vm serverport="5000" vmPath="/home/ubuntu/Bureau/CMU/meld/meld" programPath="/home/ubuntu/Bureau/CMU/meld/examples/ends.m" debugging="True" />
-<vm serverport="5000" vmPath="VMEmulator" programPath="ends.m" debugging="True" />
--->
-<vm serverport="5000" vmPath="/home/bpiranda/Documents/git-simulateur/meld/meld/meld-bbsim" programPath="./rainbowRetract.m" debugging="False" />
+<world gridSize="10,10,10" windowSize="1800,900">
+	<camera target="50,50,50" directionSpherical="0,70,100" angle="45" far="500"/>
+	<spotlight target="50,20,0" directionSpherical="45,60,200" angle="40"/>
 
-<world gridsize="10,10,10" windowSize="1800,900">
-	<camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
-	<spotlight target="200,20,200" directionSpherical="45,60,500" angle="40"/>
-	
-	<blockList color="0,255,0" size="1,1,1" blocksize="40,40,41" >
+	<blockList color="0,255,0" size="1,1,1" blockSize="10,10,10" >
 
 		<block position="5,5,5"/>
 		<block position="5,5,6"/>
@@ -19,26 +12,19 @@
 	<!-- Petite croix: -->
 		<block position="4,5,6"/>
 		<block position="6,5,6"/>
-	<!-- Grande Croix: -->	
+	<!-- Grande Croix: -->
 		<block position="5,5,8"/>
 		<block position="5,5,9"/>
 		<block position="3,5,7"/>
 		<block position="4,5,7"/>
 		<block position="6,5,7"/>
-		<block position="7,5,7"/> 
+		<block position="7,5,7"/>
 	<!-- Back	-->
 		<block position="5,6,5"/>
 		<block position="5,7,5"/>
-		<block position="5,8,5"/> 
-		
+		<block position="5,8,5"/>
+
 	</blockList>
-	<scenario autostart="True">
-		<event type="tap" time="1.0" id="4" />
-		<event type="debug" open="true" />
-		<event type="selectBlock" time="1.2" id="2" />	
-		<event type="addBlock" time="5.0" position="5,5,4" />
-		<event type="selectBlock" time="5.2" /> <!-- unselect -->		
-	</scenario>
 </world>
 
 

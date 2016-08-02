@@ -35,11 +35,11 @@ int main(int argc, char **argv) {
 		s->printInfo();
 	}
 	* getSimulator()->printInfo();
-	* BlinkyBlocks::getScheduler()->printInfo();
+	* getScheduler()->printInfo();
 	* BaseSimulator::getWorld()->printInfo();
 	*/
 		
-	BlinkyBlocks::getScheduler()->waitForSchedulerEnd();
+	getScheduler()->waitForSchedulerEnd();
 		
 	if (MeldProcess::MeldProcessVM::isInDebuggingMode()) {
 		MeldProcess::getDebugger()->waitForDebuggerEnd();

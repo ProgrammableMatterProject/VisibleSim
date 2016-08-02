@@ -11,38 +11,36 @@
 #include "buildingBlock.h"
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksGlBlock.h"
-#include "smartBlocksCapabilities.h"
 #include "network.h"
+#include "lattice.h"
 
 namespace SmartBlocks {
-enum NeighborDirection { North=0, East, South, West};
 
 class SmartBlocksBlockCode;
 
 class SmartBlocksBlock : public BaseSimulator::BuildingBlock {
-  P2PNetworkInterface *tabInterfaces[4];
-  SmartBlocksGlBlock *ptrGlBlock;
 public:
-	Color color; // color of the block
-	Vecteur position; // position of the block;
-	bool wellPlaced,_isBorder;
-	SmartBlocksBlockCode *(*buildNewBlockCode)(SmartBlocksBlock*);
+    bool wellPlaced,_isBorder,_isTrain,_isSingle;
+    
+    SmartBlocksBlock(int bId, BlockCodeBuilder bcb);
+    ~SmartBlocksBlock();
+    inline void setDisplayedValue(int n) { static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n); };
+    inline P2PNetworkInterface *getInterface(SLattice::Direction d) { return P2PNetworkInterfaces[d]; }
+    P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos);
+    P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int id);
+    
+    Cell3DPosition getPosition(SLattice::Direction d);
+	int getDirection( P2PNetworkInterface*);
+    inline void getGridPosition(int &x,int &y) { x = int(position[0]); y=int(position[1]); };
 
-	SmartBlocksBlock(int bId, SmartBlocksBlockCode *(*SmartBlocksBlockCodeBuildingFunction)(SmartBlocksBlock *));
-	~SmartBlocksBlock();
-
-	inline SmartBlocksGlBlock* getGlBlock() { return ptrGlBlock; };
-	inline void setGlBlock(SmartBlocksGlBlock*ptr) { ptrGlBlock=ptr;};
-	void setColor(const Color &);
-	void setColor(int num);
-	void setPosition(const Vecteur &p);
-	inline void setDisplayedValue(int n) { ptrGlBlock->setDisplayedValue(n); };
-	inline P2PNetworkInterface *getInterface(NeighborDirection d) { return tabInterfaces[d]; }
-	P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const PointCel &pos);
-	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int id);
-
-	NeighborDirection getDirection( P2PNetworkInterface*);
-	inline void getGridPosition(int &x,int &y) { x = int(position[0]); y=int(position[1]); };
+    /**
+	 * @copydoc BuildingBlock::addNeighbor
+	 */
+	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target);
+	/**
+	 * @copydoc BuildingBlock::removeNeighbor
+	 */
+	virtual void removeNeighbor(P2PNetworkInterface *ni);
 };
 
 }

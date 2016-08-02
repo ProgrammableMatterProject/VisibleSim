@@ -2,7 +2,7 @@
 #define NEIGHBOR_FINDING_H_
 
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "network.h"
 #include "coordinates.h"
 #include "smartBlocksBlock.h"
@@ -14,8 +14,8 @@ using namespace SmartBlocks;
 class RouteSearchMsg;
 class RouteSearchAck;
 
-typedef boost::shared_ptr<RouteSearchMsg> RouteSearchMsgPtr;
-typedef boost::shared_ptr<RouteSearchAck> RouteSearchAckPtr;
+typedef std::shared_ptr<RouteSearchMsg> RouteSearchMsgPtr;
+typedef std::shared_ptr<RouteSearchAck> RouteSearchAckPtr;
 
 const int cNeighborQuantity( 4);
 
@@ -87,9 +87,9 @@ class RouteSearchMsg : public Message {
   //
 public:
   RouteSearchMsg( std::list<Coordinates>,
-                  Coordinates, unsigned int, unsigned int, NeighborDirection,
+                  Coordinates, unsigned int, unsigned int, NeighborDirection::Direction,
                   int origine_id);
-  RouteSearchMsg( const RouteSearchMsgPtr, NeighborDirection);
+  RouteSearchMsg( const RouteSearchMsgPtr, NeighborDirection::Direction);
   ~RouteSearchMsg() {}
 
   std::list<Coordinates> searched_blocks() { return searched_blocks_; }
@@ -109,7 +109,7 @@ class RouteSearchAck : public Message {
   int origine_id_;
 public:
   RouteSearchAck( std::list<BlockAckInfos>, Coordinates, bool,
-                  NeighborDirection, int);
+                  NeighborDirection::Direction, int);
   ~RouteSearchAck() {}
 
   std::list<BlockAckInfos> blocks_infos() { return blocks_infos_; }

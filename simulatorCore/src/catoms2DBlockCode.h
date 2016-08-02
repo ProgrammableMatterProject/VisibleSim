@@ -10,6 +10,7 @@
 
 #include "blockCode.h"
 #include "catoms2DBlock.h"
+#include "network.h"
 
 namespace Catoms2D {
 
@@ -20,10 +21,6 @@ public:
 	
 	Catoms2DBlockCode(Catoms2DBlock *host);
 	virtual ~Catoms2DBlockCode();
-
-	Catoms2DBlockCode* buildNewBlockCode(Catoms2DBlock *host);
-	virtual void processLocalEvent(EventPtr pev) = 0;
-
 };
 
 }

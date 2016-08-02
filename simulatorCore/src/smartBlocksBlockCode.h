@@ -10,19 +10,18 @@
 
 #include "blockCode.h"
 #include "smartBlocksBlock.h"
+#include "network.h"
+
+using namespace BaseSimulator;
 
 namespace SmartBlocks {
 
 class SmartBlocksBlock;
 
-class SmartBlocksBlockCode : public BaseSimulator::BlockCode {
+class SmartBlocksBlockCode : public BlockCode {
 public:
-	SmartBlocksBlockCode(SmartBlocksBlock *host);
-	virtual ~SmartBlocksBlockCode();
-
-	//static SmartBlocksBlockCode* buildNewBlockCode(SmartBlocksBlock *host);
-	virtual void processLocalEvent(EventPtr pev) = 0;
-	SmartBlocksBlockCode* buildNewBlockCode(SmartBlocksBlock *host);
+	SmartBlocksBlockCode(SmartBlocksBlock *host) : BlockCode((BuildingBlock*)host) {};
+	virtual ~SmartBlocksBlockCode() {};
 };
 
 }

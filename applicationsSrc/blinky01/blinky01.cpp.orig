@@ -30,12 +30,12 @@ int main(int argc, char **argv) {
 	}
 
 	getSimulator()->printInfo();
-	BlinkyBlocks::getScheduler()->printInfo();
+	getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 <<<<<<< HEAD
 =======
 	
-	//BlinkyBlocks::getScheduler()->waitForSchedulerEnd();
+	//getScheduler()->waitForSchedulerEnd();
 >>>>>>> 78be2eb410fa6f9a727d234168b7c33b7731fe12
 	deleteSimulator();
 	

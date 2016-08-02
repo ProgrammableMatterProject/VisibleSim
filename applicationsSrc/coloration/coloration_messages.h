@@ -11,12 +11,12 @@
 #define COLOR_MSG	  9006
 
 #include "network.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "colors.h"
 
 class Color_message;
 
-typedef boost::shared_ptr<Color_message> Color_message_ptr;
+typedef std::shared_ptr<Color_message> Color_message_ptr;
 
 
 class Color_message : public Message {

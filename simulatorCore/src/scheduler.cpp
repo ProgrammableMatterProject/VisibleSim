@@ -5,14 +5,17 @@
  *      Author: dom
  */
 
+#include <cstdint>
 #include <iostream>
 #include <stdlib.h>
-#include <stdint.h>
+#include "openglViewer.h"
 #include "assert.h"
 #include "scheduler.h"
 #include "trace.h"
+#include "stdint.h"
 
 using namespace std;
+using namespace BaseSimulator::utils;
 
 namespace BaseSimulator {
 
@@ -33,15 +36,11 @@ Scheduler::Scheduler() {
 		exit(EXIT_FAILURE);
 	}
 
-	currentDate = 0;
-	//maximumDate = 60000000;
-	maximumDate = UINT64_MAX;
-	
-	eventsMapSize = 0;
-	largestEventsMapSize = 0;
+	sem_schedulerStart = new LightweightSemaphore(0);
 }
 
 Scheduler::~Scheduler() {
+	removeKeywords();
 	OUTPUT << "Scheduler destructor" << endl;
 }
 
@@ -51,23 +50,22 @@ bool Scheduler::schedule(Event *ev) {
 
 	EventPtr pev(ev);
 
-	info << "Schedule a " << pev->getEventName() << " (" << ev->id << ")";
-	//MODIF NICO : cette ligne me spam trop l'affichage^^
-	//~ trace(info.str());
+	/*info << "Schedule a " << pev->getEventName() << " (" << ev->id << ")";
+	trace(info.str());*/
 
 	if (pev->date < Scheduler::currentDate) {
-		OUTPUT << "ERROR : An event cannot be schedule in the past !\n";
-	    OUTPUT << "current time : " << Scheduler::currentDate << endl;
-	    OUTPUT << "ev->eventDate : " << pev->date << endl;
-	    OUTPUT << "ev->getEventName() : " << pev->getEventName() << endl;
-	    return(false);
+		OUTPUT << "ERROR : An event cannot be scheduled in the past !\n";
+		OUTPUT << "current time : " << Scheduler::currentDate << endl;
+		OUTPUT << "ev->eventDate : " << pev->date << endl;
+		OUTPUT << "ev->getEventName() : " << pev->getEventName() << endl;
+		return(false);
 	}
 
 	if (pev->date > maximumDate) {
-		OUTPUT << "WARNING : An event should not be schedule beyond the end of simulation date !\n";
+		OUTPUT << "WARNING : An event should not be scheduled beyond the end of simulation date !\n";
 		OUTPUT << "pev->date : " << pev->date << endl;
 		OUTPUT << "maximumDate : " << maximumDate << endl;
-	    return(false);
+		return(false);
 	}
 
 	lock();
@@ -76,7 +74,7 @@ bool Scheduler::schedule(Event *ev) {
 
 	eventsMapSize++;
 
-	if (largestEventsMapSize < eventsMapSize) largestEventsMapSize = eventsMapSize;
+	StatsCollector::getInstance().updateLargestEventsQueueSize(eventsMapSize);
 
 	unlock();
 
@@ -114,11 +112,14 @@ bool Scheduler::scheduleLock(Event *ev) {
 }
 
 void Scheduler::trace(string message,int id,const Color &color) {
-	mutex_trace.lock();
+	if (GlutContext::GUIisEnabled) {
+		mutex_trace.lock();
+		GlutContext::addTrace(message,id,color);
+		mutex_trace.unlock();
+	}
+	
 	OUTPUT.precision(6);
 	OUTPUT << fixed << (double)(currentDate)/1000000 << " #" << id << ": " << message << endl;
-	GlutContext::addTrace(message,id,color);
-	mutex_trace.unlock();
 }
 
 void Scheduler::lock() {
@@ -128,5 +129,63 @@ void Scheduler::lock() {
 void Scheduler::unlock() {
 	mutex_schedule.unlock();
 }
+
+void Scheduler::stop(uint64_t date) {
+	debugDate=date;
+	schedulerMode = SCHEDULER_MODE_DEBUG;
+}
+
+void Scheduler::restart() {
+	schedulerMode = SCHEDULER_MODE_REALTIME;
+	currentDate=debugDate;
+}
+
+bool Scheduler::debug(const string &command,int &id,string &result) {
+	ostringstream sout;
+	sout.str("");
+	if (command=="help") {
+		sout << "run\nstep\n";
+		sout << "get@id:attribute\nAttributes:\n";
+		vector<Keyword*>::const_iterator ci = tabKeywords.begin();
+		while (ci!=tabKeywords.end()) {
+			sout << (*ci)->id;
+			if ((*ci)->comment!="") sout << "// " << (*ci)->comment << "\n";
+			else sout << "\n";
+			ci++;
+		}
+
+		result = sout.str();
+		return false;
+	}
+	if (command=="run") {
+		restart();
+		return false;
+	}
+	if (command=="step") {
+		debugDate = now();
+		restart();
+		return false;
+	}
+/*    if (command.substr(0,3)=="get") {
+// command get@id:attribute
+		size_t found = command.find(":");
+		if (command.at(3)=='@') {
+			if (found!=string::npos) {
+				int idc=atoi(command.substr(4,found-4).c_str());
+				if (idc>0 && idc<getWorld()->getNbBlocks()) {
+					currentId=idc;
+				} else {
+					sout << "Error: bad blockId, use @" << currentId <<" instead.\n";
+				}
+			}
+		}
+		getWorld()->getBlockById(currentId)->getAttribute(command.substr(found+1),sout);
+		//sout << "@" << currentId << ":" << sout.str();
+		result = sout.str();
+		id = currentId;
+	}*/
+	return true;
+}
+
 
 } // BaseSimulator namespace

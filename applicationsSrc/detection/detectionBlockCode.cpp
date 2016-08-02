@@ -11,7 +11,7 @@
 #include "scheduler.h"
 #include "events.h"
 //MODIF NICO
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 using namespace std;
@@ -19,7 +19,7 @@ using namespace SmartBlocks;
 
 DetectionBlockCode::DetectionBlockCode(SmartBlocksBlock *host):SmartBlocksBlockCode(host) {
 	cout << "DetectionBlockCode constructor" << endl;
-	scheduler = SmartBlocks::getScheduler();
+	scheduler = getScheduler();
 	smartBlock = (SmartBlocksBlock*)hostBlock;
 }
 
@@ -47,9 +47,9 @@ void DetectionBlockCode::startup() {
 
 		//I send distance to all of my neighbors
 		uint64_t time_offset;
-		for( int i=North; i<=West; i++)
+		for( int i=NeighborDirection::North; i<=NeighborDirection::West; i++)
 		{
-			P2PNetworkInterface *p2p = smartBlock->getInterface(NeighborDirection(i));
+			P2PNetworkInterface *p2p = smartBlock->getInterface(NeighborDirection::Direction(i));
 			if( p2p->connectedInterface)
 			{
 				time_offset = (i+1)*1000;
@@ -71,7 +71,7 @@ void DetectionBlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
 		case EVENT_NI_RECEIVE:
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 			P2PNetworkInterface * recv_interface = message->destinationInterface;
 
 			switch( message->id) {
@@ -79,7 +79,7 @@ void DetectionBlockCode::processLocalEvent(EventPtr pev) {
 				case DIST_MSG_ID :
 				{
 					//TODO completement experimental, je ne sais pas précisement les effets de cette ligne
-					Dist_message_ptr recv_message = boost::static_pointer_cast<Dist_message>(message);
+					Dist_message_ptr recv_message = std::static_pointer_cast<Dist_message>(message);
 
 					sourceId = recv_message->sourceInterface->hostBlock->blockId;
 					info.str("");
@@ -96,9 +96,10 @@ void DetectionBlockCode::processLocalEvent(EventPtr pev) {
 						distance_dealer = recv_message->destinationInterface;
 
 						//I send my new distance to all my neighbors except to its sender
-						for( i = North; i <= West; i++)
+						for( i = NeighborDirection::North; i <= NeighborDirection::West; i++)
 						{
-							P2PNetworkInterface * p2p = smartBlock->getInterface( NeighborDirection(i));
+							P2PNetworkInterface * p2p =
+								smartBlock->getInterface(NeighborDirection::Direction(i));
 							if( p2p->connectedInterface) {
 								//except to the sender
 								if( p2p != recv_interface) {
@@ -124,9 +125,9 @@ void DetectionBlockCode::processLocalEvent(EventPtr pev) {
 				case ACK_MSG_ID :
 				{
 					//TODO completement experimental, je ne sais pas précisement les effets de cette ligne
-					Ack_message_ptr recv_message = boost::static_pointer_cast<Ack_message>(message);
+					Ack_message_ptr recv_message = std::static_pointer_cast<Ack_message>(message);
 
-					//~ boost::shared_ptr<Ack_message> recv_message = boost::static_pointer_cast<Ack_message>(message);
+					//~ std::shared_ptr<Ack_message> recv_message = std::static_pointer_cast<Ack_message>(message);
 
 					sourceId = message->sourceInterface->hostBlock->blockId;
 					info.str("");
@@ -183,8 +184,8 @@ void DetectionBlockCode::send_ack( unsigned int distance,  P2PNetworkInterface *
 
 bool DetectionBlockCode::i_can_ack(){
 	bool result = true;
-	int i = North;
-	while( i <= West && result == true)
+	int i = NeighborDirection::North;
+	while( i <= NeighborDirection::West && result == true)
 	{
 		 if( isAck[ i] == false){ result = false; }
 		 i++;

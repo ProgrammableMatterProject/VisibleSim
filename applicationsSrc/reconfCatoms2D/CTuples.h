@@ -8,7 +8,7 @@
 
 #define CTUPLES_MSG 15003
 class CTuplesMessage;
-typedef boost::shared_ptr<CTuplesMessage> CTuplesMessage_ptr;
+typedef std::shared_ptr<CTuplesMessage> CTuplesMessage_ptr;
 
 class Catoms2D1BlockCode;
 
@@ -50,7 +50,7 @@ class CTuples {
 
 class CTuplesMessage : public Message {
  public:
-  enum mode_t {OUT = 0, IN, INP, READ, READP, ANSWER};
+  enum mode_t {OUT = $(APPDIR)/0, IN, INP, READ, READP, ANSWER};
  protected:  
   // data information (payload)
   CTuple ctuple;

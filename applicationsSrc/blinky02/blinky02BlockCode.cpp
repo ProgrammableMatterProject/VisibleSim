@@ -10,7 +10,7 @@
 #include "blinky02BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 using namespace std;
@@ -18,7 +18,7 @@ using namespace BlinkyBlocks;
 
 Blinky02BlockCode::Blinky02BlockCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) {
 	cout << "Blinky02BlockCode constructor" << endl;
-	scheduler = BlinkyBlocks::getScheduler();
+	scheduler = getScheduler();
 	block = (BlinkyBlocksBlock*)hostBlock;
 }
 
@@ -69,7 +69,7 @@ void Blinky02BlockCode::processLocalEvent(EventPtr pev) {
 
 	switch (pev->eventType) {
 		case EVENT_NI_RECEIVE:
-			message = (boost::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+			message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 			P2PNetworkInterface * recv_interface = message->destinationInterface;
 
 			switch( message->id) {
@@ -77,7 +77,7 @@ void Blinky02BlockCode::processLocalEvent(EventPtr pev) {
 				case DIST_MSG_ID :
 				{
 					//TODO completement experimental, je ne sais pas précisement les effets de cette ligne
-					Dist_message_ptr recv_message = boost::static_pointer_cast<Dist_message>(message);
+					Dist_message_ptr recv_message = std::static_pointer_cast<Dist_message>(message);
 
 					sourceId = recv_message->sourceInterface->hostBlock->blockId;
 					info.str("");
@@ -122,9 +122,9 @@ void Blinky02BlockCode::processLocalEvent(EventPtr pev) {
 				case ACK_MSG_ID :
 				{
 					//TODO completement experimental, je ne sais pas précisement les effets de cette ligne
-					Ack_message_ptr recv_message = boost::static_pointer_cast<Ack_message>(message);
+					Ack_message_ptr recv_message = std::static_pointer_cast<Ack_message>(message);
 
-					//~ boost::shared_ptr<Ack_message> recv_message = boost::static_pointer_cast<Ack_message>(message);
+					//~ std::shared_ptr<Ack_message> recv_message = std::static_pointer_cast<Ack_message>(message);
 
 					sourceId = message->sourceInterface->hostBlock->blockId;
 					info.str("");

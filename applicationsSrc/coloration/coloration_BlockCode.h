@@ -10,17 +10,15 @@
 
 #include "smartBlocksBlockCode.h"
 #include "smartBlocksSimulator.h"
-#include "smartBlocksScheduler.h"
 #include "smartBlocksBlock.h"
 #include "colors.h"
-
 
 class Coloration_BlockCode : public SmartBlocks::SmartBlocksBlockCode {
 	color my_color;
 	bool colored;
 
 public:
-	SmartBlocks::SmartBlocksScheduler *scheduler;
+	Scheduler *scheduler;
 	SmartBlocks::SmartBlocksBlock *smartBlock;
 
 	Coloration_BlockCode( SmartBlocks::SmartBlocksBlock *host );

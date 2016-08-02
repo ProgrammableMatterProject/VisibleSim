@@ -1,48 +1,50 @@
 /* ConcurrentQueue : Multiple producers, one consumer */
 
 #include <queue>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/condition.hpp>
+#include <mutex>
+#include <condition_variable>
+#include <chrono>
 
 template<typename Elem>
 
 class ConcurrentQueue {
 
 private:
-   std::queue<Elem> queue;
-   mutable boost::mutex m;
-   boost::condition_variable cond;
+    std::queue<Elem> queue;
+    mutable std::mutex m;
+    std::condition_variable cond;
 
 public:
     
-   void push(Elem const& e) {
-      boost::mutex::scoped_lock lock(m);
-      queue.push(e);
-      lock.unlock();
-      cond.notify_all();
-   }
+    void push(Elem const& e) {
+        std::unique_lock<std::mutex> lock(m);
+        queue.push(e);
+        lock.unlock();
+        cond.notify_all();
+    }
 
-   bool empty() const {
-      boost::mutex::scoped_lock lock(m);
-      return queue.empty();
-   }
+    bool empty() const {
+        std::unique_lock<std::mutex> lock(m);
+        return queue.empty();
+    }
 
-   void timed_wait() {
-      boost::system_time const timeout = boost::get_system_time() + boost::posix_time::seconds(1);
-      boost::mutex::scoped_lock lock(m);
-      if(queue.empty()) {
-         cond.timed_wait(lock,timeout);
-      }
-   }
+    void timed_wait() {
+        std::chrono::time_point<std::chrono::system_clock> const timeout = std::chrono::system_clock::now()
+            + std::chrono::seconds(1);
+        std::unique_lock<std::mutex> lock(m);
+        if(queue.empty()) {
+            cond.wait_until(lock,timeout);
+        }
+    }
     
-   Elem& front() {
-      boost::mutex::scoped_lock lock(m);
-      return queue.front();
-   }
+    Elem& front() {
+        std::unique_lock<std::mutex> lock(m);
+        return queue.front();
+    }
 
-   void pop() {
-      boost::mutex::scoped_lock lock(m);
-      queue.pop();
-   }
+    void pop() {
+        std::unique_lock<std::mutex> lock(m);
+        queue.pop();
+    }
 
 };

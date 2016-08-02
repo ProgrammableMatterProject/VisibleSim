@@ -1,0 +1,5 @@
+This is a compiler for the Meld programming language written in Common Lisp.
+
+Please see this paper for more information on Meld:
+A Language for Large Ensembles of Independently Executing Nodes:
+	http://www.cs.cmu.edu/~mpa/papers/ashley-rollman-iclp09.pdf

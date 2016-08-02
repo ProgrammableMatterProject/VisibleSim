@@ -1,39 +1,36 @@
 <?xml version="1.0" standalone="no" ?>
 
-<world gridSize="30,30">  
+<world gridSize="30,1,30">
 <camera target="17,1,0" directionSpherical="5,25,25" angle="45"/>
   <spotlight target="20,18,0" directionSpherical="-45,40,50" angle="30"/>
 
   <!-- x,y -->
-  <blockList color="100,100,100" blocksize="1,5,1">
-    <blocksLine line="0" values="00011111111111"/>
-    <blocksLine line="1" values="0001111111111"/>
-    <blocksLine line="2" values="0001111111111"/>
-    <blocksLine line="3" values="0001111111111"/>
-    <blocksLine line="4" values="0001111111111"/>
-    
-    <blocksLine line= "5" values="00011111"/>
-    <blocksLine line= "6" values="00011111"/>
-    <blocksLine line= "7" values="00011111"/>
-    <blocksLine line= "8" values="00011111"/>
-    <blocksLine line= "9" values="00011111"/>
+  <blockList color="100,100,100" blockSize="1,5,1">
+    <blocksLine plane="0" values="00011111111111"/>
+    <blocksLine plane="1" values="0001111111111"/>
+    <blocksLine plane="2" values="0001111111111"/>
+    <blocksLine plane="3" values="0001111111111"/>
+    <blocksLine plane="4" values="0001111111111"/>
 
-  </blockList>	
+    <blocksLine plane= "5" values="00011111"/>
+    <blocksLine plane= "6" values="00011111"/>
+    <blocksLine plane= "7" values="00011111"/>
+    <blocksLine plane= "8" values="00011111"/>
+    <blocksLine plane= "9" values="00011111"/>
+
+  </blockList>
   <targetGrid>
-    <blocksLine line="0" values="000000000000011111111111"/>
-    <blocksLine line="1" values="000000000000001111111111"/>
-    <blocksLine line="2" values="000000000000001111111111"/>
-    <blocksLine line="3" values="000000000000001111111111"/>
-    <blocksLine line="4" values="000000000000001111111111"/>
-    
-    <blocksLine line= "5" values="00000000000000000011111"/>
-    <blocksLine line= "6" values="00000000000000000011111"/>
-    <blocksLine line= "7" values="00000000000000000011111"/>
-    <blocksLine line= "8" values="00000000000000000011111"/>
-    <blocksLine line= "9" values="00000000000000000011111"/>
+    <targetLine plane="0" values="000000000000011111111111"/>
+    <targetLine plane="1" values="000000000000001111111111"/>
+    <targetLine plane="2" values="000000000000001111111111"/>
+    <targetLine plane="3" values="000000000000001111111111"/>
+    <targetLine plane="4" values="000000000000001111111111"/>
+
+    <targetLine plane= "5" values="00000000000000000011111"/>
+    <targetLine plane= "6" values="00000000000000000011111"/>
+    <targetLine plane= "7" values="00000000000000000011111"/>
+    <targetLine plane= "8" values="00000000000000000011111"/>
+    <targetLine plane= "9" values="00000000000000000011111"/>
   </targetGrid>
-  
+
 </world>
-
-
-
