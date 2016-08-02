@@ -17,7 +17,7 @@
 using namespace std;
 using namespace BlinkyBlocks;
 
-//#define REALISTIC_CLOCK
+#define REALISTIC_CLOCK
 
 #define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
 #define SIMULATION_DURATION_USEC (10*60*1000*1000)
