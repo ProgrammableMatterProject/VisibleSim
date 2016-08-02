@@ -4,8 +4,7 @@
 
 namespace BaseSimulator {
 
-/** \namespace Utils Utilities namespace for providing globally needed constants and helper methods   
- */
+//!< utils Utilities namespace for providing globally needed constants and helper methods   
 namespace utils {
 
 #ifndef M_PI
@@ -22,16 +21,23 @@ const float M_SQRT2_2 = sqrt(2.0) / 2.0; //!< $\frac{\sqrt{2}}{2}$
 const double M_SQRT3_2 = sqrt(3.0) / 2.0; //!< $\frac{\sqrt{3}}{2}$
 const double EPS = 1E-5;                  //!< Epsilon
 
-//!< @brief Return true if file at path fileName exists and can be read, false otherwise
+//!< Return true if file at path fileName exists and can be read, false otherwise
 inline static bool file_exists(const string fileName) {
     std::ifstream infile(fileName);
     return infile.good();
 }
 
-//!< @brief An exception for marking functions as not implemented
+//!< An exception for marking functions as not implemented
 struct NotImplementedException : std::exception {
     const char* what() const noexcept { return "not yet implemented!\n"; }
 };
+
+//!< Swaps the value of two pointers a and b
+inline static void swap(int* a, int* b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
 
 
 } // namespace utils

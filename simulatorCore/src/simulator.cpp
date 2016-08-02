@@ -7,6 +7,10 @@
 
 #include "simulator.h"
 
+#include <algorithm>
+#include <climits>
+#include <unordered_set>
+
 #include "trace.h"
 #include "meldInterpretVM.h"
 #include "meldInterpretScheduler.h"
@@ -29,6 +33,7 @@ Simulator* simulator = NULL;
 Simulator* Simulator::simulator = NULL;
 
 Simulator::Type	Simulator::type = CPP; // CPP code by default
+bool Simulator::regrTesting = false; // No regression testing by default
 
 Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
 	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
@@ -151,6 +156,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 
 	// Configure the simulation world
 	parseWorld(argc, argv);	
+	initializeIDPool();
 	
 	// Instantiate and configure the Scheduler
 	loadScheduler(schedulerMaxDate);
@@ -161,6 +167,159 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseObstacles();
 	parseTarget();
 	// BlockCode::xmlTargetListNode = xmlWorldNode->FirstChild("TargetList");
+}
+
+Simulator::IDScheme Simulator::determineIDScheme() {
+	TiXmlElement* element = xmlBlockListNode->ToElement();
+	const char *attr= element->Attribute("ids");
+	if (attr) {
+		string str(attr);
+
+		if (str.compare("MANUAL") == 0)
+			return MANUAL;
+		else if (str.compare("ORDERED") == 0)
+			return ORDERED;
+		else if (str.compare("RANDOM") == 0)
+			return RANDOM;
+		else if (str.compare("RANDOM_CONTIGUOUS") == 0)
+			return RANDOM_CONTIGUOUS;
+		else {
+			cerr << "error:  unknown ID distribution scheme in configuration file: " << str << endl;
+			cerr << "\texpected values: [ORDERED, MANUAL, RANDOM, RANDOM_CONTIGUOUS]" << endl;
+			throw ParsingException();
+		}
+	}
+
+	return ORDERED;
+}
+
+int Simulator::parseRandomSeed() {
+	TiXmlElement *element = xmlBlockListNode->ToElement();
+	const char *attr = element->Attribute("seed"); 			
+	if (attr) {				// READ Seed
+		try {
+			string str(attr);
+			return stoi(str);
+		} catch (const std::invalid_argument& e) {
+			cerr << "error: invalid seed attribute value in configuration file" << endl;
+			throw ParsingException();				
+		}
+	} else {				// No seed, generate distribution with random seed		   
+		return -1;
+	}
+}
+
+void Simulator::generateRandomIDs(int n, int seed) {
+	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
+	std::uniform_int_distribution<int> dis(1, INT_MAX);
+	   
+	std::ranlux48 generator;
+	if (seed == -1) {
+	    OUTPUT << "Generating fully random ID distribution" <<  endl;
+		std::random_device rd;
+		generator = std::ranlux48(rd());
+	} else {
+	    OUTPUT << "Generating random ID distribution with seed: " << seed <<  endl;
+		generator = std::ranlux48(seed);
+	}	
+
+	// Generate n IDs and add them to the IDPool. If the ID has already been assigned, generate a new one.
+	int id;
+	for (int i = 0; i < n; i++) {
+		do {					// Generate new ID as long as we end up getting duplicate
+			id = dis(generator);
+		} while (!dupCheck.insert(id).second);
+		// There
+		IDPool.push_back(id);
+	}
+}
+
+void Simulator::generateContiguousIDs(int n, int seed) {
+	// Fill vector with n consecutive numbers {1..N}
+	IDPool = vector<int>(n);
+    std::iota(begin(IDPool), end(IDPool), 1);
+
+	// Properly seed random number generator
+	std::mt19937 generator;
+	if (seed == -1) {
+	    OUTPUT << "Generating fully random contiguous ID distribution" <<  endl;
+		generator = std::mt19937(std::random_device{}());
+	} else {
+	    OUTPUT << "Generating random contiguous ID distribution with seed: " << seed <<  endl;
+		generator = std::mt19937(seed);
+	}	
+
+	// Shuffle the elements using the rng
+	std::shuffle(begin(IDPool), end(IDPool), generator);
+}
+
+void Simulator::initializeIDPool() {
+	// Simulator.xmlBlockListNode has to be initialized at this point!
+	
+	// Count number of modules in configuration file
+	int numModules = 0;
+	for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
+		numModules++;
+
+	cerr << "There are " << numModules << " modules in the configuration" << endl;
+	
+	// Initialize capacity of IDPool consequently
+    // IDPool = vector<int>(numModules);
+
+	// Determine what assignment model to use, and initialize IDPool according to it
+	ids = determineIDScheme();
+	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
+	switch (ids) {
+	case ORDERED:
+		for (int id = 1; id <= numModules; id++)
+			IDPool.push_back(id);
+		break;
+	case MANUAL: {
+		int id;
+		TiXmlElement *element;
+		const char *attr;
+		for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block")) {
+			element = child->ToElement();
+		    attr = element->Attribute("id");
+			
+			if (attr) {
+				try {
+					string str(attr);
+					id =  stoi(str);
+				} catch (const std::invalid_argument& e) {
+					cerr << "error: invalid id attribute value in configuration file" << endl;
+					throw ParsingException();				
+				}
+			} else {
+				cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
+				throw ParsingException();
+			}
+
+			// Ensure unicity of the ID, by inserting id to the set and checking that insertion took place
+			//  (insertion does not take place if there is a duplicate, and false is returned)
+			if (dupCheck.insert(id).second)
+				IDPool.push_back(id);
+			else {
+				cerr << "error: duplicate id attribute " << id << " for block node in configuration file while in MANUAL mode"
+					 << endl;
+				throw ParsingException();
+			}
+		}
+		
+	} break;
+	case RANDOM:
+	    generateRandomIDs(numModules, parseRandomSeed());
+		break;
+	case RANDOM_CONTIGUOUS: {
+		generateContiguousIDs(numModules, parseRandomSeed());
+	} break;
+
+	} // switch
+
+	cerr << "{";
+	for (int id : IDPool)
+		cerr << id << ", ";
+	cerr << "}" << endl;
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
@@ -397,6 +556,7 @@ void Simulator::parseBlockList() {
 			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 			OUTPUT << "new default color :" << defaultColor << endl;
 		}
+		
 #if 1
 		/* Reading a catoms */
 		TiXmlNode *block = xmlBlockListNode->FirstChild("block");
@@ -441,7 +601,7 @@ void Simulator::parseBlockList() {
 				OUTPUT << "master : " << master << endl;
 			}
 
-			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
+			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;			
 			loadBlock(element, currentID++, bcb, position, color, master);
 
 			block = block->NextSibling("block");
@@ -493,24 +653,12 @@ void Simulator::parseBlockList() {
 	}
 }
 
-void Simulator::parseTarget() {	
-	TiXmlNode *targetNode = xmlWorldNode->FirstChild("target");
-	TiXmlElement* element;
-	if (targetNode) {
-		element = targetNode->ToElement();
-		const char *attr = element->Attribute("format");
-		if (attr) {
-			string str(attr);
-			if (str.compare("grid") == 0) {
-				BlockCode::target = new TargetGrid(targetNode);
-				cerr << "Parsed TargetGrid:" << endl;
-				cerr << *BlockCode::target << endl;
-			} else if (str.compare("csg") == 0) {
-					throw new NotImplementedException();
-					// BlockCode::target = new TargetCSG(targetNode);
-			}
-		}
-	} 
+void Simulator::parseTarget() {
+	Target::targetListNode = xmlWorldNode->FirstChild("targetList");
+	if (Target::targetListNode) {
+		// Load initial target (BlockCode::target = NULL if no target specified)
+		BlockCode::target = Target::loadNextTarget();
+	}
 }
 
 void Simulator::parseObstacles() {

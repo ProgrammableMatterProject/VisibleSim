@@ -59,7 +59,7 @@ endif
 
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
@@ -68,6 +68,14 @@ CC = g++
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT)
+	@:
+
+test:
+	@../../utilities/blockCodeTest.sh meldbb $(OUT) -c configs/configBB.xml -p outprogs/rainbow.bb -k BB
+	@../../utilities/blockCodeTest.sh meldsb $(OUT) -c configs/configSB.xml -p outprogs/rainbowSB.bb -k SB
+	@../../utilities/blockCodeTest.sh meldrb $(OUT) -c configs/configRB.xml -p outprogs/rainbow.bb -k RB
+	@../../utilities/blockCodeTest.sh meldc2d $(OUT) -c configs/configC2D.xml -p outprogs/rainbowC2D.bb -k C2D 
+	@../../utilities/blockCodeTest.sh meldc3d $(OUT) -c configs/configC3D.xml -p outprogs/rainbowC3D.bb -k C3D
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

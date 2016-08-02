@@ -299,9 +299,8 @@ void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
 }
 
 void BlinkyBlocksWorld::exportConfiguration() {
-	BlinkyBlocksConfigExporter *exporter = new BlinkyBlocksConfigExporter(this);
-	exporter->exportConfiguration();
-	delete exporter;
+	BlinkyBlocksConfigExporter exporter = BlinkyBlocksConfigExporter(this);
+	exporter.exportConfiguration();
 }
 
 /**

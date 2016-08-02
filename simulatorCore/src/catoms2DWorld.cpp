@@ -358,9 +358,8 @@ void Catoms2DWorld::createPopupMenu(int ix, int iy) {
 }
 
 void Catoms2DWorld::exportConfiguration() {
-	Catoms2DConfigExporter *exporter = new Catoms2DConfigExporter(this);
-	exporter->exportConfiguration();
-	delete exporter;
+	Catoms2DConfigExporter exporter = Catoms2DConfigExporter(this);
+	exporter.exportConfiguration();
 }
 
 } // Catoms2D namespace

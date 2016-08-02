@@ -299,13 +299,6 @@ public:
      */
     void stopSimulation();
     /**
-     * @brief Generate an array of n random ids 
-     *
-     * @param n : number of ids to generate
-     * @param ids : array in which the ids will be stored, must have a size >= n
-     */
-    void generateIds(int n, int *ids);
-    /**
      * @brief Increment the maximum block id present the world by one and returns it
      * @return the maximum block id present in the world + 1
      */

@@ -1,3 +1,5 @@
+include #include/smartBlock.meld
+
 type vacant(node, int).
 type linear tap(node).
 type route neighbor(node, node, int).
@@ -10,15 +12,13 @@ type route northNeighbor(node, node).
 type route sideNeighbor(node, node).
 type neighbor-level(node, node, int).
 
-// South
-!neighbor(N, X, 2) -o !southNeighbor(N, X).
-!vacant(N, 2) -o !noSouthNeighbor(N).
+!neighbor(N, X, south) -o !southNeighbor(N, X).
+!vacant(N, south) -o !noSouthNeighbor(N).
 
-// North
-!neighbor(N, X, 0) -o !northNeighbor(N, X).
+!neighbor(N, X, north) -o !northNeighbor(N, X).
 
 // Sides
-!neighbor(N, X, P), P <> 0, P <> 2
+!neighbor(N, X, P), P <> north, P <> south
    -o !sideNeighbor(N, X).
 
 !neighbor(A, B, _), !level(A, H) -o !neighbor-level(B, A, H).

@@ -252,9 +252,8 @@ void RobotBlocksWorld::setSelectedFace(int n) {
 }
 
 void RobotBlocksWorld::exportConfiguration() {
-	RobotBlocksConfigExporter *exporter = new RobotBlocksConfigExporter(this);
-	exporter->exportConfiguration();
-	delete exporter;
+	RobotBlocksConfigExporter exporter = RobotBlocksConfigExporter(this);
+	exporter.exportConfiguration();
 }
 
 } // RobotBlock namespace

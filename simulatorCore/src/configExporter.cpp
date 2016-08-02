@@ -5,6 +5,7 @@
 #include <vector>
 #include <ctime>
 
+#include "simulator.h"
 #include "catoms3DBlock.h"
 #include "catoms2DBlock.h"
 
@@ -20,11 +21,16 @@ namespace BaseSimulator {
  */
 static string generateConfigFilename() {
     std::ostringstream out;
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    
-    out << "config_" << ltm->tm_hour << "_" << ltm->tm_min << "_" << ltm->tm_sec << ".xml";
 
+    if (Simulator::regrTesting)
+        out << ".confCheck" << ".xml";
+    else {
+        time_t now = time(0);
+        tm *ltm = localtime(&now);
+    
+        out << "config_" << ltm->tm_hour << "_" << ltm->tm_min << "_" << ltm->tm_sec << ".xml";
+    }
+    
     return out.str();
 };
 
@@ -97,58 +103,57 @@ void ConfigExporter::exportConfiguration() {
 }
 
 void ConfigExporter::exportCameraAndLightSource() {
-    // Export Camera
-    Camera *camera = world->getCamera();
+    if (GlutContext::GUIisEnabled) {
+        // Export Camera
+        Camera *camera = world->getCamera();
         
-    TiXmlElement *cam = new TiXmlElement("camera");
-    Vector3D target = camera->getTarget();
-    Vector3D ds = camera->getDirectionSpherical();
-    cam->SetAttribute("target", toXmlAttribute(target.pt[0],
-                                               target.pt[1],
-                                               target.pt[2]));
-    cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
-                                                           ds.pt[1],
-                                                           ds.pt[2]));
-    cam->SetAttribute("angle", camera->getAngle());        
-    worldElt->LinkEndChild(cam);
+        TiXmlElement *cam = new TiXmlElement("camera");
+        Vector3D target = camera->getTarget();
+        Vector3D ds = camera->getDirectionSpherical();
+        cam->SetAttribute("target", toXmlAttribute(target.pt[0],
+                                                   target.pt[1],
+                                                   target.pt[2]));
+        cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
+                                                               ds.pt[1],
+                                                               ds.pt[2]));
+        cam->SetAttribute("angle", camera->getAngle());        
+        worldElt->LinkEndChild(cam);
                                   
-    // Export LightSource
-    TiXmlElement *spotlight = new TiXmlElement("spotlight");
-    LightSource *ls = &camera->ls;
-    float *lsTarget = ls->getTarget();
-    ds = ls->getDirectionSpherical();       
+        // Export LightSource
+        TiXmlElement *spotlight = new TiXmlElement("spotlight");
+        LightSource *ls = &camera->ls;
+        float *lsTarget = ls->getTarget();
+        ds = ls->getDirectionSpherical();       
         
-    spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0],
-                                                     lsTarget[1],
-                                                     lsTarget[2]));
-    spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
-                                                                 ds.pt[1],
-                                                                 ds.pt[2]));
-    spotlight->SetAttribute("angle", ls->getAngle());        
-    worldElt->LinkEndChild(spotlight);
-    config->LinkEndChild(worldElt);
+        spotlight->SetAttribute("target", toXmlAttribute(lsTarget[0],
+                                                         lsTarget[1],
+                                                         lsTarget[2]));
+        spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
+                                                                     ds.pt[1],
+                                                                     ds.pt[2]));
+        spotlight->SetAttribute("angle", ls->getAngle());        
+        worldElt->LinkEndChild(spotlight);
+    }
 }
     
 void ConfigExporter::exportWorld() {
     worldElt = new TiXmlElement("world");
     worldElt->SetAttribute("gridSize", toXmlAttribute(world->lattice->gridSize));
-    worldElt->SetAttribute("windowSize",
-                           toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
+    if (GlutContext::GUIisEnabled) {
+        worldElt->SetAttribute("windowSize",
+                               toXmlAttribute(GlutContext::screenWidth, GlutContext::screenHeight));
+    }
+
+    config->LinkEndChild(worldElt);
 }
 
 void ConfigExporter::exportBlockList() {
     blockListElt = new TiXmlElement("blockList");
-    BuildingBlock *bb = world->getSelectedBuildingBlock();
-    float *color = bb->color.rgba;
     Vector3D blockSize = world->lattice->gridScale;
     map<int, BaseSimulator::BuildingBlock*> blocks = world->getMap();
-        
-    blockListElt->SetAttribute("color", toXmlAttribute(color[0] * 255,
-                                                       color[1] * 255,
-                                                       color[2] * 255));
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
 
-    for(auto const& idBBPair : world->getMap()) {
+    for(auto const& idBBPair : blocks) {
         exportBlock(idBBPair.second);
     }
         
@@ -174,11 +179,11 @@ void ConfigExporter::exportBlock(BuildingBlock *bb) {
 }
 
 void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("rotation", ((Catoms3D::Catoms3DBlock *)bb)->orientationCode);
+    bbElt->SetAttribute("rotation", static_cast<Catoms3D::Catoms3DBlock *>(bb)->orientationCode);
 }
 
 void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("angle", ((Catoms2D::Catoms2DBlock *)bb)->angle);    
+    bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);    
 }
 
 }

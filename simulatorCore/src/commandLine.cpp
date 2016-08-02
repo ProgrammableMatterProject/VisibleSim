@@ -3,6 +3,7 @@
 
 #include "commandLine.h"
 #include "openglViewer.h"
+#include "simulator.h"
 
 void CommandLine::help() {
     cerr << "VisibleSim options:" << endl;
@@ -25,6 +26,7 @@ void CommandLine::help() {
          << "\t\t inf : the scheduler will have an infinite duration and can only be stopped by the user" << endl;
     cerr << "\t -m <VMpath>:<VMport>\tpath to the MeldVM directory and port" << endl;
     cerr << "\t -k {\"BB\", \"RB\", \"SB\", \"C2D\", \"C3D\"}\t module type for meld execution" << endl;
+    cerr << "\t -g \t\t\tEnable regression testing (export terminal configuration)" << endl;
     cerr << "\t -h \t\t\thelp" << endl;
     exit(EXIT_SUCCESS);
 }
@@ -129,6 +131,9 @@ void CommandLine::read(int argc, char *argv[]) {
             // Already handled by meld blockCode, nothing to do
             argc--;
             argv++;
+        } break;
+        case 'g' : {
+            Simulator::regrTesting = true;
         } break;
             
             // case 'a' : {

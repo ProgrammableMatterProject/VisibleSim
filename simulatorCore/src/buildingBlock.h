@@ -1,8 +1,8 @@
-/*
- * buildingBlock.h
- *
- *  Created on: 22 mars 2013
- *      Author: dom
+/**
+ *  @file buildingBlock.h
+ *  @date 22 mars 2013
+ *  @author: dom
+ *  @brief Defines a an abstract single module of the simulated ensemble
  */
 
 #ifndef BUILDINGBLOCK_H_
@@ -44,15 +44,11 @@ typedef BlockCode *(*BlockCodeBuilder)(BuildingBlock*);
  */
 class BuildingBlock {
 public:
-	//!< Enumeration of possible values for the state of a BuildingBlock. The block is considered alive if its state is >= 2
+	//!< State of a BuildingBlock. The block is considered alive if its state is >= 2
 	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3};
 private:
 	/** 
 	 * \brief state of the block, with atomic access
-	 * Graphical interface and Scheduler can access to the state of
-	 * block. The scheduler only read the state, usually read on int
-	 * can be considered as atomic but it depends on the platform
-	 * architecture. We can also use atomic type (c++11, or boost 1.53)
 	 */
 	std::atomic<State> state;
 protected:

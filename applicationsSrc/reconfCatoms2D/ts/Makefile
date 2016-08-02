@@ -18,6 +18,7 @@ OUT = $(APPDIR)/libTS.a
 TARGETS = test
 
 all: $(TARGETS)
+	@:
 
 %.o: %.cpp
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@

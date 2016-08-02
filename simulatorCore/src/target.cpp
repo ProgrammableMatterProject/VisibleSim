@@ -10,6 +10,38 @@
 
 namespace BaseSimulator {
 
+using namespace BaseSimulator::utils;
+
+TiXmlNode *Target::targetListNode = NULL;
+TiXmlNode *Target::targetNode = NULL;
+
+Target *Target::loadNextTarget() {
+    if (Target::targetListNode) {
+        // Move targetNode pointer to next target (or NULL if there is none)
+        Target::targetNode = targetListNode->IterateChildren(targetNode); 
+
+        if (Target::targetNode) {
+            TiXmlElement* element;
+            if (Target::targetNode) {
+                element = Target::targetNode->ToElement();
+                const char *attr = element->Attribute("format");
+                if (attr) {
+                    string str(attr);
+                    if (str.compare("grid") == 0) {
+                        return new TargetGrid(Target::targetNode);
+                    } else if (str.compare("csg") == 0) {
+                        throw NotImplementedException();
+                        return new TargetCSG(Target::targetNode);
+                    } 
+                }
+            }
+        }
+    }
+
+    return NULL;
+}
+
+
 /************************************************************
  *                         Target
  ************************************************************/
@@ -45,7 +77,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
             position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
         } else {
             cerr << "error: position attribute missing for target cell" << endl;
-            throw new TargetParsingException();
+            throw TargetParsingException();
         }
         
         attr = element->Attribute("color");
@@ -71,7 +103,7 @@ bool TargetGrid::isInTarget(const Cell3DPosition &pos) {
 const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) {
     if (!isInTarget(pos)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
-        throw new InvalidPositionException();
+        throw InvalidPositionException();
     }
                 
     return tCells[pos];
@@ -93,11 +125,11 @@ void TargetGrid::print(ostream& where) const {
 
 
 bool TargetCSG::isInTarget(const Cell3DPosition &pos) {
-    throw new utils::NotImplementedException();
+    throw utils::NotImplementedException();
 }
 
 const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
-    throw new utils::NotImplementedException();
+    throw utils::NotImplementedException();
 }
 
 } // namespace BaseSimulator

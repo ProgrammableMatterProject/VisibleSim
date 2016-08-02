@@ -62,3 +62,5 @@ applications*/*
 doc/xml/
 doc/html/
 
+
+utilities/LMParser/LMParser

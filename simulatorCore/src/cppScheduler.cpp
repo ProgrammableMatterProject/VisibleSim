@@ -13,6 +13,8 @@
 #include "buildingBlock.h"
 #include "blockCode.h"
 #include "trace.h"
+#include "world.h"
+#include "simulator.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -142,6 +144,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 	StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
 	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
+	// if simulation is a regression testing run, export configuration before leaving
+	if (Simulator::regrTesting)
+		getWorld()->exportConfiguration();
+	
 	// if autoStop is enabled, terminate simulation
 	if (willAutoStop())
 		glutLeaveMainLoop();

@@ -51,6 +51,8 @@ private:
     // Time
     uint64_t simulatedElapsedTime = 0; //!< Duration of simulation in discrete simulator time
     double realElapsedTime = 0; //!< Duration of simulation in real time
+
+    inline double computeEventPerSec() const {  return realElapsedTime ? eventsProcessed / realElapsedTime : 0; };
 public:
     //!< Increments processed message count by 1
     inline void incMsgCount() { messagesProcessed++; };

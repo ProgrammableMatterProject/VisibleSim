@@ -32,6 +32,10 @@ extern Simulator *simulator;
 class Simulator {
 public:
 	enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
+	enum IDScheme {ORDERED = 0, MANUAL, RANDOM, RANDOM_CONTIGUOUS};
+
+	static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
+	//!< (causes configuration export before simulator termination) 
 
 	static Simulator* getSimulator() {
 		assert(simulator != NULL);
@@ -65,6 +69,13 @@ public:
 	void startSimulation(void);
 
 protected:
+	//<! @brief Exception thrown if an error as occured during parsing
+    struct ParsingException : std::exception {
+        const char* what() const noexcept {
+            return "An error occured during configuration file parsing\n";
+        }
+    };
+
 	static Type type;			//!< Type of simulation, i.e. language of the user program
 	
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
@@ -79,6 +90,8 @@ protected:
 
 	CommandLine cmdLine;		//!< Utility member for accessing command line arguments
 	int schedulerMaxDate = 0;		//!< Maximum simulation date
+	vector<int> IDPool; //!< Vector whose size is the number of blocks in the configuration and that contains blockIds to be assigned to the block, in their order of appearance in the configuration file (by default: {1,2,3,...,n})
+	IDScheme ids = ORDERED; //!< Determines what module ID distribution scheme the simulator is using. ORDERED by default
 	
 	/*! 
 	 *  @brief Identify the type of the simulation (CPP / Meld Process / Meld Interpreter) 
@@ -101,6 +114,45 @@ protected:
 	 */
 	void parseWorld(int argc, char*argv[]);
 
+	/*!
+	 *  @brief Examines the configuration file's blockList attribute and determine the ID distribution scheme to be used
+	 *  @return the enum IDScheme value corresponding to the scheme to be used. ORDERED, if none specified in the configuration.
+	 *  @attention The xmlBlockListNode attribute has to be initialized before calling this function.
+	 */
+	IDScheme determineIDScheme();
+		
+	/*!
+	 *  @brief Initialize the pool of id according to the ID assignment model specified in configuration file
+	 *  If it does not exist, initialize IDPool with with contiguous integers up to N {1,2,3,...,N}
+	 *  @attention The xmlBlockListNode attribute has to be initialized before calling this function.
+	 */
+	void initializeIDPool();
+
+	/*!
+	 *  @brief Initializes IDPool with non-consecutive randomly generated IDs
+	 *  @param n the number of IDs to generate
+	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
+	 *  @attention { INEFFICIENT FOR A VERY LARGE NUMBER OF MODULES! (Since the algorithm has to explicitely check for
+	 *   duplicates, if 99% of all possible IDs have already been assigned, it is going to take close to forever to 
+	 *   generate the remaining IDs) }
+	 */
+	void generateRandomIDs(int n, int seed);
+	
+	/*!
+	 *  @brief Initializes IDPool with consecutive randomly generated IDs
+	 *  @param n the number of IDs to generate
+	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
+	 *  @attention {As opposed to Simulator::generateRandomIDs, this function is safe for a large number of modules}
+	 */
+	void generateContiguousIDs(int n, int seed);
+	
+	/*!
+	 *  @brief Parses the configuration file's blockList attribute for the random seed attribute
+	 *  @return The integer seed specified in the configuration file, or -1 if unspecified
+	 *  @throw ParsingException in case the seed is not a valid integer number
+	 */
+	int parseRandomSeed();
+	
 	/*! @fn loadScheduler(int maximumDate)
 	 *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock
 	 *

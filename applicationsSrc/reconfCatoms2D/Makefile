@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a ts/libTS.a
 CCFLAGS = $(GLOBAL_CCFLAGS) -std=c++1y
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 ts/libTS.a:
 	$(MAKE) -C ts
@@ -32,6 +32,10 @@ ts/libTS.a:
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT) generator
+	@:
+
+test:
+	@../../utilities/blockCodeTest.sh reconfCatoms2D $(OUT)
 
 autoinstall: $(OUT) generator 
 	cp $(OUT) $(APPDIR)

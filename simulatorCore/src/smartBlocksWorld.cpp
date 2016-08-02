@@ -202,9 +202,8 @@ void SmartBlocksWorld::setSelectedFace(int n) {
 }
 
 void SmartBlocksWorld::exportConfiguration() {
-	SmartBlocksConfigExporter *exporter = new SmartBlocksConfigExporter(this);
-	exporter->exportConfiguration();
-	delete exporter;
+	SmartBlocksConfigExporter exporter = SmartBlocksConfigExporter(this);
+	exporter.exportConfiguration();
 }
 
 

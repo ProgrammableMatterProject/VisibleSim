@@ -20,7 +20,7 @@ SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++
 
-.PHONY: clean all
+.PHONY: clean all test
 
 .cpp.o:
 	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
@@ -29,6 +29,10 @@ CC = g++
 	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
 
 all: $(OUT)
+	@:
+
+test:
+	@../../utilities/blockCodeTest.sh ABCcenterC2D $(OUT)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
