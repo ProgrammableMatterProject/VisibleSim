@@ -56,7 +56,7 @@ public:
   virtual ~QClock() {};
 
   virtual uint64_t getTime(uint64_t simTime);
-  virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+  virtual uint64_t getSimulationTime(uint64_t localTime);
 };
 
 /**
@@ -114,7 +114,7 @@ public:
   ~GNoiseQClock();
 
   uint64_t getTime(uint64_t simTime);
-  uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+  uint64_t getSimulationTime(uint64_t localTime);
 
  protected:
    /**
@@ -169,13 +169,21 @@ public:
   ~DNoiseQClock();
 
   uint64_t getTime(uint64_t simTime);
-  uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+  uint64_t getSimulationTime(uint64_t localTime);
 
   /**
    * @brief Load the noise signal data from files.
    * @para files path to noise signal files.
    */ 
   static void loadNoiseData(vector<string> &files);
+
+  /**
+   * @brief Create a DNoiseQClock that simulates the XMEGA_RTC_OSC1K_CRC 
+   * hardware clock. XMEGA_RTC_OSC1K_CRC: Calibrated RC Oscillator, 1 ms 
+   * 1% accuracy (10 000 ppm) at 3V and 25°C.
+   * @para seed seed use to randomly select the noise signal
+   */ 
+  static DNoiseQClock* createXMEGA_RTC_OSC1K_CRC(uint64_t seed);
 };
  
 }

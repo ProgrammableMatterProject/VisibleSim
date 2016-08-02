@@ -3,11 +3,13 @@
 
 using namespace BaseSimulator;
 
-//==================================================================================================
+//#define DEBUG_CLOCK
+
+//==============================================================================
 //
 //          QClock  (class)
 //
-//==================================================================================================
+//==============================================================================
 
 QClock::QClock(double _d, double _y0, double _x0): Clock() {
   d = _d;
@@ -33,7 +35,7 @@ uint64_t QClock::getTime(uint64_t simTime) {
   return localTime;
 }
 
-uint64_t QClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+uint64_t QClock::getSimulationTime(uint64_t localTime) {
   double simTime = 0;
   double delta =  pow(y0,2) - 4 * (1.0/2.0)*d * (x0-(double)localTime);
   if (delta > 0) {
@@ -112,7 +114,7 @@ uint64_t GNoiseQClock::getTime(uint64_t simTime) {
   return (uint64_t)localTime;
 }
 
-uint64_t GNoiseQClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+uint64_t GNoiseQClock::getSimulationTime(uint64_t localTime) {
   double noise_LocalTime = 0;
   double simTime = 0;
     
@@ -209,19 +211,27 @@ DNoiseQClock::~DNoiseQClock() {
   delete noise;
 }
 
-void loadNoiseData(vector<string> &noiseData) {
+void DNoiseQClock::loadNoiseData(vector<string> &noiseData) {
   DClockNoise::loadData(noiseData);
 }
 
 uint64_t DNoiseQClock::getTime(uint64_t simTime) {
-  uint64_t noise_SimTime = noise->getNoise(simTime);
-  uint64_t localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise_SimTime;
+  double noise_SimTime = noise->getNoise(simTime);
+  double localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise_SimTime;
+  localTime = max(0.0,localTime);
+#ifdef DEBUG_CLOCK
+  cout << "----------" << endl;
+  cout << "DNoiseQClock: simTime = " << simTime << endl;
+  cout << "noise = " << noise_SimTime << endl;
+  cout << "localtime = " << (uint64_t) localTime << endl;
+  cout << "----------" << endl;
+#endif
   return localTime;
 }
 
-uint64_t DNoiseQClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+uint64_t DNoiseQClock::getSimulationTime(uint64_t localTime) {
   uint64_t l = localTime;
-  uint64_t s = QClock::getSchedulerTimeForLocalTime(localTime);
+  uint64_t s = QClock::getSimulationTime(localTime);
 
   while (l < localTime) {
     s++;
@@ -239,4 +249,25 @@ uint64_t DNoiseQClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
     }
   }
   return s;
+}
+
+#define XMEGA_RTC_OSC1K_CRC_NB_NOISE 6
+#define XMEGA_RTC_OSC1K_CRC_NOISE_PATH "../../simulatorCore/clockNoise/"
+
+DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(uint64_t seed) {
+  static bool noiseDataLoaded = false;
+  if (!noiseDataLoaded) {
+    vector<string> files;
+    for (int i = 1; i <=  XMEGA_RTC_OSC1K_CRC_NB_NOISE; i++) {
+      stringstream file;
+      file << XMEGA_RTC_OSC1K_CRC_NOISE_PATH << i << ".dat";
+      files.push_back(file.str());
+    }
+    loadNoiseData(files);
+    noiseDataLoaded = true;
+  }
+  // us (4h long experiment)
+  double mean[2] = {7.132315*pow(10,-14), 0.9911011};
+  double sd[2] = {5.349995*pow(10,-14), 0.002114563};
+  return new DNoiseQClock(mean,sd,seed);
 }

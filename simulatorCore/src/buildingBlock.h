@@ -221,15 +221,21 @@ public:
 	 */
 	void setClock(Clock *c);
 	/**
-	 * @brief Returns the local time of the block according to its internal clock
-	 * @return local time of the block according to its internal clock
+	 * @brief Returns the current local time of the block according to its internal clock
+	 * @return current local time of the block according to its internal clock
 	 */   	
-	uint64_t getTime();
+	uint64_t getLocalTime();
+	/**
+	 * @brief Returns the local time of the block according to its internal clock
+	 * @para simTime simulation time for which this function returns the block clock local time
+	 * @return local time of the block according to its internal clock
+	 */ 
+	uint64_t getLocalTime(uint64_t simTime);
 	/**
 	 * @brief Converts the block's local time into the global time of the simulation and returns it
 	 * @return global time corresponding to the local time in parameter
 	 */   	
-	uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+	uint64_t getSimulationTime(uint64_t localTime);
 
 	/*************************************************
 	 *            MeldInterpreter Functions  

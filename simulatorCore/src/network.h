@@ -115,8 +115,8 @@ public:
 	static void setDefaultDataRate(unsigned int rate) { defaultDataRate = rate; }
 	*/
 	
-	void setDataRate(unsigned int rate) { dataRate = rate; }
-	void setDataRateVariability(unsigned int variability) { dataRateVariability = variability; }
+	void setDataRate(double rate) { dataRate = rate; }
+	void setDataRateVariability(double variability) { dataRateVariability = variability; }
 };
 
 #endif /* NETWORK_H_ */

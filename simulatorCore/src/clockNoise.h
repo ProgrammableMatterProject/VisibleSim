@@ -1,6 +1,5 @@
-
 #ifndef CLOCK_NOISE_H_
-#define CLOCK_NOISE_H
+#define CLOCK_NOISE_H_
 
 #include <cstdint>
 #include <vector>

@@ -198,21 +198,29 @@ void BuildingBlock::setClock(Clock *c) {
   }
   clock = c;
 }
+
+uint64_t BuildingBlock::getLocalTime(uint64_t simTime) {
+  if (clock == NULL) {
+    cerr << "device has no internal clock" << endl;
+    return 0;
+  }
+  return clock->getTime(simTime);
+}
   
-uint64_t BuildingBlock::getTime() {
+uint64_t BuildingBlock::getLocalTime() {
     if (clock == NULL) {
-		cerr << "device has no internal clock" << endl;
-		return 0;
+      cerr << "device has no internal clock" << endl;
+      return 0;
     }
     return clock->getTime();
 }
 
-uint64_t BuildingBlock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+uint64_t BuildingBlock::getSimulationTime(uint64_t localTime) {
     if (clock == NULL) {
-		cerr << "device has no internal clock" << endl;
-		return localTime;
+      cerr << "device has no internal clock" << endl;
+      return localTime;
     }
-    return clock->getSchedulerTimeForLocalTime(localTime);
+    return clock->getSimulationTime(localTime);
 }
 
 /*************************************************
