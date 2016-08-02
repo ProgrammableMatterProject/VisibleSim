@@ -63,10 +63,10 @@ The Makefile in `simulatorCore/src` handles the compilation of the core of Visib
 - obj/, contains all the output `.o` files
 
 In order:
-1. create output directories
-2. dependencies are generated (thanks to `-MT -MMD -MP -MF` CC flags)
-2. module-independent source files are compiled
-3. for each respective module family its specific files are compiled and its library is archived
+1. Create output directories
+2. Dependencies are generated (thanks to `-MT -MMD -MP -MF` CC flags)
+2. Module-independent source files are compiled
+3. For each respective module family its specific files are compiled and its library is archived
 
 ### Block Code Compilation
 Once the core has been compiled, the root Makefile calls the `applicationsSrc` Makefile, whose role is to generate the executables for every block codes that is part of the __SUBDIRS__ variable list. 
@@ -106,7 +106,67 @@ Insightful guidelines for contributing to C++ source code can be found [here](ht
 ## New Features
 
 ### Command Line Interface
-TODO
+#### Usage
+```
+> ./<app> [-c <conf.xml>] [-p <meldProgram.bb> -k <module>] ...
+VisibleSim options:
+	 -f 		full screen
+	 -p <name>	program file (Meld for instance)
+	 -D 		debugging mode (used in Meld only)
+	 -c <name>	xml configuration file
+	 -r 		run realtime mode on startup
+	 -R 		run fastest mode on startup
+	 -x 		terminate simulation when scheduler ends 
+	            (Graphical Mode only)
+	 -t 		terminal mode only (no graphical output)
+	 -s [<maximumDate> | inf] 	
+			    Scheduler mode:	Default, stops when event list is empty
+				maxDate (ms): the scheduler will stop when even list is 
+				              empty, or when the maximum date is reached
+				inf: the scheduler will have an infinite duration 
+					 and can only be stopped by the user
+	 -m <VMpath>:<VMport>	path to the MeldVM directory and port
+	 -k {"BB", "RB", "SB", "C2D", "C3D"} module type for meld execution
+	 -g 		Enable regression testing
+	 -h 	    help
+```
+
+#### Options
+
+##### Full Screen (`-f`)
+Start the VisibleSim graphical window in full screen mode.
+##### Specifying Meld Program (`-p <meldProg.bb>`)
+When using a `meld` application, tells the simulator what Meld program should be executed. `./program.bb` is its default value.
+##### Debugging Mode (`-D`)
+Enable debugger, for step-by-step execution, and interrogating variables. Only available inside `meld` (Process) applications for now. 
+##### Specifying Configuration File (`-c <config.xml>`)
+Tells VisibleSim what XML configuration file should be loaded into the simulation. `./config.xml` by default. Please refer to the appropriate section for details on formatting the configuration file.
+##### Immediate Simulation Start (`[-r | -R]`)
+Enable immediate start of the scheduler when the simulation is started. 
+
+- `-r`: Starts the simulation in `realtime` mode (Slower event processing for viewing)
+- `-R`: Starts the simulation in `fastest` mode (Process events as fast as possible)
+
+If none of these two options is provided on the command line, the user will have to manually press the <kbd>r</kbd> or <kbd>R</kbd> keys to start the simulation.
+##### Simulator Autostop (`-x`)
+Terminates the simulation (_i.e. closes VisibleSim_) when all events have been processed by the scheduler.
+##### Terminal mode (`-t`)
+Runs the simulation without the graphical OpenGL window. It also implicitly includes the `-R` and `-x` options, since the simulation will start right away and stop on scheduler end.
+##### Scheduler Termination Mode (`-s [<maximumDate> | inf]`)
+Configures the conditions for the simulation to end:
+
+- __Default__ (no option specified): simulation will stop when all events have been processed by the scheduler _OR_ when <kbd>q</kbd> is pressed from the simulation window. 
+- __Bounded__ (`-s maxDate`): similar to __default__, but also stop simulation if `maxDate` has been reached. `maxDate` is expressed in milliseconds.
+- __Infinite__ (`-s inf`): simulation continues even though all events have been processed. For now, the scheduler will still stop if the date reaches `UINT64_MAX`, and of course, if the graphical simulation window is closed by the user.
+##### Meld Process I/O Setup (`-m <VMpath>:<VMport>`)
+Only used when running a program in `Meld Process` mode, to specify the location and port of the Meld Process VM, for communicating with VisibleSim.
+##### Specify Modular Meld Target Module  (`-k {"BB", "RB", "SB", "C2D", "C3D"}`)
+This option is only available if running the `applicationsBin/meld/meld` executable (generic `meld` executable for modular robots), and is used for specifying the target block family.
+##### Regression Testing Export (`-g`)
+This option triggers the export of the current configuration at the end of the simulation to an XML file named `./confCheck.xml`. This is especially useful for regression testing of the block codes, which is detailed in its own section.
+##### Help (`-h`)
+Displays the usage message in the terminal.
+
 ### Configuration Files Format
 TODO
 #### Module ID Assignment Scheme
