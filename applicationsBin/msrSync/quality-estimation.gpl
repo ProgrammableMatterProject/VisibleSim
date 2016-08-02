@@ -1,0 +1,21 @@
+set terminal pdf mono size 12.7cm,6.6cm
+
+set output "quality-estimation.pdf"
+
+set mxtics 2
+set mytics 2
+set grid xtics ytics mxtics mytics
+
+#set key inside left top vertical Left reverse enhanced autotitles nobox title "Distance (hops)"
+#set ylabel "Probability"
+#set xlabel "Global time dissemination error (ms)"
+
+set format y "%.0f%%" 
+   
+set xlabel "Distance (hops)"
+set ylabel "Average absolute global time\ndissemination error (ms)"
+
+set format y "%.1f"
+set nokey
+plot [0:20] 'data/summary.dat' using 1:2:5 with yerrorlines title "average"
+
