@@ -23,7 +23,7 @@ public:
 	void processLocalEvent(EventPtr pev);
 	Color getColor(uint64_t time);
 	
-	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* BBCYCLEBLOCKCODE_H_ */

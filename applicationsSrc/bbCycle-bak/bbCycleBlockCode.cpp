@@ -7,21 +7,27 @@
 
 #include <iostream>
 #include <sstream>
-#include <boost/asio.hpp> 
 #include "scheduler.h"
 #include "network.h"
 #include "bbCycleBlockCode.h"
 
 #include "trace.h"
+#include "qclock.h"
 
 using namespace std;
 using namespace BlinkyBlocks;
+
+//#define REALISTIC_CLOCK
 
 #define COLOR_CHANGE_PERIOD_USEC (2*1000*1000)
 #define SIMULATION_DURATION_USEC (10*60*1000*1000)
 
 BbCycleBlockCode::BbCycleBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
 	OUTPUT << "BbCycleBlockCode constructor" << endl;
+#ifdef REALISTIC_CLOCK
+	DNoiseQClock* localClock = DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(host->blockId);
+	host->setClock(localClock);
+#endif
 }
 
 BbCycleBlockCode::~BbCycleBlockCode() {
@@ -34,7 +40,7 @@ void BbCycleBlockCode::init() {
 	
 	uint64_t time = 0;
 	while (time<SIMULATION_DURATION_USEC) {
-		uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
+		uint64_t globalTime =  bb->getSimulationTime(time);
 		Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
 		getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
 		time += COLOR_CHANGE_PERIOD_USEC;
@@ -76,6 +82,6 @@ Color BbCycleBlockCode::getColor(uint64_t time) {
 	return colors[c];
 }
 
-BlinkyBlocks::BlinkyBlocksBlockCode* BbCycleBlockCode::buildNewBlockCode(BlinkyBlocksBlock *host) {
-	return(new BbCycleBlockCode(host));
+BlockCode* BbCycleBlockCode::buildNewBlockCode(BuildingBlock *host) {
+  return(new BbCycleBlockCode((BlinkyBlocksBlock*)host));
 }

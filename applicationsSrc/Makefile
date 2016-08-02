@@ -2,7 +2,7 @@
 # GENERIC BlockCodes
 # SUBDIRS = simpleColorBB simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D
 # MELD BlockCodes
-SUBDIRS = bbCycle msrSync
+SUBDIRS = bbCycle bbCycle-bak msrSync
 # TESTED Legacy codeBlocks
 # SUBDIRS = noneCatoms2D bbCycle robot01 sphereCatoms3D sbReconf smartBlocks1
 # ALL

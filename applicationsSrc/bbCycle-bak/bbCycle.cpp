@@ -31,8 +31,6 @@ int main(int argc, char **argv) {
 	getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 		
-	getScheduler()->waitForSchedulerEnd();
-		
 	deleteSimulator();
 	
 	OUTPUT << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
