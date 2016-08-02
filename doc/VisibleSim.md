@@ -42,11 +42,42 @@ Here is a quick look at the content of each of the main directories from the pro
 ### Source Files
 As mentioned above, the C++ source files for the simulator's core are all stored into the `simulatorCore/src` directory. The `.ccp` file extension is used for implementation files, and `.h` for header files.
 
-### TODO
-
+### Software Architecture 
+TODO
 ## Compilation Workflow
+### Overview
+The compilation process in VisibleSim is based on a recursive approach. The root folder contains the root folder Makefile, and from here the `make` command is passed to Makefiles from sub-directories, along with additional information (flags, variables). 
+### Root Makefile
+The top level Makefile is the one that should receive the original `make` command. It is a bit intricate because in contains a few conditionals, whose need is justified as-follows:
+ 
+- __OS__: We need distinct variables for distinct OS families, because both the manner of including libraries, and their implementations themselves are different hence the potential need for custom compilation and linking flags. Also, even though we recommend using the gcc compiler, OS X users are more likely to be using Clang, which also has its special set of flags.
+- __MELD PROCESS__: Recently, the source code has been updated to use the new features of the C++11 standard. In an effort for better portability, we have replaced the features brought by the `boost` library by their `std` counterpart present in C++11. This has been possible for all features except `asio`, used for interprocess communication with the Meld Virtual Machines. Since it will eventually be entirely replaced by the Meld Interpreter, we decided to exclude the Meld Process sources from the compilation by default (and thus, `boost`). If you want to enable it nonetheless, add the _-DENABLE\_MELDPROCESS_ flag to the _TEMP\_CCFLAGS_ list.
 
-### TODO
+The root makefile can be used to propagate the `test` and `doc` special directives, that will be detailed later. By default, it only compiles the sources from `simulatorCore/src` and all the block codes marked for compilation in the `applicationsSrc` Makefile.
+
+### Core Compilation
+The Makefile in `simulatorCore/src` handles the compilation of the core of VisibleSim, and its output is the following:
+
+- lib/, contains libraries (one per module family), to be used by the user for compiling block codes independently from the simulator's core
+- deps/, contains dependency files for efficiently updating the target if the sources changes
+- obj/, contains all the output `.o` files
+
+In order:
+1. create output directories
+2. dependencies are generated (thanks to `-MT -MMD -MP -MF` CC flags)
+2. module-independent source files are compiled
+3. for each respective module family its specific files are compiled and its library is archived
+
+### Block Code Compilation
+Once the core has been compiled, the root Makefile calls the `applicationsSrc` Makefile, whose role is to generate the executables for every block codes that is part of the __SUBDIRS__ variable list. 
+All it does is to call `make` on the Makefile in each of the subdirectories marked in __SUBDIRS__. 
+
+Alternatively, the user can call `make` directly from the block code directory, if no change has been made to core, since the static libraries are used for linking. 
+
+All the block code Makefiles are identical, except for the following variables that have to be set by the user: _SRCS_, _OUT_, _MODULELIB_. A custom `make test` procedure can also be specified, more on this later.
+
+### VisibleSim Execution Workflow
+TODO
 
 ## Doxygen Documentation
 The source code and API are documented using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
@@ -72,4 +103,30 @@ Use [K&R bracing style](https://en.wikipedia.org/wiki/Indent_style#K.26R_style):
 ### General C++ Style Guide
 Insightful guidelines for contributing to C++ source code can be found [here](https://google.github.io/styleguide/cppguide.html).
 
-## ...
+## New Features
+
+### Command Line Interface
+TODO
+### Configuration Files Format
+TODO
+#### Module ID Assignment Scheme
+### Reconfiguration Targets
+TODO
+### Meld
+TODO
+#### Building
+Inclusions
+#### Running
+### Block Code API
+TODO
+### Automated BlockCode Testing
+TODO
+### Clock
+TODO
+### User Interactions
+#### Generic Menu
+#### C2D Rotations
+#### Tap
+TODO
+### Statistics
+TODO
