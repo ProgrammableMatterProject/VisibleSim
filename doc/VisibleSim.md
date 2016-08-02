@@ -158,6 +158,7 @@ Configures the conditions for the simulation to end:
 - __Default__ (no option specified): simulation will stop when all events have been processed by the scheduler _OR_ when <kbd>q</kbd> is pressed from the simulation window. 
 - __Bounded__ (`-s maxDate`): similar to __default__, but also stop simulation if `maxDate` has been reached. `maxDate` is expressed in milliseconds.
 - __Infinite__ (`-s inf`): simulation continues even though all events have been processed. For now, the scheduler will still stop if the date reaches `UINT64_MAX`, and of course, if the graphical simulation window is closed by the user.
+
 ##### Meld Process I/O Setup (`-m <VMpath>:<VMport>`)
 Only used when running a program in `Meld Process` mode, to specify the location and port of the Meld Process VM, for communicating with VisibleSim.
 ##### Specify Modular Meld Target Module  (`-k {"BB", "RB", "SB", "C2D", "C3D"}`)
