@@ -50,7 +50,7 @@ class CTuples {
 
 class CTuplesMessage : public Message {
  public:
-  enum mode_t {OUT = $(APPDIR)/0, IN, INP, READ, READP, ANSWER};
+  enum mode_t {OUT = 0, IN, INP, READ, READP, ANSWER};
  protected:  
   // data information (payload)
   CTuple ctuple;

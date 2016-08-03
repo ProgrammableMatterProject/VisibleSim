@@ -14,7 +14,6 @@
 #include "events.h"
 #include "reconfiguration.h"
 #include "reconfigurationMsg.h"
-#include "catoms2DMove.h"
 
 //#define RECONFIGURATION_DEBUG
 //#define RECONFIGURATION_MOVES_DEBUG
@@ -382,7 +381,7 @@ int Reconfiguration::advertiseBeforeMoving() {
   
   // send start to move to all neighbors
   for (int i = 0; i < 6; i++) {
-    p2p = catom->getInterface((NeighborDirection::Direction)i);
+    p2p = catom->getInterface(i);
     if(p2p->connectedInterface) {
       msg = new ReconfigurationStartMovingMsg();
       p2p->send(msg);
@@ -394,7 +393,7 @@ int Reconfiguration::advertiseBeforeMoving() {
 
 void Reconfiguration::move() {
   P2PNetworkInterface *pivot = getPivot();
-  Catoms2DMove m((Catoms2DBlock*)pivot->connectedInterface->hostBlock, ROTATION_DIRECTION);
+  Rotation2DMove m((Catoms2DBlock*)pivot->connectedInterface->hostBlock, ROTATION_DIRECTION);
 
   // change map coordinate
   Coordinate p = getCellAfterRotationAround(pivot);
@@ -509,10 +508,10 @@ Coordinate Reconfiguration::getCellAfterRotationAround(P2PNetworkInterface *pivo
   return map->getPosition(cellInt);
 }
 
-Catoms2DMove* Reconfiguration::nextMove() {
+Rotation2DMove* Reconfiguration::nextMove() {
   if (isFree()) {
     Catoms2DBlock* pivot = map->getOnBorderNeighbor(ROTATION_DIRECTION);
-    return new Catoms2DMove(pivot,ROTATION_DIRECTION);
+    return new Rotation2DMove(pivot,ROTATION_DIRECTION);
   }
   return NULL;
 }
@@ -532,8 +531,9 @@ bool Reconfiguration::isDone() {
     Cell3DPosition gridSize = world->lattice->gridSize;
     for (int iy = 0; iy < gridSize[2]; iy++) {
         for (int ix = 0; ix < gridSize[0]; ix++) {
-            if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-                if (!world->lattice->getBlock(Cell3DPosition(ix,0,iy))) {
+	  Cell3DPosition c(ix,0,iy);
+	  if (BlockCode::target->isInTarget(c)) {
+                if (!world->lattice->getBlock(c)) {
                     return false;
                 }
             }

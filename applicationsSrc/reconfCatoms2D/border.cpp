@@ -25,10 +25,10 @@ P2PNetworkInterface* Border::getInterface(Catoms2D::RelativeDirection::Direction
   int cn = catom->nbConsecutiveNeighbors(true);
   
   // pick-up a neighbor of c in the longest sequence of consecutive neighbors
-  for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {
+  for (int i = 0; i < HLattice::Direction::MAX_NB_NEIGHBORS; i++) {
     int n = 0;
     
-    p1 = catom->getInterface((NeighborDirection::Direction)i);
+    p1 = catom->getInterface(i);
     if (!catom->hasANeighbor(p1,false)) {
       continue;
     }

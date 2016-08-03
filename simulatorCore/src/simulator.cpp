@@ -7,7 +7,8 @@
 
 #include "simulator.h"
 
-#include <algorithms>
+#include <algorithm>
+#include <climits>
 #include <unordered_set>
 
 #include "trace.h"

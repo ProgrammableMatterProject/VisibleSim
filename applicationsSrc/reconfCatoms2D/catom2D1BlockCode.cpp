@@ -246,7 +246,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       }*/
   }
     break;
-  case EVENT_MOTION_END: {
+  case  EVENT_ROTATION2D_END: {
     #ifdef RECONFIGURATION_DEBUG
     cout << "@" << catom2D->blockId << " motion end: " << catom2D->position << endl;
     #endif
@@ -257,6 +257,6 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
 }
 
-Catoms2D::Catoms2DBlockCode* Catoms2D1BlockCode::buildNewBlockCode(Catoms2DBlock *host) {
-  return(new Catoms2D1BlockCode(host));
+BlockCode* Catoms2D1BlockCode::buildNewBlockCode(BuildingBlock *host) {
+  return(new Catoms2D1BlockCode((Catoms2DBlock*)host));
 }

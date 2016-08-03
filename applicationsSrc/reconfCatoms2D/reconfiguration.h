@@ -10,6 +10,8 @@
 
 #include <list>
 #include "catoms2DBlock.h"
+#include "rotation2DEvents.h"
+
 #include "network.h"
 #include "map.h"
 #include "border.h"
@@ -66,7 +68,7 @@ private:
    P2PNetworkInterface *canMove(PerimeterCaseState &pcs);
    bool shouldMove(P2PNetworkInterface *pivot, PerimeterCaseState &pcs);
    void forwardStateUpdate(P2PNetworkInterface *p2p, PerimeterCaseState &pcs);
-   Catoms2D::Catoms2DMove* nextMove();
+   Rotation2DMove* nextMove();
 public:
    
    Reconfiguration(Catoms2D::Catoms2DBlock *c, Map *m);

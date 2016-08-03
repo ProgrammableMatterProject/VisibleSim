@@ -132,7 +132,7 @@ bool Map::handleMessage(MessagePtr message) {
 void Map::buildMap() {
   P2PNetworkInterface *p2p;
   for (int i=0; i<6; i++) {
-    p2p = catom2D->getInterface((NeighborDirection::Direction)i);
+    p2p = catom2D->getInterface(i);
     if( (p2p == toHost) || !p2p->connectedInterface) {
       continue;
     }
@@ -194,31 +194,31 @@ Coordinate Map::virtual2Real(Coordinate o, Coordinate p) {
 Coordinate Map::getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PNetworkInterface *it) {
 
   switch(catom2D->getDirection(it)) {
-  case NeighborDirection::BottomLeft:
+  case HLattice::Direction::BottomLeft:
     if ((abs(p.y)%2) == 0) {
       p.x--;
     }
     p.y--;
     break;
-  case NeighborDirection::Left:
+  case HLattice::Direction::Left:
     p.x--;
     break;
-  case NeighborDirection::TopLeft:
+  case HLattice::Direction::TopLeft:
     if ((abs(p.y)%2) == 0) {
       p.x--;
     }
     p.y++;
     break;
-  case NeighborDirection::TopRight:
+  case HLattice::Direction::TopRight:
     if ((abs(p.y)%2) == 1) {
       p.x++;
     }
     p.y++;
     break;
-  case NeighborDirection::Right:
+  case  HLattice::Direction::Right:
     p.x++;
     break;
-  case NeighborDirection::BottomRight:
+  case  HLattice::Direction::BottomRight:
     if ((abs(p.y)%2) == 1) {
       p.x++;
     }
@@ -236,7 +236,7 @@ P2PNetworkInterface* Map::getClosestInterface(Coordinate dest, P2PNetworkInterfa
   P2PNetworkInterface *closest = NULL;
   int minDistance = distance(dest);
   for (int i = 0; i<6; i++) {
-    P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
+    P2PNetworkInterface *it = catom2D->getInterface(i);
     if((it == ignore) || !it->connectedInterface) {
       continue;
     }
@@ -252,7 +252,7 @@ P2PNetworkInterface* Map::getInterface(Coordinate &pos) {
   P2PNetworkInterface *p2p = NULL;
   Coordinate c;
   for (int i = 0; i<6; i++) {
-    p2p = catom2D->getInterface((NeighborDirection::Direction)i);
+    p2p = catom2D->getInterface(i);
     c = getPosition(p2p);
     if (pos == c) {
       return p2p;
@@ -277,7 +277,8 @@ bool Map::areNeighbors(Coordinate p1, Coordinate p2) {
 
 bool Map::isInTarget(Coordinate p) {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
-  return (world->getTargetGrid(p.x,0,p.y) == fullCell);
+  Cell3DPosition c(p.x,0,p.y);
+  return (BlockCode::target->isInTarget(c));
 }
 
 P2PNetworkInterface* Map::getOnBorderNeighborInterface(RelativeDirection::Direction d) {
