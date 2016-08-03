@@ -28,7 +28,7 @@ uint64_t PerfectClock::getTime(uint64_t simTime) {
   return simTime;
 }
   
-uint64_t PerfectClock::getSchedulerTimeForLocalTime(uint64_t localTime) {
+uint64_t PerfectClock::getSimulationTime(uint64_t localTime) {
   return localTime;
 }
  

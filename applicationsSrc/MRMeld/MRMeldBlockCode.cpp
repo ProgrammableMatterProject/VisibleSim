@@ -138,7 +138,7 @@ void MRMeldBlockCode::processLocalEvent(EventPtr pev) {
 	break;
 	case EVENT_SET_COLOR:
 	{
-		bb->getTime();
+		// bb->getTime();
 		//Called by the VM, no need to enqueue things
 		Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
 		bb->setColor(color);

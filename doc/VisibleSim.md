@@ -5,7 +5,7 @@ This technical reference sheet should be used as a starting point for anyone who
 ## Repository Organisation
 ### Project Tree
 The VisibleSim repository is organised as-follows:
-```
+```shell
 .
 +-- applicationsBin/
 |   +-- [BlockCode Applications]
@@ -63,6 +63,7 @@ The Makefile in `simulatorCore/src` handles the compilation of the core of Visib
 - obj/, contains all the output `.o` files
 
 In order:
+
 1. Create output directories
 2. Dependencies are generated (thanks to `-MT -MMD -MP -MF` CC flags)
 2. Module-independent source files are compiled
@@ -93,7 +94,7 @@ The following rules should be taken into account when contributing new source co
 Indentation size is at 4 spaces per logic level. No tabs. No trailing whitespace at the end of a line. Newline characters should be UNIX style (use `\n`, not `\r\n`).
 __Warning__: There is no additional indentation inside a _Namespace_ logical unit.
 
-### Line Length
+### Lines Length
 Lines of codes (LoC) should be kept as short as possible to avoid formatting issues while diff-ing, using split-views, or printing. Ideally, lines of codes should not be longer than __80__ characters, nonetheless, you may sometimes see LoC of up to __100__ characters in VisibleSim. It is highly discouraged to exceed this limit, since it makes code a lot harder to read.
 Hence, please break long conditions after && and || logical operators, and fold long function parameter lists on several lines.
 
@@ -107,7 +108,7 @@ Insightful guidelines for contributing to C++ source code can be found [here](ht
 
 ### Command Line Interface
 #### Usage
-```
+```shell
 > ./<app> [-c <conf.xml>] [-p <meldProgram.bb> -k <module>] ...
 VisibleSim options:
 	 -f 		full screen
@@ -168,11 +169,6 @@ This option triggers the export of the current configuration at the end of the s
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
-### Configuration Files Format
-TODO
-#### Module ID Assignment Scheme
-### Reconfiguration Targets
-TODO
 ### Meld
 TODO
 #### Building
@@ -190,4 +186,133 @@ TODO
 #### Tap
 TODO
 ### Statistics
+TODO
+
+## Configuration Files
+In VisibleSim, a configuration file is a XML file that describes the simulated world. At least the state of the world at the beginning of the simulation has to be described, but thanks to a feature named __targets__, the objective state of the world at certain points in the simulation can also be described. 
+
+### Brief Example 
+```xml
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="10,10,10" windowSize="1024,800">
+  <camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
+  <spotlight target="200,20,200" directionSpherical="45,60,500" angle="40"/>
+  
+  <blockList color="255,255,0">
+    <block position="5,5,5"/>
+    <block position="5,5,6"/>
+    <block position="5,5,7"/>
+    <!-- Small Cross: -->
+    <block position="4,5,6" color="255,0,0"/>
+    <block position="6,5,6" color="255,0,0"/>
+    <!-- Big Cross: -->	
+    <block position="5,5,8" color="0,0,255"/>
+    <block position="5,5,9" color="0,0,255"/>
+    <block position="3,5,7" color="0,0,255"/>
+    <block position="4,5,7" color="0,0,255"/>
+    <block position="6,5,7" color="0,0,255"/>
+    <block position="7,5,7" color="0,0,255"/> 
+    <!-- Tail: -->
+    <block position="5,6,5" color="0,255,255"/>
+    <block position="5,7,5" color="0,255,255"/>
+    <block position="5,8,5" color="0,255,255"/>
+  </blockList>
+</world>
+```
+
+This configuration file would produce the following output if using BlinkyBlocks :
+
+![Sample BlinkyBlocks Configuration](https://i.imgsafe.org/1700a14b52.png "SampleConfiguration")
+
+### XML Attributes
+Every possible configuration file attribute is detailed below, where items marked as "`item`!" are mandatory.
+#### !`XML Declaration`
+```xml
+<?xml version="1.0" standalone="no" ?>
+```
+This line should be included as the first line in any XML file to identify it as such, hence VisibleSim configuration files are no exception.
+#### !`world`
+This is the root element of the configuration, and all other elements are linked to it. It is defined as-follows:
+```xml
+<world gridSize="x,y,z" windowSize="w,h">
+	<!-- Configuration: ... -->
+	<!-- camera -->
+	<!-- spotLight -->
+	<!-- blockList -->
+	<!-- targetList -->
+</world>
+```
+Attributes:
+
+- !`gridSize="x,y,z"`: Size of the lattice in each coordinate (x, y, z).
+- `windowsize="w,h"`: Width and height of the graphical simulation window. _1024x800_ if unspecified, ignored if in _terminal mode_.
+
+#### !`Camera` and !`spotlight`
+These elements respectively describe the initial position and orientation of the graphical window's view and lighting. 
+
+```xml
+<camera target="xtc,ytc,ztc" directionSpherical="rc,θc,φc" angle="αc"/>
+<spotlight target="xts,yts,zts" directionSpherical="rs,θs,φs" angle="αs"/>
+```
+Attributes:
+
+__TODO:__ Need explanations on what are these parameters, and how they can be found.
+
+- !`target="x,y,z"`: Specifies the location of the camera in the simulated world. 
+- !`directionSpherical="r,θ,φ"`: Where (r, θ, φ) are the spherical coordinates of the object's direction.
+- !`angle="α"`: __TODO?__.  Based on observations: Defines how drunk the camera is. 
+
+__N.B.:__ NOT necessary if using  _terminal mode_.
+
+#### !`blockList` 
+
+The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation.
+
+```xml
+<blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" step="sp" seed="sd">
+	<!-- Description of all blocks in simulation -->
+	<block position="x,y,z" color="r,g,b" master="true/false" id="i"/>;
+	<!-- ... -->
+	<blocksLine plane="p" line="l" color="r,g,b" values="00101...1110"/>
+	<!-- ... -->
+</blockList>
+```
+##### Module ID Assignment Schemes
+
+There are two way elements can be used to describe the ensemble, they can be combined:
+
+##### The `block` Element
+Defines a single module and its attributes. 
+```xml
+<block position="x,y,z" color="r,g,b" master="true/false" id="i"/>;
+```
+Attributes:
+
+- !`position="x,y,z"`: The position of the module on the lattice. Has to be unique.
+- `color="r,g,b"`: The color of the module. Set to the `blockList` color attribute if undefined.
+- `master="true/false"`: Indicates if a module has the role of __master__. _false_ if undefined.
+- `id="i"`: Unique identifier of the module. Only used if module assignment scheme is set to manual. 
+
+##### The `blocksLine` Element
+Defines an entire line of modules, but with less control over each module's attributes. 
+```xml
+<blocksLine plane="p" line="l" color="r,g,b" values="ab001...01z"/>
+```
+Attributes:
+
+- !`line="l"`: The line on which the modules should be placed. (_i.e._ the `y` coordinate, `0` if unspecified)
+- !`plane="p"`: The plane on which the modules should be placed. (_i.e._ the `z` coordinate, `0` if unspecified)
+- `color="r,g,b"`: The color of the modules. Set to the `blockList` color attribute if undefined.
+- !`values="ab001...01z"`: Describes the line of modules, with `W` (width of the lattice) binary values, where `0` means an absence of block, and `1` means presence of block. Here, `a` means the cell at position `(0, l, p)` of the lattice, `b`: `(1, l, p)` ... and `z`: `(W - 1, l, p)`.
+
+__Warning:__ if the number of values is not equal to the width of the lattice, the configuration is incorrect.
+
+##### Constraints
+Both description methods are subject to a number of constraints:
+
+- Two modules cannot be placed on the same lattice cell. (i.e. No `block` or `blocksLine` elements should overlap)
+- Every described module needs to have a position. 
+- Two modules cannot have the same ID. 
+
+#### Reconfiguration Targets
 TODO

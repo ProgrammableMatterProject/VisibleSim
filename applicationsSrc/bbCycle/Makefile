@@ -70,8 +70,9 @@ CC = g++
 all: $(OUT)
 	@:
 
-test:				
-	@../../utilities/blockCodeTest.sh bbCycle $(OUT)
+test:
+# Cannot be tested since infinite
+# @../../utilities/blockCodeTest.sh bbCycle $(OUT)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

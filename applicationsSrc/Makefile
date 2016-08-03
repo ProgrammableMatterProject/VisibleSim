@@ -1,10 +1,13 @@
 
 # GENERIC BlockCodes
-SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB 
+SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
+
 # MELD BlockCodes
-SUBDIRS += meld # MRMeld 
+SUBDIRS += meld MRMeld
+
 # TESTED Legacy codeBlocks
-SUBDIRS += noneCatoms2D robot01 sphereCatoms3D sbReconf smartBlocks1 reconfCatoms2D #msrSync bbCycle
+SUBDIRS += noneCatoms2D robot01 sphereCatoms3D sbReconf smartBlocks1 bbCycle bbCycle-bak msrSync reconfCatoms2D
+
 # ALL
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
 

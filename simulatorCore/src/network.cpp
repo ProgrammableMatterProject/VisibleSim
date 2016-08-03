@@ -128,10 +128,8 @@ void P2PNetworkInterface::send() {
 
 	msg = outgoingQueue.front();
 	outgoingQueue.pop_front();
-//	transmissionDuration = (msg->size()*8000000ULL)/dataRate;
-    transmissionDuration = 20;
 
-	rate = dataRate - dataRateVariability + (generator()/(double)RAND_MAX) * 2 * dataRateVariability;
+	rate = dataRate - dataRateVariability + ((double)generator()/(double)generator.max()) * 2 * dataRateVariability;
 	transmissionDuration = (msg->size()*8000000ULL)/rate;
 	messageBeingTransmitted = msg;
 	messageBeingTransmitted->sourceInterface = this;

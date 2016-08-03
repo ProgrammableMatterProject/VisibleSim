@@ -39,8 +39,8 @@ BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
 	
     for (int i = 0; i < SCLattice::MAX_NB_NEIGHBORS; i++) {
 		P2PNetworkInterface *p2p = P2PNetworkInterfaces[i];
-		p2p->setDataRate((dataRateMax+dataRateMin)/2);
-		p2p->setDataRateVariability((dataRateMax-dataRateMin)/2);
+		p2p->setDataRate((dataRateMax+dataRateMin)/2.0);
+		p2p->setDataRateVariability((dataRateMax-dataRateMin)/2.0);
     }
 }
 

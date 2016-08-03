@@ -24,6 +24,11 @@ class Clock {
 public:
 
   /**
+   * @brief Clock default constructor.
+   */
+  Clock() {};
+
+  /**
    * @brief Clock destructor.
    */
   virtual ~Clock() {};
@@ -43,7 +48,7 @@ public:
    * @brief returns the simulator time for the local time in parameter.
    * @para localTime Local time for which the simulator time is requested.
    */
-  virtual uint64_t getSchedulerTimeForLocalTime(uint64_t localTime) = 0;
+  virtual uint64_t getSimulationTime(uint64_t localTime) = 0;
 };
 
 /**
@@ -63,7 +68,7 @@ public:
   ~PerfectClock();
   
   uint64_t getTime(uint64_t simTime);
-  uint64_t getSchedulerTimeForLocalTime(uint64_t localTime);
+  uint64_t getSimulationTime(uint64_t localTime);
 };
 
 
