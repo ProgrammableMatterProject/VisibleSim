@@ -5,7 +5,7 @@ This technical reference sheet should be used as a starting point for anyone who
 ## Repository Organisation
 ### Project Tree
 The VisibleSim repository is organised as-follows:
-```
+```shell
 .
 +-- applicationsBin/
 |   +-- [BlockCode Applications]
@@ -108,7 +108,7 @@ Insightful guidelines for contributing to C++ source code can be found [here](ht
 
 ### Command Line Interface
 #### Usage
-```
+```shell
 > ./<app> [-c <conf.xml>] [-p <meldProgram.bb> -k <module>] ...
 VisibleSim options:
 	 -f 		full screen
@@ -192,7 +192,7 @@ TODO
 In VisibleSim, a configuration file is a XML file that describes the simulated world. At least the state of the world at the beginning of the simulation has to be described, but thanks to a feature named __targets__, the objective state of the world at certain points in the simulation can also be described. 
 
 ### Brief Example 
-```
+```xml
 <?xml version="1.0" standalone="no" ?>
 <world gridSize="10,10,10" windowSize="1024,800">
   <camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
@@ -233,7 +233,7 @@ Every possible configuration file attribute is detailed below, where items marke
 This line should be included as the first line in any XML file to identify it as such, hence VisibleSim configuration files are no exception.
 #### !`world`
 This is the root element of the configuration, and all other elements are linked to it. It is defined as-follows:
-```
+```xml
 <world gridSize="x,y,z" windowSize="w,h">
 	<!-- Configuration: ... -->
 	<!-- camera -->
@@ -250,7 +250,7 @@ Attributes:
 #### !`Camera` and !`spotlight`
 These elements respectively describe the initial position and orientation of the graphical window's view and lighting. 
 
-```
+```xml
 <camera target="xtc,ytc,ztc" directionSpherical="rc,θc,φc" angle="αc"/>
 <spotlight target="xts,yts,zts" directionSpherical="rs,θs,φs" angle="αs"/>
 ```
@@ -268,7 +268,7 @@ __N.B.:__ NOT necessary if using  _terminal mode_.
 
 The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation.
 
-```
+```xml
 <blockList color="255,255,0" ids="RANDOM" step="2" seed="8">
 	<!-- Description of all blocks in simulation -->
 </blockList>
