@@ -63,6 +63,7 @@ The Makefile in `simulatorCore/src` handles the compilation of the core of Visib
 - obj/, contains all the output `.o` files
 
 In order:
+
 1. Create output directories
 2. Dependencies are generated (thanks to `-MT -MMD -MP -MF` CC flags)
 2. Module-independent source files are compiled
@@ -93,7 +94,7 @@ The following rules should be taken into account when contributing new source co
 Indentation size is at 4 spaces per logic level. No tabs. No trailing whitespace at the end of a line. Newline characters should be UNIX style (use `\n`, not `\r\n`).
 __Warning__: There is no additional indentation inside a _Namespace_ logical unit.
 
-### Line Length
+### Lines Length
 Lines of codes (LoC) should be kept as short as possible to avoid formatting issues while diff-ing, using split-views, or printing. Ideally, lines of codes should not be longer than __80__ characters, nonetheless, you may sometimes see LoC of up to __100__ characters in VisibleSim. It is highly discouraged to exceed this limit, since it makes code a lot harder to read.
 Hence, please break long conditions after && and || logical operators, and fold long function parameter lists on several lines.
 
@@ -168,11 +169,6 @@ This option triggers the export of the current configuration at the end of the s
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
-### Configuration Files Format
-TODO
-#### Module ID Assignment Scheme
-### Reconfiguration Targets
-TODO
 ### Meld
 TODO
 #### Building
@@ -190,4 +186,107 @@ TODO
 #### Tap
 TODO
 ### Statistics
+TODO
+
+## Configuration Files
+In VisibleSim, a configuration file is a XML file that describes the simulated world. At least the state of the world at the beginning of the simulation has to be described, but thanks to a feature named __targets__, the objective state of the world at certain points in the simulation can also be described. 
+
+### Brief Example 
+```
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="10,10,10" windowSize="1024,800">
+  <camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
+  <spotlight target="200,20,200" directionSpherical="45,60,500" angle="40"/>
+  
+  <blockList color="255,255,0">
+    <block position="5,5,5"/>
+    <block position="5,5,6"/>
+    <block position="5,5,7"/>
+    <!-- Small Cross: -->
+    <block position="4,5,6" color="255,0,0"/>
+    <block position="6,5,6" color="255,0,0"/>
+    <!-- Big Cross: -->	
+    <block position="5,5,8" color="0,0,255"/>
+    <block position="5,5,9" color="0,0,255"/>
+    <block position="3,5,7" color="0,0,255"/>
+    <block position="4,5,7" color="0,0,255"/>
+    <block position="6,5,7" color="0,0,255"/>
+    <block position="7,5,7" color="0,0,255"/> 
+    <!-- Tail: -->
+    <block position="5,6,5" color="0,255,255"/>
+    <block position="5,7,5" color="0,255,255"/>
+    <block position="5,8,5" color="0,255,255"/>
+  </blockList>
+</world>
+```
+
+This configuration file would produce the following output if using BlinkyBlocks :
+
+![Sample BlinkyBlocks Configuration](https://i.imgsafe.org/1700a14b52.png "SampleConfiguration")
+
+### XML Attributes
+Every possible configuration file attribute is detailed below, where items marked as "`item`!" are mandatory.
+#### !`XML Declaration`
+```xml
+<?xml version="1.0" standalone="no" ?>
+```
+This line should be included as the first line in any XML file to identify it as such, hence VisibleSim configuration files are no exception.
+#### !`world`
+This is the root element of the configuration, and all other elements are linked to it. It is defined as-follows:
+```
+<world gridSize="x,y,z" windowSize="w,h">
+	<!-- Configuration: ... -->
+	<!-- camera -->
+	<!-- spotLight -->
+	<!-- blockList -->
+	<!-- targetList -->
+</world>
+```
+Attributes:
+
+- !`gridSize="x,y,z"`: Size of the lattice in each coordinate (x, y, z).
+- `windowsize="w,h"`: Width and height of the graphical simulation window. _1024x800_ if unspecified, ignored if in _terminal mode_.
+
+#### !`Camera` and !`spotlight`
+These elements respectively describe the initial position and orientation of the graphical window's view and lighting. 
+
+```
+<camera target="xtc,ytc,ztc" directionSpherical="rc,θc,φc" angle="αc"/>
+<spotlight target="xts,yts,zts" directionSpherical="rs,θs,φs" angle="αs"/>
+```
+Attributes:
+
+__TODO:__ Need explanations on what are these parameters, and how they can be found.
+
+- !`target="x,y,z"`: Specifies the location of the camera in the simulated world. 
+- !`directionSpherical="r,θ,φ"`: Where (r, θ, φ) are the spherical coordinates of the object's direction.
+- !`angle="α"`: __TODO?__.  Based on observations: Defines how drunk the camera is. 
+
+__N.B.:__ NOT necessary if using  _terminal mode_.
+
+#### !`blockList` 
+
+The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation.
+
+```
+<blockList color="255,255,0" ids="RANDOM" step="2" seed="8">
+	<!-- Description of all blocks in simulation -->
+</blockList>
+```
+
+There are three ways to describe the ensemble, which can be used interchangeably and combined:
+
+1. Define a single module with the `block` element. 
+2. Define an entire line of modules with the `blocksLine` element. 
+
+However, both are subject to a number of constraints:
+
+- Two modules cannot be placed on the same lattice cell. (i.e. No `block`, `blocksLine`, or `blocksPlane` element should overlap)
+- Every described module needs to have a position. 
+- Two modules cannot have the same ID. ([More on ID assignment](#IDScheme))
+
+
+
+### <a name="IDScheme"></a> Module ID Assignment Scheme
+### Reconfiguration Targets
 TODO
