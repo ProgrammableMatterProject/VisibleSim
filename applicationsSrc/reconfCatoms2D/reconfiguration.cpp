@@ -19,6 +19,8 @@
 //#define RECONFIGURATION_MOVES_DEBUG
 //#define RECONFIGURATION_MSG_DEBUG
 
+#define RECONFIGURATION_WITH_COLOR
+
 using namespace std;
 using namespace Catoms2D;
 
@@ -118,9 +120,17 @@ void Reconfiguration::handleStopMovingEvent() {
   // This module just stops to roll
   // Pivot was:
   P2PNetworkInterface *pivot;
+#ifdef RECONFIGURATION_DEBUG
+  cout << "Stop Moving: computed position " << map->getPosition() << " vs real position" <<
+    "(" << catom->position[0] << "," << catom->position[2] << ")" << endl;
+#endif
   
   pivot = map->getOnBorderNeighborInterface(OPPOSITE_ROTATION_DIRECTION);
 
+  /*if (catom->blockId == 51) {
+    getchar();
+    }*/
+  
   if (pivot == NULL) {
     MY_CERR << "ERROR: ex-pivot NULL!" << endl;
     return;
@@ -347,7 +357,13 @@ bool Reconfiguration::hasConverged() {
     MY_CERR << " has converged!" << endl;
 #endif
     state = GOAL;
+#ifdef RECONFIGURATION_WITH_COLOR
+    Coordinate p = map->getPosition();
+    Cell3DPosition c(p.x,0,p.y); 
+    catom->setColor(BlockCode::target->getTargetColor(c));
+#else
     catom->setColor(GREEN);
+#endif
     return true;
   }
   return false;
@@ -402,7 +418,6 @@ void Reconfiguration::move() {
   // start to move around the pivot
   catom->startMove(m);
 }
-
 
 void Reconfiguration::queryStates() {
   P2PNetworkInterface *pivot = getPivot();
@@ -505,7 +520,8 @@ P2PNetworkInterface* Reconfiguration::getPivot() {
 
 Coordinate Reconfiguration::getCellAfterRotationAround(P2PNetworkInterface *pivot) {
   P2PNetworkInterface *cellInt = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, pivot, false);
-  return map->getPosition(cellInt);
+  Coordinate c = map->getPosition(cellInt);
+  return c;
 }
 
 Rotation2DMove* Reconfiguration::nextMove() {

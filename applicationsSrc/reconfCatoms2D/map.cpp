@@ -38,8 +38,7 @@ void Map::connectToHost() {
     isConnected = true;
     connectedToHost = true;
     toHost = NULL;
-
-    cout << "@" << catom2D->blockId << " is connected to host" << endl;
+    
 #ifdef VIRTUAL_COORDINATES
     // virtual coordinate
     Coordinate c = Coordinate(0,0);
@@ -53,9 +52,11 @@ void Map::connectToHost() {
     ccth.x = 0;
     ccth.y = 0;
 #endif
-
     setPosition(c);
+#ifdef MAP_DEBUG
+    cout << "@" << catom2D->blockId << " at " << c << " is connected to host" << endl;
     catom2D->setColor(RED);
+#endif
     buildMap();
   }
 }
@@ -74,8 +75,8 @@ bool Map::handleMessage(MessagePtr message) {
       Coordinate p;
       p.x = catom2D->position[0];
       p.y = catom2D->position[2];
-      Coordinate real =  real2Virtual(p,ccth);
-      cout << "@" << catom2D->blockId <<  " position " << position << " vs " << real << "(diff: " << position.x - real.x << "," <<  position.y - real.y << ")" << endl;
+      Coordinate real =  real2Virtual(p);
+      cout << "@" << catom2D->blockId <<  " position " << position << " vs " << real << " (diff: " << position.x - real.x << "," <<  position.y - real.y << ")" << endl;
       if( real != position) { // not relevant (odd/even line of the leader)
     catom2D->setColor(BLUE);
       }
@@ -136,6 +137,7 @@ void Map::buildMap() {
     if( (p2p == toHost) || !p2p->connectedInterface) {
       continue;
     }
+    Coordinate c = getPosition(p2p); 
     GoMapMessage * msg = new GoMapMessage(getPosition(p2p));
     p2p->send(msg);
     waiting++;
@@ -157,6 +159,9 @@ Coordinate Map::getPosition() {
 }
 
 Coordinate Map::real2Virtual(Coordinate p) {
+  #ifdef REAL_COORDINATES
+  return p;
+  #endif
   return real2Virtual(ccth,p);
 }
 
@@ -191,8 +196,9 @@ Coordinate Map::virtual2Real(Coordinate o, Coordinate p) {
   return vir;
 }
 
+//#define MY_COUT cout << "@" << catom2D->blockId
 Coordinate Map::getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PNetworkInterface *it) {
-
+  //MY_COUT << " at " << p << " dir: " << catom2D->getDirection(it) << endl;
   switch(catom2D->getDirection(it)) {
   case HLattice::Direction::BottomLeft:
     if ((abs(p.y)%2) == 0) {
@@ -225,6 +231,7 @@ Coordinate Map::getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PN
     p.y--;
     break;
   }
+  //cout << "res: " << p << endl;
   return p;
 }
 
@@ -236,7 +243,7 @@ P2PNetworkInterface* Map::getClosestInterface(Coordinate dest, P2PNetworkInterfa
   P2PNetworkInterface *closest = NULL;
   int minDistance = distance(dest);
   for (int i = 0; i<6; i++) {
-    P2PNetworkInterface *it = catom2D->getInterface(i);
+    P2PNetworkInterface *it = catom2D->getInterface(HLattice::Direction(i));
     if((it == ignore) || !it->connectedInterface) {
       continue;
     }
@@ -252,7 +259,7 @@ P2PNetworkInterface* Map::getInterface(Coordinate &pos) {
   P2PNetworkInterface *p2p = NULL;
   Coordinate c;
   for (int i = 0; i<6; i++) {
-    p2p = catom2D->getInterface(i);
+    p2p = catom2D->getInterface(HLattice::Direction(i));
     c = getPosition(p2p);
     if (pos == c) {
       return p2p;

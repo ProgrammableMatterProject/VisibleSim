@@ -160,14 +160,14 @@ Cell3DPosition HLattice::worldToGridPosition(const Vector3D &pos) {
 
     res.pt[2] = round(pos[2] / (M_SQRT3_2 * gridScale[2]));
     res.pt[1] = 0;              // grid is 2D (x,z)
-    res.pt[0] = (short)((pos[0] / gridScale[0]) - ((int)res.pt[2] % 2) * 0.5);
+    res.pt[0] = round((pos[0] / gridScale[0] - ((int)res.pt[2] % 2) * 0.5));
 
     /*
       cout << "------------computation worldToGridPosition--------------" << endl;
       cout << pos << endl;
       cout << res << endl;
-      cout << "---------------------------------------------------------" << endl;*/
-
+      cout << "---------------------------------------------------------" << endl;
+    */
     return res;
 }
 

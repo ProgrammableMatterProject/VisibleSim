@@ -1,53 +1,32 @@
 <?xml version="1.0" standalone="no" ?>
-<!-- <world gridSize="11,10">
-<camera target="1,1,0" directionSpherical="5,25,25" angle="45"/> -->
+
 <world gridSize="15,1,10">
-<camera target="8,1,0" directionSpherical="5,25,25" angle="45"/>
+  <camera target="8,1,0" directionSpherical="5,25,25" angle="45"/>
   <spotlight target="8,10,0" directionSpherical="-45,40,50" angle="30"/>
-
-  <!-- x,y -->
   <blockList color="100,100,100" blockSize="1,5,1">
-    <!-- x,y
-	 <block position="8,0,0"/>
-	 <block position="7,0,0"/>
-	 <block position="6,0,0"/>
-	 <block position="5,0,0"/>
-	 <block position="4,0,0"/>
-	 <block position="3,0,0"/>
-	 <block position="7,0,1"/>
-	 <block position="6,0,1"/>
-	 <block position="5,0,1"/>
-	 <block position="4,0,1"/> -->
-
     <block position="3,0,0"/>
     <block position="4,0,0"/>
     <block position="5,0,0"/>
     <block position="6,0,0"/>
-
     <block position="3,0,1"/>
     <block position="4,0,1"/>
     <block position="5,0,1"/>
-
     <block position="4,0,2"/>
     <block position="5,0,2"/>
-
     <block position="4,0,3"/>
-
   </blockList>
-  <targetGrid>
-
-    <block position="6,0,0"/>
-    <block position="7,0,0"/>
-    <block position="8,0,0"/>
-    <block position="9,0,0"/>
-
-    <block position="7,0,1"/>
-    <block position="8,0,1"/>
-    <block position="9,0,1"/>
-
-    <block position="8,0,2"/>
-    <block position="9,0,2"/>
-    <block position="1,0,2"/>
-  </targetGrid>
-
+  <targetList>
+    <target format="grid">
+      <cell position="6,0,0"/>
+      <cell position="7,0,0"/>
+      <cell position="8,0,0"/>
+      <cell position="9,0,0"/>
+      <cell position="7,0,1"/>
+      <cell position="8,0,1"/>
+      <cell position="9,0,1"/>
+      <cell position="8,0,2"/>
+      <cell position="9,0,2"/>
+      <cell position="1,0,2"/>
+    </target>
+  </targetList>
 </world>

@@ -19,7 +19,7 @@ using namespace std;
 namespace Catoms2D {
 
 Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb)
-	: BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
+	: BaseSimulator::BuildingBlock(bId, bcb, HLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "Catoms2DBlock constructor" << endl;
 
     angle = 0;
@@ -32,13 +32,13 @@ Catoms2DBlock::~Catoms2DBlock() {
 // PTHY: TODO: Can be genericized in BuildingBlocks
 int Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
     if (!p2p) {
-		return HLattice::Direction(0);
+      return HLattice::Direction(0);
     }
 
     for (int i = 0; i < HLattice::MAX_NB_NEIGHBORS; ++i) {
-		if (getInterface(HLattice::Direction(i)) == p2p) {
-			return HLattice::Direction(i);
-		}
+      if (getInterface(HLattice::Direction(i)) == p2p) {
+	return HLattice::Direction(i);
+      }
     }
     return HLattice::Direction(0);
 }
@@ -47,7 +47,6 @@ int Catoms2DBlock::getDirection(P2PNetworkInterface *p2p) {
 Cell3DPosition Catoms2DBlock::getPosition(HLattice::Direction d) {   
     World *wrl = getWorld();
     vector<Cell3DPosition> nCells = wrl->lattice->getRelativeConnectivity(position);
-    
     return position + nCells[d];
 }
 

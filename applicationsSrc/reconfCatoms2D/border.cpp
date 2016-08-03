@@ -28,7 +28,7 @@ P2PNetworkInterface* Border::getInterface(Catoms2D::RelativeDirection::Direction
   for (int i = 0; i < HLattice::Direction::MAX_NB_NEIGHBORS; i++) {
     int n = 0;
     
-    p1 = catom->getInterface(i);
+    p1 = catom->getInterface(HLattice::Direction(i));
     if (!catom->hasANeighbor(p1,false)) {
       continue;
     }
