@@ -9,3 +9,6 @@
 
 ### Meld Interpreter
 - [ ] Enable Meld action for generic motion events (Translation, Rotation 2D/3D)
+
+### Configuration Files
+- [ ] Camera and Spotlight elements could be automatically deduced from the rest of the data in the configuration file.
