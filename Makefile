@@ -37,7 +37,7 @@ TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 #TEMP_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES -DTEST_DETER"
 
 ifeq ($(OS),Darwin)
-#MacOS
+#MacOS (Assuming you are using the Clang compiler)
 OSX_CCFLAGS = -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
 
 ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
@@ -48,7 +48,7 @@ GLOBAL_LIBS = "-L./ -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework Op
 
 else
 
-#Linux, Solaris, ...
+#Linux, Solaris, ... (gcc)
 ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
