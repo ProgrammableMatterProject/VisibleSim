@@ -269,24 +269,50 @@ __N.B.:__ NOT necessary if using  _terminal mode_.
 The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation.
 
 ```xml
-<blockList color="255,255,0" ids="RANDOM" step="2" seed="8">
+<blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" step="sp" seed="sd">
 	<!-- Description of all blocks in simulation -->
+	<block position="x,y,z" color="r,g,b" master="true/false" id="i"/>;
+	<!-- ... -->
+	<blocksLine plane="p" line="l" color="r,g,b" values="00101...1110"/>
+	<!-- ... -->
 </blockList>
 ```
+##### Module ID Assignment Schemes
 
-There are three ways to describe the ensemble, which can be used interchangeably and combined:
+There are two way elements can be used to describe the ensemble, they can be combined:
 
-1. Define a single module with the `block` element. 
-2. Define an entire line of modules with the `blocksLine` element. 
+##### The `block` Element
+Defines a single module and its attributes. 
+```xml
+<block position="x,y,z" color="r,g,b" master="true/false" id="i"/>;
+```
+Attributes:
 
-However, both are subject to a number of constraints:
+- !`position="x,y,z"`: The position of the module on the lattice. Has to be unique.
+- `color="r,g,b"`: The color of the module. Set to the `blockList` color attribute if undefined.
+- `master="true/false"`: Indicates if a module has the role of __master__. _false_ if undefined.
+- `id="i"`: Unique identifier of the module. Only used if module assignment scheme is set to manual. 
 
-- Two modules cannot be placed on the same lattice cell. (i.e. No `block`, `blocksLine`, or `blocksPlane` element should overlap)
+##### The `blocksLine` Element
+Defines an entire line of modules, but with less control over each module's attributes. 
+```xml
+<blocksLine plane="p" line="l" color="r,g,b" values="ab001...01z"/>
+```
+Attributes:
+
+- !`line="l"`: The line on which the modules should be placed. (_i.e._ the `y` coordinate, `0` if unspecified)
+- !`plane="p"`: The plane on which the modules should be placed. (_i.e._ the `z` coordinate, `0` if unspecified)
+- `color="r,g,b"`: The color of the modules. Set to the `blockList` color attribute if undefined.
+- !`values="ab001...01z"`: Describes the line of modules, with `W` (width of the lattice) binary values, where `0` means an absence of block, and `1` means presence of block. Here, `a` means the cell at position `(0, l, p)` of the lattice, `b`: `(1, l, p)` ... and `z`: `(W - 1, l, p)`.
+
+__Warning:__ if the number of values is not equal to the width of the lattice, the configuration is incorrect.
+
+##### Constraints
+Both description methods are subject to a number of constraints:
+
+- Two modules cannot be placed on the same lattice cell. (i.e. No `block` or `blocksLine` elements should overlap)
 - Every described module needs to have a position. 
-- Two modules cannot have the same ID. ([More on ID assignment](#IDScheme))
+- Two modules cannot have the same ID. 
 
-
-
-### <a name="IDScheme"></a> Module ID Assignment Scheme
-### Reconfiguration Targets
+#### Reconfiguration Targets
 TODO
