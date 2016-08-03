@@ -152,7 +152,7 @@ void MeldBlockCode::processLocalEvent(EventPtr pev) {
 	break;
 	case EVENT_SET_COLOR:
 	{
-		hostBlock->getTime();
+		hostBlock->getLocalTime();
 		//Called by the VM, no need to enqueue things
 		Color color = (std::static_pointer_cast<SetColorEvent>(pev))->color;
 		hostBlock->setColor(color);

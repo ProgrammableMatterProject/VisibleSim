@@ -14,12 +14,17 @@
 #include "msrSyncMessages.h"
 #include "msrSyncEvents.h"
 #include "configStat.h"
-
 #include "trace.h"
 #include <fstream>
 
+#include "qclock.h"
+#include "clockNoise.h"
+#include <cmath>
+
 using namespace std;
 using namespace BlinkyBlocks;
+
+#define MY_COUT cout << "@" << hostBlock->blockId << ": "
 
 #define MASTER_SLAVE
 //#define PEER_TO_PEER
@@ -77,22 +82,22 @@ using namespace BlinkyBlocks;
 #define PRINT_DATA_2_FILE
 #define PRINT_NODE_ID "@" << hostBlock->blockId
 static msrSyncBlockCode* timeMaster = NULL;
-Noise msrSyncBlockCode::noise;
 
-#define GET_GLOBAL_TIME timeMaster->getTime
+#define GET_GLOBAL_TIME timeMaster->getLocalTime
 
 msrSyncBlockCode::msrSyncBlockCode(BuildingBlock *host): BlockCode(host) {
   y0 = 1;
   x0 = 0;
   round = 0;
 
-  // TODO: generator without boost!
-  //generator = boost::rand48(host->blockId);
-  //noiseId = noise.getNoiseId(generator());
+  random_device rd;
+  generator = ranlux48(rd());
+  dis = uniform_int_distribution<>(0, 50 * host->blockId);
   
-  noiseId = 2;
-
-  //cout << "@" << host->blockId << " noiseId: " << noiseId << endl;
+  // set BB clock
+  DNoiseQClock* localClock = DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(host->blockId);
+  host->setClock(localClock);
+  
   OUTPUT << "msrSyncBlockCode constructor" << endl;
 }
 
@@ -110,7 +115,7 @@ void msrSyncBlockCode::init() {
     BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
     time += COLOR_CHANGE_PERIOD_USEC;
     }*/
-  // empty the file if it exists
+  // empty the log files if they exist (for every block)
   if(hostBlock->blockId != 1) {
     ofstream file;
     string name = "data/"+to_string(bb->blockId)+".dat";
@@ -120,9 +125,10 @@ void msrSyncBlockCode::init() {
   
 #ifdef SYNCHRONIZATION
   if(hostBlock->blockId == 1) { // Time leader
-	timeMaster = this;
+    timeMaster = this;
 	// BaseSimulator::getScheduler()->now()
     BaseSimulator::getScheduler()->schedule(new MsrSyncEvent(SIMULATION_START,hostBlock));
+    MY_COUT << "time master" << endl;
   }
 #endif
 }
@@ -136,66 +142,27 @@ void msrSyncBlockCode::startup() {
   init();
 }
 
-noise_t msrSyncBlockCode::getNoise(uint64_t simTime) {
-  return noise.getNoise(noiseId,simTime);
-}
-
 uint64_t msrSyncBlockCode::getLocalTime(bool msResolution = true) {
   uint64_t simTime = BaseSimulator::getScheduler()->now();
   return getLocalTime(simTime,msResolution);
 }
 
 uint64_t msrSyncBlockCode::getLocalTime(uint64_t simTime, bool msResolution = true) {
-  noise_t n = getNoise(simTime);
-  
-  //uint64_t l = hostBlock->getTimeSimResolution(simTime);
-  // Trick just for compilation, not working (I think):
-  uint64_t l = hostBlock->getSchedulerTimeForLocalTime(simTime);
-
-  uint64_t r = l + n;
-  //double r = max((double)l+(double)n,0);
-  if ((n < 0) && (abs(n) > l)) {
-    r = 0;
-  }
+  uint64_t localTime = hostBlock->getLocalTime(simTime);
+  //MY_COUT << "Local Time: " << localTime << endl;
   if (msResolution) {
-    r = r - r%ONE_MILLISECOND;
+    localTime = localTime - localTime%ONE_MILLISECOND;
   }
-  return r;
+  //MY_COUT << "Returned local Time: " << localTime << endl;
+  return localTime;
 }
 
-uint64_t msrSyncBlockCode::getSimTime(uint64_t localTime, uint64_t simTime, uint64_t localDelay) {
-  //uint64_t s = hostBlock->getSchedulerTimeForLocalTime(localTime);
-  //uint64_t s = simTime+delay; // for now, not good...
-  // Cross-multiplication
-  // uint64_t l = localTime + localDelay;
-  //uint64_t s = simTime * ((double) l / (double) localTime);
-  
-  uint64_t localTime2 = localTime + localDelay;
-  //uint64_t s2 = simTime + localDelay;
-
-  // Cross-multiplication to approx. the right results (assume constant noise)
-  uint64_t s2 = simTime * ((double) localTime2 / (double) localTime);
-  uint64_t l2 = getLocalTime(s2,false);
-  
-  while (l2 < localTime2) {
-    s2++;
-    l2 = getLocalTime(s2,false);
-    if (l2 >= localTime2) {
-      return s2;
-    }
-  }
-
-  while(l2 > localTime2) {
-    s2--;
-    l2 = getLocalTime(s2,false);
-    if (l2 < localTime2) {
-      return s2+1;
-    }
-  }
-
-  return s2;
+uint64_t msrSyncBlockCode::getSimTime(uint64_t localTime) {
+  uint64_t simTime = hostBlock->getSimulationTime(localTime);
+  return simTime;
 }
 
+/**** Synchronized clock ****/
 uint64_t msrSyncBlockCode::getTime() {
   return getTime(getLocalTime());
 }
@@ -205,31 +172,25 @@ uint64_t msrSyncBlockCode::getTime(uint64_t localTime) {
 }
 
 uint msrSyncBlockCode::getRandomUint(uint _min, uint _max) {
-  // TODO: random without boost!
-  //uint r = generator();
-
-  uint r = 0;
+  uint r = dis(generator);
   uint bounded_r = r%(_max-_min) + _min;
   return bounded_r;
 }
 
 uint msrSyncBlockCode::getNormalRandomUint(uint m, uint s) {
   unsigned int seed = getLocalTime() * hostBlock->blockId;
-
-  // TODO: random generator without boost!
-  //boost::mt19937 uGenerator(seed);
-  //boost::normal_distribution<double> normalDist(m,s);
-  //boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > generator(uGenerator, normalDist);
-  //return max(0,(int)generator());
-  return 0;
+  mt19937 uGenerator(seed);
+  normal_distribution<double> normalDist(m,s);
+  auto gen = std::bind(normalDist, uGenerator);
+  int v = (int) std::round(gen());
+  return max(0,v);
 }
 
 double msrSyncBlockCode::getRandomDouble() {
-  // TODO: random without boost!
-  //double r = generator();
-  //r = r/(double)generator.max();
-
-  double r = 0;
+  unsigned int seed = getLocalTime() * hostBlock->blockId;
+  mt19937 gen(seed);
+  uniform_real_distribution<> dis(0, 1);
+  double r = dis(generator);
   return r;
 }
 
@@ -254,16 +215,16 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
       info << "MASTER sync " << round;
 #ifdef PRINT_NODE_INFO
       // cout << "MASTER SYNC " << getTime() << endl;
-#endif
+#endif      
       synchronize(NULL,getTime(),1);
       // schedule the next sync round
       if (round < LIMIT_NUM_ROUNDS) {
+	// Should be 
+	//uint64_t nextSync = getSimTime(getLocalTime(false)+SYNC_PERIOD_US);
+	// But this is faster (although a little bit wrong)
 	uint64_t simTime = BaseSimulator::getScheduler()->now();
-	//uint64_t localTime = getLocalTime(false);
-	uint64_t nextSync = simTime + SYNC_PERIOD_US; // a little bit wrong, but faster to simulate! 
-	//uint64_t nextSync = getSimTime(localTime, simTime, SYNC_PERIOD_US);
-	//cout << nextSync << " " << BaseSimulator::getScheduler()->now() << endl;
-	// or based on global time now ? BaseSimulator::getScheduler()->now()+SYNC_PERIOD
+	uint64_t nextSync = simTime + SYNC_PERIOD_US;
+	
 	BaseSimulator::getScheduler()->schedule(new MsrSyncEvent(nextSync,hostBlock));
       }
     }
@@ -298,7 +259,6 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 	  string name = "data/"+to_string(bb->blockId)+".dat";
 	  
 #ifdef DEBUG_PROTOCOL
-	  
 	  double estimationError = (double)realGlobalTime - (double)globalTime;
 	  cout << PRINT_NODE_ID << "reception at " << realTime << ", estimated G: " << globalTime << " vs real global time: " 
 	       << realGlobalTime << endl;
@@ -362,7 +322,6 @@ Color msrSyncBlockCode::getColor(uint64_t time) {
 }
 
 void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t estimatedGlobalTime, uint hop) {
-  
   uint64_t timeOfResidence = 0;
   // processing + interrupt times
   timeOfResidence += TIME_TO_HANDLE_MESSAGE();
@@ -384,7 +343,8 @@ void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t esti
   // timeOfResidence duration, sim scale != module scale
   uint64_t s1 = BaseSimulator::getScheduler()->now();
   uint64_t l1 = getLocalTime(false); // us resolution
-  uint64_t s2 = getSimTime(l1,s1,timeOfResidence);
+  uint64_t s2 = getSimTime(l1+timeOfResidence);
+  //MY_COUT << "Synchronize neighbors at " << s2 << "(now local: " << l1 << ", now sim: " << s1 << ")" << endl;
   uint64_t l2 = getLocalTime(s2,false);
 
 #ifdef DEBUG_PROTOCOL
@@ -414,7 +374,6 @@ void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t esti
        << timeOfResidence << "(" << timeOfResidenceMSResolution << ")" 
        << ",y0=" << y0
        << ",x0= " << x0
-       << ",noise=" << getNoise(s2)
        << ")"
        << " sent at " << s2
        << endl;
@@ -470,7 +429,7 @@ void msrSyncBlockCode::adjust() {
   x0 = yAvg - y0 * xAvg;
 #ifdef DEBUG_PROTOCOL
   if (y0 > 2.0) {
-    cout << PRINT_NODE_ID << "Error: y0 (=" << y0 << ") may be to high ? " << " x0= " << x0 << endl;
+    cout << "Error: y0 (=" << y0 << ") may be to high ? " << " x0= " << x0 << endl;
     for (vector<pair<uint64_t,uint64_t> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
       double x = it->first;
       double y =  it->second;

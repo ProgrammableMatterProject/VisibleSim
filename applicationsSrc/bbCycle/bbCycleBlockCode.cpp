@@ -81,7 +81,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	color = RED;
 	cycle = true;
       }
-      getScheduler()->schedule(new SetColorEvent(bb->getTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
+      getScheduler()->schedule(new SetColorEvent(bb->getLocalTime()+COLOR_CHANGE_PERIOD_USEC+delay,bb,color));
       info << "Setcolor scheduled" << endl;
     }
     break;
@@ -98,7 +98,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 	    received[recvMessage->idSync]=true;
 	    block2Answer=recvInterface;
 	    sendClockToNeighbors(block2Answer,recvMessage->nbhop+1,recvMessage->time,recvMessage->idSync); 	
-	    delay = recvMessage->time - bb->getTime() + 6000*recvMessage->nbhop;  
+	    delay = recvMessage->time - bb->getLocalTime() + 6000*recvMessage->nbhop;  
 	    info<<"synchronized with delay : "<< delay << endl;
 	  }
 	}
@@ -111,9 +111,9 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
   case EVENT_SYNC:
     {
       received[idMessage]=true;
-      sendClockToNeighbors(NULL,1,bb->getTime(),idMessage);
+      sendClockToNeighbors(NULL,1,bb->getLocalTime(),idMessage);
       idMessage++;
-      uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
+      uint64_t nextSync = bb->getLocalTime()+SYNC_PERIOD;
       getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
       info << "scheduled synchro" << endl;
     }

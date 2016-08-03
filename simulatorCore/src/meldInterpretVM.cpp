@@ -93,7 +93,7 @@ MeldInterpretVM::~MeldInterpretVM(){
 
 Time MeldInterpretVM::myGetTime(){
     // simulator time is in us while the unit in the vm is ms.
-    return (Time)(host->getTime()/1000);
+    return (Time)(host->getLocalTime()/1000);
 }
 
 /** Print the content of the newTuples queue */
