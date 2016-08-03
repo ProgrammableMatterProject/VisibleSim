@@ -32,7 +32,7 @@ extern Simulator *simulator;
 class Simulator {
 public:
 	enum Type {CPP = 0, MELDPROCESS = 1, MELDINTERPRET = 2};
-	enum IDScheme {ORDERED = 0, MANUAL, RANDOM, RANDOM_CONTIGUOUS};
+	enum IDScheme {ORDERED = 0, MANUAL, RANDOM};
 
 	static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
 	//!< (causes configuration export before simulator termination) 
@@ -129,22 +129,13 @@ protected:
 	void initializeIDPool();
 
 	/*!
-	 *  @brief Initializes IDPool with non-consecutive randomly generated IDs
+	 *  @brief Initializes IDPool with n ID distanced by step and shuffled
 	 *  @param n the number of IDs to generate
 	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
-	 *  @attention { INEFFICIENT FOR A VERY LARGE NUMBER OF MODULES! (Since the algorithm has to explicitely check for
-	 *   duplicates, if 99% of all possible IDs have already been assigned, it is going to take close to forever to 
-	 *   generate the remaining IDs) }
+	 *  @param step the distance between two consecutive numbers. e.g. If n = 4 and step = 2 then IDPool = {1, 3, 5, 7}
+	 *  @attention The user has to ensure that the generation won't cause any overflow
 	 */
-	void generateRandomIDs(int n, int seed);
-	
-	/*!
-	 *  @brief Initializes IDPool with consecutive randomly generated IDs
-	 *  @param n the number of IDs to generate
-	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
-	 *  @attention {As opposed to Simulator::generateRandomIDs, this function is safe for a large number of modules}
-	 */
-	void generateContiguousIDs(int n, int seed);
+	void generateRandomIDs(const int n, const int seed, const int step);
 	
 	/*!
 	 *  @brief Parses the configuration file's blockList attribute for the random seed attribute
@@ -152,6 +143,13 @@ protected:
 	 *  @throw ParsingException in case the seed is not a valid integer number
 	 */
 	int parseRandomSeed();
+
+	/*!
+	 *  @brief Parses the configuration file's blockList attribute for the random step attribute
+	 *  @return The integer step specified in the configuration file, or 1 if unspecified
+	 *  @throw ParsingException in case the step is not a valid integer number
+	 */
+	int parseRandomStep();
 	
 	/*! @fn loadScheduler(int maximumDate)
 	 *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock

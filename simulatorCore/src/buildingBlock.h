@@ -95,6 +95,13 @@ public:
 	 */
     P2PNetworkInterface *getInterface(int i) { return P2PNetworkInterfaces[i]; }
 	/**
+	 * @brief Getter for a specific P2PNetworkInterface, identified by its direction
+	 * For all blocks that cannot rotate, the direction will always be equal to the index in the P2PNetworkInterfaces array.
+	 * However, for all rotation-enabled blocks, we have to consider the angle as an offset to the index.
+	 * @param direction : Lattice::Direction to which the interface is pointing
+	 * @return A pointer to the P2PNeighborInterface at direction of the block */
+    // virtual P2PNetworkInterface *getInterfaceForDirection(int direction) { return P2PNetworkInterfaces[i]; }
+	/**
 	 * @brief Returns the interface from this block that is connected to block of id destBlockId
 	 * @param destBlockId : id of the block connected to the interface we are looking for
 	 * @return a pointer to the interface connected to the requested block, or NULL

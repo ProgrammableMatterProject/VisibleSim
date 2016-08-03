@@ -166,7 +166,6 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseBlockList();
 	parseObstacles();
 	parseTarget();
-	// BlockCode::xmlTargetListNode = xmlWorldNode->FirstChild("TargetList");
 }
 
 Simulator::IDScheme Simulator::determineIDScheme() {
@@ -181,11 +180,9 @@ Simulator::IDScheme Simulator::determineIDScheme() {
 			return ORDERED;
 		else if (str.compare("RANDOM") == 0)
 			return RANDOM;
-		else if (str.compare("RANDOM_CONTIGUOUS") == 0)
-			return RANDOM_CONTIGUOUS;
 		else {
 			cerr << "error:  unknown ID distribution scheme in configuration file: " << str << endl;
-			cerr << "\texpected values: [ORDERED, MANUAL, RANDOM, RANDOM_CONTIGUOUS]" << endl;
+			cerr << "\texpected values: [ORDERED, MANUAL, RANDOM]" << endl;
 			throw ParsingException();
 		}
 	}
@@ -209,35 +206,44 @@ int Simulator::parseRandomSeed() {
 	}
 }
 
-void Simulator::generateRandomIDs(int n, int seed) {
-	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
-	std::uniform_int_distribution<int> dis(1, INT_MAX);
-	   
-	std::ranlux48 generator;
-	if (seed == -1) {
-	    OUTPUT << "Generating fully random ID distribution" <<  endl;
-		std::random_device rd;
-		generator = std::ranlux48(rd());
-	} else {
-	    OUTPUT << "Generating random ID distribution with seed: " << seed <<  endl;
-		generator = std::ranlux48(seed);
-	}	
-
-	// Generate n IDs and add them to the IDPool. If the ID has already been assigned, generate a new one.
-	int id;
-	for (int i = 0; i < n; i++) {
-		do {					// Generate new ID as long as we end up getting duplicate
-			id = dis(generator);
-		} while (!dupCheck.insert(id).second);
-		// There
-		IDPool.push_back(id);
+int Simulator::parseRandomStep() {
+	TiXmlElement *element = xmlBlockListNode->ToElement();
+	const char *attr = element->Attribute("step");
+	if (attr) {				// READ Step
+		try {
+			string str(attr);
+			return stoi(str);
+		} catch (const std::invalid_argument& e) {
+			cerr << "error: invalid step attribute value in configuration file" << endl;
+			throw ParsingException();				
+		}
+	} else {				// No step, generate distribution with step of one
+		return 1;
 	}
 }
 
-void Simulator::generateContiguousIDs(int n, int seed) {
-	// Fill vector with n consecutive numbers {1..N}
+//!< std::iota does not support a step for filling the container.
+//!< Hence, we use this template wrapper to overload the ++ operator
+//!< cf: http://stackoverflow.com/a/34545507/3582770
+template <class T>
+struct IotaWrapper {
+    typedef T type;
+
+    type value;
+	type step;
+
+    IotaWrapper() = delete;
+    IotaWrapper(const type& n, const type& s) : value(n), step(s) {};
+
+    operator type() { return value; }
+    IotaWrapper& operator++() { value += step; return *this; }
+};
+
+void Simulator::generateRandomIDs(const int n, const int seed, const int step) {	
+	// Fill vector with n numbers from 0 and with a distance of step to each other
+	IotaWrapper<int> inc(1, step);
 	IDPool = vector<int>(n);
-    std::iota(begin(IDPool), end(IDPool), 1);
+    std::iota(begin(IDPool), end(IDPool), inc);
 
 	// Properly seed random number generator
 	std::mt19937 generator;
@@ -263,21 +269,19 @@ void Simulator::initializeIDPool() {
 
 	cerr << "There are " << numModules << " modules in the configuration" << endl;
 	
-	// Initialize capacity of IDPool consequently
-    // IDPool = vector<int>(numModules);
-
 	// Determine what assignment model to use, and initialize IDPool according to it
 	ids = determineIDScheme();
-	unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
 	switch (ids) {
-	case ORDERED:
-		for (int id = 1; id <= numModules; id++)
-			IDPool.push_back(id);
+	case ORDERED: 
+		// Fill IDPool with ID {1..N}
+		IDPool = vector<int>(numModules);
+		std::iota(begin(IDPool), end(IDPool), 1);	
 		break;
 	case MANUAL: {
 		int id;
 		TiXmlElement *element;
 		const char *attr;
+		unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
 		for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block")) {
 			element = child->ToElement();
 		    attr = element->Attribute("id");
@@ -308,12 +312,8 @@ void Simulator::initializeIDPool() {
 		
 	} break;
 	case RANDOM:
-	    generateRandomIDs(numModules, parseRandomSeed());
+	    generateRandomIDs(numModules, parseRandomSeed(), parseRandomStep());
 		break;
-	case RANDOM_CONTIGUOUS: {
-		generateContiguousIDs(numModules, parseRandomSeed());
-	} break;
-
 	} // switch
 
 	cerr << "{";
@@ -437,6 +437,9 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 				blockSize[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str());
 				OUTPUT << "blocksize =" << blockSize[0] << "," << blockSize[1] << "," << blockSize[2] << endl;
 			}
+		} else {
+			cerr << "error: No blockList element in XML configuration file" << endl;
+			throw ParsingException();
 		}
 
 		// Create the simulation world and lattice
@@ -444,7 +447,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 				  Vector3D(blockSize[0], blockSize[1], blockSize[2]), argc, argv);
 	} else {
 		ERRPUT << "ERROR : No world in XML configuration file" << endl;
-		exit(1);
+		throw ParsingException();
 	}
 }
 
