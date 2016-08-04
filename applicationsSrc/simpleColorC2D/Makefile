@@ -71,7 +71,7 @@ all: $(OUT)
 	@:
 
 test:				
-	@../../utilities/blockCodeTest.sh simpleColorC2D $(OUT)
+	@../../utilities/blockCodeTest.sh simpleColorC2D $(OUT) -c configMakeDisc10x0.xml
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)
