@@ -76,7 +76,6 @@ CC = g++
 
 all: $(OUT)
 	@:
-
 test:				
 	@../../utilities/blockCodeTest.sh catom2D1 $(OUT)
 
@@ -87,6 +86,9 @@ $(APPDIR)/$(OUT): $(OUT)
 
 $(OUT): $(SIMULATORLIB) $(APPLIBFILES) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
+
+$(APPLIBFILES):
+		$(MAKE) -C ts;
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
