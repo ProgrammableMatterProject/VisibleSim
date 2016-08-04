@@ -167,10 +167,12 @@ void Rotation2DStopEvent::consume() {
                                  rb->ptrGlBlock->position[1],
                                  rb->ptrGlBlock->position[2]);
     Cell3DPosition gridPos = wrld->lattice->worldToGridPosition(worldPos);
-    // cout << "---------------motion end-----------------"<<endl;
-    // cout << worldPos << endl;
-    // cout << gridPos << endl;
-    // cout << "------------------------------------------"<<endl;
+    /*
+    cout << "---------------motion end-----------------"<<endl;
+    cout << worldPos << endl;
+    cout << gridPos << endl;
+    cout << "------------------------------------------"<<endl;
+    */
     rb->setPosition(gridPos);    
     rb->setColor(YELLOW);
     

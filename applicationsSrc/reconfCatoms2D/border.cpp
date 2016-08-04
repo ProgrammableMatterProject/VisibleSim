@@ -15,6 +15,8 @@ Border::~Border(){}
 
 P2PNetworkInterface* Border::getInterface(Catoms2D::RelativeDirection::Direction d) {
   P2PNetworkInterface *p1 = NULL, *p2 = NULL;
+  Catoms2D::RelativeDirection::Direction od =
+    Catoms2D::RelativeDirection::getOpposite(d);
   
   if (catom->nbNeighbors(true) == 0) {
     return NULL;
@@ -23,10 +25,10 @@ P2PNetworkInterface* Border::getInterface(Catoms2D::RelativeDirection::Direction
   int cn = catom->nbConsecutiveNeighbors(true);
   
   // pick-up a neighbor of c in the longest sequence of consecutive neighbors
-  for (int i = 0; i < MAX_NB_NEIGHBORS; i++) {
+  for (int i = 0; i < HLattice::Direction::MAX_NB_NEIGHBORS; i++) {
     int n = 0;
     
-    p1 = catom->getInterface((NeighborDirection::Direction)i);
+    p1 = catom->getInterface(HLattice::Direction(i));
     if (!catom->hasANeighbor(p1,false)) {
       continue;
     }
@@ -34,7 +36,7 @@ P2PNetworkInterface* Border::getInterface(Catoms2D::RelativeDirection::Direction
     p2 = p1;
     
     while (n != cn) {
-      p2 = catom->getNextInterface(d,p2);
+      p2 = catom->getNextInterface(od,p2);
       if(!catom->hasANeighbor(p2,true)) {
 	break;
       }
@@ -51,7 +53,7 @@ P2PNetworkInterface* Border::getInterface(Catoms2D::RelativeDirection::Direction
   
   p2 = p1;
   while (true) {
-    p2 = catom->getNextInterface(d,p2);
+    p2 = catom->getNextInterface(od,p2);
     if (!catom->hasANeighbor(p2,true)) {
       return p1;
     }

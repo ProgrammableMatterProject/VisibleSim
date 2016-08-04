@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <iostream>
 #include <stdlib.h>
-
 #include "openglViewer.h"
 #include "assert.h"
 #include "scheduler.h"

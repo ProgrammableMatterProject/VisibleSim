@@ -85,7 +85,7 @@ bool Segment::intersect(Segment &s) const
 
 P2PNetworkInterface* Segment::getIntersectInterface(Catoms2D::Catoms2DBlock *catom2D, Map &map, P2PNetworkInterface *ignore) const {
   for (int i = 0; i < 6; i++) {
-    P2PNetworkInterface *it = catom2D->getInterface((NeighborDirection::Direction)i);
+    P2PNetworkInterface *it = catom2D->getInterface(i);
     if ((ignore == it) || (it->connectedInterface == NULL)) {
       continue;
     }

@@ -143,11 +143,17 @@ void World::disconnectBlock(BuildingBlock *block) {
     for(int i = 0; i < block->getNbInterfaces(); i++) {
         fromBlock = block->getInterface(i);
         if (fromBlock && fromBlock->connectedInterface) {
-			// Notify respective codeBlocks
-			block->removeNeighbor(fromBlock);
-			fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
-			// Disconnect the interfaces
-            toBlock = fromBlock->connectedInterface;
+	    toBlock = fromBlock->connectedInterface;
+	    
+	    // Clear message queue
+	    fromBlock->outgoingQueue.clear();
+	    toBlock->outgoingQueue.clear();
+	    
+	    // Notify respective codeBlocks
+	    block->removeNeighbor(fromBlock);
+	    fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
+
+	    // Disconnect the interfaces
             fromBlock->connectedInterface = NULL;
             toBlock->connectedInterface = NULL;
         }

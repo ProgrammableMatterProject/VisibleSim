@@ -79,7 +79,6 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
             cerr << "error: position attribute missing for target cell" << endl;
             throw TargetParsingException();
         }
-        
         attr = element->Attribute("color");
         if (attr) {
             string str(attr);

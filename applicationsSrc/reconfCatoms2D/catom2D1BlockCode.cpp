@@ -36,6 +36,8 @@ using namespace Catoms2D;
 //#define CENTRALIZED_COMP
 //#define SEND_TARGET_TUPLES
 
+//#define RECONFIGURATION_DEBUG
+
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
   scheduler = getScheduler();
   catom2D = (Catoms2DBlock*)hostBlock;
@@ -114,8 +116,8 @@ void Catoms2D1BlockCode::startup() {
   }
 #endif
 
-  landmarks->start();
-
+  //landmarks->start();
+  
 }
 
 void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
@@ -132,7 +134,7 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       if (finished) {
 	//ctuples->out(ContextTuple(string("map"), map->getPosition()));
 	reconfiguration->start();
-
+	
 	if (map->connectedToHost) {
 	  //cout << "@" << catom2D->blockId << " is receiving the target map and disseminating it..." << endl;
 	  cout << "@" << catom2D->blockId << " has created the coordinate system" << endl;
@@ -244,15 +246,17 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
       }*/
   }
     break;
-  case EVENT_MOTION_END: {
-    cout << "motion end" << endl;
-    cout << "@" << catom2D->blockId << " " << catom2D->position << endl;
+  case  EVENT_ROTATION2D_END: {
+    #ifdef RECONFIGURATION_DEBUG
+    cout << "@" << catom2D->blockId << " motion end: " << catom2D->position << endl;
+    #endif
     catom2D->setColor(DARKGREY);
-    break;
+    reconfiguration->handleStopMovingEvent();
   }
+    break;
   }
 }
 
-Catoms2D::Catoms2DBlockCode* Catoms2D1BlockCode::buildNewBlockCode(Catoms2DBlock *host) {
-  return(new Catoms2D1BlockCode(host));
+BlockCode* Catoms2D1BlockCode::buildNewBlockCode(BuildingBlock *host) {
+  return(new Catoms2D1BlockCode((Catoms2DBlock*)host));
 }

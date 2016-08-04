@@ -26,7 +26,7 @@ bool Cell3DPosition::operator<(const Cell3DPosition &o) const {
         if (pt[1] < o.pt[1]) return true;
         else if (pt[1] > o.pt[1]) return false;
         else {
-            if (pt[0] < o.pt[0]) return true;
+            if (pt[2] < o.pt[2]) return true;
             else return false;
         }
     }

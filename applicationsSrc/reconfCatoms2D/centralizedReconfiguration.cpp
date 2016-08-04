@@ -1,10 +1,11 @@
 #include <iostream>
+#include <climits>
 #include "centralizedReconfiguration.h"
 #include "bfs.h"
 #include "catoms2DWorld.h"
 #include "coordinate.h"
 
-#include "catoms2DDirection.h"
+#include "rotation2DEvents.h"
 #include "map.h"
 
 using namespace std;
@@ -53,7 +54,8 @@ static Coordinate getTargetBottomLeft() {
 	Cell3DPosition gridSize = world->lattice->gridSize;
 	for (int iy = 0; iy < gridSize[2]; iy++) {
 		for (int ix = 0; ix < gridSize[0]; ix++) {
-			if (world->getTargetGrid(ix,0,iy) == fullCell ) {
+		        Cell3DPosition c(p.x,0,p.y);
+			if (BlockCode::target->isInTarget(c)) {
 				Coordinate cc(ix, iy);
 				if (cc.y <= p.y) {
 					p.y = cc.y;
@@ -68,10 +70,9 @@ static Coordinate getTargetBottomLeft() {
 }
 
 static bool isNeighbor(Catoms2DBlock *c,Coordinate p) {
-
 	// test all neighbors cell
 	for (int i = 0; i < 6; i++) {
-		Cell3DPosition v = c->getPosition((NeighborDirection::Direction)i);
+	        Cell3DPosition v = c->getPosition((HLattice::Direction) i);
 		Coordinate ci(v[0],v[2]);
 		if (ci == p) {
 			return true;
@@ -85,8 +86,9 @@ static bool isOver() {
 	Cell3DPosition gridSize = world->lattice->gridSize;
 	for (int iy = 0; iy < gridSize[2]; iy++) {
 		for (int ix = 0; ix < gridSize[0]; ix++) {
-			if (world->getTargetGrid(ix,0,iy) == fullCell ) {
-				if (!world->lattice->getBlock(Cell3DPosition(ix,0,iy))) {
+		        Cell3DPosition c(ix,0,iy);
+			if (BlockCode::target->isInTarget(c)) {
+				if (!world->lattice->getBlock(c)) {
 					return false;
 				}
 			}
@@ -99,19 +101,19 @@ static P2PNetworkInterface*
 nextInterface(Catoms2DBlock *c, RelativeDirection::Direction d, P2PNetworkInterface *p2p) {
 	int p2pDirection = c->getDirection(p2p);
 	if (d == RelativeDirection::CCW) {
-		if (p2pDirection == NeighborDirection::BottomRight) {
-			p2pDirection = NeighborDirection::Right;
+		if (p2pDirection == HLattice::Direction::BottomRight) {
+		        p2pDirection = HLattice::Direction::Right;
 		} else {
 			p2pDirection++;
 		}
 	} else if (d == RelativeDirection::CW) {
-		if (p2pDirection == NeighborDirection::Right) {
-			p2pDirection = NeighborDirection::BottomRight;
+	        if (p2pDirection == HLattice::Direction::Right) {
+			p2pDirection = HLattice::Direction::BottomRight;
 		} else {
 			p2pDirection--;
 		}
 	}
-	return c->getInterface((NeighborDirection::Direction)p2pDirection);
+	return c->getInterface(p2pDirection);
 }
 /*
   static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, RelativeDirection::Direction d) {
@@ -174,7 +176,7 @@ static P2PNetworkInterface *extremeNeighborInDirection(Catoms2DBlock *c, Relativ
 	for (int i = 0; i < 6; i++) {
 		int n = 0;
 
-		p1 = c->getInterface((NeighborDirection::Direction)i);
+		p1 = c->getInterface(i);
 		if (!c->hasANeighbor(p1,false)) {
 			continue;
 		}
@@ -265,8 +267,8 @@ static Coordinate getPosition(Catoms2DBlock* c, Rotation2DMove &m) {
 }
 
 static bool isInTarget(Coordinate &p) {
-	Catoms2DWorld *world = Catoms2DWorld::getWorld();
-	return (world->getTargetGrid(p.x,0,p.y) == fullCell);
+  Cell3DPosition c(p.x,0,p.y);
+  return (BlockCode::target->isInTarget(c));
 }
 
 /*
@@ -348,7 +350,7 @@ static bool canMove(Catoms2DBlock *c, Rotation2DMove &m, state_t states[]) {
 		bool mustStop = true;
 		cout << endl << "neighbors of next (" << next->blockId << ")" << endl;
 		for (int i = 0; i < 6; i++) {
-			P2PNetworkInterface *p = next->getInterface((NeighborDirection::Direction)i);
+			P2PNetworkInterface *p = next->getInterface(i);
 			if (p->connectedInterface) {
 				Catoms2DBlock *n = (Catoms2DBlock*)p->connectedInterface->hostBlock;
 				cout << " " << n->blockId;
@@ -571,7 +573,7 @@ static void updateGradient(Catoms2DBlock *c, int gradient[]) {
 	int minGradient = INT_MAX;
 
 	for (int i = 0; i < 6; i++) {
-		P2PNetworkInterface *p2p = c->getInterface((NeighborDirection::Direction)i);
+		P2PNetworkInterface *p2p = c->getInterface(i);
 		if (p2p->connectedInterface) {
 			int id2 = p2p->connectedInterface->hostBlock->blockId;
 			if (gradient[id2] == UNDEFINED_GRADIENT) {

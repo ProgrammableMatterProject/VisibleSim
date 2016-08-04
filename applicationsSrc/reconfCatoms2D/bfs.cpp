@@ -42,8 +42,8 @@ Tree* Tree::bfs(int source, int dist[], int size) {
       b = world->getBlockById(s->id);
 			
       for (int i = 0; i < 6; i++) {
-	if (b->getInterface((NeighborDirection::Direction)i)->connectedInterface != NULL) {
-	  int id = b->getInterface((NeighborDirection::Direction)i)->connectedInterface->hostBlock->blockId;
+	if (b->getInterface(i)->connectedInterface != NULL) {
+	  int id = b->getInterface(i)->connectedInterface->hostBlock->blockId;
 	  if (!visited[id]) {
 	    visited[id] = true;
 	    dist[id] = dist[s->id] + 1;

@@ -8,12 +8,14 @@
 double Landmark::probability = PROBABILITY_LANDMARK;
 
 Landmark::Landmark() {
-  generator = boost::rand48(0);
+  generator = ranlux48(0);
+  dis = uniform_real_distribution<>(0,1);
   isLandmark = false;
 }
 
 Landmark::Landmark(int seed) {
-  generator = boost::rand48(seed);
+  generator = ranlux48(seed);
+  dis = uniform_real_distribution<>(0,1);
   isLandmark = false;
 }
 
@@ -29,7 +31,7 @@ void Landmark::setProbability(double p) {
 }
 
 void Landmark::randomDraw() {
-  double p = ((double) generator() / ((double)boost::rand48:: max()));
+  double p = (double) dis(generator);
   if (p<=probability) {
     isLandmark = true;
   } else {

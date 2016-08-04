@@ -59,7 +59,7 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   //void updateBorder();
   //bool canMove();
   
-  static Catoms2D::Catoms2DBlockCode *buildNewBlockCode(Catoms2D::Catoms2DBlock *host);
+  static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 #endif /* CATOM2DBLOCKCODE_H_ */

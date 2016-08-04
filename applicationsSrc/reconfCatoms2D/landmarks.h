@@ -2,6 +2,8 @@
 #define LANDMARKS_H_
 
 #include <vector>
+#include <random>
+
 #include "coordinate.h"
 //#include "time.h"
 #include "network.h"
@@ -19,8 +21,9 @@ class Catoms2D1BlockCode;
 class Landmark {
  protected:
   static double probability;
-  boost::rand48 generator;
-  
+  std::ranlux48 generator;
+  std::uniform_real_distribution<> dis;
+
  public:
   bool isLandmark;
 
