@@ -139,6 +139,8 @@ public:
         }
         tabKeywords.clear();
     }
+
+    void printStats();
 };
 
 static inline void deleteScheduler() {

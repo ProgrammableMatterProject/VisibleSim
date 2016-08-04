@@ -239,16 +239,18 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     StatsCollector::getInstance().updateElapsedTime(currentDate,
 													((double)(systemStopTime-systemStartTime))/1000000);   
     StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
-	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
+    StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
     // if simulation is a regression testing run, export configuration before leaving
-    if (Simulator::regrTesting)
+    if (Simulator::regrTesting) 
         getWorld()->exportConfiguration();
 
-	// if autoStop is enabled, terminate simulation
-	if (willAutoStop())
-		glutLeaveMainLoop();
+    // if autoStop is enabled, terminate simulation
+    if (willAutoStop())
+        glutLeaveMainLoop();
 
+    printStats();	
+	
     return(NULL);
 }
 

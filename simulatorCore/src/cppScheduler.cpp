@@ -151,6 +151,8 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 	// if autoStop is enabled, terminate simulation
 	if (willAutoStop())
 		glutLeaveMainLoop();
+
+	printStats();
 	
 	return(NULL);
 }

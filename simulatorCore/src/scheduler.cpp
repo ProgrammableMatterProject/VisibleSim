@@ -187,5 +187,9 @@ bool Scheduler::debug(const string &command,bID &id,string &result) {
 	return true;
 }
 
+void Scheduler::printStats() {
+  cout << StatsCollector::getInstance();
+}
+
 
 } // BaseSimulator namespace
