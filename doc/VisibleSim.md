@@ -40,7 +40,7 @@ Here is a quick look at the content of each of the main directories from the pro
 - utilities: contains scripts and programs for compiling and testing, as well as useful tools for users
 
 ### Source Files
-As mentioned above, the C++ source files for the simulator's core are all stored into the `simulatorCore/src` directory. The `.ccp` file extension is used for implementation files, and `.h` for header files.
+As mentioned above, the C++ source files for the simulator's core are all stored into the `simulatorCore/src` directory. The `.cpp` file extension is used for implementation files, and `.h` for header files.
 
 ### Software Architecture 
 TODO
@@ -48,7 +48,7 @@ TODO
 ### Overview
 The compilation process in VisibleSim is based on a recursive approach. The root folder contains the root folder Makefile, and from here the `make` command is passed to Makefiles from sub-directories, along with additional information (flags, variables). 
 ### Root Makefile
-The top level Makefile is the one that should receive the original `make` command. It is a bit intricate because in contains a few conditionals, whose need is justified as-follows:
+The top level Makefile is the one that should receive the original `make` command. It contains a few conditional variable assignments, whose need is justified as-follows:
  
 - __OS__: We need distinct variables for distinct OS families, because both the manner of including libraries, and their implementations themselves are different hence the potential need for custom compilation and linking flags. Also, even though we recommend using the gcc compiler, OS X users are more likely to be using Clang, which also has its special set of flags.
 - __MELD PROCESS__: Recently, the source code has been updated to use the new features of the C++11 standard. In an effort for better portability, we have replaced the features brought by the `boost` library by their `std` counterpart present in C++11. This has been possible for all features except `asio`, used for interprocess communication with the Meld Virtual Machines. Since it will eventually be entirely replaced by the Meld Interpreter, we decided to exclude the Meld Process sources from the compilation by default (and thus, `boost`). If you want to enable it nonetheless, add the _-DENABLE\_MELDPROCESS_ flag to the _TEMP\_CCFLAGS_ list.
@@ -92,6 +92,7 @@ The following rules should be taken into account when contributing new source co
 
 ### Whitespace and Indentation
 Indentation size is at 4 spaces per logic level. No tabs. No trailing whitespace at the end of a line. Newline characters should be UNIX style (use `\n`, not `\r\n`).
+
 __Warning__: There is no additional indentation inside a _Namespace_ logical unit.
 
 ### Lines Length
@@ -104,10 +105,8 @@ Use [K&R bracing style](https://en.wikipedia.org/wiki/Indent_style#K.26R_style):
 ### General C++ Style Guide
 Insightful guidelines for contributing to C++ source code can be found [here](https://google.github.io/styleguide/cppguide.html).
 
-## New Features
-
-### Command Line Interface
-#### Usage
+## Command Line Interface
+### Usage
 ```shell
 > ./<app> [-c <conf.xml>] [-p <meldProgram.bb> -k <module>] ...
 VisibleSim options:
@@ -132,7 +131,7 @@ VisibleSim options:
 	 -h 	    help
 ```
 
-#### Options
+### Options
 
 ##### Full Screen (`-f`)
 Start the VisibleSim graphical window in full screen mode.
@@ -169,23 +168,23 @@ This option triggers the export of the current configuration at the end of the s
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
-### Meld
+## Meld
 TODO
-#### Building
+### Building
 Inclusions
-#### Running
-### Block Code API
+### Running
+## Block Code API
 TODO
-### Clock
+## Clock
 TODO
-### User Interactions
-#### Generic Menu
-#### C2D Rotations
-#### Tap
+## User Interactions
+### Generic Menu
+### C2D Rotations
+### Tap
 TODO
-### Statistics
+## Statistics
 TODO
-### <a name="autotest"></a>Automated BlockCode Testing
+## <a name="autotest"></a>Automated BlockCode Testing
 TODO
 
 ## Configuration Files
@@ -260,7 +259,7 @@ __TODO:__ Need explanations on what are these parameters, and how they can be fo
 
 - !`target="x,y,z"`: Specifies the location of the camera in the simulated world. 
 - !`directionSpherical="r,θ,φ"`: Where (r, θ, φ) are the spherical coordinates of the object's direction.
-- !`angle="α"`: __TODO?__.  Based on observations: Defines how drunk the camera is. 
+- !`angle="α"`: __TODO?__.  Based on observations: Field of view?. 
 
 __N.B.:__ NOT necessary if using  _terminal mode_.
 
