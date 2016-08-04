@@ -11,8 +11,8 @@
 #include <iostream>
 #include <sstream>
 #include <map>
-#include <inttypes.h>
-#include <assert.h>
+#include <cinttypes>
+#include <cassert>
 #include <thread>
 #include <functional>
 #include <mutex>

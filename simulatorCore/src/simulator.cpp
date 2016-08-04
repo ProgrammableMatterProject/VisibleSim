@@ -206,13 +206,13 @@ int Simulator::parseRandomSeed() {
 	}
 }
 
-int Simulator::parseRandomStep() {
+bID Simulator::parseRandomStep() {
 	TiXmlElement *element = xmlBlockListNode->ToElement();
 	const char *attr = element->Attribute("step");
 	if (attr) {				// READ Step
 		try {
 			string str(attr);
-			return stoi(str);
+			return stol(str);
 		} catch (const std::invalid_argument& e) {
 			cerr << "error: invalid step attribute value in configuration file" << endl;
 			throw ParsingException();				
@@ -566,6 +566,7 @@ void Simulator::parseBlockList() {
 		Cell3DPosition position;
 		Color color;
 		bool master;
+		int indexBlock = 0;
 		while (block) {
 			element = block->ToElement();
 			color=defaultColor;
@@ -605,7 +606,7 @@ void Simulator::parseBlockList() {
 			}
 
 			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;			
-			loadBlock(element, currentID++, bcb, position, color, master);
+			loadBlock(element, IDPool[indexBlock++], bcb, position, color, master);
 
 			block = block->NextSibling("block");
 		} // end while (block)

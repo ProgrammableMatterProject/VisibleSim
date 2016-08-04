@@ -133,7 +133,8 @@ protected:
 	 *  @param n the number of IDs to generate
 	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
 	 *  @param step the distance between two consecutive numbers. e.g. If n = 4 and step = 2 then IDPool = {1, 3, 5, 7}
-	 *  @attention The user has to ensure that the generation won't cause any overflow
+	 *  @attention The user has to ensure that the generation won't cause any overflow. 
+	 *  If (1 + (n + 1) * step) > BID_MAX (i.e. 1.8446744e+019 with UINT64_T as bID), undefined behavior will happen.
 	 */
 	void generateRandomIDs(const int n, const int seed, const int step);
 	
@@ -149,7 +150,7 @@ protected:
 	 *  @return The integer step specified in the configuration file, or 1 if unspecified
 	 *  @throw ParsingException in case the step is not a valid integer number
 	 */
-	int parseRandomStep();
+	bID parseRandomStep();
 	
 	/*! @fn loadScheduler(int maximumDate)
 	 *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock

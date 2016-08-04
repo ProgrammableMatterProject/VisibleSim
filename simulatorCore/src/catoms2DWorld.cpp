@@ -69,7 +69,7 @@ void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
     catom2D->setColor(col);
     catom2D->isMaster=master;
 
-    cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << col << endl;
+    // cerr << "ADDING BLOCK #" << blockId << " pos:" << pos << " color:" << col << endl;
 
     if (lattice->isInGrid(pos)) {
         lattice->insert(catom2D, pos);
