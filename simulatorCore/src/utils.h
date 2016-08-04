@@ -4,7 +4,7 @@
 
 namespace BaseSimulator {
 
-//!< utils Utilities namespace for providing globally needed constants and helper methods   
+//!< utils Utilities namespace for providing globally needed constants, types, and helper methods   
 namespace utils {
 
 #ifndef M_PI

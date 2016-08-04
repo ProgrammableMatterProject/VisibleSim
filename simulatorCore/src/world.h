@@ -158,7 +158,7 @@ public:
      *                      0 by default and for all other blocks
      * @param master : indicates if the block is a master block. false by default
      */
-    virtual void addBlock(int blockId, BlockCodeBuilder bcb,
+    virtual void addBlock(bID blockId, BlockCodeBuilder bcb,
                           const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false) = 0;
     /**

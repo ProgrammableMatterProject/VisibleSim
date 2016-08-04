@@ -47,12 +47,12 @@ Catoms2DWorld::~Catoms2DWorld() {
 void Catoms2DWorld::deleteWorld() {
     delete((Catoms2DWorld*)world);
 }
-void Catoms2DWorld::addBlock(int blockId, BlockCodeBuilder bcb,
+void Catoms2DWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
                              const Cell3DPosition &pos, const Color &col,
                              short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
-	else if (blockId == -1)
+	else if (blockId == 0)
 		blockId = incrementBlockId();
 
     Catoms2DBlock *catom2D = new Catoms2DBlock(blockId,bcb);

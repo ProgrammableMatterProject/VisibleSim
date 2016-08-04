@@ -35,7 +35,7 @@ public:
 
     virtual void loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 			   int argc, char *argv[]);
-    virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+    virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
 						   const Cell3DPosition &pos, const Color &color, bool master);
     virtual void printInfo() { OUTPUT << "I'm a Catoms2DSimulator" << endl; }
     void help();

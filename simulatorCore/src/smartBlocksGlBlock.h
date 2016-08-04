@@ -17,7 +17,7 @@ protected :
 //	string popupInfo,textInfo;
 	int displayedValue;
 public :
-	SmartBlocksGlBlock(int id);
+	SmartBlocksGlBlock(bID id);
 	virtual ~SmartBlocksGlBlock();
 	virtual string getInfo();
 	/*	virtual string getPopupInfo();*/

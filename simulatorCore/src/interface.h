@@ -69,11 +69,11 @@ public :
 
 class BlockDebugData {
 public :
-	int blockId;
+    bID blockId;
 	string str;
 	Color color;
 
-	BlockDebugData(int id,const string &s,const Color &c):blockId(id),str(s),color(c) {};
+	BlockDebugData(bID id,const string &s,const Color &c):blockId(id),str(s),color(c) {};
 };
 
 class GlutSlider : public GlutWindow {
@@ -123,7 +123,7 @@ public :
 	int mouseFunc(int button,int state,int mx,int my);
 	void reshapeFunc(int wx,int wy,int mw,int mh);
 	void glDraw();
-	void addTrace(int id,const string &str,const Color &color);
+	void addTrace(bID id,const string &str,const Color &color);
 	void select(GlBlock *sb);
 	inline bool hasselectedGlBlock()  { return selectedGlBlock!=NULL; };
 	inline bool isOpened() { return openingLevel!=0; }
@@ -131,7 +131,7 @@ public :
 
 class GlutSlidingDebugWindow : public GlutWindow {
 	int openingLevel;
-	int debugId;
+    bID debugId;
 	GlutButton* buttonOpen, *buttonClose;
 	GlutSlider* slider;
 	GlutInputWindow* input;
@@ -176,7 +176,7 @@ public :
 	int mouseFunc(int button,int state,int x,int y);
 	void glDraw();
 	void activate(unsigned int n,bool value);
-	void addTrace(int id,int time,const string &str);
+	void addTrace(bID id,int time,const string &str);
 };
 
 class GlutHelpWindow : public GlutWindow {

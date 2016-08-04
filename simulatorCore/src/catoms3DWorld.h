@@ -53,7 +53,7 @@ public:
     }
 
 
-    virtual void addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+    virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation, bool master);
     inline void setSkeleton(Skeleton *s) { skeleton=s; };
     inline double getSkeletonPotentiel(const Vector3D& pos) { return (skeleton==NULL)?-1:skeleton->potentiel(pos); };

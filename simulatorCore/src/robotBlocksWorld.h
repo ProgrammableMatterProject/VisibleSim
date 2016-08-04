@@ -48,7 +48,7 @@ public:
     /**
      * @copydoc World::addBlock
      */
-    virtual void addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+    virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false);
     /**
      * \copydoc World::linkBlock

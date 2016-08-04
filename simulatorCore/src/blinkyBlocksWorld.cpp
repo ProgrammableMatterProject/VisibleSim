@@ -45,12 +45,12 @@ void BlinkyBlocksWorld::deleteWorld() {
 	delete((BlinkyBlocksWorld*)world);
 }
 
-void BlinkyBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb,
+void BlinkyBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 								 const Cell3DPosition &pos, const Color &col,
 								 short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
-	else if (blockId == -1)
+	else if (blockId == 0)
 		blockId = incrementBlockId();
 		
 	BlinkyBlocksBlock *blinkyBlock = new BlinkyBlocksBlock(blockId, bcb);
@@ -245,37 +245,37 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
  *  and with the coordinates (x,y,z).
  *
  * @param date : the date at which the tap event must be consumed
- * @param bId : the id of the target block
+ * @param id : the id of the target block
  * @param x : x coordinate of accelerometer change
  * @param y : y coordinate of accelerometer change
  * @param z : z coordinate of accelerometer change
  */
-void BlinkyBlocksWorld::accelBlock(uint64_t date, int bId, int x, int y, int z) {
-	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
+void BlinkyBlocksWorld::accelBlock(uint64_t date, bID id, int x, int y, int z) {
+	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
 	bb->accel(date, x,y,z);
 }
 
 /**
- * @brief Schedules an accel change event for block with id bId, at time date,
+ * @brief Schedules an accel change event for block with id id, at time date,
  *  and with force f.
  *
  * @param date : the date at which the tap event must be consumed
- * @param bId : the id of the target block
+ * @param id : the id of the target block
  * @param f : force of the shake
  */
-void BlinkyBlocksWorld::shakeBlock(uint64_t date, int bId, int f) {
-	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(bId);
+void BlinkyBlocksWorld::shakeBlock(uint64_t date, bID id, int f) {
+	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
 	bb->shake(date, f);
 }
 
 /**
- * @brief Schedules the stopping of block with id bId at a given date
+ * @brief Schedules the stopping of block with id id at a given date
  *
  * @param date : the date at which the tap event must be consumed
- * @param bId : the id of the target block
+ * @param id : the id of the target block
  */
-void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
-	if (bId < 0) {
+void BlinkyBlocksWorld::stopBlock(uint64_t date, bID id) {
+	if (id == 0) {
 		// Delete the block	without deleting the links
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;
 		for(it = buildingBlocksMap.begin();
@@ -286,7 +286,7 @@ void BlinkyBlocksWorld::stopBlock(uint64_t date, int bId) {
 		}
 	} else {
 		// Delete all the links and then the block
-		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(bId);
+		BlinkyBlocksBlock *bb = (BlinkyBlocksBlock *)getBlockById(id);
 		if(bb->getState() >= BlinkyBlocksBlock::ALIVE) {
 			// cut links between bb and others
 			disconnectBlock(bb);

@@ -107,7 +107,7 @@ public:
 
 	uint64_t now();
 
-	virtual void trace(string message,int id=-1,const Color &color=WHITE);
+	virtual void trace(string message,bID id=0,const Color &color=WHITE);
 	void removeEventsToBlock(BuildingBlock *bb);
 
 	void lock();
@@ -118,7 +118,7 @@ public:
 	// stop for good
 	virtual void stop(uint64_t date);
 	virtual void restart();
-	virtual bool debug(const string &command,int &id,string &result);
+	virtual bool debug(const string &command,bID &id,string &result);
 
 	inline void setState (State s) { state = s; };
 	inline State getState () { return state; };

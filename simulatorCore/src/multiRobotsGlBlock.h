@@ -18,7 +18,7 @@ namespace MultiRobots {
 class MultiRobotsGlBlock:public GlBlock {
 protected :
 public :
-	MultiRobotsGlBlock(int id) : GlBlock(id) {};
+	MultiRobotsGlBlock(bID id) : GlBlock(id) {};
 	virtual ~MultiRobotsGlBlock() {};
 
 	virtual string getInfo();

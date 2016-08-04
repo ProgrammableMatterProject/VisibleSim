@@ -40,7 +40,7 @@ void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
     World::setWorld(world);
 }
 
-void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+void SmartBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
 									 const Cell3DPosition &pos, const Color &color, bool master) {
 
     // Any additional configuration file parsing exclusive to this type of block should be performed

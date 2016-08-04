@@ -13,6 +13,7 @@
 #include <atomic>
 #include <memory>
 
+#include "tDefs.h"
 #include "glBlock.h"
 #include "blockCode.h"
 #include "clock.h"
@@ -59,7 +60,7 @@ protected:
 
 	list<EventPtr> localEventsList; //!< List of local events scheduled for this block
 public:
-	int blockId; //!< id of the block
+    bID blockId; //!< id of the block
 	std::ranlux48 generator; //!< random device to generate random numbers for BlinkyBlocks determinism
     std::uniform_int_distribution<> dis; //!< random int distribution based on generator
 	BlockCode *blockCode; //!< blockcode program executed by the block

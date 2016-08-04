@@ -19,7 +19,7 @@ protected :
 public :
     double angle; //!< orientation angle in degree around Y axis
 
-	Catoms2DGlBlock(int id);
+	Catoms2DGlBlock(bID id);
 	virtual ~Catoms2DGlBlock();
 	virtual string getInfo();
 

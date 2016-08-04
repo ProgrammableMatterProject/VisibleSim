@@ -44,11 +44,11 @@ void RobotBlocksWorld::deleteWorld() {
 	delete((RobotBlocksWorld*)world);
 }
 
-void RobotBlocksWorld::addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
+void RobotBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos,
 								const Color &col, short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
-	else if (blockId == -1)
+	else if (blockId == 0)
 		blockId = incrementBlockId();
 
 	RobotBlocksBlock *robotBlock = new RobotBlocksBlock(blockId, bcb);

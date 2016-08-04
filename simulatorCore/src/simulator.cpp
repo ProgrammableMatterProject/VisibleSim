@@ -241,8 +241,8 @@ struct IotaWrapper {
 
 void Simulator::generateRandomIDs(const int n, const int seed, const int step) {	
 	// Fill vector with n numbers from 0 and with a distance of step to each other
-	IotaWrapper<int> inc(1, step);
-	IDPool = vector<int>(n);
+	IotaWrapper<bID> inc(1, step);
+	IDPool = vector<bID>(n);
     std::iota(begin(IDPool), end(IDPool), inc);
 
 	// Properly seed random number generator
@@ -274,11 +274,11 @@ void Simulator::initializeIDPool() {
 	switch (ids) {
 	case ORDERED: 
 		// Fill IDPool with ID {1..N}
-		IDPool = vector<int>(numModules);
+		IDPool = vector<bID>(numModules);
 		std::iota(begin(IDPool), end(IDPool), 1);	
 		break;
 	case MANUAL: {
-		int id;
+		bID id;
 		TiXmlElement *element;
 		const char *attr;
 		unordered_set<int> dupCheck;			// Set containing all previously assigned IDs, used to check for duplicates
@@ -317,7 +317,7 @@ void Simulator::initializeIDPool() {
 	} // switch
 
 	cerr << "{";
-	for (int id : IDPool)
+	for (bID id : IDPool)
 		cerr << id << ", ";
 	cerr << "}" << endl;
 }

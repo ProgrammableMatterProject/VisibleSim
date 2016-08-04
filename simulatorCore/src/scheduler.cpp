@@ -111,7 +111,7 @@ bool Scheduler::scheduleLock(Event *ev) {
 	return schedule(ev); //lock done in schedule
 }
 
-void Scheduler::trace(string message,int id,const Color &color) {
+void Scheduler::trace(string message, bID id,const Color &color) {
 	if (GlutContext::GUIisEnabled) {
 		mutex_trace.lock();
 		GlutContext::addTrace(message,id,color);
@@ -140,7 +140,7 @@ void Scheduler::restart() {
 	currentDate=debugDate;
 }
 
-bool Scheduler::debug(const string &command,int &id,string &result) {
+bool Scheduler::debug(const string &command,bID &id,string &result) {
 	ostringstream sout;
 	sout.str("");
 	if (command=="help") {

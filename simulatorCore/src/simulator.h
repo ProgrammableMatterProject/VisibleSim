@@ -90,7 +90,7 @@ protected:
 
 	CommandLine cmdLine;		//!< Utility member for accessing command line arguments
 	int schedulerMaxDate = 0;		//!< Maximum simulation date
-	vector<int> IDPool; //!< Vector whose size is the number of blocks in the configuration and that contains blockIds to be assigned to the block, in their order of appearance in the configuration file (by default: {1,2,3,...,n})
+	vector<bID> IDPool; //!< Vector whose size is the number of blocks in the configuration and that contains blockIds to be assigned to the block, in their order of appearance in the configuration file (by default: {1,2,3,...,n})
 	IDScheme ids = ORDERED; //!< Determines what module ID distribution scheme the simulator is using. ORDERED by default
 	
 	/*! 
@@ -209,7 +209,7 @@ protected:
 	 *  @param master True if the block is a master block, false otherwise
 	 *
 	 */
-	virtual void loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+	virtual void loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
 						   const Cell3DPosition &pos, const Color &color, bool master) {};
    
 	Simulator(int argc, char *argv[], BlockCodeBuilder bcb);

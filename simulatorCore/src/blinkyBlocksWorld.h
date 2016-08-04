@@ -42,7 +42,7 @@ public:
         return((BlinkyBlocksBlock*)World::getBlockById(bId));
     }
 
-    virtual void addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+    virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false);
 
     virtual void linkBlock(const Cell3DPosition &pos);
@@ -54,10 +54,10 @@ public:
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
 
-    /* Sends the appropriate message (tap, ...) to the VM associated to bId block (through the scheduler)*/
-    void accelBlock(uint64_t date, int bId, int x, int y, int z);
-    void shakeBlock(uint64_t date, int bId, int f);
-    virtual void stopBlock(uint64_t date, int bId);
+    /* Sends the appropriate message (tap, ...) to the VM associated to id block (through the scheduler)*/
+    void accelBlock(uint64_t date, bID id, int x, int y, int z);
+    void shakeBlock(uint64_t date, bID id, int f);
+    virtual void stopBlock(uint64_t date, bID id);
 
     // void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
 

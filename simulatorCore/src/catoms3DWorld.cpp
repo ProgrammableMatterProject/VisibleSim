@@ -53,11 +53,11 @@ void Catoms3DWorld::deleteWorld() {
     delete((Catoms3DWorld*)world);
 }
 
-void Catoms3DWorld::addBlock(int blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
 							 short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
-	else if (blockId == -1)
+	else if (blockId == 0)
 		blockId = incrementBlockId();
 	
     Catoms3DBlock *catom = new Catoms3DBlock(blockId,bcb);

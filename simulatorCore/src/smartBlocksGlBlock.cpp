@@ -2,7 +2,7 @@
 #include "smartBlocksWorld.h"
 
 namespace SmartBlocks {
-SmartBlocksGlBlock::SmartBlocksGlBlock(int id) : GlBlock(id) {
+SmartBlocksGlBlock::SmartBlocksGlBlock(bID id) : GlBlock(id) {
 	displayedValue=id;
 }
 

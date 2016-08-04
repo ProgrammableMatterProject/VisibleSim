@@ -2,7 +2,7 @@
 
 namespace BlinkyBlocks {
 
-BlinkyBlocksGlBlock::BlinkyBlocksGlBlock(int id) : GlBlock(id) {
+BlinkyBlocksGlBlock::BlinkyBlocksGlBlock(bID id) : GlBlock(id) {
 }
 
 BlinkyBlocksGlBlock::~BlinkyBlocksGlBlock() {

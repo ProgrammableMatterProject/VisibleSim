@@ -49,12 +49,12 @@ void MultiRobotsWorld::deleteWorld() {
 	delete((MultiRobotsWorld*)world);
 }
 
-void MultiRobotsWorld::addBlock(int blockId, BlockCodeBuilder bcb,
+void MultiRobotsWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 								 const Cell3DPosition &pos, const Color &col,
 								 short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
-	else if (blockId == -1)
+	else if (blockId == 0)
 		blockId = incrementBlockId();
 		
 	MultiRobotsBlock *mrb = new MultiRobotsBlock(blockId, bcb);

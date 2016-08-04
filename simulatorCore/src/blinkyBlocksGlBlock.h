@@ -15,7 +15,7 @@ namespace BlinkyBlocks {
 class BlinkyBlocksGlBlock:public GlBlock {
 protected :
 public :
-	BlinkyBlocksGlBlock(int id);
+	BlinkyBlocksGlBlock(bID id);
 	virtual ~BlinkyBlocksGlBlock();
 	virtual string getInfo();
 

@@ -1,6 +1,6 @@
 #include "glBlock.h"
 
-GlBlock::GlBlock(int id):blockId(id) {
+GlBlock::GlBlock(bID id):blockId(id) {
 	position[0] = 0.0;
 	position[1] = 0.0;
 	position[2] = 0.0;
@@ -11,7 +11,7 @@ GlBlock::GlBlock(int id):blockId(id) {
 	isHighlighted = false;
 }
 
-GlBlock::GlBlock(int id,const Vector3D &pos, const Vector3D &col) : blockId(id) {
+GlBlock::GlBlock(bID id,const Vector3D &pos, const Vector3D &col) : blockId(id) {
 	position[0] = pos[0];
 	position[1] = pos[1];
 	position[2] = pos[2];

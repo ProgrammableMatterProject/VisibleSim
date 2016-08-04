@@ -16,7 +16,7 @@ class RobotBlocksGlBlock:public GlBlock {
 protected :
 	int nextId,prevId;
 public :
-	RobotBlocksGlBlock(int id);
+	RobotBlocksGlBlock(bID id);
 	virtual ~RobotBlocksGlBlock();
 	virtual string getInfo();
 

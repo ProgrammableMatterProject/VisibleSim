@@ -2,7 +2,7 @@
 
 namespace Catoms3D {
 
-Catoms3DGlBlock::Catoms3DGlBlock(int id) : GlBlock(id) {
+Catoms3DGlBlock::Catoms3DGlBlock(bID id) : GlBlock(id) {
     mat.identity();
 }
 

@@ -13,6 +13,8 @@
 #include <sstream>
 #include <cstring>
 
+#include "tDefs.h"
+
 #define LOGFILE
 
 #ifdef LOGFILE
@@ -32,12 +34,12 @@ class Scheduler;
 
 class ConsoleStream {
 	BaseSimulator::Scheduler *scheduler;
-    int blockId;
+    bID blockId;
     stringstream stream;
 public:
 
     ConsoleStream() { stream.str(""); };
-    void setInfo(BaseSimulator::Scheduler*s,int id) {
+    void setInfo(BaseSimulator::Scheduler*s,bID id) {
         scheduler=s;
         blockId=id;
     }

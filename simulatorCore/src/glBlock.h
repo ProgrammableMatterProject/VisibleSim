@@ -11,6 +11,7 @@
 #include "shaders.h"
 #include "vector3D.h"
 #include "color.h"
+#include "tDefs.h"
 
 using namespace std;
 
@@ -20,10 +21,10 @@ protected :
 public :
 	GLfloat position[3];
 	GLfloat color[4];
-	int blockId;
+    bID blockId;
 
-	GlBlock(int id);
-	GlBlock(int id,const Vector3D &pos, const Vector3D &col);
+	GlBlock(bID id);
+	GlBlock(bID id,const Vector3D &pos, const Vector3D &col);
 	virtual ~GlBlock();
 
 	virtual void setPosition(const Vector3D &p);

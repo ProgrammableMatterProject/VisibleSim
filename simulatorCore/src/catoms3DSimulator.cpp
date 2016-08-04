@@ -47,7 +47,7 @@ void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
     World::setWorld(world);
 }
 
-void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, int blockId, BlockCodeBuilder bcb,
+void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
 								  const Cell3DPosition &pos, const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed

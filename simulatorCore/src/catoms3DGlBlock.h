@@ -19,7 +19,7 @@ public :
     //GLfloat theta,phi,psi; //!< spherical coordinates angles in degree
     Matrix mat;
 
-	Catoms3DGlBlock(int id);
+	Catoms3DGlBlock(bID id);
 	virtual ~Catoms3DGlBlock();
 	virtual string getInfo();
 

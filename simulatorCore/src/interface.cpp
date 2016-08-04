@@ -275,7 +275,7 @@ void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
     slider->update();
 }
 
-void GlutSlidingMainWindow::addTrace(int id,const string &str,const Color &color) {
+void GlutSlidingMainWindow::addTrace(bID id,const string &str,const Color &color) {
 	BlockDebugData *bdd = new BlockDebugData(id,str,color);
 	traces.insert(pair<uint64_t,BlockDebugData*>(BaseSimulator::getScheduler()->now(),bdd));
 	if (selectedGlBlock) {
@@ -368,7 +368,7 @@ void GlutSlidingDebugWindow::glDraw() {
 		if (input->hasFocus) {
             drawString(w-85,h-20.0,"DEBUG MODE");
             char c[6];
-            sprintf(c,"%d",debugId);
+            sprintf(c,"%llu",debugId);
             drawString(w/2-45,h-20.0,c);
 		}
 
@@ -409,7 +409,7 @@ int GlutSlidingDebugWindow::mouseFunc(int button,int state,int mx,int my) {
 }
 
 int GlutSlidingDebugWindow::keyFunc(int charcode) {
-	int id=0;
+    bID id=0;
 
 	vector <GlutWindow*>::const_iterator cw = children.begin();
 	while (cw!=children.end()) {

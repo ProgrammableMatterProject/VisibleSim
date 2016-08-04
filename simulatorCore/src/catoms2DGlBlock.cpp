@@ -2,7 +2,7 @@
 
 namespace Catoms2D {
 
-Catoms2DGlBlock::Catoms2DGlBlock(int id) : GlBlock(id) {
+Catoms2DGlBlock::Catoms2DGlBlock(bID id) : GlBlock(id) {
     angle=0;
 }
 

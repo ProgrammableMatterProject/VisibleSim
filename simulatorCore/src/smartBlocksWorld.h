@@ -37,7 +37,7 @@ public:
         cout << "I'm a SmartBlocksWorld" << endl;
     }
 
-    virtual void addBlock(int blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
+    virtual void addBlock(bID blockId, BlockCode *(*blockCodeBuildingFunction)(BuildingBlock*),
                           const Cell3DPosition &pos, const Color &col,
                           short orientation = 0, bool master = false);
 
