@@ -62,7 +62,7 @@ The Makefile in `simulatorCore/src` handles the compilation of the core of Visib
 - deps/, contains dependency files for efficiently updating the target if the sources changes
 - obj/, contains all the output `.o` files
 
-In order:
+The compilation workflow is the following, in order:
 
 1. Create output directories
 2. Dependencies are generated (thanks to `-MT -MMD -MP -MF` CC flags)
@@ -75,7 +75,7 @@ All it does is to call `make` on the Makefile in each of the subdirectories mark
 
 Alternatively, the user can call `make` directly from the block code directory, if no change has been made to core, since the static libraries are used for linking. 
 
-All the block code Makefiles are identical, except for the following variables that have to be set by the user: _SRCS_, _OUT_, _MODULELIB_. A custom `make test` procedure can also be specified, more on this later.
+All the block code Makefiles are identical, except for the following variables that have to be set by the user: `SRCS`, `OUT`, `MODULELIB`. A custom `make test` procedure can also be specified, more on this [in the dedicated section](#autotest).
 
 ### VisibleSim Execution Workflow
 TODO
@@ -176,8 +176,6 @@ Inclusions
 #### Running
 ### Block Code API
 TODO
-### Automated BlockCode Testing
-TODO
 ### Clock
 TODO
 ### User Interactions
@@ -186,6 +184,8 @@ TODO
 #### Tap
 TODO
 ### Statistics
+TODO
+### <a name="autotest"></a>Automated BlockCode Testing
 TODO
 
 ## Configuration Files
@@ -266,7 +266,8 @@ __N.B.:__ NOT necessary if using  _terminal mode_.
 
 #### !`blockList` 
 
-The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation.
+The `blockList` element describes the starting physical position and color of modules (+ extra attributes depending on module type) in the simulated world, as well as their logical identifier for simulation. 
+There are two types of children elements that can be used to describe the ensemble, and that can be combined, `block` and `blocksLine`.
 
 ```xml
 <blockList color="r,g,b" ids="[MANUAL|ORDERED|RANDOM]" step="sp" seed="sd">
@@ -277,9 +278,43 @@ The `blockList` element describes the starting physical position and color of mo
 	<!-- ... -->
 </blockList>
 ```
-##### Module ID Assignment Schemes
+Attributes: 
 
-There are two way elements can be used to describe the ensemble, they can be combined:
+- `color="r,g,b"`: The default color of the modules. If unspecified, set to dark grey.
+- `ids"`: Please refer to [Module Identifiers Assignment Schemes](#ids) below.
+
+##### <a name="ids"></a>Module Identifiers Assignment Schemes
+In VisibleSim, every module is given a unique numerical identifier (from `1` to `2^63`), to which we will refer as `blockID`, or simply `ID`. They are variables that can be used in algorithms, and if they are always identical, it can introduce determinism, hence we provide the user with several methods for assigning each module with an `ID`. 
+
+```xml
+<blockList color="r,g,b" ids="ORDERED">
+	<block position="x1,y1,z1"/>
+	<!-- ... -->
+	<block position="xN,yN,zN"/>
+</blockList>
+<!-- OR -->
+<blockList color="r,g,b" ids="MANUAL">
+	<block position="x45,y45,z45" id="45"/>
+	<!-- ... -->
+	<block position="x3,y3,z3" id="3"/>
+</blockList>
+<!-- OR -->
+<blockList color="r,g,b" ids="RANDOM" step="sp" seed="sd">
+	<block position="x?,y?,z?"/>
+	<!-- ... -->
+	<block position="x?,y?,z?"/>
+</blockList>
+```
+
+The `ids` attribute of `blockList` is used for specifying the scheme that should be used. Let `N` be the number of modules in the configuration. There are 3 possible values for the `ids` field :
+
+1. `ORDERED`: Assign `ID` to modules based on their order of appearance in the configuration file. Starting from `1`, hence last module will be identified as `N`.
+2. `MANUAL`: Manually assign an `ID` to each module using the `id` attribute of `block`. Every single module in the configuration file has to be manually assigned an identifier.
+3. `RANDOM`: Takes two optional `blockList` parameters, `seed` and `step`. Fill a container with `N` identifiers starting from `1` and distanced to each other by `step`. Then, randomly assign each identifiers to a module, with the possibility to provide a custom `seed` for a deterministic distribution. If `step` equals `1` if unspecified, and if `seed` is unspecified, a random one is used. 
+
+__N.B.:__ If `ids` is unspecified, `ORDERED` will be used by default. 
+__N.B.2:__ It is the responsibility of the user to ensure that the parameters used in `RANDOM` mode (_i.e._ number of modules and step), will not generate an overflow (`ID` > `1 + (n - 1) * step`). The behaviour of VisibleSim is undefined in that case.
+__N.B.3:__ An absence of block is marked as an `ID` of `0`, but this is beyond the scope of configuration files.
 
 ##### The `block` Element
 Defines a single module and its attributes. 
@@ -305,8 +340,9 @@ Attributes:
 - `color="r,g,b"`: The color of the modules. Set to the `blockList` color attribute if undefined.
 - !`values="ab001...01z"`: Describes the line of modules, with `W` (width of the lattice) binary values, where `0` means an absence of block, and `1` means presence of block. Here, `a` means the cell at position `(0, l, p)` of the lattice, `b`: `(1, l, p)` ... and `z`: `(W - 1, l, p)`.
 
-__Warning:__ if the number of values is not equal to the width of the lattice, the configuration is incorrect.
-
+__Warning:__ if the number of values is not equal to the width of the lattice, the configuration is incorrect. 
+__Warning#2:__ `blocksLine` can only be used with the `ORDERED` identifier scheme.
+ 
 ##### Constraints
 Both description methods are subject to a number of constraints:
 
