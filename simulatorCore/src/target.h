@@ -46,6 +46,14 @@ namespace BaseSimulator {
 //<! @brief Abstract Target. Provides the user with functions for checking a target position and color.
 class Target {    
 protected:
+    
+    /**
+     * @brief prints target to an ouput string
+     * @param where ostream on which to print the object
+     */
+    virtual void print(ostream& where) const {};
+
+public:
     //<! @brief Exception thrown if an error as occured during parsing
     struct TargetParsingException : std::exception {
         const char* what() const noexcept {
@@ -64,14 +72,7 @@ protected:
             return "Target dimensions are invalid\n";
         }
     };
-    
-    /**
-     * @brief prints target to an ouput string
-     * @param where ostream on which to print the object
-     */
-    virtual void print(ostream& where) const {};
 
-public:
     static TiXmlNode *targetListNode; //!< pointer to the target list node from the XML configuration file
     static TiXmlNode *targetNode; //!< pointer to the current target node from the XML configuration file
 
@@ -99,12 +100,6 @@ public:
      * @return target color at cell p
      */
     virtual const Color getTargetColor(const Cell3DPosition &pos) = 0;
-    /**
-     * @brief 
-     * @param 
-     * @return true if a target has been loaded 
-     */
-    // virtual bool readNextTarget();
     
     friend ostream& operator<<(ostream& out,const Target &t);
 };  // class Target

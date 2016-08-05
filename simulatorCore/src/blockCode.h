@@ -86,6 +86,13 @@ public:
     virtual void onTap(int face);
 
     /**
+     * @brief Loads the next target from the configuration file into the target attribute 
+     *  by calling Target::loadNextTarget()
+     * @return true if a target has been loaded, false otherwise (No target remaining in config file)
+     */
+    static bool loadNextTarget(); 
+    
+    /**
      * @brief Add a new message handler to the block code, for message with message type type
      * @param type ID of the message for which a handler needs to be registered
      * @param eventFunc the message handling function as a std::function */

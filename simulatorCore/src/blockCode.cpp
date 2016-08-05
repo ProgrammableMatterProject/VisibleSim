@@ -132,4 +132,10 @@ void BlockCode::onTap(int face) {
 	scheduler->trace(info.str(),hostBlock->blockId);	
 }
 
+bool BlockCode::loadNextTarget() {
+	target = Target::loadNextTarget();
+
+	return target != NULL;
+}
+
 } // BaseSimulator namespace
