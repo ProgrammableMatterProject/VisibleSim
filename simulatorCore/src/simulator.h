@@ -120,6 +120,12 @@ protected:
 	 *  @attention The xmlBlockListNode attribute has to be initialized before calling this function.
 	 */
 	IDScheme determineIDScheme();
+
+	/*!
+	 * @brief Counts the number of modules defined in the configuration file. From both blocksLine and block elements.
+	 * @return The number of modules defined in configuration file.
+	 */
+	bID countNumberOfModules();
 		
 	/*!
 	 *  @brief Initialize the pool of id according to the ID assignment model specified in configuration file

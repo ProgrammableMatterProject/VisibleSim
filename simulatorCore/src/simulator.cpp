@@ -259,14 +259,38 @@ void Simulator::generateRandomIDs(const int n, const int seed, const int step) {
 	std::shuffle(begin(IDPool), end(IDPool), generator);
 }
 
+bID Simulator::countNumberOfModules() {
+	TiXmlElement *element;
+	const char *attr;
+	bID moduleCount = 0;
+
+	// Count modules from block elements
+	for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
+		moduleCount++;
+	
+	// Count modules from blocksLine elements
+	for(TiXmlNode *child = xmlBlockListNode->FirstChild("blocksLine"); child; child = child->NextSibling("blocksLine")) {
+		element = child->ToElement();
+		attr = element->Attribute("values");
+		if (attr) {
+			string str(attr);
+			int n = str.length();
+			for(int i = 0; i < n; i++) {
+				if  (str[i]=='1')
+					moduleCount++;
+			}
+		}
+	}
+
+	return moduleCount;
+}
+
 void Simulator::initializeIDPool() {
 	// Simulator.xmlBlockListNode has to be initialized at this point!
 	
 	// Count number of modules in configuration file
-	int numModules = 0;
-	for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
-		numModules++;
-
+	bID numModules = countNumberOfModules();
+		
 	cerr << "There are " << numModules << " modules in the configuration" << endl;
 	
 	// Determine what assignment model to use, and initialize IDPool according to it
@@ -544,7 +568,7 @@ void Simulator::parseCameraAndSpotlight() {
 }
 
 void Simulator::parseBlockList() {
-	int currentID = 1;
+	int indexBlock = 0;
 
 	TiXmlElement* element = xmlBlockListNode->ToElement();
 	if (xmlBlockListNode) {
@@ -566,7 +590,6 @@ void Simulator::parseBlockList() {
 		Cell3DPosition position;
 		Color color;
 		bool master;
-		int indexBlock = 0;
 		while (block) {
 			element = block->ToElement();
 			color=defaultColor;
@@ -614,6 +637,11 @@ void Simulator::parseBlockList() {
 		block = xmlBlockListNode->FirstChild("blocksLine");
 		int line = 0, plane = 0;
 		while (block) {
+			if (ids == MANUAL) {
+				cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
+				throw ParsingException();
+			}
+			
 			line = 0;
 			element = block->ToElement();
 			color=defaultColor;
@@ -645,7 +673,7 @@ void Simulator::parseBlockList() {
 				for(int i=0; i<n; i++) {
 					if  (str[i]=='1') {
 						position.pt[0]=i;
-						loadBlock(element, currentID++, bcb, position, color, false);
+						loadBlock(element, IDPool[indexBlock++], bcb, position, color, false);
 					}
 				}
 			}
