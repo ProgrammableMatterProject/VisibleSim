@@ -22,6 +22,9 @@ OUT = $(APPDIR)/catom2D1
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -libsimCatoms2D
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh catom2D1 $(OUT)
+#
 APPLIBS =  -L./ts -lTS
 APPLIBFILES = ts/libTS.a
 APPINCLUDES = -I./ts
@@ -76,8 +79,8 @@ CC = g++
 
 all: $(OUT)
 	@:
-test:				
-	@../../utilities/blockCodeTest.sh catom2D1 $(OUT)
+test:
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

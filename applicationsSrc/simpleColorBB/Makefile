@@ -22,6 +22,8 @@ OUT = $(APPDIR)/simpleColorBB
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimBlinkyBlocks
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh simpleColorBB $(OUT)
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -70,8 +72,8 @@ CC = g++
 all: $(OUT)
 	@:
 
-test:				
-	@../../utilities/blockCodeTest.sh simpleColorBB $(OUT)
+test:
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

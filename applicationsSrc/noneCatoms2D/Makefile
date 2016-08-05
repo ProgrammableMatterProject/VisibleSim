@@ -22,6 +22,9 @@ OUT = $(APPDIR)/noneCatoms2D
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms2D
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh noneCatoms2D $(OUT)
+
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -70,8 +73,8 @@ CC = g++
 all: $(OUT)
 	@:
 
-test:				
-	@../../utilities/blockCodeTest.sh noneCatoms2D $(OUT)
+test:
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

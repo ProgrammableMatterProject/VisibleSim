@@ -22,6 +22,13 @@ OUT = $(APPDIR)/meld
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh meldbb $(OUT) -c configs/configBB.xml -p outprogs/rainbow.bb -k BB ;\
+	../../utilities/blockCodeTest.sh meldsb $(OUT) -c configs/configSB.xml -p outprogs/rainbowSB.bb -k SB ;\
+	../../utilities/blockCodeTest.sh meldrb $(OUT) -c configs/configRB.xml -p outprogs/rainbow.bb -k RB ;\
+	../../utilities/blockCodeTest.sh meldc2d $(OUT) -c configs/configC2D.xml -p outprogs/rainbowC2D.bb -k C2D ;\
+	../../utilities/blockCodeTest.sh meldc3d $(OUT) -c configs/configC3D.xml -p outprogs/rainbowC3D.bb -k C3D
+
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -71,11 +78,7 @@ all: $(OUT)
 	@:
 
 test:
-	@../../utilities/blockCodeTest.sh meldbb $(OUT) -c configs/configBB.xml -p outprogs/rainbow.bb -k BB
-	@../../utilities/blockCodeTest.sh meldsb $(OUT) -c configs/configSB.xml -p outprogs/rainbowSB.bb -k SB
-	@../../utilities/blockCodeTest.sh meldrb $(OUT) -c configs/configRB.xml -p outprogs/rainbow.bb -k RB
-	@../../utilities/blockCodeTest.sh meldc2d $(OUT) -c configs/configC2D.xml -p outprogs/rainbowC2D.bb -k C2D 
-	@../../utilities/blockCodeTest.sh meldc3d $(OUT) -c configs/configC3D.xml -p outprogs/rainbowC3D.bb -k C3D
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

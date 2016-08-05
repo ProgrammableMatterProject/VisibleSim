@@ -22,6 +22,8 @@ OUT = $(APPDIR)/simpleColorC2D
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms2D
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh simpleColorC2D $(OUT) -c configMakeDisc10x0.xml
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -70,8 +72,8 @@ CC = g++
 all: $(OUT)
 	@:
 
-test:				
-	@../../utilities/blockCodeTest.sh simpleColorC2D $(OUT) -c configMakeDisc10x0.xml
+test:
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

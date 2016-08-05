@@ -31,8 +31,8 @@ CC = g++
 all: $(OUT)
 	@:
 
-test:				#TODO
-	@../../utilities/blockCodeTest.sh robot02 $(OUT)
+test:
+	@$(TESTS)
 
 autoinstall: $(OUT) 
 	cp $(OUT)  $(APPDIR)

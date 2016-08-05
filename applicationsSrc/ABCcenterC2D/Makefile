@@ -32,7 +32,7 @@ all: $(OUT)
 	@:
 
 test:
-	@../../utilities/blockCodeTest.sh ABCcenterC2D $(OUT)
+# @../../utilities/blockCodeTest.sh ABCcenterC2D $(OUT)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

@@ -22,6 +22,8 @@ OUT = $(APPDIR)/MRMeld
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimMultiRobots
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh MRMeld $(OUT) -p demo.bb #;\
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -71,8 +73,7 @@ all: $(OUT)
 	@:
 
 test:
-# Cannot be tested since infinite
-# @../../utilities/blockCodeTest.sh bbCycle $(OUT)
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

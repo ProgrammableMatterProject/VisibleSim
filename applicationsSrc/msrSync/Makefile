@@ -22,6 +22,9 @@ OUT = $(APPDIR)/msrSync
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimBlinkyBlock
+# TESTS contains the commands that will be executed when `make test` is called
+# Cannot be tested since infinite execution
+TESTS = : #;\
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -71,8 +74,7 @@ all: $(OUT)
 	@:
 
 test:
-# Cannot be tested since infinite
-# @../../utilities/blockCodeTest.sh bbCycle $(OUT)
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

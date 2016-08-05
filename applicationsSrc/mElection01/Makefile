@@ -32,7 +32,7 @@ all: $(OUT)
 	@:
 
 test:				#TODO
-	@../../utilities/blockCodeTest.sh mElection01 $(OUT)
+	@:
 
 autoinstall: $(OUT) 
 	cp $(OUT)  $(APPDIR)

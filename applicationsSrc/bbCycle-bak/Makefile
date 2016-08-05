@@ -32,8 +32,7 @@ all: $(OUT)
 	@:
 
 test:
-# Cannot be tested since infinite
-#@../../utilities/blockCodeTest.sh bbCycle-bak $(OUT)
+	@:
 
 autoinstall: $(OUT)
 	cp $(OUT) $(APPDIR)
