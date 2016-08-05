@@ -22,6 +22,8 @@ OUT = $(APPDIR)/sbReconf
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimSmartBlocks
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh sbReconf $(OUT) -c configMakeSquare9x8_8x8.xml
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -71,7 +73,7 @@ all: $(OUT)
 	@:
 
 test:				
-	@../../utilities/blockCodeTest.sh sbReconf $(OUT)
+	@$(TESTS)
 
 autoinstall: $(OUT)
 	cp $(OUT)  $(APPDIR)

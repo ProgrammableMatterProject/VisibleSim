@@ -340,10 +340,10 @@ void Simulator::initializeIDPool() {
 		break;
 	} // switch
 
-	cerr << "{";
-	for (bID id : IDPool)
-		cerr << id << ", ";
-	cerr << "}" << endl;
+	// cerr << "{";
+	// for (bID id : IDPool)
+	// 	cerr << id << ", ";
+	// cerr << "}" << endl;
 }
 
 void Simulator::readSimulationType(int argc, char*argv[]) {
