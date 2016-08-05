@@ -13,7 +13,7 @@ print_result() {
     else
         echo -e "$1:\t\t\t[\033[33;31mFAILED\x1B[0m]"
     fi
-
+   
     exit 0
 }
 
@@ -63,7 +63,7 @@ fi
 DIFF=$(echo `diff "$check" "$control" 2> /dev/null`)
 
 # Clean outputs
-rm -f ".confCheck.xml"
+rm -f $check
 
 # Interpret diff result (test succeeds if both output and control are identical)
 if [ "$DIFF" == "" ]; then
