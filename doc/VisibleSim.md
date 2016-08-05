@@ -33,11 +33,11 @@ The VisibleSim repository is organised as-follows:
 ```
 Here is a quick look at the content of each of the main directories from the project tree, before diving into details:
 
-- simulatorCore: simulator C++ sources and graphical textures
-- applicationsSrc: user programs (named block codes) source files  
-- applicationsBin: user programs executables and configuration files 
-- docs: all sort of documentations
-- utilities: contains scripts and programs for compiling and testing, as well as useful tools for users
+- `simulatorCore`: simulator C++ sources and graphical textures
+- `applicationsSrc`: user programs (named block codes) source files  
+- `applicationsBin`: user programs executables and configuration files 
+- `docs`: all sort of documentations
+- `utilities`: contains scripts and programs for compiling and testing, as well as useful tools for users
 
 ### Source Files
 As mentioned above, the C++ source files for the simulator's core are all stored into the `simulatorCore/src` directory. The `.cpp` file extension is used for implementation files, and `.h` for header files.
@@ -51,16 +51,16 @@ The compilation process in VisibleSim is based on a recursive approach. The root
 The top level Makefile is the one that should receive the original `make` command. It contains a few conditional variable assignments, whose need is justified as-follows:
  
 - __OS__: We need distinct variables for distinct OS families, because both the manner of including libraries, and their implementations themselves are different hence the potential need for custom compilation and linking flags. Also, even though we recommend using the gcc compiler, OS X users are more likely to be using Clang, which also has its special set of flags.
-- __MELD PROCESS__: Recently, the source code has been updated to use the new features of the C++11 standard. In an effort for better portability, we have replaced the features brought by the `boost` library by their `std` counterpart present in C++11. This has been possible for all features except `asio`, used for interprocess communication with the Meld Virtual Machines. Since it will eventually be entirely replaced by the Meld Interpreter, we decided to exclude the Meld Process sources from the compilation by default (and thus, `boost`). If you want to enable it nonetheless, add the _-DENABLE\_MELDPROCESS_ flag to the _TEMP\_CCFLAGS_ list.
+- __MELD PROCESS__: Recently, the source code has been updated to use the new features of the C++11 standard. In an effort for better portability, we have replaced the features brought by the `boost` library by their `std` counterpart present in C++11. This has been possible for all features except `asio`, used for interprocess communication with the Meld Virtual Machines. Since it will eventually be entirely replaced by the Meld Interpreter, we decided to exclude the Meld Process sources from the compilation by default (and thus, `boost`). If you want to enable it nonetheless, add the `-DENABLE_MELDPROCESS` flag to the `TEMP_CCFLAGS` list.
 
 The root makefile can be used to propagate the `test` and `doc` special directives, that will be detailed later. By default, it only compiles the sources from `simulatorCore/src` and all the block codes marked for compilation in the `applicationsSrc` Makefile.
 
 ### Core Compilation
 The Makefile in `simulatorCore/src` handles the compilation of the core of VisibleSim, and its output is the following:
 
-- lib/, contains libraries (one per module family), to be used by the user for compiling block codes independently from the simulator's core
-- deps/, contains dependency files for efficiently updating the target if the sources changes
-- obj/, contains all the output `.o` files
+- `lib/`, contains libraries (one per module family), to be used by the user for compiling block codes independently from the simulator's core
+- `deps/`, contains dependency files for efficiently updating the target if the sources changes
+- `obj/`, contains all the output `.o` files
 
 The compilation workflow is the following, in order:
 
@@ -224,7 +224,7 @@ This configuration file would produce the following output if using BlinkyBlocks
 ![Sample BlinkyBlocks Configuration](https://i.imgsafe.org/1700a14b52.png "SampleConfiguration")
 
 ### XML Attributes
-Every possible configuration file attribute is detailed below, where items marked as "`item`!" are mandatory.
+Every possible configuration file attribute is detailed below, where items marked as "!`item`" are mandatory.
 #### !`XML Declaration`
 ```xml
 <?xml version="1.0" standalone="no" ?>
@@ -312,7 +312,9 @@ The `ids` attribute of `blockList` is used for specifying the scheme that should
 3. `RANDOM`: Takes two optional `blockList` parameters, `seed` and `step`. Fill a container with `N` identifiers starting from `1` and distanced to each other by `step`. Then, randomly assign each identifiers to a module, with the possibility to provide a custom `seed` for a deterministic distribution. If `step` equals `1` if unspecified, and if `seed` is unspecified, a random one is used. 
 
 __N.B.:__ If `ids` is unspecified, `ORDERED` will be used by default. 
+
 __N.B.2:__ It is the responsibility of the user to ensure that the parameters used in `RANDOM` mode (_i.e._ number of modules and step), will not generate an overflow (`ID` > `1 + (n - 1) * step`). The behaviour of VisibleSim is undefined in that case.
+
 __N.B.3:__ An absence of block is marked as an `ID` of `0`, but this is beyond the scope of configuration files.
 
 ##### The `block` Element
@@ -350,4 +352,101 @@ Both description methods are subject to a number of constraints:
 - Two modules cannot have the same ID. 
 
 #### Reconfiguration Targets
-TODO
+As mentioned earlier, a VisibleSim configuration can also be used to describe one or multiple reconfiguration `targets` (_i.e._ an objective configuration in term of module positions and colors). 
+
+##### Description
+Description of `targets` in the XML configuration file has to be done under the `targetList` children element of `world`. It defines a list of configurations that will be read one by one in sequential order, when required in the user block code program.
+
+```xml
+<targetList>
+  <target format="grid">
+    <cell position="x1,y1,z1"/>
+    <!-- ... -->
+    <cell position="xM,yM,zM" color="rM,gM,bM"/>    
+  </target>
+  <target format="csg">
+    <!-- NOT YET IMPLEMENTED -->
+  </target>
+  <!-- other targets -->
+</targetList>
+```
+
+For each `target` children element of `targetList`, its `format` attribute indicates the model used to describe the target:
+
+- `format="grid"`: describes a target configuration in term of individual cells.
+- `format="msg"` : describes a target configuration in term of a combination of geometrical shapes.
+
+###### Grid Target
+A `cell` element is used to declare that a specific cell of the lattice is part of the target, and if necessary, what color the module on this cell should have. 
+```xml
+<cell position="x,y,z" color="r,g,b"/>    
+```
+Attributes: 
+- !`position="x,y,z"`: The position of the cell to add to the `target` definition. 
+- `color="r,g,b"`: The target color of the module on this cell. If unspecified, the color will be initialised as `(0,0,0)`, but should be not be used.
+###### CSG Target
+`NOT YET IMPLEMENTED`
+
+##### API: Using Targets in Block Codes
+
+```C++
+//	Target.h
+    /**
+     * @brief Parse next target from the configuration file's 
+     * Target List, and return a pointer to the instantiated object
+     * @return pointer to the parsed Target object, or NULL if there are 
+     * no (more) targets in the configuration file
+     */
+    static Target *loadNextTarget();    
+    /**
+     * @brief Indicates if a position belongs to the target
+     * @param pos position to consider
+     * @return true if pos belongs to the target, false otherwise
+     */
+    bool isInTarget(const Cell3DPosition &pos) = 0;
+    /**
+     * @brief Returns the target color at position pos
+     * @param pos position to condiser
+     * @return target color at cell p
+     */
+	const Color getTargetColor(const Cell3DPosition &pos);
+	//!< Prints a target to an output stream
+    friend ostream& operator<<(ostream& out,const Target &t);
+
+// BlockCode.h
+    /**
+     * @brief Loads the next target from the configuration file 
+     * into the target attribute by calling Target::loadNextTarget()
+     * @return true if a target has been loaded, 
+     *         false otherwise (No target remaining in config file)
+     */
+    static bool loadNextTarget();
+```
+
+The `targets` API is quite straighforward:
+
+- The `BlockCode` abstract class contains a `static` pointer to a `target`, hence any user block code will also have access to that variable. It can be accesses using `<blockCodeName>::target`.
+- Upon VisibleSim startup, `<blockCodeName>::target` will be loaded with the first occurence of `target` from the configuration file. If none is defined, then `<blockCodeName>::target` will be `NULL`.
+- Once a `target` is loaded, the following functions can be used: 
+	- `isInTarget`: check whether or not a given cell is part of the target. 
+	- `getTargetColor`: get the the target color for a given cell. If not part of the target, `InvalidPositionException` is raised.
+	- `<ostream> << <blockCodeName>::target`: prints the target to an output stream.
+- Finally, use `<blockCodeName>::loadNextTarget()` to read the next target from the configuration file, and store it into `<blockCodeName>::target`. If there was no additional target defined, this function will return `false`, and `target` attribute will be `NULL`.
+
+#### Parsing Additional User Elements
+Users can add extra elements to the configuration file that are specific to their application. The VisibleSim API provides a function to the users that is called only once per simulation, right after the parsing of the _core_ elements of the configuration file. 
+```C++
+/**
+ * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from it. Has to be overriden in the child class.
+ * @param config : pointer to the TiXmlDocument representing the configuration file, all information related to VisibleSim's core have already been parsed
+ *
+ * Called from BuildingBlock constructor, only once.
+ */ 
+ virtual void parseUserElements(TiXmlDocument *config) { }
+```
+
+This function defined in `blockCode.h` is `virtual` and does nothing by default, but can be overloaded in the user `BlockCode` to perform additional configuration. It can be used in the three following ways:
+
+1. Do not overload `parseUserElements`. Performs no additional parsing.
+2. Overload `parseUserElements` an use the `TiXmlDocument *config` parameter to access and parse the user elements from the configuration file using [TinyXML](http://www.grinninglizard.com/tinyxml/index.html). (Please refer to the [Official TinyXML Documentation](http://www.grinninglizard.com/tinyxmldocs/index.html) for instructions)
+3. Overload `parseUserElements`, but ignore the XML document parameter, and use this function to perform custom data reading and parsing from another file, in any way.
