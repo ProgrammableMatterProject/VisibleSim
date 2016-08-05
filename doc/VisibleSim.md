@@ -255,11 +255,9 @@ These elements respectively describe the initial position and orientation of the
 ```
 Attributes:
 
-__TODO:__ Need explanations on what are these parameters, and how they can be found.
-
-- !`target="x,y,z"`: Specifies the location of the camera in the simulated world. 
-- !`directionSpherical="r,θ,φ"`: Where (r, θ, φ) are the spherical coordinates of the object's direction.
-- !`angle="α"`: __TODO?__.  Based on observations: Field of view?. 
+- !`target="x,y,z"`: Specifies the location where the object in pointing at, in the simulated world. 
+- !`directionSpherical="θ,φ,r"`: Where `(θ, φ, r)` are the [spherical coordinate](https://en.wikipedia.org/wiki/Spherical_coordinate_system) of the object's direction, `θ`: azimuth angle - `φ`: polar angle - `r`: radial distance.
+- !`angle="α"`: _Angular field of view_ of the object in degrees. 
 
 __N.B.:__ NOT necessary if using  _terminal mode_.
 
@@ -374,7 +372,7 @@ Description of `targets` in the XML configuration file has to be done under the 
 For each `target` children element of `targetList`, its `format` attribute indicates the model used to describe the target:
 
 - `format="grid"`: describes a target configuration in term of individual cells.
-- `format="msg"` : describes a target configuration in term of a combination of geometrical shapes.
+- `format="csg"` : describes a target configuration in term of a combination of geometrical shapes.
 
 ###### Grid Target
 A `cell` element is used to declare that a specific cell of the lattice is part of the target, and if necessary, what color the module on this cell should have. 
@@ -403,7 +401,7 @@ Attributes:
      * @param pos position to consider
      * @return true if pos belongs to the target, false otherwise
      */
-    bool isInTarget(const Cell3DPosition &pos) = 0;
+    bool isInTarget(const Cell3DPosition &pos);
     /**
      * @brief Returns the target color at position pos
      * @param pos position to condiser
@@ -411,7 +409,7 @@ Attributes:
      */
 	const Color getTargetColor(const Cell3DPosition &pos);
 	//!< Prints a target to an output stream
-    friend ostream& operator<<(ostream& out,const Target &t);
+    ostream& operator<<(ostream& out,const Target &t);
 
 // BlockCode.h
     /**
