@@ -46,8 +46,8 @@ Target *Target::loadNextTarget() {
  *                         Target
  ************************************************************/
 
-ostream& operator<<(ostream& out,const Target &t) {
-    t.print(out);
+ostream& operator<<(ostream& out,const Target *t) {
+    t->print(out);
     return out;
 }   
 
@@ -62,7 +62,8 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     Cell3DPosition position;
     Color defaultColor = Color();
     Color color;
-    
+
+    // Parse individual cells
     while (cellNode) {
         element = cellNode->ToElement();
         color = defaultColor;
@@ -93,6 +94,49 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
         cellNode = cellNode->NextSibling("cell");
     } // end while (cellNode)
 
+    // Parse lines of cells
+    cellNode = targetNode->FirstChild("targetLine");
+    while (cellNode) {
+        int line = 0, plane = 0;            
+        element = cellNode->ToElement();
+        color = defaultColor;
+        attr = element->Attribute("color");
+        if (attr) {
+            string str(attr);
+            int pos1 = str.find_first_of(','),
+                pos2 = str.find_last_of(',');
+            color.set(atof(str.substr(0,pos1).c_str())/255.0,
+                      atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
+                      atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+        }
+
+        attr = element->Attribute("line");
+        if (attr) {
+            line = atoi(attr);
+        }
+        
+        attr = element->Attribute("plane");
+        if (attr) {
+            plane = atoi(attr);
+        }
+        
+        attr = element->Attribute("values");
+        if (attr) {
+            string str(attr);
+            position.pt[0] = 0;
+            position.pt[1] = line;
+            position.pt[2] = plane;
+            int n = str.length();
+            for(int i=0; i<n; i++) {
+                if  (str[i] == '1') {
+                    position.pt[0] = i;
+                    addTargetCell(position, color);
+                }
+            }
+        }
+        
+        cellNode = cellNode->NextSibling("blocksLine");
+    } // end while (cellNode)*/
 }
 
 bool TargetGrid::isInTarget(const Cell3DPosition &pos) {

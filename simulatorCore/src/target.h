@@ -101,7 +101,7 @@ public:
      */
     virtual const Color getTargetColor(const Cell3DPosition &pos) = 0;
     
-    friend ostream& operator<<(ostream& out,const Target &t);
+    friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
 
 //<! @brief A target modeled as a container of unique positions and colors.c
