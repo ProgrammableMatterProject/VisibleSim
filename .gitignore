@@ -64,3 +64,5 @@ doc/html/
 
 
 utilities/LMParser/LMParser
+utilities/meld-compiler/dists/quicklisp/archives/
+utilities/meld-compiler/dists/quicklisp/software/
