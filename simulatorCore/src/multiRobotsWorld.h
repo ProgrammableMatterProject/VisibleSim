@@ -18,7 +18,7 @@
 
 namespace MultiRobots {
 
-static const Vector3D defaultBlockSize{40.0, 40.0, 41.0};
+static const Vector3D defaultBlockSize{71.0, 71.0, 65.0};
 
 class MultiRobotsWorld : public BaseSimulator::World {
 protected:   

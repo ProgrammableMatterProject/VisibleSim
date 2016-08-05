@@ -177,6 +177,21 @@ public:
     virtual ~SmartBlocksConfigExporter() { };
 };
 
+/** 
+ * @brief MultiRobots Configuration Exporter
+ */
+class MultiRobotsConfigExporter : public ConfigExporter {
+public:
+    /** 
+     * @brief MultiRobots Configuration Exporter constructor
+     */
+    MultiRobotsConfigExporter(World *_world) : ConfigExporter(_world) {};
+    /** 
+     * @brief MultiRobots Configuration Exporter constructor
+     */
+    virtual ~MultiRobotsConfigExporter() { };
+};
+
 } // BASESIMULATOR_NAMESPACE
 
 #endif // CONFIGEXPORTER_H__
