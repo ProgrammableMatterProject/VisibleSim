@@ -178,16 +178,61 @@ TODO
 ## Clock
 TODO
 ## User Interactions
-### Generic Menu
-### C2D Rotations
-### Tap
-TODO
+When running VisibleSim in graphical mode (enabled by default), the user is given a number of ways to interact with the simulated world to perform various actions, as can be seen on the screenshot below.
+
+![Screenshot of the VisibleSim UI ](https://i.imgsafe.org/80543f35a5.png)
+
+### Base Interactions
+
+- <kbd>ctrl</kbd> + `left-click`: __Block Selection__
+	- When performed on a block, selects the clicked block (Show its information and messages on the left interface panel. Selected block is _blinking_).
+	- When performed elsewhere, unselect previously selected block.
+- <kbd>ctrl</kbd> + `right-click`: __Display Contextual Menu__
+	- Makes the contextual menu appear when on a block.
+	- Does nothing otherwise.
+- <kbd>r</kbd> / <kbd>R</kbd>: __Simulation Start__
+	- <kbd>r</kbd> starts the simulation in realtime mode.
+	- <kbd>R</kbd> starts the simulation in fastest mode.
+- <kbd>z</kbd>: __Camera Centering__
+	- Centers the camera on the selected block if there is one.
+- <kbd>w</kbd> / <kbd>W</kbd>: __Toggle Full Screen__
+- <kbd>h</kbd>: __Toggle Help Window__
+- <kbd>i</kbd>: __Toggle Console Sidebar__
+- <kbd>q</kbd> / <kbd>Q</kbd> / <kbd>esc</kbd>: __Quit simulation__
+
+### Contextual Menu
+The contextual menu can be used to interact with a single block from the ensemble, and modify the configuration, which can be exported to en XML file if needed. 
+
+#### General Interactions
+Some modules types can provide specific interactions, but these are the base ones :
+
+- `Add block`: Add a block to the selected face of the selected block. If that face does not correspond to any interface, or if the interface is already connected, this option will be greyed out. The `ID` of the added block will be set to the current maximum `ID` of the ensemble incremented by 1. 
+
+- `Delete block`: Remove the selected block from the ensemble after properly disconnecting from its neighbours. A new block can be added to the same position afterwards.
+
+- `Tap`: "Taps" the selected block, which schedules a `TAPEVENT` that can be processed by a customised user handler in `BlockCode`, by overloading the `virtual void onTap(int face);` function. Prints a message to the console by default. Mostly used for debugging. 
+
+- `Save`: Saves the current configuration to a XML configuration file named `config_hh_mm_ss.xml`. All the world, camera, spotlight, and lattice attributes are exported, as well as the positions, color, master and module-specific attributes of the blocks. For more information on how to edit the file to suit your needs, please refer to the [Configuration Files section](#config).
+
+- `Cancel`: Close popup menu. 
+
+#### Catoms2D Interactions
+When simulating __Catoms2D__ ensembles, two additional actions can be performed from the contextual menu: 
+
+- `CW Rotation`: __Clockwise Rotation__
+	- Rotates the selected block 60º clockwise.
+
+- `CCW Rotation`: __Counter-Clockwise Rotation__
+	- Rotates the selected block 60º counter-clockwise.
+
+Both actions perform a rotation of the block corresponding to an angle of one interface (60º). A rotation in any direction is possible if and only if the module has three consecutive vacant interface in that direction. In case one or both rotations are not possible, the options will be greyed-out.
+
 ## Statistics
 TODO
 ## <a name="autotest"></a>Automated BlockCode Testing
 TODO
 
-## Configuration Files
+## <a name="config"></a>Configuration Files
 In VisibleSim, a configuration file is a XML file that describes the simulated world. At least the state of the world at the beginning of the simulation has to be described, but thanks to a feature named __targets__, the objective state of the world at certain points in the simulation can also be described. 
 
 ### Brief Example 
@@ -382,6 +427,7 @@ A `cell` element is used to declare that a specific cell of the lattice is part 
 Attributes: 
 - !`position="x,y,z"`: The position of the cell to add to the `target` definition. 
 - `color="r,g,b"`: The target color of the module on this cell. If unspecified, the color will be initialised as `(0,0,0)`, but should be not be used.
+
 ###### CSG Target
 `NOT YET IMPLEMENTED`
 
@@ -421,7 +467,7 @@ Attributes:
     static bool loadNextTarget();
 ```
 
-The `targets` API is quite straighforward:
+The `Target` API is quite straighforward:
 
 - The `BlockCode` abstract class contains a `static` pointer to a `target`, hence any user block code will also have access to that variable. It can be accesses using `<blockCodeName>::target`.
 - Upon VisibleSim startup, `<blockCodeName>::target` will be loaded with the first occurence of `target` from the configuration file. If none is defined, then `<blockCodeName>::target` will be `NULL`.
