@@ -18,7 +18,7 @@ subdirs: $(SUBDIRS)
 # autoinstall not needed anymore
 $(SUBDIRS):
 	@mkdir -p ../applicationsBin/$@
-	@echo "Compiling $@ codeblock"
+	@echo "Compiling $@ block code"
 	@$(MAKE) -C $@ APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)"
 
 #subdirs:
@@ -28,7 +28,7 @@ $(SUBDIRS):
 #	done
 
 test:	subdirs
-	@echo "\nCodeBlocks Regression Testing:"
+	@echo "\nBlockCodes Regression Testing:"
 	@for dir in $(SUBDIRS); do \
 		$(MAKE) -C $$dir test;\
 	done

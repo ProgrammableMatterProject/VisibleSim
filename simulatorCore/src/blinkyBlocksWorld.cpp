@@ -74,22 +74,26 @@ void BlinkyBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 
 void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	BlinkyBlocksBlock *ptrNeighbor;
-	BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);
-	vector<Cell3DPosition> nCells = lattice->getNeighborhood(pos);
+	BlinkyBlocksBlock *ptrBlock = (BlinkyBlocksBlock*)lattice->getBlock(pos);	
+    vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
+	Cell3DPosition nPos;
 
-	// Check neighbors for each interface
-	for (int i = 0; i < 6; i++) {
-		ptrNeighbor = (BlinkyBlocksBlock*)lattice->getBlock(nCells[i]);
-		if (ptrNeighbor) {
-			(ptrBlock)->getInterface(i)->
-				connect(ptrNeighbor->getInterface(lattice->getOppositeDirection(i)));
+	
+    // Check neighbors for each interface
+    for (int i = 0; i < 6; i++) {
+        nPos = pos + nRelCells[i];
+        ptrNeighbor = (BlinkyBlocksBlock*)lattice->getBlock(nPos);
+        if (ptrNeighbor) {
+            (ptrBlock)->getInterface(SCLattice::Direction(i))->
+                connect(ptrNeighbor->getInterface(SCLattice::Direction(
+                                                      lattice->getOppositeDirection(i))));
 
-			OUTPUT << "connection #" << (ptrBlock)->blockId <<
-				" to #" << ptrNeighbor->blockId << endl;
-		} else {
-			(ptrBlock)->getInterface(i)->connect(NULL);
-		}
-	}
+            OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                " to #" << ptrNeighbor->blockId << endl;
+        } else {
+            (ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
+        }
+    }
 }
 
 void BlinkyBlocksWorld::glDraw() {
