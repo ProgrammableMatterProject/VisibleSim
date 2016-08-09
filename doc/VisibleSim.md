@@ -180,7 +180,7 @@ TODO
 ## User Interactions
 When running VisibleSim in graphical mode (enabled by default), the user is given a number of ways to interact with the simulated world to perform various actions, as can be seen on the screenshot below.
 
-![Screenshot of the VisibleSim UI ](https://i.imgsafe.org/80543f35a5.png)
+![VisibleSim UI Screenshot](https://i.imgsafe.org/80543f35a5.png)
 
 ### Base Interactions
 
@@ -228,8 +228,6 @@ When simulating __Catoms2D__ ensembles, two additional actions can be performed 
 Both actions perform a rotation of the block corresponding to an angle of one interface (60º). A rotation in any direction is possible if and only if the module has three consecutive vacant interface in that direction. In case one or both rotations are not possible, the options will be greyed-out.
 
 ## Statistics
-TODO
-## <a name="autotest"></a>Automated BlockCode Testing
 TODO
 
 ## <a name="config"></a>Configuration Files
@@ -494,3 +492,64 @@ This function defined in `blockCode.h` is `virtual` and does nothing by default,
 1. Do not overload `parseUserElements`. Performs no additional parsing.
 2. Overload `parseUserElements` an use the `TiXmlDocument *config` parameter to access and parse the user elements from the configuration file using [TinyXML](http://www.grinninglizard.com/tinyxml/index.html). (Please refer to the [Official TinyXML Documentation](http://www.grinninglizard.com/tinyxmldocs/index.html) for instructions)
 3. Overload `parseUserElements`, but ignore the XML document parameter, and use this function to perform custom data reading and parsing from another file, in any way.
+
+## <a name="autotest"></a>Automated BlockCode Testing
+We have designed a way for contributors to effortlessly ensure that the behaviour of VisibleSim is not altered, when some changes are made to the core of the simulator. The idea is that every previously working BlockCode is tested for regression, and returns a simple console output to the user, either __PASS__ if test succeeded, or __FAILED__ if some issues have to be investigated. 
+
+### Procedure
+This testing procedure is based on the assumption that a BlockCode execution is valid if its output (in term of end-of-algorithm configuration and individual block physical properties) is identical to the _expected output_, that has been previously defined.
+
+A single BlockCode can have several regression tests, thus every test from a single application directory needs to be identified by a unique string identifier (e.g. `testSquare`), the `testID`. 
+
+#### Utilities
+
+We use exports of configuration files at the end of algorithm as output, and the `utilities/blockCodeTest.sh` script to perform the test and decide the result. The usage information for the script are the following:
+
+```sh
+Usage: ./utilities/blockCodeTest.sh <test-ID> <path-to-blockCode-binary> <VisibleSim-arguments>
+Example: ./utilities/blockCodeTest.sh bbCycle1 ../applicationsBin/bbCycle -c config123.xml
+Test-ID can be used to distinguish between 2 control XML files from the same directory
+```
+
+In fact, you only need to provide a `testID`, followed by the usual VisibleSim arguments you would normally  use to execute your BlockCode. 
+
+In order to automate testing, we implemented the `make test` Makefile directive, which can be called recursively from the root Makefile to perform regression testing on all individual applications. In order to do so, all you have to do is edit the `TESTS` command in user-editable section of the application directory's Makefile. It has to contain a list of testing commands using the `blockCodeTest.sh` script that have to be executed.
+
+By default, this variable only contains a shell `nop`.
+```makefile
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = : #;\
+```
+Example of a `TESTS` variable containing several tests (Use `;\` to separate individual commands):
+```makefile
+# TESTS contains the commands that will be executed when `make test` is called
+TESTS = ../../utilities/blockCodeTest.sh meldbb $(OUT) -c configs/configBB.xml -p outprogs/rainbow.bb -k BB ;\
+	../../utilities/blockCodeTest.sh meldsb $(OUT) -c configs/configSB.xml -p outprogs/rainbowSB.bb -k SB ;\
+# ...
+	../../utilities/blockCodeTest.sh meldc3d $(OUT) -c configs/configC3D.xml -p outprogs/rainbowC3D.bb -k C3D
+```
+
+Which will produce the following output after a call to `make test`, if all is good:
+```sh
+CodeBlocks Regression Testing:
+meldbb:				[PASS]
+meldsb:				[PASS]
+meldrb:				[PASS]
+meldc2d:			[PASS]
+meldc3d:			[PASS]
+```
+
+_The complete testing process is detailed below._
+
+#### Control Configuration Export
+Only has to be done once, this is when the user defines what the expected output of the BlockCode is, given an input file. To generate the control XML file, the user can execute VisibleSim with the `-g` option, that will automatically export the configuration to an XML file named `.confCheck.xml`, when all scheduler events have been processed. Then, this export file needs to be renamed to `.controlConf_<testID>.xml` in `applicationsBin/<testedApp>/`, to be used as control configuration for the test `testID`  of the `testedApp` BlockCode.
+
+#### Regression Testing
+In order to test for regression, the BlockCode is executed with the exact same parameters as in the last section, and a new end-of-algorithm configuration is exported. A few different scenarios can occur:
+
+1. __Runtime Exception / Error__: If an uncaught exception has been thrown, or if a system error occurred, the test status will be __FAILED__.
+2. __Terminal Configuration Mismatch__: If when comparing the control configuration and the newly exported one (using a `diff`), the output is different, then __regression__ as occurred, and the status of the test is __FAILED__.
+3. __Terminal Configuration Match__: Inversely, if the two XML files are identical, then the test succeeded, and __PASS__ is shown. 
+4. (__Missing Control File__): If when running the script, no control configuration currently exists, then user will be asked to export one interactively, in order for the test to proceed.
+ 
+  __N.B.__: Due to the testing procedure itself, it is not possible to test algorithms that never end, since no terminal configuration can be exported.
