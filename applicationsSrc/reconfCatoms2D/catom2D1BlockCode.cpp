@@ -22,7 +22,7 @@
 using namespace std;
 using namespace Catoms2D;
 
-#define NEIGHBORING_TEST
+//#define NEIGHBORING_TEST
 
 //#define GEO_ROUTING_DEBUG
 //#define GEO_ROUTING_TEST
@@ -87,14 +87,20 @@ void Catoms2D1BlockCode::startup() {
     //catom2D->startMove(mv);
   }
 #else
+  #ifdef ASSUME_COORDINATES
+  map->assumeCoordinates();
+  //cout << "@" << catom2D->blockId << " at " << map->position << endl;
+  reconfiguration->start();
+  #else
   if (!map->isConnected && (catom2D->position[2] == 0)) {
     map->connectToHost();
-#ifdef MAP_DEBUG
+    #ifdef MAP_DEBUG
     catom2D->setColor(RED);
-#endif
+    #endif
   }
-  catom2D->setColor(RED);
+  //catom2D->setColor(RED);
   //updateBorder();
+  #endif
 #endif
 
 #ifdef NEIGHBORING_TEST

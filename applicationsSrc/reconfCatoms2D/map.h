@@ -17,6 +17,12 @@
 #include "coordinate.h"
 #include "border.h"
 
+//#define COMPUTE_COORDINATES
+#define ASSUME_COORDINATES // works only for real coordinates!
+
+//#define VIRTUAL_COORDINATES
+#define REAL_COORDINATES
+
 class Map {
  public:  
   // Map construction
@@ -60,6 +66,8 @@ class Map {
   Catoms2D::Catoms2DBlock* getOnBorderNeighbor(Catoms2D::RelativeDirection::Direction d);
   P2PNetworkInterface* getOnBorderNeighborInterface(Catoms2D::RelativeDirection::Direction d);
   Coordinate getOnBorderNeighborCoordinate(Catoms2D::RelativeDirection::Direction d);
+
+  void assumeCoordinates();
 
 };
 

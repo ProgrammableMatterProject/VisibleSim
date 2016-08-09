@@ -6,8 +6,6 @@
 #include "catoms2DWorld.h"
 #include "vector3D.h"
 
-//#define VIRTUAL_COORDINATES
-#define REAL_COORDINATES
 //#define MAP_DEBUG
 
 using namespace Catoms2D;
@@ -19,8 +17,8 @@ Map::Map(Catoms2DBlock* host): border(host) {
   connectedToHost = false;
   waiting = 0;
   toHost = NULL;
-  positionKnown = false;
   catom2D = host;
+  positionKnown = false;
 }
 
 Map::Map(const Map &m): border(m.border) {
@@ -33,7 +31,15 @@ Map::Map(const Map &m): border(m.border) {
 
 Map::~Map() {}
 
+void Map::assumeCoordinates() {
+  positionKnown = true;
+  position = Coordinate(catom2D->position[0], catom2D->position[2]);
+  ccth.x = 0;
+  ccth.y = 0;
+}
+
 void Map::connectToHost() {
+  
   if(!isConnected){
     isConnected = true;
     connectedToHost = true;
@@ -131,6 +137,7 @@ bool Map::handleMessage(MessagePtr message) {
 }
 
 void Map::buildMap() {
+#ifdef COMPUTE_COORDINATES
   P2PNetworkInterface *p2p;
   for (int i=0; i<6; i++) {
     p2p = catom2D->getInterface(i);
@@ -142,6 +149,7 @@ void Map::buildMap() {
     p2p->send(msg);
     waiting++;
   }
+#endif
 }
 
 void Map::mapBuilt(P2PNetworkInterface *d) {
@@ -283,7 +291,7 @@ bool Map::areNeighbors(Coordinate p1, Coordinate p2) {
 }
 
 bool Map::isInTarget(Coordinate p) {
-  Catoms2DWorld *world = Catoms2DWorld::getWorld();
+  //Catoms2DWorld *world = Catoms2DWorld::getWorld();
   Cell3DPosition c(p.x,0,p.y);
   return (BlockCode::target->isInTarget(c));
 }
