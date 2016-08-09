@@ -199,15 +199,15 @@ There are a number of action predicates that can be derived in Meld to perform c
 
 Furthermore, the following persistent predicates can also be used to each module:
 
-- `!at(Node N, Int x, Int y, Int z)`: Position predicate for a module. There is an `at` tuple in the database with the current position of the module at all time.
-- `!neighbor(Node A, Node B, Int f)`: Present in the module's database if module with identifier `A` has a neighbour of identifier `B` on face corresponding to `f`. (Please refer to the include files in `programs/includes/`, which provide constant identifier for interfaces).
-- `!vacant(Node N, Int f)`: If there is no `neighbor` tuple in a module database for its face `f`, then there is a `vacant` tuple instead. It means that this interface is no connected to any module.
-- `!neighborCount(Node N, Int C)`: Indicates the number of neighbours (_i.e._ number of connected interfaces) of a module. Constraint: `0 <= neighborCount <= NB_INTERFACES`.
+- `!at(Node N, Int x, Int y, Int z)`: Position predicate for a module. 
+	- There is an `at` tuple in the database with the current position of the module at all time.
+- `!neighbor(Node A, Node B, Int f)`: Present in the module's database if module with identifier `A` has a neighbour of identifier `B` on face corresponding to `f`. 
+	- Please refer to the include files in `programs/includes/`, which provide constant identifier for interfaces.
+- `!vacant(Node N, Int f)`:  Means that interface `f` is no connected to any module.
+	- If there is no `neighbor` tuple in a module's database for its face `f`, then there is a `vacant` tuple instead.
+- `!neighborCount(Node N, Int C)`: Indicates the number of neighbours (_i.e._ number of connected interfaces) of a module. 
+	- Constraint: `0 <= neighborCount <= NB_INTERFACES`.
 
-## Block Code API
-TODO
-## Clock
-TODO
 ## User Interactions
 When running VisibleSim in graphical mode (enabled by default), the user is given a number of ways to interact with the simulated world to perform various actions, as can be seen on the screenshot below.
 
@@ -257,9 +257,6 @@ When simulating __Catoms2D__ ensembles, two additional actions can be performed 
 	- Rotates the selected block 60º counter-clockwise.
 
 Both actions perform a rotation of the block corresponding to an angle of one interface (60º). A rotation in any direction is possible if and only if the module has three consecutive vacant interface in that direction. In case one or both rotations are not possible, the options will be greyed-out.
-
-## Statistics
-TODO
 
 ## <a name="config"></a>Configuration Files
 In VisibleSim, a configuration file is a XML file that describes the simulated world. At least the state of the world at the beginning of the simulation has to be described, but thanks to a feature named __targets__, the objective state of the world at certain points in the simulation can also be described. 
@@ -587,3 +584,12 @@ In order to test for regression, the BlockCode is executed with the exact same p
 4. (__Missing Control File__): If when running the script, no control configuration currently exists, then user will be asked to export one interactively, in order for the test to proceed.
  
   __N.B.__: Due to the testing procedure itself, it is not possible to test algorithms that never end, since no terminal configuration can be exported.
+
+## Configuration Exporter
+
+## Statistics
+TODO?
+## Block Code API
+TODO
+## Clock
+TODO
