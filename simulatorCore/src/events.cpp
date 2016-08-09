@@ -199,7 +199,7 @@ NetworkInterfaceStopTransmittingEvent::~NetworkInterfaceStopTransmittingEvent() 
 void NetworkInterfaceStopTransmittingEvent::consume() {
 	EVENT_CONSUME_INFO();
 	if (!interface->connectedInterface) {
-	  cerr << "Warning: connection loss, untransmitted message!" << endl;
+	  ERRPUT << "Warning: connection loss, untransmitted message!" << endl;
 	} else {
 	  interface->connectedInterface->hostBlock->scheduleLocalEvent(EventPtr(new NetworkInterfaceReceiveEvent(BaseSimulator::getScheduler()->now(), interface->connectedInterface, interface->messageBeingTransmitted)));
 	}
