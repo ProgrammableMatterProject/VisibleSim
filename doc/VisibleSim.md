@@ -169,10 +169,41 @@ This option triggers the export of the current configuration at the end of the s
 Displays the usage message in the terminal.
 
 ## Meld
-TODO
-### Building
-Inclusions
-### Running
+VisibleSim supports programs written in [Meld](http://www.cs.cmu.edu/~claytronics/software/meld.html). In that case, the workflow is a bit different from its C++ counterpart. 
+
+_This section explains how to develop and run Meld applications for any type of modular robot._
+
+### Workflow
+There is a single application directory for all Meld applications (`applicationsBin/meld`), there is no need to create a separate directory as far for C++ applications. It is fairly easy to develop a Meld application in a few steps:
+
+1. __WRITING__: Create a new `.meld` file in `applicationsBin/meld/programs`
+	- Please refer to [this document](https://github.com/flavioc/meld/blob/dev/docs/manual.pdf) for instructions on writing Meld programs.
+	- In order to reference interfaces from a certain module family,  the instruction `include #include/<module>.meld` can be used to include one of the provided Meld include files.
+2.  __COMPILING__: Compile `programs/<prog>.meld` into `outprogs/<prog>.bb` using `./compile-meld.sh programs/<prog>.meld`.
+3. __RUNNING__: Because there is also a single executable for all modular robots types, you have to provide two additional command line arguments to VisibleSim when running a Meld program:
+	- `-p outprogs/<prog>.bb`: Specifies the Meld program to run.
+	- `-k <module>`: Specifies the target modular robot type.
+		-  _Possible Values: {BB, RB, SB, C2D, C3D}_
+
+__N.B.:__ This only applies to __Modular Robots__, since _MultiRobots_ also support Meld, but have to be used from a separate directory due to it not strictly being a modular robotic systems.
+
+### VisibleSim Predicates
+There are a number of action predicates that can be derived in Meld to perform changes in the simulated world, these are the ones currently supported and how to use them:
+
+- `!setColor(Node N, Int r, Int g, Int b, Int i).`: Sets the color of the module `N` to color corresponding to `(r,g,b,intensity)`.
+- `!setColor2(Node N, Int C).`: Sets the color of the module `N` to color with identifier `C`. 
+- `!tap(Node N).`: Taps module `N` (Schedules a tap event).
+- `!moveTo(Node, Int x, Int y, Int z)`: Performs a translation of the module to cell at coordinates `(x,y,z)`.
+- `!rotate2D(Node N, Node Pivot?)`: __Not yet implemented__.
+- `!rotate3D(Node N, Node Pivot?, ...?)`: __Not yet implemented__.
+
+Furthermore, the following persistent predicates can also be used to each module:
+
+- `!at(Node N, Int x, Int y, Int z)`: Position predicate for a module. There is an `at` tuple in the database with the current position of the module at all time.
+- `!neighbor(Node A, Node B, Int f)`: Present in the module's database if module with identifier `A` has a neighbour of identifier `B` on face corresponding to `f`. (Please refer to the include files in `programs/includes/`, which provide constant identifier for interfaces).
+- `!vacant(Node N, Int f)`: If there is no `neighbor` tuple in a module database for its face `f`, then there is a `vacant` tuple instead. It means that this interface is no connected to any module.
+- `!neighborCount(Node N, Int C)`: Indicates the number of neighbours (_i.e._ number of connected interfaces) of a module. Constraint: `0 <= neighborCount <= NB_INTERFACES`.
+
 ## Block Code API
 TODO
 ## Clock
@@ -515,7 +546,7 @@ In fact, you only need to provide a `testID`, followed by the usual VisibleSim a
 
 In order to automate testing, we implemented the `make test` Makefile directive, which can be called recursively from the root Makefile to perform regression testing on all individual applications. In order to do so, all you have to do is edit the `TESTS` command in user-editable section of the application directory's Makefile. It has to contain a list of testing commands using the `blockCodeTest.sh` script that have to be executed.
 
-By default, this variable only contains a shell `nop`.
+By default, this variable only contains a shell `not`, and does nothing.
 ```makefile
 # TESTS contains the commands that will be executed when `make test` is called
 TESTS = : #;\
@@ -523,6 +554,7 @@ TESTS = : #;\
 Example of a `TESTS` variable containing several tests (Use `;\` to separate individual commands):
 ```makefile
 # TESTS contains the commands that will be executed when `make test` is called
+# $(OUT) is the executable
 TESTS = ../../utilities/blockCodeTest.sh meldbb $(OUT) -c configs/configBB.xml -p outprogs/rainbow.bb -k BB ;\
 	../../utilities/blockCodeTest.sh meldsb $(OUT) -c configs/configSB.xml -p outprogs/rainbowSB.bb -k SB ;\
 # ...
@@ -531,7 +563,7 @@ TESTS = ../../utilities/blockCodeTest.sh meldbb $(OUT) -c configs/configBB.xml -
 
 Which will produce the following output after a call to `make test`, if all is good:
 ```sh
-CodeBlocks Regression Testing:
+BlockCodes Regression Testing:
 meldbb:				[PASS]
 meldsb:				[PASS]
 meldrb:				[PASS]
@@ -542,7 +574,9 @@ meldc3d:			[PASS]
 _The complete testing process is detailed below._
 
 #### Control Configuration Export
-Only has to be done once, this is when the user defines what the expected output of the BlockCode is, given an input file. To generate the control XML file, the user can execute VisibleSim with the `-g` option, that will automatically export the configuration to an XML file named `.confCheck.xml`, when all scheduler events have been processed. Then, this export file needs to be renamed to `.controlConf_<testID>.xml` in `applicationsBin/<testedApp>/`, to be used as control configuration for the test `testID`  of the `testedApp` BlockCode.
+Only has to be done once, this is when the user defines what the expected output of the BlockCode is, given an input file. To generate the control XML file, the user can execute VisibleSim with the `-g` option, that will automatically export the configuration to an XML file named `.confCheck.xml`, when all scheduler events have been processed. 
+
+Then, this export file needs to be renamed to `.controlConf_<testID>.xml` in `applicationsBin/<testedApp>/`, to be used as control configuration for the test `testID`  of the `testedApp` BlockCode.
 
 #### Regression Testing
 In order to test for regression, the BlockCode is executed with the exact same parameters as in the last section, and a new end-of-algorithm configuration is exported. A few different scenarios can occur:
