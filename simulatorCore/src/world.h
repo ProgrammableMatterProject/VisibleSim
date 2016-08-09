@@ -293,7 +293,7 @@ public:
      * @param bId the id of the target block
      * @param face id of the tapped face, or -1 if not a picking face
      */
-    void tapBlock(uint64_t date, int bId, int face);
+    void tapBlock(Time date, int bId, int face);
     /**
      * @brief Stops all block in the world
      */

@@ -55,8 +55,8 @@ public:
    */
   virtual ~QClock() {};
 
-  virtual uint64_t getTime(uint64_t simTime);
-  virtual uint64_t getSimulationTime(uint64_t localTime);
+  virtual Time getTime(Time simTime);
+  virtual Time getSimulationTime(Time localTime);
 };
 
 /**
@@ -71,11 +71,11 @@ class GNoiseQClock : public QClock {
    */
   class ReferencePoint {
   public:
-    uint64_t local;
-    uint64_t simulation;
+    Time local;
+    Time simulation;
 
     
-    ReferencePoint(uint64_t l, uint64_t s) {local = l; simulation = s;}
+    ReferencePoint(Time l, Time s) {local = l; simulation = s;}
     ReferencePoint(const ReferencePoint &p) {local = p.local; simulation = p.simulation;}
     ~ReferencePoint() {};
   };
@@ -113,8 +113,8 @@ public:
    */
   ~GNoiseQClock();
 
-  uint64_t getTime(uint64_t simTime);
-  uint64_t getSimulationTime(uint64_t localTime);
+  Time getTime(Time simTime);
+  Time getSimulationTime(Time localTime);
 
  protected:
    /**
@@ -128,7 +128,7 @@ public:
    * @para simulation simulation time.
    * @para pos position where to insert the reference point in referencePoints
    */
-  void insertReferencePoint(uint64_t local, uint64_t simulation, list<ReferencePoint>::iterator pos);
+  void insertReferencePoint(Time local, Time simulation, list<ReferencePoint>::iterator pos);
 };
 
 /**
@@ -168,8 +168,8 @@ public:
    */
   ~DNoiseQClock();
 
-  uint64_t getTime(uint64_t simTime);
-  uint64_t getSimulationTime(uint64_t localTime);
+  Time getTime(Time simTime);
+  Time getSimulationTime(Time localTime);
 
   /**
    * @brief Load the noise signal data from files.
@@ -183,7 +183,7 @@ public:
    * 1% accuracy (10 000 ppm) at 3V and 25°C.
    * @para seed seed use to randomly select the noise signal
    */ 
-  static DNoiseQClock* createXMEGA_RTC_OSC1K_CRC(uint64_t seed);
+  static DNoiseQClock* createXMEGA_RTC_OSC1K_CRC(Time seed);
 };
  
 }

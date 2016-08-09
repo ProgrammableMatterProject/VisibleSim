@@ -46,8 +46,8 @@ public:
 
 	static SmartBlocks::SmartBlocksBlockCode *buildNewBlockCode( SmartBlocks::SmartBlocksBlock *host);
 
-	void send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
-	void send_ack( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
+	void send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset);
+	void send_ack( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset);
 
 	bool i_can_ack();
 };

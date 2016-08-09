@@ -54,9 +54,9 @@ protected:
 	std::thread *schedulerThread;
 	vector <Keyword*> tabKeywords;
 
-	uint64_t currentDate = 0;
-	uint64_t maximumDate = UINT64_MAX;
-	multimap<uint64_t,EventPtr> eventsMap;
+	Time currentDate = 0;
+	Time maximumDate = UINT64_MAX;
+	multimap<Time,EventPtr> eventsMap;
 	int eventsMapSize = 0;
 	int largestEventsMapSize = 0;
 	std::mutex mutex_schedule;
@@ -68,7 +68,7 @@ protected:
 	Scheduler();
 	virtual ~Scheduler();
 
-	uint64_t debugDate;
+	Time debugDate;
 
 public:
 	enum State {NOTREADY = 0, NOTSTARTED = 1, ENDED = 2, PAUSED = 3, RUNNING = 4};
@@ -82,7 +82,7 @@ public:
     	delete(scheduler);
 		scheduler=NULL;
 	}
-	void setMaximumDate(uint64_t tmax) {
+	void setMaximumDate(Time tmax) {
 		maximumDate=tmax;
 		cout << "scheduler: MaximumDate set to " << tmax << endl;
 	};
@@ -105,7 +105,7 @@ public:
 	virtual bool schedule(Event *ev);
 	virtual bool scheduleLock(Event *ev);
 
-	uint64_t now();
+	Time now();
 
 	virtual void trace(string message,bID id=0,const Color &color=WHITE);
 	void removeEventsToBlock(BuildingBlock *bb);
@@ -116,7 +116,7 @@ public:
 	virtual void start(int) {};
 
 	// stop for good
-	virtual void stop(uint64_t date);
+	virtual void stop(Time date);
 	virtual void restart();
 	virtual bool debug(const string &command,bID &id,string &result);
 

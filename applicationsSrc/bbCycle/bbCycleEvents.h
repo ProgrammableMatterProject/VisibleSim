@@ -16,7 +16,7 @@
 class SynchronizeEvent : public BlockEvent {
 public:
 
-        SynchronizeEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+        SynchronizeEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
                 eventType = EVENT_SYNC;
                 randomNumber = conBlock->getNextRandomNumber();
         }

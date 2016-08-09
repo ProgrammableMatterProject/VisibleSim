@@ -46,9 +46,9 @@ public:
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
-	void send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset);
+	void send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset);
 	void send_ack( unsigned int path,  unsigned int distance,
-				   P2PNetworkInterface * by_interface, uint64_t time_offset);
+				   P2PNetworkInterface * by_interface, Time time_offset);
 
 	bool i_can_ack();
 };

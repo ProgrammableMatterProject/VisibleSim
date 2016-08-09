@@ -64,7 +64,7 @@ public:
 	
 	void handlePauseRequest();
 	
-	void handleBreakAtTimeReached(uint64_t t);
+	void handleBreakAtTimeReached(Time t);
    
    static void print(string s, bool arrow = true);
 	

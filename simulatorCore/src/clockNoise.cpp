@@ -33,7 +33,7 @@ GClockNoise::GClockNoise(unsigned int _seed, double _mean, double _sd) {
 
 GClockNoise::~GClockNoise() {}
 
-clockNoise_t GClockNoise::getNoise(uint64_t simTime) {
+clockNoise_t GClockNoise::getNoise(Time simTime) {
   mt19937 uGenerator(simTime*seed);
   normal_distribution<double> normalDist(mean,sd);
   return normalDist(uGenerator);
@@ -54,7 +54,7 @@ DClockNoise::DClockNoise(unsigned int _seed) {
 DClockNoise::~DClockNoise() {}
 
 void DClockNoise::loadData(vector<string> &files) {
-  uint64_t time;
+  Time time;
   clockNoise_t noise;
 
   noiseSignals.clear();
@@ -84,14 +84,14 @@ void DClockNoise::print() {
     for (vector<referencePt_t>::iterator it2 = signal.begin();
 	 it2 != signal.end(); it2++) {
       referencePt_t &p = *it2;
-      uint64_t t = p.first;
+      Time t = p.first;
       clockNoise_t n = p.second;
       cout << "\t" << t << " " << n << endl;
     }
   }
 }
 
-clockNoise_t DClockNoise::getNoise(uint64_t simTime, referencePt_t p1, referencePt_t p2) {
+clockNoise_t DClockNoise::getNoise(Time simTime, referencePt_t p1, referencePt_t p2) {
   // assume linear noise between interval points [p1;p2]
   double t1,n1,t2,n2;
   t1 = p1.first;
@@ -104,7 +104,7 @@ clockNoise_t DClockNoise::getNoise(uint64_t simTime, referencePt_t p1, reference
   return n;
 }
 
-clockNoise_t DClockNoise::getNoise(uint64_t simTime) {
+clockNoise_t DClockNoise::getNoise(Time simTime) {
   if (id >= noiseSignals.size()) {
     cerr << "ERROR: wrong noise id (" << id << ")" << endl;
     return 0;
@@ -124,7 +124,7 @@ clockNoise_t DClockNoise::getNoise(uint64_t simTime) {
   for (it = signal.begin();
        it != signal.end(); it++) {
     referencePt_t &p = *it;
-    uint64_t t = p.first;
+    Time t = p.first;
     if(t >= simTime) {
       break;
     }

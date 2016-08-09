@@ -33,7 +33,7 @@ int MultiRobotsBlock::getDirection(P2PNetworkInterface *given_interface) {
     return BCLattice::Direction(0); // NONE
 }
 
-void MultiRobotsBlock::stopBlock(uint64_t date, State s) {
+void MultiRobotsBlock::stopBlock(Time date, State s) {
     OUTPUT << "Simulator: stop scheduled" << endl;
     setState(s);
     if (s == STOPPED) {

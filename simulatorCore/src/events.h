@@ -50,11 +50,11 @@ protected:
 
 public:
 	int id;				//!< unique ID of the event (mainly for debugging purpose)
-	uint64_t date;		//!< time at which the event will be processed. 0 means simulation start
+	Time date;		//!< time at which the event will be processed. 0 means simulation start
 	int eventType;		//!< see the various types at the beginning of this file
 	int randomNumber;
 
-	Event(uint64_t t);
+	Event(Time t);
 	Event(Event *ev);
 	virtual ~Event();
 
@@ -76,7 +76,7 @@ class BlockEvent : public Event {
 
 protected:
 	BaseSimulator::BuildingBlock *concernedBlock;
-	BlockEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock);
+	BlockEvent(Time t, BaseSimulator::BuildingBlock *conBlock);
 	BlockEvent(BlockEvent *ev);
 	virtual ~BlockEvent();
 	virtual const string getEventName();
@@ -100,7 +100,7 @@ public:
 class CodeStartEvent : public BlockEvent {
 public:
 
-	CodeStartEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	CodeStartEvent(Time, BaseSimulator::BuildingBlock *conBlock);
 	~CodeStartEvent();
 	void consumeBlockEvent();
 	const virtual string getEventName();
@@ -115,7 +115,7 @@ public:
 class CodeEndSimulationEvent : public Event {
 public:
 
-	CodeEndSimulationEvent(uint64_t);
+	CodeEndSimulationEvent(Time);
 	~CodeEndSimulationEvent();
 	void consume();
 	const virtual string getEventName();
@@ -130,7 +130,7 @@ public:
 class ProcessLocalEvent : public BlockEvent {
 public:
 
-	ProcessLocalEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	ProcessLocalEvent(Time, BaseSimulator::BuildingBlock *conBlock);
 	~ProcessLocalEvent();
 	void consumeBlockEvent();
 	const virtual string getEventName();
@@ -146,7 +146,7 @@ class NetworkInterfaceStartTransmittingEvent : public Event {
 public:
 	P2PNetworkInterface *interface;
 
-	NetworkInterfaceStartTransmittingEvent(uint64_t, P2PNetworkInterface *ni);
+	NetworkInterfaceStartTransmittingEvent(Time, P2PNetworkInterface *ni);
 	~NetworkInterfaceStartTransmittingEvent();
 	void consume();
 	const virtual string getEventName();
@@ -162,7 +162,7 @@ class NetworkInterfaceStopTransmittingEvent : public Event {
 public:
 	P2PNetworkInterface *interface;
 
-	NetworkInterfaceStopTransmittingEvent(uint64_t, P2PNetworkInterface *ni);
+	NetworkInterfaceStopTransmittingEvent(Time, P2PNetworkInterface *ni);
 	~NetworkInterfaceStopTransmittingEvent();
 	void consume();
 	const virtual string getEventName();
@@ -178,7 +178,7 @@ class NetworkInterfaceReceiveEvent : public Event {
 public:
 	P2PNetworkInterface *interface;
 	MessagePtr message;
-	NetworkInterfaceReceiveEvent(uint64_t,P2PNetworkInterface *ni, MessagePtr mes);
+	NetworkInterfaceReceiveEvent(Time,P2PNetworkInterface *ni, MessagePtr mes);
 	~NetworkInterfaceReceiveEvent();
 	void consume();
 	const virtual string getEventName();
@@ -195,8 +195,8 @@ public:
 	MessagePtr message;
 	P2PNetworkInterface *sourceInterface;
 
-	NetworkInterfaceEnqueueOutgoingEvent(uint64_t, Message *mes, P2PNetworkInterface *ni);
-	NetworkInterfaceEnqueueOutgoingEvent(uint64_t, MessagePtr mes, P2PNetworkInterface *ni);
+	NetworkInterfaceEnqueueOutgoingEvent(Time, Message *mes, P2PNetworkInterface *ni);
+	NetworkInterfaceEnqueueOutgoingEvent(Time, MessagePtr mes, P2PNetworkInterface *ni);
 	~NetworkInterfaceEnqueueOutgoingEvent();
 	void consume();
 	const virtual string getEventName();
@@ -213,8 +213,8 @@ class SetColorEvent : public BlockEvent {
 public:
 	Color color;
 
-	SetColorEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, float r, float g, float b, float a);
-	SetColorEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, Color &c);
+	SetColorEvent(Time, BaseSimulator::BuildingBlock *conBlock, float r, float g, float b, float a);
+	SetColorEvent(Time, BaseSimulator::BuildingBlock *conBlock, Color &c);
 	SetColorEvent(SetColorEvent *ev);
 	~SetColorEvent();
 	void consumeBlockEvent();
@@ -233,7 +233,7 @@ public:
 	uint64_t face;
 	uint64_t target;
 
-	AddNeighborEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f, uint64_t ta);
+	AddNeighborEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f, uint64_t ta);
 	AddNeighborEvent(AddNeighborEvent *ev);
 	~AddNeighborEvent();
 	void consumeBlockEvent();
@@ -250,7 +250,7 @@ class RemoveNeighborEvent : public BlockEvent {
 public:
 	uint64_t face;
 
-	RemoveNeighborEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
+	RemoveNeighborEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
 	RemoveNeighborEvent(RemoveNeighborEvent *ev);
 	~RemoveNeighborEvent();
 	void consumeBlockEvent();
@@ -267,7 +267,7 @@ class TapEvent : public BlockEvent {
 public:
 	const int tappedFace;
 
-	TapEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, const int face);
+	TapEvent(Time, BaseSimulator::BuildingBlock *conBlock, const int face);
 	TapEvent(TapEvent *ev);
 	~TapEvent();
 	void consumeBlockEvent();
@@ -287,7 +287,7 @@ public:
 	uint64_t y;
 	uint64_t z;
 
-	AccelEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz);
+	AccelEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz);
 	AccelEvent(AccelEvent *ev);
 	~AccelEvent();
 	void consumeBlockEvent();
@@ -304,7 +304,7 @@ class ShakeEvent : public BlockEvent {
 public:
 	uint64_t force;
 
-	ShakeEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
+	ShakeEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t f);
 	ShakeEvent(ShakeEvent *ev);
 	~ShakeEvent();
 	void consumeBlockEvent();

@@ -61,7 +61,7 @@ public:
 	bool canMove(Rotation2DMove &m);
 	int getCCWMovePivotId();
 	int getCWMovePivotId();
-	void startMove(Rotation2DMove &m, uint64_t t);
+	void startMove(Rotation2DMove &m, Time t);
 	void startMove(Rotation2DMove &m);
 
 	// MeldInterpreter

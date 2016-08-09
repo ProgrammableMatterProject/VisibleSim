@@ -111,7 +111,7 @@ bool P2PNetworkInterface::addToOutgoingBuffer(MessagePtr msg) {
 void P2PNetworkInterface::send() {
 	MessagePtr msg;
 	stringstream info;
-	uint64_t transmissionDuration;
+	Time transmissionDuration;
 	double rate;
 
 	if (!connectedInterface) {

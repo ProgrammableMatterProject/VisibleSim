@@ -140,7 +140,7 @@ void BuildingBlock::scheduleLocalEvent(EventPtr pev) {
     localEventsList.push_back(pev);
 
     if (localEventsList.size() == 1) {
-		uint64_t date;
+		Time date;
 		date = this->blockCode->availabilityDate;
 		if (date < getScheduler()->now()) date=getScheduler()->now();
 		getScheduler()->schedule(new ProcessLocalEvent(date,this));
@@ -183,7 +183,7 @@ void BuildingBlock::setPosition(const Cell3DPosition &p) {
     getWorld()->updateGlData(this);
 }
     
-void BuildingBlock::tap(uint64_t date, int face) {
+void BuildingBlock::tap(Time date, int face) {
     OUTPUT << "tap scheduled" << endl;
     getScheduler()->scheduleLock(new TapEvent(date, this, (uint8_t)face));
 }
@@ -199,7 +199,7 @@ void BuildingBlock::setClock(Clock *c) {
   clock = c;
 }
 
-uint64_t BuildingBlock::getLocalTime(uint64_t simTime) {
+Time BuildingBlock::getLocalTime(Time simTime) {
   if (clock == NULL) {
     cerr << "device has no internal clock" << endl;
     return 0;
@@ -207,7 +207,7 @@ uint64_t BuildingBlock::getLocalTime(uint64_t simTime) {
   return clock->getTime(simTime);
 }
   
-uint64_t BuildingBlock::getLocalTime() {
+Time BuildingBlock::getLocalTime() {
     if (clock == NULL) {
       cerr << "device has no internal clock" << endl;
       return 0;
@@ -215,7 +215,7 @@ uint64_t BuildingBlock::getLocalTime() {
     return clock->getTime();
 }
 
-uint64_t BuildingBlock::getSimulationTime(uint64_t localTime) {
+Time BuildingBlock::getSimulationTime(Time localTime) {
     if (clock == NULL) {
       cerr << "device has no internal clock" << endl;
       return localTime;

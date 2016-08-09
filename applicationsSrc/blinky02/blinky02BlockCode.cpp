@@ -45,7 +45,7 @@ void Blinky02BlockCode::startup() {
 		my_distance = 0;
 
 		//I send distance to all of my neighbors
-		uint64_t time_offset;
+		Time time_offset;
 		for( int i=0; i<NEIGHBORS_NUMBER; i++)
 		{
 			P2PNetworkInterface *p2p = block->getInterface(NeighborDirection(i));
@@ -62,7 +62,7 @@ void Blinky02BlockCode::startup() {
 
 void Blinky02BlockCode::processLocalEvent(EventPtr pev) {
 	int i;
-	uint64_t time_offset;
+	Time time_offset;
 	unsigned int sourceId;
 	MessagePtr message;
 	stringstream info;
@@ -168,12 +168,12 @@ BlinkyBlocks::BlinkyBlocksBlockCode* Blinky02BlockCode::buildNewBlockCode(Blinky
 }
 
 
-void Blinky02BlockCode::send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset) {
+void Blinky02BlockCode::send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset) {
 	Dist_message * message = new Dist_message( distance);
 	scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, message, by_interface));
 }
 
-void Blinky02BlockCode::send_ack( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset) {
+void Blinky02BlockCode::send_ack( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset) {
 	Ack_message * ack = new Ack_message( distance);
 	scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, ack, by_interface));
 }

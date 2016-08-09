@@ -48,7 +48,7 @@ Catoms2DBlock* Rotation2DMove::getPivot() {
 //
 //===========================================================================================================
 
-Rotation2DStartEvent::Rotation2DStartEvent(uint64_t t, Catoms2DBlock *block, Rotation2DMove &m): BlockEvent(t,block) {
+Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotation2DMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_START;
     
@@ -84,7 +84,7 @@ const string Rotation2DStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation2DStepEvent::Rotation2DStepEvent(uint64_t t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s): BlockEvent(t,block) {
+Rotation2DStepEvent::Rotation2DStepEvent(Time t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_STEP;
 
@@ -143,7 +143,7 @@ const string Rotation2DStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation2DStopEvent::Rotation2DStopEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
+Rotation2DStopEvent::Rotation2DStopEvent(Time t, Catoms2DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_STOP;
 }
@@ -195,7 +195,7 @@ const string Rotation2DStopEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation2DEndEvent::Rotation2DEndEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
+Rotation2DEndEvent::Rotation2DEndEvent(Time t, Catoms2DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_END;
 }

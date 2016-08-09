@@ -29,49 +29,49 @@ using namespace BlinkyBlocks;
 #define MASTER_SLAVE
 //#define PEER_TO_PEER
 
-#define ONE_MICROSECOND ((uint64_t)1)
-#define ONE_MILLISECOND ((uint64_t)1000*ONE_MICROSECOND)
-#define ONE_SECOND ((uint64_t)1000*ONE_MILLISECOND)
-#define ONE_MINUTE ((uint64_t)60*ONE_SECOND)
-#define ONE_HOUR ((uint64_t)60*ONE_MINUTE)
+#define ONE_MICROSECOND ((Time)1)
+#define ONE_MILLISECOND ((Time)1000*ONE_MICROSECOND)
+#define ONE_SECOND ((Time)1000*ONE_MILLISECOND)
+#define ONE_MINUTE ((Time)60*ONE_SECOND)
+#define ONE_HOUR ((Time)60*ONE_MINUTE)
 
-#define COLOR_CHANGE_PERIOD_USEC ((uint64_t)2*ONE_SECOND)
+#define COLOR_CHANGE_PERIOD_USEC ((Time)2*ONE_SECOND)
 
 #define SIMULATION_START ONE_MINUTE
-//#define SIMULATION_DURATION_USEC ((uint64_t)2*ONE_MINUTE)
+//#define SIMULATION_DURATION_USEC ((Time)2*ONE_MINUTE)
 #define SIMULATION_DURATION_USEC ONE_HOUR
-//#define SIMULATION_DURATION_USEC ((uint64_t)24*ONE_HOUR)
+//#define SIMULATION_DURATION_USEC ((Time)24*ONE_HOUR)
 
 // 1%
 #define MESSAGE_LOSS_PROBABILITY (1.0/100.0)
 #define COEFFCIENT_AFTER_LOSS (1.0/10.0)
 #define NUMBER_OF_TRANSMISSION_TRIALS 5
 
-//#define MEAN_TIME_TO_HANDLE_MESSAGE ((uint64_t)20*ONE_MICROSECOND)
-//#define SD_TIME_TO_HANDLE_MESSAGE ((uint64_t)220*ONE_MICROSECOND)
-//#define MIN_TIME_TO_HANDLE_MESSAGE ((uint64_t)10*ONE_MICROSECOND)
+//#define MEAN_TIME_TO_HANDLE_MESSAGE ((Time)20*ONE_MICROSECOND)
+//#define SD_TIME_TO_HANDLE_MESSAGE ((Time)220*ONE_MICROSECOND)
+//#define MIN_TIME_TO_HANDLE_MESSAGE ((Time)10*ONE_MICROSECOND)
 
-//#define MEAN_TIME_TO_HANDLE_MESSAGE ((uint64_t)ONE_MILLISECOND)
-//#define SD_TIME_TO_HANDLE_MESSAGE ((uint64_t)50*ONE_MICROSECOND)
+//#define MEAN_TIME_TO_HANDLE_MESSAGE ((Time)ONE_MILLISECOND)
+//#define SD_TIME_TO_HANDLE_MESSAGE ((Time)50*ONE_MICROSECOND)
 
 //old
-#define MIN_TIME_TO_HANDLE_MESSAGE ((uint64_t)20*ONE_MICROSECOND)
-#define MAX_TIME_TO_HANDLE_MESSAGE ((uint64_t)600*ONE_MICROSECOND)
+#define MIN_TIME_TO_HANDLE_MESSAGE ((Time)20*ONE_MICROSECOND)
+#define MAX_TIME_TO_HANDLE_MESSAGE ((Time)600*ONE_MICROSECOND)
 
 //#define TIME_TO_HANDLE_MESSAGE() (getNormalRandomUint(MEAN_TIME_TO_HANDLE_MESSAGE,SD_TIME_TO_HANDLE_MESSAGE) + MIN_TIME_TO_HANDLE_MESSAGE)
 #define TIME_TO_HANDLE_MESSAGE() getRandomUint(MIN_TIME_TO_HANDLE_MESSAGE,MAX_TIME_TO_HANDLE_MESSAGE)
 
-#define TIME_BEFORE_RETRANSMISSION ((uint64_t)50*ONE_MILLISECOND)
-//#define MIN_TIME_TO_HANDLE_RETRANSMISSION ((uint64_t)25*ONE_MICROSECOND)
-//#define MAX_TIME_TO_HANDLE_RETRANSMISSION ((uint64_t)100*ONE_MICROSECOND)
+#define TIME_BEFORE_RETRANSMISSION ((Time)50*ONE_MILLISECOND)
+//#define MIN_TIME_TO_HANDLE_RETRANSMISSION ((Time)25*ONE_MICROSECOND)
+//#define MAX_TIME_TO_HANDLE_RETRANSMISSION ((Time)100*ONE_MICROSECOND)
 //#define MEAN_TIME_TO_HANDLE_RETRANSMISSION  MEAN_TIME_TO_HANDLE_MESSAGE
 //#define SD_TIME_TO_HANDLE_RETRANSMISSION  SD_TIME_TO_HANDLE_MESSAGE
 #define TIME_TO_HANDLE_RETRANSMISSION() TIME_TO_HANDLE_MESSAGE() 
 //#define TIME_TO_HANDLE_RETRANSMISSION() (getNormalRandomUint(MEAN_TIME_TO_HANDLE_RETRANSMISSION,SD_TIME_TO_HANDLE_RETRANSMISSION) + MIN_TIME_TO_HANDLE_MESSAGE)
 
 #define SYNCHRONIZATION
-#define SYNC_PERIOD_US ((uint64_t)5*ONE_SECOND)
-#define COM_DELAY_US ((uint64_t)6*ONE_MILLISECOND)
+#define SYNC_PERIOD_US ((Time)5*ONE_SECOND)
+#define COM_DELAY_US ((Time)6*ONE_MILLISECOND)
 
 #define LIMIT_NUM_ROUNDS (SIMULATION_DURATION_USEC/SYNC_PERIOD_US)
 
@@ -108,9 +108,9 @@ msrSyncBlockCode::~msrSyncBlockCode() {
 void msrSyncBlockCode::init() {
   BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
-  /*uint64_t time = 0;
+  /*Time time = 0;
     while (time<SIMULATION_DURATION_USEC) {
-    uint64_t globalTime =  bb->getSchedulerTimeForLocalTime(time);
+    Time globalTime =  bb->getSchedulerTimeForLocalTime(time);
     Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
     BlinkyBlocks::getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
     time += COLOR_CHANGE_PERIOD_USEC;
@@ -142,13 +142,13 @@ void msrSyncBlockCode::startup() {
   init();
 }
 
-uint64_t msrSyncBlockCode::getLocalTime(bool msResolution = true) {
-  uint64_t simTime = BaseSimulator::getScheduler()->now();
+Time msrSyncBlockCode::getLocalTime(bool msResolution = true) {
+  Time simTime = BaseSimulator::getScheduler()->now();
   return getLocalTime(simTime,msResolution);
 }
 
-uint64_t msrSyncBlockCode::getLocalTime(uint64_t simTime, bool msResolution = true) {
-  uint64_t localTime = hostBlock->getLocalTime(simTime);
+Time msrSyncBlockCode::getLocalTime(Time simTime, bool msResolution = true) {
+  Time localTime = hostBlock->getLocalTime(simTime);
   //MY_COUT << "Local Time: " << localTime << endl;
   if (msResolution) {
     localTime = localTime - localTime%ONE_MILLISECOND;
@@ -157,17 +157,17 @@ uint64_t msrSyncBlockCode::getLocalTime(uint64_t simTime, bool msResolution = tr
   return localTime;
 }
 
-uint64_t msrSyncBlockCode::getSimTime(uint64_t localTime) {
-  uint64_t simTime = hostBlock->getSimulationTime(localTime);
+Time msrSyncBlockCode::getSimTime(Time localTime) {
+  Time simTime = hostBlock->getSimulationTime(localTime);
   return simTime;
 }
 
 /**** Synchronized clock ****/
-uint64_t msrSyncBlockCode::getTime() {
+Time msrSyncBlockCode::getTime() {
   return getTime(getLocalTime());
 }
 
-uint64_t msrSyncBlockCode::getTime(uint64_t localTime) {
+Time msrSyncBlockCode::getTime(Time localTime) {
   return y0*(double)localTime + x0;
 }
 
@@ -220,10 +220,10 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
       // schedule the next sync round
       if (round < LIMIT_NUM_ROUNDS) {
 	// Should be 
-	//uint64_t nextSync = getSimTime(getLocalTime(false)+SYNC_PERIOD_US);
+	//Time nextSync = getSimTime(getLocalTime(false)+SYNC_PERIOD_US);
 	// But this is faster (although a little bit wrong)
-	uint64_t simTime = BaseSimulator::getScheduler()->now();
-	uint64_t nextSync = simTime + SYNC_PERIOD_US;
+	Time simTime = BaseSimulator::getScheduler()->now();
+	Time nextSync = simTime + SYNC_PERIOD_US;
 	
 	BaseSimulator::getScheduler()->schedule(new MsrSyncEvent(nextSync,hostBlock));
       }
@@ -240,8 +240,8 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 	//cout << "@" << hostBlock->blockId << ": " << getTime() << "/" << globalTime << endl;
 	if (recvMessage->getRound() > round) {
 	  round = recvMessage->getRound();
-	  uint64_t globalTime = recvMessage->getTime() + COM_DELAY_US;
-	  uint64_t localTime = getLocalTime();
+	  Time globalTime = recvMessage->getTime() + COM_DELAY_US;
+	  Time localTime = getLocalTime();
 	  uint hop = recvMessage->getHop();
 	  // window of 5 last measures
 	  syncPoints.push_back(make_pair(localTime,globalTime));
@@ -253,8 +253,8 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 	  }
 #endif
 #ifdef PRINT_DATA_2_FILE
-	  uint64_t realTime = BaseSimulator::getScheduler()->now();
-	  uint64_t realGlobalTime = GET_GLOBAL_TIME();
+	  Time realTime = BaseSimulator::getScheduler()->now();
+	  Time realGlobalTime = GET_GLOBAL_TIME();
 	  ofstream file;
 	  string name = "data/"+to_string(bb->blockId)+".dat";
 	  
@@ -289,7 +289,7 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 #ifdef PRINT_NODE_INFO
 	    // if (hostBlock->blockId == INFO_NODE_ID) {
 	    cout << "@" << hostBlock->blockId << " error: ";
-	    for (vector<uint64_t>::iterator it = error.begin() ; it != error.end(); it++){
+	    for (vector<Time>::iterator it = error.begin() ; it != error.end(); it++){
 	      cout << *it << " ";
 	    }
 	    cout << endl;
@@ -315,14 +315,14 @@ void msrSyncBlockCode::processLocalEvent(EventPtr pev) {
 }
 
 
-Color msrSyncBlockCode::getColor(uint64_t time) {
+Color msrSyncBlockCode::getColor(Time time) {
   Color colors[6] = {RED,GREEN,YELLOW,BLUE,GREY,PINK};
   int c = time%6;
   return colors[c];
 }
 
-void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t estimatedGlobalTime, uint hop) {
-  uint64_t timeOfResidence = 0;
+void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, Time estimatedGlobalTime, uint hop) {
+  Time timeOfResidence = 0;
   // processing + interrupt times
   timeOfResidence += TIME_TO_HANDLE_MESSAGE();
   // time in case of retransmission(s)
@@ -341,11 +341,11 @@ void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t esti
     }
   }
   // timeOfResidence duration, sim scale != module scale
-  uint64_t s1 = BaseSimulator::getScheduler()->now();
-  uint64_t l1 = getLocalTime(false); // us resolution
-  uint64_t s2 = getSimTime(l1+timeOfResidence);
+  Time s1 = BaseSimulator::getScheduler()->now();
+  Time l1 = getLocalTime(false); // us resolution
+  Time s2 = getSimTime(l1+timeOfResidence);
   //MY_COUT << "Synchronize neighbors at " << s2 << "(now local: " << l1 << ", now sim: " << s1 << ")" << endl;
-  uint64_t l2 = getLocalTime(s2,false);
+  Time l2 = getLocalTime(s2,false);
 
 #ifdef DEBUG_PROTOCOL
   double d = (double)l2 - (double)(l1+timeOfResidence);
@@ -364,9 +364,9 @@ void msrSyncBlockCode::synchronize(P2PNetworkInterface *exception, uint64_t esti
   if (l2 < l1) { cout << "ERROR" << endl; }
 #endif
 
-  uint64_t t = l2-l1;
-  uint64_t timeOfResidenceMSResolution = t - t%ONE_MILLISECOND; 
-  uint64_t globalTime = (double)estimatedGlobalTime + y0*((double)timeOfResidenceMSResolution);
+  Time t = l2-l1;
+  Time timeOfResidenceMSResolution = t - t%ONE_MILLISECOND; 
+  Time globalTime = (double)estimatedGlobalTime + y0*((double)timeOfResidenceMSResolution);
 
 #ifdef DEBUG_PROTOCOL
   cout << PRINT_NODE_ID << "BlockCode: Sent Global Time = " << globalTime 
@@ -413,14 +413,14 @@ void msrSyncBlockCode::adjust() {
     return;
   }
 
-  for (vector<pair<uint64_t,uint64_t> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
+  for (vector<pair<Time,Time> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
     xAvg += it->first;
     yAvg += it->second;
   }
 
   xAvg = xAvg/syncPoints.size();
   yAvg = yAvg/syncPoints.size();
-  for (vector<pair<uint64_t,uint64_t> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
+  for (vector<pair<Time,Time> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
     sum1 += ((double)it->first - xAvg) * ((double)it->second - yAvg);
     sum2 += pow((double)it->first - xAvg,2);
   }
@@ -430,7 +430,7 @@ void msrSyncBlockCode::adjust() {
 #ifdef DEBUG_PROTOCOL
   if (y0 > 2.0) {
     cout << "Error: y0 (=" << y0 << ") may be to high ? " << " x0= " << x0 << endl;
-    for (vector<pair<uint64_t,uint64_t> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
+    for (vector<pair<Time,Time> >::iterator it = syncPoints.begin() ; it != syncPoints.end(); it++){
       double x = it->first;
       double y =  it->second;
       double o = x-y;

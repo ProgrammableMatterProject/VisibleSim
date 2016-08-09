@@ -24,7 +24,7 @@ namespace BaseSimulator {
 //
 //===========================================================================================================
 
-TranslationStartEvent::TranslationStartEvent(uint64_t t, BuildingBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
+TranslationStartEvent::TranslationStartEvent(Time t, BuildingBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TRANSLATION_START;
     finalPosition = fpos;
@@ -45,7 +45,7 @@ void TranslationStartEvent::consume() {
     World::getWorld()->disconnectBlock(bb);
     bb->setColor(DARKGREY);
 
-    uint64_t t = scheduler->now() + ANIMATION_DELAY;
+    Time t = scheduler->now() + ANIMATION_DELAY;
     Vector3D motionPosition = bb->getPositionVector();
     Vector3D motionStep =  finalPosition - motionPosition;
     motionStep.setLength(0.1);
@@ -62,7 +62,7 @@ const string TranslationStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-TranslationStepEvent::TranslationStepEvent(uint64_t t, BuildingBlock *block,
+TranslationStepEvent::TranslationStepEvent(Time t, BuildingBlock *block,
 				 const Vector3D &fpos): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TRANSLATION_STEP;
@@ -71,7 +71,7 @@ TranslationStepEvent::TranslationStepEvent(uint64_t t, BuildingBlock *block,
     motionStep.setLength(0.1);
 }
 
-TranslationStepEvent::TranslationStepEvent(uint64_t t, BuildingBlock *block,const Vector3D &fpos,
+TranslationStepEvent::TranslationStepEvent(Time t, BuildingBlock *block,const Vector3D &fpos,
 				 const Vector3D &step, const Vector3D &mpos): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TRANSLATION_STEP;
@@ -121,7 +121,7 @@ const string TranslationStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-TranslationStopEvent::TranslationStopEvent(uint64_t t, BuildingBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
+TranslationStopEvent::TranslationStopEvent(Time t, BuildingBlock *block,const Vector3D &fpos): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TRANSLATION_STOP;
     finalPosition = fpos;
@@ -164,7 +164,7 @@ const string TranslationStopEvent::getEventName() {
 //
 //===========================================================================================================
 
-TranslationEndEvent::TranslationEndEvent(uint64_t t, BuildingBlock *block): BlockEvent(t,block) {
+TranslationEndEvent::TranslationEndEvent(Time t, BuildingBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TRANSLATION_END;
 }

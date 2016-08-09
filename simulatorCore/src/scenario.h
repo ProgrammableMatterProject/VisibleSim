@@ -15,17 +15,17 @@
 class ScenarioEvent : public Event {
 protected :
 public :
-	ScenarioEvent(uint64_t t):eventTime(t) {};
+	ScenarioEvent(Time t):eventTime(t) {};
 	virtual ~ScenarioEvent() {};
 	
-	inline uint64_t getEventTime() { return eventTime; };
+	inline Time getEventTime() { return eventTime; };
 	virtual void exportEventToScheduler() = 0;
 };
 
 class ScenarioTapEvent:public ScenarioEvent {
     bID blockId;
 public:
-	ScenarioTapEvent(uint64_t t,bID id):ScenarioEvent(t),blockId(id) {};
+	ScenarioTapEvent(Time t,bID id):ScenarioEvent(t),blockId(id) {};
 	~ScenarioTapEvent() {};
     virtual void exportEventToScheduler() {
         BaseSimulator::getWorld()->tapBlock(eventTime * 1000000
@@ -36,7 +36,7 @@ public:
 class ScenarioDebugEvent:public ScenarioEvent {
 	bool open;
 public:
-	ScenarioDebugEvent(uint64_t t,bool op):ScenarioEvent(t),open(op) {};
+	ScenarioDebugEvent(Time t,bool op):ScenarioEvent(t),open(op) {};
 	~ScenarioDebugEvent() {};
 	virtual void exportEventToScheduler() {
 		(void)open;         // Suppress unused member warnings
@@ -46,7 +46,7 @@ public:
 class ScenarioSelectBlockEvent:public ScenarioEvent {
     bID blockId;
 public:
-	ScenarioSelectBlockEvent(uint64_t t,bID id):ScenarioEvent(t),blockId(id) {};
+	ScenarioSelectBlockEvent(Time t,bID id):ScenarioEvent(t),blockId(id) {};
 	~ScenarioSelectBlockEvent() {};
 	virtual void exportEventToScheduler() {
 		(void)blockId; // Suppress unused member warnings
@@ -56,7 +56,7 @@ public:
 class ScenarioAddBlockEvent:public ScenarioEvent {
 	Vector3D position;
 public:
-	ScenarioAddBlockEvent(uint64_t t,const Vector3D &pos):ScenarioEvent(t),position(pos) {};
+	ScenarioAddBlockEvent(Time t,const Vector3D &pos):ScenarioEvent(t),position(pos) {};
 	~ScenarioAddBlockEvent() {};
 	virtual void exportEventToScheduler() {
         BaseSimulator::getWorld()->addBlock(eventTime * 1000000
@@ -67,7 +67,7 @@ public:
 class ScenarioRemoveBlockEvent:public ScenarioEvent {
 	Vector3D position;
 public:
-	ScenarioRemoveBlockEvent(uint64_t t,const Vector3D &pos):ScenarioEvent(t),position(pos) {};
+	ScenarioRemoveBlockEvent(Time t,const Vector3D &pos):ScenarioEvent(t),position(pos) {};
 	~ScenarioRemoveBlockEvent() {};
 	virtual void exportEventToScheduler() {};
 };

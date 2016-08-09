@@ -28,7 +28,7 @@ private:
 	int schedulerMode = CMD_LINE_UNDEFINED;
 	int schedulerLength  = SCHEDULER_LENGTH_DEFAULT;
 	bool schedulerAutoStop = false;
-	uint64_t maximumDate = 0;
+	Time maximumDate = 0;
 	
 	
 	bool meldDebugger = false;
@@ -63,7 +63,7 @@ public:
 	bool getFullScreen() { return fullScreen; }
 	// int getGridSize() { return gridSize; }
 	int getSchedulerLength() { return schedulerLength; }
-	uint64_t getMaximumDate() { return maximumDate; }
+	Time getMaximumDate() { return maximumDate; }
 	bool getSchedulerAutoStop() { return schedulerAutoStop; }
 };
 

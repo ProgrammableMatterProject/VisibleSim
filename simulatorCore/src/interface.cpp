@@ -133,7 +133,7 @@ GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
 
 GlutSlidingMainWindow::~GlutSlidingMainWindow() {
 	// clean the map
-	multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
+	multimap<Time,BlockDebugData*>::iterator it = traces.begin();
 	while (it != traces.end()) {
 		delete (*it).second;
 		++it;
@@ -172,7 +172,7 @@ void GlutSlidingMainWindow::glDraw() {
 		glVertex2i(40,h);
 		glEnd();
 		char str[256];
-		uint64_t t = BaseSimulator::getScheduler()->now();
+		Time t = BaseSimulator::getScheduler()->now();
 		if (t < 10*1000*1000) { //10sec
 			sprintf(str,"Current time : %d:%d ms",int(t/1000),int((t%1000))); // ms
 		} else {
@@ -184,7 +184,7 @@ void GlutSlidingMainWindow::glDraw() {
 		if (selectedGlBlock) {
 			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
 			drawString(42.0,h-40.0,str);
-			multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
+			multimap<Time,BlockDebugData*>::iterator it = traces.begin();
 			GLfloat posy = h-65;
 			stringstream line;
 			int pos=slider->getPosition();
@@ -207,7 +207,7 @@ void GlutSlidingMainWindow::glDraw() {
 		} else {
 			sprintf(str, "Selected Block : None (use [Ctrl]+click)");
 			drawString(42.0,h-40.0,str);
-			multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
+			multimap<Time,BlockDebugData*>::iterator it = traces.begin();
 			GLfloat posy = h-65;
 			stringstream line;
 			int pos=slider->getPosition();
@@ -277,7 +277,7 @@ void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
 
 void GlutSlidingMainWindow::addTrace(bID id,const string &str,const Color &color) {
 	BlockDebugData *bdd = new BlockDebugData(id,str,color);
-	traces.insert(pair<uint64_t,BlockDebugData*>(BaseSimulator::getScheduler()->now(),bdd));
+	traces.insert(pair<Time,BlockDebugData*>(BaseSimulator::getScheduler()->now(),bdd));
 	if (selectedGlBlock) {
 		if (selectedGlBlock->blockId==id) slider->incDataTextLines();
 	} else {
@@ -289,7 +289,7 @@ void GlutSlidingMainWindow::select(GlBlock *sb) {
 	selectedGlBlock=sb;
 	if (selectedGlBlock) {
 		int n=0;
-		multimap<uint64_t,BlockDebugData*>::iterator it = traces.begin();
+		multimap<Time,BlockDebugData*>::iterator it = traces.begin();
 		while (it != traces.end()) {
 			if (((*it).second)->blockId==selectedGlBlock->blockId) {
 				n++;
@@ -361,7 +361,7 @@ void GlutSlidingDebugWindow::glDraw() {
 		glEnd();
 
 		char str[256];
-		uint64_t t = BaseSimulator::getScheduler()->now();
+		Time t = BaseSimulator::getScheduler()->now();
 		sprintf(str,"Current time : %d:%d",int(t/1000),int((t%1000)));
         glColor3f(1.0,1.0,0.0);
 		drawString(45.0,h-20.0,str);

@@ -16,7 +16,7 @@
 class MsrSyncEvent : public BlockEvent {
 public:
 
-	MsrSyncEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+	MsrSyncEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
 		eventType = EVENT_MSRSYNC;
 		randomNumber = conBlock->getNextRandomNumber();
 	}

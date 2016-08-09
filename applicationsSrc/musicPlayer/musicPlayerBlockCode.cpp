@@ -187,7 +187,7 @@ void MusicPlayerBlockCode::processLocalEvent(EventPtr pev) {
 			received[idMessage]=true;
 			sendClockToNeighbors(NULL,1,bb->getTime(),idMessage);
 			idMessage++;
-			uint64_t nextSync = bb->getTime()+SYNC_PERIOD;
+			Time nextSync = bb->getTime()+SYNC_PERIOD;
 			getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
 			info << "scheduled synchro" << endl;
 			}
@@ -203,7 +203,7 @@ BlinkyBlocks::BlinkyBlocksBlockCode* MusicPlayerBlockCode::buildNewBlockCode(Bli
 	return(new MusicPlayerBlockCode(host));
 }
 
-void MusicPlayerBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, uint64_t clock, int id){
+void MusicPlayerBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, Time clock, int id){
 	P2PNetworkInterface * p2p;
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
@@ -303,7 +303,7 @@ std::vector<Note> MusicPlayerBlockCode::Score(){ //We can take a midi file and b
 	return score;
 }
 
-SynchroMessage::SynchroMessage(uint64_t t, int hop, int ids) :Message(){
+SynchroMessage::SynchroMessage(Time t, int hop, int ids) :Message(){
 	id = SYNC_MSG_ID;
 	idSync=ids;
 	time = t;

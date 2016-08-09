@@ -24,7 +24,7 @@ using namespace BaseSimulator;
 //
 //===========================================================================================================
 
-Event::Event(uint64_t t) {
+Event::Event(Time t) {
 	id = nextId;
 	nextId++;
 	nbLivingEvents++;
@@ -67,7 +67,7 @@ unsigned int Event::getNbLivingEvents() {
 //
 //===========================================================================================================
 
-BlockEvent::BlockEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock) : Event(t) {
+BlockEvent::BlockEvent(Time t, BaseSimulator::BuildingBlock *conBlock) : Event(t) {
 	EVENT_CONSTRUCTOR_INFO();
 	concernedBlock = conBlock;
 	eventType = BLOCKEVENT_GENERIC;
@@ -92,7 +92,7 @@ const string BlockEvent::getEventName() {
 //
 //===========================================================================================================
 
-CodeStartEvent::CodeStartEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+CodeStartEvent::CodeStartEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_CODE_START;
 }
@@ -115,7 +115,7 @@ const string CodeStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-CodeEndSimulationEvent::CodeEndSimulationEvent(uint64_t t): Event(t) {
+CodeEndSimulationEvent::CodeEndSimulationEvent(Time t): Event(t) {
 	eventType = EVENT_END_SIMULATION;
 	EVENT_CONSTRUCTOR_INFO();
 }
@@ -140,7 +140,7 @@ const string CodeEndSimulationEvent::getEventName() {
 //
 //===========================================================================================================
 
-ProcessLocalEvent::ProcessLocalEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+ProcessLocalEvent::ProcessLocalEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_PROCESS_LOCAL_EVENT;
 }
@@ -163,7 +163,7 @@ const string ProcessLocalEvent::getEventName() {
 //
 //===========================================================================================================
 
-NetworkInterfaceStartTransmittingEvent::NetworkInterfaceStartTransmittingEvent(uint64_t t, P2PNetworkInterface *ni):Event(t) {
+NetworkInterfaceStartTransmittingEvent::NetworkInterfaceStartTransmittingEvent(Time t, P2PNetworkInterface *ni):Event(t) {
 	eventType = EVENT_NI_START_TRANSMITTING;
 	interface = ni;
 	EVENT_CONSTRUCTOR_INFO();
@@ -187,7 +187,7 @@ const string NetworkInterfaceStartTransmittingEvent::getEventName() {
 //
 //===========================================================================================================
 
-NetworkInterfaceStopTransmittingEvent::NetworkInterfaceStopTransmittingEvent(uint64_t t, P2PNetworkInterface *ni):Event(t) {
+NetworkInterfaceStopTransmittingEvent::NetworkInterfaceStopTransmittingEvent(Time t, P2PNetworkInterface *ni):Event(t) {
 	eventType = EVENT_NI_STOP_TRANSMITTING;
 	interface = ni;
 	EVENT_CONSTRUCTOR_INFO();
@@ -223,7 +223,7 @@ const string NetworkInterfaceStopTransmittingEvent::getEventName() {
 //
 //===========================================================================================================
 
-NetworkInterfaceReceiveEvent::NetworkInterfaceReceiveEvent(uint64_t t, P2PNetworkInterface *ni, MessagePtr mes):Event(t) {
+NetworkInterfaceReceiveEvent::NetworkInterfaceReceiveEvent(Time t, P2PNetworkInterface *ni, MessagePtr mes):Event(t) {
 	eventType = EVENT_NI_RECEIVE;
 	interface = ni;
 	message = mes;
@@ -249,14 +249,14 @@ const string NetworkInterfaceReceiveEvent::getEventName() {
 //
 //===========================================================================================================
 
-NetworkInterfaceEnqueueOutgoingEvent::NetworkInterfaceEnqueueOutgoingEvent(uint64_t t, Message *mes, P2PNetworkInterface *ni):Event(t) {
+NetworkInterfaceEnqueueOutgoingEvent::NetworkInterfaceEnqueueOutgoingEvent(Time t, Message *mes, P2PNetworkInterface *ni):Event(t) {
 	eventType = EVENT_NI_ENQUEUE_OUTGOING_MESSAGE;
 	message = MessagePtr(mes);
 	sourceInterface = ni;
 	EVENT_CONSTRUCTOR_INFO();
 }
 
-NetworkInterfaceEnqueueOutgoingEvent::NetworkInterfaceEnqueueOutgoingEvent(uint64_t t, MessagePtr mes, P2PNetworkInterface *ni):Event(t) {
+NetworkInterfaceEnqueueOutgoingEvent::NetworkInterfaceEnqueueOutgoingEvent(Time t, MessagePtr mes, P2PNetworkInterface *ni):Event(t) {
 	eventType = EVENT_NI_ENQUEUE_OUTGOING_MESSAGE;
 	message = mes;
 	sourceInterface = ni;
@@ -284,14 +284,14 @@ const string NetworkInterfaceEnqueueOutgoingEvent::getEventName() {
 //
 //===========================================================================================================
 
-SetColorEvent::SetColorEvent(uint64_t t, BuildingBlock *conBlock, float r, float g, float b, float a): BlockEvent(t, conBlock) {
+SetColorEvent::SetColorEvent(Time t, BuildingBlock *conBlock, float r, float g, float b, float a): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_SET_COLOR;
 	randomNumber = conBlock->getNextRandomNumber();
 	color = Color(r, g, b, a);
 }
 
-SetColorEvent::SetColorEvent(uint64_t t, BuildingBlock *conBlock, Color &c): BlockEvent(t, conBlock) {
+SetColorEvent::SetColorEvent(Time t, BuildingBlock *conBlock, Color &c): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_SET_COLOR;
 	randomNumber = conBlock->getNextRandomNumber();
@@ -323,7 +323,7 @@ const string SetColorEvent::getEventName() {
 //
 //===========================================================================================================
 
-AddNeighborEvent::AddNeighborEvent(uint64_t t, BuildingBlock *conBlock, uint64_t f, uint64_t ta): BlockEvent(t, conBlock) {
+AddNeighborEvent::AddNeighborEvent(Time t, BuildingBlock *conBlock, uint64_t f, uint64_t ta): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_ADD_NEIGHBOR;
 	face = f;
@@ -355,7 +355,7 @@ const string AddNeighborEvent::getEventName() {
 //
 //===========================================================================================================
 
-RemoveNeighborEvent::RemoveNeighborEvent(uint64_t t, BuildingBlock *conBlock, uint64_t f): BlockEvent(t, conBlock) {
+RemoveNeighborEvent::RemoveNeighborEvent(Time t, BuildingBlock *conBlock, uint64_t f): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_REMOVE_NEIGHBOR;
 	face = f;
@@ -385,7 +385,7 @@ const string RemoveNeighborEvent::getEventName() {
 //
 //===========================================================================================================
 
-TapEvent::TapEvent(uint64_t t, BuildingBlock *conBlock, const int face):
+TapEvent::TapEvent(Time t, BuildingBlock *conBlock, const int face):
 	BlockEvent(t, conBlock), tappedFace(face) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_TAP;
@@ -414,7 +414,7 @@ const string TapEvent::getEventName() {
 //
 //===========================================================================================================
 
-AccelEvent::AccelEvent(uint64_t t, BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz): BlockEvent(t, conBlock) {
+AccelEvent::AccelEvent(Time t, BuildingBlock *conBlock, uint64_t xx, uint64_t yy, uint64_t zz): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_ACCEL;
 	x = xx;
@@ -448,7 +448,7 @@ const string AccelEvent::getEventName() {
 //
 //===========================================================================================================
 
-ShakeEvent::ShakeEvent(uint64_t t, BuildingBlock *conBlock, uint64_t f): BlockEvent(t, conBlock) {
+ShakeEvent::ShakeEvent(Time t, BuildingBlock *conBlock, uint64_t f): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_SHAKE;
 	force = f;

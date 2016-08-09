@@ -110,7 +110,7 @@ public :
 class GlutSlidingMainWindow : public GlutWindow {
 	int openingLevel;
 	GlutButton* buttonOpen, *buttonClose;
-	multimap<uint64_t,BlockDebugData*> traces;
+	multimap<Time,BlockDebugData*> traces;
 	GlutSlider *slider;
 	GlBlock *selectedGlBlock;
 public :

@@ -11,6 +11,8 @@
 #include <iostream>
 #include <cstdint>
 
+#include "tDefs.h"
+
 namespace BaseSimulator {
 namespace utils {
 
@@ -49,7 +51,7 @@ private:
     uint64_t largestEventsQueueSize = 0; //!< Largest size of the scheduler's event
     uint64_t endEventsQueueSize = 0; //!< Size of the events queue at scheduler end
     // Time
-    uint64_t simulatedElapsedTime = 0; //!< Duration of simulation in discrete simulator time
+    Time simulatedElapsedTime = 0; //!< Duration of simulation in discrete simulator time
     double realElapsedTime = 0; //!< Duration of simulation in real time
 
     inline double computeEventPerSec() const {  return realElapsedTime ? eventsProcessed / realElapsedTime : 0; };
@@ -61,7 +63,7 @@ public:
     //!< Increments processed event count by 1
     inline void incEventsCount() { eventsProcessed++; };
     //!< Updates both elapsed times
-    inline void updateElapsedTime(uint64_t simTime, uint64_t realTime)
+    inline void updateElapsedTime(Time simTime, Time realTime)
         { simulatedElapsedTime = simTime; realElapsedTime = realTime; };
     //!< Called before scheduler destruction to collect the state of important queues at end time
     inline void setLivingCounters(uint64_t livingEvents, uint64_t livingMessages)

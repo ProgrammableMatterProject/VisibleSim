@@ -250,7 +250,7 @@ void BlinkyBlocksWorld::setSelectedFace(int n) {
  * @param y : y coordinate of accelerometer change
  * @param z : z coordinate of accelerometer change
  */
-void BlinkyBlocksWorld::accelBlock(uint64_t date, bID id, int x, int y, int z) {
+void BlinkyBlocksWorld::accelBlock(Time date, bID id, int x, int y, int z) {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
 	bb->accel(date, x,y,z);
 }
@@ -263,7 +263,7 @@ void BlinkyBlocksWorld::accelBlock(uint64_t date, bID id, int x, int y, int z) {
  * @param id : the id of the target block
  * @param f : force of the shake
  */
-void BlinkyBlocksWorld::shakeBlock(uint64_t date, bID id, int f) {
+void BlinkyBlocksWorld::shakeBlock(Time date, bID id, int f) {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*)getBlockById(id);
 	bb->shake(date, f);
 }
@@ -274,7 +274,7 @@ void BlinkyBlocksWorld::shakeBlock(uint64_t date, bID id, int f) {
  * @param date : the date at which the tap event must be consumed
  * @param id : the id of the target block
  */
-void BlinkyBlocksWorld::stopBlock(uint64_t date, bID id) {
+void BlinkyBlocksWorld::stopBlock(Time date, bID id) {
 	if (id == 0) {
 		// Delete the block	without deleting the links
 		map<int, BaseSimulator::BuildingBlock*>::iterator it;

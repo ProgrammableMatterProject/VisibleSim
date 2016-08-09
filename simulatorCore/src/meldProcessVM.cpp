@@ -275,7 +275,7 @@ void MeldProcessVM::handleDeterministicMode(VMCommand &command){
 }
 
 void MeldProcessVM::handleCommand(VMCommand &command) {
-	uint64_t dateToSchedule;
+	Time dateToSchedule;
 		
 	currentLocalDate = max(getScheduler()->now(), command.getTimestamp());
 	if (getScheduler()->getMode() == SCHEDULER_MODE_FASTEST) {
@@ -351,9 +351,9 @@ void MeldProcessVM::closeAllSockets() {
 }
 
 
-bool MeldProcessVM::dateHasBeenReachedByAll(uint64_t date) {
-	static uint64_t minReallyReached = 0;
-	uint64_t min, min2;
+bool MeldProcessVM::dateHasBeenReachedByAll(Time date) {
+	static Time minReallyReached = 0;
+	Time min, min2;
 	int alive = 0, hasNoWork = 0;
 		
 	if (date < minReallyReached) {

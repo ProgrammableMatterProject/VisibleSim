@@ -48,7 +48,7 @@ BlinkyBlocksBlock::~BlinkyBlocksBlock() {
     OUTPUT << "BlinkyBlocksBlock destructor " << blockId << endl;
 }
 
-void BlinkyBlocksBlock::pauseClock(uint64_t delay, uint64_t start) {
+void BlinkyBlocksBlock::pauseClock(Time delay, Time start) {
     //while(BaseSimulator::getScheduler()->now()<delay+start){
 
 }
@@ -65,11 +65,11 @@ int BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
     return SCLattice::Direction(0);
 }
 
-void BlinkyBlocksBlock::accel(uint64_t date, int x, int y, int z) {
+void BlinkyBlocksBlock::accel(Time date, int x, int y, int z) {
     getScheduler()->scheduleLock(new AccelEvent(date, this, x, y, z));
 }
 
-void BlinkyBlocksBlock::shake(uint64_t date, int f) {
+void BlinkyBlocksBlock::shake(Time date, int f) {
     getScheduler()->scheduleLock(new ShakeEvent(getScheduler()->now(), this, f));
 }
 
@@ -89,7 +89,7 @@ void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
 
-void BlinkyBlocksBlock::stopBlock(uint64_t date, State s) {
+void BlinkyBlocksBlock::stopBlock(Time date, State s) {
     OUTPUT << "Simulator: stop scheduled" << endl;
     setState(s);
     if (s == STOPPED) {

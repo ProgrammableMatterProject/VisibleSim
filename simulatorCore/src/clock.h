@@ -9,6 +9,7 @@
 #define CLOCK_H_
 
 #include <cstdint>
+#include "tDefs.h"
 
 using namespace std;
 
@@ -37,18 +38,18 @@ public:
    * @brief returns the local time for the simulator time in parameter.
    * @para simTime Simulator time for which the local time is requested.
    */ 
-  virtual uint64_t getTime(uint64_t simTime) = 0;
+  virtual Time getTime(Time simTime) = 0;
 
   /**
    * @brief returns the local time for the current simulator time in parameter.
    */ 
-  uint64_t getTime();
+  Time getTime();
   
   /**
    * @brief returns the simulator time for the local time in parameter.
    * @para localTime Local time for which the simulator time is requested.
    */
-  virtual uint64_t getSimulationTime(uint64_t localTime) = 0;
+  virtual Time getSimulationTime(Time localTime) = 0;
 };
 
 /**
@@ -67,8 +68,8 @@ public:
    */
   ~PerfectClock();
   
-  uint64_t getTime(uint64_t simTime);
-  uint64_t getSimulationTime(uint64_t localTime);
+  Time getTime(Time simTime);
+  Time getSimulationTime(Time localTime);
 };
 
 

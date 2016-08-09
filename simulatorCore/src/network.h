@@ -94,7 +94,7 @@ public:
 
 	P2PNetworkInterface *connectedInterface;
 	BaseSimulator::BuildingBlock *hostBlock;
-	uint64_t availabilityDate;
+	Time availabilityDate;
 
 	MessagePtr messageBeingTransmitted;
 

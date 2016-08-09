@@ -41,7 +41,7 @@ void CPPScheduler::deleteScheduler() {
 }
 
 void *CPPScheduler::startPaused(/*void *param*/) {
-	uint64_t systemCurrentTime, systemCurrentTimeMax;
+	Time systemCurrentTime, systemCurrentTimeMax;
 
 	//usleep(1000000);
 	cout << "\033[1;33mScheduler Mode :" << schedulerMode << "\033[0m"  << endl;
@@ -49,8 +49,8 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 	sem_schedulerStart->wait();
 
     state = RUNNING;
-	int systemStartTime, systemStopTime;
-	multimap<uint64_t, EventPtr>::iterator first;
+	Time systemStartTime, systemStopTime;
+	multimap<Time, EventPtr>::iterator first;
 	EventPtr pev;
 
 	systemStartTime = (glutGet(GLUT_ELAPSED_TIME))*1000;
@@ -91,7 +91,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 		cout << "Realtime mode scheduler\n";
 	    while((state != ENDED && !eventsMap.empty()) || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
 			//gettimeofday(&heureGlobaleActuelle,NULL);
-	    	systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
+	    	systemCurrentTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
 	    	systemCurrentTimeMax = systemCurrentTime - systemStartTime;
 			//ev = *(listeEvenements.begin());
 			if (!eventsMap.empty()) {
@@ -133,7 +133,7 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 		cout << "ERROR : Scheduler mode not recognized !!" << endl;
 	}
 
-	systemStopTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
+	systemStopTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
 
 	cout << "\033[1;33m" << "Scheduler end : " << systemStopTime << "\033[0m" << endl;
 

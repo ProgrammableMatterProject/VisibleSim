@@ -20,7 +20,7 @@ namespace MeldInterpret {
 class VMSetIdEvent : public BlockEvent {
 public:
 
-	VMSetIdEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	VMSetIdEvent(Time, BaseSimulator::BuildingBlock *conBlock);
 	VMSetIdEvent(VMSetIdEvent *ev);
 	~VMSetIdEvent();
 	void consumeBlockEvent() {};
@@ -37,7 +37,7 @@ public:
 class VMStopEvent : public BlockEvent {
 public:
 
-	VMStopEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	VMStopEvent(Time, BaseSimulator::BuildingBlock *conBlock);
 	VMStopEvent(VMStopEvent *ev);
 	~VMStopEvent();
 	void consumeBlockEvent() {};
@@ -57,7 +57,7 @@ public:
 	MessagePtr message;
 	P2PNetworkInterface *sourceInterface;
 
-	VMSendMessageEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni);
+	VMSendMessageEvent(Time, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes, P2PNetworkInterface *ni);
 	VMSendMessageEvent(VMSendMessageEvent *ev);
 	~VMSendMessageEvent();
 	void consumeBlockEvent();
@@ -75,7 +75,7 @@ public:
 	MessagePtr message;
 	BaseSimulator::BuildingBlock* target;
 
-	VMSendMessageEvent2(uint64_t, BaseSimulator::BuildingBlock *conBlock,
+	VMSendMessageEvent2(Time, BaseSimulator::BuildingBlock *conBlock,
 						MessagePtr mes, BaseSimulator::BuildingBlock* sento);
 	VMSendMessageEvent2(VMSendMessageEvent2 *ev);
 	~VMSendMessageEvent2();
@@ -92,7 +92,7 @@ public:
 class VMReceiveMessageEvent2 : public BlockEvent {
 public:
 	MessagePtr message;
-	VMReceiveMessageEvent2(uint64_t, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes);
+	VMReceiveMessageEvent2(Time, BaseSimulator::BuildingBlock *conBlock, MessagePtr mes);
 	VMReceiveMessageEvent2(VMReceiveMessageEvent2* ev);
 	~VMReceiveMessageEvent2();
 	void consumeBlockEvent();
@@ -109,7 +109,7 @@ class VMHandleDebugCommandEvent : public BlockEvent {
 
 public:
 
-	VMHandleDebugCommandEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	VMHandleDebugCommandEvent(Time, BaseSimulator::BuildingBlock *conBlock);
 	VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev);
 	~VMHandleDebugCommandEvent();
 	void consumeBlockEvent();
@@ -126,7 +126,7 @@ class VMDebugPauseSimEvent : public Event {
 
 public:
 
-	VMDebugPauseSimEvent(uint64_t);
+	VMDebugPauseSimEvent(Time);
 	VMDebugPauseSimEvent(VMDebugPauseSimEvent *ev);
 	~VMDebugPauseSimEvent();
 	void consume();
@@ -142,7 +142,7 @@ public:
 class VMEndPollEvent : public BlockEvent {
 public:
 
-	VMEndPollEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	VMEndPollEvent(Time, BaseSimulator::BuildingBlock *conBlock);
 	VMEndPollEvent(VMEndPollEvent *ev);
 	~VMEndPollEvent();
 	void consumeBlockEvent();
@@ -160,7 +160,7 @@ class ComputePredicateEvent : public BlockEvent {
 public:
 	//No idea for members for the moment
 
-	ComputePredicateEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock);
+	ComputePredicateEvent(Time, BaseSimulator::BuildingBlock *conBlock);
 	ComputePredicateEvent(ComputePredicateEvent *ev);
 	~ComputePredicateEvent();
 	void consumeBlockEvent();
@@ -178,7 +178,7 @@ public:
 	tuple_t tuple;
 	byte face;
 
-	AddTupleEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
+	AddTupleEvent(Time, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
 	AddTupleEvent(AddTupleEvent *ev);
 	~AddTupleEvent();
 	void consumeBlockEvent();
@@ -197,7 +197,7 @@ public:
 	tuple_t tuple;
 	byte face;
 
-	RemoveTupleEvent(uint64_t, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
+	RemoveTupleEvent(Time, BaseSimulator::BuildingBlock *conBlock, tuple_t tpl, byte f);
 	RemoveTupleEvent(RemoveTupleEvent *ev);
 	~RemoveTupleEvent();
 	void consumeBlockEvent();

@@ -16,7 +16,7 @@ namespace MeldProcess {
 //
 //===========================================================================================================
 
-VMSetIdEvent::VMSetIdEvent(uint64_t t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+VMSetIdEvent::VMSetIdEvent(Time t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_SET_ID;
 }
@@ -44,7 +44,7 @@ const string VMSetIdEvent::getEventName() {
 //
 //===========================================================================================================
 
-VMStopEvent::VMStopEvent(uint64_t t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+VMStopEvent::VMStopEvent(Time t, BuildingBlock *conBlock): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_STOP;
 }
@@ -73,7 +73,7 @@ const string VMStopEvent::getEventName() {
 //
 //===========================================================================================================
 
-VMSendMessageEvent::VMSendMessageEvent(uint64_t t, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni):BlockEvent(t, conBlock) {
+VMSendMessageEvent::VMSendMessageEvent(Time t, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni):BlockEvent(t, conBlock) {
 	eventType = EVENT_SEND_MESSAGE;
 	message = MessagePtr(mes);
 	sourceInterface = ni;
@@ -108,7 +108,7 @@ const string VMSendMessageEvent::getEventName() {
 //
 //===========================================================================================================
 
-VMHandleDebugCommandEvent::VMHandleDebugCommandEvent(uint64_t t, BuildingBlock *conBlock, DebbuggerVMCommand *c): BlockEvent(t, conBlock) {
+VMHandleDebugCommandEvent::VMHandleDebugCommandEvent(Time t, BuildingBlock *conBlock, DebbuggerVMCommand *c): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_HANDLE_DEBUG_COMMAND;
 	command = c;
@@ -138,7 +138,7 @@ const string VMHandleDebugCommandEvent::getEventName() {
 //
 //===========================================================================================================
 
-VMDebugPauseSimEvent::VMDebugPauseSimEvent(uint64_t t): Event(t) {
+VMDebugPauseSimEvent::VMDebugPauseSimEvent(Time t): Event(t) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_DEBUG_PAUSE_SIMULATION;
 }
@@ -168,7 +168,7 @@ const string VMDebugPauseSimEvent::getEventName() {
 //
 //===========================================================================================================
 
-VMEndPollEvent::VMEndPollEvent(uint64_t t, BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
+VMEndPollEvent::VMEndPollEvent(Time t, BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	randomNumber = conBlock->getNextRandomNumber();
 	eventType = EVENT_END_POLL;

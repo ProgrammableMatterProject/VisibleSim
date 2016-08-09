@@ -10,7 +10,7 @@ namespace BaseSimulator {
 //
 //===========================================================================================================
 
-uint64_t Clock::getTime() {
+Time Clock::getTime() {
     return getTime(getScheduler()->now());
 }
 
@@ -24,11 +24,11 @@ PerfectClock::PerfectClock(): Clock() {}
 
 PerfectClock::~PerfectClock() {}
 
-uint64_t PerfectClock::getTime(uint64_t simTime) {
+Time PerfectClock::getTime(Time simTime) {
   return simTime;
 }
   
-uint64_t PerfectClock::getSimulationTime(uint64_t localTime) {
+Time PerfectClock::getSimulationTime(Time localTime) {
   return localTime;
 }
  

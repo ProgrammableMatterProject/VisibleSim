@@ -48,7 +48,7 @@ class Rotation2DStartEvent : public BlockEvent {
     double angle;
     int sens;
 public:
-    Rotation2DStartEvent(uint64_t, Catoms2DBlock *block, Rotation2DMove &m);
+    Rotation2DStartEvent(Time, Catoms2DBlock *block, Rotation2DMove &m);
     Rotation2DStartEvent(Rotation2DStartEvent *ev);
     ~Rotation2DStartEvent();
     void consumeBlockEvent() {};
@@ -67,7 +67,7 @@ class Rotation2DStepEvent : public BlockEvent {
     double angle;
     int sens;
 public:
-    Rotation2DStepEvent(uint64_t, Catoms2DBlock *block,const Vector3D &pivot,double angle2goal,int s);
+    Rotation2DStepEvent(Time, Catoms2DBlock *block,const Vector3D &pivot,double angle2goal,int s);
     Rotation2DStepEvent(Rotation2DStepEvent *ev);
     ~Rotation2DStepEvent();
     void consumeBlockEvent() {};
@@ -84,7 +84,7 @@ public:
 class Rotation2DStopEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-    Rotation2DStopEvent(uint64_t, Catoms2DBlock *block);
+    Rotation2DStopEvent(Time, Catoms2DBlock *block);
     Rotation2DStopEvent(Rotation2DStepEvent *ev);
     ~Rotation2DStopEvent();
     void consumeBlockEvent() {};
@@ -100,7 +100,7 @@ public:
 
 class Rotation2DEndEvent : public BlockEvent {
 public:
-    Rotation2DEndEvent(uint64_t, Catoms2DBlock *block);
+    Rotation2DEndEvent(Time, Catoms2DBlock *block);
     Rotation2DEndEvent(Rotation2DEndEvent *ev);
     ~Rotation2DEndEvent();
     void consumeBlockEvent() {};

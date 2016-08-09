@@ -230,7 +230,7 @@ void SbReconfBlockCode::setRulesColor() {
     }
 }
 
-void SbReconfBlockCode::startMotion(uint64_t t,const PointCel &mv,int step,const vector<short>&path) {
+void SbReconfBlockCode::startMotion(Time t,const PointCel &mv,int step,const vector<short>&path) {
     prepareUnlock(path,step);
     Vector3D finalPosition;
     finalPosition.set(block->position.pt[0]+mv.x,block->position.pt[1]+mv.y,0);
@@ -1308,7 +1308,7 @@ void SbReconfBlockCode::reconnect(bool hasRule) {
 
 }
 
-void SbReconfBlockCode::createLine(uint64_t t,bool hol) {
+void SbReconfBlockCode::createLine(Time t,bool hol) {
     static PointCel tabDirections[4] = { PointCel(0,1),PointCel(1,0),PointCel(0,-1),PointCel(-1,0)};
 #ifdef verbose
     stringstream info;
@@ -1326,7 +1326,7 @@ void SbReconfBlockCode::createLine(uint64_t t,bool hol) {
 		} else {
 			motionVector = capa->tabMotions[0]->vect;
 		}
-		uint64_t t0 = scheduler->now(),
+		Time t0 = scheduler->now(),
 			t1 = t0+(t0-t)*5.0;
 		if (_previous) {
 			SetRDVMessage *message = new SetRDVMessage(t1,motionVector);
@@ -1991,7 +1991,7 @@ TrainReadyMessage::TrainReadyMessage(bool qf):Message(){
 TrainReadyMessage::~TrainReadyMessage() {
 }
 
-CreateLineMessage::CreateLineMessage(uint64_t t):Message(){
+CreateLineMessage::CreateLineMessage(Time t):Message(){
     id = CREATE_LINE_MSG_ID;
     etime = t;
 }
@@ -1999,7 +1999,7 @@ CreateLineMessage::CreateLineMessage(uint64_t t):Message(){
 CreateLineMessage::~CreateLineMessage() {
 }
 
-SetRDVMessage::SetRDVMessage(uint64_t t,const PointCel &v):Message(){
+SetRDVMessage::SetRDVMessage(Time t,const PointCel &v):Message(){
     id = SET_RDV_MSG_ID;
     rdvTime = t;
     motionVector = v;
@@ -2064,7 +2064,7 @@ ReconnectTrainMessage::~ReconnectTrainMessage() {
   AckInitMessage::~AckInitMessage() {
   }*/
 
-SingleMoveMessage::SingleMoveMessage(short *t,int n,uint64_t st,const PointCel &mv,const vector<short>&up,int s):Message() {
+SingleMoveMessage::SingleMoveMessage(short *t,int n,Time st,const PointCel &mv,const vector<short>&up,int s):Message() {
     id = SINGLEMV_MSG_ID;
     if (n>0) {
 		tab = new short[n];
@@ -2124,7 +2124,7 @@ void SbReconfBlockCode::getLocalTargetGrid(const PointCel &pos,PresenceMatrix &p
 }
 
 void SbReconfBlockCode::singleMotion(Motion *currentMotion,Capability *capa) {
-    uint64_t t = scheduler->now(),
+    Time t = scheduler->now(),
 		st = t+20*time_offset;
 #ifdef verbose
     stringstream info;

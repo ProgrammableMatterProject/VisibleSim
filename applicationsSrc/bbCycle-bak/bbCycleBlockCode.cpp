@@ -38,9 +38,9 @@ void BbCycleBlockCode::init() {
 	BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	stringstream info;
 	
-	uint64_t time = 0;
+	Time time = 0;
 	while (time<SIMULATION_DURATION_USEC) {
-		uint64_t globalTime =  bb->getSimulationTime(time);
+		Time globalTime =  bb->getSimulationTime(time);
 		Color c = getColor(time/COLOR_CHANGE_PERIOD_USEC);
 		getScheduler()->schedule(new SetColorEvent(globalTime,bb,c));
 		time += COLOR_CHANGE_PERIOD_USEC;
@@ -76,7 +76,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
 }
 
 
-Color BbCycleBlockCode::getColor(uint64_t time) {
+Color BbCycleBlockCode::getColor(Time time) {
 	Color colors[6] = {RED,GREEN,YELLOW,BLUE,GREY,PINK};
 	int c = time%6;
 	return colors[c];

@@ -24,7 +24,7 @@ Scheduler *Scheduler::scheduler=NULL;
 Scheduler::Scheduler() {
 	OUTPUT << "Scheduler constructor" << endl;
 
-	if (sizeof(uint64_t) != 8) {
+	if (sizeof(Time) != 8) {
 		ERRPUT << "\033[1;31m" << "ERROR : Scheduler requires 8bytes integer that are not available on this computer" << "\033[0m" << endl;
 		exit(EXIT_FAILURE);
 	}
@@ -70,7 +70,7 @@ bool Scheduler::schedule(Event *ev) {
 
 	lock();
 
-	eventsMap.insert(pair<uint64_t, EventPtr>(pev->date,pev));
+	eventsMap.insert(pair<Time, EventPtr>(pev->date,pev));
 
 	eventsMapSize++;
 
@@ -83,14 +83,14 @@ bool Scheduler::schedule(Event *ev) {
 
 void Scheduler::removeEventsToBlock(BuildingBlock *bb) {
 	lock();
-	multimap<uint64_t,EventPtr>::iterator im = eventsMap.begin();
+	multimap<Time,EventPtr>::iterator im = eventsMap.begin();
 	BuildingBlock *cb=NULL;
 	OUTPUT << bb << endl;
 	while (im!=eventsMap.end()) {
 		cb=(*im).second->getConcernedBlock();
 		OUTPUT << cb << endl;
 		if (cb==bb) {
-			multimap<uint64_t,EventPtr>::iterator im2 = im;
+			multimap<Time,EventPtr>::iterator im2 = im;
 			if(im != eventsMap.begin()) {
 				im--;
 				eventsMap.erase(im2);
@@ -103,7 +103,7 @@ void Scheduler::removeEventsToBlock(BuildingBlock *bb) {
 	unlock();
 }
 
-uint64_t Scheduler::now() {
+Time Scheduler::now() {
 	return(currentDate);
 }
 
@@ -130,7 +130,7 @@ void Scheduler::unlock() {
 	mutex_schedule.unlock();
 }
 
-void Scheduler::stop(uint64_t date) {
+void Scheduler::stop(Time date) {
 	debugDate=date;
 	schedulerMode = SCHEDULER_MODE_DEBUG;
 }

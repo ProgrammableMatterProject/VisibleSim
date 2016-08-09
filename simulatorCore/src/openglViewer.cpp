@@ -547,7 +547,7 @@ bool GlutContext::saveScreen(char *title) {
 
 	pixels = (unsigned char*) malloc(3*w*h);
 	glReadPixels(0,0,w,h,GL_RGB,GL_UNSIGNED_BYTE,(GLvoid*) pixels);
-	uint64_t t = BaseSimulator::getScheduler()->now();
+	Time t = BaseSimulator::getScheduler()->now();
 	fprintf(fichier,"P6\n# time: %d:%d\n%d %d\n255\n",int(t/1000),int(t%1000),w,h);
 	unsigned char *ptr = pixels+(h-1)*w*3;
 	while (h--) {

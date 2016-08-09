@@ -60,7 +60,7 @@ void MeldInterpretScheduler::SemWaitOrReadDebugMessage() {
 
 void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 
-      uint64_t systemCurrentTime, systemCurrentTimeMax, pausedTime;
+      Time systemCurrentTime, systemCurrentTimeMax, pausedTime;
     pausedTime = 0;
     int seed = 500;
     srand (seed);
@@ -86,8 +86,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 #endif
     state = RUNNING;
     //checkForReceivedVMCommands();
-    uint64_t systemStartTime, systemStopTime;
-    multimap<uint64_t, EventPtr>::iterator first, tmp;
+    Time systemStartTime, systemStopTime;
+    multimap<Time, EventPtr>::iterator first, tmp;
     EventPtr pev;
     systemStartTime = (glutGet(GLUT_ELAPSED_TIME))*1000;
     OUTPUT << "\033[1;33m" << "Scheduler : start order received " << systemStartTime << "\033[0m" << endl;
@@ -164,7 +164,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
         OUTPUT << "Realtime mode scheduler\n" << endl;
         //MeldInterpretDebugger::print("Simulation starts in real time mode");
 	    while((state != ENDED && !eventsMap.empty()) || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
-            systemCurrentTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
+            systemCurrentTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
             systemCurrentTimeMax = systemCurrentTime - systemStartTime;
             // currentDate = systemCurrentTimeMax;
             //checkForReceivedVMCommands();
@@ -218,10 +218,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 
             if (state == PAUSED) {
                 cout << "paused" << endl;
-                int pauseBeginning = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
+                int pauseBeginning = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
                 SemWaitOrReadDebugMessage();
                 setState(RUNNING);
-                pausedTime += ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
+                pausedTime += ((Time)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
             }
 
 			if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
@@ -233,7 +233,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     default:
         OUTPUT << "ERROR : Scheduler mode not recognized !!" << endl;
     }
-    systemStopTime = ((uint64_t)glutGet(GLUT_ELAPSED_TIME))*1000;
+    systemStopTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
     OUTPUT << "\033[1;33m" << "Scheduler end : " << systemStopTime << "\033[0m" << endl;
     pev.reset();
     StatsCollector::getInstance().updateElapsedTime(currentDate,
@@ -264,7 +264,7 @@ void MeldInterpretScheduler::start(int mode) {
     // }
 }
 
-void MeldInterpretScheduler::pause(uint64_t date) {
+void MeldInterpretScheduler::pause(Time date) {
     //getScheduler()->scheduleLock(new VMDebugPauseSimEvent(date));
 }
 
@@ -276,7 +276,7 @@ void MeldInterpretScheduler::unPause() {
     OUTPUT << "unpause sim" << endl;
 }
 
-void MeldInterpretScheduler::stop(uint64_t date) {
+void MeldInterpretScheduler::stop(Time date) {
     if (GlutContext::GUIisEnabled)
         schedulerThread->detach();
     setState(ENDED);
@@ -300,13 +300,13 @@ bool MeldInterpretScheduler::schedule(Event *ev) {
 
     switch (schedulerMode) {
     case SCHEDULER_MODE_REALTIME:
-        eventsMap.insert(pair<uint64_t, EventPtr>(pev->date,pev));
+        eventsMap.insert(pair<Time, EventPtr>(pev->date,pev));
         break;
     case SCHEDULER_MODE_FASTEST:
         if (eventsMap.count(pev->date) > 0) {
-            std::pair<multimap<uint64_t, EventPtr>::iterator,
-                      multimap<uint64_t, EventPtr>::iterator> range = eventsMap.equal_range(pev->date);
-            multimap<uint64_t, EventPtr>::iterator it = range.first;
+            std::pair<multimap<Time, EventPtr>::iterator,
+                      multimap<Time, EventPtr>::iterator> range = eventsMap.equal_range(pev->date);
+            multimap<Time, EventPtr>::iterator it = range.first;
             while (it != range.second) {
                 if (it->second->randomNumber == 0) {
                     it++;
@@ -326,9 +326,9 @@ bool MeldInterpretScheduler::schedule(Event *ev) {
                 }
                 it++;
             }
-            eventsMap.insert(it, pair<uint64_t, EventPtr>(pev->date,pev));
+            eventsMap.insert(it, pair<Time, EventPtr>(pev->date,pev));
         } else {
-            eventsMap.insert(pair<uint64_t, EventPtr>(pev->date,pev));
+            eventsMap.insert(pair<Time, EventPtr>(pev->date,pev));
         }
         break;
     default:

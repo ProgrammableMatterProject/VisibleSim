@@ -113,7 +113,7 @@ void BbCycleBlockCode::processLocalEvent(EventPtr pev) {
       received[idMessage]=true;
       sendClockToNeighbors(NULL,1,bb->getLocalTime(),idMessage);
       idMessage++;
-      uint64_t nextSync = bb->getLocalTime()+SYNC_PERIOD;
+      Time nextSync = bb->getLocalTime()+SYNC_PERIOD;
       getScheduler()->schedule(new SynchronizeEvent(nextSync,bb));
       info << "scheduled synchro" << endl;
     }
@@ -133,7 +133,7 @@ BlockCode* BbCycleBlockCode::buildNewBlockCode(BuildingBlock *host) {
   return(new BbCycleBlockCode((BlinkyBlocksBlock*)host));
 }
 
-void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, uint64_t clock, int id){
+void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int hop, Time clock, int id){
   P2PNetworkInterface * p2p;
   BlinkyBlocksBlock *bb = (BlinkyBlocksBlock*) hostBlock;
 	
@@ -146,7 +146,7 @@ void BbCycleBlockCode::sendClockToNeighbors (P2PNetworkInterface *p2pExcept, int
   }
 }
 
-SynchroMessage::SynchroMessage(uint64_t t, int hop, int ids) :Message(){
+SynchroMessage::SynchroMessage(Time t, int hop, int ids) :Message(){
   id = SYNC_MSG_ID;
   idSync=ids;
   time = t;

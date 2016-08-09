@@ -23,7 +23,7 @@ namespace Catoms2D {
   //
   //===========================================================================================================
 
-  MotionStartEvent::MotionStartEvent(uint64_t t, Catoms2DBlock *block, Catoms2DMove &m): BlockEvent(t,block) {
+  MotionStartEvent::MotionStartEvent(Time t, Catoms2DBlock *block, Catoms2DMove &m): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_START;
     
@@ -59,7 +59,7 @@ namespace Catoms2D {
   //
   //===========================================================================================================
 
-  MotionStepEvent::MotionStepEvent(uint64_t t, Catoms2DBlock *block,const Vecteur &p,double angle2goal,int s): BlockEvent(t,block) {
+  MotionStepEvent::MotionStepEvent(Time t, Catoms2DBlock *block,const Vecteur &p,double angle2goal,int s): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_STEP;
 
@@ -112,7 +112,7 @@ namespace Catoms2D {
   //
   //===========================================================================================================
 
-  MotionStopEvent::MotionStopEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
+  MotionStopEvent::MotionStopEvent(Time t, Catoms2DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_STOP;
   }
@@ -164,7 +164,7 @@ namespace Catoms2D {
   //
   //===========================================================================================================
 
-  MotionEndEvent::MotionEndEvent(uint64_t t, Catoms2DBlock *block): BlockEvent(t,block) {
+  MotionEndEvent::MotionEndEvent(Time t, Catoms2DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_MOTION_END;
   }

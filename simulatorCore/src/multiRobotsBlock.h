@@ -32,8 +32,8 @@ public:
 
 	void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	void removeNeighbor(P2PNetworkInterface *ni) {};
-	void stopBlock(uint64_t date, State s);
-	void pauseClock(uint64_t delay, uint64_t start);
+	void stopBlock(Time date, State s);
+	void pauseClock(Time delay, Time start);
 };
 
 std::ostream& operator<<(std::ostream &stream, MultiRobotsBlock const& bb);

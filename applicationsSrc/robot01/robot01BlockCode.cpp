@@ -339,7 +339,7 @@ void Robot01BlockCode::processLocalEvent(EventPtr pev) {
 				}
 			}
 			if (found) {
-				uint64_t time = scheduler->now();
+				Time time = scheduler->now();
 				MotionDelayMessage *message = new MotionDelayMessage(time,true);
 				scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(time + COM_DELAY, message, p2p));
 				stringstream info;
@@ -548,9 +548,9 @@ void Robot01BlockCode::sendLinkTrainMessages(P2PNetworkInterface *sender) {
 	}
 }
 
-void Robot01BlockCode::sendAnswerDelayOrMotionDelayMessage(uint64_t gt) {
+void Robot01BlockCode::sendAnswerDelayOrMotionDelayMessage(Time gt) {
 	if (motionVector!=nextMotionVector) {
-		uint64_t time = scheduler->now(),
+		Time time = scheduler->now(),
 			rdvTime = time+(time-gt)*1.5;
 		if (trainPrevious) {
 			AnswerDelayMessage *adm_message = new AnswerDelayMessage(rdvTime,trainNext!=NULL);
@@ -673,7 +673,7 @@ AckTrainMessage::~AckTrainMessage() {
 }
 
 
-MotionDelayMessage::MotionDelayMessage(uint64_t time,bool unlock):Message(){
+MotionDelayMessage::MotionDelayMessage(Time time,bool unlock):Message(){
 	id = MOTIONDELAY_MSG_ID;
 	globalTime = time;
 	unlockMode = unlock;
@@ -682,7 +682,7 @@ MotionDelayMessage::MotionDelayMessage(uint64_t time,bool unlock):Message(){
 MotionDelayMessage::~MotionDelayMessage() {
 }
 
-AnswerDelayMessage::AnswerDelayMessage(uint64_t time,bool b2ul):Message(){
+AnswerDelayMessage::AnswerDelayMessage(Time time,bool b2ul):Message(){
 	id = ANSWERDELAY_MSG_ID;
 	globalRDVTime = time;
 	block2unlock=b2ul;

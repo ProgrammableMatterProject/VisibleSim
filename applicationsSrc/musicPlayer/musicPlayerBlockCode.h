@@ -41,9 +41,9 @@ public:
 	void startup();
 	void init();
 	void processLocalEvent(EventPtr pev);
-	Color getColor(uint64_t time);
+	Color getColor(Time time);
 	std::vector<Note> Score();	
-	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, uint64_t clock, int id);	
+	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, Time clock, int id);	
 	void sendSongToNeighbors (P2PNetworkInterface *except, std::vector<Note> score);
 	static BlinkyBlocks::BlinkyBlocksBlockCode *buildNewBlockCode(BlinkyBlocks::BlinkyBlocksBlock *host);
 };
@@ -51,9 +51,9 @@ public:
 class SynchroMessage : public Message {
 public:
 	int idSync;
-	uint64_t time;
+	Time time;
 	int nbhop;
-	SynchroMessage(uint64_t t, int hop, int id);
+	SynchroMessage(Time t, int hop, int id);
 	unsigned int size() { return(17); }
 	~SynchroMessage();
 };

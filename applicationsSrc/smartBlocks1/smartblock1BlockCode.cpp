@@ -46,7 +46,7 @@ void SmartBlock1BlockCode::startup() {
         my_distance = 0;
 
         //I send distance to all of my neighbors
-        uint64_t time_offset;
+        Time time_offset;
         for( int i=SLattice::North; i<=SLattice::West; i++)
         {
             P2PNetworkInterface *p2p = smartBlock->getInterface(SLattice::Direction(i));
@@ -64,7 +64,7 @@ void SmartBlock1BlockCode::startup() {
 
 void SmartBlock1BlockCode::processLocalEvent(EventPtr pev) {
     int i;
-    uint64_t time_offset;
+    Time time_offset;
     unsigned int sourceId;
     MessagePtr message;
     stringstream info;
@@ -193,12 +193,12 @@ BlockCode* SmartBlock1BlockCode::buildNewBlockCode(BuildingBlock *host) {
 }
 
 
-void SmartBlock1BlockCode::send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset) {
+void SmartBlock1BlockCode::send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset) {
     Dist_message * message = new Dist_message( distance);
     scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, message, by_interface));
 }
 
-void SmartBlock1BlockCode::send_ack(unsigned int path, unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset) {
+void SmartBlock1BlockCode::send_ack(unsigned int path, unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset) {
     Ack_message * ack = new Ack_message(path, distance);
     scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, ack, by_interface));
 }

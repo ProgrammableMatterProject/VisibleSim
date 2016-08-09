@@ -11,7 +11,7 @@ class MeldBlockCode : public BlockCode {
 private:
 	bool hasWork, polling;
 	MeldInterpret::MeldInterpretVM *vm;
-	uint64_t currentLocalDate; // fastest mode
+	Time currentLocalDate; // fastest mode
 public:
 	MeldBlockCode(BaseSimulator::BuildingBlock *host);
 	~MeldBlockCode();
@@ -21,7 +21,7 @@ public:
 	void startup();
 	void init();
 	void processLocalEvent(EventPtr pev);
-	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
+	void setCurrentLocalDate(Time t) {currentLocalDate = t;}
 	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };

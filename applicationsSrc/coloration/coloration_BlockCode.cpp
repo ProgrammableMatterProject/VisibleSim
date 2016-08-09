@@ -46,7 +46,7 @@ OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_col
 		smartBlock->setColor(my_color);
 		sleep(1);
 
-		uint64_t time_offset = 0;
+		Time time_offset = 0;
 		P2PNetworkInterface * p2p;
 		for( int i = NeighborDirection::North ; i <= NeighborDirection::West ; i++ ) {
 			p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
@@ -79,7 +79,7 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 			colored = true;
 
 			int i;
-			uint64_t time_offset = 0;
+			Time time_offset = 0;
 			P2PNetworkInterface * p2p;
 
 			color vertical_neighbors_color;

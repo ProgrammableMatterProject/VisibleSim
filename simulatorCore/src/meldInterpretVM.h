@@ -32,7 +32,7 @@ typedef uintptr_t Register;
 typedef uint8_t byte;
 typedef uint16_t NodeID;
 typedef uint16_t Uid;
-typedef uint32_t Time;
+//typedef uint32_t Time;
 
 /* Meld Structures */
 
@@ -634,7 +634,7 @@ public:
     static char **tuple_names;
     static char **rule_names;
 
-    uint64_t currentLocalDate;
+    Time currentLocalDate;
     bool hasWork, polling, deterministicSet;
     NodeID *neighbors;
     tuple_type TYPE_INIT;

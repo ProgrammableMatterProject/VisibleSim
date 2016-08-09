@@ -126,7 +126,7 @@ public:
 	void step2(MessagePtr message);
 	void step3(MessagePtr message);
 	void reconnect(bool hasRule);
-	void createLine(uint64_t t,bool hol);
+	void createLine(Time t,bool hol);
 	void sendNoActivity(SLattice::Direction dir,int id);
 	void sendInitToNeighbors(P2PNetworkInterface *except,int stage);
 	void sendAckInit(P2PNetworkInterface *p2p);
@@ -141,7 +141,7 @@ public:
 	P2PNetworkInterface *getBorderNeighborById(int id);
 
 	void prepareUnlock(const vector<short>&path,int step);
-	void startMotion(uint64_t t,const PointCel &mv,int step,const vector<short>&path);
+	void startMotion(Time t,const PointCel &mv,int step,const vector<short>&path);
 	void singleMotion(Motion *,Capability *capa);
 
 	virtual void parseUserElements(TiXmlDocument *config);
@@ -210,16 +210,16 @@ public :
 
 class CreateLineMessage : public Message {
 public :
-	uint64_t etime;
-    CreateLineMessage(uint64_t t);
+	Time etime;
+    CreateLineMessage(Time t);
 	~CreateLineMessage();
 };
 
 class SetRDVMessage : public Message {
 public :
-	uint64_t rdvTime;
+	Time rdvTime;
 	PointCel motionVector;
-    SetRDVMessage(uint64_t t,const PointCel &);
+    SetRDVMessage(Time t,const PointCel &);
 	~SetRDVMessage();
 };
 
@@ -270,12 +270,12 @@ class SingleMoveMessage : public Message {
 public :
 	int sz;
 	short *tab;
-	uint64_t startTime;
+	Time startTime;
 	PointCel motionVector;
 	vector<short>unlockPath;
 	int step;
 
-    SingleMoveMessage(short *,int,uint64_t,const PointCel &,const vector<short>&up,int);
+    SingleMoveMessage(short *,int,Time,const PointCel &,const vector<short>&up,int);
 	~SingleMoveMessage();
 };
 

@@ -46,7 +46,7 @@ void DetectionBlockCode::startup() {
 		my_distance = 0;
 
 		//I send distance to all of my neighbors
-		uint64_t time_offset;
+		Time time_offset;
 		for( int i=NeighborDirection::North; i<=NeighborDirection::West; i++)
 		{
 			P2PNetworkInterface *p2p = smartBlock->getInterface(NeighborDirection::Direction(i));
@@ -64,7 +64,7 @@ void DetectionBlockCode::startup() {
 
 void DetectionBlockCode::processLocalEvent(EventPtr pev) {
 	int i;
-	uint64_t time_offset;
+	Time time_offset;
 	unsigned int sourceId;
 	MessagePtr message;
 	stringstream info;
@@ -171,12 +171,12 @@ SmartBlocks::SmartBlocksBlockCode* DetectionBlockCode::buildNewBlockCode(SmartBl
 }
 
 
-void DetectionBlockCode::send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset) {
+void DetectionBlockCode::send_dist( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset) {
 	Dist_message * message = new Dist_message( distance);
 	scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, message, by_interface));
 }
 
-void DetectionBlockCode::send_ack( unsigned int distance,  P2PNetworkInterface * by_interface, uint64_t time_offset) {
+void DetectionBlockCode::send_ack( unsigned int distance,  P2PNetworkInterface * by_interface, Time time_offset) {
 	Ack_message * ack = new Ack_message( distance);
 	scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, ack, by_interface));
 }

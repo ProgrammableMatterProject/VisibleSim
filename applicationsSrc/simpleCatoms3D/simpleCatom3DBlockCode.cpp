@@ -83,7 +83,7 @@ void SimpleCatom3DBlockCode::startup() {
         // recherche le voisin d'indice minimum
         //Rotations3D rotations(catom,voisin,m_1*Vector3D(0,1,0),35.2643896828,m_1*Vector3D(-1,1, -M_SQRT2),35.2643896828);
         Rotations3D rotations(catom,voisin,m_1*Vector3D(0,0,1),45.0,m_1*Vector3D(-1,1,0),45.0);
-        uint64_t t = scheduler->now()+2000;
+        Time t = scheduler->now()+2000;
         scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
 #ifdef verbose
         stringstream info;
@@ -121,7 +121,7 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
             voisin->getGlBlock()->mat.inverse(m_1);
             // Rotations3D rotations(catom,voisin,m_1*Vector3D(-1,1,M_SQRT2),35.26,m_1*Vector3D(-1,-1, -M_SQRT2),35.26);
             Rotations3D rotations(catom,voisin,m_1*Vector3D(-1,-1,0),45.0,m_1*Vector3D(0,0,1),45.0);
-            uint64_t t = scheduler->now()+1002000;
+            Time t = scheduler->now()+1002000;
             // scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;

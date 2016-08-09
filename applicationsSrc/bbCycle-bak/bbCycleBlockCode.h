@@ -21,7 +21,7 @@ public:
 	void startup();
 	void init();
 	void processLocalEvent(EventPtr pev);
-	Color getColor(uint64_t time);
+	Color getColor(Time time);
 	
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };

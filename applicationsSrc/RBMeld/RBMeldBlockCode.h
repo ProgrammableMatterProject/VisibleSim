@@ -13,7 +13,7 @@ private:
 	bool hasWork, polling;
 	MeldInterpret::MeldInterpretVM *vm;
 	RobotBlocks::RobotBlocksBlock *bb;
-	uint64_t currentLocalDate; // fastest mode
+	Time currentLocalDate; // fastest mode
 
 public:
 	RBMeldBlockCode(RobotBlocks::RobotBlocksBlock *host);
@@ -22,7 +22,7 @@ public:
 	void startup();
 	void init();
 	void processLocalEvent(EventPtr pev);
-	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
+	void setCurrentLocalDate(Time t) {currentLocalDate = t;}
 	void handleDeterministicMode(/*MeldProcess::VMCommand &command*/);
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };

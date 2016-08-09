@@ -24,7 +24,7 @@ namespace MeldProcess {
 class VMSetIdEvent : public BlockEvent {
 public:
 
-	VMSetIdEvent(uint64_t, BuildingBlock *conBlock);
+	VMSetIdEvent(Time, BuildingBlock *conBlock);
 	VMSetIdEvent(VMSetIdEvent *ev);
 	~VMSetIdEvent();
 	void consumeBlockEvent() {};
@@ -41,7 +41,7 @@ public:
 class VMStopEvent : public BlockEvent {
 public:
 
-	VMStopEvent(uint64_t, BuildingBlock *conBlock);
+	VMStopEvent(Time, BuildingBlock *conBlock);
 	VMStopEvent(VMStopEvent *ev);
 	~VMStopEvent();
 	void consumeBlockEvent() {};
@@ -61,7 +61,7 @@ public:
 	MessagePtr message;
 	P2PNetworkInterface *sourceInterface;
 
-	VMSendMessageEvent(uint64_t, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni);
+	VMSendMessageEvent(Time, BuildingBlock *conBlock, Message *mes, P2PNetworkInterface *ni);
 	VMSendMessageEvent(VMSendMessageEvent *ev);
 	~VMSendMessageEvent();
 	void consumeBlockEvent();
@@ -79,7 +79,7 @@ class VMHandleDebugCommandEvent : public BlockEvent {
 public:
 	DebbuggerVMCommand *command;
 	
-	VMHandleDebugCommandEvent(uint64_t, BuildingBlock *conBlock, DebbuggerVMCommand *c);
+	VMHandleDebugCommandEvent(Time, BuildingBlock *conBlock, DebbuggerVMCommand *c);
 	VMHandleDebugCommandEvent(VMHandleDebugCommandEvent *ev);
 	~VMHandleDebugCommandEvent();
 	void consumeBlockEvent();
@@ -96,7 +96,7 @@ class VMDebugPauseSimEvent : public Event {
 
 public:
 	
-	VMDebugPauseSimEvent(uint64_t);
+	VMDebugPauseSimEvent(Time);
 	VMDebugPauseSimEvent(VMDebugPauseSimEvent *ev);
 	~VMDebugPauseSimEvent();
 	void consume();
@@ -112,7 +112,7 @@ public:
 class VMEndPollEvent : public BlockEvent {
 public:
 
-	VMEndPollEvent(uint64_t, BuildingBlock *conBlock);
+	VMEndPollEvent(Time, BuildingBlock *conBlock);
 	VMEndPollEvent(VMEndPollEvent *ev);
 	~VMEndPollEvent();
 	void consumeBlockEvent();

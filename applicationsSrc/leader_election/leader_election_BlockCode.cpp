@@ -45,7 +45,7 @@ void Leader_election_BlockCode::startup() {
 
 	//I send my id to all of my neighbors
 	int i;
-	uint64_t time_offset = 0;
+	Time time_offset = 0;
 	P2PNetworkInterface *p2p;
 	for( i = NeighborDirection::North; i <= NeighborDirection::West; i++ )
 	{
@@ -64,7 +64,7 @@ void Leader_election_BlockCode::processLocalEvent(EventPtr pev) {
 	unsigned int sourceId;
 	MessagePtr message;
 	stringstream info;
-	uint64_t time_offset = 0;
+	Time time_offset = 0;
 
 	switch (pev->eventType) {
 		case EVENT_NI_RECEIVE:
@@ -185,7 +185,7 @@ SmartBlocks::SmartBlocksBlockCode* Leader_election_BlockCode::buildNewBlockCode(
 void Leader_election_BlockCode::master_routine() {
 	i_am_master = true;
 	master_found = true;
-	uint64_t time_offset = 0;
+	Time time_offset = 0;
 	P2PNetworkInterface *p2p;
 	for( int i = NeighborDirection::North; i <= NeighborDirection::West; i++ ) {
 		p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );

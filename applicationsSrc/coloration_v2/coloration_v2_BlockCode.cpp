@@ -97,7 +97,7 @@ void ColorationV2BlockCode::startup() {
     diagonal_neighbors.push_back( Coordinates( -1, 1));
     diagonal_neighbors.push_back( Coordinates( 1, -1));
     diagonal_neighbors.push_back( Coordinates( 1, 1));
-    //~ uint64_t time_offset = 10000 + ( rand() % 25 ) * 10000;
+    //~ Time time_offset = 10000 + ( rand() % 25 ) * 10000;
     //~ //***Donc là les deux prochain tests c'est juste une petite "optim" pas vitale, mais je pense qu'elle fera gagner pas mal d'échanges de messages
     //~ //*** dans les configurations dense, et puis sinon bin c'est juste 2 tests dans lesquels on n'entre pas
     //~ //If i have two neighbors facing each other, i can find all of my diagonal neighbors in one search message round :
@@ -141,7 +141,7 @@ void ColorationV2BlockCode::startup() {
     //~ //Else, i may have to do many rounds
     //~ else {
 //~ cout << "Pas de voisins face à face détectés :" << endl;
-      uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
+      Time time_offset( 10000 + ( rand() % 25) * 10000);
       map<Coordinates, BlockRoutingInfos>::iterator routes_map_iterator( routes_map_.find( cMyCoordinates));
       for( int i( NeighborDirection::North); i <= NeighborDirection::West; i++) {
         bool connected (smartBlock->getInterface( NeighborDirection::Direction(i))->connectedInterface);
@@ -320,7 +320,7 @@ void ColorationV2BlockCode::TreatRouteSearchMsg( RouteSearchMsgPtr recv_msg){
         ack_infos_list, recv_msg->origine(), true,
         smartBlock->getDirection( recv_msg->destinationInterface),
         recv_msg->origine_id()));
-    uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
+    Time time_offset( 10000 + ( rand() % 25) * 10000);
     scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(
         scheduler->now() + time_offset, ack, recv_msg->destinationInterface));
   // If the message have done its amount of jumps
@@ -332,13 +332,13 @@ void ColorationV2BlockCode::TreatRouteSearchMsg( RouteSearchMsgPtr recv_msg){
         ack_infos_list, recv_msg->origine(), false,
         smartBlock->getDirection( recv_msg->destinationInterface),
         recv_msg->origine_id()));
-    uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
+    Time time_offset( 10000 + ( rand() % 25) * 10000);
     scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent(
         scheduler->now() + time_offset, ack, recv_msg->destinationInterface));
 
   // Case 2: forward flooding:
   } else {
-    uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
+    Time time_offset( 10000 + ( rand() % 25) * 10000);
     for( int i( NeighborDirection::North); i <= NeighborDirection::West; i++) {
       if( smartBlock->getInterface( NeighborDirection::Direction(i))->connectedInterface &&
           smartBlock->getInterface( NeighborDirection::Direction(i)) != recv_msg->destinationInterface) {
@@ -359,7 +359,7 @@ void ColorationV2BlockCode::TreatRouteSearchMsg( RouteSearchMsgPtr recv_msg){
                                              true,
                                              smartBlock->getDirection(recv_msg->destinationInterface),
                                              recv_msg->origine_id()));
-      uint64_t time_offset(10000 + (rand() % 25) * 10000);
+      Time time_offset(10000 + (rand() % 25) * 10000);
       scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + time_offset, ack, recv_msg->destinationInterface));
     }
   }
@@ -426,7 +426,7 @@ void ColorationV2BlockCode::TreatRouteSearchAck( RouteSearchAckPtr recv_ack) {
                                              routes_map_iterator->second.dead_end,
                                              smartBlock->getDirection( routes_map_iterator->second.route_network_interface),
                                              recv_ack->origine_id()));
-      uint64_t time_offset( 10000 + (rand() % 25) * 10000);
+      Time time_offset( 10000 + (rand() % 25) * 10000);
       scheduler->schedule( new NetworkInterfaceEnqueueOutgoingEvent( scheduler->now() + time_offset, new_ack, routes_map_iterator->second.route_network_interface));
     // If the acknowledgement is for my own RouteSearchMsg,
     } else {
@@ -462,7 +462,7 @@ void ColorationV2BlockCode::StartNextRound() {
   }
   if( !missing_neighbors.empty()) {
     map<Coordinates, BlockRoutingInfos>::iterator routes_map_iterator( routes_map_.find( cMyCoordinates));
-    uint64_t time_offset( 10000 + ( rand() % 25) * 10000);
+    Time time_offset( 10000 + ( rand() % 25) * 10000);
     for( int i( NeighborDirection::North); i <= NeighborDirection::West; ++i) {
       // I send next round message only to connected neighbors wich weren't dead-ends in previous round.
       if( !dead_end_neighbors_[ i] && smartBlock->getInterface( NeighborDirection::Direction(i))->connectedInterface) {
@@ -509,7 +509,7 @@ void ColorationV2BlockCode::TreatColoringMsg( ColoringMsgPtr recv_msg) {
    if( recv_msg->destination() != cMyCoordinates) {
     // I have to transmit it toward its destination.
     P2PNetworkInterface * transmission_interface( routes_map_.find( recv_msg->destination())->second.route_network_interface);
-    uint64_t time_offset = 10000 + ( rand() % 25) * 10000;
+    Time time_offset = 10000 + ( rand() % 25) * 10000;
     ColoringMsg *new_msg( new ColoringMsg( recv_msg, smartBlock->getDirection( transmission_interface)));
     scheduler->schedule(
         new NetworkInterfaceEnqueueOutgoingEvent(
@@ -538,7 +538,7 @@ void ColorationV2BlockCode::TreatColoringAck( ColoringAckPtr recv_ack) {
   if( recv_ack->destination() != cMyCoordinates) {
     // I have to transmit it toward its destination.
     P2PNetworkInterface * transmission_interface( routes_map_.find( recv_ack->destination())->second.route_network_interface);
-    uint64_t time_offset = 10000 + ( rand() % 25) * 10000;
+    Time time_offset = 10000 + ( rand() % 25) * 10000;
     ColoringAck *new_ack( new ColoringAck( recv_ack, smartBlock->getDirection( transmission_interface)));
     scheduler->schedule(
         new NetworkInterfaceEnqueueOutgoingEvent(
@@ -581,7 +581,7 @@ void ColorationV2BlockCode::DrawAndSendColorScores() {
   }
 
   // Flood it to all my not-yet-colored neighbors
-  uint64_t time_offset = 10000 + ( rand() % 25) * 10000;
+  Time time_offset = 10000 + ( rand() % 25) * 10000;
   for( map<Coordinates, ColorQuantityArray>::iterator neighbor_iterator( color_neighborhood_.begin());
        neighbor_iterator != color_neighborhood_.end();
        ++neighbor_iterator) {
@@ -617,7 +617,7 @@ void ColorationV2BlockCode::ProcessScores() {
         smartBlock->setColor( my_color_);
         usleep( 50000);
         // I tell it to all my neighbors:
-        uint64_t time_offset = 10000 + ( rand() % 25) * 10000;
+        Time time_offset = 10000 + ( rand() % 25) * 10000;
         for( map<Coordinates, ColorQuantityArray>::iterator neighbor_iterator( color_neighborhood_.begin());
              neighbor_iterator != color_neighborhood_.end();
              ++neighbor_iterator) {

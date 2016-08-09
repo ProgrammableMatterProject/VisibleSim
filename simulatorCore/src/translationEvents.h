@@ -24,7 +24,7 @@ namespace BaseSimulator {
 class TranslationStartEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-    TranslationStartEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStartEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStartEvent(TranslationStartEvent *ev);
     ~TranslationStartEvent();
     void consumeBlockEvent() {};
@@ -43,8 +43,8 @@ class TranslationStepEvent : public BlockEvent {
     Vector3D motionStep;		//!< Translation of the block during this step
     Vector3D motionPosition;		//!< Actual position on the grid of the block in motion
 public:
-    TranslationStepEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
-    TranslationStepEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos,
+    TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStepEvent(Time, BuildingBlock *block,const Vector3D &fpos,
 		    const Vector3D &step, const Vector3D &mpos);
     TranslationStepEvent(TranslationStepEvent *ev);
     ~TranslationStepEvent();
@@ -62,7 +62,7 @@ public:
 class TranslationStopEvent : public BlockEvent {
     Vector3D finalPosition;
 public:
-    TranslationStopEvent(uint64_t, BuildingBlock *block,const Vector3D &fpos);
+    TranslationStopEvent(Time, BuildingBlock *block,const Vector3D &fpos);
     TranslationStopEvent(TranslationStepEvent *ev);
     ~TranslationStopEvent();
     void consumeBlockEvent() {};
@@ -78,7 +78,7 @@ public:
 
 class TranslationEndEvent : public BlockEvent {
 public:
-    TranslationEndEvent(uint64_t, BuildingBlock *block);
+    TranslationEndEvent(Time, BuildingBlock *block);
     TranslationEndEvent(TranslationEndEvent *ev);
     ~TranslationEndEvent();
     void consumeBlockEvent() {};

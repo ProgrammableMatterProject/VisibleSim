@@ -73,7 +73,7 @@ protected :
 class Rotation3DStartEvent : public BlockEvent {
     Rotations3D rot;
 public:
-	Rotation3DStartEvent(uint64_t, Catoms3DBlock *block,const Rotations3D& r);
+	Rotation3DStartEvent(Time, Catoms3DBlock *block,const Rotations3D& r);
 	Rotation3DStartEvent(Rotation3DStartEvent *ev);
 	~Rotation3DStartEvent();
 	void consumeBlockEvent() {};
@@ -90,7 +90,7 @@ public:
 class Rotation3DStepEvent : public BlockEvent {
     Rotations3D rot;
 public:
-	Rotation3DStepEvent(uint64_t, Catoms3DBlock *block,const Rotations3D& r);
+	Rotation3DStepEvent(Time, Catoms3DBlock *block,const Rotations3D& r);
 	Rotation3DStepEvent(Rotation3DStepEvent *ev);
 	~Rotation3DStepEvent();
 	void consumeBlockEvent() {};
@@ -107,7 +107,7 @@ public:
 class Rotation3DStopEvent : public BlockEvent {
     Rotations3D rot;
 public:
-	Rotation3DStopEvent(uint64_t, Catoms3DBlock *block,const Rotations3D& r);
+	Rotation3DStopEvent(Time, Catoms3DBlock *block,const Rotations3D& r);
 	Rotation3DStopEvent(Rotation3DStepEvent *ev);
 	~Rotation3DStopEvent();
 	void consumeBlockEvent() {};
@@ -123,7 +123,7 @@ public:
 
 class Rotation3DEndEvent : public BlockEvent {
 public:
-	Rotation3DEndEvent(uint64_t, Catoms3DBlock *block);
+	Rotation3DEndEvent(Time, Catoms3DBlock *block);
 	Rotation3DEndEvent(Rotation3DEndEvent *ev);
 	~Rotation3DEndEvent();
 	void consumeBlockEvent() {};

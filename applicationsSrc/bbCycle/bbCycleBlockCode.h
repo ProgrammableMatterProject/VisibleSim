@@ -31,18 +31,18 @@ public:
 	void startup();
 	void init();
 	void processLocalEvent(EventPtr pev);
-	Color getColor(uint64_t time);
+	Color getColor(Time time);
 	
-	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, uint64_t clock, int id);	
+	void sendClockToNeighbors (P2PNetworkInterface *except, int hop, Time clock, int id);	
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 
 class SynchroMessage : public Message {
 public:
 	int idSync;
-	uint64_t time;
+	Time time;
 	int nbhop;
-	SynchroMessage(uint64_t t, int hop, int id);
+	SynchroMessage(Time t, int hop, int id);
 	unsigned int size() { return(17); }
 	~SynchroMessage();
 };

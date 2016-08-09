@@ -55,9 +55,9 @@ public:
     virtual void exportConfiguration();
 
     /* Sends the appropriate message (tap, ...) to the VM associated to id block (through the scheduler)*/
-    void accelBlock(uint64_t date, bID id, int x, int y, int z);
-    void shakeBlock(uint64_t date, bID id, int f);
-    virtual void stopBlock(uint64_t date, bID id);
+    void accelBlock(Time date, bID id, int x, int y, int z);
+    void shakeBlock(Time date, bID id, int f);
+    virtual void stopBlock(Time date, bID id);
 
     // void addScenarioEvent(ScenarioEvent *ev) { tabEvents.push_back(ev); };
 

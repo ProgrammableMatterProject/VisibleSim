@@ -78,7 +78,7 @@ void MeldProcessDebugger::handlePauseRequest() {
 	debugger::handlePauseCommand();
 }
 
-void MeldProcessDebugger::handleBreakAtTimeReached(uint64_t t) {
+void MeldProcessDebugger::handleBreakAtTimeReached(Time t) {
 	ostringstream msg;
 	msg << "Time break point reached at " << t << endl;
 	debuggerCommandHandler(debugger::pack(debugger::TIME, msg.str(),1));

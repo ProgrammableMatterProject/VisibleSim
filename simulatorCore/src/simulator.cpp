@@ -431,7 +431,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 		attr=worldElement->Attribute("maxSimulationTime");
 		if (attr) {
 			string str=attr;
-			uint64_t t = atoi(attr);
+			Time t = atoi(attr);
 			int l = strlen(attr);
 			if (str.substr(l-2,2)=="mn") {
 				t*=60000000;

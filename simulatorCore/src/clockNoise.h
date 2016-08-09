@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+#include "tDefs.h"
+
 using namespace std;
 
 namespace BaseSimulator {
@@ -29,7 +31,7 @@ public:
    * @para simTime simulation time 
    * @return noise
    */
-  virtual clockNoise_t getNoise(uint64_t simTime) = 0;
+  virtual clockNoise_t getNoise(Time simTime) = 0;
 };
  
 /**
@@ -54,14 +56,14 @@ class GClockNoise : public ClockNoise {
    */
   ~GClockNoise();
 
-  clockNoise_t getNoise(uint64_t simTime);
+  clockNoise_t getNoise(Time simTime);
 };
  
 /**
  * \brief class to replay clock noise from a list of data files
  */
 class DClockNoise : public ClockNoise {
-  typedef pair<uint64_t, clockNoise_t> referencePt_t;
+  typedef pair<Time, clockNoise_t> referencePt_t;
   typedef vector<referencePt_t> noiseSignal_t; 
  private:
   static vector<noiseSignal_t> noiseSignals;//!< Noise signals
@@ -73,7 +75,7 @@ class DClockNoise : public ClockNoise {
    * @para p1 reference point (simulation time: t_1, noise: n_1), t_1 >= time  
    * @para p2 reference point (t_2,n_2), t_2 <= time
    */
-  clockNoise_t getNoise(uint64_t time, referencePt_t p1, referencePt_t p2);
+  clockNoise_t getNoise(Time time, referencePt_t p1, referencePt_t p2);
   
  public:
   /**
@@ -86,7 +88,7 @@ class DClockNoise : public ClockNoise {
    */
   ~DClockNoise();
   
-  clockNoise_t getNoise(uint64_t simTime);
+  clockNoise_t getNoise(Time simTime);
 
   /**
    * @brief Print the noise signal (simulation time, noise value)

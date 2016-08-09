@@ -5,14 +5,12 @@
 #include <random>
 
 #include "coordinate.h"
-//#include "time.h"
+#include "tDefs.h"
 #include "network.h"
 #include "events.h"
 #include <memory>
 
 #include "catom2D1BlockCode.h"
-
-#define Time uint64_t
 
 //typedef landmark_address vector<int>;
 
@@ -86,7 +84,7 @@ class Landmarks {
 class LandmarkBeaconEvent : public BlockEvent {
  public:
 
- LandmarkBeaconEvent(uint64_t t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
+ LandmarkBeaconEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
     eventType = LANDMARK_BEACON_EVENT;
     randomNumber = conBlock->getNextRandomNumber();
   }

@@ -23,8 +23,8 @@ private:
 	float x0; // time offset
 	uint round;
 	
-	vector<pair<uint64_t,uint64_t> > syncPoints;
-	vector<uint64_t> error;
+	vector<pair<Time,Time> > syncPoints;
+	vector<Time> error;
        	ranlux48 generator; 
 	uniform_int_distribution<> dis;
         
@@ -37,19 +37,19 @@ public:
 	void startup();
 	void init();
 	void processLocalEvent(EventPtr pev);
-	Color getColor(uint64_t time);
+	Color getColor(Time time);
 
 	// Synchronized clock
-	uint64_t getTime(); // estimated global time
-	uint64_t getTime(uint64_t localTime); //estimated global time at local time t
+	Time getTime(); // estimated global time
+	Time getTime(Time localTime); //estimated global time at local time t
 
 	// Internal hardware clock
-	uint64_t getLocalTime(bool msResolution);
-	uint64_t getLocalTime(uint64_t simTime, bool msResolution);
-	uint64_t getSimTime(uint64_t localTime);
+	Time getLocalTime(bool msResolution);
+	Time getLocalTime(Time simTime, bool msResolution);
+	Time getSimTime(Time localTime);
 
 	void synchronize(P2PNetworkInterface *exception, 
-			 uint64_t estimatedGlobalTime,
+			 Time estimatedGlobalTime,
 			 uint hop);
 	void adjust();
 

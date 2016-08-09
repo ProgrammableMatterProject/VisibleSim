@@ -30,12 +30,12 @@ QClock::QClock(double mean[], double sd[], unsigned int seed): Clock() {
   x0 = BaseSimulator::getScheduler()->now();
 }
 
-uint64_t QClock::getTime(uint64_t simTime) {
-  uint64_t localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0;
+Time QClock::getTime(Time simTime) {
+  Time localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0;
   return localTime;
 }
 
-uint64_t QClock::getSimulationTime(uint64_t localTime) {
+Time QClock::getSimulationTime(Time localTime) {
   double simTime = 0;
   double delta =  pow(y0,2) - 4 * (1.0/2.0)*d * (x0-(double)localTime);
   if (delta > 0) {
@@ -56,7 +56,7 @@ uint64_t QClock::getSimulationTime(uint64_t localTime) {
   
   simTime = max(0.0,simTime);
   simTime = min(numeric_limits<double>::max(),simTime);
-  return (uint64_t) simTime;
+  return (Time) simTime;
 }
 
 //==============================================================================
@@ -81,7 +81,7 @@ GNoiseQClock::~GNoiseQClock () {
   delete noise;
 }
 
-uint64_t GNoiseQClock::getTime(uint64_t simTime) {
+Time GNoiseQClock::getTime(Time simTime) {
   double localTime = 0;
   double noise_SimTime = 0;
   
@@ -109,12 +109,12 @@ uint64_t GNoiseQClock::getTime(uint64_t simTime) {
   localTime = max(minL,localTime);
   localTime = min(maxL,localTime);
 
-  insertReferencePoint((uint64_t)localTime,simTime,it);
+  insertReferencePoint((Time)localTime,simTime,it);
 
-  return (uint64_t)localTime;
+  return (Time)localTime;
 }
 
-uint64_t GNoiseQClock::getSimulationTime(uint64_t localTime) {
+Time GNoiseQClock::getSimulationTime(Time localTime) {
   double noise_LocalTime = 0;
   double simTime = 0;
     
@@ -160,12 +160,12 @@ uint64_t GNoiseQClock::getSimulationTime(uint64_t localTime) {
   simTime = max(minL,simTime);
   simTime = min(maxL,simTime);
 
-  insertReferencePoint(localTime,(uint64_t)simTime,it);
+  insertReferencePoint(localTime,(Time)simTime,it);
 
-  return (uint64_t) simTime;
+  return (Time) simTime;
 }
 
-void GNoiseQClock::insertReferencePoint(uint64_t local, uint64_t simulation,
+void GNoiseQClock::insertReferencePoint(Time local, Time simulation,
 					list<ReferencePoint>::iterator pos) {
  ReferencePoint p = ReferencePoint(local,simulation); 
   if (pos == referencePoints.end()) {
@@ -176,7 +176,7 @@ void GNoiseQClock::insertReferencePoint(uint64_t local, uint64_t simulation,
 }
 
 void GNoiseQClock::cleanReferencePoints() {
-  uint64_t simTime = getScheduler()->now();
+  Time simTime = getScheduler()->now();
   
   for (list<ReferencePoint>::iterator it = referencePoints.begin();
        it != referencePoints.end(); it++) {
@@ -215,7 +215,7 @@ void DNoiseQClock::loadNoiseData(vector<string> &noiseData) {
   DClockNoise::loadData(noiseData);
 }
 
-uint64_t DNoiseQClock::getTime(uint64_t simTime) {
+Time DNoiseQClock::getTime(Time simTime) {
   double noise_SimTime = noise->getNoise(simTime);
   double localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0 + noise_SimTime;
   localTime = max(0.0,localTime);
@@ -223,15 +223,15 @@ uint64_t DNoiseQClock::getTime(uint64_t simTime) {
   cout << "----------" << endl;
   cout << "DNoiseQClock: simTime = " << simTime << endl;
   cout << "noise = " << noise_SimTime << endl;
-  cout << "localtime = " << (uint64_t) localTime << endl;
+  cout << "localtime = " << (Time) localTime << endl;
   cout << "----------" << endl;
 #endif
   return localTime;
 }
 
-uint64_t DNoiseQClock::getSimulationTime(uint64_t localTime) {
-  uint64_t l = localTime;
-  uint64_t s = QClock::getSimulationTime(localTime);
+Time DNoiseQClock::getSimulationTime(Time localTime) {
+  Time l = localTime;
+  Time s = QClock::getSimulationTime(localTime);
 
   while (l < localTime) {
     s++;
@@ -254,7 +254,7 @@ uint64_t DNoiseQClock::getSimulationTime(uint64_t localTime) {
 #define XMEGA_RTC_OSC1K_CRC_NB_NOISE 6
 #define XMEGA_RTC_OSC1K_CRC_NOISE_PATH "../../simulatorCore/clockNoise/XMEGA_RTC_OSC1K_CRC/"
 
-DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(uint64_t seed) {
+DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(Time seed) {
   static bool noiseDataLoaded = false;
   if (!noiseDataLoaded) {
     vector<string> files;

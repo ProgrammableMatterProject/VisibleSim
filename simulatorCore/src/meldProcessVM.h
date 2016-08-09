@@ -46,7 +46,7 @@ protected:
 	static string programPath;
 	static bool debugging;
 	
-	uint64_t currentLocalDate; // fastest mode
+	Time currentLocalDate; // fastest mode
 	bool hasWork; // fastest mode
 	bool polling; // fastest mode
 	
@@ -89,7 +89,7 @@ public:
 	void handleDeterministicMode(VMCommand &command);
    	void handleCommand(VMCommand &command);
    	
-   	void setCurrentLocalDate(uint64_t t) {currentLocalDate = t;}
+   	void setCurrentLocalDate(Time t) {currentLocalDate = t;}
    	void setPolling(bool b) {polling = b; }
    	
 	inline static bool isInDebuggingMode() { return debugging; };
@@ -99,7 +99,7 @@ public:
 	static void checkForReceivedCommands();
 	static void waitForOneCommand();
 	
-	static bool dateHasBeenReachedByAll(uint64_t date);
+	static bool dateHasBeenReachedByAll(Time date);
 	static bool equilibrium();
 	static int broadcastDebugCommand(DebbuggerVMCommand &c);
 	static int sendCommand(int id, VMCommand &c);
@@ -121,7 +121,7 @@ public:
 
 	//int broadcastDebugCommand(DebbuggerVMCommand &c);
 	//int sendCommand(int id, VMCommand &c);
-	//bool dateHasBeenReachedByAll(uint64_t date);
+	//bool dateHasBeenReachedByAll(Time date);
 	//bool equilibrium();
 	//void killAllVMs();
 	//void closeAllSockets();

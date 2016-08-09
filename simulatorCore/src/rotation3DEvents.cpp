@@ -21,7 +21,7 @@ const int COM_DELAY=2000;
 //
 //===========================================================================================================
 
-Rotation3DStartEvent::Rotation3DStartEvent(uint64_t t, Catoms3DBlock *block,const Rotations3D &r): BlockEvent(t,block) {
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *block,const Rotations3D &r): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_START;
     rot = r;
@@ -55,7 +55,7 @@ const string Rotation3DStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation3DStepEvent::Rotation3DStepEvent(uint64_t t, Catoms3DBlock *block,const Rotations3D &r): BlockEvent(t,block) {
+Rotation3DStepEvent::Rotation3DStepEvent(Time t, Catoms3DBlock *block,const Rotations3D &r): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_STEP;
 
@@ -96,7 +96,7 @@ const string Rotation3DStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation3DStopEvent::Rotation3DStopEvent(uint64_t t, Catoms3DBlock *block,const Rotations3D& r): BlockEvent(t,block) {
+Rotation3DStopEvent::Rotation3DStopEvent(Time t, Catoms3DBlock *block,const Rotations3D& r): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_STOP;
     rot = r;
@@ -142,7 +142,7 @@ const string Rotation3DStopEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation3DEndEvent::Rotation3DEndEvent(uint64_t t, Catoms3DBlock *block): BlockEvent(t,block) {
+Rotation3DEndEvent::Rotation3DEndEvent(Time t, Catoms3DBlock *block): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_END;
 }

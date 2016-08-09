@@ -188,7 +188,7 @@ public:
 	 * @param date : date at which the stop event must be processed
 	 * @param s : new state of the block
 	 */
-	virtual void stop(uint64_t date, State s) {};
+	virtual void stop(Time date, State s) {};
 	/**
 	 * @brief Returns the direction (defined in lattice.h) corresponding to the interface p2p
 	 * @param p2p interface to consider
@@ -218,7 +218,7 @@ public:
 	 * @param date : date of the tap event
 	 * @param face : id of the tapped face
 	 */   	
-	void tap(uint64_t date, int face);
+	void tap(Time date, int face);
 	/**
 	 * @brief Set the internal clock to the clock in parameter
 	 * @param c clock which the internal clock will be set
@@ -228,18 +228,18 @@ public:
 	 * @brief Returns the current local time of the block according to its internal clock
 	 * @return current local time of the block according to its internal clock
 	 */   	
-	uint64_t getLocalTime();
+	Time getLocalTime();
 	/**
 	 * @brief Returns the local time of the block according to its internal clock
 	 * @para simTime simulation time for which this function returns the block clock local time
 	 * @return local time of the block according to its internal clock
 	 */ 
-	uint64_t getLocalTime(uint64_t simTime);
+	Time getLocalTime(Time simTime);
 	/**
 	 * @brief Converts the block's local time into the global time of the simulation and returns it
 	 * @return global time corresponding to the local time in parameter
 	 */   	
-	uint64_t getSimulationTime(uint64_t localTime);
+	Time getSimulationTime(Time localTime);
 
 	/*************************************************
 	 *            MeldInterpreter Functions  

@@ -42,8 +42,8 @@ public:
 	}
 		
 	// stop for good
-	void stop(uint64_t date);	
-	void pause(uint64_t date);
+	void stop(Time date);	
+	void pause(Time date);
 	void unPause();
 		
 	// NOT TESTED

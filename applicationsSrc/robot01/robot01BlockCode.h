@@ -82,7 +82,7 @@ public:
 	void sendAckMap(P2PNetworkInterface *p2p);
 	void sendLinkTrainMessages(P2PNetworkInterface *sender);
 	void getLocalTargetGrid(const PointRel3D &pos,PresenceMatrix &pm);
-	void sendAnswerDelayOrMotionDelayMessage(uint64_t gt);
+	void sendAnswerDelayOrMotionDelayMessage(Time gt);
 	void sendUnlockMessage(int id);
 	void calcPossibleMotions(const PointRel3D &np);
 	void sendReLinkTrainMessage();
@@ -137,17 +137,17 @@ public :
 
 class MotionDelayMessage : public Message {
 public :
-    uint64_t globalTime;
+    Time globalTime;
     bool unlockMode;
-    MotionDelayMessage(uint64_t time,bool unlock=false);
+    MotionDelayMessage(Time time,bool unlock=false);
 	~MotionDelayMessage();
 };
 
 class AnswerDelayMessage : public Message {
 public :
-    uint64_t globalRDVTime;
+    Time globalRDVTime;
     bool block2unlock;
-    AnswerDelayMessage(uint64_t time,bool b2ul);
+    AnswerDelayMessage(Time time,bool b2ul);
 	~AnswerDelayMessage();
 };
 

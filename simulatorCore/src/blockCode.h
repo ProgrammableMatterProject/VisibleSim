@@ -38,7 +38,7 @@ private:
     int sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt, int nexcept, va_list args);
 public:
     BuildingBlock *hostBlock; 	//!< The block to which this instance of the user program belongs 
-    uint64_t availabilityDate = 0; //!< If the host is busy, the date at which it will be available
+    Time availabilityDate = 0; //!< If the host is busy, the date at which it will be available
     std::multimap<int,eventFunc> eventFuncMap; //!< container of function pointers to message handlers, indexed by message typeID
     Scheduler *scheduler; //!< pointer to the single instance of scheduler of the simulation
     Lattice *lattice;  //!< pointer to the single instance of lattice of the simulation
