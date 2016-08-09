@@ -50,10 +50,16 @@ bool Scheduler::schedule(Event *ev) {
 
 	EventPtr pev(ev);
 
+	static bool possibleOverflow = false;
+	static bool tooLate = false;
 	/*info << "Schedule a " << pev->getEventName() << " (" << ev->id << ")";
 	trace(info.str());*/
 
 	if (pev->date < Scheduler::currentDate) {
+	        if (!possibleOverflow) {
+	            cerr << "WARNING: Attempt to schedule an event in the past (possible overflow detected?)!" << endl;
+	            possibleOverflow = true;
+	        }
 		OUTPUT << "ERROR : An event cannot be scheduled in the past !\n";
 		OUTPUT << "current time : " << Scheduler::currentDate << endl;
 		OUTPUT << "ev->eventDate : " << pev->date << endl;
@@ -62,6 +68,10 @@ bool Scheduler::schedule(Event *ev) {
 	}
 
 	if (pev->date > maximumDate) {
+	        if (!tooLate) {
+	            cerr << "WARNING: Maximum simulation date reached!" << endl;
+	            tooLate = true;
+	        }
 		OUTPUT << "WARNING : An event should not be scheduled beyond the end of simulation date !\n";
 		OUTPUT << "pev->date : " << pev->date << endl;
 		OUTPUT << "maximumDate : " << maximumDate << endl;
