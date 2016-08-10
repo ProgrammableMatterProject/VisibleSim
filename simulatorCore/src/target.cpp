@@ -168,11 +168,17 @@ void TargetGrid::print(ostream& where) const {
 
 
 bool TargetCSG::isInTarget(const Cell3DPosition &pos) {
-    throw utils::NotImplementedException();
+    Color color;
+    return csgRoot->isInside(pos, color);
 }
 
 const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
-    throw utils::NotImplementedException();
+    Color color;
+    if (csgRoot->isInside(pos, color)) {
+        cerr << "error: attempting to get color of undefined target cell" << endl;
+        throw InvalidPositionException();
+    }
+    return color;
 }
 
 } // namespace BaseSimulator

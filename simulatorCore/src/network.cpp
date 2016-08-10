@@ -11,6 +11,7 @@
 #include "scheduler.h"
 #include "network.h"
 #include "trace.h"
+#include "statsIndividual.h"
 
 using namespace std;
 using namespace BaseSimulator;
@@ -95,6 +96,7 @@ bool P2PNetworkInterface::addToOutgoingBuffer(MessagePtr msg) {
 
 	if (connectedInterface != NULL) {
 		outgoingQueue.push_back(msg);
+		BaseSimulator::utils::StatsIndividual::incOutgoingMessageQueueSize(hostBlock->stats);
 		if (availabilityDate < BaseSimulator::getScheduler()->now()) availabilityDate = BaseSimulator::getScheduler()->now();
 		if (outgoingQueue.size() == 1 && messageBeingTransmitted == NULL) { //TODO
 			BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStartTransmittingEvent(availabilityDate,this));
@@ -129,6 +131,8 @@ void P2PNetworkInterface::send() {
 	msg = outgoingQueue.front();
 	outgoingQueue.pop_front();
 
+	BaseSimulator::utils::StatsIndividual::decOutgoingMessageQueueSize(hostBlock->stats);
+	
 	rate = dataRate - dataRateVariability + ((double)generator()/(double)generator.max()) * 2 * dataRateVariability;
 	transmissionDuration = (msg->size()*8000000ULL)/rate;
 	messageBeingTransmitted = msg;
@@ -142,6 +146,7 @@ void P2PNetworkInterface::send() {
 	BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStopTransmittingEvent(BaseSimulator::getScheduler()->now()+transmissionDuration, this));
 	
 	StatsCollector::getInstance().incMsgCount();
+	StatsIndividual::incSentMessageCount(hostBlock->stats);
 }
 
 void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {

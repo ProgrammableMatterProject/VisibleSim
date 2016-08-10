@@ -182,6 +182,7 @@ void TranslationEndEvent::consume() {
     BuildingBlock *bb = concernedBlock;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new TranslationEndEvent(date + COM_DELAY,bb)));
     StatsCollector::getInstance().incMotionCount();
+    StatsIndividual::incMotionCount(bb->stats);
 }
 
 const string TranslationEndEvent::getEventName() {

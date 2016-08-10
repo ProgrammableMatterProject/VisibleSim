@@ -13,8 +13,6 @@
 
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
-
-#include "rotation3DEvents.h"
 #include "catoms3DBlock.h"
 #include "scheduler.h"
 #include "events.h"
@@ -22,6 +20,7 @@
 #include "stoyUtils.h"
 #include "meshUtils.h"
 #include "bitmapUtils.h"
+#include "target.h"
 
 class CSG_message;
 class Distance_message;
@@ -32,14 +31,6 @@ typedef std::shared_ptr<Distance_message> Distance_message_ptr;
 class CsgCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
     /* Debug Info */
-    static int difference_bitmap;
-    static int difference_mesh;
-    static int difference_stoy;
-    static int total_csg;
-    static double bitmap_time_elapsed;
-    static double csg_time_elapsed;
-    static double stoy_time_elapsed;
-    static double mesh_time_elapsed;
     static int side_size;
     static bool bitmap[27000];
 
@@ -52,6 +43,7 @@ public:
     StoyUtils stoyUtils;
     MeshUtils meshUtils;
     BitmapUtils bitmapUtils;
+    static CSGNode *csgRoot;
 
 	CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~CsgCatoms3DBlockCode();
@@ -68,9 +60,9 @@ public:
     void calcStoy();
     void calcMesh();
     void methodsDifference();
-    void generateBitmap();
+    void generateBitmap(int side_size);
 
-	static Catoms3D::Catoms3DBlockCode *buildNewBlockCode(Catoms3D::Catoms3DBlock *host);
+	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
 };
 
@@ -96,6 +88,21 @@ public :
 	vector<Brick> getBricks() { return bricks; };
 	string getBitmap() { return bitmap; };
 	Vector3D getPosition() { return position; };
+};
+
+class CsgCatoms3DStats {
+
+public:
+
+    /* time info */
+    static int difference_bitmap;
+    static int difference_mesh;
+    static int difference_stoy;
+    static int total_csg;
+    static double bitmap_time_elapsed;
+    static double csg_time_elapsed;
+    static double stoy_time_elapsed;
+    static double mesh_time_elapsed;
 };
 
 

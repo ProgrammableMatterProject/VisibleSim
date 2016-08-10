@@ -160,6 +160,7 @@ void Rotation3DEndEvent::consume() {
     Catoms3DBlock *rb = (Catoms3DBlock*)concernedBlock;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation3DEndEvent(date+COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
+    StatsIndividual::incMotionCount(rb->stats);
 }
 
 const string Rotation3DEndEvent::getEventName() {

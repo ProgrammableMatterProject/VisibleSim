@@ -11,6 +11,7 @@
 #include "events.h"
 #include "scheduler.h"
 #include "blockCode.h"
+#include "statsIndividual.h"
 
 int Event::nextId = 0;
 unsigned int Event::nbLivingEvents = 0;
@@ -201,7 +202,10 @@ void NetworkInterfaceStopTransmittingEvent::consume() {
 	if (!interface->connectedInterface) {
 	  ERRPUT << "Warning: connection loss, untransmitted message!" << endl;
 	} else {
-	  interface->connectedInterface->hostBlock->scheduleLocalEvent(EventPtr(new NetworkInterfaceReceiveEvent(BaseSimulator::getScheduler()->now(), interface->connectedInterface, interface->messageBeingTransmitted)));
+	  BaseSimulator::BuildingBlock *receivingBlock = interface->connectedInterface->hostBlock;
+	  receivingBlock->scheduleLocalEvent(EventPtr(new NetworkInterfaceReceiveEvent(BaseSimulator::getScheduler()->now(), interface->connectedInterface, interface->messageBeingTransmitted)));
+	  BaseSimulator::utils::StatsIndividual::incReceivedMessageCount(receivingBlock->stats);
+	  BaseSimulator::utils::StatsIndividual::incIncommingMessageQueueSize(receivingBlock->stats);
 	}
 	
 	interface->messageBeingTransmitted.reset();

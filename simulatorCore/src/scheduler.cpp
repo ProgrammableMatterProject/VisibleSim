@@ -8,11 +8,13 @@
 #include <cstdint>
 #include <iostream>
 #include <stdlib.h>
+
 #include "openglViewer.h"
 #include "assert.h"
 #include "scheduler.h"
 #include "trace.h"
 #include "stdint.h"
+#include "statsIndividual.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -199,6 +201,9 @@ bool Scheduler::debug(const string &command,bID &id,string &result) {
 
 void Scheduler::printStats() {
   cout << StatsCollector::getInstance();
+  if (StatsIndividual::enable) {
+    cout << StatsIndividual::getStats();
+  }
 }
 
 
