@@ -37,3 +37,8 @@ clean:
 	@for dir in $(SUBDIRS); do \
 	$(MAKE) -C $$dir APPDIR=../../applicationsBin/$$dir clean; \
 	done
+
+realclean:
+	@for dir in $(SUBDIRS); do \
+	rm -f ../../applicationsBin/$$dir/simulation.log; \
+	done

@@ -92,3 +92,6 @@ clean:
 	@for dir in $(SUBDIRS); do \
 	$(MAKE) -C $$dir APPDIR=../../applicationsBin clean; \
 	done
+
+realclean: clean
+	$(MAKE) -C applicationsSrc APPDIR=../../applicationsBin realclean; \
