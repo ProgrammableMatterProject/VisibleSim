@@ -82,7 +82,7 @@ $(SUBDIRS):
 #	$(MAKE) -C $$dir; \
 #	done
 
-test: 
+test: subdirs
 	@$(MAKE) -C applicationsSrc test;
 
 doc: 	
