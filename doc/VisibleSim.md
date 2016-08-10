@@ -78,7 +78,11 @@ Alternatively, the user can call `make` directly from the block code directory, 
 All the block code Makefiles are identical, except for the following variables that have to be set by the user: `SRCS`, `OUT`, `MODULELIB`. A custom `make test` procedure can also be specified, more on this [in the dedicated section](#autotest).
 
 ### VisibleSim Execution Workflow
-TODO
+This section explains aims at detailing the lifecycle of a VisibleSim simulation, for users and contributors to better understand the process.
+
+1. __Entry Point__: `main` function of the BlockCode. 
+2. __Scheduler Run__: Running GlutMainLoop until scheduler end. (`waitForSchedulerEnd()`)
+2. __End of Simulation__: Call to `deleteSimulator()` from the main;
 
 ## Doxygen Documentation
 The source code and API are documented using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
@@ -128,6 +132,7 @@ VisibleSim options:
 	 -m <VMpath>:<VMport>	path to the MeldVM directory and port
 	 -k {"BB", "RB", "SB", "C2D", "C3D"} module type for meld execution
 	 -g 		Enable regression testing
+	 -l 		Enable printing of log information to file simulation.log
 	 -h 	    help
 ```
 
@@ -165,6 +170,12 @@ Only used when running a program in `Meld Process` mode, to specify the location
 This option is only available if running the `applicationsBin/meld/meld` executable (generic `meld` executable for modular robots), and is used for specifying the target block family.
 ##### Regression Testing Export (`-g`)
 This option triggers the export of the current configuration at the end of the simulation to an XML file named `./confCheck.xml`. This is especially useful for regression testing of the block codes, which is detailed in its own section.
+##### Log File Output (`-l`)
+Enables the printing of any log information to file `simulation.log`, by using this code snippet:
+```C++
+	OUTPUT << args;
+```
+If `-l` option is not found, nothing will be printed to the file.
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
@@ -179,13 +190,14 @@ There is a single application directory for all Meld applications (`applications
 1. __WRITING__: Create a new `.meld` file in `applicationsBin/meld/programs`
 	- Please refer to [this document](https://github.com/flavioc/meld/blob/dev/docs/manual.pdf) for instructions on writing Meld programs.
 	- In order to reference interfaces from a certain module family,  the instruction `include #include/<module>.meld` can be used to include one of the provided Meld include files.
-2.  __COMPILING__: Compile `programs/<prog>.meld` into `outprogs/<prog>.bb` using `./compile-meld.sh programs/<prog>.meld`.
+2.  __COMPILING__: Compile `programs/<prog>.meld` into `outprogs/<prog>.bb`. 
+	- Use  `./compile-meld.sh programs/<prog>.meld`.
 3. __RUNNING__: Because there is also a single executable for all modular robots types, you have to provide two additional command line arguments to VisibleSim when running a Meld program:
 	- `-p outprogs/<prog>.bb`: Specifies the Meld program to run.
 	- `-k <module>`: Specifies the target modular robot type.
 		-  _Possible Values: {BB, RB, SB, C2D, C3D}_
 
-__N.B.:__ This only applies to __Modular Robots__, since _MultiRobots_ also support Meld, but have to be used from a separate directory due to it not strictly being a modular robotic systems.
+__N.B.:__ These instructions only apply to __Modular Robots__, since _MultiRobots_ also support Meld, but have to be used from a separate directory due to them not strictly being a modular robotic systems.
 
 ### VisibleSim Predicates
 There are a number of action predicates that can be derived in Meld to perform changes in the simulated world, these are the ones currently supported and how to use them:
@@ -206,7 +218,7 @@ Furthermore, the following persistent predicates can also be used to each module
 - `!vacant(Node N, Int f)`:  Means that interface `f` is no connected to any module.
 	- If there is no `neighbor` tuple in a module's database for its face `f`, then there is a `vacant` tuple instead.
 - `!neighborCount(Node N, Int C)`: Indicates the number of neighbours (_i.e._ number of connected interfaces) of a module. 
-	- Constraint: `0 <= neighborCount <= NB_INTERFACES`.
+	- _Constraint:_ `0 <= neighborCount <= NB_INTERFACES`.
 
 ## User Interactions
 When running VisibleSim in graphical mode (enabled by default), the user is given a number of ways to interact with the simulated world to perform various actions, as can be seen on the screenshot below.
@@ -349,7 +361,7 @@ There are two types of children elements that can be used to describe the ensemb
 Attributes: 
 
 - `color="r,g,b"`: The default color of the modules. If unspecified, set to dark grey.
-- `ids"`: Please refer to [Module Identifiers Assignment Schemes](#ids) below.
+- `ids`: Please refer to [Module Identifiers Assignment Schemes](#ids) below.
 
 ##### <a name="ids"></a>Module Identifiers Assignment Schemes
 In VisibleSim, every module is given a unique numerical identifier (from `1` to `2^63`), to which we will refer as `blockID`, or simply `ID`. They are variables that can be used in algorithms, and if they are always identical, it can introduce determinism, hence we provide the user with several methods for assigning each module with an `ID`. 

@@ -107,7 +107,7 @@ public:
 	 * @param destBlockId : id of the block connected to the interface we are looking for
 	 * @return a pointer to the interface connected to the requested block, or NULL
 	 */
-	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int destBlockId);
+	P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(bID destBlockId);
 	/**
 	 * @brief Creates a new interface to this block and connects it to destBlock
 	 * @param destBlock : pointer to the building block to connect to the newly created interface

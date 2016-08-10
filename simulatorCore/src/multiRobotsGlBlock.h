@@ -21,8 +21,6 @@ public :
 	MultiRobotsGlBlock(bID id) : GlBlock(id) {};
 	virtual ~MultiRobotsGlBlock() {};
 
-	virtual string getInfo();
-
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
 	void glDrawId(ObjLoader::ObjLoader *ptrObj,int &n);
 	void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n);

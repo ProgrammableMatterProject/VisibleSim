@@ -1,5 +1,7 @@
 #include "glBlock.h"
 
+#include <sstream>
+
 GlBlock::GlBlock(bID id):blockId(id) {
 	position[0] = 0.0;
 	position[1] = 0.0;
@@ -55,15 +57,19 @@ void GlBlock::toggleHighlight() {
 }
 
 string GlBlock::getInfo() {
-	char tmp[1024];
-	sprintf(tmp,"%llu\nPos=(%.1f,%.1f,%.1f) Col=(%4.1f,%4.1f,%4.1f)",blockId,position[0],position[1],position[2],color[0],color[1],color[2]);
+    ostringstream out;
+	out << blockId << "\n";
+	out << fixed;
+	out.precision(1);
+	out << "Pos=(" << position[0] << "," << position[1] << "," << position[2] << ") ";
+	out << "Col=(" << (int)(color[0] * 255) << "," << (int)(color[1] * 255) << "," << (int)(color[2] * 255) << ")";
 
-	return string(tmp);
+	return out.str();
 }
 
 string GlBlock::getPopupInfo() {
-	char tmp[1024];
-	sprintf(tmp,"#%llu",blockId);
+    ostringstream out;
+	out << blockId << "\n";
 
-	return string(tmp);
+	return out.str();
 }

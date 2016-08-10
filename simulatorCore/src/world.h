@@ -60,7 +60,7 @@ protected:
      *   Simulation Attributes
      ************************************************************/    
 
-    int maxBlockId = 0; //!< The block id of the block with the highest id in the world
+    bID maxBlockId = 0; //!< The block id of the block with the highest id in the world
     // vector<ScenarioEvent&> tabEvents;
     
     /**

@@ -47,12 +47,4 @@ void Catoms3DGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glPopMatrix();
 }
 
-
-string Catoms3DGlBlock::getInfo() {
-    char tmp[1024];
-	sprintf(tmp,"%llu\nPos=(%.1f,%.1f,%.1f) Col=(%4.1f,%4.1f,%4.1f)",blockId,position[0],position[1],position[2],color[0],color[1],color[2]);
-
-	return string(tmp);
-}
-
 }

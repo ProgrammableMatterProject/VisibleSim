@@ -17,7 +17,6 @@ protected :
 public :
 	BlinkyBlocksGlBlock(bID id);
 	virtual ~BlinkyBlocksGlBlock();
-	virtual string getInfo();
 
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
 	void glDrawId(ObjLoader::ObjLoader *ptrObj,int &n);

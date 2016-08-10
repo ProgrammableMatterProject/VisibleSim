@@ -18,7 +18,6 @@ protected :
 public :
 	RobotBlocksGlBlock(bID id);
 	virtual ~RobotBlocksGlBlock();
-	virtual string getInfo();
 
 	virtual void setPrevNext(int p,int n);
 

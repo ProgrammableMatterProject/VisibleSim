@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="30,1,30">
+    <blockList blockSize="1,5,1">
+        <block position="3,0,0" color="255,0,0" angle="0" />
+        <block position="4,0,0" color="127.5,127.5,127.5" angle="0" />
+        <block position="5,0,0" color="127.5,127.5,127.5" angle="0" />
+        <block position="6,0,0" color="127.5,127.5,127.5" angle="0" />
+        <block position="7,0,0" color="127.5,127.5,127.5" angle="0" />
+        <block position="8,0,0" color="127.5,127.5,127.5" angle="0" />
+        <block position="4,0,1" color="255,0,0" angle="0" />
+        <block position="5,0,1" color="127.5,127.5,127.5" angle="0" />
+        <block position="7,0,1" color="255,0,0" angle="-60" />
+        <block position="9,0,0" color="255,0,0" angle="-120" />
+    </blockList>
+</world>

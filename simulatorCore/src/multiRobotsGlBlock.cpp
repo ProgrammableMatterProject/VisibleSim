@@ -43,9 +43,4 @@ void MultiRobotsGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n)
 	glPopMatrix();
 }
 
-
-string MultiRobotsGlBlock::getInfo() {
-	return GlBlock::getInfo();
-}
-
 }

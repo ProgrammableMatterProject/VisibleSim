@@ -48,6 +48,7 @@ static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,
                                          {0.980392157,0.843137255,0.0,1.0},
                                          {0.094117647,0.545098039,0.094117647,1.0}};
 
-const Color Colors[9] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK};
+#define NB_COLORS 9
+const Color Colors[NB_COLORS] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, WHITE, MAGENTA, PINK};
 
 #endif // COLOR_H_

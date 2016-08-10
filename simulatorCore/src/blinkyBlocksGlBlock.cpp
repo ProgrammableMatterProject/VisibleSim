@@ -41,9 +41,4 @@ void BlinkyBlocksGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n
 	glPopMatrix();
 }
 
-
-string BlinkyBlocksGlBlock::getInfo() {
-	return GlBlock::getInfo();
-}
-
 }
