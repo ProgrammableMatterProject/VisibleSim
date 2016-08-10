@@ -13,8 +13,8 @@ void StoyUtils::readFile(string path_to_file) {
     stoyFile.close();
 }
 
-bool StoyUtils::isInside(Vector3D catomPosition) {
-    for (int i = 0; i < bricks.size(); i++) {
+bool StoyUtils::isInside(Cell3DPosition catomPosition) {
+    for (unsigned int i = 0; i < bricks.size(); i++) {
         if (bricks[i].p1.pt[0] <= catomPosition.pt[0] &&
             bricks[i].p1.pt[1] <= catomPosition.pt[1] &&
             bricks[i].p1.pt[2] <= catomPosition.pt[2] &&
