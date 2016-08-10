@@ -18,6 +18,7 @@
 #include "blockCode.h"
 #include "clock.h"
 #include "cell3DPosition.h"
+#include "statsIndividual.h"
 
 class Event;
 typedef std::shared_ptr<Event> EventPtr;
@@ -70,7 +71,7 @@ public:
 	bool isMaster; //!< indicates is the block is a master block
 	GlBlock *ptrGlBlock; //!< ptr to the GL object corresponding to this block
 	BlockCodeBuilder buildNewBlockCode; //!< function ptr to the block's blockCodeBuilder
-	
+	utils::StatsIndividual *stats = NULL; //!< Module stats collected during the simulation
 	/**
 	 * @brief BuildingBlock constructor
 	 * @param bId : the block id of the block to create

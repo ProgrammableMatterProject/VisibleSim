@@ -43,7 +43,11 @@ BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
     dis = uniform_int_distribution<>(0, 50 * blockId);
     buildNewBlockCode = bcb;
 
-	for (int i = 0; i < nbInterfaces; i++) {
+    if (utils::StatsIndividual::enable) {
+      stats = new StatsIndividual();
+    }
+    
+    for (int i = 0; i < nbInterfaces; i++) {
         P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
     }
 	
@@ -64,8 +68,12 @@ BuildingBlock::~BuildingBlock() {
 
 	if (clock != NULL) {
 		delete clock;
-    }
+	}
 
+	if (stats != NULL) {
+	        delete stats;
+	}
+	
 	for (P2PNetworkInterface *p2p : P2PNetworkInterfaces)
 		delete p2p;
 }
@@ -159,6 +167,11 @@ void BuildingBlock::processLocalEvent() {
     pev = localEventsList.front();
     localEventsList.pop_front();
     blockCode->processLocalEvent(pev);
+
+    if (pev->eventType == EVENT_NI_RECEIVE ) {
+      utils::StatsIndividual::decIncommingMessageQueueSize(stats);
+    }
+    
     if (blockCode->availabilityDate < getScheduler()->now()) blockCode->availabilityDate = getScheduler()->now();
     if (localEventsList.size() > 0) {
 		getScheduler()->schedule(new ProcessLocalEvent(blockCode->availabilityDate,this));

@@ -213,6 +213,7 @@ void Rotation2DEndEvent::consume() {
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
     concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(date+COM_DELAY,rb)));
     StatsCollector::getInstance().incMotionCount();
+    StatsIndividual::incMotionCount(rb->stats);
 }
 
 const string Rotation2DEndEvent::getEventName() {

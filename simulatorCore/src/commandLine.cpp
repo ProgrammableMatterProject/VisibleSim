@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 
+#include "statsIndividual.h"
 #include "openglViewer.h"
 #include "simulator.h"
 #include "trace.h"
@@ -18,12 +19,6 @@ void CommandLine::help() {
     cerr << "\t -R \t\trun fastest mode on startup" << endl;
     cerr << "\t -x \t\tterminate simulation when scheduler ends (Graphical Mode only)" << endl;
     cerr << "\t -t \t\tterminal mode only (no graphical output)" << endl;
-    //cerr << "\t -i \t\tprint world informations (size, diameter, centers etc.)" << endl;
-    /*cerr << "\t -g <topology code> <n or d>\t\t generate a random configuration: random 2d " << 
-      TOPOLOGY_RANDOM_2D << ", random 3d " << TOPOLOGY_RANDOM_3D << ", line " << TOPOLOGY_LINE <<
-      ", grid " << TOPOLOGY_GRID << ", torus " << TOPOLOGY_TORUS <<", cube" << TOPOLOGY_CUBE << endl;
-    */
-    //cerr << "\t -s <length>\tgrid side lentgh (square or cubic grid)" << endl;
     cerr << "\t -s [<maximumDate> | inf] \tScheduler mode:\tBy default, stops when event list is empty\n"
          << "\t\t maximumDate (ms) : the scheduler will stop when even list is empty, or when the maximum date is reach\n"
          << "\t\t inf : the scheduler will have an infinite duration and can only be stopped by the user" << endl;
@@ -31,6 +26,7 @@ void CommandLine::help() {
     cerr << "\t -k {\"BB\", \"RB\", \"SB\", \"C2D\", \"C3D\"}\t module type for meld execution" << endl;
     cerr << "\t -g \t\t\tEnable regression testing (export terminal configuration)" << endl;
     cerr << "\t -l \t\t\tEnable printing of log information to file simulation.log" << endl;
+    cerr << "\t -i \t\t\tEnable printing more detailed simulation stats" << endl;
     cerr << "\t -h \t\t\thelp" << endl;
     exit(EXIT_SUCCESS);
 }
@@ -142,37 +138,9 @@ void CommandLine::read(int argc, char *argv[]) {
         case 'g' : {
             Simulator::regrTesting = true;
         } break;
-            
-            // case 'a' : {
-            // if (argc < 1) { 
-            // help();
-            // }
-            // topology = atoi(argv[1]);
-            // argc--;
-            // argv++;
-            // if (argc < 1) { 
-            // help();
-            // }
-            // topologyParameter = atoi(argv[1]);
-            // argc--;
-            // argv++;
-            // } 
-            // break;          
-            // case 'i': {
-            // stats = true;
-            // }
-            // break;
-            // // TODO: grid size
-            // case 's': {
-            // argc--;
-            // argv++;
-            // if (argc < 1) {
-            // cerr << "Provide a grid size after -s" << endl;
-            // help();
-            // }
-            // gridSize = atoi(argv[1]);
-            // } break;
-
+	case 'i' : {
+	    utils::StatsIndividual::enable = true;
+	} break;
         default:
             help();
         }
