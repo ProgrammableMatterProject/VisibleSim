@@ -61,7 +61,6 @@ void SphereCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 Distance_message_ptr recv_message = std::static_pointer_cast<Distance_message>(message);
                 if (recv_message->getDistance() < distance) {
                     if (distance != INF) {
-                        cout << "hihihi" << endl;
                         radius[distance]--;
                     }
                     distance = recv_message->getDistance();

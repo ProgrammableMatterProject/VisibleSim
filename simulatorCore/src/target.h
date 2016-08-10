@@ -38,6 +38,7 @@
 
 #include "color.h"
 #include "cell3DPosition.h"
+#include "csg.h"
 
 using namespace std;
 
@@ -141,6 +142,8 @@ public:
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
+    CSGNode *csgRoot;
+
 protected:
     //!< @copydoc Target::print
     virtual void print(ostream& where) const {};    
