@@ -75,9 +75,5 @@ void SmartBlocksGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n)
 	ptrObj->glDrawIdByMaterial(n);
 	glPopMatrix();
 }
-
-string SmartBlocksGlBlock::getInfo() {
-	return GlBlock::getInfo();
-}
-
+    
 }

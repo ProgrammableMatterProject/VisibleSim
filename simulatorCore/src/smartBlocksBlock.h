@@ -27,7 +27,7 @@ public:
     inline void setDisplayedValue(int n) { static_cast<SmartBlocksGlBlock*>(ptrGlBlock)->setDisplayedValue(n); };
     inline P2PNetworkInterface *getInterface(SLattice::Direction d) { return P2PNetworkInterfaces[d]; }
     P2PNetworkInterface *getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos);
-    P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(int id);
+    P2PNetworkInterface *getP2PNetworkInterfaceByDestBlockId(bID id);
     
     Cell3DPosition getPosition(SLattice::Direction d);
 	int getDirection( P2PNetworkInterface*);

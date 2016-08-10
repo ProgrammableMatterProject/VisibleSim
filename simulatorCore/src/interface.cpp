@@ -9,6 +9,9 @@
 #include "trace.h"
 #include "scheduler.h"
 
+#define __STDC_FORMAT_MACROS
+#include <cinttypes>
+
 #define ID_SW_BUTTON_OPEN	1001
 #define ID_SW_BUTTON_CLOSE	1002
 #define ID_SW_SLD			1003
@@ -368,7 +371,7 @@ void GlutSlidingDebugWindow::glDraw() {
 		if (input->hasFocus) {
             drawString(w-85,h-20.0,"DEBUG MODE");
             char c[6];
-            sprintf(c,"%llu",debugId);
+            sprintf(c,"%" PRIu64,debugId);
             drawString(w/2-45,h-20.0,c);
 		}
 

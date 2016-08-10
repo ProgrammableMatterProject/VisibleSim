@@ -69,7 +69,7 @@ Cell3DPosition SmartBlocksBlock::getPosition(SLattice::Direction d) {
     return p;
 }
 
-P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(int id) {
+P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(bID id) {
     int i=0;
     while (i<4 && (P2PNetworkInterfaces[i]->connectedInterface == NULL
                    || P2PNetworkInterfaces[i]->connectedInterface->hostBlock->blockId != id)) {

@@ -19,7 +19,7 @@ protected :
 public :
 	SmartBlocksGlBlock(bID id);
 	virtual ~SmartBlocksGlBlock();
-	virtual string getInfo();
+
 	/*	virtual string getPopupInfo();*/
 	void setDisplayedValue(int n) { displayedValue=n; }
 	void glDraw(ObjLoader::ObjLoader *ptrObj);

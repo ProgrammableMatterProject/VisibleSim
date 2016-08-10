@@ -21,7 +21,6 @@ public :
 
 	Catoms3DGlBlock(bID id);
 	virtual ~Catoms3DGlBlock();
-	virtual string getInfo();
 
 	//void setAngles(float t,float p,float f);
 

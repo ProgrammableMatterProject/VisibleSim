@@ -21,7 +21,6 @@ public :
 
 	Catoms2DGlBlock(bID id);
 	virtual ~Catoms2DGlBlock();
-	virtual string getInfo();
 
 	inline void setAngle(double a) {angle=a;};
 
