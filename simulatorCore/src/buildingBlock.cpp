@@ -124,7 +124,7 @@ P2PNetworkInterface *BuildingBlock::getP2PNetworkInterfaceByBlockRef(BuildingBlo
     return NULL;
 }
 
-P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(int destBlockId) {
+P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destBlockId) {
     for(P2PNetworkInterface *p2p : P2PNetworkInterfaces) {
 		if (p2p->connectedInterface) {
 			if (p2p->connectedInterface->hostBlock->blockId == destBlockId) {
