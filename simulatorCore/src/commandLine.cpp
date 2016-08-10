@@ -1,9 +1,12 @@
+
+#include "commandLine.h"
+
 #include <iostream>
 #include <cstdlib>
 
-#include "commandLine.h"
 #include "openglViewer.h"
 #include "simulator.h"
+#include "trace.h"
 
 void CommandLine::help() {
     cerr << "VisibleSim options:" << endl;
@@ -27,6 +30,7 @@ void CommandLine::help() {
     cerr << "\t -m <VMpath>:<VMport>\tpath to the MeldVM directory and port" << endl;
     cerr << "\t -k {\"BB\", \"RB\", \"SB\", \"C2D\", \"C3D\"}\t module type for meld execution" << endl;
     cerr << "\t -g \t\t\tEnable regression testing (export terminal configuration)" << endl;
+    cerr << "\t -l \t\t\tEnable printing of log information to file simulation.log" << endl;
     cerr << "\t -h \t\t\thelp" << endl;
     exit(EXIT_SUCCESS);
 }
@@ -35,10 +39,10 @@ CommandLine::CommandLine(int argc, char *argv[]) {
 	read(argc,argv);
 }
 
-void CommandLine::read(int argc, char *argv[]) {
+void CommandLine::read(int argc, char *argv[]) {    
     /* Reading the command line */
     argv++;
-    argc--;
+    argc--;    
     while ( (argc > 0) && (argv[0][0] == '-')) {
         switch(argv[0][1]) {
         case 'p':   {
@@ -131,6 +135,9 @@ void CommandLine::read(int argc, char *argv[]) {
             // Already handled by meld blockCode, nothing to do
             argc--;
             argv++;
+        } break;
+        case 'l' : {
+            log_file.open("simulation.log");
         } break;
         case 'g' : {
             Simulator::regrTesting = true;
