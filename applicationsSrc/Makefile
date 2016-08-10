@@ -27,11 +27,12 @@ $(SUBDIRS):
 #	$(MAKE) -C $$dir autoinstall APPDIR=../../applicationsBin/$$dir; \
 #	done
 
-test:	subdirs
+test:	
 	@echo "\nBlockCodes Regression Testing:"
 	@for dir in $(SUBDIRS); do \
 		$(MAKE) -C $$dir test;\
 	done
+
 clean:
 	rm -f *~ *.o
 	@for dir in $(SUBDIRS); do \
