@@ -685,7 +685,7 @@ public:
     void setColor(Color color);
     void setLED(byte r, byte g, byte b, byte intensity);
     inline void setColorWrapper(byte color){
-        setColor(color);
+        setColor(color % NB_COLORS);
     }
     inline void setLEDWrapper(byte r, byte g, byte b, byte intensity){
         setLED(r, g, b, intensity);
