@@ -11,10 +11,7 @@ using namespace BaseSimulator;
 //
 //==============================================================================
 
-QClock::QClock(double _d, double _y0, double _x0): Clock() {
-  d = _d;
-  y0 = _y0;
-  x0 = _x0;
+QClock::QClock(double _d, double _y0, double _x0): Clock(), d(_d), y0(_y0), x0(_x0) {
 }
 
 QClock::QClock(double mean[], double sd[], unsigned int seed): Clock() {
@@ -65,8 +62,9 @@ Time QClock::getSimulationTime(Time localTime) {
 //
 //==============================================================================
 
-GNoiseQClock::GNoiseQClock(double _d, double _y0, double _x0, double _sigma, unsigned int _seed): QClock(_d,_y0,_x0) {
-  noise = new GClockNoise(_seed,0,_sigma);
+GNoiseQClock::GNoiseQClock(double _d, double _y0, double _x0,
+                           double _sigma, unsigned int _seed): QClock(_d,_y0,_x0),
+                                                               noise(new GClockNoise(_seed,0,_sigma)) {
 }
 
 GNoiseQClock::GNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed) {
@@ -199,12 +197,13 @@ void GNoiseQClock::cleanReferencePoints() {
 //
 //==============================================================================
 
-DNoiseQClock::DNoiseQClock(double _d, double _y0, double _x0, unsigned int _seed): QClock(_d,_y0,_x0) {
-  noise = new DClockNoise(_seed);
+DNoiseQClock::DNoiseQClock(double _d, double _y0, double _x0, unsigned int _seed): QClock(_d,_y0,_x0),
+                                                                                   noise(new DClockNoise(_seed)) {
+
 }
 
-DNoiseQClock::DNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed) {
-  noise = new DClockNoise(_seed);
+DNoiseQClock::DNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed),
+                                                                            noise(new DClockNoise(_seed)) {
 }
 
 DNoiseQClock::~DNoiseQClock() {
