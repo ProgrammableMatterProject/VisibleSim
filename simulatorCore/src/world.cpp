@@ -16,7 +16,7 @@ using namespace std;
 namespace BaseSimulator {
 
 World *World::world=NULL;
-map<int, BuildingBlock*>World::buildingBlocksMap;
+map<bID, BuildingBlock*>World::buildingBlocksMap;
 vector <GlBlock*>World::tabGlBlocks;
 
 World::World(int argc, char *argv[]) {
@@ -43,7 +43,7 @@ World::World(int argc, char *argv[]) {
 
 World::~World() {
 	// free building blocks
-	std::map<int, BuildingBlock*>::iterator it;
+	std::map<bID, BuildingBlock*>::iterator it;
 	for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; ++it) {
 		delete it->second;
 	}
@@ -75,7 +75,7 @@ World::~World() {
 
 
 BuildingBlock* World::getBlockById(int bId) {
-	map<int, BuildingBlock*>::iterator it;
+	map<bID, BuildingBlock*>::iterator it;
 	it = buildingBlocksMap.find(bId);
 	if (it == buildingBlocksMap.end()) {
 		return(NULL);
@@ -190,13 +190,13 @@ void World::deleteBlock(BuildingBlock *bb) {
 }
 
 void World::stopSimulation() {
-	map<int, BuildingBlock*>::iterator it;
+	map<bID, BuildingBlock*>::iterator it;
 	for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; it++) {
 		// it->second->stop();
 	}
 }
 
-bool World::canAddBlockToFace(int numSelectedGlBlock, int numSelectedFace) {
+bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
 	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 	Cell3DPosition pos = bb->position;
 	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(pos);
@@ -241,7 +241,7 @@ void World::createHelpWindow() {
 	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
 }
 
-void World::tapBlock(Time date, int bId, int face) {
+void World::tapBlock(Time date, bID bId, int face) {
 	BuildingBlock *bb = getBlockById(bId);
 	// cerr << bb->blockId << " : " << bb->position << " : " << face << endl;
 	bb->tap(date, face < lattice->getMaxNumNeighbors() ? face : -1);

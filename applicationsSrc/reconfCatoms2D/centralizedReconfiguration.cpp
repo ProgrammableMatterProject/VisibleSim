@@ -28,7 +28,7 @@ static Coordinate getMapBottomRight() {
 	Catoms2DBlock  *c;
 	Coordinate rb(INT_MIN,INT_MAX);
 
-	map<int, BuildingBlock*>::iterator it;
+	map<bID, BuildingBlock*>::iterator it;
 	for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 		c = (Catoms2DBlock*) it->second;
 		Coordinate cc(c->position[0], c->position[2]);
@@ -501,7 +501,7 @@ static void updateState(state_t states[], int gradient[]) {
 	Catoms2DWorld *world = Catoms2DWorld::getWorld();
 	Catoms2DBlock *c;
 
-	map<int, BuildingBlock*>::iterator it;
+	map<bID, BuildingBlock*>::iterator it;
 	for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
 		c = (Catoms2DBlock*) it->second;
@@ -623,7 +623,7 @@ void centralized_reconfiguration() {
 		Catoms2DWorld *world = Catoms2DWorld::getWorld();
 		Catoms2DBlock *c;
 
-		map<int, BuildingBlock*>::iterator it;
+		map<bID, BuildingBlock*>::iterator it;
 		for (it=world->getMap().begin() ; it != world->getMap().end(); ++it) {
 
 			c = (Catoms2DBlock*) it->second;

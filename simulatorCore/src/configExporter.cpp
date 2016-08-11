@@ -150,7 +150,7 @@ void ConfigExporter::exportWorld() {
 void ConfigExporter::exportBlockList() {
     blockListElt = new TiXmlElement("blockList");
     Vector3D blockSize = world->lattice->gridScale;
-    map<int, BaseSimulator::BuildingBlock*> blocks = world->getMap();
+    map<bID, BaseSimulator::BuildingBlock*> blocks = world->getMap();
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
 
     for(auto const& idBBPair : blocks) {

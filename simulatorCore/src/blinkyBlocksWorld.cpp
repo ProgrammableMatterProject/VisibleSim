@@ -281,7 +281,7 @@ void BlinkyBlocksWorld::shakeBlock(Time date, bID id, int f) {
 void BlinkyBlocksWorld::stopBlock(Time date, bID id) {
 	if (id == 0) {
 		// Delete the block	without deleting the links
-		map<int, BaseSimulator::BuildingBlock*>::iterator it;
+		map<bID, BaseSimulator::BuildingBlock*>::iterator it;
 		for(it = buildingBlocksMap.begin();
 			it != buildingBlocksMap.end(); it++) {
 			BlinkyBlocksBlock* bb = (BlinkyBlocksBlock*) it->second;
@@ -312,7 +312,7 @@ void BlinkyBlocksWorld::exportConfiguration() {
  *
  */
 void BlinkyBlocksWorld::dump() {
-	map<int, BaseSimulator::BuildingBlock*>::iterator it;
+	map<bID, BaseSimulator::BuildingBlock*>::iterator it;
 	cout << "World:" << endl;
 	for(it = buildingBlocksMap.begin();
 		it != buildingBlocksMap.end(); it++) {

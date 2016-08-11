@@ -17,7 +17,7 @@ using namespace std;
 
 namespace BaseSimulator {
 
-int BuildingBlock::nextId = 0;
+bID BuildingBlock::nextId = 0;
 bool BuildingBlock::userConfigHasBeenParsed = false;
 
 //===========================================================================================================
