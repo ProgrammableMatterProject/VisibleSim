@@ -637,4 +637,39 @@ TODO?
 ## Block Code API
 TODO
 ## Clock
-TODO
+In VisibleSim, each `BuildingBlock` is using an independent internal clock (in its `clock` attribute), which can be configured to suit the user's needs.
+
+### Clock API
+```C++
+  /**
+   * @brief returns the local time for the simulator time in parameter.
+   * @para simTime Simulator time for which the local time is requested.
+   * @return local time for simTime
+   */ 
+  Time getTime(Time simTime);
+
+  /**
+   * @brief returns the local time for the current simulator time
+   * @return local time for current simulator time
+   */ 
+  Time getTime();
+  
+  /**
+   * @brief returns the simulator time for the local time in parameter.
+   * @para localTime Local time for which the simulator time is requested.
+   * @return simulator time for localTime
+   */
+  Time getSimulationTime(Time localTime);
+```
+
+The API for using internal clocks is only made of two fundamental operations, either convert simulator time into local time for a module using `clock->getTime(simTime)`, or perform the reverse operation with `clock->getSimulationTime(moduleTime)`. 
+
+For more convenience, a third function, `clock->getTime()` is provided as a shortcut for getting the local time for the current simulator time.
+
+### Clock Models
+
+#### Perfect Clock
+By default, the modules are initialised with a _drift-free_ clock model, which means that the global simulator time will always be equal to the local time of the modules.
+
+#### Q Clock 
+TODO. André ?
