@@ -206,7 +206,7 @@ int BuildingBlock::getNextRandomNumber() {
 }
 
 void BuildingBlock::setClock(Clock *c) {
-  if (clock == NULL) {
+  if (clock != NULL) {
     delete clock;
   }
   clock = c;
