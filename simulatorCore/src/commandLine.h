@@ -40,6 +40,9 @@ private:
 	bool fullScreen = false;
 	bool terminalOnly = false;
 	string configFile = "config.xml";
+
+	bool simulationSeedSet = false;
+	int simulationSeed = 0;
 	
 	void help();
 	void read(int argc, char *argv[]);
@@ -65,6 +68,8 @@ public:
 	int getSchedulerLength() { return schedulerLength; }
 	Time getMaximumDate() { return maximumDate; }
 	bool getSchedulerAutoStop() { return schedulerAutoStop; }
+	bool isSimulationSeedSet() { return simulationSeedSet; }
+	int getSimulationSeed() { return simulationSeed; }
 };
 
 #endif // CONFIGSTAT_H_

@@ -97,7 +97,7 @@ void RBMeldBlockCode::processLocalEvent(EventPtr pev) {
 		if(vm->isWaiting()){
 			// random delay before recomputing a predicate
 			// between 0.1 ms and 1ms
-			int delay = (bb->getNextRandomNumber() % (1000 - 100 +1 )) + 100;
+			int delay = (bb->getRandomUint() % (1000 - 100 +1 )) + 100;
 			BaseSimulator::getScheduler()->schedule(
 				new ComputePredicateEvent(BaseSimulator::getScheduler()->now()+delay, bb));
 		}

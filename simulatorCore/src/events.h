@@ -16,6 +16,7 @@
 #include "uniqueEventsId.h"
 #include "network.h"
 #include "color.h"
+#include "tDefs.h"
 
 using namespace std;
 
@@ -52,7 +53,7 @@ public:
 	int id;				//!< unique ID of the event (mainly for debugging purpose)
 	Time date;		//!< time at which the event will be processed. 0 means simulation start
 	int eventType;		//!< see the various types at the beginning of this file
-	int randomNumber;
+        ruint randomNumber;
 
 	Event(Time t);
 	Event(Event *ev);

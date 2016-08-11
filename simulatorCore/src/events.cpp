@@ -291,14 +291,14 @@ const string NetworkInterfaceEnqueueOutgoingEvent::getEventName() {
 SetColorEvent::SetColorEvent(Time t, BuildingBlock *conBlock, float r, float g, float b, float a): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_SET_COLOR;
-	randomNumber = conBlock->getNextRandomNumber();
+	randomNumber = conBlock->getRandomUint();
 	color = Color(r, g, b, a);
 }
 
 SetColorEvent::SetColorEvent(Time t, BuildingBlock *conBlock, Color &c): BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
 	eventType = EVENT_SET_COLOR;
-	randomNumber = conBlock->getNextRandomNumber();
+	randomNumber = conBlock->getRandomUint();
 	color = c;
 }
 

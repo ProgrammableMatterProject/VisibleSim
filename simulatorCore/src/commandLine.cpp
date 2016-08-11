@@ -27,6 +27,7 @@ void CommandLine::help() {
     cerr << "\t -g \t\t\tEnable regression testing (export terminal configuration)" << endl;
     cerr << "\t -l \t\t\tEnable printing of log information to file simulation.log" << endl;
     cerr << "\t -i \t\t\tEnable printing more detailed simulation stats" << endl;
+    cerr << "\t -a <seed>\t\tSet simulation seed" << endl;
     cerr << "\t -h \t\t\thelp" << endl;
     exit(EXIT_SUCCESS);
 }
@@ -65,7 +66,6 @@ void CommandLine::read(int argc, char *argv[]) {
                 help();
                 exit(EXIT_FAILURE);
             }
-            
             argc--;
             argv++;            
         } break;
@@ -140,6 +140,19 @@ void CommandLine::read(int argc, char *argv[]) {
         } break;
 	case 'i' : {
 	    utils::StatsIndividual::enable = true;
+	} break;
+	case 'a' : {
+	    string str(argv[1]);
+	    try {
+	      simulationSeed = stoi (str);
+	      simulationSeedSet = true;
+            } catch(std::invalid_argument&) {                
+                cerr << "error: Simulation seed must be an integer!" << endl;
+                help();
+                exit(EXIT_FAILURE);
+            }            
+            argc--;
+            argv++;      
 	} break;
         default:
             help();
