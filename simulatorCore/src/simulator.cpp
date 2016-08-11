@@ -319,10 +319,13 @@ void Simulator::initializeIDPool() {
 			if (attr) {
 				try {
 					string str(attr);
-					id =  stoi(str);
+					id =  stoull(str); // id in range [0, 2^64 - 1]
 				} catch (const std::invalid_argument& e) {
 					cerr << "error: invalid id attribute value in configuration file" << endl;
 					throw ParsingException();				
+				} catch (const std::out_of_range& e) {
+					cerr << "error: out of range id attribute value in configuration file" << endl;
+					throw ParsingException();			
 				}
 			} else {
 				cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
