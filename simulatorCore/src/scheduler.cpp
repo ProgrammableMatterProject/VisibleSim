@@ -22,6 +22,7 @@ using namespace BaseSimulator::utils;
 namespace BaseSimulator {
 
 Scheduler *Scheduler::scheduler=NULL;
+std::mutex Scheduler::delMutex;
 
 Scheduler::Scheduler() {
 	OUTPUT << "Scheduler constructor" << endl;

@@ -134,6 +134,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                       state = ENDED;
                       break;
                   }
+
+                  if (terminate.load()) {
+                      break;
+                  }
                 //checkForReceivedVMCommands();
             } while (!MeldInterpretVM::equilibrium() || !eventsMap.empty());
 
@@ -228,6 +232,11 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 				std::chrono::milliseconds timespan(5);
 				std::this_thread::sleep_for(timespan);
 			}
+
+            
+			if (terminate.load()) {
+				break;
+			}
         }
         break;
     default:
@@ -241,15 +250,17 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
     StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
-    // if simulation is a regression testing run, export configuration before leaving
-    if (Simulator::regrTesting) 
-        getWorld()->exportConfiguration();
+	// if simulation is a regression testing run, export configuration before leaving
+	if (Simulator::regrTesting && !terminate.load())
+		getWorld()->exportConfiguration();
+	
+	// if autoStop is enabled, terminate simulation
+	if (willAutoStop() && !terminate.load())
+		glutLeaveMainLoop();
 
-    // if autoStop is enabled, terminate simulation
-    if (willAutoStop())
-        glutLeaveMainLoop();
+	printStats();
 
-    printStats();	
+	terminate.store(true);
 	
     return(NULL);
 }

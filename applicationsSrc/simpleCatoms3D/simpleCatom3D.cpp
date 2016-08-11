@@ -17,9 +17,7 @@ int main(int argc, char **argv) {
 	cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
 
 	createSimulator(argc, argv, SimpleCatom3DBlockCode::buildNewBlockCode);
-	Scheduler *scheduler = getScheduler();
 	getSimulator()->printInfo();
-	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 /*
 	scheduler->start(SCHEDULER_MODE_FASTEST);

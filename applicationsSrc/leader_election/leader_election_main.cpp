@@ -21,16 +21,9 @@ int main(int argc, char **argv) {
 	srand( time(NULL));
 
 	createSimulator(argc, argv, Leader_election_BlockCode::buildNewBlockCode);
-	Scheduler *scheduler = getScheduler();
-
 
 	getSimulator()->printInfo();
-	scheduler->printInfo();
 	BaseSimulator::getWorld()->printInfo();
-
-	scheduler->start(SCHEDULER_MODE_FASTEST);
-
-	scheduler->waitForSchedulerEnd();
 
 	deleteSimulator();
 

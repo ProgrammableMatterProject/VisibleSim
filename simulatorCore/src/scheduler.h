@@ -49,6 +49,7 @@ public:
 class Scheduler {
 protected:
 	static Scheduler *scheduler;
+	static std::mutex delMutex;
 	int schedulerMode, schedulerLength;
 	LightweightSemaphore *sem_schedulerStart;
 	std::thread *schedulerThread;
@@ -69,19 +70,32 @@ protected:
 	virtual ~Scheduler();
 
 	Time debugDate;
-
 public:
 	enum State {NOTREADY = 0, NOTSTARTED = 1, ENDED = 2, PAUSED = 3, RUNNING = 4};
 	State state;
+	atomic<bool> terminate{false};
 
 	static Scheduler* getScheduler() {
 		assert(scheduler != NULL);
 		return(scheduler);
 	}
+	
 	static void deleteScheduler() {
-    	delete(scheduler);
-		scheduler=NULL;
+		if (scheduler != NULL) {
+			delMutex.lock();
+			if (scheduler != NULL) {
+				if (!scheduler->terminate.load()) {
+					scheduler->terminate.store(true);
+					scheduler->schedulerThread->join();
+				}
+
+				delete scheduler;
+				scheduler = NULL;
+			}
+			delMutex.unlock();
+		}    	
 	}
+	
 	void setMaximumDate(Time tmax) {
 		maximumDate=tmax;
 		cout << "scheduler: MaximumDate set to " << tmax << endl;

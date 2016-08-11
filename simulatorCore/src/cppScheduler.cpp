@@ -85,6 +85,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 				eventsMap.erase(first);
 				eventsMapSize--;
 			}
+
+			if (terminate.load()) {
+				break;
+			}
 	    }
 		break;
 	case SCHEDULER_MODE_REALTIME:
@@ -126,6 +130,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 				std::chrono::milliseconds timespan(5);
 				std::this_thread::sleep_for(timespan);
 			}
+
+			if (terminate.load()) {
+				break;
+			}
 		}
 
 		break;
@@ -145,14 +153,16 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
 	// if simulation is a regression testing run, export configuration before leaving
-	if (Simulator::regrTesting)
+	if (Simulator::regrTesting && !terminate.load())
 		getWorld()->exportConfiguration();
 	
 	// if autoStop is enabled, terminate simulation
-	if (willAutoStop())
+	if (willAutoStop() && !terminate.load())
 		glutLeaveMainLoop();
 
 	printStats();
+
+	terminate.store(true);
 	
 	return(NULL);
 }

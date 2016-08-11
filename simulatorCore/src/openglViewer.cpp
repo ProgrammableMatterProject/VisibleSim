@@ -521,7 +521,8 @@ void GlutContext::mainLoop() {
 
 	std::chrono::milliseconds timespan(2);
 	std::this_thread::sleep_for(timespan);
-	
+
+	deleteScheduler();
     deleteContext();
 }
 

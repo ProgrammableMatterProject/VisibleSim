@@ -73,9 +73,7 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 
 Simulator::~Simulator() {
 	OUTPUT << "\033[1;34m"  << "Simulator destructor" << "\033[0m" << endl;
-	//MODIF NICO : le mieux serait de faire ce delete juste après avoir fini de lire le fichier xml
 	delete xmlDoc;
-	//FIN MODIF NICO
 
 #ifdef ENABLE_MELDPROCESS
 	if (getType() == MELDPROCESS) {
@@ -86,11 +84,6 @@ Simulator::~Simulator() {
 	}
 #endif
 	
-	if (getType() == MELDINTERPRET){
-		//Not sure if there is something to do, i think not
-	}
-
-	// deleteScheduler();
 	deleteWorld();
 }
 
