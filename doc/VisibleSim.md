@@ -81,8 +81,41 @@ All the block code Makefiles are identical, except for the following variables t
 This section explains aims at detailing the lifecycle of a VisibleSim simulation, for users and contributors to better understand the process.
 
 1. __Entry Point__: `main` function of the BlockCode. 
-2. __Scheduler Run__: Running GlutMainLoop until scheduler end. (`waitForSchedulerEnd()`)
-2. __End of Simulation__: Call to `deleteSimulator()` from the main;
+2.  __Simulator Creation__: `<ModuleNamespace>::createSimulator()` is called. 
+	- `ParseConfiguration()`: [Configuration file parsing](#config) and instantiation of all the core componnents of VisibleSim. In order, the following components are instantiated:
+		- `Simulator`
+		- `World`
+		- `Scheduler`
+		- `Camera` and `Spotlight` _(ignored in terminal mode)_
+		- `BlockList` (__includes individual `BlockCodes`, where `CodeStartEvent` is scheduled at scheduler time `0`__)
+		- `Obstacles` _(MultiRobots only)_
+		- [`Target`](#target)
+	- `ParseUserElements():` While calling the constructor of the first `BlockCode` from the ensemble, the `<BlockCode>::ParseUserElements()` function will be called. [More information here](#UserParsing).
+	- `startSimulation()`: Effectively start the simulation by starting the scheduler, or waiting for an input from the user to provide an input to run it.
+		- Initialises the neighbourhood information and connects all modules.
+		- Starts scheduler if _autostart_ or _terminal mode_ is __ON__.
+		- Enter _GLUT_ main loop and start drawing.
+3. __Scheduler Run__: Scheduler has been started (either in `fastest` or `realtime` mode)
+	- Every module from the ensemble has its `CodeStartEvent` processed, which called its `startup()` function. User algorithm is started. 
+	- Running GlutMainLoop until scheduler end. (`waitForSchedulerEnd()`) 
+	- Scheduler end occurs when one of the end conditions is met. 
+		- __All events processed__.
+		- Maximum simulation date has been reached.
+		- User explicitly stopped scheduler from the graphical window.
+4. __End of Simulation__: Call to `deleteSimulator()` from the main. Cascade deletion of VisibleSim components, in order:
+ 	- `Scheduler`
+	- `Graphical Context`
+	- `Simulator`
+	- `World` 
+		- Every instance of `BuildingBlock`
+			- Individual instances of `BlockCode` (_+  Single `Target` static instance_)
+			- Individual instances of `Clock`
+			- Individual instances of `Stats`
+			- Individual instances of `P2PNetworkInterface`
+		- Every instance of `GlBlock`
+		- `Lattice`
+		- `Camera` and `Spotlight`
+		- Graphical Object Loaders
 
 ## Doxygen Documentation
 The source code and API are documented using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
@@ -432,7 +465,7 @@ Both description methods are subject to a number of constraints:
 - Every described module needs to have a position. 
 - Two modules cannot have the same ID. 
 
-#### Reconfiguration Targets
+#### <a name="target"></a>Reconfiguration Targets
 As mentioned earlier, a VisibleSim configuration can also be used to describe one or multiple reconfiguration `targets` (_i.e._ an objective configuration in term of module positions and colors). 
 
 ##### Description
@@ -515,7 +548,7 @@ The `Target` API is quite straighforward:
 	- `<ostream> << <blockCodeName>::target`: prints the target to an output stream.
 - Finally, use `<blockCodeName>::loadNextTarget()` to read the next target from the configuration file, and store it into `<blockCodeName>::target`. If there was no additional target defined, this function will return `false`, and `target` attribute will be `NULL`.
 
-#### Parsing Additional User Elements
+#### <a name="userParsing"></a>Parsing Additional User Elements
 Users can add extra elements to the configuration file that are specific to their application. The VisibleSim API provides a function to the users that is called only once per simulation, right after the parsing of the _core_ elements of the configuration file. 
 ```C++
 /**
