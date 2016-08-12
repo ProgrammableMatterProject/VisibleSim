@@ -2,6 +2,8 @@
 #ifndef UTILS_H__
 #define UTILS_H__
 
+#include "tDefs.h"
+
 namespace BaseSimulator {
 
 //!< utils Utilities namespace for providing globally needed constants, types, and helper methods   
@@ -38,7 +40,6 @@ inline static void swap(int* a, int* b) {
 	*a = *b;
 	*b = temp;
 }
-
 
 } // namespace utils
 

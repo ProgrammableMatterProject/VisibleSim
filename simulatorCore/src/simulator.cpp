@@ -63,9 +63,9 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 	cout << "Seed: " << seed  << endl;
 	
 	if (seed == -1) {
-	  generator = ruintGenerator(std::random_device{}());
+	  generator = uintRNG(std::random_device{}());
 	} else {
-	  generator = ruintGenerator((uint32_t)seed);
+	  generator = uintRNG((uint32_t)seed);
 	}
 	
 	if (!isLoaded) {

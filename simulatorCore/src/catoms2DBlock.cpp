@@ -15,14 +15,19 @@
 #include "trace.h"
 
 using namespace std;
+using namespace BaseSimulator::utils;
 
 namespace Catoms2D {
 
 Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb)
-	: BaseSimulator::BuildingBlock(bId, bcb, HLattice::MAX_NB_NEIGHBORS) {
+  : BaseSimulator::BuildingBlock(bId, bcb, HLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "Catoms2DBlock constructor" << endl;
 
     angle = 0;
+    doubleRNG g = Random::getNormalDoubleRNG(getRandomUint(),CATOMS2D_MOTION_SPEED,0.01);
+    RandomRate *speed = new RandomRate(g);
+    motionEngine = new MotionEngine(speed);
+    cout << "Test: " << motionEngine->getSpeed() << endl;
 }
 
 Catoms2DBlock::~Catoms2DBlock() {
@@ -302,7 +307,7 @@ bool Catoms2DBlock::canMove(Rotation2DMove &m) {
 }
 
 void Catoms2DBlock::startMove(Rotation2DMove &m, Time t) {
-    getScheduler()->schedule(new Rotation2DStartEvent(t,this,m));
+  getScheduler()->schedule(new Rotation2DStartEvent(t,this,m));
 }
 
 void Catoms2DBlock::startMove(Rotation2DMove &m) {

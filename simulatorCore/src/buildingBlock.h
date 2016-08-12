@@ -19,6 +19,7 @@
 #include "clock.h"
 #include "cell3DPosition.h"
 #include "statsIndividual.h"
+#include "random.h"
 
 class Event;
 typedef std::shared_ptr<Event> EventPtr;
@@ -62,7 +63,7 @@ protected:
 	list<EventPtr> localEventsList; //!< List of local events scheduled for this block
 public:
     bID blockId; //!< id of the block
-	ruintGenerator generator; //!< random number generator
+	uintRNG generator; //!< random number generator
 	BlockCode *blockCode; //!< blockcode program executed by the block
 	Clock *clock; //!< internal clock of the block
 	Color color; //!< color of the block

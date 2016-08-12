@@ -6,6 +6,7 @@
 
 using namespace std;
 using namespace BaseSimulator;
+using namespace BaseSimulator::utils;
 
 //#define DEBUG_CLOCKNOISE
 
@@ -25,18 +26,14 @@ ClockNoise::~ClockNoise() {}
 //
 //==============================================================================
 
-GClockNoise::GClockNoise(unsigned int _seed, double _mean, double _sd) {
-  seed = _seed;
-  mean = _mean;
-  sd = _sd;
+GClockNoise::GClockNoise(ruint seed, double mean, double sd) {
+  generator = Random::getNormalDoubleRNG(seed,mean,sd);
 }
 
 GClockNoise::~GClockNoise() {}
 
 clockNoise_t GClockNoise::getNoise(Time simTime) {
-  mt19937 uGenerator(simTime*seed);
-  normal_distribution<double> normalDist(mean,sd);
-  return normalDist(uGenerator);
+  return (clockNoise_t)generator();
 }
 
 //==============================================================================

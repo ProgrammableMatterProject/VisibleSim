@@ -135,5 +135,4 @@ void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, Block
 	((BlinkyBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
 }
 
-
 } // BlinkyBlocks namespace

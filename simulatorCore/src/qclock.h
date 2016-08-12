@@ -9,13 +9,13 @@
 #define QCLOCK_H_
 
 #include <stdint.h> 
-#include <random>
 #include <list>
 #include <vector>
 #include <string>
 
 #include "clock.h"
 #include "clockNoise.h"
+#include "random.h"
 
 using namespace std;
 
@@ -48,7 +48,7 @@ public:
    that order).
    * @para seed seed to use in the random generation of d and y0.
    */ 
-  QClock(double mean[], double sd[], unsigned int seed);
+  //QClock(double mean[], double sd[], unsigned int seed);
 
   /**
    * QClock destructor.
@@ -94,7 +94,7 @@ public:
    * @para _sigma sigma parameter of the clock model
    * @para _seed seed to use in random noise generation
    */ 
-  GNoiseQClock(double _d, double _y0, double _x0, double _sigma, unsigned int _seed);
+  GNoiseQClock(double _d, double _y0, double _x0, double _sigma, ruint _seed);
 
   /**
    * @brief GNoiseClock constructor. Parameters d, y0 and sigma of the clock 
@@ -106,7 +106,7 @@ public:
    * @para seed seed to use in the random generation of d, y0, sigma and 
    * noise(t) ~ N(0,sigma).
    */ 
-  GNoiseQClock(double mean[], double sd[], unsigned int _seed);
+  //GNoiseQClock(double mean[], double sd[], ruint _seed);
 
   /**
    * @brief GNoiseClock destructor.
@@ -149,7 +149,7 @@ public:
    * @para _x0 x0 parameter of the clock model
    * @para _seed seed to use in the random choice of the noise signal to replay
    */ 
-  DNoiseQClock(double _d, double _y0, double _x0, unsigned int _seed);
+  DNoiseQClock(double _d, double _y0, double _x0, ruint _seed);
 
   /**
    * @brief DNoiseClock constructor. Parameters d and y0 of the clock 
@@ -161,7 +161,7 @@ public:
    * @para seed seed to use in the random generation of d, y0 and the choice 
    * of the noise signal to replay.
    */ 
-  DNoiseQClock(double mean[], double sd[], unsigned int _seed);
+  //DNoiseQClock(double mean[], double sd[], ruint _seed);
   
   /**
    * @brief DNoiseClock destructor. 
@@ -183,7 +183,7 @@ public:
    * 1% accuracy (10 000 ppm) at 3V and 25°C.
    * @para seed seed use to randomly select the noise signal
    */ 
-  static DNoiseQClock* createXMEGA_RTC_OSC1K_CRC(Time seed);
+  static DNoiseQClock* createXMEGA_RTC_OSC1K_CRC(ruint seed);
 };
  
 }

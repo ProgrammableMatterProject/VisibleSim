@@ -12,6 +12,7 @@
 #include "network.h"
 #include "trace.h"
 #include "statsIndividual.h"
+#include "utils.h"
 
 using namespace std;
 using namespace BaseSimulator;
@@ -23,8 +24,7 @@ uint64_t Message::nextId = 0;
 uint64_t Message::nbMessages = 0;
 
 unsigned int P2PNetworkInterface::nextId = 0;
-double P2PNetworkInterface::defaultDataRate=1000000;
-double P2PNetworkInterface::defaultDataRateVariability=0;
+int P2PNetworkInterface::defaultDataRate = 1000000;
 
 //===========================================================================================================
 //
@@ -73,18 +73,22 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 	hostBlock = b;
 	connectedInterface = NULL;
 	availabilityDate = 0;
-	generator = ruintGenerator(b->getRandomUint());
 	globalId = nextId;
 	nextId++;
-//	messageBeingTransmitted.reset();
-	dataRate = defaultDataRate;
-	dataRateVariability = defaultDataRateVariability;
+	dataRate = new StaticRate(defaultDataRate);
+}
+
+void P2PNetworkInterface::setDataRate(Rate *r) {
+  assert(r != NULL);
+  delete dataRate;
+  dataRate = r;
 }
 
 P2PNetworkInterface::~P2PNetworkInterface() {
 #ifndef NDEBUG
 	OUTPUT << "P2PNetworkInterface destructor" << endl;
 #endif
+	delete dataRate;
 }
 
 void P2PNetworkInterface::send(Message *m) {
@@ -132,7 +136,7 @@ void P2PNetworkInterface::send() {
 
 	BaseSimulator::utils::StatsIndividual::decOutgoingMessageQueueSize(hostBlock->stats);
 	
-	transmissionDuration = computeTransmissionDuration(msg->size());
+	transmissionDuration = getTransmissionDuration(msg);
 	messageBeingTransmitted = msg;
 	messageBeingTransmitted->sourceInterface = this;
 	messageBeingTransmitted->destinationInterface = connectedInterface;
@@ -169,13 +173,9 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
 	connectedInterface = ni;
 }
 
-Time P2PNetworkInterface::computeTransmissionDuration(unsigned int msgSize) {
-  double rate;
-  if(dataRateVariability == 0) {
-    rate = dataRate;
-  } else {
-    rate = dataRate - dataRateVariability + ((double)generator()/(double)generator.max()) * 2 * dataRateVariability;
-  }
-  Time transmissionDuration = (msgSize*8000000ULL)/rate;
+Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
+  double rate = dataRate->get();
+  Time transmissionDuration = (m->size()*8000000ULL)/rate;
+  //cerr << "TransmissionDuration: " << transmissionDuration << endl;
   return transmissionDuration;
 }

@@ -14,6 +14,7 @@
 #include "catoms2DBlockCode.h"
 #include "catoms2DGlBlock.h"
 #include "lattice.h"
+#include "motionEngine.h"
 
 class Rotation2DMove;
 
@@ -32,6 +33,7 @@ protected:
 
 public:
 	int angle;
+	MotionEngine *motionEngine;
 	
 	Catoms2DBlock(int bId, BlockCodeBuilder bcb);
 	~Catoms2DBlock();
