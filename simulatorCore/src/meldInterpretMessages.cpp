@@ -1,7 +1,6 @@
 #include "meldInterpretMessages.h"
 #include "meldInterpretVM.h"
 
-
 namespace MeldInterpret{
 
 AddTupleMessage::AddTupleMessage(tuple_t tpl, unsigned int s) : Message(){
