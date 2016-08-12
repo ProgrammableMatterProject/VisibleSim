@@ -15,7 +15,7 @@ INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 
 LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
 
-SIMULATORLIB = ../../simulatorCore/lib/libsimBlinkyBlocks.a
+SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
 
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++

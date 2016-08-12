@@ -21,7 +21,7 @@ SRCS = msrSync.cpp msrSyncBlockCode.cpp
 OUT = $(APPDIR)/msrSync
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -lsimBlinkyBlock
+MODULELIB = -lsimBlinkyBlocks
 # TESTS contains the commands that will be executed when `make test` is called
 # Cannot be tested since infinite execution
 TESTS = : #;\
@@ -33,7 +33,7 @@ OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
 OS = $(shell uname -s)
-SIMULATORLIB = ../../simulatorCore/lib/libsimRobotBlocks.a
+SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
 
 ifeq ($(GLOBAL_INCLUDES), )
 INCLUDES = -I. -I../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include
