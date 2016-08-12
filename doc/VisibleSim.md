@@ -630,16 +630,28 @@ In order to test for regression, the BlockCode is executed with the exact same p
  
   __N.B.__: Due to the testing procedure itself, it is not possible to test algorithms that never end, since no terminal configuration can be exported.
 
-## Configuration Exporter
-
-## Statistics
-TODO?
 ## Block Code API
-TODO
+This section is intended to guide new users into writing a `BlockCode`, by detailing the provided API, and explaining how to perform the base operations.
+
 ## Clock
-In VisibleSim, each `BuildingBlock` is using an independent internal clock (in its `clock` attribute), which can be configured to suit the user's needs.
+In VisibleSim, each `BuildingBlock` is using an independent internal clock, which can be configured to suit the user's needs.
 
 ### Clock API
+#### Clock Model Assignment
+Every `BuildingBlock` has a `clock` member, which is a pointer to an instance of a subclass of the `Clock` abstract class. When a `BuildingBlock` is constructed, it is given a `PerfectClock` by default.
+
+In order to change the clock model of a block, the `BuildingBlock` class provides the following setter: 
+```C++
+/**
+ * @brief Set the internal clock to the clock in parameter
+ * @param c clock which the internal clock will be set
+ */
+void setClock(Clock *c);
+```
+
+Where `c` is an instance of one of the clock models detailed in the [Clock Models](#Clock_Models) section. This can be done from the user `BlockCode` in the `startup()` function.
+
+#### Operations
 ```C++
   /**
    * @brief returns the local time for the simulator time in parameter.
@@ -666,7 +678,7 @@ The API for using internal clocks is only made of two fundamental operations, ei
 
 For more convenience, a third function, `clock->getTime()` is provided as a shortcut for getting the local time for the current simulator time.
 
-### Clock Models
+### <a name="Clock_Models"></a>Clock Models
 
 #### Perfect Clock
 By default, the modules are initialised with a _drift-free_ clock model, which means that the global simulator time will always be equal to the local time of the modules.

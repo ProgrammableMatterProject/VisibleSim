@@ -86,7 +86,7 @@ class LandmarkBeaconEvent : public BlockEvent {
 
  LandmarkBeaconEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
     eventType = LANDMARK_BEACON_EVENT;
-    randomNumber = conBlock->getNextRandomNumber();
+    randomNumber = conBlock->getRandomUint();
   }
 	
  LandmarkBeaconEvent(LandmarkBeaconEvent *ev) : BlockEvent(ev) {

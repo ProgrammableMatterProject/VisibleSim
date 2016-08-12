@@ -12,12 +12,15 @@
 #define TIXML_USE_STL	1
 #include "TinyXML/tinyxml.h"
 
+#include "tDefs.h"
 #include "scheduler.h"
 #include "world.h"
 #include "commandLine.h"
 #include "blockCode.h"
 
 using namespace std;
+
+#define DEFAULT_SIMULATION_SEED 50 //!< Default simulation seed
 
 namespace BaseSimulator {
 
@@ -35,7 +38,7 @@ public:
 	enum IDScheme {ORDERED = 0, MANUAL, RANDOM};
 
 	static bool regrTesting;			//!< Indicates if this simulation instance is performing regression testing
-	//!< (causes configuration export before simulator termination) 
+	//!< (causes configuration export before simulator termination)
 
 	static Simulator* getSimulator() {
 		assert(simulator != NULL);
@@ -67,6 +70,16 @@ public:
 	 *
 	 */
 	void startSimulation(void);
+	
+	/*! 
+	 *  @brief Generates a random unsigned int (ruint)
+	 */
+	ruint getRandomUint();
+
+	/*
+	 * @brief Sets the simulation seed
+	 */
+	//inline void setSeed(int s) { seed = s; }
 
 protected:
 	//<! @brief Exception thrown if an error as occured during parsing
@@ -77,6 +90,9 @@ protected:
     };
 
 	static Type type;			//!< Type of simulation, i.e. language of the user program
+
+	int seed = DEFAULT_SIMULATION_SEED; //!< Simulation seed, used for every randomized operation, except for the id distribution
+	ruintGenerator generator; //!< Simulation random generator, used for every randomized operation, except for the id distribution
 	
 	static Simulator *simulator; //!< Static member for accessing *this* simulator
 	Scheduler *scheduler;		//!< Scheduler to be instantiated and configured
@@ -137,19 +153,19 @@ protected:
 	/*!
 	 *  @brief Initializes IDPool with n ID distanced by step and shuffled
 	 *  @param n the number of IDs to generate
-	 *  @param seed the random seed used to configure the random number generator. If seed = -1, a random seed is used instead.
+	 *  @param idSeed the random seed used to configure the random number generator. If idSeed = -1, a random seed is used instead.
 	 *  @param step the distance between two consecutive numbers. e.g. If n = 4 and step = 2 then IDPool = {1, 3, 5, 7}
 	 *  @attention The user has to ensure that the generation won't cause any overflow. 
 	 *  If (1 + (n + 1) * step) > BID_MAX (i.e. 1.8446744e+019 with UINT64_T as bID), undefined behavior will happen.
 	 */
-	void generateRandomIDs(const int n, const int seed, const int step);
+	void generateRandomIDs(const int n, const int idSeed, const int step);
 	
 	/*!
 	 *  @brief Parses the configuration file's blockList attribute for the random seed attribute
 	 *  @return The integer seed specified in the configuration file, or -1 if unspecified
 	 *  @throw ParsingException in case the seed is not a valid integer number
 	 */
-	int parseRandomSeed();
+	int parseRandomIdSeed();
 
 	/*!
 	 *  @brief Parses the configuration file's blockList attribute for the random step attribute

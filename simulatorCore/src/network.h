@@ -11,6 +11,7 @@
 #include <deque>
 #include <string.h>
 
+#include "tDefs.h"
 #include "buildingBlock.h"
 
 using namespace std;
@@ -85,7 +86,7 @@ protected:
 	static double defaultDataRateVariability;
 	double dataRate; // bit/s
 	double dataRateVariability;
-	std::ranlux48 generator;
+	ruintGenerator generator;
 public:
 	
 	unsigned int globalId;
@@ -106,7 +107,7 @@ public:
 	bool addToOutgoingBuffer(MessagePtr msg);
 	void send();
 	void connect(P2PNetworkInterface *ni);
-    int getConnectedBlockId() {
+	int getConnectedBlockId() {
         return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:-1;
 	}
 
@@ -117,6 +118,7 @@ public:
 	
 	void setDataRate(double rate) { dataRate = rate; }
 	void setDataRateVariability(double variability) { dataRateVariability = variability; }
+	Time computeTransmissionDuration(unsigned int msgSize);
 };
 
 #endif /* NETWORK_H_ */

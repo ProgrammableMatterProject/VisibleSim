@@ -20,7 +20,7 @@ class TryToMoveEvent : public BlockEvent {
 
  TryToMoveEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
     eventType = EVENT_TRY_TO_MOVE;
-    randomNumber = conBlock->getNextRandomNumber();
+    randomNumber = conBlock->getRandomUint();
   }
 	
  TryToMoveEvent(TryToMoveEvent *ev) : BlockEvent(ev) {
@@ -42,7 +42,7 @@ class TupleQueryResponseEvent : public BlockEvent {
   
  TupleQueryResponseEvent(Time t, BaseSimulator::BuildingBlock *conBlock, ContextTuple *tu): BlockEvent(t, conBlock) {
     eventType =  EVENT_TUPLE_QUERY_RESPONSE;
-    randomNumber = conBlock->getNextRandomNumber();
+    randomNumber = conBlock->getRandomUint();
     tuple = tu;
   }
 	

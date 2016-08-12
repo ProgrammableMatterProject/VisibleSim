@@ -880,7 +880,7 @@ int MeldInterpretVM::execute_iter (const unsigned char *pc, Register *reg, int i
     list = (void**)malloc(sizeof(tuple_t) * length);
 
     for (i = 0; i < length; i++) {
-        int j = host->getNextRandomNumber() % (i+1);
+        unsigned int j = host->getRandomUint() % (i+1);
 
         list[i] = list[j];
         list[j] = entry->tuple;
