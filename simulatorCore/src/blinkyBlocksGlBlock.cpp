@@ -2,12 +2,6 @@
 
 namespace BlinkyBlocks {
 
-BlinkyBlocksGlBlock::BlinkyBlocksGlBlock(bID id) : GlBlock(id) {
-}
-
-BlinkyBlocksGlBlock::~BlinkyBlocksGlBlock() {
-}
-
 void BlinkyBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
 
@@ -25,20 +19,6 @@ void BlinkyBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	}
 	ptrObj->glDraw();
     glPopMatrix();
-}
-
-void BlinkyBlocksGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
-	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
-	ptrObj->glDrawId(n);
-	glPopMatrix();
-}
-
-void BlinkyBlocksGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
-	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
-	ptrObj->glDrawIdByMaterial(n);
-	glPopMatrix();
 }
 
 }

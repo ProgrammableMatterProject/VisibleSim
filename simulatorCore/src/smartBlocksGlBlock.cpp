@@ -2,13 +2,6 @@
 #include "smartBlocksWorld.h"
 
 namespace SmartBlocks {
-SmartBlocksGlBlock::SmartBlocksGlBlock(bID id) : GlBlock(id) {
-	displayedValue=id;
-}
-
-SmartBlocksGlBlock::~SmartBlocksGlBlock() {
-
-}
 
 void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
@@ -66,13 +59,6 @@ void SmartBlocksGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
 	glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
 	ptrObj->glDraw();
-	glPopMatrix();
-}
-
-void SmartBlocksGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
-	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
-	ptrObj->glDrawIdByMaterial(n);
 	glPopMatrix();
 }
     
