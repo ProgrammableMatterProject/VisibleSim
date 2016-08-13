@@ -16,7 +16,8 @@ class MotionEngine {
   MotionEngine();
   MotionEngine(Rate *s);
   ~MotionEngine();
-  
+
+  void setSpeed(Rate *s);
   double getSpeed();
   // ms
   Time getDuration(Distance distance);
