@@ -5,7 +5,8 @@
 #include "rate.h"
 
 #define DEFAULT_MOTION_SPEED 0.1
-#define CATOMS2D_MOTION_SPEED 1.67
+#define CATOMS2D_MOTION_SPEED_MEAN 1.881119320574239116075
+#define CATOMS2D_MOTION_SPEED_SD 0.01
 
 namespace BaseSimulator {
 
