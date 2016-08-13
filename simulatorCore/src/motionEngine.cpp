@@ -4,6 +4,8 @@
 
 #include "motionEngine.h"
 
+//#define SPEED_DEBUG
+
 using namespace std;
 
 namespace BaseSimulator {
@@ -34,10 +36,11 @@ double MotionEngine::getSpeed() {
 Time MotionEngine::getDuration(Distance distance) {
   double speed = getSpeed();
   double time = distance/speed;
-  //cerr << "speed (m/s) = " << speed << ", distance (m) = " << distance
-  //     << ", time (s) = " << time << endl;
+#ifdef SPEED_DEBUG
+  cerr << "speed (m/s) = " << speed << ", distance (m) = " << distance
+       << ", time (s) = " << time << endl;
+#endif
   Time t = time*pow(10,6);
-  
   return t;
 }
 

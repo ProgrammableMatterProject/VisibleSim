@@ -12,8 +12,15 @@
 
 using namespace BaseSimulator::utils;
 
+//#define POSITION_MOTION_DEBUG
+//#define DURATION_MOTION_DEBUG
+//#define COLOR_MOTION_DEBUG
+
+#define REMAINING_STEPS angle/ANGULAR_STEP
+
 //const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
+const int ANGLE = 60;
 const int ANGULAR_STEP=12;
 
 //===========================================================================================================
@@ -53,7 +60,7 @@ Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotatio
     eventType = EVENT_ROTATION2D_START;
     
     pivot.set(m.getPivot()->ptrGlBlock->position[0],m.getPivot()->ptrGlBlock->position[1],m.getPivot()->ptrGlBlock->position[2]);
-    angle = 60;
+    angle = ANGLE;
     sens = m.getDirection();
     Distance r = defaultBlockSize[0]/2.0; // radius
     Distance d =  r*M_PI/3.0;
@@ -79,9 +86,24 @@ void Rotation2DStartEvent::consume() {
     Scheduler *scheduler = getScheduler();
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
     Catoms2DWorld::getWorld()->disconnectBlock(rb);
+#ifdef COLOR_MOTION_DEBUG
     rb->setColor(DARKGREY);
-    Time stepDuration = duration/ANGULAR_STEP;
-    scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,stepDuration));
+#endif
+    unsigned int steps = REMAINING_STEPS;
+    Time stepDuration = (long double)duration/(long double)steps;
+    Time remaining = duration - stepDuration;
+#ifdef DURATION_MOTION_DEBUG
+    if (concernedBlock->blockId == 7) {
+      cerr << "----------" << endl;
+      cerr << "@" << concernedBlock->blockId << endl;
+      cerr << "Duration: " << duration << endl;
+      cerr << "Step duration: " << stepDuration << endl;
+      cerr << "Motion start at " << getScheduler()->now() << endl;
+      cerr << "Motion should end at " << getScheduler()->now()+duration << endl; 
+      cerr << "----------" << endl;
+    }
+#endif
+    scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,remaining));
 }
 
 const string Rotation2DStartEvent::getEventName() {
@@ -120,18 +142,19 @@ void Rotation2DStepEvent::consume() {
     Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
 
     Scheduler *scheduler = getScheduler();
-
+#ifdef DURATION_MOTION_DEBUG
+    if (concernedBlock->blockId == 7) {
+      cerr << "@" << rb->blockId << " motion step, angle " << angle << " at " << getScheduler()->now() << " (" << date << ")" << endl; 
+    }
+#endif
     Matrix roty;
-    if (angle<ANGULAR_STEP) {
-        roty.setRotationY(-sens*angle);
-        Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],
-                    rb->ptrGlBlock->position[1] - pivot[1],
-                    rb->ptrGlBlock->position[2] - pivot[2]);
-        Vector3D BC = roty*BA;
-        Vector3D pos = pivot+BC;
-        rb->angle += angle*sens;
-        Catoms2DWorld::getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
-        scheduler->schedule(new Rotation2DStopEvent(scheduler->now() + duration, rb,duration));
+
+    unsigned int steps = REMAINING_STEPS;
+    Time stepDuration = (long double)duration/(long double)steps;
+    Time remaining = duration - stepDuration;
+    
+    if (angle < ANGULAR_STEP) {
+        scheduler->schedule(new Rotation2DStopEvent(scheduler->now() + duration,rb,duration));
     } else {
         roty.setRotationY(-sens*ANGULAR_STEP);
         Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],
@@ -142,8 +165,8 @@ void Rotation2DStepEvent::consume() {
         rb->angle += ANGULAR_STEP*sens;
         Catoms2DWorld::getWorld()->updateGlData(rb,pos,
                                                 ((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+ANGULAR_STEP*sens);
-        scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + duration,rb,
-						    pivot,angle-ANGULAR_STEP,sens,duration));
+        scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration,rb,
+						    pivot,angle-ANGULAR_STEP,sens,remaining));
     }
 }
 
@@ -183,22 +206,43 @@ void Rotation2DStopEvent::consume() {
                                  rb->ptrGlBlock->position[1],
                                  rb->ptrGlBlock->position[2]);
     Cell3DPosition gridPos = wrld->lattice->worldToGridPosition(worldPos);
-    /*
-    cout << "---------------motion end-----------------"<<endl;
-    cout << worldPos << endl;
-    cout << gridPos << endl;
-    cout << "------------------------------------------"<<endl;
-    */
-    rb->setPosition(gridPos);    
+
+#ifdef POSITION_MOTION_DEBUG
+    cerr << "---------------motion end-----------------"<<endl;
+    cerr << worldPos << endl;
+    cerr << gridPos << endl;
+    cerr << "------------------------------------------"<<endl;
+#endif
+
+    rb->setPosition(gridPos);
+    
+#ifdef COLOR_MOTION_DEBUG
     rb->setColor(YELLOW);
+#endif
+
+#ifdef DURATION_MOTION_DEBUG
+    if (concernedBlock->blockId == 7) {
+      cerr << "----------" << endl;
+      cerr << "@" << concernedBlock->blockId << endl;
+      cerr << "Now: " << getScheduler()->now() << endl;
+      cerr << "Motion end at " << date << endl;
+      cerr << "Communication should be re-established at " << date + COM_DELAY << endl;
+      cerr << "----------" << endl;
+    }
+#endif
     
     stringstream info;
     info.str("");
     info << "connect Block " << rb->blockId;
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
     wrld->connectBlock(rb);
+
+    StatsCollector::getInstance().incMotionCount();
+    StatsIndividual::incMotionCount(rb->stats);
+
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new Rotation2DEndEvent(scheduler->now() + duration, rb));
+    concernedBlock->scheduleLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
+    //concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(scheduler->now()+COM_DELAY,rb)));
 }
 
 const string Rotation2DStopEvent::getEventName() {
@@ -226,10 +270,6 @@ Rotation2DEndEvent::~Rotation2DEndEvent() {
 
 void Rotation2DEndEvent::consume() {
     EVENT_CONSUME_INFO();
-    Catoms2DBlock *rb = (Catoms2DBlock*)concernedBlock;
-    concernedBlock->blockCode->processLocalEvent(EventPtr(new Rotation2DEndEvent(date+COM_DELAY,rb)));
-    StatsCollector::getInstance().incMotionCount();
-    StatsIndividual::incMotionCount(rb->stats);
 }
 
 const string Rotation2DEndEvent::getEventName() {
