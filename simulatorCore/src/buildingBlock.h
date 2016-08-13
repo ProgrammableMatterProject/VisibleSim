@@ -54,7 +54,7 @@ private:
 	 */
 	std::atomic<State> state;
 protected:
-	static int nextId;
+	static bID nextId;
 	static bool userConfigHasBeenParsed; //!< Indicates if the user parsing as already been performed by blockCode->parseUserElements. Used to ensure that user configuration is parsed only once.
 	
 	vector<P2PNetworkInterface*> P2PNetworkInterfaces; //!< Vector of size equal to the number of interfaces of the block, contains pointers to the block's interfaces
@@ -62,8 +62,7 @@ protected:
 	list<EventPtr> localEventsList; //!< List of local events scheduled for this block
 public:
     bID blockId; //!< id of the block
-	std::ranlux48 generator; //!< random device to generate random numbers for BlinkyBlocks determinism
-    std::uniform_int_distribution<> dis; //!< random int distribution based on generator
+	ruintGenerator generator; //!< random number generator
 	BlockCode *blockCode; //!< blockcode program executed by the block
 	Clock *clock; //!< internal clock of the block
 	Color color; //!< color of the block
@@ -77,6 +76,7 @@ public:
 	 * @param bId : the block id of the block to create
 	 * @param bcb : function pointer to the getter for the block's CodeBlock
 	 * @param nbInterfaces : number of initial interfaces of the block (Necessary for MeldInterpretVM init)
+	 * @param seed : seed used to create the block random generator
 	 */
 	BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces);
 	
@@ -210,8 +210,11 @@ public:
 	 * @param s : new state of the block
 	 */   	
 	inline void setState(State s) { state.store(s); }
-	/* For Blinky Block determinism version */
-	int getNextRandomNumber();
+	/**
+	 * @brief Return a random unsigned int (ruint) using the generator field
+	 * @return random ruint
+	 */ 
+	ruint getRandomUint();
 	/**
 	 * @brief Schedules a tap event at a given date for this blocks
 	 * When triggered from the simulation menu,

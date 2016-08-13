@@ -2,13 +2,6 @@
 
 namespace Catoms3D {
 
-Catoms3DGlBlock::Catoms3DGlBlock(bID id) : GlBlock(id) {
-    mat.identity();
-}
-
-Catoms3DGlBlock::~Catoms3DGlBlock() {
-}
-
 void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
 	mat.glMultMatrix();
@@ -31,20 +24,6 @@ void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	if (color[3] > 0) ptrObj->glDraw();
 	glEnable(GL_CULL_FACE);
     glPopMatrix();
-}
-
-void Catoms3DGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
-	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
-	ptrObj->glDrawId(n);
-	glPopMatrix();
-}
-
-void Catoms3DGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
-	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
-	ptrObj->glDrawIdByMaterial(n);
-	glPopMatrix();
 }
 
 }

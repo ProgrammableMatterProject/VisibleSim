@@ -2267,8 +2267,8 @@ void SbReconfBlockCode::initTargetGrid() {
 }
 
 int SbReconfBlockCode::nbreWellPlacedBlock() {
-	std::map<int, BuildingBlock*> buildingBlocksMap = SmartBlocks::getWorld()->getMap();
-    std::map<int, BuildingBlock*>::iterator it;
+	std::map<bID, BuildingBlock*> buildingBlocksMap = SmartBlocks::getWorld()->getMap();
+    std::map<bID, BuildingBlock*>::iterator it;
     int n=0;
     SmartBlocks::SmartBlocksBlock *sb;
     for( it = buildingBlocksMap.begin() ; it != buildingBlocksMap.end() ; ++it) {

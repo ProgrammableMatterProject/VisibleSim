@@ -34,7 +34,7 @@ Simulator* Simulator::simulator = NULL;
 
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
-
+  
 Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
 	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
 	
@@ -55,6 +55,19 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 	xmlDoc = new TiXmlDocument(confFileName.c_str());
 	bool isLoaded = xmlDoc->LoadFile();
 
+	
+	if (cmdLine.isSimulationSeedSet()) {
+	  seed = cmdLine.getSimulationSeed();
+	}
+
+	cout << "Seed: " << seed  << endl;
+	
+	if (seed == -1) {
+	  generator = ruintGenerator(std::random_device{}());
+	} else {
+	  generator = ruintGenerator((uint32_t)seed);
+	}
+	
 	if (!isLoaded) {
 		cerr << "error: Could not load configuration file :" << confFileName << endl;
 		exit(EXIT_FAILURE);
@@ -73,9 +86,7 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 
 Simulator::~Simulator() {
 	OUTPUT << "\033[1;34m"  << "Simulator destructor" << "\033[0m" << endl;
-	//MODIF NICO : le mieux serait de faire ce delete juste après avoir fini de lire le fichier xml
 	delete xmlDoc;
-	//FIN MODIF NICO
 
 #ifdef ENABLE_MELDPROCESS
 	if (getType() == MELDPROCESS) {
@@ -86,11 +97,6 @@ Simulator::~Simulator() {
 	}
 #endif
 	
-	if (getType() == MELDINTERPRET){
-		//Not sure if there is something to do, i think not
-	}
-
-	// deleteScheduler();
 	deleteWorld();
 }
 
@@ -190,7 +196,7 @@ Simulator::IDScheme Simulator::determineIDScheme() {
 	return ORDERED;
 }
 
-int Simulator::parseRandomSeed() {
+int Simulator::parseRandomIdSeed() {
 	TiXmlElement *element = xmlBlockListNode->ToElement();
 	const char *attr = element->Attribute("seed"); 			
 	if (attr) {				// READ Seed
@@ -239,20 +245,20 @@ struct IotaWrapper {
     IotaWrapper& operator++() { value += step; return *this; }
 };
 
-void Simulator::generateRandomIDs(const int n, const int seed, const int step) {	
+void Simulator::generateRandomIDs(const int n, const int idSeed, const int step) {	
 	// Fill vector with n numbers from 0 and with a distance of step to each other
 	IotaWrapper<bID> inc(1, step);
 	IDPool = vector<bID>(n);
     std::iota(begin(IDPool), end(IDPool), inc);
 
 	// Properly seed random number generator
-	std::mt19937 generator;
+	std::mt19937 gen;
 	if (seed == -1) {
 	    OUTPUT << "Generating fully random contiguous ID distribution" <<  endl;
-		generator = std::mt19937(std::random_device{}());
+		gen = std::mt19937(std::random_device{}());
 	} else {
-	    OUTPUT << "Generating random contiguous ID distribution with seed: " << seed <<  endl;
-		generator = std::mt19937(seed);
+	    OUTPUT << "Generating random contiguous ID distribution with seed: " << idSeed <<  endl;
+		gen = std::mt19937(idSeed);
 	}	
 
 	// Shuffle the elements using the rng
@@ -313,10 +319,13 @@ void Simulator::initializeIDPool() {
 			if (attr) {
 				try {
 					string str(attr);
-					id =  stoi(str);
+					id =  stoull(str); // id in range [0, 2^64 - 1]
 				} catch (const std::invalid_argument& e) {
 					cerr << "error: invalid id attribute value in configuration file" << endl;
 					throw ParsingException();				
+				} catch (const std::out_of_range& e) {
+					cerr << "error: out of range id attribute value in configuration file" << endl;
+					throw ParsingException();			
 				}
 			} else {
 				cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
@@ -336,7 +345,7 @@ void Simulator::initializeIDPool() {
 		
 	} break;
 	case RANDOM:
-	    generateRandomIDs(numModules, parseRandomSeed(), parseRandomStep());
+	    generateRandomIDs(numModules, parseRandomIdSeed(), parseRandomStep());
 		break;
 	} // switch
 
@@ -755,6 +764,10 @@ void Simulator::startSimulation(void) {
 
 	// Enter graphical main loop
 	GlutContext::mainLoop();
+}
+
+ruint Simulator::getRandomUint() {
+  return generator();
 }
 
 } // Simulator namespace

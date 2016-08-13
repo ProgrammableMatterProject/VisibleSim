@@ -8,10 +8,18 @@ usage() {
 }
 
 print_result() {
+    size=${#1}
+
+    # Pretty printing
+    echo -ne "$1:"
+    if [ $size -lt 7 ]; then
+        echo -ne "\t"
+    fi
+    
     if [ $2 == true ]; then
-        echo -e "$1:\t\t\t[\033[33;32mPASS\x1B[0m]"
+        echo -e "\t\t\t[\033[33;32mPASS\x1B[0m]"
     else
-        echo -e "$1:\t\t\t[\033[33;31mFAILED\x1B[0m]"
+        echo -e "\t\t\t[\033[33;31mFAILED\x1B[0m]"
     fi
    
     exit 0

@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "objLoader.h"
+
 GlBlock::GlBlock(bID id):blockId(id) {
 	position[0] = 0.0;
 	position[1] = 0.0;
@@ -72,4 +74,19 @@ string GlBlock::getPopupInfo() {
 	out << blockId << "\n";
 
 	return out.str();
+}
+
+
+void GlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
+	glPushMatrix();
+	glTranslatef(position[0],position[1],position[2]);
+	ptrObj->glDrawId(n);
+	glPopMatrix();
+}
+
+void GlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
+	glPushMatrix();
+	glTranslatef(position[0],position[1],position[2]);
+	ptrObj->glDrawIdByMaterial(n);
+	glPopMatrix();
 }

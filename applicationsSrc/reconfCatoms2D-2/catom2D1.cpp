@@ -17,9 +17,8 @@ int main(int argc, char **argv) {
 	cout << "\033[1;33m" << "Starting Smart Blocks simulation (main) ..." << "\033[0m" << endl;
 
 	createSimulator(argc, argv, Catoms2D1BlockCode::buildNewBlockCode);
-	Scheduler *scheduler = getScheduler();
 	getSimulator()->printInfo();
-	scheduler->printInfo();
+
 	BaseSimulator::getWorld()->printInfo();
 /*
 	scheduler->start(SCHEDULER_MODE_FASTEST);

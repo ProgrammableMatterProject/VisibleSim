@@ -15,12 +15,10 @@ namespace BlinkyBlocks {
 class BlinkyBlocksGlBlock:public GlBlock {
 protected :
 public :
-	BlinkyBlocksGlBlock(bID id);
-	virtual ~BlinkyBlocksGlBlock();
+	BlinkyBlocksGlBlock(bID id) : GlBlock(id) {};
+	virtual ~BlinkyBlocksGlBlock() {};
 
-	void glDraw(ObjLoader::ObjLoader *ptrObj);
-	void glDrawId(ObjLoader::ObjLoader *ptrObj,int &n);
-	void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n);
+	virtual void glDraw(ObjLoader::ObjLoader *ptrObj);
 };
 }
 #endif /* BLINKYBLOCKSGLBLOCK_H_ */

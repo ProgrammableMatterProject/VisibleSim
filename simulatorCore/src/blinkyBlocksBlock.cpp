@@ -29,8 +29,8 @@ using namespace std;
 
 namespace BlinkyBlocks {
 
-BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
-	: BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
+  BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
+    : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "BlinkyBlocksBlock constructor" << endl;
     double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)
 						  / (BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));

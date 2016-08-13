@@ -16,9 +16,7 @@ using namespace Catoms2D;
 int main(int argc, char **argv) {
 
   createSimulator(argc, argv, Catoms2D1BlockCode::buildNewBlockCode);
-  Scheduler *scheduler = getScheduler();
   getSimulator()->printInfo();
-  scheduler->printInfo();
   BaseSimulator::getWorld()->printInfo();
   deleteSimulator();
   

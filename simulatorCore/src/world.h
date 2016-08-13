@@ -40,7 +40,7 @@ protected:
      ************************************************************/    
     static World *world;        //!< Global variable to access the single simulation instance of World 
     static vector<GlBlock*>tabGlBlocks; //!< A vector containing pointers to all graphical blocks
-    static map<int, BuildingBlock*>buildingBlocksMap; //!< A map containing all BuildingBlocks in the world, indexed by their blockId
+    static map<bID, BuildingBlock*>buildingBlocksMap; //!< A map containing all BuildingBlocks in the world, indexed by their blockId
 
     /************************************************************
      *   Graphical / UI Attributes
@@ -101,7 +101,7 @@ public:
     /**
      * @brief Getter for the map containing all blocks of the world
      */    
-    map<int, BuildingBlock*>& getMap() {
+    map<bID, BuildingBlock*>& getMap() {
         return buildingBlocksMap;
     }
     
@@ -122,7 +122,7 @@ public:
      * @param numSelectedFace id of face to consider
      * @return true if corresponding cell is free and inside the grid, false otherwise
      */
-    bool canAddBlockToFace(int numSelectedGlBlock, int numSelectedFace);
+    bool canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace);
 
     /**
      * @brief Returns a pointer to the block of id BId 
@@ -149,7 +149,7 @@ public:
     /**
      * @brief Creates a block and adds it to the simulation
      *
-     * @param blockId : id of the block to be created. If -1, its id will be set to the MAX_CURRENT_ID + 1
+     * @param blockId : id of the block to be created. If 0, its id will be set to the MAX_CURRENT_ID + 1
      * @param bcb : a pointer to the user fonction return the CodeBlock to execute on the block
      * @param pos : the position of the block on the lattice grid
      * @param col : the color of the block
@@ -211,7 +211,7 @@ public:
      * @brief Returns the Glblock of id n 
      * @param n : id of the Glblock to retrieve
      */
-    inline GlBlock* getBlockByNum(int n) { return tabGlBlocks[n]; };
+    inline GlBlock* getBlockByNum(bID n) { return tabGlBlocks[n]; };
     /**
      * @brief Returns the total number of blocks in the world
      * @return the number of blocks in the world
@@ -293,7 +293,7 @@ public:
      * @param bId the id of the target block
      * @param face id of the tapped face, or -1 if not a picking face
      */
-    void tapBlock(Time date, int bId, int face);
+    void tapBlock(Time date, bID bId, int face);
     /**
      * @brief Stops all block in the world
      */
@@ -302,7 +302,7 @@ public:
      * @brief Increment the maximum block id present the world by one and returns it
      * @return the maximum block id present in the world + 1
      */
-    inline int incrementBlockId() { return ++maxBlockId; }
+    inline bID incrementBlockId() { return ++maxBlockId; }
 };
 
 /**

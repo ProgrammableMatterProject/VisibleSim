@@ -17,7 +17,7 @@ using namespace std;
 
 namespace BaseSimulator {
 
-int BuildingBlock::nextId = 0;
+bID BuildingBlock::nextId = 0;
 bool BuildingBlock::userConfigHasBeenParsed = false;
 
 //===========================================================================================================
@@ -26,21 +26,23 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 //
 //===========================================================================================================
 
-BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
+  BuildingBlock::BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces) {
     OUTPUT << "BuildingBlock constructor (id:" << nextId << ")" << endl;
 	
     if (bId < 0) {
-		blockId = nextId;
-		nextId++;
+      blockId = nextId;
+      nextId++;
     } else {
-		blockId = bId;
+      blockId = bId;
     }
 
     state.store(ALIVE);
     clock = new PerfectClock();
-    std::random_device rd;
-    generator = std::ranlux48(rd());
-    dis = uniform_int_distribution<>(0, 50 * blockId);
+
+    ruint seed = Simulator::getSimulator()->getRandomUint();
+    seed *= bId;
+    generator = ruintGenerator(seed);
+
     buildNewBlockCode = bcb;
 
     if (utils::StatsIndividual::enable) {
@@ -201,12 +203,12 @@ void BuildingBlock::tap(Time date, int face) {
     getScheduler()->scheduleLock(new TapEvent(date, this, (uint8_t)face));
 }
     
-int BuildingBlock::getNextRandomNumber() {
-    return dis(generator);
+ruint BuildingBlock::getRandomUint() {
+    return generator();
 }
 
 void BuildingBlock::setClock(Clock *c) {
-  if (clock == NULL) {
+  if (clock != NULL) {
     delete clock;
   }
   clock = c;

@@ -2,13 +2,6 @@
 
 namespace Catoms2D {
 
-Catoms2DGlBlock::Catoms2DGlBlock(bID id) : GlBlock(id) {
-    angle=0;
-}
-
-Catoms2DGlBlock::~Catoms2DGlBlock() {
-}
-
 void Catoms2DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPushMatrix();
     glTranslatef(position[0],position[1],position[2]);
@@ -28,17 +21,4 @@ void Catoms2DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPopMatrix();
 }
 
-void Catoms2DGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
-    glPushMatrix();
-    glTranslatef(position[0],position[1],position[2]);
-    ptrObj->glDrawId(n);
-    glPopMatrix();
-}
-
-void Catoms2DGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
-    glPushMatrix();
-    glTranslatef(position[0],position[1],position[2]);
-    ptrObj->glDrawIdByMaterial(n);
-    glPopMatrix();
-}
 }

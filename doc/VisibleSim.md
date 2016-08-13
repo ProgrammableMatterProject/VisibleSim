@@ -81,8 +81,41 @@ All the block code Makefiles are identical, except for the following variables t
 This section explains aims at detailing the lifecycle of a VisibleSim simulation, for users and contributors to better understand the process.
 
 1. __Entry Point__: `main` function of the BlockCode. 
-2. __Scheduler Run__: Running GlutMainLoop until scheduler end. (`waitForSchedulerEnd()`)
-2. __End of Simulation__: Call to `deleteSimulator()` from the main;
+2.  __Simulator Creation__: `<ModuleNamespace>::createSimulator()` is called. 
+	- `ParseConfiguration()`: [Configuration file parsing](#config) and instantiation of all the core componnents of VisibleSim. In order, the following components are instantiated:
+		- `Simulator`
+		- `World`
+		- `Scheduler`
+		- `Camera` and `Spotlight` _(ignored in terminal mode)_
+		- `BlockList` (__includes individual `BlockCodes`, where `CodeStartEvent` is scheduled at scheduler time `0`__)
+		- `Obstacles` _(MultiRobots only)_
+		- [`Target`](#target)
+	- `ParseUserElements():` While calling the constructor of the first `BlockCode` from the ensemble, the `<BlockCode>::ParseUserElements()` function will be called. [More information here](#UserParsing).
+	- `startSimulation()`: Effectively start the simulation by starting the scheduler, or waiting for an input from the user to provide an input to run it.
+		- Initialises the neighbourhood information and connects all modules.
+		- Starts scheduler if _autostart_ or _terminal mode_ is __ON__.
+		- Enter _GLUT_ main loop and start drawing.
+3. __Scheduler Run__: Scheduler has been started (either in `fastest` or `realtime` mode)
+	- Every module from the ensemble has its `CodeStartEvent` processed, which called its `startup()` function. User algorithm is started. 
+	- Running GlutMainLoop until scheduler end. (`waitForSchedulerEnd()`) 
+	- Scheduler end occurs when one of the end conditions is met. 
+		- __All events processed__.
+		- Maximum simulation date has been reached.
+		- User explicitly stopped scheduler from the graphical window.
+4. __End of Simulation__: Call to `deleteSimulator()` from the main. Cascade deletion of VisibleSim components, in order:
+ 	- `Scheduler`
+	- `Graphical Context`
+	- `Simulator`
+	- `World` 
+		- Every instance of `BuildingBlock`
+			- Individual instances of `BlockCode` (_+  Single `Target` static instance_)
+			- Individual instances of `Clock`
+			- Individual instances of `Stats`
+			- Individual instances of `P2PNetworkInterface`
+		- Every instance of `GlBlock`
+		- `Lattice`
+		- `Camera` and `Spotlight`
+		- Graphical Object Loaders
 
 ## Doxygen Documentation
 The source code and API are documented using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
@@ -432,7 +465,7 @@ Both description methods are subject to a number of constraints:
 - Every described module needs to have a position. 
 - Two modules cannot have the same ID. 
 
-#### Reconfiguration Targets
+#### <a name="target"></a>Reconfiguration Targets
 As mentioned earlier, a VisibleSim configuration can also be used to describe one or multiple reconfiguration `targets` (_i.e._ an objective configuration in term of module positions and colors). 
 
 ##### Description
@@ -515,7 +548,7 @@ The `Target` API is quite straighforward:
 	- `<ostream> << <blockCodeName>::target`: prints the target to an output stream.
 - Finally, use `<blockCodeName>::loadNextTarget()` to read the next target from the configuration file, and store it into `<blockCodeName>::target`. If there was no additional target defined, this function will return `false`, and `target` attribute will be `NULL`.
 
-#### Parsing Additional User Elements
+#### <a name="userParsing"></a>Parsing Additional User Elements
 Users can add extra elements to the configuration file that are specific to their application. The VisibleSim API provides a function to the users that is called only once per simulation, right after the parsing of the _core_ elements of the configuration file. 
 ```C++
 /**
@@ -597,11 +630,196 @@ In order to test for regression, the BlockCode is executed with the exact same p
  
   __N.B.__: Due to the testing procedure itself, it is not possible to test algorithms that never end, since no terminal configuration can be exported.
 
-## Configuration Exporter
-
-## Statistics
-TODO?
 ## Block Code API
+This section is intended to guide new users into writing a `BlockCode`, by detailing the provided API, and explaining how to perform the base operations.
+
+### Creating a New Application
+First, create a folder in `applicationsSrc/` with the name of your application (to which we will refer as `appName`).
+
+#### Main File
+
+Then, create the `main` file for your application, named . The following example can be used as a template :
+```C++
+/* @file <appName>.cpp
+ * @author <author>
+ * @date <date>
+ * A sample main application file.
+ */
+ 
+#include "<targetModule>Simulator.h"
+#include "<targetModule>BlockCode.h"
+#include "<appName>BlockCode.h"
+
+using namespace <targetModule>;
+
+int main(int argc, char **argv) {	
+	/* Start simulation by reading configuration file, 
+	 * instantiating necessary components, and starting the scheduler.*/
+	createSimulator(argc, argv, <appName>BlockCode::buildNewBlockCode);
+
+	/* createSimulator only returns at scheduler end.
+     * Can perform some actions here before ending simulation... */
+
+	deleteSimulator(); // Deletion of allocated memory
+	
+	return(0);
+}
+```
+Where `<targetModule>` is the name of module family for which you are developing the application (e.g. `"<targetModule>Simulator.h"` can be `blinkyBlocksSimulator.h`)
+
+#### Block Code
 TODO
+#### Makefile
+
+In order to compile the application, we provide a sample _Makefile_ that only requires that the user sets the value of a few variables in the top section. Further modifications can be done by the user to suit its needs,  but in most cases, it will suffice.
+
+Please refer to the sample _Makefile_ below, that can be used as template and contains instructions on how to adapt it for your application.
+
+```C++
+# Get current directory's name
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+APPDIR = ../../applicationsBin/$(current_dir)
+
+#####################################################################
+#
+# --- Sample User Makefile ---
+#
+# GLOBAL_LIBS, GLOBAL_INCLUDES and GLOBAL_CFLAGS are set by parent Makefile
+# HOWEVER: If calling make from the codeBlock directory (for more convenience to the user),
+#	these variables will be empty. Hence we test their value and if undefined,
+#	set them to predefined values.
+#
+# You will find instructions below on how to edit the Makefile to fit your needs.
+#
+# SRCS contains all the sources of your codeBlocks
+SRCS = <appName>.cpp <appName>BlockCode.cpp
+#
+# OUT is the output binary, where APPDIR is its enclosing directory
+OUT = $(APPDIR)/<appName>
+#
+# MODULELIB is the library for your target module type: -lsim<module_name>
+MODULELIB = -lsim<targetModule>
+# TESTS contains the commands that will be executed when `make test` 
+# is called using the blockCodeTest.sh script. 
+# Individual test commands are separated by ";\"
+TESTS = : #;\
+#
+# End of Makefile section requiring input by user
+#####################################################################
+
+OBJS = $(SRCS:.cpp=.o)
+DEPS = $(SRCS:.cpp=.depends)
+
+OS = $(shell uname -s)
+SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
+
+ifeq ($(GLOBAL_INCLUDES), )
+INCLUDES = -I. -I../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include
+else
+INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
+endif
+
+ifeq ($(GLOBAL_LIBS), )
+	ifeq ($(OS),Darwin)
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)
+	else
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lm -L/usr/X11/lib  -lglut -lGL -lGLU -lGLEW -lpthread $(MODULELIB)
+	endif				#OS
+else
+LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
+endif				#GLOBAL_LIBS
+
+ifeq ($(GLOBAL_CCFLAGS),)
+CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+	ifeq ($(OS), Darwin)
+	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
+	endif 
+else
+CCFLAGS = $(GLOBAL_CCFLAGS)
+endif
+
+CC = g++
+
+.PHONY: clean all test
+
+.cpp.o:
+	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
+
+%.depends: %.cpp
+	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
+
+all: $(OUT)
+	@:
+
+test:
+	@$(TESTS)
+
+autoinstall: $(OUT)
+	cp $(OUT)  $(APPDIR)
+
+$(APPDIR)/$(OUT): $(OUT)
+
+$(OUT): $(SIMULATORLIB) $(OBJS)
+	$(CC) -o $(OUT) $(OBJS) $(LIBS)
+
+ifneq ($(MAKECMDGOALS),clean)
+-include $(DEPS)
+endif
+
+clean:
+	rm -f *~ $(OBJS) $(OUT) $(DEPS)
+```
+
 ## Clock
-TODO
+In VisibleSim, each `BuildingBlock` is using an independent internal clock, which can be configured to suit the user's needs.
+
+### Clock API
+#### Clock Model Assignment
+Every `BuildingBlock` has a `clock` member, which is a pointer to an instance of a subclass of the `Clock` abstract class. When a `BuildingBlock` is constructed, it is given a `PerfectClock` by default.
+
+In order to change the clock model of a block, the `BuildingBlock` class provides the following setter: 
+```C++
+/**
+ * @brief Set the internal clock to the clock in parameter
+ * @param c clock which the internal clock will be set
+ */
+void setClock(Clock *c);
+```
+
+Where `c` is an instance of one of the clock models detailed in the [Clock Models](#Clock_Models) section. This can be done from the user `BlockCode` in the `startup()` function.
+
+#### Operations
+```C++
+  /**
+   * @brief returns the local time for the simulator time in parameter.
+   * @para simTime Simulator time for which the local time is requested.
+   * @return local time for simTime
+   */ 
+  Time getTime(Time simTime);
+
+  /**
+   * @brief returns the local time for the current simulator time
+   * @return local time for current simulator time
+   */ 
+  Time getTime();
+  
+  /**
+   * @brief returns the simulator time for the local time in parameter.
+   * @para localTime Local time for which the simulator time is requested.
+   * @return simulator time for localTime
+   */
+  Time getSimulationTime(Time localTime);
+```
+
+The API for using internal clocks is only made of two fundamental operations, either convert simulator time into local time for a module using `clock->getTime(simTime)`, or perform the reverse operation with `clock->getSimulationTime(moduleTime)`. 
+
+For more convenience, a third function, `clock->getTime()` is provided as a shortcut for getting the local time for the current simulator time.
+
+### <a name="Clock_Models"></a>Clock Models
+
+#### Perfect Clock
+By default, the modules are initialised with a _drift-free_ clock model, which means that the global simulator time will always be equal to the local time of the modules.
+
+#### Q Clock 
+TODO. André ?

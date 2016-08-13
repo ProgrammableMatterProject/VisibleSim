@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 	}
 
 	getSimulator()->printInfo();
-    getScheduler()->printInfo();
+    // getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 		
     // getScheduler()->waitForSchedulerEnd();

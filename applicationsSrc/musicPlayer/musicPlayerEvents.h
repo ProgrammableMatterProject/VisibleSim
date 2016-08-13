@@ -19,7 +19,7 @@ public:
 
         SynchronizeEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
                 eventType = EVENT_SYNC;
-                randomNumber = conBlock->getNextRandomNumber();
+                randomNumber = conBlock->getRandomUint();
         }
 
         SynchronizeEvent(SynchronizeEvent *ev) : BlockEvent(ev) {
@@ -41,7 +41,7 @@ public:
 	
 	PlayNoteEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t,conBlock) {
 		eventType=EVENT_PLAY_NOTE;
-		randomNumber = conBlock->getNextRandomNumber();
+		randomNumber = conBlock->getRandomUint();
 	}
 
 	PlayNoteEvent(PlayNoteEvent *ev) : BlockEvent(ev) {

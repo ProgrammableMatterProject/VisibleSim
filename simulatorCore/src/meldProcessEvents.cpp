@@ -77,7 +77,7 @@ VMSendMessageEvent::VMSendMessageEvent(Time t, BuildingBlock *conBlock, Message 
 	eventType = EVENT_SEND_MESSAGE;
 	message = MessagePtr(mes);
 	sourceInterface = ni;
-	randomNumber = conBlock->getNextRandomNumber();
+	randomNumber = conBlock->getRandomUint32();
 	EVENT_CONSTRUCTOR_INFO();
 }
 
@@ -170,7 +170,7 @@ const string VMDebugPauseSimEvent::getEventName() {
 
 VMEndPollEvent::VMEndPollEvent(Time t, BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
 	EVENT_CONSTRUCTOR_INFO();
-	randomNumber = conBlock->getNextRandomNumber();
+	randomNumber = conBlock->getRandomUint();
 	eventType = EVENT_END_POLL;
 }
 

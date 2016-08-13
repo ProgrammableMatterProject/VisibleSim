@@ -41,7 +41,8 @@ public:
   virtual Time getTime(Time simTime) = 0;
 
   /**
-   * @brief returns the local time for the current simulator time in parameter.
+   * @brief returns the local time for the current simulator time
+   * @return local time for current simulator time
    */ 
   Time getTime();
   

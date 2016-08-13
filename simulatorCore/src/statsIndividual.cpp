@@ -138,8 +138,8 @@ string StatsIndividual::getStats() {
 
   // Stats computation, over all modules
   int size = getWorld()->getSize();
-  map<int,BuildingBlock*> &modules = getWorld()->getMap();
-  map<int,BuildingBlock*>::iterator it;
+  map<bID,BuildingBlock*> &modules = getWorld()->getMap();
+  map<bID,BuildingBlock*>::iterator it;
     
   // Min, sum and max computation
   for (it = modules.begin(); it != modules.end(); ++it) {

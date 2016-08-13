@@ -18,7 +18,7 @@ public:
 
 	MsrSyncEvent(Time t, BaseSimulator::BuildingBlock *conBlock): BlockEvent(t, conBlock) {
 		eventType = EVENT_MSRSYNC;
-		randomNumber = conBlock->getNextRandomNumber();
+		randomNumber = conBlock->getRandomUint();
 	}
 	
 	MsrSyncEvent(MsrSyncEvent *ev) : BlockEvent(ev) {

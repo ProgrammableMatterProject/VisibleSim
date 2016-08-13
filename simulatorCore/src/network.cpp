@@ -73,7 +73,7 @@ P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 	hostBlock = b;
 	connectedInterface = NULL;
 	availabilityDate = 0;
-	generator = std::ranlux48(nextId);
+	generator = ruintGenerator(b->getRandomUint());
 	globalId = nextId;
 	nextId++;
 //	messageBeingTransmitted.reset();
@@ -114,7 +114,6 @@ void P2PNetworkInterface::send() {
 	MessagePtr msg;
 	stringstream info;
 	Time transmissionDuration;
-	double rate;
 
 	if (!connectedInterface) {
 		info << "*** WARNING *** [block " << hostBlock->blockId << ",interface " << globalId <<"] : trying to send a Message but no interface connected";
@@ -133,8 +132,7 @@ void P2PNetworkInterface::send() {
 
 	BaseSimulator::utils::StatsIndividual::decOutgoingMessageQueueSize(hostBlock->stats);
 	
-	rate = dataRate - dataRateVariability + ((double)generator()/(double)generator.max()) * 2 * dataRateVariability;
-	transmissionDuration = (msg->size()*8000000ULL)/rate;
+	transmissionDuration = computeTransmissionDuration(msg->size());
 	messageBeingTransmitted = msg;
 	messageBeingTransmitted->sourceInterface = this;
 	messageBeingTransmitted->destinationInterface = connectedInterface;
@@ -169,4 +167,15 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
 		connectedInterface->connectedInterface = NULL;
 	}
 	connectedInterface = ni;
+}
+
+Time P2PNetworkInterface::computeTransmissionDuration(unsigned int msgSize) {
+  double rate;
+  if(dataRateVariability == 0) {
+    rate = dataRate;
+  } else {
+    rate = dataRate - dataRateVariability + ((double)generator()/(double)generator.max()) * 2 * dataRateVariability;
+  }
+  Time transmissionDuration = (msgSize*8000000ULL)/rate;
+  return transmissionDuration;
 }

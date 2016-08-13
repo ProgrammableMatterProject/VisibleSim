@@ -29,18 +29,4 @@ void MultiRobotsGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPopMatrix();
 }
 
-void MultiRobotsGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
-	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
-	ptrObj->glDrawId(n);
-	glPopMatrix();
-}
-
-void MultiRobotsGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
-	glPushMatrix();
-	glTranslatef(position[0],position[1],position[2]);
-	ptrObj->glDrawIdByMaterial(n);
-	glPopMatrix();
-}
-
 }

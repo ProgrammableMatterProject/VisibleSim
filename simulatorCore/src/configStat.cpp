@@ -89,7 +89,7 @@ void ConfigStat::computeDistanceMatrix() {
 		}
 	}
 	
-	map<int, BuildingBlock*>::iterator bit;
+	map<bID, BuildingBlock*>::iterator bit;
 	for (bit = world->getMap().begin() ; bit != world->getMap().end() ; bit++) {
 		vector<P2PNetworkInterface*>::iterator niit;
 		for (niit = bit->second->getP2PNetworkInterfaces().begin(); niit != bit->second->getP2PNetworkInterfaces().end(); niit++) {
