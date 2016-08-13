@@ -21,7 +21,7 @@ SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp an
 OUT = $(APPDIR)/catom2D1
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -libsimCatoms2D
+MODULELIB = -lsimCatoms2D
 # TESTS contains the commands that will be executed when `make test` is called
 TESTS = ../../utilities/blockCodeTest.sh catom2D1 $(OUT)
 #
@@ -36,7 +36,7 @@ OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
 OS = $(shell uname -s)
-SIMULATORLIB = ../../simulatorCore/lib/libsimCatoms2D.a
+SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
 
 ifeq ($(GLOBAL_INCLUDES), )
 INCLUDES = -I. -I../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include

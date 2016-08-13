@@ -21,7 +21,7 @@ SRCS = robot01.cpp robot01BlockCode.cpp capabilities.cpp
 OUT = $(APPDIR)/robot01
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -lsimRobotBlock
+MODULELIB = -lsimRobotBlocks
 # TESTS contains the commands that will be executed when `make test` is called
 TESTS = ../../utilities/blockCodeTest.sh robot01 $(OUT)
 #
@@ -32,7 +32,7 @@ OBJS = $(SRCS:.cpp=.o)
 DEPS = $(SRCS:.cpp=.depends)
 
 OS = $(shell uname -s)
-SIMULATORLIB = ../../simulatorCore/lib/libsimRobotBlocks.a
+SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
 
 ifeq ($(GLOBAL_INCLUDES), )
 INCLUDES = -I. -I../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include

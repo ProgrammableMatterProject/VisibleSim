@@ -18,7 +18,7 @@ subdirs: $(SUBDIRS)
 # autoinstall not needed anymore
 $(SUBDIRS):
 	@mkdir -p ../applicationsBin/$@
-	@echo "Compiling $@ block code"
+	@echo "Checking $@ block code"
 	@$(MAKE) -C $@ APPDIR=../../applicationsBin/$@ GLOBAL_INCLUDES="$(GLOBAL_INCLUDES)" GLOBAL_LIBS="$(GLOBAL_LIBS)" GLOBAL_CCFLAGS="$(GLOBAL_CCFLAGS)"
 
 #subdirs:
