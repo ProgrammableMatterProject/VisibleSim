@@ -17,14 +17,19 @@ using namespace Catoms2D;
 void parseCmdLine(int argc, char **argv) {
   double comm = -1;
   double motion = -1;
-  // Locate -k command line argument
+  // intercept -C and -M command line argument
+  // warning: must be at the end of the command line!
   for (int i = 0; i < argc; i++) {
     if (argv[i][0] == '-') {
       if (argv[i][1] == 'C') {
 	comm = stod(argv[i+1]);
+ 	argv[i][0] = 0;
+	argv[i][1] = 0;
       }
       if (argv[i][1] == 'M') {
 	motion = stod(argv[i+1]);
+	argv[i][0] = 0;
+	argv[i][1] = 0;
       }
     }
   }

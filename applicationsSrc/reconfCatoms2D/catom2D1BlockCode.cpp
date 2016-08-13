@@ -297,7 +297,7 @@ void Catoms2D1BlockCode::setMotionSpeed() {
     double sd = mean*DEFAULT_SD_FACTOR;
     doubleRNG g = Random::getNormalDoubleRNG(catom2D->getRandomUint(),mean,sd);
     RandomRate *speed = new RandomRate(g);
-    //catom2D->motionEngine->setSpeed(speed);
+    catom2D->motionEngine->setSpeed(speed);
   }
 }
 
