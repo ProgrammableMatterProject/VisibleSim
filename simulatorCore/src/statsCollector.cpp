@@ -6,6 +6,9 @@
  */
 
 #include "statsCollector.h"
+
+#include <iomanip>
+
 #include "world.h"
 
 using namespace std;
@@ -16,8 +19,8 @@ namespace utils {
 ostream& operator<<(ostream& out,const StatsCollector &sc) {
     out << endl << "=== GLOBAL STATISTICS ===" << endl;
     out << "Number of robots: " << getWorld()->getSize() << endl;
-    out << "Simulator elapsed time: " << sc.simulatedElapsedTime << endl;
-    out << "Real elapsed time: " << sc.realElapsedTime << endl;
+    out << "Simulator elapsed time: " << sc.simulatedElapsedTime << " us" << endl;
+    out << "Real elapsed time: " << std::setprecision(2) << std::fixed << sc.realElapsedTime << " us" << endl;
     out << "Number of events processed: " << sc.eventsProcessed << endl;
     out << "Number of messages processed: " << sc.messagesProcessed << endl;
     out << "Number of motions processed: " << sc.motionsProcessed << endl;

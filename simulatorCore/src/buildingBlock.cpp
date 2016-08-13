@@ -153,7 +153,7 @@ void BuildingBlock::scheduleLocalEvent(EventPtr pev) {
 
     if (localEventsList.size() == 1) {
 		Time date;
-		date = this->blockCode->availabilityDate;
+		date = max(pev->date,this->blockCode->availabilityDate); // WARNING: is blockCode->availabilityDate considered?
 		if (date < getScheduler()->now()) date=getScheduler()->now();
 		getScheduler()->schedule(new ProcessLocalEvent(date,this));
     }

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <chrono>
 
 #include "cppScheduler.h"
 #include "buildingBlock.h"
@@ -18,6 +19,8 @@
 
 using namespace std;
 using namespace BaseSimulator::utils;
+using us = chrono::microseconds;
+using get_time = chrono::steady_clock;
 
 CPPScheduler::CPPScheduler() {
 	OUTPUT << "CPPScheduler constructor" << endl;
@@ -41,20 +44,18 @@ void CPPScheduler::deleteScheduler() {
 }
 
 void *CPPScheduler::startPaused(/*void *param*/) {
-	Time systemCurrentTime, systemCurrentTimeMax;
-
 	//usleep(1000000);
 	cout << "\033[1;33mScheduler Mode :" << schedulerMode << "\033[0m"  << endl;
 	cout << "\033[1;33mScheduler Length :" << schedulerLength << "\033[0m"  << endl;
 	sem_schedulerStart->wait();
 
     state = RUNNING;
-	Time systemStartTime, systemStopTime;
+
 	multimap<Time, EventPtr>::iterator first;
 	EventPtr pev;
 
-	systemStartTime = (glutGet(GLUT_ELAPSED_TIME))*1000;
-	cout << "\033[1;33m" << "Scheduler : start order received " << systemStartTime << "\033[0m" << endl;
+	auto systemStartTime = get_time::now();
+	cout << "\033[1;33m" << "Scheduler : start order received " << 0 << "\033[0m" << endl;
 
 	switch (schedulerMode) {
 	case SCHEDULER_MODE_FASTEST:
@@ -95,13 +96,13 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 		cout << "Realtime mode scheduler\n";
 	    while((state != ENDED && !eventsMap.empty()) || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
 			//gettimeofday(&heureGlobaleActuelle,NULL);
-	    	systemCurrentTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
-	    	systemCurrentTimeMax = systemCurrentTime - systemStartTime;
+	        auto systemCurrentTime = get_time::now();
+	    	auto systemCurrentTimeMax = systemCurrentTime - systemStartTime;
 			//ev = *(listeEvenements.begin());
 			if (!eventsMap.empty()) {
 				first=eventsMap.begin();
 				pev = (*first).second;
-				while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
+				while (!eventsMap.empty() && pev->date <= chrono::duration_cast<us>(systemCurrentTimeMax).count()) {
 					first=eventsMap.begin();
 					pev = (*first).second;
 					currentDate = pev->date;
@@ -113,19 +114,13 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 					eventsMapSize--;
 				}
 			}
-	    	systemCurrentTime = systemCurrentTimeMax;
+
 			if (!eventsMap.empty()) {
 				//ev = *(listeEvenements.begin());
 				first=eventsMap.begin();
 				pev = (*first).second;
 			}
 			
-			/*
-			  dureeAttente = ev->heureEvenement - heureActuelle;
-			  dureeAttenteTimeval.tv_sec = floor(dureeAttente / 1000000);
-			  dureeAttenteTimeval.tv_usec = (dureeAttente%1000000);
-			  select(0,NULL,NULL,NULL,&dureeAttenteTimeval);
-			*/
 			if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
 				std::chrono::milliseconds timespan(5);
 				std::this_thread::sleep_for(timespan);
@@ -141,14 +136,14 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 		cout << "ERROR : Scheduler mode not recognized !!" << endl;
 	}
 
-	systemStopTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
+	auto systemStopTime = get_time::now();
+	auto elapsedTime = systemStopTime - systemStartTime;
 
-	cout << "\033[1;33m" << "Scheduler end : " << systemStopTime << "\033[0m" << endl;
+	cout << "\033[1;33m" << "Scheduler end : " << chrono::duration_cast<us>(elapsedTime).count() << "\033[0m" << endl;
 
 	pev.reset();
 
-	StatsCollector::getInstance().updateElapsedTime(currentDate,
-													((double)(systemStopTime-systemStartTime))/1000000);
+	StatsCollector::getInstance().updateElapsedTime(currentDate, chrono::duration_cast<us>(elapsedTime).count());
 	StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
 	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
