@@ -23,7 +23,7 @@ void CommandLine::help() {
          << "\t\t maximumDate (ms) : the scheduler will stop when even list is empty, or when the maximum date is reach\n"
          << "\t\t inf : the scheduler will have an infinite duration and can only be stopped by the user" << endl;
     cerr << "\t -m <VMpath>:<VMport>\tpath to the MeldVM directory and port" << endl;
-    cerr << "\t -k {\"BB\", \"RB\", \"SB\", \"C2D\", \"C3D\"}\t module type for meld execution" << endl;
+    cerr << "\t -k {\"BB\", \"RB\", \"SB\", \"C2D\", \"C3D\", \"MR\"}\t module type for generic Block Code execution" << endl;
     cerr << "\t -g \t\t\tEnable regression testing (export terminal configuration)" << endl;
     cerr << "\t -l \t\t\tEnable printing of log information to file simulation.log" << endl;
     cerr << "\t -i \t\t\tEnable printing more detailed simulation stats" << endl;
@@ -164,4 +164,29 @@ void CommandLine::read(int argc, char *argv[]) {
 
 bool CommandLine::randomWorldRequested() {
     return topology != CMD_LINE_UNDEFINED;
+}
+
+ModuleType CommandLine::readModuleType(int argc, char **argv) {
+    // Locate -k command line argument
+    for (int i = 0; i < argc; i++) {
+        if (argv[i][0] == '-' && argv[i][1] == 'k') {
+            if (!argv[i+1]) break;
+            
+            if (strcmp(argv[i+1], "BB") == 0) return BB;
+            else if (strcmp(argv[i+1], "RB") == 0) return RB;
+            else if (strcmp(argv[i+1], "SB") == 0) return SB;
+            else if (strcmp(argv[i+1], "C2D") == 0) return C2D;
+            else if (strcmp(argv[i+1], "C3D") == 0) return C3D;
+            else if (strcmp(argv[i+1], "MR") == 0) return MR;
+            else {
+                cerr << "error: unknown module type: " << argv[i+1] << endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+    }
+
+    // Did not find it
+    cerr << "error: module type for generic Block Code execution not provided: -k"
+         << " {\"BB\", \"RB\", \"SB\", \"C2D\", \"C3D\", \"MR\"}\t" << endl;
+    exit(EXIT_FAILURE);
 }

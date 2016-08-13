@@ -99,7 +99,7 @@ public:
     void addMessageEventFunc(int type,eventFunc);
     /**
      * @brief Send message to all connected interface interfaces, except those in the variadic parameters ignore list.
-     *        Sending time randomly drawn as follow: tt = t0 + (rand * dt), where rand is either {0, 1}
+     *        Sending time randomly drawn as follow: tt = now + t0 + (rand * dt), where rand is either {0, 1}
      * @param msg message to be sent
      * @param t0 time of transmission
      * @param dt delta time between two transmissions
@@ -118,7 +118,7 @@ public:
      * @brief Send message to interface dest at time t0 + [0,1]dt
      * @param msg message to be sent
      * @param dest destination interface. 
-     * @param t0 base sending time
+     * @param t0 time to wait before sending
      * @param dt potential delay in sending time */
     int sendMessage(Message *msg,P2PNetworkInterface *dest,int t0,int dt);
     /**

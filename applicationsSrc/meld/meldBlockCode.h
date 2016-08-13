@@ -5,8 +5,6 @@
 #include "robotBlocksBlockCode.h"
 #include "robotBlocksSimulator.h"
 
-enum ModuleType {BB, RB, SB, C2D, C3D, MR};
-
 class MeldBlockCode : public BlockCode {
 private:
 	bool hasWork, polling;
