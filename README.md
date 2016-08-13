@@ -43,7 +43,10 @@ sudo apt-get install sbcl
 ```
 2\. make
 
-## Applications
+## More Information
+A __User Manual__ and a __Technical Reference__ are available in the `doc` directory, to get users and contributors started with VisibleSim.
+
+## Applications (_Obsolete_, please refer to __User Manual__)
 
 ### Application examples
 
