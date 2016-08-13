@@ -163,7 +163,7 @@ VisibleSim options:
 				inf: the scheduler will have an infinite duration 
 					 and can only be stopped by the user
 	 -m <VMpath>:<VMport>	path to the MeldVM directory and port
-	 -k {"BB", "RB", "SB", "C2D", "C3D"} module type for meld execution
+	 -k {BB, RB, SB, C2D, C3D, MR} module type for generic execution
 	 -g 		Enable regression testing
 	 -l 		Enable printing of log information to file simulation.log
 	 -h 	    help
@@ -199,8 +199,8 @@ Configures the conditions for the simulation to end:
 
 ##### Meld Process I/O Setup (`-m <VMpath>:<VMport>`)
 Only used when running a program in `Meld Process` mode, to specify the location and port of the Meld Process VM, for communicating with VisibleSim.
-##### Specify Modular Meld Target Module  (`-k {"BB", "RB", "SB", "C2D", "C3D"}`)
-This option is only available if running the `applicationsBin/meld/meld` executable (generic `meld` executable for modular robots), and is used for specifying the target block family.
+##### Specify Modular Meld Target Module  (`-k {BB, RB, SB, C2D, C3D, MR}`)
+This option is only available if running a generic `BlockCode` and is used for specifying the target block family, so that the `main` function can deduce what type of `Simulator` to instantiate.
 ##### Regression Testing Export (`-g`)
 This option triggers the export of the current configuration at the end of the simulation to an XML file named `./confCheck.xml`. This is especially useful for regression testing of the block codes, which is detailed in its own section.
 ##### Log File Output (`-l`)
@@ -638,7 +638,7 @@ First, create a folder in `applicationsSrc/` with the name of your application (
 
 #### Main File
 
-Then, create the `main` file for your application, named . The following example can be used as a template :
+Then, create the `main` file for your application, named `<appName>.cpp`. The following example can be used as a template :
 ```C++
 /* @file <appName>.cpp
  * @author <author>
@@ -668,7 +668,98 @@ int main(int argc, char **argv) {
 Where `<targetModule>` is the name of module family for which you are developing the application (e.g. `"<targetModule>Simulator.h"` can be `blinkyBlocksSimulator.h`)
 
 #### Block Code
-TODO
+The implementation of your distributed application will reside in the files `<appName>BlockCode.h`, and `<appName>BlockCode.cpp`, which respectively define a new subclass of `BlockCode` for your application, and implement it.
+
+##### BlockCode Definition
+First, create a new class, preferably named `<AppName>BlockCode`, extending either:
+
+-  `BlockCode`, for a generic application that can be used on any kind of `BuildingBlock`, but that may not allow to fully take advantage of the specificities of each type of module. 
+	- The only difficulty is that a different type of `Simulator` has to be instantiated for each module. (See the `meld` `BlockCode` in `applicationsSrc` for an example of how this can be handled, using `CommandLine::readModuleType()` and the `-k` command line option)
+- `<targetModule>BlockCode`, if creating an application targeting a specific modular robot type. 
+
+The template below can be used to get you started writing `<appName>BlockCode.h`, as it contains all the functions that have to be implemented, and is intended for a generic application. 
+In the case of a non-generic application, the parent class should be adapted, and a `static_cast<<targetModule>Block *>(host)` should be used in `buildNewBlockCode()`.
+
+```C++
+#ifndef <appName>BlockCode_H_
+#define <appName>BlockCode_H_
+
+#include "blockCode.h"
+#include "buildingBlock.h"
+
+class <AppName>BlockCode : public BlockCode {
+private:
+	// custom attribute
+public:
+    <AppName>BlockCode(BuildingBlock *host) : BlockCode(host) {};
+	~<AppName>BlockCode() {};
+
+	/**
+	 * @brief This function is called on startup of the blockCode, 
+	 it can be used to perform initial configuration of the host or this instance of the distributed program
+	*/ 
+	void startup();
+
+	/** @brief Returns a new instance of this BlocKCode. Needed to associate code to module.
+	 *  @return pointer to a newly allocated instance of this distributed program, for host assignment */
+	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+	    return (new <AppName>BlockCode(host));
+	};
+};
+
+#endif /* <appName>BlockCode_H_ */
+```
+
+##### Inter-Module Communication API
+The `BlockCode` API for communication provides functions to communicate with individual connected modules, or all of them at once (including a variadic parameter list taking pointers to interfaces to ignore). Two versions of the send functions are provided, one taking a `const char *` first argument, that can be used to print a string to the console for easy tracing, and one without.
+
+Also, a message has to be given a __unique__ integer identifier (referred to as `type` below), which can be associated to a message handler via a function pointer using the `addMessageEventFunc()` function. 
+
+Then, when a message is received by a module, the registered handler will be called. If there is none, an error message will be printed to the log file, and the message ignored.
+
+```C++
+    /**
+     * @brief Add a new message handler to the block code, for message with message type type
+     * @param type ID of the message for which a handler needs to be registered
+     * @param eventFunc the message handling function as a std::function */
+    void addMessageEventFunc(int type,eventFunc);
+    /**
+     * @brief Send message to all connected interface interfaces, except those in the variadic parameters ignore list.
+     * Sending time randomly drawn as follow: 
+     *  tt = now + t0 + (rand * dt), where rand is either {0, 1}
+     * @param msg message to be sent
+     * @param t0 time of transmission (offset to current time)
+     * @param dt delta time between two transmissions
+     * @param nexcept number of interfaces to ignore
+     * @param ... variadic parameters: pointer to the nexcept interfaces to ignore
+     * @return Number of messages effectively sent
+     */
+    int sendMessageToAllNeighbors(Message *msg,int t0,int dt,
+								  int nexcept,...);
+    /**
+     * @copydoc BlockCode::sendMessageToAllNeighbors
+     * Identical to sendMessageToAllNeighbors, but prints msgString to the console when the message is sent
+     * @param msgString string of the message to be printed when sent
+     */
+    int sendMessageToAllNeighbors(const char *msgString,Message *msg,
+								  int t0,int dt,int nexcept,...);    
+    /**
+     * @brief Send message to interface dest at time t0 + [0,1]dt
+     * @param msg message to be sent
+     * @param dest destination interface. 
+     * @param t0 base sending time
+     * @param dt potential delay in sending time */
+    int sendMessage(Message *msg,P2PNetworkInterface *dest,
+				    int t0,int dt);
+    /**
+     * @copydoc BlockCode::sendMessage
+     * @param msgString string to be printed to the console upon sending */
+    int sendMessage(const char *msgString,Message *msg,
+				    P2PNetworkInterface *dest,int t0,int dt);
+```
+
+For more information an examples, you can have a look at the already-existing applications provided in the `applicationsSrc` directory.
+
 #### Makefile
 
 In order to compile the application, we provide a sample _Makefile_ that only requires that the user sets the value of a few variables in the top section. Further modifications can be done by the user to suit its needs,  but in most cases, it will suffice.
@@ -693,7 +784,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = <appName>.cpp <appName>BlockCode.cpp
+SRCS = <appName>.cpp <appName>BlockCode.cpp #...
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/<appName>
