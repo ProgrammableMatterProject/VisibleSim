@@ -710,12 +710,55 @@ public:
 #endif /* <appName>BlockCode_H_ */
 ```
 
-##### Communication
+##### Inter-Module Communication API
+The `BlockCode` API for communication provides functions to communicate with individual connected modules, or all of them at once (including a variadic parameter list taking pointers to interfaces to ignore). Two versions of the send functions are provided, one taking a `const char *` first argument, that can be used to print a string to the console for easy tracing, and one without.
 
-TODO
+Also, a message has to be given a __unique__ integer identifier (referred to as `type` below), which can be associated to a message handler via a function pointer using the `addMessageEventFunc()` function. 
 
-##### More Information
-(Including custom files / ?. TODO)
+Then, when a message is received by a module, the registered handler will be called. If there is none, an error message will be printed to the log file, and the message ignored.
+
+```C++
+    /**
+     * @brief Add a new message handler to the block code, for message with message type type
+     * @param type ID of the message for which a handler needs to be registered
+     * @param eventFunc the message handling function as a std::function */
+    void addMessageEventFunc(int type,eventFunc);
+    /**
+     * @brief Send message to all connected interface interfaces, except those in the variadic parameters ignore list.
+     * Sending time randomly drawn as follow: 
+     *  tt = now + t0 + (rand * dt), where rand is either {0, 1}
+     * @param msg message to be sent
+     * @param t0 time of transmission (offset to current time)
+     * @param dt delta time between two transmissions
+     * @param nexcept number of interfaces to ignore
+     * @param ... variadic parameters: pointer to the nexcept interfaces to ignore
+     * @return Number of messages effectively sent
+     */
+    int sendMessageToAllNeighbors(Message *msg,int t0,int dt,
+								  int nexcept,...);
+    /**
+     * @copydoc BlockCode::sendMessageToAllNeighbors
+     * Identical to sendMessageToAllNeighbors, but prints msgString to the console when the message is sent
+     * @param msgString string of the message to be printed when sent
+     */
+    int sendMessageToAllNeighbors(const char *msgString,Message *msg,
+								  int t0,int dt,int nexcept,...);    
+    /**
+     * @brief Send message to interface dest at time t0 + [0,1]dt
+     * @param msg message to be sent
+     * @param dest destination interface. 
+     * @param t0 base sending time
+     * @param dt potential delay in sending time */
+    int sendMessage(Message *msg,P2PNetworkInterface *dest,
+				    int t0,int dt);
+    /**
+     * @copydoc BlockCode::sendMessage
+     * @param msgString string to be printed to the console upon sending */
+    int sendMessage(const char *msgString,Message *msg,
+				    P2PNetworkInterface *dest,int t0,int dt);
+```
+
+For more information an examples, you can have a look at the already-existing applications provided in the `applicationsSrc` directory.
 
 #### Makefile
 
