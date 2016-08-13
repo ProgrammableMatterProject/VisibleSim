@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <chrono>
 
 #include "meldInterpretScheduler.h"
 #include "meldInterpretVM.h"
@@ -20,6 +21,8 @@
 #include "trace.h"
 
 using namespace std;
+using us = chrono::microseconds;
+using get_time = chrono::steady_clock;
 
 namespace MeldInterpret {
 
@@ -60,8 +63,6 @@ void MeldInterpretScheduler::SemWaitOrReadDebugMessage() {
 
 void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 
-      Time systemCurrentTime, systemCurrentTimeMax, pausedTime;
-    pausedTime = 0;
     int seed = 500;
     srand (seed);
     bool hasProcessed = false;
@@ -86,11 +87,11 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 #endif
     state = RUNNING;
     //checkForReceivedVMCommands();
-    Time systemStartTime, systemStopTime;
     multimap<Time, EventPtr>::iterator first, tmp;
     EventPtr pev;
-    systemStartTime = (glutGet(GLUT_ELAPSED_TIME))*1000;
-    OUTPUT << "\033[1;33m" << "Scheduler : start order received " << systemStartTime << "\033[0m" << endl;
+	auto systemStartTime = get_time::now();
+    auto pausedTime = systemStartTime - systemStartTime; // zero by default
+	cout << "\033[1;33m" << "Scheduler : start order received " << 0 << "\033[0m" << endl;
 
     switch (schedulerMode) {
     case SCHEDULER_MODE_FASTEST:
@@ -164,12 +165,12 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 #endif
         break;
 
-    case SCHEDULER_MODE_REALTIME:
+    case SCHEDULER_MODE_REALTIME: 
         OUTPUT << "Realtime mode scheduler\n" << endl;
         //MeldInterpretDebugger::print("Simulation starts in real time mode");
 	    while((state != ENDED && !eventsMap.empty()) || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
-            systemCurrentTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000 - pausedTime;
-            systemCurrentTimeMax = systemCurrentTime - systemStartTime;
+	        auto systemCurrentTime = get_time::now() - pausedTime;
+	    	auto systemCurrentTimeMax = systemCurrentTime - systemStartTime;
             // currentDate = systemCurrentTimeMax;
             //checkForReceivedVMCommands();
             // while (true) {
@@ -201,7 +202,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 			if (!eventsMap.empty()) {
 				first=eventsMap.begin();
 				pev = (*first).second;
-				while (!eventsMap.empty() && pev->date <= systemCurrentTimeMax) {
+				while (!eventsMap.empty() && pev->date <= chrono::duration_cast<us>(systemCurrentTimeMax).count()) {
 					first=eventsMap.begin();
 					pev = (*first).second;
 					currentDate = pev->date;
@@ -213,7 +214,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 					eventsMapSize--;
 				}
 			}
-	    	systemCurrentTime = systemCurrentTimeMax;
+
 			if (!eventsMap.empty()) {
 				//ev = *(listeEvenements.begin());
 				first=eventsMap.begin();
@@ -222,10 +223,10 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 
             if (state == PAUSED) {
                 cout << "paused" << endl;
-                int pauseBeginning = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
+                auto pauseBeginning = get_time::now();
                 SemWaitOrReadDebugMessage();
                 setState(RUNNING);
-                pausedTime += ((Time)glutGet(GLUT_ELAPSED_TIME))*1000 - pauseBeginning;
+                pausedTime = get_time::now() - pauseBeginning;
             }
 
 			if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
@@ -238,17 +239,21 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 				break;
 			}
         }
-        break;
+    break;
     default:
         OUTPUT << "ERROR : Scheduler mode not recognized !!" << endl;
     }
-    systemStopTime = ((Time)glutGet(GLUT_ELAPSED_TIME))*1000;
-    OUTPUT << "\033[1;33m" << "Scheduler end : " << systemStopTime << "\033[0m" << endl;
-    pev.reset();
-    StatsCollector::getInstance().updateElapsedTime(currentDate,
-													((double)(systemStopTime-systemStartTime))/1000000);   
-    StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
-    StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
+
+    auto systemStopTime = get_time::now();
+	auto elapsedTime = systemStopTime - systemStartTime;
+
+	cout << "\033[1;33m" << "Scheduler end : " << chrono::duration_cast<us>(elapsedTime).count() << "\033[0m" << endl;
+
+	pev.reset();
+
+	StatsCollector::getInstance().updateElapsedTime(currentDate, chrono::duration_cast<us>(elapsedTime).count());
+	StatsCollector::getInstance().setLivingCounters(Event::getNbLivingEvents(), Message::getNbMessages());
+	StatsCollector::getInstance().setEndEventsQueueSize(eventsMap.size());
 
 	// if simulation is a regression testing run, export configuration before leaving
 	if (Simulator::regrTesting && !terminate.load())
