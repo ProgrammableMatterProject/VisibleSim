@@ -18,4 +18,8 @@ typedef uint64_t bID;           //!< Defines the type of a module identifier
 typedef uint64_t Time; //!< Time (unit: us)
 typedef double Distance; //!< Distance (unit: meter)
 
+enum ModuleType {BB, RB, SB, C2D, C3D, MR}; /** Defines a type that can be used to refer to a particular type of Module:
+                                             * In order: BlinkyBlock, RobotBlock, Catom2D, Catom3D, MultiRobot. 
+                                             * Used with generic block codes to determine the type of simulator to instantiate. */
+
 #endif  // TDEF_H_

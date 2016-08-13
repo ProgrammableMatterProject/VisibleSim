@@ -52,9 +52,10 @@ private:
     uint64_t endEventsQueueSize = 0; //!< Size of the events queue at scheduler end
     // Time
     Time simulatedElapsedTime = 0; //!< Duration of simulation in discrete simulator time
-    double realElapsedTime = 0; //!< Duration of simulation in real time
+    double realElapsedTime = 0; //!< Duration of simulation in real time (us)
 
-    inline double computeEventPerSec() const {  return realElapsedTime ? eventsProcessed / realElapsedTime : 0; };
+    //!< @brief Returns the number of events processed per seconds, calculated from realElapsedTime (in microseconds)
+    inline double computeEventPerSec() const {  return realElapsedTime ? eventsProcessed / (realElapsedTime / 1000000) : 0; };
 public:
     //!< Increments processed message count by 1
     inline void incMsgCount() { messagesProcessed++; };

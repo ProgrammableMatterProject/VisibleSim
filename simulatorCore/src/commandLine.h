@@ -11,6 +11,7 @@
 #include <string>
 
 #include "scheduler.h"
+#include "tDefs.h"
 
 using namespace std;
 
@@ -70,6 +71,13 @@ public:
 	bool getSchedulerAutoStop() { return schedulerAutoStop; }
 	bool isSimulationSeedSet() { return simulationSeedSet; }
 	int getSimulationSeed() { return simulationSeed; }
+
+	/**
+	 * @brief Search option -k in the command line arguments to deduce the target module type
+	 * @return ModuleType enum value (defined in tDefs.h) for target module type specified by -k option if present. 
+	 *         Terminate simulation if missing or unknown value.
+	 */
+	static ModuleType readModuleType(int argc, char **argv);
 };
 
 #endif // CONFIGSTAT_H_
