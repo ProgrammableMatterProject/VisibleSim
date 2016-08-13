@@ -34,7 +34,7 @@ double MotionEngine::getSpeed() {
 Time MotionEngine::getDuration(Distance distance) {
   double speed = getSpeed();
   double time = distance/speed;
-  // cout << "speed (m/s) = " << speed << ", distance (m) = " << distance
+  //cerr << "speed (m/s) = " << speed << ", distance (m) = " << distance
   //     << ", time (s) = " << time << endl;
   Time t = time*pow(10,6);
   

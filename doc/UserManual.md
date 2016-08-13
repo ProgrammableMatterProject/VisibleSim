@@ -1,6 +1,13 @@
-# VisibleSim Technical Reference
+# VisibleSim User Manual
 
-This technical reference sheet should be used as a starting point for anyone who is interested in contributing to VisibleSim. It details how the repository is organised, attempts to clearly outline the software's architecture, and provides new contributors with everything they need to know about the coding style to adopt.
+This manual is intended to be used by new users of VisibleSim, to get them started writing distributed applications for modular robots. 
+
+## Doxygen Documentation
+The source code and API are documented using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
+### Viewing 
+First, if the `doc` folder does not exist yet, simply run `make doc` from the root directory to build it.  Then, you can `doc/html/index.html` in your favorite browser. 
+### Contributing
+For now, please refer to the [Official Doxygen Documentation](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html) for advices on how to document the source code.
 
 ## Repository Organisation
 ### Project Tree
@@ -42,8 +49,6 @@ Here is a quick look at the content of each of the main directories from the pro
 ### Source Files
 As mentioned above, the C++ source files for the simulator's core are all stored into the `simulatorCore/src` directory. The `.cpp` file extension is used for implementation files, and `.h` for header files.
 
-### Software Architecture 
-TODO
 ## Compilation Workflow
 ### Overview
 The compilation process in VisibleSim is based on a recursive approach. The root folder contains the root folder Makefile, and from here the `make` command is passed to Makefiles from sub-directories, along with additional information (flags, variables). 
@@ -117,31 +122,6 @@ This section explains aims at detailing the lifecycle of a VisibleSim simulation
 		- `Camera` and `Spotlight`
 		- Graphical Object Loaders
 
-## Doxygen Documentation
-The source code and API are documented using [Doxygen](http://www.stack.nl/~dimitri/doxygen/).
-### Viewing 
-First, if the `doc` folder does not exist yet, simply run `make doc` from the root directory to build it.  Then, you can `doc/html/index.html` in your favorite browser. 
-### Contributing
-For now, please refer to the [Official Doxygen Documentation](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html) for advices on how to document the source code.
-
-## Coding Style
-The following rules should be taken into account when contributing new source code to VisibleSim, as they are the coding practises used on existing code, and homogeneous coding style makes it a lot easier to understand the project's sources.
-
-### Whitespace and Indentation
-Indentation size is at 4 spaces per logic level. No tabs. No trailing whitespace at the end of a line. Newline characters should be UNIX style (use `\n`, not `\r\n`).
-
-__Warning__: There is no additional indentation inside a _Namespace_ logical unit.
-
-### Lines Length
-Lines of codes (LoC) should be kept as short as possible to avoid formatting issues while diff-ing, using split-views, or printing. Ideally, lines of codes should not be longer than __80__ characters, nonetheless, you may sometimes see LoC of up to __100__ characters in VisibleSim. It is highly discouraged to exceed this limit, since it makes code a lot harder to read.
-Hence, please break long conditions after && and || logical operators, and fold long function parameter lists on several lines.
-
-### Bracing Style 
-Use [K&R bracing style](https://en.wikipedia.org/wiki/Indent_style#K.26R_style): opening brace at end of first line, cuddle else on both sides.
-
-### General C++ Style Guide
-Insightful guidelines for contributing to C++ source code can be found [here](https://google.github.io/styleguide/cppguide.html).
-
 ## Command Line Interface
 ### Usage
 ```shell
@@ -163,7 +143,7 @@ VisibleSim options:
 				inf: the scheduler will have an infinite duration 
 					 and can only be stopped by the user
 	 -m <VMpath>:<VMport>	path to the MeldVM directory and port
-	 -k {"BB", "RB", "SB", "C2D", "C3D"} module type for meld execution
+	 -k {BB, RB, SB, C2D, C3D, MR} module type for generic execution
 	 -g 		Enable regression testing
 	 -l 		Enable printing of log information to file simulation.log
 	 -h 	    help
@@ -199,8 +179,8 @@ Configures the conditions for the simulation to end:
 
 ##### Meld Process I/O Setup (`-m <VMpath>:<VMport>`)
 Only used when running a program in `Meld Process` mode, to specify the location and port of the Meld Process VM, for communicating with VisibleSim.
-##### Specify Modular Meld Target Module  (`-k {"BB", "RB", "SB", "C2D", "C3D"}`)
-This option is only available if running the `applicationsBin/meld/meld` executable (generic `meld` executable for modular robots), and is used for specifying the target block family.
+##### Specify Modular Meld Target Module  (`-k {BB, RB, SB, C2D, C3D, MR}`)
+This option is only available if running a generic `BlockCode` and is used for specifying the target block family, so that the `main` function can deduce what type of `Simulator` to instantiate.
 ##### Regression Testing Export (`-g`)
 This option triggers the export of the current configuration at the end of the simulation to an XML file named `./confCheck.xml`. This is especially useful for regression testing of the block codes, which is detailed in its own section.
 ##### Log File Output (`-l`)
@@ -211,6 +191,238 @@ Enables the printing of any log information to file `simulation.log`, by using t
 If `-l` option is not found, nothing will be printed to the file.
 ##### Help (`-h`)
 Displays the usage message in the terminal.
+
+## Block Code API
+This section is intended to guide new users into writing a `BlockCode`, by detailing the provided API, and explaining how to perform the base operations.
+
+### Creating a New Application
+First, create a folder in `applicationsSrc/` with the name of your application (to which we will refer as `appName`).
+
+#### Main File
+
+Then, create the `main` file for your application, named `<appName>.cpp`. The following example can be used as a template :
+```C++
+/* @file <appName>.cpp
+ * @author <author>
+ * @date <date>
+ * A sample main application file.
+ */
+ 
+#include "<targetModule>Simulator.h"
+#include "<targetModule>BlockCode.h"
+#include "<appName>BlockCode.h"
+
+using namespace <targetModule>;
+
+int main(int argc, char **argv) {	
+	/* Start simulation by reading configuration file, 
+	 * instantiating necessary components, and starting the scheduler.*/
+	createSimulator(argc, argv, <appName>BlockCode::buildNewBlockCode);
+
+	/* createSimulator only returns at scheduler end.
+     * Can perform some actions here before ending simulation... */
+
+	deleteSimulator(); // Deletion of allocated memory
+	
+	return(0);
+}
+```
+Where `<targetModule>` is the name of module family for which you are developing the application (e.g. `"<targetModule>Simulator.h"` can be `blinkyBlocksSimulator.h`)
+
+#### Block Code
+The implementation of your distributed application will reside in the files `<appName>BlockCode.h`, and `<appName>BlockCode.cpp`, which respectively define a new subclass of `BlockCode` for your application, and implement it.
+
+##### BlockCode Definition
+First, create a new class, preferably named `<AppName>BlockCode`, extending either:
+
+-  `BlockCode`, for a generic application that can be used on any kind of `BuildingBlock`, but that may not allow to fully take advantage of the specificities of each type of module. 
+	- The only difficulty is that a different type of `Simulator` has to be instantiated for each module. (See the `meld` `BlockCode` in `applicationsSrc` for an example of how this can be handled, using `CommandLine::readModuleType()` and the `-k` command line option)
+- `<targetModule>BlockCode`, if creating an application targeting a specific modular robot type. 
+
+The template below can be used to get you started writing `<appName>BlockCode.h`, as it contains all the functions that have to be implemented, and is intended for a generic application. 
+In the case of a non-generic application, the parent class should be adapted, and a `static_cast<<targetModule>Block *>(host)` should be used in `buildNewBlockCode()`.
+
+```C++
+#ifndef <appName>BlockCode_H_
+#define <appName>BlockCode_H_
+
+#include "blockCode.h"
+#include "buildingBlock.h"
+
+class <AppName>BlockCode : public BlockCode {
+private:
+	// custom attribute
+public:
+    <AppName>BlockCode(BuildingBlock *host) : BlockCode(host) {};
+	~<AppName>BlockCode() {};
+
+	/**
+	 * @brief This function is called on startup of the blockCode, 
+	 it can be used to perform initial configuration of the host or this instance of the distributed program
+	*/ 
+	void startup();
+
+	/** @brief Returns a new instance of this BlocKCode. Needed to associate code to module.
+	 *  @return pointer to a newly allocated instance of this distributed program, for host assignment */
+	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
+	    return (new <AppName>BlockCode(host));
+	};
+};
+
+#endif /* <appName>BlockCode_H_ */
+```
+
+##### Inter-Module Communication API
+The `BlockCode` API for communication provides functions to communicate with individual connected modules, or all of them at once (including a variadic parameter list taking pointers to interfaces to ignore). Two versions of the send functions are provided, one taking a `const char *` first argument, that can be used to print a string to the console for easy tracing, and one without.
+
+Also, a message has to be given a __unique__ integer identifier (referred to as `type` below), which can be associated to a message handler via a function pointer using the `addMessageEventFunc()` function. 
+
+Then, when a message is received by a module, the registered handler will be called. If there is none, an error message will be printed to the log file, and the message ignored.
+
+```C++
+    /**
+     * @brief Add a new message handler to the block code, for message with message type type
+     * @param type ID of the message for which a handler needs to be registered
+     * @param eventFunc the message handling function as a std::function */
+    void addMessageEventFunc(int type,eventFunc);
+    /**
+     * @brief Send message to all connected interface interfaces, except those in the variadic parameters ignore list.
+     * Sending time randomly drawn as follow: 
+     *  tt = now + t0 + (rand * dt), where rand is either {0, 1}
+     * @param msg message to be sent
+     * @param t0 time of transmission (offset to current time)
+     * @param dt delta time between two transmissions
+     * @param nexcept number of interfaces to ignore
+     * @param ... variadic parameters: pointer to the nexcept interfaces to ignore
+     * @return Number of messages effectively sent
+     */
+    int sendMessageToAllNeighbors(Message *msg,int t0,int dt,
+								  int nexcept,...);
+    /**
+     * @copydoc BlockCode::sendMessageToAllNeighbors
+     * Identical to sendMessageToAllNeighbors, but prints msgString to the console when the message is sent
+     * @param msgString string of the message to be printed when sent
+     */
+    int sendMessageToAllNeighbors(const char *msgString,Message *msg,
+								  int t0,int dt,int nexcept,...);    
+    /**
+     * @brief Send message to interface dest at time t0 + [0,1]dt
+     * @param msg message to be sent
+     * @param dest destination interface. 
+     * @param t0 base sending time
+     * @param dt potential delay in sending time */
+    int sendMessage(Message *msg,P2PNetworkInterface *dest,
+				    int t0,int dt);
+    /**
+     * @copydoc BlockCode::sendMessage
+     * @param msgString string to be printed to the console upon sending */
+    int sendMessage(const char *msgString,Message *msg,
+				    P2PNetworkInterface *dest,int t0,int dt);
+```
+
+For more information an examples, you can have a look at the already-existing applications provided in the `applicationsSrc` directory.
+
+#### Makefile
+
+In order to compile the application, we provide a sample _Makefile_ that only requires that the user sets the value of a few variables in the top section. Further modifications can be done by the user to suit its needs,  but in most cases, it will suffice.
+
+Please refer to the sample _Makefile_ below, that can be used as template and contains instructions on how to adapt it for your application.
+
+```makefile
+# Get current directory's name
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+APPDIR = ../../applicationsBin/$(current_dir)
+
+#####################################################################
+#
+# --- Sample User Makefile ---
+#
+# GLOBAL_LIBS, GLOBAL_INCLUDES and GLOBAL_CFLAGS are set by parent Makefile
+# HOWEVER: If calling make from the codeBlock directory (for more convenience to the user),
+#	these variables will be empty. Hence we test their value and if undefined,
+#	set them to predefined values.
+#
+# You will find instructions below on how to edit the Makefile to fit your needs.
+#
+# SRCS contains all the sources of your codeBlocks
+SRCS = <appName>.cpp <appName>BlockCode.cpp #...
+#
+# OUT is the output binary, where APPDIR is its enclosing directory
+OUT = $(APPDIR)/<appName>
+#
+# MODULELIB is the library for your target module type: -lsim<module_name>
+MODULELIB = -lsim<targetModule>
+# TESTS contains the commands that will be executed when `make test` 
+# is called using the blockCodeTest.sh script. 
+# Individual test commands are separated by ";\"
+TESTS = : #;\
+#
+# End of Makefile section requiring input by user
+#####################################################################
+
+OBJS = $(SRCS:.cpp=.o)
+DEPS = $(SRCS:.cpp=.depends)
+
+OS = $(shell uname -s)
+SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
+
+ifeq ($(GLOBAL_INCLUDES), )
+INCLUDES = -I. -I../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include
+else
+INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
+endif
+
+ifeq ($(GLOBAL_LIBS), )
+	ifeq ($(OS),Darwin)
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)
+	else
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lm -L/usr/X11/lib  -lglut -lGL -lGLU -lGLEW -lpthread $(MODULELIB)
+	endif				#OS
+else
+LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
+endif				#GLOBAL_LIBS
+
+ifeq ($(GLOBAL_CCFLAGS),)
+CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+	ifeq ($(OS), Darwin)
+	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
+	endif 
+else
+CCFLAGS = $(GLOBAL_CCFLAGS)
+endif
+
+CC = g++
+
+.PHONY: clean all test
+
+.cpp.o:
+	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
+
+%.depends: %.cpp
+	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
+
+all: $(OUT)
+	@:
+
+test:
+	@$(TESTS)
+
+autoinstall: $(OUT)
+	cp $(OUT)  $(APPDIR)
+
+$(APPDIR)/$(OUT): $(OUT)
+
+$(OUT): $(SIMULATORLIB) $(OBJS)
+	$(CC) -o $(OUT) $(OBJS) $(LIBS)
+
+ifneq ($(MAKECMDGOALS),clean)
+-include $(DEPS)
+endif
+
+clean:
+	rm -f *~ $(OBJS) $(OUT) $(DEPS)
+```
 
 ## Meld
 VisibleSim supports programs written in [Meld](http://www.cs.cmu.edu/~claytronics/software/meld.html). In that case, the workflow is a bit different from its C++ counterpart. 
@@ -252,56 +464,6 @@ Furthermore, the following persistent predicates can also be used to each module
 	- If there is no `neighbor` tuple in a module's database for its face `f`, then there is a `vacant` tuple instead.
 - `!neighborCount(Node N, Int C)`: Indicates the number of neighbours (_i.e._ number of connected interfaces) of a module. 
 	- _Constraint:_ `0 <= neighborCount <= NB_INTERFACES`.
-
-## User Interactions
-When running VisibleSim in graphical mode (enabled by default), the user is given a number of ways to interact with the simulated world to perform various actions, as can be seen on the screenshot below.
-
-![VisibleSim UI Screenshot](https://i.imgsafe.org/80543f35a5.png)
-
-### Base Interactions
-
-- <kbd>ctrl</kbd> + `left-click`: __Block Selection__
-	- When performed on a block, selects the clicked block (Show its information and messages on the left interface panel. Selected block is _blinking_).
-	- When performed elsewhere, unselect previously selected block.
-- <kbd>ctrl</kbd> + `right-click`: __Display Contextual Menu__
-	- Makes the contextual menu appear when on a block.
-	- Does nothing otherwise.
-- <kbd>r</kbd> / <kbd>R</kbd>: __Simulation Start__
-	- <kbd>r</kbd> starts the simulation in realtime mode.
-	- <kbd>R</kbd> starts the simulation in fastest mode.
-- <kbd>z</kbd>: __Camera Centering__
-	- Centers the camera on the selected block if there is one.
-- <kbd>w</kbd> / <kbd>W</kbd>: __Toggle Full Screen__
-- <kbd>h</kbd>: __Toggle Help Window__
-- <kbd>i</kbd>: __Toggle Console Sidebar__
-- <kbd>q</kbd> / <kbd>Q</kbd> / <kbd>esc</kbd>: __Quit simulation__
-
-### Contextual Menu
-The contextual menu can be used to interact with a single block from the ensemble, and modify the configuration, which can be exported to en XML file if needed. 
-
-#### General Interactions
-Some modules types can provide specific interactions, but these are the base ones :
-
-- `Add block`: Add a block to the selected face of the selected block. If that face does not correspond to any interface, or if the interface is already connected, this option will be greyed out. The `ID` of the added block will be set to the current maximum `ID` of the ensemble incremented by 1. 
-
-- `Delete block`: Remove the selected block from the ensemble after properly disconnecting from its neighbours. A new block can be added to the same position afterwards.
-
-- `Tap`: "Taps" the selected block, which schedules a `TAPEVENT` that can be processed by a customised user handler in `BlockCode`, by overloading the `virtual void onTap(int face);` function. Prints a message to the console by default. Mostly used for debugging. 
-
-- `Save`: Saves the current configuration to a XML configuration file named `config_hh_mm_ss.xml`. All the world, camera, spotlight, and lattice attributes are exported, as well as the positions, color, master and module-specific attributes of the blocks. For more information on how to edit the file to suit your needs, please refer to the [Configuration Files section](#config).
-
-- `Cancel`: Close popup menu. 
-
-#### Catoms2D Interactions
-When simulating __Catoms2D__ ensembles, two additional actions can be performed from the contextual menu: 
-
-- `CW Rotation`: __Clockwise Rotation__
-	- Rotates the selected block 60º clockwise.
-
-- `CCW Rotation`: __Counter-Clockwise Rotation__
-	- Rotates the selected block 60º counter-clockwise.
-
-Both actions perform a rotation of the block corresponding to an angle of one interface (60º). A rotation in any direction is possible if and only if the module has three consecutive vacant interface in that direction. In case one or both rotations are not possible, the options will be greyed-out.
 
 ## <a name="config"></a>Configuration Files
 In VisibleSim, a configuration file is a XML file that describes the simulated world. At least the state of the world at the beginning of the simulation has to be described, but thanks to a feature named __targets__, the objective state of the world at certain points in the simulation can also be described. 
@@ -566,6 +728,109 @@ This function defined in `blockCode.h` is `virtual` and does nothing by default,
 2. Overload `parseUserElements` an use the `TiXmlDocument *config` parameter to access and parse the user elements from the configuration file using [TinyXML](http://www.grinninglizard.com/tinyxml/index.html). (Please refer to the [Official TinyXML Documentation](http://www.grinninglizard.com/tinyxmldocs/index.html) for instructions)
 3. Overload `parseUserElements`, but ignore the XML document parameter, and use this function to perform custom data reading and parsing from another file, in any way.
 
+## User Interactions
+When running VisibleSim in graphical mode (enabled by default), the user is given a number of ways to interact with the simulated world to perform various actions, as can be seen on the screenshot below.
+
+![VisibleSim UI Screenshot](https://i.imgsafe.org/eee8f96789.png)
+
+### Base Interactions
+
+- <kbd>ctrl</kbd> + `left-click`: __Block Selection__
+	- When performed on a block, selects the clicked block (Show its information and messages on the left interface panel. Selected block is _blinking_).
+	- When performed elsewhere, unselect previously selected block.
+- <kbd>ctrl</kbd> + `right-click`: __Display Contextual Menu__
+	- Makes the contextual menu appear when on a block.
+	- Does nothing otherwise.
+- <kbd>r</kbd> / <kbd>R</kbd>: __Simulation Start__
+	- <kbd>r</kbd> starts the simulation in realtime mode.
+	- <kbd>R</kbd> starts the simulation in fastest mode.
+- <kbd>z</kbd>: __Camera Centering__
+	- Centers the camera on the selected block if there is one.
+- <kbd>w</kbd> / <kbd>W</kbd>: __Toggle Full Screen__
+- <kbd>h</kbd>: __Toggle Help Window__
+- <kbd>i</kbd>: __Toggle Console Sidebar__
+- <kbd>q</kbd> / <kbd>Q</kbd> / <kbd>esc</kbd>: __Quit simulation__
+
+### Contextual Menu
+The contextual menu can be used to interact with a single block from the ensemble, and modify the configuration, which can be exported to en XML file if needed. 
+
+#### General Interactions
+Some modules types can provide specific interactions, but these are the base ones :
+
+- `Add block`: Add a block to the selected face of the selected block. If that face does not correspond to any interface, or if the interface is already connected, this option will be greyed out. The `ID` of the added block will be set to the current maximum `ID` of the ensemble incremented by 1. 
+
+- `Delete block`: Remove the selected block from the ensemble after properly disconnecting from its neighbours. A new block can be added to the same position afterwards.
+
+- `Tap`: "Taps" the selected block, which schedules a `TAPEVENT` that can be processed by a customised user handler in `BlockCode`, by overloading the `virtual void onTap(int face);` function. Prints a message to the console by default. Mostly used for debugging. 
+
+- `Save`: Saves the current configuration to a XML configuration file named `config_hh_mm_ss.xml`. All the world, camera, spotlight, and lattice attributes are exported, as well as the positions, color, master and module-specific attributes of the blocks. For more information on how to edit the file to suit your needs, please refer to the [Configuration Files section](#config).
+
+- `Cancel`: Close popup menu. 
+
+#### Catoms2D Interactions
+When simulating __Catoms2D__ ensembles, two additional actions can be performed from the contextual menu: 
+
+- `CW Rotation`: __Clockwise Rotation__
+	- Rotates the selected block 60º clockwise.
+
+- `CCW Rotation`: __Counter-Clockwise Rotation__
+	- Rotates the selected block 60º counter-clockwise.
+
+Both actions perform a rotation of the block corresponding to an angle of one interface (60º). A rotation in any direction is possible if and only if the module has three consecutive vacant interface in that direction. In case one or both rotations are not possible, the options will be greyed-out.
+
+## Clock
+In VisibleSim, each `BuildingBlock` is using an independent internal clock, which can be configured to suit the user's needs.
+
+### Clock API
+#### Clock Model Assignment
+Every `BuildingBlock` has a `clock` member, which is a pointer to an instance of a subclass of the `Clock` abstract class. When a `BuildingBlock` is constructed, it is given a `PerfectClock` by default.
+
+In order to change the clock model of a block, the `BuildingBlock` class provides the following setter: 
+```C++
+/**
+ * @brief Set the internal clock to the clock in parameter
+ * @param c clock which the internal clock will be set
+ */
+void setClock(Clock *c);
+```
+
+Where `c` is an instance of one of the clock models detailed in the [Clock Models](#Clock_Models) section. This can be done from the user `BlockCode` in the `startup()` function.
+
+#### Operations
+```C++
+  /**
+   * @brief returns the local time for the simulator time in parameter.
+   * @para simTime Simulator time for which the local time is requested.
+   * @return local time for simTime
+   */ 
+  Time getTime(Time simTime);
+
+  /**
+   * @brief returns the local time for the current simulator time
+   * @return local time for current simulator time
+   */ 
+  Time getTime();
+  
+  /**
+   * @brief returns the simulator time for the local time in parameter.
+   * @para localTime Local time for which the simulator time is requested.
+   * @return simulator time for localTime
+   */
+  Time getSimulationTime(Time localTime);
+```
+
+The API for using internal clocks is only made of two fundamental operations, either convert simulator time into local time for a module using `clock->getTime(simTime)`, or perform the reverse operation with `clock->getSimulationTime(moduleTime)`. 
+
+For more convenience, a third function, `clock->getTime()` is provided as a shortcut for getting the local time for the current simulator time.
+
+### <a name="Clock_Models"></a>Clock Models
+
+#### Perfect Clock
+By default, the modules are initialised with a _drift-free_ clock model, which means that the global simulator time will always be equal to the local time of the modules.
+
+#### Q Clock 
+TODO. André ?
+
 ## <a name="autotest"></a>Automated BlockCode Testing
 We have designed a way for contributors to effortlessly ensure that the behaviour of VisibleSim is not altered, when some changes are made to the core of the simulator. The idea is that every previously working BlockCode is tested for regression, and returns a simple console output to the user, either __PASS__ if test succeeded, or __FAILED__ if some issues have to be investigated. 
 
@@ -629,197 +894,3 @@ In order to test for regression, the BlockCode is executed with the exact same p
 4. (__Missing Control File__): If when running the script, no control configuration currently exists, then user will be asked to export one interactively, in order for the test to proceed.
  
   __N.B.__: Due to the testing procedure itself, it is not possible to test algorithms that never end, since no terminal configuration can be exported.
-
-## Block Code API
-This section is intended to guide new users into writing a `BlockCode`, by detailing the provided API, and explaining how to perform the base operations.
-
-### Creating a New Application
-First, create a folder in `applicationsSrc/` with the name of your application (to which we will refer as `appName`).
-
-#### Main File
-
-Then, create the `main` file for your application, named . The following example can be used as a template :
-```C++
-/* @file <appName>.cpp
- * @author <author>
- * @date <date>
- * A sample main application file.
- */
- 
-#include "<targetModule>Simulator.h"
-#include "<targetModule>BlockCode.h"
-#include "<appName>BlockCode.h"
-
-using namespace <targetModule>;
-
-int main(int argc, char **argv) {	
-	/* Start simulation by reading configuration file, 
-	 * instantiating necessary components, and starting the scheduler.*/
-	createSimulator(argc, argv, <appName>BlockCode::buildNewBlockCode);
-
-	/* createSimulator only returns at scheduler end.
-     * Can perform some actions here before ending simulation... */
-
-	deleteSimulator(); // Deletion of allocated memory
-	
-	return(0);
-}
-```
-Where `<targetModule>` is the name of module family for which you are developing the application (e.g. `"<targetModule>Simulator.h"` can be `blinkyBlocksSimulator.h`)
-
-#### Block Code
-TODO
-#### Makefile
-
-In order to compile the application, we provide a sample _Makefile_ that only requires that the user sets the value of a few variables in the top section. Further modifications can be done by the user to suit its needs,  but in most cases, it will suffice.
-
-Please refer to the sample _Makefile_ below, that can be used as template and contains instructions on how to adapt it for your application.
-
-```C++
-# Get current directory's name
-mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
-current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
-APPDIR = ../../applicationsBin/$(current_dir)
-
-#####################################################################
-#
-# --- Sample User Makefile ---
-#
-# GLOBAL_LIBS, GLOBAL_INCLUDES and GLOBAL_CFLAGS are set by parent Makefile
-# HOWEVER: If calling make from the codeBlock directory (for more convenience to the user),
-#	these variables will be empty. Hence we test their value and if undefined,
-#	set them to predefined values.
-#
-# You will find instructions below on how to edit the Makefile to fit your needs.
-#
-# SRCS contains all the sources of your codeBlocks
-SRCS = <appName>.cpp <appName>BlockCode.cpp
-#
-# OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/<appName>
-#
-# MODULELIB is the library for your target module type: -lsim<module_name>
-MODULELIB = -lsim<targetModule>
-# TESTS contains the commands that will be executed when `make test` 
-# is called using the blockCodeTest.sh script. 
-# Individual test commands are separated by ";\"
-TESTS = : #;\
-#
-# End of Makefile section requiring input by user
-#####################################################################
-
-OBJS = $(SRCS:.cpp=.o)
-DEPS = $(SRCS:.cpp=.depends)
-
-OS = $(shell uname -s)
-SIMULATORLIB = $(MODULELIB:-l%=../../simulatorCore/lib/lib%.a)
-
-ifeq ($(GLOBAL_INCLUDES), )
-INCLUDES = -I. -I../../simulatorCore/src -I/usr/local/include -I/opt/local/include -I/usr/X11/include
-else
-INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
-endif
-
-ifeq ($(GLOBAL_LIBS), )
-	ifeq ($(OS),Darwin)
-LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(MODULELIB)
-	else
-LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lm -L/usr/X11/lib  -lglut -lGL -lGLU -lGLEW -lpthread $(MODULELIB)
-	endif				#OS
-else
-LIBS = $(GLOBAL_LIBS) -L../../simulatorCore/lib
-endif				#GLOBAL_LIBS
-
-ifeq ($(GLOBAL_CCFLAGS),)
-CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
-	ifeq ($(OS), Darwin)
-	CCFLAGS += -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -Wno-deprecated-declarations -Wno-overloaded-virtual
-	endif 
-else
-CCFLAGS = $(GLOBAL_CCFLAGS)
-endif
-
-CC = g++
-
-.PHONY: clean all test
-
-.cpp.o:
-	$(CC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
-
-%.depends: %.cpp
-	$(CC) -M $(CCFLAGS) $(INCLUDES) $< > $@
-
-all: $(OUT)
-	@:
-
-test:
-	@$(TESTS)
-
-autoinstall: $(OUT)
-	cp $(OUT)  $(APPDIR)
-
-$(APPDIR)/$(OUT): $(OUT)
-
-$(OUT): $(SIMULATORLIB) $(OBJS)
-	$(CC) -o $(OUT) $(OBJS) $(LIBS)
-
-ifneq ($(MAKECMDGOALS),clean)
--include $(DEPS)
-endif
-
-clean:
-	rm -f *~ $(OBJS) $(OUT) $(DEPS)
-```
-
-## Clock
-In VisibleSim, each `BuildingBlock` is using an independent internal clock, which can be configured to suit the user's needs.
-
-### Clock API
-#### Clock Model Assignment
-Every `BuildingBlock` has a `clock` member, which is a pointer to an instance of a subclass of the `Clock` abstract class. When a `BuildingBlock` is constructed, it is given a `PerfectClock` by default.
-
-In order to change the clock model of a block, the `BuildingBlock` class provides the following setter: 
-```C++
-/**
- * @brief Set the internal clock to the clock in parameter
- * @param c clock which the internal clock will be set
- */
-void setClock(Clock *c);
-```
-
-Where `c` is an instance of one of the clock models detailed in the [Clock Models](#Clock_Models) section. This can be done from the user `BlockCode` in the `startup()` function.
-
-#### Operations
-```C++
-  /**
-   * @brief returns the local time for the simulator time in parameter.
-   * @para simTime Simulator time for which the local time is requested.
-   * @return local time for simTime
-   */ 
-  Time getTime(Time simTime);
-
-  /**
-   * @brief returns the local time for the current simulator time
-   * @return local time for current simulator time
-   */ 
-  Time getTime();
-  
-  /**
-   * @brief returns the simulator time for the local time in parameter.
-   * @para localTime Local time for which the simulator time is requested.
-   * @return simulator time for localTime
-   */
-  Time getSimulationTime(Time localTime);
-```
-
-The API for using internal clocks is only made of two fundamental operations, either convert simulator time into local time for a module using `clock->getTime(simTime)`, or perform the reverse operation with `clock->getSimulationTime(moduleTime)`. 
-
-For more convenience, a third function, `clock->getTime()` is provided as a shortcut for getting the local time for the current simulator time.
-
-### <a name="Clock_Models"></a>Clock Models
-
-#### Perfect Clock
-By default, the modules are initialised with a _drift-free_ clock model, which means that the global simulator time will always be equal to the local time of the modules.
-
-#### Q Clock 
-TODO. André ?
