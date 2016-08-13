@@ -1,8 +1,8 @@
 /*
- * smartblock01.cpp
+ * catoms2D1.cpp
  *
- *  Created on: 12 avril 2013
- *      Author: ben
+ *  Created on: April 2015
+ *      Author: Andre
  */
 
 #include <iostream>
@@ -28,6 +28,8 @@ void parseCmdLine(int argc, char **argv) {
       }
     }
   }
+  cerr << "Mean communication rate: " << comm << endl;
+  cerr << "Mean motion speed: " << motion << endl; 
   Catoms2D1BlockCode::simParams.commRateMean = comm;
   Catoms2D1BlockCode::simParams.motionSpeedMean = motion;
 }

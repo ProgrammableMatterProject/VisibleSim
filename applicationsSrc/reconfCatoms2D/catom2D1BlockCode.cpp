@@ -1,8 +1,8 @@
 /*
  * catom2D1BlockCode.cpp
  *
- *  Created on: april 2015
- *      Author: andre
+ *  Created on: April 2015
+ *      Author: Andre
  */
 
 #include <iostream>
@@ -14,6 +14,8 @@
 #include "scheduler.h"
 #include "events.h"
 #include "rotation2DEvents.h"
+#include "rate.h"
+
 #include "reconfigurationMsg.h"
 #include "reconfCatoms2DEvents.h"
 #include "centralizedReconfiguration.h"
@@ -268,9 +270,35 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
 
 void Catoms2D1BlockCode::setSimulationParameters() {
   // Set communication rate for all interfaces
-  // catom2D
-  
+  setCommunicationRate();
   // Set motion speed
+  setMotionSpeed();
+}
+
+void Catoms2D1BlockCode::setCommunicationRate() {
+  double mean = simParams.commRateMean;
+
+  if (mean > 0) {
+    double sd = mean*DEFAULT_SD_FACTOR;
+    vector<P2PNetworkInterface*>& interfaces = catom2D->getP2PNetworkInterfaces();
+    vector<P2PNetworkInterface*>::iterator it;
+    for (it = interfaces.begin() ; it != interfaces.end(); ++it) {
+      P2PNetworkInterface* p2p = *it;
+      doubleRNG g = Random::getNormalDoubleRNG(catom2D->getRandomUint(),mean,sd);
+      RandomRate *rate = new RandomRate(g);
+      p2p->setDataRate(rate);
+    }
+  }
+}
+
+void Catoms2D1BlockCode::setMotionSpeed() {
+  double mean = simParams.motionSpeedMean;
+  if (mean > 0) {
+    double sd = mean*DEFAULT_SD_FACTOR;
+    doubleRNG g = Random::getNormalDoubleRNG(catom2D->getRandomUint(),mean,sd);
+    RandomRate *speed = new RandomRate(g);
+    //catom2D->motionEngine->setSpeed(speed);
+  }
 }
 
 BlockCode* Catoms2D1BlockCode::buildNewBlockCode(BuildingBlock *host) {

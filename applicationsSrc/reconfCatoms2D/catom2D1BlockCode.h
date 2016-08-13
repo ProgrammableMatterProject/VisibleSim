@@ -61,6 +61,8 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
   //bool canMove();
 
   void setSimulationParameters();
+  void setCommunicationRate();
+  void setMotionSpeed();
   
   static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
