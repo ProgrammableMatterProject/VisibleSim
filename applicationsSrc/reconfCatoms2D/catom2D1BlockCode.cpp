@@ -7,17 +7,16 @@
 
 #include <iostream>
 #include <sstream>
+#include <memory>
+#include <float.h>
+
 #include "catom2D1BlockCode.h"
 #include "scheduler.h"
 #include "events.h"
 #include "rotation2DEvents.h"
-//MODIF NICO
-#include <memory>
-
 #include "reconfigurationMsg.h"
 #include "reconfCatoms2DEvents.h"
 #include "centralizedReconfiguration.h"
-#include <float.h>
 
 using namespace std;
 using namespace Catoms2D;
@@ -37,6 +36,8 @@ using namespace Catoms2D;
 //#define SEND_TARGET_TUPLES
 
 //#define RECONFIGURATION_DEBUG
+
+SimulationParameters Catoms2D1BlockCode::simParams;
 
 Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
   scheduler = getScheduler();
@@ -79,6 +80,8 @@ void Catoms2D1BlockCode::startup() {
   stringstream info;
   info << "Starting ";
   scheduler->trace(info.str(),hostBlock->blockId);
+
+  setSimulationParameters();
 
 #ifdef CENTRALIZED_COMP
   if (catom2D->blockId == 1) {
@@ -261,6 +264,13 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
   }
     break;
   }
+}
+
+void Catoms2D1BlockCode::setSimulationParameters() {
+  // Set communication rate for all interfaces
+  // catom2D
+  
+  // Set motion speed
 }
 
 BlockCode* Catoms2D1BlockCode::buildNewBlockCode(BuildingBlock *host) {

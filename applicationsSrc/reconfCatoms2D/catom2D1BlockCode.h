@@ -21,7 +21,7 @@
 #include "map.h"
 #include "CTuples.h"
 #include "landmarks.h"
-
+#include "simulationParameters.h"
 #include "reconfiguration.h"
 
 class CTuples;
@@ -29,7 +29,8 @@ class Landmarks;
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  public:
-
+  static SimulationParameters simParams;
+  
   Scheduler *scheduler;
   Catoms2D::Catoms2DBlock *catom2D;
 
@@ -58,6 +59,8 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
 	
   //void updateBorder();
   //bool canMove();
+
+  void setSimulationParameters();
   
   static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
