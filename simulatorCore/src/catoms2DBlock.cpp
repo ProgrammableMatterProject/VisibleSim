@@ -27,7 +27,6 @@ Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb)
     doubleRNG g = Random::getNormalDoubleRNG(getRandomUint(),CATOMS2D_MOTION_SPEED,0.01);
     RandomRate *speed = new RandomRate(g);
     motionEngine = new MotionEngine(speed);
-    cout << "Test: " << motionEngine->getSpeed() << endl;
 }
 
 Catoms2DBlock::~Catoms2DBlock() {

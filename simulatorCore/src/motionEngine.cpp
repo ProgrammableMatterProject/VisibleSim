@@ -1,5 +1,7 @@
 #include <cmath>
 #include <iostream>
+#include <cassert>
+
 #include "motionEngine.h"
 
 using namespace std;
@@ -11,11 +13,18 @@ MotionEngine::MotionEngine() {
 }
 
 MotionEngine::MotionEngine(Rate *s) {
+  assert(s != NULL);
   speed = s;
 }
 
 MotionEngine::~MotionEngine() {
   delete speed;
+}
+
+void MotionEngine::setSpeed(Rate *s) {
+  assert(s != NULL);
+  delete speed;
+  speed = s;
 }
   
 double MotionEngine::getSpeed() {
