@@ -28,6 +28,7 @@ using namespace BlinkyBlocks;
 
 BbCycleBlockCode::BbCycleBlockCode(BlinkyBlocksBlock *host): BlinkyBlocksBlockCode(host) {
   OUTPUT << "BbCycleBlockCode constructor" << endl;
+  cout << "BbCycleBlockCode constructor" << endl;
 }
 
 BbCycleBlockCode::~BbCycleBlockCode() {

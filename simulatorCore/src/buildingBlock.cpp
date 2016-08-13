@@ -41,7 +41,7 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
 
     ruint seed = Simulator::getSimulator()->getRandomUint();
     seed *= bId;
-    generator = ruintGenerator(seed);
+    generator = uintRNG(seed);
 
     buildNewBlockCode = bcb;
 
@@ -52,16 +52,18 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
     for (int i = 0; i < nbInterfaces; i++) {
         P2PNetworkInterfaces.push_back(new P2PNetworkInterface(this));
     }
-	
-	blockCode = (BaseSimulator::BlockCode*)bcb(this);
 
-	// Parse user configuration from configuration file, only performed once
-	if (!userConfigHasBeenParsed) {
-		userConfigHasBeenParsed = true;
-		blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
-	}
-	
-	isMaster = false;
+    //setDefaultHardwareParameters();
+    
+    blockCode = (BaseSimulator::BlockCode*)bcb(this);
+
+    // Parse user configuration from configuration file, only performed once
+    if (!userConfigHasBeenParsed) {
+      userConfigHasBeenParsed = true;
+      blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
+    }
+    
+    isMaster = false;
 }
 
 BuildingBlock::~BuildingBlock() {

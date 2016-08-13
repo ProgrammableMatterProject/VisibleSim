@@ -400,13 +400,13 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
 	    int face = host->getFaceForNeighborID(target);
 
 	    if (face != -1) {
-            assert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= 17);
+            assert(TYPE_SIZE(TUPLE_TYPE(tuple)) <= MELD_MESSAGE_DEFAULT_SIZE);
             MessagePtr ptr;
             if (isNew > 0) {
-                ptr = (MessagePtr)(new AddTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
+	       ptr = (MessagePtr)(new AddTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
             }
             else {
-                ptr = (MessagePtr)(new RemoveTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
+                ptr = (MessagePtr)(new RemoveTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
             }
             P2PNetworkInterface *p2p = host->getP2PNetworkInterfaceByDestBlockId(get_neighbor_ID(face));
             /**Prepare message*/
@@ -422,10 +422,10 @@ void MeldInterpretVM::tuple_send(tuple_t tuple, NodeID rt, meld_int delay, int i
                 assert(TUPLE_TYPE(tuple) < NUM_TYPES);
                 MessagePtr ptr;
                 if (isNew > 0) {
-                    ptr = (MessagePtr)(new AddTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
+                    ptr = (MessagePtr)(new AddTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
                 }
                 else {
-                    ptr = (MessagePtr)(new RemoveTupleMessage(tuple, TYPE_SIZE(TUPLE_TYPE(tuple))));
+                    ptr = (MessagePtr)(new RemoveTupleMessage(tuple, MELD_MESSAGE_DEFAULT_SIZE));
                 }
 
                 BuildingBlock* toblock = NULL;

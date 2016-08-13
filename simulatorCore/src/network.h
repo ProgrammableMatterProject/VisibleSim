@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "tDefs.h"
+#include "rate.h"
 #include "buildingBlock.h"
 
 using namespace std;
@@ -82,11 +83,9 @@ class MessageOf:public Message {
 class P2PNetworkInterface {
 protected:
 	static unsigned int nextId;
-	static double defaultDataRate;
-	static double defaultDataRateVariability;
-	double dataRate; // bit/s
-	double dataRateVariability;
-	ruintGenerator generator;
+	static int defaultDataRate;
+	
+	BaseSimulator::Rate* dataRate;
 public:
 	
 	unsigned int globalId;
@@ -115,10 +114,9 @@ public:
 	void disconnect();
 	static void setDefaultDataRate(unsigned int rate) { defaultDataRate = rate; }
 	*/
-	
-	void setDataRate(double rate) { dataRate = rate; }
-	void setDataRateVariability(double variability) { dataRateVariability = variability; }
-	Time computeTransmissionDuration(unsigned int msgSize);
+
+	void setDataRate(BaseSimulator::Rate* r); 
+	Time getTransmissionDuration(MessagePtr &m);
 };
 
 #endif /* NETWORK_H_ */

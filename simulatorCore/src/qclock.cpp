@@ -2,6 +2,7 @@
 #include "scheduler.h"
 
 using namespace BaseSimulator;
+using namespace BaseSimulator::utils;
 
 //#define DEBUG_CLOCK
 
@@ -14,7 +15,7 @@ using namespace BaseSimulator;
 QClock::QClock(double _d, double _y0, double _x0): Clock(), d(_d), y0(_y0), x0(_x0) {
 }
 
-QClock::QClock(double mean[], double sd[], unsigned int seed): Clock() {
+/*QClock::QClock(double mean[], double sd[], unsigned int seed): Clock() {
   double values[2];
   for (int i = 0; i < 2; i++) {
     mt19937 uGenerator(seed);
@@ -25,7 +26,7 @@ QClock::QClock(double mean[], double sd[], unsigned int seed): Clock() {
   d = values[0];
   y0 = values[1];
   x0 = BaseSimulator::getScheduler()->now();
-}
+  }*/
 
 Time QClock::getTime(Time simTime) {
   Time localTime = (1.0/2.0)*d*pow((double)simTime,2) + y0*((double)simTime) + x0;
@@ -63,17 +64,17 @@ Time QClock::getSimulationTime(Time localTime) {
 //==============================================================================
 
 GNoiseQClock::GNoiseQClock(double _d, double _y0, double _x0,
-                           double _sigma, unsigned int _seed): QClock(_d,_y0,_x0),
+                           double _sigma, ruint _seed): QClock(_d,_y0,_x0),
                                                                noise(new GClockNoise(_seed,0,_sigma)) {
 }
 
-GNoiseQClock::GNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed) {
+/*GNoiseQClock::GNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed) {
   mt19937 uGenerator(_seed);
   normal_distribution<double> normalDist(mean[2],sd[2]);
   auto generator = std::bind(normalDist, uGenerator);
   double sigma = generator();
   noise = new GClockNoise(_seed,0,sigma);
-}
+  }*/
 
 GNoiseQClock::~GNoiseQClock () {
   delete noise;
@@ -197,14 +198,14 @@ void GNoiseQClock::cleanReferencePoints() {
 //
 //==============================================================================
 
-DNoiseQClock::DNoiseQClock(double _d, double _y0, double _x0, unsigned int _seed): QClock(_d,_y0,_x0),
+DNoiseQClock::DNoiseQClock(double _d, double _y0, double _x0, ruint _seed): QClock(_d,_y0,_x0),
                                                                                    noise(new DClockNoise(_seed)) {
 
 }
 
-DNoiseQClock::DNoiseQClock(double mean[], double sd[], unsigned int _seed): QClock(mean,sd,_seed),
-                                                                            noise(new DClockNoise(_seed)) {
-}
+//DNoiseQClock::DNoiseQClock(double mean[], double sd[], ruint _seed): QClock(mean,sd,_seed),
+//                                                                            noise(new DClockNoise(_seed)) {
+//}
 
 DNoiseQClock::~DNoiseQClock() {
   delete noise;
@@ -253,7 +254,7 @@ Time DNoiseQClock::getSimulationTime(Time localTime) {
 #define XMEGA_RTC_OSC1K_CRC_NB_NOISE 6
 #define XMEGA_RTC_OSC1K_CRC_NOISE_PATH "../../simulatorCore/clockNoise/XMEGA_RTC_OSC1K_CRC/"
 
-DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(Time seed) {
+DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(ruint seed) {
   static bool noiseDataLoaded = false;
   if (!noiseDataLoaded) {
     vector<string> files;
@@ -266,7 +267,11 @@ DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(Time seed) {
     noiseDataLoaded = true;
   }
   // us (4h long experiment)
-  double mean[2] = {7.132315*pow(10,-14), 0.9911011};
-  double sd[2] = {5.349995*pow(10,-14), 0.002114563};
-  return new DNoiseQClock(mean,sd,seed);
+  static double mean[2] = {7.132315*pow(10,-14), 0.9911011};
+  static double sd[2] = {5.349995*pow(10,-14), 0.002114563};
+  static doubleRNG d = Random::getNormalDoubleRNG(seed,mean[0],sd[0]); 
+  static doubleRNG y0 = Random::getNormalDoubleRNG(seed,mean[0],sd[0]);
+  
+  double x0 = (double) getScheduler()->now();
+  return new DNoiseQClock(d(),y0(),x0,seed);
 }

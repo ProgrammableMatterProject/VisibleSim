@@ -12,7 +12,7 @@
 
 using namespace BaseSimulator::utils;
 
-const int ANIMATION_DELAY=40000;
+//const int ANIMATION_DELAY=40000;
 const int COM_DELAY=2000;
 const int ANGULAR_STEP=12;
 
@@ -55,10 +55,19 @@ Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotatio
     pivot.set(m.getPivot()->ptrGlBlock->position[0],m.getPivot()->ptrGlBlock->position[1],m.getPivot()->ptrGlBlock->position[2]);
     angle = 60;
     sens = m.getDirection();
+    Distance r = defaultBlockSize[0]/2.0; // radius
+    Distance d =  r*M_PI/3.0;
+    //cerr << "Distance: " << d << endl;
+    duration = block->motionEngine->getDuration(d);
+    //cerr << "Motion duration (us): " << duration << endl;
 }
 
 Rotation2DStartEvent::Rotation2DStartEvent(Rotation2DStartEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
+    pivot = ev->pivot;
+    angle = ev->angle;
+    sens = ev->sens;
+    duration = ev->duration;
 }
 
 Rotation2DStartEvent::~Rotation2DStartEvent() {
@@ -71,7 +80,8 @@ void Rotation2DStartEvent::consume() {
     Catoms2DBlock *rb = (Catoms2DBlock *)concernedBlock;
     Catoms2DWorld::getWorld()->disconnectBlock(rb);
     rb->setColor(DARKGREY);
-    scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + ANIMATION_DELAY, rb,pivot,angle,sens));
+    Time stepDuration = duration/ANGULAR_STEP;
+    scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,stepDuration));
 }
 
 const string Rotation2DStartEvent::getEventName() {
@@ -84,17 +94,21 @@ const string Rotation2DStartEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation2DStepEvent::Rotation2DStepEvent(Time t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s): BlockEvent(t,block) {
+Rotation2DStepEvent::Rotation2DStepEvent(Time t, Catoms2DBlock *block,const Vector3D &p,double angle2goal,int s,Time d): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_STEP;
-
     pivot = p;
     angle = angle2goal;
     sens = s;
+    duration = d;
 }
 
 Rotation2DStepEvent::Rotation2DStepEvent(Rotation2DStepEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
+    pivot = ev->pivot;
+    angle = ev->angle;
+    sens = ev->sens;
+    duration = ev->duration;
 }
 
 Rotation2DStepEvent::~Rotation2DStepEvent() {
@@ -117,7 +131,7 @@ void Rotation2DStepEvent::consume() {
         Vector3D pos = pivot+BC;
         rb->angle += angle*sens;
         Catoms2DWorld::getWorld()->updateGlData(rb,pos,((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+angle*sens);
-        scheduler->schedule(new Rotation2DStopEvent(scheduler->now() + ANIMATION_DELAY, rb));
+        scheduler->schedule(new Rotation2DStopEvent(scheduler->now() + duration, rb,duration));
     } else {
         roty.setRotationY(-sens*ANGULAR_STEP);
         Vector3D BA(rb->ptrGlBlock->position[0] - pivot[0],
@@ -128,8 +142,8 @@ void Rotation2DStepEvent::consume() {
         rb->angle += ANGULAR_STEP*sens;
         Catoms2DWorld::getWorld()->updateGlData(rb,pos,
                                                 ((Catoms2DGlBlock*)rb->ptrGlBlock)->angle+ANGULAR_STEP*sens);
-        scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + ANIMATION_DELAY,rb,
-                                                pivot,angle-ANGULAR_STEP,sens));
+        scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + duration,rb,
+						    pivot,angle-ANGULAR_STEP,sens,duration));
     }
 }
 
@@ -143,13 +157,15 @@ const string Rotation2DStepEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotation2DStopEvent::Rotation2DStopEvent(Time t, Catoms2DBlock *block): BlockEvent(t,block) {
+Rotation2DStopEvent::Rotation2DStopEvent(Time t, Catoms2DBlock *block, Time d): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION2D_STOP;
+    duration = d;
 }
 
-Rotation2DStopEvent::Rotation2DStopEvent(Rotation2DStepEvent *ev) : BlockEvent(ev) {
+Rotation2DStopEvent::Rotation2DStopEvent(Rotation2DStopEvent *ev) : BlockEvent(ev) {
     EVENT_CONSTRUCTOR_INFO();
+    duration = ev->duration;
 }
 
 Rotation2DStopEvent::~Rotation2DStopEvent() {
@@ -182,7 +198,7 @@ void Rotation2DStopEvent::consume() {
     getScheduler()->trace(info.str(),rb->blockId,LIGHTBLUE);
     wrld->connectBlock(rb);
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new Rotation2DEndEvent(scheduler->now() + ANIMATION_DELAY, rb));
+    scheduler->schedule(new Rotation2DEndEvent(scheduler->now() + duration, rb));
 }
 
 const string Rotation2DStopEvent::getEventName() {

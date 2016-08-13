@@ -1,3 +1,4 @@
+
 /*
  * blinkyBlocksBlock.cpp
  *
@@ -7,6 +8,7 @@
 
 #include <iostream>
 
+#include "tDefs.h"
 #include "blinkyBlocksBlock.h"
 #include "buildingBlock.h"
 #include "blinkyBlocksWorld.h"
@@ -32,15 +34,15 @@ namespace BlinkyBlocks {
   BlinkyBlocksBlock::BlinkyBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, SCLattice::MAX_NB_NEIGHBORS) {
     OUTPUT << "BlinkyBlocksBlock constructor" << endl;
-    double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)
-						  / (BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
-    double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)
-						  / (BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
-	
+    
+    double dataRateMin = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8) / (BLINKYBLOCKS_TRANSMISSION_MAX_TIME*1000));
+    double dataRateMax = ((BLINKYBLOCKS_PACKET_DATASIZE*pow(10,6)*8)  / (BLINKYBLOCKS_TRANSMISSION_MIN_TIME*1000));
+
     for (int i = 0; i < SCLattice::MAX_NB_NEIGHBORS; i++) {
-		P2PNetworkInterface *p2p = P2PNetworkInterfaces[i];
-		p2p->setDataRate((dataRateMax+dataRateMin)/2.0);
-		p2p->setDataRateVariability((dataRateMax-dataRateMin)/2.0);
+      P2PNetworkInterface *p2p = P2PNetworkInterfaces[i];
+      doubleRNG g = Random::getUniformDoubleRNG(getRandomUint(),dataRateMin,dataRateMax);
+      RandomRate *r = new RandomRate(g);
+      p2p->setDataRate(r);
     }
 }
 

@@ -10,13 +10,12 @@
 
 #include <cinttypes>
 #include <random>
+#include <functional>
 
 typedef uint64_t bID;           //!< Defines the type of a module identifier
 #define BID_MAX UINT64_MAX       //!< Maximum module identifier value
 
-typedef uint64_t Time;
-
-typedef std::mt19937 ruintGenerator;
-typedef uint32_t ruint; 
+typedef uint64_t Time; //!< Time (unit: us)
+typedef double Distance; //!< Distance (unit: meter)
 
 #endif  // TDEF_H_

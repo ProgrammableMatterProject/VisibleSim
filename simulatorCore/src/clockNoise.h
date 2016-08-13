@@ -6,6 +6,7 @@
 #include <string>
 
 #include "tDefs.h"
+#include "random.h"
 
 using namespace std;
 
@@ -39,9 +40,7 @@ public:
  */
 class GClockNoise : public ClockNoise {
  private:
-  unsigned int seed;//!< Seed for random noise generation
-  double mean;//!< Mean of the Gaussian distribution
-  double sd;//!< Standard-deviation of the Gaussian distribution
+  doubleRNG generator;//!< Random noise generator
 
  public:
   /**
@@ -50,7 +49,7 @@ class GClockNoise : public ClockNoise {
    * @para _mean mean of the Gaussian distribution
    * @para _sd standard-deviation of the Gaussian distribution
    */
-  GClockNoise(unsigned int _seed, double _mean, double _sd);
+  GClockNoise(ruint seed, double mean, double sd);
   /**
    * @brief GClockNoise destructor.
    */
