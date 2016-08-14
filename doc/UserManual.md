@@ -146,6 +146,8 @@ VisibleSim options:
 	 -k {BB, RB, SB, C2D, C3D, MR} module type for generic execution
 	 -g 		Enable regression testing
 	 -l 		Enable printing of log information to file simulation.log
+	 -i 		Enable printing more detailed simulation stats
+	 -a <seed>	Set simulation seed
 	 -h 	    help
 ```
 
@@ -189,6 +191,10 @@ Enables the printing of any log information to file `simulation.log`, by using t
 	OUTPUT << args;
 ```
 If `-l` option is not found, nothing will be printed to the file.
+##### Detailed Simulation Statistics (`-i`)
+Prints more detailed statistics at the end of the simulation. It prints the minimum, the mean, the maximum and the standard-deviation values of the number of messages sent/received per module, the maximum message queue size reached and the number of motions per module. Be aware that collecting these statistics requires O(number of modules) memory space.
+##### Simulation Seed (`-a`)
+The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set.
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
