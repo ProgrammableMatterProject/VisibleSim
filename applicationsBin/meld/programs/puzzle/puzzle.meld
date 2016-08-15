@@ -1,0 +1,16 @@
+include #direction.meld
+include #coordinate.meld
+include #color.meld
+include #boolean.meld
+
+type initial(node).
+type inTarget(node, max int).
+
+/* Axioms */
+!inTarget(A,b_false).
+node2int(A) = 1 -o !initial(A).
+!initial(A) -o !setColor2(A,orange).
+
+/* Update Color */
+!inTarget(A,b_false) -o !setColor2(A,red).
+!inTarget(A,b_true) -o !setColor2(A,green).

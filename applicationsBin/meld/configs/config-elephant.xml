@@ -1,0 +1,65 @@
+<?xml version="1.0" standalone="no" ?>
+
+<vm serverport="5000" vmPath="./meld/meld/meld-bbsim" programPath="./program.bb" debugging="False" />
+
+<world gridsize="10,10,10" windowSize="1800,900">
+	<camera target="200,200,200" directionSpherical="0,70,400" angle="45"/>
+	<spotlight target="200,20,200" directionSpherical="45,60,400" angle="40"/>
+	
+	<blockList color="0,255,0" size="1,1,1" blocksize="40,40,41" >
+	        <!-- x y z -->
+		<block position="0,5,0"/>
+		<block position="0,4,0"/>
+
+		<block position="1,5,0"/>
+		<block position="1,4,0"/>
+		<block position="1,5,1"/>
+		<block position="1,4,1"/>
+		<block position="1,5,2"/>
+		<block position="1,4,2"/>
+		<block position="1,5,3"/>
+		<block position="1,4,3"/>
+
+		<block position="2,5,2"/>
+		<block position="2,4,2"/>
+		<block position="2,5,3"/>
+		<block position="2,4,3"/>
+		<block position="2,5,4"/>
+		<block position="2,4,4"/>
+
+		<block position="3,5,1"/>
+		<block position="3,4,1"/>
+		<block position="3,5,2"/>
+		<block position="3,4,2"/>
+		<block position="3,5,3"/>
+		<block position="3,4,3"/>
+		<block position="3,5,4"/>
+		<block position="3,4,4"/>
+
+		<block position="4,5,0"/>
+		<block position="4,4,0"/>
+		<block position="4,5,1"/>
+		<block position="4,4,1"/>
+		<block position="4,5,2"/>
+		<block position="4,4,2"/>
+		<block position="4,5,3"/>
+		<block position="4,4,3"/>
+		<block position="4,5,4"/>
+		<block position="4,4,4"/>
+
+		<block position="5,5,2"/>
+		<block position="5,4,2"/>
+		<block position="5,5,3"/>
+		<block position="5,4,3"/>
+		
+		<block position="6,5,0"/>
+		<block position="6,4,0"/>
+		<block position="6,5,1"/>
+		<block position="6,4,1"/>
+		<block position="6,5,2"/>
+		<block position="6,4,2"/>
+		<block position="6,5,3"/>
+		<block position="6,4,3"/>
+		
+	</blockList>
+</world>
