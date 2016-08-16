@@ -236,7 +236,7 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 		//cout << *camera << endl;
 	} else { // selection of the clicked block
 		if (state==GLUT_UP) {
-			if (button==GLUT_LEFT_BUTTON) {
+//			if (button==GLUT_LEFT_BUTTON) {
 				int n=selectFunc(x,y);
 				GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
 				// unselect current if exists
@@ -245,12 +245,13 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 				if (n) BaseSimulator::getWorld()->setselectedGlBlock(n-1)->toggleHighlight();
 				else BaseSimulator::getWorld()->setselectedGlBlock(-1);
 				mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
-		  	} else if (button==GLUT_RIGHT_BUTTON) {
-				int n=selectFaceFunc(x,y);
+//		  	} else
+		  	if (button==GLUT_RIGHT_BUTTON && n) {
+/*				int n=selectFaceFunc(x,y);
 				if (n) {
-					BaseSimulator::getWorld()->setSelectedFace(n-1);
+					BaseSimulator::getWorld()->setSelectedFace(n-1);*/
 					BaseSimulator::getWorld()->createPopupMenu(x,y);
-				}
+//				}
 		  	}
 		}
 	}
@@ -516,7 +517,7 @@ void GlutContext::mainLoop() {
 		s->waitForSchedulerEnd();
 //    }
 	}
-	
+
 	getScheduler()->stop(BaseSimulator::getScheduler()->now());
 
 	std::chrono::milliseconds timespan(2);
