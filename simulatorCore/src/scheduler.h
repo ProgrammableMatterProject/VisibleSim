@@ -65,6 +65,7 @@ protected:
 
 	bool autoStart = false;
 	bool autoStop = false;
+	Time maximumDate = TIME_MAX; //!< Maximum possible date that the scheduler can reach before it terminates (Defaults to maximum value for discrette time type)
 	
 	Scheduler();
 	virtual ~Scheduler();
