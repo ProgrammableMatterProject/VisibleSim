@@ -68,17 +68,17 @@ int BlinkyBlocksBlock::getDirection(P2PNetworkInterface *given_interface) {
 }
 
 void BlinkyBlocksBlock::accel(Time date, int x, int y, int z) {
-    getScheduler()->scheduleLock(new AccelEvent(date, this, x, y, z));
+    getScheduler()->schedule(new AccelEvent(date, this, x, y, z));
 }
 
 void BlinkyBlocksBlock::shake(Time date, int f) {
-    getScheduler()->scheduleLock(new ShakeEvent(getScheduler()->now(), this, f));
+    getScheduler()->schedule(new ShakeEvent(getScheduler()->now(), this, f));
 }
 
 void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
@@ -86,7 +86,7 @@ void BlinkyBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* targ
 void BlinkyBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
@@ -103,12 +103,12 @@ void BlinkyBlocksBlock::stopBlock(Time date, State s) {
 
 #ifdef ENABLE_MELDPROCESS
     if(BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDPROCESS){
-		getScheduler()->scheduleLock(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
+		getScheduler()->schedule(new MeldProcess::VMStopEvent(getScheduler()->now(), this));
     } 
 #endif
 
 	if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
-		getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
+		getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
 }
 

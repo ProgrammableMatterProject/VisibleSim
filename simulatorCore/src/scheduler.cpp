@@ -116,14 +116,6 @@ void Scheduler::removeEventsToBlock(BuildingBlock *bb) {
 	unlock();
 }
 
-Time Scheduler::now() {
-	return(currentDate);
-}
-
-bool Scheduler::scheduleLock(Event *ev) {
-	return schedule(ev); //lock done in schedule
-}
-
 void Scheduler::trace(string message, bID id,const Color &color) {
 	if (GlutContext::GUIisEnabled) {
 		mutex_trace.lock();
@@ -135,12 +127,9 @@ void Scheduler::trace(string message, bID id,const Color &color) {
 	OUTPUT << fixed << (double)(currentDate)/1000000 << " #" << id << ": " << message << endl;
 }
 
-void Scheduler::lock() {
-	mutex_schedule.lock();
-}
-
-void Scheduler::unlock() {
-	mutex_schedule.unlock();
+void Scheduler::start(int mode) {   
+	scheduler->schedulerMode = mode;
+	scheduler->sem_schedulerStart->signal();	
 }
 
 void Scheduler::stop(Time date) {

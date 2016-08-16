@@ -82,7 +82,7 @@ P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(bID i
 void SmartBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
@@ -90,7 +90,7 @@ void SmartBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* targe
 void SmartBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }

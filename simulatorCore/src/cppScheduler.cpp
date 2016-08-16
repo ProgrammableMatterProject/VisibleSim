@@ -161,9 +161,3 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 	
 	return(NULL);
 }
-
-void CPPScheduler::start(int mode) {
-	CPPScheduler* sbs = (CPPScheduler*)scheduler;
-	sbs->schedulerMode = mode;
-	sbs->sem_schedulerStart->signal();
-}

@@ -101,7 +101,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
             do {
                   while (!eventsMap.empty()  || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
                         hasProcessed = true;
-                        lock();
+                        // lock();
                         first = eventsMap.begin();
                         pev = (*first).second;
                         currentDate = pev->date;
@@ -109,7 +109,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
                         StatsCollector::getInstance().incEventsCount();
                         eventsMap.erase(first);
                         eventsMapSize--;
-                        unlock();
+                        // unlock();
                         if (state == PAUSED) {
                               if (MeldInterpretVM::isInDebuggingMode()) {
                               //getDebugger()->handleBreakAtTimeReached(currentDate);
@@ -270,18 +270,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
     return(NULL);
 }
 
-void MeldInterpretScheduler::start(int mode) {    
-    // static bool done = false;
-    // if ((state == NOTSTARTED) && !done) {
-    //     done = true;
-        MeldInterpretScheduler* sbs = (MeldInterpretScheduler*)scheduler;
-        sbs->schedulerMode = mode;
-        sbs->sem_schedulerStart->signal();
-    // }
-}
-
 void MeldInterpretScheduler::pause(Time date) {
-    //getScheduler()->scheduleLock(new VMDebugPauseSimEvent(date));
+    //getScheduler()->schedule(new VMDebugPauseSimEvent(date));
 }
 
 void MeldInterpretScheduler::unPause() {
@@ -296,76 +286,6 @@ void MeldInterpretScheduler::stop(Time date) {
     if (GlutContext::GUIisEnabled)
         schedulerThread->detach();
     setState(ENDED);
-}
-
-bool MeldInterpretScheduler::schedule(Event *ev) {
-    assert(ev != NULL);
-    stringstream info;
-
-    EventPtr pev(ev);
-
-    OUTPUT << "MeldInterpretScheduler: Schedule a " << pev->getEventName() << " (" << ev->id << ")" << endl;
-
-    // (pev->date > maximumDate) condition was removed because
-    // Blinky Block system never ends.
-
-    // (pev->date < Scheduler::currentDate) was removed because sometimes
-    // it causes bugs: when the graphical interface thread starts to
-    // schedule an event, and in this same interval, the date of the
-    // scheduler changes...
-
-    switch (schedulerMode) {
-    case SCHEDULER_MODE_REALTIME:
-        eventsMap.insert(pair<Time, EventPtr>(pev->date,pev));
-        break;
-    case SCHEDULER_MODE_FASTEST:
-        if (eventsMap.count(pev->date) > 0) {
-            std::pair<multimap<Time, EventPtr>::iterator,
-                      multimap<Time, EventPtr>::iterator> range = eventsMap.equal_range(pev->date);
-            multimap<Time, EventPtr>::iterator it = range.first;
-            while (it != range.second) {
-                if (it->second->randomNumber == 0) {
-                    it++;
-                    continue;
-                }
-                if (it->second->randomNumber > pev->randomNumber) {
-                    break;
-                }
-                if (it->second->randomNumber == pev->randomNumber) {
-                    while (it->second->randomNumber == pev->randomNumber) {
-                        if (it->second->getConcernedBlock()->blockId > pev->getConcernedBlock()->blockId) {
-                            break;
-                        }
-                        it++;
-                    }
-                    break;
-                }
-                it++;
-            }
-            eventsMap.insert(it, pair<Time, EventPtr>(pev->date,pev));
-        } else {
-            eventsMap.insert(pair<Time, EventPtr>(pev->date,pev));
-        }
-        break;
-    default:
-        ERRPUT << "unknown scheduler mode" << endl;
-        return false;
-        break;
-    }
-    eventsMapSize++;
-
-    if (largestEventsMapSize < eventsMapSize) largestEventsMapSize = eventsMapSize;
-
-    return(true);
-}
-
-
-bool MeldInterpretScheduler::scheduleLock(Event *ev) {
-    bool ret;
-    lock();
-    ret = schedule(ev);
-    unlock();
-    return ret;
 }
 
 } // MeldInterpret namespace

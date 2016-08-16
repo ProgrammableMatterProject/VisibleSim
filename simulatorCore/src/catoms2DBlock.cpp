@@ -316,7 +316,7 @@ void Catoms2DBlock::startMove(Rotation2DMove &m) {
 void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
@@ -324,7 +324,7 @@ void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) 
 void Catoms2DBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }

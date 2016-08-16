@@ -232,7 +232,7 @@ void MeldProcessScheduler::start(int mode) {
 }
 
 void MeldProcessScheduler::pause(Time date) {
-	getScheduler()->scheduleLock(new VMDebugPauseSimEvent(date));
+	getScheduler()->schedule(new VMDebugPauseSimEvent(date));
 }
 
 void MeldProcessScheduler::unPause() {
@@ -310,7 +310,7 @@ bool MeldProcessScheduler::schedule(Event *ev) {
 }
 
 
-bool MeldProcessScheduler::scheduleLock(Event *ev) {
+bool MeldProcessScheduler::schedule(Event *ev) {
 	bool ret;
 	lock();
 	ret = schedule(ev);

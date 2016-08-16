@@ -130,7 +130,7 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
@@ -138,7 +138,7 @@ void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) 
 void Catoms3DBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }
