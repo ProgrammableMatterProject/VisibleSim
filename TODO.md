@@ -10,6 +10,9 @@
 ### Meld Interpreter
 - [ ] Enable Meld action for generic rotation events (Rotation 2D/3D)
 
+### Scheduler
+- [ ] Refactor Scheduler functions (e.g. startPaused), depends on Debugger implementation
+
 ### Configuration Files
 - [ ] Camera and Spotlight elements could be automatically deduced from the rest of the data in the configuration file. See Configuration::exportToVisibleSim method in https://github.com/nazandre/VisibleSimConfigGenerator/blob/master/build/configuration.cpp.
 
@@ -18,3 +21,14 @@
 
 ### CMake buildsystem
 - [ ] Build CMake with targets: Makefile and Code::Blocks IDE project
+
+## New Features
+
+### Debugger
+- [ ] Meld Interpreter Debugger
+- [ ] C++ Debugger
+
+### Scenarios
+- [ ] Scenario definition and parsing
+- [ ] Scenario events scheduling and execution
+
