@@ -16,15 +16,15 @@
 ### Configuration Files
 - [ ] Camera and Spotlight elements could be automatically deduced from the rest of the data in the configuration file. See Configuration::exportToVisibleSim method in https://github.com/nazandre/VisibleSimConfigGenerator/blob/master/build/configuration.cpp.
 
-### Code organization
-- [ ] Organize simaltur core source code files in folders
+### Code Organization
+- [ ] Organize simulator core source code files in subfolders
 
-### CMake buildsystem
+### CMake BuildSystem
 - [ ] Build CMake with targets: Makefile and Code::Blocks IDE project
 
 ## New Features
 
-### Debugger
+### Debuggers
 - [ ] Meld Interpreter Debugger
 - [ ] C++ Debugger
 
