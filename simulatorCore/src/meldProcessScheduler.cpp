@@ -32,8 +32,6 @@ MeldProcessScheduler::MeldProcessScheduler() {
 
 MeldProcessScheduler::~MeldProcessScheduler() {
 	OUTPUT << "\033[1;31mMeldProcessScheduler destructor\33[0m" << endl;
-	delete schedulerThread;
-	delete sem_schedulerStart;
 }
 
 void MeldProcessScheduler::createScheduler() {

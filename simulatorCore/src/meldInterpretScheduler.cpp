@@ -35,8 +35,6 @@ MeldInterpretScheduler::MeldInterpretScheduler() {
 
 MeldInterpretScheduler::~MeldInterpretScheduler() {
     OUTPUT << "\033[1;31mMeldInterpretScheduler destructor\33[0m" << endl;
-    delete schedulerThread;
-    delete sem_schedulerStart;
 }
 
 void MeldInterpretScheduler::createScheduler() {
@@ -293,8 +291,11 @@ void MeldInterpretScheduler::unPause() {
 }
 
 void MeldInterpretScheduler::stop(Time date) {
-    if (GlutContext::GUIisEnabled)
+    if (GlutContext::GUIisEnabled) {
         schedulerThread->detach();
+        schedulerThread = NULL;
+    }
+    
     setState(ENDED);
 }
 

@@ -31,8 +31,6 @@ CPPScheduler::CPPScheduler() {
 
 CPPScheduler::~CPPScheduler() {
 	OUTPUT << "\033[1;31mCPPScheduler destructor\33[0m" << endl;
-	delete schedulerThread;
-	delete sem_schedulerStart;
 }
 
 void CPPScheduler::createScheduler() {
@@ -152,8 +150,10 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 		getWorld()->exportConfiguration();
 	
 	// if autoStop is enabled, terminate simulation
-	if (willAutoStop() && !terminate.load())
+	if (willAutoStop() && !terminate.load()) {
 		glutLeaveMainLoop();
+		schedulerThread = NULL;	// No need for the scheduler to delete this thread, it will have terminated already
+	}
 
 	printStats();
 
