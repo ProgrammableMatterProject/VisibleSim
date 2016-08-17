@@ -23,12 +23,7 @@ int main(int argc, char **argv) {
 	createSimulator(argc, argv, Coloration_BlockCode::buildNewBlockCode);
 
 	getSimulator()->printInfo();
-	getScheduler()->printInfo();
 	SmartBlocks::getWorld()->printInfo();
-
-	getScheduler()->start(SCHEDULER_MODE_FASTEST);
-
-	getScheduler()->waitForSchedulerEnd();
 
 	deleteSimulator();
 

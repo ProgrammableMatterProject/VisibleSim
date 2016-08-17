@@ -27,6 +27,6 @@ public:
 	void startup();
 	void processLocalEvent( EventPtr pev );
 
-	static SmartBlocks::SmartBlocksBlockCode *buildNewBlockCode( SmartBlocks::SmartBlocksBlock *host );
+	static BlockCode *buildNewBlockCode(BuildingBlock *host );
 };
 #endif /* coloration_BlockCode_H_ */
