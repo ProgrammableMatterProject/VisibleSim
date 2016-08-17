@@ -100,7 +100,7 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 				while (!eventsMap.empty()) {
 					hasProcessed = true;
 					do {
-						lock();
+						// lock();
 						first = eventsMap.begin();		
 						pev = (*first).second;
 						if (pev->date == now()) {
@@ -116,7 +116,7 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 					pev->consume();
 					eventsMap.erase(first);
 					eventsMapSize--;
-					unlock();
+					// unlock();
 					if (state == PAUSED) {
 						if (MeldProcessVM::isInDebuggingMode()) {
 							getDebugger()->handleBreakAtTimeReached(currentDate);
@@ -307,15 +307,6 @@ bool MeldProcessScheduler::schedule(Event *ev) {
 	if (largestEventsMapSize < eventsMapSize) largestEventsMapSize = eventsMapSize;
 
 	return(true);
-}
-
-
-bool MeldProcessScheduler::schedule(Event *ev) {
-	bool ret;
-	lock();
-	ret = schedule(ev);
-	unlock();
-	return ret;
 }
 
 } // MeldProcess namespace

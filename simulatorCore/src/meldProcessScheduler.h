@@ -55,11 +55,6 @@ public:
 		return !r;
 	}
 	
-	/* In the scheduler thread, schedule function is called. In the
-	 * other thread schedule should be called to not interfer
-	 * with the scheduler thread.
-	 */
-	bool schedule(Event *ev);
 	bool schedule(Event *ev);
 	
 	void SemWaitOrReadDebugMessage();
