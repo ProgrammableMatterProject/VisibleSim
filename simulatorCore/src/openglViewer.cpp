@@ -202,57 +202,57 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 	if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
 		Camera* camera=getWorld()->getCamera();
 		switch (button) {
-		case GLUT_LEFT_BUTTON:
-			if (state==GLUT_DOWN) {
-				camera->mouseDown(x,y);
-				int n=selectFunc(x,y);
-				GlBlock *glb = BaseSimulator::getWorld()->getBlockByNum(n-1);
-				GlBlock *glbs = BaseSimulator::getWorld()->getselectedGlBlock();
-				int face=selectFaceFunc(x,y);
-				if (glbs != NULL && glbs == glb) {
-					BaseSimulator::getWorld()->tapBlock(BaseSimulator::getScheduler()->now(),
-														glb->blockId, face);
-				}
-			} else
-				if (state==GLUT_UP) {
-					camera->mouseUp(x,y);
-				}
-			break;
-		case GLUT_RIGHT_BUTTON:
-			if (state==GLUT_DOWN) {
-				camera->mouseDown(x,y,true);
-			} else
-				if (state==GLUT_UP) {
-					camera->mouseUp(x,y);
-				}
-			break;
-		case 3 :
-			camera->mouseZoom(-10);
-			break;
-		case 4 :
-			camera->mouseZoom(10);
-			break;
+			case GLUT_LEFT_BUTTON:
+				if (state==GLUT_DOWN) {
+					camera->mouseDown(x,y);
+					int n=selectFunc(x,y);
+					GlBlock *glb = BaseSimulator::getWorld()->getBlockByNum(n-1);
+					GlBlock *glbs = BaseSimulator::getWorld()->getselectedGlBlock();
+					int face=selectFaceFunc(x,y);
+					if (glbs != NULL && glbs == glb) {
+						BaseSimulator::getWorld()->tapBlock(BaseSimulator::getScheduler()->now(),
+															glb->blockId, face);
+					}
+				} else
+					if (state==GLUT_UP) {
+						camera->mouseUp(x,y);
+					}
+				break;
+			case GLUT_RIGHT_BUTTON:
+				if (state==GLUT_DOWN) {
+					camera->mouseDown(x,y,true);
+				} else
+					if (state==GLUT_UP) {
+						camera->mouseUp(x,y);
+					}
+				break;
+			case 3 :
+				camera->mouseZoom(-10);
+				break;
+			case 4 :
+				camera->mouseZoom(10);
+				break;
 		}
 		//cout << *camera << endl;
 	} else { // selection of the clicked block
 		if (state==GLUT_UP) {
 //			if (button==GLUT_LEFT_BUTTON) {
-				int n=selectFunc(x,y);
-				GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
-				// unselect current if exists
-				if (slct) slct->toggleHighlight();
-				// set n-1 block selected block (no selected block if n=0
-				if (n) BaseSimulator::getWorld()->setselectedGlBlock(n-1)->toggleHighlight();
-				else BaseSimulator::getWorld()->setselectedGlBlock(-1);
-				mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
+			int n=selectFunc(x,y);
+			GlBlock *slct=BaseSimulator::getWorld()->getselectedGlBlock();
+			// unselect current if exists
+			if (slct) slct->toggleHighlight();
+			// set n-1 block selected block (no selected block if n=0
+			if (n) BaseSimulator::getWorld()->setselectedGlBlock(n-1)->toggleHighlight();
+			else BaseSimulator::getWorld()->setselectedGlBlock(-1);
+			mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
 //		  	} else
-		  	if (button==GLUT_RIGHT_BUTTON && n) {
-/*				int n=selectFaceFunc(x,y);
+			if (button==GLUT_RIGHT_BUTTON && n) {
+				int n=selectFaceFunc(x,y);
 				if (n) {
-					BaseSimulator::getWorld()->setSelectedFace(n-1);*/
+					BaseSimulator::getWorld()->setSelectedFace(n-1);
 					BaseSimulator::getWorld()->createPopupMenu(x,y);
-//				}
-		  	}
+				}
+			}
 		}
 	}
 	glutPostRedisplay();
