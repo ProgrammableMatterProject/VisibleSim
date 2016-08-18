@@ -89,9 +89,9 @@ void GlutContext::init(int argc, char **argv) {
 		glutIdleFunc(idleFunc);
 
 		mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,
-											   "../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
+											   "../../simulatorCore/resources/textures/UITextures/fenetre_onglet.tga");
 		debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,
-												 "../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga");
+												 "../../simulatorCore/resources/textures/UITextures/fenetre_ongletDBG.tga");
 		popup = new GlutPopupWindow(NULL,0,0,40,30);
 	}
 }

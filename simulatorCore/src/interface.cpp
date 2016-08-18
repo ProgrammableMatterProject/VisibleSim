@@ -128,9 +128,12 @@ GLfloat GlutWindow::drawString(GLfloat x,GLfloat y,const char *str,void *mode,GL
 GlutSlidingMainWindow::GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture):
 GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
 	openingLevel=0;
-	buttonOpen = new GlutButton(this,ID_SW_BUTTON_OPEN,5,68,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fg.tga");
-	buttonClose = new GlutButton(this,ID_SW_BUTTON_CLOSE,5,26,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fd.tga",false);
-	slider = new GlutSlider(this,ID_SW_SLD,pw+400-20,5,ph-60,"../../simulatorCore/smartBlocksTextures/slider.tga",(ph-60)/13);
+	buttonOpen = new GlutButton(this,ID_SW_BUTTON_OPEN,5,68,32,32,
+								"../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
+	buttonClose = new GlutButton(this,ID_SW_BUTTON_CLOSE,5,26,32,32,
+								 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga",false);
+	slider = new GlutSlider(this,ID_SW_SLD,pw+400-20,5,ph-60,
+							"../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
 	selectedGlBlock=NULL;
 }
 
@@ -311,9 +314,12 @@ void GlutSlidingMainWindow::select(GlBlock *sb) {
 GlutSlidingDebugWindow::GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture):
 GlutWindow(NULL,2,px,py,pw,ph,titreTexture) {
 	openingLevel=0;
-	buttonOpen = new GlutButton(this,ID_SD_BUTTON_OPEN,5,168,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fg.tga");
-	buttonClose = new GlutButton(this,ID_SD_BUTTON_CLOSE,5,126,32,32,"../../simulatorCore/smartBlocksTextures/boutons_fd.tga",false);
-	slider = new GlutSlider(this,ID_SD_SLD,pw+400-20,5,ph-75,"../../simulatorCore/smartBlocksTextures/slider.tga",(ph-60)/13);
+	buttonOpen = new GlutButton(this,ID_SD_BUTTON_OPEN,5,168,32,32,
+								"../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
+	buttonClose = new GlutButton(this,ID_SD_BUTTON_CLOSE,5,126,32,32,
+								 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga",false);
+	slider = new GlutSlider(this,ID_SD_SLD,pw+400-20,5,ph-75,
+							"../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
 	input = new GlutInputWindow(this,ID_SD_INPUT,pw+10,ph-66,380,36);
 	debugId=1;
 }
@@ -713,7 +719,7 @@ GlutHelpWindow::GlutHelpWindow(GlutWindow *parent,GLint px,GLint py,GLint pw,GLi
 	isVisible=false;
 	text=NULL;
 
-	//GlutButton *btn = new GlutButton(this, 999,pw-35,ph-35,32,32,"../../simulatorCore/smartBlocksTextures/close.tga");
+	//GlutButton *btn = new GlutButton(this, 999,pw-35,ph-35,32,32,"../../simulatorCore/resources/textures/UITextures/close.tga");
 
 	ifstream fin(textFile);
 	if(!fin) {

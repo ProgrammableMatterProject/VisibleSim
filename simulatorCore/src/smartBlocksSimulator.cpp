@@ -35,7 +35,7 @@ void SmartBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
     world = new SmartBlocksWorld(gridSize, gridScale, argc,argv);
 
 	if (GlutContext::GUIisEnabled)
-		world->loadTextures("../../simulatorCore/smartBlocksTextures");
+		world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 	
     World::setWorld(world);
 }

@@ -35,7 +35,7 @@ void MultiRobotsSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
 	world = new MultiRobotsWorld(gridSize, gridScale, argc,argv);
 
 	if (GlutContext::GUIisEnabled)
-		world->loadTextures("../../simulatorCore/multiRobotsTextures");
+		world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 
 	World::setWorld(world);
 }

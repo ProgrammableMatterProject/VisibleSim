@@ -27,10 +27,11 @@ BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vecto
 	OUTPUT << "\033[1;31mBlinkyBlocksWorld constructor\033[0m" << endl;
 
 	if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures","blinkyBlockCentered.obj");
-		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/blinkyBlocksTextures",
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
+											"blinkyBlockCentered.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/blinkyBlocksTextures",
 													  "blinkyBlockPickingCentered.obj");
-		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
 	}
 
 	lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);

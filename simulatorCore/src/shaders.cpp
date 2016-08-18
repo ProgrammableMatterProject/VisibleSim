@@ -92,7 +92,8 @@ void initShaders() {
   glShadeModel (GL_SMOOTH);					// Select Smooth Shading
   glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
 
-  shadersProgram = loadShader("../../simulatorCore/shaders/pointtex.vert","../../simulatorCore/shaders/pointtex.frag");
+  shadersProgram = loadShader("../../simulatorCore/resources/shaders/pointtex.vert",
+							  "../../simulatorCore/resources/shaders/pointtex.frag");
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 

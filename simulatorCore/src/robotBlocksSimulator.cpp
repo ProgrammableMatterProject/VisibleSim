@@ -41,7 +41,7 @@ void RobotBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vecto
     world = new RobotBlocksWorld(gridSize, gridScale, argc,argv);
 
     if (GlutContext::GUIisEnabled)
-		world->loadTextures("../../simulatorCore/robotBlocksTextures");
+		world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 	
     World::setWorld(world);
 }

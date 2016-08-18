@@ -118,7 +118,7 @@ void BlinkyBlocksSimulator::loadWorld(const Cell3DPosition &gridSize, const Vect
 	world = new BlinkyBlocksWorld(gridSize, gridScale, argc,argv);
 
 	if (GlutContext::GUIisEnabled)
-		world->loadTextures("../../simulatorCore/blinkyBlocksTextures");
+		world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 
 	World::setWorld(world);
 }
