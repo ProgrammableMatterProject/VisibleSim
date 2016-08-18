@@ -27,14 +27,13 @@ MultiRobotsWorld::MultiRobotsWorld(const Cell3DPosition &gridSize, const Vector3
 									 int argc, char *argv[]):World(argc, argv) {
 	OUTPUT << "\033[1;31mMultiRobotsWorld constructor\033[0m" << endl;
 
-    // PTHY: INCONSISTENCY
 	if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/multiRobotsTextures",
                                             "multiRobotSimple.obj");
 		objBlockForPicking = NULL;
         // = new ObjLoader::ObjLoader("../../simulatorCore/multiRobotsTextures",
         //    					  "multiRobotPicking.obj");
-		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
                                              "repere25.obj");
 	}
 

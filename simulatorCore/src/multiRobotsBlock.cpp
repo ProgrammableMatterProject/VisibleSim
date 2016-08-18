@@ -44,7 +44,7 @@ void MultiRobotsBlock::stopBlock(Time date, State s) {
 	getWorld()->updateGlData(this);
 
 	if (BaseSimulator::Simulator::getType() == BaseSimulator::Simulator::MELDINTERPRET) {
-		getScheduler()->scheduleLock(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
+		getScheduler()->schedule(new MeldInterpret::VMStopEvent(getScheduler()->now(), this));
     }
 }
 

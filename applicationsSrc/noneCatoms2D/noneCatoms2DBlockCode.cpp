@@ -15,13 +15,13 @@ using namespace std;
 using namespace Catoms2D;
 
 NoneCatoms2DBlockCode::NoneCatoms2DBlockCode(Catoms2DBlock *host):Catoms2DBlockCode(host) {
-	cout << "NoneCatoms2DBlockCode constructor" << endl;
+	// cout << "NoneCatoms2DBlockCode constructor" << endl;
 	scheduler = getScheduler();
 	catom2D = (Catoms2DBlock*)hostBlock;
 }
 
 NoneCatoms2DBlockCode::~NoneCatoms2DBlockCode() {
-	cout << "NoneCatoms2DBlockCode destructor" << endl;
+	// cout << "NoneCatoms2DBlockCode destructor" << endl;
 }
 
 void NoneCatoms2DBlockCode::startup() {

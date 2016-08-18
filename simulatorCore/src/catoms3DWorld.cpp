@@ -35,10 +35,12 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     OUTPUT << "\033[1;31mCatoms3DWorld constructor\033[0m" << endl;
 
     if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3DV2connectorID.obj");
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
+											"catom3DV2connectorID.obj");
 		objBlockForPicking =
-			new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","catom3D_picking.obj");
-		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/catoms3DTextures","repereCatom3D.obj");
+			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
+									 "catom3D_picking.obj");
+		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
 	}   
 
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);

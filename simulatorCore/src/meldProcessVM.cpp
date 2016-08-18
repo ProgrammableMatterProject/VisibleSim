@@ -291,7 +291,7 @@ void MeldProcessVM::handleCommand(VMCommand &command) {
 		// format: <size> <command> <timestamp> <src> <red> <blue> <green> <intensity>
 		SetColorVMCommand c(command.getData());
 		Color color = c.getColor();
-		getScheduler()->scheduleLock(new SetColorEvent(dateToSchedule, hostBlock, color));
+		getScheduler()->schedule(new SetColorEvent(dateToSchedule, hostBlock, color));
 	}
 	break;
 	case VM_COMMAND_SEND_MESSAGE:
@@ -307,7 +307,7 @@ void MeldProcessVM::handleCommand(VMCommand &command) {
 			ERRPUT << "Interface not found" << endl;
 			return;
 		}
-		getScheduler()->scheduleLock(new VMSendMessageEvent(dateToSchedule, hostBlock,
+		getScheduler()->schedule(new VMSendMessageEvent(dateToSchedule, hostBlock,
 															new ReceiveMessageVMCommand(c), interface));
 	}
 	break;
@@ -332,7 +332,7 @@ void MeldProcessVM::handleCommand(VMCommand &command) {
 		break;
 	case VM_COMMAND_POLL_START:
 		// Polling lasts 1us
-		getScheduler()->scheduleLock(new VMEndPollEvent(dateToSchedule+1, hostBlock));
+		getScheduler()->schedule(new VMEndPollEvent(dateToSchedule+1, hostBlock));
 		polling = true;
 		break;
 	default:

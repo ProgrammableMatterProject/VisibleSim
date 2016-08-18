@@ -252,7 +252,7 @@ Time DNoiseQClock::getSimulationTime(Time localTime) {
 }
 
 #define XMEGA_RTC_OSC1K_CRC_NB_NOISE 6
-#define XMEGA_RTC_OSC1K_CRC_NOISE_PATH "../../simulatorCore/clockNoise/XMEGA_RTC_OSC1K_CRC/"
+#define XMEGA_RTC_OSC1K_CRC_NOISE_PATH "../../simulatorCore/resources/clockNoise/XMEGA_RTC_OSC1K_CRC/"
 
 DNoiseQClock* DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(ruint seed) {
   static bool noiseDataLoaded = false;

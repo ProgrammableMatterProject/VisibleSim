@@ -146,6 +146,8 @@ VisibleSim options:
 	 -k {BB, RB, SB, C2D, C3D, MR} module type for generic execution
 	 -g 		Enable regression testing
 	 -l 		Enable printing of log information to file simulation.log
+	 -i 		Enable printing more detailed simulation stats
+	 -a <seed>	Set simulation seed
 	 -h 	    help
 ```
 
@@ -189,6 +191,10 @@ Enables the printing of any log information to file `simulation.log`, by using t
 	OUTPUT << args;
 ```
 If `-l` option is not found, nothing will be printed to the file.
+##### Detailed Simulation Statistics (`-i`)
+Prints more detailed statistics at the end of the simulation. It prints the minimum, the mean, the maximum and the standard-deviation values of the number of messages sent/received per module, the maximum message queue size reached and the number of motions per module. Be aware that collecting these statistics requires O(number of modules) memory space.
+##### Simulation Seed (`-a`)
+The randomness of the simulation (variability in the communication rate, variability in the motion duration (not fully supported yet), clock randomness) depends on the simulation seed. Using the same simulation seed on the same configuration produces the same simulation. By default, the simulation seed is equal to 50. If  `-a < seed < 0 >` is used, a randomly generated seed is set.
 ##### Help (`-h`)
 Displays the usage message in the terminal.
 
@@ -828,8 +834,16 @@ For more convenience, a third function, `clock->getTime()` is provided as a shor
 #### Perfect Clock
 By default, the modules are initialised with a _drift-free_ clock model, which means that the global simulator time will always be equal to the local time of the modules.
 
-#### Q Clock 
-TODO. André ?
+#### QClock: Quadratic-Model Clock 
+
+Many hardware clock oscillators can be modeled using a quadratic model [1]: $x(t) =  \frac{1}{2} \cdot D \cdot t^2 + y_0 \cdot t + x_0 + \epsilon(t)$, where $t$ is the real-time (i.e., the simulator time), $x(t)$ is the clock local time, $D$ is the frequency drift , $y_0$ is the frequency offset, $x_0$ is the time offset, and $\epsilon(t)$ is the random noise.
+
+ `QClock` uses this quadratic clock model.  Two types of  `QClock`  are available VisibleSim, namely  `GNoiseQClock` and `DNoiseQClock`. They differ by the way the noise $\epsilon(t)$ is simulated. In  `GNoiseQClock` (Gaussian-noise quadratic-model clock), the noise is simulated using a Gaussian distribution.  The method used in `DNoiseQClock` is inspired by the work presented in [2]. In `DNoiseQClock` (data-noise quadratic-model clock), the noise is replayed from data. We experimentally collected noise data for some BlinkyBlocks clocks during four hours. BlinkyBlocks clocks are driven by XMEGA_RTC_OSC1K_CRC calibrated RC oscillators with  a resolution of 1 millisecond and an accuracy of 1% accuracy (10 000 ppm) at 3V and 25°C. Users can easily instantiate such clocks using `DNoiseQClock DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(ruint seed)` method. Be aware that the clocks generated using this method only work until the simulator time four hours.
+
+For quadratic-model clocks, converting simulator time into local time using `clock->getTime(simTime)` is a relatively straightforward and efficient operation. On the other hand, users should be aware that the reverse operation, perfomed with `clock->getSimulationTime(moduleTime)`, is quite expensive. Because the random noise is not constant over time,  this operation is perfomed using a guided search mechanism.
+
+[1] David W Allan. Time and frequency(time-domain) characterization, estimation, and prediction of precision clocks and oscillators. IEEE transactions on ultrasonics, ferroelectrics, and frequency control, 34(6):647–654, 1987.
+[2] Ring, F., Nagy, A., Gaderer, G., & Loschmidt, P. (2010, November). Clock synchronization simulation for wireless sensor networks. In Sensors, 2010 IEEE (pp. 2022-2026). IEEE.
 
 ## <a name="autotest"></a>Automated BlockCode Testing
 We have designed a way for contributors to effortlessly ensure that the behaviour of VisibleSim is not altered, when some changes are made to the core of the simulator. The idea is that every previously working BlockCode is tested for regression, and returns a simple console output to the user, either __PASS__ if test succeeded, or __FAILED__ if some issues have to be investigated. 

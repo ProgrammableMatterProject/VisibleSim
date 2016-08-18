@@ -23,7 +23,6 @@ int main(int argc, char **argv) {
 	}
 
 	Simulator::getSimulator()->printInfo();
-	BaseSimulator::getScheduler()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 		
 	deleteSimulator();

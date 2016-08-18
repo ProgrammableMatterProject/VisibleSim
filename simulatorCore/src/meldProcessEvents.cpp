@@ -77,7 +77,7 @@ VMSendMessageEvent::VMSendMessageEvent(Time t, BuildingBlock *conBlock, Message 
 	eventType = EVENT_SEND_MESSAGE;
 	message = MessagePtr(mes);
 	sourceInterface = ni;
-	randomNumber = conBlock->getRandomUint32();
+	randomNumber = conBlock->getRandomUint();
 	EVENT_CONSTRUCTOR_INFO();
 }
 
