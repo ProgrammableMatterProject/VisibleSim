@@ -28,6 +28,10 @@
 
 ## New Features
 
+### Multi Robots
+- [ ] Native support for non-modular multi-robot systems with wireless communication capability
+- [ ] Support for obstacles as a standard feature in VisibleSim
+
 ### Debuggers
 - [ ] Meld Interpreter Debugger
 - [ ] C++ Debugger
