@@ -94,8 +94,8 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
                 connect(ptrNeighbor->getInterface(HLattice::Direction(
                                                       lattice->getOppositeDirection(i))));
 
-            OUTPUT << "connection #" << (ptrBlock)->blockId <<
-                " to #" << ptrNeighbor->blockId << endl;
+            // OUTPUT << "connection #" << (ptrBlock)->blockId <<
+            //     " to #" << ptrNeighbor->blockId << endl;
         } else {
             (ptrBlock)->getInterface(HLattice::Direction(i))->connect(NULL);
         }
@@ -210,6 +210,7 @@ void Catoms2DWorld::glDraw() {
 void Catoms2DWorld::glDrawId() {
     glPushMatrix();
     glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
+
     glDisable(GL_TEXTURE_2D);
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
@@ -224,7 +225,7 @@ void Catoms2DWorld::glDrawId() {
 
 void Catoms2DWorld::glDrawIdByMaterial() {
     glPushMatrix();
-    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
+    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
 
     glDisable(GL_TEXTURE_2D);
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
@@ -290,7 +291,6 @@ bool Catoms2DWorld::areNeighborsGridPos(Cell3DPosition &pos1, Cell3DPosition &po
 
 void Catoms2DWorld::menuChoice(int n) {
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-
     switch (n) {
     case 5: {                 // Move Left
         // Identify pivot
@@ -333,20 +333,20 @@ void Catoms2DWorld::setSelectedFace(int n) {
  */
 void Catoms2DWorld::createPopupMenu(int ix, int iy) {
     if (!GlutContext::popupMenu) {
-        GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
+        GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,252);
         GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
         GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
         GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
         GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-        GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_tap.tga");
-        GlutContext::popupMenu->addButton(6,"../../simulatorCore/menuTextures/menu_tap.tga");
+        GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_CCWMove.tga");
+        GlutContext::popupMenu->addButton(6,"../../simulatorCore/menuTextures/menu_CWMove.tga");
         GlutContext::popupMenu->addButton(7,"../../simulatorCore/menuTextures/menu_cancel.tga");
     }
 
     if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
 
-    cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
-         << " selected" << endl;
+    // cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
+    //      << " selected" << endl;
 
     Catoms2DBlock *bb = (Catoms2DBlock *)getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
 

@@ -108,6 +108,13 @@ public:
 				// If scheduler is not yet in termination mode (means it is still running), instruct it to terminate
 				if (!scheduler->terminate.load()) {
 					scheduler->terminate.store(true);
+
+					// In case scheduler thread if waiting on semaphore before start, release it
+					if (scheduler->state == NOTSTARTED) {
+						scheduler->state = ENDED;
+						scheduler->start(SCHEDULER_MODE_FASTEST);
+					}					   
+						
 					// Wait until scheduler termination
 					scheduler->schedulerThread->join();
 				}

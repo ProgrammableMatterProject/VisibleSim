@@ -35,8 +35,6 @@ MeldInterpretScheduler::MeldInterpretScheduler() {
 
 MeldInterpretScheduler::~MeldInterpretScheduler() {
     OUTPUT << "\033[1;31mMeldInterpretScheduler destructor\33[0m" << endl;
-    delete schedulerThread;
-    delete sem_schedulerStart;
 }
 
 void MeldInterpretScheduler::createScheduler() {
@@ -121,8 +119,8 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 
                         // Check that we have not reached the maximum simulation date, if there is one
                         if (currentDate > maximumDate) {
-                            cout << "\033[1;33m" << "Scheduler : maximum simulation date has been reached. "
-                                 << "Terminating..." << "\033[0m" << endl;
+                            cout << "\033[1;33m" << "Scheduler : maximum simulation date (" << maximumDate
+                                 << ") has been reached. Terminating..." << "\033[0m" << endl;
                             break;
                         }
 
@@ -283,8 +281,11 @@ void MeldInterpretScheduler::unPause() {
 }
 
 void MeldInterpretScheduler::stop(Time date) {
-    if (GlutContext::GUIisEnabled)
+    if (GlutContext::GUIisEnabled) {
         schedulerThread->detach();
+        schedulerThread = NULL;
+    }
+    
     setState(ENDED);
 }
 

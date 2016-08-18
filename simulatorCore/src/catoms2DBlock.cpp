@@ -193,29 +193,32 @@ int Catoms2DBlock::getCCWMovePivotId() {
 		P2PNetworkInterface *p2pPivot = getInterface((HLattice::Direction)j);
 		
 		if (p2pPivot->connectedInterface) {
-			cout << j << ".isConnected: ";
+			// cout << j << ".isConnected: ";
 					
 			bool res = true;
 			for (int i = 1; i < 4; i++) {
-				// Indexes are shifted by n / 60 degrees due to the rotation of the block
-				// int rotOffset = angle / 60;
-				// int index = (((i + j) % 6) + rotOffset) % 6;
 				int index = ((j - i)%6 + 6)%6;
-				// Cell3DPosition p = getPosition((HLattice::Direction)index);
 				P2PNetworkInterface *p2pIf = getInterface((HLattice::Direction)index);
 				if (p2pIf->connectedInterface) {
-					cout << index << ".false ";
+					// cout << index << ".false ";
 					res = false;
 				} else {
-					cout << index << ".true ";
+					// cout << index << ".true ";
 				}
 			}
 
-			cout << endl;
+			// cout << endl;
 
 			if (res) {
-				cout << "Block " << position << " wants to CCW MOVEP: " << getPosition(p2pPivot) << endl;
-				return p2pPivot->getConnectedBlockId();
+				Catoms2DBlock *piv = static_cast<Catoms2DBlock*>(p2pPivot->connectedInterface->hostBlock);
+				int idDestIf = ((piv->getDirection(p2pPivot->connectedInterface) + 1)%6 + 6)%6;
+				Cell3DPosition dest  = piv->getPosition((HLattice::Direction)idDestIf);
+				if (getWorld()->lattice->isInGrid(dest)) {
+					// cout << "Block " << position << " wants to CCW MOVEP: " << dest << endl;
+					return p2pPivot->getConnectedBlockId();
+				} else {
+					// cout << "CCW Destination " << dest << " not in grid" << endl;
+				}
 			}
 		}
     }
@@ -228,23 +231,30 @@ int Catoms2DBlock::getCWMovePivotId() {
 		P2PNetworkInterface *p2pPivot = getInterface((HLattice::Direction)j);
 
 		if (p2pPivot->connectedInterface) {
-			cout << j << ".isConnected: ";
+			// cout << j << ".isConnected: ";
 						
 			bool res = true;
 			for (int i = 1; i < 4; i++) {
 				int index = ((j + i)%6 + 6)%6;
 				P2PNetworkInterface *p2pIf = getInterface((HLattice::Direction)index);
 				if (p2pIf->connectedInterface) {
-					cout << index << ".false ";
+					// cout << index << ".false ";
 					res = false;
 				} else {
-					cout << index << ".true ";
+					// cout << index << ".true ";
 				}
 			}
 
 			if (res) {
-				cout << "Block " << position << " wants to CW MOVEP: " << getPosition(p2pPivot) << endl;
-				return p2pPivot->getConnectedBlockId();
+				Catoms2DBlock *piv = static_cast<Catoms2DBlock*>(p2pPivot->connectedInterface->hostBlock);
+				int idDestIf = ((piv->getDirection(p2pPivot->connectedInterface) - 1)%6 + 6)%6;
+				Cell3DPosition dest  = piv->getPosition((HLattice::Direction)idDestIf);
+				if (getWorld()->lattice->isInGrid(dest)) {
+					// cout << "Block " << position << " wants to CW MOVEP: " << dest << endl;
+					return p2pPivot->getConnectedBlockId();
+				} else {
+					// cout << "CW Destination " << dest << " not in grid" << endl;
+				}
 			}
 		}
     }
@@ -314,16 +324,16 @@ void Catoms2DBlock::startMove(Rotation2DMove &m) {
 }
 
 void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
-    OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->schedule(
-		new AddNeighborEvent(getScheduler()->now(), this,
-							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
+    // OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
+	// 	   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+getScheduler()->schedule(
+	new AddNeighborEvent(getScheduler()->now(), this,
+						 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms2DBlock::removeNeighbor(P2PNetworkInterface *ni) {
-    OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
-		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+    // OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
+	// 	   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));

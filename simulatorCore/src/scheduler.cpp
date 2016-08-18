@@ -43,8 +43,11 @@ Scheduler::Scheduler() {
 }
 
 Scheduler::~Scheduler() {
-	removeKeywords();
 	OUTPUT << "Scheduler destructor" << endl;
+	removeKeywords();
+	if (schedulerThread)
+		delete schedulerThread;
+	delete sem_schedulerStart;
 }
 
 bool Scheduler::schedule(Event *ev) {

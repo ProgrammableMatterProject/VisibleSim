@@ -23,7 +23,7 @@ OUT = $(APPDIR)/csgCatoms3D
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms3D
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = :
+TESTS = ../../utilities/blockCodeTest.sh csgCatoms3D $(OUT)
 #
 # End of Makefile section requiring input by user
 #####################################################################
