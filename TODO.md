@@ -3,7 +3,11 @@
 ## Issues to address
 
 ### User Interactions 
-- [ ] Catoms2D Rotations from the menu are sometimes mistakenly authorized, and blocks sometimes perform 2 rotations at a time.
+- [x] Catoms2D Rotations from the menu are sometimes mistakenly authorized, and blocks sometimes perform 2 rotations at a time.
+
+### Graphical Window
+- [ ] Catoms2D graphical grid size seems too narrow, which cuts modules at coordinate x = (gridSize - 1) in two. See below:
+![Catoms2D Broken Border Display](https://i.imgsafe.org/5256b40afe.png)
 
 ## Improvements
 
