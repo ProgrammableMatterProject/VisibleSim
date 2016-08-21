@@ -1,15 +1,17 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="30,1,30">
+<world gridSize="15,1,8">
     <blockList blockSize="1,5,1">
-        <block position="3,0,0" color="255,0,0" angle="0" />
-        <block position="4,0,0" color="127.5,127.5,127.5" angle="0" />
-        <block position="5,0,0" color="127.5,127.5,127.5" angle="0" />
-        <block position="6,0,0" color="127.5,127.5,127.5" angle="0" />
-        <block position="7,0,0" color="127.5,127.5,127.5" angle="0" />
-        <block position="8,0,0" color="127.5,127.5,127.5" angle="0" />
-        <block position="4,0,1" color="255,0,0" angle="0" />
-        <block position="5,0,1" color="127.5,127.5,127.5" angle="0" />
-        <block position="7,0,1" color="255,0,0" angle="-60" />
-        <block position="9,0,0" color="255,0,0" angle="-120" />
+        <block position="10,0,0" color="100,100,100" angle="-360" />
+        <block position="8,0,0" color="100,100,100" angle="0" />
+        <block position="12,0,2" color="100,100,100" angle="-480" />
+        <block position="11,0,2" color="100,100,100" angle="-360" />
+        <block position="11,0,3" color="100,100,100" angle="-360" />
+        <block position="11,0,1" color="100,100,100" angle="-540" />
+        <block position="12,0,1" color="100,100,100" angle="-540" />
+        <block position="11,0,0" color="100,100,100" angle="-480" />
+        <block position="9,0,0" color="100,100,100" angle="-360" />
+        <block position="13,0,0" color="100,100,100" angle="-540" />
+        <block position="10,0,1" color="100,100,100" angle="-420" />
+        <block position="12,0,0" color="100,100,100" angle="-420" />
     </blockList>
 </world>

@@ -24,7 +24,7 @@
 //#define RECONFIGURATION_MSG_DEBUG
 //#define RECONFIGURATION_CLEARANCE_DEBUG
 
-//#define RECONFIGURATION_WITH_COLOR
+#define RECONFIGURATION_WITH_COLOR
 
 #define RECONFIGURATION_CHECKSPACE_DEBUG
 #define CHECK_SPACE
@@ -711,6 +711,7 @@ void Reconfiguration::hasConverged() {
   state = GOAL;
 #ifdef RECONFIGURATION_WITH_COLOR
   Coordinate p = map->getPosition();
+  assert(Map::isInTarget(p));
   Cell3DPosition c(p.x,0,p.y); 
   catom->setColor(BlockCode::target->getTargetColor(c));
 #endif
