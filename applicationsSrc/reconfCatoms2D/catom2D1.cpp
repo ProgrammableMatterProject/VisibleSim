@@ -33,8 +33,21 @@ void parseCmdLine(int argc, char **argv) {
       }
     }
   }
-  cerr << "Mean communication rate: " << comm << endl;
-  cerr << "Mean motion speed: " << motion << endl; 
+
+  if (comm > 0) {
+    cerr << "Communication rate: "
+	 << " mean = " << comm << ","
+	 << " sd = " << comm*DEFAULT_SD_FACTOR
+	 << endl;
+  }
+
+  if (motion > 0) {
+    cerr << "Motion speed: "
+	 << " mean = " << motion << ","
+	 << " sd = " << motion*DEFAULT_SD_FACTOR
+	 << endl;
+  }
+  
   Catoms2D1BlockCode::simParams.commRateMean = comm;
   Catoms2D1BlockCode::simParams.motionSpeedMean = motion;
 }
