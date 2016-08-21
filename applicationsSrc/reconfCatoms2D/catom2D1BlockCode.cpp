@@ -261,11 +261,6 @@ void Catoms2D1BlockCode::processLocalEvent(EventPtr pev) {
     #ifdef RECONFIGURATION_DEBUG
     cout << "@" << catom2D->blockId << " motion end: " << catom2D->position << endl;
     #endif
-    //if (hostBlock->blockId == 7) {
-    //  cout << "@" << catom2D->blockId << " motion end  + communication re-restablised at : " << getScheduler()->now() << endl;
-      //getchar();
-    //}
-    catom2D->setColor(YELLOW);
     reconfiguration->handleStopMovingEvent();
   }
     break;

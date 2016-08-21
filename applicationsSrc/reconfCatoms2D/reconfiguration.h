@@ -16,19 +16,34 @@
 #include "map.h"
 #include "border.h"
 
+#define CATOMS_RADIUS 0.5
+ 
 enum reconfigurationState_t {NOT_SET = -2, UNKNOWN = -1, BLOCKED, WAITING, ASK_TO_MOVE, MOVING, GOAL};
 
-class PerimeterCaseState {
+class ClearanceRequest {
  public:
-  Coordinate cell;
-  std::list<reconfigurationState_t> states;
+  Coordinate src;
+  Coordinate dest;
+  int cnt;
+  
+  ClearanceRequest();
+  ClearanceRequest(Coordinate &s,Coordinate &d, int c);
+  ClearanceRequest(const ClearanceRequest &cr);
+  ~ClearanceRequest();
 
-  PerimeterCaseState();
-  PerimeterCaseState(Coordinate c, list<reconfigurationState_t> s);
-  PerimeterCaseState(const PerimeterCaseState &pcs);
-  ~PerimeterCaseState();
+  std::string toString();
+};
 
-  void reset(Coordinate &c);
+class Clearance {
+ public:
+  Coordinate src;
+  Coordinate dest;
+  
+  Clearance();
+  Clearance(Coordinate &s,Coordinate &d);
+  Clearance(const Clearance &c);
+  ~Clearance();
+
   std::string toString();
 };
 
@@ -42,20 +57,61 @@ private:
    //Border *border;
    //PerimeterCaseState rotationDirectionCell;
    //PerimeterCaseState antiRotationDirectionCell;
-   std::list<Coordinate> moving;
-   int nbWaitingAuthorization;
+   std::list<Coordinate> movings;
+   std::list<ClearanceRequest> pendingRequests;
+   
+   Clearance currentClearance;
    
    void init();
-   void updatePosition();
-   void updateState();
+
+   bool tryToMove();
+   Coordinate getPositionAfterRotationAround(Neighbor &pivot);
+   bool shouldMove(Coordinate &src, Coordinate &pivot, Coordinate &dest);
+   bool isFree();
+   void move(Clearance &c);
+   void hasConverged();
    
+   // Move to map after tests
+   //  P2PNetworkInterface* getNeighbor(Coordinate &p, P2PNetworkInterface *i);
+   //Neighbor getNeighbor(RelativeDirection::Direction dir, P2PNetworkInterface *p2p);
+   //Neighbor getNeighbor(RelativeDirection::Direction dir, Coordinate &p);
+
+   // movings management
+   bool isMoving(Coordinate &c);
+   bool isNeighborToMoving(Coordinate &c);
+   void removeMoving(Coordinate &c);
+   void insertMoving(Coordinate &c);
+   void printMoving();
+
+   // pending request management
+   bool isAPendingRequestDestNeighborWith(Coordinate &p);
+   ClearanceRequest getPendingRequestDestNeighborWith(Coordinate &p);
+   void insertPendingRequest(ClearanceRequest &pr);
+   void printPendingRequest();
+   
+   // message management
+   void send(Message *m, P2PNetworkInterface *i);
+   void forwardClearance(Clearance &c, P2PNetworkInterface *recv);
+   void forwardEndMove(Clearance &c, P2PNetworkInterface *recv);
+   
+   void printNeighbors();
+   
+   // space checker
+   static std::list<Catoms2D::Catoms2DBlock*> movingModules;
+   bool checkSpace();
+   std::vector<Coordinate> getSafetyZone();
+   void insertMovings(Catoms2D::Catoms2DBlock *c);
+   void removeMovings(Catoms2D::Catoms2DBlock *c);
+   double distance(Vector3D &p1, Vector3D &p2);
+   
+   /*void updatePosition();
+   void updateState();
    int advertiseBeforeMoving();
    bool isMoving(Coordinate &c);
    bool isNeighborToMoving(Coordinate &c);
    void removeMoving(Coordinate &c);
    void forwardStopMoving(P2PNetworkInterface *p2p, Coordinate &c);
    void printMoving();
-   
    void move();
    void queryStates();
    P2PNetworkInterface* getPivot();
@@ -68,7 +124,9 @@ private:
    P2PNetworkInterface *canMove(PerimeterCaseState &pcs);
    bool shouldMove(P2PNetworkInterface *pivot, PerimeterCaseState &pcs);
    void forwardStateUpdate(P2PNetworkInterface *p2p, PerimeterCaseState &pcs);
-   Rotation2DMove* nextMove();
+   Rotation2DMove* nextMove();*/
+
+   
 public:
    
    Reconfiguration(Catoms2D::Catoms2DBlock *c, Map *m);
@@ -80,6 +138,7 @@ public:
 
    static bool isDone();
    static std::string toString(reconfigurationState_t s);
+
 };
 
 #endif

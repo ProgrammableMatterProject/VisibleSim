@@ -3,6 +3,7 @@
 
 #include "catoms2DBlock.h"
 #include "network.h"
+#include "coordinate.h"
 
 class Border {
  private:

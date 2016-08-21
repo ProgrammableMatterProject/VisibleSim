@@ -162,7 +162,7 @@ void Map::setPosition(Coordinate p) {
   positionKnown = true;
 }
 
-Coordinate Map::getPosition() {
+Coordinate& Map::getPosition() {
   return position;
 }
 
@@ -296,12 +296,13 @@ bool Map::isInTarget(Coordinate p) {
   return (BlockCode::target->isInTarget(c));
 }
 
-P2PNetworkInterface* Map::getOnBorderNeighborInterface(RelativeDirection::Direction d) {
+
+/*P2PNetworkInterface* Map::getOnNeighborInterface(RelativeDirection::Direction d) {
   return border.getInterface(d);
 }
 
-Catoms2DBlock* Map::getOnBorderNeighbor(Catoms2D::RelativeDirection::Direction d) {
-  P2PNetworkInterface* p2p = getOnBorderNeighborInterface(d);
+Catoms2DBlock* Map::getOnNeighbor(Catoms2D::RelativeDirection::Direction d) {
+  P2PNetworkInterface* p2p = getOnNeighborInterface(d);
   if (!p2p->connectedInterface) {
     cerr << "error: no catom connected on border interface..." << endl;
     return NULL;
@@ -309,6 +310,44 @@ Catoms2DBlock* Map::getOnBorderNeighbor(Catoms2D::RelativeDirection::Direction d
   return (Catoms2DBlock*) p2p->connectedInterface->hostBlock;
 }
 
-Coordinate Map::getOnBorderNeighborCoordinate(RelativeDirection::Direction d) {
+Coordinate Map::getOnNeighborCoordinate(RelativeDirection::Direction d) {
   return getPosition(border.getInterface(d));
+  }*/
+
+Neighbor Map::getBorder(RelativeDirection::Direction d) {
+  Neighbor n;
+  n.interface = border.getInterface(d);
+  n.position = getPosition(n.interface);
+  return n;
 }
+
+P2PNetworkInterface* Map::getNeighbor(Coordinate &p, P2PNetworkInterface *i) {
+  P2PNetworkInterface* p2p;
+  for (int j = 0; j < 6; j++) {
+    p2p = catom2D->getInterface(j);
+    if(p2p->connectedInterface) {
+      Coordinate pos = getPosition(p2p);
+      if ((p2p != i) && (pos != p) && Map::areNeighbors(pos,p)) {
+	return p2p;
+      }
+    }
+  }
+  return NULL;
+}
+
+Neighbor Map::getNeighbor(RelativeDirection::Direction dir, P2PNetworkInterface *p2p) {
+  P2PNetworkInterface *interface = catom2D->getNextInterface(dir,p2p,true);
+  assert(interface);
+  Coordinate c = getPosition(interface);
+  Neighbor n(interface,c);
+  return n;
+}
+
+Neighbor Map::getNeighbor(RelativeDirection::Direction dir, Coordinate &p) {
+  P2PNetworkInterface *p2p = getInterface(p);
+  P2PNetworkInterface *interface = catom2D->getNextInterface(dir,p2p,true);
+  Coordinate c = getPosition(interface);
+  Neighbor n(interface,c);
+  return n;
+}
+

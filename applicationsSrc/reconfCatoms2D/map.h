@@ -16,12 +16,15 @@
 #include <memory>
 #include "coordinate.h"
 #include "border.h"
+#include "neighbor.h"
 
 //#define COMPUTE_COORDINATES
 #define ASSUME_COORDINATES // works only for real coordinates!
 
 //#define VIRTUAL_COORDINATES
 #define REAL_COORDINATES
+
+
 
 class Map {
  public:  
@@ -45,7 +48,7 @@ class Map {
   bool handleMessage(MessagePtr message);
   Coordinate getPosition(P2PNetworkInterface *it);
   void setPosition(Coordinate p);
-  Coordinate getPosition();
+  Coordinate& getPosition();
   Coordinate real2Virtual(Coordinate p);
   Coordinate virtual2Real(Coordinate p);
   static Coordinate real2Virtual(Coordinate o, Coordinate p);
@@ -63,9 +66,11 @@ class Map {
   static bool areNeighbors(Coordinate p1, Coordinate p2);
   static bool isInTarget(Coordinate p);
 
-  Catoms2D::Catoms2DBlock* getOnBorderNeighbor(Catoms2D::RelativeDirection::Direction d);
-  P2PNetworkInterface* getOnBorderNeighborInterface(Catoms2D::RelativeDirection::Direction d);
-  Coordinate getOnBorderNeighborCoordinate(Catoms2D::RelativeDirection::Direction d);
+  Neighbor getBorder(Catoms2D::RelativeDirection::Direction d);
+
+  P2PNetworkInterface* getNeighbor(Coordinate &p, P2PNetworkInterface *i);
+  Neighbor getNeighbor(Catoms2D::RelativeDirection::Direction dir, P2PNetworkInterface *p2p);
+  Neighbor getNeighbor(Catoms2D::RelativeDirection::Direction dir, Coordinate &p);
 
   void assumeCoordinates();
 

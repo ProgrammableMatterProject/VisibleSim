@@ -3,6 +3,9 @@
 using namespace std;
 using namespace Catoms2D;
 
+/***********
+ * Border Class
+ ***********/
 Border::Border(Catoms2DBlock *c) {
   catom = c;
 }
