@@ -59,15 +59,20 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 	if (cmdLine.isSimulationSeedSet()) {
 	  seed = cmdLine.getSimulationSeed();
 	}
-
-	cout << "Seed: " << seed  << endl;
 	
-	if (seed == -1) {
-	  generator = uintRNG(std::random_device{}());
+	int rseed = 0;
+	if (seed < 0) {
+	  random_device rd;
+	  mt19937 gen(rd());
+	  uniform_int_distribution<> dis(1,INT_MAX); // [1,intmax]
+	  rseed = dis(gen);
+	  generator = uintRNG((ruint)rseed);
 	} else {
-	  generator = uintRNG((uint32_t)seed);
+	  rseed = seed;
+	  generator = uintRNG((ruint)rseed);
 	}
-	
+	cerr << "Seed: " << rseed << endl;
+
 	if (!isLoaded) {
 		cerr << "error: Could not load configuration file :" << confFileName << endl;
 		exit(EXIT_FAILURE);
