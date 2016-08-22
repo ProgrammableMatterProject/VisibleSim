@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="16,1,8">
+  <camera target="8,4,0" directionSpherical="0,25,18" angle="45"/>
+  <spotlight target="8,4,0" directionSpherical="0,25,18" angle="30"/>
+  <blockList color="100,100,100">
+    <block position="5,0,2" color="100,100,100"/>
+    <block position="1,0,3" color="100,100,100"/>
+    <block position="8,0,0" color="100,100,100"/>
+    <block position="2,0,1" color="100,100,100"/>
+    <block position="5,0,0" color="100,100,100"/>
+    <block position="6,0,0" color="100,100,100"/>
+    <block position="7,0,0" color="100,100,100"/>
+    <block position="2,0,2" color="100,100,100"/>
+    <block position="3,0,0" color="100,100,100"/>
+    <block position="3,0,1" color="100,100,100"/>
+    <block position="3,0,2" color="100,100,100"/>
+    <block position="4,0,2" color="100,100,100"/>
+    <block position="2,0,3" color="100,100,100"/>
+    <block position="4,0,3" color="100,100,100"/>
+    <block position="3,0,3" color="100,100,100"/>
+    <block position="4,0,1" color="100,100,100"/>
+    <block position="4,0,0" color="100,100,100"/>
+    <block position="5,0,1" color="100,100,100"/>
+  </blockList>
+  <targetList>
+    <target format="grid">
+      <cell position="12,0,2" color="100,100,100"/>
+      <cell position="11,0,1" color="100,100,100"/>
+      <cell position="11,0,0" color="100,100,100"/>
+      <cell position="10,0,1" color="100,100,100"/>
+      <cell position="12,0,3" color="100,100,100"/>
+      <cell position="13,0,2" color="100,100,100"/>
+      <cell position="8,0,0" color="100,100,100"/>
+      <cell position="11,0,3" color="100,100,100"/>
+      <cell position="9,0,0" color="100,100,100"/>
+      <cell position="11,0,2" color="100,100,100"/>
+      <cell position="14,0,2" color="100,100,100"/>
+      <cell position="14,0,3" color="100,100,100"/>
+      <cell position="12,0,1" color="100,100,100"/>
+      <cell position="13,0,1" color="100,100,100"/>
+      <cell position="10,0,0" color="100,100,100"/>
+      <cell position="12,0,0" color="100,100,100"/>
+      <cell position="13,0,0" color="100,100,100"/>
+      <cell position="13,0,3" color="100,100,100"/>
+    </target>
+  </targetList>
+</world>
