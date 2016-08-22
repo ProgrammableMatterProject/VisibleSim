@@ -549,15 +549,14 @@ void Reconfiguration::forwardClearance(Clearance &c, P2PNetworkInterface *recv, 
 void Reconfiguration::forwardEndMove(Clearance &c, P2PNetworkInterface *recv, unsigned int h) {
   assert(Map::areNeighbors(map->getPosition(),c.src) || Map::areNeighbors(map->getPosition(),c.dest));
 
-  Message *m = new ReconfigurationEndMoveMsg(c,h);
   if (Map::areNeighbors(map->getPosition(),c.src)) {
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.src);
     if (n.interface != recv && Map::areNeighbors(c.src,n.position)) {
+      Message *m = new ReconfigurationEndMoveMsg(c,h);
       send(m,n.interface);
-    } else {
-      delete m;
     }
   } else if (Map::areNeighbors(map->getPosition(),c.dest)) {
+    Message *m = new ReconfigurationEndMoveMsg(c,h);
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.dest);
     assert(Map::areNeighbors(n.position,c.dest));
     assert(n.interface != recv);

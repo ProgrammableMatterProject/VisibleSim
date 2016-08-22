@@ -22,6 +22,7 @@ typedef std::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
 
 class ReconfigurationMsg : public Message {
  public:
+  static std::vector<unsigned int> hopCountStats;
   unsigned int hopCounter;
   
   enum subtype_t {CLEARANCE_REQUEST = 0, CLEARANCE, DELAYED_CLEARANCE_REQUEST, START_TO_MOVE, START_TO_MOVE_ACK, END_OF_MOVE};  
@@ -30,6 +31,7 @@ class ReconfigurationMsg : public Message {
  ReconfigurationMsg(unsigned int h) : Message() { 
     type = RECONFIGURATION_MSG;
     hopCounter = h;
+    incrHopCountStats(h);
   }
 
  ReconfigurationMsg(ReconfigurationMsg *m) : Message() { 
@@ -46,6 +48,9 @@ class ReconfigurationMsg : public Message {
   }
 
   virtual std::string toString() = 0;
+
+  static void incrHopCountStats(unsigned int index);
+  static void printHopCountStats();
 };
 
 /******************************************

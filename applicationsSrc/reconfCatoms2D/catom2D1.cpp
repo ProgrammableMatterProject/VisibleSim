@@ -17,11 +17,11 @@ using namespace Catoms2D;
 void parseCmdLine(int argc, char **argv) {
   double comm = -1;
   double motion = -1;
-  // intercept -C and -M command line argument
+  // intercept -B and -M command line argument
   // warning: must be at the end of the command line!
   for (int i = 0; i < argc; i++) {
     if (argv[i][0] == '-') {
-      if (argv[i][1] == 'C') {
+      if (argv[i][1] == 'B') {
 	comm = stod(argv[i+1]);
  	argv[i][0] = 0;
 	argv[i][1] = 0;
@@ -35,7 +35,9 @@ void parseCmdLine(int argc, char **argv) {
   }
 
   if (comm > 0) {
-    cerr << "Communication rate: "
+    cerr << "Baudrate: " << comm << endl;
+    comm *= 0.8; // assume 8-N-1 communications
+    cerr << "Bit rate (8-N-1 communications): "
 	 << " mean = " << comm << ","
 	 << " sd = " << comm*DEFAULT_SD_FACTOR
 	 << endl;

@@ -52,6 +52,13 @@ Catoms2D1BlockCode::Catoms2D1BlockCode(Catoms2DBlock *host):Catoms2DBlockCode(ho
 }
 
 Catoms2D1BlockCode::~Catoms2D1BlockCode() {
+  static bool statsPrinted = false;
+
+  if (!statsPrinted) {
+    ReconfigurationMsg::printHopCountStats();
+    statsPrinted = true;
+  }
+  
   delete reconfiguration;
   delete ctuples;
   delete map;
@@ -276,7 +283,7 @@ void Catoms2D1BlockCode::setSimulationParameters() {
 
 void Catoms2D1BlockCode::setCommunicationRate() {
   double mean = simParams.commRateMean;
-
+  
   if (mean > 0) {
     double sd = mean*DEFAULT_SD_FACTOR;
     vector<P2PNetworkInterface*>& interfaces = catom2D->getP2PNetworkInterfaces();

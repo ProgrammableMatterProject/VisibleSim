@@ -15,7 +15,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp border.cpp landmarks.cpp neighbor.cpp
+SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp border.cpp landmarks.cpp neighbor.cpp reconfigurationMsg.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/catom2D1
