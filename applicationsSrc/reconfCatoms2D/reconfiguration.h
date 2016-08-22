@@ -58,6 +58,7 @@ private:
    //PerimeterCaseState rotationDirectionCell;
    //PerimeterCaseState antiRotationDirectionCell;
    std::list<Coordinate> movings;
+   
    std::list<ClearanceRequest> pendingRequests;
    
    Clearance currentClearance;
@@ -91,8 +92,8 @@ private:
    
    // message management
    void send(Message *m, P2PNetworkInterface *i);
-   void forwardClearance(Clearance &c, P2PNetworkInterface *recv);
-   void forwardEndMove(Clearance &c, P2PNetworkInterface *recv);
+   void forwardClearance(Clearance &c, P2PNetworkInterface *recv, unsigned int h);
+   void forwardEndMove(Clearance &c, P2PNetworkInterface *recv, unsigned int h);
    
    void printNeighbors();
    

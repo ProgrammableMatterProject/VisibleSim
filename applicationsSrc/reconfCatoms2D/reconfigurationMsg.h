@@ -22,21 +22,28 @@ typedef std::shared_ptr<ReconfigurationMsg> ReconfigurationMsg_ptr;
 
 class ReconfigurationMsg : public Message {
  public:
+  unsigned int hopCounter;
+  
   enum subtype_t {CLEARANCE_REQUEST = 0, CLEARANCE, DELAYED_CLEARANCE_REQUEST, START_TO_MOVE, START_TO_MOVE_ACK, END_OF_MOVE};  
   subtype_t subtype;
       
- ReconfigurationMsg() : Message() { 
+ ReconfigurationMsg(unsigned int h) : Message() { 
     type = RECONFIGURATION_MSG;
+    hopCounter = h;
   }
 
  ReconfigurationMsg(ReconfigurationMsg *m) : Message() { 
     type = m->type; 
-    subtype = m->subtype;     
+    subtype = m->subtype;
+    hopCounter = m->hopCounter;
   }
   
   ~ReconfigurationMsg() {}
  
-  unsigned int size() {return sizeof(ReconfigurationMsg);};
+  virtual unsigned int size() {
+    return 3*sizeof(unsigned int);
+    // symbolizes the fields 2*"type" and "size" of the message
+  }
 
   virtual std::string toString() = 0;
 };
@@ -52,7 +59,7 @@ class ReconfigurationClearanceRequestMsg : public ReconfigurationMsg {
  public:
   ClearanceRequest request;
   
- ReconfigurationClearanceRequestMsg(ClearanceRequest &cr) : ReconfigurationMsg() { 
+ ReconfigurationClearanceRequestMsg(ClearanceRequest &cr, unsigned int h) : ReconfigurationMsg(h) { 
     subtype = CLEARANCE_REQUEST;
     request = cr;
   }
@@ -63,7 +70,9 @@ class ReconfigurationClearanceRequestMsg : public ReconfigurationMsg {
   
   ~ReconfigurationClearanceRequestMsg() {}
  
-  unsigned int size() {return sizeof(ReconfigurationClearanceRequestMsg);};
+  unsigned int size() {
+    return ReconfigurationMsg::size() + sizeof(ClearanceRequest);
+  }
 
   std::string toString() {return "CLEARANCE_REQUEST: <request=" + request.toString() + ">";}
 };
@@ -79,7 +88,7 @@ class ReconfigurationClearanceMsg : public ReconfigurationMsg {
  public:
   Clearance clearance;
   
- ReconfigurationClearanceMsg(Clearance &c) : ReconfigurationMsg() { 
+ ReconfigurationClearanceMsg(Clearance &c, unsigned int h) : ReconfigurationMsg(h) { 
     subtype = CLEARANCE;
     clearance = c;
   }
@@ -90,7 +99,9 @@ class ReconfigurationClearanceMsg : public ReconfigurationMsg {
   
   ~ReconfigurationClearanceMsg() {}
  
-  unsigned int size() {return sizeof(ReconfigurationClearanceMsg);};
+  unsigned int size() {
+    return ReconfigurationMsg::size() + sizeof(Clearance);
+  }
 
   std::string toString() {return "CLEARANCE: <clearance=" + clearance.toString() + ">";}
 };
@@ -106,7 +117,7 @@ class ReconfigurationDelayedClearanceRequestMsg : public ReconfigurationMsg {
  public:
   ClearanceRequest request;
   
- ReconfigurationDelayedClearanceRequestMsg(ClearanceRequest &cr) : ReconfigurationMsg() { 
+ ReconfigurationDelayedClearanceRequestMsg(ClearanceRequest &cr, unsigned int h) : ReconfigurationMsg(h) { 
     subtype = DELAYED_CLEARANCE_REQUEST;
     request = cr;
   }
@@ -117,7 +128,9 @@ class ReconfigurationDelayedClearanceRequestMsg : public ReconfigurationMsg {
   
   ~ReconfigurationDelayedClearanceRequestMsg() {}
  
-  unsigned int size() {return sizeof(ReconfigurationDelayedClearanceRequestMsg);};
+  unsigned int size() {
+    return ReconfigurationMsg::size() + sizeof(ClearanceRequest);
+  }
 
   std::string toString() {return "DELAYED_CLEARANCE_REQUEST: <request=" + request.toString() + ">";}
 };
@@ -132,7 +145,7 @@ typedef std::shared_ptr<ReconfigurationStartMoveMsg>  ReconfigurationStartMoveMs
 class  ReconfigurationStartMoveMsg : public ReconfigurationMsg {
  public:
   
- ReconfigurationStartMoveMsg() : ReconfigurationMsg() { 
+ ReconfigurationStartMoveMsg(unsigned int h) : ReconfigurationMsg(h) { 
     subtype = START_TO_MOVE;
   }
 
@@ -141,7 +154,9 @@ class  ReconfigurationStartMoveMsg : public ReconfigurationMsg {
   
   ~ReconfigurationStartMoveMsg() {}
  
-  unsigned int size() {return sizeof(ReconfigurationStartMoveMsg);};
+  unsigned int size() {
+    return ReconfigurationMsg::size();
+  }
 
   std::string toString() {return "START_TO_MOVE";}
 };
@@ -156,7 +171,7 @@ typedef std::shared_ptr<ReconfigurationStartMoveAckMsg>  ReconfigurationStartMov
 class  ReconfigurationStartMoveAckMsg : public ReconfigurationMsg {
  public:
   
- ReconfigurationStartMoveAckMsg() : ReconfigurationMsg() { 
+ ReconfigurationStartMoveAckMsg(unsigned int h) : ReconfigurationMsg(h) { 
     subtype = START_TO_MOVE_ACK;
   }
 
@@ -165,7 +180,9 @@ class  ReconfigurationStartMoveAckMsg : public ReconfigurationMsg {
   
   ~ReconfigurationStartMoveAckMsg() {}
  
-  unsigned int size() {return sizeof(ReconfigurationStartMoveAckMsg);};
+  unsigned int size() {
+    return ReconfigurationMsg::size();
+  }
 
   std::string toString() {return "START_MOVE_ACK";}
 };
@@ -181,7 +198,7 @@ class  ReconfigurationEndMoveMsg : public ReconfigurationMsg {
  public:
   Clearance clearance;
   
- ReconfigurationEndMoveMsg(Clearance &c) : ReconfigurationMsg() { 
+ ReconfigurationEndMoveMsg(Clearance &c, unsigned int h) : ReconfigurationMsg(h) { 
     subtype = END_OF_MOVE;
     clearance = c;
   }
@@ -192,7 +209,9 @@ class  ReconfigurationEndMoveMsg : public ReconfigurationMsg {
   
   ~ReconfigurationEndMoveMsg() {}
  
-  unsigned int size() {return sizeof(ReconfigurationEndMoveMsg);};
+  unsigned int size() {
+    return ReconfigurationMsg::size() + sizeof(Clearance);
+  }
 
   std::string toString() {return "END_OF_MOVE: <clearance=" + clearance.toString() + ">";}
 };

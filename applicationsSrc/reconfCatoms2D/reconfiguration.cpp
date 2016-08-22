@@ -138,7 +138,7 @@ void Reconfiguration::handleStopMovingEvent() {
   
   // send end of move to ?
   Neighbor n = map->getBorder(ROTATION_DIRECTION);
-  Message *m = new ReconfigurationEndMoveMsg(currentClearance);
+  Message *m = new ReconfigurationEndMoveMsg(currentClearance,1);
   send(m,n.interface);
   
   // try to move
@@ -162,7 +162,6 @@ void Reconfiguration::handle(MessagePtr m) {
   ReconfigurationMsg_ptr rm = std::static_pointer_cast<ReconfigurationMsg>(m);
   P2PNetworkInterface *recv = m->destinationInterface;
   assert(recv->connectedInterface);
-  
 
 #ifdef RECONFIGURATION_MSG_DEBUG
   P2PNetworkInterface *from = m->sourceInterface;
@@ -170,6 +169,9 @@ void Reconfiguration::handle(MessagePtr m) {
   MY_CERR << " " << rm->toString() << " from " << fromId << endl;
 #endif
 
+  //MY_CERR << "hop count: " << rm->hopCounter << endl;
+  //MY_CERR << "size: " << rm->size() << endl;
+  
 #ifdef CHECK_SPACE
   assert(checkSpace());
 #endif
@@ -227,11 +229,11 @@ void Reconfiguration::handle(MessagePtr m) {
 
     if (delayed) {
       // clearance rejected
-      Message *m = new ReconfigurationDelayedClearanceRequestMsg(crm->request);
+      Message *m = new ReconfigurationDelayedClearanceRequestMsg(crm->request,1);
       send(m,recv);
     } else if (hasNext) {
       // check next neighbor
-      Message *m = new ReconfigurationClearanceRequestMsg(crm->request);
+      Message *m = new ReconfigurationClearanceRequestMsg(crm->request, rm->hopCounter+1);
 #ifdef RECONFIGURATION_MSG_DEBUG
       MY_CERR << "CLEARANCE_REQUEST forwarded to : " << next.interface->connectedInterface->hostBlock->blockId << endl;
 #endif
@@ -240,7 +242,7 @@ void Reconfiguration::handle(MessagePtr m) {
       // clearance granted
       Clearance c(crm->request.src,crm->request.dest);
       insertMoving(c.dest);
-      forwardClearance(c,NULL);
+      forwardClearance(c,NULL,1);
     }
   }
     break;
@@ -251,10 +253,10 @@ void Reconfiguration::handle(MessagePtr m) {
     if (map->getPosition() == cm->clearance.src) {
       // move
       currentClearance = cm->clearance;
-      Message *m = new ReconfigurationStartMoveMsg();
+      Message *m = new ReconfigurationStartMoveMsg(1);
       send(m,recv);
     } else {
-      forwardClearance(cm->clearance, recv);      
+      forwardClearance(cm->clearance, recv,rm->hopCounter+1);      
     }
   }
     break;
@@ -270,7 +272,7 @@ void Reconfiguration::handle(MessagePtr m) {
   }
     break;
   case ReconfigurationMsg::START_TO_MOVE: {
-    Message *m = new ReconfigurationStartMoveAckMsg();
+    Message *m = new ReconfigurationStartMoveAckMsg(1);
     send(m,recv);
   }
     break;
@@ -285,7 +287,7 @@ void Reconfiguration::handle(MessagePtr m) {
     removeMoving(emm->clearance.dest);
     removeMoving(emm->clearance.src);
         
-    forwardEndMove(emm->clearance,recv);
+    forwardEndMove(emm->clearance,recv,rm->hopCounter+1);
 
     // and now:
     if (isFree()) {
@@ -302,12 +304,12 @@ void Reconfiguration::handle(MessagePtr m) {
 	ClearanceRequest cr = getPendingRequestDestNeighborWith(emm->clearance.src);
 	Neighbor next = map->getNeighbor(ROTATION_DIRECTION,cr.dest);
 	if (Map::areNeighbors(next.position,cr.dest)) {
-	  Message *m = new ReconfigurationClearanceRequestMsg(cr);
+	  Message *m = new ReconfigurationClearanceRequestMsg(cr,1);
 	  send(m,next.interface);
 	} else { // clearance granted!
 	  Clearance c(cr.src,cr.dest);
 	  insertMoving(c.dest);
-	  forwardClearance(c,NULL);
+	  forwardClearance(c,NULL,1);
 	}
       }
       
@@ -361,7 +363,7 @@ bool Reconfiguration::tryToMove() {
     // send CLEARANCE_REQUEST to b
     Neighbor b = map->getBorder(ROTATION_DIRECTION);
     ClearanceRequest cr(src,dest,0);
-    Message *m = new ReconfigurationClearanceRequestMsg(cr);
+    Message *m = new ReconfigurationClearanceRequestMsg(cr,1);
     send(m,b.interface);
     return true;
   }
@@ -522,10 +524,10 @@ void Reconfiguration::send(Message *m, P2PNetworkInterface *i) {
   i->send(m);
 }
 
-void Reconfiguration::forwardClearance(Clearance &c, P2PNetworkInterface *recv) {
+void Reconfiguration::forwardClearance(Clearance &c, P2PNetworkInterface *recv, unsigned int h) {
   assert(Map::areNeighbors(map->getPosition(),c.src) || Map::areNeighbors(map->getPosition(),c.dest));
 
-  Message *m = new ReconfigurationClearanceMsg(c);
+  Message *m = new ReconfigurationClearanceMsg(c,h);
 
   if (Map::areNeighbors(map->getPosition(),c.src)) {
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.src);
@@ -544,14 +546,16 @@ void Reconfiguration::forwardClearance(Clearance &c, P2PNetworkInterface *recv) 
   }
 }
 
-void Reconfiguration::forwardEndMove(Clearance &c, P2PNetworkInterface *recv) {
+void Reconfiguration::forwardEndMove(Clearance &c, P2PNetworkInterface *recv, unsigned int h) {
   assert(Map::areNeighbors(map->getPosition(),c.src) || Map::areNeighbors(map->getPosition(),c.dest));
 
-  Message *m = new ReconfigurationEndMoveMsg(c);
+  Message *m = new ReconfigurationEndMoveMsg(c,h);
   if (Map::areNeighbors(map->getPosition(),c.src)) {
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.src);
     if (n.interface != recv && Map::areNeighbors(c.src,n.position)) {
       send(m,n.interface);
+    } else {
+      delete m;
     }
   } else if (Map::areNeighbors(map->getPosition(),c.dest)) {
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.dest);
