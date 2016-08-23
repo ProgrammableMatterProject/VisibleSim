@@ -12,7 +12,7 @@ namespace BaseSimulator {
 
 class MotionEngine {
  protected:
-  Rate *speed; //<! m/s
+  Rate *speed; //<! mm/s (beaucse mm is the distance unit in the simulator)
  public:
   MotionEngine();
   MotionEngine(Rate *s);
@@ -20,7 +20,8 @@ class MotionEngine {
 
   void setSpeed(Rate *s);
   double getSpeed();
-  // ms
+  
+  // us
   Time getDuration(Distance distance);
 };
 
