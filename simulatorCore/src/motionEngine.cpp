@@ -38,7 +38,7 @@ Time MotionEngine::getDuration(Distance distance) {
   double time = distance/speed; // s
   
 #ifdef SPEED_DEBUG
-  cerr << "speed (mm/s) = " << speed << ", distance (m) = " << distance
+  cerr << "speed (mm/s) = " << speed << ", distance (mm) = " << distance
        << ", time (s) = " << time << endl;
 #endif
   

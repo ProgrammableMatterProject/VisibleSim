@@ -20,7 +20,8 @@ class MotionEngine {
 
   void setSpeed(Rate *s);
   double getSpeed();
-  // ms
+  
+  // us
   Time getDuration(Distance distance);
 };
 

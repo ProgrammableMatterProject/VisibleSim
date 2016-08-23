@@ -7,6 +7,8 @@ confDir="evaluation/confs/"
 subConfDir="car/ pyramid/ square/"
 resDir="evaluation/results/"
 
+export=".confCheck.xml"
+
 mv "$resDir" "evaluation/results-bak"
 mkdir "$resDir"
 
@@ -20,9 +22,10 @@ for sub in $subConfDir; do
 	xmlBaseName="$(basename $xml .xml)"
 	mkdir "$subResDir$xmlBaseName"
 	for i in $(seq 1 10); do
-	    out="$subResDir$xmlBaseName/$i.out"
+	    rad="$subResDir$xmlBaseName/$i"
 	    #echo "$xml => $out"
-	    ./catom2D1 -c $xml -R -t -i -a -1 -B $defaultBaudRate -M $defaultSpeed > $out  2>&1
+	    ./catom2D1 -c $xml -R -t -i -a -1 -g -B $defaultBaudRate -M $defaultSpeed > "$rad.out"  2>&1
+	    cp "$export" "$rad.xml"
 	done
     done
 done
