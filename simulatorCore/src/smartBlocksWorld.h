@@ -45,7 +45,7 @@ public:
     void loadTextures(const string &str);
     virtual void glDraw();
     virtual void glDrawId();
-    virtual void glDrawIdByMaterial();       
+    virtual void glDrawIdByMaterial();
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
 };

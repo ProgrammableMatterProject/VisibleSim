@@ -28,7 +28,7 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
         objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
                                                       "smartBlockPicking.obj");
     }
-       
+
     lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
@@ -48,7 +48,7 @@ void SmartBlocksWorld::addBlock(bID blockId, BlockCodeBuilder bcb,
 		maxBlockId = blockId;
 	else if (blockId == 0)
 		blockId = incrementBlockId();
-        
+
     SmartBlocksBlock *smartBlock = new SmartBlocksBlock(blockId, bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
                              (smartBlock->blockId, (BaseSimulator::BuildingBlock*)smartBlock) );
@@ -140,13 +140,11 @@ void SmartBlocksWorld::glDraw() {
 void SmartBlocksWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-    /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
-      -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0);*/
+
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
     lock();
     while (ic!=tabGlBlocks.end()) {
-        glLoadName(n++);
         ((SmartBlocksGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking, n);
         ic++;
     }
@@ -157,14 +155,12 @@ void SmartBlocksWorld::glDrawIdByMaterial() {
 void SmartBlocksWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
-    /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
-      -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0);*/
+
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     int n=1;
     lock();
     while (ic!=tabGlBlocks.end()) {
-        glLoadName(n++);
-        ((SmartBlocksGlBlock*)(*ic))->glDrawId(objBlock);
+        ((SmartBlocksGlBlock*)(*ic))->glDrawId(objBlock,n);
         ic++;
     }
     unlock();
@@ -187,18 +183,17 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     numSelectedGlBlock = n / 5;
     string name = objBlockForPicking->getObjMtlName(n % 5);
 
-    if (name == "Material__73") numSelectedFace = SLattice::South;
-    else if (name == "Material__68") numSelectedFace = SLattice::East;
-    else if (name == "Material__72") numSelectedFace = SLattice::West;
-    else if (name == "Material__71") numSelectedFace = SLattice::North;
+    if (name == "Material__72") numSelectedFace = SLattice::South;
+    else if (name == "Material__66") numSelectedFace = SLattice::East;
+    else if (name == "Material__71") numSelectedFace = SLattice::West;
+    else if (name == "Material__68") numSelectedFace = SLattice::North;
     else {
 		cerr << "warning: Unrecognized picking face" << endl;
 		numSelectedFace = 4;	// UNDEFINED
-        return;
     }
 
-    cerr << name << " = " << numSelectedFace << " = "
-         << lattice->getDirectionString(numSelectedFace) << endl;       
+    cerr << "SET " << name << " = " << numSelectedFace << " = "
+         << lattice->getDirectionString(numSelectedFace) << endl;
 }
 
 void SmartBlocksWorld::exportConfiguration() {
