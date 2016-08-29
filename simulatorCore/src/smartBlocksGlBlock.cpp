@@ -55,11 +55,19 @@ void SmartBlocksGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
     glPopMatrix();
 }
 
-void SmartBlocksGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj) {
+void SmartBlocksGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glPushMatrix();
 	glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
-	ptrObj->glDraw();
+	ptrObj->glDrawId(n);
 	glPopMatrix();
 }
-    
+
+void SmartBlocksGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
+	glPushMatrix();
+	glTranslatef(position[0]+12.5,position[1]+12.5,position[2]);
+	ptrObj->glDrawIdByMaterial(n);
+	glPopMatrix();
+}
+
+
 }

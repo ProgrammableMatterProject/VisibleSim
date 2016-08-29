@@ -23,7 +23,8 @@ public :
 	/*	virtual string getPopupInfo();*/
 	void setDisplayedValue(int n) { displayedValue=n; }
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
-	virtual void glDrawId(ObjLoader::ObjLoader *ptrObj);
+	virtual void glDrawId(ObjLoader::ObjLoader *ptrObj,int &n);
+	virtual void glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n);
 };
 }
 #endif /* SMARTBLOCKSGLBLOCK_H_ */

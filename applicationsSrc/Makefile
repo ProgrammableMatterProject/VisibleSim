@@ -1,6 +1,6 @@
 
 # GENERIC BlockCodes
-SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
+SUBDIRS = simpleColorSB C3DConstruct  #simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
 
 # MELD BlockCodes
 SUBDIRS += meld MRMeld
@@ -27,7 +27,7 @@ $(SUBDIRS):
 #	$(MAKE) -C $$dir autoinstall APPDIR=../../applicationsBin/$$dir; \
 #	done
 
-test:	
+test:
 	@echo "\nBlockCodes Regression Testing:"
 	@for dir in $(SUBDIRS); do \
 		$(MAKE) -C $$dir test;\
