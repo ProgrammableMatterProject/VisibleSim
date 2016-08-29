@@ -23,7 +23,7 @@ OUT = $(APPDIR)/bbCycle
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimBlinkyBlocks
 # TESTS contains the commands that will be executed when `make test` is called
-TESTS = : #;\
+TESTS = ../../utilities/blockCodeTest.sh bbCycle $(OUT) -s 9000000;
 #
 # End of Makefile section requiring input by user
 #####################################################################

@@ -89,9 +89,9 @@ void GlutContext::init(int argc, char **argv) {
 		glutIdleFunc(idleFunc);
 
 		mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,
-											   "../../simulatorCore/smartBlocksTextures/fenetre_onglet.tga");
+											   "../../simulatorCore/resources/textures/UITextures/fenetre_onglet.tga");
 		debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,
-												 "../../simulatorCore/smartBlocksTextures/fenetre_ongletDBG.tga");
+												 "../../simulatorCore/resources/textures/UITextures/fenetre_ongletDBG.tga");
 		popup = new GlutPopupWindow(NULL,0,0,40,30);
 	}
 }
@@ -202,36 +202,36 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
 	if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
 		Camera* camera=getWorld()->getCamera();
 		switch (button) {
-		case GLUT_LEFT_BUTTON:
-			if (state==GLUT_DOWN) {
-				camera->mouseDown(x,y);
-				int n=selectFunc(x,y);
-				GlBlock *glb = BaseSimulator::getWorld()->getBlockByNum(n-1);
-				GlBlock *glbs = BaseSimulator::getWorld()->getselectedGlBlock();
-				int face=selectFaceFunc(x,y);
-				if (glbs != NULL && glbs == glb) {
-					BaseSimulator::getWorld()->tapBlock(BaseSimulator::getScheduler()->now(),
-														glb->blockId, face);
-				}
-			} else
-				if (state==GLUT_UP) {
-					camera->mouseUp(x,y);
-				}
-			break;
-		case GLUT_RIGHT_BUTTON:
-			if (state==GLUT_DOWN) {
-				camera->mouseDown(x,y,true);
-			} else
-				if (state==GLUT_UP) {
-					camera->mouseUp(x,y);
-				}
-			break;
-		case 3 :
-			camera->mouseZoom(-10);
-			break;
-		case 4 :
-			camera->mouseZoom(10);
-			break;
+			case GLUT_LEFT_BUTTON:
+				if (state==GLUT_DOWN) {
+					camera->mouseDown(x,y);
+					int n=selectFunc(x,y);
+					GlBlock *glb = BaseSimulator::getWorld()->getBlockByNum(n-1);
+					GlBlock *glbs = BaseSimulator::getWorld()->getselectedGlBlock();
+					int face=selectFaceFunc(x,y);
+					if (glbs != NULL && glbs == glb) {
+						BaseSimulator::getWorld()->tapBlock(BaseSimulator::getScheduler()->now(),
+															glb->blockId, face);
+					}
+				} else
+					if (state==GLUT_UP) {
+						camera->mouseUp(x,y);
+					}
+				break;
+			case GLUT_RIGHT_BUTTON:
+				if (state==GLUT_DOWN) {
+					camera->mouseDown(x,y,true);
+				} else
+					if (state==GLUT_UP) {
+						camera->mouseUp(x,y);
+					}
+				break;
+			case 3 :
+				camera->mouseZoom(-10);
+				break;
+			case 4 :
+				camera->mouseZoom(10);
+				break;
 		}
 		//cout << *camera << endl;
 	} else { // selection of the clicked block

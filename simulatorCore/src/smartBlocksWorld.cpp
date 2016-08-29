@@ -23,10 +23,12 @@ SmartBlocksWorld::SmartBlocksWorld(const Cell3DPosition &gridSize, const Vector3
     cout << "\033[1;31mSmartBlocksWorld constructor\033[0m" << endl;
 
     if (GlutContext::GUIisEnabled) {
-        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","smartBlockSimple.obj");
-        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures","repere25.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/smartBlocksTextures",
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
+                                            "smartBlockSimple.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/smartBlocksTextures",
                                                       "smartBlockPicking.obj");
+        objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
+                                             "repere25.obj");
     }
 
     lattice = new SLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
@@ -174,7 +176,7 @@ void SmartBlocksWorld::loadTextures(const string &str) {
         int lx,ly;
         idTextureFloor = GlutWindow::loadTexture(path.c_str(),lx,ly);
 
-        path=str+"/digits.tga";
+        path=str+"/../smartBlocksTextures/digits.tga";
         idTextureDigits = GlutWindow::loadTexture(path.c_str(),lx,ly);
     }
 }

@@ -238,7 +238,7 @@ void World::menuChoice(int n) {
 void World::createHelpWindow() {
 	if (GlutContext::helpWindow)
 		delete GlutContext::helpWindow;
-	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/genericHelp.txt");
+	GlutContext::helpWindow = new GlutHelpWindow(NULL,10,40,540,500,"../../simulatorCore/resources/help/genericHelp.txt");
 }
 
 void World::tapBlock(Time date, bID bId, int face) {
@@ -261,11 +261,11 @@ void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
 void World::createPopupMenu(int ix, int iy) {
 	if (!GlutContext::popupMenu) {
 		GlutContext::popupMenu = new GlutPopupMenuWindow(NULL,0,0,200,180);
-		GlutContext::popupMenu->addButton(1,"../../simulatorCore/menuTextures/menu_add.tga");
-		GlutContext::popupMenu->addButton(2,"../../simulatorCore/menuTextures/menu_del.tga");
-		GlutContext::popupMenu->addButton(3,"../../simulatorCore/menuTextures/menu_tap.tga");
-		GlutContext::popupMenu->addButton(4,"../../simulatorCore/menuTextures/menu_save.tga");
-		GlutContext::popupMenu->addButton(5,"../../simulatorCore/menuTextures/menu_cancel.tga");
+		GlutContext::popupMenu->addButton(1,"../../simulatorCore/resources/textures/menuTextures/menu_add.tga");
+		GlutContext::popupMenu->addButton(2,"../../simulatorCore/resources/textures/menuTextures/menu_del.tga");
+		GlutContext::popupMenu->addButton(3,"../../simulatorCore/resources/textures/menuTextures/menu_tap.tga");
+		GlutContext::popupMenu->addButton(4,"../../simulatorCore/resources/textures/menuTextures/menu_save.tga");
+		GlutContext::popupMenu->addButton(5,"../../simulatorCore/resources/textures/menuTextures/menu_cancel.tga");
 	}
 
 	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;

@@ -42,7 +42,7 @@ void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
     world = new Catoms3DWorld(gridSize, gridScale, argc, argv);
 
 	if (GlutContext::GUIisEnabled) 
-		world->loadTextures("../../simulatorCore/catoms3DTextures");
+		world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
 	
     World::setWorld(world);
 }

@@ -1,0 +1,10 @@
+include #puzzle.meld
+
+/* 2x2x2 cube */
+!initial(A) -o !coordinate(A,0,5,0).
+
+//!coordinate(A,0,0,Z), Z >= -1, Z <= 0  -o !inTarget(A,b_true).
+!coordinate(A,0,0,-1) -o !inTarget(A,b_true).
+!coordinate(A,1,0,Z),  Z >= -1, Z <= 0 -o !inTarget(A,b_true).
+!coordinate(A,0,-1,Z), Z >= -1, Z <= 0 -o !inTarget(A,b_true).
+!coordinate(A,1,-1,Z), Z >= -1, Z <= 0 -o !inTarget(A,b_true).

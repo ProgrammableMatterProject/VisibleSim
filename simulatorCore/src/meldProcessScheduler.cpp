@@ -32,8 +32,6 @@ MeldProcessScheduler::MeldProcessScheduler() {
 
 MeldProcessScheduler::~MeldProcessScheduler() {
 	OUTPUT << "\033[1;31mMeldProcessScheduler destructor\33[0m" << endl;
-	delete schedulerThread;
-	delete sem_schedulerStart;
 }
 
 void MeldProcessScheduler::createScheduler() {
@@ -100,7 +98,7 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 				while (!eventsMap.empty()) {
 					hasProcessed = true;
 					do {
-						lock();
+						// lock();
 						first = eventsMap.begin();		
 						pev = (*first).second;
 						if (pev->date == now()) {
@@ -116,7 +114,7 @@ void *MeldProcessScheduler::startPaused(/*void *param*/) {
 					pev->consume();
 					eventsMap.erase(first);
 					eventsMapSize--;
-					unlock();
+					// unlock();
 					if (state == PAUSED) {
 						if (MeldProcessVM::isInDebuggingMode()) {
 							getDebugger()->handleBreakAtTimeReached(currentDate);
@@ -232,7 +230,7 @@ void MeldProcessScheduler::start(int mode) {
 }
 
 void MeldProcessScheduler::pause(Time date) {
-	getScheduler()->scheduleLock(new VMDebugPauseSimEvent(date));
+	getScheduler()->schedule(new VMDebugPauseSimEvent(date));
 }
 
 void MeldProcessScheduler::unPause() {
@@ -307,15 +305,6 @@ bool MeldProcessScheduler::schedule(Event *ev) {
 	if (largestEventsMapSize < eventsMapSize) largestEventsMapSize = eventsMapSize;
 
 	return(true);
-}
-
-
-bool MeldProcessScheduler::scheduleLock(Event *ev) {
-	bool ret;
-	lock();
-	ret = schedule(ev);
-	unlock();
-	return ret;
 }
 
 } // MeldProcess namespace

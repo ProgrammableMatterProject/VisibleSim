@@ -47,7 +47,7 @@ void RobotBlocksBlock::setPrevNext(const P2PNetworkInterface *prev,const P2PNetw
 void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
@@ -55,7 +55,7 @@ void RobotBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* targe
 void RobotBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
-    getScheduler()->scheduleLock(
+    getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
 }

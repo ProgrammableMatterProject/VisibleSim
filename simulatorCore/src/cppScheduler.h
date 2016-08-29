@@ -33,8 +33,6 @@ public:
 		OUTPUT << "I'm a CPPScheduler" << endl;
 	}
 
-	void start(int mode);
-
 	void waitForSchedulerEnd() {
 		schedulerThread->join();
 	}

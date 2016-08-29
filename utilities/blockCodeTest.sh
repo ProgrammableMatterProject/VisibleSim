@@ -2,7 +2,7 @@
 
 usage() {
     echo "Usage: $0 <test-ID> <path-to-blockCode-binary> <VisibleSim-arguments>"
-    echo "Example: $0 bbCycle ../applicationsBin/bbCycle -c config123.xml"
+    echo "Example: $0 bbCycle ../applicationsBin/bbCycle -c config123.xml -s 9000000"
     echo "Test-ID can be used to distinguish between 2 control XML files from the same directory"
     exit 1
 }

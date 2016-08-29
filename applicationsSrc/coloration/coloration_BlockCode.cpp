@@ -44,12 +44,14 @@ void Coloration_BlockCode::startup() {
 		colored = true;
 OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_color ) << endl;
 		smartBlock->setColor(my_color);
-		sleep(1);
+
+		std::chrono::milliseconds timespan(1);
+		std::this_thread::sleep_for(timespan);
 
 		Time time_offset = 0;
 		P2PNetworkInterface * p2p;
-		for( int i = NeighborDirection::North ; i <= NeighborDirection::West ; i++ ) {
-			p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
+		for( int i = SLattice::North ; i <= SLattice::West ; i++ ) {
+			p2p = smartBlock->getInterface( SLattice::Direction(i) );
 			if( p2p->connectedInterface ) {
 				time_offset += 10000 + (rand() % 25) * 2000;
 				Color_message * color_msg = new Color_message( my_color, vertical_neighbors_color, horizontal_neighbors_color );
@@ -85,7 +87,7 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 			color vertical_neighbors_color;
 			color horizontal_neighbors_color;
 
-			if( recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::North ) || recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::South )) {
+			if( recv_message->destinationInterface == smartBlock->getInterface( SLattice::North ) || recv_message->destinationInterface == smartBlock->getInterface( SLattice::South )) {
 				info.str("");
 				info << "I am " << color_to_string(my_color) << endl;
 				vertical_neighbors_color = recv_message->get_my_color();
@@ -98,8 +100,8 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 				}
 
 				//Informing my neighbors
-				for( i = NeighborDirection::North ; i <= NeighborDirection::West ; i++ ) {
-				p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
+				for( i = SLattice::North ; i <= SLattice::West ; i++ ) {
+				p2p = smartBlock->getInterface( SLattice::Direction(i) );
 					if( p2p->connectedInterface ) {
 						if( p2p != recv_message->destinationInterface ) {
 							time_offset += 10000 + (rand() % 25) * 2000;
@@ -109,7 +111,7 @@ void Coloration_BlockCode::processLocalEvent( EventPtr pev ) {
 					}
 				}
 			}
-			else if( recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::East ) || recv_message->destinationInterface == smartBlock->getInterface( NeighborDirection::West )) {
+			else if( recv_message->destinationInterface == smartBlock->getInterface( SLattice::East ) || recv_message->destinationInterface == smartBlock->getInterface( SLattice::West )) {
 				my_color = recv_message->get_horizontal_color();
 OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_color );
 				horizontal_neighbors_color = recv_message->get_my_color();
@@ -121,8 +123,8 @@ OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_col
 					}
 				}
 				//Informing my neighbors
-				for( i = NeighborDirection::North ; i <= NeighborDirection::West ; i++ ) {
-				p2p = smartBlock->getInterface( NeighborDirection::Direction(i) );
+				for( i = SLattice::North ; i <= SLattice::West ; i++ ) {
+				p2p = smartBlock->getInterface( SLattice::Direction(i) );
 					if( p2p->connectedInterface ) {
 						if( p2p != recv_message->destinationInterface ) {
 							time_offset += 10000 + (rand() % 25) * 2000;
@@ -133,11 +135,12 @@ OUTPUT << "Block #" << hostBlock->blockId << " I am " << color_to_string( my_col
 				}
 			}
 			smartBlock->setColor(my_color);
-			sleep(1);
+			std::chrono::milliseconds timespan(1);
+			std::this_thread::sleep_for(timespan);				
 		}
 	}
 }
 
-SmartBlocks::SmartBlocksBlockCode* Coloration_BlockCode::buildNewBlockCode(SmartBlocksBlock *host) {
-	return(new Coloration_BlockCode(host));
+BlockCode* Coloration_BlockCode::buildNewBlockCode(BuildingBlock *host) {
+	return(new Coloration_BlockCode(static_cast<SmartBlocksBlock*>(host)));
 }
