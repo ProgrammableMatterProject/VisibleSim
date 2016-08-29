@@ -46,7 +46,7 @@ sudo apt-get install sbcl
 2\. `make`
 
 ## Getting Started
-A __User Manual__ and a __Technical Reference__ are available in the `doc` directory, to get users and contributors started with VisibleSim.
+A __User Manual__ and a __Technical Reference (_Coming Soon_)__ are available in the `doc` directory, to get users and contributors started with VisibleSim.
 
 [boost1.56-ticket]:https://svn.boost.org/trac/boost/ticket/11154
 [git submodules]:https://git-scm.com/book/en/v2/Git-Tools-Submodules
