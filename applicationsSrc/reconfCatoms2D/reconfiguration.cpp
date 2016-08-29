@@ -29,6 +29,8 @@
 #define RECONFIGURATION_CHECKSPACE_DEBUG
 #define CHECK_SPACE
 
+//#define RECONFIGURATION_PARALLELISM_COLOR
+
 using namespace std;
 using namespace Catoms2D;
 
@@ -87,7 +89,7 @@ string Clearance::toString() {
 
 Reconfiguration::Reconfiguration(Catoms2DBlock *c, Map *m): map(m) {
   catom = c;
-  state = UNKNOWN;
+  setState(UNKNOWN);
   started = false;
 }
 
@@ -128,7 +130,7 @@ void Reconfiguration::handleStopMovingEvent() {
   // Verif
   assert(isFree());
   
-  state = WAITING;
+  setState(WAITING);
 
   // Verif2
 #ifdef CHECK_SPACE
@@ -140,9 +142,14 @@ void Reconfiguration::handleStopMovingEvent() {
   Neighbor n = map->getBorder(ROTATION_DIRECTION);
   Message *m = new ReconfigurationEndMoveMsg(currentClearance,1);
   send(m,n.interface);
-  
+
+  if (checkConvergence()) {
+    setState(GOAL);
+  } else if (isInStream()) {
+    requestClearance();
+  }
   // try to move
-  tryToMove(); 
+  //tryToMove(); 
 }
 
 
@@ -290,14 +297,14 @@ void Reconfiguration::handle(MessagePtr m) {
     forwardEndMove(emm->clearance,recv,rm->hopCounter+1);
 
     // and now:
-    if (isFree()) {
-      
-      state = WAITING;
+    //if (isFree()) {
+    if (isInStream()) {
+      setState(WAITING);
 
       assert(pendingRequests.size() == 0);
       
-      tryToMove();
-
+      //tryToMove();
+      requestClearance();
     } else {
       
       if (isAPendingRequestDestNeighborWith(emm->clearance.src)) {
@@ -342,6 +349,8 @@ void Reconfiguration::move(Clearance &c) {
 #ifdef RECONFIGURATION_MOVES_DEBUG
   MY_CERR << " moving " << currentClearance.toString() << endl;
 #endif
+
+  setState(MOVING);
   
   // start to move around the pivot
   catom->startMove(m);
@@ -359,12 +368,59 @@ bool Reconfiguration::tryToMove() {
   Coordinate &src = map->getPosition();
  
   if (shouldMove(src,pivot.position,dest)) {
-    state = WAITING;
+    //if (isInStream(src,pivot.position,dest)) {
+    setState(WAITING);
     // send CLEARANCE_REQUEST to b
     Neighbor b = map->getBorder(ROTATION_DIRECTION);
     ClearanceRequest cr(src,dest,0);
     Message *m = new ReconfigurationClearanceRequestMsg(cr,1);
     send(m,b.interface);
+    return true;
+  }
+  return false;
+}
+
+void Reconfiguration::requestClearance() {
+  Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
+  Coordinate dest = getPositionAfterRotationAround(pivot);
+  Coordinate &src = map->getPosition();
+ 
+  Neighbor b = map->getBorder(ROTATION_DIRECTION);
+  ClearanceRequest cr(src,dest,0);
+  Message *m = new ReconfigurationClearanceRequestMsg(cr,1);
+  send(m,b.interface);
+}
+
+bool Reconfiguration::isInStream() {
+
+  if (!isFree()) {
+    return false;
+  }
+
+  Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
+  Coordinate dest = getPositionAfterRotationAround(pivot);
+  Coordinate &src = map->getPosition();
+
+  if (!Map::isInTarget(src) && (src.y == 0)) {
+    return true;
+  } else if (!Map::isInTarget(src) && (dest.y <= src.y)) {
+    return true;
+  } else if (!Map::isInTarget(src) && Map::isInTarget(pivot.position)) {
+    return true;
+  } else if (Map::isInTarget(src) && Map::isInTarget(dest) && (dest.y <= src.y)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool Reconfiguration::checkConvergence() {
+  Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
+  Coordinate dest = getPositionAfterRotationAround(pivot);
+  Coordinate &src = map->getPosition();
+
+  if ((Map::isInTarget(src) && !Map::isInTarget(dest)) ||
+      (Map::isInTarget(src) && Map::isInTarget(dest) && (dest.y > src.y))) {
     return true;
   }
   return false;
@@ -421,13 +477,20 @@ void Reconfiguration::start() {
     started = true; 
     if (Map::isInTarget(map->position)) { // seed
       hasConverged();
-    } else if (isFree()) {
+    } else if (isInStream()) {
+      setState(WAITING);
+      requestClearance();
+    } else {
+      setState(BLOCKED);
+    }
+
+    /*else if (isFree()) {
       if(!tryToMove()) {
-	state = BLOCKED;
+	setState(BLOCKED);
       }
     } else {
-      state = BLOCKED;
-    }
+      setState(BLOCKED);
+      }*/
   }
 #ifdef RECONFIGURATION_DEBUG
   MY_CERR << " initial state " << toString(state) << endl;
@@ -711,11 +774,41 @@ bool Reconfiguration::isDone() {
 }
 
 void Reconfiguration::hasConverged() {
-  state = GOAL;
-#ifdef RECONFIGURATION_WITH_COLOR
-  Coordinate p = map->getPosition();
-  assert(Map::isInTarget(p));
-  Cell3DPosition c(p.x,0,p.y); 
-  catom->setColor(BlockCode::target->getTargetColor(c));
-#endif
+  setState(GOAL);  
 }
+
+void Reconfiguration::setState(reconfigurationState_t s) {
+  state = s;
+
+#ifdef RECONFIGURATION_WITH_COLOR
+  if (state == GOAL) {
+    Coordinate p = map->getPosition();
+    assert(Map::isInTarget(p));
+    Cell3DPosition c(p.x,0,p.y); 
+    catom->setColor(BlockCode::target->getTargetColor(c));
+  }
+#endif
+
+#ifdef RECONFIGURATION_PARALLELISM_COLOR
+  if (s == UNKNOWN) return;
+  
+  switch(s) {
+  case GOAL:
+    catom->setColor(GREEN);
+    break;
+  case WAITING:
+    catom->setColor(YELLOW);
+    break;
+  case MOVING:
+    catom->setColor(RED);
+    break;
+  case BLOCKED:
+  case UNKNOWN:
+    catom->setColor(GREY);
+    break;
+  default:
+    ;;
+  }
+#endif    
+}
+

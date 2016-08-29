@@ -70,12 +70,15 @@ private:
    bool shouldMove(Coordinate &src, Coordinate &pivot, Coordinate &dest);
    bool isFree();
    void move(Clearance &c);
-   void hasConverged();
+
+   // new version
+   bool isInStream ();
+   void requestClearance();
+   bool checkConvergence();
    
-   // Move to map after tests
-   //  P2PNetworkInterface* getNeighbor(Coordinate &p, P2PNetworkInterface *i);
-   //Neighbor getNeighbor(RelativeDirection::Direction dir, P2PNetworkInterface *p2p);
-   //Neighbor getNeighbor(RelativeDirection::Direction dir, Coordinate &p);
+   // State management
+   void hasConverged();
+   void setState(reconfigurationState_t s);
 
    // movings management
    bool isMoving(Coordinate &c);
