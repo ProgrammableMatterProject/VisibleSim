@@ -4,12 +4,15 @@ defaultBaudRate="38900"
 defaultSpeed="1.881119320574239116075"
 
 confDir="evaluation/confs/"
-subConfDir="car/ pyramid/ square/"
+subConfDir="car/ flag/ magnet/ pyramid/"
+
 resDir="evaluation/results/"
 
 export=".confCheck.xml"
 
-mv "$resDir" "evaluation/results-bak"
+bak="evaluation/results-bak"
+rm -rf "$bak"
+mv "$resDir" "$bak"
 mkdir "$resDir"
 
 for sub in $subConfDir; do
