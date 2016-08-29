@@ -859,7 +859,7 @@ Where `t` is the real-time (i.e. simulator time), `x(t)` is the clock local time
 
 For quadratic-model clocks, converting simulator time into local time using `clock->getTime(simTime)` is a relatively straightforward and efficient operation. On the other hand, users should be aware that the reverse operation, perfomed with `clock->getSimulationTime(moduleTime)`, is quite costly: This operation is perfomed using a guided search mechanism as the random noise is not constant over time.
 
-_[1] David W Allan. Time and frequency(time-domain) characterization, estimation, and prediction of precision clocks and oscillators. IEEE transactions on ultrasonics, ferroelectrics, and frequency control, 34(6):647–654, 1987.
+_[1] David W Allan. Time and frequency(time-domain) characterization, estimation, and prediction of precision clocks and oscillators. IEEE transactions on ultrasonics, ferroelectrics, and frequency control, 34(6):647–654, 1987.  
 [2] Ring, F., Nagy, A., Gaderer, G., & Loschmidt, P. (2010, November). Clock synchronization simulation for wireless sensor networks. In Sensors, 2010 IEEE (pp. 2022-2026). IEEE._
 
 ## <a name="autotest"></a>Automated BlockCode Testing
