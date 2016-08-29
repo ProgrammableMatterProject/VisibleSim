@@ -190,12 +190,12 @@ void SmartBlocksWorld::setSelectedFace(int n) {
     else if (name == "Material__71") numSelectedFace = SLattice::West;
     else if (name == "Material__68") numSelectedFace = SLattice::North;
     else {
-		cerr << "warning: Unrecognized picking face" << endl;
-		numSelectedFace = 4;	// UNDEFINED
+		numSelectedFace = 4;	// Top
+        return;
     }
 
-    cerr << "SET " << name << " = " << numSelectedFace << " = "
-         << lattice->getDirectionString(numSelectedFace) << endl;
+    // cerr << "SET " << name << " = " << numSelectedFace << " = "
+    //      << lattice->getDirectionString(numSelectedFace) << endl;
 }
 
 void SmartBlocksWorld::exportConfiguration() {
