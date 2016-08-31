@@ -179,3 +179,7 @@ Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
   //cerr << "TransmissionDuration: " << transmissionDuration << endl;
   return transmissionDuration;
 }
+
+bool P2PNetworkInterface::isConnected() {
+  return connectedInterface != NULL;
+}
