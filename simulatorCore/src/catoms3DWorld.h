@@ -67,6 +67,7 @@ public:
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
+    virtual void glDrawSpecificBg();
     void updateGlData(BuildingBlock *bb);
     void updateGlData(Catoms3DBlock*blc,const Color &color);
     void updateGlData(Catoms3DBlock*blc, bool visible);

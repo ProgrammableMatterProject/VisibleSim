@@ -311,6 +311,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             break;
 		case 's' : saveScreenMode=!saveScreenMode; break;
 		case 'S' : saveScreen((char *)("capture.ppm")); break;
+        case 'B' : 
+			World *world = BaseSimulator::getWorld();
+            world->toggleBackground();
+            break;
         }
     }
     glutPostRedisplay();

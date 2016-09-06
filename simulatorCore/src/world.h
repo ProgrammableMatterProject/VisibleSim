@@ -45,6 +45,7 @@ protected:
     /************************************************************
      *   Graphical / UI Attributes
      ************************************************************/        
+    bool background = true; //!< Option for visible background 
     GlBlock *selectedGlBlock; //!< A pointer to the GlBlock selected by the user
     GLushort numSelectedFace; //!< The id of the face (NeighborDirection) selected by the user
     GLuint numSelectedGlBlock; //!< The index of the block selected by the user in the tabGlBlock
@@ -238,6 +239,14 @@ public:
      */
     virtual void glDrawIdByMaterial() {};
     /**
+     * @brief Draws the world background
+     */
+    void glDrawBackground();
+    /**
+     * @brief Draws the background for different types of world
+     */
+    virtual void glDrawSpecificBg() {};
+    /**
      * @brief Linearly scans the grid for blocks and calls linkBlock to connect the interfaces of neighbors
      */
     void linkBlocks();
@@ -303,6 +312,10 @@ public:
      * @return the maximum block id present in the world + 1
      */
     inline bID incrementBlockId() { return ++maxBlockId; }
+    /**
+     * @brief Toggle world background
+     */
+    void toggleBackground() { background = !background; }
 };
 
 /**

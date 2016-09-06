@@ -117,6 +117,43 @@ void Catoms2DWorld::glDraw() {
     unlock();
     glPopMatrix();
 
+    glDrawBackground();
+}
+
+
+void Catoms2DWorld::glDrawId() {
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
+
+    glDisable(GL_TEXTURE_2D);
+    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+    int n=1;
+    lock();
+    while (ic!=tabGlBlocks.end()) {
+        ((Catoms2DGlBlock*)(*ic))->glDrawId(objBlock,n);
+        ic++;
+    }
+    unlock();
+    glPopMatrix();
+}
+
+void Catoms2DWorld::glDrawIdByMaterial() {
+    glPushMatrix();
+    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
+
+    glDisable(GL_TEXTURE_2D);
+    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+    int n=1;
+    lock();
+    while (ic!=tabGlBlocks.end()) {
+        ((Catoms2DGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
+        ic++;
+    }
+    unlock();
+    glPopMatrix();
+}
+
+void Catoms2DWorld::glDrawSpecificBg() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},gray[]={0.2f,0.2f,0.2f,1.0f};
 
     glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
@@ -208,39 +245,6 @@ void Catoms2DWorld::glDraw() {
     objRepere->glDraw();
     glPopMatrix();
 }
-
-void Catoms2DWorld::glDrawId() {
-    glPushMatrix();
-    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
-
-    glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
-    lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((Catoms2DGlBlock*)(*ic))->glDrawId(objBlock,n);
-        ic++;
-    }
-    unlock();
-    glPopMatrix();
-}
-
-void Catoms2DWorld::glDrawIdByMaterial() {
-    glPushMatrix();
-    glTranslatef(0.5*lattice->gridScale[0],0,0.5*lattice->gridScale[2]);
-
-    glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
-    lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((Catoms2DGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
-        ic++;
-    }
-    unlock();
-    glPopMatrix();
-}
-
 
 void Catoms2DWorld::loadTextures(const string &str) {
     string path = str+"//hexa.tga";

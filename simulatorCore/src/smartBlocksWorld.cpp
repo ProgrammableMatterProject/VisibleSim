@@ -94,34 +94,6 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 }
 
 void SmartBlocksWorld::glDraw() {
-    static const GLfloat white[]={1.0,1.0,1.0,1.0},
-        gray[]={0.2,0.2,0.2,1.0};
-
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-        glPushMatrix();
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D,idTextureFloor);
-        glNormal3f(0,0,1.0f);
-        glScalef(lattice->gridSize[0]*lattice->gridScale[0],
-                 lattice->gridSize[1]*lattice->gridScale[1],1.0f);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,0.0f);
-        glTexCoord2f(0,lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,0.0f);
-        glEnd();
-        glPopMatrix();
-        // draw the axes
-        objRepere->glDraw();
-
-        glPushMatrix();
         /*glTranslatef(-lattice->gridSize[0]/2.0f*lattice->gridScale[0],
           -lattice->gridSize[1]/2.0f*lattice->gridScale[1],0); */
         glDisable(GL_TEXTURE_2D);
@@ -137,6 +109,8 @@ void SmartBlocksWorld::glDraw() {
           Physics::glDraw();
         */
         glPopMatrix();
+
+        glDrawBackground();
 }
 
 void SmartBlocksWorld::glDrawIdByMaterial() {
@@ -167,6 +141,37 @@ void SmartBlocksWorld::glDrawId() {
     }
     unlock();
     glPopMatrix();
+}
+
+void SmartBlocksWorld::glDrawSpecificBg() {
+    static const GLfloat white[]={1.0,1.0,1.0,1.0},
+        gray[]={0.2,0.2,0.2,1.0};
+
+    glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,gray);
+    glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+    glPushMatrix();
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,idTextureFloor);
+    glNormal3f(0,0,1.0f);
+    glScalef(lattice->gridSize[0]*lattice->gridScale[0],
+             lattice->gridSize[1]*lattice->gridScale[1],1.0f);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,0);
+    glVertex3f(0.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],0);
+    glVertex3f(1.0f,0.0f,0.0f);
+    glTexCoord2f(lattice->gridSize[0],lattice->gridSize[1]);
+    glVertex3f(1.0,1.0,0.0f);
+    glTexCoord2f(0,lattice->gridSize[1]);
+    glVertex3f(0.0,1.0,0.0f);
+    glEnd();
+    glPopMatrix();
+    // draw the axes
+    objRepere->glDraw();
+
+    glPushMatrix();
 }
 
 void SmartBlocksWorld::loadTextures(const string &str) {

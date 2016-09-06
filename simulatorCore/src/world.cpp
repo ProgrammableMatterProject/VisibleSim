@@ -278,4 +278,14 @@ cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(num
 	GlutContext::popupMenu->show(true);
 }
 
+void World::glDrawBackground() {
+    if (background) {
+        glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
+        glDrawSpecificBg(); 
+    }
+    else { 
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
+    }
+}
+
 } // BaseSimulator namespace
