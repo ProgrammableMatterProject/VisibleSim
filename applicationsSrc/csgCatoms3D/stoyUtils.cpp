@@ -1,5 +1,7 @@
 #include "stoyUtils.h"
 
+vector<Brick> StoyUtils::bricks;
+
 void StoyUtils::readFile(string path_to_file) {
     fstream stoyFile;
     stoyFile.open(path_to_file);
@@ -13,7 +15,7 @@ void StoyUtils::readFile(string path_to_file) {
     stoyFile.close();
 }
 
-bool StoyUtils::isInside(Cell3DPosition catomPosition) {
+bool StoyUtils::isInside(Vector3D catomPosition) {
     for (unsigned int i = 0; i < bricks.size(); i++) {
         if (bricks[i].p1.pt[0] <= catomPosition.pt[0] &&
             bricks[i].p1.pt[1] <= catomPosition.pt[1] &&

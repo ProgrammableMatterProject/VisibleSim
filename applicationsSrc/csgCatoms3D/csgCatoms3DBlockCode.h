@@ -23,22 +23,18 @@
 #include "target.h"
 
 class CSG_message;
-class Distance_message;
 
 typedef std::shared_ptr<CSG_message> CSG_message_ptr;
-typedef std::shared_ptr<Distance_message> Distance_message_ptr;
 
 class CsgCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-    /* Debug Info */
-    static int side_size;
-    static bool bitmap[27000];
+    static bool bitmap[27000]; // used to generate the bitmap file from any method in use
+    static int side_size; // used to read the bitmap vector as a matrix
 
 	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
     Vector3D myPosition; // has relative position from the master
     bool hasPosition; // flag position
-    int distance;
     CsgUtils csgUtils;
     StoyUtils stoyUtils;
     MeshUtils meshUtils;
@@ -52,7 +48,6 @@ public:
 	void processLocalEvent(EventPtr pev);
     void createCSG();
     void sendCSGMessage();
-    void sendDistanceMessage();
 
     void benchmark();
     void calcBitmap();
@@ -64,13 +59,6 @@ public:
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 
-};
-
-class Distance_message : public Message {
-    int distance;
-public :
-    Distance_message(int _dist);
-	int getDistance() { return distance; };
 };
 
 class CSG_message : public Message {

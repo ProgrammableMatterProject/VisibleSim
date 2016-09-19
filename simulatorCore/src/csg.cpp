@@ -3,27 +3,37 @@
 #define EPS 1e-10
 
 /******************************************************************/
+CSGCube::CSGCube (double x, double y, double z) : size_x(x), size_y(y), size_z(z), center(true) {};
 
 void CSGCube::toString() {
     printf("cube([%lf, %lf, %lf], true);\n", size_x, size_y, size_z);
 }
 
 bool CSGCube::isInside(const Vector3D &p, Color &color) {
-    //center
-    if (false) {
-        if (p.pt[0] < size_x/2 && p.pt[1] < size_y/2 && p.pt[2] < size_z/2)
+    if (center) {
+        if (p.pt[0] <= size_x/2 && p.pt[0] >= -size_x/2 &&
+                p.pt[1] <= size_y/2 && p.pt[1] >= -size_y/2 &&
+                p.pt[2] <= size_z/2 && p.pt[2] >= -size_z/2)
             return true;
     }
     else {
-        if (p.pt[0] < size_x && p.pt[1] < size_y && p.pt[2] < size_z)
+        if (p.pt[0] <= size_x && p.pt[0] >= 0 &&
+                p.pt[1] <= size_y && p.pt[1] >= 0 &&
+                p.pt[2] <= size_z && p.pt[2] >= 0)
             return true;
     }
     return false;
 }
 
 void CSGCube::boundingBox(BoundingBox &bb) {
-    bb.P0.set(-size_x/2,-size_y/2,-size_z/2,1);
-    bb.P1.set(size_x/2, size_y/2, size_z/2, 1);
+    if (center) {
+        bb.P0.set(-size_x/2,-size_y/2,-size_z/2,1);
+        bb.P1.set(size_x/2, size_y/2, size_z/2, 1);
+    }
+    else {
+        bb.P0.set(0, 0, 0, 1);
+        bb.P1.set(size_x, size_y, size_z, 1);
+    }
 }
 
 /******************************************************************/
@@ -34,7 +44,7 @@ void CSGSphere::toString() {
 
 bool CSGSphere::isInside(const Vector3D &p, Color &color) {
     double dist = sqrt(pow(p.pt[0], 2) + pow(p.pt[1], 2) + pow(p.pt[2], 2));
-    if (dist < radius)
+    if (dist <= radius)
         return true;
     return false;
 }
@@ -45,23 +55,39 @@ void CSGSphere::boundingBox(BoundingBox &bb) {
 }
 
 /******************************************************************/
+CSGCylinder::CSGCylinder (double h, double r) : height(h), radius(r), center(true) {};
 
 void CSGCylinder::toString() {
     printf("cylinder(%lf, %lf, %lf, true);\n", height, radius, radius);
 }
 
 bool CSGCylinder::isInside(const Vector3D &p, Color &color) {
-    if (p.pt[2] <= height/2. && p.pt[2] >= -height/2.) {
-        if (sqrt(pow(p.pt[0], 2) + pow(p.pt[1],2)) < radius) {
-            return true;
+    if (center) {
+        if (p.pt[2] <= height/2. && p.pt[2] >= -height/2.) {
+            if (sqrt(pow(p.pt[0], 2) + pow(p.pt[1],2)) <= radius) {
+                return true;
+            }
+        }
+    }
+    else {
+        if (p.pt[2] <= height && p.pt[2] >= 0) {
+            if (sqrt(pow(p.pt[0], 2) + pow(p.pt[1],2)) <= radius) {
+                return true;
+            }
         }
     }
     return false;
 }
 
 void CSGCylinder::boundingBox(BoundingBox &bb) {
-    bb.P0.set(-radius, -radius, -height/2,1);
-    bb.P1.set(radius, radius, height/2, 1);
+    if (center) {
+        bb.P0.set(-radius, -radius, -height/2,1);
+        bb.P1.set(radius, radius, height/2, 1);
+    }
+    else {
+        bb.P0.set(-radius, -radius, 0, 1);
+        bb.P1.set(radius, radius, height, 1);
+    }
 }
 
 /******************************************************************/

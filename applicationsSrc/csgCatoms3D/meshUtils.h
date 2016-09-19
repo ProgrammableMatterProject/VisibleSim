@@ -1,6 +1,6 @@
 #ifndef MESHUTILS_H_
 #define MESHUTILS_H_
-#include "cell3DPosition.h"
+#include "vector3D.h"
 #include "mesh/world.h"
 
 class MeshUtils
@@ -10,7 +10,7 @@ public:
     MeshWorld w;
 
     void readFile(string path_to_file);
-    bool isInside(Cell3DPosition catomPosition);
+    bool isInside(Vector3D catomPosition);
 
 private:
 };

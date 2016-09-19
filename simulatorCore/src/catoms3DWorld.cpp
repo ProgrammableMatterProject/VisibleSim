@@ -36,7 +36,7 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
     if (GlutContext::GUIisEnabled) {
 		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-											"catom3DV2connectorID.obj");
+											"catom3Dsimple.obj");
 		objBlockForPicking =
 			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 									 "catom3D_picking.obj");
