@@ -57,7 +57,7 @@ void CsgCatoms3DBlockCode::startup() {
 
     hasPosition = false;
 	if (catom->blockId==1) {
-        csgRoot = csgUtils.readFile("data/mug-rotate.bc");
+        csgRoot = csgUtils.readFile("data/mug.bc");
         csgRoot->toString();
         BoundingBox bb;
         csgRoot->boundingBox(bb);
