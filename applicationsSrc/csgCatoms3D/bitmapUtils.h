@@ -5,7 +5,7 @@
 
 class BitmapUtils
 {
-    string bitmap;
+    static string bitmap;
 
 public:
     void readFile(string path_to_file);

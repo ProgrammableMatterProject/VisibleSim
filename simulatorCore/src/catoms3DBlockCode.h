@@ -27,7 +27,7 @@ public:
 	Catoms3DBlockCode(Catoms3DBlock *host);
 	virtual ~Catoms3DBlockCode();
 
-	virtual void processLocalEvent(EventPtr pev) = 0;
+//	virtual void processLocalEvent(EventPtr pev) = 0;
 
     void addDebugAttributes(Scheduler* scheduler);
 };

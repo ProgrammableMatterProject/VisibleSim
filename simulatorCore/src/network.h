@@ -39,19 +39,15 @@ typedef std::shared_ptr<Message> MessagePtr;
 class Message {
 protected:
 	static uint64_t nextId;
-	//static unsigned int nextId;
 	static uint64_t nbMessages;
-	//static unsigned int nbMessages;
 public:
-    uint64_t id;
-	//unsigned int id;
+	uint64_t id;
 	unsigned int type;
 	P2PNetworkInterface *sourceInterface, *destinationInterface;
 
 	Message();
 	virtual ~Message();
 
-//	static unsigned int getNbMessages();
 	static uint64_t getNbMessages();
 	virtual string getMessageName();
 
@@ -110,11 +106,8 @@ public:
         return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:-1;
 	}
 
-    /*
-	void disconnect();
-	static void setDefaultDataRate(unsigned int rate) { defaultDataRate = rate; }
-	*/
-
+	bool isConnected();
+	
 	void setDataRate(BaseSimulator::Rate* r); 
 	Time getTransmissionDuration(MessagePtr &m);
 };

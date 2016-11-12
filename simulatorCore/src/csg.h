@@ -55,10 +55,10 @@ private:
     double size_x;
     double size_y;
     double size_z;
+    bool center;
 
 public:
-    CSGCube (double _size_x, double _size_y, double _size_z) : size_x(_size_x), size_y(_size_y), size_z(_size_z) {};
-    ~CSGCube() {};
+    CSGCube (double _size_x, double _size_y, double _size_z);
     void toString();
     bool isInside(const Vector3D &point, Color &color);
     void boundingBox(BoundingBox &bb);
@@ -70,7 +70,6 @@ private:
     double radius;
 public:
     CSGSphere (double _radius) : radius(_radius){};
-    ~CSGSphere() {};
     void toString();
     bool isInside(const Vector3D &point, Color &color);
     void boundingBox(BoundingBox &bb);
@@ -80,9 +79,9 @@ class CSGCylinder : public CSGNode
 {
 private:
     double height, radius;
+    bool center;
 public:
-    CSGCylinder (double h, double r) : height(h), radius(r) {};
-    ~CSGCylinder() {};
+    CSGCylinder (double h, double r);
     void toString();
     bool isInside(const Vector3D &point, Color &color);
     void boundingBox(BoundingBox &bb);

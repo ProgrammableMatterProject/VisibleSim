@@ -1,22 +1,22 @@
 #ifndef STOYUTILS_H_
 #define STOYUTILS_H_
 #include <vector>
-#include "cell3DPosition.h"
+#include "vector3D.h"
 
 class Brick
 {
 public:
-    Cell3DPosition p1;
-    Cell3DPosition p2;
+    Vector3D p1;
+    Vector3D p2;
 };
 
 class StoyUtils
 {
-    vector<Brick> bricks;
+    static vector<Brick> bricks;
 
 public:
     void readFile(string path_to_file);
-    bool isInside(Cell3DPosition catomPosition);
+    bool isInside(Vector3D catomPosition);
 
     void setBricks(vector<Brick> b) { bricks = b; };
     vector<Brick> getBricks() { return bricks; };

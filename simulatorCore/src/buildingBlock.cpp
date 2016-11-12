@@ -147,6 +147,18 @@ P2PNetworkInterface*BuildingBlock::getP2PNetworkInterfaceByDestBlockId(bID destB
     return NULL;
 }
 
+unsigned short BuildingBlock::getNbNeighbors() {
+  unsigned short n = 0;
+  P2PNetworkInterface *p;
+  vector<P2PNetworkInterface*>::iterator it;
+  for (it = P2PNetworkInterfaces.begin(); it != P2PNetworkInterfaces.end(); ++it) {
+    p = *it;
+    if (p->isConnected()) {
+      n++;
+    }
+  }
+  return n;
+}
 
 void BuildingBlock::scheduleLocalEvent(EventPtr pev) {
     localEventsList.push_back(pev);
@@ -258,6 +270,5 @@ int BuildingBlock::getFaceForNeighborID(int nId) {
 
 	return -1;
 }
-
 
 } // BaseSimulator namespace

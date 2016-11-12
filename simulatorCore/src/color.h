@@ -39,6 +39,7 @@ const Color LIGHTGREY(0.75,0.75,0.75);
 const Color DARKGREY(0.25,0.25,0.25);
 const Color ORANGE(1.0,0.64706,0.0);
 const Color DARKORANGE(1.0,0.549,0.0);
+const Color BLACK(0.0,0.0,0.0);
 
 static const GLfloat tabColors[12][4] = {{1.0,0.0,0.0,1.0},{1.0,0.647058824,0.0,1.0},{1.0,1.0,0.0,1.0},
                                          {0.0,1.0,0.0,1.0},{0.0,0.0,1.0,1.0},

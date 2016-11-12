@@ -836,14 +836,31 @@ By default, the modules are initialised with a _drift-free_ clock model, which m
 
 #### QClock: Quadratic-Model Clock 
 
-Many hardware clock oscillators can be modeled using a quadratic model [1]: $x(t) =  \frac{1}{2} \cdot D \cdot t^2 + y_0 \cdot t + x_0 + \epsilon(t)$, where $t$ is the real-time (i.e., the simulator time), $x(t)$ is the clock local time, $D$ is the frequency drift , $y_0$ is the frequency offset, $x_0$ is the time offset, and $\epsilon(t)$ is the random noise.
+Many hardware clock oscillators can be modeled using a quadratic model<sup>_[1]_</sup>:  
+![Quadratic Model](https://latex.codecogs.com/png.latex?x%28t%29%20%3D%20%5Cfrac%7B1%7D%7B2%7D%20%5Ccdot%20D%20%5Ccdot%20t%5E2%20&plus;%20y_0%20%5Ccdot%20t%20&plus;%20x_0%20&plus;%20%5Cepsilon%28t%29)
 
- `QClock` uses this quadratic clock model.  Two types of  `QClock`  are available VisibleSim, namely  `GNoiseQClock` and `DNoiseQClock`. They differ by the way the noise $\epsilon(t)$ is simulated. In  `GNoiseQClock` (Gaussian-noise quadratic-model clock), the noise is simulated using a Gaussian distribution.  The method used in `DNoiseQClock` is inspired by the work presented in [2]. In `DNoiseQClock` (data-noise quadratic-model clock), the noise is replayed from data. We experimentally collected noise data for some BlinkyBlocks clocks during four hours. BlinkyBlocks clocks are driven by XMEGA_RTC_OSC1K_CRC calibrated RC oscillators with  a resolution of 1 millisecond and an accuracy of 1% accuracy (10 000 ppm) at 3V and 25°C. Users can easily instantiate such clocks using `DNoiseQClock DNoiseQClock::createXMEGA_RTC_OSC1K_CRC(ruint seed)` method. Be aware that the clocks generated using this method only work until the simulator time four hours.
+Where `t` is the real-time (i.e. simulator time), `x(t)` is the clock local time, `D` is the frequency drift , `y0` is the frequency offset, `x0` is the time offset, and `ε(t)` is the random noise.
 
-For quadratic-model clocks, converting simulator time into local time using `clock->getTime(simTime)` is a relatively straightforward and efficient operation. On the other hand, users should be aware that the reverse operation, perfomed with `clock->getSimulationTime(moduleTime)`, is quite expensive. Because the random noise is not constant over time,  this operation is perfomed using a guided search mechanism.
+ `QClock` uses this quadratic clock model. Two types of `QClock` are available VisibleSim, namely `GNoiseQClock` and `DNoiseQClock`. They differ by the way the noise `ε(t)` is simulated: 
+ 
+ - In `GNoiseQClock` (Gaussian-noise quadratic-model clock), the noise is simulated using a Gaussian distribution. 
+ - The method used in `DNoiseQClock` is inspired by the work presented in _[2]_. 
+    - In `DNoiseQClock` (data-noise quadratic-model clock), the noise is replayed from data. We experimentally collected noise data for some BlinkyBlocks clocks during four hours. BlinkyBlocks clocks are driven by `XMEGA_RTC_OSC1K_CRC` calibrated RC oscillators with  a resolution of 1 millisecond and an accuracy of 1% accuracy (10 000 ppm) at 3V and 25°C. 
+ 	- Users can easily instantiate such clocks using the following function (Only works until simulator time reaches four hours): 
+```C++
+  /**
+   * @brief Create a DNoiseQClock that simulates the XMEGA_RTC_OSC1K_CRC 
+   * hardware clock. XMEGA_RTC_OSC1K_CRC: Calibrated RC Oscillator, 1 ms 
+   * 1% accuracy (10 000 ppm) at 3V and 25°C.
+   * @para seed seed use to randomly select the noise signal
+   */ 
+  static DNoiseQClock* createXMEGA_RTC_OSC1K_CRC(ruint seed);
+```
 
-[1] David W Allan. Time and frequency(time-domain) characterization, estimation, and prediction of precision clocks and oscillators. IEEE transactions on ultrasonics, ferroelectrics, and frequency control, 34(6):647–654, 1987.
-[2] Ring, F., Nagy, A., Gaderer, G., & Loschmidt, P. (2010, November). Clock synchronization simulation for wireless sensor networks. In Sensors, 2010 IEEE (pp. 2022-2026). IEEE.
+For quadratic-model clocks, converting simulator time into local time using `clock->getTime(simTime)` is a relatively straightforward and efficient operation. On the other hand, users should be aware that the reverse operation, perfomed with `clock->getSimulationTime(moduleTime)`, is quite costly: This operation is perfomed using a guided search mechanism as the random noise is not constant over time.
+
+_[1] David W Allan. Time and frequency(time-domain) characterization, estimation, and prediction of precision clocks and oscillators. IEEE transactions on ultrasonics, ferroelectrics, and frequency control, 34(6):647–654, 1987.  
+[2] Ring, F., Nagy, A., Gaderer, G., & Loschmidt, P. (2010, November). Clock synchronization simulation for wireless sensor networks. In Sensors, 2010 IEEE (pp. 2022-2026). IEEE._
 
 ## <a name="autotest"></a>Automated BlockCode Testing
 We have designed a way for contributors to effortlessly ensure that the behaviour of VisibleSim is not altered, when some changes are made to the core of the simulator. The idea is that every previously working BlockCode is tested for regression, and returns a simple console output to the user, either __PASS__ if test succeeded, or __FAILED__ if some issues have to be investigated. 

@@ -183,3 +183,7 @@ Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
   Time transmissionDuration = (m->size()*8000000ULL)/rate;
   return transmissionDuration;
 }
+
+bool P2PNetworkInterface::isConnected() {
+  return connectedInterface != NULL;
+}

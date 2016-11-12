@@ -61,15 +61,15 @@ World::~World() {
 	// 	delete (*it);
 	// 	it++;
 	// }
-	// tabEvents.clear();	
-	
+	// tabEvents.clear();
+
 	delete lattice;
 	delete camera;
 	// delete [] targetGrid;
 	delete objBlock;
     delete objBlockForPicking;
     delete objRepere;
-	
+
 	OUTPUT << "World destructor" << endl;
 }
 
@@ -144,11 +144,11 @@ void World::disconnectBlock(BuildingBlock *block) {
         fromBlock = block->getInterface(i);
         if (fromBlock && fromBlock->connectedInterface) {
 	    toBlock = fromBlock->connectedInterface;
-	    
+
 	    // Clear message queue
 	    fromBlock->outgoingQueue.clear();
 	    toBlock->outgoingQueue.clear();
-	    
+
 	    // Notify respective codeBlocks
 	    block->removeNeighbor(fromBlock);
 	    fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
@@ -160,22 +160,22 @@ void World::disconnectBlock(BuildingBlock *block) {
     }
 
     lattice->remove(block->position);
-	
+
     OUTPUT << getScheduler()->now() << " : Disconnect Block " << block->blockId <<
         " pos = " << block->position << endl;
 }
 
-void World::deleteBlock(BuildingBlock *bb) {        
+void World::deleteBlock(BuildingBlock *bb) {
     if (bb->getState() >= BuildingBlock::ALIVE ) {
         // cut links between bb and others and remove it from the grid
-		disconnectBlock(bb);		
+		disconnectBlock(bb);
     }
-	
+
     if (selectedGlBlock == bb->ptrGlBlock) {
         selectedGlBlock = NULL;
         GlutContext::mainWindow->select(NULL);
     }
-	
+
     // remove the associated glBlock
     std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
     if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
@@ -185,7 +185,7 @@ void World::deleteBlock(BuildingBlock *bb) {
         }
         if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
     }
-	
+
     delete bb->ptrGlBlock;
 }
 
@@ -269,12 +269,23 @@ void World::createPopupMenu(int ix, int iy) {
 	}
 
 	if (iy < GlutContext::popupMenu->h) iy = GlutContext::popupMenu->h;
-
+cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(numSelectedFace)
+         << " selected" << endl;
 	// cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
 	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
+}
+
+void World::glDrawBackground() {
+    if (background) {
+        glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
+        glDrawSpecificBg(); 
+    }
+    else { 
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
+    }
 }
 
 } // BaseSimulator namespace

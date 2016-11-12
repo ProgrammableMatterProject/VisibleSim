@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="10,10,10">
+    <blockList blockSize="40,40,41">
+        <block position="4,5,1" color="0,0,255" />
+        <block position="4,5,2" color="0,0,255" />
+        <block position="4,5,3" color="0,0,255" />
+        <block position="4,5,4" color="0,0,255" />
+        <block position="4,5,5" color="0,0,255" />
+        <block position="4,5,6" color="0,0,255" />
+    </blockList>
+</world>
