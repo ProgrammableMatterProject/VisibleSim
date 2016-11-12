@@ -1,0 +1,21 @@
+set terminal pdf enhanced mono font ",16"
+set termoption enhanced
+
+#set key inside top left vertical Right title "Goal shape"
+
+set nokey
+
+set xlabel "Fraction of the total messages"
+set ylabel "Fraction of the 2D Catoms"
+
+set format y "%.0f%%"
+#set format x "%.1f%%"
+
+set grid xtics ytics
+set output "msg-distribution.pdf"
+
+#set xtics add ("0%%" 0)
+
+plot '../results-distribution/car-x1-1073/sd-1/msg.dis' using 1:($2*100) with linespoints
+
+

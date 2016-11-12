@@ -22,7 +22,7 @@ for speed in $speeds; do
 	mkdir "$outDir"
 	for i in $(seq 1 10); do
 	    out="$outDir$i"
-	    ./catom2D1 -c $xml -R -t -i -a -1 -g -B $baudrate -M $speed > "$out.out"  2>&1
+	    ./c2sr -c $xml -R -t -i -a -1 -g -B $baudrate -M $speed > "$out.out"  2>&1
 	    cp "$export" "$out.xml"
 	done
     done
