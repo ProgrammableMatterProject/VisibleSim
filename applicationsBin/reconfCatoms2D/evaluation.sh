@@ -29,6 +29,8 @@ for sub in $subConfDir; do
 	    #echo "$xml => $out"
 	    ./catom2D1 -c $xml -R -t -i -a -1 -g -B $defaultBaudRate -M $defaultSpeed > "$rad.out"  2>&1
 	    cp "$export" "$rad.xml"
+	    cp "moves.dat" "$subResDir$xmlBaseName/$i.moves"
+	    cp "messages.dat" "$subResDir$xmlBaseName/$i.messages"
 	done
     done
 done

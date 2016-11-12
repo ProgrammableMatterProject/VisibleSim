@@ -1,9 +1,10 @@
 /*
- * reconfiguration.cpp
+ * c2sr.cpp
  *
  *  Created on: 27 nov 2015
- *      Author: andre
+ *      Author: Andre Naz
  */
+
 #include <set>
 #include <iostream>
 #include <cstring>
@@ -13,15 +14,15 @@
 #include "catoms2DWorld.h"
 #include "scheduler.h"
 #include "events.h"
-#include "reconfiguration.h"
-#include "reconfigurationMsg.h"
+#include "c2sr.h"
+#include "c2srMsg.h"
 #include "catom2D1BlockCode.h"
 
 //#define RECONFIGURATION_DEBUG
 
 //#define RECONFIGURATION_NEIGHBORHOOD_DEBUG
 //#define RECONFIGURATION_MOVES_DEBUG
-//#define RECONFIGURATION_MSG_DEBUG
+//#define C2SR_MSG_DEBUG
 //#define RECONFIGURATION_CLEARANCE_DEBUG
 
 #define RECONFIGURATION_WITH_COLOR
@@ -34,7 +35,7 @@
 using namespace std;
 using namespace Catoms2D;
 
-list<Catoms2DBlock*> Reconfiguration::movingModules;
+list<Catoms2DBlock*> C2SR::movingModules;
 
 #define ROTATION_DIRECTION RelativeDirection::CW
 #define OPPOSITE_ROTATION_DIRECTION RelativeDirection::getOpposite(ROTATION_DIRECTION)
@@ -85,17 +86,17 @@ string Clearance::toString() {
   return s;
 }
 
-/***** Reconfiguration Class *****/
+/***** C2SR Class *****/
 
-Reconfiguration::Reconfiguration(Catoms2DBlock *c, Map *m): map(m) {
+C2SR::C2SR(Catoms2DBlock *c, Map *m): map(m) {
   catom = c;
   setState(UNKNOWN);
   started = false;
 }
 
-Reconfiguration::~Reconfiguration() {}
+C2SR::~C2SR() {}
 
-std::string Reconfiguration::toString(reconfigurationState_t s) {
+std::string C2SR::toString(C2SRState_t s) {
   switch(s) {
   case NOT_SET:
     return "NOT_SET";
@@ -120,7 +121,7 @@ std::string Reconfiguration::toString(reconfigurationState_t s) {
   }
 }
 
-void Reconfiguration::handleStopMovingEvent() {
+void C2SR::handleStopMovingEvent() {
 
   // This module just stops to roll
 
@@ -140,7 +141,7 @@ void Reconfiguration::handleStopMovingEvent() {
   
   // send end of move to ?
   Neighbor n = map->getBorder(ROTATION_DIRECTION);
-  Message *m = new ReconfigurationEndMoveMsg(currentClearance,1);
+  Message *m = new C2SREndMoveMsg(currentClearance,1);
   send(m,n.interface);
 
   if (checkConvergence()) {
@@ -148,12 +149,10 @@ void Reconfiguration::handleStopMovingEvent() {
   } else if (isInStream()) {
     requestClearance();
   }
-  // try to move
-  //tryToMove(); 
 }
 
 
-void Reconfiguration::printNeighbors() {
+void C2SR::printNeighbors() {
   P2PNetworkInterface* p2p;
   MY_CERR << " neighbors: ";
   for (int j = 0; j < 6; j++) {
@@ -165,12 +164,12 @@ void Reconfiguration::printNeighbors() {
   cerr << endl;
 }
 
-void Reconfiguration::handle(MessagePtr m) {
-  ReconfigurationMsg_ptr rm = std::static_pointer_cast<ReconfigurationMsg>(m);
+void C2SR::handle(MessagePtr m) {
+  C2SRMsg_ptr rm = std::static_pointer_cast<C2SRMsg>(m);
   P2PNetworkInterface *recv = m->destinationInterface;
   assert(recv->connectedInterface);
 
-#ifdef RECONFIGURATION_MSG_DEBUG
+#ifdef C2SR_MSG_DEBUG
   P2PNetworkInterface *from = m->sourceInterface;
   int fromId = recv->connectedInterface->hostBlock->blockId;
   MY_CERR << " " << rm->toString() << " from " << fromId << endl;
@@ -189,15 +188,15 @@ void Reconfiguration::handle(MessagePtr m) {
   
   switch(rm->subtype) {
     
-  case ReconfigurationMsg::CLEARANCE_REQUEST: {
-    ReconfigurationClearanceRequestMsg_ptr crm = std::static_pointer_cast<ReconfigurationClearanceRequestMsg>(m);
+  case C2SRMsg::CLEARANCE_REQUEST: {
+    C2SRClearanceRequestMsg_ptr crm = std::static_pointer_cast<C2SRClearanceRequestMsg>(m);
 
     bool delayed = false;
     bool hasNext = false;
 
     Neighbor next = map->getNeighbor(ROTATION_DIRECTION,crm->request.dest);
 
-#ifdef RECONFIGURATION_MSG_DEBUG
+#ifdef C2SR_MSG_DEBUG
     printMoving();
 #endif
     
@@ -236,12 +235,12 @@ void Reconfiguration::handle(MessagePtr m) {
 
     if (delayed) {
       // clearance rejected
-      Message *m = new ReconfigurationDelayedClearanceRequestMsg(crm->request,1);
+      Message *m = new C2SRDelayedClearanceRequestMsg(crm->request,1);
       send(m,recv);
     } else if (hasNext) {
       // check next neighbor
-      Message *m = new ReconfigurationClearanceRequestMsg(crm->request, rm->hopCounter+1);
-#ifdef RECONFIGURATION_MSG_DEBUG
+      Message *m = new C2SRClearanceRequestMsg(crm->request, rm->hopCounter+1);
+#ifdef C2SR_MSG_DEBUG
       MY_CERR << "CLEARANCE_REQUEST forwarded to : " << next.interface->connectedInterface->hostBlock->blockId << endl;
 #endif
       send(m, next.interface);      
@@ -253,22 +252,22 @@ void Reconfiguration::handle(MessagePtr m) {
     }
   }
     break;
-  case ReconfigurationMsg::CLEARANCE: {
-    ReconfigurationClearanceMsg_ptr cm = std::static_pointer_cast<ReconfigurationClearanceMsg>(m);
+  case C2SRMsg::CLEARANCE: {
+    C2SRClearanceMsg_ptr cm = std::static_pointer_cast<C2SRClearanceMsg>(m);
         
     // Find the right condition!
     if (map->getPosition() == cm->clearance.src) {
       // move
       currentClearance = cm->clearance;
-      Message *m = new ReconfigurationStartMoveMsg(1);
+      Message *m = new C2SRStartMoveMsg(1);
       send(m,recv);
     } else {
       forwardClearance(cm->clearance, recv,rm->hopCounter+1);      
     }
   }
     break;
-  case ReconfigurationMsg::DELAYED_CLEARANCE_REQUEST: {
-    ReconfigurationDelayedClearanceRequestMsg_ptr dcrm = std::static_pointer_cast<ReconfigurationDelayedClearanceRequestMsg>(m);
+  case C2SRMsg::DELAYED_CLEARANCE_REQUEST: {
+    C2SRDelayedClearanceRequestMsg_ptr dcrm = std::static_pointer_cast<C2SRDelayedClearanceRequestMsg>(m);
     
     if (dcrm->request.src != map->getPosition()) {  
 #ifdef RECONFIGURATION_CLEARANCE_DEBUG
@@ -278,17 +277,17 @@ void Reconfiguration::handle(MessagePtr m) {
     }
   }
     break;
-  case ReconfigurationMsg::START_TO_MOVE: {
-    Message *m = new ReconfigurationStartMoveAckMsg(1);
+  case C2SRMsg::START_TO_MOVE: {
+    Message *m = new C2SRStartMoveAckMsg(1);
     send(m,recv);
   }
     break;
-  case ReconfigurationMsg::START_TO_MOVE_ACK: {
+  case C2SRMsg::START_TO_MOVE_ACK: {
     move(currentClearance);
   }
     break;
-  case ReconfigurationMsg::END_OF_MOVE: {
-    ReconfigurationEndMoveMsg_ptr emm = std::static_pointer_cast<ReconfigurationEndMoveMsg>(m);
+  case C2SRMsg::END_OF_MOVE: {
+    C2SREndMoveMsg_ptr emm = std::static_pointer_cast<C2SREndMoveMsg>(m);
 
     // Remove movings and forward end_of_move
     removeMoving(emm->clearance.dest);
@@ -297,13 +296,10 @@ void Reconfiguration::handle(MessagePtr m) {
     forwardEndMove(emm->clearance,recv,rm->hopCounter+1);
 
     // and now:
-    //if (isFree()) {
     if (isInStream()) {
       setState(WAITING);
-
       assert(pendingRequests.size() == 0);
       
-      //tryToMove();
       requestClearance();
     } else {
       
@@ -311,7 +307,7 @@ void Reconfiguration::handle(MessagePtr m) {
 	ClearanceRequest cr = getPendingRequestDestNeighborWith(emm->clearance.src);
 	Neighbor next = map->getNeighbor(ROTATION_DIRECTION,cr.dest);
 	if (Map::areNeighbors(next.position,cr.dest)) {
-	  Message *m = new ReconfigurationClearanceRequestMsg(cr,1);
+	  Message *m = new C2SRClearanceRequestMsg(cr,1);
 	  send(m,next.interface);
 	} else { // clearance granted!
 	  Clearance c(cr.src,cr.dest);
@@ -324,11 +320,11 @@ void Reconfiguration::handle(MessagePtr m) {
   }
     break;
   default:
-    cerr << "unknown reconfiguration message type" << endl;
+    cerr << "unknown c2sr message type" << endl;
   }
 }
 
-void Reconfiguration::move(Clearance &c) {
+void C2SR::move(Clearance &c) {
   Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
   Coordinate dest = getPositionAfterRotationAround(pivot);
   //Coordinate &src = map->getPosition();
@@ -356,42 +352,24 @@ void Reconfiguration::move(Clearance &c) {
   catom->startMove(m);
 }
 
-Coordinate Reconfiguration::getPositionAfterRotationAround(Neighbor &pivot) {
+Coordinate C2SR::getPositionAfterRotationAround(Neighbor &pivot) {
   P2PNetworkInterface *cellInt = catom->getNextInterface(OPPOSITE_ROTATION_DIRECTION, pivot.interface, false);
   Coordinate c = map->getPosition(cellInt);
   return c;
 }
 
-bool Reconfiguration::tryToMove() {
-  Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
-  Coordinate dest = getPositionAfterRotationAround(pivot);
-  Coordinate &src = map->getPosition();
- 
-  if (shouldMove(src,pivot.position,dest)) {
-    //if (isInStream(src,pivot.position,dest)) {
-    setState(WAITING);
-    // send CLEARANCE_REQUEST to b
-    Neighbor b = map->getBorder(ROTATION_DIRECTION);
-    ClearanceRequest cr(src,dest,0);
-    Message *m = new ReconfigurationClearanceRequestMsg(cr,1);
-    send(m,b.interface);
-    return true;
-  }
-  return false;
-}
-
-void Reconfiguration::requestClearance() {
+void C2SR::requestClearance() {
   Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
   Coordinate dest = getPositionAfterRotationAround(pivot);
   Coordinate &src = map->getPosition();
  
   Neighbor b = map->getBorder(ROTATION_DIRECTION);
   ClearanceRequest cr(src,dest,0);
-  Message *m = new ReconfigurationClearanceRequestMsg(cr,1);
+  Message *m = new C2SRClearanceRequestMsg(cr,1);
   send(m,b.interface);
 }
 
-bool Reconfiguration::isInStream() {
+bool C2SR::isInStream() {
 
   if (!isFree()) {
     return false;
@@ -401,11 +379,12 @@ bool Reconfiguration::isInStream() {
   Coordinate dest = getPositionAfterRotationAround(pivot);
   Coordinate &src = map->getPosition();
 
-  if (!Map::isInTarget(src) && (src.y == 0)) {
+  //if (!Map::isInTarget(src) && (src.y == 0)) { // ground
+  if (!Map::isInTarget(src) && (pivot.position.y == 0)) { // ground
     return true;
-  } else if (!Map::isInTarget(src) && (dest.y <= src.y)) {
+  } else if (!Map::isInTarget(src) && (dest.y <= src.y)) { // descent over I
     return true;
-  } else if (!Map::isInTarget(src) && Map::isInTarget(pivot.position)) {
+  } else if (!Map::isInTarget(src) && Map::isInTarget(pivot.position)) { // 
     return true;
   } else if (Map::isInTarget(src) && Map::isInTarget(dest) && (dest.y <= src.y)) {
     return true;
@@ -414,7 +393,7 @@ bool Reconfiguration::isInStream() {
   }
 }
 
-bool Reconfiguration::checkConvergence() {
+bool C2SR::checkConvergence() {
   Neighbor pivot = map->getBorder(ROTATION_DIRECTION);
   Coordinate dest = getPositionAfterRotationAround(pivot);
   Coordinate &src = map->getPosition();
@@ -426,47 +405,13 @@ bool Reconfiguration::checkConvergence() {
   return false;
 }
 
-bool Reconfiguration::shouldMove(Coordinate &src, Coordinate &pivot, Coordinate &dest) {
-
-  if (dest.y < 0) {
-    // GOAL!?
-    hasConverged();
-    return false;
-  }
-  
-  if (!Map::isInTarget(src)) {
-    if (src.y != 0 && dest.y > src.y && !Map::isInTarget(pivot)) {
-      return false;
-    }
-    return true;
-  }
-
-  if (Map::isInTarget(src) && Map::isInTarget(dest) && (dest.y <= src.y)) {
-    return true;
-  }
-
-  if ((Map::isInTarget(src) && !Map::isInTarget(dest)) ||
-      (Map::isInTarget(src) && Map::isInTarget(dest) && (dest.y > src.y))) {
-    hasConverged();
-    return false;
-  }
-  
-  return false;
-}
-
-bool Reconfiguration::isFree() {
+bool C2SR::isFree() {
   int n = catom->nbNeighbors(true);
   int nc = catom->nbConsecutiveNeighbors(true);
-
   return ((n == nc) && (n <= 3) && (movings.size() == 0));
-
-  //return ((n == nc) &&
-  //	  (n + movings.size() <= 3));
-  
-  //return (catom->nbConsecutiveEmptyFaces(true) - movings.size() >= 3);
 }
 
-void Reconfiguration::start() {
+void C2SR::start() {
   
   if (!started) {
     
@@ -483,14 +428,6 @@ void Reconfiguration::start() {
     } else {
       setState(BLOCKED);
     }
-
-    /*else if (isFree()) {
-      if(!tryToMove()) {
-	setState(BLOCKED);
-      }
-    } else {
-      setState(BLOCKED);
-      }*/
   }
 #ifdef RECONFIGURATION_DEBUG
   MY_CERR << " initial state " << toString(state) << endl;
@@ -498,7 +435,7 @@ void Reconfiguration::start() {
 }
 
 
-bool Reconfiguration::isAPendingRequestDestNeighborWith(Coordinate &p) {
+bool C2SR::isAPendingRequestDestNeighborWith(Coordinate &p) {
   for (list<ClearanceRequest>::iterator it = pendingRequests.begin(); it != pendingRequests.end(); it++) {
     if (Map::areNeighbors(p,it->dest)) {
       return true;
@@ -507,7 +444,7 @@ bool Reconfiguration::isAPendingRequestDestNeighborWith(Coordinate &p) {
   return false;
 }
 
-ClearanceRequest Reconfiguration::getPendingRequestDestNeighborWith(Coordinate &p) {
+ClearanceRequest C2SR::getPendingRequestDestNeighborWith(Coordinate &p) {
   assert(isAPendingRequestDestNeighborWith(p));
 
   ClearanceRequest cr;
@@ -521,12 +458,12 @@ ClearanceRequest Reconfiguration::getPendingRequestDestNeighborWith(Coordinate &
   return cr;
 }
 
-void Reconfiguration::insertPendingRequest(ClearanceRequest &pr) {
+void C2SR::insertPendingRequest(ClearanceRequest &pr) {
   pendingRequests.push_back(pr);
   assert(pendingRequests.size() < 3);
 }
 
-void Reconfiguration::printPendingRequest() {
+void C2SR::printPendingRequest() {
   MY_CERR << "PendingRequest:";
   for (list<ClearanceRequest>::iterator it = pendingRequests.begin(); it != pendingRequests.end(); it++) {
     cerr << " " << it->toString();
@@ -534,14 +471,14 @@ void Reconfiguration::printPendingRequest() {
   cerr << endl;
 }
 
-void Reconfiguration::insertMoving(Coordinate &c) {
+void C2SR::insertMoving(Coordinate &c) {
 #ifdef RECONFIGURATION_CLEARANCE_DEBUG
   MY_CERR << "insert moving: " << c << endl;
 #endif
   movings.push_back(c);
 }
 
-bool Reconfiguration::isMoving(Coordinate &c) {
+bool C2SR::isMoving(Coordinate &c) {
   list<Coordinate>::iterator it;
   for (it = movings.begin(); it != movings.end(); it++) {
     if (*it == c) {
@@ -551,7 +488,7 @@ bool Reconfiguration::isMoving(Coordinate &c) {
   return false;
 }
 
-bool Reconfiguration::isNeighborToMoving(Coordinate &c) {
+bool C2SR::isNeighborToMoving(Coordinate &c) {
   list<Coordinate>::iterator it;
   for (it = movings.begin(); it != movings.end(); it++) {
     if (Map::areNeighbors(*it,c)) {
@@ -561,7 +498,7 @@ bool Reconfiguration::isNeighborToMoving(Coordinate &c) {
   return false;
 }
 
-void Reconfiguration::removeMoving(Coordinate &c) {
+void C2SR::removeMoving(Coordinate &c) {
   list<Coordinate>::iterator it;
   for (it = movings.begin(); it != movings.end(); it++) {
     if (*it == c) {
@@ -571,7 +508,7 @@ void Reconfiguration::removeMoving(Coordinate &c) {
   }
 }
 
-void Reconfiguration::printMoving() {
+void C2SR::printMoving() {
   MY_CERR << "Moving:";
   for (list<Coordinate>::iterator it = movings.begin(); it != movings.end(); it++) {
     cerr << " " << *it;
@@ -579,7 +516,7 @@ void Reconfiguration::printMoving() {
   cerr << endl;
 }
 
-void Reconfiguration::send(Message *m, P2PNetworkInterface *i) {
+void C2SR::send(Message *m, P2PNetworkInterface *i) {
   assert(i);
   assert(i->connectedInterface);
   assert(m);
@@ -587,10 +524,10 @@ void Reconfiguration::send(Message *m, P2PNetworkInterface *i) {
   i->send(m);
 }
 
-void Reconfiguration::forwardClearance(Clearance &c, P2PNetworkInterface *recv, unsigned int h) {
+void C2SR::forwardClearance(Clearance &c, P2PNetworkInterface *recv, unsigned int h) {
   assert(Map::areNeighbors(map->getPosition(),c.src) || Map::areNeighbors(map->getPosition(),c.dest));
 
-  Message *m = new ReconfigurationClearanceMsg(c,h);
+  Message *m = new C2SRClearanceMsg(c,h);
 
   if (Map::areNeighbors(map->getPosition(),c.src)) {
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.src);
@@ -609,17 +546,17 @@ void Reconfiguration::forwardClearance(Clearance &c, P2PNetworkInterface *recv, 
   }
 }
 
-void Reconfiguration::forwardEndMove(Clearance &c, P2PNetworkInterface *recv, unsigned int h) {
+void C2SR::forwardEndMove(Clearance &c, P2PNetworkInterface *recv, unsigned int h) {
   assert(Map::areNeighbors(map->getPosition(),c.src) || Map::areNeighbors(map->getPosition(),c.dest));
 
   if (Map::areNeighbors(map->getPosition(),c.src)) {
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.src);
     if (n.interface != recv && Map::areNeighbors(c.src,n.position)) {
-      Message *m = new ReconfigurationEndMoveMsg(c,h);
+      Message *m = new C2SREndMoveMsg(c,h);
       send(m,n.interface);
     }
   } else if (Map::areNeighbors(map->getPosition(),c.dest)) {
-    Message *m = new ReconfigurationEndMoveMsg(c,h);
+    Message *m = new C2SREndMoveMsg(c,h);
     Neighbor n = map->getNeighbor(OPPOSITE_ROTATION_DIRECTION,c.dest);
     assert(Map::areNeighbors(n.position,c.dest));
     assert(n.interface != recv);
@@ -627,11 +564,11 @@ void Reconfiguration::forwardEndMove(Clearance &c, P2PNetworkInterface *recv, un
   }
 }
 
-void Reconfiguration::insertMovings(Catoms2D::Catoms2DBlock *c) {
+void C2SR::insertMovings(Catoms2D::Catoms2DBlock *c) {
   movingModules.push_back(c);
 }
 
-void Reconfiguration::removeMovings(Catoms2D::Catoms2DBlock *c) {
+void C2SR::removeMovings(Catoms2D::Catoms2DBlock *c) {
   list<Catoms2DBlock*>::iterator it;
   for (it = movingModules.begin(); it != movingModules.end(); it++) {
     if (*it == c) {
@@ -643,7 +580,7 @@ void Reconfiguration::removeMovings(Catoms2D::Catoms2DBlock *c) {
 
 #define CHECKSPACE_V2
 
-bool Reconfiguration::checkSpace() {
+bool C2SR::checkSpace() {
 #ifdef CHECKSPACE_V1
   Catoms2DBlock *m1, *m2;
   
@@ -668,9 +605,9 @@ bool Reconfiguration::checkSpace() {
        bc2 = (Catoms2D1BlockCode*) m2->blockCode;
        cout.precision(17);
        MY_CERR << "SPACE Condition violated by modules "
-	       << m1->blockId << "(" << bc1->reconfiguration->currentClearance.toString() << ")"
+	       << m1->blockId << "(" << bc1->c2sr->currentClearance.toString() << ")"
 	       << " and "
-	       << m2->blockId << "(" << bc2->reconfiguration->currentClearance.toString() << ")"
+	       << m2->blockId << "(" << bc2->c2sr->currentClearance.toString() << ")"
 	       << " at distance " << fixed << d << " vs " << fixed << limit
 	       << endl;
        getchar();
@@ -685,7 +622,7 @@ bool Reconfiguration::checkSpace() {
 #ifdef CHECKSPACE_V2
   Catoms2DBlock *m1, *m2;
   Catoms2D1BlockCode *bc1, *bc2;
-  Reconfiguration *r1, *r2;
+  C2SR *r1, *r2;
     
   std::list<Catoms2DBlock*>::iterator it1;
   std::list<Catoms2DBlock*>::iterator it2;
@@ -693,7 +630,7 @@ bool Reconfiguration::checkSpace() {
   for(it1 = movingModules.begin(); it1 != movingModules.end(); ++it1) {
     m1 = *it1;
     bc1 = (Catoms2D1BlockCode*) m1->blockCode;
-    r1 = bc1->reconfiguration;
+    r1 = bc1->c2sr;
     vector<Coordinate> safetyZone = r1->getSafetyZone();
 
     assert(safetyZone.size() > 0);
@@ -703,7 +640,7 @@ bool Reconfiguration::checkSpace() {
      
       m2 = *it2;
       bc2 = (Catoms2D1BlockCode*) m2->blockCode;
-      r2 = bc2->reconfiguration;
+      r2 = bc2->c2sr;
       
       for (std::vector<Coordinate>::iterator it = safetyZone.begin(); it != safetyZone.end();
 	   ++it) {
@@ -731,13 +668,13 @@ bool Reconfiguration::checkSpace() {
   
 }
 
-double Reconfiguration::distance(Vector3D &p1, Vector3D &p2) {
+double C2SR::distance(Vector3D &p1, Vector3D &p2) {
   Vector3D t = p1 - p2;
   double d = t.norme();
   return d;
 }
 
-vector<Coordinate> Reconfiguration::getSafetyZone() {
+vector<Coordinate> C2SR::getSafetyZone() {
   Lattice *l = BaseSimulator::getWorld()->lattice;
   Coordinate srcC = currentClearance.src;
   Cell3DPosition srcP (srcC.x,0,srcC.y);
@@ -757,7 +694,7 @@ vector<Coordinate> Reconfiguration::getSafetyZone() {
   return safetyZone;
 }
  
-bool Reconfiguration::isDone() {
+bool C2SR::isDone() {
   Catoms2DWorld *world = Catoms2DWorld::getWorld();
   Cell3DPosition gridSize = world->lattice->gridSize;
   for (int iy = 0; iy < gridSize[2]; iy++) {
@@ -773,11 +710,11 @@ bool Reconfiguration::isDone() {
   return true;
 }
 
-void Reconfiguration::hasConverged() {
+void C2SR::hasConverged() {
   setState(GOAL);  
 }
 
-void Reconfiguration::setState(reconfigurationState_t s) {
+void C2SR::setState(C2SRState_t s) {
   state = s;
 
 #ifdef RECONFIGURATION_WITH_COLOR

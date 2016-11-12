@@ -1,7 +1,4 @@
 #include "map.h"
-#include "localTupleSpace.hpp"
-#include "tuple.hpp"
-#include "contextTuple.hpp"
 
 #include "catoms2DWorld.h"
 #include "vector3D.h"
@@ -86,23 +83,6 @@ bool Map::handleMessage(MessagePtr message) {
       if( real != position) { // not relevant (odd/even line of the leader)
     catom2D->setColor(BLUE);
       }
-#endif
-
-#ifdef GEO_ROUTING_TEST
-#ifdef TEST_GEO_ROUTING_ONE_TO_ONE
-      Coordinate src(5,1);
-      Coordinate dest(5,4);
-      cout << "@" << catom2D->blockId << " " << position << endl;
-      if (position == src) {
-    catom2D->setColor(BLUE);
-    cout << "sending from " << src << " to " << dest << endl;
-    //out(new ContextTuple(dest, string("testGeoRoutingOneToOne")));
-      }
-      if (position == dest) {
-    catom2D->setColor(GREEN);
-      }
-#endif
-
 #endif
       waiting = 0;
       buildMap();
@@ -204,9 +184,7 @@ Coordinate Map::virtual2Real(Coordinate o, Coordinate p) {
   return vir;
 }
 
-//#define MY_COUT cout << "@" << catom2D->blockId
 Coordinate Map::getPosition(Catoms2D::Catoms2DBlock* catom2D, Coordinate p, P2PNetworkInterface *it) {
-  //MY_COUT << " at " << p << " dir: " << catom2D->getDirection(it) << endl;
   switch(catom2D->getDirection(it)) {
   case HLattice::Direction::BottomLeft:
     if ((abs(p.y)%2) == 0) {
@@ -291,28 +269,9 @@ bool Map::areNeighbors(Coordinate p1, Coordinate p2) {
 }
 
 bool Map::isInTarget(Coordinate p) {
-  //Catoms2DWorld *world = Catoms2DWorld::getWorld();
   Cell3DPosition c(p.x,0,p.y);
   return (BlockCode::target->isInTarget(c));
 }
-
-
-/*P2PNetworkInterface* Map::getOnNeighborInterface(RelativeDirection::Direction d) {
-  return border.getInterface(d);
-}
-
-Catoms2DBlock* Map::getOnNeighbor(Catoms2D::RelativeDirection::Direction d) {
-  P2PNetworkInterface* p2p = getOnNeighborInterface(d);
-  if (!p2p->connectedInterface) {
-    cerr << "error: no catom connected on border interface..." << endl;
-    return NULL;
-  }
-  return (Catoms2DBlock*) p2p->connectedInterface->hostBlock;
-}
-
-Coordinate Map::getOnNeighborCoordinate(RelativeDirection::Direction d) {
-  return getPosition(border.getInterface(d));
-  }*/
 
 Neighbor Map::getBorder(RelativeDirection::Direction d) {
   Neighbor n;
@@ -349,5 +308,18 @@ Neighbor Map::getNeighbor(RelativeDirection::Direction dir, Coordinate &p) {
   Coordinate c = getPosition(interface);
   Neighbor n(interface,c);
   return n;
+}
+
+vector<Neighbor> Map::getNeighbors() {
+  vector<Neighbor> neighbors;
+  for (int i = 0; i < 6; i++) {
+    P2PNetworkInterface *p = catom2D->getInterface(i);
+    if (p->connectedInterface) {
+	Coordinate c = getPosition(p);  
+	Neighbor n(p,c);
+	neighbors.push_back(n);
+    }
+  }
+  return neighbors;
 }
 

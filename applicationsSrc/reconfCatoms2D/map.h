@@ -18,6 +18,8 @@
 #include "border.h"
 #include "neighbor.h"
 
+#include <vector>
+
 //#define COMPUTE_COORDINATES
 #define ASSUME_COORDINATES // works only for real coordinates!
 
@@ -69,6 +71,7 @@ class Map {
   Neighbor getBorder(Catoms2D::RelativeDirection::Direction d);
 
   P2PNetworkInterface* getNeighbor(Coordinate &p, P2PNetworkInterface *i);
+  vector<Neighbor> getNeighbors();
   Neighbor getNeighbor(Catoms2D::RelativeDirection::Direction dir, P2PNetworkInterface *p2p);
   Neighbor getNeighbor(Catoms2D::RelativeDirection::Direction dir, Coordinate &p);
 

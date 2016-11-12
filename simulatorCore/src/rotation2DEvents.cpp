@@ -64,9 +64,11 @@ Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotatio
     sens = m.getDirection();
     Distance r = defaultBlockSize[0]/2.0; // radius
     Distance d =  r*M_PI/3.0;
-    //cerr << "Distance: " << d << endl;
     duration = block->motionEngine->getDuration(d);
-    //cerr << "Motion duration (us): " << duration << endl;
+#ifdef DURATION_MOTION_DEBUG
+    cerr << "Total motion duration (us): " << duration << endl;
+    cerr << "Total motion distance (mm): " << d << endl;
+#endif
 }
 
 Rotation2DStartEvent::Rotation2DStartEvent(Rotation2DStartEvent *ev) : BlockEvent(ev) {
@@ -212,6 +214,7 @@ void Rotation2DStopEvent::consume() {
 
     rb->setPosition(gridPos);
     
+    rb->angle = rb->angle%360;
 #ifdef COLOR_MOTION_DEBUG
     rb->setColor(YELLOW);
 #endif

@@ -320,7 +320,7 @@ void Catoms2DBlock::startMove(Rotation2DMove &m, Time t) {
 }
 
 void Catoms2DBlock::startMove(Rotation2DMove &m) {
-    startMove(m,getScheduler()->now());
+  startMove(m,getScheduler()->now());
 }
 
 void Catoms2DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {

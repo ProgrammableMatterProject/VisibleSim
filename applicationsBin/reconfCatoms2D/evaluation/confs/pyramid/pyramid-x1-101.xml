@@ -10,22 +10,22 @@
     <block position="12,0,3" color="100,100,100"/>
     <block position="11,0,5" color="100,100,100"/>
     <block position="11,0,3" color="100,100,100"/>
-    <block position="16,0,7" color="100,100,100"/>
-    <block position="17,0,7" color="100,100,100"/>
-    <block position="15,0,7" color="100,100,100"/>
-    <block position="16,0,8" color="100,100,100"/>
-    <block position="16,0,6" color="100,100,100"/>
-    <block position="17,0,8" color="100,100,100"/>
-    <block position="17,0,6" color="100,100,100"/>
-    <block position="13,0,7" color="100,100,100"/>
-    <block position="14,0,7" color="100,100,100"/>
-    <block position="12,0,7" color="100,100,100"/>
-    <block position="13,0,8" color="100,100,100"/>
-    <block position="13,0,6" color="100,100,100"/>
-    <block position="14,0,8" color="100,100,100"/>
-    <block position="14,0,6" color="100,100,100"/>
     <block position="25,0,0" color="255,255,0"/>
     <block position="26,0,0" color="255,255,0"/>
+    <block position="9,0,4" color="100,100,100"/>
+    <block position="10,0,4" color="100,100,100"/>
+    <block position="8,0,4" color="100,100,100"/>
+    <block position="9,0,5" color="100,100,100"/>
+    <block position="9,0,3" color="100,100,100"/>
+    <block position="8,0,5" color="100,100,100"/>
+    <block position="8,0,3" color="100,100,100"/>
+    <block position="4,0,1" color="100,100,100"/>
+    <block position="5,0,1" color="100,100,100"/>
+    <block position="3,0,1" color="100,100,100"/>
+    <block position="4,0,2" color="100,100,100"/>
+    <block position="4,0,0" color="100,100,100"/>
+    <block position="5,0,2" color="100,100,100"/>
+    <block position="5,0,0" color="100,100,100"/>
     <block position="16,0,1" color="100,100,100"/>
     <block position="17,0,1" color="100,100,100"/>
     <block position="15,0,1" color="100,100,100"/>
@@ -40,13 +40,6 @@
     <block position="19,0,0" color="100,100,100"/>
     <block position="20,0,2" color="100,100,100"/>
     <block position="20,0,0" color="100,100,100"/>
-    <block position="15,0,10" color="100,100,100"/>
-    <block position="16,0,10" color="100,100,100"/>
-    <block position="14,0,10" color="100,100,100"/>
-    <block position="15,0,11" color="100,100,100"/>
-    <block position="15,0,9" color="100,100,100"/>
-    <block position="14,0,11" color="100,100,100"/>
-    <block position="14,0,9" color="100,100,100"/>
     <block position="22,0,1" color="100,100,100"/>
     <block position="23,0,1" color="100,100,100"/>
     <block position="21,0,1" color="100,100,100"/>
@@ -61,6 +54,13 @@
     <block position="15,0,3" color="100,100,100"/>
     <block position="14,0,5" color="100,100,100"/>
     <block position="14,0,3" color="100,100,100"/>
+    <block position="7,0,1" color="100,100,100"/>
+    <block position="8,0,1" color="100,100,100"/>
+    <block position="6,0,1" color="100,100,100"/>
+    <block position="7,0,2" color="100,100,100"/>
+    <block position="7,0,0" color="100,100,100"/>
+    <block position="8,0,2" color="100,100,100"/>
+    <block position="8,0,0" color="100,100,100"/>
     <block position="10,0,1" color="100,100,100"/>
     <block position="11,0,1" color="100,100,100"/>
     <block position="9,0,1" color="100,100,100"/>
@@ -82,25 +82,25 @@
     <block position="18,0,3" color="100,100,100"/>
     <block position="17,0,5" color="100,100,100"/>
     <block position="17,0,3" color="100,100,100"/>
+    <block position="6,0,0" color="100,100,100"/>
+    <block position="9,0,0" color="100,100,100"/>
+    <block position="9,0,2" color="100,100,100"/>
+    <block position="10,0,3" color="100,100,100"/>
     <block position="12,0,0" color="100,100,100"/>
     <block position="12,0,2" color="100,100,100"/>
     <block position="13,0,3" color="100,100,100"/>
-    <block position="13,0,5" color="100,100,100"/>
     <block position="15,0,0" color="100,100,100"/>
     <block position="15,0,2" color="100,100,100"/>
-    <block position="15,0,6" color="100,100,100"/>
-    <block position="15,0,8" color="100,100,100"/>
     <block position="16,0,3" color="100,100,100"/>
-    <block position="16,0,5" color="100,100,100"/>
     <block position="18,0,0" color="100,100,100"/>
     <block position="18,0,2" color="100,100,100"/>
     <block position="21,0,0" color="100,100,100"/>
-    <block position="9,0,0" color="100,100,100"/>
-    <block position="10,0,3" color="100,100,100"/>
-    <block position="12,0,6" color="100,100,100"/>
-    <block position="13,0,9" color="100,100,100"/>
-    <block position="16,0,9" color="100,100,100"/>
-    <block position="18,0,6" color="100,100,100"/>
+    <block position="3,0,0" color="100,100,100"/>
+    <block position="6,0,2" color="100,100,100"/>
+    <block position="7,0,3" color="100,100,100"/>
+    <block position="10,0,5" color="100,100,100"/>
+    <block position="13,0,5" color="100,100,100"/>
+    <block position="16,0,5" color="100,100,100"/>
     <block position="19,0,3" color="100,100,100"/>
     <block position="21,0,2" color="100,100,100"/>
     <block position="24,0,0" color="100,100,100"/>

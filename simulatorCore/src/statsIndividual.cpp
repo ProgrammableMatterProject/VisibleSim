@@ -5,10 +5,14 @@
  */
 
 #include <cmath>
+#include <fstream>
 
 #include "statsIndividual.h"
 #include "buildingBlock.h"
 #include "world.h"
+
+//#define EXPORT_SENT_MSG_TO_FILE
+//#define EXPORT_MOVES_TO_FILE
 
 using namespace std;
 
@@ -197,6 +201,28 @@ string StatsIndividual::getStats() {
   s += formatStat("Maximum outgoing message queue size",momqs,momqsm,momqssd,"\n");
   s += formatStat("Maximum incomming message queue size",mimqs,mimqsm,mimqssd,"\n");
   s += formatStat("Motions",m,mm,msd,"\n");
+
+#ifdef EXPORT_SENT_MSG_TO_FILE
+  ofstream ef;
+  ef.open ("messages.dat");
+  for (it = modules.begin(); it != modules.end(); ++it) {
+    StatsIndividual *st = it->second->stats;
+    ef << st->sentMessages << endl;
+  }
+  ef.close();
+  cerr << "Sent messages exported!" << endl;
+#endif
+
+#ifdef EXPORT_MOVES_TO_FILE
+  ef.open ("moves.dat");
+  for (it = modules.begin(); it != modules.end(); ++it) {
+    StatsIndividual *st = it->second->stats;
+    ef << st->motions << endl;
+  }
+  ef.close();
+  cerr << "Individual moves exported!" << endl;
+#endif
+  
   return s;
 }
 

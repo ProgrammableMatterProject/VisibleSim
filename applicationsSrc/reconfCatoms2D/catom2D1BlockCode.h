@@ -1,31 +1,20 @@
 /*
  * catom2D1BlockCode.h
  *
- *  Created on: 12 avril 2013
- *      Author: ben
+ *  Created on: 25 Nov 2015
+ *      Author: Andre Naz
  */
 
 #ifndef CATOM2D1BLOCKCODE_H_
 #define CATOM2D1BLOCKCODE_H_
 
+#include "catoms2DBlock.h"
 #include "catoms2DBlockCode.h"
 #include "catoms2DSimulator.h"
 
-#include "catoms2DBlock.h"
-#include "localTupleSpace.hpp"
-#include "tuple.hpp"
-#include "contextTuple.hpp"
-#include "CTuple.hpp"
-//#include "reconfCatoms2DMessages.h"
-#include "segment.h"
-#include "map.h"
-#include "CTuples.h"
-#include "landmarks.h"
 #include "simulationParameters.h"
-#include "reconfiguration.h"
-
-class CTuples;
-class Landmarks;
+#include "map.h"
+#include "c2sr.h"
 
 class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
  public:
@@ -39,30 +28,18 @@ class Catoms2D1BlockCode : public Catoms2D::Catoms2DBlockCode {
 
   // Distributed map construction
   Map* map;
-
-  // Geo-routing
-  //GPSR gpsr;
   
-  //Landmark structure
-  Landmarks* landmarks;
-
-  // CTuples system
-  CTuples* ctuples;
-  
-  // Reconfiguration
-  Reconfiguration* reconfiguration;
-
-  bool geoTest;
+  // C2SR
+  C2SR* c2sr;
   
   void startup();
   void processLocalEvent(EventPtr pev);
-	
-  //void updateBorder();
-  //bool canMove();
-
+  
   void setSimulationParameters();
   void setCommunicationRate();
   void setMotionSpeed();
+
+  void scheduleC2SRStart();
   
   static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };

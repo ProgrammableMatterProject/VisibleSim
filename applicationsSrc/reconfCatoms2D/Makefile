@@ -15,19 +15,19 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = bfs.cpp centralizedReconfiguration.cpp reconfiguration.cpp CTuples.cpp angle.cpp map.cpp segment.cpp gpsr.cpp catom2D1.cpp catom2D1BlockCode.cpp border.cpp landmarks.cpp neighbor.cpp reconfigurationMsg.cpp
+SRCS = c2sr.cpp map.cpp catom2D1.cpp catom2D1BlockCode.cpp border.cpp neighbor.cpp c2srMsg.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
-OUT = $(APPDIR)/catom2D1
+OUT = $(APPDIR)/c2sr
 #
 # MODULELIB is the library for your target module type: -lsim<module_name>
 MODULELIB = -lsimCatoms2D
 # TESTS contains the commands that will be executed when `make test` is called
 TESTS = ../../utilities/blockCodeTest.sh catom2D1 $(OUT)
 #
-APPLIBS =  -L./ts -lTS
-APPLIBFILES = ts/libTS.a
-APPINCLUDES = -I./ts
+APPLIBS =
+APPLIBFILES =
+APPINCLUDES =
 #
 # End of Makefile section requiring input by user
 #####################################################################
@@ -89,9 +89,6 @@ $(APPDIR)/$(OUT): $(OUT)
 
 $(OUT): $(SIMULATORLIB) $(APPLIBFILES) $(OBJS)
 	$(CC) -o $(OUT) $(OBJS) $(LIBS)
-
-$(APPLIBFILES):
-		$(MAKE) -C ts;
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
