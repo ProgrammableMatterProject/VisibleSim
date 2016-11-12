@@ -16,7 +16,7 @@ Note that the communication rate and the motion speed follow a normal distributi
 ## Directory content
 
 This directory contains:
-     - evaluation/: configurations and scripts used to evaluate C2SR
-     - *.sh: some shell scripts used to launch the evaluation of C2SR
+- evaluation/: configurations and scripts used to evaluate C2SR
+- *.sh: some shell scripts used to launch the evaluation of C2SR
 
 [c2sr-nca2016]: André Naz, Benoît Piranda, Seth Goldstein and Julien Bourgeois "A Distributed Self-Reconfiguration Algorithm for Cylindrical Lattice-Based Modular Robots." Network Computing and Applications (NCA), 2016 15th IEEE International Symposium on. IEEE, 2016.
