@@ -1,7 +1,7 @@
 The Cylindrical-Catoms Self-Reconfiguration (C2SR) Algorithm
 ==================
 
-Implementation of the C2SR algorithm proposed in [c2sr-nca2016].
+Executable of the C2SR algorithm proposed in [c2sr-nca2016]. For the source code, please see `../../applicationsSrc/c2srCatoms2D`.
 
 ## How to run it?
 
