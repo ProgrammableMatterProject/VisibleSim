@@ -8,9 +8,9 @@
 #ifndef RECONFCATOMS3DBLOCKCODE_H_
 #define RECONFCATOMS3DBLOCKCODE_H_
 
-#define CSG_MSG_ID	9001
-#define DISTANCE_MSG_ID	9002
+#define CATOM_MSG_ID	9001
 
+#include <queue>
 #include "catoms3DBlockCode.h"
 #include "catoms3DSimulator.h"
 #include "catoms3DBlock.h"
@@ -19,43 +19,43 @@
 #include "csgUtils.h"
 #include "target.h"
 
-class CSG_message;
-
-typedef std::shared_ptr<CSG_message> CSG_message_ptr;
+enum RECONF_STATUS { WAITING, READY };
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
+    static CSGNode *csgRoot;
+    static queue<int> catomQueue;
+    static BoundingBox boundingBox;
+
 	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
+	Catoms3D::Catoms3DWorld *world;
+    CsgUtils csgUtils;
+    Vector3D worldPosition;
+    Cell3DPosition simulatedBlockPosition;
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();
 
-    Vector3D myPosition; // has relative position from the master
-    bool hasPosition; // flag position
-    CsgUtils csgUtils;
-    static CSGNode *csgRoot;
-
-
 	void startup();
 	void processLocalEvent(EventPtr pev);
+    Vector3D getWorldPosition(BoundingBox bb);
     void createCSG();
     void sendCSGMessage();
+    void addNeighbors();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
+private:
+    bool isPositionUnblockedSide(const Cell3DPosition &pos);
+    bool isPositionUnblockedXY(const Cell3DPosition &pos);
+    bool isPositionUnblockedYZ(const Cell3DPosition &pos);
+    bool isPositionUnblockedXZ(const Cell3DPosition &pos);
+    bool isPositionUnblocked(const Cell3DPosition &pos);
+    bool isPositionUnblockable(const Cell3DPosition &pos);
+    bool cellHasBlock(const Cell3DPosition &pos);
 };
 
-class CSG_message : public Message {
-    char *csgBuffer;
-    int csgBufferSize;
-    Vector3D position;
-public :
-	CSG_message(char *_csgBuffer, int _csgBufferSize, Vector3D position);
-	~CSG_message();
-
-	char* getCsgBuffer() { return csgBuffer; };
-	int getCsgBufferSize() { return csgBufferSize; };
-	Vector3D getPosition() { return position; };
+class Catom_message : public Message {
+    Catom_message() {};
+    ~Catom_message();
 };
-
-
 #endif /* RECONFCATOMS3DBLOCKCODE_H_ */

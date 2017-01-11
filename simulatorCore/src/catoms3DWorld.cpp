@@ -36,7 +36,7 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
     if (GlutContext::GUIisEnabled) {
 		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-											"catom3Dsimple.obj");
+											"catom3DV2connectorID.obj");
 		objBlockForPicking =
 			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 									 "catom3D_picking.obj");
@@ -68,14 +68,16 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
 
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
 
+
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
-    tabGlBlocks.push_back(glBlock);
+    glBlock->setPosition(lattice->gridToWorldPosition(pos));
 
     catom->setGlBlock(glBlock);
     catom->setPositionAndOrientation(pos,orientation);
     catom->setColor(col);
     lattice->insert(catom, pos);
-    glBlock->setPosition(lattice->gridToWorldPosition(pos));
+
+    tabGlBlocks.push_back(glBlock);
 }
 
 /**
@@ -111,8 +113,8 @@ void Catoms3DWorld::glDraw() {
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
     while (ic!=tabGlBlocks.end()) {
-		((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
-		ic++;
+        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
+        ic++;
     }
     unlock();
     glPopMatrix();

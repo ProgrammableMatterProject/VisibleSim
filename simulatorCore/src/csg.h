@@ -44,6 +44,7 @@ public:
     void getStats(CSGTreeStats &stats, int depth);
     virtual void toString() = 0;
     virtual bool isInside(const Vector3D &p, Color &color) = 0;
+    virtual bool isInBorder(const Vector3D &p, Color &color, double border) = 0;
     virtual void boundingBox(BoundingBox &bb) = 0;
 };
 
@@ -61,6 +62,7 @@ public:
     CSGCube (double _size_x, double _size_y, double _size_z);
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 
@@ -72,6 +74,7 @@ public:
     CSGSphere (double _radius) : radius(_radius){};
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 
@@ -84,6 +87,7 @@ public:
     CSGCylinder (double h, double r);
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 /******************************************************************/
@@ -93,6 +97,7 @@ class CSGUnion : public CSGNode
 public:
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 
@@ -101,6 +106,7 @@ class CSGDifference : public CSGNode
 public:
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 
@@ -109,6 +115,7 @@ class CSGIntersection : public CSGNode
 public:
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 /******************************************************************/
@@ -122,6 +129,7 @@ public:
     CSGTranslate(float x, float y, float z) { translate.set(x,y,z); };
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 
@@ -135,6 +143,7 @@ public:
     CSGRotate(float x, float y, float z);
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 
@@ -147,6 +156,7 @@ public:
     CSGScale(float x, float y, float z) { scale.set(x,y,z); };
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 
@@ -159,6 +169,7 @@ public:
     CSGColor(int c1, int c2, int c3) { color.set(c1/255.,c2/255.,c3/255.); };
     void toString();
     bool isInside(const Vector3D &point, Color &color);
+    bool isInBorder(const Vector3D &p, Color &color, double border);
     void boundingBox(BoundingBox &bb);
 };
 

@@ -57,7 +57,7 @@ void CsgCatoms3DBlockCode::startup() {
 
     hasPosition = false;
 	if (catom->blockId==1) {
-        csgRoot = csgUtils.readFile("data/mug.bc");
+        csgRoot = csgUtils.readFile("data/cube.bc");
         csgRoot->toString();
         BoundingBox bb;
         csgRoot->boundingBox(bb);
@@ -109,7 +109,8 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     myPosition = recv_message->getPosition();
 
                     Color color;
-                    if (csgRoot->isInside(myPosition, color)) {
+                    if (csgRoot->isInBorder(myPosition, color, 3)) {
+                    //if (csgRoot->isInside(myPosition, color)) {
                         catom->setColor(color);
                     }
                     else {
