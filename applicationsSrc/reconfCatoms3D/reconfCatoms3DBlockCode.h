@@ -18,6 +18,7 @@
 #include "events.h"
 #include "csgUtils.h"
 #include "target.h"
+#include "seed.h"
 
 enum RECONF_STATUS { WAITING, READY };
 
@@ -26,31 +27,26 @@ public:
     static CSGNode *csgRoot;
     static queue<int> catomQueue;
     static BoundingBox boundingBox;
+    static Seed *root;
 
 	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
 	Catoms3D::Catoms3DWorld *world;
     CsgUtils csgUtils;
     Vector3D worldPosition;
-    Cell3DPosition simulatedBlockPosition;
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
-    Vector3D getWorldPosition(BoundingBox bb);
+    Vector3D getWorldPosition(BoundingBox bb, Cell3DPosition gridPosition);
     void createCSG();
     void sendCSGMessage();
     void addNeighbors();
+    void addLine();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:
-    bool isPositionUnblockedSide(const Cell3DPosition &pos);
-    bool isPositionUnblockedXY(const Cell3DPosition &pos);
-    bool isPositionUnblockedYZ(const Cell3DPosition &pos);
-    bool isPositionUnblockedXZ(const Cell3DPosition &pos);
-    bool isPositionUnblocked(const Cell3DPosition &pos);
-    bool isPositionUnblockable(const Cell3DPosition &pos);
     bool cellHasBlock(const Cell3DPosition &pos);
 };
 
