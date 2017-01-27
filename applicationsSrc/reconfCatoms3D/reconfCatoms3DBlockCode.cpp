@@ -103,7 +103,14 @@ void ReconfCatoms3DBlockCode::startup() {
 	if (catom->blockId==1) {
         csgRoot = csgUtils.readFile("data/mug.bc");
         csgRoot->toString();
-            csgRoot->boundingBox(boundingBox);
+        csgRoot->boundingBox(boundingBox);
+        // TODO fix bounding box precision
+        boundingBox.P0.pt[0] -= 1;
+        boundingBox.P0.pt[1] -= 1;
+        boundingBox.P0.pt[2] -= 1;
+        boundingBox.P1.pt[0] -= 1;
+        boundingBox.P1.pt[1] -= 1;
+        boundingBox.P1.pt[2] -= 1;
         cout << "Bounding box: " << boundingBox.P0 << ' ' << boundingBox.P1 << endl;
         worldPosition = getWorldPosition(catom->position);
         if (csgRoot->isInside(worldPosition, color)) {
