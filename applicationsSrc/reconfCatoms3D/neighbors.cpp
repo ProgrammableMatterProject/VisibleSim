@@ -1,4 +1,7 @@
 #include "neighbors.h"
+#include "catoms3DWorld.h"
+
+using namespace Catoms3D;
 
 int Neighbors::neighborDirectionsEven[12][3] = {{0,0,-1},{-1,-1,-1},{-1,0,-1},{0,-1,-1},{0,0,1},{-1,-1,1},{-1,0,1},{0,-1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
 int Neighbors::neighborDirectionsOdd[12][3] = {{0,0,-1},{1,1,-1},{1,0,-1},{0,1,-1},{0,0,1},{1,1,1},{1,0,1},{0,1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
@@ -117,6 +120,7 @@ bool Neighbors::isPositionBlocked(const Cell3DPosition &pos) {
 
 bool Neighbors::isPositionBlockable(const Cell3DPosition &pos) {
     Cell3DPosition neighborPos;
+    Catoms3DWorld *world = Catoms3DWorld::getWorld();
     int *direction;
     for (int i = 0; i < 12; i++) {
         direction = pos[2]%2 ? neighborDirectionsOdd[i] : neighborDirectionsEven[i];
@@ -134,5 +138,5 @@ bool Neighbors::isPositionBlockable(const Cell3DPosition &pos) {
 bool Neighbors::cellHasBlock(const Cell3DPosition &pos) {
     if (simulatedBlockPosition == pos)
         return true;
-    return world->lattice->cellHasBlock(pos);
+    return Catoms3DWorld::getWorld()->lattice->cellHasBlock(pos);
 }

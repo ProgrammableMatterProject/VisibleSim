@@ -1,18 +1,21 @@
 #include "seed.h"
+#include <iostream>
 
-Seed::Seed(){
+Seed::Seed(int id, SEED_DIRECTION direction){
+    this->id = id;
+    this->direction = direction;
+    std::cout << "PARENT = " << this->parent << std::endl;
     this->parent = NULL; 
-    this->id = 0;
 }
 
-Seed::Seed(int id){
-    this->parent = NULL; 
+Seed::Seed(int id, SEED_DIRECTION direction, Seed *parent){
     this->id = id;
+    this->direction = direction;
+    this->parent = parent; 
 }
 
-Seed::Seed(Seed &parent, int id){
-    this->parent = &parent; 
-    this->id = id;
+SEED_DIRECTION Seed::GetDirection(){
+    return this->direction;
 }
 
 Seed* Seed::GetParent(){

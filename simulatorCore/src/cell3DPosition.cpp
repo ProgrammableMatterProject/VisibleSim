@@ -14,6 +14,24 @@ void Cell3DPosition::set(short x,short y,short z) {
     pt[2]=z;
 }
 
+Cell3DPosition Cell3DPosition::addX(short x) const {
+    Cell3DPosition r(*this);
+    r.pt[0] += x;
+    return r;
+}
+
+Cell3DPosition Cell3DPosition::addY(short y) const {
+    Cell3DPosition r(*this);
+    r.pt[1] += y;
+    return r;
+}
+
+Cell3DPosition Cell3DPosition::addZ(short z) const {
+    Cell3DPosition r(*this);
+    r.pt[2] += z;
+    return r;
+}
+
 ostream& operator<<(ostream& f,const Cell3DPosition&p) {
     f << "(" << p.pt[0] << "," << p.pt[1] << "," << p.pt[2] << ")";
     return f;

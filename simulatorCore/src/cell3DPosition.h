@@ -22,6 +22,9 @@ public:
     Cell3DPosition(short x,short y,short z);
 
     void set(short x,short y,short z);
+    Cell3DPosition addX(short x) const;
+    Cell3DPosition addY(short y) const;
+    Cell3DPosition addZ(short z) const;
 
     inline const short operator[](const int i) const { return pt[i]; };
     bool operator<(const Cell3DPosition &o) const;
