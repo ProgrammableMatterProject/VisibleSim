@@ -1,10 +1,3 @@
-/*
- * reconfCatoms3DBlockCode.cpp
- *
- *  Created on: 17 October 2016
- *  Author: Thadeu
- */
-
 #include <iostream>
 #include <sstream>
 #include "reconfCatoms3DBlockCode.h"
@@ -90,6 +83,15 @@ void ReconfCatoms3DBlockCode::addNeighbor(Cell3DPosition pos) {
     }
 }
 
+bool ReconfCatoms3DBlockCode::needSync() {
+    Color c;
+    if (!csgRoot->isInside(getWorldPosition(catom->position.addY(-1)), c) &&
+        csgRoot->isInside(getWorldPosition(catom->position.addX(-1)), c) &&
+        csgRoot->isInside(getWorldPosition(catom->position.addX(-1).addY(-1)), c) )
+        return true;
+    return false;
+}
+
 void ReconfCatoms3DBlockCode::addNeighborsOnXAxis() {
     Color color;
     for (int i = 0; i < 2; i++) {
@@ -102,7 +104,9 @@ void ReconfCatoms3DBlockCode::addNeighborsOnXAxis() {
 void ReconfCatoms3DBlockCode::startup() {
     Color color;
     leftCompleted = rightCompleted = false;
-    isRequestHandled = false;
+    syncRequest.setCatom(catom);
+    syncResponse.setCatom(catom);
+
 	if (catom->blockId==1) {
         csgRoot = csgUtils.readFile("data/mug.bc");
         csgRoot->toString();
@@ -136,28 +140,38 @@ void ReconfCatoms3DBlockCode::startup() {
     // First catom of the line
     bool DEBUG = true;
     if (DEBUG) {
-        if (catom->blockId == 66) {
+        if (catom->blockId == 167) {
             set<bID> visitedSeeds;
-            visitedSeeds.insert(66);
+            visitedSeeds.insert(167);
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            requestSyncLineDown(66, 10, visitedSeeds);
-        } else {
-            // END OF DEBUG 
-    if (catom->getInterface(0)->connectedInterface == NULL && catom->getInterface(6)->connectedInterface == NULL) {
-        addNeighborsOnXAxis();
-    }
+            syncRequest.requestSyncLineDown(167, 10, visitedSeeds, lineSeeds, lineParent);
+        }
+        else 
+        {
+            if (catom->getInterface(0)->connectedInterface == NULL && catom->getInterface(6)->connectedInterface == NULL) {
+                addNeighborsOnXAxis();
+            }
+            else {
+                sendMessageToGetNeighborInformation();
+            }
+        }
+    } // END OF DEBUG 
     else {
-        sendMessageToGetNeighborInformation();
-    }
-    
-    }
-    }
+        if (catom->getInterface(0)->connectedInterface == NULL && catom->getInterface(6)->connectedInterface == NULL) {
+                addNeighborsOnXAxis();
+            }
+            else {
+                sendMessageToGetNeighborInformation();
+            }
+        }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
 
 bool ReconfCatoms3DBlockCode::isSeed() {
     Color color;
+    if (catom->blockId == 145)
+        return false;
     //Intern seed
     if (!csgRoot->isInside(getWorldPosition(catom->position.addX(1).addY(1)), color) && csgRoot->isInside(getWorldPosition(catom->position.addY(1)),color) ){
         return true;
@@ -208,86 +222,6 @@ void ReconfCatoms3DBlockCode::tryAddNextLineNeighbor() {
     if  (isSeed()) {
         lineSeeds.insert(catom->blockId);
         addNeighbor(catom->position.addY(1));
-    }
-}
-
-void ReconfCatoms3DBlockCode::requestSyncLineDown(bID requestCatomID, int requestLine, set<bID> visitedSeeds) {
-    if (isRequestHandled)
-        return;
-    isRequestHandled = true;
-    if (lineSeeds.count(catom->blockId) && !visitedSeeds.count(catom->blockId)) {
-        sendMessageSyncLineUp(requestCatomID, requestLine);
-    }
-    if (catom->blockId == lineParent) {
-        catom->setColor(BLACK);
-        sendMessageSyncLineDown(requestCatomID, requestLine);
-    }
-    cout << "___ LINE PARENT + = " << lineParent <<  " FROM LINE NUMBER " << currentLine << endl;
-    sendMessageSyncLineDownFindLineParent(requestCatomID, requestLine, visitedSeeds, TO_LEFT);
-    sendMessageSyncLineDownFindLineParent(requestCatomID, requestLine, visitedSeeds, TO_RIGHT);
-}
-
-void ReconfCatoms3DBlockCode::requestSyncLineUp(bID requestCatomID, int requestLine, set<bID> visitedSeeds) {
-    if (isRequestHandled)
-        return;
-    isRequestHandled = true;
-    if (lineSeeds.count(catom->blockId)){ //&& !visitedSeeds.count(catom->blockId)) {
-        visitedSeeds.insert(catom->blockId);
-        sendMessageSyncLineUp(requestCatomID, requestLine);
-    }
-    sendMessageSyncLineUpFindLineSeeds(requestCatomID, requestLine, visitedSeeds, TO_LEFT);
-    sendMessageSyncLineUpFindLineSeeds(requestCatomID, requestLine, visitedSeeds, TO_RIGHT);
-    
-}
-/*
- * Send sync message to previous line
- */
-void ReconfCatoms3DBlockCode::sendMessageSyncLineDown(bID requestCatomID, int requestLine) {
-    Cell3DPosition neighborPosition(catom->position.addY(-1));
-
-    catom->setColor(GREEN);
-    if (catom->getInterface(neighborPosition)->connectedInterface != NULL) {
-       Line_down_sync_message *msg = new Line_down_sync_message(requestCatomID, requestLine);
-        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 1000, msg, catom->getInterface(neighborPosition)));
-    }
-}
-
-/*
- * Send sync message to next line
- */
-void ReconfCatoms3DBlockCode::sendMessageSyncLineUp(bID requestCatomID, int requestLine) {
-    Cell3DPosition neighborPosition(catom->position.addY(1));
-
-    catom->setColor(BLUE);
-    if (catom->getInterface(neighborPosition)->connectedInterface != NULL) {
-       Line_up_sync_message *msg = new Line_up_sync_message(requestCatomID, requestLine);
-        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 1000, msg, catom->getInterface(neighborPosition)));
-    }
-}
-
-void ReconfCatoms3DBlockCode::sendMessageSyncLineDownFindLineParent(bID requestCatomID, int requestLine, set<bID> visitedSeeds, SIDE_DIRECTION side_direction) {
-    Cell3DPosition neighborPosition;
-    if (side_direction == TO_LEFT) 
-        neighborPosition = catom->position.addX(-1);
-    else
-        neighborPosition = catom->position.addX(1);
-
-    if (catom->getInterface(neighborPosition)->connectedInterface != NULL) {
-        Find_line_parent_sync_message *msg = new Find_line_parent_sync_message(requestCatomID, requestLine, visitedSeeds, TO_DOWN);
-        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 1000, msg, catom->getInterface(neighborPosition)));
-    }
-}
-
-void ReconfCatoms3DBlockCode::sendMessageSyncLineUpFindLineSeeds(bID requestCatomID, int requestLine, set<bID> visitedSeeds, SIDE_DIRECTION side_direction) {
-    Cell3DPosition neighborPosition;
-    if (side_direction == TO_LEFT) 
-        neighborPosition = catom->position.addX(-1);
-    else
-        neighborPosition = catom->position.addX(1);
-
-    if (catom->getInterface(neighborPosition)->connectedInterface != NULL) {
-        Find_line_seed_sync_message *msg = new Find_line_seed_sync_message(requestCatomID, requestLine, visitedSeeds, TO_DOWN);
-        scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 1000, msg, catom->getInterface(neighborPosition)));
     }
 }
 
@@ -370,13 +304,13 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case FIND_LINE_PARENT_SYNC_MESSAGE:
             {
                 shared_ptr<Find_line_parent_sync_message> recv_message = static_pointer_cast<Find_line_parent_sync_message>(message);
-                requestSyncLineDown(recv_message->requestCatomID, recv_message->requestLine, recv_message->visitedSeeds);
+                syncRequest.requestSyncLineDown(recv_message->requestCatomID, recv_message->requestLine, recv_message->visitedSeeds, lineSeeds, lineParent);
                 break;
             }
             case FIND_LINE_SEED_SYNC_MESSAGE:
             {
                 shared_ptr<Find_line_seed_sync_message> recv_message = static_pointer_cast<Find_line_seed_sync_message>(message);
-                requestSyncLineUp(recv_message->requestCatomID, recv_message->requestLine, recv_message->visitedSeeds);
+                syncRequest.requestSyncLineUp(recv_message->requestCatomID, recv_message->requestLine, recv_message->visitedSeeds, lineSeeds, lineParent);
                 break;
             }
             case LINE_DOWN_SYNC_MESSAGE_ID:
@@ -384,7 +318,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 shared_ptr<Line_down_sync_message> recv_message = static_pointer_cast<Line_down_sync_message>(message);
                 set<bID> newLineVisitedSeeds;
                 newLineVisitedSeeds.insert(catom->blockId);
-                requestSyncLineDown(recv_message->requestCatomID, recv_message->requestLine, newLineVisitedSeeds);
+                syncRequest.requestSyncLineDown(recv_message->requestCatomID, recv_message->requestLine, newLineVisitedSeeds, lineSeeds, lineParent);
                 catom->setColor(MAGENTA);
                 std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                 break;
@@ -395,7 +329,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 shared_ptr<Line_up_sync_message> recv_message = static_pointer_cast<Line_up_sync_message>(message);
                 set<bID> newLineVisitedSeeds;
                 newLineVisitedSeeds.insert(catom->blockId);
-                requestSyncLineUp(recv_message->requestCatomID, recv_message->requestLine, newLineVisitedSeeds);
+                syncRequest.requestSyncLineUp(recv_message->requestCatomID, recv_message->requestLine, newLineVisitedSeeds, lineSeeds, lineParent);
                 catom->setColor(RED);
                 std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                 break;
