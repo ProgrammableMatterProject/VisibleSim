@@ -1,5 +1,5 @@
 /*
- *  syncResponse.h
+ *  syncRequest.h
  *
  *  Created on: 09 February 2017
  *  Author: Thadeu
@@ -8,75 +8,54 @@
 #ifndef SYNCREQUEST_H_
 #define SYNCREQUEST_H_
 
-#define FIND_LINE_PARENT_SYNC_MESSAGE	8001
-#define FIND_LINE_SEED_SYNC_MESSAGE	    8002
-#define LINE_DOWN_SYNC_MESSAGE_ID	    8003
-#define LINE_UP_SYNC_MESSAGE_ID	        8004
+#define LOOKUP_NEIGHBOR_SYNC_MESSAGE_ID    8001
+#define LOOKUP_LINE_SYNC_MESSAGE_ID   8002
+#define SYNC_RESPONSE_MESSAGE_ID   8003
 
 #include <set>
 #include "catoms3DBlock.h"
 
 enum SIDE_DIRECTION { TO_LEFT, TO_RIGHT };
-enum LINE_DIRECTION { TO_UP, TO_DOWN };
+enum LINE_DIRECTION { TO_NEXT, TO_PREVIOUS };
+enum DIRECTION {DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT};
 
 class SyncRequest {
 	Catoms3D::Catoms3DBlock *catom;
-    bool isRequestHandled;
+
+    void sendMessageToNeighbor(bID requestCatomID, int requestLine, SIDE_DIRECTION side_direction);
+
+    void sendMessage(bID requestCatomID, int requestLine, LINE_DIRECTION line_direction);
 
 public:
-    SyncRequest() { isRequestHandled = false; }
     void setCatom(Catoms3D::Catoms3DBlock *c) {catom = c;}
-
-    void requestSyncLineDown(bID requestCatomID, int requestLine, set<bID> visitedSeeds, set<bID> lineSeeds, bID lineParent);
-
-    void requestSyncLineUp(bID requestCatomID, int requestLine, set<bID> visitedSeeds, set<bID> lineSeeds, bID lineParent);
-
-    void sendMessageSyncLineDownFindLineParent(bID requestCatomID, int requestLine, set<bID> visitedSeeds, SIDE_DIRECTION side_direction);
-
-    void sendMessageSyncLineUpFindLineSeeds(bID requestCatomID, int requestLine, set<bID> visitedSeeds, SIDE_DIRECTION side_direction);
-
-    void sendMessageSyncLineDown(bID requestCatomID, int requestLine);
-
-    void sendMessageSyncLineUp(bID requestCatomID, int requestLine);
+    void syncLineSeed(bID requestCatomID, int requestLine, set<bID> lineSeeds, bID lineParent, LINE_DIRECTION lineDirection = TO_PREVIOUS);
+    void syncLine(bID requestCatomID, int requestLine, set<bID> lineSeeds, bID lineParent, SIDE_DIRECTION sideDirection);
+    void syncResponse(bID requestCatomID, DIRECTION);
 
 };
 
-class Find_line_parent_sync_message : public Message {
+class Lookup_neighbor_sync_message : public Message {
 public:
     bID requestCatomID;
     int requestLine;
-    set<bID> visitedSeeds;
-    LINE_DIRECTION direction;
+    SIDE_DIRECTION side_direction;
 
-    Find_line_parent_sync_message(bID catomID, int line, set<bID> visitedSeeds, LINE_DIRECTION direction) : requestCatomID(catomID), requestLine(line), visitedSeeds(visitedSeeds), direction(direction) { id = FIND_LINE_PARENT_SYNC_MESSAGE; };
+    Lookup_neighbor_sync_message(bID catomID, int line, SIDE_DIRECTION direction) : requestCatomID(catomID), requestLine(line), side_direction(direction) { id = LOOKUP_NEIGHBOR_SYNC_MESSAGE_ID; };
 };
 
-class Find_line_seed_sync_message : public Message {
+class Lookup_line_sync_message : public Message {
 public:
     bID requestCatomID;
     int requestLine;
-    set<bID> visitedSeeds;
-    LINE_DIRECTION direction;
+    LINE_DIRECTION lineDirection;
 
-    Find_line_seed_sync_message(bID catomID, int line, set<bID> visitedSeeds, LINE_DIRECTION direction) : requestCatomID(catomID), requestLine(line), visitedSeeds(visitedSeeds), direction(direction) { id = FIND_LINE_PARENT_SYNC_MESSAGE; };
+    Lookup_line_sync_message(bID catomID, int line, LINE_DIRECTION direction) : requestCatomID(catomID), requestLine(line), lineDirection(direction) { id = LOOKUP_LINE_SYNC_MESSAGE_ID; }
 };
 
-class Line_down_sync_message : public Message {
+class Sync_response_message : public Message {
 public:
     bID requestCatomID;
-    int requestLine;
-
-    Line_down_sync_message(bID catomID, int line) : requestCatomID(catomID), requestLine(line)  { id = LINE_DOWN_SYNC_MESSAGE_ID; };
-
-};
-
-class Line_up_sync_message : public Message {
-public:
-    bID requestCatomID;
-    int requestLine;
-
-    Line_up_sync_message(bID catomID, int line) : requestCatomID(catomID), requestLine(line)  { id = LINE_UP_SYNC_MESSAGE_ID; };
-
+    Sync_response_message(bID blockId) : requestCatomID(blockId) { id = SYNC_RESPONSE_MESSAGE_ID; }
 };
 
 #endif /* SYNCREQUEST_H_ */

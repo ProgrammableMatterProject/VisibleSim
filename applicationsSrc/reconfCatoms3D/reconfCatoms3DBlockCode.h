@@ -24,7 +24,6 @@
 #include "target.h"
 #include "seed.h"
 #include "syncRequest.h"
-#include "syncResponse.h"
 
 enum RECONF_STATUS { WAITING, READY };
 enum SIDE_COMPLETED { LEFT, RIGHT };
@@ -47,7 +46,7 @@ public:
     bool leftCompleted, rightCompleted;
     int currentLine;
     SyncRequest syncRequest;
-    SyncResponse syncResponse;
+    map<bID, DIRECTION> syncRoute;
 
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();
@@ -96,6 +95,13 @@ class Left_side_completed_message : public Message {
 public:
     set<bID> seeds;
     Left_side_completed_message(set<bID> s) : seeds(s) { id = LEFT_SIDE_COMPLETED_MSG_ID; };
+};
+
+class SyncRoute {
+public:
+    DIRECTION direction;
+    int lineSeedsConfirmations;
+    bool parentConfirmation;
 };
 
 
