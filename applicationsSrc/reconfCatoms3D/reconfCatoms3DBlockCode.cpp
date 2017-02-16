@@ -84,17 +84,24 @@ void ReconfCatoms3DBlockCode::addNeighbor(Cell3DPosition pos) {
 
 bool ReconfCatoms3DBlockCode::needSync() {
     Color c;
-    //Cell3DPosition pos = catom->position;
-    /*
-    for (int i = 1; getWorldPosition(pos.addX(i))[0] < boundingBox.P1[0]; i++)
-        if (!csgRoot->isInside(getWorldPosition(pos.addX(i)), c) && 
-            csgRoot->isInside(getWorldPosition(pos.addX(i).addY(1)), c) )
-            continue;
-        else
+    Cell3DPosition pos = catom->position;
+
+    if (!csgRoot->isInside(getWorldPosition(pos.addX(1)), c) && 
+        csgRoot->isInside(getWorldPosition(pos.addX(1).addY(1)), c) )
+    { 
+        for (int i = 2; getWorldPosition(pos.addX(i))[0] < boundingBox.P1[0]; i++) {
+            if (!csgRoot->isInside(getWorldPosition(pos.addX(i)), c) && 
+                csgRoot->isInside(getWorldPosition(pos.addX(i).addY(1)), c) )
+                continue;
+            if (csgRoot->isInside(getWorldPosition(pos.addX(i)), c) && 
+                csgRoot->isInside(getWorldPosition(pos.addX(i).addY(1)), c) )
+                return true;
             return false;
+        }
     }
-    */
-    if (!csgRoot->isInside(getWorldPosition(catom->position.addY(-1)), c) &&
+
+    if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
+        !csgRoot->isInside(getWorldPosition(catom->position.addY(-1)), c) &&
         csgRoot->isInside(getWorldPosition(catom->position.addX(-1)), c) &&
         csgRoot->isInside(getWorldPosition(catom->position.addX(-1).addY(-1)), c) )
         return true;
@@ -106,6 +113,8 @@ void ReconfCatoms3DBlockCode::addNeighborsOnXAxis() {
     for (int i = 0; i < 2; i++) {
         Cell3DPosition neighborGridPos = catom->position;
         neighborGridPos.pt[0] += (i == 0 ? 1 : -1);
+        if (needSync())
+            catom->setColor(RED);
         addNeighbor(neighborGridPos);
     }
 }
@@ -149,9 +158,9 @@ void ReconfCatoms3DBlockCode::startup() {
     bool DEBUG = true;
     if (DEBUG) {
         if (catom->blockId == 167) {
-            set<bID> visitedSeeds;
-            visitedSeeds.insert(167);
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            if (needSync())
+                catom->setColor(RED);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10000));
             syncRequest.syncLineSeed(167, 10, lineSeeds, lineParent);
         }
         else 
@@ -263,7 +272,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 
                 if (leftCompleted && rightCompleted) {
-                    catom->setColor(DARKORANGE);
+                    //catom->setColor(DARKORANGE);
                     tryAddNextLineNeighbor();
                 }
 
@@ -281,7 +290,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 }
                 if (rightCompleted) 
                 {
-                    catom->setColor(DARKORANGE);
+                    //catom->setColor(DARKORANGE);
                     tryAddNextLineNeighbor();
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
@@ -297,7 +306,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 10, msg, catom->getInterface(catom->position.addX(-1))));
                 }
                 if (leftCompleted) {
-                    catom->setColor(DARKORANGE);
+                    //catom->setColor(DARKORANGE);
                     tryAddNextLineNeighbor();
                 }
                 
@@ -312,6 +321,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 if (recv_message->side_direction == TO_RIGHT)
                     syncRoute[recv_message->requestCatomID] = DIRECTION_LEFT;
                 syncRequest.syncLine(recv_message->requestCatomID, recv_message->requestLine, lineSeeds, lineParent, recv_message->side_direction);
+//                catom->setColor(LIGHTGREEN);
                 break;
             }
             case LOOKUP_LINE_SYNC_MESSAGE_ID:
@@ -324,13 +334,14 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 /*if (catom->blockId == lineParent && 
                         currentLine == recv_message->requestLine) {*/
                 if (catom->blockId == 137) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                     shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
                     syncRequest.syncResponse(recv_message->requestCatomID, syncRoute[recv_message->requestCatomID]);
                 }
                 else {
                     syncRequest.syncLineSeed(recv_message->requestCatomID, recv_message->requestLine, lineSeeds, lineParent, recv_message->lineDirection);
-                    catom->setColor(MAGENTA);
                 }
+                catom->setColor(GREEN);
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 break;
             }
@@ -339,6 +350,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 catom->setColor(BLUE);
                 shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
                 if (recv_message->requestCatomID != catom->blockId) {
+                    // TODO verify if all neighbors confirmed before repassing the response
                     syncRequest.syncResponse(recv_message->requestCatomID, syncRoute[recv_message->requestCatomID]);
                 }
                 else {

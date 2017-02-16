@@ -13,7 +13,6 @@ void SyncRequest::syncLineSeed(bID requestCatomID, int requestLine, set<bID> lin
     }
     else if (syncToLineDirection == TO_PREVIOUS &&
             catom->blockId == lineParent) {
-        catom->setColor(BLACK);
         sendMessage(requestCatomID, requestLine, TO_PREVIOUS);
     }
     sendMessageToNeighbor(requestCatomID, requestLine, TO_LEFT);
@@ -25,7 +24,6 @@ void SyncRequest::syncLine(bID requestCatomID, int requestLine, set<bID> lineSee
         sendMessage(requestCatomID, requestLine, TO_NEXT);
     }
     if (catom->blockId == lineParent) {
-        catom->setColor(BLACK);
         sendMessage(requestCatomID, requestLine, TO_PREVIOUS);
     }
 
@@ -52,7 +50,6 @@ void SyncRequest::sendMessage(bID requestCatomID, int requestLine, LINE_DIRECTIO
     else
         neighborPosition = catom->position.addY(1);
 
-    catom->setColor(GREEN);
     if (catom->getInterface(neighborPosition)->connectedInterface != NULL) {
         Lookup_line_sync_message *msg = new Lookup_line_sync_message(requestCatomID, requestLine, lineDirection);
 
