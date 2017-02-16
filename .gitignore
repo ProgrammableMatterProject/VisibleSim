@@ -1,3 +1,13 @@
+# Application binary files
+## Exclude all files from applicationsSrc and applicationsBin sub-directories
+applications*/*/*
+## Except sub-directories of those
+!applications*/*/*/
+## And files with extension
+!*.*
+
+## Hence, all extension-less files from these directories are ignored => No binaries
+#
 # Compiled Object files
 *.slo
 *.lo
@@ -43,25 +53,15 @@ simulatorCode/deps/
 .DS_Store
 
 # External tools config files
-.projectile
+.*
 *.xcodeproj
 *.xcworkspace
 *.cbp
 *.layout
 
-# Application binary files
-## Exclude all files from applicationsSrc and applicationsBin sub-directories
-applications*/*
-## Except sub-directories of those
-!/**/
-## And files with extension
-!*.*
-## Hence, all extension-less files from these directories are ignored => No binaries
-
 # Doxyfile documentation output
 doc/xml/
 doc/html/
-
 
 utilities/LMParser/LMParser
 utilities/meld-compiler/dists/quicklisp/archives/
