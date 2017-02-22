@@ -57,16 +57,3 @@ void SyncRequest::sendMessage(bID requestCatomID, int requestLine, LINE_DIRECTIO
     }
 }
 
-void SyncRequest::syncResponse(bID requestCatomID, DIRECTION direction) {
-    Sync_response_message *msg = new Sync_response_message(requestCatomID);
-    Cell3DPosition pos = catom->position;
-    if (direction == DIRECTION_UP)
-        pos = pos.addY(1);
-    if (direction == DIRECTION_DOWN)
-        pos = pos.addY(-1);
-    if (direction == DIRECTION_RIGHT)
-        pos = pos.addX(1);
-    if (direction == DIRECTION_LEFT)
-        pos = pos.addX(-1);
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 1000, msg, catom->getInterface(pos)));
-}

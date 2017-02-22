@@ -1,0 +1,14 @@
+#ifndef DIRECTIONS_H_
+#define DIRECTIONS_H_
+
+enum SIDE_DIRECTION { TO_LEFT, TO_RIGHT };
+enum LINE_DIRECTION { TO_NEXT, TO_PREVIOUS };
+enum DIRECTION {DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT};
+
+class SyncRoute {
+public:
+    DIRECTION direction;
+    int lineSeedsConfirmations;
+    bool parentConfirmation;
+};
+#endif /* DIRECTIONS_H_ */

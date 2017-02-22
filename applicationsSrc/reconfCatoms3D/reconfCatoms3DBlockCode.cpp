@@ -13,6 +13,14 @@
 using namespace std;
 using namespace Catoms3D;
 
+//TODO
+//1 - rules for sync - right to left.
+//2 - rules for sync - left to right.
+//3 - Send sync message to when column is not completed and pass the request for the new catoms arriving.
+//4 - Create filling in the other direction. (actually it goes just in the direction y+1
+//5 - Create examples to test.
+//6 - 3D sync.
+
 CSGNode* ReconfCatoms3DBlockCode::csgRoot = NULL;
 BoundingBox ReconfCatoms3DBlockCode::boundingBox;
 Seed *ReconfCatoms3DBlockCode::root = NULL;
@@ -123,6 +131,7 @@ void ReconfCatoms3DBlockCode::startup() {
     Color color;
     leftCompleted = rightCompleted = false;
     syncRequest.setCatom(catom);
+    syncResponse.setCatom(catom);
 
 	if (catom->blockId==1) {
         csgRoot = csgUtils.readFile("data/mug.bc");
@@ -317,9 +326,9 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 shared_ptr<Lookup_neighbor_sync_message> recv_message = static_pointer_cast<Lookup_neighbor_sync_message>(message);
 
                 if (recv_message->side_direction == TO_LEFT)
-                    syncRoute[recv_message->requestCatomID] = DIRECTION_RIGHT;
+                    syncRoutes[recv_message->requestCatomID].direction = DIRECTION_RIGHT;
                 if (recv_message->side_direction == TO_RIGHT)
-                    syncRoute[recv_message->requestCatomID] = DIRECTION_LEFT;
+                    syncRoutes[recv_message->requestCatomID].direction = DIRECTION_LEFT;
                 syncRequest.syncLine(recv_message->requestCatomID, recv_message->requestLine, lineSeeds, lineParent, recv_message->side_direction);
 //                catom->setColor(LIGHTGREEN);
                 break;
@@ -328,15 +337,15 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 shared_ptr<Lookup_line_sync_message> recv_message = static_pointer_cast<Lookup_line_sync_message>(message);
                 if (recv_message->lineDirection == TO_NEXT)
-                    syncRoute[recv_message->requestCatomID] = DIRECTION_DOWN;
+                    syncRoutes[recv_message->requestCatomID].direction = DIRECTION_DOWN;
                 if (recv_message->lineDirection == TO_PREVIOUS) 
-                    syncRoute[recv_message->requestCatomID] = DIRECTION_UP;
+                    syncRoutes[recv_message->requestCatomID].direction = DIRECTION_UP;
                 /*if (catom->blockId == lineParent && 
                         currentLine == recv_message->requestLine) {*/
                 if (catom->blockId == 137) {
                     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                     shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
-                    syncRequest.syncResponse(recv_message->requestCatomID, syncRoute[recv_message->requestCatomID]);
+                    syncResponse.response(recv_message->requestCatomID, syncRoutes[recv_message->requestCatomID].direction, true);
                 }
                 else {
                     syncRequest.syncLineSeed(recv_message->requestCatomID, recv_message->requestLine, lineSeeds, lineParent, recv_message->lineDirection);
@@ -350,8 +359,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 catom->setColor(BLUE);
                 shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
                 if (recv_message->requestCatomID != catom->blockId) {
-                    // TODO verify if all neighbors confirmed before repassing the response
-                    syncRequest.syncResponse(recv_message->requestCatomID, syncRoute[recv_message->requestCatomID]);
+                    syncResponse.forwardResponse(recv_message, lineSeeds.size(), syncRoutes[recv_message->requestCatomID]);
                 }
                 else {
                     catom->setColor(BLACK);
