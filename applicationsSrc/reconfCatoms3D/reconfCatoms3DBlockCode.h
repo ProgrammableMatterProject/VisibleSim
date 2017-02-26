@@ -46,8 +46,11 @@ public:
     // Reconfiguration Variables
     static Seed *root;
     set<bID> lineSeeds;
+    int numberSeedsLeft;
+    int numberSeedsRight;
     bID lineParent;
-    bool leftCompleted, rightCompleted;
+    bool leftCompleted;
+    bool rightCompleted;
     int currentLine;
     SyncRequest syncRequest;
     SyncResponse syncResponse;
@@ -67,8 +70,9 @@ public:
     bool isSeed();
     void tryAddNextLineNeighbor();
     bool needSync();
+    void checkLineCompleted();
 
-    void sendMessageCompletedSide(SIDE_COMPLETED side);
+    void sendMessageLineCompleted(SIDE_COMPLETED side);
     void sendMessageToGetNeighborInformation();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
@@ -87,19 +91,22 @@ public:
     bID lineParent;
     set<bID> lineSeeds;
     bool leftCompleted, rightCompleted;
+    int numberSeedsLeft, numberSeedsRight;
     New_catom_response_message() { id = NEW_CATOM_RESPONSE_MSG_ID; };
 };
 
 class Right_side_completed_message : public Message {
 public:
     set<bID> seeds;
-    Right_side_completed_message(set<bID> s) : seeds(s) { id = RIGHT_SIDE_COMPLETED_MSG_ID; };
+    int numberSeedsRight;
+    Right_side_completed_message(set<bID> s, int nSeedsRight) : seeds(s), numberSeedsRight(nSeedsRight) { id = RIGHT_SIDE_COMPLETED_MSG_ID; };
 };
 
 class Left_side_completed_message : public Message {
 public:
     set<bID> seeds;
-    Left_side_completed_message(set<bID> s) : seeds(s) { id = LEFT_SIDE_COMPLETED_MSG_ID; };
+    int numberSeedsLeft;
+    Left_side_completed_message(set<bID> s, int nSeedsLeft) : seeds(s), numberSeedsLeft(nSeedsLeft) { id = LEFT_SIDE_COMPLETED_MSG_ID; };
 };
 
 #endif /* RECONFCATOMS3DBLOCKCODE_H_ */

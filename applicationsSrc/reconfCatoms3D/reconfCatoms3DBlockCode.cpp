@@ -13,14 +13,6 @@
 using namespace std;
 using namespace Catoms3D;
 
-//TODO
-//1 - rules for sync - right to left.
-//2 - rules for sync - left to right.
-//3 - Send sync message to when column is not completed and pass the request for the new catoms arriving.
-//4 - Create filling in the other direction. (actually it goes just in the direction y+1
-//5 - Create examples to test.
-//6 - 3D sync.
-
 CSGNode* ReconfCatoms3DBlockCode::csgRoot = NULL;
 BoundingBox ReconfCatoms3DBlockCode::boundingBox;
 Seed *ReconfCatoms3DBlockCode::root = NULL;
@@ -47,7 +39,6 @@ Vector3D gridToWorldPosition(const Cell3DPosition &pos) {
         res.pt[1] = (pos[1] + 1.0);
         res.pt[0] = (pos[0] + 1.0);
     }
-
     return res;
 }
 
@@ -130,6 +121,7 @@ void ReconfCatoms3DBlockCode::addNeighborsOnXAxis() {
 void ReconfCatoms3DBlockCode::startup() {
     Color color;
     leftCompleted = rightCompleted = false;
+    numberSeedsLeft = numberSeedsRight = 0;
     syncRequest.setCatom(catom);
     syncResponse.setCatom(catom);
 
@@ -160,10 +152,6 @@ void ReconfCatoms3DBlockCode::startup() {
         lineParent = catom->blockId;
         currentLine = catom->position[1];
     }
-    isSeed();
-    sendMessageCompletedSide(SIDE_COMPLETED::LEFT);
-    sendMessageCompletedSide(SIDE_COMPLETED::RIGHT);
-    // First catom of the line
     bool DEBUG = true;
     if (DEBUG) {
         if (catom->blockId == 167) {
@@ -175,6 +163,7 @@ void ReconfCatoms3DBlockCode::startup() {
         else 
         {
             if (catom->getInterface(0)->connectedInterface == NULL && catom->getInterface(6)->connectedInterface == NULL) {
+                checkLineCompleted();
                 addNeighborsOnXAxis();
             }
             else {
@@ -183,7 +172,9 @@ void ReconfCatoms3DBlockCode::startup() {
         }
     } // END OF DEBUG 
     else {
+        // First catom of the line
         if (catom->getInterface(0)->connectedInterface == NULL && catom->getInterface(6)->connectedInterface == NULL) {
+                checkLineCompleted();
                 addNeighborsOnXAxis();
             }
             else {
@@ -196,7 +187,7 @@ void ReconfCatoms3DBlockCode::startup() {
 
 bool ReconfCatoms3DBlockCode::isSeed() {
     Color color;
-    if (catom->blockId == 145)
+    if (catom->blockId == 147)
         return false;
     //Intern seed
     if (!csgRoot->isInside(getWorldPosition(catom->position.addX(1).addY(1)), color) && csgRoot->isInside(getWorldPosition(catom->position.addY(1)),color) ){
@@ -222,29 +213,47 @@ void ReconfCatoms3DBlockCode::sendMessageToGetNeighborInformation()
     }
 }
 
-void ReconfCatoms3DBlockCode::sendMessageCompletedSide(SIDE_COMPLETED side)
+void ReconfCatoms3DBlockCode::checkLineCompleted()
 {
     Color color;
-    int offset = (side == (SIDE_COMPLETED)LEFT) ? 1 : -1;
-    Cell3DPosition neighborPosition = catom->position.addX(offset);
+    SIDE_COMPLETED sides[] = {LEFT, RIGHT};
+    for (int i = 0; i < 2; i++) { 
+        SIDE_COMPLETED side = sides[i];
+        int offset = (side == (SIDE_COMPLETED)LEFT) ? -1 : 1;
 
-    if (!csgRoot->isInside(getWorldPosition(catom->position.addX(offset*-1)), color)){
-        if (side == LEFT) {leftCompleted = true;}
-        else {rightCompleted = true;}
-
-        if (catom->getInterface(neighborPosition)->connectedInterface != NULL) {
-            Message *msg;
-            if (side == LEFT) msg = new Left_side_completed_message(lineSeeds);
-            else msg = new Right_side_completed_message(lineSeeds);
-
-            scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, msg, catom->getInterface(neighborPosition)));
-            std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
+        if (!csgRoot->isInside(getWorldPosition(catom->position.addX(offset)), color)){
+            if (side == LEFT) {
+                leftCompleted = true;
+                numberSeedsLeft = 0;
+            }
+            else {
+                rightCompleted = true;
+                numberSeedsRight = 0;
+            }
+            sendMessageLineCompleted(side);
         }
     }
 }
 
+void ReconfCatoms3DBlockCode::sendMessageLineCompleted(SIDE_COMPLETED side)
+{
+    int offset = (side == (SIDE_COMPLETED)LEFT) ? 1 : -1;
+    Cell3DPosition neighborPosition = catom->position.addX(offset);
+    Message *msg;
+    if (side == LEFT) {
+        msg = new Left_side_completed_message(lineSeeds, (isSeed() ? 1 : 0));
+    }
+    else {
+        msg = new Right_side_completed_message(lineSeeds, (isSeed() ? 1 : 0));
+    }
+
+    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, msg, catom->getInterface(neighborPosition)));
+    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
+}
+
 void ReconfCatoms3DBlockCode::tryAddNextLineNeighbor() {
     if  (isSeed()) {
+        cout << "ID = " << catom->blockId << " seedsLeft = " << numberSeedsLeft << " seedsRight = " << numberSeedsRight << endl;
         lineSeeds.insert(catom->blockId);
         addNeighbor(catom->position.addY(1));
     }
@@ -258,6 +267,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
     case EVENT_NI_RECEIVE: {
       message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
         switch(message->id) {
+            // Arriving catom asks neighbor catom for his informations.
             case NEW_CATOM_MSG_ID:
             {
                 New_catom_response_message *msg = new New_catom_response_message;
@@ -266,9 +276,14 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 msg->lineSeeds = lineSeeds;
                 msg->leftCompleted = leftCompleted;
                 msg->rightCompleted = rightCompleted;
+                msg->numberSeedsLeft = numberSeedsLeft + (isSeed() ? 1 : 0);
+                msg->numberSeedsRight = numberSeedsRight + (isSeed() ? 1 : 0);
+
                 scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, msg, message->destinationInterface));
                 break;
             }
+            // Arriving catom saves the information sent by neighbor catom that called him.
+            // LEFT_SIDE_COMPLETED_MSG_ID and RIGHT can come before this message, so we should take attention to not lost data.
             case NEW_CATOM_RESPONSE_MSG_ID:
             {
                 shared_ptr<New_catom_response_message> recv_message = static_pointer_cast<New_catom_response_message>(message);
@@ -277,15 +292,17 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 lineSeeds = recv_message->lineSeeds;
                 leftCompleted = recv_message->leftCompleted || leftCompleted;
                 rightCompleted = recv_message->rightCompleted || rightCompleted;
+                numberSeedsLeft = max(recv_message->numberSeedsLeft, numberSeedsLeft) ;
+                numberSeedsRight = max(recv_message->numberSeedsRight, numberSeedsRight);
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
+                checkLineCompleted();
 
+                addNeighborsOnXAxis();
                 if (leftCompleted && rightCompleted) {
-                    //catom->setColor(DARKORANGE);
                     tryAddNextLineNeighbor();
                 }
 
-                addNeighborsOnXAxis();
                 break;
             }
             case LEFT_SIDE_COMPLETED_MSG_ID:
@@ -293,13 +310,14 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 leftCompleted = true;
                 shared_ptr<Left_side_completed_message> recv_message = static_pointer_cast<Left_side_completed_message>(message);
                 lineSeeds.insert(recv_message->seeds.begin(), recv_message->seeds.end());
+                numberSeedsLeft = recv_message->numberSeedsLeft;
+
                 if (catom->getInterface(catom->position.addX(1))->connectedInterface != NULL) {
-                    Left_side_completed_message *msg = new Left_side_completed_message(lineSeeds);
+                    Left_side_completed_message *msg = new Left_side_completed_message(lineSeeds, numberSeedsLeft + (isSeed() ? 1 : 0));
                     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, msg, catom->getInterface(catom->position.addX(1))));
                 }
                 if (rightCompleted) 
                 {
-                    //catom->setColor(DARKORANGE);
                     tryAddNextLineNeighbor();
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
@@ -310,15 +328,17 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 rightCompleted = true;
                 shared_ptr<Right_side_completed_message> recv_message = static_pointer_cast<Right_side_completed_message>(message);
                 lineSeeds.insert(recv_message->seeds.begin(), recv_message->seeds.end());
+                numberSeedsRight = recv_message->numberSeedsRight;
+
                 if (catom->getInterface(catom->position.addX(-1))->connectedInterface != NULL) {
-                    Right_side_completed_message *msg = new Right_side_completed_message(lineSeeds);
+                    Right_side_completed_message *msg = new Right_side_completed_message(lineSeeds, numberSeedsRight + (isSeed() ? 1 : 0));
                     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 10, msg, catom->getInterface(catom->position.addX(-1))));
                 }
                 if (leftCompleted) {
-                    //catom->setColor(DARKORANGE);
                     tryAddNextLineNeighbor();
                 }
-                
+
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
                 break;
             }
             case LOOKUP_NEIGHBOR_SYNC_MESSAGE_ID:
@@ -342,9 +362,9 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     syncRoutes[recv_message->requestCatomID].direction = DIRECTION_UP;
                 /*if (catom->blockId == lineParent && 
                         currentLine == recv_message->requestLine) {*/
-                if (catom->blockId == 137) {
+                if (catom->blockId == 139) {
                     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-                    shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
+                //    shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
                     syncResponse.response(recv_message->requestCatomID, syncRoutes[recv_message->requestCatomID].direction, true);
                 }
                 else {
