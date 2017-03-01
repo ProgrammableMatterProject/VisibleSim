@@ -11,7 +11,7 @@
 #define SYNC_RESPONSE_MESSAGE_ID   8101
 
 #include "catoms3DBlock.h"
-#include "directions.h"
+#include "../directions.h"
 
 class Sync_response_message;
 
@@ -21,7 +21,7 @@ class SyncResponse {
 public:
     void setCatom(Catoms3D::Catoms3DBlock *c) {catom = c;}
     void response(bID requestCatomID, DIRECTION, bool canSyncLine);
-    void forwardResponse(shared_ptr<Sync_response_message> msg, int numberLineSeeds, SyncRoute &syncRoute);
+    void forwardResponse(shared_ptr<Sync_response_message> msg, SyncRoute &syncRoute);
 };
 
 class Sync_response_message : public Message {

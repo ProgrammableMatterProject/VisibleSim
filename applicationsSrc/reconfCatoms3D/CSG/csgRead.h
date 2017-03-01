@@ -1,29 +1,30 @@
-#ifndef CSGUTILS_H_
-#define CSGUTILS_H_
+#ifndef CSGREAD_H_
+#define CSGREAD_H_
 
 #include "csg.h"
 #include "color.h"
+#include "cell3DPosition.h"
 
 enum class CSG_T : unsigned char
 {
     Difference = 0, Union, Intersection, Translate, Scale, Rotate, Color, Cube, Cylinder, Sphere, END
 };
 
-class CsgUtils
+class CsgRead
 {
+private:
     int csgBufferPos; // CSG binary position
     char *csgBuffer;
     int csgBufferSize;
+    CSGNode* readCSGNode();
 
 public:
-    //void createCSG(int MAX_SIZE);
     CSGNode* readFile(string path_to_file);
     CSGNode* readCSGBuffer(char *csgBuffer, int csgBufferSize);
     char * getCSGBuffer() { return csgBuffer; }
     int getCSGBufferSize() { return csgBufferSize; }
-private:
-    CSGNode* readCSGNode();
 };
 
-#endif /* CSGUTILS_H_ */
+#endif /* CSGREAD_H_ */
+
 

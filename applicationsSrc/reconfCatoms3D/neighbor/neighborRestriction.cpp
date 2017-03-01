@@ -1,10 +1,10 @@
-#include "neighbors.h"
+#include "neighborRestriction.h"
 #include "catoms3DWorld.h"
 
 using namespace Catoms3D;
 
-int Neighbors::neighborDirectionsEven[12][3] = {{0,0,-1},{-1,-1,-1},{-1,0,-1},{0,-1,-1},{0,0,1},{-1,-1,1},{-1,0,1},{0,-1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
-int Neighbors::neighborDirectionsOdd[12][3] = {{0,0,-1},{1,1,-1},{1,0,-1},{0,1,-1},{0,0,1},{1,1,1},{1,0,1},{0,1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
+int NeighborRestriction::neighborDirectionsEven[12][3] = {{0,0,-1},{-1,-1,-1},{-1,0,-1},{0,-1,-1},{0,0,1},{-1,-1,1},{-1,0,1},{0,-1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
+int NeighborRestriction::neighborDirectionsOdd[12][3] = {{0,0,-1},{1,1,-1},{1,0,-1},{0,1,-1},{0,0,1},{1,1,1},{1,0,1},{0,1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
 
 int sideOneOddXY[4][3] = {{1,0,-1},{1,1,-1},{0,1,-1},{0,0,-1}};
 int sideTwoOddXY[4][3] = {{1,0,1},{1,1,1},{0,1,1},{0,0,1}};
@@ -21,7 +21,7 @@ int sideTwoOddYZ[5][3] = {{1,1,-1},{0,1,-1},{1,1,1},{0,1,1},{0,1,0}};
 int sideOneEvenYZ[5][3] = {{0,-1,-1},{-1,-1,-1},{0,-1,1},{-1,-1,1},{0,-1,0}};
 int sideTwoEvenYZ[5][3] = {{0,0,-1},{-1,0,-1},{0,0,1},{-1,0,1},{0,1,0}};
 
-bool Neighbors::isPositionUnblockedSide(const Cell3DPosition &pos) {
+bool NeighborRestriction::isPositionUnblockedSide(const Cell3DPosition &pos) {
     int xyPos[4][3] = {{-1,0,0}, {1,0,0}, {0,-1,0}, {0,1,0}};
     Cell3DPosition occupiedPosition(pos[0]+xyPos[0][0],pos[1]+xyPos[0][1], pos[2]+xyPos[0][2]);
     Cell3DPosition forbiddenPosition(pos[0]+xyPos[1][0], pos[1]+xyPos[1][1], pos[2]+xyPos[1][2]);
@@ -34,7 +34,7 @@ bool Neighbors::isPositionUnblockedSide(const Cell3DPosition &pos) {
     return true;
 }
 
-bool Neighbors::isPositionUnblockedXY(const Cell3DPosition &pos) {
+bool NeighborRestriction::isPositionUnblockedXY(const Cell3DPosition &pos) {
     int *sideOne, *sideTwo;
     Cell3DPosition position1, position2;
     bool isInSide1 = false, isInSide2 = false;
@@ -59,7 +59,7 @@ bool Neighbors::isPositionUnblockedXY(const Cell3DPosition &pos) {
     return true;
 }
 
-bool Neighbors::isPositionUnblockedYZ(const Cell3DPosition &pos) {
+bool NeighborRestriction::isPositionUnblockedYZ(const Cell3DPosition &pos) {
     int *sideOne, *sideTwo;
     Cell3DPosition position1, position2;
     bool isInSide1 = false, isInSide2 = false;
@@ -84,7 +84,7 @@ bool Neighbors::isPositionUnblockedYZ(const Cell3DPosition &pos) {
     return true;
 }
 
-bool Neighbors::isPositionUnblockedXZ(const Cell3DPosition &pos) {
+bool NeighborRestriction::isPositionUnblockedXZ(const Cell3DPosition &pos) {
     int *sideOne, *sideTwo;
     Cell3DPosition position1, position2;
     bool isInSide1 = false, isInSide2 = false;
@@ -109,7 +109,7 @@ bool Neighbors::isPositionUnblockedXZ(const Cell3DPosition &pos) {
     return true;
 }
 
-bool Neighbors::isPositionBlocked(const Cell3DPosition &pos) {
+bool NeighborRestriction::isPositionBlocked(const Cell3DPosition &pos) {
     if (isPositionUnblockedSide(pos)) {
         if (isPositionUnblockedXZ(pos) || isPositionUnblockedYZ(pos) || isPositionUnblockedXY(pos)) {
             return false;
@@ -118,7 +118,7 @@ bool Neighbors::isPositionBlocked(const Cell3DPosition &pos) {
     return true;
 }
 
-bool Neighbors::isPositionBlockable(const Cell3DPosition &pos) {
+bool NeighborRestriction::isPositionBlockable(const Cell3DPosition &pos) {
     Cell3DPosition neighborPos;
     Catoms3DWorld *world = Catoms3DWorld::getWorld();
     int *direction;
@@ -135,7 +135,7 @@ bool Neighbors::isPositionBlockable(const Cell3DPosition &pos) {
     return false;
 }
 
-bool Neighbors::cellHasBlock(const Cell3DPosition &pos) {
+bool NeighborRestriction::cellHasBlock(const Cell3DPosition &pos) {
     if (simulatedBlockPosition == pos)
         return true;
     return Catoms3DWorld::getWorld()->lattice->cellHasBlock(pos);

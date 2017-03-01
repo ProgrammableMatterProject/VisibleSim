@@ -13,19 +13,20 @@
 
 #include <set>
 #include "catoms3DBlock.h"
-#include "directions.h"
+#include "../directions.h"
+#include "../reconf.h"
 
 class SyncRequest {
 	Catoms3D::Catoms3DBlock *catom;
 
-    void sendMessageToNeighbor(bID requestCatomID, int requestLine, SIDE_DIRECTION side_direction);
+    void sendNeighborMessage(bID requestCatomID, int requestLine, SIDE_DIRECTION side_direction);
 
-    void sendMessage(bID requestCatomID, int requestLine, LINE_DIRECTION line_direction);
+    void sendSeedMessage(bID requestCatomID, int requestLine, LINE_DIRECTION line_direction);
 
 public:
     void setCatom(Catoms3D::Catoms3DBlock *c) {catom = c;}
-    void syncLineSeed(bID requestCatomID, int requestLine, set<bID> lineSeeds, bID lineParent, LINE_DIRECTION lineDirection = TO_PREVIOUS);
-    void syncLine(bID requestCatomID, int requestLine, set<bID> lineSeeds, bID lineParent, SIDE_DIRECTION sideDirection);
+    void syncLineSeedToLeft(bID requestCatomID, int requestLine, const Reconf &reconf, LINE_DIRECTION lineDirection);
+    void syncLineNeighborToLeft(bID requestCatomID, int requestLine, const Reconf &reconf, SIDE_DIRECTION sideDirection);
 
 };
 

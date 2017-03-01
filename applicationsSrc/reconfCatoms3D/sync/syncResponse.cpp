@@ -17,7 +17,8 @@ void SyncResponse::response(bID requestCatomID, DIRECTION direction, bool canSyn
 /*
  * Check if all neighbors confirmed before forward the response
  */
-void SyncResponse::forwardResponse(shared_ptr<Sync_response_message> msg, int numberLineSeeds, SyncRoute &syncRoute) {
+void SyncResponse::forwardResponse(shared_ptr<Sync_response_message> msg, SyncRoute &syncRoute) {
+    /*
     if (msg->messageFromParent == false) {
         if (msg->canSyncLine == 1) {
             response(msg->requestCatomID, syncRoute.direction, msg->canSyncLine);
@@ -38,4 +39,5 @@ void SyncResponse::forwardResponse(shared_ptr<Sync_response_message> msg, int nu
 
 
     }
+    */
 }

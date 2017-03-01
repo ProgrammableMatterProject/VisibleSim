@@ -1,6 +1,6 @@
 #include "cell3DPosition.h"
 
-class Neighbors {
+class NeighborRestriction {
     Cell3DPosition simulatedBlockPosition;
 
     bool isPositionUnblockedSide(const Cell3DPosition &pos);
