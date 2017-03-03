@@ -11,37 +11,31 @@
 #include "directions.h"
 
 class Reconf {
-    
     Catoms3D::Catoms3DBlock *catom;
-    bool leftCompleted;
-    bool rightCompleted;
-    bool imSeed;
+    int numberSeedsLeft;
+    int numberSeedsRight;
+    bool seed;
+    bool lineParent;
+    DIRECTION lineParentDirection;
 
     bool needSyncToLeft();
     bool needSyncToRight();
     bool isInternalSeed();
     bool isBorderSeed();
 public:
-    int numberSeedsLeft;
-    int numberSeedsRight;
-    int lineParentDirection;
-    bID lineParent;
-    int currentLine;
 
-    Reconf();
-    void setCatom(Catoms3D::Catoms3DBlock *c) {catom = c;}
+    Reconf(Catoms3D::Catoms3DBlock *c);
     bool isSeed();
     bool needSync();
 
-    void setLeftCompleted() { leftCompleted = true; }
-    void setRightCompleted() { rightCompleted = true; }
-    bool isLeftCompleted() { return leftCompleted; }
-    bool isRightCompleted() { return rightCompleted; }
-    bool isOnLeftBorder();
-    bool isOnRightBorder();
-    bool iAmSeed() const {
-        return imSeed;
-    }
+    bool iAmSeed() const { return seed; }
+    bool isLineParent() { return lineParent; }
+    void setLineParent() { lineParent = true; }
+    int getNumberSeedsLeft() { return numberSeedsLeft; }
+    int getNumberSeedsRight() { return numberSeedsRight; }
+    void setNumberSeedsLeft(int nSeeds) { numberSeedsLeft = nSeeds; }
+    void setNumberSeedsRight(int nSeeds) { numberSeedsRight = nSeeds; }
+
 };
 
 #endif /* RECONF_H_ */

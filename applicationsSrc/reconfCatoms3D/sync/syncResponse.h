@@ -19,7 +19,7 @@ class SyncResponse {
 	Catoms3D::Catoms3DBlock *catom;
 
 public:
-    void setCatom(Catoms3D::Catoms3DBlock *c) {catom = c;}
+    SyncResponse(Catoms3D::Catoms3DBlock *c) : catom(c) {};
     void response(bID requestCatomID, DIRECTION, bool canSyncLine);
     void forwardResponse(shared_ptr<Sync_response_message> msg, SyncRoute &syncRoute);
 };

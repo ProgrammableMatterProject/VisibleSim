@@ -9,12 +9,11 @@
 #define RECONFCATOMS3DBLOCKCODE_H_
 
 #include "catoms3DBlockCode.h"
+#include "CSG/csgUtils.h"
 #include "directions.h"
 #include "reconf.h"
 #include "neighbor/neighbor.h"
-#include "CSG/csgUtils.h"
-#include "sync/syncRequest.h"
-#include "sync/syncResponse.h"
+#include "sync/sync.h"
 
 class SyncRoute;
 
@@ -25,13 +24,11 @@ public:
     Vector3D worldPosition;
 
     CsgUtils csgUtils;
-    Neighbor neighbor;
+    Neighbor *neighbor;
     
     // Reconfiguration Variables
-    Reconf reconf;
-    SyncRequest syncRequest;
-    SyncResponse syncResponse;
-    map<bID, SyncRoute> syncRoutes;
+    Reconf *reconf;
+    Sync *sync;
 
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();

@@ -24,9 +24,9 @@ class SyncRequest {
     void sendSeedMessage(bID requestCatomID, int requestLine, LINE_DIRECTION line_direction);
 
 public:
-    void setCatom(Catoms3D::Catoms3DBlock *c) {catom = c;}
-    void syncLineSeedToLeft(bID requestCatomID, int requestLine, const Reconf &reconf, LINE_DIRECTION lineDirection);
-    void syncLineNeighborToLeft(bID requestCatomID, int requestLine, const Reconf &reconf, SIDE_DIRECTION sideDirection);
+    SyncRequest(Catoms3D::Catoms3DBlock *c) : catom(c) {};
+    void syncLineSeedToLeft(bID requestCatomID, int requestLine, Reconf*, LINE_DIRECTION lineDirection);
+    void syncLineNeighborToLeft(bID requestCatomID, int requestLine, Reconf*, SIDE_DIRECTION sideDirection);
 
 };
 
