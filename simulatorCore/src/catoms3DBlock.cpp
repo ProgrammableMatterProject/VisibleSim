@@ -34,18 +34,23 @@ void Catoms3DBlock::setVisible(bool visible) {
 
 void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code) {
     orientationCode = code;
+    short orientation = code%12;
+    short up = code/12;
     position = p;
 
+    //cout << "ID" << blockId << " OR :" << orientation << "  UP :" << up << endl;
+
     Matrix M1,M2,M3,M;
-    M1.setRotationZ(tabOrientationAngles[code][0]);
-    M2.setRotationY(tabOrientationAngles[code][1]);
-    M3.setRotationX(tabOrientationAngles[code][2]);
+    M1.setRotationZ(tabOrientationAngles[orientation][2]);
+    M2.setRotationY(tabOrientationAngles[orientation][1]);
+    M3.setRotationX(tabOrientationAngles[orientation][0]+up*180.0);
     M = M2*M1;
     M1 = M3*M;
     M2.setTranslation(getWorld()->lattice->gridToWorldPosition(p));
     M = M2*M1;
-    OUTPUT << M << endl;
     getWorld()->updateGlData(this,M);
+
+    //cout << M << endl;
 }
 
 short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
@@ -66,6 +71,28 @@ short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
             psmax=v[0];
         }
     }
+    // orientation autour du connecteur
+    Matrix M1,M2,M3,M;
+    M1.setRotationZ(tabOrientationAngles[current][2]);
+    M2.setRotationY(tabOrientationAngles[current][1]);
+    M3.setRotationX(tabOrientationAngles[current][0]);
+    M = M2*M1;
+    M1 = M3*M;
+    M1.inverse(M);
+    M.m[15]=0;
+    /*OUTPUT << "----- ref -----" << endl;
+    OUTPUT << M << endl;
+    OUTPUT << "----- mat -----" << endl;*/
+    M3 = mat;
+    //OUTPUT << M3 << endl;
+
+    M2 = mat*M;
+    //OUTPUT << M2 << endl;
+    // detection of a rotation matrix PI around X axis if M2.m[10]=env.-1
+    if (M2.m[10]<0) {
+        current = current+12;
+    }
+
     //OUTPUT << "result =" << current << endl;
     return current;
 }

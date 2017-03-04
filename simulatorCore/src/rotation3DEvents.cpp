@@ -1,8 +1,8 @@
 /*
  * @file rotation3DEvents.cpp
- * 
+ *
  * formerly catoms3DEvents.cpp
- * 
+ *
  *  Created on: 18/07/2016
  *      Author: Benoit Piranda, Pierre Thalamy
  */
@@ -40,7 +40,7 @@ void Rotation3DStartEvent::consume() {
     Scheduler *scheduler = getScheduler();
     Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
-    catom->setColor(DARKGREY);
+//    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
     scheduler->schedule(new Rotation3DStepEvent(scheduler->now() + ANIMATION_DELAY,catom, rot));
 }
@@ -113,7 +113,7 @@ Rotation3DStopEvent::~Rotation3DStopEvent() {
 void Rotation3DStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    catom->setColor(YELLOW);
+//    catom->setColor(YELLOW);
 
     Cell3DPosition position;
     short orientation;
@@ -173,9 +173,9 @@ const string Rotation3DEndEvent::getEventName() {
 //
 //===========================================================================================================
 
-Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,
+Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,const Vector3D &ax1,
                          double ang1,const Vector3D &ax2,double ang2):angle1(ang1),angle2(ang2) {
-    static const double c_2 = 0.5/(3+sqrt(2));
+    static const double c_2 = 1.0/(3+sqrt(2));
     Matrix MA = ((Catoms3DGlBlock*)mobile->getGlBlock())->mat;
     Matrix MB = ((Catoms3DGlBlock*)fixe->getGlBlock())->mat;
     Matrix MA_1;
@@ -183,88 +183,104 @@ Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3
     // we calculate AB translation in A referentiel
     MA.inverse(MA_1);
     Matrix m = MA_1*MB;
-    AB = m*Vector3D(0,0,0,1);
+    Vector3D AB = m*Vector3D(0,0,0,1);
 
     Matrix matTAB,matTBA;
     matTAB.setTranslation(AB);
     matTBA.setTranslation(-AB);
 
-    // we write rotation R1 axes in A referentiel
-    axe1 = m*ax1;
-    axe1 = axe1.normer();
+    // we write rotation axes in A referentiel
+    axe1 = (MA_1*ax1).normer();
+//    axe1 = ax1.normer();
 
-    Vector3D v=(AB^axe1).normer();
-    AD = 0.5*AB + c_2*v;
+    double r=AB.norme()/2.0;
+    double shift = (ang1>0)?c_2*r:-c_2*r;
+    Vector3D V = AB^axe1;
+    V.normer_interne();
 
-
-    axe2 = ax2.normer();
-
+    A0D0 = (0.5+0.5*rprim)*AB+shift*V;
+    A0C0 = (0.5-0.5*rprim)*AB+shift*V;
+/*    OUTPUT << "axe1=" << axe1 << endl;
+    OUTPUT << "V=" << V << endl;
+    OUTPUT << "A0B=" << AB << endl;
+    OUTPUT << "A0C0=" << A0C0 << endl;
+    OUTPUT << "A0D0=" << A0D0 << endl;
+*/
     Matrix mr;
     mr.setRotation(angle1,axe1);
-    firstStepMatrix = matTBA*mr;
-    firstStepMatrix = mr*firstStepMatrix;
-    firstStepMatrix  = matTAB*firstStepMatrix;
-    firstStepMatrix  = MA*firstStepMatrix;
+    finalMatrix = matTAB*(mr*(matTBA*mr));
+    m  = MA*finalMatrix;
 
-    // we calculate AC=firstStep*AB translation in A referentiel
-    firstStepMatrix.inverse(MA_1);
+    m.inverse(MA_1);
     m = MA_1*MB;
-    CB = m*Vector3D(0,0,0,1);
-    //matTCB.setTranslation(AB);
-    //matTBC.setTranslation(-AB);
+    AB = m*Vector3D(0,0,0,1);
+    axe2 = (MA_1*ax2).normer();
 
-    // we write rotation R2 axes in new firstStep A referentiel
-    axe2 = m*ax2;
-    axe2 = axe2.normer();
+    matTAB.setTranslation(AB);
+    matTBA.setTranslation(-AB);
+    mr.setRotation(angle2,axe2);
+    m = matTAB*(mr*(matTBA*mr));
+    finalMatrix = finalMatrix*m;
+
+/*    OUTPUT << "--------initialMatrix-------" << endl;
+    OUTPUT << initialMatrix;
+    OUTPUT << "--------finalMatrix-------" << endl;
+    OUTPUT << finalMatrix;
+*/
+    m = MA*finalMatrix;
+/*    OUTPUT << "A1=" << m*Vector3D(0,0,0,1) << endl;
+*/
+    m.inverse(MA_1);
+    m = MA_1*MB;
+    AB = m*Vector3D(0,0,0,1);
+
+
+    shift = (ang2>0)?-c_2*r:c_2*r;
+    V = AB^axe2;
+    V.normer_interne();
+
+    A1D1 = (0.5+0.5*rprim)*AB+shift*V;
+    A1C1 = (0.5-0.5*rprim)*AB+shift*V;
+/*    OUTPUT << "axe2=" << axe2 << endl;
+    OUTPUT << "V=" << V << endl;
+    OUTPUT << "A1B=" << AB << endl;
+    OUTPUT << "A1C1=" << A1C1 << endl;
+    OUTPUT << "A1D1=" << A1D1 << endl;*/
 }
 
 bool Rotations3D::nextStep(Matrix &m) {
     if (firstRotation) {
         step++;
         double angle=angle1*step/nbRotationSteps;
-        OUTPUT << "step=" << step << "   angle=" << angle << endl;
+        //OUTPUT << "step=" << step << "   angle=" << angle << endl;
         Matrix mr;
         mr.setRotation(angle,axe1);
-        Matrix matTAB,matTBA;
-        /*if (angle<angleArticulation) {
-          matTAB.setTranslation(AD);
-          matTBA.setTranslation(-AD);
-          m = mr*matTBA;
-          m = matTAB*m;
-          } else */{
-            //double coef=(angle<angleArticulation)?angle*coefRayonCourbure/angleArticulation:coefRayonCourbure;
-            double coef=coefRayonCourbure;
-            matTAB.setTranslation(coef*AB);
-            matTBA.setTranslation((-coef)*AB);
-// TRT-1R
-            m = matTBA*mr;
-            m = mr*m;
-            m = matTAB*m;
-        }
+
+        Matrix matTCA,matTDC,matTAD;
+        matTCA.setTranslation(-A0C0);
+        matTDC.setTranslation(-A0D0+A0C0);
+        matTAD.setTranslation(A0D0);
+        m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = initialMatrix * m;
+        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
         if (step==nbRotationSteps) {
             firstRotation=false;
-            firstStepMatrix = m;
-            step=0;
         }
     } else {
-        step++;
-        double angle=angle2*step/nbRotationSteps;
+        step--;
+        double angle=-angle2*step/nbRotationSteps;
         // TRT-1R
         Matrix mr;
         mr.setRotation(angle,axe2);
-        //double coef=(angle>angle2-angleArticulation)?(angle2-angle)*coefRayonCourbure/(angle2-angleArticulation):coefRayonCourbure;
-        double coef=coefRayonCourbure;
-        Matrix matTCB,matTBC;
-        matTCB.setTranslation(coef*CB);
-        matTBC.setTranslation((-coef)*CB);
 
-        m = matTBC*mr;
-        m = mr*m;
-        m = matTCB*m;
-        m = firstStepMatrix * m;
-        if (step>=nbRotationSteps) {
-            step=nbRotationSteps;
+        Matrix matTCA,matTDC,matTAD;
+        matTCA.setTranslation(-A1C1);
+        matTDC.setTranslation(-A1D1+A1C1);
+        matTAD.setTranslation(A1D1);
+        m = matTAD*(mr*(matTDC*(mr*matTCA)));
+        m = finalMatrix * m;
+        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
+        if (step==0) {
             return true;
         }
     }
@@ -272,29 +288,12 @@ bool Rotations3D::nextStep(Matrix &m) {
 }
 
 void Rotations3D::getFinalPositionAndOrientation(Cell3DPosition &position, short &orientation) {
-    Matrix mr,m;
-    mr.setRotation(angle1,axe1);
-    Matrix matTAB,matTBA;
-    matTAB.setTranslation(AB);
-    matTBA.setTranslation(-AB);
-    m = matTBA*mr;
-    m = mr*m;
-    m = matTAB*m;
-    firstStepMatrix = initialMatrix*m;
+    Vector3D p(0,0,0,1),q = finalMatrix * p;
 
-    mr.setRotation(angle2,axe2);
-    matTAB.setTranslation(CB);
-    matTBA.setTranslation(-CB);
-    m = matTBA*mr;
-    m = mr*m;
-    m = matTAB*m;
-    m = firstStepMatrix * m;
-
-    Vector3D p(0,0,0,1),q = m * p;
-
-    OUTPUT << "final=" << q << endl;
+//    OUTPUT << "final=" << q << endl;
     position = Catoms3D::getWorld()->lattice->worldToGridPosition(q);
-    OUTPUT << "final grid=" << position << endl;
+//    OUTPUT << "final grid=" << position << endl;
 
-    orientation=Catoms3DBlock::getOrientationFromMatrix(m);
+    orientation=Catoms3DBlock::getOrientationFromMatrix(finalMatrix);
 }
+

@@ -22,10 +22,10 @@ using namespace BaseSimulator::utils;
 //! \namespace Catoms3D
 namespace Catoms3D {
 
-const float tabOrientationAngles[12][3] = { {0,0,0}, {-90.0f,0,90.0f}, {-45.0f,45.0,-90.0f},
-											{-135.0f,45.0f,90}, {135.0f,45.0f,-90.0f}, {45.0f,45.0f,90.0f},
-											{180.0f,0,0}, {90.0f,0,180.0f}, {135.0f,-45.0f,90.0f},
-											{45.0f,-45.0f,-90.0f}, {-45.0f,-45.0f,90.0f}, {-135.0f,-45.0f,-90.0f} };
+const float tabOrientationAngles[12][3] = { {0,0,0}, {180.0f,0.0f,-90.0f}, {-90.0f,45.0f,-45.0f},
+											{90.0f,45.0f,-135.0f}, {-90.0f,45.0f,135.0f}, {90.0f,45.0f,45.0f},
+											{0,0,180.0f}, {180.0f,0,90.0f}, {90.0f,-45.0f,135.0f},
+											{-90.0f,-45.0f,45.0f}, {90.0f,-45.0f,-45.0f}, {-90.0f,-45.0f,-135.0f} };
 
 const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_2},
 											 {-0.5,0.5,M_SQRT2_2},{-0.5,-0.5,M_SQRT2_2},{0.5,-0.5,M_SQRT2_2},
@@ -50,7 +50,7 @@ public:
 
 	inline virtual Catoms3DGlBlock* getGlBlock() { return static_cast<Catoms3DGlBlock*>(ptrGlBlock); };
 	inline void setGlBlock(Catoms3DGlBlock*ptr) { ptrGlBlock=ptr;};
-	
+
 	void setVisible(bool visible);
 	void setPositionAndOrientation(const Cell3DPosition &p,short code);
 /**
@@ -69,7 +69,7 @@ public:
 	int getDirection(P2PNetworkInterface*);
 
 	static short getOrientationFromMatrix(const Matrix &mat);
-	
+
 	// MeldInterpreter
 	/**
 	 * @copydoc BuildingBlock::addNeighbor
@@ -83,7 +83,7 @@ public:
 };
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb);
-    
+
 }
 
 #endif /* CATOMS3DBLOCK_H_ */

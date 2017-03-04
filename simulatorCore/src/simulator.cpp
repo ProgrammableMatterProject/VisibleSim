@@ -34,10 +34,10 @@ Simulator* Simulator::simulator = NULL;
 
 Simulator::Type	Simulator::type = CPP; // CPP code by default
 bool Simulator::regrTesting = false; // No regression testing by default
-  
+
 Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), cmdLine(argc,argv) {
 	OUTPUT << "\033[1;34m" << "Simulator constructor" << "\033[0m" << endl;
-	
+
 	// Ensure that only one instance of simulator is running at once
 	if (simulator == NULL) {
 		simulator = this;
@@ -55,19 +55,19 @@ Simulator::Simulator(int argc, char *argv[], BlockCodeBuilder _bcb): bcb(_bcb), 
 	xmlDoc = new TiXmlDocument(confFileName.c_str());
 	bool isLoaded = xmlDoc->LoadFile();
 
-	
+
 	if (cmdLine.isSimulationSeedSet()) {
 	  seed = cmdLine.getSimulationSeed();
 	}
 
 	cout << "Seed: " << seed  << endl;
-	
+
 	if (seed == -1) {
 	  generator = uintRNG(std::random_device{}());
 	} else {
 	  generator = uintRNG((uint32_t)seed);
 	}
-	
+
 	if (!isLoaded) {
 		cerr << "error: Could not load configuration file :" << confFileName << endl;
 		exit(EXIT_FAILURE);
@@ -96,7 +96,7 @@ Simulator::~Simulator() {
 		MeldProcess::deleteVMServer();
 	}
 #endif
-	
+
 	deleteWorld();
 }
 
@@ -108,7 +108,7 @@ void Simulator::deleteSimulator() {
 void Simulator::loadScheduler(int schedulerMaxDate) {
 	int sl = cmdLine.getSchedulerLength();
 	int sm = cmdLine.getSchedulerMode();
-	
+
 	// Create a scheduler of the same type as target BlockCode
 	switch(getType()) {
 	case MELDINTERPRET:
@@ -130,23 +130,23 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 	}
 
 	scheduler = getScheduler();
-	
-	// Set the scheduler execution mode on start, if enabled	
+
+	// Set the scheduler execution mode on start, if enabled
 	if (sm != CMD_LINE_UNDEFINED) {
 		if (!GlutContext::GUIisEnabled && sm == SCHEDULER_MODE_REALTIME) {
 			cerr << "error: Realtime mode cannot be used when in terminal mode" << endl;
 			exit(EXIT_FAILURE);
-		}				   
+		}
 
 		scheduler->setSchedulerMode(sm);
-		scheduler->setAutoStart(true);		
+		scheduler->setAutoStart(true);
 	}
 
 	if (!GlutContext::GUIisEnabled) {
 		// If GUI disabled, and no mode specified, set fastest mode by default (Normally REALTIME)
 		scheduler->setSchedulerMode(SCHEDULER_MODE_FASTEST);
 	}
-	
+
 	// Set the scheduler termination mode
 	scheduler->setSchedulerLength(sl);
 	scheduler->setAutoStop(cmdLine.getSchedulerAutoStop());
@@ -158,12 +158,12 @@ void Simulator::loadScheduler(int schedulerMaxDate) {
 
 void Simulator::parseConfiguration(int argc, char*argv[]) {
 	// Identify the type of the simulation (CPP / Meld Process / MeldInterpret)
-	readSimulationType(argc, argv);	
+	readSimulationType(argc, argv);
 
 	// Configure the simulation world
-	parseWorld(argc, argv);	
+	parseWorld(argc, argv);
 	initializeIDPool();
-	
+
 	// Instantiate and configure the Scheduler
 	loadScheduler(schedulerMaxDate);
 
@@ -198,16 +198,16 @@ Simulator::IDScheme Simulator::determineIDScheme() {
 
 int Simulator::parseRandomIdSeed() {
 	TiXmlElement *element = xmlBlockListNode->ToElement();
-	const char *attr = element->Attribute("seed"); 			
+	const char *attr = element->Attribute("seed");
 	if (attr) {				// READ Seed
 		try {
 			string str(attr);
 			return stoi(str);
 		} catch (const std::invalid_argument& e) {
 			cerr << "error: invalid seed attribute value in configuration file" << endl;
-			throw ParsingException();				
+			throw ParsingException();
 		}
-	} else {				// No seed, generate distribution with random seed		   
+	} else {				// No seed, generate distribution with random seed
 		return -1;
 	}
 }
@@ -221,7 +221,7 @@ bID Simulator::parseRandomStep() {
 			return stol(str);
 		} catch (const std::invalid_argument& e) {
 			cerr << "error: invalid step attribute value in configuration file" << endl;
-			throw ParsingException();				
+			throw ParsingException();
 		}
 	} else {				// No step, generate distribution with step of one
 		return 1;
@@ -245,7 +245,7 @@ struct IotaWrapper {
     IotaWrapper& operator++() { value += step; return *this; }
 };
 
-void Simulator::generateRandomIDs(const int n, const int idSeed, const int step) {	
+void Simulator::generateRandomIDs(const int n, const int idSeed, const int step) {
 	// Fill vector with n numbers from 0 and with a distance of step to each other
 	IotaWrapper<bID> inc(1, step);
 	IDPool = vector<bID>(n);
@@ -259,7 +259,7 @@ void Simulator::generateRandomIDs(const int n, const int idSeed, const int step)
 	} else {
 	    OUTPUT << "Generating random contiguous ID distribution with seed: " << idSeed <<  endl;
 		gen = std::mt19937(idSeed);
-	}	
+	}
 
 	// Shuffle the elements using the rng
 	std::shuffle(begin(IDPool), end(IDPool), generator);
@@ -273,7 +273,7 @@ bID Simulator::countNumberOfModules() {
 	// Count modules from block elements
 	for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block"))
 		moduleCount++;
-	
+
 	// Count modules from blocksLine elements
 	for(TiXmlNode *child = xmlBlockListNode->FirstChild("blocksLine"); child; child = child->NextSibling("blocksLine")) {
 		element = child->ToElement();
@@ -293,19 +293,19 @@ bID Simulator::countNumberOfModules() {
 
 void Simulator::initializeIDPool() {
 	// Simulator.xmlBlockListNode has to be initialized at this point!
-	
+
 	// Count number of modules in configuration file
 	bID numModules = countNumberOfModules();
-		
+
 	cerr << "There are " << numModules << " modules in the configuration" << endl;
-	
+
 	// Determine what assignment model to use, and initialize IDPool according to it
 	ids = determineIDScheme();
 	switch (ids) {
-	case ORDERED: 
+	case ORDERED:
 		// Fill IDPool with ID {1..N}
 		IDPool = vector<bID>(numModules);
-		std::iota(begin(IDPool), end(IDPool), 1);	
+		std::iota(begin(IDPool), end(IDPool), 1);
 		break;
 	case MANUAL: {
 		bID id;
@@ -315,17 +315,17 @@ void Simulator::initializeIDPool() {
 		for(TiXmlNode *child = xmlBlockListNode->FirstChild("block"); child; child = child->NextSibling("block")) {
 			element = child->ToElement();
 		    attr = element->Attribute("id");
-			
+
 			if (attr) {
 				try {
 					string str(attr);
 					id =  stoull(str); // id in range [0, 2^64 - 1]
 				} catch (const std::invalid_argument& e) {
 					cerr << "error: invalid id attribute value in configuration file" << endl;
-					throw ParsingException();				
+					throw ParsingException();
 				} catch (const std::out_of_range& e) {
 					cerr << "error: out of range id attribute value in configuration file" << endl;
-					throw ParsingException();			
+					throw ParsingException();
 				}
 			} else {
 				cerr << "error: missing id attribute for block node in configuration file while in MANUAL mode" << endl;
@@ -342,7 +342,7 @@ void Simulator::initializeIDPool() {
 				throw ParsingException();
 			}
 		}
-		
+
 	} break;
 	case RANDOM:
 	    generateRandomIDs(numModules, parseRandomIdSeed(), parseRandomStep());
@@ -374,7 +374,7 @@ void Simulator::readSimulationType(int argc, char*argv[]) {
 				 << endl;
 			exit(1);
 		}
-		
+
 		MeldProcess::setVMConfiguration(vmPath, programPath, debugging);
 		MeldProcess::createVMServer(vmPort);
 		if(debugging) {
@@ -384,7 +384,7 @@ void Simulator::readSimulationType(int argc, char*argv[]) {
 		return;
 	}
 #endif
-	
+
 	if(getType() == MELDINTERPRET) {
 		string programPath = cmdLine.getProgramPath();
 		bool debugging = cmdLine.getMeldDebugger();
@@ -403,7 +403,7 @@ void Simulator::readSimulationType(int argc, char*argv[]) {
 	}
 }
 
-void Simulator::parseWorld(int argc, char*argv[]) {		
+void Simulator::parseWorld(int argc, char*argv[]) {
 	/* reading the xml file */
 	xmlWorldNode = xmlDoc->FirstChild("world");
 
@@ -485,7 +485,7 @@ void Simulator::parseWorld(int argc, char*argv[]) {
 }
 
 void Simulator::parseCameraAndSpotlight() {
-	if (GlutContext::GUIisEnabled) {		
+	if (GlutContext::GUIisEnabled) {
 		// loading the camera parameters
 		TiXmlNode *nodeConfig = xmlWorldNode->FirstChild("camera");
 		if (nodeConfig) {
@@ -544,6 +544,7 @@ void Simulator::parseCameraAndSpotlight() {
 		if (nodeConfig) {
 			Vector3D target;
 			float az=0,ele=60,dist=1000,angle=50;
+			double nearPlane=10,farPlane=2000;
 			TiXmlElement* lightElement = nodeConfig->ToElement();
 			const char *attr=lightElement->Attribute("target");
 			if (attr) {
@@ -570,8 +571,17 @@ void Simulator::parseCameraAndSpotlight() {
 				angle = atof(attr);
 			}
 
-			float farplane=2.0*dist*tan(angle*M_PI/180.0);
-			world->getCamera()->setLightParameters(target,az,ele,dist,angle,10.0,farplane);
+            world->getCamera()->getNearFar(nearPlane,farPlane);
+            attr=lightElement->Attribute("near");
+			if (attr) {
+				nearPlane = atof(attr);
+			}
+
+            attr=lightElement->Attribute("far");
+			if (attr) {
+				farPlane = atof(attr);
+			}
+			world->getCamera()->setLightParameters(target,az,ele,dist,angle,nearPlane,farPlane);
 		}
 	}
 }
@@ -592,7 +602,7 @@ void Simulator::parseBlockList() {
 			defaultColor.rgba[2] = atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0;
 			OUTPUT << "new default color :" << defaultColor << endl;
 		}
-		
+
 #if 1
 		/* Reading a catoms */
 		TiXmlNode *block = xmlBlockListNode->FirstChild("block");
@@ -637,7 +647,7 @@ void Simulator::parseBlockList() {
 				OUTPUT << "master : " << master << endl;
 			}
 
-			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;			
+			// cerr << "addBlock(" << currentID << ") pos = " << position << endl;
 			loadBlock(element, IDPool[indexBlock++], bcb, position, color, master);
 
 			block = block->NextSibling("block");
@@ -650,7 +660,7 @@ void Simulator::parseBlockList() {
 				cerr << "error: blocksLine element cannot be used in MANUAL identifier assignment mode" << endl;
 				throw ParsingException();
 			}
-			
+
 			line = 0;
 			element = block->ToElement();
 			color=defaultColor;
@@ -748,19 +758,19 @@ void Simulator::parseObstacles() {
 			world->addObstacle(position, color);
 			nodeObstacle = nodeObstacle->NextSibling("obstacle");
 		} // end while (nodeObstacle)
-	} 
+	}
 }
 
 void Simulator::startSimulation(void) {
 	// Connect all blocks – TODO: Check if needed to do it here (maybe all blocks are linked on addition)
 	world->linkBlocks();
-	
+
 	// Finalize scheduler configuration and start simulation if autoStart is enabled
 	Scheduler *scheduler = getScheduler();
 	//scheduler->sem_schedulerStart->post();
 	scheduler->setState(Scheduler::NOTSTARTED);
 	if (scheduler->willAutoStart())
-		scheduler->start(scheduler->getSchedulerMode()); 
+		scheduler->start(scheduler->getSchedulerMode());
 
 	// Enter graphical main loop
 	GlutContext::mainLoop();

@@ -85,7 +85,7 @@ $(SUBDIRS):
 test: subdirs
 	@$(MAKE) -C applicationsSrc test;
 
-doc: 	
+doc:
 	@$(MAKE) -C doc;
 clean:
 	rm -f *~ *.o

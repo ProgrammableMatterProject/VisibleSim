@@ -37,11 +37,13 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     if (GlutContext::GUIisEnabled) {
 		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 											"catom3DV2connectorID.obj");
+        /*objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
+											"catom3Drepere3.obj");*/
 		objBlockForPicking =
 			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 									 "catom3D_picking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
-	}   
+	}
 
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
@@ -61,7 +63,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
 		maxBlockId = blockId;
 	else if (blockId == 0)
 		blockId = incrementBlockId();
-	
+
     Catoms3DBlock *catom = new Catoms3DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
