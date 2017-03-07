@@ -3,6 +3,7 @@
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
+    seed = false;
     numberSeedsLeft = numberSeedsRight = 0;
 }
 
@@ -29,7 +30,14 @@ bool Reconf::isSeed()
 {
     if (catom->blockId == 148)
         return false;
-    return isInternalSeed() || isBorderSeed();
+    return seed;
+}
+
+bool Reconf::isSeedCheck()
+{
+    if (catom->blockId == 148)
+        return false;
+    return seed = (isInternalSeed() || isBorderSeed());
 }
 
 bool Reconf::needSyncToRight()
@@ -44,6 +52,7 @@ bool Reconf::needSyncToRight()
             if (CsgUtils::isInside(catom->position.addX(i)) && 
                 CsgUtils::isInside(catom->position.addX(i).addY(1)) )
                 return true;
+            return false;
         }
     }
     return false;
@@ -51,7 +60,8 @@ bool Reconf::needSyncToRight()
 
 bool Reconf::needSyncToLeft()
 {
-    if (!CsgUtils::isInside(catom->position.addY(-1)) &&
+    if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
+        !CsgUtils::isInside(catom->position.addY(-1)) &&
         CsgUtils::isInside(catom->position.addX(-1)) &&
         CsgUtils::isInside(catom->position.addX(-1).addY(-1)) )
         return true;

@@ -6,32 +6,33 @@
  *  Look for other seeds/parent for both sides of the line.
  */
 void SyncRequest::syncLineSeedToLeft(bID requestCatomID, int requestLine, Reconf *reconf, LINE_DIRECTION syncToLineDirection) {
+    cout << "syncLineSeed BlockID =  " << catom->blockId << endl;
     if (syncToLineDirection == TO_NEXT &&
             reconf->isSeed()){
         sendSeedMessage(requestCatomID, requestLine, TO_NEXT);
-    }
-    else if (reconf->getNumberSeedsLeft()) {
-        sendNeighborMessage(requestCatomID, requestLine, TO_LEFT);
-    }
-    else if (reconf->getNumberSeedsRight()) {
-        sendNeighborMessage(requestCatomID, requestLine, TO_RIGHT);
+        catom->setColor(BLUE);
     }
     else if (syncToLineDirection == TO_PREVIOUS &&
             reconf->isLineParent()) {
         sendSeedMessage(requestCatomID, requestLine, TO_PREVIOUS);
+        catom->setColor(BLUE);
     }
+    else if (reconf->lineParentDirection == TO_LEFT || reconf->getNumberSeedsLeft())
+        sendNeighborMessage(requestCatomID, requestLine, TO_LEFT);
+    else
+        sendNeighborMessage(requestCatomID, requestLine, TO_RIGHT);
+
 }
 
 void SyncRequest::syncLineNeighborToLeft(bID requestCatomID, int requestLine, Reconf *reconf, SIDE_DIRECTION sideDirection) {
+    cout << "syncLineNeighbor BlockID =  " << catom->blockId << endl;
     if (reconf->isSeed()) {
         sendSeedMessage(requestCatomID, requestLine, TO_NEXT);
     }
-    else if (reconf->isLineParent()) {
+    if (reconf->isLineParent()) {
         sendSeedMessage(requestCatomID, requestLine, TO_PREVIOUS);
     }
-    else {
-        sendNeighborMessage(requestCatomID, requestLine, sideDirection);
-    }
+    sendNeighborMessage(requestCatomID, requestLine, sideDirection);
 }
 
 void SyncRequest::sendNeighborMessage(bID requestCatomID, int requestLine, SIDE_DIRECTION side_direction) {

@@ -3,6 +3,8 @@
 #include "catoms3DWorld.h"
 #include "../CSG/csgUtils.h"
 
+#define WAIT_TIME 5
+
 using namespace Catoms3D;
 
 Neighbor::Neighbor(Catoms3D::Catoms3DBlock *c, BlockCodeBuilder bcb) : catom(c), blockCodeBuilder(bcb)
@@ -61,6 +63,10 @@ void Neighbor::sendMessageToGetNeighborInformation()
         Cell3DPosition neighborPosition = (i == 0) ? catom->position.addX(-1) : catom->position.addX(1);
         if (catom->getInterface(neighborPosition)->connectedInterface != NULL) {
             New_catom_message *msg = new New_catom_message;
+            if (i == 0)  
+                msg->lineParentDirection = TO_LEFT;
+            else
+                msg->lineParentDirection = TO_RIGHT; 
             getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
         }
     }
@@ -85,8 +91,10 @@ void Neighbor::sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed)
 
 void Neighbor::tryAddNextLineNeighbor(Reconf *reconf)
 {
-    if  (reconf->isSeed()) {
-        addNeighbor(catom->position.addY(1));
+    if  (reconf->isSeedCheck()) {
+        if (isLeftCompleted() && isRightCompleted()) {
+            addNeighbor(catom->position.addY(1));
+        }
     }
 }
 
@@ -124,15 +132,17 @@ bool Neighbor::isFirstCatomOfLine()
     return false;
 }
 
-void Neighbor::handleNewCatomMsg(MessagePtr msg, int numberSeedsLeft, int numberSeedsRight)
+void Neighbor::handleNewCatomMsg(MessagePtr message, Reconf *reconf)
 {
+    shared_ptr<New_catom_message> recv_message = static_pointer_cast<New_catom_message>(message);
     New_catom_response_message *msgResponse = new New_catom_response_message;
     msgResponse->leftCompleted = isLeftCompleted();
     msgResponse->rightCompleted = isRightCompleted();
-    msgResponse->numberSeedsLeft = numberSeedsLeft;
-    msgResponse->numberSeedsRight = numberSeedsRight;
+    msgResponse->numberSeedsLeft = reconf->getNumberSeedsLeft() + reconf->isSeed();
+    msgResponse->numberSeedsRight = reconf->getNumberSeedsRight() + reconf->isSeed();
+    msgResponse->lineParentDirection = recv_message->lineParentDirection;
 
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, msg->destinationInterface));
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
 }
 
 void Neighbor::handleNewCatomResponseMsg(MessagePtr message, Reconf *reconf)
@@ -140,10 +150,11 @@ void Neighbor::handleNewCatomResponseMsg(MessagePtr message, Reconf *reconf)
     shared_ptr<New_catom_response_message> recv_message = static_pointer_cast<New_catom_response_message>(message);
     int numberSeedsLeft = max(recv_message->numberSeedsLeft, reconf->getNumberSeedsLeft());
     int numberSeedsRight = max(recv_message->numberSeedsRight, reconf->getNumberSeedsRight());
-
-    if (isLeftCompleted() && isRightCompleted()) {
-        tryAddNextLineNeighbor(reconf);
-    }
+    reconf->lineParentDirection = recv_message->lineParentDirection;
+    if (recv_message->lineParentDirection == TO_RIGHT)
+        cout << "TO RIGHT BLOCKID = " << catom->blockId << " - " << reconf->lineParentDirection << endl;
+    else
+        cout << "TO LEFT BLOCKID = " << catom->blockId <<  endl;
     if (recv_message->leftCompleted)
         setLeftCompleted();
     if (recv_message->rightCompleted)
@@ -153,19 +164,22 @@ void Neighbor::handleNewCatomResponseMsg(MessagePtr message, Reconf *reconf)
     addNeighborToRight(reconf);
     reconf->setNumberSeedsLeft(numberSeedsLeft);
     reconf->setNumberSeedsRight(numberSeedsRight);
+    tryAddNextLineNeighbor(reconf);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
+
 
 void Neighbor::handleLeftSideCompletedMsg(MessagePtr message, Reconf *reconf)
 {
     shared_ptr<Left_side_completed_message> recv_message = static_pointer_cast<Left_side_completed_message>(message);
 
     setLeftCompleted();
-    if (isRightCompleted()) 
-        tryAddNextLineNeighbor(reconf);
     reconf->setNumberSeedsLeft(recv_message->numberSeedsLeft);
-    sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->iAmSeed());
+    sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
+    tryAddNextLineNeighbor(reconf);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
 
 void Neighbor::handleRightSideCompletedMsg(MessagePtr message, Reconf *reconf)
@@ -173,11 +187,10 @@ void Neighbor::handleRightSideCompletedMsg(MessagePtr message, Reconf *reconf)
     shared_ptr<Right_side_completed_message> recv_message = static_pointer_cast<Right_side_completed_message>(message);
 
     setRightCompleted();
-    if (isLeftCompleted())
-        tryAddNextLineNeighbor(reconf);
     reconf->setNumberSeedsRight(recv_message->numberSeedsRight);
-    sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->iAmSeed());
+    sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeed());
+    tryAddNextLineNeighbor(reconf);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
 

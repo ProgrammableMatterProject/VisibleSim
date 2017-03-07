@@ -16,19 +16,19 @@ class Reconf {
     int numberSeedsRight;
     bool seed;
     bool lineParent;
-    DIRECTION lineParentDirection;
 
     bool needSyncToLeft();
     bool needSyncToRight();
     bool isInternalSeed();
     bool isBorderSeed();
 public:
+    SIDE_DIRECTION lineParentDirection;
 
     Reconf(Catoms3D::Catoms3DBlock *c);
     bool isSeed();
     bool needSync();
 
-    bool iAmSeed() const { return seed; }
+    bool isSeedCheck();
     bool isLineParent() { return lineParent; }
     void setLineParent() { lineParent = true; }
     int getNumberSeedsLeft() { return numberSeedsLeft; }

@@ -22,19 +22,19 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 	cout << "ReconfCatoms3DBlockCode destructor" << endl;
 }
 
-
 void ReconfCatoms3DBlockCode::debug() {
     if (catom->blockId == 167) {
         neighbor->checkLineCompleted(reconf);
         if (reconf->needSync())
             catom->setColor(BLACK);
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-//        syncRequest->syncLineSeedToLeft(167, 10, reconf, TO_PREVIOUS);
+        sync->syncRequest->syncLineSeedToLeft(167, 10, reconf, TO_PREVIOUS);
     }
     else 
     {
         if (neighbor->isFirstCatomOfLine()) {
             reconf->setLineParent();
+            reconf->isSeedCheck();
             neighbor->checkLineCompleted(reconf);
             neighbor->addNeighborToLeft(reconf);
             neighbor->addNeighborToRight(reconf);
@@ -80,9 +80,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         switch(message->id) {
             case NEW_CATOM_MSG_ID:
             {
-                int numberSeedsLeft = reconf->getNumberSeedsLeft() + (reconf->isSeed() ? 1 : 0);
-                int numberSeedsRight = reconf->getNumberSeedsRight() + (reconf->isSeed() ? 1 : 0);
-                neighbor->handleNewCatomMsg(message, numberSeedsLeft, numberSeedsRight);
+                neighbor->handleNewCatomMsg(message, reconf);
                 break;
             }
             case NEW_CATOM_RESPONSE_MSG_ID:
@@ -104,13 +102,14 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 sync->handleLookupNeighborMessage(message, reconf);
                 catom->setColor(LIGHTGREEN);
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 break;
             }
             case LOOKUP_LINE_SYNC_MESSAGE_ID:
             {
                 sync->handleLookupLineMessage(message, reconf);
                 catom->setColor(GREEN);
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 break;
             }
             case SYNC_RESPONSE_MESSAGE_ID:
@@ -131,7 +130,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
       break;
 	}
 }
-
 
 BlockCode* ReconfCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {
     return (new ReconfCatoms3DBlockCode((Catoms3DBlock*)host));

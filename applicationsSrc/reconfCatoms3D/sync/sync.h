@@ -14,12 +14,12 @@
 
 class Sync {
     Catoms3D::Catoms3DBlock *catom;
-
-    SyncRequest *syncRequest;
-    SyncResponse *syncResponse;
     map<bID, SyncRoute> syncRoutes;
 
 public:
+    SyncRequest *syncRequest;
+    SyncResponse *syncResponse;
+
     Sync(Catoms3D::Catoms3DBlock *c);
     void handleLookupNeighborMessage(MessagePtr message, Reconf*);
     void handleLookupLineMessage(MessagePtr message, Reconf*);

@@ -15,6 +15,7 @@ void Sync::handleLookupNeighborMessage(MessagePtr message, Reconf *reconf)
     if (recv_message->side_direction == TO_RIGHT)
         syncRoutes[recv_message->requestCatomID].direction = DIRECTION_LEFT;
     syncRequest->syncLineNeighborToLeft(recv_message->requestCatomID, recv_message->requestLine, reconf, recv_message->side_direction);
+    catom->setColor(RED);
 }
 
 void Sync::handleLookupLineMessage(MessagePtr message, Reconf *reconf)
@@ -35,4 +36,5 @@ void Sync::handleLookupLineMessage(MessagePtr message, Reconf *reconf)
     else {
         syncRequest->syncLineSeedToLeft(recv_message->requestCatomID, recv_message->requestLine, reconf, recv_message->lineDirection);
     }
+    catom->setColor(WHITE);
 }

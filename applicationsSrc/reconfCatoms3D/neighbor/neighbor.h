@@ -46,7 +46,7 @@ public:
     bool isOnRightBorder();
     bool isFirstCatomOfLine();
 
-    void handleNewCatomMsg(MessagePtr msg, int numberSeedsLeft, int numberSeedsRight);
+    void handleNewCatomMsg(MessagePtr msg, Reconf *reconf);
     void handleNewCatomResponseMsg(MessagePtr msg, Reconf *reconf);
     void handleLeftSideCompletedMsg(MessagePtr msg, Reconf *reconf);
     void handleRightSideCompletedMsg(MessagePtr msg, Reconf *reconf);
@@ -55,6 +55,7 @@ public:
 
 class New_catom_message : public Message {
 public:
+    SIDE_DIRECTION lineParentDirection;
     New_catom_message() { id = NEW_CATOM_MSG_ID; };
 };
 
@@ -64,6 +65,7 @@ public:
     bID lineParent;
     bool leftCompleted, rightCompleted;
     int numberSeedsLeft, numberSeedsRight;
+    SIDE_DIRECTION lineParentDirection;
     New_catom_response_message() { id = NEW_CATOM_RESPONSE_MSG_ID; };
 };
 
