@@ -16,6 +16,7 @@ class Reconf {
     int numberSeedsRight;
     bool seed;
     bool lineParent;
+    bool lineCompleted;
 
     bool needSyncToLeft();
     bool needSyncToRight();
@@ -35,6 +36,8 @@ public:
     int getNumberSeedsRight() { return numberSeedsRight; }
     void setNumberSeedsLeft(int nSeeds) { numberSeedsLeft = nSeeds; }
     void setNumberSeedsRight(int nSeeds) { numberSeedsRight = nSeeds; }
+    void setLineCompleted() { lineCompleted = true; }
+    bool isLineCompleted() { return lineCompleted; }
 
 };
 

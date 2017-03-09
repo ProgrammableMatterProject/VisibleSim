@@ -6,15 +6,15 @@
 using namespace std;
 using namespace Catoms3D;
 
-string CSG_FILE = "data/mug.bc";
+string CSG_FILE = "data/testForm.bc";
 
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "ReconfCatoms3DBlockCode constructor" << endl;
     scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
 
-    neighbor = new Neighbor(catom, buildNewBlockCode);
     reconf = new Reconf(catom);
+    neighbor = new Neighbor(catom, reconf, buildNewBlockCode);
     sync = new Sync(catom);
 }
 
@@ -23,21 +23,29 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 }
 
 void ReconfCatoms3DBlockCode::debug() {
-    if (catom->blockId == 167) {
-        neighbor->checkLineCompleted(reconf);
+    if (catom->blockId == 170) {
+        neighbor->checkLineCompleted();
+        reconf->lineParentDirection = TO_LEFT;
         if (reconf->needSync())
             catom->setColor(BLACK);
+
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        sync->syncRequest->syncLineSeedToLeft(167, 10, reconf, TO_PREVIOUS);
+        sync->syncRequest->syncLineSeedToLeft(170, 10, reconf, TO_PREVIOUS);
+    }
+    else if(catom->blockId == 189) {
+        neighbor->checkLineCompleted();
+        reconf->lineParentDirection = TO_RIGHT;
+        if (reconf->needSync())
+            catom->setColor(BLACK);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        sync->syncRequest->syncLineSeedToLeft(189, 10, reconf, TO_PREVIOUS);
     }
     else 
     {
         if (neighbor->isFirstCatomOfLine()) {
-            reconf->setLineParent();
-            reconf->isSeedCheck();
-            neighbor->checkLineCompleted(reconf);
-            neighbor->addNeighborToLeft(reconf);
-            neighbor->addNeighborToRight(reconf);
+            neighbor->init();
+            neighbor->addNeighbors();
         }
         else {
             neighbor->sendMessageToGetNeighborInformation();
@@ -58,10 +66,8 @@ void ReconfCatoms3DBlockCode::startup() {
     } 
     else {
         if (neighbor->isFirstCatomOfLine()) {
-            reconf->setLineParent();
-            neighbor->checkLineCompleted(reconf);
-            neighbor->addNeighborToLeft(reconf);
-            neighbor->addNeighborToRight(reconf);
+            neighbor->init();
+            neighbor->addNeighbors();
         }
         else {
             neighbor->sendMessageToGetNeighborInformation();
@@ -80,22 +86,22 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         switch(message->id) {
             case NEW_CATOM_MSG_ID:
             {
-                neighbor->handleNewCatomMsg(message, reconf);
+                neighbor->handleNewCatomMsg(message);
                 break;
             }
             case NEW_CATOM_RESPONSE_MSG_ID:
             {
-                neighbor->handleNewCatomResponseMsg(message, reconf);
+                neighbor->handleNewCatomResponseMsg(message);
                 break;
             }
             case LEFT_SIDE_COMPLETED_MSG_ID:
             {
-                neighbor->handleLeftSideCompletedMsg(message, reconf);
+                neighbor->handleLeftSideCompletedMsg(message);
                 break;
             }
             case RIGHT_SIDE_COMPLETED_MSG_ID:
             {
-                neighbor->handleRightSideCompletedMsg(message, reconf);
+                neighbor->handleRightSideCompletedMsg(message);
                 break;
             }
             case LOOKUP_NEIGHBOR_SYNC_MESSAGE_ID:

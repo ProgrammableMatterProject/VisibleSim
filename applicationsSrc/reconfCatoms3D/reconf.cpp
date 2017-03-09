@@ -5,6 +5,8 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
     seed = false;
     numberSeedsLeft = numberSeedsRight = 0;
+    lineCompleted = false;
+    lineParent = false;
 }
 
 bool Reconf::isInternalSeed()
@@ -18,7 +20,7 @@ bool Reconf::isInternalSeed()
 
 bool Reconf::isBorderSeed()
 {
-    if (numberSeedsLeft == 0 &&
+    if (//numberSeedsLeft == 0 &&
         !CsgUtils::isInside(catom->position.addX(1)) && 
         CsgUtils::isInside(catom->position.addY(1)) ){
         return true;
@@ -28,14 +30,14 @@ bool Reconf::isBorderSeed()
 
 bool Reconf::isSeed()
 {
-    if (catom->blockId == 148)
+    if (catom->blockId == 189 || catom->blockId == 170)
         return false;
     return seed;
 }
 
 bool Reconf::isSeedCheck()
 {
-    if (catom->blockId == 148)
+    if (catom->blockId == 189 || catom->blockId == 170)
         return false;
     return seed = (isInternalSeed() || isBorderSeed());
 }

@@ -7,7 +7,7 @@
 
 using namespace Catoms3D;
 
-Neighbor::Neighbor(Catoms3D::Catoms3DBlock *c, BlockCodeBuilder bcb) : catom(c), blockCodeBuilder(bcb)
+Neighbor::Neighbor(Catoms3D::Catoms3DBlock *c, Reconf *r, BlockCodeBuilder bcb) : catom(c), reconf(r), blockCodeBuilder(bcb)
 {
     leftCompleted = rightCompleted = false;
 }
@@ -43,14 +43,28 @@ void Neighbor::addNeighbor(Cell3DPosition pos)
     }
 }
 
-void Neighbor::addNeighborToLeft(Reconf *reconf)
+void Neighbor::setLeftCompleted()
+{
+    leftCompleted = true;
+    if (leftCompleted && rightCompleted)
+        reconf->setLineCompleted();
+}
+
+void Neighbor::setRightCompleted()
+{
+    rightCompleted = true;
+    if (leftCompleted && rightCompleted)
+        reconf->setLineCompleted();
+}
+
+void Neighbor::addNeighborToLeft()
 {
     if (reconf->needSync())
         catom->setColor(BLUE);
     addNeighbor(catom->position.addX(-1));
 }
 
-void Neighbor::addNeighborToRight(Reconf *reconf)
+void Neighbor::addNeighborToRight()
 {
     if (reconf->needSync())
         catom->setColor(BLUE);
@@ -89,16 +103,16 @@ void Neighbor::sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed)
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(positionRight)));
 }
 
-void Neighbor::tryAddNextLineNeighbor(Reconf *reconf)
+void Neighbor::tryAddNextLineNeighbor()
 {
-    if  (reconf->isSeedCheck()) {
+    if  (reconf->isSeed()) {
         if (isLeftCompleted() && isRightCompleted()) {
             addNeighbor(catom->position.addY(1));
         }
     }
 }
 
-void Neighbor::checkLineCompleted(Reconf *reconf)
+void Neighbor::checkLineCompleted()
 {
     if (isOnLeftBorder())
         sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
@@ -132,7 +146,22 @@ bool Neighbor::isFirstCatomOfLine()
     return false;
 }
 
-void Neighbor::handleNewCatomMsg(MessagePtr message, Reconf *reconf)
+void Neighbor::init()
+{
+    if (isFirstCatomOfLine())
+        reconf->setLineParent();
+    reconf->isSeedCheck();
+    checkLineCompleted();
+    tryAddNextLineNeighbor();
+}
+
+void Neighbor::addNeighbors()
+{
+    addNeighborToLeft();
+    addNeighborToRight();
+}
+
+void Neighbor::handleNewCatomMsg(MessagePtr message)
 {
     shared_ptr<New_catom_message> recv_message = static_pointer_cast<New_catom_message>(message);
     New_catom_response_message *msgResponse = new New_catom_response_message;
@@ -145,51 +174,52 @@ void Neighbor::handleNewCatomMsg(MessagePtr message, Reconf *reconf)
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
 }
 
-void Neighbor::handleNewCatomResponseMsg(MessagePtr message, Reconf *reconf)
+void Neighbor::handleNewCatomResponseMsg(MessagePtr message)
 {
     shared_ptr<New_catom_response_message> recv_message = static_pointer_cast<New_catom_response_message>(message);
     int numberSeedsLeft = max(recv_message->numberSeedsLeft, reconf->getNumberSeedsLeft());
     int numberSeedsRight = max(recv_message->numberSeedsRight, reconf->getNumberSeedsRight());
     reconf->lineParentDirection = recv_message->lineParentDirection;
-    if (recv_message->lineParentDirection == TO_RIGHT)
-        cout << "TO RIGHT BLOCKID = " << catom->blockId << " - " << reconf->lineParentDirection << endl;
-    else
-        cout << "TO LEFT BLOCKID = " << catom->blockId <<  endl;
     if (recv_message->leftCompleted)
         setLeftCompleted();
     if (recv_message->rightCompleted)
         setRightCompleted();
-    checkLineCompleted(reconf);
-    addNeighborToLeft(reconf);
-    addNeighborToRight(reconf);
     reconf->setNumberSeedsLeft(numberSeedsLeft);
     reconf->setNumberSeedsRight(numberSeedsRight);
-    tryAddNextLineNeighbor(reconf);
+
+    init();
+    addNeighbors();
 
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
 
 
-void Neighbor::handleLeftSideCompletedMsg(MessagePtr message, Reconf *reconf)
+void Neighbor::handleLeftSideCompletedMsg(MessagePtr message)
 {
-    shared_ptr<Left_side_completed_message> recv_message = static_pointer_cast<Left_side_completed_message>(message);
-
     setLeftCompleted();
-    reconf->setNumberSeedsLeft(recv_message->numberSeedsLeft);
-    sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
-    tryAddNextLineNeighbor(reconf);
 
+    shared_ptr<Left_side_completed_message> recv_message = static_pointer_cast<Left_side_completed_message>(message);
+    reconf->setNumberSeedsLeft(recv_message->numberSeedsLeft);
+
+    reconf->isSeedCheck();
+    tryAddNextLineNeighbor();
+
+    sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
+    
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
 
-void Neighbor::handleRightSideCompletedMsg(MessagePtr message, Reconf *reconf)
+void Neighbor::handleRightSideCompletedMsg(MessagePtr message)
 {
-    shared_ptr<Right_side_completed_message> recv_message = static_pointer_cast<Right_side_completed_message>(message);
-
     setRightCompleted();
+
+    shared_ptr<Right_side_completed_message> recv_message = static_pointer_cast<Right_side_completed_message>(message);
     reconf->setNumberSeedsRight(recv_message->numberSeedsRight);
+
+    reconf->isSeedCheck();
+    tryAddNextLineNeighbor();
+
     sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeed());
-    tryAddNextLineNeighbor(reconf);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }

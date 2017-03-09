@@ -19,37 +19,40 @@
 
 class Neighbor {
     Catoms3D::Catoms3DBlock *catom;
+    Reconf *reconf;
     BlockCodeBuilder blockCodeBuilder;
     bool leftCompleted;
     bool rightCompleted;
 
 public:
-    Neighbor(Catoms3D::Catoms3DBlock *catom, BlockCodeBuilder blockCodeBuilder);
+    Neighbor(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, BlockCodeBuilder blockCodeBuilder);
 
     void addNeighbor(Cell3DPosition pos);
-    void addNeighborToLeft(Reconf *reconf);
-    void addNeighborToRight(Reconf *reconf);
+    void addNeighborToLeft();
+    void addNeighborToRight();
+    void addNeighbors();
     void addAllNeighbors();
 
     void sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed);
     void sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed);
     void sendMessageToGetNeighborInformation();
 
-    void tryAddNextLineNeighbor(Reconf *reconf);
-    void checkLineCompleted(Reconf *reconf);
+    void tryAddNextLineNeighbor();
+    void checkLineCompleted();
 
-    void setLeftCompleted() { leftCompleted = true; }
-    void setRightCompleted() { rightCompleted = true; }
+    void setLeftCompleted();
+    void setRightCompleted();
     bool isLeftCompleted() { return leftCompleted; }
     bool isRightCompleted() { return rightCompleted; }
     bool isOnLeftBorder();
     bool isOnRightBorder();
     bool isFirstCatomOfLine();
+    void init();
 
-    void handleNewCatomMsg(MessagePtr msg, Reconf *reconf);
-    void handleNewCatomResponseMsg(MessagePtr msg, Reconf *reconf);
-    void handleLeftSideCompletedMsg(MessagePtr msg, Reconf *reconf);
-    void handleRightSideCompletedMsg(MessagePtr msg, Reconf *reconf);
+    void handleNewCatomMsg(MessagePtr msg);
+    void handleNewCatomResponseMsg(MessagePtr msg);
+    void handleLeftSideCompletedMsg(MessagePtr msg);
+    void handleRightSideCompletedMsg(MessagePtr msg);
 
 };
 
