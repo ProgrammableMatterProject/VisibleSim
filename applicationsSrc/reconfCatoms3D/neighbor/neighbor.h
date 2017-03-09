@@ -64,12 +64,11 @@ public:
 
 class New_catom_response_message : public Message {
 public:
-    int currentLine;
     bID lineParent;
     bool leftCompleted, rightCompleted;
     int numberSeedsLeft, numberSeedsRight;
     SIDE_DIRECTION lineParentDirection;
-    New_catom_response_message() { id = NEW_CATOM_RESPONSE_MSG_ID; };
+    New_catom_response_message();
 };
 
 class Right_side_completed_message : public Message {

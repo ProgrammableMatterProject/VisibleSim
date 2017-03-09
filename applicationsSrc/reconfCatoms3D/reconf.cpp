@@ -3,10 +3,11 @@
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
-    seed = false;
-    numberSeedsLeft = numberSeedsRight = 0;
+    numberSeedsLeft = 0;
+    numberSeedsRight = 0;
     lineCompleted = false;
     lineParent = false;
+    seed = false;
 }
 
 bool Reconf::isInternalSeed()
@@ -20,8 +21,7 @@ bool Reconf::isInternalSeed()
 
 bool Reconf::isBorderSeed()
 {
-    if (//numberSeedsLeft == 0 &&
-        !CsgUtils::isInside(catom->position.addX(1)) && 
+    if (!CsgUtils::isInside(catom->position.addX(1)) && 
         CsgUtils::isInside(catom->position.addY(1)) ){
         return true;
     }
@@ -37,9 +37,7 @@ bool Reconf::isSeed()
 
 bool Reconf::isSeedCheck()
 {
-    if (catom->blockId == 189 || catom->blockId == 170)
-        return false;
-    return seed = (isInternalSeed() || isBorderSeed());
+   return seed = isInternalSeed() || isBorderSeed();
 }
 
 bool Reconf::needSyncToRight()
@@ -47,13 +45,14 @@ bool Reconf::needSyncToRight()
     if (!CsgUtils::isInside(catom->position.addX(1)) && 
         CsgUtils::isInside(catom->position.addX(1).addY(1)))
     { 
-        for (int i = 2; catom->position.addX(i)[0] < CsgUtils::boundingBox.P1[0]; i++) {
+        for (int i = 2; CsgUtils::getWorldPosition(catom->position.addX(i))[0] < CsgUtils::boundingBox.P1[0]; i++) {
             if (!CsgUtils::isInside(catom->position.addX(i)) && 
                 CsgUtils::isInside(catom->position.addX(i).addY(1)))
                 continue;
             if (CsgUtils::isInside(catom->position.addX(i)) && 
                 CsgUtils::isInside(catom->position.addX(i).addY(1)) )
                 return true;
+            cout << "2 - Sync To Right " << catom->blockId << endl;
             return false;
         }
     }

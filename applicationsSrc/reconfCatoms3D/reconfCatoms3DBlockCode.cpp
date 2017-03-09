@@ -30,7 +30,7 @@ void ReconfCatoms3DBlockCode::debug() {
             catom->setColor(BLACK);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        sync->syncRequest->syncLineSeedToLeft(170, 10, reconf, TO_PREVIOUS);
+        sync->syncRequest->syncLineSeedToLeft(170, catom->position[1]+1, reconf, TO_PREVIOUS);
     }
     else if(catom->blockId == 189) {
         neighbor->checkLineCompleted();
@@ -39,13 +39,13 @@ void ReconfCatoms3DBlockCode::debug() {
             catom->setColor(BLACK);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        sync->syncRequest->syncLineSeedToLeft(189, 10, reconf, TO_PREVIOUS);
+        sync->syncRequest->syncLineSeedToLeft(189, catom->position[1], reconf, TO_PREVIOUS);
     }
     else 
     {
         if (neighbor->isFirstCatomOfLine()) {
             neighbor->init();
-            neighbor->addNeighbors();
+//            neighbor->addNeighbors();
         }
         else {
             neighbor->sendMessageToGetNeighborInformation();
@@ -60,6 +60,7 @@ void ReconfCatoms3DBlockCode::startup() {
             catom->setColor(RED);
         }
 	}
+    reconf->isSeedCheck();
     bool DEBUG = true;
     if (DEBUG) {
         debug();

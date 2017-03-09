@@ -152,6 +152,7 @@ void Neighbor::init()
         reconf->setLineParent();
     reconf->isSeedCheck();
     checkLineCompleted();
+    addNeighbors();
     tryAddNextLineNeighbor();
 }
 
@@ -165,10 +166,14 @@ void Neighbor::handleNewCatomMsg(MessagePtr message)
 {
     shared_ptr<New_catom_message> recv_message = static_pointer_cast<New_catom_message>(message);
     New_catom_response_message *msgResponse = new New_catom_response_message;
-    msgResponse->leftCompleted = isLeftCompleted();
-    msgResponse->rightCompleted = isRightCompleted();
-    msgResponse->numberSeedsLeft = reconf->getNumberSeedsLeft() + reconf->isSeed();
-    msgResponse->numberSeedsRight = reconf->getNumberSeedsRight() + reconf->isSeed();
+    if (recv_message->lineParentDirection == TO_LEFT) {
+        msgResponse->leftCompleted = isLeftCompleted();
+        msgResponse->numberSeedsLeft = reconf->getNumberSeedsLeft() + reconf->isSeed();
+    }
+    else {
+        msgResponse->rightCompleted = isRightCompleted();
+        msgResponse->numberSeedsRight = reconf->getNumberSeedsRight() + reconf->isSeed();
+    }
     msgResponse->lineParentDirection = recv_message->lineParentDirection;
 
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
@@ -177,18 +182,21 @@ void Neighbor::handleNewCatomMsg(MessagePtr message)
 void Neighbor::handleNewCatomResponseMsg(MessagePtr message)
 {
     shared_ptr<New_catom_response_message> recv_message = static_pointer_cast<New_catom_response_message>(message);
-    int numberSeedsLeft = max(recv_message->numberSeedsLeft, reconf->getNumberSeedsLeft());
-    int numberSeedsRight = max(recv_message->numberSeedsRight, reconf->getNumberSeedsRight());
+    if (recv_message->lineParentDirection == TO_LEFT) {
+        int numberSeedsLeft = max(recv_message->numberSeedsLeft, reconf->getNumberSeedsLeft());
+        reconf->setNumberSeedsLeft(numberSeedsLeft);
+        if (recv_message->leftCompleted)
+            setLeftCompleted();
+    }
+    else {
+        int numberSeedsRight = max(recv_message->numberSeedsRight, reconf->getNumberSeedsRight());
+        reconf->setNumberSeedsRight(numberSeedsRight);
+        if (recv_message->rightCompleted)
+            setRightCompleted();
+    }
     reconf->lineParentDirection = recv_message->lineParentDirection;
-    if (recv_message->leftCompleted)
-        setLeftCompleted();
-    if (recv_message->rightCompleted)
-        setRightCompleted();
-    reconf->setNumberSeedsLeft(numberSeedsLeft);
-    reconf->setNumberSeedsRight(numberSeedsRight);
 
     init();
-    addNeighbors();
 
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
@@ -196,14 +204,11 @@ void Neighbor::handleNewCatomResponseMsg(MessagePtr message)
 
 void Neighbor::handleLeftSideCompletedMsg(MessagePtr message)
 {
-    setLeftCompleted();
-
     shared_ptr<Left_side_completed_message> recv_message = static_pointer_cast<Left_side_completed_message>(message);
-    reconf->setNumberSeedsLeft(recv_message->numberSeedsLeft);
 
-    reconf->isSeedCheck();
+    setLeftCompleted();
     tryAddNextLineNeighbor();
-
+    reconf->setNumberSeedsLeft(recv_message->numberSeedsLeft);
     sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
     
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
@@ -211,16 +216,20 @@ void Neighbor::handleLeftSideCompletedMsg(MessagePtr message)
 
 void Neighbor::handleRightSideCompletedMsg(MessagePtr message)
 {
-    setRightCompleted();
-
     shared_ptr<Right_side_completed_message> recv_message = static_pointer_cast<Right_side_completed_message>(message);
-    reconf->setNumberSeedsRight(recv_message->numberSeedsRight);
 
-    reconf->isSeedCheck();
+    setRightCompleted();
     tryAddNextLineNeighbor();
-
+    reconf->setNumberSeedsRight(recv_message->numberSeedsRight);
     sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeed());
 
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
+}
+
+New_catom_response_message::New_catom_response_message()
+{
+    id = NEW_CATOM_RESPONSE_MSG_ID;
+    leftCompleted = rightCompleted = false;
+    numberSeedsLeft = numberSeedsRight = 0;
 }
 
