@@ -71,7 +71,7 @@ void Neighbor::addNeighborToRight()
     addNeighbor(catom->position.addX(1));
 }
 
-void Neighbor::sendMessageToGetNeighborInformation()
+void Neighbor::sendMessageToGetLineInfo()
 {
     for (int i = 0; i < 2; i++) {
         Cell3DPosition neighborPosition = (i == 0) ? catom->position.addX(-1) : catom->position.addX(1);
@@ -152,7 +152,6 @@ void Neighbor::init()
         reconf->setLineParent();
     reconf->isSeedCheck();
     checkLineCompleted();
-    addNeighbors();
     tryAddNextLineNeighbor();
 }
 
@@ -164,7 +163,7 @@ void Neighbor::addNeighbors()
 
 void Neighbor::handleNewCatomMsg(MessagePtr message)
 {
-    shared_ptr<New_catom_message> recv_message = static_pointer_cast<New_catom_message>(message);
+    New_catom_ptr recv_message = static_pointer_cast<New_catom_message>(message);
     New_catom_response_message *msgResponse = new New_catom_response_message;
     if (recv_message->lineParentDirection == TO_LEFT) {
         msgResponse->leftCompleted = isLeftCompleted();
@@ -181,7 +180,7 @@ void Neighbor::handleNewCatomMsg(MessagePtr message)
 
 void Neighbor::handleNewCatomResponseMsg(MessagePtr message)
 {
-    shared_ptr<New_catom_response_message> recv_message = static_pointer_cast<New_catom_response_message>(message);
+    New_catom_response_ptr recv_message = static_pointer_cast<New_catom_response_message>(message);
     if (recv_message->lineParentDirection == TO_LEFT) {
         int numberSeedsLeft = max(recv_message->numberSeedsLeft, reconf->getNumberSeedsLeft());
         reconf->setNumberSeedsLeft(numberSeedsLeft);
@@ -204,7 +203,7 @@ void Neighbor::handleNewCatomResponseMsg(MessagePtr message)
 
 void Neighbor::handleLeftSideCompletedMsg(MessagePtr message)
 {
-    shared_ptr<Left_side_completed_message> recv_message = static_pointer_cast<Left_side_completed_message>(message);
+    Left_side_completed_ptr recv_message = static_pointer_cast<Left_side_completed_message>(message);
 
     setLeftCompleted();
     tryAddNextLineNeighbor();
@@ -216,7 +215,7 @@ void Neighbor::handleLeftSideCompletedMsg(MessagePtr message)
 
 void Neighbor::handleRightSideCompletedMsg(MessagePtr message)
 {
-    shared_ptr<Right_side_completed_message> recv_message = static_pointer_cast<Right_side_completed_message>(message);
+    Right_side_completed_ptr recv_message = static_pointer_cast<Right_side_completed_message>(message);
 
     setRightCompleted();
     tryAddNextLineNeighbor();

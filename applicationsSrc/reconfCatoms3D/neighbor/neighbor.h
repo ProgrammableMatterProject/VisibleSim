@@ -18,27 +18,28 @@
 #include "../reconf.h"
 
 class Neighbor {
+private:
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
     BlockCodeBuilder blockCodeBuilder;
     bool leftCompleted;
     bool rightCompleted;
+    void addNeighbor(Cell3DPosition pos);
+    void addAllNeighbors();
+    void sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed);
+    void sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed);
+
+    void checkLineCompleted();
+    void tryAddNextLineNeighbor();
 
 public:
     Neighbor(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, BlockCodeBuilder blockCodeBuilder);
 
-    void addNeighbor(Cell3DPosition pos);
+    void addNeighbors();
     void addNeighborToLeft();
     void addNeighborToRight();
-    void addNeighbors();
-    void addAllNeighbors();
 
-    void sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed);
-    void sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed);
-    void sendMessageToGetNeighborInformation();
-
-    void tryAddNextLineNeighbor();
-    void checkLineCompleted();
+    void sendMessageToGetLineInfo();
 
     void setLeftCompleted();
     void setRightCompleted();
@@ -61,6 +62,7 @@ public:
     SIDE_DIRECTION lineParentDirection;
     New_catom_message() { id = NEW_CATOM_MSG_ID; };
 };
+typedef shared_ptr<New_catom_message> New_catom_ptr;
 
 class New_catom_response_message : public Message {
 public:
@@ -70,16 +72,19 @@ public:
     SIDE_DIRECTION lineParentDirection;
     New_catom_response_message();
 };
+typedef shared_ptr<New_catom_response_message> New_catom_response_ptr;
 
 class Right_side_completed_message : public Message {
 public:
     int numberSeedsRight;
     Right_side_completed_message(int nSeedsRight) : numberSeedsRight(nSeedsRight) { id = RIGHT_SIDE_COMPLETED_MSG_ID; };
 };
+typedef shared_ptr<Right_side_completed_message> Right_side_completed_ptr;
 
 class Left_side_completed_message : public Message {
 public:
     int numberSeedsLeft;
     Left_side_completed_message(int nSeedsLeft) : numberSeedsLeft(nSeedsLeft) { id = LEFT_SIDE_COMPLETED_MSG_ID; };
 };
+typedef shared_ptr<Left_side_completed_message> Left_side_completed_ptr;
 #endif /* NEIGHBOR_H_ */
