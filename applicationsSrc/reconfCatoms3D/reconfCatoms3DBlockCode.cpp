@@ -15,7 +15,7 @@ ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBl
 
     reconf = new Reconf(catom);
     neighbor = new Neighbor(catom, reconf, buildNewBlockCode);
-    sync = new Sync(catom);
+    sync = new Sync(catom, reconf);
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
@@ -51,6 +51,7 @@ void ReconfCatoms3DBlockCode::catomReady(MessagePtr message)
     New_catom_response_ptr recv_message = static_pointer_cast<New_catom_response_message>(message);
     if (reconf->needSync()) {
         sync->syncRequest->syncLineSeedToLeft(catom->blockId, catom->position[1]+1, reconf, TO_PREVIOUS);
+        //sync->sync();
         catom->setColor(BLACK);
     }
     else {
@@ -78,6 +79,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 neighbor->handleNewCatomResponseMsg(message);
                 catomReady(message);
+                break;
             }
             case LEFT_SIDE_COMPLETED_MSG_ID:
             {

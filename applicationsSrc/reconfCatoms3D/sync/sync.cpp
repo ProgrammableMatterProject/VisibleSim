@@ -1,10 +1,18 @@
 #include "sync.h"
 
-Sync::Sync(Catoms3D::Catoms3DBlock *c) : catom(c)
+Sync::Sync(Catoms3D::Catoms3DBlock *c, Reconf *r) : catom(c), reconf(r)
 {
     syncRequest = new SyncRequest(catom);
     syncResponse = new SyncResponse(catom);
 }
+
+void Sync::sync() {
+    if (reconf->needSyncToLeft()) {
+        syncRequest->syncLineSeedToLeft(catom->blockId, catom->position[1]+1, reconf, TO_PREVIOUS);
+    }
+}
+
+
 
 void Sync::handleLookupNeighborMessage(MessagePtr message, Reconf *reconf)
 {

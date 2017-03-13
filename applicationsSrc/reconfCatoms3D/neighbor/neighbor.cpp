@@ -37,6 +37,7 @@ void Neighbor::addNeighbor(Cell3DPosition pos)
         else if (neighbors.isPositionBlocked(pos))
             world->addBlock(0, blockCodeBuilder, pos, RED, 0, false);
         else {
+
             world->addBlock(0, blockCodeBuilder, pos, WHITE, 0, false);
         }
         world->linkBlock(pos);
@@ -91,7 +92,7 @@ void Neighbor::sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed)
     int newNumberSeedsLeft = numberSeedsLeft + isSeed;
     Cell3DPosition positionLeft = catom->position.addX(1);
 
-    Message *msg = new Left_side_completed_message(newNumberSeedsLeft);
+    Left_side_completed_message *msg = new Left_side_completed_message(newNumberSeedsLeft);
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(positionLeft)));
 }
 
@@ -99,7 +100,7 @@ void Neighbor::sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed)
 {
     int newNumberSeedsRight = numberSeedsRight + isSeed;
     Cell3DPosition positionRight = catom->position.addX(-1);
-    Message *msg = new Right_side_completed_message(newNumberSeedsRight);
+    Right_side_completed_message *msg = new Right_side_completed_message(newNumberSeedsRight);
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(positionRight)));
 }
 

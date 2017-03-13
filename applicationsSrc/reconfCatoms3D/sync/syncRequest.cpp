@@ -6,15 +6,17 @@
  *  Look for other seeds/parent for both sides of the line.
  */
 void SyncRequest::syncLineSeedToLeft(bID requestCatomID, int requestLine, Reconf *reconf, LINE_DIRECTION syncToLineDirection) {
-    cout << "syncLineSeed BlockID =  " << catom->blockId << endl;
+    if(catom->position[1] == requestLine && reconf->isLineCompleted()) {
+
+    }
     if (syncToLineDirection == TO_NEXT &&
             reconf->isSeed()){
         sendSeedMessage(requestCatomID, requestLine, TO_NEXT);
         catom->setColor(BLUE);
     }
-    else if ((reconf->lineParentDirection == TO_LEFT  && !reconf->isLineParent()) || reconf->getNumberSeedsLeft()) {
+    else if ((reconf->lineParentDirection == TO_LEFT  && !reconf->isLineParent()) 
+            || reconf->getNumberSeedsLeft()) {
         sendNeighborMessage(requestCatomID, requestLine, TO_LEFT);
-        cout << "SYNC TO LEFT" << endl;
     }
     else if (syncToLineDirection == TO_PREVIOUS &&
             reconf->isLineParent()) {
@@ -23,27 +25,21 @@ void SyncRequest::syncLineSeedToLeft(bID requestCatomID, int requestLine, Reconf
     }
     else {
         sendNeighborMessage(requestCatomID, requestLine, TO_RIGHT);
-        cout << "SYNC TO RIGHT" << endl;
     }
 }
 
 void SyncRequest::syncLineNeighborToLeft(bID requestCatomID, int requestLine, Reconf *reconf, SIDE_DIRECTION sideDirection) {
-    cout << "syncLineNeighbor BlockID =  " << catom->blockId << ' ';
     if (reconf->isSeed() && reconf->isLineCompleted()) {
         sendSeedMessage(requestCatomID, requestLine, TO_NEXT);
-        cout << "1" << endl;
     }
     else if (reconf->getNumberSeedsLeft() && reconf->isLineCompleted() && sideDirection == TO_LEFT) {
         sendNeighborMessage(requestCatomID, requestLine, TO_LEFT);
-        cout << "1.5" << endl;
     }
     else if (reconf->isLineParent()) {
         sendSeedMessage(requestCatomID, requestLine, TO_PREVIOUS);
-        cout << "2" << endl;
     }
     else {
         sendNeighborMessage(requestCatomID, requestLine, reconf->lineParentDirection);
-        cout << "3" << endl;
     }
 }
 

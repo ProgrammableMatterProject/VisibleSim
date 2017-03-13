@@ -10,8 +10,8 @@
 
 #define NEW_CATOM_MSG_ID	9001
 #define NEW_CATOM_RESPONSE_MSG_ID	9002
-#define RIGHT_SIDE_COMPLETED_MSG_ID	9003
-#define LEFT_SIDE_COMPLETED_MSG_ID	9004
+#define LEFT_SIDE_COMPLETED_MSG_ID	9003
+#define RIGHT_SIDE_COMPLETED_MSG_ID	9004
 
 #include "cell3DPosition.h"
 #include "directions.h"
@@ -74,17 +74,17 @@ public:
 };
 typedef shared_ptr<New_catom_response_message> New_catom_response_ptr;
 
-class Right_side_completed_message : public Message {
-public:
-    int numberSeedsRight;
-    Right_side_completed_message(int nSeedsRight) : numberSeedsRight(nSeedsRight) { id = RIGHT_SIDE_COMPLETED_MSG_ID; };
-};
-typedef shared_ptr<Right_side_completed_message> Right_side_completed_ptr;
-
 class Left_side_completed_message : public Message {
 public:
     int numberSeedsLeft;
     Left_side_completed_message(int nSeedsLeft) : numberSeedsLeft(nSeedsLeft) { id = LEFT_SIDE_COMPLETED_MSG_ID; };
 };
 typedef shared_ptr<Left_side_completed_message> Left_side_completed_ptr;
+
+class Right_side_completed_message : public Message {
+public:
+    int numberSeedsRight;
+    Right_side_completed_message(int nSeedsRight) : numberSeedsRight(nSeedsRight) { id = RIGHT_SIDE_COMPLETED_MSG_ID; };
+};
+typedef shared_ptr<Right_side_completed_message> Right_side_completed_ptr;
 #endif /* NEIGHBOR_H_ */

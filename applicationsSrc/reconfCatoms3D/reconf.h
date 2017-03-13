@@ -18,8 +18,6 @@ class Reconf {
     bool lineParent;
     bool lineCompleted;
 
-    bool needSyncToLeft();
-    bool needSyncToRight();
     bool isInternalSeed();
     bool isBorderSeed();
 public:
@@ -28,6 +26,8 @@ public:
     Reconf(Catoms3D::Catoms3DBlock *c);
     bool isSeed();
     bool needSync();
+    bool needSyncToLeft();
+    bool needSyncToRight();
 
     bool isSeedCheck();
     bool isLineParent() { return lineParent; }
