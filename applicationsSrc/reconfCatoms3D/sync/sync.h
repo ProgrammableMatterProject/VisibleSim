@@ -16,6 +16,7 @@ class Sync {
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
     map<bID, SyncRoute> syncRoutes;
+    bool syncOK;
 
 public:
     SyncRequest *syncRequest;
@@ -23,8 +24,11 @@ public:
 
     Sync(Catoms3D::Catoms3DBlock *c, Reconf *r);
     void sync();
-    void handleLookupNeighborMessage(MessagePtr message, Reconf*);
+    void handleResponse(MessagePtr message);
+    void handleLookupForwardMessage(MessagePtr message, Reconf*);
     void handleLookupLineMessage(MessagePtr message, Reconf*);
+    bool isSyncOK() { return syncOK; }
+    void setSyncOK() { syncOK = true; }
 };
 
 

@@ -6,20 +6,23 @@
 using namespace std;
 using namespace Catoms3D;
 
+//string CSG_FILE = "data/manyHoles.bc";
 string CSG_FILE = "data/testForm.bc";
 
+
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
-	cout << "ReconfCatoms3DBlockCode constructor" << endl;
     scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
 
     reconf = new Reconf(catom);
-    neighbor = new Neighbor(catom, reconf, buildNewBlockCode);
     sync = new Sync(catom, reconf);
+    neighbor = new Neighbor(catom, reconf, sync, buildNewBlockCode);
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
-	cout << "ReconfCatoms3DBlockCode destructor" << endl;
+    delete reconf;
+    delete neighbor;
+    delete sync;
 }
 
 void ReconfCatoms3DBlockCode::startup() {
@@ -32,12 +35,7 @@ void ReconfCatoms3DBlockCode::startup() {
     reconf->isSeedCheck();
     if (neighbor->isFirstCatomOfLine()) {
         neighbor->init();
-        if (reconf->needSync()) {
-            sync->syncRequest->syncLineSeedToLeft(catom->blockId, catom->position[1]+1, reconf, TO_PREVIOUS);
-            catom->setColor(BLACK);
-        }
-        else
-            neighbor->addNeighbors();
+        catomReady();
     }
 
     else {
@@ -46,20 +44,17 @@ void ReconfCatoms3DBlockCode::startup() {
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
 
-void ReconfCatoms3DBlockCode::catomReady(MessagePtr message)
+void ReconfCatoms3DBlockCode::catomReady()
 {
-    New_catom_response_ptr recv_message = static_pointer_cast<New_catom_response_message>(message);
-    if (reconf->needSync()) {
-        sync->syncRequest->syncLineSeedToLeft(catom->blockId, catom->position[1]+1, reconf, TO_PREVIOUS);
-        //sync->sync();
+    /*if (reconf->needSync()) {
+        cout << catom->blockId << " " << reconf->isSeed() << endl;
+        sync->sync();
         catom->setColor(BLACK);
     }
     else {
-        if (recv_message->lineParentDirection == TO_LEFT)
-            neighbor->addNeighborToRight();
-        else
-            neighbor->addNeighborToLeft();
-    }
+        neighbor->addNeighbors();
+    }*/
+    neighbor->addNeighbors();
 }
 
 void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
@@ -78,7 +73,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case NEW_CATOM_RESPONSE_MSG_ID:
             {
                 neighbor->handleNewCatomResponseMsg(message);
-                catomReady(message);
+                catomReady();
                 break;
             }
             case LEFT_SIDE_COMPLETED_MSG_ID:
@@ -91,9 +86,9 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 neighbor->handleRightSideCompletedMsg(message);
                 break;
             }
-            case LOOKUP_NEIGHBOR_SYNC_MESSAGE_ID:
+            case LOOKUP_FORWARD_SYNC_MESSAGE_ID:
             {
-                sync->handleLookupNeighborMessage(message, reconf);
+                sync->handleLookupForwardMessage(message, reconf);
                 catom->setColor(LIGHTGREEN);
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 break;
@@ -110,7 +105,11 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 catom->setColor(BLUE);
                 shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
                 if (recv_message->requestCatomID != catom->blockId) {
-//                    syncResponse->forwardResponse(recv_message, syncRoutes[recv_message->requestCatomID]);
+                    sync->handleResponse(recv_message);
+                }
+                else {
+                    sync->setSyncOK();
+                    neighbor->addNeighbors();
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
             }

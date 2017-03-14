@@ -7,7 +7,7 @@
 
 using namespace Catoms3D;
 
-Neighbor::Neighbor(Catoms3D::Catoms3DBlock *c, Reconf *r, BlockCodeBuilder bcb) : catom(c), reconf(r), blockCodeBuilder(bcb)
+Neighbor::Neighbor(Catoms3D::Catoms3DBlock *c, Reconf *r, Sync *s, BlockCodeBuilder bcb) : catom(c), reconf(r), sync(s), blockCodeBuilder(bcb)
 {
     leftCompleted = rightCompleted = false;
 }
@@ -60,15 +60,11 @@ void Neighbor::setRightCompleted()
 
 void Neighbor::addNeighborToLeft()
 {
-    if (reconf->needSync())
-        catom->setColor(BLUE);
     addNeighbor(catom->position.addX(-1));
 }
 
 void Neighbor::addNeighborToRight()
 {
-    if (reconf->needSync())
-        catom->setColor(BLUE);
     addNeighbor(catom->position.addX(1));
 }
 
@@ -106,7 +102,11 @@ void Neighbor::sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed)
 
 void Neighbor::tryAddNextLineNeighbor()
 {
-    if  (reconf->isSeed()) {
+    if (reconf->needSync()) {
+        sync->sync();
+        catom->setColor(RED);
+    }
+    else if  (reconf->isSeed()) {
         if (isLeftCompleted() && isRightCompleted()) {
             addNeighbor(catom->position.addY(1));
         }
@@ -115,10 +115,16 @@ void Neighbor::tryAddNextLineNeighbor()
 
 void Neighbor::checkLineCompleted()
 {
-    if (isOnLeftBorder())
+    if (isOnLeftBorder())  {
+        if (rightCompleted)
+            tryAddNextLineNeighbor();
         sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
-    if (isOnRightBorder())
+    }
+    if (isOnRightBorder()) {
+        if (leftCompleted)
+            tryAddNextLineNeighbor();
         sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeed());
+    }
 }
 
 bool Neighbor::isOnLeftBorder()
@@ -153,13 +159,18 @@ void Neighbor::init()
         reconf->setLineParent();
     reconf->isSeedCheck();
     checkLineCompleted();
-    tryAddNextLineNeighbor();
 }
 
 void Neighbor::addNeighbors()
 {
-    addNeighborToLeft();
-    addNeighborToRight();
+    if (!sync->isSyncOK() && reconf->needSync()) {
+        sync->sync();
+        catom->setColor(RED);
+    }
+    else {
+        addNeighborToLeft();
+        addNeighborToRight();
+    }
 }
 
 void Neighbor::handleNewCatomMsg(MessagePtr message)

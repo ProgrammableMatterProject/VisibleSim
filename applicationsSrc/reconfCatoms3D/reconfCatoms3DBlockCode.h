@@ -35,8 +35,7 @@ public:
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
-    void debug();
-    void catomReady(MessagePtr);
+    void catomReady();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:

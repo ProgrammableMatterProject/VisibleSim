@@ -8,7 +8,7 @@
 #ifndef SYNCREQUEST_H_
 #define SYNCREQUEST_H_
 
-#define LOOKUP_NEIGHBOR_SYNC_MESSAGE_ID    8001
+#define LOOKUP_FORWARD_SYNC_MESSAGE_ID    8001
 #define LOOKUP_LINE_SYNC_MESSAGE_ID   8002
 
 #include <set>
@@ -19,27 +19,28 @@
 class SyncRequest {
 	Catoms3D::Catoms3DBlock *catom;
 
-    void sendNeighborMessage(bID requestCatomID, int requestLine, SIDE_DIRECTION side_direction);
+    void sendNeighborMessage(bID requestCatomID, Cell3DPosition requestPosition, SIDE_DIRECTION side_direction, LINE_DIRECTION lineDirection);
 
-    void sendSeedMessage(bID requestCatomID, int requestLine, LINE_DIRECTION line_direction);
+    void sendSeedMessage(bID requestCatomID, Cell3DPosition requestPosition, LINE_DIRECTION line_direction);
 
 public:
     SyncRequest(Catoms3D::Catoms3DBlock *c) : catom(c) {};
-    void syncLineSeedToLeft(bID requestCatomID, int requestLine, Reconf*, LINE_DIRECTION lineDirection);
-    void syncLineNeighborToLeft(bID requestCatomID, int requestLine, Reconf*, SIDE_DIRECTION sideDirection);
+    void syncLineSeedToLeft(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, LINE_DIRECTION lineDirection);
+    void syncLineNeighborToLeft(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, SIDE_DIRECTION sideDirection, LINE_DIRECTION lineDirection);
 
 };
 
 /*
  * Send request to neighbor (x+1 or x-1)
  */
-class Lookup_neighbor_sync_message : public Message {
+class Lookup_forward_sync_message : public Message {
 public:
     bID requestCatomID;
-    int requestLine;
+    Cell3DPosition requestPosition;
     SIDE_DIRECTION side_direction;
+    LINE_DIRECTION line_direction;
 
-    Lookup_neighbor_sync_message(bID catomID, int line, SIDE_DIRECTION direction) : requestCatomID(catomID), requestLine(line), side_direction(direction) { id = LOOKUP_NEIGHBOR_SYNC_MESSAGE_ID; };
+    Lookup_forward_sync_message(bID catomID, Cell3DPosition pos, SIDE_DIRECTION direction, LINE_DIRECTION ldirection) : requestCatomID(catomID), requestPosition(pos), side_direction(direction), line_direction(ldirection) { id = LOOKUP_FORWARD_SYNC_MESSAGE_ID; };
 };
 
 /*
@@ -48,10 +49,10 @@ public:
 class Lookup_line_sync_message : public Message {
 public:
     bID requestCatomID;
-    int requestLine;
+    Cell3DPosition requestPosition;
     LINE_DIRECTION lineDirection;
 
-    Lookup_line_sync_message(bID catomID, int line, LINE_DIRECTION direction) : requestCatomID(catomID), requestLine(line), lineDirection(direction) { id = LOOKUP_LINE_SYNC_MESSAGE_ID; }
+    Lookup_line_sync_message(bID catomID, Cell3DPosition pos, LINE_DIRECTION direction) : requestCatomID(catomID), requestPosition(pos), lineDirection(direction) { id = LOOKUP_LINE_SYNC_MESSAGE_ID; }
 };
 
 

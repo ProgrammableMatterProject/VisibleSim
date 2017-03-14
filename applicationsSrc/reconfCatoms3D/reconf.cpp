@@ -30,8 +30,6 @@ bool Reconf::isBorderSeed()
 
 bool Reconf::isSeed()
 {
-    if (catom->blockId == 189 || catom->blockId == 170)
-        return false;
     return seed;
 }
 
@@ -52,7 +50,6 @@ bool Reconf::needSyncToRight()
             if (CsgUtils::isInside(catom->position.addX(i)) && 
                 CsgUtils::isInside(catom->position.addX(i).addY(1)) )
                 return true;
-            cout << "2 - Sync To Right " << catom->blockId << endl;
             return false;
         }
     }

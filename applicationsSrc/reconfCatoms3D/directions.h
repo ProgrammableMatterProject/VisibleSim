@@ -9,7 +9,9 @@ enum DIRECTION {DIRECTION_UP, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT};
 class SyncRoute {
 public:
     DIRECTION direction;
-    int lineSeedsConfirmations;
-    bool parentConfirmation;
+    bool rightSeedVisited;
+    bool leftSeedVisited;
+    bool nextSeedVisited;
+    bool parentVisited;
 };
 #endif /* DIRECTIONS_H_ */

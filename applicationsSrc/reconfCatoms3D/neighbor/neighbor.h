@@ -16,11 +16,13 @@
 #include "cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
+#include "../sync/sync.h"
 
 class Neighbor {
 private:
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
+    Sync *sync;
     BlockCodeBuilder blockCodeBuilder;
     bool leftCompleted;
     bool rightCompleted;
@@ -30,14 +32,14 @@ private:
     void sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed);
 
     void checkLineCompleted();
-    void tryAddNextLineNeighbor();
-
-public:
-    Neighbor(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, BlockCodeBuilder blockCodeBuilder);
-
-    void addNeighbors();
     void addNeighborToLeft();
     void addNeighborToRight();
+
+public:
+    Neighbor(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Sync *s, BlockCodeBuilder blockCodeBuilder);
+
+    void addNeighbors();
+    void tryAddNextLineNeighbor();
 
     void sendMessageToGetLineInfo();
 
