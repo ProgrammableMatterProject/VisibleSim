@@ -18,7 +18,7 @@
 #include "../reconf.h"
 #include "../sync/sync.h"
 
-class Neighbor {
+class Neighborhood {
 private:
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
@@ -36,13 +36,12 @@ private:
     void addNeighborToRight();
 
 public:
-    Neighbor(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Sync *s, BlockCodeBuilder blockCodeBuilder);
+    Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Sync *s, BlockCodeBuilder blockCodeBuilder);
 
     void addNeighbors();
-    void tryAddNextLineNeighbor();
+    void addNextLineNeighbor();
 
     void sendMessageToGetLineInfo();
-
     void setLeftCompleted();
     void setRightCompleted();
     bool isLeftCompleted() { return leftCompleted; }

@@ -8,7 +8,7 @@
 #ifndef SYNC_H_
 #define SYNC_H_
 #include "catoms3DBlockCode.h"
-#include "syncRequest.h"
+#include "syncLeft.h"
 #include "syncResponse.h"
 #include "../reconf.h"
 
@@ -19,7 +19,7 @@ class Sync {
     bool syncOK;
 
 public:
-    SyncRequest *syncRequest;
+    SyncLeft *syncLeft;
     SyncResponse *syncResponse;
 
     Sync(Catoms3D::Catoms3DBlock *c, Reconf *r);

@@ -16,17 +16,19 @@
 #include "../directions.h"
 #include "../reconf.h"
 
-class SyncRequest {
+class SyncLeft {
 	Catoms3D::Catoms3DBlock *catom;
+    void syncSeedNext(bID requestCatomID, Cell3DPosition requestPosition, Reconf*);
+    void syncSeedPrevious(bID requestCatomID, Cell3DPosition requestPosition, Reconf*);
 
     void sendNeighborMessage(bID requestCatomID, Cell3DPosition requestPosition, SIDE_DIRECTION side_direction, LINE_DIRECTION lineDirection);
 
     void sendSeedMessage(bID requestCatomID, Cell3DPosition requestPosition, LINE_DIRECTION line_direction);
 
 public:
-    SyncRequest(Catoms3D::Catoms3DBlock *c) : catom(c) {};
-    void syncLineSeedToLeft(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, LINE_DIRECTION lineDirection);
-    void syncLineNeighborToLeft(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, SIDE_DIRECTION sideDirection, LINE_DIRECTION lineDirection);
+    SyncLeft(Catoms3D::Catoms3DBlock *c) : catom(c) {};
+    void syncSeed(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, LINE_DIRECTION lineDirection);
+    void syncNeighbor(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, SIDE_DIRECTION sideDirection, LINE_DIRECTION lineDirection);
 
 };
 

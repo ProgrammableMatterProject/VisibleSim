@@ -38,6 +38,7 @@ public:
     void setNumberSeedsRight(int nSeeds) { numberSeedsRight = nSeeds; }
     void setLineCompleted() { lineCompleted = true; }
     bool isLineCompleted() { return lineCompleted; }
+    void setSeed(bool v) { seed = v; };
 
 };
 

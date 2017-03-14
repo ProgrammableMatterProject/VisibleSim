@@ -12,7 +12,7 @@
 #include "CSG/csgUtils.h"
 #include "directions.h"
 #include "reconf.h"
-#include "neighbor/neighbor.h"
+#include "neighborhood/neighborhood.h"
 #include "sync/sync.h"
 
 class SyncRoute;
@@ -24,7 +24,7 @@ public:
     Vector3D worldPosition;
 
     CsgUtils csgUtils;
-    Neighbor *neighbor;
+    Neighborhood *neighborhood;
     
     // Reconfiguration Variables
     Reconf *reconf;

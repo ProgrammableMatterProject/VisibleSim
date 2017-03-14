@@ -2,14 +2,14 @@
 
 Sync::Sync(Catoms3D::Catoms3DBlock *c, Reconf *r) : catom(c), reconf(r)
 {
-    syncRequest = new SyncRequest(catom);
+    syncLeft = new SyncLeft(catom);
     syncResponse = new SyncResponse(catom);
     syncOK = false;
 }
 
 void Sync::sync() {
     if (reconf->needSyncToLeft()) {
-        syncRequest->syncLineSeedToLeft(catom->blockId, catom->position.addX(-1).addY(-1), reconf, TO_PREVIOUS);
+        syncLeft->syncSeed(catom->blockId, catom->position.addX(-1).addY(-1), reconf, TO_PREVIOUS);
     }
 }
 
@@ -22,11 +22,11 @@ void Sync::handleResponse(MessagePtr message) {
     else {
         if (reconf->getNumberSeedsLeft() && !route->leftSeedVisited) {
             route->leftSeedVisited = true;
-            syncRequest->syncLineSeedToLeft(recv_message->requestCatomID, recv_message->requestPosition, reconf, TO_PREVIOUS);
+            syncLeft->syncSeed(recv_message->requestCatomID, recv_message->requestPosition, reconf, TO_PREVIOUS);
         }
         else if (reconf->getNumberSeedsRight() && !route->rightSeedVisited) {
             route->rightSeedVisited = true;
-            syncRequest->syncLineSeedToLeft(recv_message->requestCatomID, recv_message->requestPosition, reconf, TO_PREVIOUS);
+            syncLeft->syncSeed(recv_message->requestCatomID, recv_message->requestPosition, reconf, TO_PREVIOUS);
         }
         else if (reconf->isSeed() && !route->nextSeedVisited) {
             route->nextSeedVisited = true;
@@ -56,9 +56,10 @@ void Sync::handleLookupForwardMessage(MessagePtr message, Reconf *reconf)
         syncRoutes[recv_message->requestCatomID].rightSeedVisited = true;
     }
     if (catom->position == recv_message->requestPosition) {
+        reconf->setSeed(false);
         syncResponse->response(recv_message->requestCatomID, recv_message->requestPosition, syncRoutes[recv_message->requestCatomID].direction, true);
     }
-    syncRequest->syncLineNeighborToLeft(recv_message->requestCatomID, recv_message->requestPosition, reconf, recv_message->side_direction, recv_message->line_direction);
+    syncLeft->syncNeighbor(recv_message->requestCatomID, recv_message->requestPosition, reconf, recv_message->side_direction, recv_message->line_direction);
     catom->setColor(RED);
 }
 
@@ -76,6 +77,7 @@ void Sync::handleLookupLineMessage(MessagePtr message, Reconf *reconf)
     }
 
     if (reconf->isLineCompleted() && catom->position == recv_message->requestPosition) {
+        reconf->setSeed(false);
         catom->setColor(RED);
         syncResponse->response(recv_message->requestCatomID, recv_message->requestPosition, syncRoutes[recv_message->requestCatomID].direction, true);
     }
@@ -83,7 +85,7 @@ void Sync::handleLookupLineMessage(MessagePtr message, Reconf *reconf)
         syncResponse->response(recv_message->requestCatomID, recv_message->requestPosition, syncRoutes[recv_message->requestCatomID].direction, false);
     }
     else {
-        syncRequest->syncLineSeedToLeft(recv_message->requestCatomID, recv_message->requestPosition, reconf, recv_message->lineDirection);
+        syncLeft->syncSeed(recv_message->requestCatomID, recv_message->requestPosition, reconf, recv_message->lineDirection);
     }
     catom->setColor(WHITE);
 }

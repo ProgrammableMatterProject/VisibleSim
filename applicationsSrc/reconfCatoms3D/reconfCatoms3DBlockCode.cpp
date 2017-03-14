@@ -1,13 +1,15 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
 
-#define WAIT_TIME 0
+#define WAIT_TIME 5
 
 using namespace std;
 using namespace Catoms3D;
 
 //string CSG_FILE = "data/manyHoles.bc";
-string CSG_FILE = "data/testForm.bc";
+string CSG_FILE = "data/manyHolesScale2.bc";
+//string CSG_FILE = "data/letterC.bc";
+//string CSG_FILE = "data/testForm.bc";
 
 
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
@@ -16,30 +18,30 @@ ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBl
 
     reconf = new Reconf(catom);
     sync = new Sync(catom, reconf);
-    neighbor = new Neighbor(catom, reconf, sync, buildNewBlockCode);
+    neighborhood = new Neighborhood(catom, reconf, sync, buildNewBlockCode);
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
     delete reconf;
-    delete neighbor;
+    delete neighborhood;
     delete sync;
 }
 
 void ReconfCatoms3DBlockCode::startup() {
-	if (catom->blockId==1) {
+	if (catom->blockId == 1) {
         CsgUtils::init(CSG_FILE);
         if (!CsgUtils::isInside(catom->position)) {
             catom->setColor(RED);
         }
 	}
     reconf->isSeedCheck();
-    if (neighbor->isFirstCatomOfLine()) {
-        neighbor->init();
+    if (neighborhood->isFirstCatomOfLine()) {
+        neighborhood->init();
         catomReady();
     }
 
     else {
-        neighbor->sendMessageToGetLineInfo();
+        neighborhood->sendMessageToGetLineInfo();
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
 }
@@ -52,9 +54,9 @@ void ReconfCatoms3DBlockCode::catomReady()
         catom->setColor(BLACK);
     }
     else {
-        neighbor->addNeighbors();
+        neighborhood->addNeighbors();
     }*/
-    neighbor->addNeighbors();
+    neighborhood->addNeighbors();
 }
 
 void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
@@ -67,51 +69,51 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         switch(message->id) {
             case NEW_CATOM_MSG_ID:
             {
-                neighbor->handleNewCatomMsg(message);
+                neighborhood->handleNewCatomMsg(message);
                 break;
             }
             case NEW_CATOM_RESPONSE_MSG_ID:
             {
-                neighbor->handleNewCatomResponseMsg(message);
+                neighborhood->handleNewCatomResponseMsg(message);
                 catomReady();
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
                 break;
             }
             case LEFT_SIDE_COMPLETED_MSG_ID:
             {
-                neighbor->handleLeftSideCompletedMsg(message);
+                neighborhood->handleLeftSideCompletedMsg(message);
                 break;
             }
             case RIGHT_SIDE_COMPLETED_MSG_ID:
             {
-                neighbor->handleRightSideCompletedMsg(message);
+                neighborhood->handleRightSideCompletedMsg(message);
                 break;
             }
             case LOOKUP_FORWARD_SYNC_MESSAGE_ID:
             {
                 sync->handleLookupForwardMessage(message, reconf);
                 catom->setColor(LIGHTGREEN);
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 break;
             }
             case LOOKUP_LINE_SYNC_MESSAGE_ID:
             {
                 sync->handleLookupLineMessage(message, reconf);
                 catom->setColor(GREEN);
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
                 break;
             }
             case SYNC_RESPONSE_MESSAGE_ID:
             {
                 catom->setColor(BLUE);
                 shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
-                if (recv_message->requestCatomID != catom->blockId) {
-                    sync->handleResponse(recv_message);
+                if (recv_message->requestCatomID == catom->blockId) {
+                    sync->setSyncOK();
+                    neighborhood->addNeighbors();
                 }
                 else {
-                    sync->setSyncOK();
-                    neighbor->addNeighbors();
+                    sync->handleResponse(recv_message);
                 }
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME));
             }
           }
       }
