@@ -11,24 +11,25 @@
 #include "syncLeft.h"
 #include "syncResponse.h"
 #include "../reconf.h"
+#include "syncData.h"
 
 class Sync {
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
-    map<bID, SyncRoute> syncRoutes;
-    bool syncOK;
+    SyncData *syncData;
 
 public:
     SyncLeft *syncLeft;
     SyncResponse *syncResponse;
 
     Sync(Catoms3D::Catoms3DBlock *c, Reconf *r);
+    ~Sync();
     void sync();
     void handleResponse(MessagePtr message);
     void handleLookupForwardMessage(MessagePtr message, Reconf*);
     void handleLookupLineMessage(MessagePtr message, Reconf*);
-    bool isSyncOK() { return syncOK; }
-    void setSyncOK() { syncOK = true; }
+    bool isSyncOK() { return syncData->isSyncOK(); }
+    void setSyncOK() { syncData->setSyncOK(); }
 };
 
 

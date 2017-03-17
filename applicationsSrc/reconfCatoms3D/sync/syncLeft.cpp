@@ -1,11 +1,27 @@
 #include "syncLeft.h"
 
+/*void SyncLeft::goToLeft(bID requestCatomID, Cell3DPosition requestPosition, LINE_DIRECTION lineDirection) {
+    sendNeighborMessage(requestCatomID, requestPosition, TO_LEFT, lineDirection);
+}
+
+void SyncLeft::goToRight(bID requestCatomID, Cell3DPosition requestPosition, LINE_DIRECTION lineDirection) {
+    sendNeighborMessage(requestCatomID, requestPosition, TO_RIGHT, lineDirection);
+}*/
+
 void SyncLeft::syncSeed(bID requestCatomID, Cell3DPosition requestPosition, Reconf *reconf, LINE_DIRECTION syncToLineDirection) {
-    if (syncToLineDirection == TO_NEXT) {
-        syncSeedNext(requestCatomID, requestPosition, reconf);
+    if (reconf->isLineCompleted() && catom->position == requestPosition) {
+        syncResponse->response(requestCatomID, requestPosition, syncData->routes[requestCatomID].direction, true);
     }
-    else if (syncToLineDirection == TO_PREVIOUS) {
-        syncSeedPrevious(requestCatomID, requestPosition, reconf);
+    else if (reconf->isLineCompleted() && !reconf->isSeed() && reconf->getNumberSeedsLeft() == 0 &&!catom->getInterface(catom->position.addX(1))->isConnected()) {
+        syncResponse->response(requestCatomID, requestPosition, syncData->routes[requestCatomID].direction, false);
+    }
+    else {
+        if (syncToLineDirection == TO_NEXT) {
+            syncSeedNext(requestCatomID, requestPosition, reconf);
+        }
+        else if (syncToLineDirection == TO_PREVIOUS) {
+            syncSeedPrevious(requestCatomID, requestPosition, reconf);
+        }
     }
 }
 
@@ -19,8 +35,15 @@ void SyncLeft::syncSeedNext(bID requestCatomID, Cell3DPosition requestPosition, 
             sendNeighborMessage(requestCatomID, requestPosition, TO_LEFT, TO_NEXT);
         else if (reconf->getNumberSeedsRight())
             sendNeighborMessage(requestCatomID, requestPosition, TO_RIGHT, TO_NEXT);
-        else
-            cout << "ERROR - expecting seed on this line" << endl;
+        else {
+            if (catom->getInterface(catom->position.addX(1))->isConnected())
+                sendNeighborMessage(requestCatomID, requestPosition, TO_RIGHT, TO_NEXT);
+            else {
+                // TODO
+                syncResponse->response(requestCatomID, requestPosition, DIRECTION_RIGHT, false);
+            }
+            //cout << "ERROR - expecting seed on this line" << endl;
+        }
     }
 }
 
@@ -40,20 +63,31 @@ void SyncLeft::syncSeedPrevious(bID requestCatomID, Cell3DPosition requestPositi
 }
 
 void SyncLeft::syncNeighbor(bID requestCatomID, Cell3DPosition requestPosition, Reconf *reconf, SIDE_DIRECTION sideDirection, LINE_DIRECTION lineDirection) {
-    if (reconf->isSeed() && reconf->isLineCompleted() && !(sideDirection == TO_RIGHT && lineDirection == TO_PREVIOUS)) {
+    if (catom->position == requestPosition) {
+        syncResponse->response(requestCatomID, requestPosition, syncData->routes[requestCatomID].direction, true);
+    }
+    else if (sideDirection == TO_RIGHT && !catom->getInterface(catom->position.addX(1))->isConnected() &&
+            ((!reconf->isSeed() && lineDirection == TO_NEXT) ||
+            (!reconf->isLineParent() && lineDirection == TO_PREVIOUS)) ) {
+        syncResponse->response(requestCatomID, requestPosition, syncData->routes[requestCatomID].direction, false);
+    }
+
+    else if (reconf->isSeed() && reconf->isLineCompleted() && !(sideDirection == TO_RIGHT && lineDirection == TO_PREVIOUS)) {
         sendSeedMessage(requestCatomID, requestPosition, TO_NEXT);
     }
-    else if (reconf->getNumberSeedsLeft() && reconf->isLineCompleted() && sideDirection == TO_LEFT) {
+    else if (sideDirection == TO_LEFT && reconf->getNumberSeedsLeft()) {
         sendNeighborMessage(requestCatomID, requestPosition, TO_LEFT, lineDirection);
     }
+    //else if (reconf->getNumberSeedsLeft() && reconf->isLineCompleted() && sideDirection == TO_LEFT) {
     else if (reconf->isLineParent() && lineDirection == TO_PREVIOUS) {
         sendSeedMessage(requestCatomID, requestPosition, TO_PREVIOUS);
     }
-    else if (reconf->getNumberSeedsRight() && reconf->isLineCompleted() && sideDirection == TO_RIGHT) {
+    //else if (reconf->getNumberSeedsRight() && reconf->isLineCompleted() && sideDirection == TO_RIGHT) {
+    else if (sideDirection == TO_RIGHT) {
         sendNeighborMessage(requestCatomID, requestPosition, TO_RIGHT, lineDirection);
     }
     else {
-        sendNeighborMessage(requestCatomID, requestPosition, reconf->lineParentDirection, lineDirection);
+        cout << "ERROR" << endl;
     }
 }
 

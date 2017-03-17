@@ -25,7 +25,7 @@ public:
 
     CsgUtils csgUtils;
     Neighborhood *neighborhood;
-    
+
     // Reconfiguration Variables
     Reconf *reconf;
     Sync *sync;

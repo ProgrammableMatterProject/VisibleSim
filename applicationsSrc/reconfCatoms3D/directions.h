@@ -13,5 +13,12 @@ public:
     bool leftSeedVisited;
     bool nextSeedVisited;
     bool parentVisited;
+
+    SyncRoute() {
+        rightSeedVisited = false;
+        leftSeedVisited = false;
+        nextSeedVisited = false;
+        parentVisited = false;
+    }
 };
 #endif /* DIRECTIONS_H_ */

@@ -15,9 +15,13 @@
 #include "catoms3DBlock.h"
 #include "../directions.h"
 #include "../reconf.h"
+#include "syncResponse.h"
 
 class SyncLeft {
 	Catoms3D::Catoms3DBlock *catom;
+    SyncData *syncData;
+    SyncResponse *syncResponse; 
+
     void syncSeedNext(bID requestCatomID, Cell3DPosition requestPosition, Reconf*);
     void syncSeedPrevious(bID requestCatomID, Cell3DPosition requestPosition, Reconf*);
 
@@ -26,7 +30,7 @@ class SyncLeft {
     void sendSeedMessage(bID requestCatomID, Cell3DPosition requestPosition, LINE_DIRECTION line_direction);
 
 public:
-    SyncLeft(Catoms3D::Catoms3DBlock *c) : catom(c) {};
+    SyncLeft(Catoms3D::Catoms3DBlock *c, SyncData *d, SyncResponse *s) : catom(c), syncData(d), syncResponse(s) {};
     void syncSeed(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, LINE_DIRECTION lineDirection);
     void syncNeighbor(bID requestCatomID, Cell3DPosition requestPosition, Reconf*, SIDE_DIRECTION sideDirection, LINE_DIRECTION lineDirection);
 

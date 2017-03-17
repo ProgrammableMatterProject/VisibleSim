@@ -12,16 +12,18 @@
 
 #include "catoms3DBlock.h"
 #include "../directions.h"
+#include "syncData.h"
 
 class Sync_response_message;
 
 class SyncResponse {
 	Catoms3D::Catoms3DBlock *catom;
+    SyncData *syncData;
 
 public:
-    SyncResponse(Catoms3D::Catoms3DBlock *c) : catom(c) {};
+    SyncResponse(Catoms3D::Catoms3DBlock *c, SyncData *d) : catom(c), syncData(d) {};
     void response(bID requestCatomID, Cell3DPosition requestPosition, DIRECTION, bool canSyncLine);
-    void forwardResponse(shared_ptr<Sync_response_message> msg, SyncRoute &syncRoute);
+    void forwardResponse(shared_ptr<Sync_response_message> msg);
 };
 
 class Sync_response_message : public Message {

@@ -33,9 +33,10 @@ bool Reconf::isSeed()
     return seed;
 }
 
+// A sync module cant be seed to avoid two seeds constructing the same line
 bool Reconf::isSeedCheck()
 {
-   return seed = isInternalSeed() || isBorderSeed();
+    return seed = (isInternalSeed() || isBorderSeed()) && !needSyncToRight();
 }
 
 bool Reconf::needSyncToRight()

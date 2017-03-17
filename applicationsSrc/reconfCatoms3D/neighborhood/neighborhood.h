@@ -55,7 +55,6 @@ public:
     void handleNewCatomResponseMsg(MessagePtr msg);
     void handleLeftSideCompletedMsg(MessagePtr msg);
     void handleRightSideCompletedMsg(MessagePtr msg);
-
 };
 
 class New_catom_message : public Message {

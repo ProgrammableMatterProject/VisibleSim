@@ -17,8 +17,8 @@ void SyncResponse::response(bID requestCatomID, Cell3DPosition requestPosition, 
 /*
  * Check if all neighbors confirmed before forward the response
  */
-void SyncResponse::forwardResponse(shared_ptr<Sync_response_message> msg, SyncRoute &syncRoute) {
-    response(msg->requestCatomID, msg->requestPosition, syncRoute.direction, msg->canSyncLine);
+void SyncResponse::forwardResponse(shared_ptr<Sync_response_message> msg) {
+    response(msg->requestCatomID, msg->requestPosition, syncData->routes[msg->requestCatomID].direction, msg->canSyncLine);
     /*
     if (msg->messageFromParent == false) {
         if (msg->canSyncLine == 1) {
