@@ -2,27 +2,28 @@
 
 Sync::Sync(Catoms3D::Catoms3DBlock *c, Reconf *r) : catom(c), reconf(r)
 {
-    syncData = new SyncData;
-    syncResponse = new SyncResponse(catom, syncData);
-    syncLeft = new SyncLeft(catom, syncData, syncResponse);
+    syncResponseModel = new SyncResponseModel;
+    syncResponse = new SyncResponse(catom, syncResponseModel);
+    syncLeft = new SyncLeft(catom, reconf, syncResponseModel, syncResponse);
 }
 
 Sync::~Sync()
 {
     delete syncLeft;
     delete syncResponse;
-    delete syncData;
+    delete syncResponseModel;
 }
 
 void Sync::sync() {
     if (reconf->needSyncToLeft()) {
-        syncLeft->syncSeed(catom->blockId, catom->position.addX(-1).addY(-1), reconf, TO_PREVIOUS);
+        SyncModel syncModel(catom->blockId, catom->position.addX(-1).addY(-1));
+        syncLeft->syncSeed(syncModel, TO_PREVIOUS);
     }
 }
 
 void Sync::handleResponse(MessagePtr message) {
     shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
-    SyncRoute *route = &syncData->routes[recv_message->requestCatomID];
+    SyncRoute *route = &syncResponseModel->routes[recv_message->syncModel.requestCatomID];
     if (recv_message->canSyncLine) {
         syncResponse->forwardResponse(recv_message);
     }
@@ -38,7 +39,7 @@ void Sync::handleResponse(MessagePtr message) {
         else*/
         if (reconf->isSeed() && reconf->getNumberSeedsLeft() && !route->leftSeedVisited) {
             route->leftSeedVisited = true;
-            syncLeft->syncSeed(recv_message->requestCatomID, recv_message->requestPosition, reconf, TO_PREVIOUS);
+                syncLeft->syncSeed(recv_message->syncModel, TO_PREVIOUS);
         }
         else {
             syncResponse->forwardResponse(recv_message);
@@ -47,34 +48,34 @@ void Sync::handleResponse(MessagePtr message) {
 }
 
 
-void Sync::handleLookupForwardMessage(MessagePtr message, Reconf *reconf)
+void Sync::handleLookupForwardMessage(MessagePtr message)
 {
     shared_ptr<Lookup_forward_sync_message> recv_message = static_pointer_cast<Lookup_forward_sync_message>(message);
 
     if (recv_message->side_direction == TO_LEFT) {
-        syncData->routes[recv_message->requestCatomID].direction = DIRECTION_RIGHT;
-        syncData->routes[recv_message->requestCatomID].rightSeedVisited = true;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].direction = DIRECTION_RIGHT;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].rightSeedVisited = true;
     }
     if (recv_message->side_direction == TO_RIGHT) {
-        syncData->routes[recv_message->requestCatomID].direction = DIRECTION_LEFT;
-        syncData->routes[recv_message->requestCatomID].leftSeedVisited = true;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].direction = DIRECTION_LEFT;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].leftSeedVisited = true;
     }
 
-    syncLeft->syncNeighbor(recv_message->requestCatomID, recv_message->requestPosition, reconf, recv_message->side_direction, recv_message->line_direction);
+    syncLeft->syncNeighbor(recv_message->syncInfo, recv_message->side_direction, recv_message->line_direction);
 }
 
-void Sync::handleLookupLineMessage(MessagePtr message, Reconf *reconf)
+void Sync::handleLookupLineMessage(MessagePtr message)
 {
     shared_ptr<Lookup_line_sync_message> recv_message = static_pointer_cast<Lookup_line_sync_message>(message);
 
     if (recv_message->lineDirection == TO_NEXT) {
-        syncData->routes[recv_message->requestCatomID].direction = DIRECTION_DOWN;
-        syncData->routes[recv_message->requestCatomID].parentVisited = true;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].direction = DIRECTION_DOWN;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].parentVisited = true;
     }
     if (recv_message->lineDirection == TO_PREVIOUS) {
-        syncData->routes[recv_message->requestCatomID].direction = DIRECTION_UP;
-        syncData->routes[recv_message->requestCatomID].nextSeedVisited = true;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].direction = DIRECTION_UP;
+        syncResponseModel->routes[recv_message->syncInfo.requestCatomID].nextSeedVisited = true;
     }
 
-    syncLeft->syncSeed(recv_message->requestCatomID, recv_message->requestPosition, reconf, recv_message->lineDirection);
+    syncLeft->syncSeed(recv_message->syncInfo, recv_message->lineDirection);
 }

@@ -8,15 +8,15 @@
 #ifndef SYNC_H_
 #define SYNC_H_
 #include "catoms3DBlockCode.h"
+#include "../reconf.h"
 #include "syncLeft.h"
 #include "syncResponse.h"
-#include "../reconf.h"
-#include "syncData.h"
+#include "syncModel.h"
 
 class Sync {
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
-    SyncData *syncData;
+    SyncResponseModel *syncResponseModel;
 
 public:
     SyncLeft *syncLeft;
@@ -26,10 +26,10 @@ public:
     ~Sync();
     void sync();
     void handleResponse(MessagePtr message);
-    void handleLookupForwardMessage(MessagePtr message, Reconf*);
-    void handleLookupLineMessage(MessagePtr message, Reconf*);
-    bool isSyncOK() { return syncData->isSyncOK(); }
-    void setSyncOK() { syncData->setSyncOK(); }
+    void handleLookupForwardMessage(MessagePtr message);
+    void handleLookupLineMessage(MessagePtr message);
+    bool isSyncOK() { return syncResponseModel->isSyncOK(); }
+    void setSyncOK() { syncResponseModel->setSyncOK(); }
 };
 
 

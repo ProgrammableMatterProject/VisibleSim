@@ -11,13 +11,13 @@
 #include "../directions.h"
 #include <map>
 
-class SyncData {
+class SyncResponseModel {
 
     bool syncOK;
 public:
     map<bID, SyncRoute> routes;
 
-    SyncData() {
+    SyncResponseModel() {
         syncOK = false;
     }
 
@@ -29,4 +29,12 @@ public:
         return syncOK;
     }
 };
+
+class SyncModel {
+public:
+    bID requestCatomID;
+    Cell3DPosition requestPosition;
+    SyncModel(bID requestCatom, Cell3DPosition requestPos) : requestCatomID(requestCatom), requestPosition(requestPos){ };
+};
+
 #endif /* SYNCDATA_H_ */

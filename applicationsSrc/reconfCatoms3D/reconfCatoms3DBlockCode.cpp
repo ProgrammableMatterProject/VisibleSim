@@ -1,17 +1,17 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
 
-#define CONSTRUCT_WAIT_TIME 5
-#define SYNC_WAIT_TIME 50
+#define CONSTRUCT_WAIT_TIME 1
+#define SYNC_WAIT_TIME 5
 
 using namespace std;
 using namespace Catoms3D;
 
 //string CSG_FILE = "data/manyHoles.bc";
-//string CSG_FILE = "data/manyHolesScale2.bc";
+string CSG_FILE = "data/manyHolesScale2.bc";
 //string CSG_FILE = "data/threeHoles.bc";
 //string CSG_FILE = "data/letterC.bc";
-string CSG_FILE = "data/testForm.bc";
+//string CSG_FILE = "data/testForm.bc";
 
 
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
@@ -92,14 +92,14 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case LOOKUP_FORWARD_SYNC_MESSAGE_ID:
             {
-                sync->handleLookupForwardMessage(message, reconf);
+                sync->handleLookupForwardMessage(message);
                 catom->setColor(LIGHTGREEN);
                 std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
                 break;
             }
             case LOOKUP_LINE_SYNC_MESSAGE_ID:
             {
-                sync->handleLookupLineMessage(message, reconf);
+                sync->handleLookupLineMessage(message);
                 catom->setColor(GREEN);
                 std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
                 break;
@@ -108,7 +108,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 catom->setColor(BLUE);
                 shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
-                if (recv_message->canSyncLine && recv_message->requestCatomID == catom->blockId) {
+                if (recv_message->canSyncLine && recv_message->syncModel.requestCatomID == catom->blockId) {
                     sync->setSyncOK();
                     neighborhood->addNeighbors();
                 }

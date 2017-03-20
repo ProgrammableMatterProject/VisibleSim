@@ -1,7 +1,7 @@
 #include "syncResponse.h"
 
-void SyncResponse::response(bID requestCatomID, Cell3DPosition requestPosition, DIRECTION direction, bool canSyncLine) {
-    Sync_response_message *msg = new Sync_response_message(requestCatomID, requestPosition, canSyncLine);
+void SyncResponse::response(SyncModel syncModel, DIRECTION direction, bool canSyncLine) {
+    Sync_response_message *msg = new Sync_response_message(syncModel, canSyncLine);
     Cell3DPosition pos = catom->position;
     if (direction == DIRECTION_UP)
         pos = pos.addY(1);
@@ -18,7 +18,7 @@ void SyncResponse::response(bID requestCatomID, Cell3DPosition requestPosition, 
  * Check if all neighbors confirmed before forward the response
  */
 void SyncResponse::forwardResponse(shared_ptr<Sync_response_message> msg) {
-    response(msg->requestCatomID, msg->requestPosition, syncData->routes[msg->requestCatomID].direction, msg->canSyncLine);
+    response(msg->syncModel, syncResponseModel->routes[msg->syncModel.requestCatomID].direction, msg->canSyncLine);
     /*
     if (msg->messageFromParent == false) {
         if (msg->canSyncLine == 1) {
