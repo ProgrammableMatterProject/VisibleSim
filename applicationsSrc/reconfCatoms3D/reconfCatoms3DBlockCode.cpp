@@ -1,17 +1,17 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
 
-#define CONSTRUCT_WAIT_TIME 1
-#define SYNC_WAIT_TIME 5
+#define CONSTRUCT_WAIT_TIME 10
+#define SYNC_WAIT_TIME 100
 
 using namespace std;
 using namespace Catoms3D;
 
 //string CSG_FILE = "data/manyHoles.bc";
-string CSG_FILE = "data/manyHolesScale2.bc";
+//string CSG_FILE = "data/manyHolesScale2.bc";
 //string CSG_FILE = "data/threeHoles.bc";
 //string CSG_FILE = "data/letterC.bc";
-//string CSG_FILE = "data/testForm.bc";
+string CSG_FILE = "data/testForm.bc";
 
 
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
@@ -90,17 +90,31 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 neighborhood->handleRightSideCompletedMsg(message);
                 break;
             }
-            case LOOKUP_FORWARD_SYNC_MESSAGE_ID:
+            case LOOKUP_NEIGHBOR_LEFT_SYNC_MESSAGE_ID:
             {
-                sync->handleLookupForwardMessage(message);
+                sync->handleLookupNeighborLeftMessage(message);
                 catom->setColor(LIGHTGREEN);
                 std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
                 break;
             }
-            case LOOKUP_LINE_SYNC_MESSAGE_ID:
+            case LOOKUP_LINE_LEFT_SYNC_MESSAGE_ID:
             {
-                sync->handleLookupLineMessage(message);
+                sync->handleLookupLineLeftMessage(message);
                 catom->setColor(GREEN);
+                std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+                break;
+            }
+            case LOOKUP_NEIGHBOR_RIGHT_SYNC_MESSAGE_ID:
+            {
+                sync->handleLookupNeighborRightMessage(message);
+                catom->setColor(YELLOW);
+                std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+                break;
+            }
+            case LOOKUP_LINE_RIGHT_SYNC_MESSAGE_ID:
+            {
+                sync->handleLookupLineRightMessage(message);
+                catom->setColor(ORANGE);
                 std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
                 break;
             }

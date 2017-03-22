@@ -22,7 +22,7 @@ class SyncResponse {
 
 public:
     SyncResponse(Catoms3D::Catoms3DBlock *c, SyncResponseModel *d) : catom(c), syncResponseModel(d) {};
-    void response(SyncModel syncModel, DIRECTION, bool canSyncLine);
+    void response(SyncModel syncModel, DIRECTION, bool canSyncLine, bool toLeft);
     void forwardResponse(shared_ptr<Sync_response_message> msg);
 };
 
@@ -30,8 +30,8 @@ class Sync_response_message : public Message {
 public:
     SyncModel syncModel;
     bool canSyncLine; // 0 for completed but not allowed and 1 for allowed
-//    bool messageFromParent; // can be from parent or from neighbor
-    Sync_response_message(SyncModel syncModel, bool canSyncLine) : syncModel(syncModel), canSyncLine(canSyncLine) { id = SYNC_RESPONSE_MESSAGE_ID; }
+    bool toLeft;
+    Sync_response_message(SyncModel syncModel, bool canSyncLine, bool toLeft) : syncModel(syncModel), canSyncLine(canSyncLine), toLeft(toLeft) { id = SYNC_RESPONSE_MESSAGE_ID; }
 };
 
 #endif /* SYNCRESPONSE_H_ */

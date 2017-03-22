@@ -10,6 +10,7 @@
 #include "catoms3DBlockCode.h"
 #include "../reconf.h"
 #include "syncLeft.h"
+#include "syncRight.h"
 #include "syncResponse.h"
 #include "syncModel.h"
 
@@ -20,14 +21,22 @@ class Sync {
 
 public:
     SyncLeft *syncLeft;
+    SyncRight *syncRight;
     SyncResponse *syncResponse;
 
     Sync(Catoms3D::Catoms3DBlock *c, Reconf *r);
     ~Sync();
     void sync();
     void handleResponse(MessagePtr message);
-    void handleLookupForwardMessage(MessagePtr message);
-    void handleLookupLineMessage(MessagePtr message);
+    void handleResponseLeft(shared_ptr<Sync_response_message> message);
+    void handleResponseRight(shared_ptr<Sync_response_message> message);
+
+    void handleLookupNeighborLeftMessage(MessagePtr message);
+    void handleLookupLineLeftMessage(MessagePtr message);
+
+    void handleLookupNeighborRightMessage(MessagePtr message);
+    void handleLookupLineRightMessage(MessagePtr message);
+
     bool isSyncOK() { return syncResponseModel->isSyncOK(); }
     void setSyncOK() { syncResponseModel->setSyncOK(); }
 };

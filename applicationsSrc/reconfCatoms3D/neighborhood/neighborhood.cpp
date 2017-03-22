@@ -60,11 +60,7 @@ bool Neighborhood::isOnRightBorder()
 
 void Neighborhood::addNextLineNeighbor()
 {
-    if (reconf->needSync()) {
-        sync->sync();
-        catom->setColor(RED);
-    }
-    else if  (reconf->isSeed()) {
+    if  (reconf->isSeed()) {
         if (isLeftCompleted() && isRightCompleted()) {
             addNeighbor(catom->position.addY(1));
         }
