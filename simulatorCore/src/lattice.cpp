@@ -267,9 +267,25 @@ string SLattice::getDirectionString(int d) {
 
 
 /********************* FCCLattice *********************/
-FCCLattice::FCCLattice() : Lattice3D() {}
-FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
-FCCLattice::~FCCLattice() {}
+FCCLattice::FCCLattice() : Lattice3D() {
+}
+
+FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {
+    tabLockedCells = new bool[gridSize[0] * gridSize[1] * gridSize[2]]();
+    /*bool *ptr=tabLockedCells;
+    int i=gridSize[0] * gridSize[1] * gridSize[2];
+    while (--i) {
+        *ptr++=false;
+    }*/
+    OUTPUT << "init Lattice" << endl;
+    for (int i=0; i<gridSize[0] * gridSize[1] * gridSize[2];i++) { OUTPUT << tabLockedCells[i] << " "; }
+    OUTPUT << endl;
+}
+
+
+FCCLattice::~FCCLattice() {
+    delete [] tabLockedCells;
+}
 
 vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
     return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
@@ -299,8 +315,7 @@ Cell3DPosition FCCLattice::worldToGridPosition(const Vector3D &pos) {
     static const double round=0.05;
     double v;
 
-    res.pt[2] = short(pos[2] / (M_SQRT2_2 * gridScale[2]) - 0.5 + round);
-
+    res.pt[2] = short(floor(pos[2] / (M_SQRT2_2 * gridScale[2]) - 0.5 + round));
     if (IS_EVEN(res[2])) {
         v = (pos[0] - gridScale[0]) / gridScale[0] + 0.5;
         res.pt[0] = v < 0 ? short(v - round) : short(v + round);
@@ -313,7 +328,6 @@ Cell3DPosition FCCLattice::worldToGridPosition(const Vector3D &pos) {
         v = (pos[1] - gridScale[1]) / gridScale[1];
         res.pt[1] = v < 0 ? short(v - round) : short(v + round);
     }
-
     return res;
 }
 
@@ -351,6 +365,49 @@ string FCCLattice::getDirectionString(int d) {
     return directionName[d];
 }
 
+bool FCCLattice::lockCell(const Cell3DPosition &pos) {
+    if (!isInGrid(pos)) return true;
+
+    int ind = getIndex(pos);
+    OUTPUT << "ind=" << ind << " / pos=" << pos << " / state=" << tabLockedCells[ind] << " / bb=" << (grid[ind]==NULL?0:1) << endl;
+    if (tabLockedCells[ind] || grid[ind]!=NULL) {
+        return false;
+    }
+    tabLockedCells[ind] = true;
+    return true;
+}
+
+bool FCCLattice::unlockCell(const Cell3DPosition &pos) {
+    if (!isInGrid(pos)) return true;
+
+    int ind = getIndex(pos);
+    bool prev = tabLockedCells[ind];
+    tabLockedCells[ind] = false;
+    return prev;
+}
+
+void FCCLattice::glDraw() {
+    int ix,iy,iz;
+    Cell3DPosition gp;
+    Vector3D v;
+
+    bool *ptr = tabLockedCells;
+    for (iz=0; iz<gridSize[2]; iz++) {
+        for (iy=0; iy<gridSize[1]; iy++) {
+            for (ix=0; ix<gridSize[0]; ix++) {
+                if (*ptr) {
+                    glPushMatrix();
+                    gp.set(ix,iy,iz);
+                    v = gridToWorldPosition(gp);
+                    glTranslatef(v[0],v[1],v[2]);
+                    glutSolidSphere(0.065*gridScale[0],6,6);
+                    glPopMatrix();
+                }
+                ptr++;
+            }
+        }
+    }
+}
 
 /********************* SCLattice *********************/
 SCLattice::SCLattice() : Lattice3D() {}

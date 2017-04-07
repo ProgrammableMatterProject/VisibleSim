@@ -21,6 +21,7 @@ namespace BaseSimulator {
  *
  */
 class Lattice {
+protected :
     struct InvalidInsertionException : std::exception {
         const char* what() const noexcept {
             return "trying to insert a block out of the lattice\n";
@@ -32,7 +33,7 @@ class Lattice {
         }
     };
 
-    static const string directionName[];    
+    static const string directionName[];
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)
     /**
@@ -51,9 +52,9 @@ public:
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
-   
+
     /**
-     * @brief Abstract Lattice constructor. 
+     * @brief Abstract Lattice constructor.
      */
     Lattice();
     /**
@@ -150,22 +151,23 @@ public:
      * @return the maximum number of neighbor for the callee lattice
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; };
+    virtual void glDraw() {};
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
  *
  */
 class Lattice2D : public Lattice {
-    static const string directionName[];    
+    static const string directionName[];
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
     /**
-     * @brief Abstract Lattice 2D constructor. 
+     * @brief Abstract Lattice 2D constructor.
      */
     Lattice2D();
     /**
-     * @brief Abstract Lattice 2D constructor. 
+     * @brief Abstract Lattice 2D constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
@@ -189,7 +191,7 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() = 0;
 };
 
@@ -202,11 +204,11 @@ public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
     /**
-     * @brief Abstract Lattice 3D constructor. 
+     * @brief Abstract Lattice 3D constructor.
      */
     Lattice3D();
     /**
-     * @brief Abstract Lattice 3D constructor. 
+     * @brief Abstract Lattice 3D constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
@@ -230,7 +232,7 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() = 0;
 };
 
@@ -254,22 +256,22 @@ public:
     virtual int getOppositeDirection(int d);
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(int d);
-    
+
     /**
-     * @brief SLattice constructor. 
+     * @brief SLattice constructor.
      */
     SLattice();
     /**
-     * @brief SLattice constructor. 
+     * @brief SLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     SLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief SLattice destructor. 
+     * @brief SLattice destructor.
      */
     ~SLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -284,7 +286,7 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
 };
 
@@ -313,7 +315,7 @@ class HLattice : public Lattice2D {
             }; //!< Vector containing relative position of neighboring cells for odd(z) cells
 
     static const string directionName[];
-public:   
+public:
     enum Direction {Right = 0, TopRight = 1, TopLeft = 2,
                     Left = 3, BottomLeft = 4, BottomRight = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
@@ -322,20 +324,20 @@ public:
     virtual string getDirectionString(int d);
 
     /**
-     * @brief HLattice constructor. 
+     * @brief HLattice constructor.
      */
     HLattice();
     /**
-     * @brief HLattice constructor. 
+     * @brief HLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     HLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief HLattice destructor. 
+     * @brief HLattice destructor.
      */
     ~HLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -350,7 +352,7 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
 };
 
@@ -392,6 +394,7 @@ class FCCLattice : public Lattice3D {
       }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
 
     static const string directionName[];
+    bool *tabLockedCells;
 public:
     enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
                     Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
@@ -399,22 +402,22 @@ public:
     virtual int getOppositeDirection(int d);
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(int d);
-    
+
     /**
-     * @brief FCCLattice constructor. 
+     * @brief FCCLattice constructor.
      */
     FCCLattice();
     /**
-     * @brief FCCLattice constructor. 
+     * @brief FCCLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief FCCLattice destructor. 
+     * @brief FCCLattice destructor.
      */
     ~FCCLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -429,8 +432,11 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+    bool lockCell(const Cell3DPosition &pos);
+    bool unlockCell(const Cell3DPosition &pos);
+    void glDraw();
 };
 
 /*! @brief 3D Simple Cubic Lattice
@@ -454,22 +460,22 @@ public:
     virtual int getOppositeDirection(int d);
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(int d);
-    
+
     /**
-     * @brief SCLattice constructor. 
+     * @brief SCLattice constructor.
      */
     SCLattice();
     /**
-     * @brief SCLattice constructor. 
+     * @brief SCLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief SCLattice destructor. 
+     * @brief SCLattice destructor.
      */
     ~SCLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -484,7 +490,7 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
 };
 
@@ -503,19 +509,19 @@ public:
     virtual string getDirectionString(int d);
 
     list<BuildingBlock*> connected; //!< contains all cells with a block on it
-    
+
     /**
-     * @brief BCLattice constructor. 
+     * @brief BCLattice constructor.
      */
     BCLattice();
     /**
-     * @brief BCLattice constructor. 
+     * @brief BCLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief BCLattice destructor. 
+     * @brief BCLattice destructor.
      */
     ~BCLattice();
 
@@ -533,7 +539,7 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
 };
 

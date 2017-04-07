@@ -129,7 +129,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 4 : {
+        case 4 : { // 0->5
             Rotations3D rotations(catom,voisin,r1,Vector3D(0,0,1),45.0,Vector3D(-1,1,0),45.0);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
@@ -142,7 +142,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 6 : {
+        case 6 : { // 0->2
             Rotations3D rotations(catom,voisin,r1,Vector3D(0,0,1),-45.0,Vector3D(1,1,0),45.0);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
@@ -155,7 +155,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 8 : {
+        case 8 : { // 0->10
             Rotations3D rotations(catom,voisin,r1,Vector3D(0,0,1),45.0,Vector3D(-1,1,0),-45.0);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
@@ -168,7 +168,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 10 : {
+        case 10 : { // 0->9
             Rotations3D rotations(catom,voisin,r1,Vector3D(0,0,1),-45.0,Vector3D(1,1,0),-45.0);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
@@ -181,7 +181,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 12 : {
+        case 12 : { // 0->2
             Rotations3D rotations(catom,voisin,r2,Vector3D(0,1,0),ALPHA,Vector3D(1.0,1.0,M_SQRT2),ALPHA);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
@@ -194,7 +194,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 14 : {
+        case 14 : { // 0->5
             Rotations3D rotations(catom,voisin,r2,Vector3D(0,1,0),ALPHA,Vector3D(1.0,-1.0,M_SQRT2),-ALPHA);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
@@ -207,7 +207,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 16 : {
+        case 16 : { // 0->10
             Rotations3D rotations(catom,voisin,r2,Vector3D(0,1,0),-ALPHA,Vector3D(-1.0,-1.0,M_SQRT2),ALPHA);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
@@ -220,7 +220,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
         }
         break;
-        case 18 : {
+        case 18 : { // 0->9
             Rotations3D rotations(catom,voisin,r2,Vector3D(0,1,0),-ALPHA,Vector3D(-1.0,1.0,M_SQRT2),-ALPHA);
             t = scheduler->now()+2000;
             scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));

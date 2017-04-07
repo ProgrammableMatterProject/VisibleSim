@@ -4,7 +4,7 @@
 	<spotlight target="25,25,0" directionSpherical="-35,40,150" angle="20"/>
 
 	<blockList color="128,128,128" blockSize="10,10,10">
-		<block position="1,1,1" orientation="0" color="255,255,64"/>
+		<block position="1,1,1" orientation="1" color="255,255,64"/>
 
 		<block position="2,1,1" orientation="0" color="255,64,255"/>
 

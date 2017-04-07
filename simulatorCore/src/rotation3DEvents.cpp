@@ -40,6 +40,7 @@ void Rotation3DStartEvent::consume() {
     Scheduler *scheduler = getScheduler();
     Catoms3DBlock *catom = (Catoms3DBlock *)concernedBlock;
     Catoms3DWorld::getWorld()->disconnectBlock(catom);
+
 //    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
     scheduler->schedule(new Rotation3DStepEvent(scheduler->now() + ANIMATION_DELAY,catom, rot));
@@ -189,9 +190,7 @@ Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,
     matTAB.setTranslation(AB);
     matTBA.setTranslation(-AB);
 
-    // we write rotation axes in A referentiel
-    axe1 = (MA_1*ax1).normer();
-//    axe1 = ax1.normer();
+    axe1 = ax1.normer();
 
     double r=AB.norme()/2.0;
     double shift = (ang1>0)?c_2*r:-c_2*r;
@@ -200,21 +199,19 @@ Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,
 
     A0D0 = (0.5+0.5*rprim)*AB+shift*V;
     A0C0 = (0.5-0.5*rprim)*AB+shift*V;
-/*    OUTPUT << "axe1=" << axe1 << endl;
-    OUTPUT << "V=" << V << endl;
-    OUTPUT << "A0B=" << AB << endl;
-    OUTPUT << "A0C0=" << A0C0 << endl;
-    OUTPUT << "A0D0=" << A0D0 << endl;
-*/
+
     Matrix mr;
     mr.setRotation(angle1,axe1);
     finalMatrix = matTAB*(mr*(matTBA*mr));
-    m  = MA*finalMatrix;
 
+    m  = MA*finalMatrix;
     m.inverse(MA_1);
     m = MA_1*MB;
     AB = m*Vector3D(0,0,0,1);
+
+    finalMatrix.inverse(MA_1);
     axe2 = (MA_1*ax2).normer();
+
 
     matTAB.setTranslation(AB);
     matTBA.setTranslation(-AB);
@@ -222,18 +219,10 @@ Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,
     m = matTAB*(mr*(matTBA*mr));
     finalMatrix = finalMatrix*m;
 
-/*    OUTPUT << "--------initialMatrix-------" << endl;
-    OUTPUT << initialMatrix;
-    OUTPUT << "--------finalMatrix-------" << endl;
-    OUTPUT << finalMatrix;
-*/
     m = MA*finalMatrix;
-/*    OUTPUT << "A1=" << m*Vector3D(0,0,0,1) << endl;
-*/
     m.inverse(MA_1);
     m = MA_1*MB;
     AB = m*Vector3D(0,0,0,1);
-
 
     shift = (ang2>0)?-c_2*r:c_2*r;
     V = AB^axe2;
@@ -241,11 +230,6 @@ Rotations3D::Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,
 
     A1D1 = (0.5+0.5*rprim)*AB+shift*V;
     A1C1 = (0.5-0.5*rprim)*AB+shift*V;
-/*    OUTPUT << "axe2=" << axe2 << endl;
-    OUTPUT << "V=" << V << endl;
-    OUTPUT << "A1B=" << AB << endl;
-    OUTPUT << "A1C1=" << A1C1 << endl;
-    OUTPUT << "A1D1=" << A1D1 << endl;*/
 }
 
 bool Rotations3D::nextStep(Matrix &m) {
@@ -262,7 +246,7 @@ bool Rotations3D::nextStep(Matrix &m) {
         matTAD.setTranslation(A0D0);
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = initialMatrix * m;
-        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
+//        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
         if (step==nbRotationSteps) {
             firstRotation=false;
         }
@@ -279,7 +263,7 @@ bool Rotations3D::nextStep(Matrix &m) {
         matTAD.setTranslation(A1D1);
         m = matTAD*(mr*(matTDC*(mr*matTCA)));
         m = finalMatrix * m;
-        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
+//        OUTPUT << m.m[0] << " " << m.m[1] << " " << m.m[2] << " " << m.m[3] << " " << m.m[4] << " " << m.m[5] << " " << m.m[6] << " " << m.m[7] << " " << m.m[8] << " " << m.m[9] << " " << m.m[10] << " " << m.m[11] << " " << m.m[12] << " " << m.m[13] << " " << m.m[14] << " " << m.m[15] << endl;
         if (step==0) {
             return true;
         }
@@ -293,7 +277,6 @@ void Rotations3D::getFinalPositionAndOrientation(Cell3DPosition &position, short
 //    OUTPUT << "final=" << q << endl;
     position = Catoms3D::getWorld()->lattice->worldToGridPosition(q);
 //    OUTPUT << "final grid=" << position << endl;
-
     orientation=Catoms3DBlock::getOrientationFromMatrix(finalMatrix);
 }
 

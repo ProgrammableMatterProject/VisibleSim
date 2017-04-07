@@ -32,13 +32,9 @@ void Catoms3DBlock::setVisible(bool visible) {
     getWorld()->updateGlData(this,visible);
 }
 
-void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code) {
-    orientationCode = code;
+Matrix Catoms3DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code) {
     short orientation = code%12;
     short up = code/12;
-    position = p;
-
-    //cout << "ID" << blockId << " OR :" << orientation << "  UP :" << up << endl;
 
     Matrix M1,M2,M3,M;
     M1.setRotationZ(tabOrientationAngles[orientation][2]);
@@ -46,11 +42,18 @@ void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &p,short code
     M3.setRotationX(tabOrientationAngles[orientation][0]+up*180.0);
     M = M2*M1;
     M1 = M3*M;
-    M2.setTranslation(getWorld()->lattice->gridToWorldPosition(p));
+    M2.setTranslation(getWorld()->lattice->gridToWorldPosition(pos));
     M = M2*M1;
-    getWorld()->updateGlData(this,M);
+    return M;
+}
 
-    //cout << M << endl;
+void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos,short code) {
+    orientationCode = code;
+    position = pos;
+
+    Matrix M=getMatrixFromPositionAndOrientation(pos,code);
+    getWorld()->updateGlData(this,M);
+    getWorld()->updateGlData(this,position);
 }
 
 short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
@@ -112,7 +115,7 @@ std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
     return stream;
 }
 
-bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) {
+bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
     Vector3D realPos;
 
     Catoms3DWorld *wrl = getWorld();
