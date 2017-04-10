@@ -1,5 +1,5 @@
 /*! @file target.cpp
- * @brief Defines a target configuration for reconfiguration algorithms, 
+ * @brief Defines a target configuration for reconfiguration algorithms,
  * several ways of defining the configuration are provided to the user.
  * @author Pierre Thalamy
  * @date 21/07/2016
@@ -18,7 +18,7 @@ TiXmlNode *Target::targetNode = NULL;
 Target *Target::loadNextTarget() {
     if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
-        Target::targetNode = targetListNode->IterateChildren(targetNode); 
+        Target::targetNode = targetListNode->IterateChildren(targetNode);
 
         if (Target::targetNode) {
             TiXmlElement* element;
@@ -32,7 +32,7 @@ Target *Target::loadNextTarget() {
                     } else if (str.compare("csg") == 0) {
                         throw NotImplementedException();
                         return new TargetCSG(Target::targetNode);
-                    } 
+                    }
                 }
             }
         }
@@ -49,13 +49,13 @@ Target *Target::loadNextTarget() {
 ostream& operator<<(ostream& out,const Target *t) {
     t->print(out);
     return out;
-}   
+}
 
 /************************************************************
  *                      TargetGrid
  ************************************************************/
 
-TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {    
+TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *cellNode = targetNode->FirstChild("cell");
     const char* attr;
     TiXmlElement *element;
@@ -67,7 +67,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     while (cellNode) {
         element = cellNode->ToElement();
         color = defaultColor;
-        
+
         attr = element->Attribute("position");
         if (attr) {
             string str(attr);
@@ -97,7 +97,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     // Parse lines of cells
     cellNode = targetNode->FirstChild("targetLine");
     while (cellNode) {
-        int line = 0, plane = 0;            
+        int line = 0, plane = 0;
         element = cellNode->ToElement();
         color = defaultColor;
         attr = element->Attribute("color");
@@ -114,12 +114,12 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
         if (attr) {
             line = atoi(attr);
         }
-        
+
         attr = element->Attribute("plane");
         if (attr) {
             plane = atoi(attr);
         }
-        
+
         attr = element->Attribute("values");
         if (attr) {
             string str(attr);
@@ -134,8 +134,8 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
                 }
             }
         }
-        
-        cellNode = cellNode->NextSibling("blocksLine");
+
+        cellNode = cellNode->NextSibling("targetLine");
     } // end while (cellNode)*/
 }
 
@@ -148,7 +148,7 @@ const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException();
     }
-                
+
     return tCells[pos];
 }
 
