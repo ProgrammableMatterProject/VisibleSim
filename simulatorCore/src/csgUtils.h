@@ -3,24 +3,18 @@
 
 #include "csg.h"
 #include "color.h"
-
-enum class CSG_T : unsigned char
-{
-    Difference = 0, Union, Intersection, Translate, Scale, Rotate, Color, Cube, Cylinder, Sphere, END
-};
+#include "csgParser.h"
 
 class CsgUtils
 {
     int csgBufferPos; // CSG binary position
     char *csgBuffer;
-    int csgBufferSize;
 
 public:
-    //void createCSG(int MAX_SIZE);
+    ~CsgUtils();
     CSGNode* readFile(string path_to_file);
-    CSGNode* readCSGBuffer(char *csgBuffer, int csgBufferSize);
+    CSGNode* readCSGBuffer(char *csgBuffer);
     char * getCSGBuffer() { return csgBuffer; }
-    int getCSGBufferSize() { return csgBufferSize; }
 private:
     CSGNode* readCSGNode();
 };

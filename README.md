@@ -5,6 +5,7 @@ Dependencies:
  - GLUT
  - GLEW
  - SBCL - to compile Meld programs
+ - MUPARSER - to use CSG
 
 ## Installation
 

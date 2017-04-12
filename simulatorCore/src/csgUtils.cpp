@@ -1,35 +1,12 @@
 #include "csgUtils.h"
 
-/*
-void CsgUtils::createCSG(int MAX_SIZE) {
-    CSGNode difference(node_t::bool_op , new BoolOperator(BoolOperator::bool_operator_t::bool_difference));
-
-    CSGNode union1(node_t::bool_op, new BoolOperator(BoolOperator::bool_operator_t::bool_union));
-    CSGNode cube1(node_t::shape, new Cube(MAX_SIZE, MAX_SIZE, MAX_SIZE/8));
-
-    CSGNode translate(node_t::transformation, 
-        new Transformation(Transformation::transformation_t::translate, MAX_SIZE/2, MAX_SIZE/2, MAX_SIZE/8));
-    CSGNode cylinder1(node_t::shape, new Cylinder(MAX_SIZE, MAX_SIZE/2));
-    translate.addChild(cylinder1);
-
-    union1.addChild(cube1);
-    union1.addChild(translate);
-
-    CSGNode translate2(node_t::transformation, new Transformation(Transformation::transformation_t::translate, MAX_SIZE/2, MAX_SIZE/2, MAX_SIZE/8));
-    CSGNode cylinder2(node_t::shape, new Cylinder(MAX_SIZE, MAX_SIZE/4));
-    translate2.addChild(cylinder2);
-
-    difference.addChild(union1);
-    difference.addChild(translate2);
-
-    return difference;
+CsgUtils::~CsgUtils() {
+    delete csgBuffer;
 }
-*/
-
 CSGNode* CsgUtils::readFile(string path_to_file) {
     fstream csgFile;
     csgFile.open(path_to_file, ios::binary | ios::in | ios::ate);
-    csgBufferSize = csgFile.tellg();
+    int csgBufferSize = csgFile.tellg();
 
     csgFile.seekg(0, ios::beg);
     csgBuffer = new char[csgBufferSize];
@@ -40,9 +17,8 @@ CSGNode* CsgUtils::readFile(string path_to_file) {
     return readCSGNode();
 }
 
-CSGNode* CsgUtils::readCSGBuffer(char *_csgBuffer, int _csgBufferSize) {
+CSGNode* CsgUtils::readCSGBuffer(char *_csgBuffer) {
     csgBuffer = _csgBuffer;
-    csgBufferSize = _csgBufferSize;
     csgBufferPos = 0;
 
     return readCSGNode();

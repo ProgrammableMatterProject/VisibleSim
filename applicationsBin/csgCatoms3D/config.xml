@@ -8005,4 +8005,19 @@
 		<block position="19,19,18" orientation="0"/>
 		<block position="19,19,19" orientation="0"/>
 	</blockList>
+  <targetList>
+    <target format="csg">
+        <csg content="
+        difference() {
+		union() {
+            translate([10,10,1])
+                cube([20, 20, 20/8], true);
+			translate([20/2, 20/2, 12.5])
+				cylinder(20,20/2,20/2, true);
+		}
+		translate([20/2,20/2,12.5])
+			cylinder(20,20/4,20/4, true);
+            }"/>
+    </target>
+  </targetList>
 </world>

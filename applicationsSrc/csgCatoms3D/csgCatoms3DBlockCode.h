@@ -35,11 +35,9 @@ public:
 	Catoms3D::Catoms3DBlock *catom;
     Vector3D myPosition; // has relative position from the master
     bool hasPosition; // flag position
-    CsgUtils csgUtils;
     StoyUtils stoyUtils;
     MeshUtils meshUtils;
     BitmapUtils bitmapUtils;
-    static CSGNode *csgRoot;
 
 	CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~CsgCatoms3DBlockCode();
@@ -62,17 +60,15 @@ public:
 };
 
 class CSG_message : public Message {
-    char *csgBuffer;
-    int csgBufferSize;
+    //char *csgBuffer;
     Vector3D position;
     vector<Brick> bricks;
     string bitmap;
 public :
-	CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> bricks, string _bitmap, Vector3D position);
+	CSG_message(vector<Brick> bricks, string _bitmap, Vector3D position);
 	~CSG_message();
 
-	char* getCsgBuffer() { return csgBuffer; };
-	int getCsgBufferSize() { return csgBufferSize; };
+	//char* getCsgBuffer() { return csgBuffer; };
 	vector<Brick> getBricks() { return bricks; };
 	string getBitmap() { return bitmap; };
 	Vector3D getPosition() { return position; };
