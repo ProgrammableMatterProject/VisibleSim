@@ -189,7 +189,7 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
 }
 
 Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
-    Vector3D worldPosition = Catoms3D::Catoms3DWorld::getWorld()->lattice->gridToWorldPosition(pos);
+    Vector3D worldPosition;
     worldPosition.pt[3] = 1.0;
     worldPosition.pt[2] = M_SQRT2_2 * (pos[2] + 0.5);
     if (IS_EVEN(pos[2])) {
@@ -199,7 +199,6 @@ Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
         worldPosition.pt[1] = (pos[1] + 1.0);
         worldPosition.pt[0] = (pos[0] + 1.0);
     }
-    //Vector3D worldPosition = gridToWorldPosition2(pos);
     worldPosition.pt[0] += bb.P0[0];
     worldPosition.pt[1] += bb.P0[1];
     worldPosition.pt[2] += bb.P0[2];
