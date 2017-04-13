@@ -177,12 +177,15 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *cellNode = targetNode->FirstChild("csg");
     TiXmlElement *element = cellNode->ToElement();
     string str = element->Attribute("content");
+    bool boundingBox=true;
+    element->QueryBoolAttribute("boundingBox", &boundingBox);
 
     char* csgBin = CSGParser::parseCsg(str);
     CsgUtils csgUtils;
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
-    csgRoot->boundingBox(bb);
+    if (boundingBox)
+        csgRoot->boundingBox(bb);
 }
 
 Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
