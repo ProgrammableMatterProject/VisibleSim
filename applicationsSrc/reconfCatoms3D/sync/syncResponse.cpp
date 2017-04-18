@@ -11,9 +11,12 @@ void SyncResponse::response(SyncModel syncModel, DIRECTION direction, bool canSy
         pos = pos.addX(1);
     if (direction == DIRECTION_LEFT)
         pos = pos.addX(-1);
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 1000, msg, catom->getInterface(pos)));
+    if (catom->getInterface(pos) != NULL) {
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 1000, msg, catom->getInterface(pos)));
+    }
 }
 
 void SyncResponse::forwardResponse(shared_ptr<Sync_response_message> msg) {
     response(msg->syncModel, syncResponseModel->routes[msg->syncModel.requestCatomID].direction, msg->canSyncLine, msg->toLeft);
 }
+

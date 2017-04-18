@@ -56,13 +56,8 @@ void Sync::handleResponseLeft(shared_ptr<Sync_response_message> msg)
 void Sync::handleResponseRight(shared_ptr<Sync_response_message> msg)
 {
     SyncRoute *route = &syncResponseModel->routes[msg->syncModel.requestCatomID];
-    cout << catom->blockId << endl;
     if (reconf->isSeed() && reconf->getNumberSeedsRight() && !route->rightSeedVisited) {
         route->rightSeedVisited = true;
-        syncRight->syncSeed(msg->syncModel, TO_PREVIOUS);
-    }
-    else if (reconf->isLineParent() && route->rightSeedVisited) {
-        route->parentVisited = true;
         syncRight->syncSeed(msg->syncModel, TO_PREVIOUS);
     }
     else {

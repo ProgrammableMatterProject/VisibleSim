@@ -1,17 +1,17 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
 
-#define CONSTRUCT_WAIT_TIME 10
-#define SYNC_WAIT_TIME 100
+#define CONSTRUCT_WAIT_TIME 5
+#define SYNC_WAIT_TIME 10
 
 using namespace std;
 using namespace Catoms3D;
 
 //string CSG_FILE = "data/manyHoles.bc";
 //string CSG_FILE = "data/manyHolesScale2.bc";
-//string CSG_FILE = "data/threeHoles.bc";
+string CSG_FILE = "data/threeHoles.bc";
 //string CSG_FILE = "data/letterC.bc";
-string CSG_FILE = "data/testForm.bc";
+//string CSG_FILE = "data/testForm.bc";
 
 
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
@@ -126,7 +126,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     sync->setSyncOK();
                     neighborhood->addNeighbors();
                 }
-                else {
+                else if(recv_message->syncModel.requestCatomID != catom->blockId) {
                     sync->handleResponse(recv_message);
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));

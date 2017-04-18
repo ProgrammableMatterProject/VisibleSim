@@ -1,4 +1,5 @@
 #include "syncLeft.h"
+//SYNC TO LEFT
 
 void SyncLeft::syncSeed(SyncModel syncModel, LINE_DIRECTION syncToLineDirection) {
     if (reconf->isLineCompleted() && catom->position == syncModel.requestPosition) {

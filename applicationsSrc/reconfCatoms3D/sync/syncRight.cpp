@@ -1,4 +1,5 @@
 #include "syncRight.h"
+//SYNC TO RIGHT
 
 void SyncRight::syncSeed(SyncModel syncModel, LINE_DIRECTION syncToLineDirection) {
     if (catom->position == syncModel.requestPosition) {
