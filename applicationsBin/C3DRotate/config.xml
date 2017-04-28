@@ -20,6 +20,7 @@
 		<block position="1,3,0" orientation="0" color="128,128,64"/>
 		<block position="2,3,0" orientation="0" color="128,128,64"/>
 		<block position="3,3,0" orientation="0" color="128,128,64"/>
+		<block position="0,0,1" orientation="0" color="255,128,128"/>
 		<block position="1,0,1" orientation="0" color="255,255,64"/>
 		<block position="2,0,1" orientation="0" color="255,255,64"/>
 		<block position="1,1,1" orientation="0" color="255,255,64"/>
@@ -29,28 +30,29 @@
 
 	<targetList>
 		<target format="grid">
-		<cell position="0,0,0" color="64,255,64"/>
-		<cell position="1,0,0" color="64,255,64"/>
-		<cell position="2,0,0" color="64,255,64"/>
-		<cell position="3,0,0" color="64,255,64"/>
-		<cell position="0,1,0" color="64,255,64"/>
-		<cell position="1,1,0" color="64,255,64"/>
-		<cell position="2,1,0" color="64,255,64"/>
-		<cell position="3,1,0" color="64,255,64"/>
-		<cell position="0,2,0" color="64,255,64"/>
-		<cell position="1,2,0" color="64,255,64"/>
-		<cell position="2,2,0" color="64,255,64"/>
-		<cell position="3,2,0" color="64,255,64"/>
-		<cell position="0,3,0" color="64,255,64"/>
-		<cell position="1,3,0" color="64,255,64"/>
-		<cell position="2,3,0" color="64,255,64"/>
-		<cell position="3,3,0" color="64,255,64"/>
-		<cell position="1,0,1" color="64,255,64"/>
-		<cell position="2,0,1" color="64,255,64"/>
-		<cell position="1,1,1" color="64,255,64"/>
-		<cell position="2,1,1" color="64,255,64"/>
-		<cell position="2,1,2" color="255,64,128"/>
-	</target>
+			<cell position="0,0,0" color="64,255,64"/>
+			<cell position="1,0,0" color="64,255,64"/>
+			<cell position="2,0,0" color="64,255,64"/>
+			<cell position="3,0,0" color="64,255,64"/>
+			<cell position="0,1,0" color="64,255,64"/>
+			<cell position="1,1,0" color="64,255,64"/>
+			<cell position="2,1,0" color="64,255,64"/>
+			<cell position="3,1,0" color="64,255,64"/>
+			<cell position="0,2,0" color="64,255,64"/>
+			<cell position="1,2,0" color="64,255,64"/>
+			<cell position="2,2,0" color="64,255,64"/>
+			<cell position="3,2,0" color="64,255,64"/>
+			<cell position="0,3,0" color="64,255,64"/>
+			<cell position="1,3,0" color="64,255,64"/>
+			<cell position="2,3,0" color="64,255,64"/>
+			<cell position="3,3,0" color="64,255,64"/>
+			<cell position="1,0,1" color="64,255,64"/>
+			<cell position="2,0,1" color="64,255,64"/>
+			<cell position="1,1,1" color="64,255,64"/>
+			<cell position="2,1,1" color="64,255,64"/>
+			<cell position="2,1,2" color="255,64,128"/>
+			<cell position="0,2,1" color="255,64,128"/>
+		</target>
 	</targetList>
 
 	<!--<skeleton>

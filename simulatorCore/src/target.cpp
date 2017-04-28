@@ -139,7 +139,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     } // end while (cellNode)*/
 }
 
-bool TargetGrid::isInTarget(const Cell3DPosition &pos) {
+bool TargetGrid::isInTarget(const Cell3DPosition &pos)const {
     return tCells.count(pos);
 }
 
@@ -167,7 +167,7 @@ void TargetGrid::print(ostream& where) const {
  ************************************************************/
 
 
-bool TargetCSG::isInTarget(const Cell3DPosition &pos) {
+bool TargetCSG::isInTarget(const Cell3DPosition &pos)const {
     Color color;
     return csgRoot->isInside(pos, color);
 }

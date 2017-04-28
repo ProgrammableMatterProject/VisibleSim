@@ -1,4 +1,77 @@
+#include <queue>
 #include "C3DRotateCode.h"
+
+void C3DRotateCode::initDistances() {
+    static bool first=true;
+
+    if (first) {
+        first=false;
+
+        FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
+
+        short ix,iy,iz;
+        Cell3DPosition pos;
+        queue<Cell3DPosition> stkCells;
+        for (iz=0; iz<lattice->gridSize.pt[2]; iz++) {
+            for (iy=0; iy<lattice->gridSize.pt[1]; iy++) {
+                for (ix=0; ix<lattice->gridSize.pt[0]; ix++) {
+                    pos.set(ix,iy,iz);
+                    // free cell that must be filled
+                    if (target->isInTarget(pos) && !lattice->cellHasBlock(pos)) {
+                        lattice->setDistance(pos,0);
+                        OUTPUT << "dist0 : " << pos << endl;
+                        stkCells.push(pos);
+                    }
+                }
+            }
+        }
+        vector<Cell3DPosition> neighborhood;
+        vector <Catoms3DMotionRulesLink*>vml;
+        Catoms3DMotionRules *motionRules = Catoms3D::getWorld()->getMotionRules();
+        int currentLevel;
+        while (!stkCells.empty()) {
+            pos = stkCells.front();
+            stkCells.pop();
+            currentLevel = lattice->getDistance(pos)+1;
+            OUTPUT << pos << " LEVEL " << currentLevel << endl;
+            neighborhood = lattice->getNeighborhood(pos);
+            vector<Cell3DPosition>::const_iterator ci = neighborhood.begin();
+            while (ci!=neighborhood.end()) {
+                //OUTPUT << "neighbor " << (*ci) << endl;
+                Catoms3DBlock *pivot = (Catoms3DBlock*)lattice->getBlock(*ci);
+                if (pivot) {
+                    OUTPUT << "catom #" << pivot->blockId <<  endl;
+                    for (int i=0; i<12; i++) {
+                        //OUTPUT << "connector #" << i << endl;
+                        vml.clear();
+                        if (motionRules->getValidMotionListFromPivot(pivot,i,vml,lattice,target)) {
+                            //OUTPUT << "ans: " << vml.size() << endl;
+                            vector <Catoms3DMotionRulesLink*>::const_iterator ct = vml.begin();
+                            while (ct!=vml.end()) {
+                                Cell3DPosition destPos,fromPos;
+                                int to = (*ct)->getConToID();
+                                pivot->getNeighborPos(to,destPos);
+                                //OUTPUT << "to=" << to << ":" << destPos << endl;
+                                if (destPos==pos) {
+                                    pivot->getNeighborPos(i,fromPos);
+                                    bool full = lattice->cellHasBlock(fromPos);
+                                    if (lattice->isInGrid(fromPos) &&
+                                        lattice->getDistance(fromPos)>currentLevel ) {
+                                        OUTPUT << "dist " << currentLevel << " : "<< fromPos << " " << i << "->" << to << " " << destPos << " full=" << full << endl;
+                                        lattice->setDistance(fromPos,currentLevel);
+                                        stkCells.push(fromPos);
+                                    }
+                                }
+                                ct++;
+                            }
+                        }
+                    }
+                }
+                ci++;
+            }
+        }
+    }
+}
 
 double getPotentiel(const Vector3D &pos) {
     static const Vector3D goal(25.0,25.0,17.7,1.0);
@@ -17,6 +90,9 @@ void C3DRotateCode::startup() {
         module->setColor(target->getTargetColor(module->position));
     }
 
+    FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
+    lattice->initTabDistances();
+    initDistances();
 	//tryToMove();
 }
 
@@ -42,7 +118,7 @@ bool C3DRotateCode::tryToMove() {
             console << "interface#" << i << " to " << neighbor->blockId << "#" << neighbor->getDirection(p2p->connectedInterface) << "\n";
             // liste des mouvements possibles
             vml.clear();
-            if (motionRules->validMotionList(module,i,vml)) {
+            if (motionRules->getValidMotionList(module,i,vml)) {
                 vector <Catoms3DMotionRulesLink*>::const_iterator ci = vml.begin();
                 while (ci!=vml.end()) {
                     v = (*ci)->getFinalPosition(module);

@@ -1,3 +1,4 @@
+#include <climits>
 
 #include "lattice.h"
 #include "utils.h"
@@ -37,7 +38,7 @@ Lattice::~Lattice() {
     delete []grid;
 }
 
-int Lattice::getIndex(const Cell3DPosition &p) {
+int Lattice::getIndex(const Cell3DPosition &p) const {
     int index = p[0] + (p[1] + p[2] * gridSize[1]) * gridSize[0];
 #ifdef LATTICE_LOG
     // cerr << "index: " << index << "(/total = " << gridSize[0]*gridSize[1]*gridSize[2] << ")" << endl;
@@ -65,18 +66,18 @@ void Lattice::remove(const Cell3DPosition &p) {
     grid[getIndex(p)] = NULL;
 }
 
-BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) {
+BuildingBlock* Lattice::getBlock(const Cell3DPosition &p) const {
     return isInGrid(p) ? grid[getIndex(p)] : NULL;
 }
 
-bool Lattice::isFree(const Cell3DPosition &p) {
+bool Lattice::isFree(const Cell3DPosition &p) const {
     if (!isInGrid(p))
         return false;
     else
         return (getBlock(p) == NULL);
 }
 
-bool Lattice::cellHasBlock(const Cell3DPosition &p) {
+bool Lattice::cellHasBlock(const Cell3DPosition &p) const {
     if (!isInGrid(p)) {
         return false;
     } else {
@@ -84,7 +85,7 @@ bool Lattice::cellHasBlock(const Cell3DPosition &p) {
     }
 }
 
-bool Lattice::isInGrid(const Cell3DPosition &p) {
+bool Lattice::isInGrid(const Cell3DPosition &p) const {
     return isInRange(p[0], 0, gridSize[0] - 1)
         && isInRange(p[1], 0, gridSize[1] - 1)
         && isInRange(p[2], 0, gridSize[2] - 1);
@@ -280,11 +281,14 @@ FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice
     OUTPUT << "init Lattice" << endl;
     for (int i=0; i<gridSize[0] * gridSize[1] * gridSize[2];i++) { OUTPUT << tabLockedCells[i] << " "; }
     OUTPUT << endl;
+
+    tabDistances=NULL;
 }
 
 
 FCCLattice::~FCCLattice() {
     delete [] tabLockedCells;
+    delete [] tabDistances;
 }
 
 vector<Cell3DPosition> FCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
@@ -391,6 +395,8 @@ void FCCLattice::glDraw() {
     Cell3DPosition gp;
     Vector3D v;
 
+if (!tabDistances) return;
+    unsigned short *ptrDistance = tabDistances;
     bool *ptr = tabLockedCells;
     for (iz=0; iz<gridSize[2]; iz++) {
         for (iy=0; iy<gridSize[1]; iy++) {
@@ -403,10 +409,44 @@ void FCCLattice::glDraw() {
                     glutSolidSphere(0.065*gridScale[0],6,6);
                     glPopMatrix();
                 }
+                if (*ptrDistance!=USHRT_MAX) {
+                    glPushMatrix();
+                    gp.set(ix,iy,iz);
+                    v = gridToWorldPosition(gp);
+                    glTranslatef(v[0],v[1],v[2]);
+
+                    glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
+                    glutSolidCube(0.2*gridScale[0]);
+                    glPopMatrix();
+
+                }
                 ptr++;
+                ptrDistance++;
             }
         }
     }
+}
+
+unsigned short FCCLattice::initTabDistances() {
+    if (tabDistances==NULL) {
+        int n = gridSize.pt[0]*gridSize.pt[1]*gridSize.pt[2];
+        tabDistances = new unsigned short[n];
+        // initialisation of tabDistances with value 'd'
+        unsigned short *ptr=tabDistances;
+        while (n--) {
+            *ptr++=USHRT_MAX;
+        }
+
+    }
+}
+
+unsigned short FCCLattice::getDistance(const Cell3DPosition &pos) {
+    if (!isInGrid(pos)) return USHRT_MAX;
+    return tabDistances[getIndex(pos)];
+}
+
+void FCCLattice::setDistance(const Cell3DPosition &pos,unsigned short d) {
+    if (isInGrid(pos)) tabDistances[getIndex(pos)]=d;
 }
 
 /********************* SCLattice *********************/

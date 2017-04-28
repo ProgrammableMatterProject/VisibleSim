@@ -84,31 +84,31 @@ public:
      * @param p The position of the cell to test
      * @return true if cell at position p is in grid, false otherwise
      */
-    bool isInGrid(const Cell3DPosition &p);
+    bool isInGrid(const Cell3DPosition &p) const;
     /**
      * @brief Returns a one-dimensional array index for grid position p
      * @param p The position of the cell for which the index is needed
      * @return The index of the cell in the lattice's 1D array of cells
      */
-    int getIndex(const Cell3DPosition &p);
+    int getIndex(const Cell3DPosition &p) const;
     /**
      * @brief Indicates if cell at position p has a block on it
      * @param p The position of the cell to test
      * @return true if cell at position p has a block on it, false otherwise or if p is out of grid
      */
-    bool cellHasBlock(const Cell3DPosition &p);
+    bool cellHasBlock(const Cell3DPosition &p) const;
     /**
      * @brief Indicates if cell at position p is an empty grid cell
      * @param p The position of the cell to test
      * @return true if cell at position p is in grid and empty, false otherwise
      */
-    bool isFree(const Cell3DPosition &p);
+    bool isFree(const Cell3DPosition &p) const;
     /**
      * @brief Returns a pointer to the block on cell p of the grid
      * @param p The position of the block to get
      * @return A pointer to the block on cell p or NULL if p is not in grid or empty
      */
-    BuildingBlock *getBlock(const Cell3DPosition &p);
+    BuildingBlock *getBlock(const Cell3DPosition &p) const;
     /**
      * @brief Returns the location of all alive neighbors for cell pos
      * @param pos The cell to consider
@@ -395,6 +395,7 @@ class FCCLattice : public Lattice3D {
 
     static const string directionName[];
     bool *tabLockedCells;
+    unsigned short *tabDistances;
 public:
     enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
                     Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
@@ -436,6 +437,9 @@ public:
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
     bool lockCell(const Cell3DPosition &pos);
     bool unlockCell(const Cell3DPosition &pos);
+    unsigned short initTabDistances();
+    unsigned short getDistance(const Cell3DPosition &pos);
+    void setDistance(const Cell3DPosition &pos,unsigned short d);
     void glDraw();
 };
 

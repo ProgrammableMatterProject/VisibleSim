@@ -28,6 +28,8 @@ public :
 	C3DRotateCode(Catoms3DBlock *host):Catoms3DBlockCode(host) { module = host; };
 	~C3DRotateCode() {};
 
+	void initDistances();
+
 	void startup();
 	bool tryToMove();
 	void myLockFunc(const MessageOf<Motions>*msg,P2PNetworkInterface *sender);

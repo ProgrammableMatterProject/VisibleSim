@@ -1,5 +1,5 @@
 /*! @file target.h
- * @brief Defines a target configuration for reconfiguration algorithms, 
+ * @brief Defines a target configuration for reconfiguration algorithms,
  * several ways of defining the configuration are provided to the user.
  *
  * e.g. Definition of a list of targets in the XML file:
@@ -15,7 +15,7 @@
  *          <cell position="1,1,1"/>
  *          <cell position="1,3,2"/>
  *          <cell position="2,2,2"/>
- *          <cell position="3,3,3"/>            
+ *          <cell position="3,3,3"/>
  *        </target>
  *        <target format="csg">
  *          <TODO.../>
@@ -45,9 +45,9 @@ using namespace std;
 namespace BaseSimulator {
 
 //<! @brief Abstract Target. Provides the user with functions for checking a target position and color.
-class Target {    
+class Target {
 protected:
-    
+
     /**
      * @brief prints target to an ouput string
      * @param where ostream on which to print the object
@@ -81,27 +81,27 @@ public:
      * @brief Parse next target from the configuration file's Target List, and return a pointer to the instantiated object
      * @return pointer to the parsed Target object, or NULL if there are no (more) targets in the configuration file
      */
-    static Target *loadNextTarget();    
+    static Target *loadNextTarget();
     /**
      * @brief Target constructor. Where parsing occurs thanks to the targetNode parameter
      * @param targetNode XML Node containing target description from configuration file
      */
     Target(TiXmlNode *targetNode) {};
     virtual ~Target() {};
-    
+
     /**
      * @brief Indicates if a position belongs to the target
      * @param pos position to consider
      * @return true if pos belongs to the target, false otherwise
      */
-    virtual bool isInTarget(const Cell3DPosition &pos) = 0;
+    virtual bool isInTarget(const Cell3DPosition &pos)const = 0;
     /**
      * @brief Returns the target color at position pos
      * @param pos position to condiser
      * @return target color at cell p
      */
     virtual const Color getTargetColor(const Cell3DPosition &pos) = 0;
-    
+
     friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
 
@@ -110,7 +110,7 @@ class TargetGrid : public Target {
     // Only store target cells instead of the entire grid to save memory
     map<const Cell3DPosition, const Color> tCells; //!< the target cells as Cell/Color key-value pairs
 
-protected:    
+protected:
     /**
      * @brief Add a cell to the target cells container
      * @param pos position of the target cell
@@ -119,22 +119,22 @@ protected:
     void addTargetCell(const Cell3DPosition &pos, const Color c = Color());
 
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const;    
+    virtual void print(ostream& where) const;
 public:
     /**
-     * @copydoc Target::Target 
+     * @copydoc Target::Target
      * XML Description Format:
      * <target format="grid">
      *   <cell position="x,y,z" color="r,g,b"/>
      *   ...
      * </target>
-     */    
+     */
     TargetGrid(TiXmlNode *targetNode);
     virtual ~TargetGrid() {};
 
     //!< @copydoc Target::getTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
-    virtual bool isInTarget(const Cell3DPosition &pos);
+    virtual bool isInTarget(const Cell3DPosition &pos)const;
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
     virtual const Color getTargetColor(const Cell3DPosition &pos);
@@ -146,13 +146,13 @@ class TargetCSG : public Target {
 
 protected:
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const {};    
+    virtual void print(ostream& where) const {};
 public:
     TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {};
     virtual ~TargetCSG() {};
 
     //!< @copydoc Target::isInTarget
-    virtual bool isInTarget(const Cell3DPosition &pos);
+    virtual bool isInTarget(const Cell3DPosition &pos)const;
     //!< @copydoc Target::getTargetColor
     virtual const Color getTargetColor(const Cell3DPosition &pos);
 };  // class TargetCSG

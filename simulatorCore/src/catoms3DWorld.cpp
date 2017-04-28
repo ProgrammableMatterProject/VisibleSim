@@ -132,6 +132,11 @@ void Catoms3DWorld::glDraw() {
 
         lattice->glDraw();
 
+		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+
 		glPushMatrix();
 		enableTexture(true);
 		glBindTexture(GL_TEXTURE_2D,idTextureGrid);
