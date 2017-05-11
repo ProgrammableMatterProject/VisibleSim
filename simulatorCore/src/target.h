@@ -18,7 +18,7 @@
  *          <cell position="3,3,3"/>            
  *        </target>
  *        <target format="csg">
- *          <TODO.../>
+ *          <csg content="union() { cube([10,10,10]); cylinder(10,5,5); }"/>
  *        </target>
  *        </targetList>
  *
@@ -101,6 +101,12 @@ public:
      * @return target color at cell p
      */
     virtual const Color getTargetColor(const Cell3DPosition &pos) = 0;
+
+    /**
+     * @brief Returns the target bounding box
+     * @param bb boundingbox to be written
+     */
+    virtual void boundingBox(BoundingBox &bb) = 0;
     
     friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
@@ -128,7 +134,7 @@ public:
      *   <cell position="x,y,z" color="r,g,b"/>
      *   ...
      * </target>
-     */    
+     */
     TargetGrid(TiXmlNode *targetNode);
     virtual ~TargetGrid() {};
 
@@ -138,23 +144,42 @@ public:
     //!< @copydoc Target::getTargetColor
     //!< @throws InvalidPositionException is cell at position pos is not part of the target
     virtual const Color getTargetColor(const Cell3DPosition &pos);
+
+    //!< @copydoc Target::BoundingBox
+    virtual void boundingBox(BoundingBox &bb);
+
 };  // class TargetGrid
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
     CSGNode *csgRoot;
+    BoundingBox bb;
 
 protected:
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const {};    
+    virtual void print(ostream& where) const {};
 public:
-    TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {};
+    TargetCSG(TiXmlNode *targetNode);
     virtual ~TargetCSG() {};
 
     //!< @copydoc Target::isInTarget
     virtual bool isInTarget(const Cell3DPosition &pos);
     //!< @copydoc Target::getTargetColor
     virtual const Color getTargetColor(const Cell3DPosition &pos);
+    //!< @copydoc Target::boundingBox
+    virtual void boundingBox(BoundingBox &bb);
+    /**
+     * @brief Grid to world position within bounding box
+     * @param pos position of the target cell
+     */
+    Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    /**
+     * @brief The object is in the border of the target
+     * @param pos position of the target cell
+     * @param radius radius of the border
+     */
+    bool isInTargetBorder(const Cell3DPosition &pos, double radius);
+
 };  // class TargetCSG
 
 } // namespace BaseSimulator

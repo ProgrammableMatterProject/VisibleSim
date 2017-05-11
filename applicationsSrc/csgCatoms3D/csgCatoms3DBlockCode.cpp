@@ -29,7 +29,6 @@ double CsgCatoms3DStats::stoy_time_elapsed = 0;
 double CsgCatoms3DStats::mesh_time_elapsed = 0;
 bool CsgCatoms3DBlockCode::bitmap[27000] = {0};
 int CsgCatoms3DBlockCode::side_size = 0;
-CSGNode* CsgCatoms3DBlockCode::csgRoot = NULL;
 
 CsgCatoms3DBlockCode::CsgCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "CsgCatoms3DBlockCode constructor" << endl;
@@ -47,7 +46,7 @@ void CsgCatoms3DBlockCode::generateBitmap(int side_size) {
     int z = catom->position.pt[2];
     int pos = x + y*side_size + z*side_size*side_size;
     Color c;
-    bitmap[pos] = csgRoot->isInside(myPosition, c);
+    bitmap[pos] = BlockCode::target->isInTarget(catom->position);
 }
 
 void CsgCatoms3DBlockCode::startup() {
@@ -57,21 +56,14 @@ void CsgCatoms3DBlockCode::startup() {
 
     hasPosition = false;
 	if (catom->blockId==1) {
-        csgRoot = csgUtils.readFile("data/cube.bc");
-        csgRoot->toString();
-        BoundingBox bb;
-        csgRoot->boundingBox(bb);
-        cout << bb.P0 << ' ' << bb.P1 << endl;
 
         stoyUtils.readFile("data/mug-high.stoy");
         meshUtils.readFile("data/mug-highresolution.obj");
         bitmapUtils.readFile("data/mug.bmp");
-        myPosition = bb.P0;
+        myPosition = Catoms3DWorld::getWorld()->lattice->gridToWorldPosition(catom->position);
 
-
-        Color color;
-        if (csgRoot->isInside(myPosition, color)) {
-            catom->setColor(color);
+        if (BlockCode::target->isInTarget(catom->position)) {
+            catom->setColor(BlockCode::target->getTargetColor(catom->position));
         }
         else {
             catom->setVisible(false);
@@ -101,7 +93,7 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     /*
                     char *csgBuffer = recv_message->getCsgBuffer();
                     int csgBufferSize = recv_message->getCsgBufferSize();
-                    csgRoot = csgUtils.readCSGBuffer(csgBuffer, csgBufferSize);
+                    BlockCode::target = csgUtils.readCSGBuffer(csgBuffer, csgBufferSize);
                     stoyUtils.setBricks(recv_message->getBricks());
                     bitmapUtils.setBitmap(recv_message->getBitmap());
                     */
@@ -109,9 +101,9 @@ void CsgCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                     myPosition = recv_message->getPosition();
 
                     Color color;
-                    if (csgRoot->isInBorder(myPosition, color, 3)) {
-                    //if (csgRoot->isInside(myPosition, color)) {
-                        catom->setColor(color);
+                    if (((TargetCSG*)BlockCode::target)->isInTargetBorder(catom->position, 3)) {
+                    //if (BlockCode::target->isInside(myPosition, color)) {
+                        catom->setColor(BlockCode::target->getTargetColor(catom->position));
                     }
                     else {
                         catom->setVisible(false);
@@ -162,7 +154,7 @@ void CsgCatoms3DBlockCode::calcCSG() {
     auto begin = std::chrono::high_resolution_clock::now();
     Color c;
     for (int i = 0; i < MAX; i++) {
-        csgRoot->isInside(myPosition, c);
+        BlockCode::target->isInTarget(catom->position);
     }
     auto end = std::chrono::high_resolution_clock::now();
     CsgCatoms3DStats::csg_time_elapsed += (std::chrono::duration_cast<std::chrono::nanoseconds>(end-begin).count())/MAX;
@@ -196,17 +188,17 @@ void CsgCatoms3DBlockCode::sendCSGMessage() {
     for (int i = 0; i < 12; i++) {
         if (catom->getInterface(i)->connectedInterface != NULL) {
             Vector3D pos(
-                myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0], 
+                myPosition.pt[0] + Catoms3D::tabConnectorPositions[i][0],
                 myPosition.pt[1] + Catoms3D::tabConnectorPositions[i][1],
                 myPosition.pt[2] + Catoms3D::tabConnectorPositions[i][2],
                 1);
-            CSG_message *message = new CSG_message(csgUtils.getCSGBuffer(), csgUtils.getCSGBufferSize(), stoyUtils.getBricks(), bitmapUtils.getBitmap(), pos);
+            CSG_message *message = new CSG_message(stoyUtils.getBricks(), bitmapUtils.getBitmap(), pos);
             scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(scheduler->now() + 100, message, catom->getInterface(i)));
         }
     }
 }
 
-CSG_message::CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> _bricks, string _bitmap, Vector3D pos) {
+CSG_message::CSG_message(vector<Brick> _bricks, string _bitmap, Vector3D pos) {
 	id = CSG_MSG_ID;
 
 //    csgBuffer = new char[_csgBufferSize];

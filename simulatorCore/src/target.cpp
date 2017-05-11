@@ -7,6 +7,10 @@
 
 #include "target.h"
 #include "utils.h"
+#include "csgParser.h"
+#include "csgUtils.h"
+#include "csg.h"
+#include "catoms3DWorld.h"
 
 namespace BaseSimulator {
 
@@ -30,7 +34,6 @@ Target *Target::loadNextTarget() {
                     if (str.compare("grid") == 0) {
                         return new TargetGrid(Target::targetNode);
                     } else if (str.compare("csg") == 0) {
-                        throw NotImplementedException();
                         return new TargetCSG(Target::targetNode);
                     } 
                 }
@@ -134,7 +137,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
                 }
             }
         }
-        
+
         cellNode = cellNode->NextSibling("blocksLine");
     } // end while (cellNode)*/
 }
@@ -148,7 +151,7 @@ const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException();
     }
-                
+
     return tCells[pos];
 }
 
@@ -162,19 +165,63 @@ void TargetGrid::print(ostream& where) const {
     }
 }
 
+void TargetGrid::boundingBox(BoundingBox &bb) {
+    throw BaseSimulator::utils::NotImplementedException();
+}
+
 /************************************************************
  *                      TargetCSG
  ************************************************************/
 
+TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
+    TiXmlNode *cellNode = targetNode->FirstChild("csg");
+    TiXmlElement *element = cellNode->ToElement();
+    string str = element->Attribute("content");
+    bool boundingBox=true;
+    element->QueryBoolAttribute("boundingBox", &boundingBox);
+
+    char* csgBin = CSGParser::parseCsg(str);
+    CsgUtils csgUtils;
+    csgRoot = csgUtils.readCSGBuffer(csgBin);
+    csgRoot->toString();
+    if (boundingBox)
+        csgRoot->boundingBox(bb);
+}
+
+Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
+    Vector3D worldPosition;
+    worldPosition.pt[3] = 1.0;
+    worldPosition.pt[2] = M_SQRT2_2 * (pos[2] + 0.5);
+    if (IS_EVEN(pos[2])) {
+        worldPosition.pt[1] = (pos[1] + 0.5);
+        worldPosition.pt[0] = (pos[0] + 0.5);
+    } else {
+        worldPosition.pt[1] = (pos[1] + 1.0);
+        worldPosition.pt[0] = (pos[0] + 1.0);
+    }
+    worldPosition.pt[0] += bb.P0[0];
+    worldPosition.pt[1] += bb.P0[1];
+    worldPosition.pt[2] += bb.P0[2];
+    return worldPosition;
+}
 
 bool TargetCSG::isInTarget(const Cell3DPosition &pos) {
     Color color;
-    return csgRoot->isInside(pos, color);
+    return csgRoot->isInside(gridToWorldPosition(pos), color);
+}
+
+bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) {
+    Color color;
+    return csgRoot->isInBorder(gridToWorldPosition(pos), color, radius);
+}
+
+void TargetCSG::boundingBox(BoundingBox &bb) {
+    csgRoot->boundingBox(bb);
 }
 
 const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
     Color color;
-    if (csgRoot->isInside(pos, color)) {
+    if (!csgRoot->isInside(gridToWorldPosition(pos), color)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException();
     }

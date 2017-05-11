@@ -11,8 +11,7 @@
 #include "buildingBlock.h"
 #include "world.h"
 
-//#define EXPORT_SENT_MSG_TO_FILE
-//#define EXPORT_MOVES_TO_FILE
+//#define EXPORT_INDIVIDUAL_STATS
 
 using namespace std;
 
@@ -202,25 +201,20 @@ string StatsIndividual::getStats() {
   s += formatStat("Maximum incomming message queue size",mimqs,mimqsm,mimqssd,"\n");
   s += formatStat("Motions",m,mm,msd,"\n");
 
-#ifdef EXPORT_SENT_MSG_TO_FILE
-  ofstream ef;
-  ef.open ("messages.dat");
-  for (it = modules.begin(); it != modules.end(); ++it) {
-    StatsIndividual *st = it->second->stats;
-    ef << st->sentMessages << endl;
-  }
-  ef.close();
-  cerr << "Sent messages exported!" << endl;
-#endif
+#ifdef EXPORT_INDIVIDUAL_STATS
+  ofstream data;
+  data.open ("individualStats.dat", std::ios::out | std::ios::trunc);
 
-#ifdef EXPORT_MOVES_TO_FILE
-  ef.open ("moves.dat");
   for (it = modules.begin(); it != modules.end(); ++it) {
     StatsIndividual *st = it->second->stats;
-    ef << st->motions << endl;
+    data << it->second->blockId << " "
+	 << st->sentMessages << " "
+	 << st->maxMessageQueueSize << " "
+	 << st->motions << " "
+	 << endl;
   }
-  ef.close();
-  cerr << "Individual moves exported!" << endl;
+  data.close();
+  cerr << "Individual stats exported!" << endl;
 #endif
   
   return s;

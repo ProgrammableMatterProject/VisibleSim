@@ -5,6 +5,7 @@ Dependencies:
  - GLUT
  - GLEW
  - SBCL - to compile Meld programs
+ - MUPARSER - to use CSG
 
 ## Installation
 
@@ -42,6 +43,7 @@ sudo apt-get install libboost-all-dev
 sudo apt-get install freeglut3-dev
 sudo apt-get install libglew-dev
 sudo apt-get install sbcl
+sudo apt-get install libmuparser-dev
 ```
 2\. `make`
 
