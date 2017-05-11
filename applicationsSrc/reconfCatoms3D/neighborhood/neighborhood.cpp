@@ -1,7 +1,6 @@
 #include "neighborhood.h"
 #include "neighborRestriction.h"
 #include "catoms3DWorld.h"
-#include "../CSG/csgUtils.h"
 
 #define WAIT_TIME 5
 
@@ -42,7 +41,7 @@ void Neighborhood::addNeighborToRight()
 
 bool Neighborhood::isOnLeftBorder()
 {
-    if (!CsgUtils::isInside(catom->position.addX(-1))) {
+    if (!BlockCode::target->isInTarget(catom->position.addX(-1))) {
         setLeftCompleted();
         return true;
     }
@@ -51,7 +50,7 @@ bool Neighborhood::isOnLeftBorder()
 
 bool Neighborhood::isOnRightBorder()
 {
-    if (!CsgUtils::isInside(catom->position.addX(1))) {
+    if (!BlockCode::target->isInTarget(catom->position.addX(1))) {
         setRightCompleted();
         return true;
     }
@@ -215,7 +214,7 @@ void Neighborhood::addNeighbor(Cell3DPosition pos)
 {
     Catoms3DWorld *world = Catoms3DWorld::getWorld();
     NeighborRestriction neighbors;
-    if (world->lattice->isFree(pos) && CsgUtils::isInside(pos)) {
+    if (world->lattice->isFree(pos) && BlockCode::target->isInTarget(pos)) {
         if (neighbors.isPositionBlockable(pos))
             world->addBlock(0, blockCodeBuilder, pos, PINK, 0, false);
         else if (neighbors.isPositionBlocked(pos))

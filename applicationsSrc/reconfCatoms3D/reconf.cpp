@@ -1,5 +1,4 @@
 #include "reconf.h"
-#include "CSG/csgUtils.h"
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
@@ -12,8 +11,8 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 
 bool Reconf::isInternalSeed()
 {
-    if (!CsgUtils::isInside(catom->position.addX(1).addY(1)) &&
-            CsgUtils::isInside(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) &&
+            BlockCode::target->isInTarget(catom->position.addY(1)) ){
         return true;
     }
     return false;
@@ -21,8 +20,8 @@ bool Reconf::isInternalSeed()
 
 bool Reconf::isBorderSeed()
 {
-    if (!CsgUtils::isInside(catom->position.addX(1)) && 
-        CsgUtils::isInside(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.addX(1)) && 
+        BlockCode::target->isInTarget(catom->position.addY(1)) ){
         return true;
     }
     return false;
@@ -41,15 +40,17 @@ bool Reconf::isSeedCheck()
 
 bool Reconf::needSyncToRight()
 {
-    if (!CsgUtils::isInside(catom->position.addX(1)) && 
-        CsgUtils::isInside(catom->position.addX(1).addY(1)))
-    { 
-        for (int i = 2; CsgUtils::getWorldPosition(catom->position.addX(i))[0] < CsgUtils::boundingBox.P1[0]; i++) {
-            if (!CsgUtils::isInside(catom->position.addX(i)) && 
-                CsgUtils::isInside(catom->position.addX(i).addY(1)))
+    if (!BlockCode::target->isInTarget(catom->position.addX(1)) && 
+        BlockCode::target->isInTarget(catom->position.addX(1).addY(1)))
+    {
+        BoundingBox bb;
+        BlockCode::target->boundingBox(bb);
+        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(catom->position.addX(i))[0] < bb.P1[0]; i++) {
+            if (!BlockCode::target->isInTarget(catom->position.addX(i)) && 
+                BlockCode::target->isInTarget(catom->position.addX(i).addY(1)))
                 continue;
-            if (CsgUtils::isInside(catom->position.addX(i)) && 
-                CsgUtils::isInside(catom->position.addX(i).addY(1)) )
+            if (BlockCode::target->isInTarget(catom->position.addX(i)) && 
+                BlockCode::target->isInTarget(catom->position.addX(i).addY(1)) )
                 return true;
             return false;
         }
@@ -60,9 +61,9 @@ bool Reconf::needSyncToRight()
 bool Reconf::needSyncToLeft()
 {
     if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
-        !CsgUtils::isInside(catom->position.addY(-1)) &&
-        CsgUtils::isInside(catom->position.addX(-1)) &&
-        CsgUtils::isInside(catom->position.addX(-1).addY(-1)) )
+        !BlockCode::target->isInTarget(catom->position.addY(-1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)) )
         return true;
     return false;
 }

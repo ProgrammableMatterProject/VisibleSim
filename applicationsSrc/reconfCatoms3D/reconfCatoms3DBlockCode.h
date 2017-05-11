@@ -9,7 +9,6 @@
 #define RECONFCATOMS3DBLOCKCODE_H_
 
 #include "catoms3DBlockCode.h"
-#include "CSG/csgUtils.h"
 #include "directions.h"
 #include "reconf.h"
 #include "neighborhood/neighborhood.h"
@@ -23,7 +22,6 @@ public:
 	Catoms3D::Catoms3DBlock *catom;
     Vector3D worldPosition;
 
-    CsgUtils csgUtils;
     Neighborhood *neighborhood;
 
     // Reconfiguration Variables

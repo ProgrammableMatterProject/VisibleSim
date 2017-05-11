@@ -9,12 +9,11 @@
   <targetList>
     <target format="csg">
         <csg content="
-union() {
-    difference() {
-        cylinder(20,10,10, true);
-        cylinder(20,5,5, true);
-    }
-    translate([0,-2,0]) cube([3,8,20], true);
+difference() {
+    cylinder(20,17,17, true);
+    translate([10,0,0]) cylinder(20,4,4, true);
+    translate([-10,0,0]) cylinder(20,4,4, true);
+    translate([0,0,0]) cylinder(20,4,4, true);
 }
             "/>
     </target>

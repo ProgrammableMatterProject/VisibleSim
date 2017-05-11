@@ -9,7 +9,7 @@ using namespace Catoms3D;
 
 //string CSG_FILE = "data/manyHoles.bc";
 //string CSG_FILE = "data/manyHolesScale2.bc";
-string CSG_FILE = "data/threeHoles.bc";
+//string CSG_FILE = "data/threeHoles.bc";
 //string CSG_FILE = "data/letterC.bc";
 //string CSG_FILE = "data/testForm.bc";
 
@@ -31,8 +31,7 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 
 void ReconfCatoms3DBlockCode::startup() {
 	if (catom->blockId == 1) {
-        CsgUtils::init(CSG_FILE);
-        if (!CsgUtils::isInside(catom->position)) {
+        if (!BlockCode::target->isInTarget(catom->position)) {
             catom->setColor(RED);
         }
 	}

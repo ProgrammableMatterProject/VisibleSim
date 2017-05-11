@@ -4,17 +4,17 @@
     <spotlight target="200,200,120" directionSpherical="125,40,1500" angle="30" near="80.0" far="2500.0"/>
     <blockList color="128,128,128" blocksize="10,10,10">
 
-		<block position="7,4,7" orientation="0"/>
+		<block position="15,6,7" orientation="0"/>
 	</blockList>
   <targetList>
     <target format="csg">
         <csg content="
-union() {
-    difference() {
-        cylinder(20,10,10, true);
-        cylinder(20,5,5, true);
-    }
-    translate([0,-2,0]) cube([3,8,20], true);
+            difference() {
+    cylinder(20,17,17, true);
+    translate([9.5,0,0]) cylinder(20,5,5, true);
+    translate([-9,0,0]) cylinder(20,5,5, true);
+    translate([2,-8,0]) cylinder(20,4,4, true);
+    translate([0,5,0]) cylinder(20,4,4, true);
 }
             "/>
     </target>
