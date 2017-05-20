@@ -1,4 +1,4 @@
-/** 
+/**
  * @file configExporter.h
  * Header for Configuration Exporter module
  */
@@ -21,22 +21,22 @@ namespace BaseSimulator {
 
 /************************************************************
  *   Abstract Configuration Exporter
- ************************************************************/    
+ ************************************************************/
 
-/** 
+/**
  * @brief Abstract Configuration Exporter
  *
  * Saves all the information in the world at time of export into an xml file
- *  with name config_hh_mm_ss.xml. The following elements are exported: 
- *  1. Properties of the world (dimensions, scale) 
+ *  with name config_hh_mm_ss.xml. The following elements are exported:
+ *  1. Properties of the world (dimensions, scale)
  *  2. The current state of the camera and lightsource
- *  3. The list of blocks and their current attributes. 
- *    (Common ones + type specific ones exported by the virtual function exportAdditionalAttribute)  
+ *  3. The list of blocks and their current attributes.
+ *    (Common ones + type specific ones exported by the virtual function exportAdditionalAttribute)
  */
-class ConfigExporter {      
+class ConfigExporter {
 protected:
     World *world;          //!< pointer to the world to export
-    TiXmlDocument *config; //!< the TiXML Document used for export 
+    TiXmlDocument *config; //!< the TiXML Document used for export
     string configName;     //!< the name of the output configuration file
     TiXmlElement *worldElt; //!< a pointer to the world XML element of the document
     TiXmlElement *blockListElt; //!< a pointer to the blockList XML element of the document
@@ -87,110 +87,126 @@ public:
 
 /************************************************************
  *   Subclasses
- ************************************************************/    
+ ************************************************************/
 
-/** 
+/**
  * @brief BlinkyBlocks Configuration Exporter
  */
 class BlinkyBlocksConfigExporter : public ConfigExporter {
 
 public:
-    /** 
+    /**
      * @brief BlinkyBlocks Configuration Exporter constructor
      */
     BlinkyBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
-    /** 
+    /**
      * @brief BlinkyBlocks Configuration Exporter destructor
      */
     virtual ~BlinkyBlocksConfigExporter() { };
 };
 
-/** 
+/**
  * @brief Catoms3D Configuration Exporter
  */
 class Catoms3DConfigExporter : public ConfigExporter {
 public:
-    /** 
+    /**
      * @brief Catoms3D Configuration Exporter constructor
      */
     Catoms3DConfigExporter(World *_world) : ConfigExporter(_world) {};
-    /** 
+    /**
      * @brief Catoms3D Configuration Exporter destructor
      */
     virtual ~Catoms3DConfigExporter() { };
 
-    /** 
+    /**
      * @copydoc ConfigExporter::exportAdditionalAttribute
      *  Exports the rotation attribute of a Catoms3DBlock
      */
     virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
 };
 
-/** 
+/**
  * @brief RobotBlocks Configuration Exporter
  */
 class RobotBlocksConfigExporter : public ConfigExporter {
 public:
-    /** 
+    /**
      * @brief RobotBlocks Configuration Exporter constructor
      */
     RobotBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
-    /** 
+    /**
      * @brief RobotBlocks Configuration Exporter destructor
      */
     virtual ~RobotBlocksConfigExporter() { };
 };
 
-/** 
+/**
  * @brief Catoms2D Configuration Exporter
  */
 class Catoms2DConfigExporter : public ConfigExporter {
 public:
-    /** 
+    /**
      * @brief Catoms2D Configuration Exporter constructor
      */
     Catoms2DConfigExporter(World *_world) : ConfigExporter(_world) {};
-    /** 
+    /**
      * @brief Catoms2D Configuration Exporter constructor
      */
     virtual ~Catoms2DConfigExporter() { };
 
-    /** 
+    /**
      * @copydoc ConfigExporter::exportAdditionalAttribute
      *  Exports the rotation attribute of a Catoms3DBlock
      */
     virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
 };
 
-/** 
+/**
  * @brief SmartBlocks Configuration Exporter
  */
 class SmartBlocksConfigExporter : public ConfigExporter {
 public:
-    /** 
+    /**
      * @brief SmartBlocks Configuration Exporter constructor
      */
     SmartBlocksConfigExporter(World *_world) : ConfigExporter(_world) {};
-    /** 
+    /**
      * @brief SmartBlocks Configuration Exporter constructor
      */
     virtual ~SmartBlocksConfigExporter() { };
 };
 
-/** 
+/**
  * @brief MultiRobots Configuration Exporter
  */
 class MultiRobotsConfigExporter : public ConfigExporter {
 public:
-    /** 
+    /**
      * @brief MultiRobots Configuration Exporter constructor
      */
     MultiRobotsConfigExporter(World *_world) : ConfigExporter(_world) {};
-    /** 
+    /**
      * @brief MultiRobots Configuration Exporter constructor
      */
     virtual ~MultiRobotsConfigExporter() { };
 };
+
+/**
+ * @brief RobotBlocks Configuration Exporter
+ */
+class OktenConfigExporter : public ConfigExporter {
+public:
+    /**
+     * @brief RobotBlocks Configuration Exporter constructor
+     */
+    OktenConfigExporter(World *_world) : ConfigExporter(_world) {};
+    /**
+     * @brief RobotBlocks Configuration Exporter destructor
+     */
+    virtual ~OktenConfigExporter() { };
+};
+
 
 } // BASESIMULATOR_NAMESPACE
 

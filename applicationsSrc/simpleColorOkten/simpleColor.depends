@@ -1,4 +1,4 @@
-C3DRotate.o: C3DRotate.cpp /usr/include/stdc-predef.h \
+simpleColor.o: simpleColor.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8/iostream \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
@@ -102,7 +102,7 @@ C3DRotate.o: C3DRotate.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8/bits/basic_ios.tcc \
  /usr/include/c++/4.8/bits/ostream.tcc /usr/include/c++/4.8/istream \
  /usr/include/c++/4.8/bits/istream.tcc \
- ../../simulatorCore/src/catoms3DSimulator.h \
+ ../../simulatorCore/src/oktenSimulator.h \
  ../../simulatorCore/src/simulator.h \
  ../../simulatorCore/src/TinyXML/tinyxml.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/string3.h /usr/include/assert.h \
@@ -190,13 +190,9 @@ C3DRotate.o: C3DRotate.cpp /usr/include/stdc-predef.h \
  ../../simulatorCore/src/openglViewer.h \
  ../../simulatorCore/src/interface.h \
  ../../simulatorCore/src/commandLine.h \
- ../../simulatorCore/src/catoms3DBlockCode.h \
- ../../simulatorCore/src/catoms3DBlock.h \
- ../../simulatorCore/src/catoms3DGlBlock.h \
- ../../simulatorCore/src/objLoader.h \
- ../../simulatorCore/src/catoms3DWorld.h \
+ ../../simulatorCore/src/oktenBlockCode.h \
+ ../../simulatorCore/src/oktenBlock.h \
+ ../../simulatorCore/src/oktenGlBlock.h \
+ ../../simulatorCore/src/objLoader.h ../../simulatorCore/src/oktenWorld.h \
  ../../simulatorCore/src/openglViewer.h \
- ../../simulatorCore/src/skeleton.h ../../simulatorCore/src/trace.h \
- ../../simulatorCore/src/vector3D.h \
- ../../simulatorCore/src/catoms3DMotionRules.h \
- ../../simulatorCore/src/catoms3DBlockCode.h C3DRotateCode.h
+ ../../simulatorCore/src/oktenBlockCode.h simpleColorCode.h

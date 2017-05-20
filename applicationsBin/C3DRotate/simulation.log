@@ -1,7 +1,7 @@
 [1;34mSimulator constructor[0m
-[1;34m  config1.xml successfully loaded [0m
+[1;34m  config.xml successfully loaded [0m
 [1;34mCatoms3DSimulator constructor[0m
-grid size : 10 x 10 x 6
+grid size : 5 x 5 x 6
 blocksize =10,10,10
 World constructor
 initShaders
@@ -37,7 +37,7 @@ Smoothing groups not managed !
 No 'lighted' texture in obj file :catom3D_picking.obj
 No 'lighted' texture in obj file :repereCatom3D.obj
 init Lattice
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 loading ../../simulatorCore/resources/textures/latticeTextures//hexa.tga
 loading ../../simulatorCore/resources/textures/latticeTextures//textureCarre.tga
 Scheduler constructor
@@ -417,2976 +417,387 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 Catoms3DBlockCode constructor
 Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
-new color :(0.501961,0.501961,0.501961,1)
-orientation : 0
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-Catoms3DBlockCode constructor
-Catoms3DBlock constructor
 link catom 1
 Simulator: 1 add neighbor 2 on Con0
 Simulator: 2 add neighbor 1 on Con6
 connection #1(0) to #2
-Simulator: 1 add neighbor 11 on Con1
-Simulator: 11 add neighbor 1 on Con7
-connection #1(1) to #11
+Simulator: 1 add neighbor 5 on Con1
+Simulator: 5 add neighbor 1 on Con7
+connection #1(1) to #5
+Simulator: 1 add neighbor 17 on Con2
+Simulator: 17 add neighbor 1 on Con8
+connection #1(2) to #17
 link catom 2
 Simulator: 2 add neighbor 3 on Con0
 Simulator: 3 add neighbor 2 on Con6
 connection #2(0) to #3
-Simulator: 2 add neighbor 12 on Con1
-Simulator: 12 add neighbor 2 on Con7
-connection #2(1) to #12
+Simulator: 2 add neighbor 6 on Con1
+Simulator: 6 add neighbor 2 on Con7
+connection #2(1) to #6
+Simulator: 2 add neighbor 18 on Con2
+Simulator: 18 add neighbor 2 on Con8
+connection #2(2) to #18
+Simulator: 2 add neighbor 17 on Con3
+Simulator: 17 add neighbor 2 on Con9
+connection #2(3) to #17
 connection #2(6) to #1
 link catom 3
 Simulator: 3 add neighbor 4 on Con0
 Simulator: 4 add neighbor 3 on Con6
 connection #3(0) to #4
-Simulator: 3 add neighbor 13 on Con1
-Simulator: 13 add neighbor 3 on Con7
-connection #3(1) to #13
+Simulator: 3 add neighbor 7 on Con1
+Simulator: 7 add neighbor 3 on Con7
+connection #3(1) to #7
+Simulator: 3 add neighbor 19 on Con2
+Simulator: 19 add neighbor 3 on Con8
+connection #3(2) to #19
+Simulator: 3 add neighbor 18 on Con3
+Simulator: 18 add neighbor 3 on Con9
+connection #3(3) to #18
 connection #3(6) to #2
 link catom 4
-Simulator: 4 add neighbor 5 on Con0
-Simulator: 5 add neighbor 4 on Con6
-connection #4(0) to #5
-Simulator: 4 add neighbor 14 on Con1
-Simulator: 14 add neighbor 4 on Con7
-connection #4(1) to #14
+Simulator: 4 add neighbor 8 on Con1
+Simulator: 8 add neighbor 4 on Con7
+connection #4(1) to #8
+Simulator: 4 add neighbor 19 on Con3
+Simulator: 19 add neighbor 4 on Con9
+connection #4(3) to #19
 connection #4(6) to #3
 link catom 5
 Simulator: 5 add neighbor 6 on Con0
 Simulator: 6 add neighbor 5 on Con6
 connection #5(0) to #6
-Simulator: 5 add neighbor 15 on Con1
-Simulator: 15 add neighbor 5 on Con7
-connection #5(1) to #15
-connection #5(6) to #4
+Simulator: 5 add neighbor 9 on Con1
+Simulator: 9 add neighbor 5 on Con7
+connection #5(1) to #9
+Simulator: 5 add neighbor 17 on Con5
+Simulator: 17 add neighbor 5 on Con11
+connection #5(5) to #17
+connection #5(7) to #1
 link catom 6
 Simulator: 6 add neighbor 7 on Con0
 Simulator: 7 add neighbor 6 on Con6
 connection #6(0) to #7
-Simulator: 6 add neighbor 16 on Con1
-Simulator: 16 add neighbor 6 on Con7
-connection #6(1) to #16
+Simulator: 6 add neighbor 10 on Con1
+Simulator: 10 add neighbor 6 on Con7
+connection #6(1) to #10
+Simulator: 6 add neighbor 20 on Con2
+Simulator: 20 add neighbor 6 on Con8
+connection #6(2) to #20
+Simulator: 6 add neighbor 17 on Con4
+Simulator: 17 add neighbor 6 on Con10
+connection #6(4) to #17
+Simulator: 6 add neighbor 18 on Con5
+Simulator: 18 add neighbor 6 on Con11
+connection #6(5) to #18
 connection #6(6) to #5
+connection #6(7) to #2
 link catom 7
 Simulator: 7 add neighbor 8 on Con0
 Simulator: 8 add neighbor 7 on Con6
 connection #7(0) to #8
-Simulator: 7 add neighbor 17 on Con1
-Simulator: 17 add neighbor 7 on Con7
-connection #7(1) to #17
+Simulator: 7 add neighbor 11 on Con1
+Simulator: 11 add neighbor 7 on Con7
+connection #7(1) to #11
+Simulator: 7 add neighbor 21 on Con2
+Simulator: 21 add neighbor 7 on Con8
+connection #7(2) to #21
+Simulator: 7 add neighbor 20 on Con3
+Simulator: 20 add neighbor 7 on Con9
+connection #7(3) to #20
+Simulator: 7 add neighbor 18 on Con4
+Simulator: 18 add neighbor 7 on Con10
+connection #7(4) to #18
+Simulator: 7 add neighbor 19 on Con5
+Simulator: 19 add neighbor 7 on Con11
+connection #7(5) to #19
 connection #7(6) to #6
+connection #7(7) to #3
 link catom 8
-Simulator: 8 add neighbor 9 on Con0
-Simulator: 9 add neighbor 8 on Con6
-connection #8(0) to #9
-Simulator: 8 add neighbor 18 on Con1
-Simulator: 18 add neighbor 8 on Con7
-connection #8(1) to #18
+Simulator: 8 add neighbor 12 on Con1
+Simulator: 12 add neighbor 8 on Con7
+connection #8(1) to #12
+Simulator: 8 add neighbor 21 on Con3
+Simulator: 21 add neighbor 8 on Con9
+connection #8(3) to #21
+Simulator: 8 add neighbor 19 on Con4
+Simulator: 19 add neighbor 8 on Con10
+connection #8(4) to #19
 connection #8(6) to #7
+connection #8(7) to #4
 link catom 9
 Simulator: 9 add neighbor 10 on Con0
 Simulator: 10 add neighbor 9 on Con6
 connection #9(0) to #10
-Simulator: 9 add neighbor 19 on Con1
-Simulator: 19 add neighbor 9 on Con7
-connection #9(1) to #19
-connection #9(6) to #8
+Simulator: 9 add neighbor 13 on Con1
+Simulator: 13 add neighbor 9 on Con7
+connection #9(1) to #13
+connection #9(7) to #5
 link catom 10
-Simulator: 10 add neighbor 20 on Con1
-Simulator: 20 add neighbor 10 on Con7
-connection #10(1) to #20
+Simulator: 10 add neighbor 11 on Con0
+Simulator: 11 add neighbor 10 on Con6
+connection #10(0) to #11
+Simulator: 10 add neighbor 14 on Con1
+Simulator: 14 add neighbor 10 on Con7
+connection #10(1) to #14
+Simulator: 10 add neighbor 20 on Con5
+Simulator: 20 add neighbor 10 on Con11
+connection #10(5) to #20
 connection #10(6) to #9
+connection #10(7) to #6
 link catom 11
 Simulator: 11 add neighbor 12 on Con0
 Simulator: 12 add neighbor 11 on Con6
 connection #11(0) to #12
-Simulator: 11 add neighbor 21 on Con1
-Simulator: 21 add neighbor 11 on Con7
-connection #11(1) to #21
-connection #11(7) to #1
+Simulator: 11 add neighbor 15 on Con1
+Simulator: 15 add neighbor 11 on Con7
+connection #11(1) to #15
+Simulator: 11 add neighbor 22 on Con2
+Simulator: 22 add neighbor 11 on Con8
+connection #11(2) to #22
+Simulator: 11 add neighbor 20 on Con4
+Simulator: 20 add neighbor 11 on Con10
+connection #11(4) to #20
+Simulator: 11 add neighbor 21 on Con5
+Simulator: 21 add neighbor 11 on Con11
+connection #11(5) to #21
+connection #11(6) to #10
+connection #11(7) to #7
 link catom 12
-Simulator: 12 add neighbor 13 on Con0
-Simulator: 13 add neighbor 12 on Con6
-connection #12(0) to #13
-Simulator: 12 add neighbor 22 on Con1
-Simulator: 22 add neighbor 12 on Con7
-connection #12(1) to #22
+Simulator: 12 add neighbor 16 on Con1
+Simulator: 16 add neighbor 12 on Con7
+connection #12(1) to #16
+Simulator: 12 add neighbor 22 on Con3
+Simulator: 22 add neighbor 12 on Con9
+connection #12(3) to #22
+Simulator: 12 add neighbor 21 on Con4
+Simulator: 21 add neighbor 12 on Con10
+connection #12(4) to #21
 connection #12(6) to #11
-connection #12(7) to #2
+connection #12(7) to #8
 link catom 13
 Simulator: 13 add neighbor 14 on Con0
 Simulator: 14 add neighbor 13 on Con6
 connection #13(0) to #14
-Simulator: 13 add neighbor 23 on Con1
-Simulator: 23 add neighbor 13 on Con7
-connection #13(1) to #23
-connection #13(6) to #12
-connection #13(7) to #3
+connection #13(7) to #9
 link catom 14
 Simulator: 14 add neighbor 15 on Con0
 Simulator: 15 add neighbor 14 on Con6
 connection #14(0) to #15
-Simulator: 14 add neighbor 24 on Con1
-Simulator: 24 add neighbor 14 on Con7
-connection #14(1) to #24
 connection #14(6) to #13
-connection #14(7) to #4
+connection #14(7) to #10
 link catom 15
 Simulator: 15 add neighbor 16 on Con0
 Simulator: 16 add neighbor 15 on Con6
 connection #15(0) to #16
-Simulator: 15 add neighbor 25 on Con1
-Simulator: 25 add neighbor 15 on Con7
-connection #15(1) to #25
+Simulator: 15 add neighbor 22 on Con5
+Simulator: 22 add neighbor 15 on Con11
+connection #15(5) to #22
 connection #15(6) to #14
-connection #15(7) to #5
+connection #15(7) to #11
 link catom 16
-Simulator: 16 add neighbor 17 on Con0
-Simulator: 17 add neighbor 16 on Con6
-connection #16(0) to #17
-Simulator: 16 add neighbor 26 on Con1
-Simulator: 26 add neighbor 16 on Con7
-connection #16(1) to #26
+Simulator: 16 add neighbor 22 on Con4
+Simulator: 22 add neighbor 16 on Con10
+connection #16(4) to #22
 connection #16(6) to #15
-connection #16(7) to #6
+connection #16(7) to #12
 link catom 17
 Simulator: 17 add neighbor 18 on Con0
 Simulator: 18 add neighbor 17 on Con6
 connection #17(0) to #18
-Simulator: 17 add neighbor 27 on Con1
-Simulator: 27 add neighbor 17 on Con7
-connection #17(1) to #27
-connection #17(6) to #16
-connection #17(7) to #7
+connection #17(8) to #1
+connection #17(9) to #2
+connection #17(10) to #6
+connection #17(11) to #5
 link catom 18
 Simulator: 18 add neighbor 19 on Con0
 Simulator: 19 add neighbor 18 on Con6
 connection #18(0) to #19
-Simulator: 18 add neighbor 28 on Con1
-Simulator: 28 add neighbor 18 on Con7
-connection #18(1) to #28
+Simulator: 18 add neighbor 20 on Con1
+Simulator: 20 add neighbor 18 on Con7
+connection #18(1) to #20
 connection #18(6) to #17
-connection #18(7) to #8
+connection #18(8) to #2
+connection #18(9) to #3
+connection #18(10) to #7
+connection #18(11) to #6
 link catom 19
-Simulator: 19 add neighbor 20 on Con0
-Simulator: 20 add neighbor 19 on Con6
-connection #19(0) to #20
-Simulator: 19 add neighbor 29 on Con1
-Simulator: 29 add neighbor 19 on Con7
-connection #19(1) to #29
+Simulator: 19 add neighbor 21 on Con1
+Simulator: 21 add neighbor 19 on Con7
+connection #19(1) to #21
 connection #19(6) to #18
-connection #19(7) to #9
+connection #19(8) to #3
+connection #19(9) to #4
+connection #19(10) to #8
+connection #19(11) to #7
 link catom 20
-Simulator: 20 add neighbor 30 on Con1
-Simulator: 30 add neighbor 20 on Con7
-connection #20(1) to #30
-connection #20(6) to #19
-connection #20(7) to #10
+Simulator: 20 add neighbor 21 on Con0
+Simulator: 21 add neighbor 20 on Con6
+connection #20(0) to #21
+connection #20(7) to #18
+connection #20(8) to #6
+connection #20(9) to #7
+connection #20(10) to #11
+connection #20(11) to #10
 link catom 21
-Simulator: 21 add neighbor 22 on Con0
-Simulator: 22 add neighbor 21 on Con6
-connection #21(0) to #22
-Simulator: 21 add neighbor 31 on Con1
-Simulator: 31 add neighbor 21 on Con7
-connection #21(1) to #31
-connection #21(7) to #11
+Simulator: 21 add neighbor 22 on Con1
+Simulator: 22 add neighbor 21 on Con7
+connection #21(1) to #22
+connection #21(6) to #20
+connection #21(7) to #19
+connection #21(8) to #7
+connection #21(9) to #8
+connection #21(10) to #12
+connection #21(11) to #11
 link catom 22
-Simulator: 22 add neighbor 23 on Con0
-Simulator: 23 add neighbor 22 on Con6
-connection #22(0) to #23
-Simulator: 22 add neighbor 32 on Con1
-Simulator: 32 add neighbor 22 on Con7
-connection #22(1) to #32
-connection #22(6) to #21
-connection #22(7) to #12
-link catom 23
-Simulator: 23 add neighbor 24 on Con0
-Simulator: 24 add neighbor 23 on Con6
-connection #23(0) to #24
-Simulator: 23 add neighbor 33 on Con1
-Simulator: 33 add neighbor 23 on Con7
-connection #23(1) to #33
-connection #23(6) to #22
-connection #23(7) to #13
-link catom 24
-Simulator: 24 add neighbor 25 on Con0
-Simulator: 25 add neighbor 24 on Con6
-connection #24(0) to #25
-Simulator: 24 add neighbor 34 on Con1
-Simulator: 34 add neighbor 24 on Con7
-connection #24(1) to #34
-connection #24(6) to #23
-connection #24(7) to #14
-link catom 25
-Simulator: 25 add neighbor 26 on Con0
-Simulator: 26 add neighbor 25 on Con6
-connection #25(0) to #26
-Simulator: 25 add neighbor 35 on Con1
-Simulator: 35 add neighbor 25 on Con7
-connection #25(1) to #35
-connection #25(6) to #24
-connection #25(7) to #15
-link catom 26
-Simulator: 26 add neighbor 27 on Con0
-Simulator: 27 add neighbor 26 on Con6
-connection #26(0) to #27
-Simulator: 26 add neighbor 36 on Con1
-Simulator: 36 add neighbor 26 on Con7
-connection #26(1) to #36
-connection #26(6) to #25
-connection #26(7) to #16
-link catom 27
-Simulator: 27 add neighbor 28 on Con0
-Simulator: 28 add neighbor 27 on Con6
-connection #27(0) to #28
-Simulator: 27 add neighbor 37 on Con1
-Simulator: 37 add neighbor 27 on Con7
-connection #27(1) to #37
-connection #27(6) to #26
-connection #27(7) to #17
-link catom 28
-Simulator: 28 add neighbor 29 on Con0
-Simulator: 29 add neighbor 28 on Con6
-connection #28(0) to #29
-Simulator: 28 add neighbor 38 on Con1
-Simulator: 38 add neighbor 28 on Con7
-connection #28(1) to #38
-connection #28(6) to #27
-connection #28(7) to #18
-link catom 29
-Simulator: 29 add neighbor 30 on Con0
-Simulator: 30 add neighbor 29 on Con6
-connection #29(0) to #30
-Simulator: 29 add neighbor 39 on Con1
-Simulator: 39 add neighbor 29 on Con7
-connection #29(1) to #39
-connection #29(6) to #28
-connection #29(7) to #19
-link catom 30
-Simulator: 30 add neighbor 40 on Con1
-Simulator: 40 add neighbor 30 on Con7
-connection #30(1) to #40
-connection #30(6) to #29
-connection #30(7) to #20
-link catom 31
-Simulator: 31 add neighbor 32 on Con0
-Simulator: 32 add neighbor 31 on Con6
-connection #31(0) to #32
-Simulator: 31 add neighbor 41 on Con1
-Simulator: 41 add neighbor 31 on Con7
-connection #31(1) to #41
-connection #31(7) to #21
-link catom 32
-Simulator: 32 add neighbor 33 on Con0
-Simulator: 33 add neighbor 32 on Con6
-connection #32(0) to #33
-Simulator: 32 add neighbor 42 on Con1
-Simulator: 42 add neighbor 32 on Con7
-connection #32(1) to #42
-connection #32(6) to #31
-connection #32(7) to #22
-link catom 33
-Simulator: 33 add neighbor 34 on Con0
-Simulator: 34 add neighbor 33 on Con6
-connection #33(0) to #34
-Simulator: 33 add neighbor 43 on Con1
-Simulator: 43 add neighbor 33 on Con7
-connection #33(1) to #43
-connection #33(6) to #32
-connection #33(7) to #23
-link catom 34
-Simulator: 34 add neighbor 35 on Con0
-Simulator: 35 add neighbor 34 on Con6
-connection #34(0) to #35
-Simulator: 34 add neighbor 44 on Con1
-Simulator: 44 add neighbor 34 on Con7
-connection #34(1) to #44
-connection #34(6) to #33
-connection #34(7) to #24
-link catom 35
-Simulator: 35 add neighbor 36 on Con0
-Simulator: 36 add neighbor 35 on Con6
-connection #35(0) to #36
-Simulator: 35 add neighbor 45 on Con1
-Simulator: 45 add neighbor 35 on Con7
-connection #35(1) to #45
-connection #35(6) to #34
-connection #35(7) to #25
-link catom 36
-Simulator: 36 add neighbor 37 on Con0
-Simulator: 37 add neighbor 36 on Con6
-connection #36(0) to #37
-Simulator: 36 add neighbor 46 on Con1
-Simulator: 46 add neighbor 36 on Con7
-connection #36(1) to #46
-connection #36(6) to #35
-connection #36(7) to #26
-link catom 37
-Simulator: 37 add neighbor 38 on Con0
-Simulator: 38 add neighbor 37 on Con6
-connection #37(0) to #38
-Simulator: 37 add neighbor 47 on Con1
-Simulator: 47 add neighbor 37 on Con7
-connection #37(1) to #47
-connection #37(6) to #36
-connection #37(7) to #27
-link catom 38
-Simulator: 38 add neighbor 39 on Con0
-Simulator: 39 add neighbor 38 on Con6
-connection #38(0) to #39
-Simulator: 38 add neighbor 48 on Con1
-Simulator: 48 add neighbor 38 on Con7
-connection #38(1) to #48
-connection #38(6) to #37
-connection #38(7) to #28
-link catom 39
-Simulator: 39 add neighbor 40 on Con0
-Simulator: 40 add neighbor 39 on Con6
-connection #39(0) to #40
-Simulator: 39 add neighbor 49 on Con1
-Simulator: 49 add neighbor 39 on Con7
-connection #39(1) to #49
-connection #39(6) to #38
-connection #39(7) to #29
-link catom 40
-Simulator: 40 add neighbor 50 on Con1
-Simulator: 50 add neighbor 40 on Con7
-connection #40(1) to #50
-connection #40(6) to #39
-connection #40(7) to #30
-link catom 41
-Simulator: 41 add neighbor 42 on Con0
-Simulator: 42 add neighbor 41 on Con6
-connection #41(0) to #42
-Simulator: 41 add neighbor 51 on Con1
-Simulator: 51 add neighbor 41 on Con7
-connection #41(1) to #51
-connection #41(7) to #31
-link catom 42
-Simulator: 42 add neighbor 43 on Con0
-Simulator: 43 add neighbor 42 on Con6
-connection #42(0) to #43
-Simulator: 42 add neighbor 52 on Con1
-Simulator: 52 add neighbor 42 on Con7
-connection #42(1) to #52
-connection #42(6) to #41
-connection #42(7) to #32
-link catom 43
-Simulator: 43 add neighbor 44 on Con0
-Simulator: 44 add neighbor 43 on Con6
-connection #43(0) to #44
-Simulator: 43 add neighbor 53 on Con1
-Simulator: 53 add neighbor 43 on Con7
-connection #43(1) to #53
-connection #43(6) to #42
-connection #43(7) to #33
-link catom 44
-Simulator: 44 add neighbor 45 on Con0
-Simulator: 45 add neighbor 44 on Con6
-connection #44(0) to #45
-Simulator: 44 add neighbor 54 on Con1
-Simulator: 54 add neighbor 44 on Con7
-connection #44(1) to #54
-connection #44(6) to #43
-connection #44(7) to #34
-link catom 45
-Simulator: 45 add neighbor 46 on Con0
-Simulator: 46 add neighbor 45 on Con6
-connection #45(0) to #46
-Simulator: 45 add neighbor 55 on Con1
-Simulator: 55 add neighbor 45 on Con7
-connection #45(1) to #55
-connection #45(6) to #44
-connection #45(7) to #35
-link catom 46
-Simulator: 46 add neighbor 47 on Con0
-Simulator: 47 add neighbor 46 on Con6
-connection #46(0) to #47
-Simulator: 46 add neighbor 56 on Con1
-Simulator: 56 add neighbor 46 on Con7
-connection #46(1) to #56
-connection #46(6) to #45
-connection #46(7) to #36
-link catom 47
-Simulator: 47 add neighbor 48 on Con0
-Simulator: 48 add neighbor 47 on Con6
-connection #47(0) to #48
-Simulator: 47 add neighbor 57 on Con1
-Simulator: 57 add neighbor 47 on Con7
-connection #47(1) to #57
-connection #47(6) to #46
-connection #47(7) to #37
-link catom 48
-Simulator: 48 add neighbor 49 on Con0
-Simulator: 49 add neighbor 48 on Con6
-connection #48(0) to #49
-Simulator: 48 add neighbor 58 on Con1
-Simulator: 58 add neighbor 48 on Con7
-connection #48(1) to #58
-connection #48(6) to #47
-connection #48(7) to #38
-link catom 49
-Simulator: 49 add neighbor 50 on Con0
-Simulator: 50 add neighbor 49 on Con6
-connection #49(0) to #50
-Simulator: 49 add neighbor 59 on Con1
-Simulator: 59 add neighbor 49 on Con7
-connection #49(1) to #59
-connection #49(6) to #48
-connection #49(7) to #39
-link catom 50
-Simulator: 50 add neighbor 60 on Con1
-Simulator: 60 add neighbor 50 on Con7
-connection #50(1) to #60
-connection #50(6) to #49
-connection #50(7) to #40
-link catom 51
-Simulator: 51 add neighbor 52 on Con0
-Simulator: 52 add neighbor 51 on Con6
-connection #51(0) to #52
-Simulator: 51 add neighbor 61 on Con1
-Simulator: 61 add neighbor 51 on Con7
-connection #51(1) to #61
-connection #51(7) to #41
-link catom 52
-Simulator: 52 add neighbor 53 on Con0
-Simulator: 53 add neighbor 52 on Con6
-connection #52(0) to #53
-Simulator: 52 add neighbor 62 on Con1
-Simulator: 62 add neighbor 52 on Con7
-connection #52(1) to #62
-connection #52(6) to #51
-connection #52(7) to #42
-link catom 53
-Simulator: 53 add neighbor 54 on Con0
-Simulator: 54 add neighbor 53 on Con6
-connection #53(0) to #54
-Simulator: 53 add neighbor 63 on Con1
-Simulator: 63 add neighbor 53 on Con7
-connection #53(1) to #63
-connection #53(6) to #52
-connection #53(7) to #43
-link catom 54
-Simulator: 54 add neighbor 55 on Con0
-Simulator: 55 add neighbor 54 on Con6
-connection #54(0) to #55
-Simulator: 54 add neighbor 64 on Con1
-Simulator: 64 add neighbor 54 on Con7
-connection #54(1) to #64
-connection #54(6) to #53
-connection #54(7) to #44
-link catom 55
-Simulator: 55 add neighbor 56 on Con0
-Simulator: 56 add neighbor 55 on Con6
-connection #55(0) to #56
-Simulator: 55 add neighbor 65 on Con1
-Simulator: 65 add neighbor 55 on Con7
-connection #55(1) to #65
-connection #55(6) to #54
-connection #55(7) to #45
-link catom 56
-Simulator: 56 add neighbor 57 on Con0
-Simulator: 57 add neighbor 56 on Con6
-connection #56(0) to #57
-Simulator: 56 add neighbor 66 on Con1
-Simulator: 66 add neighbor 56 on Con7
-connection #56(1) to #66
-connection #56(6) to #55
-connection #56(7) to #46
-link catom 57
-Simulator: 57 add neighbor 58 on Con0
-Simulator: 58 add neighbor 57 on Con6
-connection #57(0) to #58
-Simulator: 57 add neighbor 67 on Con1
-Simulator: 67 add neighbor 57 on Con7
-connection #57(1) to #67
-connection #57(6) to #56
-connection #57(7) to #47
-link catom 58
-Simulator: 58 add neighbor 59 on Con0
-Simulator: 59 add neighbor 58 on Con6
-connection #58(0) to #59
-Simulator: 58 add neighbor 68 on Con1
-Simulator: 68 add neighbor 58 on Con7
-connection #58(1) to #68
-connection #58(6) to #57
-connection #58(7) to #48
-link catom 59
-Simulator: 59 add neighbor 60 on Con0
-Simulator: 60 add neighbor 59 on Con6
-connection #59(0) to #60
-Simulator: 59 add neighbor 69 on Con1
-Simulator: 69 add neighbor 59 on Con7
-connection #59(1) to #69
-connection #59(6) to #58
-connection #59(7) to #49
-link catom 60
-Simulator: 60 add neighbor 70 on Con1
-Simulator: 70 add neighbor 60 on Con7
-connection #60(1) to #70
-connection #60(6) to #59
-connection #60(7) to #50
-link catom 61
-Simulator: 61 add neighbor 62 on Con0
-Simulator: 62 add neighbor 61 on Con6
-connection #61(0) to #62
-Simulator: 61 add neighbor 71 on Con1
-Simulator: 71 add neighbor 61 on Con7
-connection #61(1) to #71
-connection #61(7) to #51
-link catom 62
-Simulator: 62 add neighbor 63 on Con0
-Simulator: 63 add neighbor 62 on Con6
-connection #62(0) to #63
-Simulator: 62 add neighbor 72 on Con1
-Simulator: 72 add neighbor 62 on Con7
-connection #62(1) to #72
-connection #62(6) to #61
-connection #62(7) to #52
-link catom 63
-Simulator: 63 add neighbor 64 on Con0
-Simulator: 64 add neighbor 63 on Con6
-connection #63(0) to #64
-Simulator: 63 add neighbor 73 on Con1
-Simulator: 73 add neighbor 63 on Con7
-connection #63(1) to #73
-connection #63(6) to #62
-connection #63(7) to #53
-link catom 64
-Simulator: 64 add neighbor 65 on Con0
-Simulator: 65 add neighbor 64 on Con6
-connection #64(0) to #65
-Simulator: 64 add neighbor 74 on Con1
-Simulator: 74 add neighbor 64 on Con7
-connection #64(1) to #74
-connection #64(6) to #63
-connection #64(7) to #54
-link catom 65
-Simulator: 65 add neighbor 66 on Con0
-Simulator: 66 add neighbor 65 on Con6
-connection #65(0) to #66
-Simulator: 65 add neighbor 75 on Con1
-Simulator: 75 add neighbor 65 on Con7
-connection #65(1) to #75
-connection #65(6) to #64
-connection #65(7) to #55
-link catom 66
-Simulator: 66 add neighbor 67 on Con0
-Simulator: 67 add neighbor 66 on Con6
-connection #66(0) to #67
-Simulator: 66 add neighbor 76 on Con1
-Simulator: 76 add neighbor 66 on Con7
-connection #66(1) to #76
-connection #66(6) to #65
-connection #66(7) to #56
-link catom 67
-Simulator: 67 add neighbor 68 on Con0
-Simulator: 68 add neighbor 67 on Con6
-connection #67(0) to #68
-Simulator: 67 add neighbor 77 on Con1
-Simulator: 77 add neighbor 67 on Con7
-connection #67(1) to #77
-connection #67(6) to #66
-connection #67(7) to #57
-link catom 68
-Simulator: 68 add neighbor 69 on Con0
-Simulator: 69 add neighbor 68 on Con6
-connection #68(0) to #69
-Simulator: 68 add neighbor 78 on Con1
-Simulator: 78 add neighbor 68 on Con7
-connection #68(1) to #78
-connection #68(6) to #67
-connection #68(7) to #58
-link catom 69
-Simulator: 69 add neighbor 70 on Con0
-Simulator: 70 add neighbor 69 on Con6
-connection #69(0) to #70
-Simulator: 69 add neighbor 79 on Con1
-Simulator: 79 add neighbor 69 on Con7
-connection #69(1) to #79
-connection #69(6) to #68
-connection #69(7) to #59
-link catom 70
-Simulator: 70 add neighbor 80 on Con1
-Simulator: 80 add neighbor 70 on Con7
-connection #70(1) to #80
-connection #70(6) to #69
-connection #70(7) to #60
-link catom 71
-Simulator: 71 add neighbor 72 on Con0
-Simulator: 72 add neighbor 71 on Con6
-connection #71(0) to #72
-Simulator: 71 add neighbor 81 on Con1
-Simulator: 81 add neighbor 71 on Con7
-connection #71(1) to #81
-connection #71(7) to #61
-link catom 72
-Simulator: 72 add neighbor 73 on Con0
-Simulator: 73 add neighbor 72 on Con6
-connection #72(0) to #73
-Simulator: 72 add neighbor 82 on Con1
-Simulator: 82 add neighbor 72 on Con7
-connection #72(1) to #82
-connection #72(6) to #71
-connection #72(7) to #62
-link catom 73
-Simulator: 73 add neighbor 74 on Con0
-Simulator: 74 add neighbor 73 on Con6
-connection #73(0) to #74
-Simulator: 73 add neighbor 83 on Con1
-Simulator: 83 add neighbor 73 on Con7
-connection #73(1) to #83
-connection #73(6) to #72
-connection #73(7) to #63
-link catom 74
-Simulator: 74 add neighbor 75 on Con0
-Simulator: 75 add neighbor 74 on Con6
-connection #74(0) to #75
-Simulator: 74 add neighbor 84 on Con1
-Simulator: 84 add neighbor 74 on Con7
-connection #74(1) to #84
-connection #74(6) to #73
-connection #74(7) to #64
-link catom 75
-Simulator: 75 add neighbor 76 on Con0
-Simulator: 76 add neighbor 75 on Con6
-connection #75(0) to #76
-Simulator: 75 add neighbor 85 on Con1
-Simulator: 85 add neighbor 75 on Con7
-connection #75(1) to #85
-connection #75(6) to #74
-connection #75(7) to #65
-link catom 76
-Simulator: 76 add neighbor 77 on Con0
-Simulator: 77 add neighbor 76 on Con6
-connection #76(0) to #77
-Simulator: 76 add neighbor 86 on Con1
-Simulator: 86 add neighbor 76 on Con7
-connection #76(1) to #86
-connection #76(6) to #75
-connection #76(7) to #66
-link catom 77
-Simulator: 77 add neighbor 78 on Con0
-Simulator: 78 add neighbor 77 on Con6
-connection #77(0) to #78
-Simulator: 77 add neighbor 87 on Con1
-Simulator: 87 add neighbor 77 on Con7
-connection #77(1) to #87
-connection #77(6) to #76
-connection #77(7) to #67
-link catom 78
-Simulator: 78 add neighbor 79 on Con0
-Simulator: 79 add neighbor 78 on Con6
-connection #78(0) to #79
-Simulator: 78 add neighbor 88 on Con1
-Simulator: 88 add neighbor 78 on Con7
-connection #78(1) to #88
-connection #78(6) to #77
-connection #78(7) to #68
-link catom 79
-Simulator: 79 add neighbor 80 on Con0
-Simulator: 80 add neighbor 79 on Con6
-connection #79(0) to #80
-Simulator: 79 add neighbor 89 on Con1
-Simulator: 89 add neighbor 79 on Con7
-connection #79(1) to #89
-connection #79(6) to #78
-connection #79(7) to #69
-link catom 80
-Simulator: 80 add neighbor 90 on Con1
-Simulator: 90 add neighbor 80 on Con7
-connection #80(1) to #90
-connection #80(6) to #79
-connection #80(7) to #70
-link catom 81
-Simulator: 81 add neighbor 82 on Con0
-Simulator: 82 add neighbor 81 on Con6
-connection #81(0) to #82
-Simulator: 81 add neighbor 91 on Con1
-Simulator: 91 add neighbor 81 on Con7
-connection #81(1) to #91
-connection #81(7) to #71
-link catom 82
-Simulator: 82 add neighbor 83 on Con0
-Simulator: 83 add neighbor 82 on Con6
-connection #82(0) to #83
-Simulator: 82 add neighbor 92 on Con1
-Simulator: 92 add neighbor 82 on Con7
-connection #82(1) to #92
-connection #82(6) to #81
-connection #82(7) to #72
-link catom 83
-Simulator: 83 add neighbor 84 on Con0
-Simulator: 84 add neighbor 83 on Con6
-connection #83(0) to #84
-Simulator: 83 add neighbor 93 on Con1
-Simulator: 93 add neighbor 83 on Con7
-connection #83(1) to #93
-connection #83(6) to #82
-connection #83(7) to #73
-link catom 84
-Simulator: 84 add neighbor 85 on Con0
-Simulator: 85 add neighbor 84 on Con6
-connection #84(0) to #85
-Simulator: 84 add neighbor 94 on Con1
-Simulator: 94 add neighbor 84 on Con7
-connection #84(1) to #94
-connection #84(6) to #83
-connection #84(7) to #74
-link catom 85
-Simulator: 85 add neighbor 86 on Con0
-Simulator: 86 add neighbor 85 on Con6
-connection #85(0) to #86
-Simulator: 85 add neighbor 95 on Con1
-Simulator: 95 add neighbor 85 on Con7
-connection #85(1) to #95
-connection #85(6) to #84
-connection #85(7) to #75
-link catom 86
-Simulator: 86 add neighbor 87 on Con0
-Simulator: 87 add neighbor 86 on Con6
-connection #86(0) to #87
-Simulator: 86 add neighbor 96 on Con1
-Simulator: 96 add neighbor 86 on Con7
-connection #86(1) to #96
-connection #86(6) to #85
-connection #86(7) to #76
-link catom 87
-Simulator: 87 add neighbor 88 on Con0
-Simulator: 88 add neighbor 87 on Con6
-connection #87(0) to #88
-Simulator: 87 add neighbor 97 on Con1
-Simulator: 97 add neighbor 87 on Con7
-connection #87(1) to #97
-connection #87(6) to #86
-connection #87(7) to #77
-link catom 88
-Simulator: 88 add neighbor 89 on Con0
-Simulator: 89 add neighbor 88 on Con6
-connection #88(0) to #89
-Simulator: 88 add neighbor 98 on Con1
-Simulator: 98 add neighbor 88 on Con7
-connection #88(1) to #98
-connection #88(6) to #87
-connection #88(7) to #78
-link catom 89
-Simulator: 89 add neighbor 90 on Con0
-Simulator: 90 add neighbor 89 on Con6
-connection #89(0) to #90
-Simulator: 89 add neighbor 99 on Con1
-Simulator: 99 add neighbor 89 on Con7
-connection #89(1) to #99
-connection #89(6) to #88
-connection #89(7) to #79
-link catom 90
-Simulator: 90 add neighbor 100 on Con1
-Simulator: 100 add neighbor 90 on Con7
-connection #90(1) to #100
-connection #90(6) to #89
-connection #90(7) to #80
-link catom 91
-Simulator: 91 add neighbor 92 on Con0
-Simulator: 92 add neighbor 91 on Con6
-connection #91(0) to #92
-connection #91(7) to #81
-link catom 92
-Simulator: 92 add neighbor 93 on Con0
-Simulator: 93 add neighbor 92 on Con6
-connection #92(0) to #93
-connection #92(6) to #91
-connection #92(7) to #82
-link catom 93
-Simulator: 93 add neighbor 94 on Con0
-Simulator: 94 add neighbor 93 on Con6
-connection #93(0) to #94
-connection #93(6) to #92
-connection #93(7) to #83
-link catom 94
-Simulator: 94 add neighbor 95 on Con0
-Simulator: 95 add neighbor 94 on Con6
-connection #94(0) to #95
-connection #94(6) to #93
-connection #94(7) to #84
-link catom 95
-Simulator: 95 add neighbor 96 on Con0
-Simulator: 96 add neighbor 95 on Con6
-connection #95(0) to #96
-connection #95(6) to #94
-connection #95(7) to #85
-link catom 96
-Simulator: 96 add neighbor 97 on Con0
-Simulator: 97 add neighbor 96 on Con6
-connection #96(0) to #97
-connection #96(6) to #95
-connection #96(7) to #86
-link catom 97
-Simulator: 97 add neighbor 98 on Con0
-Simulator: 98 add neighbor 97 on Con6
-connection #97(0) to #98
-connection #97(6) to #96
-connection #97(7) to #87
-link catom 98
-Simulator: 98 add neighbor 99 on Con0
-Simulator: 99 add neighbor 98 on Con6
-connection #98(0) to #99
-connection #98(6) to #97
-connection #98(7) to #88
-link catom 99
-Simulator: 99 add neighbor 100 on Con0
-Simulator: 100 add neighbor 99 on Con6
-connection #99(0) to #100
-connection #99(6) to #98
-connection #99(7) to #89
-link catom 100
-connection #100(6) to #99
-connection #100(7) to #90
+connection #22(7) to #21
+connection #22(8) to #11
+connection #22(9) to #12
+connection #22(10) to #16
+connection #22(11) to #15
 loading ../../simulatorCore/resources/textures/catoms3DTextures/numbers.tga
-dist0 : (4,0,1)
-dist0 : (5,0,1)
-dist0 : (2,1,1)
-dist0 : (3,1,1)
-dist0 : (4,1,1)
-dist0 : (5,1,1)
-dist0 : (6,1,1)
-dist0 : (7,1,1)
-dist0 : (1,2,1)
-dist0 : (2,2,1)
-dist0 : (3,2,1)
-dist0 : (6,2,1)
-dist0 : (7,2,1)
-dist0 : (8,2,1)
-dist0 : (1,3,1)
-dist0 : (2,3,1)
-dist0 : (7,3,1)
-dist0 : (8,3,1)
-dist0 : (0,4,1)
-dist0 : (1,4,1)
-dist0 : (8,4,1)
-dist0 : (9,4,1)
-dist0 : (0,5,1)
-dist0 : (1,5,1)
-dist0 : (8,5,1)
-dist0 : (9,5,1)
-dist0 : (1,6,1)
-dist0 : (2,6,1)
-dist0 : (7,6,1)
-dist0 : (8,6,1)
-dist0 : (1,7,1)
-dist0 : (2,7,1)
-dist0 : (3,7,1)
-dist0 : (6,7,1)
-dist0 : (7,7,1)
-dist0 : (8,7,1)
-dist0 : (2,8,1)
-dist0 : (3,8,1)
-dist0 : (4,8,1)
-dist0 : (5,8,1)
-dist0 : (6,8,1)
-dist0 : (7,8,1)
-dist0 : (4,9,1)
-dist0 : (5,9,1)
-(4,0,1) LEVEL 1
-catom #5
-dist 1 : (3,0,1) 3->2 (4,0,1) full=0
-catom #6
-catom #16
-catom #15
-(5,0,1) LEVEL 1
-catom #6
-dist 1 : (6,0,0) 0->2 (5,0,1) full=1
-catom #7
-dist 1 : (6,0,1) 2->3 (5,0,1) full=0
-catom #17
-catom #16
-(2,1,1) LEVEL 1
-catom #13
-dist 1 : (1,1,1) 3->2 (2,1,1) full=0
-dist 1 : (1,0,1) 4->2 (2,1,1) full=0
-dist 1 : (2,0,1) 5->2 (2,1,1) full=0
-catom #14
-catom #24
-catom #23
-(3,1,1) LEVEL 1
-catom #14
-catom #15
-catom #25
-dist 1 : (4,2,1) 2->4 (3,1,1) full=0
-catom #24
-(4,1,1) LEVEL 1
-catom #15
-catom #16
-dist 1 : (5,2,0) 1->3 (4,1,1) full=1
-catom #26
-dist 1 : (5,2,1) 2->4 (4,1,1) full=0
-catom #25
-(5,1,1) LEVEL 1
-catom #16
-catom #17
-catom #27
-catom #26
-(6,1,1) LEVEL 1
-catom #17
-catom #18
-dist 1 : (7,0,1) 5->3 (6,1,1) full=0
-catom #28
-catom #27
-(7,1,1) LEVEL 1
-catom #18
-dist 1 : (8,1,0) 0->2 (7,1,1) full=1
-catom #19
-dist 1 : (8,1,1) 2->3 (7,1,1) full=0
-dist 1 : (8,0,1) 5->3 (7,1,1) full=0
-catom #29
-catom #28
-(1,2,1) LEVEL 1
-catom #22
-dist 1 : (0,2,1) 3->2 (1,2,1) full=0
-dist 1 : (0,1,1) 4->2 (1,2,1) full=0
-catom #23
-catom #33
-catom #32
-dist 1 : (0,3,1) 3->5 (1,2,1) full=0
-(2,2,1) LEVEL 1
-catom #23
-catom #24
-catom #34
-dist 1 : (3,3,1) 2->4 (2,2,1) full=0
-catom #33
-(3,2,1) LEVEL 1
-catom #24
-catom #25
-catom #35
-dist 1 : (4,3,1) 2->4 (3,2,1) full=0
-catom #34
-(6,2,1) LEVEL 1
-catom #27
-dist 1 : (6,3,0) 1->2 (6,2,1) full=1
-catom #28
-catom #38
-dist 1 : (6,3,1) 3->4 (6,2,1) full=0
-catom #37
-dist 1 : (5,3,1) 3->5 (6,2,1) full=0
-(7,2,1) LEVEL 1
-catom #28
-catom #29
-catom #39
-catom #38
-(8,2,1) LEVEL 1
-catom #29
-dist 1 : (9,2,0) 0->2 (8,2,1) full=1
-catom #30
-dist 1 : (9,3,0) 1->3 (8,2,1) full=1
-dist 1 : (9,2,1) 2->3 (8,2,1) full=0
-dist 1 : (9,1,1) 5->3 (8,2,1) full=0
-catom #40
-dist 1 : (9,3,1) 2->4 (8,2,1) full=0
-catom #39
-(1,3,1) LEVEL 1
-catom #32
-catom #33
-catom #43
-dist 1 : (2,4,1) 2->4 (1,3,1) full=0
-catom #42
-(2,3,1) LEVEL 1
-catom #33
-catom #34
-catom #44
-dist 1 : (3,4,1) 2->4 (2,3,1) full=0
-catom #43
-(7,3,1) LEVEL 1
-catom #38
-dist 1 : (7,4,0) 1->2 (7,3,1) full=1
-catom #39
-catom #49
-dist 1 : (7,4,1) 3->4 (7,3,1) full=0
-catom #48
-dist 1 : (6,4,1) 3->5 (7,3,1) full=0
-(8,3,1) LEVEL 1
-catom #39
-catom #40
-catom #50
-catom #49
-(0,4,1) LEVEL 1
-catom #41
-catom #42
-catom #52
-catom #51
-(1,4,1) LEVEL 1
-catom #42
-catom #43
-dist 1 : (2,5,0) 1->3 (1,4,1) full=1
-catom #53
-dist 1 : (2,5,1) 2->4 (1,4,1) full=0
-catom #52
-(8,4,1) LEVEL 1
-catom #49
-catom #50
-catom #60
-catom #59
-dist 1 : (7,5,1) 3->5 (8,4,1) full=0
-(9,4,1) LEVEL 1
-catom #50
-catom #60
-(0,5,1) LEVEL 1
-catom #51
-dist 1 : (0,6,0) 1->2 (0,5,1) full=1
-catom #52
-catom #62
-dist 1 : (0,6,1) 3->4 (0,5,1) full=0
-catom #61
-(1,5,1) LEVEL 1
-catom #52
-catom #53
-catom #63
-catom #62
-(8,5,1) LEVEL 1
-catom #59
-catom #60
-dist 1 : (9,6,0) 1->3 (8,5,1) full=1
-catom #70
-dist 1 : (9,6,1) 2->4 (8,5,1) full=0
-catom #69
-(9,5,1) LEVEL 1
-catom #60
-catom #70
-(1,6,1) LEVEL 1
-catom #62
-catom #63
-catom #73
-catom #72
-dist 1 : (0,7,1) 3->5 (1,6,1) full=0
-(2,6,1) LEVEL 1
-catom #63
-dist 1 : (3,6,0) 0->2 (2,6,1) full=1
-catom #64
-dist 1 : (3,6,1) 2->3 (2,6,1) full=0
-dist 1 : (3,5,1) 5->3 (2,6,1) full=0
-catom #74
-catom #73
-(7,6,1) LEVEL 1
-catom #68
-dist 1 : (6,6,1) 3->2 (7,6,1) full=0
-dist 1 : (6,5,1) 4->2 (7,6,1) full=0
-catom #69
-catom #79
-catom #78
-(8,6,1) LEVEL 1
-catom #69
-catom #70
-dist 1 : (9,7,0) 1->3 (8,6,1) full=1
-catom #80
-dist 1 : (9,7,1) 2->4 (8,6,1) full=0
-catom #79
-(1,7,1) LEVEL 1
-catom #72
-dist 1 : (1,8,0) 1->2 (1,7,1) full=1
-catom #73
-catom #83
-dist 1 : (1,8,1) 3->4 (1,7,1) full=0
-catom #82
-dist 1 : (0,8,1) 3->5 (1,7,1) full=0
-(2,7,1) LEVEL 1
-catom #73
-catom #74
-catom #84
-catom #83
-(3,7,1) LEVEL 1
-catom #74
-dist 1 : (4,7,0) 0->2 (3,7,1) full=1
-catom #75
-dist 1 : (4,7,1) 2->3 (3,7,1) full=0
-dist 1 : (4,6,1) 5->3 (3,7,1) full=0
-catom #85
-catom #84
-(6,7,1) LEVEL 1
-catom #77
-dist 1 : (5,7,1) 3->2 (6,7,1) full=0
-dist 1 : (5,6,1) 4->2 (6,7,1) full=0
-catom #78
-catom #88
-catom #87
-(7,7,1) LEVEL 1
-catom #78
-catom #79
-dist 1 : (8,8,0) 1->3 (7,7,1) full=1
-catom #89
-dist 1 : (8,8,1) 2->4 (7,7,1) full=0
-catom #88
-(8,7,1) LEVEL 1
-catom #79
-catom #80
-dist 1 : (9,8,0) 1->3 (8,7,1) full=1
-catom #90
-dist 1 : (9,8,1) 2->4 (8,7,1) full=0
-catom #89
-(2,8,1) LEVEL 1
-catom #83
-dist 1 : (2,9,0) 1->2 (2,8,1) full=1
-catom #84
-dist 1 : (3,9,0) 1->3 (2,8,1) full=1
-catom #94
-dist 1 : (3,9,1) 2->4 (2,8,1) full=0
-dist 1 : (2,9,1) 3->4 (2,8,1) full=0
-catom #93
-dist 1 : (1,9,1) 3->5 (2,8,1) full=0
-(3,8,1) LEVEL 1
-catom #84
-catom #85
-catom #95
-catom #94
-(4,8,1) LEVEL 1
-catom #85
-catom #86
-catom #96
-catom #95
-(5,8,1) LEVEL 1
-catom #86
-catom #87
-dist 1 : (6,9,0) 1->3 (5,8,1) full=1
-catom #97
-dist 1 : (6,9,1) 2->4 (5,8,1) full=0
-catom #96
-(6,8,1) LEVEL 1
-catom #87
-catom #88
-dist 1 : (7,9,0) 1->3 (6,8,1) full=1
-catom #98
-dist 1 : (7,9,1) 2->4 (6,8,1) full=0
-catom #97
-(7,8,1) LEVEL 1
-catom #88
-catom #89
-dist 1 : (8,9,0) 1->3 (7,8,1) full=1
-catom #99
-dist 1 : (8,9,1) 2->4 (7,8,1) full=0
-catom #98
-(4,9,1) LEVEL 1
-catom #95
-catom #96
-(5,9,1) LEVEL 1
-catom #96
-catom #97
-(3,0,1) LEVEL 2
-catom #4
-catom #5
-catom #15
-catom #14
-dist 2 : (3,0,0) 7->5 (3,0,1) full=1
-(6,0,0) LEVEL 2
-catom #8
-catom #17
-catom #6
-(6,0,1) LEVEL 2
-catom #7
-dist 2 : (7,0,0) 0->2 (6,0,1) full=1
-catom #8
-catom #18
-catom #17
-(1,1,1) LEVEL 2
-catom #12
-dist 2 : (0,0,1) 4->2 (1,1,1) full=0
-catom #13
-catom #23
-catom #22
-(1,0,1) LEVEL 2
-catom #2
-catom #3
-catom #13
-dist 2 : (2,0,0) 7->4 (1,0,1) full=1
-catom #12
-dist 2 : (1,0,0) 7->5 (1,0,1) full=1
-(2,0,1) LEVEL 2
-catom #3
-catom #4
-catom #14
-catom #13
-(4,2,1) LEVEL 2
-catom #25
-catom #26
-dist 2 : (5,3,0) 1->3 (4,2,1) full=1
-catom #36
-catom #35
-(5,2,0) LEVEL 2
-catom #27
-catom #36
-catom #25
-catom #16
-(5,2,1) LEVEL 2
-catom #26
-catom #27
-catom #37
-catom #36
-(7,0,1) LEVEL 2
-catom #8
-dist 2 : (8,0,0) 0->2 (7,0,1) full=1
+dist0 : (0,2,1)
+dist0 : (2,1,2)
+Target: 20/22 cells
+(0,2,1) LEVEL 1
 catom #9
-catom #19
-catom #18
-(8,1,0) LEVEL 2
-catom #20
-catom #29
-catom #18
-catom #9
-(8,1,1) LEVEL 2
-catom #19
-dist 2 : (9,1,0) 0->2 (8,1,1) full=1
-catom #20
-dist 2 : (9,0,1) 5->3 (8,1,1) full=0
-catom #30
-catom #29
-(8,0,1) LEVEL 2
-catom #9
-dist 2 : (9,0,0) 0->2 (8,0,1) full=1
+dist 1 : (0,1,1) 5->2 (0,2,1) full=0
 catom #10
-catom #20
+catom #14
+dist 1 : (1,3,1) 2->4 (0,2,1) full=0
+dist 1 : (0,3,1) 3->4 (0,2,1) full=0
+dist 1 : (1,2,1) 5->4 (0,2,1) full=0
+catom #13
+(2,1,2) LEVEL 1
+catom #18
+dist 1 : (1,1,2) 3->2 (2,1,2) full=0
+dist 1 : (1,0,2) 4->2 (2,1,2) full=0
+dist 1 : (2,0,2) 5->2 (2,1,2) full=0
 catom #19
-(0,2,1) LEVEL 2
+dist 1 : (3,1,2) 2->3 (2,1,2) full=0
+dist 1 : (3,0,2) 5->3 (2,1,2) full=0
 catom #21
-catom #22
-dist 2 : (0,2,0) 6->3 (0,2,1) full=1
-catom #32
-dist 2 : (0,3,0) 6->4 (0,2,1) full=1
-catom #31
+dist 1 : (3,2,2) 2->4 (2,1,2) full=0
+dist 1 : (2,2,2) 3->4 (2,1,2) full=0
+catom #20
+dist 1 : (1,2,2) 3->5 (2,1,2) full=0
 (0,1,1) LEVEL 2
-catom #11
-catom #12
-dist 2 : (0,1,0) 6->3 (0,1,1) full=1
-catom #22
-catom #21
-(0,3,1) LEVEL 2
-catom #31
-catom #32
-catom #42
-catom #41
-(3,3,1) LEVEL 2
-catom #34
-catom #35
-catom #45
-dist 2 : (4,4,1) 2->4 (3,3,1) full=0
-catom #44
-(4,3,1) LEVEL 2
-catom #35
-catom #36
-dist 2 : (5,4,0) 1->3 (4,3,1) full=1
-catom #46
-dist 2 : (5,4,1) 2->4 (4,3,1) full=0
-catom #45
-(6,3,0) LEVEL 2
-catom #38
-catom #47
-catom #36
-catom #27
-(6,3,1) LEVEL 2
-catom #37
-dist 2 : (6,4,0) 1->2 (6,3,1) full=1
-catom #38
-catom #48
-catom #47
-(5,3,1) LEVEL 2
-catom #36
-catom #37
-catom #47
-catom #46
-(9,2,0) LEVEL 2
-catom #40
-catom #29
 catom #20
-(9,3,0) LEVEL 2
-catom #50
-catom #39
-catom #30
-(9,2,1) LEVEL 2
-catom #30
-catom #40
-(9,1,1) LEVEL 2
-catom #20
-catom #30
-(9,3,1) LEVEL 2
-catom #40
-catom #50
-(2,4,1) LEVEL 2
-catom #43
-catom #44
-dist 2 : (3,5,0) 1->3 (2,4,1) full=1
-catom #54
-catom #53
-(3,4,1) LEVEL 2
-catom #44
-catom #45
-dist 2 : (4,5,0) 1->3 (3,4,1) full=1
-catom #55
-dist 2 : (4,5,1) 2->4 (3,4,1) full=0
-catom #54
-(7,4,0) LEVEL 2
-catom #49
-catom #58
-catom #47
-catom #38
-(7,4,1) LEVEL 2
-catom #48
-dist 2 : (7,5,0) 1->2 (7,4,1) full=1
-catom #49
-catom #59
-catom #58
-(6,4,1) LEVEL 2
-catom #47
-dist 2 : (6,5,0) 1->2 (6,4,1) full=1
-catom #48
-catom #58
-catom #57
-dist 2 : (5,5,1) 3->5 (6,4,1) full=0
-(2,5,0) LEVEL 2
-catom #54
-catom #63
-catom #52
-catom #43
-(2,5,1) LEVEL 2
-catom #53
-catom #54
-catom #64
-catom #63
-(7,5,1) LEVEL 2
-catom #58
-catom #59
-catom #69
-catom #68
-(0,6,0) LEVEL 2
-catom #62
-catom #71
-catom #51
-(0,6,1) LEVEL 2
-catom #61
-dist 2 : (0,7,0) 1->2 (0,6,1) full=1
-catom #62
-catom #72
-catom #71
-(9,6,0) LEVEL 2
-catom #80
-catom #69
-catom #60
-(9,6,1) LEVEL 2
-catom #70
-catom #80
-(0,7,1) LEVEL 2
-catom #71
-dist 2 : (0,8,0) 1->2 (0,7,1) full=1
-catom #72
-catom #82
-catom #81
-(3,6,0) LEVEL 2
-catom #65
-catom #74
-catom #63
-catom #54
-(3,6,1) LEVEL 2
-catom #64
-dist 2 : (4,6,0) 0->2 (3,6,1) full=1
-catom #65
-catom #75
-catom #74
-(3,5,1) LEVEL 2
-catom #54
-catom #55
-catom #65
-catom #64
-(6,6,1) LEVEL 2
-catom #67
-catom #68
-dist 2 : (6,6,0) 6->3 (6,6,1) full=1
-catom #78
-catom #77
-(6,5,1) LEVEL 2
-catom #57
-catom #58
-catom #68
-catom #67
-(9,7,0) LEVEL 2
-catom #90
-catom #79
-catom #70
-(9,7,1) LEVEL 2
-catom #80
-catom #90
-(1,8,0) LEVEL 2
-catom #83
-catom #92
-catom #81
-catom #72
-(1,8,1) LEVEL 2
-catom #82
-dist 2 : (1,9,0) 1->2 (1,8,1) full=1
-catom #83
-catom #93
-catom #92
-dist 2 : (0,9,1) 3->5 (1,8,1) full=0
-(0,8,1) LEVEL 2
-catom #81
-dist 2 : (0,9,0) 1->2 (0,8,1) full=1
-catom #82
-catom #92
-catom #91
-(4,7,0) LEVEL 2
-catom #76
-catom #85
-catom #74
-catom #65
-(4,7,1) LEVEL 2
-catom #75
-dist 2 : (5,7,0) 0->2 (4,7,1) full=1
-catom #76
-catom #86
-catom #85
-(4,6,1) LEVEL 2
-catom #65
-dist 2 : (5,6,0) 0->2 (4,6,1) full=1
-catom #66
-catom #76
-catom #75
-(5,7,1) LEVEL 2
-catom #76
-catom #77
-catom #87
-catom #86
-(5,6,1) LEVEL 2
-catom #66
-catom #67
-catom #77
-catom #76
-(8,8,0) LEVEL 2
-catom #90
-catom #99
-catom #88
-catom #79
-(8,8,1) LEVEL 2
-catom #89
-catom #90
-dist 2 : (9,9,0) 1->3 (8,8,1) full=1
-catom #100
-dist 2 : (9,9,1) 2->4 (8,8,1) full=0
-catom #99
-(9,8,0) LEVEL 2
-catom #100
-catom #89
-catom #80
-(9,8,1) LEVEL 2
-catom #90
-catom #100
-(2,9,0) LEVEL 2
-catom #94
-catom #92
-catom #83
-(3,9,0) LEVEL 2
-catom #95
-catom #93
-catom #84
-(3,9,1) LEVEL 2
-catom #94
-catom #95
-(2,9,1) LEVEL 2
-catom #93
-catom #94
-(1,9,1) LEVEL 2
-catom #92
-catom #93
-(6,9,0) LEVEL 2
-catom #98
-catom #96
-catom #87
-(6,9,1) LEVEL 2
-catom #97
-catom #98
-(7,9,0) LEVEL 2
-catom #99
-catom #97
-catom #88
-(7,9,1) LEVEL 2
-catom #98
-catom #99
-(8,9,0) LEVEL 2
-catom #100
-catom #98
-catom #89
-(8,9,1) LEVEL 2
-catom #99
-catom #100
-(3,0,0) LEVEL 3
+catom #17
+dist 2 : (0,1,2) 3->1 (0,1,1) full=0
 catom #5
+dist 2 : (0,0,1) 5->2 (0,1,1) full=1
+catom #6
+catom #10
+catom #9
+(1,3,1) LEVEL 2
 catom #14
-catom #3
-(7,0,0) LEVEL 3
-catom #9
-catom #18
-catom #7
-(0,0,1) LEVEL 3
-catom #1
-catom #2
-dist 3 : (0,0,0) 6->3 (0,0,1) full=1
-catom #12
-catom #11
-(2,0,0) LEVEL 3
-catom #4
+dist 2 : (1,4,0) 1->2 (1,3,1) full=0
+catom #15
+dist 2 : (2,4,0) 1->3 (1,3,1) full=0
+dist 2 : (2,3,1) 2->3 (1,3,1) full=0
+dist 2 : (2,2,1) 5->3 (1,3,1) full=1
+(0,3,1) LEVEL 2
 catom #13
-catom #2
-(1,0,0) LEVEL 3
-catom #3
-catom #12
-catom #1
-(5,3,0) LEVEL 3
-catom #37
-catom #46
-catom #35
-catom #26
-(8,0,0) LEVEL 3
-catom #10
-catom #19
-catom #8
-(9,1,0) LEVEL 3
-catom #30
-catom #19
-catom #10
-(9,0,1) LEVEL 3
-catom #10
-catom #20
-(9,0,0) LEVEL 3
-catom #20
-catom #9
-(0,2,0) LEVEL 3
+dist 2 : (0,4,0) 1->2 (0,3,1) full=0
+catom #14
+(1,2,1) LEVEL 2
 catom #22
-catom #31
+dist 2 : (2,3,2) 3->6 (1,2,1) full=0
+catom #20
+catom #10
 catom #11
-(0,3,0) LEVEL 3
-catom #32
-catom #41
+catom #15
+catom #14
+(1,1,2) LEVEL 2
+catom #17
+dist 2 : (0,0,2) 4->2 (1,1,2) full=0
+catom #18
+catom #20
+(1,0,2) LEVEL 2
+catom #18
+catom #17
+(2,0,2) LEVEL 2
+catom #19
+catom #18
+(3,1,2) LEVEL 2
+catom #19
+dist 2 : (3,0,1) 0->2 (3,1,2) full=0
 catom #21
-(0,1,0) LEVEL 3
-catom #12
+dist 2 : (3,1,1) 0->5 (3,1,2) full=0
+(3,0,2) LEVEL 2
+catom #19
+(3,2,2) LEVEL 2
 catom #21
+catom #22
+dist 2 : (3,2,1) 0->5 (3,2,2) full=0
+dist 2 : (3,3,2) 2->5 (3,2,2) full=0
+(2,2,2) LEVEL 2
+catom #20
+catom #21
+catom #22
+(1,2,2) LEVEL 2
+catom #20
+(0,1,2) LEVEL 3
+catom #17
+(0,0,1) LEVEL 3
+catom #18
 catom #1
-(4,4,1) LEVEL 3
-catom #45
-catom #46
-dist 3 : (5,5,0) 1->3 (4,4,1) full=1
-catom #56
-catom #55
-(5,4,0) LEVEL 3
-catom #47
-catom #56
-catom #45
-catom #36
-(5,4,1) LEVEL 3
-catom #46
-catom #47
-catom #57
-catom #56
-(6,4,0) LEVEL 3
-catom #48
-catom #57
-catom #46
-catom #37
-(3,5,0) LEVEL 3
-catom #55
-catom #64
-catom #53
-catom #44
-(4,5,0) LEVEL 3
-catom #56
-catom #65
-catom #54
-catom #45
-(4,5,1) LEVEL 3
-catom #55
-catom #56
-catom #66
-catom #65
-(7,5,0) LEVEL 3
-catom #59
-catom #68
-catom #57
-catom #48
-(6,5,0) LEVEL 3
-catom #58
-catom #67
-catom #56
-catom #47
-(5,5,1) LEVEL 3
-catom #56
-catom #57
-catom #67
-catom #66
-(0,7,0) LEVEL 3
-catom #72
-catom #81
-catom #61
-(0,8,0) LEVEL 3
-catom #82
-catom #91
-catom #71
-(4,6,0) LEVEL 3
-catom #66
-catom #75
-catom #64
-catom #55
-(6,6,0) LEVEL 3
-catom #68
-catom #77
-catom #66
-catom #57
-(1,9,0) LEVEL 3
-catom #93
-catom #91
-catom #82
-(0,9,1) LEVEL 3
-catom #91
-catom #92
-(0,9,0) LEVEL 3
-catom #92
-catom #81
-(5,7,0) LEVEL 3
-catom #77
-catom #86
-catom #75
-catom #66
-(5,6,0) LEVEL 3
-catom #67
-catom #76
-catom #65
-catom #56
-(9,9,0) LEVEL 3
-catom #99
-catom #90
-(9,9,1) LEVEL 3
-catom #100
-(0,0,0) LEVEL 4
 catom #2
+catom #6
+catom #5
+(1,4,0) LEVEL 3
+catom #14
+(2,4,0) LEVEL 3
+catom #15
+(2,3,1) LEVEL 3
+catom #22
+catom #15
+catom #16
+dist 3 : (3,4,0) 1->3 (2,3,1) full=0
+dist 3 : (3,3,1) 2->3 (2,3,1) full=0
+(2,2,1) LEVEL 3
+catom #21
 catom #11
-(5,5,0) LEVEL 4
-catom #57
-catom #66
-catom #55
-catom #46
+catom #12
+catom #16
+catom #15
+(0,4,0) LEVEL 3
+catom #13
+(2,3,2) LEVEL 3
+catom #22
+(0,0,2) LEVEL 3
+catom #17
+(3,0,1) LEVEL 3
+catom #19
+catom #4
+dist 3 : (4,0,0) 0->2 (3,0,1) full=0
+catom #8
+dist 3 : (4,1,0) 0->5 (3,0,1) full=0
+(3,1,1) LEVEL 3
+catom #21
+catom #8
+catom #12
+dist 3 : (4,2,0) 0->5 (3,1,1) full=0
+(3,2,1) LEVEL 3
+catom #22
+catom #12
+catom #16
+dist 3 : (4,3,0) 0->5 (3,2,1) full=0
+(3,3,2) LEVEL 3
+catom #22
+(3,4,0) LEVEL 4
+catom #16
+(3,3,1) LEVEL 4
+catom #16
+(4,0,0) LEVEL 4
+catom #4
+(4,1,0) LEVEL 4
+catom #8
+(4,2,0) LEVEL 4
+catom #12
+(4,3,0) LEVEL 4
+catom #16
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
@@ -3495,257 +906,124 @@ ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
+loading ../../simulatorCore/resources/textures/menuTextures/menu_add.tga
+loading ../../simulatorCore/resources/textures/menuTextures/menu_del.tga
+loading ../../simulatorCore/resources/textures/menuTextures/menu_tap.tga
+loading ../../simulatorCore/resources/textures/menuTextures/menu_save.tga
+loading ../../simulatorCore/resources/textures/menuTextures/menu_cancel.tga
+tap scheduled
+0.000000 #17: try to move p=(0,0,1);2
+0.000000 #17: interface#0 to 18#6
+0 -> 5, 0 -> 2, 0 -> 10, 0 -> 9, 0 -> 2, blocking: 10
+0 -> 1, blocking: 10
+0 -> 10, 0 -> 7, blocking: 8
+0 -> 5, blocking: 8
+0 -> 9, 0->5:(1,0,2);1
+0->2:(1,1,2);1
+0.000000 #17: interface#8 to 1#2
+8 -> 7, blocking: 0
+8 -> 9, 8 -> 6, blocking: 11
+8 -> 11, 8 -> 6, 8 -> 4, 8 -> 7, 8 -> 9, 8 -> 10, 8 -> 11, 0.000000 #17: interface#9 to 2#3
+9 -> 7, blocking: 8
+9 -> 8, 9 -> 0, 9 -> 10, 9 -> 7, blocking: 0
+9 -> 5, blocking: 0
+9 -> 0, 9 -> 8, 9 -> 10, 9 -> 11, 0.000000 #17: interface#10 to 6#4
+10 -> 1, blocking: 11
+10 -> 11, 10 -> 0, 10 -> 9, 10 -> 0, 10 -> 2, blocking: 0
+10 -> 1, blocking: 0
+10 -> 8, 10 -> 9, 10 -> 11, 0.000000 #17: interface#11 to 5#5
+11 -> 1, blocking: 0
+11 -> 10, 11 -> 6, blocking: 8
+11 -> 8, 11 -> 1, 11 -> 3, 11 -> 6, 11 -> 8, 11 -> 9, 11 -> 10, B->1:(0,1,1);1
+0.000000 #17: Best Orig.0 ->5:1
+0.000000 #17: send LOCK() to 18
+17 sends 1001 to 18 at 152
+ind=56 / pos=(1,1,2) / state=0 / bb=0
+lock (1,1,2) : 1
+ind=55 / pos=(0,1,2) / state=0 / bb=0
+lock (0,1,2) : 1
+ind=50 / pos=(0,0,2) / state=0 / bb=0
+lock (0,0,2) : 1
+isok=1
+0.000184 #18: send ANSLOCK(1) to 17
+18 sends 1002 to 17 at 415
+Simulator: 17 remove neighbor on Con0
+Simulator: 18 remove neighbor on Con6
+Simulator: 17 remove neighbor on Con8
+Simulator: 1 remove neighbor on Con2
+Simulator: 17 remove neighbor on Con9
+Simulator: 2 remove neighbor on Con3
+Simulator: 17 remove neighbor on Con10
+Simulator: 6 remove neighbor on Con4
+Simulator: 17 remove neighbor on Con11
+Simulator: 5 remove neighbor on Con5
+2447 : Disconnect Block 17 pos = (0,0,1)
+4.102447 #17: connect Block 17
+Connect Block 17 pos = (1,0,2)
+link catom 17
+Simulator: 17 add neighbor 18 on Con5
+Simulator: 18 add neighbor 17 on Con4
+connection #17(5) to #18
+link catom 18
+connection #18(0) to #19
+connection #18(1) to #20
+connection #18(4) to #17
+connection #18(8) to #2
+connection #18(9) to #3
+connection #18(10) to #7
+connection #18(11) to #6
 ADD_NEIGHBOR
 ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
+unlock (1,1,2)
+unlock (0,1,2)
+unlock (0,0,2)
+tap scheduled
+4.202447 #17: try to move p=(1,0,2);1
+4.202447 #17: interface#5 to 18#4
+5 -> 7, 5 -> 4, 5 -> 0, 5 -> 2, 5 -> 7, 5 -> 0, 5 -> 9, 5 -> 2, 5 -> 4, 5 -> 3, 5->4:(2,0,2);1
+5->0:(0,0,1);2
+5->2:(1,1,2);1
+5->0:(0,0,1);2
+5->9:(1,0,0);65535
+5->2:(1,1,2);1
+5->4:(2,0,2);1
+5->3:(2,1,2);0
+4.202447 #17: Best Orig.5 ->3:0
+4.202447 #17: send LOCK() to 18
+17 sends 1001 to 18 at 4202573
+4.202605 #18: send ANSLOCK(0) to 17
+18 sends 1002 to 17 at 4202743
+tap scheduled
+4.202775 #17: try to move p=(1,0,2);1
+4.202775 #17: interface#5 to 18#4
+5 -> 7, 5 -> 4, 5 -> 0, 5 -> 2, 5 -> 7, 5 -> 0, 5 -> 9, 5 -> 2, 5 -> 4, 5 -> 3, 5->4:(2,0,2);1
+5->0:(0,0,1);2
+5->2:(1,1,2);1
+5->0:(0,0,1);2
+5->9:(1,0,0);65535
+5->2:(1,1,2);1
+5->4:(2,0,2);1
+5->3:(2,1,2);0
+4.202775 #17: Best Orig.5 ->3:0
+4.202775 #17: send LOCK() to 18
+17 sends 1001 to 18 at 4203036
+4.203068 #18: send ANSLOCK(0) to 17
+18 sends 1002 to 17 at 4203316
+tap scheduled
+4.203348 #17: try to move p=(1,0,2);1
+4.203348 #17: interface#5 to 18#4
+5 -> 7, 5 -> 4, 5 -> 0, 5 -> 2, 5 -> 7, 5 -> 0, 5 -> 9, 5 -> 2, 5 -> 4, 5 -> 3, 5->4:(2,0,2);1
+5->0:(0,0,1);2
+5->2:(1,1,2);1
+5->0:(0,0,1);2
+5->9:(1,0,0);65535
+5->2:(1,1,2);1
+5->4:(2,0,2);1
+5->3:(2,1,2);0
+4.203348 #17: Best Orig.5 ->3:0
+4.203348 #17: send LOCK() to 18
+17 sends 1001 to 18 at 4203498
+4.203530 #18: send ANSLOCK(0) to 17
+18 sends 1002 to 17 at 4203643
 [1;31mCPPScheduler destructor[0m
 Scheduler destructor

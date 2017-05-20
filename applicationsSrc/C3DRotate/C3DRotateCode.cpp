@@ -1,4 +1,5 @@
 #include <queue>
+#include <climits>
 #include "C3DRotateCode.h"
 
 void C3DRotateCode::initDistances() {
@@ -12,19 +13,25 @@ void C3DRotateCode::initDistances() {
         short ix,iy,iz;
         Cell3DPosition pos;
         queue<Cell3DPosition> stkCells;
+        unsigned int ngoal=0,nwp=0;
         for (iz=0; iz<lattice->gridSize.pt[2]; iz++) {
             for (iy=0; iy<lattice->gridSize.pt[1]; iy++) {
                 for (ix=0; ix<lattice->gridSize.pt[0]; ix++) {
                     pos.set(ix,iy,iz);
                     // free cell that must be filled
-                    if (target->isInTarget(pos) && !lattice->cellHasBlock(pos)) {
-                        lattice->setDistance(pos,0);
-                        OUTPUT << "dist0 : " << pos << endl;
-                        stkCells.push(pos);
+                    if (target->isInTarget(pos)) {
+                        ngoal++;
+                        if (!lattice->cellHasBlock(pos)) {
+                            lattice->setDistance(pos,0);
+                            OUTPUT << "dist0 : " << pos << endl;
+                            stkCells.push(pos);
+                            nwp++;
+                        }
                     }
                 }
             }
         }
+        OUTPUT << "Target: " << ngoal-nwp << "/" << ngoal << " cells" << endl;
         vector<Cell3DPosition> neighborhood;
         vector <Catoms3DMotionRulesLink*>vml;
         Catoms3DMotionRules *motionRules = Catoms3D::getWorld()->getMotionRules();
@@ -73,11 +80,6 @@ void C3DRotateCode::initDistances() {
     }
 }
 
-double getPotentiel(const Vector3D &pos) {
-    static const Vector3D goal(25.0,25.0,17.7,1.0);
-    return (pos-goal).norme2();
-}
-
 void C3DRotateCode::startup() {
     isLocked=false;
     currentMotion=NULL;
@@ -97,17 +99,18 @@ void C3DRotateCode::startup() {
 }
 
 bool C3DRotateCode::tryToMove() {
-    if (isLocked) return false;
+    if (isLocked || target->isInTarget(module->position)) return false;
     FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
-    double modulePotential = getPotentiel(lattice->gridToWorldPosition(module->position));
-	console << "try to move p=" << module->position << ";" << modulePotential << "\n";
+    unsigned short moduleDistance = lattice->getDistance(module->position);
+
+	console << "try to move p=" << module->position << ";" << moduleDistance << "\n";
 
     P2PNetworkInterface *p2p;
     Catoms3DBlock *neighbor;
     Catoms3DMotionRules *motionRules = Catoms3D::getWorld()->getMotionRules();
     vector <Catoms3DMotionRulesLink*>vml;
 
-    double bestPotential = 1e32,p;
+    unsigned short bestDistance = USHRT_MAX,p;
     int bestOri = -1;
     Catoms3DMotionRulesLink* bestMRL=NULL;
     Cell3DPosition v;
@@ -123,11 +126,11 @@ bool C3DRotateCode::tryToMove() {
                 while (ci!=vml.end()) {
                     v = (*ci)->getFinalPosition(module);
                     if (lattice->isInGrid(v)) {
-                        p = getPotentiel(lattice->gridToWorldPosition(v));
+                        p = lattice->getDistance(v);
                         OUTPUT << (*ci)->getID() << ":" << v << ";" << p << endl;
-                        if (p<bestPotential) {
+                        if (p<bestDistance) {
                             bestOri = i;
-                            bestPotential=p;
+                            bestDistance=p;
                             bestMRL = (*ci);
                         }
                     }
@@ -137,8 +140,8 @@ bool C3DRotateCode::tryToMove() {
             }
         }
     }
-    if (bestMRL && bestPotential<modulePotential) {
-        console << "Best Orig." << bestOri << " ->" << bestMRL->getConToID() << ":" << bestPotential << "\n";
+    if (bestMRL && bestDistance<moduleDistance) {
+        console << "Best Orig." << bestOri << " ->" << bestMRL->getConToID() << ":" << bestDistance << "\n";
         p2p=module->getInterface(bestOri);
         currentMotion = new Motions(module,(Catoms3DBlock *)p2p->connectedInterface->hostBlock,bestMRL);
         console << "send LOCK() to " << p2p->connectedInterface->hostBlock->blockId << "\n";

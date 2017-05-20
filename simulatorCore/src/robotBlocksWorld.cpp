@@ -26,14 +26,18 @@ RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 	OUTPUT << "\033[1;31mRobotBlocksWorld constructor\033[0m" << endl;
 
 	if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures",
+/*		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures",
 											"robotBlock.obj");
 		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures",
-													  "robotBlockPicking.obj");
+													  "robotBlockPicking.obj");*/
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures",
+											"sphere.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/robotBlocksTextures",
+													  "sphere.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures",
 											 "repere25.obj");
 	}
-	
+
 	lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
@@ -101,7 +105,6 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 void RobotBlocksWorld::glDraw() {
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0f};
-
 
 		glPushMatrix();
 		glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);

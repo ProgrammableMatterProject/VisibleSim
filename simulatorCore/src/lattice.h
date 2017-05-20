@@ -445,7 +445,7 @@ public:
 
 /*! @brief 3D Simple Cubic Lattice
  *
- * Used by BlinkyBlocks and RobotBlocks
+ * Used by BlinkyBlocks, RobotBlocks and Okten
  *
  */
 class SCLattice : public Lattice3D {

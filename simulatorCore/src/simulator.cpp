@@ -690,7 +690,7 @@ void Simulator::parseBlockList() {
 				position.pt[2] = plane;
 				int n = str.length();
 				for(int i=0; i<n; i++) {
-					if  (str[i]=='1') {
+					if (str[i]=='1') {
 						position.pt[0]=i;
 						loadBlock(element, IDPool[indexBlock++], bcb, position, color, false);
 					}
