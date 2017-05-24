@@ -233,6 +233,7 @@ void OktenWorld::glDrawId() {
     int n=1;
     lock();
     while (ic!=tabGlBlocks.end()) {
+		((OktenGlBlock*)(*ic))->glDrawIdConnectors(objConnector,n);
 		((OktenGlBlock*)(*ic))->glDrawId(objBlock,n);
 		ic++;
     }
@@ -245,10 +246,13 @@ void OktenWorld::glDrawIdByMaterial() {
     glDisable(GL_TEXTURE_2D);
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    int n=1;
+    int n=1,m;
     lock();
+    // 6 objects per module
     while (ic!=tabGlBlocks.end()) {
-		((OktenGlBlock*)(*ic))->glDrawIdByMaterial(objBlockForPicking,n);
+        m=0;
+        ((OktenGlBlock*)(*ic))->glDrawId(objBlockForPicking,m); // structure
+		((OktenGlBlock*)(*ic))->glDrawIdByMaterial(objConnector,n); // connectors
 		ic++;
     }
     unlock();
@@ -334,14 +338,7 @@ void OktenWorld::updateGlData(OktenBlock*blc, short id, float length) {
 
 void OktenWorld::setSelectedFace(int n) {
     numSelectedGlBlock=n/6;
-	string name = objBlockForPicking->getObjMtlName(n%6);
-	if (name=="face_top") numSelectedFace=SCLattice::Top;
-	else if (name=="face_bottom") numSelectedFace=SCLattice::Bottom;
-	else if (name=="face_right") numSelectedFace=SCLattice::Right;
-	else if (name=="face_left") numSelectedFace=SCLattice::Left;
-	else if (name=="face_front") numSelectedFace=SCLattice::Front;
-	else if (name=="face_back") numSelectedFace=SCLattice::Back;
-	cerr << name << " = " << numSelectedFace << " = " << endl;
+	numSelectedFace = n%6;
 }
 
 void OktenWorld::exportConfiguration() {
