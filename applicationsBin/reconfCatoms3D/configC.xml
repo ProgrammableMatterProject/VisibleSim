@@ -4,12 +4,12 @@
     <spotlight target="200,200,120" directionSpherical="125,40,1500" angle="30" near="80.0" far="2500.0"/>
     <blockList color="128,128,128" blocksize="10,10,10">
 
-		<block position="5,7,7" orientation="0"/>
+		<block position="20,1,7" orientation="0"/>
 	</blockList>
   <targetList>
     <target format="csg">
         <csg content="
-            difference() {
+            scale([0.2,0.2,0.2]) difference() {
     cylinder(200,100,100, true);
     translate([10,0,0]) cylinder(200,60,60, true);
     translate([70,0,0]) cube([75,75,200], true);
