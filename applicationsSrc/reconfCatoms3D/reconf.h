@@ -7,6 +7,7 @@
 
 #ifndef RECONF_H_
 #define RECONF_H_
+#include <queue>
 #include "catoms3DBlockCode.h"
 #include "directions.h"
 
@@ -14,22 +15,24 @@ class Reconf {
     Catoms3D::Catoms3DBlock *catom;
     int numberSeedsLeft;
     int numberSeedsRight;
-    bool seed;
     bool lineParent;
     bool lineCompleted;
+    bool seedNext;
+    bool seedPrevious;
 
-    bool isInternalSeed();
-    bool isBorderSeed();
+    bool isInternalSeed(LINE_DIRECTION);
+    bool isBorderSeed(LINE_DIRECTION);
 public:
+    queue<MessagePtr> requestQueue;
     SIDE_DIRECTION lineParentDirection;
 
     Reconf(Catoms3D::Catoms3DBlock *c);
-    bool isSeed();
+    bool isSeedNext();
+    bool isSeedPrevious();
     bool needSync();
     bool needSyncToLeft();
     bool needSyncToRight();
 
-    bool isSeedCheck();
     bool isLineParent() { return lineParent; }
     void setLineParent() { lineParent = true; }
     int getNumberSeedsLeft() { return numberSeedsLeft; }
@@ -38,7 +41,8 @@ public:
     void setNumberSeedsRight(int nSeeds) { numberSeedsRight = nSeeds; }
     void setLineCompleted() { lineCompleted = true; }
     bool isLineCompleted() { return lineCompleted; }
-    void setSeed(bool v) { seed = v; };
+    void setSeedNext() { seedNext = true; };
+    void setSeedPrevious() { seedPrevious = true; };
 
 };
 

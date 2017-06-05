@@ -6,11 +6,12 @@
 
 using namespace Catoms3D;
 
-Neighborhood::Neighborhood(Catoms3D::Catoms3DBlock *c, Reconf *r, Sync *s, BlockCodeBuilder bcb)
+Neighborhood::Neighborhood(Catoms3D::Catoms3DBlock *c, Reconf *r, Sync *s, SyncCCW *sccw, BlockCodeBuilder bcb)
 {
     catom = c;
     reconf = r;
     sync = s;
+    syncCCW = sccw;
     blockCodeBuilder = bcb;
     leftCompleted = rightCompleted = false;
 }
@@ -59,7 +60,7 @@ bool Neighborhood::isOnRightBorder()
 
 void Neighborhood::addNextLineNeighbor()
 {
-    if  (reconf->isSeed()) {
+    if  (reconf->isSeedNext()) {
         if (isLeftCompleted() && isRightCompleted()) {
             addNeighbor(catom->position.addY(1));
         }
@@ -71,12 +72,12 @@ void Neighborhood::checkLineCompleted()
     if (isOnLeftBorder())  {
         if (rightCompleted)
             addNextLineNeighbor();
-        sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
+        sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeedNext());
     }
     if (isOnRightBorder()) {
         if (leftCompleted)
             addNextLineNeighbor();
-        sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeed());
+        sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeedNext());
     }
 }
 
@@ -92,20 +93,38 @@ void Neighborhood::init()
 {
     if (isFirstCatomOfLine())
         reconf->setLineParent();
-    reconf->isSeedCheck();
+    reconf->isSeedNext();
+    reconf->isSeedPrevious();
     checkLineCompleted();
 }
 
 void Neighborhood::addNeighbors()
 {
-    if (!sync->isSyncOK() && reconf->needSync()) {
-        sync->sync();
-        catom->setColor(RED);
+    if (reconf->needSyncToLeft()) {
+        syncCCW->sync();
+    }
+    else if (reconf->needSyncToRight()) {
+        if (syncCCW->canContinueLeftSeed()) {
+            reconf->setSeedNext();
+            addNextLineNeighbor();
+        }
     }
     else {
         addNeighborToLeft();
         addNeighborToRight();
     }
+}
+
+void Neighborhood::addNeighborsWithoutSync()
+{
+    addNeighborToLeft();
+    addNeighborToRight();
+}
+
+void Neighborhood::handleParentSeedMsg(MessagePtr message)
+{
+    New_catom_response_message *msgResponse = new New_catom_response_message;
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
 }
 
 void Neighborhood::handleNewCatomMsg(MessagePtr message)
@@ -114,15 +133,54 @@ void Neighborhood::handleNewCatomMsg(MessagePtr message)
     New_catom_response_message *msgResponse = new New_catom_response_message;
     if (recv_message->lineParentDirection == TO_LEFT) {
         msgResponse->leftCompleted = isLeftCompleted();
-        msgResponse->numberSeedsLeft = reconf->getNumberSeedsLeft() + reconf->isSeed();
+        msgResponse->numberSeedsLeft = reconf->getNumberSeedsLeft() + reconf->isSeedNext();
     }
     else {
         msgResponse->rightCompleted = isRightCompleted();
-        msgResponse->numberSeedsRight = reconf->getNumberSeedsRight() + reconf->isSeed();
+        msgResponse->numberSeedsRight = reconf->getNumberSeedsRight() + reconf->isSeedNext();
     }
     msgResponse->lineParentDirection = recv_message->lineParentDirection;
+    msgResponse->requestQueue = reconf->requestQueue;
 
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
+}
+
+void Neighborhood::handleNewCatomParentMsg(MessagePtr message)
+{
+    New_catom_parent_response_message *msgResponse = new New_catom_parent_response_message;
+    while (!reconf->requestQueue.empty()) {
+        shared_ptr<SyncCCW_message> requestMsg = static_pointer_cast<SyncCCW_message>(reconf->requestQueue.front());
+        reconf->requestQueue.pop();
+        if (requestMsg->goal[1] != catom->position[1]) {
+            msgResponse->requestQueue.push(requestMsg);
+        }
+    }
+
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
+}
+
+void Neighborhood::handleNewCatomParentResponseMsg(MessagePtr message)
+{
+    New_catom_parent_response_ptr recv_message = static_pointer_cast<New_catom_parent_response_message>(message);
+    reconf->requestQueue = recv_message->requestQueue;
+    requestQueueHandler();
+    if (!reconf->requestQueue.empty()) {
+        catom->setColor(BLACK);
+    }
+}
+
+void Neighborhood::requestQueueHandler()
+{
+    for (int i = 0; i < (int)reconf->requestQueue.size(); i++) {
+        shared_ptr<SyncCCW_message> requestMsg = static_pointer_cast<SyncCCW_message>(reconf->requestQueue.front());
+        reconf->requestQueue.pop();
+        if (requestMsg->goal == catom->position) {
+            syncCCW->response();
+        }
+        else {
+            reconf->requestQueue.push(requestMsg);
+        }
+    }
 }
 
 void Neighborhood::handleNewCatomResponseMsg(MessagePtr message)
@@ -141,6 +199,11 @@ void Neighborhood::handleNewCatomResponseMsg(MessagePtr message)
             setRightCompleted();
     }
     reconf->lineParentDirection = recv_message->lineParentDirection;
+    reconf->requestQueue = recv_message->requestQueue;
+    requestQueueHandler();
+    if (!reconf->requestQueue.empty()) {
+        catom->setColor(LIGHTGREEN);
+    }
     init();
 }
 
@@ -151,7 +214,7 @@ void Neighborhood::handleLeftSideCompletedMsg(MessagePtr message)
     setLeftCompleted();
     addNextLineNeighbor();
     reconf->setNumberSeedsLeft(recv_message->numberSeedsLeft);
-    sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeed());
+    sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeedNext());
 }
 
 void Neighborhood::handleRightSideCompletedMsg(MessagePtr message)
@@ -161,7 +224,7 @@ void Neighborhood::handleRightSideCompletedMsg(MessagePtr message)
     setRightCompleted();
     addNextLineNeighbor();
     reconf->setNumberSeedsRight(recv_message->numberSeedsRight);
-    sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeed());
+    sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeedNext());
 
 }
 
@@ -170,12 +233,19 @@ void Neighborhood::sendMessageToGetLineInfo()
     for (int i = 0; i < 2; i++) {
         Cell3DPosition neighborPosition = (i == 0) ? catom->position.addX(-1) : catom->position.addX(1);
         New_catom_message *msg = new New_catom_message;
-        if (i == 0)  
+        if (i == 0)
             msg->lineParentDirection = TO_LEFT;
         else
-            msg->lineParentDirection = TO_RIGHT; 
+            msg->lineParentDirection = TO_RIGHT;
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
     }
+}
+
+void Neighborhood::sendMessageToGetParentInfo()
+{
+    Cell3DPosition neighborPosition = catom->position.addY(-1);
+    New_catom_parent_message *msg = new New_catom_parent_message;
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
 }
 
 void Neighborhood::sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed)

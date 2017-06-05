@@ -6,50 +6,52 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
     numberSeedsRight = 0;
     lineCompleted = false;
     lineParent = false;
-    seed = false;
+    seedNext = false;
+    seedPrevious = false;
 }
 
-bool Reconf::isInternalSeed()
+bool Reconf::isInternalSeed(LINE_DIRECTION lineDirection)
 {
-    if (!BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) &&
-            BlockCode::target->isInTarget(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.addX(lineDirection).addY(lineDirection)) &&
+            BlockCode::target->isInTarget(catom->position.addY(lineDirection)) ){
         return true;
     }
     return false;
 }
 
-bool Reconf::isBorderSeed()
+bool Reconf::isBorderSeed(LINE_DIRECTION lineDirection)
 {
-    if (!BlockCode::target->isInTarget(catom->position.addX(1)) && 
-        BlockCode::target->isInTarget(catom->position.addY(1)) ){
+    if (!BlockCode::target->isInTarget(catom->position.addX(lineDirection)) &&
+        BlockCode::target->isInTarget(catom->position.addY(lineDirection)) ){
         return true;
     }
     return false;
 }
 
-bool Reconf::isSeed()
+// A sync module cant be seed to avoid two seeds constructing the same line (merge lines and avoid cycle)
+bool Reconf::isSeedNext()
 {
-    return seed;
+    return seedNext = seedNext || ((isInternalSeed(LINE_DIRECTION::TO_NEXT) || isBorderSeed(LINE_DIRECTION::TO_NEXT)) && !needSyncToRight());
 }
 
-// A sync module cant be seed to avoid two seeds constructing the same line
-bool Reconf::isSeedCheck()
+bool Reconf::isSeedPrevious()
 {
-    return seed = (isInternalSeed() || isBorderSeed()) && !needSyncToRight();
+    return seedPrevious = seedPrevious || (isInternalSeed(LINE_DIRECTION::TO_PREVIOUS) || isBorderSeed(LINE_DIRECTION::TO_PREVIOUS)); //&& !needSyncToRightPrevious();
 }
+
 
 bool Reconf::needSyncToRight()
 {
-    if (!BlockCode::target->isInTarget(catom->position.addX(1)) && 
+    if (!BlockCode::target->isInTarget(catom->position.addX(1)) &&
         BlockCode::target->isInTarget(catom->position.addX(1).addY(1)))
     {
         BoundingBox bb;
         BlockCode::target->boundingBox(bb);
         for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(catom->position.addX(i))[0] < bb.P1[0]; i++) {
-            if (!BlockCode::target->isInTarget(catom->position.addX(i)) && 
+            if (!BlockCode::target->isInTarget(catom->position.addX(i)) &&
                 BlockCode::target->isInTarget(catom->position.addX(i).addY(1)))
                 continue;
-            if (BlockCode::target->isInTarget(catom->position.addX(i)) && 
+            if (BlockCode::target->isInTarget(catom->position.addX(i)) &&
                 BlockCode::target->isInTarget(catom->position.addX(i).addY(1)) )
                 return true;
             return false;

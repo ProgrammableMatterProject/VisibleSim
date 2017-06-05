@@ -10,7 +10,6 @@
 #include "catoms3DBlockCode.h"
 #include "../reconf.h"
 #include "syncLeft.h"
-#include "syncRight.h"
 #include "syncResponse.h"
 #include "syncModel.h"
 
@@ -21,7 +20,6 @@ class Sync {
 
 public:
     SyncLeft *syncLeft;
-    SyncRight *syncRight;
     SyncResponse *syncResponse;
 
     Sync(Catoms3D::Catoms3DBlock *c, Reconf *r);

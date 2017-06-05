@@ -13,6 +13,7 @@
 #include "reconf.h"
 #include "neighborhood/neighborhood.h"
 #include "sync/sync.h"
+#include "syncCCW/syncCCW.h"
 
 class SyncRoute;
 
@@ -27,13 +28,13 @@ public:
     // Reconfiguration Variables
     Reconf *reconf;
     Sync *sync;
+    SyncCCW *syncCCW;
 
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
-    void catomReady();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:
