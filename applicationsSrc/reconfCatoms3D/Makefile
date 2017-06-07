@@ -15,7 +15,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS = reconfCatoms3D.cpp reconfCatoms3DBlockCode.cpp neighborhood/neighborhood.cpp neighborhood/neighborRestriction.cpp sync/sync.cpp sync/syncLeft.cpp sync/syncResponse.cpp reconf.cpp syncCCW/syncCCW.cpp
+SRCS = reconfCatoms3D.cpp reconfCatoms3DBlockCode.cpp neighborhood/neighborhood.cpp neighborhood/neighborMessages.cpp neighborhood/neighborRestriction.cpp sync/sync.cpp sync/syncLeft.cpp sync/syncResponse.cpp reconf.cpp syncCCW/syncCCW.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/reconfCatoms3D

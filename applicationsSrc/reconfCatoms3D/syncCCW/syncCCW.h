@@ -24,7 +24,7 @@ public:
     SyncCCW(Catoms3D::Catoms3DBlock *c, Reconf *r);
     void sync();
     void response();
-    bool canContinueLeftSeed();
+    bool isInternalBorder(int idx);
     void handleMessage(shared_ptr<SyncCCW_message> message);
     void handleResponseMessage(shared_ptr<SyncCCW_response_message> message);
 };

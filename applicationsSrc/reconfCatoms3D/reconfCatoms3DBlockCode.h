@@ -12,6 +12,7 @@
 #include "directions.h"
 #include "reconf.h"
 #include "neighborhood/neighborhood.h"
+#include "neighborhood/neighborMessages.h"
 #include "sync/sync.h"
 #include "syncCCW/syncCCW.h"
 
@@ -24,6 +25,7 @@ public:
     Vector3D worldPosition;
 
     Neighborhood *neighborhood;
+    NeighborMessages *neighborMessages;
 
     // Reconfiguration Variables
     Reconf *reconf;

@@ -8,6 +8,8 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
     lineParent = false;
     seedNext = false;
     seedPrevious = false;
+    leftCompleted = false;
+    rightCompleted = false;
 }
 
 bool Reconf::isInternalSeed(LINE_DIRECTION lineDirection)
@@ -73,4 +75,18 @@ bool Reconf::needSyncToLeft()
 bool Reconf::needSync()
 {
     return needSyncToLeft() || needSyncToRight();
+}
+
+void Reconf::setLeftCompleted()
+{
+    leftCompleted = true;
+    if (leftCompleted && rightCompleted)
+        setLineCompleted();
+}
+
+void Reconf::setRightCompleted()
+{
+    rightCompleted = true;
+    if (leftCompleted && rightCompleted)
+        setLineCompleted();
 }

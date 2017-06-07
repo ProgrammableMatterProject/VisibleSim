@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "muParser.h"
+#include <muParser.h>
 
 using namespace std;
 

@@ -19,8 +19,9 @@ void SyncCCW::response() {
     handleResponseMessage(message);
 }
 
-bool SyncCCW::canContinueLeftSeed() {
-    int oldIdx = 0;
+// idx is the direction the border comes for the first catom
+bool SyncCCW::isInternalBorder(int idx) {
+    int oldIdx = idx;
     int nTurns = 0;
     Cell3DPosition currentPos = catom->position;
 
@@ -60,10 +61,10 @@ bool SyncCCW::canContinueLeftSeed() {
             }
         }
     }
-    cout << "catom id = " << catom->blockId << " nturn = " << nTurns << endl;
     catom->setColor(BLUE);
-    if (nTurns > 0) return false;
-    return true;
+    cout << nTurns << endl;
+    if (nTurns > 0) return true;
+    return false;
 }
 
 void SyncCCW::handleMessage(shared_ptr<SyncCCW_message> message) {

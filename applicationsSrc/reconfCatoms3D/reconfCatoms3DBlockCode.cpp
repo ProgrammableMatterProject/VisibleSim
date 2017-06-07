@@ -16,6 +16,7 @@ ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBl
     sync = new Sync(catom, reconf);
     syncCCW = new SyncCCW(catom, reconf);
     neighborhood = new Neighborhood(catom, reconf, sync, syncCCW, buildNewBlockCode);
+    neighborMessages = new NeighborMessages(catom, reconf, neighborhood, sync, syncCCW);
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
@@ -29,17 +30,15 @@ void ReconfCatoms3DBlockCode::startup() {
         if (!BlockCode::target->isInTarget(catom->position)) {
             catom->setColor(RED);
         }
-        neighborhood->init();
-        neighborhood->addNeighbors();
+        neighborMessages->init();
 	}
-    //catom->setColor(BLUE);
     reconf->isSeedNext();
     reconf->isSeedPrevious();
     if (neighborhood->isFirstCatomOfLine()) {
-        neighborhood->sendMessageToGetParentInfo();
+        neighborMessages->sendMessageToGetParentInfo();
     }
     else {
-        neighborhood->sendMessageToGetLineInfo();
+        neighborMessages->sendMessageToGetLineInfo();
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
@@ -54,35 +53,34 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         switch(message->id) {
             case NEW_CATOM_MSG_ID:
             {
-                neighborhood->handleNewCatomMsg(message);
+                neighborMessages->handleNewCatomMsg(message);
                 break;
             }
             case NEW_CATOM_PARENT_MSG_ID:
             {
-                neighborhood->handleNewCatomParentMsg(message);
+                neighborMessages->handleNewCatomParentMsg(message);
                 break;
             }
             case NEW_CATOM_RESPONSE_MSG_ID:
             {
-                neighborhood->handleNewCatomResponseMsg(message);
-                neighborhood->addNeighbors();
+                neighborMessages->handleNewCatomResponseMsg(message);
+                neighborMessages->init();
                 break;
             }
             case NEW_CATOM_PARENT_RESPONSE_MSG_ID:
             {
-                neighborhood->handleNewCatomParentResponseMsg(message);
-                neighborhood->init();
-                neighborhood->addNeighbors();
+                neighborMessages->handleNewCatomParentResponseMsg(message);
+                neighborMessages->init();
                 break;
             }
             case LEFT_SIDE_COMPLETED_MSG_ID:
             {
-                neighborhood->handleLeftSideCompletedMsg(message);
+                neighborMessages->handleLeftSideCompletedMsg(message);
                 break;
             }
             case RIGHT_SIDE_COMPLETED_MSG_ID:
             {
-                neighborhood->handleRightSideCompletedMsg(message);
+                neighborMessages->handleRightSideCompletedMsg(message);
                 break;
             }
             case SYNCCCW_MESSAGE_ID:
@@ -136,7 +134,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 //if (recv_message->canSyncLine && recv_message->syncModel.requestCatomID == catom->blockId) {
                 if (recv_message->syncModel.requestCatomID == catom->blockId) {
                     sync->setSyncOK();
-                    neighborhood->addNeighbors();
+                    neighborhood->tryAddNeighbors();
                 }
                 else if(recv_message->syncModel.requestCatomID != catom->blockId) {
                     sync->handleResponse(recv_message);
