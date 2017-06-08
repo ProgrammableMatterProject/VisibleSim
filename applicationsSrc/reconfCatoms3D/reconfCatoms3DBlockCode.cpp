@@ -32,14 +32,10 @@ void ReconfCatoms3DBlockCode::startup() {
         }
         neighborMessages->init();
 	}
-    reconf->isSeedNext();
-    reconf->isSeedPrevious();
-    if (neighborhood->isFirstCatomOfLine()) {
+    if (neighborhood->isFirstCatomOfLine())
         neighborMessages->sendMessageToGetParentInfo();
-    }
-    else {
+    else
         neighborMessages->sendMessageToGetLineInfo();
-    }
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
 

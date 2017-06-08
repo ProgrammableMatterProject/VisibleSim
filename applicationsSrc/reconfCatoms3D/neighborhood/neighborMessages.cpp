@@ -16,8 +16,8 @@ void NeighborMessages::init()
     checkAndSendRightBorderMessage();
 
     neighborhood->tryAddNeighbors();
-    if (reconf->isLineCompleted())
-        neighborhood->tryAddNextLineNeighbor();
+    neighborhood->tryAddNextLineNeighbor();
+    neighborhood->tryAddPreviousLineNeighbor();
 }
 
 void NeighborMessages::checkLineParent() {
@@ -91,7 +91,6 @@ void NeighborMessages::requestQueueHandler()
     }
 }
 
-
 void NeighborMessages::handleNewCatomResponseMsg(MessagePtr message)
 {
     New_catom_response_ptr recv_message = static_pointer_cast<New_catom_response_message>(message);
@@ -120,7 +119,9 @@ void NeighborMessages::handleLeftSideCompletedMsg(MessagePtr message)
 
     reconf->setLeftCompleted();
     reconf->setNumberSeedsLeft(recv_message->numberSeedsLeft);
+
     neighborhood->tryAddNextLineNeighbor();
+    neighborhood->tryAddPreviousLineNeighbor();
 
     sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeedNext());
 }
@@ -131,7 +132,9 @@ void NeighborMessages::handleRightSideCompletedMsg(MessagePtr message)
 
     reconf->setRightCompleted();
     reconf->setNumberSeedsRight(recv_message->numberSeedsRight);
+
     neighborhood->tryAddNextLineNeighbor();
+    neighborhood->tryAddPreviousLineNeighbor();
 
     sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeedNext());
 }
@@ -152,9 +155,15 @@ void NeighborMessages::sendMessageToGetLineInfo()
 void NeighborMessages::sendMessageToGetParentInfo()
 {
     New_catom_parent_message *msg = new New_catom_parent_message;
+    Cell3DPosition neighborPosition;
 
-    Cell3DPosition neighborPosition = catom->position.addY(-1);
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
+    neighborPosition = catom->position.addY(1);
+    if (catom->getInterface(neighborPosition)->isConnected())
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
+
+    neighborPosition = catom->position.addY(-1);
+    if (catom->getInterface(neighborPosition)->isConnected())
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
 }
 
 void NeighborMessages::sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed)

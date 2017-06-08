@@ -16,8 +16,6 @@
 #include "sync/sync.h"
 #include "syncCCW/syncCCW.h"
 
-class SyncRoute;
-
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
 	Scheduler *scheduler;

@@ -14,6 +14,9 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 
 bool Reconf::isInternalSeed(LINE_DIRECTION lineDirection)
 {
+    if (catom->getInterface(catom->position.addY(lineDirection))->isConnected())
+        return false;
+
     if (!BlockCode::target->isInTarget(catom->position.addX(lineDirection).addY(lineDirection)) &&
             BlockCode::target->isInTarget(catom->position.addY(lineDirection)) ){
         return true;
@@ -23,6 +26,9 @@ bool Reconf::isInternalSeed(LINE_DIRECTION lineDirection)
 
 bool Reconf::isBorderSeed(LINE_DIRECTION lineDirection)
 {
+    if (catom->getInterface(catom->position.addY(lineDirection))->isConnected())
+        return false;
+
     if (!BlockCode::target->isInTarget(catom->position.addX(lineDirection)) &&
         BlockCode::target->isInTarget(catom->position.addY(lineDirection)) ){
         return true;
@@ -38,7 +44,10 @@ bool Reconf::isSeedNext()
 
 bool Reconf::isSeedPrevious()
 {
-    return seedPrevious = seedPrevious || (isInternalSeed(LINE_DIRECTION::TO_PREVIOUS) || isBorderSeed(LINE_DIRECTION::TO_PREVIOUS)); //&& !needSyncToRightPrevious();
+    seedPrevious = seedPrevious || (isInternalSeed(LINE_DIRECTION::TO_PREVIOUS) || isBorderSeed(LINE_DIRECTION::TO_PREVIOUS)); //&& !needSyncToRightPrevious();
+    if (seedPrevious)
+        catom->setColor(YELLOW);
+    return seedPrevious;
 }
 
 

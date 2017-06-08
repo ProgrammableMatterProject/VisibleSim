@@ -34,6 +34,7 @@ public:
     void addAllNeighbors();
 
     void tryAddNextLineNeighbor();
+    void tryAddPreviousLineNeighbor();
     void tryAddNeighbors();
 
     bool isOnLeftBorder();

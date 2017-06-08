@@ -43,10 +43,18 @@ bool Neighborhood::isOnRightBorder()
 
 void Neighborhood::tryAddNextLineNeighbor()
 {
-
     if  (reconf->isSeedNext()) {
         if (reconf->isLineCompleted()) {
             addNeighbor(catom->position.addY(1));
+        }
+    }
+}
+
+void Neighborhood::tryAddPreviousLineNeighbor()
+{
+    if  (reconf->isSeedPrevious()) {
+        if (reconf->isLineCompleted()) {
+            addNeighbor(catom->position.addY(-1));
         }
     }
 }
