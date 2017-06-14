@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include "catoms3DBlockCode.h"
-#include "network.h"
 #include "trace.h"
 
 using namespace std;

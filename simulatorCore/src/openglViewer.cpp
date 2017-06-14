@@ -497,15 +497,17 @@ int GlutContext::processHits(GLint hits, GLuint *buffer) {
 }
 
 void GlutContext::mainLoop() {
+	Scheduler *s = getScheduler();
 	if (GUIisEnabled) {
 		glutMainLoop();
+        deleteContext();
 	} else {
 //    cout << "r+[ENTER] to run simulation" << endl;
 		std::chrono::milliseconds timespan(2);
 		std::this_thread::sleep_for(timespan);
 /*    char c='r';
 	  cin >> c;*/
-		Scheduler *s = getScheduler();
+//		Scheduler *s = getScheduler();
 //    if (c=='r') {
 		cout << "Run simulation..." << endl;
 		cout.flush();
@@ -515,14 +517,12 @@ void GlutContext::mainLoop() {
 		s->waitForSchedulerEnd();
 //    }
 	}
-
-	getScheduler()->stop(BaseSimulator::getScheduler()->now());
-
-	std::chrono::milliseconds timespan(2);
-	std::this_thread::sleep_for(timespan);
+	s->stop(s->now());
 
 	deleteScheduler();
-    deleteContext();
+	std::chrono::milliseconds timespan(500);
+	std::this_thread::sleep_for(timespan);
+
 }
 
 void GlutContext::addTrace(const string &message,int id,const Color &color) {

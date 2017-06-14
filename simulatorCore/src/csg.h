@@ -34,7 +34,6 @@ class CSGNode
 {
 protected:
     vector<CSGNode*> children;
-
 public:
 
     CSGNode() {};
@@ -42,6 +41,7 @@ public:
 
     void addChild(CSGNode *n);
     void getStats(CSGTreeStats &stats, int depth);
+
     virtual void toString() const = 0;
     virtual bool isInside(const Vector3D &p, Color &color) const = 0;
     virtual bool isInBorder(const Vector3D &p, Color &color, double border) const = 0;

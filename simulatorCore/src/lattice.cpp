@@ -48,7 +48,6 @@ int Lattice::getIndex(const Cell3DPosition &p) const {
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
     int index = getIndex(p);
-
     if (!grid[index]) {
         grid[index] = bb;
     } else {
