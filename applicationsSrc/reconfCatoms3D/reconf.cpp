@@ -10,27 +10,52 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
     seedPrevious = false;
     leftCompleted = false;
     rightCompleted = false;
+    createdFromPrevious = true;
 }
 
-bool Reconf::isInternalSeed(LINE_DIRECTION lineDirection)
+bool Reconf::isInternalSeedNext()
 {
-    if (catom->getInterface(catom->position.addY(lineDirection))->isConnected())
+    if (catom->getInterface(catom->position.addY(1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(lineDirection).addY(lineDirection)) &&
-            BlockCode::target->isInTarget(catom->position.addY(lineDirection)) ){
+    if (!BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) &&
+            BlockCode::target->isInTarget(catom->position.addY(1)) ){
         return true;
     }
     return false;
 }
 
-bool Reconf::isBorderSeed(LINE_DIRECTION lineDirection)
+bool Reconf::isInternalSeedPrevious()
 {
-    if (catom->getInterface(catom->position.addY(lineDirection))->isConnected())
+    if (catom->getInterface(catom->position.addY(-1))->isConnected())
         return false;
 
-    if (!BlockCode::target->isInTarget(catom->position.addX(lineDirection)) &&
-        BlockCode::target->isInTarget(catom->position.addY(lineDirection)) ){
+    if (!BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)) &&
+            BlockCode::target->isInTarget(catom->position.addY(-1)) ){
+        return true;
+    }
+    return false;
+}
+
+bool Reconf::isBorderSeedNext()
+{
+    if (catom->getInterface(catom->position.addY(1))->isConnected())
+        return false;
+
+    if (!BlockCode::target->isInTarget(catom->position.addX(1)) &&
+        BlockCode::target->isInTarget(catom->position.addY(1)) ){
+        return true;
+    }
+    return false;
+}
+
+bool Reconf::isBorderSeedPrevious()
+{
+    if (catom->getInterface(catom->position.addY(-1))->isConnected())
+        return false;
+
+    if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+        BlockCode::target->isInTarget(catom->position.addY(-1)) ){
         return true;
     }
     return false;
@@ -39,21 +64,25 @@ bool Reconf::isBorderSeed(LINE_DIRECTION lineDirection)
 // A sync module cant be seed to avoid two seeds constructing the same line (merge lines and avoid cycle)
 bool Reconf::isSeedNext()
 {
-    return seedNext = seedNext || ((isInternalSeed(LINE_DIRECTION::TO_NEXT) || isBorderSeed(LINE_DIRECTION::TO_NEXT)) && !needSyncToRight());
+    seedNext = seedNext || ((isInternalSeedNext() || isBorderSeedNext()) && !needSyncToRightNext());
+    if (seedNext)
+        catom->setColor(LIGHTBLUE);
+    return seedNext;
 }
 
 bool Reconf::isSeedPrevious()
 {
-    seedPrevious = seedPrevious || (isInternalSeed(LINE_DIRECTION::TO_PREVIOUS) || isBorderSeed(LINE_DIRECTION::TO_PREVIOUS)); //&& !needSyncToRightPrevious();
+    seedPrevious = seedPrevious || ((isInternalSeedPrevious() || isBorderSeedPrevious()) && !needSyncToRightPrevious());
     if (seedPrevious)
         catom->setColor(YELLOW);
     return seedPrevious;
 }
 
 
-bool Reconf::needSyncToRight()
+bool Reconf::needSyncToRightNext()
 {
-    if (!BlockCode::target->isInTarget(catom->position.addX(1)) &&
+    if (createdFromPrevious &&
+        !BlockCode::target->isInTarget(catom->position.addX(1)) &&
         BlockCode::target->isInTarget(catom->position.addX(1).addY(1)))
     {
         BoundingBox bb;
@@ -71,9 +100,31 @@ bool Reconf::needSyncToRight()
     return false;
 }
 
-bool Reconf::needSyncToLeft()
+bool Reconf::needSyncToRightPrevious()
 {
-    if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
+    if (!createdFromPrevious &&
+        !BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)))
+    {
+        BoundingBox bb;
+        BlockCode::target->boundingBox(bb);
+        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(catom->position.addX(i))[0] < bb.P1[0]; i++) {
+            if (!BlockCode::target->isInTarget(catom->position.addX(-i)) &&
+                BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)))
+                continue;
+            if (BlockCode::target->isInTarget(catom->position.addX(-i)) &&
+                BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)) )
+                return true;
+            return false;
+        }
+    }
+    return false;
+}
+
+bool Reconf::needSyncToLeftNext()
+{
+    if (createdFromPrevious &&
+        catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
         !BlockCode::target->isInTarget(catom->position.addY(-1)) &&
         BlockCode::target->isInTarget(catom->position.addX(-1)) &&
         BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)) )
@@ -81,9 +132,20 @@ bool Reconf::needSyncToLeft()
     return false;
 }
 
+bool Reconf::needSyncToLeftPrevious()
+{
+    if (!createdFromPrevious &&
+        catom->getInterface(catom->position.addX(1))->connectedInterface == NULL &&
+        !BlockCode::target->isInTarget(catom->position.addY(1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) )
+        return true;
+    return false;
+}
+
 bool Reconf::needSync()
 {
-    return needSyncToLeft() || needSyncToRight();
+    return needSyncToLeftPrevious() || needSyncToRightPrevious();
 }
 
 void Reconf::setLeftCompleted()

@@ -13,8 +13,8 @@
 #include "reconf.h"
 #include "neighborhood/neighborhood.h"
 #include "neighborhood/neighborMessages.h"
-#include "sync/sync.h"
-#include "syncCCW/syncCCW.h"
+#include "sync/syncNext.h"
+#include "sync/syncPrevious.h"
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
@@ -27,8 +27,8 @@ public:
 
     // Reconfiguration Variables
     Reconf *reconf;
-    Sync *sync;
-    SyncCCW *syncCCW;
+    SyncNext *syncNext;
+    SyncPrevious *syncPrevious;
 
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();

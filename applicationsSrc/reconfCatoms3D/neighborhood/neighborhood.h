@@ -12,15 +12,15 @@
 #include "cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
-#include "../sync/sync.h"
-#include "../syncCCW/syncCCW.h"
+#include "../sync/syncNext.h"
+#include "../sync/syncPrevious.h"
 
 class Neighborhood {
 private:
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
-    Sync *sync;
-    SyncCCW *syncCCW;
+    SyncNext *syncNext;
+    SyncPrevious *syncPrevious;
     BlockCodeBuilder blockCodeBuilder;
 
     void addNeighbor(Cell3DPosition pos);
@@ -28,7 +28,7 @@ private:
     void addNeighborToRight();
 
 public:
-    Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Sync *s, SyncCCW *sccw, BlockCodeBuilder blockCodeBuilder);
+    Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb);
 
     void addNeighborsWithoutSync();
     void addAllNeighbors();

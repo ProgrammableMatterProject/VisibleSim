@@ -4,12 +4,12 @@
 
 #define WAIT_TIME 5
 
-Neighborhood::Neighborhood(Catoms3D::Catoms3DBlock *c, Reconf *r, Sync *s, SyncCCW *sccw, BlockCodeBuilder bcb)
+Neighborhood::Neighborhood(Catoms3D::Catoms3DBlock *c, Reconf *r, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb)
 {
     catom = c;
     reconf = r;
-    sync = s;
-    syncCCW = sccw;
+    syncNext = sn;
+    syncPrevious = sp;
     blockCodeBuilder = bcb;
 }
 
@@ -41,24 +41,6 @@ bool Neighborhood::isOnRightBorder()
     return false;
 }
 
-void Neighborhood::tryAddNextLineNeighbor()
-{
-    if  (reconf->isSeedNext()) {
-        if (reconf->isLineCompleted()) {
-            addNeighbor(catom->position.addY(1));
-        }
-    }
-}
-
-void Neighborhood::tryAddPreviousLineNeighbor()
-{
-    if  (reconf->isSeedPrevious()) {
-        if (reconf->isLineCompleted()) {
-            addNeighbor(catom->position.addY(-1));
-        }
-    }
-}
-
 bool Neighborhood::isFirstCatomOfLine()
 {
     if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
@@ -67,22 +49,64 @@ bool Neighborhood::isFirstCatomOfLine()
     return false;
 }
 
+void Neighborhood::tryAddNextLineNeighbor()
+{
+    if (!reconf->isSeedNext() && reconf->needSyncToRightNext()) {
+        if (!syncNext->isInternalBorder(0)) {
+            reconf->setSeedNext();
+        }
+    }
+
+    if (reconf->isSeedNext()) {
+        if (reconf->isLineCompleted() || !reconf->createdFromPrevious) {
+            addNeighbor(catom->position.addY(1));
+        }
+    }
+}
+
+void Neighborhood::tryAddPreviousLineNeighbor()
+{
+    if (!reconf->isSeedPrevious() && reconf->needSyncToRightPrevious()) {
+        if (!syncNext->isInternalBorder(2)) {
+            reconf->setSeedPrevious();
+        }
+    }
+
+    if  (reconf->isSeedPrevious()) {
+        if (reconf->isLineCompleted()) { //|| reconf->createdFromPrevious) {
+            addNeighbor(catom->position.addY(-1));
+        }
+    }
+}
+
 void Neighborhood::tryAddNeighbors()
 {
-    if (reconf->needSyncToLeft()) {
-        if (syncCCW->isInternalBorder(1)) {
-            syncCCW->sync();
+    if (reconf->needSyncToLeftNext()) {
+        if (syncNext->isInternalBorder(1)) {
+            cout << "Sync to Left Next " << catom->blockId << endl;
+            syncNext->sync();
         }
         else {
             addNeighborToLeft();
+        }
+        addNeighborToRight();
+    }
+    else if (reconf->needSyncToLeftPrevious()) {
+        if (syncPrevious->isInternalBorder(3)) {
+            cout << "Sync to Left Previous " << catom->blockId << endl;
+            catom->setColor(BLACK);
+            syncPrevious->sync();
+        }
+        else {
             addNeighborToRight();
         }
+        addNeighborToLeft();
     }
-    else if (reconf->needSyncToRight()) {
-        if (!syncCCW->isInternalBorder(0)) {
-            reconf->setSeedNext();
-            tryAddNextLineNeighbor();
-        }
+    else if (reconf->needSyncToRightNext()) {
+        addNeighborToLeft();
+    }
+    else if (reconf->needSyncToRightPrevious()) {
+        addNeighborToRight();
     }
     else {
         addNeighborToLeft();

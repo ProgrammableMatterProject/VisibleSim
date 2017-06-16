@@ -1,12 +1,12 @@
 #include "neighborMessages.h"
 
-NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighborhood *n, Sync *s, SyncCCW *sccw)
+NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighborhood *n, SyncNext *sn, SyncPrevious *sp)
 {
     catom = c;
     reconf = r;
     neighborhood = n;
-    sync = s;
-    syncCCW = sccw;
+    syncNext = sn;
+    syncPrevious = sp;
 }
 
 void NeighborMessages::init()
@@ -57,6 +57,7 @@ void NeighborMessages::handleNewCatomMsg(MessagePtr message)
     msgResponse->numberSeedsRight = reconf->getNumberSeedsRight() + reconf->isSeedNext();
 
     msgResponse->requestQueue = reconf->requestQueue;
+    msgResponse->createdFromPrevious = reconf->createdFromPrevious;
 
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
 }
@@ -65,9 +66,13 @@ void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
 {
     New_catom_parent_response_message *msgResponse = new New_catom_parent_response_message;
     while (!reconf->requestQueue.empty()) {
-        shared_ptr<SyncCCW_message> requestMsg = static_pointer_cast<SyncCCW_message>(reconf->requestQueue.front());
+        msgResponse->requestQueue.push(reconf->requestQueue.front());
         reconf->requestQueue.pop();
     }
+    if (message->sourceInterface->hostBlock->position[1] > catom->position[1])
+        msgResponse->createdFromPrevious = true;
+    else
+        msgResponse->createdFromPrevious = false;
 
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msgResponse, message->destinationInterface));
 }
@@ -76,16 +81,22 @@ void NeighborMessages::handleNewCatomParentResponseMsg(MessagePtr message)
 {
     New_catom_parent_response_ptr recv_message = static_pointer_cast<New_catom_parent_response_message>(message);
     reconf->requestQueue = recv_message->requestQueue;
+    reconf->createdFromPrevious = recv_message->createdFromPrevious;
     requestQueueHandler();
 }
 
 void NeighborMessages::requestQueueHandler()
 {
-    shared_ptr<SyncCCW_message> requestMsg = static_pointer_cast<SyncCCW_message>(reconf->requestQueue.front());
     for (int i = 0; i < (int)reconf->requestQueue.size(); i++) {
+        shared_ptr<Sync_message> requestMsg = static_pointer_cast<Sync_message>(reconf->requestQueue.front());
         reconf->requestQueue.pop();
-        if (requestMsg->goal == catom->position)
-            syncCCW->response();
+        if (requestMsg->goal == catom->position) {
+            if (catom->getInterface(catom->position.addY(-1))->isConnected() ||
+                catom->getInterface(catom->position.addX(-1))->isConnected())
+                syncNext->response(requestMsg->origin);
+            else
+                syncPrevious->response(requestMsg->origin);
+        }
         else
             reconf->requestQueue.push(requestMsg);
     }
@@ -106,6 +117,7 @@ void NeighborMessages::handleNewCatomResponseMsg(MessagePtr message)
         reconf->setLeftCompleted();
 
     reconf->lineParentDirection = recv_message->lineParentDirection;
+    reconf->createdFromPrevious = recv_message->createdFromPrevious;
     reconf->requestQueue = recv_message->requestQueue;
     requestQueueHandler();
     if (!reconf->requestQueue.empty()) {
@@ -158,12 +170,14 @@ void NeighborMessages::sendMessageToGetParentInfo()
     Cell3DPosition neighborPosition;
 
     neighborPosition = catom->position.addY(1);
-    if (catom->getInterface(neighborPosition)->isConnected())
+    if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
+    }
 
     neighborPosition = catom->position.addY(-1);
-    if (catom->getInterface(neighborPosition)->isConnected())
+    if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(neighborPosition)));
+    }
 }
 
 void NeighborMessages::sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed)

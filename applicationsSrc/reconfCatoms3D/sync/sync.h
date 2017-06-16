@@ -1,44 +1,60 @@
 /*
  *  sync.h
  *
- *  Created on: 28 February 2017
+ *  Created on: 15 Juin 2017
  *  Author: Thadeu
  */
 
 #ifndef SYNC_H_
 #define SYNC_H_
+
 #include "catoms3DBlockCode.h"
 #include "../reconf.h"
-#include "syncLeft.h"
-#include "syncResponse.h"
-#include "syncModel.h"
+
+#define SYNCNEXT_MESSAGE_ID    8201
+#define SYNCNEXT_RESPONSE_MESSAGE_ID    8202
+#define SYNCPREVIOUS_MESSAGE_ID    8203
+#define SYNCPREVIOUS_RESPONSE_MESSAGE_ID    8204
 
 class Sync {
+protected:
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
-    SyncResponseModel *syncResponseModel;
+    vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
+    vector<pair<int, int>> cw_order = {{0,-1}, {-1,0}, {0,1}, {1,0}};
 
 public:
-    SyncLeft *syncLeft;
-    SyncResponse *syncResponse;
-
     Sync(Catoms3D::Catoms3DBlock *c, Reconf *r);
-    ~Sync();
-    void sync();
-    void handleResponse(MessagePtr message);
-    void handleResponseLeft(shared_ptr<Sync_response_message> message);
-    void handleResponseRight(shared_ptr<Sync_response_message> message);
+    virtual ~Sync();
 
-    void handleLookupNeighborLeftMessage(MessagePtr message);
-    void handleLookupLineLeftMessage(MessagePtr message);
+    virtual void sync() = 0;
+    virtual void response(Cell3DPosition) = 0;
+    virtual void handleMessage(shared_ptr<Message>) = 0;
+    virtual void handleMessageResponse(shared_ptr<Message>) = 0;
 
-    void handleLookupNeighborRightMessage(MessagePtr message);
-    void handleLookupLineRightMessage(MessagePtr message);
-
-    bool isSyncOK() { return syncResponseModel->isSyncOK(); }
-    void setSyncOK() { syncResponseModel->setSyncOK(); }
+    bool isInternalBorder(int idx);
 };
 
+class Sync_message : public Message {
+public:
+    int idx;
+    Cell3DPosition goal;
+    Cell3DPosition origin;
+    Sync_message(int idx, Cell3DPosition goal, Cell3DPosition origin) {
+        this->idx = idx;
+        this->goal = goal;
+        this->origin = origin;
+    }
+};
+
+class Sync_response_message : public Message {
+public:
+    int idx;
+    Cell3DPosition origin;
+    Sync_response_message(int idx, Cell3DPosition origin) {
+        this->idx = idx;
+        this->origin = origin;
+    }
+};
 
 #endif /* SYNC_H_ */
-

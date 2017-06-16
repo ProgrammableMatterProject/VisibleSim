@@ -10,7 +10,6 @@
 
 #include "../reconf.h"
 #include "../sync/sync.h"
-#include "../syncCCW/syncCCW.h"
 #include "neighborhood.h"
 
 #define NEW_CATOM_MSG_ID	9001
@@ -26,14 +25,14 @@ private:
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;
     Neighborhood *neighborhood;
-    Sync *sync;
-    SyncCCW *syncCCW;
+    SyncNext *syncNext;
+    SyncPrevious *syncPrevious;
 
     void sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed);
     void sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed);
 
 public:
-    NeighborMessages(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Neighborhood *n, Sync *s, SyncCCW *sccw);
+    NeighborMessages(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Neighborhood *n, SyncNext *sn, SyncPrevious *sp);
 
     void init();
     void requestQueueHandler();
@@ -69,6 +68,7 @@ public:
 class New_catom_parent_response_message : public Message {
 public:
     queue<MessagePtr> requestQueue;
+    bool createdFromPrevious;
     New_catom_parent_response_message() { id = NEW_CATOM_PARENT_RESPONSE_MSG_ID;}
 };
 typedef shared_ptr<New_catom_parent_response_message> New_catom_parent_response_ptr;
@@ -77,6 +77,7 @@ class New_catom_response_message : public Message {
 public:
     bID lineParent;
     bool leftCompleted, rightCompleted;
+    bool createdFromPrevious;
     int numberSeedsLeft, numberSeedsRight;
     SIDE_DIRECTION lineParentDirection;
     queue<MessagePtr> requestQueue;

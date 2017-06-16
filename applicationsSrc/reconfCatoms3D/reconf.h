@@ -22,9 +22,12 @@ class Reconf {
     bool leftCompleted;
     bool rightCompleted;
 
-    bool isInternalSeed(LINE_DIRECTION);
-    bool isBorderSeed(LINE_DIRECTION);
+    bool isInternalSeedNext();
+    bool isInternalSeedPrevious();
+    bool isBorderSeedNext();
+    bool isBorderSeedPrevious();
 public:
+    bool createdFromPrevious;
     queue<MessagePtr> requestQueue;
     SIDE_DIRECTION lineParentDirection;
 
@@ -33,8 +36,12 @@ public:
     bool isSeedNext();
     bool isSeedPrevious();
     bool needSync();
-    bool needSyncToLeft();
-    bool needSyncToRight();
+
+    bool needSyncToLeftNext();
+    bool needSyncToLeftPrevious();
+
+    bool needSyncToRightNext();
+    bool needSyncToRightPrevious();
 
     bool isLineParent() { return lineParent; }
     void setLineParent() { lineParent = true; }
