@@ -1,8 +1,8 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
 
-#define CONSTRUCT_WAIT_TIME 1
-#define SYNC_WAIT_TIME 5
+#define CONSTRUCT_WAIT_TIME 10
+#define SYNC_WAIT_TIME 10
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 
 using namespace std;
@@ -103,7 +103,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 }
                 else {
                     syncNext->handleMessage(recv_message);
-                    catom->setColor(ORANGE);
                     std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
                 }
                 break;
@@ -129,7 +128,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 }
                 else {
                     syncPrevious->handleMessage(recv_message);
-                    catom->setColor(DARKORANGE);
                     std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
                 }
                 break;
@@ -143,7 +141,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 }
                 else {
                     syncNext->handleMessageResponse(recv_message);
-                    catom->setColor(GREEN);
                     std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
                 }
                 break;

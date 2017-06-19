@@ -120,9 +120,9 @@ void NeighborMessages::handleNewCatomResponseMsg(MessagePtr message)
     reconf->createdFromPrevious = recv_message->createdFromPrevious;
     reconf->requestQueue = recv_message->requestQueue;
     requestQueueHandler();
-    if (!reconf->requestQueue.empty()) {
-        catom->setColor(LIGHTGREEN);
-    }
+    //if (!reconf->requestQueue.empty()) {
+        //catom->setColor(LIGHTGREEN);
+    //}
 }
 
 void NeighborMessages::handleLeftSideCompletedMsg(MessagePtr message)

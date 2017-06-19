@@ -83,7 +83,7 @@ void Neighborhood::tryAddNeighbors()
 {
     if (reconf->needSyncToLeftNext()) {
         if (syncNext->isInternalBorder(1)) {
-            cout << "Sync to Left Next " << catom->blockId << endl;
+            //cout << "Sync to Left Next " << catom->blockId << endl;
             syncNext->sync();
         }
         else {
@@ -93,8 +93,8 @@ void Neighborhood::tryAddNeighbors()
     }
     else if (reconf->needSyncToLeftPrevious()) {
         if (syncPrevious->isInternalBorder(3)) {
-            cout << "Sync to Left Previous " << catom->blockId << endl;
-            catom->setColor(BLACK);
+            //cout << "Sync to Left Previous " << catom->blockId << endl;
+            //catom->setColor(BLACK);
             syncPrevious->sync();
         }
         else {
@@ -141,7 +141,7 @@ void Neighborhood::addNeighbor(Cell3DPosition pos)
     NeighborRestriction neighbors;
     if (world->lattice->isFree(pos) && BlockCode::target->isInTarget(pos)) {
         if (neighbors.isPositionBlockable(pos))
-            world->addBlock(0, blockCodeBuilder, pos, PINK, 0, false);
+            world->addBlock(0, blockCodeBuilder, pos, WHITE, 0, false);
         else if (neighbors.isPositionBlocked(pos))
             world->addBlock(0, blockCodeBuilder, pos, RED, 0, false);
         else {
