@@ -8,7 +8,6 @@
 #ifndef NEIGHBOR_H_
 #define NEIGHBOR_H_
 
-
 #include "cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
@@ -40,6 +39,10 @@ public:
     bool isOnLeftBorder();
     bool isOnRightBorder();
     bool isFirstCatomOfLine();
+    bool isFirstCatomOfPlane();
+
+    void addNeighborToNextPlane();
+    void addNeighborToPreviousPlane();
 };
 
 #endif /* NEIGHBORHOOD_H_ */

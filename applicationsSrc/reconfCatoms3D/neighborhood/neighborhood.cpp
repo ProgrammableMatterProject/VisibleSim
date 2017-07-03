@@ -2,8 +2,6 @@
 #include "neighborRestriction.h"
 #include "catoms3DWorld.h"
 
-#define WAIT_TIME 5
-
 Neighborhood::Neighborhood(Catoms3D::Catoms3DBlock *c, Reconf *r, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb)
 {
     catom = c;
@@ -21,6 +19,26 @@ void Neighborhood::addNeighborToLeft()
 void Neighborhood::addNeighborToRight()
 {
     addNeighbor(catom->position.addX(1));
+}
+
+void Neighborhood::addNeighborToNextPlane()
+{
+    if (BlockCode::target->isInTarget(catom->position.addZ(1))) {
+        cout << catom->blockId << endl;
+        addNeighbor(catom->position.addZ(1));
+    }
+    else if (BlockCode::target->isInTarget(catom->position.addY(1).addZ(1))) {
+        cout << catom->blockId << endl;
+        addNeighbor(catom->position.addY(1).addZ(1));
+    }
+}
+
+void Neighborhood::addNeighborToPreviousPlane()
+{
+    if (BlockCode::target->isInTarget(catom->position.addZ(-1)))
+        addNeighbor(catom->position.addZ(-1));
+    else if (BlockCode::target->isInTarget(catom->position.addY(1).addZ(-1)))
+        addNeighbor(catom->position.addY(1).addZ(-1));
 }
 
 bool Neighborhood::isOnLeftBorder()
@@ -45,6 +63,15 @@ bool Neighborhood::isFirstCatomOfLine()
 {
     if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
             catom->getInterface(catom->position.addX(1))->connectedInterface == NULL)
+        return true;
+    return false;
+}
+
+bool Neighborhood::isFirstCatomOfPlane()
+{
+    if (isFirstCatomOfLine() &&
+            catom->getInterface(catom->position.addY(-1))->connectedInterface == NULL &&
+            catom->getInterface(catom->position.addY(1))->connectedInterface == NULL)
         return true;
     return false;
 }
@@ -145,10 +172,8 @@ void Neighborhood::addNeighbor(Cell3DPosition pos)
         else if (neighbors.isPositionBlocked(pos))
             world->addBlock(0, blockCodeBuilder, pos, RED, 0, false);
         else {
-
             world->addBlock(0, blockCodeBuilder, pos, WHITE, 0, false);
         }
         world->linkBlock(pos);
     }
 }
-

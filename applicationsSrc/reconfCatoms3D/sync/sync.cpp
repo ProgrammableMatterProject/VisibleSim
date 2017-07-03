@@ -9,47 +9,35 @@ Sync::~Sync() {}
 
 // idx is the direction the border comes for the first catom
 bool Sync::isInternalBorder(int idx) {
-    int oldIdx = idx;
     int nTurns = 0;
     Cell3DPosition currentPos = catom->position;
+    cout << "---" << endl;
+    nTurns += getNextBorderNeighbor(idx, currentPos);
 
-    for (int i = 0; i < 4; i++) {
-        int idx = (((oldIdx+i-1)%4)+4)%4;
-        Cell3DPosition nextPos = currentPos.addX(cw_order[idx].first)
-                                          .addY(cw_order[idx].second);
-        if (BlockCode::target->isInTarget(nextPos)) {
-            if (i == 0)
-                nTurns++;
-            else if (i == 2)
-                nTurns--;
-            else if (i == 3)
-                nTurns -= 2;
-            oldIdx = idx;
-            currentPos = nextPos;
-            break;
-        }
-    }
-
-    while(currentPos != catom->position) {
-        for (int i = 0; i < 4; i++) {
-            int idx = (((oldIdx+i-1)%4)+4)%4;
-            Cell3DPosition nextPos = currentPos.addX(cw_order[idx].first)
-                                              .addY(cw_order[idx].second);
-            if (BlockCode::target->isInTarget(nextPos)) {
-                if (i == 0) {
-                    nTurns++;
-                }
-                else if (i == 2)
-                    nTurns--;
-                else if (i == 3)
-                    nTurns -= 2;
-                oldIdx = idx;
-                currentPos = nextPos;
-                break;
-            }
-        }
-    }
+    while(currentPos != catom->position)
+        nTurns += getNextBorderNeighbor(idx, currentPos);
     if (nTurns > 0) return true;
     return false;
+}
+
+int Sync::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
+    int newIdx;
+    for (int i = 0; i < 4; i++) {
+        newIdx = (((idx+i-1)%4)+4)%4;
+        Cell3DPosition nextPos = currentPos.addX(cw_order[newIdx].first)
+                                          .addY(cw_order[newIdx].second);
+        if (BlockCode::target->isInTarget(nextPos)) {
+            cout << nextPos << endl;
+            idx = newIdx;
+            currentPos = nextPos;
+            if (i == 0)
+                return 1;
+            else if (i == 2)
+                return -1;
+            else if (i == 3)
+                return -2;
+        }
+    }
+    return 0;
 }
 

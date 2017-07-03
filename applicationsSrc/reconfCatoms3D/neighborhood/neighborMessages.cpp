@@ -1,12 +1,13 @@
 #include "neighborMessages.h"
 
-NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighborhood *n, SyncNext *sn, SyncPrevious *sp)
+NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighborhood *n, SyncNext *sn, SyncPrevious *sp, SyncPlane *sPlane)
 {
     catom = c;
     reconf = r;
     neighborhood = n;
     syncNext = sn;
     syncPrevious = sp;
+    syncPlane = sPlane;
 }
 
 void NeighborMessages::init()
@@ -18,6 +19,7 @@ void NeighborMessages::init()
     neighborhood->tryAddNeighbors();
     neighborhood->tryAddNextLineNeighbor();
     neighborhood->tryAddPreviousLineNeighbor();
+    trySendMessagePlaneFinished();
 }
 
 void NeighborMessages::checkLineParent() {
@@ -136,6 +138,8 @@ void NeighborMessages::handleLeftSideCompletedMsg(MessagePtr message)
     neighborhood->tryAddPreviousLineNeighbor();
 
     sendMessageLeftSideCompleted(reconf->getNumberSeedsLeft(), reconf->isSeedNext());
+
+    trySendMessagePlaneFinished();
 }
 
 void NeighborMessages::handleRightSideCompletedMsg(MessagePtr message)
@@ -149,6 +153,8 @@ void NeighborMessages::handleRightSideCompletedMsg(MessagePtr message)
     neighborhood->tryAddPreviousLineNeighbor();
 
     sendMessageRightSideCompleted(reconf->getNumberSeedsRight(), reconf->isSeedNext());
+
+    trySendMessagePlaneFinished();
 }
 
 void NeighborMessages::sendMessageToGetLineInfo()
@@ -202,5 +208,26 @@ New_catom_response_message::New_catom_response_message()
     id = NEW_CATOM_RESPONSE_MSG_ID;
     leftCompleted = rightCompleted = false;
     numberSeedsLeft = numberSeedsRight = 0;
+}
 
+void NeighborMessages::trySendMessagePlaneFinished()
+{
+    if (reconf->isLineParent() && reconf->isLineCompleted() && reconf->checkPlaneCompleted()) {
+       sendMessagePlaneFinished();
+    }
+}
+
+void NeighborMessages::sendMessagePlaneFinished()
+{
+    if (reconf->planeFinished)
+        return;
+    reconf->planeFinished = true;
+    Plane_finished_message *msg = new Plane_finished_message();
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(catom->position.addX(1))));
+    msg = new Plane_finished_message();
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(catom->position.addX(-1))));
+    msg = new Plane_finished_message();
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(catom->position.addY(1))));
+    msg = new Plane_finished_message();
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, catom->getInterface(catom->position.addY(-1))));
 }

@@ -17,6 +17,9 @@
 #define SYNCPREVIOUS_RESPONSE_MESSAGE_ID    8204
 
 class Sync {
+private:
+    int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos);
+
 protected:
     Catoms3D::Catoms3DBlock *catom;
     Reconf *reconf;

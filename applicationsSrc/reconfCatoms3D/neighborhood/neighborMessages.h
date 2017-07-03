@@ -10,6 +10,7 @@
 
 #include "../reconf.h"
 #include "../sync/sync.h"
+#include "../sync/syncPlane.h"
 #include "neighborhood.h"
 
 #define NEW_CATOM_MSG_ID	9001
@@ -18,6 +19,7 @@
 #define NEW_CATOM_PARENT_RESPONSE_MSG_ID	9004
 #define LEFT_SIDE_COMPLETED_MSG_ID	9005
 #define RIGHT_SIDE_COMPLETED_MSG_ID	9006
+#define PLANE_FINISHED_MSG_ID	9007
 
 class NeighborMessages
 {
@@ -27,12 +29,13 @@ private:
     Neighborhood *neighborhood;
     SyncNext *syncNext;
     SyncPrevious *syncPrevious;
+    SyncPlane *syncPlane;
 
     void sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed);
     void sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed);
 
 public:
-    NeighborMessages(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Neighborhood *n, SyncNext *sn, SyncPrevious *sp);
+    NeighborMessages(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Neighborhood *n, SyncNext *sn, SyncPrevious *sp, SyncPlane *sPlane);
 
     void init();
     void requestQueueHandler();
@@ -51,6 +54,8 @@ public:
     void handleLeftSideCompletedMsg(MessagePtr msg);
     void handleRightSideCompletedMsg(MessagePtr msg);
 
+    void trySendMessagePlaneFinished();
+    void sendMessagePlaneFinished();
 };
 
 class New_catom_message : public Message {
@@ -98,5 +103,10 @@ public:
     Right_side_completed_message(int nSeedsRight) : numberSeedsRight(nSeedsRight) { id = RIGHT_SIDE_COMPLETED_MSG_ID; };
 };
 typedef shared_ptr<Right_side_completed_message> Right_side_completed_ptr;
+
+class Plane_finished_message : public Message {
+public:
+    Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
+};
 
 #endif /* NEIGHBORMESSAGES_H_ */

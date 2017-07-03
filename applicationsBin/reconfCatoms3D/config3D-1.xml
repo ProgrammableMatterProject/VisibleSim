@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="210, 210, 210">
+    <camera target="200,200,120" directionSpherical="0,50,650" angle="45" near="0.01" far="2500.0" />
+    <spotlight target="200,200,120" directionSpherical="125,40,1500" angle="30" near="80.0" far="2500.0"/>
+    <blockList color="128,128,128" blocksize="1,1,1">
+
+		<block position="10,7,6" orientation="0"/>
+	</blockList>
+  <targetList>
+    <target format="csg">
+        <csg content="
+scale([0.2,0.2,0.2])
+union() {
+cube([150,100,20],true);
+translate([-40,0,50]) cylinder(80,10,10, true);
+translate([40,0,50]) cylinder(80,10,10, true);
+translate([0,0,120]) cylinder(60,80,0, true);
+}
+            "/>
+    </target>
+  </targetList>
+</world>

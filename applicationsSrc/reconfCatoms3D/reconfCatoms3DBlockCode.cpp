@@ -1,7 +1,7 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
 
-#define CONSTRUCT_WAIT_TIME 10
+#define CONSTRUCT_WAIT_TIME 5
 #define SYNC_WAIT_TIME 10
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 
@@ -15,8 +15,9 @@ ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBl
     reconf = new Reconf(catom);
     syncNext = new SyncNext(catom, reconf);
     syncPrevious = new SyncPrevious(catom, reconf);
+    syncPlane = new SyncPlane(catom, reconf);
     neighborhood = new Neighborhood(catom, reconf, syncNext, syncPrevious, buildNewBlockCode);
-    neighborMessages = new NeighborMessages(catom, reconf, neighborhood, syncNext, syncPrevious);
+    neighborMessages = new NeighborMessages(catom, reconf, neighborhood, syncNext, syncPrevious, syncPlane);
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
@@ -27,14 +28,16 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 }
 
 void ReconfCatoms3DBlockCode::startup() {
-	if (catom->blockId == 1) {
+	if (neighborhood->isFirstCatomOfPlane()) {
         if (!BlockCode::target->isInTarget(catom->position)) {
             catom->setColor(RED);
         }
+        reconf->planeParent = true;
         neighborMessages->init();
 	}
-    if (neighborhood->isFirstCatomOfLine())
+    if (neighborhood->isFirstCatomOfLine()) {
         neighborMessages->sendMessageToGetParentInfo();
+    }
     else
         neighborMessages->sendMessageToGetLineInfo();
 
@@ -142,6 +145,21 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 else {
                     syncNext->handleMessageResponse(recv_message);
                     std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+                }
+                break;
+            }
+            case PLANE_FINISHED_MSG_ID:
+            {
+                if (!reconf->planeFinished) {
+                    if (syncPlane->isSeed()) {
+                        catom->setColor(BLACK);
+                        neighborhood->addNeighborToNextPlane();
+                    }
+                    else if (reconf->planeParent) {
+                        catom->setColor(GREY);
+                        neighborhood->addNeighborToNextPlane();
+                    }
+                    neighborMessages->sendMessagePlaneFinished();
                 }
                 break;
             }

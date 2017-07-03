@@ -15,6 +15,7 @@
 #include "neighborhood/neighborMessages.h"
 #include "sync/syncNext.h"
 #include "sync/syncPrevious.h"
+#include "sync/syncPlane.h"
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
@@ -29,6 +30,7 @@ public:
     Reconf *reconf;
     SyncNext *syncNext;
     SyncPrevious *syncPrevious;
+    SyncPlane *syncPlane;
 
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();

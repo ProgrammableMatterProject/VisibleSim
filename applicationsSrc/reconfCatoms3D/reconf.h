@@ -13,20 +13,32 @@
 
 class Reconf {
     Catoms3D::Catoms3DBlock *catom;
+
     int numberSeedsLeft;
     int numberSeedsRight;
+
     bool lineParent;
     bool lineCompleted;
+
     bool seedNext;
     bool seedPrevious;
+
     bool leftCompleted;
     bool rightCompleted;
+
 
     bool isInternalSeedNext();
     bool isInternalSeedPrevious();
     bool isBorderSeedNext();
     bool isBorderSeedPrevious();
+
+    bool isHighestOfBorder(int idx);
+    int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos);
+    bool isOnBorder();
+    bool isHighest();
 public:
+    bool planeParent;
+    bool planeFinished;
     bool createdFromPrevious;
     queue<MessagePtr> requestQueue;
     SIDE_DIRECTION lineParentDirection;
@@ -63,6 +75,8 @@ public:
 
     void setRightCompleted();
     bool isRightCompleted() { return rightCompleted; }
+
+    bool checkPlaneCompleted();
 
 };
 
