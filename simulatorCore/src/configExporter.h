@@ -195,16 +195,16 @@ public:
 /**
  * @brief RobotBlocks Configuration Exporter
  */
-class OktenConfigExporter : public ConfigExporter {
+class OkteenConfigExporter : public ConfigExporter {
 public:
     /**
      * @brief RobotBlocks Configuration Exporter constructor
      */
-    OktenConfigExporter(World *_world) : ConfigExporter(_world) {};
+    OkteenConfigExporter(World *_world) : ConfigExporter(_world) {};
     /**
      * @brief RobotBlocks Configuration Exporter destructor
      */
-    virtual ~OktenConfigExporter() { };
+    virtual ~OkteenConfigExporter() { };
 };
 
 

@@ -1,12 +1,12 @@
 /*!
- * \file oktenSimulator.cpp
- * \brief okten Simulator
+ * \file okteenSimulator.cpp
+ * \brief okteen Simulator
  * \date 05/03/2015
  * \author Benoît Piranda
  */
 
 #include <iostream>
-#include "oktenSimulator.h"
+#include "okteenSimulator.h"
 #include <string.h>
 #include "trace.h"
 #include "utils.h"
@@ -14,32 +14,32 @@
 using namespace std;
 using namespace BaseSimulator::utils;
 
-namespace Okten {
+namespace Okteen {
 
-void OktenSimulator::help() {
+void OkteenSimulator::help() {
 	cerr << "VisibleSim:" << endl;
-	cerr << "Okten" << endl;
+	cerr << "Okteen" << endl;
 	exit(EXIT_SUCCESS);
 }
 
-OktenSimulator::OktenSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
+OkteenSimulator::OkteenSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
 	: BaseSimulator::Simulator(argc, argv, bcb) {
-	OUTPUT << "\033[1;34m" << "OktenSimulator constructor" << "\033[0m" << endl;
+	OUTPUT << "\033[1;34m" << "OkteenSimulator constructor" << "\033[0m" << endl;
 }
 
-OktenSimulator::~OktenSimulator() {
-	OUTPUT << "\033[1;34m" << "OktenSimulator destructor" << "\033[0m" <<endl;
+OkteenSimulator::~OkteenSimulator() {
+	OUTPUT << "\033[1;34m" << "OkteenSimulator destructor" << "\033[0m" <<endl;
 }
 
-void OktenSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
-	simulator =  new OktenSimulator(argc, argv, bcb);
+void OkteenSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
+	simulator =  new OkteenSimulator(argc, argv, bcb);
 	simulator->parseConfiguration(argc, argv);
 	simulator->startSimulation();
 }
 
-void OktenSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+void OkteenSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 				      int argc, char *argv[]) {
-    world = new OktenWorld(gridSize, gridScale, argc, argv);
+    world = new OkteenWorld(gridSize, gridScale, argc, argv);
 
 	if (GlutContext::GUIisEnabled)
 		world->loadTextures("../../simulatorCore/resources/textures/latticeTextures");
@@ -47,7 +47,7 @@ void OktenSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &g
     World::setWorld(world);
 }
 
-void OktenSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
+void OkteenSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
 								  const Cell3DPosition &pos, const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
@@ -62,7 +62,7 @@ void OktenSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBui
 	}
 
 	// Finally, add block to the world
-	((OktenWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
+	((OkteenWorld*)world)->addBlock(blockId, bcb, pos, color, orientation, master);
 }
 
-} // Okten namespace
+} // Okteen namespace

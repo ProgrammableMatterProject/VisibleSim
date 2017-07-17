@@ -1,33 +1,33 @@
 /*
- * oktenBlockCode.cpp
+ * okteenBlockCode.cpp
  *
  *  Created on: 12 mai 2017
  *  Author: Benoît Piranda
  */
 
 #include <iostream>
-#include "oktenBlockCode.h"
+#include "okteenBlockCode.h"
 #include "network.h"
 #include "trace.h"
 
 using namespace std;
 
-namespace Okten {
+namespace Okteen {
 
-OktenBlockCode::OktenBlockCode(OktenBlock *host):BlockCode(host) {
-	OUTPUT << "OktenBlockCode constructor" << endl;
+OkteenBlockCode::OkteenBlockCode(OkteenBlock *host):BlockCode(host) {
+	OUTPUT << "OkteenBlockCode constructor" << endl;
 }
 
-OktenBlockCode::~OktenBlockCode() {
-	OUTPUT << "OktenBlockCode destructor" << endl;
+OkteenBlockCode::~OkteenBlockCode() {
+	OUTPUT << "OkteenBlockCode destructor" << endl;
 }
 
-void OktenBlockCode::addDebugAttributes(Scheduler *scheduler) {
- /*   OktenBlock *catom = (OktenBlock*)(hostBlock);
+void OkteenBlockCode::addDebugAttributes(Scheduler *scheduler) {
+ /*   OkteenBlock *catom = (OkteenBlock*)(hostBlock);
     scheduler->addKeyword(new KeywordT<short>("orientationCode",&catom->orientationCode,"orientation of the block"));*/
 }
 
-void OktenBlockCode::processLocalEvent(EventPtr pev) {
+void OkteenBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
 
@@ -58,7 +58,7 @@ void OktenBlockCode::processLocalEvent(EventPtr pev) {
 			info << "rec.: EVENT_MOTION_END";
 			scheduler->trace(info.str(),hostBlock->blockId);
 #endif
-            OktenBlock*c3d = (OktenBlock*)hostBlock;
+            OkteenBlock*c3d = (OkteenBlock*)hostBlock;
             c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
             onMotionEnd();
         }  break;
@@ -66,9 +66,9 @@ void OktenBlockCode::processLocalEvent(EventPtr pev) {
 }
 
 
-/*bool OktenBlockCode::getAttribute(const string &att,ostringstream &sout) {
+/*bool OkteenBlockCode::getAttribute(const string &att,ostringstream &sout) {
 
-    OktenBlock *catom = (OktenBlock*)(hostBlock);
+    OkteenBlock *catom = (OkteenBlock*)(hostBlock);
 
     if (att=="blockId") {
         sout << catom->blockId << endl;

@@ -1,6 +1,6 @@
 /*!
- * \file oktenWorld.cpp
- * \brief okten world
+ * \file okteenWorld.cpp
+ * \brief okteen world
  * \date 05/03/2015
  * \author Benoît Piranda
  */
@@ -12,16 +12,16 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include "oktenWorld.h"
-#include "oktenBlock.h"
+#include "okteenWorld.h"
+#include "okteenBlock.h"
 #include "trace.h"
 #include "configExporter.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
 
-//! \namespace Okten
-namespace Okten {
+//! \namespace Okteen
+namespace Okteen {
 
 /**
    \brief Constructor
@@ -30,43 +30,43 @@ namespace Okten {
    \param argc : number of execution parameters
    \param argv : string array of parameters
 */
-OktenWorld::OktenWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
+OkteenWorld::OkteenWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 							 int argc, char *argv[]):World(argc, argv) {
-    OUTPUT << "\033[1;31mOktenWorld constructor\033[0m" << endl;
+    OUTPUT << "\033[1;31mOkteenWorld constructor\033[0m" << endl;
 
     if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/oktenTextures","oktenModule.obj");
-		objConnector = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/oktenTextures","oktenConnector.obj");
-        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/oktenTextures","oktenModule.obj");
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/okteenTextures","okteenModule.obj");
+		objConnector = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/okteenTextures","okteenConnector.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/okteenTextures","okteenModule.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/latticeTextures","repere25.obj");
 	}
 
     lattice = new SCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 }
 
-OktenWorld::~OktenWorld() {
-    OUTPUT << "OktenWorld destructor" << endl;
+OkteenWorld::~OkteenWorld() {
+    OUTPUT << "OkteenWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
 }
 
-void OktenWorld::deleteWorld() {
-    delete((OktenWorld*)world);
+void OkteenWorld::deleteWorld() {
+    delete((OkteenWorld*)world);
 }
 
-void OktenWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
+void OkteenWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
 							 short orientation, bool master) {
 	if (blockId > maxBlockId)
 		maxBlockId = blockId;
 	else if (blockId == 0)
 		blockId = incrementBlockId();
 
-    OktenBlock *module = new OktenBlock(blockId,bcb);
+    OkteenBlock *module = new OkteenBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (module->blockId, (BaseSimulator::BuildingBlock*)module));
 
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), module));
 
-    OktenGlBlock *glBlock = new OktenGlBlock(blockId);
+    OkteenGlBlock *glBlock = new OkteenGlBlock(blockId);
     tabGlBlocks.push_back(glBlock);
 
     module->setGlBlock(glBlock);
@@ -82,9 +82,9 @@ void OktenWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositio
  */
 
  /* revoir avec robotblock*/
-void OktenWorld::linkBlock(const Cell3DPosition& pos) {
-    OktenBlock *module = (OktenBlock *)lattice->getBlock(pos);
-	OktenBlock* neighborBlock;
+void OkteenWorld::linkBlock(const Cell3DPosition& pos) {
+    OkteenBlock *module = (OkteenBlock *)lattice->getBlock(pos);
+	OkteenBlock* neighborBlock;
 	vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
 	Cell3DPosition nPos;
 
@@ -94,7 +94,7 @@ void OktenWorld::linkBlock(const Cell3DPosition& pos) {
 	for (int i = 0; i < 6; i++) {
 		nPos = pos + nRelCells[i];
 		OUTPUT << "npos:" << nPos << "  i=" << i << endl;
-		neighborBlock = (OktenBlock*)lattice->getBlock(nPos);
+		neighborBlock = (OkteenBlock*)lattice->getBlock(nPos);
 		if (neighborBlock) {
 			module->getInterface(SCLattice::Direction(i))->connect(neighborBlock->getInterface(SCLattice::Direction(lattice->getOppositeDirection(i))));
 
@@ -113,16 +113,16 @@ void OktenWorld::linkBlock(const Cell3DPosition& pos) {
 /**
  * \brief Draw modules and axes
  */
-void OktenWorld::glDraw() {
+void OkteenWorld::glDraw() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
 // draw modules
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    OktenGlBlock *ptr;
+    OkteenGlBlock *ptr;
     lock();
     while (ic!=tabGlBlocks.end()) {
-        ptr = (OktenGlBlock*)(*ic);
+        ptr = (OkteenGlBlock*)(*ic);
 		ptr->glDraw(objBlock);
 		ptr->glDrawConnectors(objConnector);
 		ic++;
@@ -225,7 +225,7 @@ void OktenWorld::glDraw() {
 		glPopMatrix();
 }
 
-void OktenWorld::glDrawId() {
+void OkteenWorld::glDrawId() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
    	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
@@ -233,15 +233,15 @@ void OktenWorld::glDrawId() {
     int n=1;
     lock();
     while (ic!=tabGlBlocks.end()) {
-		((OktenGlBlock*)(*ic))->glDrawIdConnectors(objConnector,n);
-		((OktenGlBlock*)(*ic))->glDrawId(objBlock,n);
+		((OkteenGlBlock*)(*ic))->glDrawIdConnectors(objConnector,n);
+		((OkteenGlBlock*)(*ic))->glDrawId(objBlock,n);
 		ic++;
     }
     unlock();
     glPopMatrix();
 }
 
-void OktenWorld::glDrawIdByMaterial() {
+void OkteenWorld::glDrawIdByMaterial() {
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
 	glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
@@ -251,8 +251,8 @@ void OktenWorld::glDrawIdByMaterial() {
     // 6 objects per module
     while (ic!=tabGlBlocks.end()) {
         m=0;
-        ((OktenGlBlock*)(*ic))->glDrawId(objBlockForPicking,m); // structure
-		((OktenGlBlock*)(*ic))->glDrawIdByMaterial(objConnector,n); // connectors
+        ((OkteenGlBlock*)(*ic))->glDrawId(objBlockForPicking,m); // structure
+		((OkteenGlBlock*)(*ic))->glDrawIdByMaterial(objConnector,n); // connectors
 		ic++;
     }
     unlock();
@@ -260,14 +260,14 @@ void OktenWorld::glDrawIdByMaterial() {
 }
 
 
-void OktenWorld::loadTextures(const string &str) {
+void OkteenWorld::loadTextures(const string &str) {
 	string path = str+"/texture_plane.tga";
 	int lx,ly;
 	idTextureWall = GlutWindow::loadTexture(path.c_str(),lx,ly);
 }
 
-void OktenWorld::updateGlData(BuildingBlock *bb) {
-    OktenGlBlock *glblc = (OktenGlBlock*)bb->getGlBlock();
+void OkteenWorld::updateGlData(BuildingBlock *bb) {
+    OkteenGlBlock *glblc = (OkteenGlBlock*)bb->getGlBlock();
     if (glblc) {
 		lock();
 		//cout << "update pos:" << position << endl;
@@ -277,8 +277,8 @@ void OktenWorld::updateGlData(BuildingBlock *bb) {
     }
 }
 
-void OktenWorld::updateGlData(OktenBlock*blc, const Color &color) {
-    OktenGlBlock *glblc = blc->getGlBlock();
+void OkteenWorld::updateGlData(OkteenBlock*blc, const Color &color) {
+    OkteenGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
 		lock();
 		//cout << "update pos:" << position << endl;
@@ -287,8 +287,8 @@ void OktenWorld::updateGlData(OktenBlock*blc, const Color &color) {
     }
 }
 
-void OktenWorld::updateGlData(OktenBlock*blc, bool visible) {
-    OktenGlBlock *glblc = blc->getGlBlock();
+void OkteenWorld::updateGlData(OkteenBlock*blc, bool visible) {
+    OkteenGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
 		lock();
 		//cout << "update pos:" << position << endl;
@@ -297,8 +297,8 @@ void OktenWorld::updateGlData(OktenBlock*blc, bool visible) {
     }
 }
 
-void OktenWorld::updateGlData(OktenBlock*blc, const Vector3D &position) {
-    OktenGlBlock *glblc = blc->getGlBlock();
+void OkteenWorld::updateGlData(OkteenBlock*blc, const Vector3D &position) {
+    OkteenGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
 		lock();
 		//cout << "update pos:" << position << endl;
@@ -307,8 +307,8 @@ void OktenWorld::updateGlData(OktenBlock*blc, const Vector3D &position) {
     }
 }
 
-void OktenWorld::updateGlData(OktenBlock*blc, const Cell3DPosition &position) {
-    OktenGlBlock *glblc = blc->getGlBlock();
+void OkteenWorld::updateGlData(OkteenBlock*blc, const Cell3DPosition &position) {
+    OkteenGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
 		lock();
 		//cout << "update pos:" << position << endl;
@@ -317,8 +317,8 @@ void OktenWorld::updateGlData(OktenBlock*blc, const Cell3DPosition &position) {
     }
 }
 
-void OktenWorld::updateGlData(OktenBlock*blc, const Matrix &mat) {
-    OktenGlBlock *glblc = blc->getGlBlock();
+void OkteenWorld::updateGlData(OkteenBlock*blc, const Matrix &mat) {
+    OkteenGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
 		lock();
 		glblc->mat = mat;
@@ -326,8 +326,8 @@ void OktenWorld::updateGlData(OktenBlock*blc, const Matrix &mat) {
     }
 }
 
-void OktenWorld::updateGlData(OktenBlock*blc, short id, float length) {
-    OktenGlBlock *glblc = blc->getGlBlock();
+void OkteenWorld::updateGlData(OkteenBlock*blc, short id, float length) {
+    OkteenGlBlock *glblc = blc->getGlBlock();
     if (glblc) {
 		lock();
 		glblc->tabPosConnectors[id] = (uint8_t)(length*255.0);
@@ -336,20 +336,20 @@ void OktenWorld::updateGlData(OktenBlock*blc, short id, float length) {
     }
 }
 
-void OktenWorld::setSelectedFace(int n) {
+void OkteenWorld::setSelectedFace(int n) {
     numSelectedGlBlock=n/6;
 	numSelectedFace = n%6;
 }
 
-void OktenWorld::exportConfiguration() {
-	OktenConfigExporter exporter = OktenConfigExporter(this);
+void OkteenWorld::exportConfiguration() {
+	OkteenConfigExporter exporter = OkteenConfigExporter(this);
 	exporter.exportConfiguration();
 }
 
 /*
-  void OktenWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
+  void OkteenWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
   presence *gpm=pm.grid;
-  OktenBlock **grb;
+  OkteenBlock **grb;
 
   //memset(pm.grid,wall,27*sizeof(presence));
 
@@ -373,7 +373,7 @@ void OktenWorld::exportConfiguration() {
   }
   }
 
-  void OktenWorld::initTargetGrid() {
+  void OkteenWorld::initTargetGrid() {
   if (targetGrid) delete [] targetGrid;
   int sz = lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2];
   targetGrid = new presence[lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2]];

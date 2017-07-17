@@ -1,26 +1,26 @@
 /*!
- * \file oktenBlock.h
- * \brief okten Block
+ * \file okteenBlock.h
+ * \brief okteen Block
  * \date 05/03/2015
  * \author Benoît Piranda
  */
 
-#ifndef OKTENBLOCK_H_
-#define OKTENBLOCK_H_
+#ifndef OKTEENBLOCK_H_
+#define OKTEENBLOCK_H_
 
 #include <stdexcept>
 
 #include "buildingBlock.h"
-#include "oktenBlockCode.h"
-#include "oktenGlBlock.h"
+#include "okteenBlockCode.h"
+#include "okteenGlBlock.h"
 #include "cell3DPosition.h"
 #include "lattice.h"
 #include "utils.h"
 
 using namespace BaseSimulator::utils;
 
-//! \namespace Okten
-namespace Okten {
+//! \namespace Okteen
+namespace Okteen {
 
 /**
     \brief list of rotations around x,y,z axis applied to the initial catom to obtain orientation of indice orientationCode
@@ -45,12 +45,12 @@ const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_
 											 {0.5,-0.5,-M_SQRT2_2},{0.5,0.5,-M_SQRT2_2},{-0.5,0.5,-M_SQRT2_2}};
 
 
-class OktenBlockCode;
+class OkteenBlockCode;
 
-/*! \class OktenBlock
+/*! \class OkteenBlock
     \brief Special treatement and data for 3D quasi-spherical robot
 */
-class OktenBlock : public BaseSimulator::BuildingBlock {
+class OkteenBlock : public BaseSimulator::BuildingBlock {
 public :
 	short orientationCode; //!< number of the connector that is along the x axis.
 public:
@@ -59,11 +59,11 @@ public:
    \param bId: id of the block
    \param bcd : code block function
 */
-	OktenBlock(int bId, BlockCodeBuilder bcb);
-	~OktenBlock();
+	OkteenBlock(int bId, BlockCodeBuilder bcb);
+	~OkteenBlock();
 
-	inline virtual OktenGlBlock* getGlBlock() { return static_cast<OktenGlBlock*>(ptrGlBlock); };
-	inline void setGlBlock(OktenGlBlock*ptr) { ptrGlBlock=ptr;};
+	inline virtual OkteenGlBlock* getGlBlock() { return static_cast<OkteenGlBlock*>(ptrGlBlock); };
+	inline void setGlBlock(OkteenGlBlock*ptr) { ptrGlBlock=ptr;};
 /**
    \brief Get the interface from the neighbor position in the grid
    \param pos: position of the cell (if in the grid)
@@ -119,8 +119,8 @@ public:
 
 };
 
-std::ostream& operator<<(std::ostream &stream, OktenBlock const& bb);
+std::ostream& operator<<(std::ostream &stream, OkteenBlock const& bb);
 
 }
 
-#endif /* OKTENBLOCK_H_ */
+#endif /* OKTEENBLOCK_H_ */

@@ -1,10 +1,10 @@
 #include <iostream>
-#include "oktenSimulator.h"
-#include "oktenBlockCode.h"
+#include "okteenSimulator.h"
+#include "okteenBlockCode.h"
 #include "simpleColorCode.h"
 
 using namespace std;
-using namespace Okten;
+using namespace Okteen;
 
 int main(int argc, char **argv) {
 	createSimulator(argc, argv, SimpleColorCode::buildNewBlockCode);

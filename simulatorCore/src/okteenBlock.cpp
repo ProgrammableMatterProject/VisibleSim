@@ -1,34 +1,34 @@
 /*!
- * \file oktenBlock.cpp
- * \brief okten Block
+ * \file okteenBlock.cpp
+ * \brief okteen Block
  * \date 05/03/2015
  * \author Benoît Piranda
  */
 
 #include <iostream>
-#include "oktenBlock.h"
+#include "okteenBlock.h"
 #include "buildingBlock.h"
-#include "oktenWorld.h"
-#include "oktenSimulator.h"
+#include "okteenWorld.h"
+#include "okteenSimulator.h"
 #include "trace.h"
 
 using namespace std;
 
-//! \namespace Okten
-namespace Okten {
+//! \namespace Okteen
+namespace Okteen {
 
-OktenBlock::OktenBlock(int bId, BlockCodeBuilder bcb)
+OkteenBlock::OkteenBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
-    OUTPUT << "OktenBlock constructor" << endl;
+    OUTPUT << "OkteenBlock constructor" << endl;
 
     orientationCode=0; // connector 0 is along X axis
 }
 
-OktenBlock::~OktenBlock() {
-    OUTPUT << "OktenBlock destructor " << blockId << endl;
+OkteenBlock::~OkteenBlock() {
+    OUTPUT << "OkteenBlock destructor " << blockId << endl;
 }
 
-Matrix OktenBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code) {
+Matrix OkteenBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code) {
     short orientation = code%12;
     short up = code/12;
 
@@ -43,7 +43,7 @@ Matrix OktenBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos
     return M;
 }
 
-void OktenBlock::setPositionAndOrientation(const Cell3DPosition &pos,short code) {
+void OkteenBlock::setPositionAndOrientation(const Cell3DPosition &pos,short code) {
     orientationCode = code;
     position = pos;
 
@@ -52,7 +52,7 @@ void OktenBlock::setPositionAndOrientation(const Cell3DPosition &pos,short code)
     getWorld()->updateGlData(this,position);
 }
 
-short OktenBlock::getOrientationFromMatrix(const Matrix &mat) {
+short OkteenBlock::getOrientationFromMatrix(const Matrix &mat) {
     Vector3D x(1.0,0.0,0.0,0.0); // Vector3D X
     Vector3D v;
     //p = mat*x;
@@ -96,7 +96,7 @@ short OktenBlock::getOrientationFromMatrix(const Matrix &mat) {
     return current;
 }
 
-int OktenBlock::getDirection(P2PNetworkInterface *given_interface) {
+int OkteenBlock::getDirection(P2PNetworkInterface *given_interface) {
     if( !given_interface) {
         return -1;
     }
@@ -106,33 +106,33 @@ int OktenBlock::getDirection(P2PNetworkInterface *given_interface) {
     return -1;
 }
 
-std::ostream& operator<<(std::ostream &stream, OktenBlock const& bb) {
+std::ostream& operator<<(std::ostream &stream, OkteenBlock const& bb) {
     stream << bb.blockId << "\tcolor: " << bb.color;
     return stream;
 }
 
-bool OktenBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
+bool OkteenBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
     Vector3D realPos;
 
-    OktenWorld *wrl = getWorld();
+    OkteenWorld *wrl = getWorld();
     const Vector3D bs = wrl->lattice->gridScale;
 
     realPos.set(tabConnectorPositions[connectorID],3,1);
     realPos.pt[0] *= bs[0];
     realPos.pt[1] *= bs[1];
     realPos.pt[2] *= bs[2];
-    realPos = ((OktenGlBlock*)ptrGlBlock)->mat*realPos;
+    realPos = ((OkteenGlBlock*)ptrGlBlock)->mat*realPos;
     if (realPos[2]<0) return false;
     pos = wrl->lattice->worldToGridPosition(realPos);
     return wrl->lattice->isInGrid(pos);
 }
 
-void OktenBlock::setConnectorLength(short connectorId,float length) {
-    OktenWorld *wrl = getWorld();
+void OkteenBlock::setConnectorLength(short connectorId,float length) {
+    OkteenWorld *wrl = getWorld();
     wrl->updateGlData(this,connectorId,length);
 }
 
-void OktenBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+void OkteenBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
     getScheduler()->schedule(
@@ -140,7 +140,7 @@ void OktenBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
-void OktenBlock::removeNeighbor(P2PNetworkInterface *ni) {
+void OkteenBlock::removeNeighbor(P2PNetworkInterface *ni) {
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
     getScheduler()->schedule(

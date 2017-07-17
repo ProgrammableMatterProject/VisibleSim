@@ -1,16 +1,16 @@
 #ifndef simpleColorCode_H_
 #define simpleColorCode_H_
-#include "oktenBlockCode.h"
+#include "okteenBlockCode.h"
 
 static const int BROADCAST_MSG=1001;
 
-using namespace Okten;
+using namespace Okteen;
 
-class SimpleColorCode : public OktenBlockCode {
+class SimpleColorCode : public OkteenBlockCode {
 private:
     int distance;
 public :
-	SimpleColorCode(OktenBlock *host):OktenBlockCode(host) {};
+	SimpleColorCode(OkteenBlock *host):OkteenBlockCode(host) {};
 	~SimpleColorCode() {};
 
 	void startup();
@@ -19,7 +19,7 @@ public :
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return (new SimpleColorCode((OktenBlock*)host));
+	    return (new SimpleColorCode((OkteenBlock*)host));
 	};
 /*****************************************************************************/
 };

@@ -1,15 +1,15 @@
-#include "oktenGlBlock.h"
+#include "okteenGlBlock.h"
 #include "lattice.h"
 
-namespace Okten {
+namespace Okteen {
 
-OktenGlBlock::OktenGlBlock(bID id):GlBlock(id) {
+OkteenGlBlock::OkteenGlBlock(bID id):GlBlock(id) {
     for (size_t i=0; i<6; i++) {
         tabPosConnectors[i]=0; // min length
     }
 }
 
-void OktenGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
+void OkteenGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
 	mat.glMultMatrix();
 
@@ -28,7 +28,7 @@ void OktenGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPopMatrix();
 }
 
-void OktenGlBlock::glDrawConnectors(ObjLoader::ObjLoader *ptrObj) {
+void OkteenGlBlock::glDrawConnectors(ObjLoader::ObjLoader *ptrObj) {
     const float ampl = 1.47/255.0;
 	glPushMatrix();
 	mat.glMultMatrix();
@@ -71,7 +71,7 @@ void OktenGlBlock::glDrawConnectors(ObjLoader::ObjLoader *ptrObj) {
 	glPopMatrix();
 }
 
-void OktenGlBlock::glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj,int &n) {
+void OkteenGlBlock::glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj,int &n) {
     int m=n;
     const float ampl = 1.47/255.0;
 	glPushMatrix();
@@ -121,14 +121,14 @@ void OktenGlBlock::glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glPopMatrix();
 }
 
-void OktenGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
+void OkteenGlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glPushMatrix();
 	mat.glMultMatrix();
     ptrObj->glDrawId(n);
 	glPopMatrix();
 }
 
-void OktenGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
+void OkteenGlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
 	const float ampl = 1.47/255.0;
 	glPushMatrix();
 	mat.glMultMatrix();

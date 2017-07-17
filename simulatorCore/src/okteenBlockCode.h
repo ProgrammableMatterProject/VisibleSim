@@ -1,31 +1,31 @@
 /*
- * \file oktenBlockCode.h
- * \brief okten Block
+ * \file okteenBlockCode.h
+ * \brief okteen Block
  * \date 12/05/2017
  * \author Benoît Piranda
  */
 
-#ifndef OKTENBLOCKCODE_H_
-#define OKTENBLOCKCODE_H_
+#ifndef OKTEENBLOCKCODE_H_
+#define OKTEENBLOCKCODE_H_
 
 #include <ostream>
 
 #include "blockCode.h"
-#include "oktenBlock.h"
+#include "okteenBlock.h"
 #include "network.h"
 #include "scheduler.h"
 
 using namespace BaseSimulator;
 
-namespace Okten {
+namespace Okteen {
 
-class OktenBlock;
+class OkteenBlock;
 
-class OktenBlockCode : public BaseSimulator::BlockCode {
+class OkteenBlockCode : public BaseSimulator::BlockCode {
 public:
 
-	OktenBlockCode(OktenBlock *host);
-	virtual ~OktenBlockCode();
+	OkteenBlockCode(OkteenBlock *host);
+	virtual ~OkteenBlockCode();
 
 	virtual void processLocalEvent(EventPtr pev);
 	virtual void onMotionEnd() {};
@@ -35,4 +35,4 @@ public:
 
 }
 
-#endif /* OKTENBLOCKCODE_H_ */
+#endif /* OKTEENBLOCKCODE_H_ */

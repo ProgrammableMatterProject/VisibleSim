@@ -27,7 +27,14 @@ Lattice::Lattice(const Cell3DPosition &gsz, const Vector3D &gsc) {
         throw InvalidDimensionsException();
     }
 
-    grid = new BuildingBlock*[gridSize[0] * gridSize[1] * gridSize[2]]{NULL};
+    grid = new BuildingBlock*[gridSize[0] * gridSize[1] * gridSize[2]];
+    // Initializes grid to NULL
+    BuildingBlock **ptr = grid;
+    int i=gridSize[0] * gridSize[1] * gridSize[2];
+    while (i--) {
+        *ptr=NULL;
+        ptr++;
+    }
 
 #ifdef LATTICE_LOG
     cerr << "l.new(gridSize = " << gridSize << ", gridScale = " << gridScale << ")" << endl;
