@@ -11,7 +11,6 @@ Sync::~Sync() {}
 bool Sync::isInternalBorder(int idx) {
     int nTurns = 0;
     Cell3DPosition currentPos = catom->position;
-    cout << "---" << endl;
     nTurns += getNextBorderNeighbor(idx, currentPos);
 
     while(currentPos != catom->position)
@@ -27,7 +26,6 @@ int Sync::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
         Cell3DPosition nextPos = currentPos.addX(cw_order[newIdx].first)
                                           .addY(cw_order[newIdx].second);
         if (BlockCode::target->isInTarget(nextPos)) {
-            cout << nextPos << endl;
             idx = newIdx;
             currentPos = nextPos;
             if (i == 0)
@@ -36,6 +34,8 @@ int Sync::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
                 return -1;
             else if (i == 3)
                 return -2;
+            else
+                return 0;
         }
     }
     return 0;
