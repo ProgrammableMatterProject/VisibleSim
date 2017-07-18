@@ -20,6 +20,7 @@
 #define LEFT_SIDE_COMPLETED_MSG_ID	9005
 #define RIGHT_SIDE_COMPLETED_MSG_ID	9006
 #define PLANE_FINISHED_MSG_ID	9007
+#define PLANE_FINISHED_ACK_MSG_ID	9008
 
 class NeighborMessages
 {
@@ -56,6 +57,7 @@ public:
 
     void trySendMessagePlaneFinished();
     void sendMessagePlaneFinished();
+    void sendMessagePlaneFinishedAck();
 };
 
 class New_catom_message : public Message {
@@ -74,6 +76,8 @@ class New_catom_parent_response_message : public Message {
 public:
     queue<MessagePtr> requestQueue;
     bool createdFromPrevious;
+
+    SyncPlane_node *syncPlaneNodeParent;
     New_catom_parent_response_message() { id = NEW_CATOM_PARENT_RESPONSE_MSG_ID;}
 };
 typedef shared_ptr<New_catom_parent_response_message> New_catom_parent_response_ptr;
@@ -86,6 +90,8 @@ public:
     int numberSeedsLeft, numberSeedsRight;
     SIDE_DIRECTION lineParentDirection;
     queue<MessagePtr> requestQueue;
+
+    SyncPlane_node *syncPlaneNodeParent;
     New_catom_response_message();
 };
 typedef shared_ptr<New_catom_response_message> New_catom_response_ptr;
@@ -107,6 +113,11 @@ typedef shared_ptr<Right_side_completed_message> Right_side_completed_ptr;
 class Plane_finished_message : public Message {
 public:
     Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
+};
+
+class Plane_finished_ack_message : public Message {
+public:
+    Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
 };
 
 #endif /* NEIGHBORMESSAGES_H_ */
