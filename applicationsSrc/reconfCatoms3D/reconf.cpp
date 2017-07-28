@@ -13,6 +13,9 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
     rightCompleted = false;
     createdFromPrevious = true;
     planeFinished = false;
+    planeFinishedAck = false;
+    syncPlaneNodeParent = NULL;
+    syncPlaneNode = NULL;
 }
 
 bool Reconf::isInternalSeedNext()
@@ -166,7 +169,7 @@ void Reconf::setRightCompleted()
 bool Reconf::checkPlaneCompleted()
 {
     if (isHighest()) {
-        catom->setColor(RED);
+        //catom->setColor(RED);
         return true;
     }
     return false;
@@ -174,15 +177,9 @@ bool Reconf::checkPlaneCompleted()
 
 bool Reconf::isHighestOfBorder(int idx) {
     Cell3DPosition currentPos = catom->position;
-    if (catom->blockId == 608) {
-        cout << currentPos << endl;
-    }
     getNextBorderNeighbor(idx, currentPos);
 
     while(currentPos != catom->position) {
-        if (catom->blockId == 608) {
-            cout << currentPos << endl;
-        }
         if (currentPos[1] > catom->position[1] ||
                 (currentPos[1] == catom->position[1] && currentPos[0] > catom->position[0]))
             return false;
@@ -200,10 +197,6 @@ int Reconf::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
         Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
                                           .addY(ccw_order[newIdx].second);
         if (BlockCode::target->isInTarget(nextPos)) {
-            if (catom->blockId == 608) {
-                cout << ">>>" << currentPos << endl;
-                cout << "---" << nextPos << endl;
-            }
             idx = newIdx;
             currentPos = nextPos;
             if (i == 0)

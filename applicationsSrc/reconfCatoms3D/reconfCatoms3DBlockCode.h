@@ -38,10 +38,19 @@ public:
 	void startup();
 	void processLocalEvent(EventPtr pev);
 
+    void syncNextMessage(shared_ptr<Sync_message> recv_message);
+    void syncPreviousMessage(shared_ptr<Sync_message> recv_message);
+    void syncResponse(shared_ptr<Sync_response_message> recv_message);
+    void planeFinishedAck();
+    void tryAddNextPlane();
+    void planeFinished();
+    void setSeedNextPlaneCentralized();
+    void continueOtherSeeds();
+    void removeSeed();
+
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:
     bool cellHasBlock(const Cell3DPosition &pos);
 };
-
 
 #endif /* RECONFCATOMS3DBLOCKCODE_H_ */

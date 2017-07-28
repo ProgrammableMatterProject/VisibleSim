@@ -4,7 +4,7 @@
     <spotlight target="200,200,120" directionSpherical="125,40,1500" angle="30" near="80.0" far="2500.0"/>
     <blockList color="128,128,128" blocksize="1,1,1">
 
-		<block position="16,1,1" orientation="0"/>
+		<block position="19,0,1" orientation="0"/>
 	</blockList>
   <targetList>
     <target format="csg">

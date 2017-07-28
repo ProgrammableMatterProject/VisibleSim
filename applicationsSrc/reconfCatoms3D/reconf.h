@@ -9,7 +9,9 @@
 #define RECONF_H_
 #include <queue>
 #include "catoms3DBlockCode.h"
+#include "catoms3DWorld.h"
 #include "directions.h"
+#include "sync/syncPlaneNode.h"
 
 class Reconf {
     Catoms3D::Catoms3DBlock *catom;
@@ -39,9 +41,13 @@ class Reconf {
 public:
     bool planeParent;
     bool planeFinished;
+    bool planeFinishedAck;
     bool createdFromPrevious;
     queue<MessagePtr> requestQueue;
     SIDE_DIRECTION lineParentDirection;
+
+    SyncPlane_node *syncPlaneNodeParent;
+    SyncPlane_node *syncPlaneNode;
 
     Reconf(Catoms3D::Catoms3DBlock *c);
 

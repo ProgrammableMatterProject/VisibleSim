@@ -1,9 +1,11 @@
 #include <iostream>
 #include "reconfCatoms3DBlockCode.h"
+#include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 5
-#define SYNC_WAIT_TIME 10
+#define CONSTRUCT_WAIT_TIME 0
+#define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
+#define PLANE_WAIT_TIME 100
 
 using namespace std;
 using namespace Catoms3D;
@@ -28,20 +30,36 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 }
 
 void ReconfCatoms3DBlockCode::startup() {
+    if (!BlockCode::target->isInTarget(catom->position)) {
+        catom->setColor(RED);
+    }
+
 	if (neighborhood->isFirstCatomOfPlane()) {
-        if (!BlockCode::target->isInTarget(catom->position)) {
-            catom->setColor(RED);
-        }
         reconf->planeParent = true;
         neighborMessages->init();
+
+        if (catom->blockId == 1) {
+            SyncPlane_node_manager::root->planeNumber = catom->position[2];
+            reconf->syncPlaneNode = SyncPlane_node_manager::root;
+            reconf->syncPlaneNodeParent = SyncPlane_node_manager::root;
+        }
+        else {
+            ReconfCatoms3DBlockCode *neighborBlockCode = (ReconfCatoms3DBlockCode*)Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
+            if (neighborBlockCode != NULL) {
+                reconf->syncPlaneNodeParent = neighborBlockCode->reconf->syncPlaneNode;
+            }
+            else {
+                cout << "error " << catom->blockId << " null" << endl;
+            }
+        }
 	}
-    if (neighborhood->isFirstCatomOfLine()) {
+    else if (neighborhood->isFirstCatomOfLine()) {
         neighborMessages->sendMessageToGetParentInfo();
     }
-    else
+    else {
         neighborMessages->sendMessageToGetLineInfo();
+    }
 
-    //neighborhood->addAllNeighbors();
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
 
@@ -88,85 +106,161 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case SYNCNEXT_MESSAGE_ID:
             {
                 shared_ptr<Sync_message> recv_message = static_pointer_cast<Sync_message>(message);
-                if (catom->position[0] <= recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
-                    syncNext->response(recv_message->origin);
-                }
-                else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
-                {
-                    reconf->requestQueue.push(recv_message);
-                }
-                else if (reconf->needSyncToRightNext()) {
-                    reconf->setSeedNext();
-                    neighborhood->tryAddNeighbors();
-                    neighborhood->tryAddNextLineNeighbor();
-                    reconf->requestQueue.push(recv_message);
-                }
-                else if (reconf->needSyncToRightPrevious()) {
-                    syncNext->response(recv_message->origin);
-                }
-                else {
-                    syncNext->handleMessage(recv_message);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
-                }
+                syncNextMessage(recv_message);
                 break;
             }
             case SYNCPREVIOUS_MESSAGE_ID:
             {
                 shared_ptr<Sync_message> recv_message = static_pointer_cast<Sync_message>(message);
-                if (catom->position[0] >= recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
-                    syncPrevious->response(recv_message->origin);
-                }
-                else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
-                {
-                    reconf->requestQueue.push(recv_message);
-                }
-                else if (reconf->needSyncToRightNext()) {
-                    syncPrevious->response(recv_message->origin);
-                }
-                else if (reconf->needSyncToRightPrevious()) {
-                    reconf->setSeedPrevious();
-                    neighborhood->tryAddNeighbors();
-                    neighborhood->tryAddPreviousLineNeighbor();
-                    reconf->requestQueue.push(recv_message);
-                }
-                else {
-                    syncPrevious->handleMessage(recv_message);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
-                }
+                syncPreviousMessage(recv_message);
                 break;
             }
             case SYNCNEXT_RESPONSE_MESSAGE_ID:
             case SYNCPREVIOUS_RESPONSE_MESSAGE_ID:
             {
                 shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
-                if (recv_message->origin == catom->position) {
-                    neighborhood->addNeighborsWithoutSync();
-                }
-                else {
-                    syncNext->handleMessageResponse(recv_message);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
-                }
+                syncResponse(recv_message);
                 break;
             }
             case PLANE_FINISHED_MSG_ID:
             {
                 if (!reconf->planeFinished) {
-                    if (syncPlane->isSeed()) {
-                        catom->setColor(BLACK);
-                        neighborhood->addNeighborToNextPlane();
-                    }
-                    else if (reconf->planeParent) {
-                        catom->setColor(GREY);
-                        neighborhood->addNeighborToNextPlane();
-                    }
-                    neighborMessages->sendMessagePlaneFinished();
+                    planeFinished();
+
                 }
+                break;
+            }
+            case PLANE_FINISHED_ACK_MSG_ID:
+            {
+                planeFinishedAck();
                 break;
             }
           }
       }
       break;
 	}
+}
+
+void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_message)
+{
+    if (catom->position[0] <= recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
+        syncNext->response(recv_message->origin);
+    }
+    else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
+    {
+        reconf->requestQueue.push(recv_message);
+    }
+    else if (reconf->needSyncToRightNext()) {
+        reconf->setSeedNext();
+        neighborhood->tryAddNeighbors();
+        neighborhood->tryAddNextLineNeighbor();
+        reconf->requestQueue.push(recv_message);
+    }
+    else if (reconf->needSyncToRightPrevious()) {
+        syncNext->response(recv_message->origin);
+    }
+    else {
+        syncNext->handleMessage(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_message)
+{
+    if (catom->position[0] >= recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
+        syncPrevious->response(recv_message->origin);
+    }
+    else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
+    {
+        reconf->requestQueue.push(recv_message);
+    }
+    else if (reconf->needSyncToRightNext()) {
+        syncPrevious->response(recv_message->origin);
+    }
+    else if (reconf->needSyncToRightPrevious()) {
+        reconf->setSeedPrevious();
+        neighborhood->tryAddNeighbors();
+        neighborhood->tryAddPreviousLineNeighbor();
+        reconf->requestQueue.push(recv_message);
+    }
+    else {
+        syncPrevious->handleMessage(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> recv_message)
+{
+    if (recv_message->origin == catom->position) {
+        neighborhood->addNeighborsWithoutSync();
+    }
+    else {
+        syncNext->handleMessageResponse(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::planeFinishedAck()
+{
+    if (!reconf->planeFinishedAck) {
+        tryAddNextPlane();
+        neighborMessages->sendMessagePlaneFinishedAck();
+    }
+}
+void ReconfCatoms3DBlockCode::tryAddNextPlane()
+{
+    if (syncPlane->isSeed()) {
+        if (SyncPlane_node_manager::root->isOk(catom->position[2]+1) == (int)catom->blockId) {
+            neighborhood->addNeighborToNextPlane();
+        }
+        continueOtherSeeds();
+    }
+}
+
+void ReconfCatoms3DBlockCode::continueOtherSeeds()
+{
+    vector<int> v = SyncPlane_node_manager::root->canContinue(catom->position[2]);
+    if (v.size() == 0) {
+        int nextId = SyncPlane_node_manager::root->isOk(catom->position[2]+1);
+        ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(nextId)->blockCode;
+        otherCatom->neighborhood->addNeighborToNextPlane();
+    }
+    else {
+        ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(v[0])->blockCode;
+        otherCatom->neighborhood->addNeighborToNextPlane();
+    }
+}
+
+void ReconfCatoms3DBlockCode::planeFinished()
+{
+    if (syncPlane->isSeed())
+        setSeedNextPlaneCentralized();
+    removeSeed();
+    neighborMessages->sendMessagePlaneFinished();
+
+    if (reconf->planeParent) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_WAIT_TIME));
+        if (reconf->syncPlaneNodeParent != NULL)
+            reconf->syncPlaneNodeParent->setCompleted();
+        planeFinishedAck();
+    }
+}
+
+void ReconfCatoms3DBlockCode::removeSeed()
+{
+    if (!reconf->planeParent) {
+        if (catom->getInterface(catom->position.addZ(-1))->isConnected()) {
+            ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
+            SyncPlane_node_manager::root->remove(otherCatom->reconf->syncPlaneNode, otherCatom->reconf->syncPlaneNodeParent);
+        }
+    }
+}
+
+void ReconfCatoms3DBlockCode::setSeedNextPlaneCentralized()
+{
+    catom->setColor(BLACK);
+    reconf->syncPlaneNode = new SyncPlane_node(catom->blockId, catom->position[2]+1);
+    SyncPlane_node_manager::root->add(reconf->syncPlaneNode, reconf->syncPlaneNodeParent);
 }
 
 BlockCode* ReconfCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {
