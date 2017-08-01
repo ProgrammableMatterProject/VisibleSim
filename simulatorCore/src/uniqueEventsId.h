@@ -67,6 +67,11 @@
 #define EVENT_TRANSLATION_STOP						1110
 #define EVENT_TRANSLATION_STEP						1111
 #define EVENT_TRANSLATION_END						1112
+// Okteen motions
+#define EVENT_OKTEEN_START  					    1113
+#define EVENT_OKTEEN_STOP	    					1114
+#define EVENT_OKTEEN_STEP		    				1115
+#define EVENT_OKTEEN_END			    			1116
 
 
 #endif /* UNIQUEEVENTSID_H_ */

@@ -9,6 +9,14 @@ OkteenGlBlock::OkteenGlBlock(bID id):GlBlock(id) {
     }
 }
 
+void OkteenGlBlock::setPosition(const Vector3D &pos) {
+	position[0] = GLfloat(pos[0]);
+	position[1] = GLfloat(pos[1]);
+	position[2] = GLfloat(pos[2]);
+	mat.setTranslation(pos);
+}
+
+
 void OkteenGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
 	mat.glMultMatrix();

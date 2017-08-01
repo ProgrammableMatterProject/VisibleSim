@@ -22,6 +22,8 @@ public :
 	OkteenGlBlock(bID id);
 	virtual ~OkteenGlBlock() {};
 
+	void setPosition(const Vector3D &p);
+
 	void glDraw(ObjLoader::ObjLoader *ptrObj);
 	void glDrawConnectors(ObjLoader::ObjLoader *ptrObj);
 	void glDrawIdConnectors(ObjLoader::ObjLoader *ptrObj, int &n);

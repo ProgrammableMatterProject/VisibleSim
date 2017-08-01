@@ -59,7 +59,7 @@ void OkteenBlockCode::processLocalEvent(EventPtr pev) {
 			scheduler->trace(info.str(),hostBlock->blockId);
 #endif
             OkteenBlock*c3d = (OkteenBlock*)hostBlock;
-            c3d->setPositionAndOrientation(c3d->position,c3d->orientationCode);
+            c3d->setPosition(c3d->position);
             onMotionEnd();
         }  break;
     }

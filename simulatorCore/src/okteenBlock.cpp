@@ -27,7 +27,7 @@ OkteenBlock::OkteenBlock(int bId, BlockCodeBuilder bcb)
 OkteenBlock::~OkteenBlock() {
     OUTPUT << "OkteenBlock destructor " << blockId << endl;
 }
-
+/*
 Matrix OkteenBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code) {
     short orientation = code%12;
     short up = code/12;
@@ -55,7 +55,6 @@ void OkteenBlock::setPositionAndOrientation(const Cell3DPosition &pos,short code
 short OkteenBlock::getOrientationFromMatrix(const Matrix &mat) {
     Vector3D x(1.0,0.0,0.0,0.0); // Vector3D X
     Vector3D v;
-    //p = mat*x;
     Matrix mat_1;
     mat.inverse(mat_1);
 
@@ -64,13 +63,11 @@ short OkteenBlock::getOrientationFromMatrix(const Matrix &mat) {
     for (int i=0; i<12; i++) {
         x.set(tabConnectorPositions[i],3);
         v = mat*x;
-        //OUTPUT << "connector #" << i << ":" << v << endl;
         if (v[0]>psmax) {
             current=i;
             psmax=v[0];
         }
     }
-    // orientation autour du connecteur
     Matrix M1,M2,M3,M;
     M1.setRotationZ(tabOrientationAngles[current][2]);
     M2.setRotationY(tabOrientationAngles[current][1]);
@@ -79,9 +76,6 @@ short OkteenBlock::getOrientationFromMatrix(const Matrix &mat) {
     M1 = M3*M;
     M1.inverse(M);
     M.m[15]=0;
-    /*OUTPUT << "----- ref -----" << endl;
-    OUTPUT << M << endl;
-    OUTPUT << "----- mat -----" << endl;*/
     M3 = mat;
     //OUTPUT << M3 << endl;
 
@@ -95,7 +89,7 @@ short OkteenBlock::getOrientationFromMatrix(const Matrix &mat) {
     //OUTPUT << "result =" << current << endl;
     return current;
 }
-
+*/
 int OkteenBlock::getDirection(P2PNetworkInterface *given_interface) {
     if( !given_interface) {
         return -1;
@@ -111,19 +105,9 @@ std::ostream& operator<<(std::ostream &stream, OkteenBlock const& bb) {
     return stream;
 }
 
-bool OkteenBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const {
-    Vector3D realPos;
-
+bool OkteenBlock::getNeighborPos(SCLattice::Direction connectorDir,Cell3DPosition &pos) const {
     OkteenWorld *wrl = getWorld();
-    const Vector3D bs = wrl->lattice->gridScale;
-
-    realPos.set(tabConnectorPositions[connectorID],3,1);
-    realPos.pt[0] *= bs[0];
-    realPos.pt[1] *= bs[1];
-    realPos.pt[2] *= bs[2];
-    realPos = ((OkteenGlBlock*)ptrGlBlock)->mat*realPos;
-    if (realPos[2]<0) return false;
-    pos = wrl->lattice->worldToGridPosition(realPos);
+    pos = position+((SCLattice*)(wrl->lattice))->getNeighborRelativePos(connectorDir);
     return wrl->lattice->isInGrid(pos);
 }
 

@@ -453,18 +453,18 @@ class SCLattice : public Lattice3D {
         Cell3DPosition(0,0,-1), // BOTTOM
             Cell3DPosition(0,1,0), // BACK
             Cell3DPosition(1,0,0),  // RIGHT
-            Cell3DPosition(0,-1,0),  // FRONT
             Cell3DPosition(-1,0,0),  // LEFT
+            Cell3DPosition(0,-1,0),  // FRONT
             Cell3DPosition(0,0,1)  // TOP
             }; //!< Vector containing relative position of neighboring cells
     static const string directionName[];
 public:
-    enum Direction { Bottom = 0, Back = 1, Right, Front, Left, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
     virtual int getOppositeDirection(int d);
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(int d);
-
+    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
     /**
      * @brief SCLattice constructor.
      */

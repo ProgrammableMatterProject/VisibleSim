@@ -22,29 +22,6 @@ using namespace BaseSimulator::utils;
 //! \namespace Okteen
 namespace Okteen {
 
-/**
-    \brief list of rotations around x,y,z axis applied to the initial catom to obtain orientation of indice orientationCode
-
-    tabOrientationAngles[oc] : rotations done to transform initial catom to oc oriented catom
-
-*/
-const float tabOrientationAngles[12][3] = { {0,0,0}, {180.0f,0.0f,-90.0f}, {-90.0f,45.0f,-45.0f},
-											{90.0f,45.0f,-135.0f}, {-90.0f,45.0f,135.0f}, {90.0f,45.0f,45.0f},
-											{0,0,180.0f}, {180.0f,0,90.0f}, {90.0f,-45.0f,135.0f},
-											{-90.0f,-45.0f,45.0f}, {90.0f,-45.0f,-45.0f}, {-90.0f,-45.0f,-135.0f} };
-
-/**
-    \brief list of connector positions (x,y,z) in catom local coordinates
-
-    tabConnectorPositions[i] : coordinates of connector #i
-
-*/
-const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_2},
-											 {-0.5,0.5,M_SQRT2_2},{-0.5,-0.5,M_SQRT2_2},{0.5,-0.5,M_SQRT2_2},
-											 {-1,0,0}, {0,-1,0}, {-0.5,-0.5,-M_SQRT2_2},
-											 {0.5,-0.5,-M_SQRT2_2},{0.5,0.5,-M_SQRT2_2},{-0.5,0.5,-M_SQRT2_2}};
-
-
 class OkteenBlockCode;
 
 /*! \class OkteenBlock
@@ -76,10 +53,10 @@ public:
 	inline P2PNetworkInterface *getInterface(int id) const { return P2PNetworkInterfaces[id]; };
 /**
    \brief Get the position of the gridcell in the direction of the given connector
-   \param connectorId: id of connector (0..5)
+   \param connectorDir: direction code of the neighbor (Bottom=0, Back=1, Right=2, Left=3, Front=4, Top=5)
    \param pos: position of the cell (if in the grid)
    \return return true if the cell is in the grid, false otherwise. */
-	bool getNeighborPos(short connectorId,Cell3DPosition &pos) const;
+	bool getNeighborPos(SCLattice::Direction connectorDir,Cell3DPosition &pos) const;
 /**
    \brief Get the direction id for the corresponding interface
    \param p2p: pointer to the interface
@@ -93,19 +70,19 @@ public:
 /**
    \brief Get the orientation code from the transformation matrix of the catom
    \param mat: homogeneous transformation matrix
-   \return return orientation code. */
-	static short getOrientationFromMatrix(const Matrix &mat);
+   \return return orientation code.
+	static short getOrientationFromMatrix(const Matrix &mat);*/
 /**
    \brief Get the transformation matrix of the catom from its position in the grid and its orientation code
    \param pos: position of the cell constaining the catom
    \param code: orientation code (number of the connector aligned with x axis)
-   \return return homogeneous transformation matrix. */
-    static Matrix getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code);
+   \return return homogeneous transformation matrix.
+    static Matrix getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code);*/
 /**
    \brief Set the catom in the grid according to a cell position and an orientation code
    \param pos: position of the cell constaining the catom
-   \param code: orientation code (number of the connector aligned with x axis)*/
-	void setPositionAndOrientation(const Cell3DPosition &pos,short code);
+   \param code: orientation code (number of the connector aligned with x axis)
+	void setPositionAndOrientation(const Cell3DPosition &pos,short code);*/
 
 	// MeldInterpreter
 	/**

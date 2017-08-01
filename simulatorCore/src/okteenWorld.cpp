@@ -70,8 +70,8 @@ void OkteenWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPositi
     tabGlBlocks.push_back(glBlock);
 
     module->setGlBlock(glBlock);
-    module->setPositionAndOrientation(pos,orientation);
     module->setColor(col);
+    module->setPosition(pos);
     lattice->insert(module, pos);
     glBlock->setPosition(lattice->gridToWorldPosition(pos));
     OUTPUT << "ADD #" << blockId << ", "<< pos << endl;
@@ -331,7 +331,7 @@ void OkteenWorld::updateGlData(OkteenBlock*blc, short id, float length) {
     if (glblc) {
 		lock();
 		glblc->tabPosConnectors[id] = (uint8_t)(length*255.0);
-		OUTPUT << "#" << blc->blockId << ":" << id << "=" << (int)glblc->tabPosConnectors[id] << endl;
+		//OUTPUT << "#" << blc->blockId << ":" << id << "=" << (int)glblc->tabPosConnectors[id] << endl;
 		unlock();
     }
 }
@@ -346,38 +346,5 @@ void OkteenWorld::exportConfiguration() {
 	exporter.exportConfiguration();
 }
 
-/*
-  void OkteenWorld::getPresenceMatrix(const PointRel3D &pos,PresenceMatrix &pm) {
-  presence *gpm=pm.grid;
-  OkteenBlock **grb;
 
-  //memset(pm.grid,wall,27*sizeof(presence));
-
-  for (int i=0; i<27; i++) { *gpm++ = wallCell; };
-
-  int ix0 = (pos.x<1)?1-pos.x:0,
-  ix1 = (pos.x>lattice->gridSize[0]-2)?lattice->gridSize[0]-pos.x+1:3,
-  iy0 = (pos.y<1)?1-pos.y:0,
-  iy1 = (pos.y>lattice->gridSize[1]-2)?lattice->gridSize[1]-pos.y+1:3,
-  iz0 = (pos.z<1)?1-pos.z:0,
-  iz1 = (pos.z>lattice->gridSize[2]-2)?lattice->gridSize[2]-pos.z+1:3,
-  ix,iy,iz;
-  for (iz=iz0; iz<iz1; iz++) {
-  for (iy=iy0; iy<iy1; iy++) {
-  gpm = pm.grid+((iz*3+iy)*3+ix0);
-  grb = gridPtrBlocks+(ix0+pos.x-1+(iy+pos.y-1+(iz+pos.z-1)*lattice->gridSize[1])*lattice->gridSize[0]);
-  for (ix=ix0; ix<ix1; ix++) {
-  *gpm++ = (*grb++)?fullCell:emptyCell;
-  }
-  }
-  }
-  }
-
-  void OkteenWorld::initTargetGrid() {
-  if (targetGrid) delete [] targetGrid;
-  int sz = lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2];
-  targetGrid = new presence[lattice->gridSize[0]*lattice->gridSize[1]*lattice->gridSize[2]];
-  memset(targetGrid,emptyCell,sz*sizeof(presence));
-  }
-*/
-} // RobotBlock namespace
+} // Okteen namespace

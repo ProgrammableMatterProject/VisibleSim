@@ -52,7 +52,7 @@ MULTIROBOTS_SRCS = multiRobotsSimulator.cpp multiRobotsBlock.cpp multiRobotsBloc
 MULTIROBOTS_OBJS = $(MULTIROBOTS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 MULTIROBOTS_DEPS = $(MULTIROBOTS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-OKTEEN_SRCS = okteenSimulator.cpp okteenBlock.cpp okteenBlockCode.cpp okteenWorld.cpp okteenGlBlock.cpp
+OKTEEN_SRCS = okteenSimulator.cpp okteenBlock.cpp okteenBlockCode.cpp okteenWorld.cpp okteenGlBlock.cpp okteenEvents.cpp
 OKTEEN_OBJS = $(OKTEEN_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 OKTEEN_DEPS = $(OKTEEN_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
