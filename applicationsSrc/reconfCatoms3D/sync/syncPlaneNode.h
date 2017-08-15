@@ -16,7 +16,7 @@ using namespace std;
 
 class SyncPlane_node {
 private:
-    vector<int> canContinue(vector<int> &vec, int pNumber);
+    int isOkInternal(int pNumber);
 
 public:
     int planeNumber;
@@ -32,8 +32,8 @@ public:
     void setCompleted();
     int isOk(int pNumber);
 
-    // return a list of ids of blocks that can continue
-    vector<int> canContinue(int pNumber);
+    // continue on the next block id or return null
+    int canContinue(int pNumber);
 };
 
 #endif /* SyncPlaneNode.h */

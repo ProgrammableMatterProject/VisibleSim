@@ -34,7 +34,7 @@ void ReconfCatoms3DBlockCode::startup() {
         catom->setColor(RED);
     }
 
-	if (neighborhood->isFirstCatomOfPlane()) {
+    if (neighborhood->isFirstCatomOfPlane()) {
         reconf->planeParent = true;
         neighborMessages->init();
 
@@ -52,7 +52,7 @@ void ReconfCatoms3DBlockCode::startup() {
                 cout << "error " << catom->blockId << " null" << endl;
             }
         }
-	}
+    }
     else if (neighborhood->isFirstCatomOfLine()) {
         neighborMessages->sendMessageToGetParentInfo();
     }
@@ -213,21 +213,23 @@ void ReconfCatoms3DBlockCode::tryAddNextPlane()
         if (SyncPlane_node_manager::root->isOk(catom->position[2]+1) == (int)catom->blockId) {
             neighborhood->addNeighborToNextPlane();
         }
-        continueOtherSeeds();
     }
+    continueOtherSeeds();
 }
 
 void ReconfCatoms3DBlockCode::continueOtherSeeds()
 {
-    vector<int> v = SyncPlane_node_manager::root->canContinue(catom->position[2]);
-    if (v.size() == 0) {
-        int nextId = SyncPlane_node_manager::root->isOk(catom->position[2]+1);
-        ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(nextId)->blockCode;
+    int continueBlockId = SyncPlane_node_manager::root->canContinue(catom->position[2]);
+    if (continueBlockId != 0) {
+        ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(continueBlockId)->blockCode;
         otherCatom->neighborhood->addNeighborToNextPlane();
     }
     else {
-        ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(v[0])->blockCode;
-        otherCatom->neighborhood->addNeighborToNextPlane();
+        int nextId = SyncPlane_node_manager::root->isOk(catom->position[2]+1);
+        if (nextId != 0) {
+            ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(nextId)->blockCode;
+            otherCatom->neighborhood->addNeighborToNextPlane();
+        }
     }
 }
 

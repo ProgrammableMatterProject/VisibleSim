@@ -29,11 +29,11 @@ void SyncPlane_node::remove(SyncPlane_node *node, SyncPlane_node *parent) {
 }
 
 void SyncPlane_node::print() {
-    cout << "BlockId = " << blockId << endl;
+    cout << "BlockId = " << blockId << " completed = " << completed << endl;
     for (int i = 0; i < children.size(); i++) {
-        cout << "and ";
         children[i]->print();
     }
+    cout << "end = " << blockId << endl;
 }
 
 void SyncPlane_node::setCompleted() {
@@ -41,6 +41,13 @@ void SyncPlane_node::setCompleted() {
 }
 
 int SyncPlane_node::isOk(int pNumber) {
+    int result = isOkInternal(pNumber);
+    if (result == INF)
+        return 0;
+    return result;
+}
+
+int SyncPlane_node::isOkInternal(int pNumber) {
     if ((planeNumber < pNumber) && !completed)
         return 0;
     else if (pNumber == planeNumber && !completed)
@@ -48,27 +55,23 @@ int SyncPlane_node::isOk(int pNumber) {
     else {
         int result = INF;
         for (int i = 0; i < children.size(); i++)
-            result = min(result, children[i]->isOk(pNumber));
+            result = min(result, children[i]->isOkInternal(pNumber));
 
         return result;
     }
     return INF;
 }
 
-vector<int> SyncPlane_node::canContinue(int pNumber) {
-    vector<int> vec;
-    return canContinue(vec, pNumber);
-}
-
-// return a list of ids of blocks that can continue
-vector<int> SyncPlane_node::canContinue(vector<int> &vec, int pNumber) {
+int SyncPlane_node::canContinue(int pNumber) {
     if (pNumber == planeNumber && !completed) {
-        vec.push_back(blockId);
+        return blockId;
     }
     else {
         for (int i = 0; i < children.size(); i++) {
-            children[i]->canContinue(vec, pNumber);
+            int blockId = children[i]->canContinue(pNumber);
+            if (blockId != 0)
+                return blockId;
         }
     }
-    return vec;
+    return 0;
 }
