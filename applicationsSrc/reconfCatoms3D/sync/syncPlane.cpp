@@ -24,9 +24,9 @@ int SyncPlane::getIdxForBorder(Cell3DPosition pos) {
         if (!BlockCode::target->isInTarget(pos.addX(-1)))
             return 1;
         if (!BlockCode::target->isInTarget(pos.addX(1)))
-            return 3;
+            return 1;
         if (!BlockCode::target->isInTarget(pos.addY(-1)))
-            return 2;
+            return 0;
         if (!BlockCode::target->isInTarget(pos.addY(1)))
             return 0;
     }

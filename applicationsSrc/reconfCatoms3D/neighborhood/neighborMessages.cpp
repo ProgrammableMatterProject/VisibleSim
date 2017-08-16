@@ -219,7 +219,6 @@ New_catom_response_message::New_catom_response_message()
 
 void NeighborMessages::trySendMessagePlaneFinished()
 {
-    //if (reconf->isLineParent() && reconf->isLineCompleted() && reconf->checkPlaneCompleted()) {
     if (reconf->isLineCompleted() && reconf->checkPlaneCompleted()) {
        sendMessagePlaneFinished();
     }

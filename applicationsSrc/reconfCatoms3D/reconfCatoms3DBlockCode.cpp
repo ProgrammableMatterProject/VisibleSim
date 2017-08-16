@@ -36,7 +36,6 @@ void ReconfCatoms3DBlockCode::startup() {
 
     if (neighborhood->isFirstCatomOfPlane()) {
         reconf->planeParent = true;
-        neighborMessages->init();
 
         if (catom->blockId == 1) {
             SyncPlane_node_manager::root->planeNumber = catom->position[2];
@@ -45,13 +44,9 @@ void ReconfCatoms3DBlockCode::startup() {
         }
         else {
             ReconfCatoms3DBlockCode *neighborBlockCode = (ReconfCatoms3DBlockCode*)Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
-            if (neighborBlockCode != NULL) {
-                reconf->syncPlaneNodeParent = neighborBlockCode->reconf->syncPlaneNode;
-            }
-            else {
-                cout << "error " << catom->blockId << " null" << endl;
-            }
+            reconf->syncPlaneNodeParent = neighborBlockCode->reconf->syncPlaneNode;
         }
+        neighborMessages->init();
     }
     else if (neighborhood->isFirstCatomOfLine()) {
         neighborMessages->sendMessageToGetParentInfo();
