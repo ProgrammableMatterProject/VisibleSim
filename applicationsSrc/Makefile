@@ -1,7 +1,7 @@
 
 # GENERIC BlockCodes
 #SUBDIRS = C3DRotate pong simpleColorOkteen simpleMotion
-SUBDIRS = simpleColorOkteen simpleMotionOkteen
+SUBDIRS = simpleColorOkteen simpleMotionOkteen simpleCatoms3D
 
 # MELD BlockCodes
 #SUBDIRS += meld MRMeld

@@ -9,6 +9,7 @@ using namespace Okteen;
 class SimpleMotionCode : public OkteenBlockCode {
 private:
 	OkteenBlock *module;
+	int step;
 public:
 	SimpleMotionCode(OkteenBlock *host):OkteenBlockCode(host) { module=host; };
 	~SimpleMotionCode() {};

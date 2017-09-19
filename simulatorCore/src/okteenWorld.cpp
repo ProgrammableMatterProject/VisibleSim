@@ -346,5 +346,34 @@ void OkteenWorld::exportConfiguration() {
 	exporter.exportConfiguration();
 }
 
+void OkteenWorld::disconnectBlock(BuildingBlock *block) {
+    P2PNetworkInterface *fromBlock,*toBlock;
+
+    for(int i = 0; i < block->getNbInterfaces(); i++) {
+        fromBlock = block->getInterface(i);
+        if (fromBlock && fromBlock->connectedInterface) {
+            toBlock = fromBlock->connectedInterface;
+
+            // Clear message queue
+            fromBlock->outgoingQueue.clear();
+            toBlock->outgoingQueue.clear();
+
+            // Notify respective codeBlocks
+            block->removeNeighbor(fromBlock);
+            fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
+
+            // Disconnect the interfaces
+            fromBlock->connectedInterface = NULL;
+            toBlock->connectedInterface = NULL;
+        }
+    }
+
+    lattice->remove(block->position);
+
+    OUTPUT << getScheduler()->now() << " : Disconnect Block " << block->blockId <<
+        " pos = " << block->position << endl;
+}
+
+
 
 } // Okteen namespace

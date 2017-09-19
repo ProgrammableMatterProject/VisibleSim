@@ -155,10 +155,12 @@ OkteenMotionsEndEvent::~OkteenMotionsEndEvent() {
 
 void OkteenMotionsEndEvent::consume() {
     EVENT_CONSUME_INFO();
-    BuildingBlock *module = concernedBlock;
-    module->blockCode->processLocalEvent(EventPtr(new OkteenMotionsEndEvent(date+COM_DELAY,module)));
+    OkteenBlockCode *bc = (OkteenBlockCode*)concernedBlock->blockCode;
+
+    //module->blockCode->processLocalEvent(EventPtr(new OkteenMotionsEndEvent(date+COM_DELAY,module)));
+    bc->onMotionEnd();
     StatsCollector::getInstance().incMotionCount();
-    StatsIndividual::incMotionCount(module->stats);
+    StatsIndividual::incMotionCount(concernedBlock->stats);
 }
 
 const string OkteenMotionsEndEvent::getEventName() {

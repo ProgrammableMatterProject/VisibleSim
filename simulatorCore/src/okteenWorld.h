@@ -73,6 +73,8 @@ public:
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
 
+    virtual void disconnectBlock(BuildingBlock *block);
+
 /**
  * \brief load the background textures (internal)
  */
