@@ -9,10 +9,10 @@
   <targetList>
     <target format="csg">
         <csg content="
-            scale([0.2,0.2,0.2]) difference() {
-    cylinder(200,100,100, true);
-    translate([10,0,0]) cylinder(200,60,60, true);
-    translate([70,0,0]) cube([75,75,200], true);
+ difference() {
+    cylinder(40,20,20, true);
+    translate([2,0,0]) cylinder(40,12,12, true);
+    translate([14,0,0]) cube([15,15,40], true);
 }
             "/>
     </target>

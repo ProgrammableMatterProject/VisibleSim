@@ -9,7 +9,7 @@
   <targetList>
     <target format="csg">
         <csg content="
-difference() {
+scale([1,1,1]) difference() {
     cylinder(20,17,17, true);
     translate([10,0,0]) cylinder(20,4,4, true);
     translate([-10,0,0]) cylinder(20,4,4, true);

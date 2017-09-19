@@ -1,0 +1,53 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="210, 210, 210">
+    <camera target="200,200,120" directionSpherical="0,50,650" angle="45" near="0.01" far="2500.0" />
+    <spotlight target="200,200,120" directionSpherical="125,40,1500" angle="30" near="80.0" far="2500.0"/>
+    <blockList color="128,128,128" blocksize="10,10,10">
+
+		<block position="35,0,7" orientation="0"/>
+	</blockList>
+  <targetList>
+    <target format="csg">
+        <csg content="
+union() {
+    difference() {
+        cylinder(20,20,20,true);
+        cylinder(20,7,7,true);
+    }
+    translate([25,8,0])
+        difference () { 
+            cylinder(20,8,8,true);
+            cylinder(20,4,4,true);
+        }
+    translate([27,0,0])
+        cube([5,10,20], true);
+    translate([35,-8,0])
+        difference () { 
+            cylinder(20,8,8,true);
+            cylinder(20,4,4,true);
+        }
+    translate([40,0,0])
+        cube([5,10,20], true);
+    translate([47,8,0])
+        difference () { 
+            cylinder(20,8,8,true);
+            cylinder(20,4,4,true);
+        }
+    translate([52,0,0])
+        cube([5,10,20], true);
+    translate([59,-8,0])
+        difference () { 
+            cylinder(20,8,8,true);
+            cylinder(20,4,4,true);
+        }
+    translate([76,10,0])
+        cube([20,40,20], true);
+    translate([25,35,0])
+        cube([110,20,20], true);
+    translate([-25,10,0])
+        cube([20,40,20], true);
+}
+            "/>
+    </target>
+  </targetList>
+</world>
