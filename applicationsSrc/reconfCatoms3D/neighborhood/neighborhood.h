@@ -22,15 +22,17 @@ private:
     SyncPrevious *syncPrevious;
     BlockCodeBuilder blockCodeBuilder;
 
-    void addNeighbor(Cell3DPosition pos);
+    bool addNeighbor(Cell3DPosition pos);
     void addNeighborToLeft();
     void addNeighborToRight();
 
 public:
+    static int numberBlockedModules;
     Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb);
 
     void addNeighborsWithoutSync();
     void addAllNeighbors();
+    bool addFirstNeighbor();
 
     void tryAddNextLineNeighbor();
     void tryAddPreviousLineNeighbor();

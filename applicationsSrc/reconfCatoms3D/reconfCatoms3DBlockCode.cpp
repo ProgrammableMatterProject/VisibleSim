@@ -2,10 +2,10 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 0
-#define SYNC_WAIT_TIME 0
-#define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
-#define PLANE_WAIT_TIME 100
+#define CONSTRUCT_WAIT_TIME 00
+#define SYNC_WAIT_TIME 00 
+#define SYNC_RESPONSE_TIME SYNC_WAIT_TIME 00
+#define PLANE_WAIT_TIME 0
 
 using namespace std;
 using namespace Catoms3D;
@@ -20,6 +20,7 @@ ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBl
     syncPlane = new SyncPlane(catom, reconf);
     neighborhood = new Neighborhood(catom, reconf, syncNext, syncPrevious, buildNewBlockCode);
     neighborMessages = new NeighborMessages(catom, reconf, neighborhood, syncNext, syncPrevious, syncPlane);
+    syncPlaneManager = new SyncPlaneManager(catom, reconf, syncPlane, neighborhood, neighborMessages);
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
@@ -34,6 +35,13 @@ void ReconfCatoms3DBlockCode::startup() {
         catom->setColor(RED);
     }
 
+    planningRun();
+    //stochasticRun();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
+}
+
+void ReconfCatoms3DBlockCode::planningRun() {
     if (neighborhood->isFirstCatomOfPlane()) {
         reconf->planeParent = true;
 
@@ -47,6 +55,9 @@ void ReconfCatoms3DBlockCode::startup() {
             reconf->syncPlaneNodeParent = neighborBlockCode->reconf->syncPlaneNode;
         }
         neighborMessages->init();
+        //if (reconf->checkPlaneCompleted()) {
+            //syncPlaneManager->planeFinished();
+        //}
     }
     else if (neighborhood->isFirstCatomOfLine()) {
         neighborMessages->sendMessageToGetParentInfo();
@@ -54,10 +65,16 @@ void ReconfCatoms3DBlockCode::startup() {
     else {
         neighborMessages->sendMessageToGetLineInfo();
     }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
-
+void ReconfCatoms3DBlockCode::stochasticRun() {
+    //if (catom->blockId == 1)
+        //srand(time(NULL));
+    for (int i = 0; i < 100000; i++) {
+        ReconfCatoms3DBlockCode *catom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(rand()%Catoms3D::getWorld()->getSize() + 1)->blockCode;
+        if (catom->neighborhood->addFirstNeighbor())
+            break;
+    }
+}
 void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 	MessagePtr message;
 	stringstream info;
@@ -91,11 +108,17 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case LEFT_SIDE_COMPLETED_MSG_ID:
             {
                 neighborMessages->handleLeftSideCompletedMsg(message);
+                if (reconf->checkPlaneCompleted()) {
+                   syncPlaneManager->planeFinished();
+                }
                 break;
             }
             case RIGHT_SIDE_COMPLETED_MSG_ID:
             {
                 neighborMessages->handleRightSideCompletedMsg(message);
+                if (reconf->checkPlaneCompleted()) {
+                   syncPlaneManager->planeFinished();
+                }
                 break;
             }
             case SYNCNEXT_MESSAGE_ID:
@@ -120,14 +143,15 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case PLANE_FINISHED_MSG_ID:
             {
                 if (!reconf->planeFinished) {
-                    planeFinished();
-
+                    syncPlaneManager->planeFinished();
+                    removeSeed();
                 }
                 break;
             }
             case PLANE_FINISHED_ACK_MSG_ID:
             {
-                planeFinishedAck();
+                syncPlaneManager->planeFinishedAck();
+                continueOtherSeeds();
                 break;
             }
           }
@@ -195,23 +219,6 @@ void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> rec
     }
 }
 
-void ReconfCatoms3DBlockCode::planeFinishedAck()
-{
-    if (!reconf->planeFinishedAck) {
-        tryAddNextPlane();
-        neighborMessages->sendMessagePlaneFinishedAck();
-    }
-}
-void ReconfCatoms3DBlockCode::tryAddNextPlane()
-{
-    if (syncPlane->isSeed()) {
-        if (SyncPlane_node_manager::root->isOk(catom->position[2]+1) == (int)catom->blockId) {
-            neighborhood->addNeighborToNextPlane();
-        }
-    }
-    continueOtherSeeds();
-}
-
 void ReconfCatoms3DBlockCode::continueOtherSeeds()
 {
     int continueBlockId = SyncPlane_node_manager::root->canContinue(catom->position[2]);
@@ -228,21 +235,6 @@ void ReconfCatoms3DBlockCode::continueOtherSeeds()
     }
 }
 
-void ReconfCatoms3DBlockCode::planeFinished()
-{
-    if (syncPlane->isSeed())
-        setSeedNextPlaneCentralized();
-    removeSeed();
-    neighborMessages->sendMessagePlaneFinished();
-
-    if (reconf->planeParent) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_WAIT_TIME));
-        if (reconf->syncPlaneNodeParent != NULL)
-            reconf->syncPlaneNodeParent->setCompleted();
-        planeFinishedAck();
-    }
-}
-
 void ReconfCatoms3DBlockCode::removeSeed()
 {
     if (!reconf->planeParent) {
@@ -251,13 +243,6 @@ void ReconfCatoms3DBlockCode::removeSeed()
             SyncPlane_node_manager::root->remove(otherCatom->reconf->syncPlaneNode, otherCatom->reconf->syncPlaneNodeParent);
         }
     }
-}
-
-void ReconfCatoms3DBlockCode::setSeedNextPlaneCentralized()
-{
-    catom->setColor(BLACK);
-    reconf->syncPlaneNode = new SyncPlane_node(catom->blockId, catom->position[2]+1);
-    SyncPlane_node_manager::root->add(reconf->syncPlaneNode, reconf->syncPlaneNodeParent);
 }
 
 BlockCode* ReconfCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {

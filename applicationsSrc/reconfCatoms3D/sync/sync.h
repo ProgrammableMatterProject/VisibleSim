@@ -27,6 +27,8 @@ protected:
     vector<pair<int, int>> cw_order = {{0,-1}, {-1,0}, {0,1}, {1,0}};
 
 public:
+    static int nMessagesSync;
+    static int nMessagesSyncResponse;
     Sync(Catoms3D::Catoms3DBlock *c, Reconf *r);
     virtual ~Sync();
 

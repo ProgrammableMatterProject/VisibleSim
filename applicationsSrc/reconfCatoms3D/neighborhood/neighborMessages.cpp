@@ -1,6 +1,9 @@
 #include "neighborMessages.h"
 
-#define MSG_TIME 0
+#define MSG_TIME 000
+
+int NeighborMessages::nMessagesGetInfo = 0;
+int NeighborMessages::nMessagesBorderMessage = 0;
 
 NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighborhood *n, SyncNext *sn, SyncPrevious *sp, SyncPlane *sPlane)
 {
@@ -21,7 +24,7 @@ void NeighborMessages::init()
     neighborhood->tryAddNeighbors();
     neighborhood->tryAddNextLineNeighbor();
     neighborhood->tryAddPreviousLineNeighbor();
-    trySendMessagePlaneFinished();
+    //trySendMessagePlaneFinished();
 }
 
 void NeighborMessages::checkLineParent() {
@@ -55,10 +58,10 @@ void NeighborMessages::handleNewCatomMsg(MessagePtr message)
     msgResponse->lineParentDirection = recv_message->lineParentDirection;
 
     msgResponse->leftCompleted = reconf->isLeftCompleted();
-    msgResponse->numberSeedsLeft = reconf->getNumberSeedsLeft() + reconf->isSeedNext();
+    msgResponse->numberSeedsLeft = 0;//reconf->getNumberSeedsLeft() + reconf->isSeedNext();
 
     msgResponse->rightCompleted = reconf->isRightCompleted();
-    msgResponse->numberSeedsRight = reconf->getNumberSeedsRight() + reconf->isSeedNext();
+    msgResponse->numberSeedsRight = 0;//reconf->getNumberSeedsRight() + reconf->isSeedNext();
 
     msgResponse->requestQueue = reconf->requestQueue;
     msgResponse->createdFromPrevious = reconf->createdFromPrevious;
@@ -66,6 +69,7 @@ void NeighborMessages::handleNewCatomMsg(MessagePtr message)
     msgResponse->syncPlaneNodeParent = reconf->syncPlaneNodeParent;
 
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
+    nMessagesGetInfo++;
 }
 
 void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
@@ -82,6 +86,7 @@ void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
 
     msgResponse->syncPlaneNodeParent = reconf->syncPlaneNodeParent;
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
+    nMessagesGetInfo++;
 }
 
 void NeighborMessages::handleNewCatomParentResponseMsg(MessagePtr message)
@@ -173,7 +178,10 @@ void NeighborMessages::sendMessageToGetLineInfo()
             msg->lineParentDirection = TO_LEFT;
         else
             msg->lineParentDirection = TO_RIGHT;
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
+        if (catom->getInterface(neighborPosition)->isConnected()) {
+            getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
+            nMessagesGetInfo++;
+        }
     }
 }
 
@@ -185,11 +193,13 @@ void NeighborMessages::sendMessageToGetParentInfo()
     neighborPosition = catom->position.addY(1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
+        nMessagesGetInfo++;
     }
 
     neighborPosition = catom->position.addY(-1);
     if (catom->getInterface(neighborPosition)->isConnected()) {
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(neighborPosition)));
+        nMessagesGetInfo++;
     }
 }
 
@@ -199,7 +209,10 @@ void NeighborMessages::sendMessageLeftSideCompleted(int numberSeedsLeft, bool is
     Cell3DPosition positionLeft = catom->position.addX(1);
 
     Left_side_completed_message *msg = new Left_side_completed_message(newNumberSeedsLeft);
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(positionLeft)));
+    if (catom->getInterface(positionLeft)->isConnected()) {
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(positionLeft)));
+        nMessagesBorderMessage++;
+    }
 }
 
 void NeighborMessages::sendMessageRightSideCompleted(int numberSeedsRight, bool isSeed)
@@ -207,7 +220,10 @@ void NeighborMessages::sendMessageRightSideCompleted(int numberSeedsRight, bool 
     int newNumberSeedsRight = numberSeedsRight + isSeed;
     Cell3DPosition positionRight = catom->position.addX(-1);
     Right_side_completed_message *msg = new Right_side_completed_message(newNumberSeedsRight);
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(positionRight)));
+    if (catom->getInterface(positionRight)->isConnected()) {
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(positionRight)));
+        nMessagesBorderMessage++;
+    }
 }
 
 New_catom_response_message::New_catom_response_message()
@@ -219,7 +235,7 @@ New_catom_response_message::New_catom_response_message()
 
 void NeighborMessages::trySendMessagePlaneFinished()
 {
-    if (reconf->isLineCompleted() && reconf->checkPlaneCompleted()) {
+    if (reconf->checkPlaneCompleted()) {
        sendMessagePlaneFinished();
     }
 }

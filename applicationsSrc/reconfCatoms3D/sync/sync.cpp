@@ -1,5 +1,8 @@
 #include "sync.h"
 
+int Sync::nMessagesSync = 0;
+int Sync::nMessagesSyncResponse = 0;
+
 Sync::Sync(Catoms3D::Catoms3DBlock *c, Reconf *r) {
     this->catom = c;
     this->reconf = r;

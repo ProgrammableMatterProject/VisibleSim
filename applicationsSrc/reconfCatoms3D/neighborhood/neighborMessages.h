@@ -36,6 +36,9 @@ private:
     void sendMessageLeftSideCompleted(int numberSeedsLeft, bool isSeed);
 
 public:
+    static int nMessagesGetInfo;
+    static int nMessagesBorderMessage;
+
     NeighborMessages(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, Neighborhood *n, SyncNext *sn, SyncPrevious *sp, SyncPlane *sPlane);
 
     void init();

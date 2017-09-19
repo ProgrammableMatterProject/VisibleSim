@@ -18,8 +18,11 @@ class SyncPlane {
 private:
     int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos);
     bool isLowestOfBorder(Cell3DPosition pos);
+    bool isLowestOfBorderNext(Cell3DPosition pos);
     bool isOnBorder(Cell3DPosition pos);
     int getIdxForBorder(Cell3DPosition pos);
+    bool hasAllNeighbors(Cell3DPosition);
+    Cell3DPosition getCurrentBorderForNextPlane();
 
 protected:
     Catoms3D::Catoms3DBlock *catom;
@@ -30,6 +33,9 @@ public:
     ~SyncPlane();
 
     bool isSeed();
+    bool couldBeSeed(Cell3DPosition);
+    bool isSeedBorder(Cell3DPosition);
+    bool isSeedBorderNextPlane(Cell3DPosition);
     void sendMessageCanConstructNextPlane();
 };
 

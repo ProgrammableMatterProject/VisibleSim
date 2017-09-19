@@ -2,6 +2,8 @@
 #include "neighborRestriction.h"
 #include "catoms3DWorld.h"
 
+int Neighborhood::numberBlockedModules = 0;
+
 Neighborhood::Neighborhood(Catoms3D::Catoms3DBlock *c, Reconf *r, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb)
 {
     catom = c;
@@ -23,14 +25,14 @@ void Neighborhood::addNeighborToRight()
 
 void Neighborhood::addNeighborToNextPlane()
 {
-    if (BlockCode::target->isInTarget(catom->position.addZ(1)))
-        addNeighbor(catom->position.addZ(1));
+    //if (BlockCode::target->isInTarget(catom->position.addZ(1)))
+        //addNeighbor(catom->position.addZ(1));
 }
 
 void Neighborhood::addNeighborToPreviousPlane()
 {
-    if (BlockCode::target->isInTarget(catom->position.addZ(-1)))
-        addNeighbor(catom->position.addZ(-1));
+    //if (BlockCode::target->isInTarget(catom->position.addZ(-1)))
+        //addNeighbor(catom->position.addZ(-1));
 }
 
 bool Neighborhood::isOnLeftBorder()
@@ -151,20 +153,44 @@ void Neighborhood::addAllNeighbors()
     }
 }
 
-void Neighborhood::addNeighbor(Cell3DPosition pos)
+bool Neighborhood::addFirstNeighbor()
+{
+    for (int i = 0; i < 12; i++) {
+        Cell3DPosition neighborGridPos = catom->position;
+        int *neighborPosPointer = (catom->position[2]%2) ? NeighborRestriction::neighborDirectionsOdd[i] : NeighborRestriction::neighborDirectionsEven[i];
+
+        neighborGridPos.pt[0] += neighborPosPointer[0];
+        neighborGridPos.pt[1] += neighborPosPointer[1];
+        neighborGridPos.pt[2] += neighborPosPointer[2];
+        //if (neighborGridPos[2] != catom->position[2])
+            //continue;
+        if (addNeighbor(neighborGridPos))
+            return true;
+    }
+    return false;
+}
+
+bool Neighborhood::addNeighbor(Cell3DPosition pos)
 {
     Catoms3D::Catoms3DWorld *world = Catoms3D::Catoms3DWorld::getWorld();
     NeighborRestriction neighbors;
     if (world->lattice->isFree(pos) && BlockCode::target->isInTarget(pos)) {
         if (neighbors.isPositionBlockable(pos))
-            world->addBlock(0, blockCodeBuilder, pos, WHITE, 0, false);
+            world->addBlock(0, blockCodeBuilder, pos, LIGHTGREY, 0, false);
         else if (neighbors.isPositionBlocked(pos)) {
             world->addBlock(0, blockCodeBuilder, pos, RED, 0, false);
+            numberBlockedModules++;
+            cout << "number of blocked modules = " << numberBlockedModules << endl;
             cout << "---- ERROR ----\nPosition " << pos << " blocked" << endl;
+
+            //std::this_thread::sleep_for(std::chrono::milliseconds(100000));
         }
         else {
-            world->addBlock(0, blockCodeBuilder, pos, WHITE, 0, false);
+            world->addBlock(0, blockCodeBuilder, pos, LIGHTGREY, 0, false);
+            //std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
         world->linkBlock(pos);
+        return true;
     }
+    return false;
 }

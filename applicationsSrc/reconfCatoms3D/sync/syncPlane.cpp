@@ -1,6 +1,8 @@
 #include "syncPlane.h"
 #include "catoms3DWorld.h"
 
+#define DEBUG 1
+
 SyncPlane_node *SyncPlane_node_manager::root = new SyncPlane_node(1, 0);
 
 SyncPlane::SyncPlane(Catoms3D::Catoms3DBlock *c, Reconf *r) {
@@ -19,43 +21,163 @@ bool SyncPlane::isOnBorder(Cell3DPosition pos)
     return false;
 }
 
-int SyncPlane::getIdxForBorder(Cell3DPosition pos) {
-    if (isOnBorder(pos)  && BlockCode::target->isInTarget(pos)) {
-        if (!BlockCode::target->isInTarget(pos.addX(-1)))
-            return 1;
-        if (!BlockCode::target->isInTarget(pos.addX(1)))
-            return 1;
-        if (!BlockCode::target->isInTarget(pos.addY(-1)))
-            return 0;
-        if (!BlockCode::target->isInTarget(pos.addY(1)))
-            return 0;
+bool debugPosition(Cell3DPosition pos) {
+    cout << "debug position " << pos << " ";
+    if (BlockCode::target->isInTarget(pos.addY(1)))
+        cout << "hasNorth ";
+    if (BlockCode::target->isInTarget(pos.addX(1)))
+        cout << "hasRight ";
+    if (BlockCode::target->isInTarget(pos.addY(-1)))
+        cout << "hasLeft ";
+    if (BlockCode::target->isInTarget(pos.addX(-1)))
+        cout << "hasSouth ";
+    cout << endl;
+}
+
+Cell3DPosition SyncPlane::getCurrentBorderForNextPlane()
+{
+    Cell3DPosition currentPos = catom->position;
+    int idx = getIdxForBorder(currentPos);
+    getNextBorderNeighbor(idx, currentPos);
+    while (currentPos != catom->position) {
+        Cell3DPosition nextPlanePos = currentPos.addZ(1);
+        if (BlockCode::target->isInTarget(nextPlanePos) &&
+                isOnBorder(nextPlanePos))
+            return currentPos;
+        getNextBorderNeighbor(idx, currentPos);
     }
-    return 0;
+    return currentPos;
 }
 
 bool SyncPlane::isSeed()
 {
-    Cell3DPosition posNext = catom->position.addZ(1);
-    Cell3DPosition pos = catom->position;
-    if (isOnBorder(pos) && isLowestOfBorder(pos) && BlockCode::target->isInTarget(posNext))
+    if (catom->blockId == 2748)
+        cout << "for id 2748 the next plane is " << BlockCode::target->isInTarget(catom->position.addZ(1)) << endl;
+    if (catom->blockId == 2744)
+        cout << "for id 2744 the next plane is " << BlockCode::target->isInTarget(catom->position.addZ(1)) << endl;
+    // To avoid line cases
+    if (couldBeSeed(catom->position.addX(-1)) || couldBeSeed(catom->position.addY(-1)))
+        return false;
+
+    if (isSeedBorderNextPlane(catom->position.addZ(1))) {
         return true;
-    if (isOnBorder(posNext))
-        return isLowestOfBorder(posNext);
+    }
+
+    int debugID = 9999;
+    if (isSeedBorder(catom->position)) {
+        Cell3DPosition initialPos = getCurrentBorderForNextPlane().addZ(1);
+        Cell3DPosition currentPos = initialPos;
+        int idx = getIdxForBorder(currentPos);
+        if (catom->blockId == debugID) {
+            cout << "looping on " << catom->position << endl;
+            cout << "idx = " << idx << endl;
+            debugPosition(currentPos);
+        }
+        getNextBorderNeighbor(idx, currentPos);
+        while (currentPos != initialPos) {
+            if (catom->blockId == debugID) {
+                cout << "-" << currentPos << endl;
+            }
+            if (isSeedBorderNextPlane(currentPos) && BlockCode::target->isInTarget(currentPos.addZ(-1)))
+                return false;
+            getNextBorderNeighbor(idx, currentPos);
+        }
+        return true;
+    }
     return false;
 }
 
+bool SyncPlane::couldBeSeed(Cell3DPosition pos)
+{
+    if (BlockCode::target->isInTarget(pos) && BlockCode::target->isInTarget(pos.addZ(1)))
+        if (isOnBorder(pos) || isOnBorder(pos.addZ(1)))
+            return true;
+    return false;
+}
+
+bool SyncPlane::isSeedBorder(Cell3DPosition pos)
+{
+    if (BlockCode::target->isInTarget(pos.addZ(1)) && isOnBorder(pos) && isLowestOfBorder(pos) )
+        return true;
+}
+
+bool SyncPlane::isSeedBorderNextPlane(Cell3DPosition pos)
+{
+    if (BlockCode::target->isInTarget(pos) && isOnBorder(pos) && isLowestOfBorderNext(pos))
+        return true;
+}
+
+bool SyncPlane::isLowestOfBorderNext(Cell3DPosition pos) {
+    int nTurns = 0;
+    int idx = getIdxForBorder(pos);
+    Cell3DPosition currentPos = pos;
+    int debugID = 1529;
+    if (DEBUG) {
+       if (catom->blockId == debugID) {
+           cout << "starting next " << currentPos << endl;
+           cout << BlockCode::target->isInTarget(catom->position) << " -> " << catom->position << endl;
+           debugPosition(currentPos);
+       }
+    }
+    nTurns += getNextBorderNeighbor(idx, currentPos);
+    while(currentPos != pos) {
+        if (DEBUG) {
+           if (catom->blockId == debugID) {
+               cout << currentPos << endl;
+           }
+        }
+        if ((currentPos[1] < pos[1] ||
+                (currentPos[1] == pos[1] && currentPos[0] < pos[0])) && Catoms3D::getWorld()->getBlockByPosition(currentPos.addZ(-1)) != NULL)
+        {
+            if (DEBUG)
+               if (catom->blockId == debugID)
+                    cout << "false" << endl;
+            return false;
+
+        }
+        nTurns += getNextBorderNeighbor(idx, currentPos);
+    }
+    if (DEBUG) {
+       if (catom->blockId == debugID) {
+           cout << "true"  << currentPos << endl;
+       }
+    }
+    return true;
+}
 
 bool SyncPlane::isLowestOfBorder(Cell3DPosition pos) {
     int nTurns = 0;
     int idx = getIdxForBorder(pos);
     Cell3DPosition currentPos = pos;
+    int debugID = 1529;
+    if (DEBUG) {
+       if (catom->blockId == debugID) {
+           cout << "starting " << currentPos << endl;
+       }
+    }
     nTurns += getNextBorderNeighbor(idx, currentPos);
-
     while(currentPos != pos) {
-        if (currentPos[1] < pos[1] ||
-                (currentPos[1] == pos[1] && currentPos[0] < pos[0]))
+        if (DEBUG) {
+           if (catom->blockId == debugID) {
+               cout << currentPos << endl;
+               //Catoms3D::Catoms3DBlockCode* otherCatom = (Catoms3D::Catoms3DBlockCode*)Catoms3D::getWorld()->getBlockByPosition(currentPos)->blockCode;
+               //otherCatom->hostBlock->setColor(BLUE);
+               std::this_thread::sleep_for(std::chrono::milliseconds(100));
+           }
+        }
+        if ((currentPos[1] < pos[1] ||
+                (currentPos[1] == pos[1] && currentPos[0] < pos[0])) && BlockCode::target->isInTarget(currentPos.addZ(1))) {
+            if (DEBUG)
+               if (catom->blockId == debugID)
+                    cout << "false" << endl;
             return false;
+        }
         nTurns += getNextBorderNeighbor(idx, currentPos);
+    }
+    if (DEBUG) {
+       if (catom->blockId == debugID) {
+           cout << "true" << endl;
+       }
     }
     return true;
 }
@@ -64,7 +186,10 @@ int SyncPlane::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
     vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
     int newIdx;
     for (int i = 0; i < 4; i++) {
-        newIdx = (((idx+i-1)%4)+4)%4;
+        //if (hasAllNeighbors(currentPos))
+            //newIdx = idx;
+        //else
+            newIdx = (((idx+i-1)%4)+4)%4;
         Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
                                           .addY(ccw_order[newIdx].second);
         if (BlockCode::target->isInTarget(nextPos)) {
@@ -82,9 +207,102 @@ int SyncPlane::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
     return 0;
 }
 
+bool SyncPlane::hasAllNeighbors(Cell3DPosition pos)
+{
+    if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+        return true;
+    return false;
+}
 void SyncPlane::sendMessageCanConstructNextPlane()
 {
     SyncPlane_message *msg = new SyncPlane_message(catom->position[2]);
     P2PNetworkInterface *interface = catom->getInterface(catom->position.addZ(-1));
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + 100, msg, interface));
+}
+
+int SyncPlane::getIdxForBorder(Cell3DPosition pos) {
+    if (isOnBorder(pos)  && BlockCode::target->isInTarget(pos)) {
+        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 0;
+        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            !BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 3;
+        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            !BlockCode::target->isInTarget(pos.addX(1)))
+            return 2;
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 1;
+        // 2 empty neighbors
+        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            !BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 3;
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 0;
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            !BlockCode::target->isInTarget(pos.addX(1)))
+            return 1;
+        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            !BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            !BlockCode::target->isInTarget(pos.addX(1)))
+            return 2;
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            !BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 0;
+        // critical case?
+        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            !BlockCode::target->isInTarget(pos.addX(1)))
+            return 2;
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 1;
+        // 3 empty neighbors
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            !BlockCode::target->isInTarget(pos.addX(1)))
+            return 0;
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            !BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            BlockCode::target->isInTarget(pos.addX(1)))
+            return 3;
+        if (BlockCode::target->isInTarget(pos.addY(-1)) &&
+            !BlockCode::target->isInTarget(pos.addY(1)) &&
+            !BlockCode::target->isInTarget(pos.addX(-1)) &&
+            !BlockCode::target->isInTarget(pos.addX(1)))
+            return 2;
+        if (!BlockCode::target->isInTarget(pos.addY(-1)) &&
+            !BlockCode::target->isInTarget(pos.addY(1)) &&
+            BlockCode::target->isInTarget(pos.addX(-1)) &&
+            !BlockCode::target->isInTarget(pos.addX(1)))
+            return 1;
+    }
+    return 0;
 }

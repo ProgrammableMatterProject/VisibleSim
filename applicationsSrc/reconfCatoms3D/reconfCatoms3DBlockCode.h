@@ -16,6 +16,7 @@
 #include "sync/syncNext.h"
 #include "sync/syncPrevious.h"
 #include "sync/syncPlane.h"
+#include "sync/syncPlaneManager.h"
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
@@ -31,12 +32,16 @@ public:
     SyncNext *syncNext;
     SyncPrevious *syncPrevious;
     SyncPlane *syncPlane;
+    SyncPlaneManager *syncPlaneManager;
 
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
+
+    void planningRun();
+    void stochasticRun();
 
     void syncNextMessage(shared_ptr<Sync_message> recv_message);
     void syncPreviousMessage(shared_ptr<Sync_message> recv_message);

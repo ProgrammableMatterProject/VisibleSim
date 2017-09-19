@@ -70,16 +70,16 @@ bool Reconf::isBorderSeedPrevious()
 bool Reconf::isSeedNext()
 {
     seedNext = seedNext || ((isInternalSeedNext() || isBorderSeedNext()) && !needSyncToRightNext());
-    if (seedNext)
-        catom->setColor(LIGHTBLUE);
+    //if (seedNext)
+        //catom->setColor(LIGHTBLUE);
     return seedNext;
 }
 
 bool Reconf::isSeedPrevious()
 {
     seedPrevious = seedPrevious || ((isInternalSeedPrevious() || isBorderSeedPrevious()) && !needSyncToRightPrevious());
-    if (seedPrevious)
-        catom->setColor(YELLOW);
+    //if (seedPrevious)
+        //catom->setColor(YELLOW);
     return seedPrevious;
 }
 
@@ -168,7 +168,7 @@ void Reconf::setRightCompleted()
 
 bool Reconf::checkPlaneCompleted()
 {
-    if (isHighest()) {
+    if (isLineCompleted() && isHighest()) {
         //catom->setColor(RED);
         return true;
     }

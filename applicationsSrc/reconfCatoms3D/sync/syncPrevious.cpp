@@ -23,6 +23,7 @@ void SyncPrevious::handleMessage(shared_ptr<Message> message) {
         if (p2p->isConnected()) {
             SyncPrevious_message *msg = new SyncPrevious_message(idx, syncMsg->goal, syncMsg->origin);
             getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, p2p));
+            nMessagesSync++;
             break;
         }
     }
@@ -39,6 +40,7 @@ void SyncPrevious::handleMessageResponse(shared_ptr<Message> message) {
         if (p2p->isConnected()) {
             SyncPrevious_response_message *msg = new SyncPrevious_response_message(idx, syncMsg->origin);
             getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, p2p));
+            nMessagesSyncResponse++;
             break;
         }
     }
