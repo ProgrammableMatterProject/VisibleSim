@@ -149,7 +149,10 @@ bool Reconf::needSyncToLeftPrevious()
 
 bool Reconf::needSync()
 {
-    return needSyncToLeftPrevious() || needSyncToRightPrevious();
+    bool needSync = needSyncToLeftPrevious() || needSyncToRightPrevious();
+    if (needSync)
+        catom->setColor(RED);
+    return needSync;
 }
 
 void Reconf::setLeftCompleted()

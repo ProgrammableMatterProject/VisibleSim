@@ -105,6 +105,7 @@ void Neighborhood::tryAddNeighbors()
     if (reconf->needSyncToLeftNext()) {
         if (syncNext->isInternalBorder(1)) {
             syncNext->sync();
+            catom->setColor(RED);
         }
         else {
             addNeighborToLeft();
@@ -122,6 +123,7 @@ void Neighborhood::tryAddNeighbors()
     }
     else if (reconf->needSyncToRightNext()) {
         addNeighborToLeft();
+        catom->setColor(RED);
     }
     else if (reconf->needSyncToRightPrevious()) {
         addNeighborToRight();

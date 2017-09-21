@@ -3,8 +3,8 @@
 #include "catoms3DWorld.h"
 
 #define CONSTRUCT_WAIT_TIME 00
-#define SYNC_WAIT_TIME 00 
-#define SYNC_RESPONSE_TIME SYNC_WAIT_TIME 00
+#define SYNC_WAIT_TIME 100000
+#define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
 
 using namespace std;
@@ -34,6 +34,7 @@ void ReconfCatoms3DBlockCode::startup() {
     if (!BlockCode::target->isInTarget(catom->position)) {
         catom->setColor(RED);
     }
+    catom->setColor(LIGHTGREY);
 
     planningRun();
     //stochasticRun();
@@ -162,7 +163,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 
 void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_message)
 {
-    if (catom->position[0] <= recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
+    if (catom->position[0] == recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
         syncNext->response(recv_message->origin);
     }
     else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
@@ -186,7 +187,7 @@ void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_mess
 
 void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_message)
 {
-    if (catom->position[0] >= recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
+    if (catom->position[0] == recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
         syncPrevious->response(recv_message->origin);
     }
     else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
@@ -215,7 +216,7 @@ void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> rec
     }
     else {
         syncNext->handleMessageResponse(recv_message);
-        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_RESPONSE_TIME));
     }
 }
 
