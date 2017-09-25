@@ -39,6 +39,8 @@ public:
     void addNeighborToLeft();
     void addNeighborToRight();
 
+    void tryAddNeighborToLeft();
+    void tryAddNeighborToRight();
     void tryAddNextLineNeighbor();
     void tryAddPreviousLineNeighbor();
     void tryAddNeighbors();
@@ -54,6 +56,8 @@ public:
     void canFill();
     void sendMessageToAddLeft();
     void sendMessageToAddRight();
+    void sendResponseMessageToAddLeft();
+    void sendResponseMessageToAddRight();
 };
 
 class CanFillLeft_message : public Message {

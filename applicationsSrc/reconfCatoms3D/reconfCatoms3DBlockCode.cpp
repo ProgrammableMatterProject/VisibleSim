@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 50
+#define CONSTRUCT_WAIT_TIME 10
 #define SYNC_WAIT_TIME 100
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -99,14 +99,12 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 neighborMessages->handleNewCatomResponseMsg(message);
                 neighborMessages->init();
-                //neighborhood->canFill();
                 break;
             }
             case NEW_CATOM_PARENT_RESPONSE_MSG_ID:
             {
                 neighborMessages->handleNewCatomParentResponseMsg(message);
                 neighborMessages->init();
-                //neighborhood->canFill();
                 break;
             }
             case LEFT_SIDE_COMPLETED_MSG_ID:
@@ -160,27 +158,23 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case CANFILLLEFT_MESSAGE_ID:
             {
-                if (BlockCode::target->isInTarget(catom->position.addX(-1)) &&
-                        catom->getInterface(catom->position.addX(-1))->connectedInterface != NULL) {
-                    CanFillLeftResponse_message *msg = new CanFillLeftResponse_message();
-                    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
-                }
+                neighborhood->sendResponseMessageToAddLeft();
+                break;
             }
             case CANFILLLEFTRESPONSE_MESSAGE_ID:
             {
-                neighborhood->addNeighborToLeft();
+                neighborhood->tryAddNeighborToLeft();
+                break;
             }
             case CANFILLRIGHT_MESSAGE_ID:
             {
-                if (BlockCode::target->isInTarget(catom->position.addX(1)) &&
-                        catom->getInterface(catom->position.addX(1))->connectedInterface != NULL) {
-                    CanFillRightResponse_message *msg = new CanFillRightResponse_message();
-                    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
-                }
+                neighborhood->sendResponseMessageToAddRight();
+                break;
             }
             case CANFILLRIGHTRESPONSE_MESSAGE_ID:
             {
-                //neighborhood->addNeighborToRight();
+                neighborhood->tryAddNeighborToRight();
+                break;
             }
           }
       }

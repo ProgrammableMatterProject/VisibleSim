@@ -22,8 +22,8 @@ void NeighborMessages::init()
     checkAndSendRightBorderMessage();
 
     neighborhood->tryAddNeighbors();
-    neighborhood->tryAddNextLineNeighbor();
-    neighborhood->tryAddPreviousLineNeighbor();
+    //neighborhood->tryAddNextLineNeighbor();
+    //neighborhood->tryAddPreviousLineNeighbor();
     //trySendMessagePlaneFinished();
 }
 
@@ -70,6 +70,9 @@ void NeighborMessages::handleNewCatomMsg(MessagePtr message)
 
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
+
+    neighborhood->sendResponseMessageToAddLeft();
+    neighborhood->sendResponseMessageToAddRight();
 }
 
 void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
@@ -87,7 +90,7 @@ void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
     msgResponse->syncPlaneNodeParent = reconf->syncPlaneNodeParent;
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
-    neighborhood->canFill();
+    //neighborhood->canFill();
 }
 
 void NeighborMessages::handleNewCatomParentResponseMsg(MessagePtr message)

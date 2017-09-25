@@ -108,29 +108,46 @@ void Neighborhood::tryAddNeighbors()
         syncNext->isInternalBorder(1)) {
         syncNext->sync();
         catom->setColor(RED);
-        addNeighborToRight();
+        //addNeighborToRight();
     }
     else if (reconf->needSyncToLeftPrevious()) {
         if (syncPrevious->isInternalBorder(3)) {
             syncPrevious->sync();
         }
         else {
-            addNeighborToRight();
+            //addNeighborToRight();
         }
-        addNeighborToLeft();
+        //addNeighborToLeft();
     }
     else if (reconf->needSyncToRightNext()) {
-        addNeighborToLeft();
+        //addNeighborToLeft();
         catom->setColor(RED);
     }
     else if (reconf->needSyncToRightPrevious()) {
-        addNeighborToRight();
+        //addNeighborToRight();
     }
     else {
         //addNeighborToLeft();
         //addNeighborToRight();
         canFill();
     }
+}
+
+void Neighborhood::tryAddNeighborToLeft()
+{
+    if (reconf->needSyncToLeftNext() &&
+        syncNext->isInternalBorder(1)) {
+        syncNext->sync();
+        catom->setColor(RED);
+    }
+    else {
+        addNeighborToLeft();
+    }
+}
+void Neighborhood::tryAddNeighborToRight()
+{
+    if (!reconf->needSyncToRightNext())
+        addNeighborToRight();
 }
 
 void Neighborhood::addNeighborsWithoutSync()
@@ -204,13 +221,13 @@ void Neighborhood::canFill()
     }
 
     if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1))) {
-        addNeighborToLeft();
+        tryAddNeighborToLeft();
     }
     else
         sendMessageToAddLeft();
 
     if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(1))) {
-        addNeighborToRight();
+        tryAddNeighborToRight();
     }
     else
         sendMessageToAddRight();
@@ -231,5 +248,21 @@ void Neighborhood::sendMessageToAddRight() {
             && BlockCode::target->isInTarget(catom->position.addY(-1).addX(1))) {
         CanFillRight_message *msg2 = new CanFillRight_message();
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg2, catom->getInterface(catom->position.addY(-1))));
+    }
+}
+
+void Neighborhood::sendResponseMessageToAddLeft() {
+    if (BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+            catom->getInterface(catom->position.addX(-1))->connectedInterface != NULL) {
+        CanFillLeftResponse_message *msg = new CanFillLeftResponse_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
+    }
+}
+
+void Neighborhood::sendResponseMessageToAddRight() {
+    if (BlockCode::target->isInTarget(catom->position.addX(1)) &&
+            catom->getInterface(catom->position.addX(1))->connectedInterface != NULL) {
+        CanFillRightResponse_message *msg = new CanFillRightResponse_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
     }
 }
