@@ -52,6 +52,7 @@ public:
     void setSeedNextPlaneCentralized();
     void continueOtherSeeds();
     void removeSeed();
+    void canFill();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:

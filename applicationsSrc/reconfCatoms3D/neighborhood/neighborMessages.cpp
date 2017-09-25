@@ -87,6 +87,7 @@ void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
     msgResponse->syncPlaneNodeParent = reconf->syncPlaneNodeParent;
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
+    neighborhood->canFill();
 }
 
 void NeighborMessages::handleNewCatomParentResponseMsg(MessagePtr message)

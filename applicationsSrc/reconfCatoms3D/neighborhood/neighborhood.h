@@ -8,6 +8,11 @@
 #ifndef NEIGHBOR_H_
 #define NEIGHBOR_H_
 
+#define CANFILLLEFT_MESSAGE_ID 12001
+#define CANFILLLEFTRESPONSE_MESSAGE_ID 12002
+#define CANFILLRIGHT_MESSAGE_ID 12003
+#define CANFILLRIGHTRESPONSE_MESSAGE_ID 12004
+
 #include "cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
@@ -23,8 +28,6 @@ private:
     BlockCodeBuilder blockCodeBuilder;
 
     bool addNeighbor(Cell3DPosition pos);
-    void addNeighborToLeft();
-    void addNeighborToRight();
 
 public:
     static int numberBlockedModules;
@@ -33,6 +36,8 @@ public:
     void addNeighborsWithoutSync();
     void addAllNeighbors();
     bool addFirstNeighbor();
+    void addNeighborToLeft();
+    void addNeighborToRight();
 
     void tryAddNextLineNeighbor();
     void tryAddPreviousLineNeighbor();
@@ -45,6 +50,38 @@ public:
 
     void addNeighborToNextPlane();
     void addNeighborToPreviousPlane();
+
+    void canFill();
+    void sendMessageToAddLeft();
+    void sendMessageToAddRight();
+};
+
+class CanFillLeft_message : public Message {
+public:
+    CanFillLeft_message() {
+        this->id = CANFILLLEFT_MESSAGE_ID;
+    }
+};
+
+class CanFillLeftResponse_message : public Message {
+public:
+    CanFillLeftResponse_message() {
+        this->id = CANFILLLEFTRESPONSE_MESSAGE_ID;
+    }
+};
+
+class CanFillRight_message : public Message {
+public:
+    CanFillRight_message() {
+        this->id = CANFILLRIGHT_MESSAGE_ID;
+    }
+};
+
+class CanFillRightResponse_message : public Message {
+public:
+    CanFillRightResponse_message() {
+        this->id = CANFILLRIGHTRESPONSE_MESSAGE_ID;
+    }
 };
 
 #endif /* NEIGHBORHOOD_H_ */

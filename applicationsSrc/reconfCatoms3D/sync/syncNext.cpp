@@ -13,7 +13,7 @@ void SyncNext::response(Cell3DPosition origin) {
 }
 
 void SyncNext::handleMessage(shared_ptr<Message> message) {
-    //catom->setColor(BLUE);
+    catom->setColor(BLUE);
     shared_ptr<SyncNext_message> syncMsg = static_pointer_cast<SyncNext_message>(message);
     for (int i = 0; i < 4; i++) {
         int idx = (((syncMsg->idx+i-1)%4)+4)%4;
@@ -30,7 +30,7 @@ void SyncNext::handleMessage(shared_ptr<Message> message) {
 }
 
 void SyncNext::handleMessageResponse(shared_ptr<Message> message) {
-    //catom->setColor(GREEN);
+    catom->setColor(GREEN);
     shared_ptr<SyncNext_response_message> syncMsg = static_pointer_cast<SyncNext_response_message>(message);
     for (int i = 0; i < 4; i++) {
         int idx = (((syncMsg->idx+i-1)%4)+4)%4;
