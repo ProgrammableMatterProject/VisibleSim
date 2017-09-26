@@ -46,8 +46,6 @@ public:
     void sendMessageToGetLineInfo();
     void sendMessageToGetParentInfo();
 
-    void checkAndSendLeftBorderMessage();
-    void checkAndSendRightBorderMessage();
     void checkLineParent();
 
     void handleNewCatomMsg(MessagePtr msg);
@@ -55,8 +53,6 @@ public:
     void handleNewCatomResponseMsg(MessagePtr msg);
     void handleNewCatomParentResponseMsg(MessagePtr msg);
     void handleParentSeedMsg(MessagePtr msg);
-    void handleLeftSideCompletedMsg(MessagePtr msg);
-    void handleRightSideCompletedMsg(MessagePtr msg);
 
     void trySendMessagePlaneFinished();
     void sendMessagePlaneFinished();

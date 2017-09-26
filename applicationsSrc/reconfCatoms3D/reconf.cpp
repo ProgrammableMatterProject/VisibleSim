@@ -3,15 +3,8 @@
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
-    numberSeedsLeft = 0;
-    numberSeedsRight = 0;
-    lineCompleted = false;
-    lineParent = false;
     seedNext = false;
     seedPrevious = false;
-    leftCompleted = false;
-    rightCompleted = false;
-    createdFromPrevious = true;
     planeFinished = false;
     planeFinishedAck = false;
     syncPlaneNodeParent = NULL;
@@ -127,7 +120,7 @@ bool Reconf::needSyncToRightPrevious()
 
 bool Reconf::needSyncToLeftNext()
 {
-    if (createdFromPrevious &&
+    if (//createdFromPrevious &&
         catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
         !BlockCode::target->isInTarget(catom->position.addY(-1)) &&
         BlockCode::target->isInTarget(catom->position.addX(-1)) &&
@@ -138,7 +131,7 @@ bool Reconf::needSyncToLeftNext()
 
 bool Reconf::needSyncToLeftPrevious()
 {
-    if (!createdFromPrevious &&
+    if (//!createdFromPrevious &&
         catom->getInterface(catom->position.addX(1))->connectedInterface == NULL &&
         !BlockCode::target->isInTarget(catom->position.addY(1)) &&
         BlockCode::target->isInTarget(catom->position.addX(1)) &&
@@ -155,23 +148,9 @@ bool Reconf::needSync()
     return needSync;
 }
 
-void Reconf::setLeftCompleted()
-{
-    leftCompleted = true;
-    if (leftCompleted && rightCompleted)
-        setLineCompleted();
-}
-
-void Reconf::setRightCompleted()
-{
-    rightCompleted = true;
-    if (leftCompleted && rightCompleted)
-        setLineCompleted();
-}
-
 bool Reconf::checkPlaneCompleted()
 {
-    if (isLineCompleted() && isHighest()) {
+    if (isHighest()) {
         //catom->setColor(RED);
         return true;
     }

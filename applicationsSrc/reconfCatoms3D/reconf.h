@@ -16,18 +16,10 @@
 class Reconf {
     Catoms3D::Catoms3DBlock *catom;
 
-    int numberSeedsLeft;
-    int numberSeedsRight;
-
     bool lineParent;
-    bool lineCompleted;
 
     bool seedNext;
     bool seedPrevious;
-
-    bool leftCompleted;
-    bool rightCompleted;
-
 
     bool isInternalSeedNext();
     bool isInternalSeedPrevious();
@@ -64,23 +56,8 @@ public:
     bool isLineParent() { return lineParent; }
     void setLineParent() { lineParent = true; }
 
-    int getNumberSeedsLeft() { return numberSeedsLeft; }
-    void setNumberSeedsLeft(int nSeeds) { numberSeedsLeft = nSeeds; }
-
-    int getNumberSeedsRight() { return numberSeedsRight; }
-    void setNumberSeedsRight(int nSeeds) { numberSeedsRight = nSeeds; }
-
-    void setLineCompleted() { lineCompleted = true; }
-    bool isLineCompleted() { return lineCompleted; }
-
     void setSeedNext() { seedNext = true; };
     void setSeedPrevious() { seedPrevious = true; };
-
-    void setLeftCompleted();
-    bool isLeftCompleted() { return leftCompleted; }
-
-    void setRightCompleted();
-    bool isRightCompleted() { return rightCompleted; }
 
     bool checkPlaneCompleted();
 

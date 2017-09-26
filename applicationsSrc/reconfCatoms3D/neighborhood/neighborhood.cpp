@@ -40,7 +40,6 @@ void Neighborhood::addNeighborToPreviousPlane()
 bool Neighborhood::isOnLeftBorder()
 {
     if (!BlockCode::target->isInTarget(catom->position.addX(-1))) {
-        reconf->setLeftCompleted();
         return true;
     }
     return false;
@@ -49,7 +48,6 @@ bool Neighborhood::isOnLeftBorder()
 bool Neighborhood::isOnRightBorder()
 {
     if (!BlockCode::target->isInTarget(catom->position.addX(1))) {
-        reconf->setRightCompleted();
         return true;
     }
     return false;
@@ -96,9 +94,7 @@ void Neighborhood::tryAddPreviousLineNeighbor()
     }
 
     if  (reconf->isSeedPrevious()) {
-        if (reconf->isLineCompleted()) { //|| reconf->createdFromPrevious) {
-            addNeighbor(catom->position.addY(-1));
-        }
+        addNeighbor(catom->position.addY(-1));
     }
 }
 
@@ -228,7 +224,6 @@ void Neighborhood::canFill()
 void Neighborhood::addEventAddNextLineNeighbor() {
     AddNextLine_event *evt = new AddNextLine_event(getScheduler()->now()+MSG_TIME, catom);
     getScheduler()->schedule(evt);
-    //getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position)));
 }
 
 void Neighborhood::sendMessageToAddLeft() {
