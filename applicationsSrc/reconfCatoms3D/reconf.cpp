@@ -78,8 +78,7 @@ bool Reconf::isSeedPrevious()
 
 bool Reconf::needSyncToRightNext()
 {
-    if (createdFromPrevious &&
-        !BlockCode::target->isInTarget(catom->position.addX(1)) &&
+    if (!BlockCode::target->isInTarget(catom->position.addX(1)) &&
         BlockCode::target->isInTarget(catom->position.addX(1).addY(1)))
     {
         BoundingBox bb;
@@ -99,8 +98,7 @@ bool Reconf::needSyncToRightNext()
 
 bool Reconf::needSyncToRightPrevious()
 {
-    if (!createdFromPrevious &&
-        !BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+    if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
         BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)))
     {
         BoundingBox bb;

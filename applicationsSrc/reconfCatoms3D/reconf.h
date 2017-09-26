@@ -34,9 +34,6 @@ public:
     bool planeParent;
     bool planeFinished;
     bool planeFinishedAck;
-    bool createdFromPrevious;
-    queue<MessagePtr> requestQueue;
-    SIDE_DIRECTION lineParentDirection;
 
     SyncPlane_node *syncPlaneNodeParent;
     SyncPlane_node *syncPlaneNode;

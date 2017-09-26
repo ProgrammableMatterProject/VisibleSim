@@ -44,8 +44,8 @@ void ReconfCatoms3DBlockCode::startup() {
 }
 
 void ReconfCatoms3DBlockCode::planningRun() {
-    if (catom->blockId == 1)
-        srand(time(NULL));
+    //if (catom->blockId == 1)
+        //srand(time(NULL));
 
     if (neighborhood->isFirstCatomOfPlane()) {
         reconf->planeParent = true;
