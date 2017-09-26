@@ -2,7 +2,7 @@
 #include "neighborRestriction.h"
 #include "catoms3DWorld.h"
 
-#define MSG_TIME 100
+#define MSG_TIME rand()%10000
 
 int Neighborhood::numberBlockedModules = 0;
 
@@ -108,27 +108,20 @@ void Neighborhood::tryAddNeighbors()
         syncNext->isInternalBorder(1)) {
         syncNext->sync();
         catom->setColor(RED);
-        //addNeighborToRight();
     }
     else if (reconf->needSyncToLeftPrevious()) {
         if (syncPrevious->isInternalBorder(3)) {
             syncPrevious->sync();
         }
-        else {
-            //addNeighborToRight();
-        }
-        //addNeighborToLeft();
     }
     else if (reconf->needSyncToRightNext()) {
-        //addNeighborToLeft();
+        syncNext->response(catom->position.addX(1).addY(1));
         catom->setColor(RED);
     }
     else if (reconf->needSyncToRightPrevious()) {
         //addNeighborToRight();
     }
     else {
-        //addNeighborToLeft();
-        //addNeighborToRight();
         canFill();
     }
 }
@@ -215,22 +208,27 @@ bool Neighborhood::addNeighbor(Cell3DPosition pos)
 
 void Neighborhood::canFill()
 {
+    // fill to next line
     if (reconf->isSeedNext())
-    {
-        tryAddNextLineNeighbor();
-    }
+        addEventAddNextLineNeighbor();
 
-    if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1))) {
+    // fill to left
+    if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1)))
         tryAddNeighborToLeft();
-    }
     else
         sendMessageToAddLeft();
 
-    if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(1))) {
+    // fill to right
+    if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(1)))
         tryAddNeighborToRight();
-    }
     else
         sendMessageToAddRight();
+}
+
+void Neighborhood::addEventAddNextLineNeighbor() {
+    AddNextLine_event *evt = new AddNextLine_event(getScheduler()->now()+MSG_TIME, catom);
+    getScheduler()->schedule(evt);
+    //getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position)));
 }
 
 void Neighborhood::sendMessageToAddLeft() {

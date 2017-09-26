@@ -8,6 +8,7 @@
 #ifndef NEIGHBOR_H_
 #define NEIGHBOR_H_
 
+#define ADDNEXTLINE_EVENT_ID 12000
 #define CANFILLLEFT_MESSAGE_ID 12001
 #define CANFILLLEFTRESPONSE_MESSAGE_ID 12002
 #define CANFILLRIGHT_MESSAGE_ID 12003
@@ -54,10 +55,27 @@ public:
     void addNeighborToPreviousPlane();
 
     void canFill();
+    void addEventAddNextLineNeighbor();
     void sendMessageToAddLeft();
     void sendMessageToAddRight();
     void sendResponseMessageToAddLeft();
     void sendResponseMessageToAddRight();
+};
+
+class AddNextLine_event : public BlockEvent {
+public:
+    AddNextLine_event(Time t, BaseSimulator::BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
+        eventType = ADDNEXTLINE_EVENT_ID;
+    }
+    AddNextLine_event(AddNextLine_event *conBlock) : BlockEvent(conBlock) {
+    }
+
+    void consumeBlockEvent() {
+        concernedBlock->scheduleLocalEvent(EventPtr(new AddNextLine_event(this)));
+    }
+
+    const string getEventName() { return "ADD NEXT LINE BLOCK EVENT"; }
+
 };
 
 class CanFillLeft_message : public Message {

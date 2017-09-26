@@ -2,11 +2,11 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 10
-#define SYNC_WAIT_TIME 100
+#define CONSTRUCT_WAIT_TIME 20
+#define SYNC_WAIT_TIME 10
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
-#define MSG_TIME 100
+#define MSG_TIME 10
 
 using namespace std;
 using namespace Catoms3D;
@@ -44,6 +44,9 @@ void ReconfCatoms3DBlockCode::startup() {
 }
 
 void ReconfCatoms3DBlockCode::planningRun() {
+    if (catom->blockId == 1)
+        srand(time(NULL));
+
     if (neighborhood->isFirstCatomOfPlane()) {
         reconf->planeParent = true;
 
@@ -69,8 +72,6 @@ void ReconfCatoms3DBlockCode::planningRun() {
     }
 }
 void ReconfCatoms3DBlockCode::stochasticRun() {
-    //if (catom->blockId == 1)
-        //srand(time(NULL));
     for (int i = 0; i < 100000; i++) {
         ReconfCatoms3DBlockCode *catom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(rand()%Catoms3D::getWorld()->getSize() + 1)->blockCode;
         if (catom->neighborhood->addFirstNeighbor())
@@ -176,9 +177,16 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 neighborhood->tryAddNeighborToRight();
                 break;
             }
+            case ADDNEXTLINE_EVENT_ID:
+            {
+            }
           }
       }
       break;
+    case ADDNEXTLINE_EVENT_ID: {
+        neighborhood->tryAddNextLineNeighbor();
+        break;
+    }
 	}
 }
 
