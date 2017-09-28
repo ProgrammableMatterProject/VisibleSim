@@ -13,6 +13,8 @@
 #include "directions.h"
 #include "sync/syncPlaneNode.h"
 
+class MessageQueue;
+
 class Reconf {
     Catoms3D::Catoms3DBlock *catom;
 
@@ -30,6 +32,7 @@ class Reconf {
     int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos);
     bool isOnBorder();
     bool isHighest();
+
 public:
     bool planeParent;
     bool planeFinished;
@@ -37,6 +40,8 @@ public:
 
     SyncPlane_node *syncPlaneNodeParent;
     SyncPlane_node *syncPlaneNode;
+
+    vector<MessageQueue> messageQueue;
 
     Reconf(Catoms3D::Catoms3DBlock *c);
 
@@ -58,6 +63,14 @@ public:
 
     bool checkPlaneCompleted();
 
+    void addMessageOnQueue(MessageQueue mQueue);
+};
+
+class MessageQueue {
+public:
+    Cell3DPosition destination;
+    Message* message;
+    MessageQueue(Cell3DPosition dest, Message *msg) : destination(dest), message(msg) {}
 };
 
 #endif /* RECONF_H_ */

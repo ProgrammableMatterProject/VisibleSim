@@ -20,6 +20,8 @@ void SyncPrevious::handleMessage(shared_ptr<Message> message) {
         Cell3DPosition pos = catom->position.addX(ccw_order[idx].first)
                                             .addY(ccw_order[idx].second);
         P2PNetworkInterface *p2p = catom->getInterface(pos);
+        if (BlockCode::target->isInTarget(pos) && !p2p->isConnected())
+            break;
         if (p2p->isConnected()) {
             SyncPrevious_message *msg = new SyncPrevious_message(idx, syncMsg->goal, syncMsg->origin);
             getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, p2p));

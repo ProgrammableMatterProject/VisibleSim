@@ -8,11 +8,12 @@
 #ifndef NEIGHBOR_H_
 #define NEIGHBOR_H_
 
-#define ADDNEXTLINE_EVENT_ID 12000
 #define CANFILLLEFT_MESSAGE_ID 12001
 #define CANFILLLEFTRESPONSE_MESSAGE_ID 12002
 #define CANFILLRIGHT_MESSAGE_ID 12003
 #define CANFILLRIGHTRESPONSE_MESSAGE_ID 12004
+#define ADDNEXTLINE_EVENT_ID 12005
+#define ADDPREVIOUSLINE_EVENT_ID 12006
 
 #include "cell3DPosition.h"
 #include "directions.h"
@@ -39,12 +40,13 @@ public:
     bool addFirstNeighbor();
     void addNeighborToLeft();
     void addNeighborToRight();
+    void addNextLineNeighbor();
+    void addPreviousLineNeighbor();
 
     void tryAddNeighborToLeft();
     void tryAddNeighborToRight();
-    void tryAddNextLineNeighbor();
-    void tryAddPreviousLineNeighbor();
     void tryAddNeighbors();
+    void checkSyncAndTryAddNeighbors();
 
     bool isOnLeftBorder();
     bool isOnRightBorder();
@@ -56,6 +58,7 @@ public:
 
     void canFill();
     void addEventAddNextLineNeighbor();
+    void addEventAddPreviousLineNeighbor();
     void sendMessageToAddLeft();
     void sendMessageToAddRight();
     void sendResponseMessageToAddLeft();
@@ -75,7 +78,21 @@ public:
     }
 
     const string getEventName() { return "ADD NEXT LINE BLOCK EVENT"; }
+};
 
+class AddPreviousLine_event : public BlockEvent {
+public:
+    AddPreviousLine_event(Time t, BaseSimulator::BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
+        eventType = ADDPREVIOUSLINE_EVENT_ID;
+    }
+    AddPreviousLine_event(AddPreviousLine_event *conBlock) : BlockEvent(conBlock) {
+    }
+
+    void consumeBlockEvent() {
+        concernedBlock->scheduleLocalEvent(EventPtr(new AddPreviousLine_event(this)));
+    }
+
+    const string getEventName() { return "ADD PREVIOUS LINE BLOCK EVENT"; }
 };
 
 class CanFillLeft_message : public Message {

@@ -16,7 +16,6 @@ union() {
         cylinder(20,5,5, true);
     }
     translate([0,-2,0]) cube([3,8,20], true);
-    translate([12,0,0]) cube([8,8,20], true);
 }
             "/>
     </target>
