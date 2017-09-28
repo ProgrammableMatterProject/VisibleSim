@@ -156,8 +156,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case CANFILLRIGHTRESPONSE_MESSAGE_ID:
             {
-                if (catom->blockId == 492)
-                    cout << "huehue" << endl;
                 neighborhood->addNeighborToRight();
                 break;
             }
