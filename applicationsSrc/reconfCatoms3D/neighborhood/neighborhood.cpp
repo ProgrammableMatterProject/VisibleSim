@@ -89,18 +89,18 @@ void Neighborhood::checkSyncAndTryAddNeighbors()
         syncNext->sync();
         catom->setColor(RED);
     }
-    else if (reconf->needSyncToLeftPrevious() &&
-             syncPrevious->isInternalBorder(3)) {
-        syncPrevious->sync();
-    }
+    //else if (reconf->needSyncToLeftPrevious() &&
+             //syncPrevious->isInternalBorder(3)) {
+        //syncPrevious->sync();
+    //}
     else if (reconf->needSyncToRightNext() &&
             syncNext->isInternalBorder(1)) {
         //syncNext->response(catom->position.addX(1).addY(1));
         catom->setColor(RED);
     }
-    else if (reconf->needSyncToRightPrevious()) {
+    //else if (reconf->needSyncToRightPrevious()) {
         //syncPrevious->response(catom->position.addX(1).addY(-1));
-    }
+    //}
     else {
         tryAddNeighbors();
     }
@@ -238,26 +238,10 @@ void Neighborhood::sendMessageToAddLeft() {
         return;
     }
 
-    //if (catom->getInterface(catom->position.addY(1))->isConnected()
-            //&& BlockCode::target->isInTarget(catom->position.addY(1).addX(-1))) {
-        //CanFillLeft_message *msg = new CanFillLeft_message();
-        //getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
-        //return;
-    //}
-
     addNeighborToLeft();
 }
 
 void Neighborhood::sendMessageToAddRight() {
-    //if (catom->getInterface(catom->position.addY(-1))->isConnected()
-            //&& BlockCode::target->isInTarget(catom->position.addY(-1).addX(1))) {
-        //if (catom->blockId == 553)
-            //cout << "huehue2" << endl;
-        //CanFillRight_message *msg = new CanFillRight_message();
-        //getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(-1))));
-        //return;
-    //}
-
     if (catom->getInterface(catom->position.addY(1))->isConnected()
             && BlockCode::target->isInTarget(catom->position.addY(1).addX(1))) {
         CanFillRight_message *msg = new CanFillRight_message();

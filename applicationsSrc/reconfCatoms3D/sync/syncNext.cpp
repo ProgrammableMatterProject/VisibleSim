@@ -22,7 +22,6 @@ void SyncNext::handleMessage(shared_ptr<Message> message) {
         P2PNetworkInterface *p2p = catom->getInterface(pos);
 
         if (BlockCode::target->isInTarget(pos) && !p2p->isConnected()) {
-            cout << "add on queue: " << pos << " " << catom->position << endl;
             SyncNext_message *msg = new SyncNext_message(idx, syncMsg->goal, syncMsg->origin);
             MessageQueue mQueue(pos, msg);
             reconf->messageQueue.push_back(mQueue);
@@ -46,8 +45,6 @@ void SyncNext::handleMessageResponse(shared_ptr<Message> message) {
         Cell3DPosition pos = catom->position.addX(cw_order[idx].first)
                                             .addY(cw_order[idx].second);
         P2PNetworkInterface *p2p = catom->getInterface(pos);
-        //if (BlockCode::target->isInTarget(pos) && !p2p->isConnected())
-            //break;
         if (p2p->isConnected()) {
             SyncNext_response_message *msg = new SyncNext_response_message(idx, syncMsg->origin);
             getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, p2p));

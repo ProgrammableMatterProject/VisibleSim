@@ -181,28 +181,18 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 
 void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_message)
 {
-    if (catom->position[0] == recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
+    if (reconf->needSyncToRightNext() &&
+            syncNext->isInternalBorder(1) &&
+            catom->position[1] == recv_message->goal[1] &&
+            catom->position[0] <= recv_message->goal[0]) {
         syncNext->response(recv_message->origin);
     }
-    else if (reconf->needSyncToRightNext() &&
-            syncNext->isInternalBorder(1) && recv_message->goal[1] > catom->position[1]) {
-    //    if (reconf->isSeedNext())
-            neighborhood->addNextLineNeighbor();
-    }
-    //else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
-    //{
-        //reconf->requestQueue.push(recv_message);
-    //}
-    //else if (reconf->needSyncToRightNext()) {
-        //reconf->setSeedNext();
-        //neighborhood->tryAddNeighbors();
-        //neighborhood->tryAddNextLineNeighbor();
-        //reconf->requestQueue.push(recv_message);
-    //}
-    //else if (reconf->needSyncToRightPrevious()) {
-        //syncNext->response(recv_message->origin);
-    //}
     else {
+        if (reconf->needSyncToRightNext() &&
+                syncNext->isInternalBorder(1) &&
+                catom->position[1] < recv_message->goal[1]) {
+            neighborhood->addNextLineNeighbor();
+        }
         syncNext->handleMessage(recv_message);
         std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
     }
@@ -213,19 +203,6 @@ void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_
     if (catom->position[0] == recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
         syncPrevious->response(recv_message->origin);
     }
-    //else if (!reconf->isLineCompleted() && (reconf->isSeedNext() || reconf->isSeedPrevious()))
-    //{
-        //reconf->requestQueue.push(recv_message);
-    //}
-    //else if (reconf->needSyncToRightNext()) {
-        //syncPrevious->response(recv_message->origin);
-    //}
-    //else if (reconf->needSyncToRightPrevious()) {
-        //reconf->setSeedPrevious();
-        //neighborhood->tryAddNeighbors();
-        //neighborhood->tryAddPreviousLineNeighbor();
-        //reconf->requestQueue.push(recv_message);
-    //}
     else {
         syncPrevious->handleMessage(recv_message);
         std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
@@ -234,21 +211,10 @@ void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_
 
 void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> recv_message)
 {
-    if (reconf->needSyncToLeftNext() &&
-            syncNext->isInternalBorder(1) && recv_message->origin[1] >= catom->position[1]) {
-        neighborhood->addNeighborsWithoutSync();
-    }
-    else if (reconf->needSyncToRightNext() &&
-            syncNext->isInternalBorder(1) && recv_message->origin[1] >= catom->position[1]) {
-        neighborhood->addNeighborsWithoutSync();
-    }
-    else if (recv_message->origin == catom->position) {
+    if (recv_message->origin == catom->position) {
         neighborhood->addNeighborsWithoutSync();
     }
     else {
-        if (recv_message->origin[1] < catom->position[1]) {
-            //TODO
-        }
         syncNext->handleMessageResponse(recv_message);
         std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_RESPONSE_TIME));
     }
