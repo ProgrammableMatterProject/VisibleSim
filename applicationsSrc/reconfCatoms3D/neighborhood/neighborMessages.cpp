@@ -1,6 +1,7 @@
 #include "neighborMessages.h"
 
-#define MSG_TIME 000
+#define MSG_TIME rand()%10000
+//#define MSG_TIME 0000
 
 int NeighborMessages::nMessagesGetInfo = 0;
 int NeighborMessages::nMessagesBorderMessage = 0;
@@ -17,13 +18,15 @@ NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighb
 
 void NeighborMessages::init()
 {
-    //checkLineParent();
-    //checkAndSendLeftBorderMessage();
-    //checkAndSendRightBorderMessage();
+    if (reconf->needSyncToRightNext() && !syncNext->isInternalBorder(1)) {
+        reconf->setSeedNext();
+    }
 
-    neighborhood->tryAddNeighbors();
-    //neighborhood->tryAddNextLineNeighbor();
-    //neighborhood->tryAddPreviousLineNeighbor();
+    if (reconf->needSyncToRightPrevious() && !syncNext->isInternalBorder(2)) {
+        reconf->setSeedPrevious();
+    }
+
+    neighborhood->checkSyncAndTryAddNeighbors();
     //trySendMessagePlaneFinished();
 }
 
@@ -48,6 +51,8 @@ void NeighborMessages::handleNewCatomMsg(MessagePtr message)
 
     neighborhood->sendResponseMessageToAddLeft();
     neighborhood->sendResponseMessageToAddRight();
+
+    sendMessagesOnQueue(recv_message->sourceInterface->hostBlock->position);
 }
 
 void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
@@ -55,7 +60,11 @@ void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
     New_catom_parent_response_message *msgResponse = new New_catom_parent_response_message;
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
-    //neighborhood->canFill();
+
+    neighborhood->sendResponseMessageToAddLeft();
+    neighborhood->sendResponseMessageToAddRight();
+
+    sendMessagesOnQueue(message->sourceInterface->hostBlock->position);
 }
 
 void NeighborMessages::handleNewCatomParentResponseMsg(MessagePtr message)
@@ -144,4 +153,17 @@ void NeighborMessages::sendMessagePlaneFinishedAck()
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
     msg = new Plane_finished_ack_message();
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(-1))));
+}
+
+void NeighborMessages::sendMessagesOnQueue(Cell3DPosition pos)
+{
+    vector<MessageQueue>::iterator it;
+    for (it = reconf->messageQueue.begin(); it != reconf->messageQueue.end(); ) {
+        if (pos == it->destination) {
+            getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, it->message, catom->getInterface(pos)));
+            it = reconf->messageQueue.erase(it);
+        }
+        else
+            ++it;
+    }
 }

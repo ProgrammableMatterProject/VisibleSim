@@ -57,6 +57,7 @@ public:
     void trySendMessagePlaneFinished();
     void sendMessagePlaneFinished();
     void sendMessagePlaneFinishedAck();
+    void sendMessagesOnQueue(Cell3DPosition pos);
 };
 
 class New_catom_message : public Message {
