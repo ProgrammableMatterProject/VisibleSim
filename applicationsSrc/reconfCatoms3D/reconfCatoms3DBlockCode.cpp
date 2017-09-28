@@ -2,8 +2,8 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 5
-#define SYNC_WAIT_TIME 10
+#define CONSTRUCT_WAIT_TIME 0
+#define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
 
@@ -184,6 +184,12 @@ void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_mess
             catom->position[1] == recv_message->goal[1] &&
             catom->position[0] <= recv_message->goal[0]) {
         syncNext->response(recv_message->origin);
+    }
+    else if (reconf->needSyncToRightPrevious() &&
+            syncNext->isInternalBorder(3) &&
+            !catom->getInterface(catom->position.addY(-1))->isConnected() && // TO AVOID FAKE NEEDSYNCRIGHT PREVIOUS
+            catom->position[1] < recv_message->goal[1]) {
+        syncPrevious->response(recv_message->origin);
     }
     else {
         if (reconf->needSyncToRightNext() &&
