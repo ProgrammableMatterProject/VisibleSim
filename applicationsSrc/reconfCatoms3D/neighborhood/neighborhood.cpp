@@ -89,18 +89,19 @@ void Neighborhood::checkSyncAndTryAddNeighbors()
         syncNext->sync();
         catom->setColor(RED);
     }
-    //else if (reconf->needSyncToLeftPrevious() &&
-             //syncPrevious->isInternalBorder(3)) {
-        //syncPrevious->sync();
-    //}
+    else if (reconf->needSyncToLeftPrevious() &&
+             syncPrevious->isInternalBorder(3)) {
+        syncPrevious->sync();
+    }
     else if (reconf->needSyncToRightNext() &&
             syncNext->isInternalBorder(1)) {
         //syncNext->response(catom->position.addX(1).addY(1));
         catom->setColor(RED);
     }
-    //else if (reconf->needSyncToRightPrevious()) {
+    else if (reconf->needSyncToRightPrevious()) {
         //syncPrevious->response(catom->position.addX(1).addY(-1));
-    //}
+        catom->setColor(RED);
+    }
     else {
         tryAddNeighbors();
     }

@@ -198,10 +198,24 @@ void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_mess
 
 void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_message)
 {
-    if (catom->position[0] == recv_message->goal[0] && catom->position[1] == recv_message->goal[1]) {
+    if (reconf->needSyncToRightPrevious() &&
+            syncPrevious->isInternalBorder(3) &&
+            catom->position[1] == recv_message->goal[1] &&
+            catom->position[0] >= recv_message->goal[0]) {
+        syncPrevious->response(recv_message->origin);
+    }
+    else if (reconf->needSyncToRightNext() &&
+            syncNext->isInternalBorder(1) &&
+            !catom->getInterface(catom->position.addY(1))->isConnected() && // TO AVOID FAKE NEEDSYNCRIGHT NEXT
+            catom->position[1] > recv_message->goal[1]) {
         syncPrevious->response(recv_message->origin);
     }
     else {
+        if (reconf->needSyncToRightPrevious() &&
+                syncNext->isInternalBorder(3) &&
+                catom->position[1] > recv_message->goal[1]) {
+            neighborhood->addPreviousLineNeighbor();
+        }
         syncPrevious->handleMessage(recv_message);
         std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
     }
