@@ -35,28 +35,22 @@ public:
     static int numberBlockedModules;
     Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb);
 
-    void addNeighborsWithoutSync();
     void addAllNeighbors();
     bool addFirstNeighbor();
+
     void addNeighborToLeft();
     void addNeighborToRight();
     void addNextLineNeighbor();
     void addPreviousLineNeighbor();
-
-    void tryAddNeighborToLeft();
-    void tryAddNeighborToRight();
-    void tryAddNeighbors();
-    void checkSyncAndTryAddNeighbors();
-
-    bool isOnLeftBorder();
-    bool isOnRightBorder();
-    bool isFirstCatomOfLine();
-    bool isFirstCatomOfPlane();
-
     void addNeighborToNextPlane();
     void addNeighborToPreviousPlane();
 
-    void canFill();
+    void tryAddNeighbors();
+    void checkSyncAndTryAddNeighbors();
+
+    bool isFirstCatomOfLine();
+    bool isFirstCatomOfPlane();
+
     void addEventAddNextLineNeighbor();
     void addEventAddPreviousLineNeighbor();
     void sendMessageToAddLeft();
@@ -77,7 +71,7 @@ public:
         concernedBlock->scheduleLocalEvent(EventPtr(new AddNextLine_event(this)));
     }
 
-    const string getEventName() { return "ADD NEXT LINE BLOCK EVENT"; }
+    const string getEventName() { return "Add next line block event"; }
 };
 
 class AddPreviousLine_event : public BlockEvent {
@@ -92,7 +86,7 @@ public:
         concernedBlock->scheduleLocalEvent(EventPtr(new AddPreviousLine_event(this)));
     }
 
-    const string getEventName() { return "ADD PREVIOUS LINE BLOCK EVENT"; }
+    const string getEventName() { return "Add previous line block event"; }
 };
 
 class CanFillLeft_message : public Message {

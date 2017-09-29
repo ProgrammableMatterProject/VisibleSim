@@ -36,6 +36,8 @@ public:
     virtual void response(Cell3DPosition) = 0;
     virtual void handleMessage(shared_ptr<Message>) = 0;
     virtual void handleMessageResponse(shared_ptr<Message>) = 0;
+    virtual bool needSyncToLeft() = 0;
+    virtual bool needSyncToRight() = 0;
 
     bool isInternalBorder(int idx);
 };

@@ -2,8 +2,8 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 0
-#define SYNC_WAIT_TIME 0
+#define CONSTRUCT_WAIT_TIME 5
+#define SYNC_WAIT_TIME 10 
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
 
@@ -179,21 +179,17 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 
 void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_message)
 {
-    if (reconf->needSyncToRightNext() &&
-            syncNext->isInternalBorder(1) &&
+    if (syncNext->needSyncToRight() &&
             catom->position[1] == recv_message->goal[1] &&
             catom->position[0] <= recv_message->goal[0]) {
         syncNext->response(recv_message->origin);
     }
-    else if (reconf->needSyncToRightPrevious() &&
-            syncNext->isInternalBorder(3) &&
-            !catom->getInterface(catom->position.addY(-1))->isConnected() && // TO AVOID FAKE NEEDSYNCRIGHT PREVIOUS
+    else if (syncPrevious->needSyncToRight() &&
             catom->position[1] < recv_message->goal[1]) {
-        syncPrevious->response(recv_message->origin);
+        syncNext->response(recv_message->origin);
     }
     else {
-        if (reconf->needSyncToRightNext() &&
-                syncNext->isInternalBorder(1) &&
+        if (syncNext->needSyncToRight() &&
                 catom->position[1] < recv_message->goal[1]) {
             neighborhood->addNextLineNeighbor();
         }
@@ -204,21 +200,17 @@ void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_mess
 
 void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_message)
 {
-    if (reconf->needSyncToRightPrevious() &&
-            syncPrevious->isInternalBorder(3) &&
+    if (syncPrevious->needSyncToLeft() &&
             catom->position[1] == recv_message->goal[1] &&
             catom->position[0] >= recv_message->goal[0]) {
         syncPrevious->response(recv_message->origin);
     }
-    else if (reconf->needSyncToRightNext() &&
-            syncNext->isInternalBorder(1) &&
-            !catom->getInterface(catom->position.addY(1))->isConnected() && // TO AVOID FAKE NEEDSYNCRIGHT NEXT
+    else if (syncNext->needSyncToRight() &&
             catom->position[1] > recv_message->goal[1]) {
         syncPrevious->response(recv_message->origin);
     }
     else {
-        if (reconf->needSyncToRightPrevious() &&
-                syncNext->isInternalBorder(3) &&
+        if (syncPrevious->needSyncToLeft() &&
                 catom->position[1] > recv_message->goal[1]) {
             neighborhood->addPreviousLineNeighbor();
         }
@@ -230,7 +222,8 @@ void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_
 void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> recv_message)
 {
     if (recv_message->origin == catom->position) {
-        neighborhood->addNeighborsWithoutSync();
+        neighborhood->addNeighborToLeft();
+        neighborhood->addNeighborToRight();
     }
     else {
         syncNext->handleMessageResponse(recv_message);

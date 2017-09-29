@@ -47,13 +47,6 @@ public:
 
     bool isSeedNext();
     bool isSeedPrevious();
-    bool needSync();
-
-    bool needSyncToLeftNext();
-    bool needSyncToLeftPrevious();
-
-    bool needSyncToRightNext();
-    bool needSyncToRightPrevious();
 
     bool isLineParent() { return lineParent; }
     void setLineParent() { lineParent = true; }

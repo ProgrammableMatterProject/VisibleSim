@@ -18,11 +18,11 @@ NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighb
 
 void NeighborMessages::init()
 {
-    if (reconf->needSyncToRightNext() && !syncNext->isInternalBorder(1)) {
+    if (syncNext->needSyncToRight() && !syncNext->isInternalBorder(1)) {
         reconf->setSeedNext();
     }
 
-    if (reconf->needSyncToRightPrevious() && !syncNext->isInternalBorder(2)) {
+    if (syncPrevious->needSyncToRight() && !syncNext->isInternalBorder(2)) {
         reconf->setSeedPrevious();
     }
 

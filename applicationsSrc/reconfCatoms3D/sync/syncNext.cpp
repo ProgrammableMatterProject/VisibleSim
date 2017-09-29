@@ -12,6 +12,44 @@ void SyncNext::response(Cell3DPosition origin) {
     handleMessageResponse(message);
 }
 
+bool SyncNext::needSyncToLeft()
+{
+    if (catom->getInterface(catom->position.addX(-1))->isConnected())
+        return false;
+
+    if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
+        !BlockCode::target->isInTarget(catom->position.addY(-1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1)) )
+    {
+        return isInternalBorder(1);
+    }
+    return false;
+}
+
+bool SyncNext::needSyncToRight()
+{
+    if (catom->getInterface(catom->position.addY(1))->isConnected())
+        return false;
+
+    if (!BlockCode::target->isInTarget(catom->position.addX(1)) &&
+        BlockCode::target->isInTarget(catom->position.addX(1).addY(1)))
+    {
+        BoundingBox bb;
+        BlockCode::target->boundingBox(bb);
+        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(catom->position.addX(i))[0] < bb.P1[0]; i++) {
+            if (!BlockCode::target->isInTarget(catom->position.addX(i)) &&
+                BlockCode::target->isInTarget(catom->position.addX(i).addY(1)))
+                continue;
+            if (BlockCode::target->isInTarget(catom->position.addX(i)) &&
+                BlockCode::target->isInTarget(catom->position.addX(i).addY(1)) )
+                return isInternalBorder(1);
+            return false;
+        }
+    }
+    return false;
+}
+
 void SyncNext::handleMessage(shared_ptr<Message> message) {
     catom->setColor(BLUE);
     shared_ptr<SyncNext_message> syncMsg = static_pointer_cast<SyncNext_message>(message);

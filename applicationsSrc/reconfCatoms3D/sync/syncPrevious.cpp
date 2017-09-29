@@ -12,6 +12,40 @@ void SyncPrevious::response(Cell3DPosition origin) {
     handleMessageResponse(message);
 }
 
+bool SyncPrevious::needSyncToLeft() {
+    if (catom->getInterface(catom->position.addY(-1))->isConnected())
+        return false;
+
+    if (!BlockCode::target->isInTarget(catom->position.addX(-1)) &&
+            BlockCode::target->isInTarget(catom->position.addX(-1).addY(-1))) {
+
+        BoundingBox bb;
+        BlockCode::target->boundingBox(bb);
+
+        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(catom->position.addX(i))[0] < bb.P1[0]; i++) {
+            if (!BlockCode::target->isInTarget(catom->position.addX(-i)) &&
+                BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)))
+                continue;
+            if (BlockCode::target->isInTarget(catom->position.addX(-i)) &&
+                BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)) )
+                return true;
+            return false;
+        }
+    }
+    return false;
+}
+
+bool SyncPrevious::needSyncToRight() {
+    if (catom->getInterface(catom->position.addX(1))->isConnected())
+        return false;
+
+    if (catom->getInterface(catom->position.addX(1))->connectedInterface == NULL &&
+            !BlockCode::target->isInTarget(catom->position.addY(1)) &&
+            BlockCode::target->isInTarget(catom->position.addX(1)) &&
+            BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) )
+        return true;
+    return false;
+}
 void SyncPrevious::handleMessage(shared_ptr<Message> message) {
     catom->setColor(DARKORANGE);
     shared_ptr<SyncPrevious_message> syncMsg = static_pointer_cast<SyncPrevious_message>(message);

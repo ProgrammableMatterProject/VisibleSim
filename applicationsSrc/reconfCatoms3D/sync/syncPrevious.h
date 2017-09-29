@@ -18,6 +18,8 @@ public:
     void response(Cell3DPosition origin);
     void handleMessage(shared_ptr<Message> message);
     void handleMessageResponse(shared_ptr<Message> message);
+    bool needSyncToLeft();
+    bool needSyncToRight();
 };
 
 class SyncPrevious_message : public Sync_message {
