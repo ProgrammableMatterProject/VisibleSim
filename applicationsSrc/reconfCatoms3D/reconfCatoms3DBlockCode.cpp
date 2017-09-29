@@ -2,8 +2,8 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 5
-#define SYNC_WAIT_TIME 10 
+#define CONSTRUCT_WAIT_TIME 0
+#define SYNC_WAIT_TIME 0 
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
 
@@ -165,6 +165,14 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
           }
       }
       break;
+    case ADDLEFTBLOCK_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addX(-1));
+        break;
+    }
+    case ADDRIGHTBLOCK_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addX(1));
+        break;
+    }
     case ADDNEXTLINE_EVENT_ID: {
         neighborhood->addNextLineNeighbor();
         break;

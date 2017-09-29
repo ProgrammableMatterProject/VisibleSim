@@ -14,6 +14,8 @@
 #define CANFILLRIGHTRESPONSE_MESSAGE_ID 12004
 #define ADDNEXTLINE_EVENT_ID 12005
 #define ADDPREVIOUSLINE_EVENT_ID 12006
+#define ADDLEFTBLOCK_EVENT_ID 12007
+#define ADDRIGHTBLOCK_EVENT_ID 12008
 
 #include "cell3DPosition.h"
 #include "directions.h"
@@ -29,14 +31,15 @@ private:
     SyncPrevious *syncPrevious;
     BlockCodeBuilder blockCodeBuilder;
 
-    bool addNeighbor(Cell3DPosition pos);
 
 public:
     static int numberBlockedModules;
+    static int numberMessagesToAddBlock;
     Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb);
 
     void addAllNeighbors();
     bool addFirstNeighbor();
+    bool addNeighbor(Cell3DPosition pos);
 
     void addNeighborToLeft();
     void addNeighborToRight();
@@ -87,6 +90,36 @@ public:
     }
 
     const string getEventName() { return "Add previous line block event"; }
+};
+
+class AddLeftBlock_event : public BlockEvent {
+public:
+    AddLeftBlock_event(Time t, BaseSimulator::BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
+        eventType = ADDLEFTBLOCK_EVENT_ID;
+    }
+    AddLeftBlock_event(AddLeftBlock_event *conBlock) : BlockEvent(conBlock) {
+    }
+
+    void consumeBlockEvent() {
+        concernedBlock->scheduleLocalEvent(EventPtr(new AddLeftBlock_event(this)));
+    }
+
+    const string getEventName() { return "Add left block event"; }
+};
+
+class AddRightBlock_event : public BlockEvent {
+public:
+    AddRightBlock_event(Time t, BaseSimulator::BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
+        eventType = ADDRIGHTBLOCK_EVENT_ID;
+    }
+    AddRightBlock_event(AddRightBlock_event *conBlock) : BlockEvent(conBlock) {
+    }
+
+    void consumeBlockEvent() {
+        concernedBlock->scheduleLocalEvent(EventPtr(new AddRightBlock_event(this)));
+    }
+
+    const string getEventName() { return "Add right block event"; }
 };
 
 class CanFillLeft_message : public Message {

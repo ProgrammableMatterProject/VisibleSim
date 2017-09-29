@@ -162,6 +162,7 @@ void NeighborMessages::sendMessagesOnQueue(Cell3DPosition pos)
         if (pos == it->destination) {
             getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, it->message, catom->getInterface(pos)));
             it = reconf->messageQueue.erase(it);
+            Sync::nMessagesSync++;
         }
         else
             ++it;
