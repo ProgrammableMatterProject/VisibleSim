@@ -28,7 +28,7 @@ bool SyncPrevious::needSyncToLeft() {
                 continue;
             if (BlockCode::target->isInTarget(catom->position.addX(-i)) &&
                 BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)) )
-                return true;
+                return isInternalBorder(3);
             return false;
         }
     }
@@ -43,7 +43,7 @@ bool SyncPrevious::needSyncToRight() {
             !BlockCode::target->isInTarget(catom->position.addY(1)) &&
             BlockCode::target->isInTarget(catom->position.addX(1)) &&
             BlockCode::target->isInTarget(catom->position.addX(1).addY(1)) )
-        return true;
+        return isInternalBorder(3);
     return false;
 }
 void SyncPrevious::handleMessage(shared_ptr<Message> message) {
