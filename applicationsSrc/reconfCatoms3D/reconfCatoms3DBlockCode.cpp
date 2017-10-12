@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 0
+#define CONSTRUCT_WAIT_TIME 5
 #define SYNC_WAIT_TIME 0 
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -35,8 +35,8 @@ void ReconfCatoms3DBlockCode::startup() {
         catom->setColor(RED);
     }
     //catom->setColor(LIGHTGREY);
-    if (catom->blockId == 1)
-        srand(time(NULL));
+    //if (catom->blockId == 1)
+        //srand(time(NULL));
 
     planningRun();
     //stochasticRun();
@@ -159,9 +159,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 neighborhood->addNeighborToRight();
                 break;
             }
-            case ADDNEXTLINE_EVENT_ID:
-            {
-            }
           }
       }
       break;
@@ -192,7 +189,7 @@ void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_mess
             catom->position[0] <= recv_message->goal[0]) {
         syncNext->response(recv_message->origin);
     }
-    else if (syncPrevious->needSyncToRight() &&
+    else if (syncPrevious->needSyncToLeft() &&
             catom->position[1] < recv_message->goal[1]) {
         syncNext->response(recv_message->origin);
     }

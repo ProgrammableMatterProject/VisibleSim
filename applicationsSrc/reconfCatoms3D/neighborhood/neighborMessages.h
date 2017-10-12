@@ -84,11 +84,6 @@ typedef shared_ptr<New_catom_parent_response_message> New_catom_parent_response_
 
 class New_catom_response_message : public Message {
 public:
-    bID lineParent;
-    bool leftCompleted, rightCompleted;
-    bool createdFromPrevious;
-    int numberSeedsLeft, numberSeedsRight;
-    SIDE_DIRECTION lineParentDirection;
     queue<MessagePtr> requestQueue;
 
     SyncPlane_node *syncPlaneNodeParent;
