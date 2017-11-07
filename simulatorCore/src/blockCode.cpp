@@ -31,7 +31,7 @@ BlockCode::~BlockCode() {
 		delete target;
 		target = NULL;
 	}
-		
+
 	eventFuncMap.clear();
 }
 
@@ -51,7 +51,7 @@ int BlockCode::sendMessage(const char*msgString,Message*msg,P2PNetworkInterface 
 
 	OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
 		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
-	
+
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
     return 0;
 }
@@ -94,7 +94,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t
         }
     }
     delete msg;
-    return n;	
+    return n;
 }
 
 void BlockCode::processLocalEvent(EventPtr pev) {
@@ -115,6 +115,7 @@ void BlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
         case EVENT_ADD_NEIGHBOR: {
+            OUTPUT << "ADD_NEIGHBOR" << endl;
             startup();
         } break;
         case EVENT_TAP: {
@@ -128,7 +129,7 @@ void BlockCode::onTap(int face) {
 	stringstream info;
 	info.str("");
 	info << "Tapped on face " << lattice->getDirectionString(face);
-	scheduler->trace(info.str(),hostBlock->blockId);	
+	scheduler->trace(info.str(),hostBlock->blockId);
 }
 
 bool BlockCode::loadNextTarget() {

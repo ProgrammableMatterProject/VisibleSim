@@ -145,10 +145,7 @@ void TranslationStopEvent::consume() {
     wrld->updateGlData(bb);
     bb->setColor(YELLOW);
 
-    stringstream info;
-    info.str("");
-    info << "connect Block " << bb->blockId;
-    getScheduler()->trace(info.str(),bb->blockId,LIGHTBLUE);
+    OUTPUT << "connect Block " << bb->blockId << "\n";
     wrld->connectBlock(bb);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new TranslationEndEvent(scheduler->now() + ANIMATION_DELAY, bb));

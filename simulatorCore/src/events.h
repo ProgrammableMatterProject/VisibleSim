@@ -34,7 +34,7 @@ typedef std::shared_ptr<Event> EventPtr;
 #endif
 
 #ifdef DEBUG_CONSUME_EVENTS
-#define EVENT_CONSUME_INFO()				({ stringstream debuginfo1; debuginfo1 << "consuming event " << id << " (" << getEventName() << ")"; Scheduler::trace(debuginfo1.str());})
+#define EVENT_CONSUME_INFO()				({ stringstream debuginfo1; debuginfo1 << "consuming event " << id << " (" << getEventName() << ")"; Scheduler::trace(debuginfo1.str()); })
 #else
 #define EVENT_CONSUME_INFO()
 #endif

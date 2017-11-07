@@ -10,10 +10,11 @@
 OS = $(shell uname -s)
 
 # VisibleSim local libraries
-VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots
+VSIM_LIBS = -lsimCatoms3D -lsimCatoms2D -lsimRobotBlocks -lsimBlinkyBlocks -lsimSmartBlocks -lsimMultiRobots -lsimOkteen
 
 #for debug version
-TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+#TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
+TEMP_CCFLAGS = -O3 -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 
 # ADDITIONAL CCFLAGS
 # ================
@@ -31,7 +32,7 @@ TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 # -DDEBUG_VM_MESSAGES     : trace the messages sent to the multicores VM
 
 #for production version
-#TEMP_CCFLAGS = "-O3 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"
+#TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"
 
 #for TEST VERSION
 #TEMP_CCFLAGS = "-g -Wall -DTINYXML_USE_STL -DTIXML_USE_STL -DDEBUG_VM_MESSAGES -DTEST_DETER"
@@ -44,7 +45,11 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt
 endif
 
+<<<<<<< HEAD
 GLOBAL_LIBS = "-L./ -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib -lmuparser $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
+=======
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -lmuparser -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
+>>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 
 else
 
@@ -53,7 +58,11 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
 
+<<<<<<< HEAD
 GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lglut -lGL -lGLEW -lGLU -lpthread -lmuparser $(INC_BOOST_IF_NEEDED)"
+=======
+GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread $(INC_BOOST_IF_NEEDED)"
+>>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 
 endif
 
@@ -85,7 +94,7 @@ $(SUBDIRS):
 test: subdirs
 	@$(MAKE) -C applicationsSrc test;
 
-doc: 	
+doc:
 	@$(MAKE) -C doc;
 clean:
 	rm -f *~ *.o

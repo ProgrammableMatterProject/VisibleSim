@@ -1,5 +1,5 @@
 /*! @file target.cpp
- * @brief Defines a target configuration for reconfiguration algorithms, 
+ * @brief Defines a target configuration for reconfiguration algorithms,
  * several ways of defining the configuration are provided to the user.
  * @author Pierre Thalamy
  * @date 21/07/2016
@@ -22,7 +22,7 @@ TiXmlNode *Target::targetNode = NULL;
 Target *Target::loadNextTarget() {
     if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
-        Target::targetNode = targetListNode->IterateChildren(targetNode); 
+        Target::targetNode = targetListNode->IterateChildren(targetNode);
 
         if (Target::targetNode) {
             TiXmlElement* element;
@@ -35,7 +35,7 @@ Target *Target::loadNextTarget() {
                         return new TargetGrid(Target::targetNode);
                     } else if (str.compare("csg") == 0) {
                         return new TargetCSG(Target::targetNode);
-                    } 
+                    }
                 }
             }
         }
@@ -52,13 +52,13 @@ Target *Target::loadNextTarget() {
 ostream& operator<<(ostream& out,const Target *t) {
     t->print(out);
     return out;
-}   
+}
 
 /************************************************************
  *                      TargetGrid
  ************************************************************/
 
-TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {    
+TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *cellNode = targetNode->FirstChild("cell");
     const char* attr;
     TiXmlElement *element;
@@ -70,7 +70,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     while (cellNode) {
         element = cellNode->ToElement();
         color = defaultColor;
-        
+
         attr = element->Attribute("position");
         if (attr) {
             string str(attr);
@@ -100,7 +100,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     // Parse lines of cells
     cellNode = targetNode->FirstChild("targetLine");
     while (cellNode) {
-        int line = 0, plane = 0;            
+        int line = 0, plane = 0;
         element = cellNode->ToElement();
         color = defaultColor;
         attr = element->Attribute("color");
@@ -117,12 +117,12 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
         if (attr) {
             line = atoi(attr);
         }
-        
+
         attr = element->Attribute("plane");
         if (attr) {
             plane = atoi(attr);
         }
-        
+
         attr = element->Attribute("values");
         if (attr) {
             string str(attr);
@@ -142,7 +142,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     } // end while (cellNode)*/
 }
 
-bool TargetGrid::isInTarget(const Cell3DPosition &pos) {
+bool TargetGrid::isInTarget(const Cell3DPosition &pos) const {
     return tCells.count(pos);
 }
 
@@ -179,11 +179,15 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     string str = element->Attribute("content");
     bool boundingBox=true;
     element->QueryBoolAttribute("boundingBox", &boundingBox);
+<<<<<<< HEAD
 
+=======
+>>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     char* csgBin = CSGParser::parseCsg(str);
     CsgUtils csgUtils;
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
+<<<<<<< HEAD
     if (boundingBox)
         csgRoot->boundingBox(bb);
 }
@@ -203,15 +207,43 @@ Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
     worldPosition.pt[1] += bb.P0[1];
     worldPosition.pt[2] += bb.P0[2];
     return worldPosition;
+=======
+    if (boundingBox) csgRoot->boundingBox(bb);
+>>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 }
 
-bool TargetCSG::isInTarget(const Cell3DPosition &pos) {
+Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
+    Vector3D worldPosition;
+    worldPosition.pt[3] = 1.0;
+    worldPosition.pt[2] = M_SQRT2_2 * (pos[2] + 0.5);
+    if (IS_EVEN(pos[2])) {
+        worldPosition.pt[1] = (pos[1] + 0.5);
+        worldPosition.pt[0] = (pos[0] + 0.5);
+    } else {
+        worldPosition.pt[1] = (pos[1] + 1.0);
+        worldPosition.pt[0] = (pos[0] + 1.0);
+    }
+    worldPosition.pt[0] += bb.P0[0];
+    worldPosition.pt[1] += bb.P0[1];
+    worldPosition.pt[2] += bb.P0[2];
+    return worldPosition;
+}
+
+bool TargetCSG::isInTarget(const Cell3DPosition &pos) const {
     Color color;
+    return csgRoot->isInside(gridToWorldPosition(pos), color);
+}
+
+bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) const {
+    Color color;
+<<<<<<< HEAD
     return csgRoot->isInside(gridToWorldPosition(pos), color);
 }
 
 bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) {
     Color color;
+=======
+>>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     return csgRoot->isInBorder(gridToWorldPosition(pos), color, radius);
 }
 
