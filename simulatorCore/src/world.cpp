@@ -168,7 +168,8 @@ void World::disconnectBlock(BuildingBlock *block) {
 void World::deleteBlock(BuildingBlock *bb) {
     if (bb->getState() >= BuildingBlock::ALIVE ) {
         // cut links between bb and others and remove it from the grid
-		disconnectBlock(bb);
+	disconnectBlock(bb);
+        bb->setState(BuildingBlock::REMOVED);
     }
 
     if (selectedGlBlock == bb->ptrGlBlock) {
