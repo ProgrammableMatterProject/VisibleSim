@@ -9,11 +9,7 @@ void CSGCube::toString() const {
     printf("cube([%lf, %lf, %lf], true);\n", size_x, size_y, size_z);
 }
 
-<<<<<<< HEAD
-bool CSGCube::isInside(const Vector3D &p, Color &color) {
-=======
 bool CSGCube::isInside(const Vector3D &p, Color &color) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     if (center) {
         if (p.pt[0] <= size_x/2 && p.pt[0] >= -size_x/2 &&
                 p.pt[1] <= size_y/2 && p.pt[1] >= -size_y/2 &&
@@ -29,15 +25,6 @@ bool CSGCube::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-<<<<<<< HEAD
-bool CSGCube::isInBorder(const Vector3D &p, Color &color, double border) {
-    if (center) {
-        if (isInside(p, color) &&  (
-            (p.pt[0] <= size_x/2 && p.pt[0] >= size_x/2 - border) ||
-            (p.pt[1] <= size_y/2 && p.pt[1] >= size_y/2 - border) || 
-            (p.pt[2] <= size_z/2 && p.pt[2] >= size_z/2 - border) || 
-            (p.pt[0] >= -size_x/2 && p.pt[0] <= -size_x/2 + border) || 
-=======
 bool CSGCube::isInBorder(const Vector3D &p, Color &color, double border) const {
     if (center) {
         if (isInside(p, color) &&  (
@@ -45,7 +32,6 @@ bool CSGCube::isInBorder(const Vector3D &p, Color &color, double border) const {
             (p.pt[1] <= size_y/2 && p.pt[1] >= size_y/2 - border) ||
             (p.pt[2] <= size_z/2 && p.pt[2] >= size_z/2 - border) ||
             (p.pt[0] >= -size_x/2 && p.pt[0] <= -size_x/2 + border) ||
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
             (p.pt[1] >= -size_y/2 && p.pt[1] <= -size_y/2 + border) ||
             (p.pt[2] >= -size_z/2 && p.pt[2] <= -size_z/2 + border)))
             return true;
@@ -85,16 +71,6 @@ bool CSGSphere::isInside(const Vector3D &p, Color &color) const {
 
 bool CSGSphere::isInBorder(const Vector3D &p, Color &color, double border) const {
     double dist = sqrt(pow(p.pt[0], 2) + pow(p.pt[1], 2) + pow(p.pt[2], 2));
-<<<<<<< HEAD
-    if (dist <= radius)
-        return true;
-    return false;
-}
-
-bool CSGSphere::isInBorder(const Vector3D &p, Color &color, double border) {
-    double dist = sqrt(pow(p.pt[0], 2) + pow(p.pt[1], 2) + pow(p.pt[2], 2));
-=======
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     if (dist <= radius && dist >= radius - border)
         return true;
     return false;
@@ -112,11 +88,7 @@ void CSGCylinder::toString() const {
     printf("cylinder(%lf, %lf, %lf, true);\n", height, radius, radius);
 }
 
-<<<<<<< HEAD
-bool CSGCylinder::isInside(const Vector3D &p, Color &color) {
-=======
 bool CSGCylinder::isInside(const Vector3D &p, Color &color) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     double dist = sqrt(pow(p.pt[0], 2) + pow(p.pt[1], 2));
     if (center) {
         if (p.pt[2] <= height/2. && p.pt[2] >= -height/2.) {
@@ -135,11 +107,7 @@ bool CSGCylinder::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-<<<<<<< HEAD
-bool CSGCylinder::isInBorder(const Vector3D &p, Color &color, double border) {
-=======
 bool CSGCylinder::isInBorder(const Vector3D &p, Color &color, double border) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     double dist = sqrt(pow(p.pt[0], 2) + pow(p.pt[1], 2));
     if (center) {
         if (p.pt[2] <= height/2. && p.pt[2] >= -height/2.) {
@@ -188,15 +156,9 @@ bool CSGTranslate::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-<<<<<<< HEAD
-bool CSGTranslate::isInBorder(const Vector3D &p, Color &color, double border) {
-    Vector3D new_point(p[0]-translate[0], p[1]-translate[1], p[2]-translate[2], 1.0);
-    
-=======
 bool CSGTranslate::isInBorder(const Vector3D &p, Color &color, double border) const {
     Vector3D new_point(p[0]-translate[0], p[1]-translate[1], p[2]-translate[2], 1.0);
 
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     for (unsigned int i = 0; i < children.size(); i++) {
         if (children[i]->isInBorder(new_point, color, border)) return true;
     }
@@ -238,11 +200,7 @@ bool CSGRotate::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-<<<<<<< HEAD
-bool CSGRotate::isInBorder(const Vector3D &p, Color &color, double border) {
-=======
 bool CSGRotate::isInBorder(const Vector3D &p, Color &color, double border) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     Vector3D new_point = rotate_1*((Vector3D&)p);
     for (unsigned int i = 0; i < children.size(); i++) {
         if (children[i]->isInBorder(new_point, color, border)) return true;
@@ -275,11 +233,7 @@ bool CSGScale::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-<<<<<<< HEAD
-bool CSGScale::isInBorder(const Vector3D &p, Color &color, double border) {
-=======
 bool CSGScale::isInBorder(const Vector3D &p, Color &color, double border) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     Vector3D new_point(p[0]/scale[0], p[1]/scale[1], p[2]/scale[2], 1.0);
     for (unsigned int i = 0; i < children.size(); i++) {
         if (children[i]->isInBorder(new_point, color, border)) return true;
@@ -310,11 +264,7 @@ bool CSGUnion::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-<<<<<<< HEAD
-bool CSGUnion::isInBorder(const Vector3D &p, Color &color, double border) {
-=======
 bool CSGUnion::isInBorder(const Vector3D &p, Color &color, double border) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     bool flagInside;
     for (unsigned int i = 0; i < children.size(); i++) {
         if (children[i]->isInBorder(p, color, border)) {
@@ -357,11 +307,7 @@ bool CSGDifference::isInside(const Vector3D &p, Color &color) const {
     return false;
 }
 
-<<<<<<< HEAD
-bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) {
-=======
 bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     if (children.size() > 0 && children[0]->isInBorder(p, color, border)) {
         for (unsigned int i = 1; i < children.size(); i++) {
             if (children[i]->isInside(p, color)) return false;
@@ -391,11 +337,7 @@ bool CSGIntersection::isInside(const Vector3D &p, Color &color) const {
     return children.size() > 0 ? true : false;
 }
 
-<<<<<<< HEAD
-bool CSGIntersection::isInBorder(const Vector3D &p, Color &color, double border) {
-=======
 bool CSGIntersection::isInBorder(const Vector3D &p, Color &color, double border) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     bool flagInside;
     for (unsigned int i = 0; i < children.size(); i++) {
         if (children[i]->isInBorder(p, color, border)) {
@@ -422,9 +364,6 @@ void CSGColor::toString() const {
         children[i]->toString();
 }
 
-<<<<<<< HEAD
-bool CSGColor::isInside(const Vector3D &p, Color &color) {
-=======
 bool CSGColor::isInside(const Vector3D &p, Color &color) const {
     for (unsigned int i = 0; i < children.size(); i++) {
         if (children[i]->isInside(p, color)) {
@@ -436,19 +375,8 @@ bool CSGColor::isInside(const Vector3D &p, Color &color) const {
 }
 
 bool CSGColor::isInBorder(const Vector3D &p, Color &color, double border) const {
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     for (unsigned int i = 0; i < children.size(); i++) {
         if (children[i]->isInBorder(p, color, border)) {
-            color = this->color;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool CSGColor::isInBorder(const Vector3D &p, Color &color, double border) {
-    for (unsigned int i = 0; i < children.size(); i++) {
-        if (children[i]->isInBorder(p, color, border)) { 
             color = this->color;
             return true;
         }

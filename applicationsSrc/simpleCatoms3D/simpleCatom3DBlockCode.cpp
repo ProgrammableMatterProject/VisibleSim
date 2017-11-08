@@ -42,44 +42,12 @@ OUTPUT << "start SimpleCatom3DBlockCode " << catom->blockId << endl;
 	catom->setColor(potentiel>1.0?YELLOW:DARKORANGE);
 
 	info << potentiel;
-<<<<<<< HEAD
-	scheduler->trace(info.str(),hostBlock->blockId);
-
-	if (catom->blockId==1) {
-        Vector3D position=wrl->lattice->gridToWorldPosition(Cell3DPosition(2,1,0));
-        int id=1000000;
-        int i=0;
-        Catoms3DBlock *voisin=NULL;
-        P2PNetworkInterface *p2p;
-        while (i<12) {
-            p2p = catom->getInterface(i);
-            if(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId<id) {
-                voisin = (Catoms3DBlock*)p2p->connectedInterface->hostBlock;
-                id = voisin->blockId;
-            }
-            i++;
-        }
-        Matrix m_1;
-        voisin->getGlBlock()->mat.inverse(m_1);
-        // recherche le voisin d'indice minimum
-        //Rotations3D rotations(catom,voisin,m_1*Vector3D(0,1,0),35.2643896828,m_1*Vector3D(-1,1, -M_SQRT2),35.2643896828);
-        Rotations3D rotations(catom,voisin,m_1*Vector3D(0,0,1),45.0,m_1*Vector3D(-1,1,0),45.0);
-        Time t = scheduler->now()+2000;
-        scheduler->schedule(new Rotation3DStartEvent(t,catom,rotations));
-#ifdef verbose
-        stringstream info;
-        info.str("");
-        info << "Rotation3DStartEvent(" << t << ") around #" << voisin->blockId;
-        scheduler->trace(info.str(),catom->blockId,LIGHTGREY);
-#endif
-=======
 	scheduler->trace(info.str(),hostBlock->blockId);*/
 	if (catom->blockId==1 && firstStart) {
         step=0;
         currentOr = catom->orientationCode;
         nextRotation();
         firstStart=false;
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 	}
 }
 
@@ -278,16 +246,6 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
         }*/
     }
 
-<<<<<<< HEAD
-/*bool SimpleCatom3DBlockCode::getAttribute(const string &att,ostringstream &sout) {
-    if (att=="potentiel") {
-        sout << potentiel << endl;
-        return true;
-    }
-    return Catoms3DBlockCode::getAttribute(att,sout);
-}
-*/
-=======
     #ifdef verbose
             stringstream info;
             info.str("");
@@ -302,4 +260,3 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
 //     }
 //     return Catoms3DBlockCode::getAttribute(att,sout);
 // }
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab

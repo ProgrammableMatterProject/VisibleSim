@@ -107,11 +107,7 @@ public:
      * @param bb boundingbox to be written
      */
     virtual void boundingBox(BoundingBox &bb) = 0;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
 
@@ -176,21 +172,13 @@ public:
      * @brief Grid to world position within bounding box
      * @param pos position of the target cell
      */
-<<<<<<< HEAD
-    Vector3D gridToWorldPosition(const Cell3DPosition &pos);
-=======
     Vector3D gridToWorldPosition(const Cell3DPosition &pos) const;
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     /**
      * @brief The object is in the border of the target
      * @param pos position of the target cell
      * @param radius radius of the border
      */
-<<<<<<< HEAD
-    bool isInTargetBorder(const Cell3DPosition &pos, double radius);
-=======
     bool isInTargetBorder(const Cell3DPosition &pos, double radius) const;
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 
 };  // class TargetCSG
 

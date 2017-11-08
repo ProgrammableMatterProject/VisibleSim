@@ -179,37 +179,13 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     string str = element->Attribute("content");
     bool boundingBox=true;
     element->QueryBoolAttribute("boundingBox", &boundingBox);
-<<<<<<< HEAD
 
-=======
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     char* csgBin = CSGParser::parseCsg(str);
     CsgUtils csgUtils;
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
-<<<<<<< HEAD
-    if (boundingBox)
-        csgRoot->boundingBox(bb);
-}
 
-Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
-    Vector3D worldPosition;
-    worldPosition.pt[3] = 1.0;
-    worldPosition.pt[2] = M_SQRT2_2 * (pos[2] + 0.5);
-    if (IS_EVEN(pos[2])) {
-        worldPosition.pt[1] = (pos[1] + 0.5);
-        worldPosition.pt[0] = (pos[0] + 0.5);
-    } else {
-        worldPosition.pt[1] = (pos[1] + 1.0);
-        worldPosition.pt[0] = (pos[0] + 1.0);
-    }
-    worldPosition.pt[0] += bb.P0[0];
-    worldPosition.pt[1] += bb.P0[1];
-    worldPosition.pt[2] += bb.P0[2];
-    return worldPosition;
-=======
     if (boundingBox) csgRoot->boundingBox(bb);
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 }
 
 Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
@@ -236,14 +212,7 @@ bool TargetCSG::isInTarget(const Cell3DPosition &pos) const {
 
 bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) const {
     Color color;
-<<<<<<< HEAD
-    return csgRoot->isInside(gridToWorldPosition(pos), color);
-}
 
-bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) {
-    Color color;
-=======
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
     return csgRoot->isInBorder(gridToWorldPosition(pos), color, radius);
 }
 

@@ -46,13 +46,13 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 	}
 
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
-    motionRules = new Catoms3DMotionRules();
+    // motionRules = new Catoms3DMotionRules();
 }
 
 Catoms3DWorld::~Catoms3DWorld() {
     OUTPUT << "Catoms3DWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
-    delete motionRules;
+    // delete motionRules;
 }
 
 void Catoms3DWorld::deleteWorld() {
@@ -125,12 +125,6 @@ void Catoms3DWorld::glDraw() {
 
 
 // material for the grid walls
-<<<<<<< HEAD
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    if (background) {
-        glDrawBackground();
-    }
-=======
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0f};
 		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
@@ -221,7 +215,6 @@ void Catoms3DWorld::glDraw() {
 		glPushMatrix();
 		objRepere->glDraw();
 		glPopMatrix();
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 }
 
 void Catoms3DWorld::glDrawId() {

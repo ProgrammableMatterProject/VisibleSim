@@ -103,20 +103,6 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 }
 
 void RobotBlocksWorld::glDraw() {
-<<<<<<< HEAD
-    glPushMatrix();
-    glTranslatef(0.5*lattice->gridScale[0],0.5*lattice->gridScale[1],0.5*lattice->gridScale[2]);
-    glDisable(GL_TEXTURE_2D);
-    vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    lock();
-    while (ic!=tabGlBlocks.end()) {
-        ((RobotBlocksGlBlock*)(*ic))->glDraw(objBlock);
-        ic++;
-    }
-    unlock();
-
-    glPopMatrix();
-=======
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0f};
 
@@ -210,7 +196,6 @@ void RobotBlocksWorld::glDraw() {
 		glScalef(0.2f,0.2f,0.2f);
 		objRepere->glDraw();
 		glPopMatrix();
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 }
 
 void RobotBlocksWorld::glDrawId() {

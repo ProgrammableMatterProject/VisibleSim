@@ -1,6 +1,5 @@
 
 # GENERIC BlockCodes
-<<<<<<< HEAD
 SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
 
 # MELD BlockCodes
@@ -11,7 +10,7 @@ SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D s
 
 # ALL
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
-SUBDIRS += greedySRCatoms3D
+SUBDIRS += greedySRCatoms3D meltSortGrow simpleMotionOkteen
 
 .PHONY: subdirs $(SUBDIRS) test
 

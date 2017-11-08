@@ -45,11 +45,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread-mt  -lboost_system-mt -lboost_chrono-mt
 endif
 
-<<<<<<< HEAD
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib -lmuparser $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
-=======
 GLOBAL_LIBS = "-L./ -L/usr/local/lib -lmuparser -lGLEW -lglut -framework GLUT -framework OpenGL -L/usr/X11/lib /usr/local/lib/libglut.dylib $(VSIM_LIBS) $(INC_BOOST_IF_NEEDED)"
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 
 else
 
@@ -58,11 +54,7 @@ ifneq ($(filter -DENABLE_MELDPROCESS, $(TEMP_CCFLAGS)),)
 INC_BOOST_IF_NEEDED = -lboost_thread -lboost_system -lboost_chrono
 endif
 
-<<<<<<< HEAD
-GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lglut -lGL -lGLEW -lGLU -lpthread -lmuparser $(INC_BOOST_IF_NEEDED)"
-=======
 GLOBAL_LIBS = "-L./ -L/usr/local/lib -L/usr/X11/lib $(VSIM_LIBS) -lmuparser -lglut -lGL -lGLEW -lGLU -lpthread $(INC_BOOST_IF_NEEDED)"
->>>>>>> c6c62492c89637df99623ae4f52e00d1a7be89ab
 
 endif
 
