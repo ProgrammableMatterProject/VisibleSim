@@ -116,10 +116,13 @@ void BlockCode::processLocalEvent(EventPtr pev) {
         } break;
         case EVENT_ADD_NEIGHBOR: {
             OUTPUT << "ADD_NEIGHBOR" << endl;
-            startup();
+            // @PTHY 08/11/2017: Startup needs not be called every time a neighbor is added
+            //  This would mean that a catom is disconnected from its power source everytime its
+            //   neighborhood is updated. 
+            // startup();
         } break;
         case EVENT_TAP: {
-			int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
+            int face = (std::static_pointer_cast<TapEvent>(pev))->tappedFace;
             onTap(face);
         } break;
     }
