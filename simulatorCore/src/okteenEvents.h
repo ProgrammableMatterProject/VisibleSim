@@ -58,7 +58,9 @@ protected :
     Vector3D translation;*/
     short step;
     Vector3D initPos;
+    Vector3D initConnectorDir;
     Vector3D finalPos;
+    Vector3D finalConnectorDir;
 };
 
 //===========================================================================================================

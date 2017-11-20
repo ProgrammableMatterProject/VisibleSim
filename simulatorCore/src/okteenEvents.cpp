@@ -176,6 +176,7 @@ const string OkteenMotionsEndEvent::getEventName() {
 OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,SCLattice::Direction axisDir) {
     SCLattice* lattice = (SCLattice *)((Okteen::getWorld())->lattice);
     module = mobile;
+    OUTPUT << "Motion" << endl;
     initPos = lattice->gridToWorldPosition(mobile->position);
     switch (connector) {
         case SCLattice::Left:
@@ -296,6 +297,8 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
             }
         break;
         case SCLattice::Back:
+            OUTPUT << "BACK" <<endl;
+            initConnectorDir.set(0,-2.828427,0);
             switch (axisDir) {
                 case SCLattice::Top:
                 {   Cell3DPosition pos = mobile->position+Cell3DPosition(-1,-1,0);
@@ -305,12 +308,15 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                         finalPos = lattice->gridToWorldPosition(pos);
                     }
                 } break;
-                case SCLattice::Bottom:
-                {   Cell3DPosition pos = mobile->position+Cell3DPosition(1,-1,0);
+                case SCLattice::Bottom: {
+                    OUTPUT << "BOTTOM"<<endl;
+                    Cell3DPosition pos = mobile->position+Cell3DPosition(1,-1,0);
                     if (!lattice->isFree(pos)) {
                         finalPos = lattice->gridToWorldPosition(mobile->position+Cell3DPosition(1,0,0));
+                        finalConnectorDir.set(0,-2.828427,0);
                     } else {
                         finalPos = lattice->gridToWorldPosition(pos);
+                        finalConnectorDir.set(-2.828427,0,0);
                     }
                 } break;
                 case SCLattice::Left:
@@ -418,10 +424,26 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
 }
 
 bool OkteenMotions::nextStep(Matrix &m) {
-    Vector3D v = initPos + (step/20.0)*(finalPos-initPos);
-    m.setTranslation(v);
+    Matrix m1;
+    Vector3D v;
+    if (step<5) {
+        v = initPos + (step/4.0)*(initConnectorDir);
+        m.setTranslation(v);
+    } else {
+        v = initPos + initConnectorDir;
+        m.setTranslation(v);
+        if (step<15) {
+            v = ((step-5)/9.0)*(finalPos+finalConnectorDir-initPos-initConnectorDir);
+            m1.setTranslation(v);
+            m = m1*m;
+        } else {
+            v = finalPos+(1.0-(step-15)/5.0)*(finalConnectorDir);
+            m.setTranslation(v);
+        }
+    }
+
     step++;
-    return (step>=20);
+    return (step>20);
 }
 
 void OkteenMotions::getFinalPosition(Cell3DPosition &position) {

@@ -1,6 +1,6 @@
 
 # GENERIC BlockCodes
-#SUBDIRS = C3DRotate pong simpleColorOkteen simpleMotion
+#SUBDIRS = simpleCatoms3D simpleColorSB simpleColorC2D simpleMotion
 SUBDIRS = simpleColorOkteen simpleMotionOkteen simpleCatoms3D
 
 # MELD BlockCodes

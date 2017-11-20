@@ -18,7 +18,6 @@
 using namespace std;
 using namespace Catoms3D;
 
-
 SimpleCatom3DBlockCode::SimpleCatom3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
 	cout << "SimpleCatom3DBlockCode constructor" << endl;
 	scheduler = getScheduler();
@@ -33,6 +32,7 @@ void SimpleCatom3DBlockCode::startup() {
     static bool firstStart=true;
 	stringstream info;
 
+console << "start\n";
 	info << "Starting ";
 OUTPUT << "start SimpleCatom3DBlockCode " << catom->blockId << endl;
 	/* skeleton test */
