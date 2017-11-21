@@ -47,8 +47,8 @@ bool NeighborRestriction::isPositionUnblockedXY(const Cell3DPosition &pos) {
             sideOne = sideOneEvenXY[i];
             sideTwo = sideTwoEvenXY[i];
         }
-        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]); 
-        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]); 
+        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]);
+        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]);
         if (cellHasBlock(position1))
             isInSide1 = true;
         if (cellHasBlock(position2))

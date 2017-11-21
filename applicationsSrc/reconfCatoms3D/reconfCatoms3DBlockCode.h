@@ -53,6 +53,7 @@ public:
     void continueOtherSeeds();
     void removeSeed();
     void canFill();
+    void getStats();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:

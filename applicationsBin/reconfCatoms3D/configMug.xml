@@ -9,7 +9,7 @@
   <targetList>
     <target format="csg">
         <csg content="
-scale([0.3,0.3,0.3])    translate([17,0,0]) difference(){
+scale([0.3,0.3,0.3])   color([1,1,1])  translate([17,0,0]) difference(){
         union() {
             cylinder(98,42,42, true);
             translate([-48,0,0]) rotate([90,0,0]) scale([2.8,3.5,1]) difference() {

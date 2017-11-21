@@ -2,8 +2,8 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 5
-#define SYNC_WAIT_TIME 0 
+#define CONSTRUCT_WAIT_TIME 0
+#define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
 
@@ -31,15 +31,14 @@ ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
 }
 
 void ReconfCatoms3DBlockCode::startup() {
-    if (!BlockCode::target->isInTarget(catom->position)) {
-        catom->setColor(RED);
-    }
-    //catom->setColor(LIGHTGREY);
-    //if (catom->blockId == 1)
-        //srand(time(NULL));
+    if (catom->blockId == 1)
+        srand(time(NULL));
 
-    planningRun();
+    //planningRun();
     //stochasticRun();
+    //Cell3DPosition p(0,0,1);
+    //neighborhood->addNeighbor(p);
+    neighborhood->addAllNeighbors();
 
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
@@ -164,21 +163,39 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
       break;
     case ADDLEFTBLOCK_EVENT_ID: {
         neighborhood->addNeighbor(catom->position.addX(-1));
+        //getStats();
         break;
     }
     case ADDRIGHTBLOCK_EVENT_ID: {
         neighborhood->addNeighbor(catom->position.addX(1));
+        //getStats();
         break;
     }
     case ADDNEXTLINE_EVENT_ID: {
         neighborhood->addNextLineNeighbor();
+        //getStats();
         break;
     }
     case ADDPREVIOUSLINE_EVENT_ID: {
         neighborhood->addPreviousLineNeighbor();
+        //getStats();
         break;
     }
 	}
+}
+
+void ReconfCatoms3DBlockCode::getStats() {
+    int count = 0;
+    count += Scheduler::getScheduler()->getNbEventsById(ADDLEFTBLOCK_EVENT_ID);
+    count += Scheduler::getScheduler()->getNbEventsById(ADDRIGHTBLOCK_EVENT_ID);
+    count += Scheduler::getScheduler()->getNbEventsById(ADDNEXTLINE_EVENT_ID);
+    count += Scheduler::getScheduler()->getNbEventsById(ADDPREVIOUSLINE_EVENT_ID);
+    int nbBlocks = World::getWorld()->getNbBlocks();
+    int nMessages = 0;
+    nMessages += NeighborMessages::nMessagesGetInfo;
+    nMessages += Neighborhood::numberMessagesToAddBlock;
+    nMessages += Sync::nMessagesSyncResponse*2;
+    cout << nbBlocks*100/12607 << ';' << count << ';' << nbBlocks << ';' << nMessages << endl;
 }
 
 

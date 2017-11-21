@@ -46,7 +46,7 @@ bool SyncPrevious::needSyncToRight() {
     return false;
 }
 void SyncPrevious::handleMessage(shared_ptr<Message> message) {
-    catom->setColor(DARKORANGE);
+    //catom->setColor(BLUE);
     shared_ptr<SyncPrevious_message> syncMsg = static_pointer_cast<SyncPrevious_message>(message);
     for (int i = 0; i < 4; i++) {
         int idx = (((syncMsg->idx+i-1)%4)+4)%4;
@@ -69,7 +69,7 @@ void SyncPrevious::handleMessage(shared_ptr<Message> message) {
 }
 
 void SyncPrevious::handleMessageResponse(shared_ptr<Message> message) {
-    catom->setColor(GREEN);
+    //catom->setColor(GREEN);
     shared_ptr<SyncPrevious_response_message> syncMsg = static_pointer_cast<SyncPrevious_response_message>(message);
     for (int i = 0; i < 4; i++) {
         int idx = (((syncMsg->idx+i-1)%4)+4)%4;

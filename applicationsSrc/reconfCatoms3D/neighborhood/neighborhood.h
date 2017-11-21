@@ -48,9 +48,6 @@ public:
     void addNeighborToNextPlane();
     void addNeighborToPreviousPlane();
 
-    void tryAddNeighbors();
-    void checkSyncAndTryAddNeighbors();
-
     bool isFirstCatomOfLine();
     bool isFirstCatomOfPlane();
 
@@ -60,6 +57,12 @@ public:
     void sendMessageToAddRight();
     void sendResponseMessageToAddLeft();
     void sendResponseMessageToAddRight();
+
+    void addNeighbors();
+    void addNext();
+    void addPrevious();
+    void addLeft();
+    void addRight();
 };
 
 class AddNextLine_event : public BlockEvent {
