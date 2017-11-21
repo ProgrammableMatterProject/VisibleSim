@@ -139,6 +139,9 @@ public:
 		cout << "I'm a Scheduler" << endl;
 	}
 
+    int getNbEventsById(int id);
+    bool hasEvent(int id, unsigned long blockId);
+
 	//!< @brief Getter for Scheduler::schedulerMode
 	int getMode() { return schedulerMode; };
 	//!< @brief Setter for Scheduler::schedulerLength
