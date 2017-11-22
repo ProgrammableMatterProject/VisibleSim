@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="10,10,6">
+  <camera target="50,50,10" directionSpherical="-20,30,100" angle="45" near="0.01" far="250.0" />
+  <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="30" near="80.0" far="250.0"/>
+
+  <blockList color="128,128,128" blockSize="10,10,10">
+    <block position="4,4,0" orientation="0"/>
+    <block position="5,4,0" orientation="0"/>
+    <block position="5,5,0" orientation="0"/>
+    <block position="4,5,0" orientation="0"/>
+  </blockList>
+
+  <skeleton>
+    <skeleton_line posA="50,50,0" posB="50,50,21" blobbiness="-0.1" radius="26"/>
+    <!--        <skeleton_point pos="50,50,0" blobbiness="-0.1" radius="25"/>
+         <skeleton_point pos="50,50,40" blobbiness="-0.1" radius="10"/>-->
+  </skeleton>
+</world>
+
+
+
