@@ -116,6 +116,12 @@ public:
      */
     std::vector<Cell3DPosition> getActiveNeighborCells(const Cell3DPosition &pos);
     /**
+     * @brief Returns the location of all empty neighbor cell positions around pos
+     * @param pos The cell to consider
+     * @return A vector containing the position of all free cells around pos
+     */
+    std::vector<Cell3DPosition> getFreeNeighborCells(const Cell3DPosition &pos);        
+    /**
      * @brief Returns the location of all neighbor cells for cell pos
      * @param pos The cell to consider
      * @return A vector containing the position of all cells (empty and full) around pos

@@ -109,6 +109,18 @@ vector<Cell3DPosition> Lattice::getActiveNeighborCells(const Cell3DPosition &pos
     return activeNeighborCells;
 }
 
+vector<Cell3DPosition> Lattice::getFreeNeighborCells(const Cell3DPosition &pos) {
+    vector<Cell3DPosition> freeNeighborCells;
+
+    for (Cell3DPosition p : getNeighborhood(pos)) { // Check if each neighbor cell has an active node on it
+        if (isFree(p)) {
+            freeNeighborCells.push_back(p);         // Add its position to the result
+        }
+    }
+
+    return freeNeighborCells;
+}
+
 vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
     vector<Cell3DPosition> neighborhood;
     vector<Cell3DPosition> relativeNCells =
@@ -346,9 +358,9 @@ Cell3DPosition FCCLattice::worldToGridPosition(const Vector3D &pos) {
  ************************************************************/
 
 const string FCCLattice::directionName[] = {"Con0", "Con1", "Con2",
-                                                               "Con3", "Con4", "Con5",
-                                                               "Con6", "Con7", "Con8",
-                                                               "Con9", "Con10", "Con11"};
+                                            "Con3", "Con4", "Con5",
+                                            "Con6", "Con7", "Con8",
+                                            "Con9", "Con10", "Con11"};
 
 int FCCLattice::getOppositeDirection(int d) {
     switch (Direction(d)) {
