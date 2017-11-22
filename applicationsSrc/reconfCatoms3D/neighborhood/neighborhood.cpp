@@ -2,8 +2,8 @@
 #include "neighborRestriction.h"
 #include "catoms3DWorld.h"
 
-#define MSG_TIME rand()%100
-#define MSG_TIME_ADD 10000+rand()%10000
+#define MSG_TIME rand()%10
+#define MSG_TIME_ADD 100+rand()%10
 
 int Neighborhood::numberBlockedModules = 0;
 int Neighborhood::numberMessagesToAddBlock = 0;

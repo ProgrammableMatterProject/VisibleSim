@@ -1,7 +1,7 @@
 #include "neighborMessages.h"
 
-#define MSG_TIME rand()%100
-#define MSG_TIME_ADD 10000+rand()%10000
+#define MSG_TIME rand()%10
+#define MSG_TIME_ADD 100+rand()%100
 //#define MSG_TIME 0000
 
 int NeighborMessages::nMessagesGetInfo = 0;

@@ -24,7 +24,7 @@ void SyncPlaneManager::planeFinishedAck()
     if (!reconf->planeFinishedAck) {
         if (syncPlane->isSeed()) {
             setSeedNextPlaneCentralized();
-            tryAddNextPlane();
+            //tryAddNextPlane();
         }
         neighborMessages->sendMessagePlaneFinishedAck();
     }
@@ -40,7 +40,8 @@ void SyncPlaneManager::tryAddNextPlane()
 
 void SyncPlaneManager::setSeedNextPlaneCentralized()
 {
-    catom->setColor(BLACK);
+    //catom->setColor(WHITE);
+    neighborhood->addNeighborToNextPlane();
     reconf->syncPlaneNode = new SyncPlane_node(catom->blockId, catom->position[2]+1);
     SyncPlane_node_manager::root->add(reconf->syncPlaneNode, reconf->syncPlaneNodeParent);
 }

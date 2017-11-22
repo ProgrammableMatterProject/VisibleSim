@@ -47,6 +47,7 @@ public:
     void syncPreviousMessage(shared_ptr<Sync_message> recv_message);
     void syncResponse(shared_ptr<Sync_response_message> recv_message);
     void planeFinishedAck();
+    void startTree();
     void tryAddNextPlane();
     void planeFinished();
     void setSeedNextPlaneCentralized();

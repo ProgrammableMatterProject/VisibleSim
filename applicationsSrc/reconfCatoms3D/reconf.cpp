@@ -79,7 +79,6 @@ bool Reconf::isSeedPrevious()
 bool Reconf::checkPlaneCompleted()
 {
     if (isHighest()) {
-        //catom->setColor(RED);
         return true;
     }
     return false;
@@ -91,7 +90,7 @@ bool Reconf::isHighestOfBorder(int idx) {
 
     while(currentPos != catom->position) {
         if (currentPos[1] > catom->position[1] ||
-                (currentPos[1] == catom->position[1] && currentPos[0] > catom->position[0]))
+                (currentPos[1] == catom->position[1] && currentPos[0] < catom->position[0]))
             return false;
         getNextBorderNeighbor(idx, currentPos);
     }
