@@ -72,6 +72,12 @@
 #define EVENT_OKTEEN_STOP	    					1114
 #define EVENT_OKTEEN_STEP		    				1115
 #define EVENT_OKTEEN_END			    			1116
+// Catoms3D Teleportation
+#define EVENT_TELEPORTATION_START					1117
+#define EVENT_TELEPORTATION_STOP					1118
+#define EVENT_TELEPORTATION_STEP					1119
+#define EVENT_TELEPORTATION_END						1120
+
 
 
 #endif /* UNIQUEEVENTSID_H_ */
