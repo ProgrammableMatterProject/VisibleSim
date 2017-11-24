@@ -49,8 +49,9 @@ public:
 private:
     std::list<P2PNetworkInterface*> dfsQueue; //!< Stack of next interfaces to send message to DFS-style
     Cell3DPosition meltTargetPosition; //!< Position to be filled by the module for the melt phase
+    std::list<Cell3DPosition> parentPathPositions; //!< set of path positions given by the module's parent for the current module melt
+    std::list<Cell3DPosition> myPathPositions; //!< set of path positions around the current module
 
-    std::set<Cell3DPosition, posCmp>* currentPath; //!< set of path positions for the current module melt
     
     bool amIArticulationPoint;
     bool isTail;

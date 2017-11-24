@@ -169,7 +169,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg, P2PNetworkInt
         } break;
 
         case MSG_MELT_FIND_MOBILE_MODULE: {
-            std::set<Cell3DPosition, posCmp> *path =
+            std::list<Cell3DPosition, posCmp> *path =
                 *(std::static_pointer_cast<MessageOf<std::set<Cell3DPosition, posCmp>*>>(msg)->getData());
 
             resetDFSQueue();
