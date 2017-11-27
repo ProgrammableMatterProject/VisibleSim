@@ -433,6 +433,71 @@ public:
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
 };
 
+
+/*! @brief 3D Face-Centered Cubic Lattice with new coordinates system
+ *
+ * Used by Catoms3D
+ *
+ */
+class FCCLattice2 : public Lattice3D {
+    // The index i of the relative position in the vector corresponds to the cell on interface i of a block
+    vector<Cell3DPosition> nCells{
+        Cell3DPosition(1,0,0),  // 0
+        Cell3DPosition(0,1,0), // 1
+        Cell3DPosition(0,0,1), // 2
+        Cell3DPosition(-1,0,1), // 3
+        Cell3DPosition(-1,-1,1), // 4
+        Cell3DPosition(0,-1,1), // 5
+        Cell3DPosition(-1,0,0), // 6
+        Cell3DPosition(0,-1,0), // 7
+        Cell3DPosition(0,0,-1), // 8
+        Cell3DPosition(1,0,-1), // 9
+        Cell3DPosition(1,1,-1), // 10
+        Cell3DPosition(0,1,-1), // 11
+        }; //!< Vector containing relative position of neighboring cells;
+
+    static const string directionName[];
+public:
+    enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
+                    Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    //!< @copydoc Lattice::getOppositeDirection
+    virtual int getOppositeDirection(int d);
+    //!< @copydoc Lattice::getDirectionString
+    virtual string getDirectionString(int d);
+    
+    /**
+     * @brief FCCLattice2 constructor. 
+     */
+    FCCLattice2();
+    /**
+     * @brief FCCLattice2 constructor. 
+     * @param gsz The size of the grid
+     * @param gsc The real size of a block on the grid, also equal to the scale of the grid
+     */
+    FCCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc);
+    /**
+     * @brief FCCLattice destructor. 
+     */
+    ~FCCLattice2();
+    
+    /**
+     * @copydoc Lattice::gridToWorldPosition
+     */
+    virtual Vector3D gridToWorldPosition(const Cell3DPosition &pos);
+    /**
+     * @copydoc Lattice::worldToGridPosition
+     */
+    virtual Cell3DPosition worldToGridPosition(const Vector3D &pos);
+    /**
+     * @copydoc Lattice::getRelativeConnectivity
+     */
+    virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
+    /**
+     * @copydoc Lattice::getMaxNumNeighbors
+     */    
+    virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+};
+
 /*! @brief 3D Simple Cubic Lattice
  *
  * Used by BlinkyBlocks and RobotBlocks

@@ -18,7 +18,7 @@ using namespace std;
 namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
-    : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
+    : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice2::MAX_NB_NEIGHBORS) {
     OUTPUT << "Catoms3DBlock constructor" << endl;
 
     orientationCode=0; // connector 0 is along X axis
