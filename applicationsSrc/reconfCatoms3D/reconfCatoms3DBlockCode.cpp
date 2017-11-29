@@ -5,7 +5,6 @@
 #define CONSTRUCT_WAIT_TIME 5
 #define SYNC_WAIT_TIME 5
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
-#define PLANE_WAIT_TIME 0
 
 using namespace std;
 using namespace Catoms3D;
@@ -140,7 +139,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case PLANE_FINISHED_ACK_MSG_ID:
             {
                 syncPlaneManager->planeFinishedAck();
-                //continueOtherSeeds();
                 if (syncPlane->isSeed()) {
                     if(catom->getInterface(catom->position.addZ(1)) == NULL) {
                         neighborhood->addNeighborToNextPlane();
@@ -263,7 +261,7 @@ void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> rec
     }
 }
 
-void ReconfCatoms3DBlockCode::continueOtherSeeds()
+void ReconfCatoms3DBlockCode::planeContinue()
 {
     int continueBlockId = SyncPlane_node_manager::root->canContinue(catom->position[2]);
     if (continueBlockId != 0) {
