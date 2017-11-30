@@ -1,4 +1,5 @@
 #include "glBlock.h"
+#include "world.h"
 
 #include <sstream>
 
@@ -71,7 +72,7 @@ string GlBlock::getInfo() {
 
 string GlBlock::getPopupInfo() {
     ostringstream out;
-	out << blockId << "\n";
+	out << blockId << " - " << World::getWorld()->lattice->worldToGridPosition(getPosition()) <<"\n";
 
 	return out.str();
 }

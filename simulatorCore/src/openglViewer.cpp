@@ -92,7 +92,7 @@ void GlutContext::init(int argc, char **argv) {
 											   "../../simulatorCore/resources/textures/UITextures/fenetre_onglet.tga");
 		debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,
 												 "../../simulatorCore/resources/textures/UITextures/fenetre_ongletDBG.tga");
-		popup = new GlutPopupWindow(NULL,0,0,40,30);
+		popup = new GlutPopupWindow(NULL,0,0,140,30);
 	}
 }
 
