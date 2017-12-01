@@ -15,6 +15,7 @@
 #include "meltSortGrowBlockCode.h"
 #include "scheduler.h"
 #include "events.h"
+#include "trace.h"
 #include "teleportationEvents.h"
 #include "meltSortGrowUtils.h"
 #include "APLTypes.h"
@@ -53,35 +54,36 @@ void MeltSortGrowBlockCode::APLabellingInitialization() {
             neighbors.push_back(itf);
         }
     }
+}
 
-    if (catom->blockId == 1) {
-        source = true;
-        catom->setColor(RED);
+void MeltSortGrowBlockCode::APLabellingStart() {
+    source = true;
+    catom->setColor(RED);
         
-        if (state == APLState::Inactive) {
-            state = APLState::Active;;
-            lDfn = dfn = dfnCnt = 1;
-            APLabellingSearch();
+    if (state == APLState::Inactive) {
+        state = APLState::Active;;
+        lDfn = dfn = dfnCnt = 1;
+        APLabellingSearch();
                 
-            // send VISITED(DFN(i)) to all nodes in (Neighbors(i) - Sons(i))
-            for (auto const& module : neighbors) {
-                if (!sons.count(module))
-                    sendMessage("visited",
-                                new MessageOf<int>(MSG_MELT_APL_VISITED, dfn),
-                                module, 100, 0);
-            }
+        // send VISITED(DFN(i)) to all nodes in (Neighbors(i) - Sons(i))
+        for (auto const& module : neighbors) {
+            if (!sons.count(module))
+                sendMessage("visited",
+                            new MessageOf<int>(MSG_MELT_APL_VISITED, dfn),
+                            module, 100, 0);
         }
     }
-
 }
 
 
 void MeltSortGrowBlockCode::APLabellingSearch() {
     P2PNetworkInterface *unprocessedNeighbor = NULL;
-
+    
     for (const auto& element : flag) {
-        if (element.second == false) {
+        if (!element.second) {
             unprocessedNeighbor = element.first;
+            cout << "catom " << catom->blockId << " found unpc nghbr "
+                 << element.first->getConnectedBlockId() << endl;
             break;
         }
     }
@@ -108,8 +110,7 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
         sendMessage("Echo",
                     new MessageOf<EchoPayload>(MSG_MELT_APL_ECHO,
                                                EchoPayload(lDfn, dfnCnt)),
-                    father, 100, 0);
-        
+                    father, 100, 0);        
     }
     
 }
@@ -119,6 +120,64 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
     stringstream info;
 
     switch (msg->type) {
+
+        case MSG_ROOT_UPDATE: {
+            Cell3DPosition candidateRoot =
+                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
+        
+            if (challengeRootFitness(candidateRoot)) {
+                currentRootPosition = candidateRoot;
+            
+                // Broadcast new root candidate to every neighbor except sender
+                sendMessageToAllNeighbors("RootUpdate",
+                                          new MessageOf<Cell3DPosition>(MSG_ROOT_UPDATE,
+                                                                        currentRootPosition),
+                                          0, 100, 1, sender);
+                expectedConfirms = catom->getNbNeighbors() - 1; // Ignore parent
+                parent = sender;
+
+                if (!expectedConfirms) {
+                    sendMessage("RootConfirmation",
+                                new MessageOf<Cell3DPosition>(MSG_ROOT_CONFIRM,
+                                                              currentRootPosition),
+                                parent, 0, 100);
+                }    
+            } else {
+                // Received best root twice, send a NACK
+                sendMessage("RootConfirmation",
+                            new MessageOf<Cell3DPosition>(MSG_ROOT_NCONFIRM,
+                                                          candidateRoot),
+                            sender, 0, 100);
+            }
+        } break;
+
+        case MSG_ROOT_CONFIRM:
+            // If confirmation, first add to children and then proceed as in NCONFIRM
+            // children.push_back(sender);
+        case MSG_ROOT_NCONFIRM:{
+            Cell3DPosition confirmedRoot =
+                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
+
+            if (confirmedRoot == currentRootPosition)
+                --expectedConfirms;
+            
+            if (!expectedConfirms) {
+                if (parent)
+                    sendMessage("RootConfirmation",
+                                new MessageOf<Cell3DPosition>(MSG_ROOT_CONFIRM,
+                                                              currentRootPosition),
+                                parent, 0, 100);
+                else {
+                    if (catom->position == currentRootPosition) { // Election Complete, module is root
+                        // Proceed to next stage
+                        isTail = true;
+                        meltOneModule();                        
+                    }
+                }
+            }    
+        } break;
+
+        
         case MSG_MELT_APL_START: {
             if (state == APLState::Inactive) {
                 state = APLState::Active;;
@@ -146,11 +205,12 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                 state = APLState::Active;
                 father = sender;
                 lDfn = dfn = dfnCnt = fatherDfnCnt;
+
                 APLabellingSearch();
                 
                 // send VISITED(DFN(i)) to all nodes in (Neighbors(i) -Sons(i)-Father(i))
                 for (auto const& module : neighbors) {
-                    if (!sons.count(module) && !father)
+                    if (!sons.count(module) && module != father)
                         sendMessage("visited",
                                     new MessageOf<int>(MSG_MELT_APL_VISITED, dfn),
                                     module, 100, 0);
@@ -192,7 +252,8 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
             flag[sender] = true;
             
             if (receivedDfn < minDfn) {
-                minDfn = receivedDfn; minSdr = sender;
+                minDfn = receivedDfn;
+                minSdr = sender;
             }
             
             bool senderIsChild = sons.count(sender);
@@ -210,13 +271,13 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
 void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
     MessagePtr message;
     stringstream info;
-
+	
     switch (pev->eventType) {
         case EVENT_RECEIVE_MESSAGE: {
             message =
                 (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
             P2PNetworkInterface * recv_interface = message->destinationInterface;
-
+            
             // Handover to global message handler
             processReceivedMessage(message, recv_interface);
         } break;
@@ -239,25 +300,25 @@ bool MeltSortGrowBlockCode::challengeRootFitness(Cell3DPosition& candidateRoot) 
 // Locate the root of the algorithm
 // i.e., find the left-most module in the whole ensemble (perhaps extend to lowest-leftmost for 3D)
 void MeltSortGrowBlockCode::determineRoot() {
-    // // Every node keeps its currently known candidate root in a variable
-    // //  and updates it when it finds a better potential root for (min(x) & min(y) & min(z) in this order)
-    // //  when root is updated, the block broadcast the new root, and then expects an ack from all its neighbors
-    // currentRootPosition = catom->position;
+    // Every node keeps its currently known candidate root in a variable
+    //  and updates it when it finds a better potential root for (min(x) & min(y) & min(z) in this order)
+    //  when the root is updated, the block broadcasts the new root, and then expects an ack from all of its neighbors
+    currentRootPosition = catom->position;
 
-    // electionClosed = false;
-    // parent = NULL;
-    // expectedConfirms = catom->getNbNeighbors();
+    parent = NULL;
+    expectedConfirms = catom->getNbNeighbors();
     
-    // // Send a message to every neighbor that includes the block's own location, as a potential root
-    // sendMessageToAllNeighbors("RootUpdate",
-    //                           new MessageOf<Cell3DPosition>(MSG_ROOT_UPDATE,
-    //                                                         currentRootPosition),
-    //                           0, 100, 0);
+    // Send a message to every neighbor that includes the block's own location, as a potential root
+    sendMessageToAllNeighbors("RootUpdate",
+                              new MessageOf<Cell3DPosition>(MSG_ROOT_UPDATE,
+                                                            currentRootPosition),
+                              0, 100, 0);
 }
 
 // Initiates the Melt phase of the algorithm by the root node
 //  i.e., decomposition into an intermediate shape
 void MeltSortGrowBlockCode::meltOneModule() {
+    APLabellingStart();
 }
 
 // Initiates the Sort phase of the algorithm

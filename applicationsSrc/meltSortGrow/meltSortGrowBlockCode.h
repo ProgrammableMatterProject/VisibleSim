@@ -62,9 +62,6 @@ private:
     Cell3DPosition currentRootPosition;
     unsigned int expectedConfirms;
     P2PNetworkInterface *parent;     //!< Connector connected to the module to confirm to
-    std::list<P2PNetworkInterface*> children; //!< List of children in the tree
-    bool electionClosed;
-
 
     /**** MELT *****/
 
@@ -74,7 +71,7 @@ private:
     int lDfn = 0; //!< Lowest DFN reachable from tis node using a path of descendants followed by at most one back edge
     int dfnCnt = 0; //!< DFN counter at this node
     int minDfn = INT_MAX; //!< Minimum FDN received by node from its ancestors other than its father
-    P2PNetworkInterface *minSdr; //!< Id of the node which sent the minDfn
+    P2PNetworkInterface *minSdr = NULL; //!< Id of the node which sent the minDfn
     enum APLState { Inactive, Active }; //!< Possible node states in AP labelling algorithms
     APLState state = APLState::Inactive;
     P2PNetworkInterface *father = NULL; //!< Connector connected to the node's father
@@ -89,7 +86,8 @@ private:
      */
     void APLabellingInitialization();
     void APLabellingSearch();
-    
+    void APLabellingStart();
+
     bool amIArticulationPoint; //!< Label indicating whether current module is an articulation point
     bool isTail; //!< Label indicating whether current module is tail of the decomposition line, there should be only one tail module at a given time
 
