@@ -11,5 +11,6 @@
         <block position="12,11,5" color="128,128,128" rotation="0" />
         <block position="11,12,5" color="128,128,128" rotation="0" />
         <block position="12,12,5" color="128,128,128" rotation="0" />
+        <block position="12,10,4" color="128,128,128" rotation="0" />
     </blockList>
 </world>
