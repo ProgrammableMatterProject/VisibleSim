@@ -48,52 +48,52 @@ int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
 
 void GlutContext::init(int argc, char **argv) {
-    if (GUIisEnabled) {
-        glutInit(&argc,argv);
-        glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+	if (GUIisEnabled) {
+		glutInit(&argc,argv);
+		glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_CONTINUE_EXECUTION);
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 
-        // creation of a new graphic window
-        glutInitWindowPosition(0, 0);
-        glutInitWindowSize(screenWidth,screenHeight);
-        if (glutCreateWindow("VisibleSim") == GL_FALSE) {
-            puts("ERREUR : echec à la création de la fenêtre graphique");
-            exit(EXIT_FAILURE);
-        }
+		// creation of a new graphic window
+		glutInitWindowPosition(0, 0);
+		glutInitWindowSize(screenWidth,screenHeight);
+		if (glutCreateWindow("VisibleSim") == GL_FALSE) {
+			puts("ERREUR : echec à la création de la fenêtre graphique");
+			exit(EXIT_FAILURE);
+		}
 
-        if(fullScreenMode) {
-            glutFullScreen();
-        }
+		if(fullScreenMode) {
+			glutFullScreen();
+		}
 
-        initShaders();
+		initShaders();
 
-        ////// GL parameters /////////////////////////////////////
-        glEnable(GL_DEPTH_TEST);
-        glShadeModel(GL_SMOOTH);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        glEnable(GL_NORMALIZE);
+		////// GL parameters /////////////////////////////////////
+		glEnable(GL_DEPTH_TEST);
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glEnable(GL_NORMALIZE);
 
-        glClearColor(0.3f,0.3f,0.8f,0.0f);
+		glClearColor(0.3f,0.3f,0.8f,0.0f);
 
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
-        glEnable(GL_NORMALIZE);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glEnable(GL_NORMALIZE);
 
-        glutReshapeFunc(reshapeFunc);
-        glutDisplayFunc(drawFunc);
-        glutMouseFunc(mouseFunc);
-        glutMotionFunc(motionFunc);
-        glutPassiveMotionFunc(passiveMotionFunc);
-        glutKeyboardFunc(keyboardFunc);
-        glutIdleFunc(idleFunc);
+		glutReshapeFunc(reshapeFunc);
+		glutDisplayFunc(drawFunc);
+		glutMouseFunc(mouseFunc);
+		glutMotionFunc(motionFunc);
+		glutPassiveMotionFunc(passiveMotionFunc);
+		glutKeyboardFunc(keyboardFunc);
+		glutIdleFunc(idleFunc);
 
-        mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,
-                                               "../../simulatorCore/resources/textures/UITextures/fenetre_onglet.tga");
-        debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,
-                                                 "../../simulatorCore/resources/textures/UITextures/fenetre_ongletDBG.tga");
-        popup = new GlutPopupWindow(NULL,0,0,40,30);
-    }
+		mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,
+											   "../../simulatorCore/resources/textures/UITextures/fenetre_onglet.tga");
+		debugWindow = new GlutSlidingDebugWindow(screenWidth-40,60,40,screenHeight-60,
+												 "../../simulatorCore/resources/textures/UITextures/fenetre_ongletDBG.tga");
+		popup = new GlutPopupWindow(NULL,0,0,140,30);
+	}
 }
 
 void GlutContext::deleteContext() {
