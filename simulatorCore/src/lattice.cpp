@@ -194,6 +194,12 @@ vector<Cell3DPosition> HLattice::getRelativeConnectivity(const Cell3DPosition &p
     return IS_EVEN(p[2]) ? nCellsEven : nCellsOdd;
 }
 
+Cell3DPosition HLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
+{
+    return pRef + getRelativeConnectivity(pRef)[direction];
+}
+
+
 /************************************************************
  *   HLattice::NeighborDirections
  ************************************************************/
@@ -251,6 +257,11 @@ Cell3DPosition SLattice::worldToGridPosition(const Vector3D &pos) {
     return Cell3DPosition(pos[0] / gridScale[0],
                           pos[1] / gridScale[1],
                           0);
+}
+
+Cell3DPosition SLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
+{
+    return pRef + nCells[direction];
 }
 
 /************************************************************
@@ -387,6 +398,12 @@ string FCCLattice::getDirectionString(int d) {
     return directionName[d];
 }
 
+Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
+{
+    return pRef + getRelativeConnectivity(pRef)[direction];
+}
+
+
 bool FCCLattice::lockCell(const Cell3DPosition &pos) {
     if (!isInGrid(pos)) return true;
 
@@ -507,6 +524,11 @@ int SCLattice::getOppositeDirection(int d) {
 
 string SCLattice::getDirectionString(int d) {
     return directionName[d];
+}
+
+Cell3DPosition SCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
+{
+    return pRef + nCells[direction];
 }
 
 /********************* BCLattice *********************/

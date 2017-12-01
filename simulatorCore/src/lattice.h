@@ -157,6 +157,15 @@ public:
      * @return the maximum number of neighbor for the callee lattice
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; };
+
+    /**
+     * @brief Returns the Cell3DPosition in some direction from a reference cell
+     *
+     * @return Position of the cell in direction "direction" from cell pRef
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction) = 0;
+    
     virtual void glDraw() {};
 };
 
@@ -199,6 +208,13 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() = 0;
+
+    
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction) = 0;
 };
 
 /*! @brief 3-Dimensional Lattice abstract class
@@ -240,6 +256,12 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() = 0;
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction) = 0;
 };
 
 /*! @brief Square 2D Lattice
@@ -294,6 +316,12 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
 };
 
 /*! @brief Hexagonal 2D Lattice
@@ -360,6 +388,12 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
 };
 
 /*! @brief 3D Face-Centered Cubic Lattice
@@ -441,6 +475,13 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
+    
     bool lockCell(const Cell3DPosition &pos);
     bool unlockCell(const Cell3DPosition &pos);
     unsigned short initTabDistances();
@@ -502,6 +543,12 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
 };
 
 /*! @brief 3D Broadcast Lattice
@@ -551,6 +598,16 @@ public:
      * @copydoc Lattice::getMaxNumNeighbors
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction)
+    {
+         // Does not apply to mobile-type modular robots
+         return Cell3DPosition(0,0,0);
+    }
 };
 
 
