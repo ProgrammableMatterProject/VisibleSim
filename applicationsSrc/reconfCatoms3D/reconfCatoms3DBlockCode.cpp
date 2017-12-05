@@ -2,8 +2,8 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 5
-#define SYNC_WAIT_TIME 5
+#define CONSTRUCT_WAIT_TIME 0
+#define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 
 using namespace std;
@@ -37,7 +37,7 @@ void ReconfCatoms3DBlockCode::startup() {
     //stochasticRun();
     //neighborhood->addAllNeighbors();
 
-    startTree();
+    //startTree();
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
 
@@ -146,19 +146,9 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 }
                 break;
             }
-            case CANFILLLEFT_MESSAGE_ID:
-            {
-                neighborhood->sendResponseMessageToAddLeft();
-                break;
-            }
             case CANFILLLEFTRESPONSE_MESSAGE_ID:
             {
                 neighborhood->addNeighborToLeft();
-                break;
-            }
-            case CANFILLRIGHT_MESSAGE_ID:
-            {
-                neighborhood->sendResponseMessageToAddRight();
                 break;
             }
             case CANFILLRIGHTRESPONSE_MESSAGE_ID:
@@ -169,6 +159,29 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
           }
       }
       break;
+    case EVENT_ADD_NEIGHBOR: {
+        uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
+        if (!reconf->init)
+            break;
+
+        if (face == 1 || face == 6)
+        {
+            if (catom->getInterface(1)->isConnected() &&
+                    catom->getInterface(6)->isConnected())
+            {
+                neighborhood->sendResponseMessageToAddLeft();
+            }
+        }
+        if (face == 7 || face == 0)
+        {
+            if (catom->getInterface(7)->isConnected() &&
+                    catom->getInterface(0)->isConnected())
+            {
+                neighborhood->sendResponseMessageToAddRight();
+            }
+        }
+        break;
+    }
     case ADDLEFTBLOCK_EVENT_ID: {
         neighborhood->addNeighbor(catom->position.addX(-1));
         //getStats();

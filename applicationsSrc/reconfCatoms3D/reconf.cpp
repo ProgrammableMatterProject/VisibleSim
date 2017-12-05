@@ -3,6 +3,7 @@
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
+    init = false;
     seedNext = false;
     seedPrevious = false;
     planeFinished = false;

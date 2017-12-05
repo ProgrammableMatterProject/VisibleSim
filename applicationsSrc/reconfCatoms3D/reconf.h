@@ -37,6 +37,7 @@ public:
     bool planeParent;
     bool planeFinished;
     bool planeFinishedAck;
+    bool init;
 
     SyncPlane_node *syncPlaneNodeParent;
     SyncPlane_node *syncPlaneNode;

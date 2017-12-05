@@ -53,8 +53,6 @@ public:
 
     void addEventAddNextLineNeighbor();
     void addEventAddPreviousLineNeighbor();
-    void sendMessageToAddLeft();
-    void sendMessageToAddRight();
     void sendResponseMessageToAddLeft();
     void sendResponseMessageToAddRight();
 

@@ -90,8 +90,6 @@ void Neighborhood::addLeft() {
         }
         else if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1)) || !catom->getInterface(catom->position.addY(-1))->isConnected())
             addNeighborToLeft();
-        else
-            sendMessageToAddLeft();
     }
 }
 
@@ -104,8 +102,6 @@ void Neighborhood::addRight() {
         }
         else if (!BlockCode::target->isInTarget(catom->position.addY(1).addX(1)) || !catom->getInterface(catom->position.addY(1))->isConnected())
             addNeighborToRight();
-        else
-            sendMessageToAddRight();
     }
 }
 

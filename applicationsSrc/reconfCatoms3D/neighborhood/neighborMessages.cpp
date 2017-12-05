@@ -19,6 +19,7 @@ NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighb
 
 void NeighborMessages::init()
 {
+    reconf->init = true;
     if (syncNext->needSyncToRight() && !syncNext->isInternalBorder(1)) {
         reconf->setSeedNext();
     }
@@ -28,7 +29,7 @@ void NeighborMessages::init()
     }
 
     neighborhood->addNeighbors();
-    trySendMessagePlaneFinished();
+    //trySendMessagePlaneFinished();
 }
 
 void NeighborMessages::checkLineParent() {
@@ -50,8 +51,8 @@ void NeighborMessages::handleNewCatomMsg(MessagePtr message)
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
 
-    neighborhood->sendResponseMessageToAddLeft();
-    neighborhood->sendResponseMessageToAddRight();
+    //neighborhood->sendResponseMessageToAddLeft();
+    //neighborhood->sendResponseMessageToAddRight();
 
     sendMessagesOnQueue(recv_message->sourceInterface->hostBlock->position);
 }
@@ -62,8 +63,8 @@ void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
 
-    neighborhood->sendResponseMessageToAddLeft();
-    neighborhood->sendResponseMessageToAddRight();
+    //neighborhood->sendResponseMessageToAddLeft();
+    //neighborhood->sendResponseMessageToAddRight();
 
     sendMessagesOnQueue(message->sourceInterface->hostBlock->position);
 }
