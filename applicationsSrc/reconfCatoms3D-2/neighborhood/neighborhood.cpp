@@ -81,6 +81,8 @@ void Neighborhood::addNeighbors()
 }
 
 void Neighborhood::addNextPlane() {
+    //if (catom->blockId == 158)
+        //cout << reconf->isPlaneSeed() << ' '  << reconf->canAddNextPlaneSeed() << endl;
     if (reconf->isPlaneSeed() && reconf->canAddNextPlaneSeed()) {
         addNeighborToNextPlane();
     }
@@ -90,7 +92,7 @@ void Neighborhood::addLeft() {
     if(BlockCode::target->isInTarget(catom->position.addX(-1)) &&
        !catom->getInterface(catom->position.addX(-1))->isConnected()) {
         if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1)) || !catom->getInterface(catom->position.addY(-1))->isConnected()) {
-            if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete())
+            if (reconf->floor == 0 || (reconf->confirmWestLeft && reconf->confirmWestRight))
                 addNeighborToLeft();
         }
         else {
@@ -115,7 +117,14 @@ void Neighborhood::addRight() {
 }
 
 void Neighborhood::addNext() {
-    if (reconf->isSeedNext()) {
+    if (reconf->isSeedNext() && ((reconf->confirmNorthLeft && reconf->confirmNorthRight) || reconf->floor == 0)) {
+        //if (catom->blockId == 1838) {
+            //cout << "----" << endl;
+            //cout << reconf->isSeedNext() << endl;
+            //cout << reconf->confirmNorthLeft << endl;
+            //cout << reconf->confirmNorthRight << endl;
+            //cout << reconf->floor << endl;
+        //}
         addEventAddNextLineNeighbor();
         //catom->setColor(CYAN);
     }
@@ -243,4 +252,102 @@ bool Neighborhood::addNeighbor(Cell3DPosition pos)
         return true;
     }
     return false;
+}
+
+
+void Neighborhood::checkDependencies() {
+    if (catom->position[2]%2) {
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(2))))
+            reconf->confirmNorthLeft = true;
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(2).addX(1)))) {
+            reconf->confirmNorthRight = true;
+        }
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(-1)))) {
+            reconf->confirmWestLeft = true;
+        }
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1).addX(-1)))) {
+            reconf->confirmWestRight = true;
+        }
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(-1).addX(1)))) {
+            reconf->confirmSouthLeft = true;
+        }
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(-1)))) {
+            reconf->confirmSouthRight = true;
+        }
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1).addX(2)))) {
+            reconf->confirmEastLeft = true;
+        }
+        if (!(BlockCode::target->isInTarget(catom->position.addZ(-1).addX(2)))) {
+            reconf->confirmEastRight = true;
+        }
+    }
+    else {
+        if (!BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1).addX(-1)))
+            reconf->confirmNorthLeft = true;
+        if (!BlockCode::target->isInTarget(catom->position.addZ(-1).addY(1)))
+            reconf->confirmNorthRight = true;
+    }
+}
+void Neighborhood::sendMessageToNextPlaneNorthLeft() {
+    if (catom->getInterface(5)->isConnected()) {
+        NextPlaneConfirmationNorthLeft_message *msg = new NextPlaneConfirmationNorthLeft_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(5)));
+        numberMessagesToAddBlock++;
+    }
+}
+
+void Neighborhood::sendMessageToNextPlaneNorthRight() {
+    if (catom->getInterface(4)->isConnected()) {
+        NextPlaneConfirmationNorthRight_message *msg = new NextPlaneConfirmationNorthRight_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(4)));
+        numberMessagesToAddBlock++;
+    }
+}
+
+void Neighborhood::sendMessageToNextPlaneWestLeft() {
+    if (catom->getInterface(2)->isConnected()) {
+        NextPlaneConfirmationWestLeft_message *msg = new NextPlaneConfirmationWestLeft_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(2)));
+        numberMessagesToAddBlock++;
+    }
+}
+
+void Neighborhood::sendMessageToNextPlaneWestRight() {
+    if (catom->getInterface(5)->isConnected()) {
+        NextPlaneConfirmationWestRight_message *msg = new NextPlaneConfirmationWestRight_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(5)));
+        numberMessagesToAddBlock++;
+    }
+}
+
+void Neighborhood::sendMessageToNextPlaneSouthLeft() {
+    if (catom->getInterface(3)->isConnected()) {
+        NextPlaneConfirmationSouthLeft_message *msg = new NextPlaneConfirmationSouthLeft_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(3)));
+        numberMessagesToAddBlock++;
+    }
+}
+
+void Neighborhood::sendMessageToNextPlaneSouthRight() {
+    if (catom->getInterface(2)->isConnected()) {
+        NextPlaneConfirmationSouthRight_message *msg = new NextPlaneConfirmationSouthRight_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(2)));
+        numberMessagesToAddBlock++;
+    }
+}
+
+void Neighborhood::sendMessageToNextPlaneEastLeft() {
+    if (catom->getInterface(4)->isConnected()) {
+        NextPlaneConfirmationEastLeft_message *msg = new NextPlaneConfirmationEastLeft_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(4)));
+        numberMessagesToAddBlock++;
+    }
+}
+
+void Neighborhood::sendMessageToNextPlaneEastRight() {
+    if (catom->getInterface(3)->isConnected()) {
+        NextPlaneConfirmationEastRight_message *msg = new NextPlaneConfirmationEastRight_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(3)));
+        numberMessagesToAddBlock++;
+    }
 }

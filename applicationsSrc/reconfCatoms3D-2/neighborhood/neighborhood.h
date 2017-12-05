@@ -17,6 +17,15 @@
 #define ADDLEFTBLOCK_EVENT_ID 12007
 #define ADDRIGHTBLOCK_EVENT_ID 12008
 
+#define NEXTPLANECONFIRMATION_NORTHLEFT_MESSAGE_ID 12009
+#define NEXTPLANECONFIRMATION_NORTHRIGHT_MESSAGE_ID 12010
+#define NEXTPLANECONFIRMATION_WESTLEFT_MESSAGE_ID 12011
+#define NEXTPLANECONFIRMATION_WESTRIGHT_MESSAGE_ID 12012
+#define NEXTPLANECONFIRMATION_SOUTHLEFT_MESSAGE_ID 12013
+#define NEXTPLANECONFIRMATION_SOUTHRIGHT_MESSAGE_ID 12014
+#define NEXTPLANECONFIRMATION_EASTLEFT_MESSAGE_ID 12015
+#define NEXTPLANECONFIRMATION_EASTRIGHT_MESSAGE_ID 12016
+
 #include "cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
@@ -60,6 +69,17 @@ public:
     void addLeft();
     void addRight();
     void addNextPlane();
+
+
+    void checkDependencies();
+    void sendMessageToNextPlaneNorthLeft();
+    void sendMessageToNextPlaneNorthRight();
+    void sendMessageToNextPlaneWestLeft();
+    void sendMessageToNextPlaneWestRight();
+    void sendMessageToNextPlaneSouthLeft();
+    void sendMessageToNextPlaneSouthRight();
+    void sendMessageToNextPlaneEastLeft();
+    void sendMessageToNextPlaneEastRight();
 };
 
 class AddNextLine_event : public BlockEvent {
@@ -150,4 +170,59 @@ public:
     }
 };
 
+class NextPlaneConfirmationNorthLeft_message : public Message {
+public:
+    NextPlaneConfirmationNorthLeft_message() {
+        this->id = NEXTPLANECONFIRMATION_NORTHLEFT_MESSAGE_ID;
+    }
+};
+
+class NextPlaneConfirmationNorthRight_message : public Message {
+public:
+    NextPlaneConfirmationNorthRight_message() {
+        this->id = NEXTPLANECONFIRMATION_NORTHRIGHT_MESSAGE_ID;
+    }
+};
+
+class NextPlaneConfirmationWestLeft_message : public Message {
+public:
+    NextPlaneConfirmationWestLeft_message() {
+        this->id = NEXTPLANECONFIRMATION_WESTLEFT_MESSAGE_ID;
+    }
+};
+
+class NextPlaneConfirmationWestRight_message : public Message {
+public:
+    NextPlaneConfirmationWestRight_message() {
+        this->id = NEXTPLANECONFIRMATION_WESTRIGHT_MESSAGE_ID;
+    }
+};
+
+class NextPlaneConfirmationSouthLeft_message : public Message {
+public:
+    NextPlaneConfirmationSouthLeft_message() {
+        this->id = NEXTPLANECONFIRMATION_SOUTHLEFT_MESSAGE_ID;
+    }
+};
+
+class NextPlaneConfirmationSouthRight_message : public Message {
+public:
+    NextPlaneConfirmationSouthRight_message() {
+        this->id = NEXTPLANECONFIRMATION_SOUTHRIGHT_MESSAGE_ID;
+    }
+};
+
+class NextPlaneConfirmationEastLeft_message : public Message {
+public:
+    NextPlaneConfirmationEastLeft_message() {
+        this->id = NEXTPLANECONFIRMATION_EASTLEFT_MESSAGE_ID;
+    }
+};
+
+class NextPlaneConfirmationEastRight_message : public Message {
+public:
+    NextPlaneConfirmationEastRight_message() {
+        this->id = NEXTPLANECONFIRMATION_EASTRIGHT_MESSAGE_ID;
+    }
+};
 #endif /* NEIGHBORHOOD_H_ */

@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 25
+#define CONSTRUCT_WAIT_TIME 5
 #define SYNC_WAIT_TIME 5
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -111,7 +111,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case CANFILLLEFTRESPONSE_MESSAGE_ID:
             {
-                if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete())
+                if (reconf->floor == 0 || (reconf->confirmWestLeft && reconf->confirmWestRight))
                     neighborhood->addNeighborToLeft();
                 break;
             }
@@ -124,6 +124,54 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete())
                     neighborhood->addNeighborToRight();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_NORTHLEFT_MESSAGE_ID:
+            {
+                reconf->confirmNorthLeft = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_NORTHRIGHT_MESSAGE_ID:
+            {
+                reconf->confirmNorthRight = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_WESTLEFT_MESSAGE_ID:
+            {
+                reconf->confirmWestLeft = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_WESTRIGHT_MESSAGE_ID:
+            {
+                reconf->confirmWestRight = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_SOUTHLEFT_MESSAGE_ID:
+            {
+                reconf->confirmSouthLeft = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_SOUTHRIGHT_MESSAGE_ID:
+            {
+                reconf->confirmSouthRight = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_EASTLEFT_MESSAGE_ID:
+            {
+                reconf->confirmEastLeft = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case NEXTPLANECONFIRMATION_EASTRIGHT_MESSAGE_ID:
+            {
+                reconf->confirmEastRight = true;
+                neighborhood->addNeighbors();
                 break;
             }
           }
@@ -150,6 +198,75 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         break;
     }
     case EVENT_ADD_NEIGHBOR: {
+        uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
+        if (!reconf->init)
+            break;
+
+        if (face == 1 || face == 4)
+        {
+            if (catom->getInterface(1)->isConnected() &&
+                    catom->getInterface(4)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneNorthRight();
+            }
+        }
+        if (face == 1 || face == 5)
+        {
+            if (catom->getInterface(1)->isConnected() &&
+                    catom->getInterface(5)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneNorthLeft();
+            }
+        }
+        if (face == 6 || face == 2)
+        {
+            if (catom->getInterface(6)->isConnected() &&
+                    catom->getInterface(2)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneWestLeft();
+            }
+        }
+        if (face == 6 || face == 5)
+        {
+            if (catom->getInterface(6)->isConnected() &&
+                    catom->getInterface(5)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneWestRight();
+            }
+        }
+        if (face == 7 || face == 5)
+        {
+            if (catom->getInterface(7)->isConnected() &&
+                    catom->getInterface(5)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneSouthLeft();
+            }
+        }
+        if (face == 7 || face == 4)
+        {
+            if (catom->getInterface(7)->isConnected() &&
+                    catom->getInterface(4)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneSouthRight();
+            }
+        }
+        if (face == 0 || face == 2)
+        {
+            if (catom->getInterface(0)->isConnected() &&
+                    catom->getInterface(2)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneEastLeft();
+            }
+        }
+        if (face == 0 || face == 5)
+        {
+            if (catom->getInterface(0)->isConnected() &&
+                    catom->getInterface(5)->isConnected())
+            {
+                neighborhood->sendMessageToNextPlaneEastRight();
+            }
+        }
+
         //if (catom->getInterface(9)->isConnected() && catom->getInterface(10)->isConnected())
             //neighborhood->addRight();
         //if (catom->getInterface(8)->isConnected() && catom->getInterface(11)->isConnected())

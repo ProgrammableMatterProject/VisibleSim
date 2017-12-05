@@ -95,7 +95,7 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 		for (int i=0; i<12; i++) {
 			if (catom->getNeighborPos(i,neighborPos)
 				&& (neighborBlock = (Catoms3DBlock *)lattice->getBlock(neighborPos))!=NULL) {
-				catom->getInterface(i)->connect(neighborBlock->getInterface(pos));
+				catom->getInterface(i)->connect(neighborBlock->getInterface(lattice->getOppositeDirection(i)));
 				OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #"
 					   << neighborBlock->blockId << endl;
 			}

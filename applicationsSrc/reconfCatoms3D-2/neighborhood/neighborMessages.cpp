@@ -16,10 +16,13 @@ NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighb
 
 void NeighborMessages::init()
 {
-    neighborhood->addNeighbors();
+    reconf->init = true;
     if (reconf->isPlaneSeed()) {
         catom->setColor(WHITE);
     }
+
+    neighborhood->checkDependencies();
+    neighborhood->addNeighbors();
 }
 
 void NeighborMessages::checkLineParent() {

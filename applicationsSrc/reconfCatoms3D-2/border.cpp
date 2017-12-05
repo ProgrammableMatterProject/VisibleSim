@@ -3,7 +3,7 @@
 bool Border::isPlaneSeed(Cell3DPosition catomPos)
 {
     // To avoid line cases
-    if (couldBeSeed(catomPos.addX(-1)) || couldBeSeed(catomPos.addY(-1)))
+    if (couldBeSeed(catomPos.addX(1)) || couldBeSeed(catomPos.addY(-1)))
         return false;
 
     if (isSeedBorderOnNextPlane(catomPos.addZ(1))) {
@@ -56,7 +56,7 @@ bool Border::isLowestOfBorderOnCurrentPlane(Cell3DPosition pos) {
     nTurns += getNextBorderNeighbor(idx, currentPos);
     while(currentPos != pos) {
         if ((currentPos[1] < pos[1] ||
-                (currentPos[1] == pos[1] && currentPos[0] < pos[0])) && BlockCode::target->isInTarget(currentPos.addZ(1))) {
+                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && BlockCode::target->isInTarget(currentPos.addZ(1))) {
             return false;
         }
         nTurns += getNextBorderNeighbor(idx, currentPos);
@@ -83,7 +83,7 @@ bool Border::isLowestOfBorderOnNextPlane(Cell3DPosition pos) {
     nTurns += getNextBorderNeighbor(idx, currentPos);
     while(currentPos != pos) {
         if ((currentPos[1] < pos[1] ||
-                (currentPos[1] == pos[1] && currentPos[0] < pos[0])) && Catoms3D::getWorld()->getBlockByPosition(currentPos.addZ(-1)) != NULL)
+                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && Catoms3D::getWorld()->getBlockByPosition(currentPos.addZ(-1)) != NULL)
         {
             return false;
 

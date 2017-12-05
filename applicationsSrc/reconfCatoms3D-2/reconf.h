@@ -30,9 +30,18 @@ class Reconf {
 
 
 public:
+    bool init;
     vector<MessageQueue> messageQueue;
     bool lineParent;
     bool planeParent;
+    bool confirmNorthLeft;
+    bool confirmNorthRight;
+    bool confirmWestLeft;
+    bool confirmWestRight;
+    bool confirmSouthLeft;
+    bool confirmSouthRight;
+    bool confirmEastLeft;
+    bool confirmEastRight;
     int floor;
 
     Reconf(Catoms3D::Catoms3DBlock *c);

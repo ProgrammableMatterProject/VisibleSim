@@ -3,9 +3,14 @@
 
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
+    init = false;
     seedNext = false;
     seedPrevious = false;
-    floor = 0;
+    floor = -1;
+    confirmNorthLeft = false;
+    confirmNorthRight = false;
+    confirmWestLeft = false;
+    confirmWestRight = false;
 }
 
 bool Reconf::isInternalSeedNext()
@@ -109,8 +114,9 @@ bool Reconf::canAddNextPlaneSeed()
     }
     for (int i = 0; i < 2; i++) {
         if (BlockCode::target->isInTarget(neighbors[i]) &&
-                !catom->getInterface(neighbors[i])->isConnected())
+                !catom->getInterface(neighbors[i])->isConnected()) {
             return false;
+        }
     }
     return true;
 }
