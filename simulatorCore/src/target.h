@@ -33,6 +33,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <Eigen/Dense>
 
 #define TIXML_USE_STL	1
 #include "TinyXML/tinyxml.h"
