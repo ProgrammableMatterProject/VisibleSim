@@ -35,7 +35,9 @@ Target *Target::loadNextTarget() {
                         return new TargetGrid(Target::targetNode);
                     } else if (str.compare("csg") == 0) {
                         return new TargetCSG(Target::targetNode);
-                    } 
+                    } else if (str.compare("surface") == 0) {
+                        return new TargetSurface(Target::targetNode);
+                    }
                 }
             }
         }
@@ -226,6 +228,166 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
         throw InvalidPositionException();
     }
     return color;
+}
+
+/************************************************************
+ *                      TargetSurface
+ ************************************************************/
+
+TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {    
+    TiXmlNode *methNode = targetNode->FirstChild("method");
+    const char* attr;
+    TiXmlElement *element;
+    Cell3DPosition position;
+    Color defaultColor = Color();
+    Color color;
+
+    if (methNode) {
+            element = methNode->ToElement();
+            const char *attr = element->Attribute("meth");
+            if (attr) {
+                string str(attr);
+                if (str.compare("interpolation") == 0) {
+                    method = str;
+                    cout << "Method initialized" << method << endl; 
+                }
+                else if (str.compare("voisin") == 0) {
+                    method = str;
+                    cout << "Method initialized" << method << endl; 
+                }
+                TiXmlNode *cellNode = methNode->FirstChild("cell");
+                // Parse individual cells
+                while (cellNode) {
+                element = cellNode->ToElement();
+                color = defaultColor;
+                  
+                attr = element->Attribute("position");
+                if (attr) {
+                    string str(attr);
+                    int pos1 = str.find_first_of(','),
+                        pos2 = str.find_last_of(',');
+                    position.pt[0] = atoi(str.substr(0,pos1).c_str());
+                    position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
+                    position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+                } else {
+                    cerr << "error: position attribute missing for target cell" << endl;
+                    throw TargetParsingException();
+                }
+                attr = element->Attribute("color");
+                if (attr) {
+                    string str(attr);
+                    int pos1 = str.find_first_of(','),
+                        pos2 = str.find_last_of(',');
+                    color.set(atof(str.substr(0,pos1).c_str())/255.0,
+                              atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
+                              atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+                }
+
+                addTargetCell(position, color);
+                cellNode = cellNode->NextSibling("cell");
+            } // end while (cellNode)
+
+            // Parse lines of cells
+            cellNode = targetNode->FirstChild("targetLine");
+            while (cellNode) {
+                int line = 0, plane = 0;            
+                element = cellNode->ToElement();
+                color = defaultColor;
+                attr = element->Attribute("color");
+                if (attr) {
+                    string str(attr);
+                    int pos1 = str.find_first_of(','),
+                        pos2 = str.find_last_of(',');
+                    color.set(atof(str.substr(0,pos1).c_str())/255.0,
+                              atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
+                              atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
+                }
+        
+                attr = element->Attribute("line");
+                if (attr) {
+                    line = atoi(attr);
+                }
+        
+                attr = element->Attribute("plane");
+                if (attr) {
+                    plane = atoi(attr);
+                }
+                
+                attr = element->Attribute("values");
+                if (attr) {
+                    string str(attr);
+                    position.pt[0] = 0;
+                    position.pt[1] = line;
+                    position.pt[2] = plane;
+                    int n = str.length();
+                    for(int i=0; i<n; i++) {
+                        if  (str[i] == '1') {
+                            position.pt[0] = i;
+                            addTargetCell(position, color);
+                        }
+                    }
+                }
+
+                cellNode = cellNode->NextSibling("blocksLine");
+            } // end while (cellNode)*/
+            }
+    }
+
+    
+    if (method.compare("interpolation") == 0) {
+        //Calculate polynom coeff
+        cout << "Coefficients to be calculated"<< endl; 
+    }
+}
+
+bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
+    if (method.compare("interpolation") == 0) {
+        //print method
+        cout << "Call to isInTarget method =" << method << endl; 
+        return true;
+    }
+
+    else if (method.compare("voisin") == 0) {
+        //print method
+        cout << "Call to isInTarget method =" << method << endl; 
+        return true;
+    }
+    
+    else {
+        throw BaseSimulator::utils::NotImplementedException();
+    }
+}
+
+const Color TargetSurface::getTargetColor(const Cell3DPosition &pos) {
+    throw BaseSimulator::utils::NotImplementedException();
+}
+
+void TargetSurface::addTargetCell(const Cell3DPosition &pos, const Color c) {
+    Vector3D v;
+    v.set(pos.pt[0],pos.pt[1],pos.pt[2],1);
+    pcl.push_back(v);
+    cout << "Point ("<<v.pt[0]<<","<<v.pt[1]<<","<<v.pt[2]<<") added to pointCloud" << endl;
+}
+
+void TargetSurface::print(ostream& where) const {
+
+    if (method.compare("interpolation") == 0) {
+        //print method
+        cout << "Call to print method =" << method << endl; 
+    }
+
+    else if (method.compare("voisin") == 0) {
+        //print method
+        cout << "Call to print method =" << method << endl; 
+    }
+    
+    else {
+        throw BaseSimulator::utils::NotImplementedException();
+    }
+}
+
+void TargetSurface::boundingBox(BoundingBox &bb) {
+    throw BaseSimulator::utils::NotImplementedException();
 }
 
 } // namespace BaseSimulator

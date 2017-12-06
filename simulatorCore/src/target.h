@@ -32,6 +32,7 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #define TIXML_USE_STL	1
 #include "TinyXML/tinyxml.h"
@@ -39,6 +40,7 @@
 #include "color.h"
 #include "cell3DPosition.h"
 #include "csg.h"
+#include "vector3D.h"
 
 using namespace std;
 
@@ -181,6 +183,50 @@ public:
     bool isInTargetBorder(const Cell3DPosition &pos, double radius);
 
 };  // class TargetCSG
+
+//<! @brief A target modeling a surface by a point cloud
+class TargetSurface : public Target {
+    // Stores the points of the point cloud
+    vector<Vector3D> pcl; //!< the point cloud
+    vector<float> coeffs; //!< the coefficients of the interpolating polynom
+    string method;
+
+protected:    
+    /**
+     * @brief Add a cell to the target cells container
+     * @param pos position of the target cell
+     * @param c color of the cell. If none provided, defaults to (0,0,0,0)
+     */
+    void addTargetCell(const Cell3DPosition &pos, const Color c = Color());
+
+    //!< @copydoc Target::print
+    virtual void print(ostream& where) const;    
+public:
+    /**
+     * @copydoc Target::Target 
+     * XML Description Format:
+     * <target format="surface">
+     *   <method meth="type">
+     *     <cell position="x,y,z" color="r,g,b"/>
+     *     ...
+     *   </method>
+     * </target>
+     */
+    TargetSurface(TiXmlNode *targetNode);
+    virtual ~TargetSurface() {};
+
+    //!< @copydoc Target::getTargetColor
+    //!< a cell is in the target grid if it is at the same level or under as the surface described for a couple (x,y)
+    virtual bool isInTarget(const Cell3DPosition &pos);
+    //!< @copydoc Target::getTargetColor
+    //!< @throws InvalidPositionException is cell at position pos is not part of the target
+    virtual const Color getTargetColor(const Cell3DPosition &pos);
+
+    //!< @copydoc Target::BoundingBox
+    virtual void boundingBox(BoundingBox &bb);
+
+};  // class TargetSurface
+
 
 } // namespace BaseSimulator
 
