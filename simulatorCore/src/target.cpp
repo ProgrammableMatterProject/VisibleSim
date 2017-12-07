@@ -336,12 +336,73 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
     
     if (method.compare("interpolation") == 0) {
         //Calculate polynom coeff
-        cout << "Coefficients to be calculated"<< endl; 
-        Eigen::Matrix3f m;
-        m << 1, 2, 3,
-             4, 5, 6,
-             7, 8, 9;
+        cout << "Coefficients to be calculated"<< endl;
+        //Calculation of d polynom degree
+        int d = 0;
+        while (pcl.size() > (d+1)*(d+2)/2){
+            d = d+1;
+        }
+        if (pcl.size() < (d+1)*(d+2)/2){
+            d = d-1;
+        }
+        cout << pcl.size() << "points in the cloud" << endl;
+        cout << "Polynom bivariate of degree " << d << endl;
+        //Initialization of n number of coefficients
+        int n = (d+1)*(d+2)/2;
+        //Placing all z coordinate in a vector
+        vector<float> z;
+        for (int i=0;i<n;i++){
+            z.push_back(pcl[i].pt[2]);
+        }
+        for (int i=0;i<n;i++){
+            cout << "z" << i <<" = " << z[i] << endl;
+        }
+        //Creating the matrix for coeff calculation
+        Eigen::MatrixXf m(n,n);
+        for (int i=0;i<n;i++){
+            float x = pcl[i].pt[0];
+            float y = pcl[i].pt[1];
+            int j = 0;
+            for (int k=0;k<=d;k++){
+                for(int l=0;l<=(d-k);l++){
+                    m(i,j)=pow(x,(d-k-l))*pow(y,l);
+                    j=j+1;
+                }
+            }
+        }
         cout << m << endl;
+        //Determinant calculations
+        cout << "determinant de M =" << m.determinant() << endl;
+        vector<vector<float>> det;
+        for (int k=0;k<n;k++){
+            vector<float> detcoef;
+            for (int l=0;l<n;l++){
+                Eigen::MatrixXf Mkl(n-1,n-1);
+                Mkl.topLeftCorner(k,l) = m.topLeftCorner(k,l);
+                Mkl.topRightCorner(k,n-l-1) = m.topRightCorner(k,n-l-1);
+                Mkl.bottomLeftCorner(n-k-1,l) = m.bottomLeftCorner(n-k-1,l);
+                Mkl.bottomRightCorner(n-k-1,n-l-1) = m.bottomRightCorner(n-k-1,n-l-1);
+                detcoef.push_back(pow(-1,k+l)*Mkl.determinant());
+            }
+            det.push_back(detcoef);
+        }
+        for (int i=0;i<n;i++){
+            cout << "determinant de M" << i << endl;
+            for (int j=0;j<n;j++){
+                cout << "coeff " << j << " de M" << i << " = " << det[i][j] << endl;
+            }
+        }
+        //Polynom coefficient calculation
+        for (int i=0;i<n;i++){
+            float coeff=0;
+            for (int j=0;j<n;j++){
+                coeff = coeff+((z[j]*det[j][i])/m.determinant());
+            }
+            coeffs.push_back(coeff);
+        }
+        for (int i=0;i<n;i++){
+            cout << "Coeff " << i << " = " << coeffs[i] << endl;
+        }
     }
 }
 
