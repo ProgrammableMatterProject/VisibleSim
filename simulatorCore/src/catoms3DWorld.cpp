@@ -90,7 +90,6 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
 void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
     Catoms3DBlock *catom = (Catoms3DBlock *)lattice->getBlock(pos);
 
-    OUTPUT << "linkBlock(" << pos << "):" << endl;
     if (catom) {
 		OUTPUT << "link catom " << catom->blockId << endl;
         
@@ -105,8 +104,6 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 					   << neighborBlock->blockId << endl;
 			}
 		}
-    } else {
-        OUTPUT << "ERROR : try to link a block in empty cell :" << pos << endl;
     }
 }
 

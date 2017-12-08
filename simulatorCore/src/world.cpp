@@ -153,7 +153,7 @@ void World::disconnectBlock(BuildingBlock *block) {
             block->removeNeighbor(fromBlock);
             fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
 
-	    // Disconnect the interfaces
+            // Disconnect the interfaces
             fromBlock->connectedInterface = NULL;
             toBlock->connectedInterface = NULL;
         }
