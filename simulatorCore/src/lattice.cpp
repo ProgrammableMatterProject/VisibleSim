@@ -307,9 +307,9 @@ FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice
     while (--i) {
         *ptr++=false;
     }*/
-    OUTPUT << "init Lattice" << endl;
-    for (int i=0; i<gridSize[0] * gridSize[1] * gridSize[2];i++) { OUTPUT << tabLockedCells[i] << " "; }
-    OUTPUT << endl;
+    // OUTPUT << "init Lattice" << endl;
+    // for (int i=0; i<gridSize[0] * gridSize[1] * gridSize[2];i++) { OUTPUT << tabLockedCells[i] << " "; }
+    // OUTPUT << endl;
 
     tabDistances=NULL;
 }
@@ -462,7 +462,7 @@ if (!tabDistances) return;
     }
 }
 
-unsigned short FCCLattice::initTabDistances() {
+void FCCLattice::initTabDistances() {
     if (tabDistances==NULL) {
         int n = gridSize.pt[0]*gridSize.pt[1]*gridSize.pt[2];
         tabDistances = new unsigned short[n];

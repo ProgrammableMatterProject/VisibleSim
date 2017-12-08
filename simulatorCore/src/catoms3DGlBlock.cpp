@@ -4,8 +4,8 @@ namespace Catoms3D {
 
 void Catoms3DGlBlock::glDraw(ObjLoader::ObjLoader *ptrObj) {
 	glPushMatrix();
-	// mat.glMultMatrix();
-	glTranslatef(position[0],position[1],position[2]);
+	mat.glMultMatrix();
+	// glTranslatef(position[0],position[1],position[2]);
     // glRotatef(psi,1,0,0);
     // glRotatef(phi,0,1,0);
     // glRotatef(theta,0,0,1);

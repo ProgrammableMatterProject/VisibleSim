@@ -114,7 +114,6 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
     } else if (source) { /* root checks for articulation point and terminates */
         if (sons.size() >= 2) articulationPoint = true;
             
-        // For now, re-use tree built during APL phase
         findMobileModule();
     } else { /* a normal node has finished the visits to its subtree */
         if (minDfn < lDfn && minSdr != father)
