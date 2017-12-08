@@ -104,6 +104,8 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 					   << neighborBlock->blockId << endl;
 			}
 		}
+    } else {
+        OUTPUT << "ERROR: trying to link a block in an empty cell!" << endl;
     }
 }
 

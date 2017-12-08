@@ -50,14 +50,14 @@ public:
 	//!< State of a BuildingBlock. The block is considered alive if its state is >= 2
 	enum State {STOPPED = 0, REMOVED = 1, ALIVE = 2, COMPUTING = 3};
 private:
-	/** 
+	/**
 	 * \brief state of the block, with atomic access
 	 */
 	std::atomic<State> state;
 protected:
 	static bID nextId;
 	static bool userConfigHasBeenParsed; //!< Indicates if the user parsing as already been performed by blockCode->parseUserElements. Used to ensure that user configuration is parsed only once.
-	
+
 	vector<P2PNetworkInterface*> P2PNetworkInterfaces; //!< Vector of size equal to the number of interfaces of the block, contains pointers to the block's interfaces
 
 	list<EventPtr> localEventsList; //!< List of local events scheduled for this block
@@ -80,11 +80,11 @@ public:
 	 * @param seed : seed used to create the block random generator
 	 */
 	BuildingBlock(int bId, BlockCodeBuilder bcb, int nbInterfaces);
-	
+
 	/**
 	 * @brief BuildingBlock destructor
 	 */
-	virtual ~BuildingBlock();  
+	virtual ~BuildingBlock();
 
 	/**
 	 * @brief Getter for P2PNetworkInterfaces attribute
@@ -123,8 +123,8 @@ public:
 	 */
 	bool addP2PNetworkInterfaceAndConnectTo(int destBlockId);
 	/**
-	 * @brief Finds the block's interface that is connected to destBlock 
-	 * @param destBlock : pointer to a connected block 
+	 * @brief Finds the block's interface that is connected to destBlock
+	 * @param destBlock : pointer to a connected block
 	 * @return a pointer to the interface connected to destBlock if there is one, NULL otherwise
 	 */
 	P2PNetworkInterface *getP2PNetworkInterfaceByBlockRef(BuildingBlock *destBlock);
@@ -155,13 +155,13 @@ public:
 	 * @brief Sets the color for this block with the color of id idColor
 	 * @param idColor : id of the Color as defined in color.h
 	 */
-	void setColor(int idColor);	
+	void setColor(int idColor);
 	/**
 	 * @brief Sets the grid position of the block
 	 *
 	 * @param p :  the grid position (x,y,z) of the block as a Cell3DPosition
 	 */
-	void setPosition(const Cell3DPosition &p);
+	virtual void setPosition(const Cell3DPosition &p);
 
 	/**
 	 * @brief Returns a Vector3D corresponding to the Cell3DPosition of the current block.
@@ -174,7 +174,7 @@ public:
 	 * @param ni : pointer to the interface that was just connected
 	 * @param target : pointer to the BuildingBlock connected to interface ni
 	 */
-	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};	
+	virtual void addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {};
 	/**
 	 * @brief Schedules a RemoveNeighborEvent
 	 * @param ni : pointer to the disconnected interface
@@ -200,7 +200,7 @@ public:
 	 * @brief Returns the direction (defined in lattice.h) corresponding to the interface p2p
 	 * @param p2p interface to consider
 	 * @return direction on which p2p is
-	 */	
+	 */
 	virtual int getDirection(P2PNetworkInterface *p2p) = 0;
 	/**
 	 * @brief Atomic getter for the block's state
@@ -214,12 +214,12 @@ public:
 	 * No guarantee that state value will remain the same, it just avoids
 	 * date race condition.
 	 * @param s : new state of the block
-	 */   	
+	 */
 	inline void setState(State s) { state.store(s); }
 	/**
 	 * @brief Return a random unsigned int (ruint) using the generator field
 	 * @return random ruint
-	 */ 
+	 */
 	ruint getRandomUint();
 	/**
 	 * @brief Schedules a tap event at a given date for this blocks
@@ -227,7 +227,7 @@ public:
 	 *  can be used as an interactive event for debug on all catom types
 	 * @param date : date of the tap event
 	 * @param face : id of the tapped face
-	 */   	
+	 */
 	void tap(Time date, int face);
 	/**
 	 * @brief Set the internal clock to the clock in parameter
@@ -237,32 +237,32 @@ public:
 	/**
 	 * @brief Returns the current local time of the block according to its internal clock
 	 * @return current local time of the block according to its internal clock
-	 */   	
+	 */
 	Time getLocalTime();
 	/**
 	 * @brief Returns the local time of the block according to its internal clock
 	 * @para simTime simulation time for which this function returns the block clock local time
 	 * @return local time of the block according to its internal clock
-	 */ 
+	 */
 	Time getLocalTime(Time simTime);
 	/**
 	 * @brief Converts the block's local time into the global time of the simulation and returns it
 	 * @return global time corresponding to the local time in parameter
-	 */   	
+	 */
 	Time getSimulationTime(Time localTime);
 
 	/*************************************************
-	 *            MeldInterpreter Functions  
+	 *            MeldInterpreter Functions
 	 *************************************************/
 	/**
 	 * @brief Returns the id of the block connected on interface #faceNum of this block
 	 * @param faceNum : id of the connected interface
-	 * @return id of the block connected to interface faceNum 
+	 * @return id of the block connected to interface faceNum
 	 */
 	unsigned short getNeighborIDForFace(int faceNum);
 	/**
 	 * @brief Returns the id of the face from this block connected to block of id nId
-	 * @param nId : id of the connected block 
+	 * @param nId : id of the connected block
 	 * @return the id of the face connected to block nId, or -1 if the two blocks are not neighbors
 	 */
 	int getFaceForNeighborID(int nId);
