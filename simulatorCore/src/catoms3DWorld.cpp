@@ -93,7 +93,9 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
     OUTPUT << "linkBlock(" << pos << "):" << endl;
     if (catom) {
 		OUTPUT << "link catom " << catom->blockId << endl;
-
+        if (catom->blockId == 1)
+            OUTPUT << "C'est ici! " << catom->blockId << endl;
+        
 		Cell3DPosition neighborPos;
 		Catoms3DBlock* neighborBlock;
 

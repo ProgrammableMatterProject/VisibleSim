@@ -484,7 +484,7 @@ public:
     
     bool lockCell(const Cell3DPosition &pos);
     bool unlockCell(const Cell3DPosition &pos);
-    unsigned short initTabDistances();
+    void initTabDistances();
     unsigned short getDistance(const Cell3DPosition &pos);
     void setDistance(const Cell3DPosition &pos,unsigned short d);
     void glDraw();

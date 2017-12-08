@@ -47,7 +47,13 @@ Matrix Catoms3DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &
     return M;
 }
 
-void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos,short code) {
+void Catoms3DBlock::setPosition(const Cell3DPosition &p) {
+    position = p;
+    setPositionAndOrientation(p, orientationCode);
+    getWorld()->updateGlData(this);
+}
+
+void Catoms3DBlock::setPositionAndOrientation(const Cell3DPosition &pos, short code) {
     orientationCode = code;
     position = pos;
 
