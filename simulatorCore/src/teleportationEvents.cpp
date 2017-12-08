@@ -53,7 +53,12 @@ void TeleportationStartEvent::consume() {
     World::getWorld()->disconnectBlock(bb);
 
     Time t = scheduler->now() + ANIMATION_DELAY;
-    scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition));
+    if (getWorld()->lattice->isInGrid(finalPosition)) {
+        scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition));
+    } else {
+        OUTPUT << "ERROR: trying to teleport module to a position outside of lattice"
+               << endl;        
+    }
 }
 
 const string TeleportationStartEvent::getEventName() {
