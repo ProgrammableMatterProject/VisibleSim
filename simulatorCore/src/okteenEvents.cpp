@@ -112,7 +112,9 @@ OkteenMotionsStopEvent::~OkteenMotionsStopEvent() {
 
 void OkteenMotionsStopEvent::consume() {
     EVENT_CONSUME_INFO();
+#ifdef COLOR_MOTION_DEBUG
     motion.module->setColor(YELLOW);
+#endif
 
     Cell3DPosition position;
 /* Transformer les coordonnées GL en coordonnées grille*/

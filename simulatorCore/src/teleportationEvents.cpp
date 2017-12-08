@@ -35,8 +35,6 @@ TeleportationStartEvent::TeleportationStartEvent(Time t,
                                                  const Cell3DPosition &fpos): BlockEvent(t,block) {
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_TELEPORTATION_START;
-    // pivot = pivot;
-    // movementDirection = mDir;
     finalPosition = fpos;
 }
 
@@ -86,7 +84,10 @@ void TeleportationStopEvent::consume() {
     bb->setPosition(finalPosition);
     wrld->updateGlData(bb);
 
+#ifdef COLOR_MOTION_DEBUG
     bb->setColor(YELLOW);
+#endif
+
     OUTPUT << "connect Block " << bb->blockId << "\n";
     wrld->connectBlock(bb);
     Scheduler *scheduler = getScheduler();

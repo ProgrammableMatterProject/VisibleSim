@@ -114,7 +114,7 @@ Rotation3DStopEvent::~Rotation3DStopEvent() {
 void Rotation3DStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-//    catom->setColor(YELLOW);
+    catom->setColor(YELLOW);
 
     Cell3DPosition position;
     short orientation;
