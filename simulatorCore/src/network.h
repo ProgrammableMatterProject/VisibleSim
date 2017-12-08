@@ -46,6 +46,7 @@ public:
 	P2PNetworkInterface *sourceInterface, *destinationInterface;
 
 	Message();
+    Message(int t):Message() { type=t;};
 	virtual ~Message();
 
 	static uint64_t getNbMessages();
