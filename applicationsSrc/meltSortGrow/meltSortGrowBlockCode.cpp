@@ -43,17 +43,43 @@ void MeltSortGrowBlockCode::startup() {
     APLabellingInitialization();
 }
 
-void MeltSortGrowBlockCode::APLabellingInitialization() {
+void MeltSortGrowBlockCode::resetDFSForLabelling() {
     neighbors.clear();
     flag.clear();
+    sons.clear();
     
-    minSdr = NULL;
     for (P2PNetworkInterface *itf : catom->getP2PNetworkInterfaces()) {
         if (itf->isConnected()) {
             flag[itf] = false;
             neighbors.push_back(itf);
         }
     }
+
+    dfn = 0;
+    lDfn = 0;
+    dfnCnt = 0;
+    minDfn = INT_MAX;
+    bridge = false;
+    articulationPoint = false;
+    father = NULL;
+    minSdr = NULL;
+    source = false;
+    state = APLState::Inactive;
+
+    // Next APL Reset
+    resetFather = NULL;
+}
+
+void MeltSortGrowBlockCode::resetDFSForSearching() {
+    flag.clear();
+    
+    for (P2PNetworkInterface *itf : sons) {
+        flag[itf] = false; // Reset DFS markers
+    }
+}
+
+void MeltSortGrowBlockCode::APLabellingInitialization() {
+    resetDFSForLabelling();    
 }
 
 void MeltSortGrowBlockCode::APLabellingStart() {
@@ -77,17 +103,8 @@ void MeltSortGrowBlockCode::APLabellingStart() {
 
 
 void MeltSortGrowBlockCode::APLabellingSearch() {
-    P2PNetworkInterface *unprocessedNeighbor = NULL;
+    P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
     
-    for (const auto& element : flag) {
-        if (!element.second) {
-            unprocessedNeighbor = element.first;
-            cout << "catom " << catom->blockId << " found unpc nghbr "
-                 << element.first->getConnectedBlockId() << endl;
-            break;
-        }
-    }
-
     if (unprocessedNeighbor) {
         // Send TOKEN(DFNcnt(i) + 1) to k
         sendMessage("Token",
@@ -95,10 +112,10 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
                     unprocessedNeighbor, 100, 0);
         sons.insert(unprocessedNeighbor);
     } else if (source) { /* root checks for articulation point and terminates */
-        if (sons.size() >= 2) {
-            articulationPoint = true;
-            catom->setColor(PINK); // #ToRemove
-        }
+        if (sons.size() >= 2) articulationPoint = true;
+            
+        // For now, re-use tree built during APL phase
+        findMobileModule();
     } else { /* a normal node has finished the visits to its subtree */
         if (minDfn < lDfn && minSdr != father)
             lDfn = minDfn; /* sets to the smaller min. DFN from ancestors */            
@@ -110,9 +127,53 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
         sendMessage("Echo",
                     new MessageOf<EchoPayload>(MSG_MELT_APL_ECHO,
                                                EchoPayload(lDfn, dfnCnt)),
-                    father, 100, 0);        
+                    father, 100, 0);
     }
     
+}
+
+void MeltSortGrowBlockCode::findMobileModule() {
+    Cell3DPosition tailPosition = catom->position - Cell3DPosition(1, 0, 0);
+
+    // Prepare data structures for the mobile module search DFS
+    resetDFSForSearching();
+    
+    P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
+    
+    if (unprocessedNeighbor) {
+        sendMessage("FindMobileModule",
+                    new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE,
+                                                  tailPosition),
+                    unprocessedNeighbor, 100, 0);        
+    } else if (source) {
+        // No more module paths to explore,
+        catom->setColor(BLUE); // #TOREMOVE
+    } else {
+        sendMessage("FindMobileModuleNope",
+                    new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NOPE,
+                                                  tailPosition),
+                    father, 100, 0);
+    }
+}
+
+
+void MeltSortGrowBlockCode::propagateGraphResetBFS() {
+    resetChildrenDecount = 0;
+    for (P2PNetworkInterface *nghbr : catom->getP2PNetworkInterfaces()) {
+        if (nghbr->connectedInterface && nghbr != resetFather) {
+            sendMessage("GraphReset",
+                        new Message(MSG_MELT_RESET_GRAPH),
+                        nghbr, 100, 0);
+            resetChildrenDecount++;
+        }
+    }
+
+    if (!resetChildrenDecount && resetFather) { // No children, return 
+        sendMessage("GraphResetDone",
+                    new Message(MSG_MELT_RESET_GRAPH_DONE),
+                    resetFather, 100, 0);
+                        resetDFSForLabelling();
+    }
 }
 
 void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
@@ -171,12 +232,11 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                     if (catom->position == currentRootPosition) { // Election Complete, module is root
                         // Proceed to next stage
                         isTail = true;
-                        meltOneModule();                        
+                        meltOneModule();
                     }
                 }
             }    
         } break;
-
         
         case MSG_MELT_APL_START: {
             if (state == APLState::Inactive) {
@@ -263,6 +323,109 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
             }
         } break;
 
+        case MSG_MELT_FIND_MOBILE_MODULE: {
+            Cell3DPosition tailPosition =
+                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
+
+            // Prepare data structures for the mobile module search DFS
+            resetDFSForSearching();
+            
+            if (articulationPoint) {
+                P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
+                if (unprocessedNeighbor) {
+                    sendMessage("FindMobileModule",
+                                new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE,
+                                                              tailPosition),
+                                unprocessedNeighbor, 100, 0);        
+                } else {
+                    // There are no mobile modules on this branch
+                    sendMessage("FindMobileModuleNope",
+                                new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NOPE,
+                                                              tailPosition),
+                                father, 100, 0);
+                }
+            } else {
+                // Module is mobile, notify father and jump to tail for now
+                sendMessage("FindMobileModuleYup",
+                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_YUP,
+                                                          tailPosition),
+                            father, 100, 0);
+
+                catom->setColor(WHITE);
+                // Teleport to tail for now
+                scheduler->schedule(
+                    new TeleportationStartEvent(scheduler->now() + 150,
+                                                catom, tailPosition));
+            }
+        } break;
+
+        case MSG_MELT_FIND_MOBILE_MODULE_YUP: {
+            Cell3DPosition tailPosition =
+                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
+
+            if (!source) {
+                sendMessage("FindMobileModuleYup",
+                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_YUP,
+                                                          tailPosition),
+                            father, 100, 0);
+            } else {
+                catom->setColor(ORANGE);
+            }
+
+            // resetDFSForLabelling();
+        } break;
+
+        case MSG_MELT_FIND_MOBILE_MODULE_NOPE: {
+            Cell3DPosition tailPosition =
+                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
+
+            flag[sender] = true;
+            
+            P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
+            if (unprocessedNeighbor) {
+                sendMessage("FindMobileModule",
+                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE,
+                                                          tailPosition),
+                            unprocessedNeighbor, 100, 0);
+            } else {
+                sendMessage("FindMobileModuleNope",
+                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NOPE,
+                                                          tailPosition),
+                            father, 100, 0);
+            }
+
+            // resetDFSForLabelling();
+        } break;
+
+        case MSG_MELT_RESET_GRAPH: {
+            if (!resetFather) 
+                resetFather = sender;
+
+            if (resetFather == sender)
+                propagateGraphResetBFS();
+            else {
+                sendMessage("No Sir, I do not want anything to do with you",
+                            new Message(MSG_MELT_RESET_GRAPH_NOSIRIDONOTWANTANYTHINGTODOWITHYOU),
+                            sender, 100, 0);
+            }
+
+        } break;
+
+        case MSG_MELT_RESET_GRAPH_DONE:
+        case MSG_MELT_RESET_GRAPH_NOSIRIDONOTWANTANYTHINGTODOWITHYOU: {            
+            if (!--resetChildrenDecount) {
+                if (resetFather) {
+                    sendMessage("GraphResetDone",
+                                new Message(MSG_MELT_RESET_GRAPH_DONE),
+                                resetFather, 100, 0);
+                    resetDFSForLabelling();
+                } else { // isSource
+                    resetDFSForLabelling();
+                    meltOneModule();
+                }                
+            }
+        } break;
+            
         default: cout << "wut?" << endl; break;
     }
 
@@ -277,13 +440,22 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
             message =
                 (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
             P2PNetworkInterface * recv_interface = message->destinationInterface;
+            console << " received " << message->type << " from "
+                    << recv_interface->connectedInterface->hostBlock->blockId << "\n";
             
             // Handover to global message handler
             processReceivedMessage(message, recv_interface);
         } break;
 
         case EVENT_TELEPORTATION_END: {
-            // todo
+            console << "I have reached where you wanted me to go sir." << "\n";
+            // World::getWorld()->connectBlock(catom);
+            propagateGraphResetBFS();
+        } break;
+
+        case EVENT_TAP: {
+            for (const auto &pair : flag)
+                cout << pair.first->connectedInterface->hostBlock->blockId << endl;
         } break;
     }
 }
@@ -392,4 +564,15 @@ bool MeltSortGrowBlockCode::computePathPositions(list<Cell3DPosition> *parentPat
     }
 
     return !myPathPositions.empty();        
+}
+
+
+P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
+    for (const auto& element : flag) {
+        if (!element.second) {
+            return element.first;
+        }
+    }
+
+    return NULL;
 }

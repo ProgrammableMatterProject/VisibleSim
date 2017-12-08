@@ -29,13 +29,14 @@
 #define MSG_MELT_FIND_MOBILE_MODULE 0022
 #define MSG_MELT_FIND_MOBILE_MODULE_YUP 0023 // Notify parent we're on the move!
 #define MSG_MELT_FIND_MOBILE_MODULE_NOPE 0024 // Notify parent we couldn't find non AP (Convergence condition)
-#define MSG_MELT_UPDATE_TAIL 0025
-#define MSG_MELT_UPDATE_TAIL_ACK 0026
+#define MSG_MELT_RESET_GRAPH 0025
+#define MSG_MELT_RESET_GRAPH_DONE 0026
+#define MSG_MELT_RESET_GRAPH_NOSIRIDONOTWANTANYTHINGTODOWITHYOU 0027
 
-#define MSG_MELT_APL_START 0030
-#define MSG_MELT_APL_TOKEN 0031
-#define MSG_MELT_APL_ECHO 0032
-#define MSG_MELT_APL_VISITED 0033
+#define MSG_MELT_APL_START 0030 //24
+#define MSG_MELT_APL_TOKEN 0031 //25
+#define MSG_MELT_APL_ECHO 0032 // 26
+#define MSG_MELT_APL_VISITED 0033 // 27
 
 class MeltSortGrowBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
@@ -81,13 +82,36 @@ private:
     bool articulationPoint = false; //!< Indicates whether node is an AP
     std::vector<P2PNetworkInterface*> neighbors; //!< Active neighbors around modul
     std::map<P2PNetworkInterface*, bool> flag; //!< flags for each neighbors when the node knows that they have been visited
+    int resetChildrenDecount; //!< Number of children which have NOT YET notified their father that they reset their search data structures
+    P2PNetworkInterface *resetFather = NULL; //!< interface connected to the module which sent us a reset command first
+    
     /**
      * @brief Initializes the local variables used by the articulation points labelling algorithm
      */
     void APLabellingInitialization();
+    /**
+     * @brief Searches articulation points in the module graph using DFS
+     */
     void APLabellingSearch();
+    /**
+     * @brief Initiates the articulation points labelling algorithm from source module
+     */    
     void APLabellingStart();
 
+    /**
+     * @brief Searches the path positions of the module graph for a non-articulation point module DFS-style
+     */   
+    void findMobileModule();
+
+    /**
+     * @brief Sends a message to all nodes in the graph so that they get ready for the next AP labelling round
+     */   
+    void propagateGraphResetBFS();
+     
+    P2PNetworkInterface *getNextUnprocessedInterface();
+    void resetDFSForLabelling();
+    void resetDFSForSearching();
+    
     bool amIArticulationPoint; //!< Label indicating whether current module is an articulation point
     bool isTail; //!< Label indicating whether current module is tail of the decomposition line, there should be only one tail module at a given time
 
@@ -100,7 +124,7 @@ private:
      * @brief Reset the module's DFSQueue by re-adding all neighboring modules to it 
      */
     void resetDFSQueue();
-
+    
     /**
      * @brief Called by the tail during the Melt phase. 
      *  Fills the module's path positions list with all free positions around module, starting by position right left to the tail, which is the next Melt's target.
