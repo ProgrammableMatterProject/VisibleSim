@@ -29,7 +29,10 @@ void NeighborMessages::init()
     }
 
     neighborhood->addNeighbors();
-    //trySendMessagePlaneFinished();
+    trySendMessagePlaneFinished();
+
+    if (reconf->areNeighborsPlaced() && reconf->nChildren == 0)
+        sendMessagePlaneFinished();
 }
 
 void NeighborMessages::checkLineParent() {
@@ -45,16 +48,12 @@ void NeighborMessages::handleParentSeedMsg(MessagePtr message)
 
 void NeighborMessages::handleNewCatomMsg(MessagePtr message)
 {
-    New_catom_ptr recv_message = static_pointer_cast<New_catom_message>(message);
     New_catom_response_message *msgResponse = new New_catom_response_message;
 
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
 
-    //neighborhood->sendResponseMessageToAddLeft();
-    //neighborhood->sendResponseMessageToAddRight();
-
-    sendMessagesOnQueue(recv_message->sourceInterface->hostBlock->position);
+    sendMessagesOnQueue(message->sourceInterface->hostBlock->position);
 }
 
 void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
@@ -63,20 +62,19 @@ void NeighborMessages::handleNewCatomParentMsg(MessagePtr message)
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
 
-    //neighborhood->sendResponseMessageToAddLeft();
-    //neighborhood->sendResponseMessageToAddRight();
-
     sendMessagesOnQueue(message->sourceInterface->hostBlock->position);
 }
 
 void NeighborMessages::handleNewCatomParentResponseMsg(MessagePtr message)
 {
     New_catom_parent_response_ptr recv_message = static_pointer_cast<New_catom_parent_response_message>(message);
+    reconf->interfaceParent = recv_message->sourceInterface;
 }
 
 void NeighborMessages::handleNewCatomResponseMsg(MessagePtr message)
 {
     New_catom_response_ptr recv_message = static_pointer_cast<New_catom_response_message>(message);
+    reconf->interfaceParent = recv_message->sourceInterface;
 }
 
 void NeighborMessages::sendMessageToGetLineInfo()
@@ -120,33 +118,19 @@ New_catom_response_message::New_catom_response_message()
 
 void NeighborMessages::trySendMessagePlaneFinished()
 {
-    if (reconf->checkPlaneCompleted()) {
-       sendMessagePlaneFinished();
-    }
 }
 
-void NeighborMessages::sendMessagePlaneFinished()
-{
-    if (reconf->syncPlaneNodeParent != NULL)
-        reconf->syncPlaneNodeParent->setCompleted();
-    if (reconf->planeFinished)
-        return;
-    reconf->planeFinished = true;
+void NeighborMessages::sendMessagePlaneFinished() {
+    catom->setColor(GREEN);
     Plane_finished_message *msg = new Plane_finished_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(1))));
-    msg = new Plane_finished_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(-1))));
-    msg = new Plane_finished_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
-    msg = new Plane_finished_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(-1))));
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, reconf->interfaceParent->connectedInterface));
 }
 
 void NeighborMessages::sendMessagePlaneFinishedAck()
 {
-    if (reconf->planeFinishedAck)
+    if (reconf->isPlaneCompleted)
         return;
-    reconf->planeFinishedAck = true;
+    reconf->isPlaneCompleted = true;
     Plane_finished_ack_message *msg = new Plane_finished_ack_message();
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(1))));
     msg = new Plane_finished_ack_message();

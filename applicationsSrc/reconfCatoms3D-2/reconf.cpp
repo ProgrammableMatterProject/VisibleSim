@@ -11,6 +11,16 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
     confirmNorthRight = false;
     confirmWestLeft = false;
     confirmWestRight = false;
+    confirmSouthLeft = false;
+    confirmSouthRight = false;
+    confirmEastLeft = false;
+    confirmEastRight = false;
+
+    childConfirm = 0;
+    nChildren = 0;
+
+    isLineParent = false;
+    isPlaneParent = false;
 }
 
 bool Reconf::isInternalSeedNext()
@@ -127,4 +137,30 @@ bool Reconf::isPlaneSeed()
     return Border::isPlaneSeed(catom->position);
 }
 
+
+bool Reconf::isOnBorder()
+{
+    Cell3DPosition pos = catom->position;
+    if (BlockCode::target->isInTarget(pos) &&
+        (!BlockCode::target->isInTarget(pos.addX(-1)) ||
+        !BlockCode::target->isInTarget(pos.addX(1)) ||
+        !BlockCode::target->isInTarget(pos.addY(-1)) ||
+        !BlockCode::target->isInTarget(pos.addY(1))))
+        return true;
+    return false;
+}
+
+bool Reconf::areNeighborsPlaced()
+{
+    Cell3DPosition pos = catom->position;
+    if (BlockCode::target->isInTarget(pos.addX(-1)) && !catom->getInterface(pos.addX(-1))->isConnected())
+        return false;
+    if (BlockCode::target->isInTarget(pos.addX(1)) && !catom->getInterface(pos.addX(1))->isConnected())
+        return false;
+    if (BlockCode::target->isInTarget(pos.addY(-1)) && !catom->getInterface(pos.addY(-1))->isConnected())
+        return false;
+    if (BlockCode::target->isInTarget(pos.addY(1)) && !catom->getInterface(pos.addY(1))->isConnected())
+        return false;
+    return true;
+}
 

@@ -2,9 +2,10 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 0
+#define CONSTRUCT_WAIT_TIME 10
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
+#define PLANE_FINISHED_TIME 3
 
 using namespace std;
 using namespace Catoms3D;
@@ -43,7 +44,7 @@ void ReconfCatoms3DBlockCode::startup() {
 
 void ReconfCatoms3DBlockCode::planningRun() {
     if (neighborhood->isFirstCatomOfPlane()) {
-        reconf->planeParent = true;
+        reconf->isPlaneParent = true;
 
         neighborMessages->init();
     }
@@ -66,9 +67,6 @@ void ReconfCatoms3DBlockCode::startTree() {
             ReconfCatoms3DBlockCode *neighborBlockCode = (ReconfCatoms3DBlockCode*)Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
             reconf->syncPlaneNodeParent = neighborBlockCode->reconf->syncPlaneNode;
         }
-    }
-    if (reconf->checkPlaneCompleted()) {
-        syncPlaneManager->planeFinished();
     }
 }
 
@@ -130,20 +128,27 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case PLANE_FINISHED_MSG_ID:
             {
-                if (!reconf->planeFinished) {
-                    syncPlaneManager->planeFinished();
-                    removeSeed();
+                reconf->childConfirm++;
+                if (reconf->childConfirm == reconf->nChildren) {
+                    if (!reconf->isPlaneParent) {
+                        neighborMessages->sendMessagePlaneFinished();
+                    }
+                    else {
+                        neighborMessages->sendMessagePlaneFinishedAck();
+                    }
                 }
+                std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
             }
             case PLANE_FINISHED_ACK_MSG_ID:
             {
-                syncPlaneManager->planeFinishedAck();
+                neighborMessages->sendMessagePlaneFinishedAck();
                 if (syncPlane->isSeed()) {
                     if(catom->getInterface(catom->position.addZ(1)) == NULL) {
                         neighborhood->addNeighborToNextPlane();
                     }
                 }
+                std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
             }
             case CANFILLLEFTRESPONSE_MESSAGE_ID:
@@ -163,6 +168,9 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
         if (!reconf->init)
             break;
+
+        if (reconf->areNeighborsPlaced() && reconf->nChildren == 0)
+            neighborMessages->sendMessagePlaneFinished();
 
         if (face == 1 || face == 6)
         {
@@ -292,7 +300,7 @@ void ReconfCatoms3DBlockCode::planeContinue()
 
 void ReconfCatoms3DBlockCode::removeSeed()
 {
-    if (!reconf->planeParent) {
+    if (!reconf->isPlaneParent) {
         if (catom->getInterface(catom->position.addZ(-1))->isConnected()) {
             ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
             SyncPlane_node_manager::root->remove(otherCatom->reconf->syncPlaneNode, otherCatom->reconf->syncPlaneNodeParent);

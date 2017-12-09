@@ -21,8 +21,10 @@ void Neighborhood::addNeighborToLeft()
 {
     Cell3DPosition pos = catom->position.addX(-1);
     if (BlockCode::target->isInTarget(pos) && !catom->getInterface(pos)->isConnected()) {
-        if (!Scheduler::getScheduler()->hasEvent(ADDLEFTBLOCK_EVENT_ID, catom->blockId))
+        if (!Scheduler::getScheduler()->hasEvent(ADDLEFTBLOCK_EVENT_ID, catom->blockId)) {
+            reconf->nChildren++;
             getScheduler()->schedule(new AddLeftBlock_event(getScheduler()->now()+MSG_TIME_ADD, catom));
+        }
     }
 }
 
@@ -30,19 +32,27 @@ void Neighborhood::addNeighborToRight()
 {
     Cell3DPosition pos = catom->position.addX(1);
     if (BlockCode::target->isInTarget(pos) && !catom->getInterface(pos)->isConnected()) {
-        if (!Scheduler::getScheduler()->hasEvent(ADDRIGHTBLOCK_EVENT_ID, catom->blockId))
+        if (!Scheduler::getScheduler()->hasEvent(ADDRIGHTBLOCK_EVENT_ID, catom->blockId)) {
+            reconf->nChildren++;
             getScheduler()->schedule(new AddRightBlock_event(getScheduler()->now()+MSG_TIME_ADD, catom));
+        }
     }
 }
 
 void Neighborhood::addNextLineNeighbor()
 {
-    addNeighbor(catom->position.addY(1));
+    if (!catom->getInterface(catom->position.addY(1))->isConnected()) {
+        reconf->nChildren++;
+        addNeighbor(catom->position.addY(1));
+    }
 }
 
 void Neighborhood::addPreviousLineNeighbor()
 {
-    addNeighbor(catom->position.addY(-1));
+    if (!catom->getInterface(catom->position.addY(-1))->isConnected()) {
+        reconf->nChildren++;
+        addNeighbor(catom->position.addY(-1));
+    }
 }
 
 void Neighborhood::addNeighborToNextPlane()
@@ -132,30 +142,6 @@ void Neighborhood::addEventAddPreviousLineNeighbor() {
         AddPreviousLine_event *evt = new AddPreviousLine_event(getScheduler()->now()+MSG_TIME_ADD, catom);
         getScheduler()->schedule(evt);
     }
-}
-
-void Neighborhood::sendMessageToAddLeft() {
-    if (catom->getInterface(catom->position.addY(-1))->isConnected()
-            && BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1))) {
-        CanFillLeft_message *msg = new CanFillLeft_message();
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(-1))));
-        numberMessagesToAddBlock++;
-        return;
-    }
-
-    addNeighborToLeft();
-}
-
-void Neighborhood::sendMessageToAddRight() {
-    if (catom->getInterface(catom->position.addY(1))->isConnected()
-            && BlockCode::target->isInTarget(catom->position.addY(1).addX(1))) {
-        CanFillRight_message *msg = new CanFillRight_message();
-        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
-        numberMessagesToAddBlock++;
-        return;
-    }
-
-    addNeighborToRight();
 }
 
 void Neighborhood::sendResponseMessageToAddLeft() {

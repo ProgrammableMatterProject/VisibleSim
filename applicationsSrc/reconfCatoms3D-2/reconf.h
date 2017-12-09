@@ -32,8 +32,8 @@ class Reconf {
 public:
     bool init;
     vector<MessageQueue> messageQueue;
-    bool lineParent;
-    bool planeParent;
+    bool isLineParent;
+    bool isPlaneParent;
     bool confirmNorthLeft;
     bool confirmNorthRight;
     bool confirmWestLeft;
@@ -43,19 +43,22 @@ public:
     bool confirmEastLeft;
     bool confirmEastRight;
     int floor;
+    int childConfirm;
+    int nChildren;
+    bool isPlaneCompleted;
+    P2PNetworkInterface* interfaceParent;
 
     Reconf(Catoms3D::Catoms3DBlock *c);
 
     bool isSeedNext();
     bool isSeedPrevious();
 
-    bool isLineParent() { return lineParent; }
-    void setLineParent() { lineParent = true; }
-
     void setSeedNext() { seedNext = true; };
     void setSeedPrevious() { seedPrevious = true; };
 
     bool checkPlaneCompleted();
+    bool areNeighborsPlaced();
+    bool isOnBorder();
 
     void addMessageOnQueue(MessageQueue mQueue);
     bool isPlaneSeed();

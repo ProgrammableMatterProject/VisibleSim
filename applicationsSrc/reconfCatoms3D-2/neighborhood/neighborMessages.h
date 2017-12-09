@@ -20,6 +20,9 @@
 #define NEW_CATOM_LINE_PARENT_RESPONSE_MSG_ID	9005
 #define NEW_CATOM_PLANE_PARENT_RESPONSE_MSG_ID	9006
 
+#define PLANE_FINISHED_MSG_ID 9007
+#define PLANE_FINISHED_ACK_MSG_ID 9008
+
 class NeighborMessages
 {
 private:
@@ -50,6 +53,9 @@ public:
     //void handleParentSeedMsg(MessagePtr msg);
 
     void sendMessagesOnQueue(Cell3DPosition pos);
+
+    void sendMessagePlaneFinished();
+    void sendMessagePlaneFinishedAck();
 };
 
 class New_catom_message : public Message {
@@ -92,5 +98,14 @@ public:
     New_catom_plane_parent_response_message() { id = NEW_CATOM_PLANE_PARENT_RESPONSE_MSG_ID;}
 };
 
+class Plane_finished_message : public Message {
+public:
+    Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
+};
+
+class Plane_finished_ack_message : public Message {
+public:
+    Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
+};
 
 #endif /* NEIGHBORMESSAGES_H_ */

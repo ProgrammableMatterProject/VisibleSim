@@ -30,14 +30,17 @@ class Reconf {
 
     bool isHighestOfBorder(int idx);
     int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos);
-    bool isOnBorder();
     bool isHighest();
 
 public:
-    bool planeParent;
-    bool planeFinished;
-    bool planeFinishedAck;
+    bool isPlaneParent;
+    bool isPlaneCompleted;
+
     bool init;
+    //bool isLeaf;
+    int childConfirm;
+    int nChildren;
+    P2PNetworkInterface* interfaceParent;
 
     SyncPlane_node *syncPlaneNodeParent;
     SyncPlane_node *syncPlaneNode;
@@ -56,6 +59,8 @@ public:
     void setSeedPrevious() { seedPrevious = true; };
 
     bool checkPlaneCompleted();
+    bool areNeighborsPlaced();
+    bool isOnBorder();
 
     void addMessageOnQueue(MessageQueue mQueue);
 };

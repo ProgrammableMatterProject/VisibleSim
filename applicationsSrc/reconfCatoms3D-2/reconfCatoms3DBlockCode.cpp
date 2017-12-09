@@ -6,6 +6,7 @@
 #define SYNC_WAIT_TIME 5
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
+#define PLANE_FINISHED_TIME 5
 
 using namespace std;
 using namespace Catoms3D;
@@ -40,10 +41,10 @@ void ReconfCatoms3DBlockCode::startup() {
 void ReconfCatoms3DBlockCode::planningRun() {
     if (catom->blockId == 1) {
         neighborMessages->init();
-        reconf->planeParent = true;
+        reconf->isPlaneParent = true;
     }
     else if (neighborhood->isFirstCatomOfPlane()) {
-        reconf->planeParent = true;
+        reconf->isPlaneParent = true;
         neighborMessages->sendMessageToGetPlaneParentInfo();
         catom->setColor(GREEN);
     }
@@ -174,6 +175,31 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 neighborhood->addNeighbors();
                 break;
             }
+            case PLANE_FINISHED_MSG_ID:
+            {
+                reconf->childConfirm++;
+                if (reconf->childConfirm == reconf->nChildren) {
+                    if (!reconf->isPlaneParent) {
+                        neighborMessages->sendMessagePlaneFinished();
+                    }
+                    else {
+                        neighborMessages->sendMessagePlaneFinishedAck();
+                    }
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
+                break;
+            }
+            case PLANE_FINISHED_ACK_MSG_ID:
+            {
+                neighborMessages->sendMessagePlaneFinishedAck();
+                if (reconf->isPlaneSeed()) {
+                    if(catom->getInterface(catom->position.addZ(1)) == NULL) {
+                        neighborhood->addNeighborToNextPlane();
+                    }
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
+                break;
+            }
           }
       }
       break;
@@ -201,6 +227,9 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
         if (!reconf->init)
             break;
+
+        if (reconf->areNeighborsPlaced() && reconf->nChildren == 0)
+            neighborMessages->sendMessagePlaneFinished();
 
         if (face == 1 || face == 4)
         {
