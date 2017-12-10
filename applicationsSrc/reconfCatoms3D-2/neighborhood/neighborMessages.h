@@ -23,6 +23,8 @@
 #define PLANE_FINISHED_MSG_ID 9007
 #define PLANE_FINISHED_ACK_MSG_ID 9008
 
+#define PARENT_PLANE_FINISHED_MSG_ID 9009
+
 class NeighborMessages
 {
 private:
@@ -56,6 +58,8 @@ public:
 
     void sendMessagePlaneFinished();
     void sendMessagePlaneFinishedAck();
+    void sendMessageParentPlaneFinished(Cell3DPosition direction);
+    void broadcastMessageParentPlaneFinished();
 };
 
 class New_catom_message : public Message {
@@ -76,7 +80,7 @@ public:
 
 class New_catom_response_message : public Message {
 public:
-    queue<MessagePtr> requestQueue;
+    //queue<MessagePtr> requestQueue;
     int floor;
 
     New_catom_response_message() { id = NEW_CATOM_RESPONSE_MSG_ID; };
@@ -84,7 +88,7 @@ public:
 
 class New_catom_line_parent_response_message : public Message {
 public:
-    queue<MessagePtr> requestQueue;
+    //queue<MessagePtr> requestQueue;
     bool createdFromPrevious;
     int floor;
 
@@ -100,12 +104,17 @@ public:
 
 class Plane_finished_message : public Message {
 public:
-    Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
+    Plane_finished_message() { id = PLANE_FINISHED_MSG_ID;};
 };
 
 class Plane_finished_ack_message : public Message {
 public:
-    Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
+    Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID;};
+};
+
+class Parent_plane_finished_message: public Message {
+public:
+    Parent_plane_finished_message() { id = PARENT_PLANE_FINISHED_MSG_ID;}
 };
 
 #endif /* NEIGHBORMESSAGES_H_ */

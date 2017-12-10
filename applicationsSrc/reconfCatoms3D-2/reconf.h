@@ -34,6 +34,7 @@ public:
     vector<MessageQueue> messageQueue;
     bool isLineParent;
     bool isPlaneParent;
+    bool planeSeed;
     bool confirmNorthLeft;
     bool confirmNorthRight;
     bool confirmWestLeft;
@@ -47,6 +48,7 @@ public:
     int nChildren;
     bool isPlaneCompleted;
     P2PNetworkInterface* interfaceParent;
+    bool parentPlaneFinished;
 
     Reconf(Catoms3D::Catoms3DBlock *c);
 

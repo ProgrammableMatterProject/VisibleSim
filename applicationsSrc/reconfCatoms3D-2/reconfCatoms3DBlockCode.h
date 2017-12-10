@@ -37,6 +37,8 @@ public:
 
     void getStats();
 
+    void planeFinishedAck();
+
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 };
 

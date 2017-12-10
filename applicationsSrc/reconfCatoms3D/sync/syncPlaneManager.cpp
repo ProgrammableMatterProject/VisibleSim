@@ -12,7 +12,7 @@ void SyncPlaneManager::planeFinished()
 {
     neighborMessages->sendMessagePlaneFinished();
 
-    if (reconf->planeParent) {
+    if (reconf->isPlaneParent) {
         if (reconf->syncPlaneNodeParent != NULL)
             reconf->syncPlaneNodeParent->setCompleted();
         planeFinishedAck();
@@ -21,7 +21,7 @@ void SyncPlaneManager::planeFinished()
 
 void SyncPlaneManager::planeFinishedAck()
 {
-    if (!reconf->planeFinishedAck) {
+    if (!reconf->isPlaneCompleted) {
         if (syncPlane->isSeed()) {
             setSeedNextPlaneCentralized();
             //tryAddNextPlane();

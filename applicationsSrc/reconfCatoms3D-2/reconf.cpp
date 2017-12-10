@@ -21,6 +21,9 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 
     isLineParent = false;
     isPlaneParent = false;
+    isPlaneCompleted = false;
+    parentPlaneFinished = false;
+    planeSeed = false;
 }
 
 bool Reconf::isInternalSeedNext()
@@ -134,7 +137,9 @@ bool Reconf::canAddNextPlaneSeed()
 
 bool Reconf::isPlaneSeed()
 {
-    return Border::isPlaneSeed(catom->position);
+    if (planeSeed)
+        return true;
+    return planeSeed = Border::isPlaneSeed(catom->position);
 }
 
 

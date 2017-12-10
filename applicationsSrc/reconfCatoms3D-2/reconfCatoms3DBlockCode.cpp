@@ -2,11 +2,11 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 5
-#define SYNC_WAIT_TIME 5
+#define CONSTRUCT_WAIT_TIME 1
+#define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
-#define PLANE_FINISHED_TIME 5
+#define PLANE_FINISHED_TIME 1
 
 using namespace std;
 using namespace Catoms3D;
@@ -183,7 +183,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                         neighborMessages->sendMessagePlaneFinished();
                     }
                     else {
-                        neighborMessages->sendMessagePlaneFinishedAck();
+                        planeFinishedAck();
                     }
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
@@ -191,12 +191,13 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case PLANE_FINISHED_ACK_MSG_ID:
             {
-                neighborMessages->sendMessagePlaneFinishedAck();
-                if (reconf->isPlaneSeed()) {
-                    if(catom->getInterface(catom->position.addZ(1)) == NULL) {
-                        neighborhood->addNeighborToNextPlane();
-                    }
-                }
+                planeFinishedAck();
+                std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
+                break;
+            }
+            case PARENT_PLANE_FINISHED_MSG_ID:
+            {
+                neighborMessages->broadcastMessageParentPlaneFinished();
                 std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
             }
@@ -317,6 +318,15 @@ void ReconfCatoms3DBlockCode::getStats() {
     nMessages += NeighborMessages::nMessagesGetInfo;
     nMessages += Neighborhood::numberMessagesToAddBlock;
     cout << nbBlocks*100/12607 << ';' << count << ';' << nbBlocks << ';' << nMessages << endl;
+}
+
+void ReconfCatoms3DBlockCode::planeFinishedAck() {
+    neighborMessages->sendMessagePlaneFinishedAck();
+    if (reconf->isPlaneSeed()) {
+        if(catom->getInterface(catom->position.addZ(1))->isConnected()) {
+            neighborMessages->sendMessageParentPlaneFinished(catom->position.addZ(1));
+        }
+    }
 }
 
 BlockCode* ReconfCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {

@@ -39,18 +39,18 @@ void Neighborhood::addNeighborToRight()
 
 void Neighborhood::addNextLineNeighbor()
 {
-    //if (!catom->getInterface(catom->position.addY(1))) {
+    if (!catom->getInterface(catom->position.addY(1))->isConnected()) {
         reconf->nChildren++;
         addNeighbor(catom->position.addY(1));
-    //}
+    }
 }
 
 void Neighborhood::addPreviousLineNeighbor()
 {
-    //if (!catom->getInterface(catom->position.addY(-1))) {
+    if (!catom->getInterface(catom->position.addY(-1))->isConnected()) {
         reconf->nChildren++;
         addNeighbor(catom->position.addY(-1));
-    //}
+    }
 }
 
 void Neighborhood::addNeighborToNextPlane()
@@ -65,8 +65,8 @@ void Neighborhood::addNeighborToPreviousPlane()
 
 bool Neighborhood::isFirstCatomOfLine()
 {
-    if (catom->getInterface(catom->position.addX(-1))->connectedInterface == NULL &&
-            catom->getInterface(catom->position.addX(1))->connectedInterface == NULL)
+    if (!catom->getInterface(catom->position.addX(-1))->isConnected() &&
+            !catom->getInterface(catom->position.addX(1))->isConnected())
         return true;
     return false;
 }
@@ -74,8 +74,8 @@ bool Neighborhood::isFirstCatomOfLine()
 bool Neighborhood::isFirstCatomOfPlane()
 {
     if (isFirstCatomOfLine() &&
-            catom->getInterface(catom->position.addY(-1))->connectedInterface == NULL &&
-            catom->getInterface(catom->position.addY(1))->connectedInterface == NULL)
+            !catom->getInterface(catom->position.addY(-1))->isConnected() &&
+            !catom->getInterface(catom->position.addY(1))->isConnected())
         return true;
     return false;
 }
@@ -102,7 +102,7 @@ void Neighborhood::addLeft() {
     if(BlockCode::target->isInTarget(catom->position.addX(-1)) &&
        !catom->getInterface(catom->position.addX(-1))->isConnected()) {
         if (!BlockCode::target->isInTarget(catom->position.addY(-1).addX(-1)) || !catom->getInterface(catom->position.addY(-1))->isConnected()) {
-            if (reconf->floor == 0 || (reconf->confirmWestLeft && reconf->confirmWestRight))
+            if (reconf->floor == 0 || (reconf->confirmWestLeft && reconf->confirmWestRight) || reconf->parentPlaneFinished)
                 addNeighborToLeft();
         }
         else {
@@ -116,7 +116,7 @@ void Neighborhood::addRight() {
     if(BlockCode::target->isInTarget(catom->position.addX(1)) &&
        !catom->getInterface(catom->position.addX(1))->isConnected()) {
         if (!BlockCode::target->isInTarget(catom->position.addY(1).addX(1)) || !catom->getInterface(catom->position.addY(1))->isConnected()) {
-            if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete())
+            if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete() || reconf->parentPlaneFinished)
                 addNeighborToRight();
         }
         else {
@@ -127,21 +127,19 @@ void Neighborhood::addRight() {
 }
 
 void Neighborhood::addNext() {
-    if (reconf->isSeedNext() && ((reconf->confirmNorthLeft && reconf->confirmNorthRight) || reconf->floor == 0)) {
-        //if (catom->blockId == 1838) {
+        //if (catom->blockId == 39) {
             //cout << "----" << endl;
             //cout << reconf->isSeedNext() << endl;
             //cout << reconf->confirmNorthLeft << endl;
             //cout << reconf->confirmNorthRight << endl;
             //cout << reconf->floor << endl;
         //}
+    if (reconf->isSeedNext() && ((reconf->confirmNorthLeft && reconf->confirmNorthRight) || reconf->floor == 0 || reconf->parentPlaneFinished)) {
         addEventAddNextLineNeighbor();
-        //catom->setColor(CYAN);
     }
 }
 void Neighborhood::addPrevious() {
-    if (reconf->isSeedPrevious()) {
-        //catom->setColor(GOLD);
+    if (reconf->isSeedPrevious() && ((reconf->confirmSouthLeft && reconf->confirmSouthRight) || reconf->floor == 0 || reconf->parentPlaneFinished)) {
         addEventAddPreviousLineNeighbor();
     }
 }
