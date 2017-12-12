@@ -34,6 +34,7 @@
 #include <fstream>
 #include <vector>
 #include <Eigen/Dense>
+#include <cfloat>
 
 #define TIXML_USE_STL	1
 #include "TinyXML/tinyxml.h"

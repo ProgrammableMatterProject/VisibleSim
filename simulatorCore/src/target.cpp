@@ -407,16 +407,61 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
 }
 
 bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
+    //Initialization
+    Vector3D cartesianpos = getWorld()->lattice->gridToWorldPosition(pos);
+    float x = cartesianpos.pt[0];
+    float y = cartesianpos.pt[1];
+    float z = cartesianpos.pt[2];
+
     if (method.compare("interpolation") == 0) {
-        //print method
-        cout << "Call to isInTarget method =" << method << endl; 
-        return true;
+        //Calculation of d polynom degree
+        int d = 0;
+        while (coeffs.size()>(d+1)*(d+2)/2) {
+            d = d+1;
+        }
+        if (coeffs.size()<(d+1)*(d+2)/2) {
+            d = d-1;
+        }
+        //Calculation of f(x,y)
+        float f = 0;
+        int j = 0;
+        for (int k=0;k<=d;k++){
+            for (int l=0;l<=(d-k);l++){
+                f = f+coeffs[j]*pow(x,(d-k-l))*pow(y,l);
+            }
+        }
+        //Comparison between f and z
+        if (z<=f){
+            //cout << "x=" << x << ",y=" << y << " f= " << f << endl;
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     else if (method.compare("voisin") == 0) {
         //print method
         cout << "Call to isInTarget method =" << method << endl; 
-        return true;
+        //Nearest neighboor research
+        float mindist = FLT_MAX;
+        int neighbor = 0;
+        for (int i=0;i<pcl.size();i++){
+            float xi = pcl[i].pt[0];
+            float yi = pcl[i].pt[1];
+            float dist = pow((x-xi),2)+pow((y-yi),2);
+            if (dist<mindist){
+                mindist = dist;
+                neighbor = i;
+            }
+        }
+        //Comparison between z
+        if (z<=pcl[neighbor].pt[2]){
+            return true;
+        }
+        else{
+            return false;
+        }        
     }
     
     else {
