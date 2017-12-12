@@ -428,9 +428,11 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         for (int k=0;k<=d;k++){
             for (int l=0;l<=(d-k);l++){
                 f = f+coeffs[j]*pow(x,(d-k-l))*pow(y,l);
+                j = j+1;
             }
         }
         //Comparison between f and z
+        cout << "x=" << x << ",y=" << y << ",z=" << z <<  " f= " << f << endl;
         if (z<=f){
             //cout << "x=" << x << ",y=" << y << " f= " << f << endl;
             return true;
