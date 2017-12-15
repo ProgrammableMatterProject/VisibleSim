@@ -1,14 +1,13 @@
-
 <?xml version="1.0" standalone="no" ?>
 <world gridSize="20,20,10" windowSize="1280,720">
-    <camera target="25,20,10" directionSpherical="-8.95323,30.4124,120" angle="30" />
-    <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="33" />
+    <camera target="103.82,48.0155,78.0437" directionSpherical="-8.95323,30.4124,100" angle="30" />
+    <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="78" />
     <blockList blockSize="10,10,10">
-        <block position="11,11,4" color="128,128,128" Rotation="0" />
+        <block position="11,11,4" color="128,128,128" rotation="0" />
         <block position="12,11,4" color="128,128,128" rotation="0" />
         <block position="11,12,4" color="128,128,128" rotation="0" />
         <block position="12,12,4" color="128,128,128" rotation="0" />
-        <block position="11,11,5" color="128,128,128" Rotation="0" />
+        <block position="11,11,5" color="128,128,128" rotation="0" />
         <block position="12,11,5" color="128,128,128" rotation="0" />
         <block position="11,12,5" color="128,128,128" rotation="0" />
         <block position="12,12,5" color="128,128,128" rotation="0" />
