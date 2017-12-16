@@ -84,7 +84,8 @@ private:
     std::map<P2PNetworkInterface*, bool> flag; //!< flags for each neighbors when the node knows that they have been visited
     int resetChildrenDecount; //!< Number of children which have NOT YET notified their father that they reset their search data structures
     P2PNetworkInterface *resetFather = NULL; //!< interface connected to the module which sent us a reset command first
-    
+    bool melted = false; //!< indicates whether module has already melted into the line
+
     /**
      * @brief Initializes the local variables used by the articulation points labelling algorithm
      */

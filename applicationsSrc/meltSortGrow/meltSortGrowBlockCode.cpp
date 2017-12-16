@@ -113,7 +113,7 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
         sons.insert(unprocessedNeighbor);
     } else if (source) { /* root checks for articulation point and terminates */
         if (sons.size() >= 2) articulationPoint = true;
-            
+
         findMobileModule();
     } else { /* a normal node has finished the visits to its subtree */
         if (minDfn < lDfn && minSdr != father)
@@ -271,7 +271,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                 for (auto const& module : neighbors) {
                     if (!sons.count(module) && module != father)
                         sendMessage("visited",
-                                    new MessageOf<int>(MSG_MELT_APL_VISITED, dfn),
+                                    new MessageOf<int>(MSG_MELT_APL_VISITED, lDfn),
                                     module, 100, 0);
                 }
 
@@ -295,10 +295,10 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                 lDfn = std::min(lDfn, echoPayload->lDfn); /* updates L(i) to reflect its son's smaller L */
                 dfnCnt = std::max(dfnCnt, echoPayload->dfnCnt);
 
-                if (lDfn >= dfn && !source) {
+                if (echoPayload->lDfn >= dfn && !source) {
                     articulationPoint = true;
                     catom->setColor(PINK); // #ToRemove
-                }
+               }
 
                 APLabellingSearch();
             }
@@ -329,7 +329,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
             // Prepare data structures for the mobile module search DFS
             resetDFSForSearching();
             
-            if (articulationPoint) {
+            if (articulationPoint || melted) {
                 P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
                 if (unprocessedNeighbor) {
                     sendMessage("FindMobileModule",
@@ -387,10 +387,14 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                                                           tailPosition),
                             unprocessedNeighbor, 100, 0);
             } else {
-                sendMessage("FindMobileModuleNope",
-                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NOPE,
-                                                          tailPosition),
-                            father, 100, 0);
+                if (father) 
+                    sendMessage("FindMobileModuleNope",
+                                new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NOPE,
+                                                              tailPosition),
+                                father, 100, 0);
+                else
+                    // Melt is done
+                    catom->setColor(RED);
             }
 
             // resetDFSForLabelling();
@@ -448,7 +452,6 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
 
         case EVENT_TELEPORTATION_END: {
             console << "I have reached where you wanted me to go sir." << "\n";
-            // World::getWorld()->connectBlock(catom);
             propagateGraphResetBFS();
         } break;
 
@@ -489,6 +492,7 @@ void MeltSortGrowBlockCode::determineRoot() {
 // Initiates the Melt phase of the algorithm by the root node
 //  i.e., decomposition into an intermediate shape
 void MeltSortGrowBlockCode::meltOneModule() {
+    melted = true;
     APLabellingStart();
 }
 
