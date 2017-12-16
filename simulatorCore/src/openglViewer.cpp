@@ -262,52 +262,55 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
 
     } else {
         switch(c) {
-        case 27 : case 'q' : case 'Q' : // quit
-            glutLeaveMainLoop();
-            break;
-        case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
-        case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
-        case '+' : camera->mouseZoom(0.5); break;
-        case '-' : camera->mouseZoom(-0.5); break;
-            //  case 'l' : showLinks = !showLinks; break;
-        case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
-//          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
-            //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
-        case 'd' : getScheduler()->stop(getScheduler()->now()); break;
-        case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
-            //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
-        case 'z' : {
-            World *world = BaseSimulator::getWorld();
-            GlBlock *slct=world->getselectedGlBlock();
-            if (slct) {
-                world->getCamera()->setTarget(slct->getPosition());
+            case 27 : case 'q' : case 'Q' : // quit
+                glutLeaveMainLoop();
+                break;
+            case 'f' : glPolygonMode(GL_FRONT_AND_BACK,GL_LINE); break;
+            case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
+            case '+' : camera->mouseZoom(0.5); break;
+            case '-' : camera->mouseZoom(-0.5); break;
+            case 'T' : mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE); break;
+            case 't' : mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD); break;
+                //  case 'l' : showLinks = !showLinks; break;
+            case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
+    //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
+                //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
+            case 'd' : getScheduler()->stop(getScheduler()->now()); break;
+            case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
+                //case 'u' : BlinkyBlocks::getDebugger()->unPauseSim(); break;
+            case 'z' : {
+                World *world = BaseSimulator::getWorld();
+                GlBlock *slct=world->getselectedGlBlock();
+                if (slct) {
+                    world->getCamera()->setTarget(slct->getPosition());
+                }
             }
-        }
-            break;
-        case 'w' : case 'W' :
-            fullScreenMode = !fullScreenMode;
-            if (fullScreenMode) {
-                glutFullScreen();
-            } else {
-                glutReshapeWindow(initialScreenWidth,initialScreenHeight);
-                glutPositionWindow(0,0);
-            }
-            break;
-        case 'h' :
-            if (!helpWindow) {
-                BaseSimulator::getWorld()->createHelpWindow();
-            }
-            helpWindow->showHide();
-            break;
-        case 'i' : case 'I' :
-            mainWindow->openClose();
-            break;
-        case 's' : saveScreenMode=!saveScreenMode; break;
-        case 'S' : saveScreen((char *)("capture.ppm")); break;
-        case 'B' : 
-            World *world = BaseSimulator::getWorld();
-            world->toggleBackground();
-            break;
+                break;
+            case 'w' : case 'W' :
+                fullScreenMode = !fullScreenMode;
+                if (fullScreenMode) {
+                    glutFullScreen();
+                } else {
+                    glutReshapeWindow(initialScreenWidth,initialScreenHeight);
+                    glutPositionWindow(0,0);
+                }
+                break;
+            case 'h' :
+                if (!helpWindow) {
+                    BaseSimulator::getWorld()->createHelpWindow();
+                }
+                helpWindow->showHide();
+                break;
+            case 'i' : case 'I' :
+                mainWindow->openClose();
+                break;
+            case 's' : saveScreenMode=!saveScreenMode; break;
+            case 'S' : saveScreen((char *)("capture.ppm")); break;
+            case 'B' :
+                World *world = BaseSimulator::getWorld();
+                world->toggleBackground();
+                break;
+
         }
     }
     glutPostRedisplay();
