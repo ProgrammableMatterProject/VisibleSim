@@ -12,14 +12,17 @@ const int tabConnectors4[6][4] = { {0,1,2,10},{1,3,6,11},{4,6,7,8},{0,5,7,9},{8,
 
 Catoms3DMotionRules::Catoms3DMotionRules() {
 
-// allocation of connectors
+    // allocation of connectors
     for (int i=0; i<12; i++) {
         tabConnectors[i] = new Catoms3DMotionRulesConnector(i);
     }
 
-    Vector3D up(0,+1,0),upleft(+1,+1,+M_SQRT2),upright(-1,+1,-M_SQRT2),
-             down(0,-1,0),downright(+1,-1,-M_SQRT2),downleft(-1,-1,+M_SQRT2),left(0,0,1),right(0,0,-1),
-             lup(-1,+1,0),rup(+1,+1,0);
+    Vector3D up(0,+1,0), down(0,-1,0),
+        upleft(+1,+1,+M_SQRT2), upright(-1,+1,-M_SQRT2),
+        downright(+1,-1,-M_SQRT2),downleft(-1,-1,+M_SQRT2),
+        left(0,0,1),right(0,0,-1),
+        lup(-1,+1,0),rup(+1,+1,0);
+    
     addLinks3(1,2,3,up,downright,downleft);
     addLinks3(7,4,5,up,downright,downleft);
     addLinks3(0,5,2,down,upleft,upright);
@@ -85,7 +88,10 @@ const int *findTab4(int id1,int id2) {
     return tabConnectors4[i-1];
 }
 
-void Catoms3DMotionRules::addLinks3(int id1, int id2, int id3, const Vector3D &axis1,const Vector3D &axis2,const Vector3D &axis3) {
+void Catoms3DMotionRules::addLinks3(int id1, int id2, int id3,
+                                    const Vector3D &axis1,
+                                    const Vector3D &axis2,
+                                    const Vector3D &axis3) {
     static const double radius = 0.4530052159;
     static const double angle = atan(sqrt(2.0)/2.0)*180.0/M_PI;
     int tabBC1[5],tabBC2[5],tabBC3[5];
@@ -111,7 +117,10 @@ void Catoms3DMotionRules::addLinks3(int id1, int id2, int id3, const Vector3D &a
     addLink(hexaFace,id3,id2,angle,radius,-axis1,axis3,5,tabBC3);
 }
 
-void Catoms3DMotionRules::addLinks4(int id1, int id2, int id3, int id4, const Vector3D &left,const Vector3D &lup,const Vector3D &rup) {
+void Catoms3DMotionRules::addLinks4(int id1, int id2, int id3, int id4,
+                                    const Vector3D &left,
+                                    const Vector3D &lup,
+                                    const Vector3D &rup) {
     static const double radius = 0.453081839321973;
     static const double angle = 45.0;
     int tabBC1[6],tabBC2[6],tabBC3[6],tabBC4[6];
@@ -174,7 +183,11 @@ void Catoms3DMotionRules::addLinks4(int id1, int id2, int id3, int id4, const Ve
 }
 
 
-void Catoms3DMotionRules::addLink(MotionRuleLinkType mrlt,int id1, int id2,double angle,double radius,const Vector3D &axis1,const Vector3D &axis2,int n, int *tabBC) {
+void Catoms3DMotionRules::addLink(MotionRuleLinkType mrlt,int id1, int id2,
+                                  double angle, double radius,
+                                  const Vector3D &axis1,
+                                  const Vector3D &axis2,
+                                  int n, int *tabBC) {
     Matrix M = Catoms3DBlock::getMatrixFromPositionAndOrientation(Cell3DPosition(0,0,0),id1);
     Matrix M_1;
     M.inverse(M_1);
@@ -183,7 +196,10 @@ void Catoms3DMotionRules::addLink(MotionRuleLinkType mrlt,int id1, int id2,doubl
     ax1.normer_interne();
     ax2.normer_interne();
 
-    Catoms3DMotionRulesLink *lnk = new Catoms3DMotionRulesLink(mrlt,tabConnectors[id1],tabConnectors[id2],angle,radius,ax1,ax2);
+    Catoms3DMotionRulesLink *lnk = new Catoms3DMotionRulesLink(mrlt,
+                                                               tabConnectors[id1],
+                                                               tabConnectors[id2],
+                                                               angle,radius,ax1,ax2);
     tabConnectors[id1]->addLink(lnk);
     //OUTPUT << id1 << " -> " << id2 << endl;
     for (int i=0; i<n; i++) {
@@ -195,7 +211,8 @@ void Catoms3DMotionRules::addLink(MotionRuleLinkType mrlt,int id1, int id2,doubl
     //OUTPUT << endl;
 }
 
-bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,int from,vector<Catoms3DMotionRulesLink*>&vec) {
+bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d, int from,
+                                             vector<Catoms3DMotionRulesLink*>&vec) {
     Catoms3DMotionRulesConnector *conn = tabConnectors[from];
     bool notEmpty=false;
 
@@ -211,7 +228,10 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,int from,v
     return notEmpty;
 }
 
-bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot,int from,vector<Catoms3DMotionRulesLink*>&vec,const FCCLattice *lattice,const Target *target) {
+bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot,int from,
+                                                      vector<Catoms3DMotionRulesLink*>&vec,
+                                                      const FCCLattice *lattice,
+                                                      const Target *target) {
     Catoms3DMotionRulesConnector *conn = tabConnectors[from];
     bool notEmpty=false;
     bool isOk;
@@ -310,15 +330,20 @@ bool Catoms3DMotionRulesLink::isValid(const Catoms3DBlock *c3d) {
 Cell3DPosition Catoms3DMotionRulesLink::getFinalPosition(Catoms3DBlock *c3d) {
     Cell3DPosition finalPosition;
     short orient;
-    Catoms3DBlock *neighbor = (Catoms3DBlock *)c3d->getInterface(conFrom->ID)->connectedInterface->hostBlock;
+    Catoms3DBlock *neighbor = (Catoms3DBlock *)c3d->
+        getInterface(conFrom->ID)->connectedInterface->hostBlock;    
     Rotations3D rotations(c3d,neighbor,radius,axis1,angle,axis2,angle);
+    
     rotations.init(((Catoms3DGlBlock*)c3d->ptrGlBlock)->mat);
     rotations.getFinalPositionAndOrientation(finalPosition,orient);
 //    OUTPUT << "rotation " << c3d->blockId << ":" << conFrom->ID << " et " << neighbor->blockId << endl;
+
     return finalPosition;
 }
 
-void Catoms3DMotionRulesLink::sendRotationEvent(Catoms3DBlock*mobile,Catoms3DBlock*fixed,double t) {
+void Catoms3DMotionRulesLink::sendRotationEvent(Catoms3DBlock*mobile,
+                                                Catoms3DBlock*fixed,
+                                                double t) {
     Rotations3D rotations(mobile,fixed,radius,axis1,angle,axis2,angle);
     getScheduler()->schedule(new Rotation3DStartEvent(t,mobile,rotations));
 }
