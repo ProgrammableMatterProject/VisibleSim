@@ -216,9 +216,9 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
-        break;
+            break;
         case SCLattice::Right:
             switch (axisDir) {
                 case SCLattice::Top:
@@ -255,9 +255,9 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
-        break;
+            break;
         case SCLattice::Front:
             switch (axisDir) {
                 case SCLattice::Top:
@@ -294,9 +294,9 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
-        break;
+            break;
         case SCLattice::Back:
             switch (axisDir) {
                 case SCLattice::Top:
@@ -333,7 +333,7 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
         case SCLattice::Top:
             switch (axisDir) {
@@ -371,7 +371,7 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
+                    break;
             }
         case SCLattice::Bottom:
             switch (axisDir) {
@@ -409,14 +409,17 @@ OkteenMotions::OkteenMotions(OkteenBlock *mobile,SCLattice::Direction connector,
                 } break;
                 default :
                     OUTPUT << "Error: invalid motion" << endl;
-                break;
-            }
+                    break;
+            } break;
+        default:
+            OUTPUT << "Error: invalid motion" << endl;
+            break;
     }
 /*    translation = lattice->getNeighborRelativePos(connector);
-    translation.pt[0]*=lattice->gridScale[0];
-    translation.pt[1]*=lattice->gridScale[1];
-    translation.pt[2]*=lattice->gridScale[2];
-    axis=lattice->getNeighborRelativePos(axisDir);*/
+      translation.pt[0]*=lattice->gridScale[0];
+      translation.pt[1]*=lattice->gridScale[1];
+      translation.pt[2]*=lattice->gridScale[2];
+      axis=lattice->getNeighborRelativePos(axisDir);*/
 }
 
 bool OkteenMotions::nextStep(Matrix &m) {
