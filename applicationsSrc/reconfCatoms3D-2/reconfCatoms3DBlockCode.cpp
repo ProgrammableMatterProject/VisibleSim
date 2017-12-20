@@ -6,7 +6,7 @@
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
-#define PLANE_FINISHED_TIME 1
+#define PLANE_FINISHED_TIME 0
 
 using namespace std;
 using namespace Catoms3D;
@@ -112,7 +112,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case CANFILLLEFTRESPONSE_MESSAGE_ID:
             {
-                if (reconf->floor == 0 || (reconf->confirmWestLeft && reconf->confirmWestRight))
+                if (reconf->floor == 0 || (reconf->confirmWestLeft && reconf->confirmWestRight) || reconf->parentPlaneFinished)
                     neighborhood->addNeighborToLeft();
                 break;
             }
@@ -123,7 +123,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case CANFILLRIGHTRESPONSE_MESSAGE_ID:
             {
-                if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete())
+                if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete() || reconf->parentPlaneFinished)
                     neighborhood->addNeighborToRight();
                 break;
             }
@@ -198,6 +198,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case PARENT_PLANE_FINISHED_MSG_ID:
             {
                 neighborMessages->broadcastMessageParentPlaneFinished();
+                neighborhood->addNeighbors();
                 std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
             }

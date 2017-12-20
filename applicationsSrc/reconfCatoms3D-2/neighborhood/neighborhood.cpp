@@ -2,8 +2,8 @@
 #include "neighborRestriction.h"
 #include "catoms3DWorld.h"
 
-#define MSG_TIME rand()%10
-#define MSG_TIME_ADD 100+rand()%10
+#define MSG_TIME rand()%100
+#define MSG_TIME_ADD 10000+rand()%100
 
 int Neighborhood::numberBlockedModules = 0;
 int Neighborhood::numberMessagesToAddBlock = 0;
@@ -249,7 +249,7 @@ bool Neighborhood::addNeighbor(Cell3DPosition pos)
             cout << "number of blocked modules = " << numberBlockedModules << endl;
             cout << "---- ERROR ----\nPosition " << pos << " blocked" << endl;
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(100000));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(100000));
         }
         else {
             //world->addBlock(0, blockCodeBuilder, pos, LIGHTGREY, 0, false);

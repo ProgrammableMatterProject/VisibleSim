@@ -33,6 +33,7 @@ public:
     SyncPrevious *syncPrevious;
     SyncPlane *syncPlane;
     SyncPlaneManager *syncPlaneManager;
+    vector<Cell3DPosition> leafs;
 
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();

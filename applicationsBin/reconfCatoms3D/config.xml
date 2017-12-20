@@ -1,15 +1,15 @@
 <?xml version="1.0" standalone="no" ?>
 <world gridSize="210, 210, 210">
-    <camera target="370,200,650" directionSpherical="0,80,500" angle="45" near="0.01" far="2500.0" />
+    <camera target="170,100,150" directionSpherical="0,80,500" angle="45" near="0.01" far="2500.0" />
     <spotlight target="600,600,420" directionSpherical="125,30,2400" angle="30" near="80.0" far="2500.0"/>
     <blockList color="128,128,128" blocksize="1,1,1">
 
-		<block position="36,1,1" orientation="0"/>
+		<block position="18,1,1" orientation="0"/>
 	</blockList>
   <targetList>
     <target format="csg">
         <csg content="
-scale([4.0,4.0,4.0])
+scale([2.0,2.0,2.0])
 union() {
     difference() {
         cylinder(20,10,10, true);

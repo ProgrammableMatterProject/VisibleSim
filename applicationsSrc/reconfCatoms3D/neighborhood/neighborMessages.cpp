@@ -121,7 +121,6 @@ void NeighborMessages::trySendMessagePlaneFinished()
 }
 
 void NeighborMessages::sendMessagePlaneFinished() {
-    catom->setColor(GREEN);
     Plane_finished_message *msg = new Plane_finished_message();
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, reconf->interfaceParent->connectedInterface));
 }
@@ -131,14 +130,13 @@ void NeighborMessages::sendMessagePlaneFinishedAck()
     if (reconf->isPlaneCompleted)
         return;
     reconf->isPlaneCompleted = true;
-    Plane_finished_ack_message *msg = new Plane_finished_ack_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(1))));
-    msg = new Plane_finished_ack_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(-1))));
-    msg = new Plane_finished_ack_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(1))));
-    msg = new Plane_finished_ack_message();
-    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addY(-1))));
+    vector<pair<int,int>> coordinates = {{1,0},{-1,0},{0,-1},{0,1}};
+    for (int i = 0; i < 4; i++) {
+        int x = coordinates[i].first;
+        int y = coordinates[i].second;
+        Plane_finished_ack_message *msg = new Plane_finished_ack_message();
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(x).addY(y))));
+    }
 }
 
 void NeighborMessages::sendMessagesOnQueue(Cell3DPosition pos)
@@ -152,5 +150,46 @@ void NeighborMessages::sendMessagesOnQueue(Cell3DPosition pos)
         }
         else
             ++it;
+    }
+}
+
+void NeighborMessages::sendMessageCanStartNextPlane(Cell3DPosition origin)
+{
+    catom->setColor(RED);
+    Can_start_next_plane_message *msg = new Can_start_next_plane_message();
+    msg->origin = origin;
+    getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, reconf->interfaceParent->connectedInterface));
+}
+
+void NeighborMessages::sendMessageConfirmationCanStartNextPlane(Cell3DPosition pos)
+{
+    catom->setColor(LIGHTBLUE);
+    if (pos == catom->position)
+    {
+        neighborhood->addNeighborToNextPlane();
+    }
+    else {
+        broadcastConfirmationCanStartNextPlane(pos);
+    }
+}
+
+void NeighborMessages::broadcastConfirmationCanStartNextPlane(Cell3DPosition destination)
+{
+    if (reconf->lastMessage == destination)
+        return;
+    reconf->lastMessage = destination;
+    vector<pair<int,int>> coordinates = {{1,0},{-1,0},{0,-1},{0,1}};
+    for (int i = 0; i < 4; i++) {
+        int x = coordinates[i].first;
+        int y = coordinates[i].second;
+        Confirmation_can_start_next_plane_message *msg = new Confirmation_can_start_next_plane_message();
+        msg->destination = destination;
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addX(x).addY(y))));
+    }
+    if (reconf->isSeedNext())
+    {
+        Confirmation_can_start_next_plane_message *msg = new Confirmation_can_start_next_plane_message();
+        msg->destination = destination;
+        getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addZ(1))));
     }
 }

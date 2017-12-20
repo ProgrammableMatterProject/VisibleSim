@@ -2,10 +2,10 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 10
+#define CONSTRUCT_WAIT_TIME 2
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
-#define PLANE_FINISHED_TIME 3
+#define PLANE_FINISHED_TIME 0
 
 using namespace std;
 using namespace Catoms3D;
@@ -45,6 +45,10 @@ void ReconfCatoms3DBlockCode::startup() {
 void ReconfCatoms3DBlockCode::planningRun() {
     if (neighborhood->isFirstCatomOfPlane()) {
         reconf->isPlaneParent = true;
+        if (catom->position[2]%2)
+            reconf->interfaceParent = catom->BaseSimulator::BuildingBlock::getInterface(8)->connectedInterface;
+        else
+            reconf->interfaceParent = catom->BaseSimulator::BuildingBlock::getInterface(10)->connectedInterface;
 
         neighborMessages->init();
     }
@@ -144,9 +148,13 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             {
                 neighborMessages->sendMessagePlaneFinishedAck();
                 if (syncPlane->isSeed()) {
-                    if(catom->getInterface(catom->position.addZ(1)) == NULL) {
-                        neighborhood->addNeighborToNextPlane();
-                    }
+                    //if(catom->getInterface(catom->position.addZ(1))->isConnected()) {
+                        if (catom->position[2] == 1)
+                            neighborhood->addNeighborToNextPlane();
+                        else
+                            neighborMessages->sendMessageCanStartNextPlane(catom->position);
+                        //neighborhood->addNeighborToNextPlane();
+                    //}
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
@@ -159,6 +167,29 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             case CANFILLRIGHTRESPONSE_MESSAGE_ID:
             {
                 neighborhood->addNeighborToRight();
+                break;
+            }
+            case CAN_START_NEXT_PLANE_MSG_ID:
+            {
+                shared_ptr<Can_start_next_plane_message> recv_message = static_pointer_cast<Can_start_next_plane_message>(message);
+                catom->setColor(PINK);
+                if (catom->blockId == 1) {
+                    leafs.push_back(recv_message->origin);
+                    ReconfCatoms3DBlockCode* other = (ReconfCatoms3DBlockCode*)(World::getWorld()->getBlockByPosition(recv_message->origin)->blockCode);
+                    other->neighborhood->addNeighborToNextPlane();
+                    //neighborMessages->sendMessageConfirmationCanStartNextPlane(recv_message->origin);
+                }
+                else
+                    neighborMessages->sendMessageCanStartNextPlane(recv_message->origin);
+                break;
+            }
+            case CONFIRMATION_CAN_START_NEXT_PLANE_MSG_ID:
+            {
+                //shared_ptr<Confirmation_can_start_next_plane_message> recv_message = static_pointer_cast<Confirmation_can_start_next_plane_message>(message);
+                //catom->setColor(RED);
+                ////neighborMessages->sendMessageConfirmationCanStartNextPlane(recv_message->destination);
+                //ReconfCatoms3DBlockCode* other = (ReconfCatoms3DBlockCode*)(World::getWorld()->getBlockByPosition(recv_message->destination)->blockCode);
+                //other->neighborhood->addNeighborToNextPlane();
                 break;
             }
           }

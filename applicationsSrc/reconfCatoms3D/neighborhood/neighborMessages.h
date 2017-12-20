@@ -21,6 +21,8 @@
 #define RIGHT_SIDE_COMPLETED_MSG_ID	9006
 #define PLANE_FINISHED_MSG_ID	9007
 #define PLANE_FINISHED_ACK_MSG_ID	9008
+#define CAN_START_NEXT_PLANE_MSG_ID	9009
+#define CONFIRMATION_CAN_START_NEXT_PLANE_MSG_ID	9010
 
 class NeighborMessages
 {
@@ -58,6 +60,9 @@ public:
     void sendMessagePlaneFinished();
     void sendMessagePlaneFinishedAck();
     void sendMessagesOnQueue(Cell3DPosition pos);
+    void sendMessageCanStartNextPlane(Cell3DPosition);
+    void sendMessageConfirmationCanStartNextPlane(Cell3DPosition);
+    void broadcastConfirmationCanStartNextPlane(Cell3DPosition);
 };
 
 class New_catom_message : public Message {
@@ -113,6 +118,18 @@ public:
 class Plane_finished_ack_message : public Message {
 public:
     Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
+};
+
+class Can_start_next_plane_message : public Message {
+public:
+    Cell3DPosition origin;
+    Can_start_next_plane_message() { id = CAN_START_NEXT_PLANE_MSG_ID; };
+};
+
+class Confirmation_can_start_next_plane_message : public Message {
+public:
+    Cell3DPosition destination;
+    Confirmation_can_start_next_plane_message() { id = CONFIRMATION_CAN_START_NEXT_PLANE_MSG_ID; };
 };
 
 #endif /* NEIGHBORMESSAGES_H_ */

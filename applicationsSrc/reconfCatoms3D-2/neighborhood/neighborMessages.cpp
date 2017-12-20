@@ -1,8 +1,7 @@
 #include "neighborMessages.h"
 
-#define MSG_TIME rand()%10
-#define MSG_TIME_ADD 100+rand()%100
-//#define MSG_TIME 0000
+#define MSG_TIME rand()%100
+#define MSG_TIME_ADD 10000+rand()%100
 
 int NeighborMessages::nMessagesGetInfo = 0;
 int NeighborMessages::nMessagesBorderMessage = 0;
@@ -196,7 +195,6 @@ void NeighborMessages::broadcastMessageParentPlaneFinished()
         return;
     reconf->parentPlaneFinished = true;
 
-    catom->setColor(PINK);
     vector<pair<int,int>> coordinates = {{1,0},{-1,0},{0,-1},{0,1}};
     for (int i = 0; i < 4; i++) {
         int x = coordinates[i].first;

@@ -44,6 +44,7 @@ public:
 
     SyncPlane_node *syncPlaneNodeParent;
     SyncPlane_node *syncPlaneNode;
+    Cell3DPosition lastMessage;
 
     vector<MessageQueue> messageQueue;
 
