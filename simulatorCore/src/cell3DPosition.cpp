@@ -14,6 +14,15 @@ void Cell3DPosition::set(short x,short y,short z) {
     pt[2]=z;
 }
 
+double Cell3DPosition::dist_euclid(const Cell3DPosition p) const {
+    Cell3DPosition diff = *this - p;
+    return diff.l2_norm();
+}
+
+double Cell3DPosition::l2_norm() const {
+    return sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
+}
+
 ostream& operator<<(ostream& f,const Cell3DPosition&p) {
     f << "(" << p.pt[0] << "," << p.pt[1] << "," << p.pt[2] << ")";
     return f;

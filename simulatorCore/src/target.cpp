@@ -25,17 +25,14 @@ Target *Target::loadNextTarget() {
         Target::targetNode = targetListNode->IterateChildren(targetNode);
 
         if (Target::targetNode) {
-            TiXmlElement* element;
-            if (Target::targetNode) {
-                element = Target::targetNode->ToElement();
-                const char *attr = element->Attribute("format");
-                if (attr) {
-                    string str(attr);
-                    if (str.compare("grid") == 0) {
-                        return new TargetGrid(Target::targetNode);
-                    } else if (str.compare("csg") == 0) {
-                        return new TargetCSG(Target::targetNode);
-                    }
+            TiXmlElement* element = Target::targetNode->ToElement();
+            const char *attr = element->Attribute("format");
+            if (attr) {
+                string str(attr);
+                if (str.compare("grid") == 0) {
+                    return new TargetGrid(Target::targetNode);
+                } else if (str.compare("csg") == 0) {
+                    return new TargetCSG(Target::targetNode);
                 }
             }
         }
@@ -167,6 +164,16 @@ void TargetGrid::print(ostream& where) const {
 
 void TargetGrid::boundingBox(BoundingBox &bb) {
     throw BaseSimulator::utils::NotImplementedException();
+}
+
+list<Cell3DPosition> TargetGrid::getTargetCellsAsc() {
+    list<Cell3DPosition> targetCells;
+        
+    for (const auto &pair : tCells) {
+        targetCells.push_back(pair.first);
+    }
+
+    return targetCells;
 }
 
 /************************************************************

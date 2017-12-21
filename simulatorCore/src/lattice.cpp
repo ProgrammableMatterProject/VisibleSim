@@ -136,6 +136,10 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
     return neighborhood;
 }
 
+bool Lattice::cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p2) {
+    return p1.dist_euclid(p2) == 1;
+}
+
 string Lattice::getDirectionString(int d) {
     return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ? directionName[d] : "undefined";
 }
