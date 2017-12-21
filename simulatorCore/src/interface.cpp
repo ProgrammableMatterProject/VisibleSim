@@ -14,6 +14,7 @@
 
 #define ID_SW_BUTTON_OPEN	1001
 #define ID_SW_BUTTON_CLOSE	1002
+#define ID_SW_BUTTON_SIZE	1004
 #define ID_SW_SLD			1003
 #define ID_SD_BUTTON_OPEN	2001
 #define ID_SD_BUTTON_CLOSE	2002
@@ -163,10 +164,13 @@ GlutWindow(NULL,1,px,py,pw,ph,titreTexture) {
 								"../../simulatorCore/resources/textures/UITextures/boutons_fg.tga");
 	buttonClose = new GlutButton(this,ID_SW_BUTTON_CLOSE,5,26,32,32,
 								 "../../simulatorCore/resources/textures/UITextures/boutons_fd.tga",false);
+	buttonSize = new GlutButton(this,ID_SW_BUTTON_SIZE,pw+SLIDING_WINDOW_STANDARD_WIDTH-40,ph-40,32,32,
+								 "../../simulatorCore/resources/textures/UITextures/boutons_zoom.tga");
 	slider = new GlutSlider(this,ID_SW_SLD,pw+SLIDING_WINDOW_STANDARD_WIDTH-20,5,ph-60,
 							"../../simulatorCore/resources/textures/UITextures/slider.tga",(ph-60)/13);
 	selectedGlBlock=NULL;
 	slider->setVisible(false);
+	buttonSize->setVisible(false);
 }
 
 GlutSlidingMainWindow::~GlutSlidingMainWindow() {
@@ -279,6 +283,13 @@ int GlutSlidingMainWindow::mouseFunc(int button,int state,int mx,int my) {
           case ID_SW_BUTTON_CLOSE :
               setOpenCloseButtonPosition(false);
           break;
+          case ID_SW_BUTTON_SIZE :
+              if (currentTextSize==TextSize::TEXTSIZE_LARGE) {
+                setTextSize(TextSize::TEXTSIZE_STANDARD);
+              } else {
+                setTextSize(TextSize::TEXTSIZE_LARGE);
+              }
+          break;
       }
   }
   return n;
@@ -312,12 +323,13 @@ void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
     x = mx+mw-w;
     y = my;
     h = mh;
-    //setGeometry(mx+mw-40-sz,my,40+sz,mh);
 }
 
 void GlutSlidingMainWindow::updateSliderWindow() {
     slider->setGeometry(w-20,5,11,h-60);
     slider->setVisible(openningLevel>0);
+    buttonSize->setVisible(openningLevel>0);
+    buttonSize->setGeometry(w-40,h-40,32,32);
     slider->update();
 }
 
