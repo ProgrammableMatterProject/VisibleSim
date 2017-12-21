@@ -19,24 +19,7 @@
 
 #include "rotation3DEvents.h"
 #include "catoms3DBlock.h"
-
-#define MSG_ROOT_UPDATE 0011
-#define MSG_ROOT_CONFIRM 0012
-#define MSG_ROOT_NCONFIRM 0013
-
-#define MSG_MELT_LABEL_AP 0020 // Label articulation points
-#define MSG_MELT_LABEL_AP_DONE 0021 // Notify parent of labelling completion
-#define MSG_MELT_FIND_MOBILE_MODULE 0022
-#define MSG_MELT_FIND_MOBILE_MODULE_YUP 0023 // Notify parent we're on the move!
-#define MSG_MELT_FIND_MOBILE_MODULE_NOPE 0024 // Notify parent we couldn't find non AP (Convergence condition)
-#define MSG_MELT_RESET_GRAPH 0025
-#define MSG_MELT_RESET_GRAPH_DONE 0026
-#define MSG_MELT_RESET_GRAPH_NOSIRIDONOTWANTANYTHINGTODOWITHYOU 0027
-
-#define MSG_MELT_APL_START 0030 //24
-#define MSG_MELT_APL_TOKEN 0031 //25
-#define MSG_MELT_APL_ECHO 0032 // 26
-#define MSG_MELT_APL_VISITED 0033 // 27
+#include "msgMessages.h"
 
 class MeltSortGrowBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
@@ -80,12 +63,21 @@ private:
     bool source = false; //!< Indicates whether module is source of the DFS
     bool bridge = false; //!< Indicates whether edge with father is a bridge
     bool articulationPoint = false; //!< Indicates whether node is an AP
-    std::vector<P2PNetworkInterface*> neighbors; //!< Active neighbors around modul
+    std::vector<P2PNetworkInterface*> neighbors; //!< Active neighbors around module
     std::map<P2PNetworkInterface*, bool> flag; //!< flags for each neighbors when the node knows that they have been visited
     int resetChildrenDecount; //!< Number of children which have NOT YET notified their father that they reset their search data structures
     P2PNetworkInterface *resetFather = NULL; //!< interface connected to the module which sent us a reset command first
     bool melted = false; //!< indicates whether module has already melted into the line
+    Cell3DPosition *tailPosition = NULL; //!< if defined, next position to be filled by the melt algorithm
 
+    /**** GROW *****/
+    list<Cell3DPosition> targetCells; //!< Ordered list of target positions to be filled during the growth phase    
+    bool growing = false; //!< Indicates whether current module is currently moving to fill a target position during the growth phase
+    /* bool grown = false; //!< Indicates whether current module is done with its growth and is currently filling a target position */
+    /* bool firstGrowth = true; //!< Indicates whether the current growth movement is the first, it is necessary as we initialize the growth DFS-tree during the first growth */
+    P2PNetworkInterface *growthParent = NULL; //!< The module's parent in the DFS-tree created during the growth phase
+    Cell3DPosition goalPosition; //!< Position to be filled by current growth
+    
     /**
      * @brief Initializes the local variables used by the articulation points labelling algorithm
      */
@@ -100,6 +92,11 @@ private:
     void APLabellingStart();
 
     /**
+     * @brief Initialize the path position trail for the tail module leading the current Melt
+     */
+    void initializeMeltPath();
+         
+    /**
      * @brief Searches the path positions of the module graph for a non-articulation point module DFS-style
      */   
     void findMobileModule();
@@ -112,9 +109,10 @@ private:
     P2PNetworkInterface *getNextUnprocessedInterface();
     void resetDFSForLabelling();
     void resetDFSForSearching();
+    void resetDFSFlags();
     
-    bool amIArticulationPoint; //!< Label indicating whether current module is an articulation point
-    bool isTail; //!< Label indicating whether current module is tail of the decomposition line, there should be only one tail module at a given time
+    /* bool amIArticulationPoint; //!< Label indicating whether current module is an articulation point */
+    /* bool isTail; //!< Label indicating whether current module is tail of the decomposition line, there should be only one tail module at a given time */
 
     std::list<P2PNetworkInterface*> dfsQueue; //!< Stack of next interfaces to send message to DFS-style
 
@@ -163,6 +161,11 @@ private:
      */
     void grow();
 
+    /**
+     *  @brief Searches for a path to the next position to be filled during growth
+     */
+    void moveToGoal();
+    
     /**
      * @brief Compares the fitness of the candidate root in argument and returns whether 
      it is fitter than current root
