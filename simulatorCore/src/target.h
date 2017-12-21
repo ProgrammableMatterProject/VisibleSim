@@ -32,6 +32,7 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <list>
 
 #define TIXML_USE_STL	1
 #include "TinyXML/tinyxml.h"
@@ -148,6 +149,11 @@ public:
     //!< @copydoc Target::BoundingBox
     virtual void boundingBox(BoundingBox &bb);
 
+    /**
+     * @brief Returns a list of all cells in target in ascending order (x, y, and then z)
+     * @return the list of all cells in the target in ascending order
+     */
+    list<Cell3DPosition> getTargetCellsAsc();
 };  // class TargetGrid
 
 //<! @brief A target modeled as an ensemble of shapes

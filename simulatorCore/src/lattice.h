@@ -127,7 +127,14 @@ public:
      * @return A vector containing the position of all cells (empty and full) around pos
      */
     std::vector<Cell3DPosition> getNeighborhood(const Cell3DPosition &pos);
-
+    /**
+     * @brief Indicates whether cells in argument are adjacent to each other
+     * @param p1 the first cell
+     * @param p2 the second cell
+     * @return a boolean indicating whether the two cells p1 and p2 are adjacent
+     */    
+    bool cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p2);
+    
     /**
      * @brief Returns the total number of cells on the grid
      * @return Total number of cells on the grid

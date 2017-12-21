@@ -22,7 +22,9 @@ public:
     Cell3DPosition(short x,short y,short z);
 
     void set(short x,short y,short z);
-
+    double dist_euclid(const Cell3DPosition p) const;
+    double l2_norm() const;
+    
     inline const short operator[](const int i) const { return pt[i]; };
     bool operator<(const Cell3DPosition &o) const;
     bool operator==(const Cell3DPosition &o) const
