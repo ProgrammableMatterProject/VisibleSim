@@ -53,6 +53,17 @@ public:
 
 	virtual unsigned int size() { return(4); }
 	virtual Message* clone();
+    virtual bool isMessageHandeable() { return false; };
+};
+
+class HandleableMessage:public Message {
+public:
+	HandleableMessage();
+	virtual ~HandleableMessage();
+
+    virtual void handle(BaseSimulator::BlockCode*) = 0;
+
+    virtual bool isMessageHandeable() { return true; };
 };
 
 template <class T>
