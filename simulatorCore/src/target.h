@@ -114,10 +114,10 @@ public:
 
 //<! @brief A target modeled as a container of unique positions and colors.c
 class TargetGrid : public Target {
-    // Only store target cells instead of the entire grid to save memory
+protected:
+     // Only store target cells instead of the entire grid to save memory
     map<const Cell3DPosition, const Color> tCells; //!< the target cells as Cell/Color key-value pairs
 
-protected:
     /**
      * @brief Add a cell to the target cells container
      * @param pos position of the target cell
@@ -155,6 +155,38 @@ public:
      */
     list<Cell3DPosition> getTargetCellsAsc();
 };  // class TargetGrid
+
+//<! @brief A target modeled as a container of unique positions using a coordinate system relative to some specific origin module, and colors
+class RelativeTargetGrid : public TargetGrid {
+     Cell3DPosition *origin = NULL;
+public:
+     //<! @brief Exception thrown if an there is an attempt to use the RelativeTargetGrid without having set its origin beforehand
+     struct MissingInitializationException : std::exception {
+          const char* what() const noexcept {
+               return "Attempted to call isInTarget without having set the target's origin first\n";
+          }
+     };
+protected:
+RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
+     virtual ~RelativeTargetGrid() { delete origin; };
+
+    //!< @copydoc Target::getTargetColor
+    //!< a cell is in the target grid if and only if it is present in the target cells container//!< @warning Can only be used once origin has been set, and expects a relative position as input     
+    virtual bool isInTarget(const Cell3DPosition &pos) const;
+
+    /**
+     * @brief Returns a list of all cells in target in ascending order (x, y, and then z)
+     * @return the list of all cells in the target in ascending order
+     * @warning Can only be used once origin has been set
+     */
+    list<Cell3DPosition> getTargetCellsAsc();
+
+    /**
+     * @brief Sets the origin of the coordinate system used by the target
+     * @warning Calling Target::isInTarget before setting the origin will result in an error
+     */    
+    virtual void setOrigin(const Cell3DPosition &org);
+};  // class RelativeTargetGrid
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {

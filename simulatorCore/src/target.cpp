@@ -176,6 +176,41 @@ list<Cell3DPosition> TargetGrid::getTargetCellsAsc() {
     return targetCells;
 }
 
+
+/************************************************************
+ *                      RelativeTargetGrid
+ ************************************************************/
+
+bool RelativeTargetGrid::isInTarget(const Cell3DPosition &pos) const {
+    if (!origin)
+        throw MissingInitializationException();
+
+    Cell3DPosition absolutePos = *origin + pos;
+    
+    return TargetGrid::isInTarget(absolutePos);
+}
+
+void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
+    origin = new Cell3DPosition(org);
+
+    // Then update every relative position parsed from the configuration file to its absolute counterpart
+    map<const Cell3DPosition, const Color> absMap;
+    for (const auto& targetEntry : tCells) {
+        absMap.insert(
+            std::pair<const Cell3DPosition, const Color>(targetEntry.first + *origin,
+                                                        targetEntry.second));
+    }
+
+    tCells = absMap;
+}
+
+list<Cell3DPosition> RelativeTargetGrid::getTargetCellsAsc() {
+    if (!origin)
+        throw MissingInitializationException();
+    
+    return TargetGrid::getTargetCellsAsc();
+}
+
 /************************************************************
  *                      TargetCSG
  ************************************************************/
