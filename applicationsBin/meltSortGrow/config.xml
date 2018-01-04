@@ -19,12 +19,12 @@
       <cell position="0,0,0" />
       <cell position="1,0,0" />
       <cell position="2,0,0" />
-      <cell position="3,0,0" />
-      <cell position="4,0,0" />
-      <cell position="5,0,0" />
-      <cell position="6,0,0" />
-      <cell position="7,0,0" />
-      <cell position="8,0,0" />
+      <cell position="0,1,0" />
+      <cell position="1,1,0" />
+      <cell position="2,1,0" />
+      <cell position="0,2,0" />
+      <cell position="1,2,0" />
+      <cell position="2,2,0" />
     </target>
   </targetList>
 

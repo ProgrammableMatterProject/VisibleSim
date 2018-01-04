@@ -208,9 +208,9 @@ void MeltSortGrowBlockCode::propagateGraphResetBFS() {
 void MeltSortGrowBlockCode::moveToGoal() {
     growthParent = NULL;
     
-    if (!targetCells.empty()) {
-        goalPosition = targetCells.front();
-        targetCells.pop_front();
+    if (!rtg->getTargetCellsAsc().empty()) {
+        goalPosition = rtg->getTargetCellsAsc().front();
+        rtg->targetCellsAsc->pop_front();
 
         cout << " New growth target position: " << goalPosition << endl;
         
@@ -294,6 +294,12 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                                 parent, 0, 100);
                 else {
                     if (catom->position == currentRootPosition) { // Election Complete, module is root
+                        relPos = new Cell3DPosition(0,0,0);
+                        rtg->setOrigin(catom->position);
+                        for (auto x : rtg->getTargetCellsAsc())
+                            cout << x << endl;                        
+                        rtg->targetCellsAsc->pop_front(); // this is the root's target position, in which it already is
+                        
                         // Proceed to next stage
                         meltOneModule();
                     }
@@ -500,12 +506,14 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
             goalPosition =
                 *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
             
-            if (!growthParent) { // Module has not been considered for path planning yet
-                growthParent = sender;
+            if (!growthVisited) { // Module has not been considered for path planning yet
+                if (!growthParent) growthParent = sender;
 
+                growthVisited = true;
+                
                 flag[sender] = true;
 
-                targetCells.pop_front();
+                // targetCells.pop_front(); todo done globally for now
                 
                 // Check if adjacent to target and Visit sub-tree otherwise
                 if (lattice->cellsAreAdjacent(catom->position, goalPosition)) {
@@ -515,6 +523,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                                                        pathIds),
                                 growthParent, 100, 0);
                     catom->setColor(BLUE); // todo
+                    console << "Path to " << goalPosition << " found" << "\n";
                 } else {
                     P2PNetworkInterface *unprocessedNeighbor =
                         getNextUnprocessedInterface();
@@ -528,7 +537,6 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                         sendMessage("FindPathNotFound",
                                     new Message(MSG_GROW_FINDPATH_NOTFOUND),
                                     growthParent, 100, 0);
-                        growthParent = NULL;
                     }
 
                 }
@@ -554,10 +562,13 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                             new MessageOf<list<int>>(MSG_GROW_FINDPATH_FOUND,
                                                    pathIds),
                             growthParent, 100, 0);
+                growthVisited = false;
                 catom->setColor(GREEN); // todo
             } else { // isTail, moving module
                 catom->setColor(RED);
                 growing = true;
+                growthVisited = true;
+                console << "Moving to " << goalPosition << "!" << "\n";
                 scheduler->schedule(new TeleportationStartEvent(scheduler->now() + 150,
                                                                 catom, goalPosition));
             }            
@@ -580,6 +591,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                     sendMessage("FindPathNotFound",
                                 new Message(MSG_GROW_FINDPATH_NOTFOUND),
                                 growthParent, 100, 0);
+                    growthVisited = false;
                 } else {
                     catom->setColor(WHITE); //todo probleeeeem
                 } 
@@ -594,10 +606,12 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                     sendMessage("NextModule",
                                 new Message(MSG_GROW_NEXTMODULE),
                                 growthParent, 100, 0);
-                    growthParent = NULL;
+                    growthVisited = false;
                 } else { // Current module should be new tail
                     moveToGoal();
                 }
+            } else {
+                console << "I'm sorry sir, but I do not have a growth parent." << "\n";
             }
             
         } break;
@@ -630,14 +644,16 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                 // do stuff...
                 if (catom->position == goalPosition) {
                     growing = false;
+                    growthVisited = false;
                     resetDFSFlags();
 
                     // Send to single neigbor which will follow the message
                     //  route back to the new tail
-                    assert(neighbors.size());                        
+                    assert(neighbors.size());
+                    growthParent = neighbors.front();
                     sendMessage("NextModule",
                                 new Message(MSG_GROW_NEXTMODULE),
-                                neighbors.front(), 100, 0);
+                                growthParent, 100, 0);
                 } else {
                     // Perform next move towards current growth target
                 }

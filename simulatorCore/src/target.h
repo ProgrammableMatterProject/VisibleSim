@@ -160,7 +160,6 @@ public:
 class RelativeTargetGrid : public TargetGrid {
 protected:
      Cell3DPosition *origin = NULL;
-     std::list<Cell3DPosition> *targetCellsAsc = NULL;
      //<! @brief Exception thrown if an there is an attempt to use the RelativeTargetGrid without having set its origin beforehand
      struct MissingInitializationException : std::exception {
           const char* what() const noexcept {
@@ -169,6 +168,7 @@ protected:
      };
 
 public:
+     std::list<Cell3DPosition> *targetCellsAsc = NULL; //todo protected
 
 RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
      virtual ~RelativeTargetGrid() {

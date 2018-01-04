@@ -78,6 +78,7 @@ private:
      bool growing = false; //!< Indicates whether current module is currently moving to fill a target position during the growth phase
      /* bool grown = false; //!< Indicates whether current module is done with its growth and is currently filling a target position */
      /* bool firstGrowth = true; //!< Indicates whether the current growth movement is the first, it is necessary as we initialize the growth DFS-tree during the first growth */
+     bool growthVisited = false; //!< Indicates whether the current module has been visited during this growth phase
      P2PNetworkInterface *growthParent = NULL; //!< The module's parent in the DFS-tree created during the growth phase
      Cell3DPosition goalPosition; //!< Position to be filled by current growth
     

@@ -195,12 +195,7 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
     }
 
     tCells = absMap;
-}
-
-list<Cell3DPosition> RelativeTargetGrid::getTargetCellsAsc() {
-    if (!origin)
-        throw MissingInitializationException();
-
+    
     if (!targetCellsAsc) {
         targetCellsAsc = new list<Cell3DPosition>();
         
@@ -210,6 +205,11 @@ list<Cell3DPosition> RelativeTargetGrid::getTargetCellsAsc() {
 
         targetCellsAsc->sort(Cell3DPosition::compare_ZYX);
     }
+}
+
+list<Cell3DPosition> RelativeTargetGrid::getTargetCellsAsc() {
+    if (!origin)
+        throw MissingInitializationException();
     
     return *targetCellsAsc;
 }
