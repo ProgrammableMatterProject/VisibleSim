@@ -32,6 +32,11 @@ public:
     bool operator!=(const Cell3DPosition &o) const
         { return (pt[0] != o.pt[0]) || (pt[1] != o.pt[1]) || (pt[2] != o.pt[2]) ; };
 
+    /** 
+     * @brief Compares two position by considering first the Z component, then Y, and X, and returns true if first is smaller than second
+     **/
+    static bool compare_ZYX(const Cell3DPosition& first, const Cell3DPosition& second);
+
     operator Vector3D() const { return Vector3D(pt[0], pt[1], pt[2], 1.0); };
 
     friend ostream& operator<<(ostream& f,const Cell3DPosition&p);

@@ -33,6 +33,10 @@ Target *Target::loadNextTarget() {
                     return new TargetGrid(Target::targetNode);
                 } else if (str.compare("csg") == 0) {
                     return new TargetCSG(Target::targetNode);
+                } else if (str.compare("relativeGrid") == 0) {
+                    return new RelativeTargetGrid(Target::targetNode);
+                } else {
+                    throw UnknownTargetFormatException();
                 }
             }
         }
@@ -166,17 +170,6 @@ void TargetGrid::boundingBox(BoundingBox &bb) {
     throw BaseSimulator::utils::NotImplementedException();
 }
 
-list<Cell3DPosition> TargetGrid::getTargetCellsAsc() {
-    list<Cell3DPosition> targetCells;
-        
-    for (const auto &pair : tCells) {
-        targetCells.push_back(pair.first);
-    }
-
-    return targetCells;
-}
-
-
 /************************************************************
  *                      RelativeTargetGrid
  ************************************************************/
@@ -207,8 +200,18 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
 list<Cell3DPosition> RelativeTargetGrid::getTargetCellsAsc() {
     if (!origin)
         throw MissingInitializationException();
+
+    if (!targetCellsAsc) {
+        targetCellsAsc = new list<Cell3DPosition>();
+        
+        for (const auto &pair : tCells) {
+            targetCellsAsc->push_back(pair.first);
+        }
+
+        targetCellsAsc->sort(Cell3DPosition::compare_ZYX);
+    }
     
-    return TargetGrid::getTargetCellsAsc();
+    return *targetCellsAsc;
 }
 
 /************************************************************

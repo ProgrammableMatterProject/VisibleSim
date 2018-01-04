@@ -41,6 +41,20 @@ bool Cell3DPosition::operator<(const Cell3DPosition &o) const {
     }
 }
 
+bool Cell3DPosition::compare_ZYX(const Cell3DPosition& first, const Cell3DPosition& second) {    
+    // Consider positions in order z -> y -> x
+    if (first.pt[2] < second.pt[2]) return true;
+    else if (first.pt[2] > second.pt[2]) return false;
+    else {
+        if (first.pt[1] < second.pt[1]) return true;
+        else if (first.pt[1] > second.pt[1]) return false;
+        else {
+            if (first.pt[0] < second.pt[0]) return true;
+            else return false;
+        }
+    }
+}
+
 const Cell3DPosition operator +(const Cell3DPosition p1, const Cell3DPosition p2)
 {
     Cell3DPosition r;

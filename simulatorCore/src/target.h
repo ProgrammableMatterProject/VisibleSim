@@ -47,6 +47,12 @@ namespace BaseSimulator {
 
 //<! @brief Abstract Target. Provides the user with functions for checking a target position and color.
 class Target {
+     struct UnknownTargetFormatException : std::exception {
+          const char* what() const noexcept {
+               return "Unknown target format found in configuration file\n";
+          }
+     };
+
 protected:
 
     /**
@@ -148,30 +154,31 @@ public:
 
     //!< @copydoc Target::BoundingBox
     virtual void boundingBox(BoundingBox &bb);
-
-    /**
-     * @brief Returns a list of all cells in target in ascending order (x, y, and then z)
-     * @return the list of all cells in the target in ascending order
-     */
-    list<Cell3DPosition> getTargetCellsAsc();
 };  // class TargetGrid
 
 //<! @brief A target modeled as a container of unique positions using a coordinate system relative to some specific origin module, and colors
 class RelativeTargetGrid : public TargetGrid {
+protected:
      Cell3DPosition *origin = NULL;
-public:
+     std::list<Cell3DPosition> *targetCellsAsc = NULL;
      //<! @brief Exception thrown if an there is an attempt to use the RelativeTargetGrid without having set its origin beforehand
      struct MissingInitializationException : std::exception {
           const char* what() const noexcept {
                return "Attempted to call isInTarget without having set the target's origin first\n";
           }
      };
-protected:
-RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
-     virtual ~RelativeTargetGrid() { delete origin; };
 
+public:
+
+RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
+     virtual ~RelativeTargetGrid() {
+          delete origin;
+          delete targetCellsAsc;
+     };
+     
     //!< @copydoc Target::getTargetColor
-    //!< a cell is in the target grid if and only if it is present in the target cells container//!< @warning Can only be used once origin has been set, and expects a relative position as input     
+    //!< a cell is in the target grid if and only if it is present in the target cells container
+     //!< @warning Can only be used once origin has been set, and expects a relative position as input     
     virtual bool isInTarget(const Cell3DPosition &pos) const;
 
     /**
