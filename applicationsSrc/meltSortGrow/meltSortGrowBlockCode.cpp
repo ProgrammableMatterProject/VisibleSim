@@ -37,7 +37,8 @@ void MeltSortGrowBlockCode::startup() {
 
     info << "Starting ";
 
-    targetCells = ((TargetGrid*)target)->getTargetCellsAsc();
+    // targetCells = ((TargetGrid*)target)->getTargetCellsAsc();
+    rtg = (RelativeTargetGrid*)target;
     
     determineRoot();
     APLabellingInitialization();
@@ -657,7 +658,9 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
  * @param candidateRoot the position of the root to consider as new root
  * @return true if candidateRoot is fitter than current root, false otherwise */
 bool MeltSortGrowBlockCode::challengeRootFitness(Cell3DPosition& candidateRoot) {
-    return candidateRoot < currentRootPosition;
+    // return candidateRoot < currentRootPosition;
+
+    return Cell3DPosition::compare_ZYX(candidateRoot, currentRootPosition);
 }
 
 // Locate the root of the algorithm

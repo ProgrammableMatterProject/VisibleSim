@@ -15,16 +15,16 @@
     <block position="12,10,4" color="128,128,128" rotation="0" />
   </blockList>
   <targetList>
-    <target format="grid">
-      <cell position="11,12,4" />
-      <cell position="11,11,4" />
-      <cell position="11,10,4" />
-      <cell position="11,9,4" />
-      <cell position="11,8,4" />
-      <cell position="11,7,4" />
-      <cell position="11,6,4" />
-      <cell position="11,5,4" />
-      <cell position="11,4,4" />
+    <target format="relativeGrid">
+      <cell position="0,0,0" />
+      <cell position="1,0,0" />
+      <cell position="2,0,0" />
+      <cell position="3,0,0" />
+      <cell position="4,0,0" />
+      <cell position="5,0,0" />
+      <cell position="6,0,0" />
+      <cell position="7,0,0" />
+      <cell position="8,0,0" />
     </target>
   </targetList>
 
