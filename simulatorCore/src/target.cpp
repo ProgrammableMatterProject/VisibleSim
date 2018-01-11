@@ -251,7 +251,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                     method = str;
                     cout << "Method initialized" << method << endl; 
                 }
-                else if (str.compare("voisin") == 0) {
+                else if (str.compare("neighbor") == 0) {
                     method = str;
                     cout << "Method initialized" << method << endl; 
                 }
@@ -432,7 +432,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             }
         }
         //Comparison between f and z
-        cout << "x=" << x << ",y=" << y << ",z=" << z <<  " f= " << f << endl;
+        //cout << "x=" << x << ",y=" << y << ",z=" << z <<  " f= " << f << endl;
         if (z<=f){
             //cout << "x=" << x << ",y=" << y << " f= " << f << endl;
             return true;
@@ -442,7 +442,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         }
     }
 
-    else if (method.compare("voisin") == 0) {
+    else if (method.compare("neighbor") == 0) {
         //print method
         cout << "Call to isInTarget method =" << method << endl; 
         //Nearest neighboor research
@@ -489,7 +489,7 @@ void TargetSurface::print(ostream& where) const {
         cout << "Call to print method =" << method << endl; 
     }
 
-    else if (method.compare("voisin") == 0) {
+    else if (method.compare("neighbor") == 0) {
         //print method
         cout << "Call to print method =" << method << endl; 
     }

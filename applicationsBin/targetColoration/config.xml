@@ -8008,16 +8008,16 @@
 	<targetList>
 	  <target format="surface">
 	    <method meth="interpolation">
-	      <cell position="10,20,145" color="100,100,100"/>
-	      <cell position="40,30,85" color="100,100,100"/>
-	      <cell position="60,50,41" color="100,100,100"/>
-	      <cell position="50,70,34" color="100,100,100"/>
-	      <cell position="80,40,40" color="100,100,100"/>
-	      <cell position="70,70,18" color="100,100,100"/>
-	      <cell position="100,150,25" color="100,100,100"/>
-	      <cell position="180,160,100" color="100,100,100"/>
-	      <cell position="30,110,50" color="100,100,100"/>
-	      <cell position="120,40,40" color="100,100,100"/>
+	      <cell position="10,20,15" color="100,100,100"/>
+	      <cell position="40,30,75" color="100,100,100"/>
+	      <cell position="60,50,119" color="100,100,100"/>
+	      <cell position="50,70,126" color="100,100,100"/>
+	      <cell position="80,40,120" color="100,100,100"/>
+	      <cell position="70,70,142" color="100,100,100"/>
+	      <cell position="100,150,135" color="100,100,100"/>
+	      <cell position="180,160,60" color="100,100,100"/>
+	      <cell position="30,110,110" color="100,100,100"/>
+	      <cell position="120,40,120" color="100,100,100"/>
 	    </method>
 	  </target>
 	</targetList>
