@@ -136,7 +136,17 @@ bool Catoms3DBlock::getNeighborPos(short connectorID,Cell3DPosition &pos) const 
 }
 
 P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
+    short conId = getConnectorId(pos);
+
+    return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
+}
+
+short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) {
     Catoms3DWorld *wrl = getWorld();
+
+    if (!wrl->lattice->isInGrid(pos))
+        return -1;
+
     Vector3D realPos = wrl->lattice->gridToWorldPosition(pos);
 
     Matrix m_1;
@@ -158,7 +168,8 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
         d=x*x+y*y+z*z;
         i++;
     }
-    return (d>0.1)?NULL:P2PNetworkInterfaces[i-1];
+    
+    return d > 0.1 ? -1 : i - 1;
 }
 
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {

@@ -54,7 +54,7 @@ public:
 
 	virtual unsigned int size() { return(4); }
 	virtual Message* clone();
-    virtual bool isMessageHandeable() { return false; };
+        virtual bool isMessageHandleable() { return false; };
 };
 
 class HandleableMessage:public Message {
@@ -64,7 +64,7 @@ public:
 
     virtual void handle(BaseSimulator::BlockCode*) = 0;
 
-    virtual bool isMessageHandeable() { return true; };
+    virtual bool isMessageHandleable() { return true; };
 };
 
 template <class T>

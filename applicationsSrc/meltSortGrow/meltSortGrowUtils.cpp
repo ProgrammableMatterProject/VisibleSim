@@ -1,5 +1,5 @@
 
-#include "meltSortGrowUtils.h"
+#include "meltSortGrowUtils.hpp"
 
 bool
 MeltSortGrowUtils::motionIsPossible(Lattice *lattice,

@@ -45,7 +45,19 @@ Catoms3DMotionRules::~Catoms3DMotionRules() {
     }
 }
 
-string Catoms3DMotionRulesLink::getID() {
+bool Catoms3DMotionRulesLink::concernsConnector(short conId) const {    
+    return getConnectors()[0] == conId || getConnectors()[1] == conId;
+}
+
+bool Catoms3DMotionRulesLink::concernsConnectors(short conId1, short conId2) const {    
+    return concernsConnector(conId1) && concernsConnector(conId2);
+}
+
+std::array<short, 2> Catoms3DMotionRulesLink::getConnectors() const {
+    return {(short)conFrom->ID, (short)conTo->ID};
+}
+
+string Catoms3DMotionRulesLink::getID() const {
     string c="X->X";
     uint8_t id1 = conFrom->ID;
     uint8_t id2 = conTo->ID;
@@ -225,8 +237,14 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d, int from,
         }
         ci++;
     }
+    
     return notEmpty;
 }
+
+// bool Catoms3DMotionRules::getMotionListFromAnyTo(const Catoms3DBlock*c3d, int to,
+//                                                  vector<Catoms3DMotionRulesLink*>&vec) {
+    
+// }
 
 bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot,int from,
                                                       vector<Catoms3DMotionRulesLink*>&vec,
@@ -240,8 +258,12 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
     // source must be free or is not in goal
     pivot->getNeighborPos(from,pos);
 //OUTPUT << "FROM pos=" << pos << endl;
-    if (lattice->cellHasBlock(pos) && target->isInTarget(pos)) return false;
-    pos2 = 2*pos + pos - pivot->position;
+    if (lattice->cellHasBlock(pos)
+        && (target == NULL || target->isInTarget(pos)) ) return false;
+    // PTHA: shouldn't it be:
+    pos2 = pos + pos - pivot->position;
+    // instead of:
+    // pos2 = 2*pos + pos - pivot->position;
 //OUTPUT << "OPP FROM pos=" << pos2 << endl;
     if (lattice->cellHasBlock(pos2)) return false;
 
@@ -257,7 +279,7 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
         pos2 = 2*pos - pivot->position;
 //OUTPUT << "OPP TO pos=" << pos2 << endl;
         isOk = isOk && !lattice->cellHasBlock(pos2);
-
+        
         // list of cells that must be free
         if ((*ci)->isOctaFace()) {
             const int *ptr = findTab4(from,to);
@@ -280,6 +302,7 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
                 i++;
             }
         }
+        
         if (isOk) {
             vec.push_back(*ci);
             //OUTPUT << "ADD " << from << " -> " << to << endl;
@@ -287,7 +310,22 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
         }
         ci++;
     }
+    
     return notEmpty;
+}
+
+bool Catoms3DMotionRules::
+connectorIsReachableUsingMotionRules(short from,
+                                     short to,
+                                     vector<Catoms3DMotionRulesLink*>&mrl) {
+    for (auto const link : mrl) {
+        std::array<short, 2> cons = link->getConnectors();
+        if ((cons[0] == from && cons[1] == to)
+            || (cons[0] == to && cons[1] == from))
+            return true;
+    }
+
+    return false;
 }
 
 
@@ -363,6 +401,11 @@ vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catom
     }
     //OUTPUT << endl;
     return tabPos;
+}
+
+std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {
+    stream << mrl.getID();
+    return stream;
 }
 
 } // Catoms3D namespace

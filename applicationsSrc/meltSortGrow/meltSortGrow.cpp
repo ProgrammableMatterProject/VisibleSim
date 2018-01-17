@@ -8,7 +8,7 @@
 #include <iostream>
 #include "catoms3DSimulator.h"
 #include "catoms3DBlockCode.h"
-#include "meltSortGrowBlockCode.h"
+#include "meltSortGrowBlockCode.hpp"
 
 using namespace std;
 using namespace Catoms3D;

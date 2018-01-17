@@ -87,6 +87,12 @@ namespace Catoms3D {
              @return return true if the cell is in the grid, false otherwise. */
           bool getNeighborPos(short connectorId,Cell3DPosition &pos) const;
 
+          /**
+             @brief Get the connector of the catom that is next to the position in argument
+             @param pos: position of the cell (must be in the grid)
+             @return returns the id of the connector next to this pos or -1 if invalid. */
+          short getConnectorId(const Cell3DPosition& pos);
+
           int getDirection(P2PNetworkInterface*);
 
           /**

@@ -12,13 +12,15 @@
 #include <unordered_set>
 
 #include "catoms3DWorld.h"
-#include "meltSortGrowBlockCode.h"
 #include "scheduler.h"
 #include "events.h"
 #include "trace.h"
 #include "teleportationEvents.h"
-#include "meltSortGrowUtils.h"
-#include "APLTypes.h"
+
+#include "meltSortGrowBlockCode.hpp"
+#include "meltSortGrowUtils.hpp"
+#include "APLTypes.hpp"
+#include "Messages/Melt/findMobileModuleMessages.hpp"
 
 using namespace Catoms3D;
 
@@ -101,7 +103,7 @@ void MeltSortGrowBlockCode::APLabellingStart() {
     catom->setColor(RED);
         
     if (state == APLState::Inactive) {
-        state = APLState::Active;;
+        state = APLState::Active;
         lDfn = dfn = dfnCnt = 1;
         APLabellingSearch();
                 
@@ -129,7 +131,10 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
         if (sons.size() >= 2) articulationPoint = true;
         
         initializeMeltPath();
-               
+
+        // Prepare data structures for the mobile module search DFS
+        resetDFSForSearching();
+
         findMobileModule();
     } else { /* a normal node has finished the visits to its subtree */
         if (minDfn < lDfn && minSdr != father)
@@ -156,35 +161,36 @@ void MeltSortGrowBlockCode::initializeMeltPath() {
     
     // Set next position to be filled
     tailPosition = new Cell3DPosition(catom->position - Cell3DPosition(1, 0, 0));
-    list<Cell3DPosition> initPath;
-    initPath.push_back(*tailPosition);
-    
-    // Find all neighboring positions that can reach it
-    computePathPositions(&initPath, catom->position);
-}
-
-void MeltSortGrowBlockCode::findMobileModule() {
-    // Prepare data structures for the mobile module search DFS
-    resetDFSForSearching();
-    
-    P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();    
-    
-    if (unprocessedNeighbor) {
-        sendMessage("FindMobileModule",
-                    new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE,
-                                                  *tailPosition),
-                    unprocessedNeighbor, 100, 0);        
-    } else if (source) {
-        // No more module paths to explore,
-        catom->setColor(BLUE); // #TOREMOVE todo
-    } else {
-        sendMessage("FindMobileModuleNack",
-                    new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NACK,
-                                                  *tailPosition),
-                    father, 100, 0);
+    tailConId = catom->getConnectorId(*tailPosition);
+    cout << tailConId << endl;
+        
+    // There should always be a path from the tail to the position to be filled.
+    console << "QUE!?" << "\n";
+    bool pathExists = motionRules.getValidMotionList(catom, tailConId, pathLinks);
+    console << "pathExists " << pathExists << "\n";
+    for (auto const link : pathLinks) {
+        console << "conLink " << *link << "\n";
     }
 }
 
+void MeltSortGrowBlockCode::findMobileModule() {    
+    P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();    
+    
+    if (unprocessedNeighbor) {        
+        sendMessage("FindMobileModule",
+                    new FindMobileModuleMessage(catom->orientationCode,
+                                                pathConnectors),
+                    unprocessedNeighbor, 100, 0);
+    } else if (source) {
+        // No more module paths to explore
+        catom->setColor(BLUE); // #TOREMOVE todo
+        throw NotImplementedException();
+    } else {
+        sendMessage("FindMobileModuleNotFound",
+                    new FindMobileModuleNotFoundMessage(),
+                    father, 100, 0);
+    }
+}
 
 void MeltSortGrowBlockCode::propagateGraphResetBFS() {
     resetChildrenDecount = 0;
@@ -296,6 +302,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                     if (catom->position == currentRootPosition) { // Election Complete, module is root
                         relPos = new Cell3DPosition(0,0,0);
                         rtg->setOrigin(catom->position);
+                        cout << "Absolute Target Positions" << endl; 
                         for (auto x : rtg->getTargetCellsAsc())
                             cout << x << endl;                        
                         rtg->targetCellsAsc->pop_front(); // this is the root's target position, in which it already is
@@ -368,7 +375,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                 if (echoPayload->lDfn >= dfn && !source) {
                     articulationPoint = true;
                     catom->setColor(PINK); // #ToRemove
-               }
+                }
 
                 APLabellingSearch();
             }
@@ -390,87 +397,6 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                 sons.erase(sender);
                 APLabellingSearch();
             }
-        } break;
-
-        case MSG_MELT_FIND_MOBILE_MODULE: {
-            Cell3DPosition tailPosition =
-                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
-
-            // Prepare data structures for the mobile module search DFS
-            resetDFSForSearching();
-            
-            if (articulationPoint || melted) {
-                P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
-                if (unprocessedNeighbor) {
-                    sendMessage("FindMobileModule",
-                                new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE,
-                                                              tailPosition),
-                                unprocessedNeighbor, 100, 0);        
-                } else {
-                    // There are no mobile modules on this branch
-                    sendMessage("FindMobileModuleNack",
-                                new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NACK,
-                                                              tailPosition),
-                                father, 100, 0);
-                }
-            } else {
-                // Module is mobile, notify father and jump to tail for now
-                sendMessage("FindMobileModuleYup",
-                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_ACK,
-                                                          tailPosition),
-                            father, 100, 0);
-
-                catom->setColor(WHITE);
-                // Teleport to tail for now
-                scheduler->schedule(
-                    new TeleportationStartEvent(scheduler->now() + 150,
-                                                catom, tailPosition));
-            }
-        } break;
-
-        case MSG_MELT_FIND_MOBILE_MODULE_ACK: {
-            Cell3DPosition tailPosition =
-                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
-
-            if (!source) {
-                sendMessage("FindMobileModuleYup",
-                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_ACK,
-                                                          tailPosition),
-                            father, 100, 0);
-            } else {
-                catom->setColor(ORANGE);
-            }
-
-            // resetDFSForLabelling();
-        } break;
-
-        case MSG_MELT_FIND_MOBILE_MODULE_NACK: {
-            Cell3DPosition tailPosition =
-                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
-
-            flag[sender] = true;
-            
-            P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
-            if (unprocessedNeighbor) {
-                sendMessage("FindMobileModule",
-                            new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE,
-                                                          tailPosition),
-                            unprocessedNeighbor, 100, 0);
-            } else {
-                if (father)  {
-                    sendMessage("FindMobileModuleNack",
-                                new MessageOf<Cell3DPosition>(MSG_MELT_FIND_MOBILE_MODULE_NACK,
-                                                              tailPosition),
-                                father, 100, 0);
-                    resetDFSForSearching();
-                } else {
-                    // Melt is done
-                    catom->setColor(RED);
-                    grow();
-                }
-            }
-
-            // resetDFSForLabelling();
         } break;
 
         case MSG_MELT_RESET_GRAPH: {
@@ -520,7 +446,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                     list<int> pathIds; pathIds.push_back(catom->blockId);
                     sendMessage("FindPathFound",
                                 new MessageOf<list<int>>(MSG_GROW_FINDPATH_FOUND,
-                                                       pathIds),
+                                                         pathIds),
                                 growthParent, 100, 0);
                     catom->setColor(BLUE); // todo
                     console << "Path to " << goalPosition << " found" << "\n";
@@ -560,7 +486,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                 pathIds.push_back(catom->blockId);
                 sendMessage("FindPathFound",
                             new MessageOf<list<int>>(MSG_GROW_FINDPATH_FOUND,
-                                                   pathIds),
+                                                     pathIds),
                             growthParent, 100, 0);
                 growthVisited = false;
                 catom->setColor(GREEN); // todo
@@ -611,7 +537,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                     moveToGoal();
                 }
             } else {
-                console << "I'm sorry sir, but I do not have a growth parent." << "\n";
+                console << "I'm very much sorry sir, but I do not have a growth parent." << "\n";
             }
             
         } break;
@@ -629,12 +555,17 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
         case EVENT_RECEIVE_MESSAGE: {
             message =
                 (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
-            P2PNetworkInterface * recv_interface = message->destinationInterface;
-            console << " received " << message->type << " from "
-                    << recv_interface->connectedInterface->hostBlock->blockId << "\n";
+
+            if (message->isMessageHandleable()) {
+                (std::static_pointer_cast<HandleableMessage>(message))->handle(this);
+            } else {
+                P2PNetworkInterface * recv_interface = message->destinationInterface;
+                console << " received " << message->type << " from "
+                        << recv_interface->connectedInterface->hostBlock->blockId << "\n";
             
-            // Handover to global message handler
-            processReceivedMessage(message, recv_interface);
+                // Handover to global message handler
+                processReceivedMessage(message, recv_interface);
+            }
         } break;
 
         case EVENT_TELEPORTATION_END: {
