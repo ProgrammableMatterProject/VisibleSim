@@ -6,6 +6,7 @@
 #include <list>
 
 #include "catoms3DMotionRules.h"
+#include "catoms3DWorld.h"
 
 using namespace Catoms3D;
 
@@ -16,7 +17,9 @@ using namespace Catoms3D;
 // void function(...);
 
 class API { 
-
+    static inline Catoms3DMotionRules* getMotionRules() {
+        return Catoms3DWorld::getWorld()->getMotionRules();
+    }
 public:
 /**
    @brief For a given Catoms3D module acting as a pivot, enumerates all the possible catom surface links that

@@ -46,13 +46,13 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 	}
 
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
-    // motionRules = new Catoms3DMotionRules();
+    motionRules = new Catoms3DMotionRules();
 }
 
 Catoms3DWorld::~Catoms3DWorld() {
     OUTPUT << "Catoms3DWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
-    // delete motionRules;
+    delete motionRules;
 }
 
 void Catoms3DWorld::deleteWorld() {

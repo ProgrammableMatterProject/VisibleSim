@@ -1,13 +1,13 @@
 
 #include "api.hpp"
+#include "catoms3DWorld.h"
 
 bool
 API::getAllLinksToConnector(const Catoms3DBlock *pivot,
                             short conId,
                             vector<Catoms3DMotionRulesLink*>&links)
 {
-    // #TODO fixit
-    (new Catoms3DMotionRules())->getValidMotionList(pivot, (int)conId, links);
+    getMotionRules()->getValidMotionList(pivot, (int)conId, links);
     
     return !links.empty();
 }
@@ -19,7 +19,7 @@ API::getAllLinks(const Catoms3DBlock *pivot,
     for (short conId = 0; conId < 12; conId++) {
         // #TODO fixit
         // Pb: ne fournit pas les routes pour les interfaces déjà connectées
-        (new Catoms3DMotionRules())->getValidMotionList(pivot, (int)conId, links);
+        getMotionRules()->getValidMotionList(pivot, (int)conId, links);
     }
 
     return !links.empty();

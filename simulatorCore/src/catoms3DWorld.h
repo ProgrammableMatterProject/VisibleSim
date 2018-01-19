@@ -19,7 +19,7 @@
 #include "objLoader.h"
 #include "skeleton.h"
 #include "trace.h"
-/* #include "catoms3DMotionRules.h" */
+#include "catoms3DMotionRules.h"
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
@@ -33,7 +33,7 @@ class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     Skeleton *skeleton = NULL;
-    /* Catoms3DMotionRules *motionRules; */
+    Catoms3DMotionRules *motionRules;
 
     virtual ~Catoms3DWorld();
 public:
@@ -60,8 +60,7 @@ public:
     inline void setSkeleton(Skeleton *s) { skeleton=s; };
     inline double getSkeletonPotentiel(const Vector3D& pos) { return (skeleton==NULL)?-1:skeleton->potentiel(pos); };
 
-    /* inline Catoms3DMotionRules *getMotionRules() { return motionRules; }; */
-
+    inline Catoms3DMotionRules *getMotionRules() { return motionRules; };
 
     /**
      * \brief Connects block on grid cell pos to its neighbor
