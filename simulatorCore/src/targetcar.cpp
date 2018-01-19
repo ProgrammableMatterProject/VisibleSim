@@ -412,21 +412,23 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
     if (method.compare("nurbs") == 0) {
         cout << "Call to the NURBS surface type initialization" << endl;
         //Initialization of the NURBS parameters, parsing from config file to be implemented later
-        S_NUMPOINTS = 5;
+        S_NUMPOINTS = 7;
         S_ORDER = 3;
         S_NUMKNOTS = S_NUMPOINTS + S_ORDER;
-        T_NUMPOINTS = 5;
+        T_NUMPOINTS = 4;
         T_ORDER = 3;
         T_NUMKNOTS = T_NUMPOINTS + T_ORDER;
         
         //Filling sknots
         sknots.push_back(0);
-        sknots.push_back(0.125);
-        sknots.push_back(0.25);
-        sknots.push_back(0.375);
+        sknots.push_back(0.1);
+        sknots.push_back(0.2);
+        sknots.push_back(0.3);
+        sknots.push_back(0.4);
         sknots.push_back(0.5);
-        sknots.push_back(0.625);
-        sknots.push_back(0.75);
+        sknots.push_back(0.6);
+        sknots.push_back(0.7);
+        sknots.push_back(0.8);
         sknots.push_back(1);
 
         //Checking if sknots correctly filled
@@ -437,11 +439,10 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
 
         //Filling tknots
         tknots.push_back(0);
-        tknots.push_back(0.125);
-        tknots.push_back(0.25);
-        tknots.push_back(0.375);
-        tknots.push_back(0.5);
-        tknots.push_back(0.625);
+        tknots.push_back(0.15);
+        tknots.push_back(0.3);
+        tknots.push_back(0.45);
+        tknots.push_back(0.60);
         tknots.push_back(0.75);
         tknots.push_back(1);
 
@@ -456,10 +457,66 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
             vector<vector<float>> tctlpoint;
             for (int j=0; j < T_NUMPOINTS; j++){
                 vector<float> point;
-                point.push_back(i*45);
-                point.push_back(j*45);
-                point.push_back(0);
-                point.push_back(45);
+                float l=0;
+                float k=-33.33;
+                if (i==1) {
+                    l = 6.66;
+                    k = 40;
+                    if (j==1) {
+                        k = k+13.33;
+                    }
+                    if (j==2) {
+                        k = k+13.33;
+                    }
+                }
+                if (i==2) {
+                    l = 66.66;
+                    k = 66.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==3) {
+                    l = 116.66;
+                    k = 66.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==4) {
+                    l = 150;
+                    k = 26.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==5) {
+                    l = 193.33;
+                    k = 26.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==6) {
+                    l = 200;
+                    k = -20;
+                }
+                point.push_back(l);
+                point.push_back(j*33.33);
+                point.push_back(k);
+                point.push_back(33.33);
                 tctlpoint.push_back(point);
                 point.clear();
              }
@@ -467,8 +524,8 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
              tctlpoint.clear();
         }
 
-        ctlpoints[2][1][2]=270;
-        ctlpoints[3][3][2]=90;
+        //ctlpoints[2][1][2]=270;
+        //ctlpoints[3][3][2]=90;
 
         //Checking ctlpoints
         
@@ -488,6 +545,8 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
     float x = cartesianpos.pt[0];
     float y = cartesianpos.pt[1];
     float z = cartesianpos.pt[2];
+    float xfound = 0;
+    float yfound = 0;
 
     if (method.compare("interpolation") == 0) {
         //Calculation of d polynom degree
@@ -545,7 +604,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
 
     else if (method.compare("nurbs") == 0) {
         //print method
-        cout << "Call to isInTarget method =" << method << endl; 
+        //cout << "Call to isInTarget method =" << method << endl; 
         //Initialization of dichotomy parameters
         float precision = FLT_MAX;
         float precGoal = 100;
@@ -570,6 +629,16 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             float y3 = calculateNurbs(u0,v1,1);
             float x4 = calculateNurbs(u1,v1,0);
             float y4 = calculateNurbs(u1,v1,1);
+            if (count == 0){
+                //cout << "x1=" <<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
+                //cout << "y1=" <<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
+                if ( x1 < x && x2 < x && x3 < x && x4 < x ){
+                    return false;
+                }
+                if ( y1 < y && y2 < y && y3 < y && y4 < y ){
+                    return false;
+                }
+            }
             //Search quadrant (x,y) is in
             if (dist(x1,y1,x,y)<mindist){
                 mindist = dist(x1,y1,x,y);
@@ -591,56 +660,45 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             if (quadrant == 1){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x1<<" y found="<<y1<<endl;
                 znurbs = calculateNurbs(u0,v0,2);
+                xfound = x1;
+                yfound = y1;
                 u1 = (u1+u0)/2;
                 v1 = (v1+v0)/2;
             }
             if (quadrant == 2){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x2<<" y found="<<y2<<endl;
+                xfound = x2;
+                yfound = y2;
                 znurbs = calculateNurbs(u1,v0,2);
                 u0 = (u1+u0)/2;
                 v1 = (v1+v0)/2;
             }
             if (quadrant == 3){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x3<<" y found="<<y3<<endl;
+                xfound = x3;
+                yfound = y3;
                 znurbs = calculateNurbs(u0,v1,2);
                 u1 = (u1+u0)/2;
                 v0 = (v1+v0)/2;
             }
             if (quadrant == 4){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x4<<" y found="<<y4<<endl;
+                xfound = x4;
+                yfound = y4;
                 znurbs = calculateNurbs(u1,v1,2);
                 u0 = (u1+u0)/2;
                 v0 = (v1+v0)/2;
             }
             
             precision = sqrt(mindist);
-/*
-            if (count < 10){
-                cout << "quadrant =" << quadrant << endl;
-                cout << "u0 = " << u0 <<endl;
-                cout << "v0 = " << v0 << endl;
-                cout << "u1 = " << u1 << endl;
-                cout << "v1 = " << v1 << endl;
-                cout << "precision =" <<  precision << endl;
-            }
-*/           
-            cout<<"quadrant="<<quadrant<<endl;
-            cout<<"x="<<x<<",x1="<<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
-            cout<<"y="<<y<<",y1="<<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
+            //cout<<"quadrant="<<quadrant<<endl;
+            //cout<<"x="<<x<<",x1="<<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
+            //cout<<"y="<<y<<",y1="<<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
             count += 1;
         }
+        cout << "x=" << x << ", y=" << y << ", xfound=" << xfound << ", yfound=" << yfound <<endl;
         cout << "End of while: znurbs=" << znurbs << " ,précision =" << precision << endl;
         //Comparison between z
-/*        float znurbs=0;
-
-        for (int i=0;i<11;i++){
-            for (int j=0;j<11;j++){
-                for (int k=0;k<3;k++){
-                    cout << "S(" << i*0.1 <<","<<j*0.1<<")."<<k<<"="<<calculateNurbs(i*0.1,j*0.1,k)<<endl;
-                }
-            }
-        }
-*/        
         if (z<=znurbs){
             return true;
         }
@@ -738,12 +796,8 @@ float TargetSurface::calculateNurbs(float u, float v, int coord){
     //S calculation
     float num = 0;
     float den = 0;
-    //for (int i =0; i <= S_NUMPOINTS-S_ORDER; i++){
-        //for (int j=0; j <= T_NUMPOINTS-T_ORDER; j++){
     for (int i =0; i < S_NUMPOINTS; i++){
         for (int j=0; j < T_NUMPOINTS; j++){
-            //num = num + Ni[i][S_ORDER-1]*Nj[j][T_ORDER-1]*ctlpoints[i][j][3]*ctlpoints[i][j][coord];
-            //den = den + Ni[i][S_ORDER-1]*Nj[j][T_ORDER-1]*ctlpoints[i][j][3];
             num = num + Ni[i][S_ORDER-1]*Nj[j][T_ORDER-1]*ctlpoints[i][j][3]*ctlpoints[i][j][coord];
             den = den + Ni[i][S_ORDER-1]*Nj[j][T_ORDER-1]*ctlpoints[i][j][3];
         }

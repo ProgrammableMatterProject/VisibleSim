@@ -192,6 +192,15 @@ class TargetSurface : public Target {
     vector<Vector3D> pcl; //!< the point cloud
     vector<float> coeffs; //!< the coefficients of the interpolating polynom
     string method;
+    int S_NUMPOINTS;
+    int S_ORDER;
+    int S_NUMKNOTS;
+    int T_NUMPOINTS;
+    int T_ORDER;
+    int T_NUMKNOTS;
+    vector<float> sknots;
+    vector<float> tknots;
+    vector<vector<vector<float>>> ctlpoints;
 
 protected:    
     /**
@@ -200,6 +209,10 @@ protected:
      * @param c color of the cell. If none provided, defaults to (0,0,0,0)
      */
     void addTargetCell(const Cell3DPosition &pos, const Color c = Color());
+
+    float calculateNurbs(float u, float v, int coord);
+
+    float dist(float x1, float y1, float x2, float y2);
 
     //!< @copydoc Target::print
     virtual void print(ostream& where) const;    
