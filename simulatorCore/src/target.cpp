@@ -1,10 +1,9 @@
 /*! @file target.cpp
- * @brief Defines a target configuration for reconfiguration algorithms, 
+ * @brief Defines a target configuration for reconfiguration algorithms,
  * several ways of defining the configuration are provided to the user.
  * @author Pierre Thalamy
  * @date 21/07/2016
  */
-
 #include "target.h"
 #include "utils.h"
 #include "csgParser.h"
@@ -22,7 +21,7 @@ TiXmlNode *Target::targetNode = NULL;
 Target *Target::loadNextTarget() {
     if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
-        Target::targetNode = targetListNode->IterateChildren(targetNode); 
+        Target::targetNode = targetListNode->IterateChildren(targetNode);
 
         if (Target::targetNode) {
             TiXmlElement* element;
@@ -46,6 +45,9 @@ Target *Target::loadNextTarget() {
     return NULL;
 }
 
+void Target::glDraw() {
+
+}
 
 /************************************************************
  *                         Target
@@ -54,13 +56,13 @@ Target *Target::loadNextTarget() {
 ostream& operator<<(ostream& out,const Target *t) {
     t->print(out);
     return out;
-}   
+}
 
 /************************************************************
  *                      TargetGrid
  ************************************************************/
 
-TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {    
+TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *cellNode = targetNode->FirstChild("cell");
     const char* attr;
     TiXmlElement *element;
@@ -72,7 +74,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     while (cellNode) {
         element = cellNode->ToElement();
         color = defaultColor;
-        
+
         attr = element->Attribute("position");
         if (attr) {
             string str(attr);
@@ -102,7 +104,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     // Parse lines of cells
     cellNode = targetNode->FirstChild("targetLine");
     while (cellNode) {
-        int line = 0, plane = 0;            
+        int line = 0, plane = 0;
         element = cellNode->ToElement();
         color = defaultColor;
         attr = element->Attribute("color");
@@ -119,12 +121,12 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
         if (attr) {
             line = atoi(attr);
         }
-        
+
         attr = element->Attribute("plane");
         if (attr) {
             plane = atoi(attr);
         }
-        
+
         attr = element->Attribute("values");
         if (attr) {
             string str(attr);
@@ -234,7 +236,7 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
  *                      TargetSurface
  ************************************************************/
 
-TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {    
+TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
     TiXmlNode *methNode = targetNode->FirstChild("method");
     const char* attr;
     TiXmlElement *element;
@@ -249,22 +251,22 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                 string str(attr);
                 if (str.compare("interpolation") == 0) {
                     method = str;
-                    cout << "Method initialized" << method << endl; 
+                    cout << "Method initialized" << method << endl;
                 }
                 else if (str.compare("neighbor") == 0) {
                     method = str;
-                    cout << "Method initialized" << method << endl; 
+                    cout << "Method initialized" << method << endl;
                 }
                 else if (str.compare("nurbs") == 0) {
                     method = str;
-                    cout << "Method initialized" << method << endl; 
+                    cout << "Method initialized" << method << endl;
                 }
                 TiXmlNode *cellNode = methNode->FirstChild("cell");
                 // Parse individual cells
                 while (cellNode) {
                 element = cellNode->ToElement();
                 color = defaultColor;
-                  
+
                 attr = element->Attribute("position");
                 if (attr) {
                     string str(attr);
@@ -294,7 +296,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
             // Parse lines of cells
             cellNode = targetNode->FirstChild("targetLine");
             while (cellNode) {
-                int line = 0, plane = 0;            
+                int line = 0, plane = 0;
                 element = cellNode->ToElement();
                 color = defaultColor;
                 attr = element->Attribute("color");
@@ -306,17 +308,17 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                               atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
                               atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
                 }
-        
+
                 attr = element->Attribute("line");
                 if (attr) {
                     line = atoi(attr);
                 }
-        
+
                 attr = element->Attribute("plane");
                 if (attr) {
                     plane = atoi(attr);
                 }
-                
+
                 attr = element->Attribute("values");
                 if (attr) {
                     string str(attr);
@@ -337,7 +339,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
             }
     }
 
-    
+
     if (method.compare("interpolation") == 0) {
         //Calculate polynom coeff
         cout << "Coefficients to be calculated"<< endl;
@@ -418,7 +420,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
         T_NUMPOINTS = 5;
         T_ORDER = 3;
         T_NUMKNOTS = T_NUMPOINTS + T_ORDER;
-        
+
         //Filling sknots
         sknots.push_back(0);
         sknots.push_back(0.125);
@@ -471,12 +473,40 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
         ctlpoints[3][3][2]=90;
 
         //Checking ctlpoints
-        
+
         for (int i=0; i < S_NUMPOINTS; i++){
             for (int j=0; j < T_NUMPOINTS; j++){
                 cout << "ctlpoints["<<i<<"]["<<j<<"][2] = "<< ctlpoints[i][j][2]<< endl;
              }
         }
+		/*
+		float_sknots = new float[S_NUMKNOTS];
+		float_tknots = new float[T_NUMKNOTS];
+		float_ctlpoints = new float**[S_NUMPOINTS];
+
+		for (int i=0; i<S_NUMKNOTS; i++) {
+			float_sknots[i] = sknots[i];
+			cout << "float_sknots[" << i << "]=" << float_sknots[i] << endl;
+		}
+		for (int i=0; i<T_NUMKNOTS; i++) {
+			float_tknots[i] = tknots[i];
+			cout << "float_tknots[" << i << "]=" << float_tknots[i] << endl;
+		}
+		for (int i=0; i<S_NUMPOINTS; i++) {
+			float_ctlpoints[i] = new float*[T_NUMPOINTS];
+			for(int j=0; j<T_NUMPOINTS; j++) {
+				float_ctlpoints[i][j] = new float[4];
+				for (int k=0; k<4; k++) {
+					float_ctlpoints[i][j][k] = ctlpoints[i][j][k];
+					cout << "float_ctlpoints[" << i << "]["<<j<<"]["<<k<<"]=" << float_ctlpoints[i][j][k]<< endl;
+				}
+			}
+		}
+
+
+		theNurb = gluNewNurbsRenderer();
+		gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 50.0);
+		gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);*/
         //NURBS parameters initialization finished
     }
 
@@ -520,7 +550,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
 
     else if (method.compare("neighbor") == 0) {
         //print method
-        cout << "Call to isInTarget method =" << method << endl; 
+        cout << "Call to isInTarget method =" << method << endl;
         //Nearest neighboor research
         float mindist = FLT_MAX;
         int neighbor = 0;
@@ -539,13 +569,13 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         }
         else{
             return false;
-        }        
+        }
     }
 
 
     else if (method.compare("nurbs") == 0) {
         //print method
-        cout << "Call to isInTarget method =" << method << endl; 
+        cout << "Call to isInTarget method =" << method << endl;
         //Initialization of dichotomy parameters
         float precision = FLT_MAX;
         float precGoal = 100;
@@ -612,7 +642,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
                 u0 = (u1+u0)/2;
                 v0 = (v1+v0)/2;
             }
-            
+
             precision = sqrt(mindist);
 /*
             if (count < 10){
@@ -623,7 +653,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
                 cout << "v1 = " << v1 << endl;
                 cout << "precision =" <<  precision << endl;
             }
-*/           
+*/
             cout<<"quadrant="<<quadrant<<endl;
             cout<<"x="<<x<<",x1="<<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
             cout<<"y="<<y<<",y1="<<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
@@ -640,15 +670,15 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
                 }
             }
         }
-*/        
+*/
         if (z<=znurbs){
             return true;
         }
         else{
             return false;
-        }        
+        }
     }
-    
+
     else {
         throw BaseSimulator::utils::NotImplementedException();
     }
@@ -767,19 +797,19 @@ void TargetSurface::print(ostream& where) const {
 
     if (method.compare("interpolation") == 0) {
         //print method
-        cout << "Call to print method =" << method << endl; 
+        cout << "Call to print method =" << method << endl;
     }
 
     else if (method.compare("neighbor") == 0) {
         //print method
-        cout << "Call to print method =" << method << endl; 
+        cout << "Call to print method =" << method << endl;
     }
-    
+
     else if (method.compare("nurbs") == 0) {
         //print method
-        cout << "Call to print method =" << method << endl; 
+        cout << "Call to print method =" << method << endl;
     }
-    
+
     else {
         throw BaseSimulator::utils::NotImplementedException();
     }
@@ -788,5 +818,36 @@ void TargetSurface::print(ostream& where) const {
 void TargetSurface::boundingBox(BoundingBox &bb) {
     throw BaseSimulator::utils::NotImplementedException();
 }
+
+void TargetSurface::glDraw() {
+	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_diffuse[] = { 1.0, 0.2, 1.0, 1.0 };
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
+
+    GLfloat light0_position[] = { 2.0, 0.1, 5.0, 0.0 };
+    GLfloat light1_position[] = { -2.0, 0.1, 5.0, 0.0 };
+
+    GLfloat lmodel_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+	glPushMatrix();
+	gluBeginSurface(theNurb);
+    gluNurbsSurface(theNurb,
+	    S_NUMKNOTS, float_sknots,
+	    T_NUMKNOTS, float_tknots,
+	    4 * T_NUMPOINTS,
+	    4,
+	    &float_ctlpoints[0][0][0],
+	    S_ORDER, T_ORDER,
+	    GL_MAP2_VERTEX_4);
+    gluEndSurface(theNurb);
+	glPopMatrix();
+}
+
 
 } // namespace BaseSimulator

@@ -23,6 +23,13 @@
 //!< \namespace Catoms3D
 namespace Catoms3D {
 
+const int S_NUMPOINTS=5;
+const int S_ORDER=3;
+const int S_NUMKNOTS=(S_NUMPOINTS + S_ORDER);
+const int T_NUMPOINTS=5;
+const int T_ORDER=3;
+const int T_NUMKNOTS=(T_NUMPOINTS + T_ORDER);
+
 static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 
 /**
@@ -32,6 +39,20 @@ class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     Skeleton *skeleton = NULL;
+
+	GLfloat sknots[S_NUMKNOTS] =
+	    {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
+	GLfloat tknots[T_NUMKNOTS] = {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
+
+	GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
+		{{0.0,0.0,0.0,45.},{0.0,45.0,0.0,45.},{0.0,90.0,0.0,45.},{0.0,135.0,0.0,45.},{0.0,180.0,0.0,45.}},
+		{{45.0,0.0,0.0,45.},{45.0,45.0,0.0,45.},{45.0,90.0,0.0,45.},{45.0,135.0,0.0,45.},{45.0,180.0,0.0,45.}},
+		{{90.0,0.0,0.0,45.},{90.0,45.0,270.0,45.},{90.0,90.0,0.0,45.},{90.0,135.0,0.0,45.},{90.0,180.0,0.0,45.}},
+		{{135.0,0.0,0.0,45.},{135.0,45.0,0.0,45.},{135.0,90.0,0.0,45.},{135.0,135.0,90.0,45.},{135.0,180.0,0.0,45.}},
+		{{180.0,0.0,0.0,45.},{180.0,45.0,0.0,45.},{180.0,90.0,0.0,45.},{180.0,135.0,0.0,45.},{180.0,180.0,0.0,45.}},
+	};
+
+	GLUnurbsObj *theNurb;
 
     virtual ~Catoms3DWorld();
 public:
@@ -76,7 +97,7 @@ public:
     void updateGlData(Catoms3DBlock*blc, const Matrix &mat);
     virtual void setSelectedFace(int n);
     virtual void exportConfiguration();
-    
+
 /**
  * \brief load the background textures (internal)
  */

@@ -41,9 +41,16 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 									 "catom3D_picking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
-	}   
+	}
 
     lattice = new FCCLattice2(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+
+	theNurb = gluNewNurbsRenderer();
+
+    gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 50.0);
+    //gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_OUTLINE_PATCH);
+	//gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_OUTLINE_POLYGON);
+	gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
 }
 
 Catoms3DWorld::~Catoms3DWorld() {
@@ -61,7 +68,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
 		maxBlockId = blockId;
 	else if (blockId == 0)
 		blockId = incrementBlockId();
-	
+
     Catoms3DBlock *catom = new Catoms3DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
@@ -118,6 +125,36 @@ void Catoms3DWorld::glDraw() {
     }
     unlock();
     glPopMatrix();
+
+	// draw the goal surface
+	/*if (buildingBlocksMap.begin()!=buildingBlocksMap.end()) {
+		map<bID, BuildingBlock*>::iterator it = buildingBlocksMap.begin();
+		it->second->blockCode->target->glDraw();
+	}*/
+	GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.2, 0.8, 1.0 };
+    GLfloat mat_specular[] = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	enableTexture(false);
+	glPushMatrix();
+	glScalef(45,45,45);
+	gluBeginSurface(theNurb);
+	gluNurbsSurface(theNurb,
+		S_NUMKNOTS, sknots,
+		T_NUMKNOTS, tknots,
+		4 * T_NUMPOINTS,
+		4,
+		&ctlpoints[0][0][0],
+		S_ORDER, T_ORDER,
+		GL_MAP2_VERTEX_4);
+	gluEndSurface(theNurb);
+
+	glPopMatrix();
 
 // material for the grid walls
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);

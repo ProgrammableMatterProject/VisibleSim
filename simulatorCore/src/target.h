@@ -1,5 +1,5 @@
 /*! @file target.h
- * @brief Defines a target configuration for reconfiguration algorithms, 
+ * @brief Defines a target configuration for reconfiguration algorithms,
  * several ways of defining the configuration are provided to the user.
  *
  * e.g. Definition of a list of targets in the XML file:
@@ -15,7 +15,7 @@
  *          <cell position="1,1,1"/>
  *          <cell position="1,3,2"/>
  *          <cell position="2,2,2"/>
- *          <cell position="3,3,3"/>            
+ *          <cell position="3,3,3"/>
  *        </target>
  *        <target format="csg">
  *          <csg content="union() { cube([10,10,10]); cylinder(10,5,5); }"/>
@@ -49,9 +49,9 @@ using namespace std;
 namespace BaseSimulator {
 
 //<! @brief Abstract Target. Provides the user with functions for checking a target position and color.
-class Target {    
+class Target {
 protected:
-    
+
     /**
      * @brief prints target to an ouput string
      * @param where ostream on which to print the object
@@ -85,14 +85,14 @@ public:
      * @brief Parse next target from the configuration file's Target List, and return a pointer to the instantiated object
      * @return pointer to the parsed Target object, or NULL if there are no (more) targets in the configuration file
      */
-    static Target *loadNextTarget();    
+    static Target *loadNextTarget();
     /**
      * @brief Target constructor. Where parsing occurs thanks to the targetNode parameter
      * @param targetNode XML Node containing target description from configuration file
      */
     Target(TiXmlNode *targetNode) {};
     virtual ~Target() {};
-    
+
     /**
      * @brief Indicates if a position belongs to the target
      * @param pos position to consider
@@ -111,7 +111,11 @@ public:
      * @param bb boundingbox to be written
      */
     virtual void boundingBox(BoundingBox &bb) = 0;
-    
+	/*
+	* @brief Draw geometry of the target in the interfaces
+	*/
+	virtual void glDraw();
+
     friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
 
@@ -120,7 +124,7 @@ class TargetGrid : public Target {
     // Only store target cells instead of the entire grid to save memory
     map<const Cell3DPosition, const Color> tCells; //!< the target cells as Cell/Color key-value pairs
 
-protected:    
+protected:
     /**
      * @brief Add a cell to the target cells container
      * @param pos position of the target cell
@@ -129,10 +133,10 @@ protected:
     void addTargetCell(const Cell3DPosition &pos, const Color c = Color());
 
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const;    
+    virtual void print(ostream& where) const;
 public:
     /**
-     * @copydoc Target::Target 
+     * @copydoc Target::Target
      * XML Description Format:
      * <target format="grid">
      *   <cell position="x,y,z" color="r,g,b"/>
@@ -201,8 +205,9 @@ class TargetSurface : public Target {
     vector<float> sknots;
     vector<float> tknots;
     vector<vector<vector<float>>> ctlpoints;
-
-protected:    
+	float *float_sknots,*float_tknots,***float_ctlpoints;
+	GLUnurbsObj *theNurb;
+protected:
     /**
      * @brief Add a cell to the target cells container
      * @param pos position of the target cell
@@ -215,10 +220,10 @@ protected:
     float dist(float x1, float y1, float x2, float y2);
 
     //!< @copydoc Target::print
-    virtual void print(ostream& where) const;    
+    virtual void print(ostream& where) const;
 public:
     /**
-     * @copydoc Target::Target 
+     * @copydoc Target::Target
      * XML Description Format:
      * <target format="surface">
      *   <method meth="type">
@@ -240,6 +245,7 @@ public:
     //!< @copydoc Target::BoundingBox
     virtual void boundingBox(BoundingBox &bb);
 
+	void glDraw();
 };  // class TargetSurface
 
 

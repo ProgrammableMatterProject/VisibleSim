@@ -3,10 +3,10 @@
 SUBDIRS = simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
 
 # MELD BlockCodes
-SUBDIRS += meld MRMeld
+#SUBDIRS += meld MRMeld
 
 # TESTED Legacy codeBlocks
-SUBDIRS += noneCatoms2D robot01 sphereCatoms3D sbReconf smartBlocks1 bbCycle bbCycle-bak msrSync c2srCatoms2D csgCatoms3D coloration
+#SUBDIRS += noneCatoms2D robot01 sphereCatoms3D sbReconf smartBlocks1 bbCycle bbCycle-bak msrSync c2srCatoms2D csgCatoms3D coloration
 
 # Currently tested BlockCodes
 SUBDIRS += targetColoration

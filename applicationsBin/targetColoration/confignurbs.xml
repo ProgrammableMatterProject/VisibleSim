@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="21,21,21">
-    <camera target="25,20,10" directionSpherical="0,90,30" angle="45" near="0.01" far="1000.0" />
-    <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="30"/>
+<world gridSize="21,21,21" windowSize="1024,800">
+    <camera target="75.7996,35.5356,8.32616" directionSpherical="159.282,26.9746,410" angle="45" />
+    <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="29" />
     <blockList color="128,128,128" blocksize="10,10,10">
 
 		<block position="0,0,0" orientation="0"/>
@@ -8007,18 +8007,19 @@
 	</blockList>
 	<targetList>
 	  <target format="surface">
-	    <method meth="nurbs">
-	      <cell position="10,20,15" color="100,100,100"/>
-	      <cell position="40,30,75" color="100,100,100"/>
-	      <cell position="60,50,119" color="100,100,100"/>
-	      <cell position="50,70,126" color="100,100,100"/>
-	      <cell position="80,40,120" color="100,100,100"/>
-	      <cell position="70,70,142" color="100,100,100"/>
-	      <cell position="100,150,135" color="100,100,100"/>
-	      <cell position="180,160,60" color="100,100,100"/>
-	      <cell position="30,110,110" color="100,100,100"/>
-	      <cell position="120,40,120" color="100,100,100"/>
-	    </method>
+		<method meth="nurbs">
+		  <cell position="10,20,15" color="100,100,100"/>
+		  <cell position="40,30,75" color="100,100,100"/>
+		  <cell position="60,50,119" color="100,100,100"/>
+		  <cell position="50,70,126" color="100,100,100"/>
+		  <cell position="80,40,120" color="100,100,100"/>
+		  <cell position="70,70,142" color="100,100,100"/>
+		  <cell position="100,150,135" color="100,100,100"/>
+		  <cell position="180,160,60" color="100,100,100"/>
+		  <cell position="30,110,110" color="100,100,100"/>
+		  <cell position="120,40,120" color="100,100,100"/>
+		</method>
 	  </target>
 	</targetList>
+
 </world>
