@@ -404,7 +404,8 @@ vector<Cell3DPosition> Catoms3DMotionRulesLink::getBlockingCellsList(const Catom
 }
 
 std::ostream& operator<<(std::ostream &stream, Catoms3DMotionRulesLink const& mrl) {
-    stream << mrl.getID();
+    std::array<short, 2> connectors = mrl.getConnectors();
+    stream << connectors[0] << " -> " << connectors[1];
     return stream;
 }
 

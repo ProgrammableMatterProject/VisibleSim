@@ -23,14 +23,16 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
         bc->resetDFSFlags();
     
         if (!bc->articulationPoint && !bc->melted) {
-            vector<Catoms3DMotionRulesLink*> mrl = API::getAllLinks(this->sender);
+            vector<Catoms3DMotionRulesLink*> mrl;
+            API::getAllLinks(this->sender, mrl);
             
             // Mobile Module:
             // Check if module can move to any of the path connectors of pivot
-            list<Catoms3DMotionRulesLink*> rotations =
-                API::findConnectorsPath(mrl,
-                                        (short)this->sender->getDirection(bc->meltFather),
-                                        this->pathCons);
+            list<Catoms3DMotionRulesLink*> rotations;
+            API::findConnectorsPath(mrl,
+                                    (short)this->sender->getDirection(bc->meltFather),
+                                    this->pathCons,
+                                    rotations);
 
             if (!rotations.empty()) {
                 Catoms3DMotionRulesLink *nextRotation = rotations.front();
@@ -42,13 +44,15 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
         // If module not mobile or a movement path could not be found,
         //  then propagate search to children
-        set<short> myAdjacentPathConnectors =
-            API::findAdjacentConnectors(this->pathCons,
-                                   this->senderOriCode,
-                                   bc->catom->orientationCode);
+        set<short> myAdjacentPathConnectors;
+        API::findAdjacentConnectors(this->pathCons,
+                                    this->senderOriCode,
+                                    bc->catom->orientationCode,
+                                    myAdjacentPathConnectors);
         if (!myAdjacentPathConnectors.empty()) {
-            bc->pathConnectors = API::findPathConnectors(bc->catom,
-                                                         myAdjacentPathConnectors);
+            API::findPathConnectors(bc->catom,
+                                    myAdjacentPathConnectors,
+                                    bc->pathConnectors);
             bc->findMobileModule();
             return;
         }

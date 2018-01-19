@@ -21,6 +21,7 @@
 #include "meltSortGrowUtils.hpp"
 #include "APLTypes.hpp"
 #include "Messages/Melt/findMobileModuleMessages.hpp"
+#include "api.hpp"
 
 using namespace Catoms3D;
 
@@ -41,9 +42,25 @@ void MeltSortGrowBlockCode::startup() {
 
     // targetCells = ((TargetGrid*)target)->getTargetCellsAsc();
     rtg = (RelativeTargetGrid*)target;
+
+    console << "Starting test..." << "\n";
+
+    vector<Catoms3DMotionRulesLink*> links;
+    API::getAllLinks(this->catom, links);
+
+    // for (const auto& link : links) {
+    //     console << *link << "\n";
+    // }
+
+    list<Catoms3DMotionRulesLink*> shortestConPath;
+    bool ret = API::findConnectorsPath(links, 0, 6, shortestConPath);
+    console << "Path is: " << ret << "\n";
+    for (const auto& motion : shortestConPath) {
+        console << *motion << "\n";
+    }
     
-    determineRoot();
-    APLabellingInitialization();
+    // determineRoot();
+    // APLabellingInitialization();
 }
 
 void MeltSortGrowBlockCode::resetDFSForLabelling() {

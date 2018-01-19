@@ -1,33 +1,37 @@
 
 #include "api.hpp"
 
-vector<Catoms3DMotionRulesLink*>
+bool
 API::getAllLinksToConnector(const Catoms3DBlock *pivot,
-                            short conId)
+                            short conId,
+                            vector<Catoms3DMotionRulesLink*>&links)
 {
-    vector<Catoms3DMotionRulesLink*> links;
-    Catoms3DMotionRules().getValidMotionList(pivot, (int)conId, links);
+    // #TODO fixit
+    (new Catoms3DMotionRules())->getValidMotionList(pivot, (int)conId, links);
     
-    return links;
+    return !links.empty();
 }
 
-vector<Catoms3DMotionRulesLink*>
-API::getAllLinks(const Catoms3DBlock *pivot)
+bool
+API::getAllLinks(const Catoms3DBlock *pivot,
+                 vector<Catoms3DMotionRulesLink*>&links)
 {
-    vector<Catoms3DMotionRulesLink*> links;
     for (short conId = 0; conId < 12; conId++) {
-        Catoms3DMotionRules().getValidMotionList(pivot, (int)conId, links);
+        // #TODO fixit
+        // Pb: ne fournit pas les routes pour les interfaces déjà connectées
+        (new Catoms3DMotionRules())->getValidMotionList(pivot, (int)conId, links);
     }
 
-    return links;
+    return !links.empty();
 }
 
-list<Catoms3DMotionRulesLink*>
+bool
 API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
                         short conFrom,
-                        short conTo)
+                        short conTo,
+                        list<Catoms3DMotionRulesLink*>& path)
 {
-    if (motionRulesLinks.empty()) return list<Catoms3DMotionRulesLink*>();
+    if (motionRulesLinks.empty()) return false;
 
     // Build an adjacency matrix out of the motion rules link for easier graph traversal
     list<Catoms3DMotionRulesLink*> linkMatrix[12][12];
@@ -35,11 +39,12 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
     for (const auto& link : motionRulesLinks) {
         std::array<short, 2> linkCons = link->getConnectors();
 
+        cout << *link << endl;
         linkMatrix[linkCons[0]][linkCons[1]].push_back(link);
-        linkMatrix[linkCons[1]][linkCons[0]].push_back(link);
+        // linkMatrix[linkCons[1]][linkCons[0]].push_back(link);
 
         adj[linkCons[0]].push_back(linkCons[1]);
-        adj[linkCons[1]].push_back(linkCons[0]);
+        // adj[linkCons[1]].push_back(linkCons[0]);
     }
 
     // BFS-parent of every connector
@@ -57,7 +62,6 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
 
     list<short>::iterator itCon;
     short connector;
-    list<Catoms3DMotionRulesLink*> path;
     
     while(!queue.empty()) {
         connector = queue.front();
@@ -83,10 +87,12 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
                         // For now, we simply take the first available link between the two connectors
                         Catoms3DMotionRulesLink* nextMotion =
                             linkMatrix[currentCon][parent[currentCon]].front();
-                        path.push_front(nextMotion);
-
-                        return path;
+                        
+                        path.push_front(nextMotion);                        
                     }
+                    
+
+                    return !path.empty();
                 }
 
                 queue.push_back(*itCon);
@@ -94,57 +100,63 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
         }
     }
 
-    // Could not find direct link from conFrom to conTo, return empty list
-    return path;
+    // Could not find direct link from conFrom to conTo, return false
+    return !path.empty();
 }
 
 
-list<Catoms3DMotionRulesLink*>
+bool
 API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
                         short conFrom,
-                        set<short> consTo)
+                        const set<short>& consTo,
+                        list<Catoms3DMotionRulesLink*>& shortestPath)
 {
     if (motionRulesLinks.empty()
         || consTo.empty())
-        return list<Catoms3DMotionRulesLink*>();
+        return false;
 
     // Compute path to each connector and return the shortest
-    list<Catoms3DMotionRulesLink*> shortestPath;
     for (short conTo : consTo) {
-        list<Catoms3DMotionRulesLink*> candidate =
-            API::findConnectorsPath(motionRulesLinks, conFrom, conTo);
+        list<Catoms3DMotionRulesLink*> candidate;
+        API::findConnectorsPath(motionRulesLinks, conFrom, conTo, candidate);
 
-        if (shortestPath.empty()
-            || candidate.size() < shortestPath.size())
+        if (!candidate.empty() &&
+            (shortestPath.empty() || candidate.size() < shortestPath.size()) )
             shortestPath = candidate;
     }
 
-    return shortestPath; // might be empty if no path found
+    return !shortestPath.empty(); // might be empty if no path found
 }
 
-set<short>
+bool
 API::findPathConnectors(const set<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                        short conTo)
+                        short conTo,
+                        set<short>& pathConnectors)
 {
     throw NotImplementedException();
 }
 
-set<short>
-API::findPathConnectors(const Catoms3DBlock *pivot, short conTo)
+bool
+API::findPathConnectors(const Catoms3DBlock *pivot,
+                        short conTo,
+                        set<short>& pathConnectors)
 {
     throw NotImplementedException();
 }
 
-set<short>
-API::findPathConnectors(const Catoms3DBlock *pivot, set<short> consTo)
+bool
+API::findPathConnectors(const Catoms3DBlock *pivot,
+                        const set<short>& consTo,
+                        set<short>& pathConnectors)
 {
     throw NotImplementedException();
 }
 
-set<short>
+bool
 API::findAdjacentConnectors(const set<short>& pathConnectors,
                             short pathOrientationCode,
-                            short orientationCode)
+                            short orientationCode,
+                            set<short>& adjacentConnectors)
 {
     throw NotImplementedException();
 }
@@ -152,9 +164,10 @@ API::findAdjacentConnectors(const set<short>& pathConnectors,
 
 // NOT MSG SPECIFIC
 
-set<short>
+bool
 API::getConnectorsAdjacentToCell(Catoms3DBlock *catom,
-                                 const Cell3DPosition cell)
+                                 const Cell3DPosition cell,
+                                 set<short>& pathConnectors)
 {
     throw NotImplementedException();
 }
