@@ -58,7 +58,9 @@ void MeltSortGrowBlockCode::startup() {
     for (const auto& motion : shortestConPath) {
         console << *motion << "\n";
     }
-    
+    cout << "TESTING OVER - EXITING BLOCKCODE" << endl;
+
+    // UNCOMMENT WHEN TESTING DONE
     // determineRoot();
     // APLabellingInitialization();
 }
@@ -169,35 +171,27 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
     
 }
 
-void MeltSortGrowBlockCode::initializeMeltPath() {
-    // // TARGET TESTING todo
-    // OUTPUT << "tCells: " << endl;
-    // for (const auto& tcell : ((TargetGrid*)target)->getTargetCellsAsc()) {
-    //     OUTPUT << tcell << endl;
-    // }
-    
+void MeltSortGrowBlockCode::initializeMeltPath() {    
     // Set next position to be filled
     tailPosition = new Cell3DPosition(catom->position - Cell3DPosition(1, 0, 0));
     tailConId = catom->getConnectorId(*tailPosition);
     cout << tailConId << endl;
-        
-    // There should always be a path from the tail to the position to be filled.
-    console << "QUE!?" << "\n";
-    bool pathExists = motionRules.getValidMotionList(catom, tailConId, pathLinks);
-    console << "pathExists " << pathExists << "\n";
-    for (auto const link : pathLinks) {
-        console << "conLink " << *link << "\n";
-    }
+
+    // Initially only the target connector needs be in the path 
+    path.push_back(PathHop(catom->position, catom->orientationCode,
+                           { {tailConId, 0} }) // Inline map init
+        ); 
 }
 
 void MeltSortGrowBlockCode::findMobileModule() {    
     P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();    
     
-    if (unprocessedNeighbor) {        
-        sendMessage("FindMobileModule",
-                    new FindMobileModuleMessage(catom->orientationCode,
-                                                pathConnectors),
-                    unprocessedNeighbor, 100, 0);
+    if (unprocessedNeighbor) {
+        // UPNEXT
+        // sendMessage("FindMobileModule",
+        //             new FindMobileModuleMessage(catom->orientationCode,
+        //                                         pathConnectors),
+        //             unprocessedNeighbor, 100, 0);
     } else if (source) {
         // No more module paths to explore
         catom->setColor(BLUE); // #TOREMOVE todo
@@ -663,68 +657,6 @@ void MeltSortGrowBlockCode::sort() {
 void MeltSortGrowBlockCode::grow() {
     moveToGoal();
 }
-
-struct C3DPos_hash {
-    std::size_t operator()(const Cell3DPosition& _pos) const {
-        std::ostringstream oss; oss << _pos; 
-        return std::hash<std::string>()(oss.str());
-    }
-};
-void MeltSortGrowBlockCode::initializePathPositions() {
-    // Add target tail position at front of list
-    myPathPositions.clear();
-    myPathPositions.push_back(catom->position + Cell3DPosition(-1, 0, 0));
-
-    std::vector<Cell3DPosition> freeNeighborCells =
-        lattice->getFreeNeighborCells(catom->position);
-
-    // Ensures position are only added once to the list (ToImprove)
-    std::unordered_set<Cell3DPosition, C3DPos_hash> addedPos;
-    
-    for (Cell3DPosition pathPos : freeNeighborCells) {
-        if (!addedPos.count(pathPos)) {
-            addedPos.insert(pathPos);
-            myPathPositions.push_back(pathPos);
-        }
-    }
-}
-
-// Returns true if there is a path position around this module that can reach
-//  at least one of the path positions of the module's parent
-// Returns false otherwise
-bool MeltSortGrowBlockCode::computePathPositions(list<Cell3DPosition> *parentPath,
-                                                 Cell3DPosition parentPos) {
-    // Clear previous computation in case neighborhood has changed
-    myPathPositions.clear();
-    
-    // Find path position around us
-    // Assumption: Module is able to detect whether or not one of its connectors is
-    //  connected, and deduce the cell's position from its own and its connector's position
-    std::vector<Cell3DPosition> freeNeighborCells =
-        lattice->getFreeNeighborCells(catom->position);
-
-    // Ensures position are only added once to the list (ToImprove)
-    std::unordered_set<Cell3DPosition, C3DPos_hash> addedPos;
-
-    // For every free position around module, check if it allows a direct motion
-    //  to a cell of the parent's path
-    for (Cell3DPosition pathPos : freeNeighborCells) {
-        for (Cell3DPosition parentPathPos : *parentPath) {
-            if (MeltSortGrowUtils::motionIsPossible(lattice,
-                                                    pathPos,
-                                                    parentPathPos,
-                                                    parentPos)) {                
-                if (!addedPos.count(pathPos)) {
-                    addedPos.insert(pathPos);
-                    myPathPositions.push_back(pathPos);
-                }
-            }
-        }
-    }
-
-    return !myPathPositions.empty();        
-}
-
 
 P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
     for (const auto& element : flag) {

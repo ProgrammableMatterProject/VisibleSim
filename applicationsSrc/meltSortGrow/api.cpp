@@ -65,7 +65,7 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
     
     while(!queue.empty()) {
         connector = queue.front();
-        cout << connector << " ";
+        // cout << connector << " ";
         queue.pop_front();
 
         // Get all adjacent connectors of dequeued connector.
@@ -108,7 +108,7 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
 bool
 API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
                         short conFrom,
-                        const set<short>& consTo,
+                        const vector<short>& consTo,
                         list<Catoms3DMotionRulesLink*>& shortestPath)
 {
     if (motionRulesLinks.empty()
@@ -153,7 +153,7 @@ API::findPathConnectors(const Catoms3DBlock *pivot,
 }
 
 bool
-API::findAdjacentConnectors(const set<short>& pathConnectors,
+API::findAdjacentConnectors(const vector<short>& pathConnectors,
                             short pathOrientationCode,
                             short orientationCode,
                             set<short>& adjacentConnectors)

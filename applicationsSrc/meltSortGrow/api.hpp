@@ -62,13 +62,13 @@ public:
    @brief Given a catom used as pivot, searches a path (sequence of individual rotations) that leads from connector conFrom to connector any connector of the input set
    @param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
    @param conFrom the source connector of the desired connector path
-   @param consTo the destinations connector of the desired connector path
-   @param path  container that will populated as an ordered list of individual links that can be followed by a module to move from conFrom to a connector of conTo, or list.end() if no path has been found 
+   @param consTo the destinations connector of the desired connector path \attention{sorted in increasing distance to the global path target}
+   @param shortestPath  container that will populated as an ordered list of individual links that can be followed by a module to move from conFrom to a connector of conTo, or list.end() if no path has been found 
    @return true if a path exists, false otherwise
-   @remarks The best option would be to find the fastest path from conFrom to a conTo connector */
+   @remarks The best option would be to find the fastest path from conFrom to a conTo connector, and also consider the distance of conFrom to the global target*/
     static bool findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
                                    short conFrom,
-                                   const std::set<short>& consTo,
+                                   const std::vector<short>& consTo,
                                    list<Catoms3DMotionRulesLink*>& shortestPath);
 
 /**
@@ -105,7 +105,7 @@ public:
    @param pathOrientationCode the orientation code of the module to which the path connectors belong
    @param orientationCode the orientation code of the module for which we wish to determine the connectors adjacent to the input set
    @return a set of all connectors of module with orientation orientationCode that are adjacent to the connectors in the input set, set.end() if none exist */
-    static bool findAdjacentConnectors(const set<short>& pathConnectors,
+    static bool findAdjacentConnectors(const vector<short>& pathConnectors,
                                        short pathOrientationCode,
                                        short orientationCode,
                                        set<short>& adjacentConnectors);

@@ -8,6 +8,7 @@
 #include <iostream>
 #include "catoms3DBlockCode.h"
 #include "trace.h"
+#include "catoms3DWorld.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ namespace Catoms3D {
 
 Catoms3DBlockCode::Catoms3DBlockCode(Catoms3DBlock *host):BlockCode(host) {
 	OUTPUT << "Catoms3DBlockCode constructor" << endl;
+    // motionRules = Catoms3DWorld::getWorld()->getMotionRules();
 }
 
 Catoms3DBlockCode::~Catoms3DBlockCode() {

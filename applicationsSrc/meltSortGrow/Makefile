@@ -16,7 +16,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 #
 # SRCS contains all the sources of your codeBlocks
 SRCS =  meltSortGrow.cpp meltSortGrowBlockCode.cpp meltSortGrowUtils.cpp\
-	Messages/Melt/findMobileModuleMessages.cpp api.cpp 
+	Messages/Melt/findMobileModuleMessages.cpp api.cpp pathHop.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/meltSortGrow

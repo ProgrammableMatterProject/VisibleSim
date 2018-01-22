@@ -234,7 +234,8 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d, int from,
         if ((*ci)->isValid(c3d)) {
             vec.push_back(*ci);
             notEmpty=true;
-        }
+            OUTPUT << endl;
+        } 
         ci++;
     }
     
@@ -314,19 +315,20 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
     return notEmpty;
 }
 
-bool Catoms3DMotionRules::
-connectorIsReachableUsingMotionRules(short from,
-                                     short to,
-                                     vector<Catoms3DMotionRulesLink*>&mrl) {
-    for (auto const link : mrl) {
-        std::array<short, 2> cons = link->getConnectors();
-        if ((cons[0] == from && cons[1] == to)
-            || (cons[0] == to && cons[1] == from))
-            return true;
-    }
+// ONLY CONSIDERS 1 HOP MOTIONS...
+// bool Catoms3DMotionRules::
+// connectorIsReachableUsingMotionRules(short from,
+//                                      short to,
+//                                      vector<Catoms3DMotionRulesLink*>&mrl) {
+//     for (auto const link : mrl) {
+//         std::array<short, 2> cons = link->getConnectors();
+//         if ((cons[0] == from && cons[1] == to)
+//             || (cons[0] == to && cons[1] == from))
+//             return true;
+//     }
 
-    return false;
-}
+//     return false;
+// }
 
 
 void Catoms3DMotionRulesConnector::addLink(Catoms3DMotionRulesLink *lnk) {
