@@ -1,5 +1,6 @@
 #include <queue>
 #include <climits>
+
 #include "C3DRotateCode.h"
 
 void C3DRotateCode::initDistances() {
