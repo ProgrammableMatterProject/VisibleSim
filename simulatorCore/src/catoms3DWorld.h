@@ -23,10 +23,20 @@
 //!< \namespace Catoms3D
 namespace Catoms3D {
 
-const int S_NUMPOINTS=5;
+//Nurbs surface
+/*const int S_NUMPOINTS=5;
 const int S_ORDER=3;
 const int S_NUMKNOTS=(S_NUMPOINTS + S_ORDER);
 const int T_NUMPOINTS=5;
+const int T_ORDER=3;
+const int T_NUMKNOTS=(T_NUMPOINTS + T_ORDER);
+*/
+
+//Nurbs car
+const int S_NUMPOINTS=7;
+const int S_ORDER=3;
+const int S_NUMKNOTS=(S_NUMPOINTS + S_ORDER);
+const int T_NUMPOINTS=4;
 const int T_ORDER=3;
 const int T_NUMKNOTS=(T_NUMPOINTS + T_ORDER);
 
@@ -39,8 +49,8 @@ class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
     Skeleton *skeleton = NULL;
-
-	GLfloat sknots[S_NUMKNOTS] =
+//Nurbs surface
+/*	GLfloat sknots[S_NUMKNOTS] =
 	    {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
 	GLfloat tknots[T_NUMKNOTS] = {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
 
@@ -51,6 +61,23 @@ protected:
 		{{135.0,0.0,0.0,45.},{135.0,45.0,0.0,45.},{135.0,90.0,0.0,45.},{135.0,135.0,90.0,45.},{135.0,180.0,0.0,45.}},
 		{{180.0,0.0,0.0,45.},{180.0,45.0,0.0,45.},{180.0,90.0,0.0,45.},{180.0,135.0,0.0,45.},{180.0,180.0,0.0,45.}},
 	};
+*/
+
+//Nurbs car
+GLfloat sknots[S_NUMKNOTS] =
+    {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1.0f};
+GLfloat tknots[T_NUMKNOTS] = {0.0,0.15,0.3,0.45,0.60,0.75,1.0f};
+
+GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
+        {{0.0,0.0,-33.33,33.33},{0.0,33.33,-33.33,33.33},{0.0,66.66,-33.33,33.33},{0.0,100.0,-33.33,33.33}},
+        {{6.66,0.0,40.0,33.33},{6.66,33.33,53.33,33.33},{6.66,66.66,53.33,33.33},{6.66,100.0,40.0,33.33}},
+        {{66.66,0.0,66.66,33.33},{66.66,33.33,80.0,33.33},{66.66,66.66,80.0,33.33},{66.66,100.0,66.66,33.33}},
+        {{116.66,0.0,66.66,33.33},{116.66,33.33,80.0,33.33},{116.66,66.66,80.0,33.33},{116.66,100.0,66.66,33.33}},
+        {{150.0,0.0,26.66,33.33},{150.0,33.33,40.0,33.33},{150.0,66.66,40.0,33.33},{150.0,100.0,26.66,33.33}},
+        {{193.33,0.0,26.66,33.33},{193.33,33.33,40.0,33.33},{193.33,66.66,40.0,33.33},{193.33,100.0,26.66,33.33}},
+        {{200.0,0.0,-20.0,33.33},{200.0,33.33,-20.0,33.33},{200.0,66.66,-20.0,33.33},{200.0,100.0,-20.0,33.33}},
+
+};
 
 	GLUnurbsObj *theNurb;
 

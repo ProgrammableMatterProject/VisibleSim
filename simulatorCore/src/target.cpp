@@ -414,6 +414,9 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
     if (method.compare("nurbs") == 0) {
         cout << "Call to the NURBS surface type initialization" << endl;
         //Initialization of the NURBS parameters, parsing from config file to be implemented later
+
+//Nurbs Surface
+/*
         S_NUMPOINTS = 5;
         S_ORDER = 3;
         S_NUMKNOTS = S_NUMPOINTS + S_ORDER;
@@ -479,6 +482,135 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
                 cout << "ctlpoints["<<i<<"]["<<j<<"][2] = "<< ctlpoints[i][j][2]<< endl;
              }
         }
+*/
+
+//Nurbs car
+
+      S_NUMPOINTS = 7;
+        S_ORDER = 3;
+        S_NUMKNOTS = S_NUMPOINTS + S_ORDER;
+        T_NUMPOINTS = 4;
+        T_ORDER = 3;
+        T_NUMKNOTS = T_NUMPOINTS + T_ORDER;
+
+        //Filling sknots
+        sknots.push_back(0);
+        sknots.push_back(0.1);
+        sknots.push_back(0.2);
+        sknots.push_back(0.3);
+        sknots.push_back(0.4);
+        sknots.push_back(0.5);
+        sknots.push_back(0.6);
+        sknots.push_back(0.7);
+        sknots.push_back(0.8);
+        sknots.push_back(1);
+
+        //Checking if sknots correctly filled
+
+        for (int i=0; i < S_NUMKNOTS; i++){
+            cout << "sknots[" << i << "] = " << sknots[i] << endl;
+        }
+
+        //Filling tknots
+        tknots.push_back(0);
+        tknots.push_back(0.15);
+        tknots.push_back(0.3);
+        tknots.push_back(0.45);
+        tknots.push_back(0.60);
+        tknots.push_back(0.75);
+        tknots.push_back(1);
+
+        //Checking if tknots correctly filled
+
+        for (int i=0; i < T_NUMKNOTS; i++){
+            cout << "tknots[" << i << "] = " << tknots[i] << endl;
+        }
+
+        //Filling ctlpoints
+        for (int i=0; i < S_NUMPOINTS; i++){
+            vector<vector<float>> tctlpoint;
+            for (int j=0; j < T_NUMPOINTS; j++){
+                vector<float> point;
+                float l=0;
+                float k=-33.33;
+                if (i==1) {
+                    l = 6.66;
+                    k = 40;
+                    if (j==1) {
+                        k = k+13.33;
+                    }
+                    if (j==2) {
+                        k = k+13.33;
+                    }
+                }
+                if (i==2) {
+                    l = 66.66;
+                    k = 66.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==3) {
+                    l = 116.66;
+                    k = 66.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==4) {
+                    l = 150;
+                    k = 26.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==5) {
+                    l = 193.33;
+                    k = 26.66;
+                    if (j==1) {
+                        k = k+13.34;
+                    }
+                    if (j==2) {
+                        k = k+13.34;
+                    }
+                }
+                if (i==6) {
+                    l = 200;
+                    k = -20;
+                }
+                point.push_back(l);
+                point.push_back(j*33.33);
+                point.push_back(k);
+                point.push_back(33.33);
+                tctlpoint.push_back(point);
+                point.clear();
+             }
+             ctlpoints.push_back(tctlpoint);
+             tctlpoint.clear();
+        }
+
+        //ctlpoints[2][1][2]=270;
+        //ctlpoints[3][3][2]=90;
+
+        //Checking ctlpoints
+
+        for (int i=0; i < S_NUMPOINTS; i++){
+            for (int j=0; j < T_NUMPOINTS; j++){
+                cout << "ctlpoints["<<i<<"]["<<j<<"][2] = "<< ctlpoints[i][j][2]<< endl;
+             }
+        }
+
+
+
 		/*
 		float_sknots = new float[S_NUMKNOTS];
 		float_tknots = new float[T_NUMKNOTS];
@@ -575,7 +707,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
 
     else if (method.compare("nurbs") == 0) {
         //print method
-        cout << "Call to isInTarget method =" << method << endl;
+        //cout << "Call to isInTarget method =" << method << endl;
         //Initialization of dichotomy parameters
         float precision = FLT_MAX;
         float precGoal = 100;
@@ -592,14 +724,36 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         // || precision>precGoal || ((u0 == u1) && (v0 == v1))){
             float mindist = FLT_MAX;
             int quadrant = 0;
-            float x1 = calculateNurbs(u0,v0,0);
-            float y1 = calculateNurbs(u0,v0,1);
-            float x2 = calculateNurbs(u1,v0,0);
-            float y2 = calculateNurbs(u1,v0,1);
-            float x3 = calculateNurbs(u0,v1,0);
-            float y3 = calculateNurbs(u0,v1,1);
-            float x4 = calculateNurbs(u1,v1,0);
-            float y4 = calculateNurbs(u1,v1,1);
+            if (count == 0){
+                //cout << "x1=" <<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
+                //cout << "y1=" <<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
+                float x1 = calculateNurbs(u0,v0,0);
+                float y1 = calculateNurbs(u0,v0,1);
+                float x2 = calculateNurbs(u1,v0,0);
+                float y2 = calculateNurbs(u1,v0,1);
+                float x3 = calculateNurbs(u0,v1,0);
+                float y3 = calculateNurbs(u0,v1,1);
+                float x4 = calculateNurbs(u1,v1,0);
+                float y4 = calculateNurbs(u1,v1,1);
+                if ( x1 < x && x2 < x && x3 < x && x4 < x ){
+                    return false;
+                }
+                if ( y1 < y && y2 < y && y3 < y && y4 < y ){
+                    return false;
+                }
+            }
+
+            float u = (u0+u1)/2;
+            float v = (v0+v1)/2;
+            float x1 = calculateNurbs(u-approx,v-approx,0);
+            float y1 = calculateNurbs(u-approx,v-approx,1);
+            float x2 = calculateNurbs(u+approx,v-approx,0);
+            float y2 = calculateNurbs(u+approx,v-approx,1);
+            float x3 = calculateNurbs(u-approx,v+approx,0);
+            float y3 = calculateNurbs(u-approx,v+approx,1);
+            float x4 = calculateNurbs(u+approx,v+approx,0);
+            float y4 = calculateNurbs(u+approx,v+approx,1);
+
             //Search quadrant (x,y) is in
             if (dist(x1,y1,x,y)<mindist){
                 mindist = dist(x1,y1,x,y);
@@ -654,16 +808,16 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
                 cout << "precision =" <<  precision << endl;
             }
 */
-            cout<<"quadrant="<<quadrant<<endl;
-            cout<<"x="<<x<<",x1="<<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
-            cout<<"y="<<y<<",y1="<<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
+            //cout<<"quadrant="<<quadrant<<endl;
+            //cout<<"x="<<x<<",x1="<<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
+            //cout<<"y="<<y<<",y1="<<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
             count += 1;
         }
         cout << "End of while: znurbs=" << znurbs << " ,précision =" << precision << endl;
         //Comparison between z
 /*        float znurbs=0;
 
-        for (int i=0;i<11;i++){
+       for (int i=0;i<11;i++){
             for (int j=0;j<11;j++){
                 for (int k=0;k<3;k++){
                     cout << "S(" << i*0.1 <<","<<j*0.1<<")."<<k<<"="<<calculateNurbs(i*0.1,j*0.1,k)<<endl;

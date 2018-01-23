@@ -142,7 +142,10 @@ void Catoms3DWorld::glDraw() {
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 	enableTexture(false);
 	glPushMatrix();
-	glScalef(45,45,45);
+        // Nurbs surface
+	//glScalef(45,45,45);
+        //Nurbs car
+        glScalef(33.33,33.33,33.33);
 	gluBeginSurface(theNurb);
 	gluNurbsSurface(theNurb,
 		S_NUMKNOTS, sknots,
