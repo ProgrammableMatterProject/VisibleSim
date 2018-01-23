@@ -34,7 +34,7 @@ void C3DRotateCode::initDistances() {
         OUTPUT << "Target: " << ngoal-nwp << "/" << ngoal << " cells" << endl;
         vector<Cell3DPosition> neighborhood;
         vector <Catoms3DMotionRulesLink*>vml;
-        Catoms3DMotionRules *motionRules = Catoms3D::getWorld()->getMotionRules();
+        Catoms3DMotionRules *motionRules = (Catoms3D::getWorld())->getMotionRules();
         int currentLevel;
         while (!stkCells.empty()) {
             pos = stkCells.front();
