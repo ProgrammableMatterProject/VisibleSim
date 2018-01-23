@@ -32,7 +32,9 @@ namespace Catoms3D {
 */
 Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
 							 int argc, char *argv[]):World(argc, argv) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "\033[1;31mCatoms3DWorld constructor\033[0m" << endl;
+#endif
 
     if (GlutContext::GUIisEnabled) {
 		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
@@ -50,7 +52,9 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 }
 
 Catoms3DWorld::~Catoms3DWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
     OUTPUT << "Catoms3DWorld destructor" << endl;
+#endif
     /*	block linked are deleted by world::~world() */
     delete motionRules;
 }
@@ -91,7 +95,9 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
     Catoms3DBlock *catom = (Catoms3DBlock *)lattice->getBlock(pos);
 
     if (catom) {
-		OUTPUT << "link catom " << catom->blockId << endl;
+#ifdef DEBUG_NEIGHBORHOOD
+        OUTPUT << "link catom " << catom->blockId << endl;
+#endif
         
 		Cell3DPosition neighborPos;
 		Catoms3DBlock* neighborBlock;
@@ -100,8 +106,10 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 			if (catom->getNeighborPos(i,neighborPos)
 				&& (neighborBlock = (Catoms3DBlock *)lattice->getBlock(neighborPos))!=NULL) {
 				catom->getInterface(i)->connect(neighborBlock->getInterface(pos));
-				OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #"
+#ifdef DEBUG_NEIGHBORHOOD
+                OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #"
 					   << neighborBlock->blockId << endl;
+#endif
 			}
 		}
     } else {

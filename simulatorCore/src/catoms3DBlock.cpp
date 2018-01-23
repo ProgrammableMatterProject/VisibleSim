@@ -19,13 +19,17 @@ namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DBlock constructor" << endl;
+#endif
 
     orientationCode=0; // connector 0 is along X axis
 }
 
 Catoms3DBlock::~Catoms3DBlock() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DBlock destructor " << blockId << endl;
+#endif
 }
 
 void Catoms3DBlock::setVisible(bool visible) {
@@ -88,8 +92,8 @@ short Catoms3DBlock::getOrientationFromMatrix(const Matrix &mat) {
     M1.inverse(M);
     M.m[15]=0;
     /*OUTPUT << "----- ref -----" << endl;
-    OUTPUT << M << endl;
-    OUTPUT << "----- mat -----" << endl;*/
+      OUTPUT << M << endl;
+      OUTPUT << "----- mat -----" << endl;*/
     M3 = mat;
     //OUTPUT << M3 << endl;
 
@@ -173,16 +177,20 @@ short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) {
 }
 
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void Catoms3DBlock::removeNeighbor(P2PNetworkInterface *ni) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));

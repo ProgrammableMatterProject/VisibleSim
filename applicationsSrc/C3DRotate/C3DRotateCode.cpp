@@ -47,7 +47,7 @@ void C3DRotateCode::initDistances() {
                 //OUTPUT << "neighbor " << (*ci) << endl;
                 Catoms3DBlock *pivot = (Catoms3DBlock*)lattice->getBlock(*ci);
                 if (pivot) {
-                    OUTPUT << "catom #" << pivot->blockId <<  endl;
+                    OUTPUT << "Pivot is catom #" << pivot->blockId <<  endl;
                     for (int i=0; i<12; i++) {
                         //OUTPUT << "connector #" << i << endl;
                         vml.clear();

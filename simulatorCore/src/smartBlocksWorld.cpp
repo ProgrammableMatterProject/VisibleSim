@@ -85,8 +85,10 @@ void SmartBlocksWorld::linkBlock(const Cell3DPosition &pos) {
                 connect(ptrNeighbor->getInterface(SLattice::Direction(
                                                       lattice->getOppositeDirection(i))));
 
+#ifdef DEBUG_NEIGHBORHOOD
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
+#endif
         } else {
             (ptrBlock)->getInterface(SLattice::Direction(i))->connect(NULL);
         }

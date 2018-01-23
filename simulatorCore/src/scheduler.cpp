@@ -25,7 +25,9 @@ Scheduler *Scheduler::scheduler=NULL;
 std::mutex Scheduler::delMutex;
 
 Scheduler::Scheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Scheduler constructor" << endl;
+#endif
 
 	if (sizeof(Time) != 8) {
 		ERRPUT << "\033[1;31m" << "ERROR : Scheduler requires 8bytes integer that are not available on this computer" << "\033[0m" << endl;
@@ -43,7 +45,9 @@ Scheduler::Scheduler() {
 }
 
 Scheduler::~Scheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Scheduler destructor" << endl;
+#endif
 	removeKeywords();
 	if (schedulerThread)
 		delete schedulerThread;

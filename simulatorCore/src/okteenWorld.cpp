@@ -45,7 +45,9 @@ OkteenWorld::OkteenWorld(const Cell3DPosition &gridSize, const Vector3D &gridSca
 }
 
 OkteenWorld::~OkteenWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
     OUTPUT << "OkteenWorld destructor" << endl;
+#endif
     /*	block linked are deleted by world::~world() */
 }
 
@@ -98,9 +100,11 @@ void OkteenWorld::linkBlock(const Cell3DPosition& pos) {
 		if (neighborBlock) {
 			module->getInterface(SCLattice::Direction(i))->connect(neighborBlock->getInterface(SCLattice::Direction(lattice->getOppositeDirection(i))));
 
-			OUTPUT << "connection #" << module->blockId << ":" << lattice->getDirectionString(i) <<
+#ifdef DEBUG_NEIGHBORHOOD
+            OUTPUT << "connection #" << module->blockId << ":" << lattice->getDirectionString(i) <<
 				" to #" << neighborBlock->blockId << ":"
 				   << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
+#endif
 
 			updateGlData(module,i,1.0);
 		} else {

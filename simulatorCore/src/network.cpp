@@ -80,7 +80,9 @@ HandleableMessage::~HandleableMessage() {
 
 P2PNetworkInterface::P2PNetworkInterface(BaseSimulator::BuildingBlock *b) {
 #ifndef NDEBUG
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "P2PNetworkInterface constructor" << endl;
+#endif
 #endif
 	hostBlock = b;
 	connectedInterface = NULL;
@@ -98,7 +100,9 @@ void P2PNetworkInterface::setDataRate(Rate *r) {
 
 P2PNetworkInterface::~P2PNetworkInterface() {
 #ifndef NDEBUG
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "P2PNetworkInterface destructor" << endl;
+#endif
 #endif
 	delete dataRate;
 }

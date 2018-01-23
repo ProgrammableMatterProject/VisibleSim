@@ -584,7 +584,9 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 GLuint GlutWindow::loadTexture(const char *titre,int &tw,int &th) {
 	unsigned char *image;
 	GLuint id=0;
-	OUTPUT << "loading " << titre << endl;
+#ifdef DEBUG_GRAPHICS
+    OUTPUT << "loading " << titre << endl;
+#endif
 	if (!(image=lectureTarga(titre,tw,th))) {
 		ERRPUT << "Error : can't open " << titre << endl;
 	} else {

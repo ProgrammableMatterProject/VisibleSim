@@ -42,7 +42,9 @@ RobotBlocksWorld::RobotBlocksWorld(const Cell3DPosition &gridSize, const Vector3
 }
 
 RobotBlocksWorld::~RobotBlocksWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "RobotBlocksWorld destructor" << endl;
+#endif
 	/*	block linked are deleted by world::~world() */
 }
 
@@ -93,9 +95,11 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 				connect(ptrNeighbor->getInterface(SCLattice::Direction(
 													  lattice->getOppositeDirection(i))));
 
-			OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << lattice->getDirectionString(i) <<
+#ifdef DEBUG_NEIGHBORHOOD
+            OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << lattice->getDirectionString(i) <<
 				" to #" << ptrNeighbor->blockId << ":"
 				   << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
+#endif
 		} else {
 			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}

@@ -27,7 +27,9 @@ using get_time = chrono::steady_clock;
 namespace MeldInterpret {
 
 MeldInterpretScheduler::MeldInterpretScheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "MeldInterpretScheduler constructor" << endl;
+#endif
     state = NOTREADY;
     schedulerMode = SCHEDULER_MODE_REALTIME;
     schedulerThread = new thread(bind(&MeldInterpretScheduler::startPaused, this));
