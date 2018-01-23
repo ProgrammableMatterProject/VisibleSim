@@ -180,18 +180,19 @@ void MeltSortGrowBlockCode::initializeMeltPath() {
     // Initially only the target connector needs be in the path 
     path.push_back(PathHop(catom->position, catom->orientationCode,
                            { {tailConId, 0} }) // Inline map init
-        ); 
+        );
+
+    // Add self as the next hop of the path
+    API::addModuleToPath(catom, path);
 }
 
 void MeltSortGrowBlockCode::findMobileModule() {    
     P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();    
     
     if (unprocessedNeighbor) {
-        // UPNEXT
-        // sendMessage("FindMobileModule",
-        //             new FindMobileModuleMessage(catom->orientationCode,
-        //                                         pathConnectors),
-        //             unprocessedNeighbor, 100, 0);
+        sendMessage("FindMobileModule",
+                    new FindMobileModuleMessage(path),
+                    unprocessedNeighbor, 100, 0);
     } else if (source) {
         // No more module paths to explore
         catom->setColor(BLUE); // #TOREMOVE todo
@@ -199,7 +200,7 @@ void MeltSortGrowBlockCode::findMobileModule() {
     } else {
         sendMessage("FindMobileModuleNotFound",
                     new FindMobileModuleNotFoundMessage(),
-                    father, 100, 0);
+                    meltFather, 100, 0);
     }
 }
 

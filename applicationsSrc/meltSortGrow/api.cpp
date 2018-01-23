@@ -3,6 +3,51 @@
 #include "catoms3DWorld.h"
 
 bool
+API::addModuleToPath(Catoms3DBlock *catom, list<PathHop>& path)
+{
+    if (path.empty())
+        return false;
+    
+    // List all connectors that could be filled in order to connect
+    //  a neighbor module to the last hop
+    PathHop lastHop = path.back();
+    set<short> adjacentConnectors;
+    findAdjacentConnectors(lastHop,
+                           lastHop.getOrientation(), // actually should be P2P_NI
+                           catom->orientationCode,
+                           adjacentConnectors);
+
+    if (adjacentConnectors.empty()) return false;
+    // \todo
+
+    throw NotImplementedException();
+}
+
+bool
+API::buildRotationSequenceToTarget(Catoms3DBlock *pivot,
+                                   short pivotCon,
+                                   list<PathHop>& path,                                   
+                                   list<Catoms3DMotionRulesLink*>& rotations)
+{
+    if (path.empty() || pivot == NULL) return false;
+
+    vector<Catoms3DMotionRulesLink*> startMotionRules;
+    // getMotionRules()->getValidRotationsListForCatom(bc->catom, startMotionRules);
+    // getMotionRules()->getValidMotionListFromPivot()
+    
+    // The algorithm is simple, all we have to do is find
+    //  a sequence of motion from the catom to the connector of the neighbor
+    //  with the minimum distance to the target, and then unfold the hop list
+    for (auto &hop : path) {
+        vector<short> orderedCons;
+        hop.getConnectorsByIncreasingDistance(orderedCons);
+        assert(!orderedCons.empty());
+    }
+
+    throw NotImplementedException();
+}
+
+bool
 API::getAllLinksToConnector(const Catoms3DBlock *pivot,
                             short conId,
                             vector<Catoms3DMotionRulesLink*>&links)
@@ -129,11 +174,16 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
 }
 
 bool
-API::findPathConnectors(const set<Catoms3DMotionRulesLink*>& motionRulesLinks,
+API::findPathConnectors(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
                         short conTo,
                         set<short>& pathConnectors)
 {
-    throw NotImplementedException();
+    for (auto const& mrl : motionRulesLinks) {
+        if (mrl->getConToID() == conTo)
+            pathConnectors.insert(mrl->getConFromID());
+    }
+
+    return !pathConnectors.empty(); // might be empty if no connectors
 }
 
 bool
@@ -141,7 +191,10 @@ API::findPathConnectors(const Catoms3DBlock *pivot,
                         short conTo,
                         set<short>& pathConnectors)
 {
-    throw NotImplementedException();
+    vector<Catoms3DMotionRulesLink*> links;
+    getAllLinks(pivot, links);
+
+    return findPathConnectors(links, conTo, pathConnectors);
 }
 
 bool
@@ -149,11 +202,17 @@ API::findPathConnectors(const Catoms3DBlock *pivot,
                         const set<short>& consTo,
                         set<short>& pathConnectors)
 {
-    throw NotImplementedException();
+    vector<Catoms3DMotionRulesLink*> links;
+    getAllLinks(pivot, links);
+
+    for (short conTo : consTo)
+        findPathConnectors(links, conTo, pathConnectors);
+
+    return !pathConnectors.empty();
 }
 
 bool
-API::findAdjacentConnectors(const vector<short>& pathConnectors,
+API::findAdjacentConnectors(const PathHop hop,
                             short pathOrientationCode,
                             short orientationCode,
                             set<short>& adjacentConnectors)
