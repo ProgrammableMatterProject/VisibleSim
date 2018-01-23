@@ -8,11 +8,8 @@
 #include "findMobileModuleMessages.hpp"
 #include "../../api.hpp"
 
-FindMobileModuleMessage::FindMobileModuleMessage(short _senderOriCode,
-                                                 set<short> _pathCons) {    
-    senderOriCode = _senderOriCode;
-    pathCons = _pathCons;
-}
+FindMobileModuleMessage::FindMobileModuleMessage(list<PathHop> _path)
+    : path(_path) {}
 
 void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
@@ -21,16 +18,24 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
     if (!bc->meltFather) {
         bc->meltFather = sourceInterface;
         bc->resetDFSFlags();
-    
+
+        PathHop lastHop = path.back();
+        vector<short> inputConnectors;
+        lastHop.getConnectorsByIncreasingDistance(inputConnectors);
+
         if (!bc->articulationPoint && !bc->melted) {
-            vector<Catoms3DMotionRulesLink*> mrl = API::getAllLinks(this->sender);
+            vector<Catoms3DMotionRulesLink*> mrl;
+            API::getAllLinks(this->sender, mrl);
             
             // Mobile Module:
-            // Check if module can move to any of the path connectors of pivot
-            list<Catoms3DMotionRulesLink*> rotations =
-                API::findConnectorsPath(mrl,
-                                        (short)this->sender->getDirection(bc->meltFather),
-                                        this->pathCons);
+            // Check if module can move to any of the path connectors of pivot.
+            // Input connector set is ordered by distance to target, so the search should stop
+            // as soon as a solution has been found
+            list<Catoms3DMotionRulesLink*> rotations;                        
+            API::findConnectorsPath(mrl,
+                                    (short)this->sender->getDirection(bc->meltFather),
+                                    inputConnectors,
+                                    rotations);
 
             if (!rotations.empty()) {
                 Catoms3DMotionRulesLink *nextRotation = rotations.front();
@@ -42,13 +47,16 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
         // If module not mobile or a movement path could not be found,
         //  then propagate search to children
-        set<short> myAdjacentPathConnectors =
-            API::findAdjacentConnectors(this->pathCons,
-                                   this->senderOriCode,
-                                   bc->catom->orientationCode);
+        set<short> myAdjacentPathConnectors;
+        set<short> pathConnectors; // Change to PathHop
+        API::findAdjacentConnectors(inputConnectors,
+                                    lastHop.getOrientation(),
+                                    bc->catom->orientationCode,
+                                    myAdjacentPathConnectors);
         if (!myAdjacentPathConnectors.empty()) {
-            bc->pathConnectors = API::findPathConnectors(bc->catom,
-                                                         myAdjacentPathConnectors);
+            API::findPathConnectors(bc->catom,
+                                    myAdjacentPathConnectors,
+                                    pathConnectors);
             bc->findMobileModule();
             return;
         }

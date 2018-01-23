@@ -6,6 +6,7 @@
 #include <list>
 
 #include "catoms3DMotionRules.h"
+#include "catoms3DWorld.h"
 
 using namespace Catoms3D;
 
@@ -16,26 +17,34 @@ using namespace Catoms3D;
 // void function(...);
 
 class API { 
-
+    static inline Catoms3DMotionRules* getMotionRules() {
+        return Catoms3DWorld::getWorld()->getMotionRules();
+    }
 public:
 /**
    @brief For a given Catoms3D module acting as a pivot, enumerates all the possible catom surface links that
    a catom connected to the pivot on any connector could use to reach connector conId
    @param pivot The module acting as a pivot for the link search, which will be the point-of-reference for the connector search
    @param conId Identifier of the target connector of the all the link in the results set 
-   @return A set of all possible individual surface links around pivot that lead from one connector to connector conId. 
-   @remarks This function might not be of any use, as @ref{getAllLinks} might need to be used by default */
-    static vector<Catoms3DMotionRulesLink*> getAllLinksToConnector(const Catoms3DBlock *pivot,
-                                                                short conId);
+   @param links Reference to the container that will hold the set of all individual surface links around pivot that lead from one connector to connector conId. 
+   @return true if at least one link exists, false otherwise
+   @remarks This function might not be of any use, as @ref{getAllLinks} might need to be used by default 
+   @remarks Changer signature pour renvoyer pathStruct plutot que les links */
+    static bool getAllLinksToConnector(const Catoms3DBlock *pivot,
+                                       short conId,
+                                       vector<Catoms3DMotionRulesLink*>&links);
     
 /**
    @brief For a given Catoms3D module acting as a pivot, enumerates all the possible catom surface links that
    a catom connected to the pivot on any connector could use
    @param pivot The module acting as a pivot for the link search, which will be the point-of-reference for the connector search
-   @return A set of all possible individual surface links around pivot that lead from one connector to another. 
+   @param links Reference to the container that will hold the set of all individual surface links around pivot that lead from any connector to any other. 
+   @return true if at least one link exists, false otherwise
    It can be seen as a graph, where the resulting set is the list of all the edges connecting the connectors of the pivot module, acting as vertices. 
-   @remarks This is the fallback function that can be used to find an indirect link from any connector to a target one in case no direct link could be found using \ref{getAllLinksToConnector}  */
-    static vector<Catoms3DMotionRulesLink*> getAllLinks(const Catoms3DBlock *pivot);
+   @remarks This is the fallback function that can be used to find an indirect link from any connector to a target one in case no direct link could be found using \ref{getAllLinksToConnector}  
+ */
+    static bool getAllLinks(const Catoms3DBlock *pivot,
+                            vector<Catoms3DMotionRulesLink*>&links);
 
 /**
    @brief Given a set of motion rules link passed as argument, searches a path (sequence of individual rotations) that leads from connector conFrom to connector conTo
@@ -44,21 +53,23 @@ public:
    @param conTo the destination connector of the desired connector path
    @return an ordered list of individual links that can be followed by a module to move from conFrom to conTo, or list.end() if no path has been found 
    @remarks The best option would be to find the fastest path from conFrom to conTo*/
-    static list<Catoms3DMotionRulesLink*> findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                                                     short conFrom,
-                                                     short conTo);
-
+    static bool findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
+                                   short conFrom,
+                                   short conTo,
+                                   list<Catoms3DMotionRulesLink*>& paths);
 
 /**
    @brief Given a catom used as pivot, searches a path (sequence of individual rotations) that leads from connector conFrom to connector any connector of the input set
    @param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
    @param conFrom the source connector of the desired connector path
-   @param consTo the destinations connector of the desired connector path
-   @return an ordered list of individual links that can be followed by a module to move from conFrom to a connector of conTo, or list.end() if no path has been found 
-   @remarks The best option would be to find the fastest path from conFrom to a conTo connector */
-    static list<Catoms3DMotionRulesLink*> findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                                                     short conFrom,
-                                                     set<short> consTo);
+   @param consTo the destinations connector of the desired connector path \attention{sorted in increasing distance to the global path target}
+   @param shortestPath  container that will populated as an ordered list of individual links that can be followed by a module to move from conFrom to a connector of conTo, or list.end() if no path has been found 
+   @return true if a path exists, false otherwise
+   @remarks The best option would be to find the fastest path from conFrom to a conTo connector, and also consider the distance of conFrom to the global target*/
+    static bool findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
+                                   short conFrom,
+                                   const std::vector<short>& consTo,
+                                   list<Catoms3DMotionRulesLink*>& shortestPath);
 
 /**
    @brief Given a set of motion rules link passed as argument, deduce a set of all connectors for which a path exists to connector conTo
@@ -66,22 +77,26 @@ public:
    @param conTo the desired destination of the connector path for which we want to find all potential motion sources
    @return a set of all connectors for which a path to conTo exists 
    @remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
-    static set<short> findPathConnectors(const set<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                                         short conTo);
+    static bool findPathConnectors(const set<Catoms3DMotionRulesLink*>& motionRulesLinks,
+                                   short conTo,
+                                   set<short>& pathConnectors);
 
 /**
    @brief Given a catom used as pivot, deduce a set of all connectors for which a path exists to connector conTo
    @param conTo the desired destination of the connector path for which we want to find all potential motion sources
    @return a set of all connectors for which a path to conTo exists 
    @remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
-    static set<short> findPathConnectors(const Catoms3DBlock *pivot, short conTo);
+    static bool findPathConnectors(const Catoms3DBlock *pivot, short conTo,
+                                   set<short>& pathConnectors);
 
 /**
    @brief Given a catom used as pivot, deduce a set of all connectors for which a path exists to any connector of input set consTo
    @param consTo the desired destinations of the connector path for which we want to find all potential motion sources
    @return a set of all connectors for which a path to conTo exists 
    @remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
-    static set<short> findPathConnectors(const Catoms3DBlock *pivot, set<short> consTo);
+    static bool findPathConnectors(const Catoms3DBlock *pivot,
+                                   const set<short>& consTo,
+                                   set<short>& pathConnectors);
 
 /**
    @brief Given a set of connector IDs and the orientation of the module to which they belong, determine which connectors of the current module are adjacent to those contained in the input set. 
@@ -90,9 +105,10 @@ public:
    @param pathOrientationCode the orientation code of the module to which the path connectors belong
    @param orientationCode the orientation code of the module for which we wish to determine the connectors adjacent to the input set
    @return a set of all connectors of module with orientation orientationCode that are adjacent to the connectors in the input set, set.end() if none exist */
-    static set<short> findAdjacentConnectors(const set<short>& pathConnectors,
-                                      short pathOrientationCode,
-                                      short orientationCode);
+    static bool findAdjacentConnectors(const vector<short>& pathConnectors,
+                                       short pathOrientationCode,
+                                       short orientationCode,
+                                       set<short>& adjacentConnectors);
 
 
 // NOT MSG SPECIFIC
@@ -103,8 +119,9 @@ public:
    @param catom the module for which we want to find which connector is adjacent to the input position
    @param cell a cell position that belongs to the simulated lattice
    @return the ID of the connector of module catom that is adjacent to the input position, or -1 if that position is not in the neighborhood of catom */
-    static set<short> getConnectorsAdjacentToCell(Catoms3DBlock *catom,
-                                           const Cell3DPosition cell);
+    static bool getConnectorsAdjacentToCell(Catoms3DBlock *catom,
+                                            const Cell3DPosition cell,
+                                            set<short>& pathConnectors);
 
 /**
    @brief Returns the ID of the connector of a given catom that is connected to the input lattice position

@@ -12,14 +12,13 @@
 
 #include "../../meltSortGrowBlockCode.hpp"
 #include "../meltSortGrowMessage.hpp"
+#include "../../pathHop.hpp"
 
 class FindMobileModuleMessage : public MeltSortGrowMessage {
-    Catoms3DBlock *sender; //!<
-    short senderOriCode; //!< id of the connector to which the message sender is connected
-    set<short> pathCons; //!< set of path connectors of the parent
+    Catoms3DBlock *sender; //!< A pointer to the sender catom \attention {(PTHA: this should not be necessary as it clearly violates distributed code)}
+    list<PathHop> path; //!< Description of all the previous hop in the path
 public:
-    FindMobileModuleMessage(short _senderOriCode,
-                            set<short>pathCons);
+    FindMobileModuleMessage(list<PathHop> path);
     virtual ~FindMobileModuleMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
