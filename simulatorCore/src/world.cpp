@@ -20,7 +20,9 @@ map<bID, BuildingBlock*>World::buildingBlocksMap;
 vector <GlBlock*>World::tabGlBlocks;
 
 World::World(int argc, char *argv[]) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "World constructor" << endl;
+#endif
 	selectedGlBlock = NULL;
 	numSelectedFace=0;
 	numSelectedGlBlock=0;
@@ -70,7 +72,9 @@ World::~World() {
     delete objBlockForPicking;
     delete objRepere;
 
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "World destructor" << endl;
+#endif
 }
 
 

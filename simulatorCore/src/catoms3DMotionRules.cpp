@@ -223,7 +223,8 @@ void Catoms3DMotionRules::addLink(MotionRuleLinkType mrlt,int id1, int id2,
     //OUTPUT << endl;
 }
 
-bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d, int from,
+bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,
+                                             int from,
                                              vector<Catoms3DMotionRulesLink*>&vec) {
     Catoms3DMotionRulesConnector *conn = tabConnectors[from];
     bool notEmpty=false;
@@ -242,6 +243,12 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d, int from,
     return notEmpty;
 }
 
+bool Catoms3DMotionRules::getValidRotationsListForCatom(const Catoms3DBlock* c3d,
+                                                        vector<Catoms3DMotionRulesLink*>& vec) {
+    throw NotImplementedException();
+}
+
+
 // bool Catoms3DMotionRules::getMotionListFromAnyTo(const Catoms3DBlock*c3d, int to,
 //                                                  vector<Catoms3DMotionRulesLink*>&vec) {
     
@@ -256,15 +263,12 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
     bool isOk;
     Cell3DPosition pos,pos2;
 
-    // source must be free or is not in goal
+    // source must be free or is not in goal 
     pivot->getNeighborPos(from,pos);
 //OUTPUT << "FROM pos=" << pos << endl;
     if (lattice->cellHasBlock(pos)
-        && (target == NULL || target->isInTarget(pos)) ) return false;
-    // PTHA: shouldn't it be:
+        && (target != NULL && target->isInTarget(pos)) ) return false;
     pos2 = pos + pos - pivot->position;
-    // instead of:
-    // pos2 = 2*pos + pos - pivot->position;
 //OUTPUT << "OPP FROM pos=" << pos2 << endl;
     if (lattice->cellHasBlock(pos2)) return false;
 
@@ -314,22 +318,6 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
     
     return notEmpty;
 }
-
-// ONLY CONSIDERS 1 HOP MOTIONS...
-// bool Catoms3DMotionRules::
-// connectorIsReachableUsingMotionRules(short from,
-//                                      short to,
-//                                      vector<Catoms3DMotionRulesLink*>&mrl) {
-//     for (auto const link : mrl) {
-//         std::array<short, 2> cons = link->getConnectors();
-//         if ((cons[0] == from && cons[1] == to)
-//             || (cons[0] == to && cons[1] == from))
-//             return true;
-//     }
-
-//     return false;
-// }
-
 
 void Catoms3DMotionRulesConnector::addLink(Catoms3DMotionRulesLink *lnk) {
     tabLinks.push_back(lnk);

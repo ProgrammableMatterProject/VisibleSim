@@ -1,6 +1,6 @@
 
 # GENERIC BlockCodes
-SUBDIRS = C3DRotate simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
+SUBDIRS = C3DRotate #simpleColorC2D simpleColorRB simpleColorSB distanceRB simpleCatoms3D simpleColorBB
 
 # MELD BlockCodes
 #SUBDIRS += meld MRMeld

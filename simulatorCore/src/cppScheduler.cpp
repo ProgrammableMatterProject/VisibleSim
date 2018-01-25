@@ -23,14 +23,18 @@ using us = chrono::microseconds;
 using get_time = chrono::steady_clock;
 
 CPPScheduler::CPPScheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "CPPScheduler constructor" << endl;
+#endif
 	state = NOTREADY;
 	schedulerMode = SCHEDULER_MODE_REALTIME;
 	schedulerThread = new thread(bind(&CPPScheduler::startPaused, this));
 }
 
 CPPScheduler::~CPPScheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "\033[1;31mCPPScheduler destructor\33[0m" << endl;
+#endif
 }
 
 void CPPScheduler::createScheduler() {

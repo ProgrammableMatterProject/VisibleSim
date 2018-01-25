@@ -118,7 +118,6 @@ void BlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
         case EVENT_ADD_NEIGHBOR: {
-            OUTPUT << "ADD_NEIGHBOR" << endl;
             // @PTHY 08/11/2017: Startup needs not be called every time a neighbor is added
             //  This would mean that a catom is disconnected from its power source everytime its
             //   neighborhood is updated. 

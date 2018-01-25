@@ -11,7 +11,7 @@ class Catoms3DMotionRulesLink;
 
 class Catoms3DMotionRulesConnector {
 public :
-    int ID;
+    short ID;
     vector <Catoms3DMotionRulesLink*> tabLinks;
 
     Catoms3DMotionRulesConnector(int n):ID(n) {};
@@ -39,8 +39,14 @@ public :
        \brief Get connector ID of destination of the motion
        \return destination connector ID
     **/
-    inline int getConToID() { return conTo->ID; };
-    inline int isOctaFace() { return MRLT==octaFace; };
+    inline short getConToID() { return conTo->ID; };
+    /**
+       \brief Gets the connector ID of source of the motion
+       \return source connector ID
+    **/
+    inline short getConFromID() { return conFrom->ID; };
+
+    inline bool isOctaFace() { return MRLT==octaFace; };
     /**
        \brief Returns an array containing the ids of the two connectors forming the link such that [fromCon, ToCon]
     **/
@@ -124,6 +130,24 @@ public:
        \return return if c3d catom is able to turn from the orientation fromId to the toId one */
     bool getValidMotionList(const Catoms3DBlock* c3d,int from,
                             vector<Catoms3DMotionRulesLink*>&vec);
+
+    /**
+       \brief Get the list of valid motion rules from any connector of a C3D catom
+       \param c3d The catom whose rotation is being considered
+       \param vec an output vector of the resulting valid motion rules
+       \return return true if at least one rotation is possible, false otherwise
+       \attention 
+       \todo */
+    bool getValidRotationsListForCatom(const Catoms3DBlock* c3d,
+                                       vector<Catoms3DMotionRulesLink*>& vec);
+
+    /**
+       \brief Get the list of valid motion rules from any connector of a C3D catom
+       \param c3d The catom whose rotation is being considered
+       \param vec an output vector of the resulting valid motion rules
+       \return return true if at least one rotation is possible, false otherwise
+       \attention 
+       \todo */
     bool getValidMotionListFromPivot(const Catoms3DBlock* pivot, int from,
                                      vector<Catoms3DMotionRulesLink*>&vec,
                                      const FCCLattice *lattice,const Target *target);
@@ -139,17 +163,6 @@ public:
     bool getValidSurfaceLinksOnCatom(const Catoms3DBlock* pivot,
                                      vector<Catoms3DMotionRulesLink*>& links);
     
-    // /*  /\** */
-    // /*     \brief Get the list of valid motion rules to a given connector of a c3D catom. Each motion source connector corresponds to a potential neighbor on this connector. */
-    // /*     \param c3d: the catom acting as a pivot */
-    // /*     \param to : id of target connector */
-    // /*     \param vec : vector of valid motion rules from any connector to the target one */
-    // /*     \return return if a surface rotation path exists from any connector to the target one  *\/ */
-    // /* bool getMotionListFromAnyTo(const Catoms3DBlock*c3d, int to, */
-    // /*                             vector<Catoms3DMotionRulesLink*>&vec);     */
-    // bool connectorIsReachableUsingMotionRules(short from,
-    //                                           short to,
-    //                                           vector<Catoms3DMotionRulesLink*>&mrl);
 protected:
 private:
     void addLinks3(int id1, int id2, int id3,

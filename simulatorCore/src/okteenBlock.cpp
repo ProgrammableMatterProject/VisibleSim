@@ -19,7 +19,9 @@ namespace Okteen {
 
 OkteenBlock::OkteenBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "OkteenBlock constructor" << endl;
+#endif
 
     orientationCode=0; // connector 0 is along X axis
 }
@@ -117,14 +119,18 @@ void OkteenBlock::setConnectorLength(short connectorId,float length) {
 }
 
 void OkteenBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(new AddNeighborEvent(getScheduler()->now(), this,getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void OkteenBlock::removeNeighbor(P2PNetworkInterface *ni) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(new RemoveNeighborEvent(getScheduler()->now(), this,getWorld()->lattice->getOppositeDirection(getDirection(ni))));
     getWorld()->updateGlData(this,getDirection(ni),0);
 }

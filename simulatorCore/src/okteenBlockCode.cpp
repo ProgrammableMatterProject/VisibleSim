@@ -15,11 +15,15 @@ using namespace std;
 namespace Okteen {
 
 OkteenBlockCode::OkteenBlockCode(OkteenBlock *host):BlockCode(host) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "OkteenBlockCode constructor" << endl;
+#endif
 }
 
 OkteenBlockCode::~OkteenBlockCode() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "OkteenBlockCode destructor" << endl;
+#endif
 }
 
 void OkteenBlockCode::addDebugAttributes(Scheduler *scheduler) {

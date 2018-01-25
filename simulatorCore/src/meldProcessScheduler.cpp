@@ -24,7 +24,9 @@ using namespace std;
 namespace MeldProcess {
 
 MeldProcessScheduler::MeldProcessScheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "MeldProcessScheduler constructor" << endl;
+#endif
 	state = NOTREADY;
 	schedulerMode = SCHEDULER_MODE_REALTIME;
 	schedulerThread = new thread(bind(&MeldProcessScheduler::startPaused, this));

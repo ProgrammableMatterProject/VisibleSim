@@ -79,9 +79,9 @@ public:
     
     /* Path finding using connectors */
     short tailConId; //!< Connector id corresponding to the position to be filled by the tail
-    list<PathHop> path;
-    P2PNetworkInterface *meltFather;
-    
+    list<PathHop> path; //!< 
+    P2PNetworkInterface *meltFather; //!< l'id de module du last hop
+    list<Catoms3DMotionRulesLink*> meltRotationsPlan; //!< Ordered list of rotation motions that a melting module has to follow to reach the end of the melt tail
          
     /**** GROW *****/
     list<Cell3DPosition> targetCells; //!< Ordered list of target positions to be filled during the growth phase    

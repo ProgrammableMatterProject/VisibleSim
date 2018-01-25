@@ -14,9 +14,10 @@ FindMobileModuleMessage::FindMobileModuleMessage(list<PathHop> _path)
 void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
     sender = static_cast<Catoms3DBlock*>(sourceInterface->hostBlock);
-
+    short pivotConId = (short)sender->getDirection(sourceInterface);
+    
     if (!bc->meltFather) {
-        bc->meltFather = sourceInterface;
+        bc->meltFather = destinationInterface;
         bc->resetDFSFlags();
 
         PathHop lastHop = path.back();
@@ -31,15 +32,21 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
             // Check if module can move to any of the path connectors of pivot.
             // Input connector set is ordered by distance to target, so the search should stop
             // as soon as a solution has been found
-            list<Catoms3DMotionRulesLink*> rotations;                        
+            list<Catoms3DMotionRulesLink*> rotations;
             API::findConnectorsPath(mrl,
-                                    (short)this->sender->getDirection(bc->meltFather),
+                                    pivotConId,
                                     inputConnectors,
-                                    rotations);
+                                    rotations); ///...           
 
-            if (!rotations.empty()) {
-                Catoms3DMotionRulesLink *nextRotation = rotations.front();
-                rotations.pop_front();
+            // This will only lead the module so far, as it will simply move it to a position where it is connected to the next hop.
+            // It might be preferable to compute the entire list of rotations to reach the tail at once, and only start moving afterwards
+            bool motionIsPossible =
+                API::buildRotationSequenceToTarget(bc->catom, pivotConId,
+                                                   path, bc->meltRotationsPlan);
+            
+            if (!bc->meltRotationsPlan.empty()) {
+                Catoms3DMotionRulesLink *nextRotation = bc->meltRotationsPlan.front();
+                bc->meltRotationsPlan.pop_front();
                 nextRotation->sendRotationEvent(bc->catom, this->sender, 100);
                 return;
             }
@@ -47,20 +54,27 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
         // If module not mobile or a movement path could not be found,
         //  then propagate search to children
-        set<short> myAdjacentPathConnectors;
-        set<short> pathConnectors; // Change to PathHop
-        API::findAdjacentConnectors(inputConnectors,
-                                    lastHop.getOrientation(),
-                                    bc->catom->orientationCode,
-                                    myAdjacentPathConnectors);
-        if (!myAdjacentPathConnectors.empty()) {
-            API::findPathConnectors(bc->catom,
-                                    myAdjacentPathConnectors,
-                                    pathConnectors);
+        bc->path = this->path;
+        bool moduleCanBeHop = API::addModuleToPath(bc->catom, bc->path);
+        if (moduleCanBeHop) {
             bc->findMobileModule();
             return;
         }
-            
+        
+        //\deprecated
+        // set<short> myAdjacentPathConnectors;
+        // set<short> pathConnectors; // Change to PathHop
+        // API::findAdjacentConnectors(inputConnectors,
+        //                             lastHop.getOrientation(),
+        //                             bc->catom->orientationCode,
+        //                             myAdjacentPathConnectors);
+        // if (!myAdjacentPathConnectors.empty()) {
+        //     API::findPathConnectors(bc->catom,
+        //                             myAdjacentPathConnectors,
+        //                             pathConnectors);
+        //     bc->findMobileModule();
+        //     return;
+        // }        
     }
 
     // Module already in DFS tree, or path to pathConnectors is blocked
@@ -73,7 +87,7 @@ void FindMobileModuleIgnoreMessage::handle(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
     sender = static_cast<Catoms3DBlock*>(sourceInterface->hostBlock);
 
-    bc->flag[sourceInterface] = true;
+    bc->flag[destinationInterface] = true;
     
     // Just proceed with next DFS child        
     bc->findMobileModule();
@@ -84,7 +98,7 @@ void FindMobileModuleNotFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
     sender = static_cast<Catoms3DBlock*>(sourceInterface->hostBlock);
 
-    bc->flag[sourceInterface] = true;
+    bc->flag[destinationInterface] = true;
 
     if (bc->meltFather)  {
         bc->sendMessage("FindMobileModuleNotFound",
@@ -105,7 +119,7 @@ void FindMobileModuleFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
     sender = static_cast<Catoms3DBlock*>(sourceInterface->hostBlock);
 
-    bc->flag[sourceInterface] = true;
+    bc->flag[destinationInterface] = true;
     
     if (!bc->source) {
         bc->sendMessage("FindMobileModuleFound",

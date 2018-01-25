@@ -25,11 +25,16 @@ TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 # 				       # if this flag is not set, the boost libraries will not be included,
 # 				       # since they are the only source files using them.
 
-# You can add those constant definitions to get a more verbose output
-# -DDEBUG_EVENTS          :  trace creation and destruction of all events
-# -DDEBUG_CONSUME_EVENTS  : trace the consomption of all events
-# -DDEBUG_MESSAGES        :  trace creation and destruction of all messages inside the simulator
-# -DDEBUG_VM_MESSAGES     : trace the messages sent to the multicores VM
+# You can add any of the following debug flags to get a more verbose output
+# TEMP_CCFLAGS += -DDEBUG_EVENTS #          :  trace creation and destruction of all events
+# TEMP_CCFLAGS += -DDEBUG_CONSUME_EVENTS #  : trace the consomption of all events
+# TEMP_CCFLAGS += -DDEBUG_MESSAGES #        :  trace creation and destruction of all message inside the simulator
+# TEMP_CCFLAGS += -DDEBUG_VM_MESSAGES #     : trace the messages sent to the multicores VM
+# TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
+# TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
+# TEMP_CCFLAGS += -DDEBUG_NEIGHBORHOOD #: trace robot neighborhood updates and interface linking
+# TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
+# TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"

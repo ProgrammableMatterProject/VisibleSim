@@ -24,11 +24,15 @@ void OkteenSimulator::help() {
 
 OkteenSimulator::OkteenSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
 	: BaseSimulator::Simulator(argc, argv, bcb) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "\033[1;34m" << "OkteenSimulator constructor" << "\033[0m" << endl;
+#endif
 }
 
 OkteenSimulator::~OkteenSimulator() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "\033[1;34m" << "OkteenSimulator destructor" << "\033[0m" <<endl;
+#endif
 }
 
 void OkteenSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
@@ -58,7 +62,9 @@ void OkteenSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBu
 	const char *attr = blockElt->Attribute("orientation");
 	if (attr) {
 		orientation = atoi(attr);
-		OUTPUT << "orientation : " << orientation << endl;
+#ifdef DEBUG_WORLD_LOAD
+        OUTPUT << "orientation : " << orientation << endl;
+#endif
 	}
 
 	// Finally, add block to the world

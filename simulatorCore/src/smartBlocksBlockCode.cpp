@@ -13,11 +13,15 @@ using namespace std;
 
 namespace SmartBlocks {
 SmartBlocksBlockCode::SmartBlocksBlockCode(SmartBlocksBlock *host):BlockCode(host) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "SmartBlocksBlockCode constructor" << endl;
+#endif
 }
 
 SmartBlocksBlockCode::~SmartBlocksBlockCode() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "SmartBlocksBlockCode destructor" << endl;
+#endif
 }
 
 void SmartBlocksBlockCode::processLocalEvent(EventPtr pev) {
