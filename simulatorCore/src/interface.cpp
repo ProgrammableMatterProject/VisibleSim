@@ -323,6 +323,7 @@ void GlutSlidingMainWindow::reshapeFunc(int mx,int my,int mw,int mh) {
     x = mx+mw-w;
     y = my;
     h = mh;
+    updateSliderWindow();
 }
 
 void GlutSlidingMainWindow::updateSliderWindow() {

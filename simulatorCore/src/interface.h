@@ -57,6 +57,7 @@ protected :
 	static GLfloat drawString(GLfloat x,GLfloat y,const char *str,void* mode=GLUT_BITMAP_8_BY_13,GLint height=13);
 	GLfloat drawString(GLfloat x,GLfloat y,const char *str, TextMode mode);
 	virtual void setTextSize(TextSize ts);
+	TextSize getTextSize() { return currentTextSize; }
 	void setVisible(bool v) { isVisible=v; }
 };
 
@@ -135,8 +136,8 @@ public :
 	inline bool isOpened() { return openningLevel!=0; }
 	virtual void setTextSize(TextSize ts);
 private :
+	void updateSliderWindow();
     void setOpenCloseButtonPosition(bool openning);
-    void updateSliderWindow();
 };
 
 class GlutSlidingDebugWindow : public GlutWindow {

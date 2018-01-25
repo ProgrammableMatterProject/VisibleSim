@@ -269,8 +269,13 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'F' : glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); break;
             case '+' : camera->mouseZoom(0.5); break;
             case '-' : camera->mouseZoom(-0.5); break;
-            case 'T' : mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE); break;
-            case 't' : mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD); break;
+            case 'T' : case 't' :
+                if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
+                    mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
+                } else {
+                    mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
+                }
+                break;
                 //  case 'l' : showLinks = !showLinks; break;
             case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
     //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
