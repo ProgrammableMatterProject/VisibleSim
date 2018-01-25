@@ -27,17 +27,22 @@ namespace BaseSimulator {};
 using namespace std;
 using namespace BaseSimulator;
 
+enum class TextMode {TEXTMODE_STANDARD,TEXTMODE_TITLE,TEXTMODE_BOLD,TEXTMODE_ID};
+enum class TextSize {TEXTSIZE_STANDARD,TEXTSIZE_LARGE};
+
 class GlutWindow {
 
 protected :
 	vector<GlutWindow*> children;
 	GLuint idTexture;
-
-	void addChild(GlutWindow *child);
+    void addChild(GlutWindow *child);
 	void bindTexture();
+    TextSize currentTextSize=TextSize::TEXTSIZE_STANDARD;
+    bool isVisible;
   public :
 	GLuint id;
 	GLint x,y,w,h;
+
 	GlutWindow(GlutWindow *parent,GLuint pid,GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutWindow();
 	inline void setGeometry(GLint px,GLint py,GLint pw,GLint ph) { x=px; y=py; w=pw; h=ph; };
@@ -50,6 +55,10 @@ protected :
 	static GLuint loadTexture(const char *titre,int &tw,int &th);
 	static unsigned char *lectureTarga(const char *titre, int& width, int& height ,bool retourner=false);
 	static GLfloat drawString(GLfloat x,GLfloat y,const char *str,void* mode=GLUT_BITMAP_8_BY_13,GLint height=13);
+	GLfloat drawString(GLfloat x,GLfloat y,const char *str, TextMode mode);
+	virtual void setTextSize(TextSize ts);
+	TextSize getTextSize() { return currentTextSize; }
+	void setVisible(bool v) { isVisible=v; }
 };
 
 class GlutButton : public GlutWindow {
@@ -108,8 +117,8 @@ public :
 };
 
 class GlutSlidingMainWindow : public GlutWindow {
-	int openingLevel;
-	GlutButton* buttonOpen, *buttonClose;
+	int openningLevel;
+	GlutButton* buttonOpen, *buttonClose, *buttonSize;
 	multimap<Time,BlockDebugData*> traces;
 	GlutSlider *slider;
 	GlBlock *selectedGlBlock;
@@ -117,8 +126,6 @@ public :
 	GlutSlidingMainWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutSlidingMainWindow();
 
-/*	inline void open() { openingLevel++; };
-	inline void close() { openingLevel--; };*/
     void openClose();
 	int mouseFunc(int button,int state,int mx,int my);
 	void reshapeFunc(int wx,int wy,int mw,int mh);
@@ -126,11 +133,15 @@ public :
 	void addTrace(bID id,const string &str,const Color &color);
 	void select(GlBlock *sb);
 	inline bool hasselectedGlBlock()  { return selectedGlBlock!=NULL; };
-	inline bool isOpened() { return openingLevel!=0; }
+	inline bool isOpened() { return openningLevel!=0; }
+	virtual void setTextSize(TextSize ts);
+private :
+	void updateSliderWindow();
+    void setOpenCloseButtonPosition(bool openning);
 };
 
 class GlutSlidingDebugWindow : public GlutWindow {
-	int openingLevel;
+	int openningLevel;
     bID debugId;
 	GlutButton* buttonOpen, *buttonClose;
 	GlutSlider* slider;
@@ -140,14 +151,14 @@ public :
 	GlutSlidingDebugWindow(GLint px,GLint py,GLint pw,GLint ph,const char *titreTexture);
 	virtual ~GlutSlidingDebugWindow();
 
-/*	inline void open() { openingLevel++; };
-	inline void close() { openingLevel--; };
+/*	inline void open() { openningLevel++; };
+	inline void close() { openningLevel--; };
 */
 	int mouseFunc(int button,int state,int mx,int my);
 	int keyFunc(int charcode);
 	void reshapeFunc(int wx,int wy,int mw,int mh);
 	void glDraw();
-	inline bool isOpened() { return openingLevel!=0; }
+	inline bool isOpened() { return openningLevel!=0; }
 };
 
 class GlutPopupWindow : public GlutWindow {

@@ -241,4 +241,4 @@ simpleMotionCode.o: simpleMotionCode.cpp /usr/include/stdc-predef.h \
  ../../simulatorCore/src/okteenWorld.h \
  ../../simulatorCore/src/openglViewer.h \
  ../../simulatorCore/src/okteenBlockCode.h \
- ../../simulatorCore/src/okteenEvents.h
+ ../../simulatorCore/src/teleportationEvents.h
