@@ -4,8 +4,8 @@
           angle="30" />
   <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="78" />
   <blockList blockSize="10,10,10">
-    <block position="2,2,2" color="128,128,128" rotation="0" />
-    <block position="3,2,2" color="128,128,128" rotation="0" />
+    <block position="2,2,2" color="128,128,128" /> <!-- orientation="13" /> -->
+    <block position="3,2,2" color="128,128,128" /> <!-- orientation="3" /> -->
   </blockList>
   <targetList>
     <target format="relativeGrid">      

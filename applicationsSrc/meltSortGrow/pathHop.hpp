@@ -25,15 +25,25 @@ public:
         : position(pos), orientationCode(ori), conDistanceMap(map) {}
     ~PathHop(){}
 
-    short getOrientation() const { return orientationCode; }
-    Cell3DPosition getPosition() const { return position; }
+    inline short getOrientation() const { return orientationCode; }
+    inline Cell3DPosition getPosition() const { return position; }
     bool getConnectors(std::set<short>& connectors) const;
+    /** 
+     * @brief Returns the distance corresponding to connector con
+     * @param con input connector
+     * @return the distance of the connector to some target, or -1 if connector is not in path hop
+     */
+    int getDistance(short con) const;
     
     /**
        \brief Populates a vector with all the connectors in the \see{conDistanceMap}, sorted by increasing distance to the path target
        \param sortedCons reference to output solution vector
        \return true if vector is not empty, false otherwise **/
     bool getConnectorsByIncreasingDistance(vector<short>& sortedCons);
+
+    friend std::ostream& operator<<(std::ostream &stream, PathHop const& hop);
 };
+
+std::ostream& operator<<(std::ostream &stream, PathHop const& hop);
 
 #endif /* PATH_HOP_H_ */

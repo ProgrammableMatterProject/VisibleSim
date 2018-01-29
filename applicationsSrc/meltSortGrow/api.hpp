@@ -1,3 +1,12 @@
+/**
+ * @file   api.hpp
+ * @author pthalamy <pthalamy@p3520-pthalamy-linux>
+ * @date   Wed Jan 24 09:50:06 2018
+ * 
+ * @brief  
+ * 
+ * 
+ */
 
 #ifndef __DESIGN_HPP_
 #define __DESIGN_HPP_
@@ -43,13 +52,13 @@ public:
         \param rotations the output motion sequence 
         \return false is the catom cannot be reach the path target, true otherwise
         \attention path must be initialized and thus contain at least one entry
-        \todo PTHA
-    **/
+        \attention CANNOT WORK, OPPOSING BLOCKING MODULES CANNOT BE DETECTED IN ADVANCE
+        \todo PTHA **/
     static bool buildRotationSequenceToTarget(Catoms3DBlock *pivot,
                                               short pivotCon,
                                               list<PathHop>& path,
                                               list<Catoms3DMotionRulesLink*>& rotations);
-    
+
 /**
    \brief For a given Catoms3D module acting as a pivot, enumerates all the possible catom surface links that
    a catom connected to the pivot on any connector could use to reach connector conId
@@ -101,6 +110,30 @@ public:
                                    const std::vector<short>& consTo,
                                    list<Catoms3DMotionRulesLink*>& shortestPath);
 
+    /** 
+     * @brief For each connector conFrom in the consFrom set, searches through the graph described by the motionRulesLinks for all the other connectors conOther that are connected to it, and assign it a distance using distance[conOther] = distance[conFrom] + pathLength(conFrom -> conOther)
+     * @param motionRulesLinks Motion rules links on which to perform the search
+     * @param consFrom Set of input connectors that are desired to be reached
+     * @param distance Output map containing for each connector its distance to some target
+     * @attention distance must already contain a distance for each of the connectors in the input set consFrom
+     * @return true if distance not empty, false otherwise
+     */
+    static bool computePathConnectorsAndDistances(const Catoms3DBlock *catom,
+                                           std::set<short> consFrom,
+                                           std::map<short, int>& distance);
+
+    /** 
+     * @brief Searches through the graph described by the motionRulesLinks for all connectors conOther that are connected to conFrom, and assign it a distance using distance[conOther] = distance[conFrom] + pathLength(conFrom -> conOther)
+     * @param motionRulesLinks Motion rules links on which to perform the search
+     * @param conFrom Input connectors that is desired to be reached
+     * @param distance Output map containing for each connector its distance to some target
+     * @attention distance must already contain a distance for the input connectors conFrom
+     * @return true if distance not empty, false otherwise
+     */
+    static bool computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
+                                           short conFrom,
+                                           std::map<short, int>& distance);
+
 /**
    \brief Given a set of motion rules link passed as argument, deduce a set of all connectors for which a path exists to connector conTo
    \param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
@@ -129,16 +162,14 @@ public:
                                    set<short>& pathConnectors);
 
 /**
-   \brief Given a set of connector IDs and the orientation of the module to which they belong, determine which connectors of the current module are adjacent to those contained in the input set. 
+   \brief Given a set of connector IDs and the orientation of the module to which they belong, determine which connectors of the current module are adjacent to those contained in the input set (Keys of input map). 
    \remarks Two connectors of opposing modules are adjacent if a third module could fill a position where both connectors are connected to that module at the same time
-   \param pathConnectors a set of connector IDs belonging to a path to some target
-   \param pathOrientationCode the orientation code of the module to which the path connectors belong
-   \param orientationCode the orientation code of the module for which we wish to determine the connectors adjacent to the input set
-   \return a set of all connectors of module with orientation orientationCode that are adjacent to the connectors in the input set, set.end() if none exist */
-    static bool findAdjacentConnectors(const PathHop hop,
-                                       short pathOrientationCode,
-                                       short orientationCode,
-                                       set<short>& adjacentConnectors);
+   \param catom a pointer to the reference module 
+   \param pathHop the path hop to consider 
+   \param adjacentConnectors output map of all connectors of module with orientation orientationCode that are adjacent to the connectors in the input set, and their distance to some target */
+    static bool findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
+                                                   const PathHop hop,
+                                                   std::map<short, int>& adjacentConnectors);
 
 // NOT MSG SPECIFIC
 

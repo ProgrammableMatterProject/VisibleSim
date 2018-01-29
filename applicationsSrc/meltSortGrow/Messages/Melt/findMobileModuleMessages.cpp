@@ -59,22 +59,7 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
         if (moduleCanBeHop) {
             bc->findMobileModule();
             return;
-        }
-        
-        //\deprecated
-        // set<short> myAdjacentPathConnectors;
-        // set<short> pathConnectors; // Change to PathHop
-        // API::findAdjacentConnectors(inputConnectors,
-        //                             lastHop.getOrientation(),
-        //                             bc->catom->orientationCode,
-        //                             myAdjacentPathConnectors);
-        // if (!myAdjacentPathConnectors.empty()) {
-        //     API::findPathConnectors(bc->catom,
-        //                             myAdjacentPathConnectors,
-        //                             pathConnectors);
-        //     bc->findMobileModule();
-        //     return;
-        // }        
+        }        
     }
 
     // Module already in DFS tree, or path to pathConnectors is blocked

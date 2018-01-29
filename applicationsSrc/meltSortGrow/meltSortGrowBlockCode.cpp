@@ -52,17 +52,17 @@ void MeltSortGrowBlockCode::startup() {
     //     console << *link << "\n";
     // }
 
-    list<Catoms3DMotionRulesLink*> shortestConPath;
-    bool ret = API::findConnectorsPath(links, 0, 6, shortestConPath);
-    console << "Path is: " << ret << "\n";
-    for (const auto& motion : shortestConPath) {
-        console << *motion << "\n";
-    }
-    cout << "TESTING OVER - EXITING BLOCKCODE" << endl;
+    // list<Catoms3DMotionRulesLink*> shortestConPath;
+    // bool ret = API::findConnectorsPath(links, 0, 6, shortestConPath);
+    // console << "Path is: " << ret << "\n";
+    // for (const auto& motion : shortestConPath) {
+    //     console << *motion << "\n";
+    // }
+    // cout << "TESTING OVER - EXITING BLOCKCODE" << endl;
 
     // UNCOMMENT WHEN TESTING DONE
-    // determineRoot();
-    // APLabellingInitialization();
+    determineRoot();
+    APLabellingInitialization();
 }
 
 void MeltSortGrowBlockCode::resetDFSForLabelling() {
@@ -179,7 +179,7 @@ void MeltSortGrowBlockCode::initializeMeltPath() {
 
     // Initially only the target connector needs be in the path 
     path.push_back(PathHop(catom->position, catom->orientationCode,
-                           { {tailConId, 0} }) // Inline map init
+                           { {catom->getAbsoluteDirection(tailConId), 0} }) // Inline map init
         );
 
     // Add self as the next hop of the path
@@ -187,7 +187,7 @@ void MeltSortGrowBlockCode::initializeMeltPath() {
 }
 
 void MeltSortGrowBlockCode::findMobileModule() {    
-    P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();    
+    P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
     
     if (unprocessedNeighbor) {
         sendMessage("FindMobileModule",
@@ -196,6 +196,7 @@ void MeltSortGrowBlockCode::findMobileModule() {
     } else if (source) {
         // No more module paths to explore
         catom->setColor(BLUE); // #TOREMOVE todo
+        cout << "Reached NIE" << endl;
         throw NotImplementedException();
     } else {
         sendMessage("FindMobileModuleNotFound",
