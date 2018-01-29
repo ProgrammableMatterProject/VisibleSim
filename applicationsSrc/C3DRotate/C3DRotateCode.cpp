@@ -1,5 +1,6 @@
 #include <queue>
 #include <climits>
+#include <unistd.h>
 
 #include "C3DRotateCode.h"
 
@@ -32,6 +33,7 @@ void C3DRotateCode::initDistances() {
                 }
             }
         }
+        
         OUTPUT << "Target: " << ngoal-nwp << "/" << ngoal << " cells" << endl;
         vector<Cell3DPosition> neighborhood;
         vector <Catoms3DMotionRulesLink*>vml;
@@ -96,7 +98,7 @@ void C3DRotateCode::startup() {
     FCCLattice *lattice = (FCCLattice*)(Catoms3D::getWorld()->lattice);
     lattice->initTabDistances();
     initDistances();
-	//tryToMove();
+    tryToMove();
 }
 
 bool C3DRotateCode::tryToMove() {
@@ -141,14 +143,17 @@ bool C3DRotateCode::tryToMove() {
             }
         }
     }
+    
     if (bestMRL && bestDistance<moduleDistance) {
         console << "Best Orig." << bestOri << " ->" << bestMRL->getConToID() << ":" << bestDistance << "\n";
         p2p=module->getInterface(bestOri);
         currentMotion = new Motions(module,(Catoms3DBlock *)p2p->connectedInterface->hostBlock,bestMRL);
         console << "send LOCK() to " << p2p->connectedInterface->hostBlock->blockId << "\n";
         sendMessage(new MessageOf<Motions>(LOCK_MSG,*currentMotion),p2p,100,200);
+
         return true;
     }
+    
     return false;
 }
 
