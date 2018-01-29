@@ -7,6 +7,7 @@
 //!< \namespace Catoms3D
 namespace Catoms3D {
 enum MotionRuleLinkType { hexaFace, octaFace};
+
 class Catoms3DMotionRulesLink;
 
 class Catoms3DMotionRulesConnector {
@@ -15,11 +16,11 @@ public :
     vector <Catoms3DMotionRulesLink*> tabLinks;
 
     Catoms3DMotionRulesConnector(int n):ID(n) {};
-    void addLink(Catoms3DMotionRulesLink *lnk);
+    void addLink(Catoms3DMotionRulesLink *lnk);    
 };
 
 class Catoms3DMotionRulesLink {
-
+    
     Catoms3DMotionRulesConnector *conFrom; //!< origin connector
     Catoms3DMotionRulesConnector *conTo; //!< destination connector
     double angle; //!< rotations angle
@@ -28,7 +29,6 @@ class Catoms3DMotionRulesLink {
     Vector3D axis2; //!< second rotation axis
     vector <int> tabBlockingIDs; //!< array of blocking ID
     MotionRuleLinkType MRLT;
-
 public :
     Catoms3DMotionRulesLink(MotionRuleLinkType m,
                             Catoms3DMotionRulesConnector *from,
@@ -47,6 +47,9 @@ public :
     inline short getConFromID() { return conFrom->ID; };
 
     inline bool isOctaFace() { return MRLT==octaFace; };
+
+    // inline Catoms3DLinkDirection getDirection() { return Catoms3DLinkDirection(axis1, axis2); };
+    
     /**
        \brief Returns an array containing the ids of the two connectors forming the link such that [fromCon, ToCon]
     **/
@@ -104,6 +107,10 @@ public :
        \param t : time of start of rotation
     **/
     void sendRotationEvent(Catoms3DBlock *mobile,Catoms3DBlock *fixed,double t);
+
+    /** \brief Could return something like TOP_TOPLEFT, so as to project one couple of connectors from one module over the ones of a neighbor 
+        \todo */
+    Catoms3DMotionRulesLink* getDirectionTuple() const;
 };
 
 /** 
@@ -112,9 +119,15 @@ public :
 **/
 class Catoms3DMotionRules {
     Catoms3DMotionRulesConnector *tabConnectors[12]; //!< array of connector rules
-public:
+public:    
     Catoms3DMotionRules();
     virtual ~Catoms3DMotionRules();
+
+    /** \brief See what I was trying to do here?
+        \todo */
+    short mapConnectorOntoModule(Catoms3DBlock *catom,
+                                 short conLinkCatom, short conToPivot);
+    
     /**
        \brief Returns if c3d catom is able to turn from the orientation fromId to the toId one
        \param c3d: the catom

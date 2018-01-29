@@ -118,6 +118,33 @@ int Catoms3DBlock::getDirection(P2PNetworkInterface *given_interface) {
     return -1;
 }
 
+short Catoms3DBlock::getAbsoluteDirection(short connector) {
+    Cell3DPosition conPos; // cell adjacent to connector
+    bool posIsValid = getNeighborPos(connector, conPos);
+
+    if (!posIsValid) return -1;
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+    return lattice->getDirection(position, conPos);
+}
+
+short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos,
+                                                      short nDirection) const {
+    // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
+    //      << "\tPosition: " << position << endl;
+    
+    // Find cell on direction nDirection of neighbor at nPos
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
+    Cell3DPosition projectedPos = lattice->getCellInDirection(nPos, nDirection); 
+    // cout << "\tproj: " << projectedPos << endl;
+    
+    // No corresponding connector on current module
+    if (!lattice->cellsAreAdjacent(position, projectedPos)) return -1;
+
+    // Find connector adjacent to projectedPos on current module
+    return getConnectorId(projectedPos);
+}
+
+
 std::ostream& operator<<(std::ostream &stream, Catoms3DBlock const& bb) {
     stream << bb.blockId << "\tcolor: " << bb.color;
     return stream;
@@ -145,7 +172,7 @@ P2PNetworkInterface *Catoms3DBlock::getInterface(const Cell3DPosition& pos) {
     return conId >= 0 ? P2PNetworkInterfaces[conId] : NULL;
 }
 
-short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) {
+short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) const {
     Catoms3DWorld *wrl = getWorld();
 
     if (!wrl->lattice->isInGrid(pos))

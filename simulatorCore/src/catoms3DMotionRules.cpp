@@ -1,5 +1,6 @@
 #include "catoms3DMotionRules.h"
 #include "rotation3DEvents.h"
+#include "catoms3DWorld.h"
 
 using namespace std;
 using namespace BaseSimulator::utils;
@@ -248,11 +249,59 @@ bool Catoms3DMotionRules::getValidRotationsListForCatom(const Catoms3DBlock* c3d
     throw NotImplementedException();
 }
 
-
-// bool Catoms3DMotionRules::getMotionListFromAnyTo(const Catoms3DBlock*c3d, int to,
-//                                                  vector<Catoms3DMotionRulesLink*>&vec) {
+bool Catoms3DMotionRules::getValidSurfaceLinksOnCatom(const Catoms3DBlock* catom,
+                                                      vector<Catoms3DMotionRulesLink*>& links) {
+    Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
     
-// }
+    for (short from = 0; from < 12; from++) {
+        Catoms3DMotionRulesConnector *con = tabConnectors[from];
+        Cell3DPosition fromAdjPos;
+
+        // We do not consider the source conector as blocking since their could be a moving module on there, but all the other ones are potentially blocking
+        catom->getNeighborPos(from, fromAdjPos);
+
+        for (Catoms3DMotionRulesLink *link : con->tabLinks) {
+            int conTo = link->getConToID();
+            bool isOk = false;
+            Cell3DPosition pos;
+            
+            // Destination must be in lattice and free
+            catom->getNeighborPos(conTo,pos);
+            isOk = lattice->isInGrid(pos) && !lattice->cellHasBlock(pos);
+            
+            // list of cells that must be free
+            if (link->isOctaFace()) {
+                const int *ptr = findTab4(from,conTo);
+                int i=0;
+                while (isOk && i<4) {
+                    if (ptr[i]!=from && ptr[i]!=conTo) {
+                        catom->getNeighborPos(ptr[i],pos);
+                        isOk = !lattice->cellHasBlock(pos);
+                    }
+                    i++;
+                }
+            } else { // isHexaFace
+                const int *ptr = findTab3(from,conTo);
+                int i=0;
+                while (isOk && i<3) {
+                    if (ptr[i]!=from && ptr[i]!=conTo) {
+                        catom->getNeighborPos(ptr[i],pos);
+                        isOk = !lattice->cellHasBlock(pos);
+                    }
+                    i++;
+                }
+            }
+        
+            if (isOk) {
+                links.push_back(link);
+                OUTPUT << "ADD " << from << " -> " << conTo << endl;
+            }
+        }
+    } // for
+
+    return !links.empty();
+}
+
 
 bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot,int from,
                                                       vector<Catoms3DMotionRulesLink*>&vec,

@@ -41,14 +41,21 @@ public:
      * @param d id of the direction from which we want the opposite
      * @return id of direction opposite to d
      */
-    virtual int getOppositeDirection(int d) { return -1; };
+    virtual short getOppositeDirection(short d) { return -1; };
     /**
      * @brief Returns the name string corresponding to direction d
      * @param d id of the direction from which we want the name
      * @return name string corresponding to direction d
      */
-    virtual string getDirectionString(int d);
+    virtual string getDirectionString(short d);
 
+    /** 
+     * @brief Returns the direction in which cell neighbor is, relative to cell p
+     * @param p the reference cell 
+     * @return a short int representing a lattice specific direction enum value
+     */
+    short getDirection(const Cell3DPosition &p, const Cell3DPosition &neighbor);
+    
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
