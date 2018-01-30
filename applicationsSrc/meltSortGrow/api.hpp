@@ -84,6 +84,10 @@ public:
     static bool getAllLinks(const Catoms3DBlock *pivot,
                             vector<Catoms3DMotionRulesLink*>&links);
 
+    static bool getMotionRulesFromConnector(const Catoms3DBlock *catom,
+                                            short conFrom,
+                                            vector<Catoms3DMotionRulesLink*>& links);
+    
 /**
    \brief Given a set of motion rules link passed as argument, searches a path (sequence of individual rotations) that leads from connector conFrom to connector conTo
    \param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
@@ -134,32 +138,32 @@ public:
                                            short conFrom,
                                            std::map<short, int>& distance);
 
-/**
-   \brief Given a set of motion rules link passed as argument, deduce a set of all connectors for which a path exists to connector conTo
-   \param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
-   \param conTo the desired destination of the connector path for which we want to find all potential motion sources
-   \return a set of all connectors for which a path to conTo exists 
-   \remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
-    static bool findPathConnectors(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                                   short conTo,
-                                   set<short>& pathConnectors);
+// /**
+//    \brief Given a set of motion rules link passed as argument, deduce a set of all connectors for which a path exists to connector conTo
+//    \param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
+//    \param conTo the desired destination of the connector path for which we want to find all potential motion sources
+//    \return a set of all connectors for which a path to conTo exists 
+//    \remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
+//     static bool findPathConnectors(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
+//                                    short conTo,
+//                                    set<short>& pathConnectors);
 
-/**
-   \brief Given a catom used as pivot, deduce a set of all connectors for which a path exists to connector conTo
-   \param conTo the desired destination of the connector path for which we want to find all potential motion sources
-   \return a set of all connectors for which a path to conTo exists 
-   \remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
-    static bool findPathConnectors(const Catoms3DBlock *pivot, short conTo,
-                                   set<short>& pathConnectors);
+// /**
+//    \brief Given a catom used as pivot, deduce a set of all connectors for which a path exists to connector conTo
+//    \param conTo the desired destination of the connector path for which we want to find all potential motion sources
+//    \return a set of all connectors for which a path to conTo exists 
+//    \remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
+//     static bool findPathConnectors(const Catoms3DBlock *pivot, short conTo,
+//                                    set<short>& pathConnectors);
 
-/**
-   \brief Given a catom used as pivot, deduce a set of all connectors for which a path exists to any connector of input set consTo
-   \param consTo the desired destinations of the connector path for which we want to find all potential motion sources
-   \return a set of all connectors for which a path to conTo exists 
-   \remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
-    static bool findPathConnectors(const Catoms3DBlock *pivot,
-                                   const set<short>& consTo,
-                                   set<short>& pathConnectors);
+// /**
+//    \brief Given a catom used as pivot, deduce a set of all connectors for which a path exists to any connector of input set consTo
+//    \param consTo the desired destinations of the connector path for which we want to find all potential motion sources
+//    \return a set of all connectors for which a path to conTo exists 
+//    \remarks An enhancement could be to return a list of connectors sorted by increasing distance to conTo */
+//     static bool findPathConnectors(const Catoms3DBlock *pivot,
+//                                    const set<short>& consTo,
+//                                    set<short>& pathConnectors);
 
 /**
    \brief Given a set of connector IDs and the orientation of the module to which they belong, determine which connectors of the current module are adjacent to those contained in the input set (Keys of input map). 

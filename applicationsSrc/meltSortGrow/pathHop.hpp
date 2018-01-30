@@ -41,6 +41,23 @@ public:
        \return true if vector is not empty, false otherwise **/
     bool getConnectorsByIncreasingDistance(vector<short>& sortedCons);
 
+    /** 
+     * @brief Indicates whether cell in argument is in a position of the current path hop
+     * @param pos cell that may or may not belong to hop
+     * @return true if pos if is a position of this hop, false otherwise
+     */
+    bool isInVicinityOf(const Cell3DPosition &pos) const;
+
+    /** 
+     * @brief Called once a connector has been selected, removes connectors with higher distance than connector in argument from the hop
+     * @param connector connector that has been choosen for movement */
+    void prune(short connector);
+
+    bool operator==(const PathHop &o) const
+        { return o.position == position; };
+    bool operator!=(const PathHop &o) const
+        { return o.position != position; };
+
     friend std::ostream& operator<<(std::ostream &stream, PathHop const& hop);
 };
 

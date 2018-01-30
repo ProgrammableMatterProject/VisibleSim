@@ -244,11 +244,6 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,
     return notEmpty;
 }
 
-bool Catoms3DMotionRules::getValidRotationsListForCatom(const Catoms3DBlock* c3d,
-                                                        vector<Catoms3DMotionRulesLink*>& vec) {
-    throw NotImplementedException();
-}
-
 bool Catoms3DMotionRules::getValidSurfaceLinksOnCatom(const Catoms3DBlock* catom,
                                                       vector<Catoms3DMotionRulesLink*>& links) {
     Lattice *lattice = Catoms3DWorld::getWorld()->lattice;

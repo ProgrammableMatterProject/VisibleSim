@@ -91,9 +91,9 @@ public:
      * @brief Given a neighbor at position nPos and a lattice absolute direction (connector Id if neighbor had con0 aligned with x-axis) from that position, deduce what connector of the current module is adjacent to cell on direction nDirection of nPos.
      * @param nPos 
      * @param nDirection 
+     * @param includeSelf if true, returns connector if cell on nDirection of nPos is own cell
      * @return connector of the current module is adjacent to cell on direction nDirection of nPos, or -1 if that cell and the current module are not adjacent */
-    short projectAbsoluteNeighborDirection(const Cell3DPosition& nPos,
-                                           short nDirection) const;
+    short projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, short nDirection) const;
 
     /**
        @brief Get the connector of the catom that is next to the position in argument
@@ -101,6 +101,9 @@ public:
        @return returns the id of the connector next to this pos or -1 if invalid. */
     short getConnectorId(const Cell3DPosition& pos) const;
 
+    /** 
+     * @attention SHOULD BE getConnector(p2p...)!
+     */
     int getDirection(P2PNetworkInterface*);
     
     /** 
@@ -134,6 +137,13 @@ public:
        @param code: orientation code (number of the connector aligned with x axis)*/
     void setPositionAndOrientation(const Cell3DPosition &pos,short code);
 
+    /** 
+     * @brief If position in argument is adjacent to current module, returns a pointer to the neighbor in that cell
+     * @param pos position of the neighbor to retrieve
+     * @return a pointer to the neighbor on cell pos or NULL if pos is not adjacent to the module or out of lattice
+     */
+    Catoms3DBlock* getNeighborOnCell(const Cell3DPosition &pos) const;
+    
     // MeldInterpreter
     /**
      * @copydoc BuildingBlock::addNeighbor

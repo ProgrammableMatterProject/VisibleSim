@@ -82,7 +82,9 @@ public:
     list<PathHop> path; //!< 
     P2PNetworkInterface *meltFather = NULL; //!< l'id de module du last hop
     list<Catoms3DMotionRulesLink*> meltRotationsPlan; //!< Ordered list of rotation motions that a melting module has to follow to reach the end of the melt tail
-         
+    Catoms3DBlock *rotationPlanPivot = NULL;
+    short pivotLinkConId = -1; //!< id of the module's connector that is connected to a pivot module used for rotation
+    
     /**** GROW *****/
     list<Cell3DPosition> targetCells; //!< Ordered list of target positions to be filled during the growth phase    
     bool growing = false; //!< Indicates whether current module is currently moving to fill a target position during the growth phase
@@ -166,6 +168,8 @@ public:
      * \param candidateRoot the position of the root to consider as new root
      * \return true if candidateRoot is fitter than current root, false otherwise */
     bool challengeRootFitness(Cell3DPosition& candidateRoot);
+
+    bool tryNextMeltRotation(list<PathHop>& path);
 };
 
 #endif /* MELTSORTGROWBLOCKCODE_H_ */

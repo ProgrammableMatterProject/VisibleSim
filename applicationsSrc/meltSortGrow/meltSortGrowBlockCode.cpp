@@ -43,24 +43,6 @@ void MeltSortGrowBlockCode::startup() {
     // targetCells = ((TargetGrid*)target)->getTargetCellsAsc();
     rtg = (RelativeTargetGrid*)target;
 
-    console << "Starting test..." << "\n";
-
-    vector<Catoms3DMotionRulesLink*> links;
-    API::getAllLinks(this->catom, links);
-
-    // for (const auto& link : links) {
-    //     console << *link << "\n";
-    // }
-
-    // list<Catoms3DMotionRulesLink*> shortestConPath;
-    // bool ret = API::findConnectorsPath(links, 0, 6, shortestConPath);
-    // console << "Path is: " << ret << "\n";
-    // for (const auto& motion : shortestConPath) {
-    //     console << *motion << "\n";
-    // }
-    // cout << "TESTING OVER - EXITING BLOCKCODE" << endl;
-
-    // UNCOMMENT WHEN TESTING DONE
     determineRoot();
     APLabellingInitialization();
 }
@@ -195,13 +177,16 @@ void MeltSortGrowBlockCode::findMobileModule() {
                     unprocessedNeighbor, 100, 0);
     } else if (source) {
         // No more module paths to explore
-        catom->setColor(BLUE); // #TOREMOVE todo
-        cout << "Reached NIE" << endl;
-        throw NotImplementedException();
+        catom->setColor(BLUE); // #TOREMOVE tod
+        throw "EXCEPTION (findMobileModuleMessages.cpp:107): Disabled growth for testing";
     } else {
         sendMessage("FindMobileModuleNotFound",
                     new FindMobileModuleNotFoundMessage(),
                     meltFather, 100, 0);
+
+        // ??
+        // bc->meltFather = NULL;
+        // bc->resetDFSFlags();
     }
 }
 
@@ -605,6 +590,29 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
 
+        case EVENT_ROTATION3D_END: {
+            if (!meltRotationsPlan.empty()) {                    
+                Catoms3DMotionRulesLink *nextRotation = meltRotationsPlan.front();
+                pivotLinkConId = nextRotation->getConToID();
+                meltRotationsPlan.pop_front();
+                nextRotation->sendRotationEvent(catom, rotationPlanPivot,
+                                                getScheduler()->now() + 100);
+            } else {
+                if (!path.empty()) { // Not in place yet                
+                    // Check if next path hop has been reached
+                    auto it = path.end(); it--;
+                    assert((*it) == path.back());
+                    PathHop& nextHop = *(--it);
+                    
+                    if (nextHop.isInVicinityOf(catom->position)) path.pop_back();
+
+                    tryNextMeltRotation(path);
+                } else {
+                    cout << "Not really" << endl;
+                }
+            }
+        } break;
+            
         case EVENT_TAP: {
             for (const auto &pair : flag)
                 cout << pair.first->connectedInterface->hostBlock->blockId << endl;
@@ -668,4 +676,50 @@ P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
     }
 
     return NULL;
+}
+
+
+bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
+
+    // List all connectors that could be filled in order to connect
+    //  a neighbor module to the last hop or that would help reach parent's path connectors
+    PathHop lastHop = path.back();
+    std::vector<short> parentPathDirections;
+    lastHop.getConnectorsByIncreasingDistance(parentPathDirections);
+
+    std::vector<short> adjacentPathConnectors;
+    std::map<short, short> neighborDirConMapping;
+    for (short nDirection : parentPathDirections) {
+        short conProj = catom->
+            projectAbsoluteNeighborDirection(lastHop.getPosition(), nDirection);
+        if (conProj > -1) {
+            adjacentPathConnectors.push_back(conProj);
+            neighborDirConMapping[conProj] = nDirection;
+        }
+    }
+        
+    vector<Catoms3DMotionRulesLink*> mrl;
+    API::getMotionRulesFromConnector(catom, pivotLinkConId, mrl);
+            
+    // Mobile Module:
+    // Check if module can move to any of the adjacent path connectors of pivot.
+    // Input connector set is ordered by distance to target, so the search should stop
+    // as soon as a solution has been found
+    meltRotationsPlan.clear();
+    API::findConnectorsPath(mrl, pivotLinkConId, adjacentPathConnectors,
+                            meltRotationsPlan);
+            
+    if (!meltRotationsPlan.empty()) {
+        short dirTo = meltRotationsPlan.back()->getConToID();
+        lastHop.prune(neighborDirConMapping[dirTo]);
+        
+        Catoms3DMotionRulesLink *nextRotation = meltRotationsPlan.front();
+        meltRotationsPlan.pop_front();
+        nextRotation->sendRotationEvent(catom, catom->getNeighborOnCell(lastHop.getPosition()),
+                                        getScheduler()->now() + 100);
+        return true;
+    } else {
+        cout << "Could not compute feasible rotation plan to parent" << endl;
+        exit(1);
+    }
 }

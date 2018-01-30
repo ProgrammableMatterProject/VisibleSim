@@ -122,11 +122,6 @@ class Catoms3DMotionRules {
 public:    
     Catoms3DMotionRules();
     virtual ~Catoms3DMotionRules();
-
-    /** \brief See what I was trying to do here?
-        \todo */
-    short mapConnectorOntoModule(Catoms3DBlock *catom,
-                                 short conLinkCatom, short conToPivot);
     
     /**
        \brief Returns if c3d catom is able to turn from the orientation fromId to the toId one
@@ -148,19 +143,7 @@ public:
        \brief Get the list of valid motion rules from any connector of a C3D catom
        \param c3d The catom whose rotation is being considered
        \param vec an output vector of the resulting valid motion rules
-       \return return true if at least one rotation is possible, false otherwise
-       \attention 
-       \todo */
-    bool getValidRotationsListForCatom(const Catoms3DBlock* c3d,
-                                       vector<Catoms3DMotionRulesLink*>& vec);
-
-    /**
-       \brief Get the list of valid motion rules from any connector of a C3D catom
-       \param c3d The catom whose rotation is being considered
-       \param vec an output vector of the resulting valid motion rules
-       \return return true if at least one rotation is possible, false otherwise
-       \attention 
-       \todo */
+       \return return true if at least one rotation is possible, false otherwise */
     bool getValidMotionListFromPivot(const Catoms3DBlock* pivot, int from,
                                      vector<Catoms3DMotionRulesLink*>&vec,
                                      const FCCLattice *lattice,const Target *target);
@@ -171,7 +154,6 @@ public:
        \param links A vector reference that will hold all the solution links (\attention {PTHA: a set might be better suited})
        \return true if at least one link exists, false otherwise (\attention{PTHA: might not be necessary})
        \remarks This is different from finding a set of rotations that a module could perform, as in this case it's not the pivot catom that will perform the motion, hence there are fewer blocking constraints
-       \todo bpiranda / pthalamy - Implement function
      **/
     bool getValidSurfaceLinksOnCatom(const Catoms3DBlock* pivot,
                                      vector<Catoms3DMotionRulesLink*>& links);

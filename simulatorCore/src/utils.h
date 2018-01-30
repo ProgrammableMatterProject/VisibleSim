@@ -41,8 +41,57 @@ inline static void swap(int* a, int* b) {
 	*b = temp;
 }
 
+template< typename ContainerT, typename PredicateT >
+     void erase_if( ContainerT& items, const PredicateT& predicate ) {
+     for( auto it = items.begin(); it != items.end(); ) {
+          if( predicate(*it) ) it = items.erase(it);
+          else ++it;
+     }
+};
+ 
 } // namespace utils
 
 } // namespace BaseSimulator
+
+class Cell3DPosition;
+namespace Catoms3D {
+
+// Utility functions that return cell in direction d of a given Catoms3D Position
+typedef Cell3DPosition (*conProj)(const Cell3DPosition&);
+static const conProj CONPROJECTOR[12] {
+    [] (const Cell3DPosition &p) { return Cell3DPosition(p[0]+1, p[1], p[2]); },
+           
+       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0], p[1]+1, p[2]); },
+               
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0], p[1], p[2]+1):Cell3DPosition(p[0]+1, p[1]+1, p[2]+1); },
+
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0]-1, p[1], p[2]+1):Cell3DPosition(p[0], p[1]+1, p[2]+1); },
+
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0]-1, p[1]-1, p[2]+1):Cell3DPosition(p[0], p[1], p[2]+1); },
+
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0], p[1]-1, p[2]+1):Cell3DPosition(p[0]+1, p[1], p[2]+1); },
+
+       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0]-1, p[1], p[2]); },
+
+       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0], p[1]-1, p[2]); },
+           
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0]-1, p[1]-1, p[2]-1):Cell3DPosition(p[0], p[1], p[2]-1); },
+           
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0], p[1]-1, p[2]-1):Cell3DPosition(p[0]+1, p[1], p[2]-1); },
+           
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0], p[1], p[2]-1):Cell3DPosition(p[0]+1, p[1]+1, p[2]-1); },
+
+       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
+               Cell3DPosition(p[0]-1, p[1], p[2]-1):Cell3DPosition(p[0], p[1]+1, p[2]-1); },
+  };
+
+} // namespace Catoms3D
 
 #endif

@@ -125,14 +125,14 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
     vector<Cell3DPosition> neighborhood;
     vector<Cell3DPosition> relativeNCells =
         getRelativeConnectivity(pos);
-
+    
     for (Cell3DPosition p : relativeNCells) { // Check if each neighbor cell is in grid
         Cell3DPosition v = pos + p;
         if (isInGrid(v)) {
             neighborhood.push_back(v);         // Add its position to the result
         }
     }
-
+    
     return neighborhood;
 }
 

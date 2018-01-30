@@ -9,6 +9,10 @@
 
 #include <algorithm>
 
+#include "utils.h"
+#include "catoms3DWorld.h"
+#include "lattice.h"
+
 bool
 PathHop::getConnectors(std::set<short>& connectors) const {
     transform(conDistanceMap.begin(), conDistanceMap.end(),
@@ -42,6 +46,36 @@ PathHop::getDistance(short con) const {
         return -1;
 }
 
+
+bool
+PathHop::isInVicinityOf(const Cell3DPosition &pos) const {
+    vector<Cell3DPosition> neighborhood = getWorld()->lattice->
+        getNeighborhood(position);
+
+    for (auto const& pair : conDistanceMap)
+        if (neighborhood[pair.first] == pos) return true;
+    
+    // ONLY WORKS WITH C3D
+    // for (auto const& pair : conDistanceMap)
+    //     if (CONPROJECTOR[pair.first](position) == pos) return true;
+
+    return false;
+}
+
+void
+PathHop::prune(short connector) {
+    assert(conDistanceMap.find(connector) != conDistanceMap.end());
+    int dPrune = conDistanceMap[connector];
+
+    cout << "Prune " << connector << "(" << dPrune << ")" << endl
+         << *this << endl;
+    
+    utils::erase_if(conDistanceMap, [&](std::pair<short, int> pair) {
+            return (pair.second >= dPrune); // (pair.first != connector) && ?
+        });
+
+    cout << "Res: " << *this << endl;    
+}
 
 std::ostream& operator<<(std::ostream &stream, PathHop const& hop) {   
     stream << "Position: " << hop.position << endl

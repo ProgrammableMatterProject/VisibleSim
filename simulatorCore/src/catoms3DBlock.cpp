@@ -203,6 +203,15 @@ short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) const {
     return d > 0.1 ? -1 : i - 1;
 }
 
+Catoms3DBlock* Catoms3DBlock::getNeighborOnCell(const Cell3DPosition &pos) const {
+    Lattice *lattice = getWorld()->lattice;
+
+    if (!lattice->cellsAreAdjacent(position, pos)) return NULL;
+
+    return static_cast<Catoms3DBlock*>(lattice->getBlock(pos));
+}
+
+
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
