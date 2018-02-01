@@ -72,29 +72,6 @@ API::buildRotationSequenceToTarget(Catoms3DBlock *pivot,
     return !rotations.empty();
 }
 
-// bool
-// API::getAllLinksToConnector(const Catoms3DBlock *pivot,
-//                             short conId,
-//                             vector<Catoms3DMotionRulesLink*>&links)
-// {
-//     getMotionRules()->getValidMotionList(pivot, (int)conId, links);
-    
-//     return !links.empty();
-// }
-
-// bool
-// API::getAllLinks(const Catoms3DBlock *pivot,
-//                  vector<Catoms3DMotionRulesLink*>&links)
-// {
-//     for (short conId = 0; conId < 12; conId++) {
-//         // #TODO fixit
-//         // Pb: ne fournit pas les routes pour les interfaces déjà connectées
-//         getMotionRules()->getValidMotionList(pivot, (int)conId, links);
-//     }
-
-//     return !links.empty();
-// }
-
 bool API::getMotionRulesFromConnector(const Catoms3DBlock *catom,
                                       short conFrom,
                                       vector<Catoms3DMotionRulesLink*>& links)
@@ -294,44 +271,6 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
     return !shortestPath.empty(); // might be empty if no path found
 }
 
-// bool
-// API::findPathConnectors(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
-//                         short conTo,
-//                         set<short>& pathConnectors)
-// {
-//     for (auto const& mrl : motionRulesLinks) {
-//         if (mrl->getConToID() == conTo)
-//             pathConnectors.insert(mrl->getConFromID());
-//     }
-
-//     return !pathConnectors.empty(); // might be empty if no connectors
-// }
-
-// bool
-// API::findPathConnectors(const Catoms3DBlock *pivot,
-//                         short conTo,
-//                         set<short>& pathConnectors)
-// {
-//     vector<Catoms3DMotionRulesLink*> links;
-//     getAllLinks(pivot, links);
-
-//     return findPathConnectors(links, conTo, pathConnectors);
-// }
-
-// bool
-// API::findPathConnectors(const Catoms3DBlock *pivot,
-//                         const set<short>& consTo,
-//                         set<short>& pathConnectors)
-// {
-//     vector<Catoms3DMotionRulesLink*> links;
-//     getAllLinks(pivot, links);
-
-//     for (short conTo : consTo)
-//         findPathConnectors(links, conTo, pathConnectors);
-
-//     return !pathConnectors.empty();
-// }
-
 bool
 API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
                                         const PathHop hop,
@@ -353,16 +292,6 @@ API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
     return !adjacentConnectors.empty();
 }
 
-
-// NOT MSG SPECIFIC
-
-bool
-API::getConnectorsAdjacentToCell(Catoms3DBlock *catom,
-                                 const Cell3DPosition cell,
-                                 set<short>& pathConnectors)
-{
-    throw NotImplementedException();
-}
 
 short
 API::getConnectorForCell(Catoms3DBlock *catom, const Cell3DPosition cell)
