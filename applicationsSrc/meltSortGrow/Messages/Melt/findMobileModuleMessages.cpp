@@ -22,7 +22,7 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
         // List all connectors that could be filled in order to connect
         //  a neighbor module to the last hop or that would help reach parent's path connectors
-        PathHop lastHop = path.back();
+        PathHop& lastHop = path.back();
         std::vector<short> parentPathDirections;
         lastHop.getConnectorsByIncreasingDistance(parentPathDirections);
 

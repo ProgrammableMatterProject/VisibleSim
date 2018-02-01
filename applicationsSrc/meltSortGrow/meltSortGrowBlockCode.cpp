@@ -683,7 +683,9 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
 
     // List all connectors that could be filled in order to connect
     //  a neighbor module to the last hop or that would help reach parent's path connectors
-    PathHop lastHop = path.back();
+    PathHop &lastHop = path.back();
+    cout << "tryNextMeltRotation: " << "input path: " << lastHop << endl;
+    
     std::vector<short> parentPathDirections;
     lastHop.getConnectorsByIncreasingDistance(parentPathDirections);
 
@@ -714,12 +716,14 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
         lastHop.prune(neighborDirConMapping[dirTo]);
         
         Catoms3DMotionRulesLink *nextRotation = meltRotationsPlan.front();
+        pivotLinkConId = nextRotation->getConToID();
         meltRotationsPlan.pop_front();
         nextRotation->sendRotationEvent(catom, catom->getNeighborOnCell(lastHop.getPosition()),
                                         getScheduler()->now() + 100);
         return true;
     } else {
-        cout << "Could not compute feasible rotation plan to parent" << endl;
-        exit(1);
+        cout << "tryNextMeltRotation: Could not compute feasible rotation plan to parent" << endl;
     }
+
+    return false;
 }
