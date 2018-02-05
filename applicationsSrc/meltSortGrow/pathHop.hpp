@@ -53,10 +53,12 @@ public:
      * @param connector connector that has been choosen for movement */
     void prune(short connector);
 
+    /** @remarks No need to check for connectors because there should always be one hop per module in a given path */
     bool operator==(const PathHop &o) const
-        { return o.position == position; };
+        { return o.position == position && o.orientationCode == orientationCode; };
+    /** @remarks No need to check for connectors because there should always be one hop per module in a given path */
     bool operator!=(const PathHop &o) const
-        { return o.position != position; };
+        { return o.position != position || o.orientationCode != orientationCode; };
 
     friend std::ostream& operator<<(std::ostream &stream, PathHop const& hop);
 };

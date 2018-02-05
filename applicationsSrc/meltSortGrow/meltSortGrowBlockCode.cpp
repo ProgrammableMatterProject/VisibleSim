@@ -44,22 +44,24 @@ void MeltSortGrowBlockCode::startup() {
     rtg = (RelativeTargetGrid*)target;
 
     Catoms3DMotionRules *motionRules = Catoms3DWorld::getWorld()->getMotionRules();
-    short pivotDockingCon = 0;
-    short pivotOrientationCode = 0;
+    short pivotDockingCon = 2;
+    short pivotOrientationCode = 2;
     // std::set<short> pivotCons = { 7, 2, 10 };
-    std::set<short> pivotCons = { 1,2,3,4,5,6,7,8,9,10,11 };
-    short myDockingCon = 5;
-    short myOrientationCode = 11;
-    bool inverted = ((pivotOrientationCode % 11) + (myOrientationCode % 11)) == 1;
+    std::set<short> pivotCons = { 0,1,2,3,4,5,6,7,8,9,10,11 };
+    short myDockingCon = 11;
+    short myOrientationCode = 5;
+    bool inverted = ((pivotOrientationCode / 12) + (myOrientationCode / 12)) == 1;
+    cout << "inverted: " << inverted << " = " << (pivotOrientationCode / 12)
+         << " + " << (myOrientationCode / 12) << endl;
     
-    const std::vector<Catoms3DMotionRulesLink*> pivotConLinks =
-        motionRules->getMotionRulesLinksForConnector(pivotDockingCon);
+    // const std::vector<Catoms3DMotionRulesLink*> pivotConLinks =
+    //     motionRules->getMotionRulesLinksForConnector(pivotDockingCon);
 
-    cout << "Pivot con links: " << endl;
-    for (auto const& link : pivotConLinks) {
-        cout << *link << endl;
-    }
-    cout << "end Pivot con links" << endl << endl;
+    // cout << "Pivot con links: " << endl;
+    // for (auto const& link : pivotConLinks) {
+    //     cout << *link << endl;
+    // }
+    // cout << "end Pivot con links" << endl << endl;
 
     const short *pivotDockingConNeighbors =
         motionRules->getNeighborConnectors(pivotDockingCon);
