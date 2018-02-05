@@ -36,7 +36,8 @@ void Catoms3DBlock::setVisible(bool visible) {
     getWorld()->updateGlData(this,visible);
 }
 
-Matrix Catoms3DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,short code) {
+Matrix Catoms3DBlock::getMatrixFromPositionAndOrientation(const Cell3DPosition &pos,
+                                                          short code) {
     short orientation = code%12;
     short up = code/12;
 

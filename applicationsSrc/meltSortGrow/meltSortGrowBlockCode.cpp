@@ -43,6 +43,49 @@ void MeltSortGrowBlockCode::startup() {
     // targetCells = ((TargetGrid*)target)->getTargetCellsAsc();
     rtg = (RelativeTargetGrid*)target;
 
+    Catoms3DMotionRules *motionRules = Catoms3DWorld::getWorld()->getMotionRules();
+    short pivotDockingCon = 0;
+    short pivotOrientationCode = 0;
+    // std::set<short> pivotCons = { 7, 2, 10 };
+    std::set<short> pivotCons = { 1,2,3,4,5,6,7,8,9,10,11 };
+    short myDockingCon = 5;
+    short myOrientationCode = 11;
+    bool inverted = ((pivotOrientationCode % 11) + (myOrientationCode % 11)) == 1;
+    
+    const std::vector<Catoms3DMotionRulesLink*> pivotConLinks =
+        motionRules->getMotionRulesLinksForConnector(pivotDockingCon);
+
+    cout << "Pivot con links: " << endl;
+    for (auto const& link : pivotConLinks) {
+        cout << *link << endl;
+    }
+    cout << "end Pivot con links" << endl << endl;
+
+    const short *pivotDockingConNeighbors =
+        motionRules->getNeighborConnectors(pivotDockingCon);
+
+    cout << "Pivot docking con neighbors: " << endl;
+    for (short i = 0; i < 6; i++) {
+        cout << pivotDockingConNeighbors[i] << endl;
+    }
+    cout << "end Pivot docking con neighbors" << endl << endl;
+    
+    std::set<short> myCons;    
+    for (short i = 0; i < 6; i++) {
+        short c = pivotDockingConNeighbors[i];
+        
+        if (pivotCons.count(c)) {
+            short oppC = motionRules->getMirrorNeighborConnector(myDockingCon,
+                                                                 (ConnectorDirection)i,
+                                                                 inverted);
+            myCons.insert(oppC);
+
+            cout << c << " opp is -> " << oppC << endl;
+        }
+    }
+        
+    exit(1);
+    
     determineRoot();
     APLabellingInitialization();
 }

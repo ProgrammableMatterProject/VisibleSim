@@ -11,6 +11,58 @@ namespace Catoms3D {
 const int tabConnectors3[8][3] = { {0,2,5},{0,9,10},{1,2,3},{1,10,11},{3,4,6},{6,8,11},{4,5,7},{7,8,9}};
 const int tabConnectors4[6][4] = { {0,1,2,10},{1,3,6,11},{4,6,7,8},{0,5,7,9},{8,9,10,11},{2,3,4,5}};
 
+const short neighborConnector[12][6] = {
+    { 5, 2, 1, 10, 9, 7 }, // Con0
+    { 11, 10, 0, 2, 3, 6 }, // Con1
+    { 0, 5, 4, 3, 1, 10 }, // Con2
+    { 4, 6, 11, 1, 2, 5 }, // Con3
+    { 6, 3, 2, 5, 7, 8 }, // Con4
+    { 2, 0, 9, 7, 4, 3  }, // Con5
+    { 3, 4, 7, 8, 11, 1  }, // Con6
+    { 9, 8, 6, 4, 5, 0 }, // Con7
+    { 11, 6, 4, 7,  9, 10  }, // Con8
+    { 0, 10, 11, 8, 7, 5 }, // Con9
+    { 1, 11, 8, 9, 0, 2 }, // Con10
+    { 10, 1, 3, 6, 8, 6  }, // Con11
+};
+
+ConnectorDirection
+Catoms3DMotionRules::getMirrorConnectorDirection(ConnectorDirection d,
+                                                 bool inverted) {
+    switch (d) {
+        case NORTH_WEST: return inverted ? SOUTH_WEST : NORTH_EAST;
+        case NORTH_EAST: return inverted ? SOUTH_EAST : NORTH_WEST;
+        case SOUTH_WEST: return inverted ? NORTH_WEST : SOUTH_EAST;
+        case SOUTH_EAST: return inverted ? NORTH_EAST : SOUTH_WEST;
+        case EAST: return inverted ? EAST : WEST;
+        case WEST: return inverted ? WEST : EAST;
+        default: throw "invalid direction";
+    }
+}
+
+short Catoms3DMotionRules::getMirrorNeighborConnector(short conFrom, ConnectorDirection d,
+                                                      bool inverted) {
+    return conFrom >= 12 ?
+        -1 : neighborConnector[conFrom][getMirrorConnectorDirection(d, inverted)];
+}
+
+short Catoms3DMotionRules::getNeighborConnector(short conFrom, ConnectorDirection d) {
+    return conFrom >= 12 ? -1 : neighborConnector[conFrom][d];
+}
+
+const short *Catoms3DMotionRules::getNeighborConnectors(short conFrom) {
+    return conFrom >= 12 ? NULL : neighborConnector[conFrom];
+}
+
+const vector<Catoms3DMotionRulesLink*>&
+Catoms3DMotionRules::getMotionRulesLinksForConnector(short con) {
+    if (con < 0 || con > 11)
+        throw "error: invalid input connector";
+
+    return tabConnectors[con]->tabLinks;
+}
+    
+
 Catoms3DMotionRules::Catoms3DMotionRules() {
 
     // allocation of connectors

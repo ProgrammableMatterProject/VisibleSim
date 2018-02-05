@@ -7,6 +7,10 @@
 //!< \namespace Catoms3D
 namespace Catoms3D {
 enum MotionRuleLinkType { hexaFace, octaFace};
+enum ConnectorDirection { NORTH_WEST, NORTH_EAST,
+                          EAST,
+                          SOUTH_EAST, SOUTH_WEST,
+                          WEST };
 
 class Catoms3DMotionRulesLink;
 
@@ -122,6 +126,42 @@ class Catoms3DMotionRules {
 public:    
     Catoms3DMotionRules();
     virtual ~Catoms3DMotionRules();
+
+    /** 
+     * @brief Gets a collection containing all outgoing links from connector con
+     * @param con links source connector
+     * @return a reference to the vector of links for that connector
+     */
+    const vector<Catoms3DMotionRulesLink*>& getMotionRulesLinksForConnector(short con);
+    
+    /** 
+     * @brief Transforms the input connector direction and returns the result
+     * @param d input connector direction
+     * @param inverted if false, mirroring will be done relative to the y-axis, and x-axis if true (\attention{false is default if left unspecified})
+     * @return mirror connector of input direction d
+     */
+    static ConnectorDirection getMirrorConnectorDirection(ConnectorDirection d,
+                                                          bool inverted = false);
+
+    /** 
+     * @brief Returns connector in mirror direction of d from connector conFrom 
+     * @param conFrom source connector 
+     * @param d connector direction that must be mirrored to find mirror neighbor
+     * @param inverted if false, mirroring will be done relative to the y-axis, and x-axis if true (\attention{false is default if left unspecified})
+     * @return connector in mirror direction of d from connector conFrom, or -1 if conFrom invalid
+     */
+    static short getMirrorNeighborConnector(short conFrom, ConnectorDirection d,
+                                            bool inverted = false);
+
+    /** 
+     * @brief Returns connector in direction d from conFrom
+     * @param conFrom source connector
+     * @param d direction of the neighbor
+     * @return connector in direction d from conFrom, or -1 if input is invalid
+     */
+    static short getNeighborConnector(short conFrom, ConnectorDirection d);
+
+    static const short* getNeighborConnectors(short conFrom);
     
     /**
        \brief Returns if c3d catom is able to turn from the orientation fromId to the toId one
