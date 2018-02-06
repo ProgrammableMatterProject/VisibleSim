@@ -2,19 +2,30 @@
 #include "api.hpp"
 #include "catoms3DWorld.h"
 
+#include <algorithm>
+
 bool
-API::addModuleToPath(Catoms3DBlock *catom, list<PathHop>& path)
+API::addModuleToPath(Catoms3DBlock *catom,
+                     list<PathHop>& path,
+                     short pivotDockingConnector,
+                     short catomDockingConnector)
 {
-    if (path.empty())
-        return false;
-    
     // List all connectors that could be filled in order to connect
     //  a neighbor module to the last hop
-    PathHop lastHop = path.back();
     // cout << "addModuleToPath: " << "lastHop: " << lastHop << endl;
     
     std::map<short, int> pathConnectorsDistance;
-    findAdjacentConnectorsAndDistances(catom, lastHop, pathConnectorsDistance);    
+    if (!path.empty()) {
+        PathHop &lastHop = path.back();
+        findAdjacentConnectorsAndDistances(catom, lastHop,
+                                           pivotDockingConnector,
+                                           catomDockingConnector,
+                                           pathConnectorsDistance);
+    } else {
+        InitializeConnectorsAndDistances(pivotDockingConnector,
+                                         pathConnectorsDistance);
+    }
+    
     std::set<short> targetCons; // Adjacent target connectors on current module
     for (auto const& pair : pathConnectorsDistance) {
         targetCons.insert(pair.first);
@@ -25,19 +36,12 @@ API::addModuleToPath(Catoms3DBlock *catom, list<PathHop>& path)
 
     // Module cannot connect to path, notify caller
     if (pathConnectorsDistance.empty()) return false;
-
-    // Shift to absolute directions instead of connectors
-    std::map<short, int> pathAbsoluteDirectionsDistance;
-    for (auto const& pair : pathConnectorsDistance) {
-        short direction =  catom->getAbsoluteDirection(pair.first);
-        assert(direction > -1);
-
-        pathAbsoluteDirectionsDistance.insert({direction, pair.second});
-    }
     
     // Module can connect to path, create entry and add to path
     PathHop newHop = PathHop(catom->position, catom->orientationCode,
-                             pathAbsoluteDirectionsDistance);
+                             pathConnectorsDistance,
+                             path.empty());
+                             // pathAbsoluteDirectionsDistance);
 
     // cout << "addModuleToPath: " << "newHop: " << newHop << endl;
     path.push_back(newHop);
@@ -271,26 +275,84 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
     return !shortestPath.empty(); // might be empty if no path found
 }
 
+void
+API::InitializeConnectorsAndDistances(short tailConnector,
+                                      std::map<short, int>& adjacentConnectors)
+{
+    adjacentConnectors.insert({tailConnector, 0});
+}
+
+
 bool
 API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
-                                        const PathHop hop,
+                                        const PathHop& hop,
+                                        short pivotDockingConnector,
+                                        short catomDockingConnector,
                                         std::map<short, int>& adjacentConnectors)
 {
-    std::set<short> directions; hop.getConnectors(directions);
+    bool inverted = catom->areOrientationsInverted(hop.getOrientation());
+    bool lastHopIsSelf = catom->position == hop.getPosition();
     
-    // For each direction in last hop, project onto current module connectors
-    for (short direction : directions) {
-        short conDir = catom->projectAbsoluteNeighborDirection(hop.getPosition(), direction);
-        if (conDir > -1) {
-            // cout << "direction " << direction << " -> " << conDir << endl;
-            adjacentConnectors.insert({conDir, hop.getDistance(direction)});
-        } // else {
-        //     cout << "direction " << direction << " -> NA" << endl;
-        // }
+    const short *pivotDockingConNeighbors =
+        getMotionRules()->getNeighborConnectors(pivotDockingConnector);
+    std::set<short> pivotCons; hop.getConnectors(pivotCons);
+    
+    for (short i = 0; i < 6; i++) {
+        short c = pivotDockingConNeighbors[i];
+                      
+        if (lastHopIsSelf || pivotCons.count(c)) {
+            short oppC = getMotionRules()->
+                getMirrorNeighborConnector(catomDockingConnector, (ConnectorDirection)i,
+                                           inverted);
+            adjacentConnectors.insert({oppC, lastHopIsSelf ? 1 : hop.getDistance(c)});
+
+            cout << c << " opp is -> " << oppC << " (" << hop.getDistance(c)
+                 << ")" << endl;
+        }
     }
 
     return !adjacentConnectors.empty();
 }
+
+bool
+API::findAdjacentConnectors(const Catoms3DBlock *catom,
+                            PathHop& hop,
+                            short pivotDockingConnector,
+                            short catomDockingConnector,
+                            std::vector<short>& adjacentConnectors,
+                            std::map<short, short>& mirrorConnector)
+{
+    std::vector<short> inputConnectors;
+    hop.getConnectorsByIncreasingDistance(inputConnectors);
+
+    bool inverted = catom->areOrientationsInverted(hop.getOrientation());
+    bool lastHopIsSelf = catom->position == hop.getPosition();
+
+    const short *pivotDockingConNeighbors =
+        getMotionRules()->getNeighborConnectors(pivotDockingConnector);
+
+    for (short c : inputConnectors) {
+        auto pdcn_end = pivotDockingConNeighbors + 6;
+        auto it = std::find(pivotDockingConNeighbors,
+                            pdcn_end,
+                            c);
+        if (lastHopIsSelf || it != pdcn_end) {
+            short idx = std::distance(pivotDockingConNeighbors, it);
+            short oppC = getMotionRules()->
+                getMirrorNeighborConnector(catomDockingConnector,
+                                           (ConnectorDirection)idx,
+                                           inverted);
+            adjacentConnectors.push_back(oppC);
+            mirrorConnector[oppC] = c;
+            
+            cout << c << " opp is -> " << oppC
+                 << " (" << hop.getDistance(c) << ")" << endl;
+        } 
+    }
+
+    return !adjacentConnectors.empty();
+}
+
 
 
 short

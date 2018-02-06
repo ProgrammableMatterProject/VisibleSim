@@ -34,15 +34,17 @@ class API {
 public:
 
     /** 
-        \brief Add a new path entry at the back of the path hop list
-        \param catom the module for which a hop entry needs to be created
-        \param path the path hop list to which the hop entry will be appended
-        \return false is the catom cannot be connected to the path, true otherwise
-        \attention path must be initialized and thus contain at least one entry
-        \todo PTHA
+        @brief Add a new path entry at the back of the path hop list
+        @param catom the module for which a hop entry needs to be created
+        @param path the path hop list to which the hop entry will be appended
+        @param pivotDockingConnector id of the pivot's connector that is connected to the computing catom 
+        @param catomDockingConnector id of the computing catom's connector that is connected to the pivot         
+        @return false is the catom cannot be connected to the path, true otherwise
     **/
-    static bool addModuleToPath(Catoms3DBlock *catom, list<PathHop>& path);
-
+    static bool addModuleToPath(Catoms3DBlock *catom,
+                                list<PathHop>& path,
+                                short pivotDockingConnector,
+                                short catomDockingConnector);
     
     /** 
         \brief Builds a sequence of rotation that goes from a catom's current location to the target of the path
@@ -138,15 +140,41 @@ public:
                                            short conFrom,
                                            std::map<short, int>& distance);
 
+    /** 
+     * @brief Initializes a distance map with tailconnector and distance 0
+     * @param tailConnector tail connector that will be used for init
+     * @param adjacentConnectors Output distance map 
+     */
+    static void InitializeConnectorsAndDistances(short tailConnector,
+                                                 std::map<short, int>& adjacentConnectors);
+
 /**
-   \brief Given a set of connector IDs and the orientation of the module to which they belong, determine which connectors of the current module are adjacent to those contained in the input set (Keys of input map). 
-   \remarks Two connectors of opposing modules are adjacent if a third module could fill a position where both connectors are connected to that module at the same time
-   \param catom a pointer to the reference module 
-   \param pathHop the path hop to consider 
-   \param adjacentConnectors output map of all connectors of module with orientation orientationCode that are adjacent to the connectors in the input set, and their distance to some target */
+   @brief Given a set of connector IDs and the orientation of the module to which they belong, determine which connectors of the current module are adjacent to those contained in the input set (Keys of input map). 
+   @param catom a pointer to the reference module 
+   @param hop the path hop to consider 
+   @param pivotDockingConnector id of the pivot's connector that is connected to the computing catom 
+   @param catomDockingConnector id of the computing catom's connector that is connected to the pivot 
+   @param adjacentConnectors output map of all connectors of module with orientation orientationCode that are adjacent to the connectors in the input set, and their distance to some target */
     static bool findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
-                                                   const PathHop hop,
+                                                   const PathHop& hop,
+                                                   short pivotDockingConnector,
+                                                   short catomDockingConnector,
                                                    std::map<short, int>& adjacentConnectors);
+
+    /**
+   @brief Given a set of connector IDs and the orientation of the module to which they belong, determine which connectors of the current module are adjacent to those contained in the input vector
+   @param catom a pointer to the reference module 
+   @param hop the path hop to consider 
+   @param pivotDockingConnector id of the pivot's connector that is connected to the computing catom 
+   @param catomDockingConnector id of the computing catom's connector that is connected to the pivot 
+   @param adjacentConnectors output vector of all mirrored connectors of module with orientation orientationCode that are adjacent to the connectors in the input set, in the same order as input connectors 
+   @param mirrorConnector mapping from mirror adjacent connectors to their input counterparts  */
+    static bool findAdjacentConnectors(const Catoms3DBlock *catom,
+                                       PathHop& hop,
+                                       short pivotDockingConnector,
+                                       short catomDockingConnector,
+                                       std::vector<short>& adjacentConnectors,
+                                       std::map<short, short>& mirrorConnector);
 
 /**
    \brief Returns the ID of the connector of a given catom that is connected to the input lattice position

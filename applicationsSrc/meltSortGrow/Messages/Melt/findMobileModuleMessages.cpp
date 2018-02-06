@@ -14,7 +14,8 @@ FindMobileModuleMessage::FindMobileModuleMessage(list<PathHop> _path)
 void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
     sender = static_cast<Catoms3DBlock*>(sourceInterface->hostBlock);
-    short pivotLinkConId = bc->catom->getDirection(destinationInterface);
+    short catomDockingConnector = bc->catom->getDirection(destinationInterface);
+    short pivotDockingConnector = sender->getDirection(sourceInterface); // so-so
     
     if (!bc->meltFather) {
         bc->meltFather = destinationInterface;
@@ -23,35 +24,28 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
         // List all connectors that could be filled in order to connect
         //  a neighbor module to the last hop or that would help reach parent's path connectors
         PathHop& lastHop = path.back();
-        std::vector<short> parentPathDirections;
-        lastHop.getConnectorsByIncreasingDistance(parentPathDirections);
 
         std::vector<short> adjacentPathConnectors;
-        std::map<short, short> neighborDirConMapping;
-        for (short nDirection : parentPathDirections) {
-            short conProj = bc->catom->
-                projectAbsoluteNeighborDirection(lastHop.getPosition(), nDirection);
-            if (conProj > -1) {
-                adjacentPathConnectors.push_back(conProj);
-                neighborDirConMapping[conProj] = nDirection;
-            }
-        }
+        std::map<short, short> mirrorConnector;
+        API::findAdjacentConnectors(bc->catom, lastHop,
+                                    pivotDockingConnector, catomDockingConnector,
+                                    adjacentPathConnectors, mirrorConnector);
         
         if (!bc->articulationPoint && !bc->melted) {
             vector<Catoms3DMotionRulesLink*> mrl;
-            API::getMotionRulesFromConnector(bc->catom, pivotLinkConId, mrl);
+            API::getMotionRulesFromConnector(bc->catom, catomDockingConnector, mrl);
             
             // Mobile Module:
             // Check if module can move to any of the adjacent path connectors of pivot.
             // Input connector set is ordered by distance to target, so the search should stop
             // as soon as a solution has been found
             bc->meltRotationsPlan.clear();
-            API::findConnectorsPath(mrl, pivotLinkConId, adjacentPathConnectors,
+            API::findConnectorsPath(mrl, catomDockingConnector, adjacentPathConnectors,
                                     bc->meltRotationsPlan);
             
             if (!bc->meltRotationsPlan.empty()) {
                 short dirTo = bc->meltRotationsPlan.back()->getConToID();
-                lastHop.prune(neighborDirConMapping[dirTo]);
+                lastHop.prune(mirrorConnector[dirTo]);
                 
                 Catoms3DMotionRulesLink *nextRotation = bc->meltRotationsPlan.front();
                 bc->pivotLinkConId = nextRotation->getConToID();
@@ -69,7 +63,9 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
         // If module not mobile or a movement path could not be found,
         //  then propagate search to children
         bc->path = this->path;
-        bool moduleCanBeHop = API::addModuleToPath(bc->catom, bc->path);
+        bool moduleCanBeHop = API::addModuleToPath(bc->catom, bc->path,
+                                                   pivotDockingConnector,
+                                                   catomDockingConnector);
         if (moduleCanBeHop) {
             bc->findMobileModule();
         } else {

@@ -40,53 +40,7 @@ void MeltSortGrowBlockCode::startup() {
 
     info << "Starting ";
 
-    // targetCells = ((TargetGrid*)target)->getTargetCellsAsc();
     rtg = (RelativeTargetGrid*)target;
-
-    Catoms3DMotionRules *motionRules = Catoms3DWorld::getWorld()->getMotionRules();
-    short pivotDockingCon = 2;
-    short pivotOrientationCode = 2;
-    // std::set<short> pivotCons = { 7, 2, 10 };
-    std::set<short> pivotCons = { 0,1,2,3,4,5,6,7,8,9,10,11 };
-    short myDockingCon = 11;
-    short myOrientationCode = 5;
-    bool inverted = ((pivotOrientationCode / 12) + (myOrientationCode / 12)) == 1;
-    cout << "inverted: " << inverted << " = " << (pivotOrientationCode / 12)
-         << " + " << (myOrientationCode / 12) << endl;
-    
-    // const std::vector<Catoms3DMotionRulesLink*> pivotConLinks =
-    //     motionRules->getMotionRulesLinksForConnector(pivotDockingCon);
-
-    // cout << "Pivot con links: " << endl;
-    // for (auto const& link : pivotConLinks) {
-    //     cout << *link << endl;
-    // }
-    // cout << "end Pivot con links" << endl << endl;
-
-    const short *pivotDockingConNeighbors =
-        motionRules->getNeighborConnectors(pivotDockingCon);
-
-    cout << "Pivot docking con neighbors: " << endl;
-    for (short i = 0; i < 6; i++) {
-        cout << pivotDockingConNeighbors[i] << endl;
-    }
-    cout << "end Pivot docking con neighbors" << endl << endl;
-    
-    std::set<short> myCons;    
-    for (short i = 0; i < 6; i++) {
-        short c = pivotDockingConNeighbors[i];
-        
-        if (pivotCons.count(c)) {
-            short oppC = motionRules->getMirrorNeighborConnector(myDockingCon,
-                                                                 (ConnectorDirection)i,
-                                                                 inverted);
-            myCons.insert(oppC);
-
-            cout << c << " opp is -> " << oppC << endl;
-        }
-    }
-        
-    exit(1);
     
     determineRoot();
     APLabellingInitialization();
@@ -202,15 +156,15 @@ void MeltSortGrowBlockCode::initializeMeltPath() {
     // Set next position to be filled
     tailPosition = new Cell3DPosition(catom->position - Cell3DPosition(1, 0, 0));
     tailConId = catom->getConnectorId(*tailPosition);
-    cout << tailConId << endl;
+    cout << "Tail is " << tailConId << endl;
 
     // Initially only the target connector needs be in the path 
-    path.push_back(PathHop(catom->position, catom->orientationCode,
-                           { {catom->getAbsoluteDirection(tailConId), 0} }) // Inline map init
-        );
+    // path.push_back(PathHop(catom->position, catom->orientationCode,
+    //                        { {tailConId, 0} }) // Inline map init
+    //     );
 
     // Add self as the next hop of the path
-    API::addModuleToPath(catom, path);
+    API::addModuleToPath(catom, path, tailConId, tailConId);
 }
 
 void MeltSortGrowBlockCode::findMobileModule() {    
@@ -643,13 +597,22 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                 nextRotation->sendRotationEvent(catom, rotationPlanPivot,
                                                 getScheduler()->now() + 100);
             } else {
-                if (!path.empty()) { // Not in place yet                
+                if (!path.empty()) { // Not in place yet
                     // Check if next path hop has been reached
-                    auto it = path.end(); it--;
-                    assert((*it) == path.back());
-                    PathHop& nextHop = *(--it);
+                    auto lastHop = path.back();
+
+                    if (!lastHop.isFinalTarget()) {
+                        auto it = std::prev(path.end());
+                        assert((*it) == path.back());
+                        PathHop& nextHop = *(std::prev(it));
                     
-                    if (nextHop.isInVicinityOf(catom->position)) path.pop_back();
+                        if (nextHop.isInVicinityOf(catom->position)) path.pop_back();
+                    } else {
+                        if (lastHop.finalTargetReached()) {
+                            cout << "Final position reached perhaps" << endl;
+                            return;
+                        }
+                    }
 
                     tryNextMeltRotation(path);
                 } else {
@@ -730,36 +693,32 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
     //  a neighbor module to the last hop or that would help reach parent's path connectors
     PathHop &lastHop = path.back();
     cout << "tryNextMeltRotation: " << "input path: " << lastHop << endl;
-    
-    std::vector<short> parentPathDirections;
-    lastHop.getConnectorsByIncreasingDistance(parentPathDirections);
+
+    short catomDockingConnector = pivotLinkConId;
+    short pivotDockingConnector =
+        lastHop.getHopConnectorAtPosition(catom->position); // so-so
 
     std::vector<short> adjacentPathConnectors;
-    std::map<short, short> neighborDirConMapping;
-    for (short nDirection : parentPathDirections) {
-        short conProj = catom->
-            projectAbsoluteNeighborDirection(lastHop.getPosition(), nDirection);
-        if (conProj > -1) {
-            adjacentPathConnectors.push_back(conProj);
-            neighborDirConMapping[conProj] = nDirection;
-        }
-    }
+    std::map<short, short> mirrorConnector;
+    API::findAdjacentConnectors(catom, lastHop,
+                                pivotDockingConnector, catomDockingConnector,
+                                adjacentPathConnectors, mirrorConnector);
         
     vector<Catoms3DMotionRulesLink*> mrl;
-    API::getMotionRulesFromConnector(catom, pivotLinkConId, mrl);
+    API::getMotionRulesFromConnector(catom, catomDockingConnector, mrl);
             
     // Mobile Module:
     // Check if module can move to any of the adjacent path connectors of pivot.
     // Input connector set is ordered by distance to target, so the search should stop
     // as soon as a solution has been found
     meltRotationsPlan.clear();
-    API::findConnectorsPath(mrl, pivotLinkConId, adjacentPathConnectors,
+    API::findConnectorsPath(mrl, catomDockingConnector, adjacentPathConnectors,
                             meltRotationsPlan);
             
     if (!meltRotationsPlan.empty()) {
         short dirTo = meltRotationsPlan.back()->getConToID();
-        lastHop.prune(neighborDirConMapping[dirTo]);
-        
+        lastHop.prune(mirrorConnector[dirTo]);
+                
         Catoms3DMotionRulesLink *nextRotation = meltRotationsPlan.front();
         pivotLinkConId = nextRotation->getConToID();
         meltRotationsPlan.pop_front();

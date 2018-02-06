@@ -11,7 +11,10 @@
 
 #include "utils.h"
 #include "catoms3DWorld.h"
+#include "catoms3DBlock.h"
 #include "lattice.h"
+
+using namespace Catoms3D;
 
 bool
 PathHop::getConnectors(std::set<short>& connectors) const {
@@ -46,20 +49,24 @@ PathHop::getDistance(short con) const {
         return -1;
 }
 
+short
+PathHop::getHopConnectorAtPosition(const Cell3DPosition &pos) const {
+    Catoms3DBlock *pivot = static_cast<Catoms3DBlock*>(
+        Catoms3DWorld::getWorld()->lattice->getBlock(position));
+    
+    return pivot->getConnectorId(pos);
+}
 
 bool
 PathHop::isInVicinityOf(const Cell3DPosition &pos) const {
-    vector<Cell3DPosition> neighborhood = getWorld()->lattice->
-        getNeighborhood(position);
-
-    for (auto const& pair : conDistanceMap)
-        if (neighborhood[pair.first] == pos) return true;
+    short conToFind = getHopConnectorAtPosition(pos);
     
-    // ONLY WORKS WITH C3D
-    // for (auto const& pair : conDistanceMap)
-    //     if (CONPROJECTOR[pair.first](position) == pos) return true;
+    return conDistanceMap.find(conToFind) != conDistanceMap.end();  
+}
 
-    return false;
+bool
+PathHop::finalTargetReached() const {
+    return conDistanceMap.empty();
 }
 
 void

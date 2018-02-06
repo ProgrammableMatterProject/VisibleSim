@@ -16,12 +16,26 @@ using namespace Catoms3D;
 int main(int argc, char **argv) {
 	cout << "\033[1;33m" << "Starting Catom3D simulation (main) ..." << "\033[0m" << endl;
 
-	createSimulator(argc, argv, MeltSortGrowBlockCode::buildNewBlockCode);
-	getSimulator()->printInfo();
-	BaseSimulator::getWorld()->printInfo();
-	deleteSimulator();
+    try
+    {
+        createSimulator(argc, argv, MeltSortGrowBlockCode::buildNewBlockCode);
+        getSimulator()->printInfo();
+        BaseSimulator::getWorld()->printInfo();
+        deleteSimulator();
+    }
+    catch(std::logic_error const& err)
+    {
+        cerr << err.what();
+    }
+    catch (char const* msg)
+    {
+        cerr << msg << endl;
+    }
+    catch (std::exception e) {
+        cerr << "exeptiondwa" << endl;
+    }
 
-	cout << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
+    cout << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
 
-	return(0);
+	return 0;
 }

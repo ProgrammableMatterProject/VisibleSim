@@ -138,6 +138,12 @@ public:
     void setPositionAndOrientation(const Cell3DPosition &pos,short code);
 
     /** 
+     * @param otherOriCode Some other catom's orientation code
+     * @return true if both catoms' orientation are inverted relative to each other
+     */
+    bool areOrientationsInverted(short otherOriCode) const;
+    
+    /** 
      * @brief If position in argument is adjacent to current module, returns a pointer to the neighbor in that cell
      * @param pos position of the neighbor to retrieve
      * @return a pointer to the neighbor on cell pos or NULL if pos is not adjacent to the module or out of lattice

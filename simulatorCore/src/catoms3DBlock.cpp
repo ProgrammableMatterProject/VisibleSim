@@ -212,6 +212,9 @@ Catoms3DBlock* Catoms3DBlock::getNeighborOnCell(const Cell3DPosition &pos) const
     return static_cast<Catoms3DBlock*>(lattice->getBlock(pos));
 }
 
+bool Catoms3DBlock::areOrientationsInverted(short otherOriCode) const {
+    return ((orientationCode / 12) + (otherOriCode / 12)) == 1;
+}
 
 void Catoms3DBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
 #ifdef DEBUG_NEIGHBORHOOD
