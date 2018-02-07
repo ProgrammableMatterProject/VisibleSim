@@ -40,6 +40,21 @@ PathHop::getConnectorsByIncreasingDistance(vector<short>& sortedCons) {
     return !sortedCons.empty();
 }
 
+bool
+PathHop::getMinDistanceConnectors(set<short>& minCons) { 
+    vector<short> sortedCons; getConnectorsByIncreasingDistance(sortedCons);
+
+    int distMin = sortedCons.empty() ? -1 : conDistanceMap[sortedCons[0]];
+    for (auto it = sortedCons.begin();
+         it != sortedCons.end() && conDistanceMap[*it] == distMin;
+         it++)
+    {
+        minCons.insert(*it);
+    }
+    
+    return !minCons.empty();
+}
+
 int
 PathHop::getDistance(short con) const {
     auto pair = conDistanceMap.find(con);
@@ -53,6 +68,8 @@ short
 PathHop::getHopConnectorAtPosition(const Cell3DPosition &pos) const {
     Catoms3DBlock *pivot = static_cast<Catoms3DBlock*>(
         Catoms3DWorld::getWorld()->lattice->getBlock(position));
+
+    assert(pivot != NULL);
     
     return pivot->getConnectorId(pos);
 }
@@ -65,8 +82,22 @@ PathHop::isInVicinityOf(const Cell3DPosition &pos) const {
 }
 
 bool
+PathHop::catomIsAlreadyOnBestConnector(const Cell3DPosition &pos) {
+    set<short> minCons; getMinDistanceConnectors(minCons);
+    auto it = minCons.find(getHopConnectorAtPosition(pos));
+    bool found = it != minCons.end();
+    
+    return minCons.empty()
+        || found;
+}
+
+bool
 PathHop::finalTargetReached() const {
     return conDistanceMap.empty();
+}
+
+void PathHop::removeConnectorOnPosition(const Cell3DPosition &pos) {
+    conDistanceMap.erase(getHopConnectorAtPosition(pos));
 }
 
 void
@@ -74,8 +105,7 @@ PathHop::prune(short connector) {
     assert(conDistanceMap.find(connector) != conDistanceMap.end());
     int dPrune = conDistanceMap[connector];
 
-    cout << "Prune " << connector << "(" << dPrune << ")" << endl
-         << *this << endl;
+    cout << "Prune " << connector << "(" << dPrune << ")" << endl;
     
     utils::erase_if(conDistanceMap, [&](std::pair<short, int> pair) {
             return (pair.second >= dPrune); // (pair.first != connector) && ?

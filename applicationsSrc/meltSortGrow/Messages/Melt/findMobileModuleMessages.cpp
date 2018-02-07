@@ -8,7 +8,7 @@
 #include "findMobileModuleMessages.hpp"
 #include "../../api.hpp"
 
-FindMobileModuleMessage::FindMobileModuleMessage(list<PathHop> _path)
+FindMobileModuleMessage::FindMobileModuleMessage(vector<PathHop> _path)
     : path(_path) {}
 
 void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
@@ -27,6 +27,7 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
         std::vector<short> adjacentPathConnectors;
         std::map<short, short> mirrorConnector;
+        cout << endl << "Adding module " << bc->catom->blockId << " to path" << endl;
         API::findAdjacentConnectors(bc->catom, lastHop,
                                     pivotDockingConnector, catomDockingConnector,
                                     adjacentPathConnectors, mirrorConnector);
@@ -46,6 +47,14 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
             if (!bc->meltRotationsPlan.empty()) {
                 short dirTo = bc->meltRotationsPlan.back()->getConToID();
                 lastHop.prune(mirrorConnector[dirTo]);
+                // lastHop.removeConnectorOnPosition(bc->catom->position); 
+
+                // Notify father we are moving
+                // Path to pathConnectors is blocked
+                bc->sendMessage("FindMobileModuleFound",
+                                new FindMobileModuleFoundMessage(),
+                                bc->meltFather, 100, 0);
+
                 
                 Catoms3DMotionRulesLink *nextRotation = bc->meltRotationsPlan.front();
                 bc->pivotLinkConId = nextRotation->getConToID();
@@ -56,8 +65,10 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
                 bc->path = this->path;
                 return;
             } else {
-                cout << "Could not compute feasible rotation plan to parent" << endl;
+                cout << "Could not compute feasible rotation plan to parent, add myself to path" << endl;
             }
+        } else {
+            cout << "I am an articulation point, I cannot move" << endl;
         }
 
         // If module not mobile or a movement path could not be found,
@@ -73,6 +84,9 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
             bc->sendMessage("FindMobileModuleNotFound",
                             new FindMobileModuleNotFoundMessage(),
                             bc->meltFather, 100, 0);
+            // Prepare data structures for the mobile module search DFS
+            bc->resetDFSFlags();
+            bc->meltFather = NULL;
         }
     } else {
         // Module already in DFS tree
@@ -116,5 +130,6 @@ void FindMobileModuleFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
     }
 
     // Prepare data structures for the mobile module search DFS
-    bc->resetDFSForSearching();
+    bc->resetDFSFlags();
+    bc->meltFather = NULL;
 }

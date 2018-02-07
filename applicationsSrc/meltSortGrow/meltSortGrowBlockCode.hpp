@@ -75,11 +75,12 @@ public:
     P2PNetworkInterface *resetFather = NULL; //!< interface connected to the module which sent us a reset command first
 
     bool melted = false; //!< indicates whether module has already melted into the line
-    Cell3DPosition *tailPosition = NULL; //!< if defined, next position to be filled by the melt algorithm    
+    // Cell3DPosition *tailPosition = NULL; //!< if defined, next position to be filled by the melt algorithm    
     
     /* Path finding using connectors */
-    short tailConId; //!< Connector id corresponding to the position to be filled by the tail
-    list<PathHop> path; //!< 
+    // short tailConId; //!< Connector id corresponding to the position to be filled by the tai
+    
+    vector<PathHop> path; //!< 
     P2PNetworkInterface *meltFather = NULL; //!< l'id de module du last hop
     list<Catoms3DMotionRulesLink*> meltRotationsPlan; //!< Ordered list of rotation motions that a melting module has to follow to reach the end of the melt tail
     Catoms3DBlock *rotationPlanPivot = NULL;
@@ -110,7 +111,7 @@ public:
     /**
      * \brief Initialize the path position trail for the tail module leading the current Melt
      */
-    void initializeMeltPath();
+    bool initializeMeltPath();
          
     /**
      * \brief Searches the path positions of the module graph for a non-articulation point module DFS-style
@@ -169,7 +170,7 @@ public:
      * \return true if candidateRoot is fitter than current root, false otherwise */
     bool challengeRootFitness(Cell3DPosition& candidateRoot);
 
-    bool tryNextMeltRotation(list<PathHop>& path);
+    bool tryNextMeltRotation(vector<PathHop>& path);
 };
 
 #endif /* MELTSORTGROWBLOCKCODE_H_ */

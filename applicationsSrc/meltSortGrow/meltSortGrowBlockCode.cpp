@@ -68,10 +68,10 @@ void MeltSortGrowBlockCode::resetDFSForLabelling() {
     minSdr = NULL;
     source = false;
     state = APLState::Inactive;
-    tailPosition = NULL;
     
     // Next APL Reset
     resetFather = NULL;
+    meltFather = NULL;
 }
 
 void MeltSortGrowBlockCode::resetDFSForSearching() {
@@ -87,7 +87,7 @@ void MeltSortGrowBlockCode::resetDFSFlags() {
     neighbors.clear();
     
     for (P2PNetworkInterface *itf : catom->getP2PNetworkInterfaces()) {
-        if (itf->isConnected() && itf != growthParent) {
+        if (itf->isConnected() && itf != growthParent && itf != meltFather) {
             flag[itf] = false;
             neighbors.push_back(itf);
         }
@@ -130,12 +130,14 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
     } else if (source) { /* root checks for articulation point and terminates */
         if (sons.size() >= 2) articulationPoint = true;
         
-        initializeMeltPath();
+        bool meltStarted = initializeMeltPath();
 
-        // Prepare data structures for the mobile module search DFS
-        resetDFSForSearching();
+        if (meltStarted) {
+            // Prepare data structures for the mobile module search DFS
+            resetDFSForSearching();
 
-        findMobileModule();
+            findMobileModule();
+        }
     } else { /* a normal node has finished the visits to its subtree */
         if (minDfn < lDfn && minSdr != father)
             lDfn = minDfn; /* sets to the smaller min. DFN from ancestors */            
@@ -152,19 +154,29 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
     
 }
 
-void MeltSortGrowBlockCode::initializeMeltPath() {    
+bool MeltSortGrowBlockCode::initializeMeltPath() {    
     // Set next position to be filled
-    tailPosition = new Cell3DPosition(catom->position - Cell3DPosition(1, 0, 0));
-    tailConId = catom->getConnectorId(*tailPosition);
-    cout << "Tail is " << tailConId << endl;
+    Cell3DPosition tailPosition = catom->position - Cell3DPosition(1, 0, 0);
 
-    // Initially only the target connector needs be in the path 
-    // path.push_back(PathHop(catom->position, catom->orientationCode,
-    //                        { {tailConId, 0} }) // Inline map init
-    //     );
+    if (lattice->isInGrid(tailPosition)) {
+        short tailConId = catom->getConnectorId(tailPosition);
+        cout << "Tail is " << tailConId << endl;
 
-    // Add self as the next hop of the path
-    API::addModuleToPath(catom, path, tailConId, tailConId);
+        // Initially only the target connector needs be in the path 
+        // path.push_back(PathHop(catom->position, catom->orientationCode,
+        //                        { {tailConId, 0} }) // Inline map init
+        //     );
+
+        // Add self as the next hop of the path
+        API::addModuleToPath(catom, path, tailConId, tailConId);
+
+        return true;
+    } else {
+        catom->setColor(RED);
+        grow();
+
+        return false;
+    }
 }
 
 void MeltSortGrowBlockCode::findMobileModule() {    
@@ -176,16 +188,13 @@ void MeltSortGrowBlockCode::findMobileModule() {
                     unprocessedNeighbor, 100, 0);
     } else if (source) {
         // No more module paths to explore
-        catom->setColor(BLUE); // #TOREMOVE tod
-        throw "EXCEPTION (findMobileModuleMessages.cpp:107): Disabled growth for testing";
+        catom->setColor(BLUE); // #TOREMOVE todo
+        grow();
     } else {
         sendMessage("FindMobileModuleNotFound",
                     new FindMobileModuleNotFoundMessage(),
                     meltFather, 100, 0);
-
-        // ??
-        // bc->meltFather = NULL;
-        // bc->resetDFSFlags();
+        resetDFSFlags();
     }
 }
 
@@ -494,7 +503,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
                 console << "Moving to " << goalPosition << "!" << "\n";
                 scheduler->schedule(new TeleportationStartEvent(scheduler->now() + 150,
                                                                 catom, goalPosition));
-            }            
+            } 
         } break;
 
         case MSG_GROW_FINDPATH_NOTFOUND:
@@ -601,22 +610,29 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                     // Check if next path hop has been reached
                     auto lastHop = path.back();
 
-                    if (!lastHop.isFinalTarget()) {
-                        auto it = std::prev(path.end());
-                        assert((*it) == path.back());
-                        PathHop& nextHop = *(std::prev(it));
-                    
-                        if (nextHop.isInVicinityOf(catom->position)) path.pop_back();
+                    // Case 1: This is not the final hop
+                    if (path.size() > 1) {
+                        PathHop& nextHop = *(std::prev(std::prev(path.end())));
+
+                        // Next hop is within reach, clear current hop
+                        if (nextHop.isInVicinityOf(catom->position))
+                            path.pop_back();
                     } else {
                         if (lastHop.finalTargetReached()) {
-                            cout << "Final position reached perhaps" << endl;
+                            path.pop_back();
+                            cout << "Final hop is empty, we should be done 2" << endl;
+
+                            melted = true;
+                            propagateGraphResetBFS();
+                            
                             return;
                         }
+                        
                     }
-
+                    
                     tryNextMeltRotation(path);
                 } else {
-                    cout << "Not really" << endl;
+                    cout << "Final hop is empty, we should be done" << endl;
                 }
             }
         } break;
@@ -687,14 +703,19 @@ P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
 }
 
 
-bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
-
+bool MeltSortGrowBlockCode::tryNextMeltRotation(vector<PathHop>& path) {
+    if (path.empty()) {
+        cout << "catom has reach target location" << endl;
+        melted = true;
+        return false;
+    }
+        
     // List all connectors that could be filled in order to connect
     //  a neighbor module to the last hop or that would help reach parent's path connectors
     PathHop &lastHop = path.back();
     cout << "tryNextMeltRotation: " << "input path: " << lastHop << endl;
 
-    short catomDockingConnector = pivotLinkConId;
+    short catomDockingConnector = catom->getConnectorId(lastHop.getPosition());
     short pivotDockingConnector =
         lastHop.getHopConnectorAtPosition(catom->position); // so-so
 
@@ -718,11 +739,15 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
     if (!meltRotationsPlan.empty()) {
         short dirTo = meltRotationsPlan.back()->getConToID();
         lastHop.prune(mirrorConnector[dirTo]);
-                
+        // lastHop.removeConnectorOnPosition(catom->position);
+        
         Catoms3DMotionRulesLink *nextRotation = meltRotationsPlan.front();
-        pivotLinkConId = nextRotation->getConToID();
+
+        cout << "Moving : " << *nextRotation << endl << endl;
+        
         meltRotationsPlan.pop_front();
-        nextRotation->sendRotationEvent(catom, catom->getNeighborOnCell(lastHop.getPosition()),
+        nextRotation->sendRotationEvent(catom,
+                                        catom->getNeighborOnCell(lastHop.getPosition()),
                                         getScheduler()->now() + 100);
         return true;
     } else {

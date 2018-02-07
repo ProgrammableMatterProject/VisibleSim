@@ -26,6 +26,10 @@ const short neighborConnector[12][6] = {
     { 10, 1, 3, 6, 8, 9 }, // Con11 LEFT
 };
 
+const ConnectorOrientation defaultOrientation[12] = {
+    UP, DOWN, LEFT, RIGHT, LEFT, RIGHT, UP, DOWN, RIGHT, LEFT, RIGHT, LEFT
+};
+
 ConnectorDirection
 Catoms3DMotionRules::getMirrorConnectorDirection(ConnectorDirection d,
                                                  bool inverted) {
@@ -88,8 +92,8 @@ Catoms3DMotionRules::Catoms3DMotionRules() {
     addLinks4(6,4,7,8,left,lup,rup);
     addLinks4(1,3,6,11,right,-rup,-lup);
     addLinks4(7,5,0,9,right,-rup,-lup);
-    addLinks4(2,5,4,3,left,lup,rup);
-    addLinks4(8,9,10,11,right,-rup,-lup);
+    addLinks4(2,5,4,3,right,lup,rup); // PTHA: CHECK
+    addLinks4(8,9,10,11,left,-rup,-lup); // PTHA: CHECK
 }
 
 Catoms3DMotionRules::~Catoms3DMotionRules() {

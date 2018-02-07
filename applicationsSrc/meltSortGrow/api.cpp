@@ -6,7 +6,7 @@
 
 bool
 API::addModuleToPath(Catoms3DBlock *catom,
-                     list<PathHop>& path,
+                     vector<PathHop>& path,
                      short pivotDockingConnector,
                      short catomDockingConnector)
 {
@@ -46,13 +46,16 @@ API::addModuleToPath(Catoms3DBlock *catom,
     // cout << "addModuleToPath: " << "newHop: " << newHop << endl;
     path.push_back(newHop);
 
+    for (PathHop& hop : path) cout << hop << endl;
+    cout << endl;
+    
     return true;
 }
 
 bool
 API::buildRotationSequenceToTarget(Catoms3DBlock *pivot,
                                    short pivotCon,
-                                   list<PathHop>& path,                                   
+                                   vector<PathHop>& path,                                   
                                    list<Catoms3DMotionRulesLink*>& rotations)
 {
     if (path.empty() || pivot == NULL) return false;
@@ -238,7 +241,7 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
 
     // Could not find direct link from conFrom to conTo, return false
     return !path.empty();
-}
+}                                        
 
 bool
 API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
@@ -291,23 +294,40 @@ API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
                                         std::map<short, int>& adjacentConnectors)
 {
     bool inverted = catom->areOrientationsInverted(hop.getOrientation());
-    bool lastHopIsSelf = catom->position == hop.getPosition();
     
     const short *pivotDockingConNeighbors =
         getMotionRules()->getNeighborConnectors(pivotDockingConnector);
     std::set<short> pivotCons; hop.getConnectors(pivotCons);
-    
+
+    Catoms3DBlock *pivot = static_cast<Catoms3DBlock*>
+        (Catoms3DWorld::getWorld()->lattice->getBlock(hop.getPosition()));
+
     for (short i = 0; i < 6; i++) {
         short c = pivotDockingConNeighbors[i];
-                      
-        if (lastHopIsSelf || pivotCons.count(c)) {
+        
+        if (pivotCons.count(c)) {
             short oppC = getMotionRules()->
                 getMirrorNeighborConnector(catomDockingConnector, (ConnectorDirection)i,
                                            inverted);
-            adjacentConnectors.insert({oppC, lastHopIsSelf ? 1 : hop.getDistance(c)});
 
-            cout << c << " opp is -> " << oppC << " (" << hop.getDistance(c)
-                 << ")" << endl;
+            
+            Cell3DPosition nPosPivot, nPosCatom;
+            pivot->getNeighborPos(c, nPosPivot); catom->getNeighborPos(oppC, nPosCatom);
+            
+            if ( ( (nPosPivot == (nPosCatom + Cell3DPosition(1,0,0)))
+                   || (nPosPivot == (nPosCatom - Cell3DPosition(1,0,0))) )
+                 || ( (nPosPivot == (nPosCatom + Cell3DPosition(0,1,0)))
+                      || (nPosPivot == (nPosCatom - Cell3DPosition(0,1,0))) ) ) {
+
+                cout << "findAdjacentConnectorsAndDistances: " << c << " and "
+                     << oppC << " are NOT ADJACENT" << endl;                
+            } else {                
+                adjacentConnectors.insert({oppC, hop.getDistance(c)});
+            
+                cout << "findAdjacentConnectorsAndDistances: " << c << " opp is -> "
+                     << oppC << " (" << hop.getDistance(c)
+                     << ")" << endl;
+            }
         }
     }
 
@@ -342,11 +362,13 @@ API::findAdjacentConnectors(const Catoms3DBlock *catom,
                 getMirrorNeighborConnector(catomDockingConnector,
                                            (ConnectorDirection)idx,
                                            inverted);
-            adjacentConnectors.push_back(oppC);
+
+            adjacentConnectors.push_back(oppC);            
             mirrorConnector[oppC] = c;
-            
-            cout << c << " opp is -> " << oppC
+
+            cout << "findAdjacentConnectors: " << c << " opp is -> " << oppC
                  << " (" << hop.getDistance(c) << ")" << endl;
+            
         } 
     }
 

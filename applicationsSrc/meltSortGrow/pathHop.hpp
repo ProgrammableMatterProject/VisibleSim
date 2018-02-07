@@ -31,6 +31,7 @@ public:
     inline Cell3DPosition getPosition() const { return position; }
     inline bool isFinalTarget() const { return finalTarget; }
     bool getConnectors(std::set<short>& connectors) const;
+
     /** 
      * @brief Returns the distance corresponding to connector con
      * @param con input connector
@@ -43,6 +44,9 @@ public:
        \param sortedCons reference to output solution vector
        \return true if vector is not empty, false otherwise **/
     bool getConnectorsByIncreasingDistance(vector<short>& sortedCons);
+
+    bool getMinDistanceConnectors(set<short>& minCons);
+    bool catomIsAlreadyOnBestConnector(const Cell3DPosition &pos);
 
     /** 
      * @brief Indicates whether cell in argument is in a position of the current path hop
@@ -59,7 +63,8 @@ public:
      * @brief Called once a connector has been selected, removes connectors with higher distance than connector in argument from the hop
      * @param connector connector that has been choosen for movement */
     void prune(short connector);
-
+    void removeConnectorOnPosition(const Cell3DPosition &pos);
+    
     /** @remarks No need to check for connectors because there should always be one hop per module in a given path */
     bool operator==(const PathHop &o) const
         { return o.position == position && o.orientationCode == orientationCode; };

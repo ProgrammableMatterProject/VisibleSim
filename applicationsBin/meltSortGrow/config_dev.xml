@@ -4,13 +4,15 @@
           angle="30" />
   <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="78" />
   <blockList blockSize="10,10,10">
-    <block position="2,2,2" color="128,128,128" /> <!-- orientation="13" /> -->
-    <block position="3,2,2" color="128,128,128" /> <!-- orientation="3" /> -->
+    <block position="3,2,2" color="128,128,128" /> <!-- orientation="13" /> -->
+    <block position="4,2,2" color="128,128,128" /> <!-- orientation="3" /> -->
+    <block position="5,2,2" color="128,128,128" /> <!-- orientation="3" /> -->
   </blockList>
   <targetList>
     <target format="relativeGrid">      
-      <cell position="2,2,2" />
-      <cell position="2,2,3" />
+      <cell position="0,0,0" />
+      <cell position="0,0,1" />
+      <cell position="0,0,2" />            
     </target>
   </targetList>
 

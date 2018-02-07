@@ -42,7 +42,7 @@ public:
         @return false is the catom cannot be connected to the path, true otherwise
     **/
     static bool addModuleToPath(Catoms3DBlock *catom,
-                                list<PathHop>& path,
+                                vector<PathHop>& path,
                                 short pivotDockingConnector,
                                 short catomDockingConnector);
     
@@ -58,7 +58,7 @@ public:
         \todo PTHA **/
     static bool buildRotationSequenceToTarget(Catoms3DBlock *pivot,
                                               short pivotCon,
-                                              list<PathHop>& path,
+                                              vector<PathHop>& path,
                                               list<Catoms3DMotionRulesLink*>& rotations);
 
 /**
