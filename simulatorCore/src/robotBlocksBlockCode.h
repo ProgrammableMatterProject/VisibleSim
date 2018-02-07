@@ -11,6 +11,7 @@
 #include "blockCode.h"
 #include "robotBlocksBlock.h"
 #include "network.h"
+#include "events.h"
 
 namespace RobotBlocks {
 
@@ -20,6 +21,7 @@ class RobotBlocksBlockCode : public BaseSimulator::BlockCode {
 public:	
 	RobotBlocksBlockCode(RobotBlocksBlock *host);
 	virtual ~RobotBlocksBlockCode();
+	virtual void processLocalEvent(EventPtr pev);
 };
 
 }

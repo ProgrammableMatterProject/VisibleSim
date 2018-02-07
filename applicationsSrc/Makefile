@@ -1,7 +1,8 @@
 
 # GENERIC BlockCodes
 #SUBDIRS = simpleCatoms3D simpleColorSB simpleColorC2D simpleMotion
-SUBDIRS = simpleColorOkteen simpleMotionOkteen simpleCatoms3D
+SUBDIRS = locomotion 
+# simpleColorOkteen simpleMotionOkteen simpleCatoms3D
 
 # MELD BlockCodes
 #SUBDIRS += meld MRMeld

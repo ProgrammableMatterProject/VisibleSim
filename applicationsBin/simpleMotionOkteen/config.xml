@@ -5,19 +5,14 @@
 	<spotlight target="20,20,10" directionSpherical="60,45,80" angle="25" near="1" far="200"/>
 
 	<blockList color="128,128,128" blockSize="10.0,10.0,10.0" >
-		<block position="1,1,1" color="255,128,64"/>
-
-		<block position="0,0,0" color="255,255,255"/>
-		<block position="0,0,1" color="255,255,255"/>
-		<block position="0,1,0" color="255,255,255"/>
-		<block position="1,0,0" color="255,255,255"/>
 		<block position="2,0,0" color="255,255,255"/>
-		<block position="2,1,0" color="255,255,255"/>
 		<block position="2,0,1" color="255,255,255"/>
+		<block position="2,1,0" color="255,255,255"/>
+		<block position="2,1,1" color="255,255,255"/>
 		<block position="3,0,0" color="255,255,255"/>
-		<block position="1,1,0" color="255,128,64"/>
-		<block position="1,0,1" color="255,128,64"/>
-		<block position="0,1,1" color="255,128,64"/>
+		<block position="3,0,1" color="255,255,255"/>
+		<block position="3,1,0" color="255,255,255"/>
+		
 	</blockList>
 
 	<target>

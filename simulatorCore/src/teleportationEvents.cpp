@@ -57,7 +57,7 @@ void TeleportationStartEvent::consume() {
         scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition));
     } else {
         OUTPUT << "ERROR: trying to teleport module to a position outside of lattice"
-               << endl;        
+               << endl;
     }
 }
 
@@ -128,6 +128,7 @@ void TeleportationEndEvent::consume() {
     concernedBlock->blockCode->processLocalEvent(
         EventPtr(new TeleportationEndEvent(date + COM_DELAY,bb))
         );
+
     StatsCollector::getInstance().incMotionCount();
     StatsIndividual::incMotionCount(bb->stats);
 }

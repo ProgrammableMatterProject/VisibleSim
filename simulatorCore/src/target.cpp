@@ -20,25 +20,22 @@ TiXmlNode *Target::targetListNode = NULL;
 TiXmlNode *Target::targetNode = NULL;
 
 Target *Target::loadNextTarget() {
-    if (Target::targetListNode) {
+	if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
         Target::targetNode = targetListNode->IterateChildren(targetNode);
-
-        if (Target::targetNode) {
-            TiXmlElement* element;
-            if (Target::targetNode) {
-                element = Target::targetNode->ToElement();
-                const char *attr = element->Attribute("format");
-                if (attr) {
-                    string str(attr);
-                    if (str.compare("grid") == 0) {
-                        return new TargetGrid(Target::targetNode);
-                    } else if (str.compare("csg") == 0) {
-                        return new TargetCSG(Target::targetNode);
-                    }
-                }
-            }
-        }
+		TiXmlElement* element;
+		if (Target::targetNode) {
+			element = Target::targetNode->ToElement();
+			const char *attr = element->Attribute("format");
+			if (attr) {
+				string str(attr);
+				if (str.compare("grid") == 0) {
+					return new TargetGrid(Target::targetNode);
+				} else if (str.compare("csg") == 0) {
+					return new TargetCSG(Target::targetNode);
+				}
+			}
+		}
     }
 
     return NULL;
@@ -92,7 +89,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
                       atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
                       atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
         }
-
+		OUTPUT << "add target " << position << "," << color << endl;
         addTargetCell(position, color);
         cellNode = cellNode->NextSibling("cell");
     } // end while (cellNode)
