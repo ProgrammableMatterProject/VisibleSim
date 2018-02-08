@@ -605,32 +605,69 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                 meltRotationsPlan.pop_front();
                 nextRotation->sendRotationEvent(catom, rotationPlanPivot,
                                                 getScheduler()->now() + 100);
+                cout <<  "QWIDJBKQWNDKJLQWNDKQWMDQWDWQD HERE" << endl; 
             } else {
                 if (!path.empty()) { // Not in place yet
                     // Check if next path hop has been reached
                     auto lastHop = path.back();
 
                     // Case 1: This is not the final hop
-                    if (path.size() > 1) {
-                        PathHop& nextHop = *(std::prev(std::prev(path.end())));
+                    // Case 1.1: Catom can skip a hop
+                    bool skippedHop = false;
+                    if (path.size() > 3) {
+                        PathHop& nextNextNextHop = *(std::prev(
+                                                         std::prev(
+                                                             std::prev(
+                                                                 std::prev(path.end())))));
+
+                        // Next next hop is within reach, clear current hop
+                        if (nextNextNextHop.isInVicinityOf(catom->position)) {
+                            path.pop_back(); path.pop_back(); path.pop_back();
+                            skippedHop = true;
+                        } 
+                    }
+
+                    if (!skippedHop && path.size() > 2) {
+                        PathHop& nextNextHop = *(std::prev(
+                                                     std::prev(std::prev(path.end()))));
 
                         // Next hop is within reach, clear current hop
-                        if (nextHop.isInVicinityOf(catom->position))
-                            path.pop_back();
-                    } else {
-                        if (lastHop.finalTargetReached()) {
-                            path.pop_back();
-                            cout << "Final hop is empty, we should be done 2" << endl;
+                        if (nextNextHop.isInVicinityOf(catom->position)) {
+                            path.pop_back(); path.pop_back();
+                            skippedHop = true;
+                        } 
+                    }
 
-                            melted = true;
-                            propagateGraphResetBFS();
-                            
-                            return;
+                    if (!skippedHop && path.size() > 1) {
+                        PathHop& nextHop = *(std::prev(std::prev(path.end())));
+
+                        // Case 1.2: Catom is adjacent to next hop and continues from it
+                        if (nextHop.isInVicinityOf(catom->position)
+                            || nextHop.catomIsAlreadyOnBestConnector(catom->position)) {
+                            path.pop_back();
                         }
-                        
+                        // Case 1.3: Catom is not yet adjacent to next hop, keep rotating
+                    } else if (!skippedHop) {
+                        // Case 2.1: We are on final hop and we are on tail connector, terminate
+                        if (lastHop.finalTargetReached()
+                            || lastHop.catomIsAlreadyOnBestConnector(catom->position)) {
+                            path.pop_back();
+                        } // else Case 2.2: We are on final hop, rotate to tail con
                     }
                     
-                    tryNextMeltRotation(path);
+                    bool meltIsOver = tryNextMeltRotation(path);
+
+                    if (meltIsOver && path.empty()) {
+                        cout << "Final hop is empty, we should be done" << endl;
+
+                        melted = true;
+                        propagateGraphResetBFS();
+                            
+                        return;
+                    } else if (meltIsOver && !path.empty()) {
+                        cout << "MELT: MODULE IS STUCK!" << endl;
+                        throw "Melt aborted";
+                    }
                 } else {
                     cout << "Final hop is empty, we should be done" << endl;
                 }
@@ -705,19 +742,27 @@ P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
 
 bool MeltSortGrowBlockCode::tryNextMeltRotation(vector<PathHop>& path) {
     if (path.empty()) {
-        cout << "catom has reach target location" << endl;
-        melted = true;
-        return false;
+        cout << "catom has reach target location" << endl;        
+        return true;
     }
         
     // List all connectors that could be filled in order to connect
     //  a neighbor module to the last hop or that would help reach parent's path connectors
     PathHop &lastHop = path.back();
-    cout << "tryNextMeltRotation: " << "input path: " << lastHop << endl;
 
+    if (lastHop.catomIsAlreadyOnBestConnector(catom->position)) {
+        path.pop_back();
+        if (path.empty()) return true;
+        else lastHop = path.back();
+    }
+    
     short catomDockingConnector = catom->getConnectorId(lastHop.getPosition());
     short pivotDockingConnector =
-        lastHop.getHopConnectorAtPosition(catom->position); // so-so
+        lastHop.getHopConnectorAtPosition(catom->position); // so-so    
+
+    cout << "tryNextMeltRotation: " << "module is on " << pivotDockingConnector
+         << " -> " << catomDockingConnector << endl
+         << "input path: " << lastHop << endl;
 
     std::vector<short> adjacentPathConnectors;
     std::map<short, short> mirrorConnector;
@@ -749,10 +794,10 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(vector<PathHop>& path) {
         nextRotation->sendRotationEvent(catom,
                                         catom->getNeighborOnCell(lastHop.getPosition()),
                                         getScheduler()->now() + 100);
-        return true;
+        return false;
     } else {
         cout << "tryNextMeltRotation: Could not compute feasible rotation plan to parent" << endl;
     }
 
-    return false;
+    return true;
 }

@@ -19,17 +19,13 @@ class PathHop {
     Cell3DPosition position; /// Lattice position of the hop module
     short orientationCode; /// Determines the orientation of the hop module ori \in [0..23], where c \in [0..11] (the connector on the x axis), a \in [1..2] (the orientation of the connector, 1 = regular or 2 = upside-down) and ori = c * a
     std::map<short, int> conDistanceMap; /// A dictionary where each key is the ID of a connector in the path and each value its distance in number of rotations to the movement target using the shortest path
-    bool finalTarget = false;
 public:
     PathHop(Cell3DPosition pos, short ori, std::map<short, int> map)
         : position(pos), orientationCode(ori), conDistanceMap(map) {}
-    PathHop(Cell3DPosition pos, short ori, std::map<short, int> map, bool final)
-        : position(pos), orientationCode(ori), conDistanceMap(map), finalTarget(final) {}
     ~PathHop(){}
 
     inline short getOrientation() const { return orientationCode; }
     inline Cell3DPosition getPosition() const { return position; }
-    inline bool isFinalTarget() const { return finalTarget; }
     bool getConnectors(std::set<short>& connectors) const;
 
     /** 

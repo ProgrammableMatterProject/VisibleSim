@@ -39,8 +39,7 @@ API::addModuleToPath(Catoms3DBlock *catom,
     
     // Module can connect to path, create entry and add to path
     PathHop newHop = PathHop(catom->position, catom->orientationCode,
-                             pathConnectorsDistance,
-                             path.empty());
+                             pathConnectorsDistance);
                              // pathAbsoluteDirectionsDistance);
 
     // cout << "addModuleToPath: " << "newHop: " << newHop << endl;
@@ -314,10 +313,7 @@ API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
             Cell3DPosition nPosPivot, nPosCatom;
             pivot->getNeighborPos(c, nPosPivot); catom->getNeighborPos(oppC, nPosCatom);
             
-            if ( ( (nPosPivot == (nPosCatom + Cell3DPosition(1,0,0)))
-                   || (nPosPivot == (nPosCatom - Cell3DPosition(1,0,0))) )
-                 || ( (nPosPivot == (nPosCatom + Cell3DPosition(0,1,0)))
-                      || (nPosPivot == (nPosCatom - Cell3DPosition(0,1,0))) ) ) {
+            if (nPosPivot != nPosCatom) { // NOT ADJACENT
 
                 cout << "findAdjacentConnectorsAndDistances: " << c << " and "
                      << oppC << " are NOT ADJACENT" << endl;                

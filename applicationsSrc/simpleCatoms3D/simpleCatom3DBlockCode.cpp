@@ -34,15 +34,7 @@ void SimpleCatom3DBlockCode::startup() {
 	stringstream info;
 
 	info << "Starting ";
-OUTPUT << "start SimpleCatom3DBlockCode " << catom->blockId << endl;
-	/* skeleton test */
-/*	Catoms3DWorld*wrl = Catoms3DWorld::getWorld();
-	Vector3D pos(catom->ptrGlBlock->position[0],catom->ptrGlBlock->position[1],catom->ptrGlBlock->position[2]);
-	potentiel = wrl->getSkeletonPotentiel(pos);
-	catom->setColor(potentiel>1.0?YELLOW:DARKORANGE);
-
-	info << potentiel;
-	scheduler->trace(info.str(),hostBlock->blockId);*/
+    OUTPUT << "start SimpleCatom3DBlockCode " << catom->blockId << endl;
 	if (catom->blockId==1 && firstStart) {
         step=0;
         currentOr = catom->orientationCode;
@@ -81,7 +73,7 @@ void SimpleCatom3DBlockCode::processLocalEvent(EventPtr pev) {
 }
 
 void SimpleCatom3DBlockCode::nextRotation() {
-    Catoms3DWorld*wrl = Catoms3DWorld::getWorld();
+    // Catoms3DWorld*wrl = Catoms3DWorld::getWorld();
     static const double r1 = 0.453081839321973;
     static const double r2 = 0.4530052159;
     static const double ALPHA=atan(sqrt(2.0)/2.0)*180.0/M_PI;
@@ -93,7 +85,7 @@ OUTPUT << "nextRotation step=" << step << ", catom " << catom->blockId << endl;
     P2PNetworkInterface *p2p;
     while (i<12) {
         p2p = catom->getInterface(i);
-        if(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId<id) {
+        if(p2p->connectedInterface && p2p->connectedInterface->hostBlock->blockId<(uint)id) {
             voisin = (Catoms3DBlock*)p2p->connectedInterface->hostBlock;
             id = voisin->blockId;
         }

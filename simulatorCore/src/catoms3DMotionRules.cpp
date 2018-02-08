@@ -92,7 +92,7 @@ Catoms3DMotionRules::Catoms3DMotionRules() {
     addLinks4(6,4,7,8,left,lup,rup);
     addLinks4(1,3,6,11,right,-rup,-lup);
     addLinks4(7,5,0,9,right,-rup,-lup);
-    addLinks4(2,5,4,3,right,lup,rup); // PTHA: CHECK
+    addLinks4(2,5,4,3,left,lup,rup); // PTHA: CHECK
     addLinks4(8,9,10,11,left,-rup,-lup); // PTHA: CHECK
 }
 
