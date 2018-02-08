@@ -582,11 +582,13 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                 if (catom->position == goalPosition) {
                     growing = false;
                     growthVisited = false;
+                    meltFather = NULL;
                     resetDFSFlags();
 
                     // Send to single neigbor which will follow the message
                     //  route back to the new tail
-                    assert(neighbors.size());
+                    if (!neighbors.size())
+                        cout << "huho" << endl;
                     growthParent = neighbors.front();
                     sendMessage("NextModule",
                                 new Message(MSG_GROW_NEXTMODULE),
