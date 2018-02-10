@@ -49,6 +49,7 @@ public:
 	P2PNetworkInterface *sourceInterface, *destinationInterface;
 
 	Message();
+	Message(unsigned int t):type(t) {};
 	virtual ~Message();
 
 //	static unsigned int getNbMessages();
@@ -63,7 +64,7 @@ template <class T>
 class MessageOf:public Message {
     T *ptrData;
     public :
-    MessageOf(int t,const T &data):Message() { type=t; ptrData = new T(data);};
+    MessageOf(unsigned int t,const T &data):Message(t) { ptrData = new T(data);};
     ~MessageOf() { delete ptrData; };
     T* getData() const { return ptrData; };
     virtual Message* clone() {

@@ -202,56 +202,24 @@ connection #3:Front to #2:Right
 connection #3:Left to #5:Back
 loading ../../simulatorCore/resources/textures/robotBlocksTextures/robotTexture.tga
 0.000000 #1: start 1
-0.000000 #1:  sends BFS to 2 at 1000
-1 sends 1001 to 2 at 1000
 0.000000 #2: start 2
-0.000000 #2:  sends BFS to 3 at 1000
-2 sends 1001 to 3 at 1000
-0.000000 #2:  sends BFS to 1 at 1000
-2 sends 1001 to 1 at 1000
-0.000000 #2:  sends BFS to 4 at 1000
-2 sends 1001 to 4 at 1000
 0.000000 #3: start 3
-0.000000 #3:  sends BFS to 2 at 1000
-3 sends 1001 to 2 at 1000
-0.000000 #3:  sends BFS to 5 at 1000
-3 sends 1001 to 5 at 1000
 0.000000 #4: start 4
+0.000000 #4:  sends BFS to 2 at 1000
+4 sends 1001 to 2 at 1000
+0.000000 #4:  sends BFS to 5 at 1000
+4 sends 1001 to 5 at 1000
+0.000000 #4:  sends BFS to 8 at 1000
+4 sends 1001 to 8 at 1000
 0.000000 #5: start 5
-0.000000 #5:  sends BFS to 3 at 1000
-5 sends 1001 to 3 at 1000
-0.000000 #5:  sends BFS to 4 at 1000
-5 sends 1001 to 4 at 1000
-0.000000 #5:  sends BFS to 9 at 1000
-5 sends 1001 to 9 at 1000
 0.000000 #6: start 6
-0.000000 #6:  sends BFS to 7 at 1000
-6 sends 1001 to 7 at 1000
-0.000000 #6:  sends BFS to 10 at 1000
-6 sends 1001 to 10 at 1000
 0.000000 #7: start 7
-0.000000 #7:  sends BFS to 8 at 1000
-7 sends 1001 to 8 at 1000
-0.000000 #7:  sends BFS to 6 at 1000
-7 sends 1001 to 6 at 1000
 0.000000 #8: start 8
-0.000000 #8:  sends BFS to 4 at 1000
-8 sends 1001 to 4 at 1000
-0.000000 #8:  sends BFS to 9 at 1000
-8 sends 1001 to 9 at 1000
-0.000000 #8:  sends BFS to 7 at 1000
-8 sends 1001 to 7 at 1000
 0.000000 #9: start 9
-0.000000 #9:  sends BFS to 5 at 1000
-9 sends 1001 to 5 at 1000
-0.000000 #9:  sends BFS to 8 at 1000
-9 sends 1001 to 8 at 1000
 0.000000 #10: start 10
-0.000000 #10:  sends BFS to 6 at 1000
-10 sends 1001 to 6 at 1000
-0.000000 #10:  sends BFS to 11 at 1000
-10 sends 1001 to 11 at 1000
 0.000000 #11: start 11
+0.000000 #11:  sends BFS to 10 at 1000
+11 sends 1001 to 10 at 1000
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
@@ -277,24 +245,32 @@ ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 0.001032 #2: rec. BFS
-0.001032 #3: rec. BFS
-0.001032 #1: rec. BFS
-0.001032 #4: rec. BFS
+0.001032 #2:  sends ConfirmEdge to 4 at 3064
+2 sends 1002 to 4 at 3064
 0.001032 #5: rec. BFS
-0.001032 #9: rec. BFS
-0.001032 #7: rec. BFS
+0.001032 #5:  sends ConfirmEdge to 4 at 3064
+5 sends 1002 to 4 at 3064
+0.001032 #8: rec. BFS
+0.001032 #8:  sends ConfirmEdge to 4 at 3064
+8 sends 1002 to 4 at 3064
 0.001032 #10: rec. BFS
-0.001032 #8: rec. BFS
-0.001032 #6: rec. BFS
-0.001032 #11: rec. BFS
-0.001032 #2: rec. BFS
-0.001032 #3: rec. BFS
-0.001032 #4: rec. BFS
-0.001032 #5: rec. BFS
-0.001032 #9: rec. BFS
-0.001032 #7: rec. BFS
-0.001032 #8: rec. BFS
-0.001032 #6: rec. BFS
-0.001032 #4: rec. BFS
+0.001032 #10:  sends ConfirmEdge to 11 at 3064
+10 sends 1002 to 11 at 3064
+0.003096 #4: rec. ConfirmEdge
+0.003096 #4:  sends CutOff to 2 at 7192
+4 sends 1003 to 2 at 7192
+0.003096 #11: rec. ConfirmEdge
+0.003096 #11:  sends CutOff to 10 at 7192
+11 sends 1003 to 10 at 7192
+0.003096 #4: rec. ConfirmEdge
+0.003096 #4:  sends CutOff to 5 at 7192
+4 sends 1003 to 5 at 7192
+0.003096 #4: rec. ConfirmEdge
+0.003096 #4:  sends CutOff to 8 at 7192
+4 sends 1003 to 8 at 7192
+ERROR: message Id #1003 unknown!
+ERROR: message Id #1003 unknown!
+ERROR: message Id #1003 unknown!
+ERROR: message Id #1003 unknown!
 [1;31mCPPScheduler destructor[0m
 Scheduler destructor
