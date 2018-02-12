@@ -633,6 +633,21 @@ Both description methods are subject to a number of constraints:
 - Every described module needs to have a position. 
 - Two modules cannot have the same ID. 
 
+#### Behavioral Customization
+Some of VisibleSim's behaviors can be customized so as to let the user tweak some variables of the simulation. 
+
+##### Description
+The list of customizations to apply falls under the `customization` XML tag, where each child is a customization groupe that tweaks one specific behavior.
+
+```xml
+<customization>
+  <rotationDelay multiplier="0.5" />
+  <...>
+</customization>
+```
+##### Rotation Speed Tweaking
+For now, the only customizable property is the rotation speed of catoms. This is done in the `rotationDelay` element of the `customization` group. The editable attribute is `multiplier`, which takes a float value that will be used as a multiplier to the default rotation **delay** - i.e., a multiplier of 0.5 will result in a rotation twice as fast as normal, and 2.0 twice as slow.
+
 #### <a name="target"></a>Reconfiguration Targets
 As mentioned earlier, a VisibleSim configuration can also be used to describe one or multiple reconfiguration `targets` (_i.e._ an objective configuration in term of module positions and colors). 
 
