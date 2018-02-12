@@ -19,8 +19,10 @@ const int nbRotationSteps = 20;
 
 using namespace Catoms3D;
 
-class Rotations3D {
+class Rotations3D {    
 public :
+    static float rotationDelayMultiplier;
+    
 /**
     \brief Create a couple of rotations
     \param p : fixed pivot catom

@@ -17,6 +17,7 @@
 #include "cppScheduler.h"
 #include "openglViewer.h"
 #include "utils.h"
+#include "rotation3DEvents.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessVM.h"
@@ -182,6 +183,7 @@ void Simulator::parseConfiguration(int argc, char*argv[]) {
 	parseBlockList();
 	parseObstacles();
 	parseTarget();
+    parseCustomizations();
 }
 
 Simulator::IDScheme Simulator::determineIDScheme() {
@@ -787,6 +789,24 @@ void Simulator::parseObstacles() {
 			nodeObstacle = nodeObstacle->NextSibling("obstacle");
 		} // end while (nodeObstacle)
 	}
+}
+
+void Simulator::parseCustomizations() {
+	TiXmlNode *customizationNode = xmlWorldNode->FirstChild("customization");
+	if (customizationNode) {
+		TiXmlNode *rotationDelayNode = customizationNode->FirstChild("rotationDelay");
+
+        if (rotationDelayNode) {
+            TiXmlElement* element = rotationDelayNode->ToElement();
+            const char *attr= element->Attribute("multiplier");
+
+			if (attr != NULL) {
+                Rotations3D::rotationDelayMultiplier = atof(attr);
+			} else {
+                cout << "wut" << endl;
+            }
+        }
+    }
 }
 
 void Simulator::startSimulation(void) {

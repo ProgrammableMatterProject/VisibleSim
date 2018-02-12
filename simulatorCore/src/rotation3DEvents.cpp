@@ -14,6 +14,7 @@ using namespace BaseSimulator::utils;
 
 const int ANIMATION_DELAY=100000;
 const int COM_DELAY=2000;
+float Rotations3D::rotationDelayMultiplier = 1.0f;
 
 //===========================================================================================================
 //
@@ -43,7 +44,9 @@ void Rotation3DStartEvent::consume() {
 
 //    catom->setColor(DARKGREY);
     rot.init(((Catoms3DGlBlock*)catom->ptrGlBlock)->mat);
-    scheduler->schedule(new Rotation3DStepEvent(scheduler->now() + ANIMATION_DELAY,catom, rot));
+    scheduler->schedule(
+        new Rotation3DStepEvent(scheduler->now()+(Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY),
+                                catom, rot));
 }
 
 const string Rotation3DStartEvent::getEventName() {
@@ -81,9 +84,14 @@ void Rotation3DStepEvent::consume() {
 
     Catoms3DWorld::getWorld()->updateGlData(catom,mat);
     if (rotationEnd) {
-        scheduler->schedule(new Rotation3DStopEvent(scheduler->now() + ANIMATION_DELAY, catom, rot));
+        scheduler->schedule(
+            new Rotation3DStopEvent(scheduler->now() +
+                                    Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY,
+                                    catom, rot));
     } else {
-        scheduler->schedule(new Rotation3DStepEvent(scheduler->now() + ANIMATION_DELAY, catom, rot));
+        scheduler->schedule(new Rotation3DStepEvent(scheduler->now() +
+                                                    Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY,
+                                                    catom, rot));
     }
 }
 
@@ -130,7 +138,9 @@ void Rotation3DStopEvent::consume() {
     getScheduler()->trace(info.str(),catom->blockId,LIGHTBLUE);
     wrld->connectBlock(catom);
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new Rotation3DEndEvent(scheduler->now() + ANIMATION_DELAY, catom));
+    scheduler->schedule(
+        new Rotation3DEndEvent(scheduler->now() +
+                               Rotations3D::rotationDelayMultiplier*ANIMATION_DELAY, catom));
 }
 
 const string Rotation3DStopEvent::getEventName() {
