@@ -53,7 +53,7 @@ string Message::getMessageName() {
 }
 
 Message* Message::clone() {
-    Message* ptr = new Message();
+    Message* ptr = new Message(*this);
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
     ptr->type = type;

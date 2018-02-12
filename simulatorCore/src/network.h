@@ -22,7 +22,7 @@ class P2PNetworkInterface;
 
 typedef std::shared_ptr<Message> MessagePtr;
 
-#ifdef DEBUG_MESSAGES
+#ifdef DEBUG_OBJECT_LIFECYCLE
 #define MESSAGE_CONSTRUCTOR_INFO()			(cout << getMessageName() << " constructor (" << id << ")" << endl)
 #define MESSAGE_DESTRUCTOR_INFO()			(cout << getMessageName() << " destructor (" << id << ")" << endl)
 #else
@@ -53,8 +53,11 @@ public:
 	virtual string getMessageName();
 
 	virtual unsigned int size() { return(4); }
+    /** 
+     * @brief Clones the message. This is necessary when broadcasting
+     * @attention Needs to overloaded in subclasses to avoid slicing (https://en.wikipedia.org/wiki/Object_slicing) when broadcasting subclasses of Message */
 	virtual Message* clone();
-        virtual bool isMessageHandleable() { return false; };
+    virtual bool isMessageHandleable() { return false; };
 };
 
 class HandleableMessage:public Message {
@@ -63,8 +66,8 @@ public:
 	virtual ~HandleableMessage();
 
     virtual void handle(BaseSimulator::BlockCode*) = 0;
-
     virtual bool isMessageHandleable() { return true; };
+	virtual Message* clone() = 0;
 };
 
 template <class T>

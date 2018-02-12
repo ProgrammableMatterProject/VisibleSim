@@ -23,6 +23,8 @@
 #include "msgMessages.hpp"
 #include "pathHop.hpp"
 
+enum APLState { Inactive, Active }; //!< Possible node states in AP labelling algorithms
+
 class MeltSortGrowBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
     Scheduler *scheduler;
@@ -61,7 +63,7 @@ public:
     int dfnCnt = 0; //!< DFN counter at this node
     int minDfn = INT_MAX; //!< Minimum FDN received by node from its ancestors other than its father
     P2PNetworkInterface *minSdr = NULL; //!< Id of the node which sent the minDfn
-    enum APLState { Inactive, Active }; //!< Possible node states in AP labelling algorithms
+    
     APLState state = APLState::Inactive;
     P2PNetworkInterface *father = NULL; //!< Connector connected to the node's father
     std::unordered_set<P2PNetworkInterface*> sons; //!< The node's children
@@ -111,7 +113,7 @@ public:
     /**
      * \brief Initialize the path position trail for the tail module leading the current Melt
      */
-    bool initializeMeltPath();
+    void initializeMeltPath();
          
     /**
      * \brief Searches the path positions of the module graph for a non-articulation point module DFS-style

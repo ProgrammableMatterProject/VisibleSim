@@ -15,8 +15,11 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS =  meltSortGrow.cpp meltSortGrowBlockCode.cpp meltSortGrowUtils.cpp\
-	Messages/Melt/findMobileModuleMessages.cpp api.cpp pathHop.cpp
+SRCS =  meltSortGrow.cpp meltSortGrowBlockCode.cpp\
+	Messages/Melt/findMobileModuleMessages.cpp\
+	api.cpp pathHop.cpp\
+	Messages/Melt/APLabellingMessages.cpp\
+	Messages/Init/rootInitializationMessages.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/meltSortGrow

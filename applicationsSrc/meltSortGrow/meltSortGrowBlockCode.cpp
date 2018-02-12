@@ -18,9 +18,9 @@
 #include "teleportationEvents.h"
 
 #include "meltSortGrowBlockCode.hpp"
-#include "meltSortGrowUtils.hpp"
-#include "APLTypes.hpp"
+#include "Messages/Melt/APLabellingMessages.hpp"
 #include "Messages/Melt/findMobileModuleMessages.hpp"
+#include "Messages/Init/rootInitializationMessages.hpp"
 #include "api.hpp"
 
 using namespace Catoms3D;
@@ -111,7 +111,7 @@ void MeltSortGrowBlockCode::APLabellingStart() {
         for (auto const& module : neighbors) {
             if (!sons.count(module))
                 sendMessage("visited",
-                            new MessageOf<int>(MSG_MELT_APL_VISITED, dfn),
+                            new APLabellingVisitedMessage(dfn),
                             module, 100, 0);
         }
     }
@@ -124,20 +124,18 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
     if (unprocessedNeighbor) {
         // Send TOKEN(DFNcnt(i) + 1) to k
         sendMessage("Token",
-                    new MessageOf<int>(MSG_MELT_APL_TOKEN, dfnCnt + 1),
+                    new APLabellingTokenMessage(dfnCnt + 1),
                     unprocessedNeighbor, 100, 0);
         sons.insert(unprocessedNeighbor);
     } else if (source) { /* root checks for articulation point and terminates */
         if (sons.size() >= 2) articulationPoint = true;
         
-        bool meltStarted = initializeMeltPath();
+        initializeMeltPath();
+       
+        // Prepare data structures for the mobile module search DFS
+        resetDFSForSearching();
 
-        if (meltStarted) {
-            // Prepare data structures for the mobile module search DFS
-            resetDFSForSearching();
-
-            findMobileModule();
-        }
+        findMobileModule();        
     } else { /* a normal node has finished the visits to its subtree */
         if (minDfn < lDfn && minSdr != father)
             lDfn = minDfn; /* sets to the smaller min. DFN from ancestors */            
@@ -147,36 +145,27 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
 
         // send ECHO(L(i), DFNcnt(i)) to Father(i)
         sendMessage("Echo",
-                    new MessageOf<EchoPayload>(MSG_MELT_APL_ECHO,
-                                               EchoPayload(lDfn, dfnCnt)),
+                    new APLabellingEchoMessage(lDfn, dfnCnt),
                     father, 100, 0);
     }
     
 }
 
-bool MeltSortGrowBlockCode::initializeMeltPath() {    
+void MeltSortGrowBlockCode::initializeMeltPath() {    
     // Set next position to be filled
     Cell3DPosition tailPosition = catom->position - Cell3DPosition(1, 0, 0);
+    assert(lattice->isInGrid(tailPosition)); // If not, increase grid size in XML
+    
+    short tailConId = catom->getConnectorId(tailPosition);
+    cout << "Tail is " << tailConId << endl;
 
-    if (lattice->isInGrid(tailPosition)) {
-        short tailConId = catom->getConnectorId(tailPosition);
-        cout << "Tail is " << tailConId << endl;
+    // Initially only the target connector needs be in the path 
+    // path.push_back(PathHop(catom->position, catom->orientationCode,
+    //                        { {tailConId, 0} }) // Inline map init
+    //     );
 
-        // Initially only the target connector needs be in the path 
-        // path.push_back(PathHop(catom->position, catom->orientationCode,
-        //                        { {tailConId, 0} }) // Inline map init
-        //     );
-
-        // Add self as the next hop of the path
-        API::addModuleToPath(catom, path, tailConId, tailConId);
-
-        return true;
-    } else {
-        catom->setColor(RED);
-        grow();
-
-        return false;
-    }
+    // Add self as the next hop of the path
+    API::addModuleToPath(catom, path, tailConId, tailConId);
 }
 
 void MeltSortGrowBlockCode::findMobileModule() {    
@@ -257,154 +246,7 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
     stringstream info;
 
     switch (msg->type) {
-
-        case MSG_ROOT_UPDATE: {
-            Cell3DPosition candidateRoot =
-                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
         
-            if (challengeRootFitness(candidateRoot)) {
-                currentRootPosition = candidateRoot;
-            
-                // Broadcast new root candidate to every neighbor except sender
-                sendMessageToAllNeighbors("RootUpdate",
-                                          new MessageOf<Cell3DPosition>(MSG_ROOT_UPDATE,
-                                                                        currentRootPosition),
-                                          0, 100, 1, sender);
-                expectedConfirms = catom->getNbNeighbors() - 1; // Ignore parent
-                parent = sender;
-
-                if (!expectedConfirms) {
-                    sendMessage("RootConfirmation",
-                                new MessageOf<Cell3DPosition>(MSG_ROOT_CONFIRM,
-                                                              currentRootPosition),
-                                parent, 0, 100);
-                }    
-            } else {
-                // Received best root twice, send a NACK
-                sendMessage("RootConfirmation",
-                            new MessageOf<Cell3DPosition>(MSG_ROOT_NCONFIRM,
-                                                          candidateRoot),
-                            sender, 0, 100);
-            }
-        } break;
-
-        case MSG_ROOT_CONFIRM:
-            // If confirmation, first add to children and then proceed as in NCONFIRM
-            // children.push_back(sender);
-        case MSG_ROOT_NCONFIRM:{
-            Cell3DPosition confirmedRoot =
-                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
-
-            if (confirmedRoot == currentRootPosition)
-                --expectedConfirms;
-            
-            if (!expectedConfirms) {
-                if (parent)
-                    sendMessage("RootConfirmation",
-                                new MessageOf<Cell3DPosition>(MSG_ROOT_CONFIRM,
-                                                              currentRootPosition),
-                                parent, 0, 100);
-                else {
-                    if (catom->position == currentRootPosition) { // Election Complete, module is root
-                        relPos = new Cell3DPosition(0,0,0);
-                        rtg->setOrigin(catom->position);
-                        cout << "Absolute Target Positions" << endl; 
-                        for (auto x : rtg->getTargetCellsAsc())
-                            cout << x << endl;                        
-                        rtg->targetCellsAsc->pop_front(); // this is the root's target position, in which it already is
-                        
-                        // Proceed to next stage
-                        meltOneModule();
-                    }
-                }
-            }    
-        } break;
-        
-        case MSG_MELT_APL_START: {
-            if (state == APLState::Inactive) {
-                state = APLState::Active;;
-                lDfn = dfn = dfnCnt = 1;
-                APLabellingSearch();
-                
-                // send VISITED(DFN(i)) to all nodes in (Neighbors(i) - Sons(i))
-                for (auto const& module : neighbors) {
-                    if (!sons.count(module))
-                        sendMessage("visited",
-                                    new MessageOf<int>(MSG_MELT_APL_VISITED, dfn),
-                                    module, 100, 0);
-                }
-            }
-            
-        } break;
-
-        case MSG_MELT_APL_TOKEN: {
-            int fatherDfnCnt =
-                *(std::static_pointer_cast<MessageOf<int>>(msg)->getData());
-
-            flag[sender] = true;
-
-            if (state == APLState::Inactive) {
-                state = APLState::Active;
-                father = sender;
-                lDfn = dfn = dfnCnt = fatherDfnCnt;
-
-                APLabellingSearch();
-                
-                // send VISITED(DFN(i)) to all nodes in (Neighbors(i) -Sons(i)-Father(i))
-                for (auto const& module : neighbors) {
-                    if (!sons.count(module) && module != father)
-                        sendMessage("visited",
-                                    new MessageOf<int>(MSG_MELT_APL_VISITED, lDfn),
-                                    module, 100, 0);
-                }
-
-            } else {
-                bool senderIsChild = sons.count(sender);
-                if (senderIsChild) {
-                    sons.erase(sender);
-                    APLabellingSearch();
-                }
-            }
-            
-        } break;
-
-        case MSG_MELT_APL_ECHO: {
-            EchoPayload *echoPayload =
-                std::static_pointer_cast<MessageOf<EchoPayload>>(msg)->getData();
-
-            bool senderIsChild = sons.count(sender);
-            if (senderIsChild) {
-                flag[sender] = true;
-                lDfn = std::min(lDfn, echoPayload->lDfn); /* updates L(i) to reflect its son's smaller L */
-                dfnCnt = std::max(dfnCnt, echoPayload->dfnCnt);
-
-                if (echoPayload->lDfn >= dfn && !source) {
-                    articulationPoint = true;
-                    catom->setColor(PINK); // #ToRemove
-                }
-
-                APLabellingSearch();
-            }
-        } break;
-
-        case MSG_MELT_APL_VISITED: {
-            int receivedDfn =
-                *(std::static_pointer_cast<MessageOf<int>>(msg)->getData());            
-
-            flag[sender] = true;
-            
-            if (receivedDfn < minDfn) {
-                minDfn = receivedDfn;
-                minSdr = sender;
-            }
-            
-            bool senderIsChild = sons.count(sender);
-            if (senderIsChild) {
-                sons.erase(sender);
-                APLabellingSearch();
-            }
-        } break;
-
         case MSG_MELT_RESET_GRAPH: {
             if (!resetFather) 
                 resetFather = sender;
@@ -566,8 +408,6 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                 (std::static_pointer_cast<HandleableMessage>(message))->handle(this);
             } else {
                 P2PNetworkInterface * recv_interface = message->destinationInterface;
-                console << " received " << message->type << " from "
-                        << recv_interface->connectedInterface->hostBlock->blockId << "\n";
             
                 // Handover to global message handler
                 processReceivedMessage(message, recv_interface);
@@ -608,7 +448,7 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
             // Case 1.1: Catom can skip some hops
             for (auto it = path.begin(); it != path.end(); it = std::next(it)) {
                 PathHop& someHop = *(it); 
-
+ 
                 // Next next hop is within reach, clear current hop
                 if (someHop.isInVicinityOf(catom->position)
                     || someHop.catomIsAlreadyOnBestConnector(catom->position)) {
@@ -652,7 +492,7 @@ bool MeltSortGrowBlockCode::challengeRootFitness(Cell3DPosition& candidateRoot) 
 // i.e., find the left-most module in the whole ensemble (perhaps extend to lowest-leftmost for 3D)
 void MeltSortGrowBlockCode::determineRoot() {
     // Every node keeps its currently known candidate root in a variable
-    //  and updates it when it finds a better potential root for (min(x) & min(y) & min(z) in this order)
+    //  and updates it when it finds a better potential root for (min(z) & min(y) & min(x) in this order)
     //  when the root is updated, the block broadcasts the new root, and then expects an ack from all of its neighbors
     currentRootPosition = catom->position;
 
@@ -661,8 +501,7 @@ void MeltSortGrowBlockCode::determineRoot() {
     
     // Send a message to every neighbor that includes the block's own location, as a potential root
     sendMessageToAllNeighbors("RootUpdate",
-                              new MessageOf<Cell3DPosition>(MSG_ROOT_UPDATE,
-                                                            currentRootPosition),
+                              new RootUpdateMessage(currentRootPosition),
                               0, 100, 0);
 }
 
@@ -698,7 +537,7 @@ P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
 
 bool MeltSortGrowBlockCode::tryNextMeltRotation(vector<PathHop>& path) {
     if (path.empty()) {
-        cout << "catom has reach target location" << endl;        
+        cout << "catom has reached target location" << endl;        
         return true;
     }
         

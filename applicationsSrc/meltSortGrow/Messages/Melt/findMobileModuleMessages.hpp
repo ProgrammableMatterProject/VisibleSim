@@ -23,6 +23,7 @@ public:
     virtual ~FindMobileModuleMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new FindMobileModuleMessage(*this); }
 };
 
 
@@ -33,6 +34,7 @@ public:
     virtual ~FindMobileModuleFoundMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new FindMobileModuleFoundMessage(*this); }
 };
 
 class FindMobileModuleIgnoreMessage : public MeltSortGrowMessage {
@@ -42,6 +44,7 @@ public:
     virtual ~FindMobileModuleIgnoreMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new FindMobileModuleIgnoreMessage(*this); }
 };
 
 class FindMobileModuleNotFoundMessage : public MeltSortGrowMessage {
@@ -51,6 +54,7 @@ public:
     virtual ~FindMobileModuleNotFoundMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new FindMobileModuleNotFoundMessage(*this); }
 };
 
 #endif /* FIND_MOBILE_MODULE_MESSAGE_H_ */

@@ -8,8 +8,8 @@
 #ifndef MSGMESSAGES_H_
 #define MSGMESSAGES_H_
 
-#define MSG_ROOT_UPDATE 0011
-#define MSG_ROOT_CONFIRM 0012
+#define MSG_ROOT_UPDATE 0011 // 3
+#define MSG_ROOT_CONFIRM 0012 // 
 #define MSG_ROOT_NCONFIRM 0013
 
 #define MSG_MELT_LABEL_AP 0020 // Label articulation points

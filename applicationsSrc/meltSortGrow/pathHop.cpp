@@ -16,6 +16,12 @@
 
 using namespace Catoms3D;
 
+PathHop::PathHop(PathHop const &copy) {
+    position = copy.position;
+    orientationCode = copy.orientationCode;
+    conDistanceMap = std::map<short, int>(copy.conDistanceMap);
+}
+
 bool
 PathHop::getConnectors(std::set<short>& connectors) const {
     transform(conDistanceMap.begin(), conDistanceMap.end(),

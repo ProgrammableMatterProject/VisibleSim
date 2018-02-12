@@ -12,8 +12,6 @@
 #include "../meltSortGrowBlockCode.hpp"
 
 class MeltSortGrowMessage : public HandleableMessage {
-protected:
-    Catoms3DBlock *sender; //!< A pointer to the catom which sent the message
 public:
     MeltSortGrowMessage() {};
     virtual ~MeltSortGrowMessage() {};

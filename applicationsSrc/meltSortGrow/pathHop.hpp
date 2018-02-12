@@ -22,11 +22,12 @@ class PathHop {
 public:
     PathHop(Cell3DPosition pos, short ori, std::map<short, int> map)
         : position(pos), orientationCode(ori), conDistanceMap(map) {}
+    PathHop(PathHop const &copy);
     ~PathHop(){}
 
     inline short getOrientation() const { return orientationCode; }
-    inline Cell3DPosition getPosition() const { return position; }
-    bool getConnectors(std::set<short>& connectors) const;
+    inline Cell3DPosition getPosition() const { return position; } 
+   bool getConnectors(std::set<short>& connectors) const;
 
     /** 
      * @brief Returns the distance corresponding to connector con
