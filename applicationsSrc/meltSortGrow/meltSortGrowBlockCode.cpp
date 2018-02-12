@@ -601,78 +601,32 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
         } break;
 
         case EVENT_ROTATION3D_END: {
-            if (!meltRotationsPlan.empty()) {                    
-                Catoms3DMotionRulesLink *nextRotation = meltRotationsPlan.front();
-                pivotLinkConId = nextRotation->getConToID();
-                meltRotationsPlan.pop_front();
-                nextRotation->sendRotationEvent(catom, rotationPlanPivot,
-                                                getScheduler()->now() + 100);
-                cout <<  "QWIDJBKQWNDKJLQWNDKQWMDQWDWQD HERE" << endl; 
-            } else {
-                if (!path.empty()) { // Not in place yet
-                    // Check if next path hop has been reached
-                    auto lastHop = path.back();
+            assert(meltRotationsPlan.empty());
+            assert(!path.empty());
+            
+            // Case 1: This is not the final hop
+            // Case 1.1: Catom can skip some hops
+            for (auto it = path.begin(); it != path.end(); it = std::next(it)) {
+                PathHop& someHop = *(it); 
 
-                    // Case 1: This is not the final hop
-                    // Case 1.1: Catom can skip a hop
-                    bool skippedHop = false;
-                    if (path.size() > 3) {
-                        PathHop& nextNextNextHop = *(std::prev(
-                                                         std::prev(
-                                                             std::prev(
-                                                                 std::prev(path.end())))));
-
-                        // Next next hop is within reach, clear current hop
-                        if (nextNextNextHop.isInVicinityOf(catom->position)) {
-                            path.pop_back(); path.pop_back(); path.pop_back();
-                            skippedHop = true;
-                        } 
-                    }
-
-                    if (!skippedHop && path.size() > 2) {
-                        PathHop& nextNextHop = *(std::prev(
-                                                     std::prev(std::prev(path.end()))));
-
-                        // Next hop is within reach, clear current hop
-                        if (nextNextHop.isInVicinityOf(catom->position)) {
-                            path.pop_back(); path.pop_back();
-                            skippedHop = true;
-                        } 
-                    }
-
-                    if (!skippedHop && path.size() > 1) {
-                        PathHop& nextHop = *(std::prev(std::prev(path.end())));
-
-                        // Case 1.2: Catom is adjacent to next hop and continues from it
-                        if (nextHop.isInVicinityOf(catom->position)
-                            || nextHop.catomIsAlreadyOnBestConnector(catom->position)) {
-                            path.pop_back();
-                        }
-                        // Case 1.3: Catom is not yet adjacent to next hop, keep rotating
-                    } else if (!skippedHop) {
-                        // Case 2.1: We are on final hop and we are on tail connector, terminate
-                        if (lastHop.finalTargetReached()
-                            || lastHop.catomIsAlreadyOnBestConnector(catom->position)) {
-                            path.pop_back();
-                        } // else Case 2.2: We are on final hop, rotate to tail con
-                    }
+                // Next next hop is within reach, clear current hop
+                if (someHop.isInVicinityOf(catom->position)
+                    || someHop.catomIsAlreadyOnBestConnector(catom->position)) {
+                    path.erase(++it, path.end());
+                    break;
+                } 
+            }
                     
-                    bool meltIsOver = tryNextMeltRotation(path);
+            bool meltIsOver = tryNextMeltRotation(path);
 
-                    if (meltIsOver && path.empty()) {
-                        cout << "Final hop is empty, we should be done" << endl;
+            if (meltIsOver && path.empty()) {
+                cout << "Final hop is empty, melt should be done" << endl;
 
-                        melted = true;
-                        propagateGraphResetBFS();
-                            
-                        return;
-                    } else if (meltIsOver && !path.empty()) {
-                        cout << "MELT: MODULE IS STUCK!" << endl;
-                        throw "Melt aborted";
-                    }
-                } else {
-                    cout << "Final hop is empty, we should be done" << endl;
-                }
+                melted = true;
+                propagateGraphResetBFS();
+            } else if (meltIsOver && !path.empty()) {
+                cout << "MELT: MODULE IS STUCK!" << endl;
+                throw "Melt aborted";
             }
         } break;
             
