@@ -2,6 +2,11 @@
 <world gridSize="20,20,10" windowSize="1280,720">
   <camera target="72.5226,45.3391,17.5914" directionSpherical="-8.95323,30.4124,220" angle="30" />
   <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="78" />
+ 
+  <customization>
+    <rotationDelay multiplier="0.1f"/>
+  </customization>
+  
   <blockList blockSize="10,10,10">
     <block position="7,4,8" color="128,128,128" rotation="0" />
     <block position="7,4,7" color="128,128,128" rotation="0" />
@@ -12,6 +17,7 @@
     <block position="7,4,2" color="128,128,128" rotation="0" />
     <block position="7,4,1" color="128,128,128" rotation="0" />
   </blockList>
+
   <targetList>
     <target format="relativeGrid">
       <cell position="0,0,0" />
@@ -24,4 +30,5 @@
       <cell position="7,0,0" />
     </target>
   </targetList>
+
 </world>

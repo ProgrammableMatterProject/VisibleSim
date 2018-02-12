@@ -10,11 +10,18 @@
     <block position="4,5,0" orientation="0"/>
   </blockList>
 
-  <skeleton>
-    <skeleton_line posA="50,50,0" posB="50,50,21" blobbiness="-0.1" radius="26"/>
-    <!--        <skeleton_point pos="50,50,0" blobbiness="-0.1" radius="25"/>
-         <skeleton_point pos="50,50,40" blobbiness="-0.1" radius="10"/>-->
-  </skeleton>
+  <targetList>
+    <target format="relativeGrid">
+      <cell position="0,0,0" />
+      <cell position="1,0,0" />
+      <cell position="2,0,0" />
+      <cell position="3,0,0" />
+      <cell position="4,0,0" />
+      <cell position="5,0,0" />
+      <cell position="6,0,0" />
+      <cell position="7,0,0" />
+    </target>
+  </targetList>
 </world>
 
 
