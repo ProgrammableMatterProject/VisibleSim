@@ -19,6 +19,8 @@
 #include "meldProcessDebugger.h"
 #endif
 
+//#define showStatsFPS	1
+
 //===========================================================================================================
 //
 //          GlutContext  (class)
@@ -328,7 +330,9 @@ void GlutContext::idleFunc(void) {
     std::chrono::milliseconds timespan(20);
     std::this_thread::sleep_for(timespan);
 
-    //calculateFPS();
+#ifdef showStatsFPS
+    calculateFPS();
+#endif
     if (saveScreenMode && mustSaveImage) {
         static int num=0;
         char title[16];
@@ -363,8 +367,7 @@ void GlutContext::calculateFPS(void) {
 
     //  Calculate time passed
     int timeInterval = currentTime - previousTime;
-    if(timeInterval > 1000)
-    {
+    if(timeInterval > 200) {
         fps = frameCount / (timeInterval / 1000.0f);
         previousTime = currentTime;
         frameCount = 0;
@@ -374,6 +377,7 @@ void GlutContext::calculateFPS(void) {
 void GlutContext::showFPS(void) {
     char fpsStr[50];
     sprintf(fpsStr, "FPS = %4.2f", fps);
+	glColor3f(255,255,0);
     GlutWindow::drawString(50, 50, fpsStr);
 }
 
@@ -409,8 +413,9 @@ void GlutContext::drawFunc(void) {
     popup->glDraw();
     if (popupMenu) popupMenu->glDraw();
     if (helpWindow) helpWindow->glDraw();
-    //showFPS();
-
+#ifdef showStatsFPS
+    showFPS();
+#endif
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }
@@ -481,20 +486,20 @@ int GlutContext::selectFaceFunc(int x,int y) {
 // recherche du premier élément dans le tableau d'objet cliqués
 // tableau d'entiers : { [name,zmin,zmax,n],[name,zmin,zmax,n]...}
 int GlutContext::processHits(GLint hits, GLuint *buffer) {
-    if (hits==0) {
+	if (hits==0) {
         return 0;
     }
     GLuint *ptr=buffer;
     GLuint nmini = ptr[3];
     GLuint zmini = ptr[1];
     ptr+=4;
-    for (int i=1; i<hits; i++)
-    { if (ptr[1]<zmini)
-        { zmini = ptr[1];
-            nmini = ptr[3];
-        }
-        ptr+=4;
-    }
+    for (int i=1; i<hits; i++) {
+		if (ptr[1]<zmini) {
+			zmini = ptr[1];
+			nmini = ptr[3];
+		}
+		ptr+=4;
+	}
     // traitement d'une selection
     // nmini contient le numéro de l'élément sélectionné
     // celui de z minimum

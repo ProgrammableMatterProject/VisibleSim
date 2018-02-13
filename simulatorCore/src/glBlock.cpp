@@ -77,7 +77,6 @@ string GlBlock::getPopupInfo() {
 	return out.str();
 }
 
-
 void GlBlock::glDrawId(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glPushMatrix();
 	glTranslatef(position[0],position[1],position[2]);

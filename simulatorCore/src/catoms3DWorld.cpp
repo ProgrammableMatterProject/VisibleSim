@@ -37,13 +37,15 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 #endif
 
     if (GlutContext::GUIisEnabled) {
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-											"catom3DV2connectorID.obj");
+/* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
+/*
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+*/
+		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2connectorID.obj");
+		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
         /*objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 											"catom3Drepere3.obj");*/
-		objBlockForPicking =
-			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-									 "catom3D_picking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
 	}
 
@@ -52,7 +54,7 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 }
 
 Catoms3DWorld::~Catoms3DWorld() {
-#ifdef DEBUG_OBJECT_LIFECYCLE    
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DWorld destructor" << endl;
 #endif
     /*	block linked are deleted by world::~world() */
@@ -98,7 +100,7 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 #ifdef DEBUG_NEIGHBORHOOD
         OUTPUT << "link catom " << catom->blockId << endl;
 #endif
-        
+
 		Cell3DPosition neighborPos;
 		Catoms3DBlock* neighborBlock;
 
@@ -239,8 +241,6 @@ void Catoms3DWorld::glDrawId() {
     }
     unlock();
     glPopMatrix();
-
-    glDrawBackground();
 }
 
 void Catoms3DWorld::glDrawIdByMaterial() {
