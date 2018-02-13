@@ -14,7 +14,7 @@ void Cell3DPosition::set(short x,short y,short z) {
     pt[2]=z;
 }
 
-double Cell3DPosition::dist_euclid(const Cell3DPosition p) const {
+double Cell3DPosition::dist_euclid(const Cell3DPosition& p) const {
     Cell3DPosition diff = *this - p;
     return diff.l2_norm();
 }

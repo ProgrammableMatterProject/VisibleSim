@@ -203,7 +203,9 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
             targetCellsAsc->push_back(pair.first);
         }
 
-        targetCellsAsc->sort(Cell3DPosition::compare_ZYX);
+        targetCellsAsc->sort([=](const Cell3DPosition& first, const Cell3DPosition& second){
+                return first.dist_euclid(*origin) < second.dist_euclid(*origin);
+            });
     }
 }
 
