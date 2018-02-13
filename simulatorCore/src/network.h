@@ -67,6 +67,7 @@ public:
 
     virtual void handle(BaseSimulator::BlockCode*) = 0;
     virtual bool isMessageHandleable() { return true; };
+    virtual string getName() = 0;
 	virtual Message* clone() = 0;
 };
 

@@ -43,6 +43,18 @@ int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,int t0,int dt) 
 	return sendMessage(NULL, msg, dest, t0, dt);
 }
 
+int BlockCode::sendMessage(HandleableMessage*msg,
+                           P2PNetworkInterface *dest, int t0, int dt) {
+    int t1 = scheduler->now() + t0
+      + (int)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
+
+    console << " sends " << msg->getName() << " to "
+            << dest->getConnectedBlockId() << " at " << t1 << "\n";
+
+    scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
+    return 0;
+}
+
 int BlockCode::sendMessage(const char*msgString, Message*msg,
                            P2PNetworkInterface *dest, int t0, int dt) {
     int t1 = scheduler->now() + t0
