@@ -345,7 +345,7 @@ bool Catoms3DMotionRules::getValidSurfaceLinksOnCatom(const Catoms3DBlock* catom
         
             if (isOk) {
                 links.push_back(link);
-                OUTPUT << "ADD " << from << " -> " << conTo << endl;
+                // OUTPUT << "ADD " << from << " -> " << conTo << endl;
             }
         }
     } // for

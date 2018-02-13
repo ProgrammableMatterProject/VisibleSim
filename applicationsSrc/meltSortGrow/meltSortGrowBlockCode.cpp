@@ -263,11 +263,37 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
 
-        case EVENT_TELEPORTATION_END: {
-            if (!growing) { // MELT
-                propagateGraphResetBFS();
-            } else { // GROW 
-                // do stuff...
+        case EVENT_ROTATION3D_END: {            
+            assert(meltRotationsPlan.empty());
+            assert(!path.empty());
+
+            if (!growing) {
+                // Case 1: This is not the final hop
+                // Case 1.1: Catom can skip some hops
+                for (auto it = path.begin(); it != path.end(); it = std::next(it)) {
+                    PathHop& someHop = *(it); 
+ 
+                    // Next next hop is within reach, clear current hop
+                    if (someHop.isInVicinityOf(catom->position)
+                        || someHop.catomIsAlreadyOnBestConnector(catom->position)) {
+                        OUTPUT << "Skipping until: " << *it << endl;
+                        path.erase(++it, path.end());
+                        break;
+                    } 
+                }
+                    
+                bool meltIsOver = tryNextMeltRotation(path);
+
+                if (meltIsOver && path.empty()) {
+                    cout << "Final hop is empty, melt should be done" << endl;
+
+                    melted = true;
+                    propagateGraphResetBFS();
+                } else if (meltIsOver && !path.empty()) {
+                    cout << "MELT: MODULE IS STUCK!" << endl;
+                    throw "Melt aborted";
+                }
+            } else {
                 if (catom->position == goalPosition) {
                     growing = false;
                     growthVisited = false;
@@ -276,45 +302,34 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
 
                     // Send to single neigbor which will follow the message
                     //  route back to the new tail
-                    if (!neighbors.size())
-                        cout << "huho" << endl;
-                    growthParent = neighbors.front();
+                    assert(neighbors.size());
+
+                    PathHop& finalHop = path.back(); 
+                    P2PNetworkInterface* growthParent =
+                        catom->getInterface(finalHop.getPosition());
+                    assert(growthParent != NULL);
+                    // growthParent = neighbors.front();
                     sendMessage(new GrowNextModuleMessage(),
                                 growthParent, 100, 0);
                 } else {
                     // Perform next move towards current growth target
-                }
-                
-            }
-        } break;
-
-        case EVENT_ROTATION3D_END: {
-            assert(meltRotationsPlan.empty());
-            assert(!path.empty());
-            
-            // Case 1: This is not the final hop
-            // Case 1.1: Catom can skip some hops
-            for (auto it = path.begin(); it != path.end(); it = std::next(it)) {
-                PathHop& someHop = *(it); 
+                    // Case 1: This is not the final hop
+                    // Case 1.1: Catom can skip some hops
+                    // TODO: REFACTOR
+                    for (auto it = path.begin(); it != path.end(); it = std::next(it)) {
+                        PathHop& someHop = *(it); 
  
-                // Next next hop is within reach, clear current hop
-                if (someHop.isInVicinityOf(catom->position)
-                    || someHop.catomIsAlreadyOnBestConnector(catom->position)) {
-                    path.erase(++it, path.end());
-                    break;
-                } 
-            }
-                    
-            bool meltIsOver = tryNextMeltRotation(path);
+                        // Next next hop is within reach, clear current hop
+                        if (someHop.isInVicinityOf(catom->position)
+                            || someHop.catomIsAlreadyOnBestConnector(catom->position)) {
+                            OUTPUT << "Skipping until: " << *it << endl;
+                            path.erase(++it, path.end());
+                            break;
+                        } 
+                    }
 
-            if (meltIsOver && path.empty()) {
-                cout << "Final hop is empty, melt should be done" << endl;
-
-                melted = true;
-                propagateGraphResetBFS();
-            } else if (meltIsOver && !path.empty()) {
-                cout << "MELT: MODULE IS STUCK!" << endl;
-                throw "Melt aborted";
+                    assert(!tryNextGrowthRotation(path));
+                }
             }
         } break;
             
@@ -382,7 +397,6 @@ P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
     return NULL;
 }
 
-
 bool MeltSortGrowBlockCode::tryNextMeltRotation(vector<PathHop>& path) {
     if (path.empty()) {
         cout << "catom has reached target location" << endl;        
@@ -440,6 +454,60 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(vector<PathHop>& path) {
         return false;
     } else {
         cout << "tryNextMeltRotation: Could not compute feasible rotation plan to parent" << endl;
+    }
+
+    return true;
+}
+
+bool MeltSortGrowBlockCode::tryNextGrowthRotation(vector<PathHop>& path) {
+    assert(!path.empty());
+        
+    // List all connectors that could be filled in order to connect
+    //  a neighbor module to the last hop or that would help reach parent's path connectors
+    PathHop &lastHop = path.back();
+
+    if (lastHop.catomIsAlreadyOnBestConnector(catom->position)) {
+        path.pop_back();
+        if (path.empty()) return true;
+        else lastHop = path.back();
+    }
+    
+    short catomDockingConnector = catom->getConnectorId(lastHop.getPosition());
+    short pivotDockingConnector =
+        lastHop.getHopConnectorAtPosition(catom->position); // so-so    
+
+    cout << "tryNextMeltRotation: " << "module is on " << pivotDockingConnector
+         << " -> " << catomDockingConnector << endl
+         << "input path: " << lastHop << endl;
+
+    std::vector<short> adjacentPathConnectors;
+    std::map<short, short> mirrorConnector;
+    API::findAdjacentConnectors(catom, lastHop,
+                                pivotDockingConnector, catomDockingConnector,
+                                adjacentPathConnectors, mirrorConnector);
+        
+    vector<Catoms3DMotionRulesLink*> mrl;
+    API::getMotionRulesFromConnector(catom, catomDockingConnector, mrl);
+            
+    growthRotationsPlan.clear();
+    API::findConnectorsPath(mrl, catomDockingConnector, adjacentPathConnectors,
+                            growthRotationsPlan);
+            
+    if (!growthRotationsPlan.empty()) {
+        short dirTo = growthRotationsPlan.back()->getConToID();
+        lastHop.prune(mirrorConnector[dirTo]);
+        
+        Catoms3DMotionRulesLink *nextRotation = growthRotationsPlan.front();
+
+        cout << "Moving : " << *nextRotation << endl << endl;
+        
+        growthRotationsPlan.pop_front();
+        nextRotation->sendRotationEvent(catom,
+                                        catom->getNeighborOnCell(lastHop.getPosition()),
+                                        getScheduler()->now() + 100);
+        return false;
+    } else {
+        cout << "tryNextGrowthRotation: Could not compute feasible rotation plan to parent" << endl;
     }
 
     return true;

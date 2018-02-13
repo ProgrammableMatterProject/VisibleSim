@@ -42,11 +42,11 @@ API::addModuleToPath(Catoms3DBlock *catom,
                              pathConnectorsDistance);
                              // pathAbsoluteDirectionsDistance);
 
-    // cout << "addModuleToPath: " << "newHop: " << newHop << endl;
+    cout << "addModuleToPath: " << "newHop: " << newHop << endl;
     path.push_back(newHop);
 
-    for (PathHop& hop : path) cout << hop << endl;
-    cout << endl;
+    // for (PathHop& hop : path) cout << hop << endl;
+    // cout << endl;
     
     return true;
 }

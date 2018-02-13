@@ -96,6 +96,7 @@ public:
     bool growthVisited = false; //!< Indicates whether the current module has been visited during this growth phase
     P2PNetworkInterface *growthParent = NULL; //!< The module's parent in the DFS-tree created during the growth phase
     Cell3DPosition goalPosition; //!< Position to be filled by current growth     
+    list<Catoms3DMotionRulesLink*> growthRotationsPlan; //!< Ordered list of rotation motions that a growing module has to follow to reach the next target position
      
     /**
      * \brief Initializes the local variables used by the articulation points labelling algorithm
@@ -173,6 +174,7 @@ public:
     bool challengeRootFitness(Cell3DPosition& candidateRoot);
 
     bool tryNextMeltRotation(vector<PathHop>& path);
+    bool tryNextGrowthRotation(vector<PathHop>& path);
 };
 
 #endif /* MELTSORTGROWBLOCKCODE_H_ */

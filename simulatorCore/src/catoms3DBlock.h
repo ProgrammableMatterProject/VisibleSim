@@ -74,7 +74,7 @@ public:
        @brief Get the interface from the neighbor position in the grid
        @param pos: position of the cell (if in the grid)
        @return return interface if it exists one connected, NULL otherwise */
-    P2PNetworkInterface *getInterface(const Cell3DPosition &pos);
+    P2PNetworkInterface* getInterface(const Cell3DPosition &pos);
     /**
        @brief Get the interface from the interface id
        @param id: interface number

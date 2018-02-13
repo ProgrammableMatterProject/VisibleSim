@@ -21,8 +21,6 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
         bc->meltFather = destinationInterface;
         bc->resetDFSFlags();
 
-        // List all connectors that could be filled in order to connect
-        //  a neighbor module to the last hop or that would help reach parent's path connectors
         PathHop& lastHop = path.back();
 
         std::vector<short> adjacentPathConnectors;
@@ -53,7 +51,6 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
                 // Path to pathConnectors is blocked
                 bc->sendMessage(new FindMobileModuleFoundMessage(),
                                 bc->meltFather, 100, 0);
-
                 
                 Catoms3DMotionRulesLink *nextRotation = bc->meltRotationsPlan.front();
                 bc->pivotLinkConId = nextRotation->getConToID();
