@@ -35,13 +35,15 @@
       
       <!-- 2x2x2 Volume -->
       <cell position="0,0,0" />
-      <cell position="1,0,0" />
-      <cell position="0,1,0" />
-      <cell position="1,1,0" />
       <cell position="0,0,1" />
+      <cell position="0,1,0" />
       <cell position="0,1,1" />
+      <cell position="1,0,0" />
       <cell position="1,0,1" />
+      <cell position="1,1,0" />
       <cell position="1,1,1" />
+
+      <!-- +1 module on the side -->
       <cell position="2,0,0" />
     </target>
   </targetList>

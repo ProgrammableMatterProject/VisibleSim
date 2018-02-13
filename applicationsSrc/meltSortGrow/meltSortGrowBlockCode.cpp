@@ -324,6 +324,10 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                             || someHop.catomIsAlreadyOnBestConnector(catom->position)) {
                             OUTPUT << "Skipping until: " << *it << endl;
                             path.erase(++it, path.end());
+
+                            OUTPUT << "Updated path: " << endl;
+                            for (auto hop:path) OUTPUT << hop << endl;
+                            
                             break;
                         } 
                     }
