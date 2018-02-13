@@ -10,6 +10,7 @@
 
 #include "network.h"
 #include "../meltSortGrowBlockCode.hpp"
+#include "../msgMessages.hpp"
 
 class MeltSortGrowMessage : public HandleableMessage {
 public:

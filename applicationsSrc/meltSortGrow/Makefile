@@ -19,7 +19,9 @@ SRCS =  meltSortGrow.cpp meltSortGrowBlockCode.cpp\
 	Messages/Melt/findMobileModuleMessages.cpp\
 	api.cpp pathHop.cpp\
 	Messages/Melt/APLabellingMessages.cpp\
-	Messages/Init/rootInitializationMessages.cpp
+	Messages/Init/rootInitializationMessages.cpp\
+	Messages/Melt/graphResetMessages.cpp\
+	Messages/Growth/findPathMessages.cpp
 #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/meltSortGrow

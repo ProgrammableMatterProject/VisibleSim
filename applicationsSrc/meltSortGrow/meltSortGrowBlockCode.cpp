@@ -18,9 +18,11 @@
 #include "teleportationEvents.h"
 
 #include "meltSortGrowBlockCode.hpp"
-#include "Messages/Melt/APLabellingMessages.hpp"
-#include "Messages/Melt/findMobileModuleMessages.hpp"
 #include "Messages/Init/rootInitializationMessages.hpp"
+#include "Messages/Melt/APLabellingMessages.hpp"
+#include "Messages/Melt/graphResetMessages.hpp"
+#include "Messages/Melt/findMobileModuleMessages.hpp"
+#include "Messages/Growth/findPathMessages.hpp"
 #include "api.hpp"
 
 using namespace Catoms3D;
@@ -110,8 +112,7 @@ void MeltSortGrowBlockCode::APLabellingStart() {
         // send VISITED(DFN(i)) to all nodes in (Neighbors(i) - Sons(i))
         for (auto const& module : neighbors) {
             if (!sons.count(module))
-                sendMessage("visited",
-                            new APLabellingVisitedMessage(dfn),
+                sendMessage(new APLabellingVisitedMessage(dfn),
                             module, 100, 0);
         }
     }
@@ -123,8 +124,7 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
     
     if (unprocessedNeighbor) {
         // Send TOKEN(DFNcnt(i) + 1) to k
-        sendMessage("Token",
-                    new APLabellingTokenMessage(dfnCnt + 1),
+        sendMessage(new APLabellingTokenMessage(dfnCnt + 1),
                     unprocessedNeighbor, 100, 0);
         sons.insert(unprocessedNeighbor);
     } else if (source) { /* root checks for articulation point and terminates */
@@ -144,8 +144,7 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
             bridge = true;
 
         // send ECHO(L(i), DFNcnt(i)) to Father(i)
-        sendMessage("Echo",
-                    new APLabellingEchoMessage(lDfn, dfnCnt),
+        sendMessage(new APLabellingEchoMessage(lDfn, dfnCnt),
                     father, 100, 0);
     }
     
@@ -159,11 +158,6 @@ void MeltSortGrowBlockCode::initializeMeltPath() {
     short tailConId = catom->getConnectorId(tailPosition);
     cout << "Tail is " << tailConId << endl;
 
-    // Initially only the target connector needs be in the path 
-    // path.push_back(PathHop(catom->position, catom->orientationCode,
-    //                        { {tailConId, 0} }) // Inline map init
-    //     );
-
     // Add self as the next hop of the path
     API::addModuleToPath(catom, path, tailConId, tailConId);
 }
@@ -172,16 +166,14 @@ void MeltSortGrowBlockCode::findMobileModule() {
     P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
     
     if (unprocessedNeighbor) {
-        sendMessage("FindMobileModule",
-                    new FindMobileModuleMessage(path),
+        sendMessage(new FindMobileModuleMessage(path),
                     unprocessedNeighbor, 100, 0);
     } else if (source) {
         // No more module paths to explore
         catom->setColor(BLUE); // #TOREMOVE todo
         grow();
     } else {
-        sendMessage("FindMobileModuleNotFound",
-                    new FindMobileModuleNotFoundMessage(),
+        sendMessage(new FindMobileModuleNotFoundMessage(),
                     meltFather, 100, 0);
         resetDFSFlags();
     }
@@ -191,16 +183,14 @@ void MeltSortGrowBlockCode::propagateGraphResetBFS() {
     resetChildrenDecount = 0;
     for (P2PNetworkInterface *nghbr : catom->getP2PNetworkInterfaces()) {
         if (nghbr->connectedInterface && nghbr != resetFather) {
-            sendMessage("GraphReset",
-                        new Message(MSG_MELT_RESET_GRAPH),
+            sendMessage(new ResetGraphMessage(),
                         nghbr, 100, 0);
             resetChildrenDecount++;
         }
     }
 
     if (!resetChildrenDecount && resetFather) { // No children, return 
-        sendMessage("GraphResetDone",
-                    new Message(MSG_MELT_RESET_GRAPH_DONE),
+        sendMessage(new ResetGraphDoneMessage(),
                     resetFather, 100, 0);
         resetDFSForLabelling();
     }
@@ -224,8 +214,7 @@ void MeltSortGrowBlockCode::moveToGoal() {
         P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
     
         if (unprocessedNeighbor) {
-            sendMessage("FindPath",
-                        new MessageOf<Cell3DPosition>(MSG_GROW_FINDPATH, goalPosition),
+            sendMessage(new FindPathMessage(goalPosition),
                         unprocessedNeighbor, 100, 0);
         } else {
             console << "Houston we have a problem." << "\n";
@@ -246,151 +235,11 @@ void MeltSortGrowBlockCode::processReceivedMessage(MessagePtr msg,
     stringstream info;
 
     switch (msg->type) {
-        
-        case MSG_MELT_RESET_GRAPH: {
-            if (!resetFather) 
-                resetFather = sender;
-
-            if (resetFather == sender)
-                propagateGraphResetBFS();
-            else {
-                sendMessage("MeltResetGraphNack",
-                            new Message(MSG_MELT_RESET_GRAPH_NACK),
-                            sender, 100, 0);
-            }
-
-        } break;
-
-        case MSG_MELT_RESET_GRAPH_DONE:
-        case MSG_MELT_RESET_GRAPH_NACK: {            
-            if (!--resetChildrenDecount) {
-                if (resetFather) {
-                    sendMessage("GraphResetDone",
-                                new Message(MSG_MELT_RESET_GRAPH_DONE),
-                                resetFather, 100, 0);
-                    resetDFSForLabelling();
-                } else { // isSource
-                    resetDFSForLabelling();
-                    meltOneModule();
-                }                
-            }
-        } break;
-
-        case MSG_GROW_FINDPATH: {
-            goalPosition =
-                *(std::static_pointer_cast<MessageOf<Cell3DPosition>>(msg)->getData());
-            
-            if (!growthVisited) { // Module has not been considered for path planning yet
-                if (!growthParent) growthParent = sender;
-
-                growthVisited = true;
-                
-                flag[sender] = true;
-
-                // targetCells.pop_front(); todo done globally for now
-                
-                // Check if adjacent to target and Visit sub-tree otherwise
-                if (lattice->cellsAreAdjacent(catom->position, goalPosition)) {
-                    list<int> pathIds; pathIds.push_back(catom->blockId);
-                    sendMessage("FindPathFound",
-                                new MessageOf<list<int>>(MSG_GROW_FINDPATH_FOUND,
-                                                         pathIds),
-                                growthParent, 100, 0);
-                    catom->setColor(BLUE); // todo
-                    console << "Path to " << goalPosition << " found" << "\n";
-                } else {
-                    P2PNetworkInterface *unprocessedNeighbor =
-                        getNextUnprocessedInterface();
-
-                    if (unprocessedNeighbor) {
-                        sendMessage("FindPath",
-                                    new MessageOf<Cell3DPosition>(MSG_GROW_FINDPATH,
-                                                                  goalPosition),
-                                    unprocessedNeighbor, 100, 0);
-                    } else {
-                        sendMessage("FindPathNotFound",
-                                    new Message(MSG_GROW_FINDPATH_NOTFOUND),
-                                    growthParent, 100, 0);
-                    }
-
-                }
-                     
-            } else { // Module has already been considered in this phase
-                sendMessage("FindPathIgnore",
-                            new Message(MSG_GROW_FINDPATH_IGNORE),
-                            sender, 100, 0);
-            }
-            
-        } break;
-
-            
-        case MSG_GROW_FINDPATH_FOUND: {
-            list<int> pathIds =
-                *(std::static_pointer_cast<MessageOf<list<int>>>(msg)->getData());
-
-            flag[sender] = true;
-
-            if (growthParent) {            
-                pathIds.push_back(catom->blockId);
-                sendMessage("FindPathFound",
-                            new MessageOf<list<int>>(MSG_GROW_FINDPATH_FOUND,
-                                                     pathIds),
-                            growthParent, 100, 0);
-                growthVisited = false;
-                catom->setColor(GREEN); // todo
-            } else { // isTail, moving module
-                catom->setColor(RED);
-                growing = true;
-                growthVisited = true;
-                console << "Moving to " << goalPosition << "!" << "\n";
-                scheduler->schedule(new TeleportationStartEvent(scheduler->now() + 150,
-                                                                catom, goalPosition));
-            } 
-        } break;
-
-        case MSG_GROW_FINDPATH_NOTFOUND:
-        case MSG_GROW_FINDPATH_IGNORE: {
-            P2PNetworkInterface *unprocessedNeighbor =
-                getNextUnprocessedInterface();
-
-            flag[sender] = true;
-
-            if (unprocessedNeighbor) {
-                sendMessage("FindPath",
-                            new MessageOf<Cell3DPosition>(MSG_GROW_FINDPATH,
-                                                          goalPosition),
-                            unprocessedNeighbor, 100, 0);
-            } else {
-                if (growthParent) {
-                    sendMessage("FindPathNotFound",
-                                new Message(MSG_GROW_FINDPATH_NOTFOUND),
-                                growthParent, 100, 0);
-                    growthVisited = false;
-                } else {
-                    catom->setColor(WHITE); //todo probleeeeem
-                } 
-            }
-        } break;
-            
-        case MSG_GROW_NEXTMODULE: {
-            if (growthParent) {
-                resetDFSFlags();
-                
-                if (growthParent->isConnected()) {
-                    sendMessage("NextModule",
-                                new Message(MSG_GROW_NEXTMODULE),
-                                growthParent, 100, 0);
-                    growthVisited = false;
-                } else { // Current module should be new tail
-                    moveToGoal();
-                }
-            } else {
-                console << "I'm very much sorry sir, but I do not have a growth parent." << "\n";
-            }
-            
-        } break;
-            
-        default: cout << "wut?" << endl; break;
+        // ALL MOVED TO HANDLEABLE MESSAGES
+        default:
+            cout << "Unknown Generic Message Type" << endl;
+            assert(false);
+            break;
     }
 
 }
@@ -430,8 +279,7 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                     if (!neighbors.size())
                         cout << "huho" << endl;
                     growthParent = neighbors.front();
-                    sendMessage("NextModule",
-                                new Message(MSG_GROW_NEXTMODULE),
+                    sendMessage(new GrowNextModuleMessage(),
                                 growthParent, 100, 0);
                 } else {
                     // Perform next move towards current growth target
