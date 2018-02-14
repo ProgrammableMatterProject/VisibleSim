@@ -16,6 +16,7 @@
 #include <thread>
 #include <functional>
 #include <mutex>
+#include <condition_variable>
 
 #include "sema.h"
 #include "events.h"
@@ -90,7 +91,9 @@ public:
 	};
 	State state;				//!< Current state of the scheduler accoring to the State enum
 	atomic<bool> terminate{false}; //!< Indicates if the scheduler has been instructed to terminate. Atomic value used for synchronising deletion of the scheduler and other simulation components. If terminate equals true, it means that other components are waiting for the scheduler to terminate before they can be deleted. Scheduler will finish processing current event and terminate.
-
+    static std::mutex pause_mtx;
+    static std::condition_variable pause_cv;
+        
 	//!< @brief Static getter for the global instance of Scheduler
 	static Scheduler* getScheduler() {
 		assert(scheduler != NULL);

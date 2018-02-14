@@ -14,6 +14,7 @@
 #include "simulator.h"
 #include "events.h"
 #include "trace.h"
+#include "rotation3DEvents.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessDebugger.h"
@@ -88,6 +89,7 @@ void GlutContext::init(int argc, char **argv) {
 		glutMotionFunc(motionFunc);
 		glutPassiveMotionFunc(passiveMotionFunc);
 		glutKeyboardFunc(keyboardFunc);
+        glutSpecialFunc(specialFunc);
 		glutIdleFunc(idleFunc);
 
 		mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,
@@ -313,13 +315,66 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                 break;
             case 's' : saveScreenMode=!saveScreenMode; break;
             case 'S' : saveScreen((char *)("capture.ppm")); break;
-            case 'B' :
+            case 'B' : {
                 World *world = BaseSimulator::getWorld();
                 world->toggleBackground();
-                break;
-
+            } break;
+            case 32: // SPACE
+                Scheduler *scheduler = getScheduler();
+                if (scheduler->state > Scheduler::ENDED) {
+                    // scheduler->state = scheduler->state == Scheduler::PAUSED ?
+                    //     Scheduler::RUNNING : Scheduler::PAUSED;
+                    std::unique_lock<std::mutex> lck(scheduler->pause_mtx);
+                    if (scheduler->state == Scheduler::PAUSED) {
+                        scheduler->state = Scheduler::RUNNING;                        
+                        scheduler->pause_cv.notify_one();
+                    } else {
+                        scheduler->state = Scheduler::PAUSED;
+                    }
+                }
+                break; 
         }
     }
+    glutPostRedisplay();
+}
+
+/////////////////////////////////////run/////////////////////////////////////////
+// fonction associée aux interruptions clavier de caractères spéciaux
+// - key : keycode of the pressed key
+// - x,y : window cursor coordinates
+void GlutContext::specialFunc(int key, int x, int y)
+{           
+    switch(key) {
+        
+        case GLUT_KEY_PAGE_UP: {
+            Rotations3D::rotationDelayMultiplier /= 1.5f;
+            const float minRotationDelayMultiplier = 0.001f;
+            if (Rotations3D::rotationDelayMultiplier < minRotationDelayMultiplier) {
+                Rotations3D::rotationDelayMultiplier = minRotationDelayMultiplier;
+                cout << "Max rotation speed reached: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            } else {            
+                cout << "Increased rotation speed: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            }
+        } break;
+
+        case GLUT_KEY_PAGE_DOWN: {
+            // PTHA: #TODO Should consider creating a configuration variables system
+            Rotations3D::rotationDelayMultiplier *= 1.5f;
+            const float maxRotationDelayMultiplier = 10.0f;
+            if (Rotations3D::rotationDelayMultiplier > maxRotationDelayMultiplier) {
+                Rotations3D::rotationDelayMultiplier = maxRotationDelayMultiplier;
+                cout << "Min rotation speed reached: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            } else {            
+                cout << "Decreased rotation speed: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            }
+        } break;
+        default: cerr << "Unknown keycode pressed: " << key << endl; break;
+    }
+
     glutPostRedisplay();
 }
 

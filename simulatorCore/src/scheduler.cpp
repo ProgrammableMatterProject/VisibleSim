@@ -23,6 +23,8 @@ namespace BaseSimulator {
 
 Scheduler *Scheduler::scheduler=NULL;
 std::mutex Scheduler::delMutex;
+std::mutex Scheduler::pause_mtx;
+std::condition_variable Scheduler::pause_cv;
 
 Scheduler::Scheduler() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
