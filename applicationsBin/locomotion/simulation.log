@@ -1,7 +1,7 @@
 [1;34mSimulator constructor[0m
-[1;34m  config.xml successfully loaded [0m
+[1;34m  config_line3.xml successfully loaded [0m
 [1;34mRobotBlocksSimulator constructor[0m
-grid size : 6 x 6 x 4
+grid size : 5 x 4 x 4
 blocksize =10,10,10
 World constructor
 initShaders
@@ -61,135 +61,8 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 RobotBlocksBlockCode constructor
 RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-new color :(0.25,0.25,0.25,1)
-BuildingBlock constructor (id:0)
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-P2PNetworkInterface constructor
-RobotBlocksBlockCode constructor
-RobotBlocksBlock constructor
-add target (2,4,1),(0,0,0,0)
-add target (3,4,1),(0,0,0,0)
-add target (4,4,1),(0,0,0,0)
-add target (4,3,1),(0,0,0,0)
-add target (1,2,1),(0,0,0,0)
-add target (2,2,1),(0,0,0,0)
-add target (3,2,1),(0,0,0,0)
-add target (4,2,1),(0,0,0,0)
-add target (1,1,1),(0,0,0,0)
-add target (5,4,1),(0,0,0,0)
-add target (4,3,1),(0,0,0,0)
-Simulator: 11 add neighbor 10 on Back
-Simulator: 10 add neighbor 11 on Left
-connection #11:Back to #10:Left
-Simulator: 10 add neighbor 6 on Back
-Simulator: 6 add neighbor 10 on Left
-connection #10:Back to #6:Left
-connection #10:Left to #11:Back
-Simulator: 6 add neighbor 7 on Right
-Simulator: 7 add neighbor 6 on Front
-connection #6:Right to #7:Front
-connection #6:Left to #10:Back
-Simulator: 7 add neighbor 8 on Right
-Simulator: 8 add neighbor 7 on Front
-connection #7:Right to #8:Front
-connection #7:Front to #6:Right
-Simulator: 8 add neighbor 4 on Back
-Simulator: 4 add neighbor 8 on Left
-connection #8:Back to #4:Left
-Simulator: 8 add neighbor 9 on Right
-Simulator: 9 add neighbor 8 on Front
-connection #8:Right to #9:Front
-connection #8:Front to #7:Right
-Simulator: 9 add neighbor 5 on Back
-Simulator: 5 add neighbor 9 on Left
-connection #9:Back to #5:Left
-connection #9:Front to #8:Right
-Simulator: 4 add neighbor 2 on Back
-Simulator: 2 add neighbor 4 on Left
-connection #4:Back to #2:Left
-Simulator: 4 add neighbor 5 on Right
-Simulator: 5 add neighbor 4 on Front
-connection #4:Right to #5:Front
-connection #4:Left to #8:Back
-Simulator: 5 add neighbor 3 on Back
-Simulator: 3 add neighbor 5 on Left
-connection #5:Back to #3:Left
-connection #5:Front to #4:Right
-connection #5:Left to #9:Back
+add target (2,1,1),(0,0,0,0)
+add target (3,1,1),(0,0,0,0)
 Simulator: 1 add neighbor 2 on Right
 Simulator: 2 add neighbor 1 on Front
 connection #1:Right to #2:Front
@@ -197,80 +70,170 @@ Simulator: 2 add neighbor 3 on Right
 Simulator: 3 add neighbor 2 on Front
 connection #2:Right to #3:Front
 connection #2:Front to #1:Right
-connection #2:Left to #4:Back
 connection #3:Front to #2:Right
-connection #3:Left to #5:Back
 loading ../../simulatorCore/resources/textures/robotBlocksTextures/robotTexture.tga
-0.000000 #1: start 1
-0.000000 #2: start 2
-0.000000 #3: start 3
-0.000000 #4: start 4
-0.000000 #4:  sends BFS to 2 at 1000
-4 sends 1001 to 2 at 1000
-0.000000 #4:  sends BFS to 5 at 1000
-4 sends 1001 to 5 at 1000
-0.000000 #4:  sends BFS to 8 at 1000
-4 sends 1001 to 8 at 1000
-0.000000 #5: start 5
-0.000000 #6: start 6
-0.000000 #7: start 7
-0.000000 #8: start 8
-0.000000 #9: start 9
-0.000000 #10: start 10
-0.000000 #11: start 11
-0.000000 #11:  sends BFS to 10 at 1000
-11 sends 1001 to 10 at 1000
+0.000000 #1: start 1,(0,1,0,1)
+0.000000 #1: isSource
+0.000000 #1:  sends BFS to 2 at 1000
+1 sends 1001 to 2 at 1000
+0.000000 #2: start 2,(1,1,0,1)
+0.000000 #2: isModule
+0.000000 #3: start 3,(1,1,1,1)
+0.000000 #3: isSink
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-ADD_NEIGHBOR
-0.001032 #2: rec. BFS
-0.001032 #2:  sends ConfirmEdge to 4 at 3064
-2 sends 1002 to 4 at 3064
-0.001032 #5: rec. BFS
-0.001032 #5:  sends ConfirmEdge to 4 at 3064
-5 sends 1002 to 4 at 3064
-0.001032 #8: rec. BFS
-0.001032 #8:  sends ConfirmEdge to 4 at 3064
-8 sends 1002 to 4 at 3064
-0.001032 #10: rec. BFS
-0.001032 #10:  sends ConfirmEdge to 11 at 3064
-10 sends 1002 to 11 at 3064
-0.003096 #4: rec. ConfirmEdge
-0.003096 #4:  sends CutOff to 2 at 7192
-4 sends 1003 to 2 at 7192
-0.003096 #11: rec. ConfirmEdge
-0.003096 #11:  sends CutOff to 10 at 7192
-11 sends 1003 to 10 at 7192
-0.003096 #4: rec. ConfirmEdge
-0.003096 #4:  sends CutOff to 5 at 7192
-4 sends 1003 to 5 at 7192
-0.003096 #4: rec. ConfirmEdge
-0.003096 #4:  sends CutOff to 8 at 7192
-4 sends 1003 to 8 at 7192
-ERROR: message Id #1003 unknown!
-ERROR: message Id #1003 unknown!
-ERROR: message Id #1003 unknown!
-ERROR: message Id #1003 unknown!
+0.001032 #2: rec. BFS(1)
+0.001032 #2:  sends ConfirmEdge to 1 at 3064
+2 sends 1002 to 1 at 3064
+0.001032 #2:  sends BFS to 3 at 3164
+2 sends 1001 to 3 at 3164
+0.001032 #2:  sends BFS to 1 at 3164
+2 sends 1001 to 1 at 3164
+0.003096 #1: rec. ConfirmEdge
+0.003096 #1:  sends CutOff to 2 at 7192
+1 sends 1003 to 2 at 7192
+0.003196 #3: rec. BFS(1)
+0.003196 #3:  sends ConfirmEdge to 2 at 7392
+3 sends 1002 to 2 at 7392
+0.003196 #3:  sends ConfirmPath to 2 at 7492
+3 sends 1005 to 2 at 7492
+0.003196 #1: rec. BFS(1)
+0.007224 #2: rec. CutOff(empty,0)
+isMainPathRemoved=1
+sendMessageToPath()
+sendMessageToPath()
+sendMessageToPath()
+0.007224 #2:  sends Available to 3 at 15448
+2 sends 1004 to 3 at 15448
+0.007224 #2:  sends Available to 1 at 15448
+2 sends 1004 to 1 at 15448
+0.007424 #2: rec. ConfirmEdge
+0.007424 #2:  sends CutOff to 3 at 15848
+2 sends 1003 to 3 at 15848
+0.007524 #2: rec. ConfirmPath
+0.015480 #3: rec. Available
+0.015480 #3:  sends BFS to 2 at 31960
+3 sends 1001 to 2 at 31960
+0.015480 #1: rec. Available
+0.015880 #3: rec. CutOff(empty,0)
+isMainPathRemoved=1
+sendMessageToPath(3,)
+lenght=1
+path.front()=3
+next=0
+sendMessageToPath()
+sendMessageToPath()
+0.015880 #3:  sends Available to 2 at 32760
+3 sends 1004 to 2 at 32760
+0.031992 #2: rec. BFS(3)
+0.031992 #2:  sends ConfirmEdge to 3 at 64984
+2 sends 1002 to 3 at 64984
+0.031992 #2:  sends BFS to 3 at 65084
+2 sends 1001 to 3 at 65084
+0.031992 #2:  sends BFS to 1 at 65084
+2 sends 1001 to 1 at 65084
+0.032792 #2: rec. Available
+0.065016 #3: rec. ConfirmEdge
+0.065016 #3:  sends CutOff to 2 at 131032
+3 sends 1003 to 2 at 131032
+0.065116 #3: rec. BFS(3)
+0.065116 #3:  sends ConfirmEdge to 2 at 131232
+3 sends 1002 to 2 at 131232
+0.065116 #3:  sends ConfirmPath to 2 at 131332
+3 sends 1005 to 2 at 131332
+0.065116 #1: rec. BFS(3)
+0.131064 #2: rec. CutOff(empty,0)
+isMainPathRemoved=1
+sendMessageToPath()
+0.131064 #2:  sends Available to 3 at 263128
+2 sends 1004 to 3 at 263128
+0.131064 #2:  sends Available to 1 at 263128
+2 sends 1004 to 1 at 263128
+0.131264 #2: rec. ConfirmEdge
+0.131264 #2:  sends CutOff to 3 at 263528
+2 sends 1003 to 3 at 263528
+0.131364 #2: rec. ConfirmPath
+0.263160 #3: rec. Available
+0.263160 #3:  sends BFS to 2 at 527320
+3 sends 1001 to 2 at 527320
+0.263160 #1: rec. Available
+0.263560 #3: rec. CutOff(empty,0)
+isMainPathRemoved=1
+sendMessageToPath(3,)
+lenght=1
+path.front()=3
+next=0
+0.263560 #3:  sends Available to 2 at 528120
+3 sends 1004 to 2 at 528120
+0.527352 #2: rec. BFS(3)
+0.527352 #2:  sends ConfirmEdge to 3 at 1055704
+2 sends 1002 to 3 at 1055704
+0.527352 #2:  sends BFS to 3 at 1055804
+2 sends 1001 to 3 at 1055804
+0.527352 #2:  sends BFS to 1 at 1055804
+2 sends 1001 to 1 at 1055804
+0.528152 #2: rec. Available
+1.055736 #3: rec. ConfirmEdge
+1.055736 #3:  sends CutOff to 2 at 2112472
+3 sends 1003 to 2 at 2112472
+1.055836 #3: rec. BFS(3)
+1.055836 #3:  sends ConfirmEdge to 2 at 2112672
+3 sends 1002 to 2 at 2112672
+1.055836 #3:  sends ConfirmPath to 2 at 2112772
+3 sends 1005 to 2 at 2112772
+1.055836 #1: rec. BFS(3)
+2.112504 #2: rec. CutOff(empty,0)
+isMainPathRemoved=1
+sendMessageToPath()
+2.112504 #2:  sends Available to 3 at 4226008
+2 sends 1004 to 3 at 4226008
+2.112504 #2:  sends Available to 1 at 4226008
+2 sends 1004 to 1 at 4226008
+2.112704 #2: rec. ConfirmEdge
+2.112704 #2:  sends CutOff to 3 at 4226408
+2 sends 1003 to 3 at 4226408
+2.112804 #2: rec. ConfirmPath
+4.226040 #3: rec. Available
+4.226040 #3:  sends BFS to 2 at 8453080
+3 sends 1001 to 2 at 8453080
+4.226040 #1: rec. Available
+4.226440 #3: rec. CutOff(empty,0)
+isMainPathRemoved=1
+sendMessageToPath(3,)
+lenght=1
+path.front()=3
+next=0
+4.226440 #3:  sends Available to 2 at 8453880
+3 sends 1004 to 2 at 8453880
+8.453112 #2: rec. BFS(3)
+8.453112 #2:  sends ConfirmEdge to 3 at 16907224
+2 sends 1002 to 3 at 16907224
+8.453112 #2:  sends BFS to 3 at 16907324
+2 sends 1001 to 3 at 16907324
+8.453112 #2:  sends BFS to 1 at 16907324
+2 sends 1001 to 1 at 16907324
+8.453912 #2: rec. Available
+16.907256 #3: rec. ConfirmEdge
+16.907256 #3:  sends CutOff to 2 at 33815512
+3 sends 1003 to 2 at 33815512
+16.907356 #3: rec. BFS(3)
+16.907356 #3:  sends ConfirmEdge to 2 at 33815712
+3 sends 1002 to 2 at 33815712
+16.907356 #3:  sends ConfirmPath to 2 at 33815812
+3 sends 1005 to 2 at 33815812
+16.907356 #1: rec. BFS(3)
+33.815544 #2: rec. CutOff(empty,0)
+isMainPathRemoved=1
+sendMessageToPath()
+33.815544 #2:  sends Available to 3 at 67632088
+2 sends 1004 to 3 at 67632088
+33.815544 #2:  sends Available to 1 at 67632088
+2 sends 1004 to 1 at 67632088
+33.815744 #2: rec. ConfirmEdge
+33.815744 #2:  sends CutOff to 3 at 67632488
+2 sends 1003 to 3 at 67632488
+33.815844 #2: rec. ConfirmPath
 [1;31mCPPScheduler destructor[0m
 Scheduler destructor

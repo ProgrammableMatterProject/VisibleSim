@@ -19,6 +19,7 @@ public :
 	bool firstExcepted;
 	vector<int> path;
 	
+	PathMessageData() { firstExcepted=false; };
 	bool empty() { 
 		return path.empty();
 	}
