@@ -84,9 +84,7 @@ public:
     
     vector<PathHop> path; //!< 
     P2PNetworkInterface *meltFather = NULL; //!< l'id de module du last hop
-    list<Catoms3DMotionRulesLink*> meltRotationsPlan; //!< Ordered list of rotation motions that a melting module has to follow to reach the end of the melt tail
-    Catoms3DBlock *rotationPlanPivot = NULL;
-    short pivotLinkConId = -1; //!< id of the module's connector that is connected to a pivot module used for rotation
+
     
     /**** GROW *****/
     list<Cell3DPosition> targetCells; //!< Ordered list of target positions to be filled during the growth phase    
@@ -96,8 +94,9 @@ public:
     bool growthVisited = false; //!< Indicates whether the current module has been visited during this growth phase
     P2PNetworkInterface *growthParent = NULL; //!< The module's parent in the DFS-tree created during the growth phase
     Cell3DPosition goalPosition; //!< Position to be filled by current growth     
-    list<Catoms3DMotionRulesLink*> growthRotationsPlan; //!< Ordered list of rotation motions that a growing module has to follow to reach the next target position
-     
+
+    std::list<Catoms3DMotionRulesLink*> rotationsPlan; //!< Ordered list of rotation motions along the path
+
     /**
      * \brief Initializes the local variables used by the articulation points labelling algorithm
      */
@@ -173,8 +172,10 @@ public:
      * \return true if candidateRoot is fitter than current root, false otherwise */
     bool challengeRootFitness(Cell3DPosition& candidateRoot);
 
+    bool computeNextRotation(vector<PathHop>& path);
     bool tryNextMeltRotation(vector<PathHop>& path);
     bool tryNextGrowthRotation(vector<PathHop>& path);
+    void trimPath(vector<PathHop>& path);
 };
 
 #endif /* MELTSORTGROWBLOCKCODE_H_ */

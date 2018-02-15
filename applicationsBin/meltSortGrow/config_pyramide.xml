@@ -1,92 +1,108 @@
 <?xml version="1.0" standalone="no" ?>
-<world gridSize="80,10,6">
-  <camera target="80,50,10" directionSpherical="-20,30,100" angle="45" near="10.0" far="250.0" />
-  <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="30" near="80.0" far="250.0"/>
+<world gridSize="40,20,10" windowSize="1280,720">
+    <camera target="183.422,101.736,16.5822" directionSpherical="-721.713,47.6011,520" angle="30" far="2500" />
+    <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="78" />
+    
+    <customization>
+      <rotationDelay multiplier="0.1f"/>
+    </customization>
 
-  <customization>
-    <rotationDelay multiplier="0.1f"/>
-  </customization>
-
-  <blockList color="128,128,128" blockSize="10,10,10">
-    <block position="71,1,0" orientation="0"/>
-    <block position="72,1,0" orientation="0"/>
-    <block position="73,1,0" orientation="0"/>
-    <block position="74,1,0" orientation="0"/>
-    <block position="75,1,0" orientation="0"/>
-    <block position="76,1,0" orientation="0"/>
-    <block position="77,1,0" orientation="0"/>
-    <block position="78,1,0" orientation="0"/>
-    <block position="71,2,0" orientation="0"/>
-    <block position="72,2,0" orientation="0"/>
-    <block position="73,2,0" orientation="0"/>
-    <block position="74,2,0" orientation="0"/>
-    <block position="75,2,0" orientation="0"/>
-    <block position="76,2,0" orientation="0"/>
-    <block position="77,2,0" orientation="0"/>
-    <block position="78,2,0" orientation="0"/>
-    <block position="71,3,0" orientation="0"/>
-    <block position="72,3,0" orientation="0"/>
-    <block position="73,3,0" orientation="0"/>
-    <block position="74,3,0" orientation="0"/>
-    <block position="75,3,0" orientation="0"/>
-    <block position="76,3,0" orientation="0"/>
-    <block position="77,3,0" orientation="0"/>
-    <block position="78,3,0" orientation="0"/>
-    <block position="71,4,0" orientation="0"/>
-    <block position="72,4,0" orientation="0"/>
-    <block position="73,4,0" orientation="0"/>
-    <block position="74,4,0" orientation="0"/>
-    <block position="75,4,0" orientation="0"/>
-    <block position="76,4,0" orientation="0"/>
-    <block position="77,4,0" orientation="0"/>
-    <block position="78,4,0" orientation="0"/>
-    <block position="71,5,0" orientation="0"/>
-    <block position="72,5,0" orientation="0"/>
-    <block position="73,5,0" orientation="0"/>
-    <block position="74,5,0" orientation="0"/>
-    <block position="75,5,0" orientation="0"/>
-    <block position="76,5,0" orientation="0"/>
-    <block position="77,5,0" orientation="0"/>
-    <block position="78,5,0" orientation="0"/>
-    <block position="71,6,0" orientation="0"/>
-    <block position="72,6,0" orientation="0"/>
-    <block position="73,6,0" orientation="0"/>
-    <block position="74,6,0" orientation="0"/>
-    <block position="75,6,0" orientation="0"/>
-    <block position="76,6,0" orientation="0"/>
-    <block position="77,6,0" orientation="0"/>
-    <block position="78,6,0" orientation="0"/>
-    <block position="71,7,0" orientation="0"/>
-    <block position="72,7,0" orientation="0"/>
-    <block position="73,7,0" orientation="0"/>
-    <block position="74,7,0" orientation="0"/>
-    <block position="75,7,0" orientation="0"/>
-    <block position="76,7,0" orientation="0"/>
-    <block position="77,7,0" orientation="0"/>
-    <block position="78,7,0" orientation="0"/>
-    <block position="71,8,0" orientation="0"/>
-    <block position="72,8,0" orientation="0"/>
-    <block position="73,8,0" orientation="0"/>
-    <block position="74,8,0" orientation="0"/>
-    <block position="75,8,0" orientation="0"/>
-    <block position="76,8,0" orientation="0"/>
-    <block position="77,8,0" orientation="0"/>
-    <block position="78,8,0" orientation="0"/>
-  </blockList>
+    <blockList blockSize="10,10,10">
+        <block position="31,10,4" color="128,128,128" rotation="0" />
+        <block position="30,10,4" color="128,128,128" rotation="0" />
+        <block position="32,10,4" color="128,128,128" rotation="0" />
+        <block position="33,10,4" color="128,128,128" rotation="0" />
+        <block position="33,11,4" color="128,128,128" rotation="0" />
+        <block position="33,12,4" color="128,128,128" rotation="0" />
+        <block position="32,11,4" color="128,128,128" rotation="0" />
+        <block position="32,12,4" color="128,128,128" rotation="0" />
+        <block position="31,11,4" color="128,128,128" rotation="0" />
+        <block position="31,12,4" color="128,128,128" rotation="0" />
+        <block position="30,11,4" color="128,128,128" rotation="0" />
+        <block position="30,12,4" color="128,128,128" rotation="0" />
+        <block position="33,13,4" color="128,128,128" rotation="0" />
+        <block position="32,13,4" color="128,128,128" rotation="0" />
+        <block position="31,13,4" color="128,128,128" rotation="0" />
+        <block position="30,13,4" color="128,128,128" rotation="0" />
+        <block position="30,10,5" color="128,128,128" rotation="0" />
+        <block position="30,11,5" color="128,128,128" rotation="0" />
+        <block position="30,12,5" color="128,128,128" rotation="0" />
+        <block position="31,10,5" color="128,128,128" rotation="0" />
+        <block position="31,11,5" color="128,128,128" rotation="0" />
+        <block position="31,12,5" color="128,128,128" rotation="0" />
+        <block position="32,10,5" color="128,128,128" rotation="0" />
+        <block position="32,11,5" color="128,128,128" rotation="0" />
+        <block position="32,12,5" color="128,128,128" rotation="0" />
+        <block position="31,11,6" color="128,128,128" rotation="0" />
+        <block position="31,12,6" color="128,128,128" rotation="0" />
+        <block position="32,11,6" color="128,128,128" rotation="0" />
+        <block position="32,12,6" color="128,128,128" rotation="0" />
+        <block position="31,11,7" color="128,128,128" rotation="0" />
+    </blockList>
 
     <targetList>
-    <target format="relativeGrid">
-      <cell position="0,0,0" />
-      <cell position="1,0,0" />
-      <cell position="2,0,0" />
-      <cell position="3,0,0" />
-      <cell position="4,0,0" />
-      <cell position="5,0,0" />
-      <cell position="6,0,0" />
-      <cell position="7,0,0" />
-    </target>
-  </targetList>
+      <target format="relativeGrid">
+        <cell position="0,0,0" />
+        <cell position="0,0,1" />
+        <cell position="0,0,2" />
+        <cell position="-1,0,2" />
+        <cell position="0,-1,2" />
+        <cell position="0,1,2" />
+        <cell position="1,0,2" />
+        <cell position="-1,-1,2" />
+        <cell position="-1,1,2" />
+        <cell position="1,-1,2" />
+        <cell position="1,1,2" />
+        <cell position="0,0,3" />
+        <cell position="-1,0,3" />
+        <cell position="0,-1,3" />
+        <cell position="0,1,3" />
+        <cell position="1,0,3" />
+        <cell position="-1,-1,3" />
+        <cell position="1,-1,3" />
+        <cell position="1,1,3" />
+        <cell position="0,-1,1" />
+        <cell position="-1,0,1" />
+        <cell position="-1,-1,1" />
+        <cell position="1,-2,3" />
+        <cell position="0,-2,3" />
+        <cell position="-1,-2,3" />
+        <cell position="-1,1,3" />
+        <cell position="-2,0,3" />
+        <cell position="-2,1,3" />
+        <cell position="-2,-1,3" />
+        <cell position="-2,-2,3" />
+        
+        <!-- <cell position="1,0,3" /> -->
+        <!-- <cell position="0,0,3" /> -->
+        <!-- <cell position="2,0,3" /> -->
+        <!-- <cell position="3,0,3" /> -->
+        <!-- <cell position="3,1,3" /> -->
+        <!-- <cell position="3,2,3" /> -->
+        <!-- <cell position="2,1,3" /> -->
+        <!-- <cell position="2,2,3" /> -->
+        <!-- <cell position="1,1,3" /> -->
+        <!-- <cell position="1,2,3" /> -->
+        <!-- <cell position="0,1,3" /> -->
+        <!-- <cell position="0,2,3" /> -->
+        <!-- <cell position="3,3,3" /> -->
+        <!-- <cell position="2,3,3" /> -->
+        <!-- <cell position="1,3,3" /> -->
+        <!-- <cell position="0,3,3" /> -->
+        <!-- <cell position="0,0,2" /> -->
+        <!-- <cell position="0,1,2" /> -->
+        <!-- <cell position="0,2,2" /> -->
+        <!-- <cell position="1,0,2" /> -->
+        <!-- <cell position="1,1,2" /> -->
+        <!-- <cell position="1,2,2" /> -->
+        <!-- <cell position="2,0,2" /> -->
+        <!-- <cell position="2,1,2" /> -->
+        <!-- <cell position="2,2,2" /> -->
+        <!-- <cell position="1,1,1" /> -->
+        <!-- <cell position="1,2,1" /> -->
+        <!-- <cell position="2,1,1" /> -->
+        <!-- <cell position="2,2,1" /> -->
+        <!-- <cell position="1,1,0" /> -->
+      </target>
+    </targetList>
 </world>
-
-
-

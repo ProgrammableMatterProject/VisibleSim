@@ -27,7 +27,7 @@ void FindPathMessage::handle(BaseSimulator::BlockCode* bsbc) {
             
             // Add self as the next hop of the path
             bc->path.clear();
-            API::addModuleToPath(bc->catom, bc->path, targetCon, targetCon);            
+            API::addModuleToPath(bc->catom, bc->path, targetCon, targetCon);
             
             bc->sendMessage(new FindPathFoundMessage(bc->path),
                             bc->growthParent, 100, 0);
@@ -77,52 +77,18 @@ void FindPathFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
         bc->growthVisited = false;
         bc->catom->setColor(GREEN); // todo
     } else { // isTail, moving module        
-        PathHop& lastHop = path.back();
-
-        std::vector<short> adjacentPathConnectors;
-        std::map<short, short> mirrorConnector;
-        
-        API::findAdjacentConnectors(bc->catom, lastHop,
-                                    pivotDockingConnector, catomDockingConnector,
-                                    adjacentPathConnectors, mirrorConnector);
-
-        vector<Catoms3DMotionRulesLink*> mrl;
-        API::getMotionRulesFromConnector(bc->catom, catomDockingConnector, mrl);
-            
-        bc->growthRotationsPlan.clear();
-        API::findConnectorsPath(mrl, catomDockingConnector, adjacentPathConnectors,
-                                bc->growthRotationsPlan);
-            
-        if (!bc->growthRotationsPlan.empty()) {
-            bc->growing = true;
-            bc->growthVisited = true;
-            bc->console << " (" << bc->catom->position << ") "
-                        << "Moving to " << bc->goalPosition << "!" << "\n";
-
-            short dirTo = bc->growthRotationsPlan.back()->getConToID();
-            lastHop.prune(mirrorConnector[dirTo]);
-            // lastHop.removeConnectorOnPosition(bc->catom->position); 
-                
-            Catoms3DMotionRulesLink *nextRotation = bc->growthRotationsPlan.front();
-            bc->pivotLinkConId = nextRotation->getConToID();
-            bc->growthRotationsPlan.pop_front();
-
-            Catoms3DBlock *pivot = bc->catom->getNeighborOnCell(lastHop.getPosition());
-            assert(pivot);
-            nextRotation->sendRotationEvent(bc->catom,
-                                            pivot,
-                                            getScheduler()->now() + 100);
-            bc->path = this->path;
-            return;
-        } else {
+        bc->path = this->path;
+        if (!bc->computeNextRotation(bc->path)) {
             cout << "Could not compute feasible rotation plan to parent,"
                  << " add myself to path" << endl;
             bc->catom->setColor(RED);
-            assert(false);
-        }
 
-        // bc->scheduler->schedule(new TeleportationStartEvent(bc->scheduler->now() + 150,
-        //                                                     bc->catom, bc->goalPosition));
+            awaitKeyPressed();
+            assert(false);
+        } else {
+            bc->growing = true;
+            bc->growthVisited = true;
+        }
     } 
 }
 
@@ -145,7 +111,14 @@ void handleFindPathResponse(BaseSimulator::BlockCode* bsbc,
             bc->growthVisited = false;
         } else {
             bc->catom->setColor(WHITE); //todo probleeeeem
+
+            OUTPUT << "Absolute Target Positions" << endl; 
+            for (auto x : *bc->rtg->getTargetCellsInConstructionOrder())
+                OUTPUT << x << endl;
+            OUTPUT << "FINI" << endl;
+
             cerr << "growth failed" << endl;
+            awaitKeyPressed();
             assert(false);
         } 
     }

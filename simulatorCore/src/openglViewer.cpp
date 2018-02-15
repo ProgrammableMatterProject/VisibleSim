@@ -372,7 +372,6 @@ void GlutContext::specialFunc(int key, int x, int y)
                      << Rotations3D::rotationDelayMultiplier << endl;
             }
         } break;
-        default: cerr << "Unknown keycode pressed: " << key << endl; break;
     }
 
     glutPostRedisplay();

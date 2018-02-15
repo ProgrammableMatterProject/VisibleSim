@@ -42,15 +42,15 @@ void handleRootUpdateAnswer(BaseSimulator::BlockCode* bsbc,
     if (!bc->expectedConfirms) {
         if (bc->parent)
             bc->sendMessage(new RootConfirmationMessage(bc->currentRootPosition),
-                        bc->parent, 0, 100);
+                            bc->parent, 0, 100);
         else {
             if (bc->catom->position == bc->currentRootPosition) { // Election Complete, module is root
                 bc->relPos = new Cell3DPosition(0,0,0);
                 bc->rtg->setOrigin(bc->catom->position);
                 cout << "Absolute Target Positions" << endl; 
-                for (auto x : bc->rtg->getTargetCellsAsc())
+                for (auto x : *bc->rtg->getTargetCellsInConstructionOrder())
                     cout << x << endl;                        
-                bc->rtg->targetCellsAsc->pop_front(); // this is the root's target position, in which it already is
+                bc->rtg->getTargetCellsInConstructionOrder()->pop_front(); // this is the root's target position, in which it already is
                         
                 // Proceed to next stage
                 bc->meltOneModule();

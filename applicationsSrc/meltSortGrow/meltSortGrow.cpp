@@ -31,9 +31,6 @@ int main(int argc, char **argv) {
     {
         cerr << msg << endl;
     }
-    catch (std::exception e) {
-        cerr << "exeption" << endl;
-    }
 
     cout << "\033[1;33m" << "end (main)" << "\033[0m" << endl;
 

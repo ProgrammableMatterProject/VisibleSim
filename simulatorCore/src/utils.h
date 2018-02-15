@@ -16,6 +16,10 @@ namespace utils {
 #define IS_ODD(x) ((x>0?x:-x) % 2)     //!< returns 1 if x is odd, 0 otherwise
 #define IS_EVEN(x) (!IS_ODD(x)) //!< returns 1 if x is even, 0 otherwise
 
+inline static void awaitKeyPressed() {
+    cout << "Press ENTER to continue..." << endl; cin.ignore();
+}
+
 //!< @brief Return true if a <= x <= b, false otherwise
 inline static bool isInRange(int x, int a, int b) { return (a <= x && x <= b); };
 

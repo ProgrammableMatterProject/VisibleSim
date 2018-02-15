@@ -35,6 +35,7 @@ TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 # TEMP_CCFLAGS += -DDEBUG_NEIGHBORHOOD #: trace robot neighborhood updates and interface linking
 # TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
+  TEMP_CCFLAGS += -DshowStatsFPS
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"

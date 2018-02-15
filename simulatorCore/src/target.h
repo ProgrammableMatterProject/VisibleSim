@@ -168,12 +168,12 @@ protected:
      };
 
 public:
-     std::list<Cell3DPosition> *targetCellsAsc = NULL; //todo protected
+     std::list<Cell3DPosition> *targetCellsInConstructionOrder = NULL; //todo protected
 
 RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
      virtual ~RelativeTargetGrid() {
           delete origin;
-          delete targetCellsAsc;
+          delete targetCellsInConstructionOrder;
      };
      
     //!< @copydoc Target::getTargetColor
@@ -183,11 +183,11 @@ RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
 
     /**
      * @brief Returns a list of all cells in target in ascending order (x, y, and then z)
-     * @return the list of all cells in the target in ascending order
+     * @param tgCells a reference to the output list of all cells in the target in ascending order
      * @warning Can only be used once origin has been set
+     * @throw MissingInitializationException if target origin has not been set
      */
-    list<Cell3DPosition> getTargetCellsAsc();
-
+    list<Cell3DPosition>* getTargetCellsInConstructionOrder();
     /**
      * @brief Sets the origin of the coordinate system used by the target
      * @warning Calling Target::isInTarget before setting the origin will result in an error

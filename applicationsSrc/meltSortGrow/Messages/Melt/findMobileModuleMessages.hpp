@@ -15,7 +15,6 @@
 #include "../../pathHop.hpp"
 
 class FindMobileModuleMessage : public MeltSortGrowMessage {
-    Catoms3DBlock *sender; //!< A pointer to the sender catom \attention {(PTHA: this should not be necessary as it clearly violates distributed code)}
     vector<PathHop> path; //!< Description of all the previous hop in the path
     // short parentConId; //!< Id of the connector of the sender of this message that is connected to the receiving module
 public:

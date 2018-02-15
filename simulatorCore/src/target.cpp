@@ -12,6 +12,8 @@
 #include "csg.h"
 #include "catoms3DWorld.h"
 
+#include <algorithm>
+
 namespace BaseSimulator {
 
 using namespace BaseSimulator::utils;
@@ -184,8 +186,16 @@ bool RelativeTargetGrid::isInTarget(const Cell3DPosition &pos) const {
 }
 
 void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
+    assert(!tCells.empty());
+    
     origin = new Cell3DPosition(org);
 
+    // Cell3DPosition minZYX =
+    //     std::min_element(tCells.begin(), tCells.end(),
+    //                      [](const std::pair<const Cell3DPosition, const Color>& a,
+    //                         const std::pair<const Cell3DPosition, const Color>& b)
+    //                      { return Cell3DPosition::compare_ZYX(a.first, b.first);})->first;
+    
     // Then update every relative position parsed from the configuration file to its absolute counterpart
     map<const Cell3DPosition, const Color> absMap;
     for (const auto& targetEntry : tCells) {
@@ -196,24 +206,24 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
 
     tCells = absMap;
     
-    if (!targetCellsAsc) {
-        targetCellsAsc = new list<Cell3DPosition>();
+    if (!targetCellsInConstructionOrder) {
+        targetCellsInConstructionOrder = new list<Cell3DPosition>();
         
         for (const auto &pair : tCells) {
-            targetCellsAsc->push_back(pair.first);
+            targetCellsInConstructionOrder->push_back(pair.first);
         }
 
-        targetCellsAsc->sort([=](const Cell3DPosition& first, const Cell3DPosition& second){
+        targetCellsInConstructionOrder->sort([=](const Cell3DPosition& first, const Cell3DPosition& second){
                 return first.dist_euclid(*origin) < second.dist_euclid(*origin);
             });
     }
 }
 
-list<Cell3DPosition> RelativeTargetGrid::getTargetCellsAsc() {
+list<Cell3DPosition>* RelativeTargetGrid::getTargetCellsInConstructionOrder() {
     if (!origin)
         throw MissingInitializationException();
     
-    return *targetCellsAsc;
+    return targetCellsInConstructionOrder;
 }
 
 /************************************************************

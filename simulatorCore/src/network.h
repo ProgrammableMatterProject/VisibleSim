@@ -55,7 +55,8 @@ public:
 	virtual unsigned int size() { return(4); }
     /** 
      * @brief Clones the message. This is necessary when broadcasting
-     * @attention Needs to overloaded in subclasses to avoid slicing (https://en.wikipedia.org/wiki/Object_slicing) when broadcasting subclasses of Message */
+     * @attention Needs to overloaded in subclasses to avoid slicing (https://en.wikipedia.org/wiki/Object_slicing) when broadcasting subclasses of Message 
+     * @example virtual Message* clone() { return new MyMessageType(*this); }*/
 	virtual Message* clone();
     virtual bool isMessageHandleable() { return false; };
 };
