@@ -57,7 +57,7 @@ void SimpleCatom3DBlockCode::startup() {
 	/* skeleton test */
 	Catoms3DWorld*wrl = Catoms3DWorld::getWorld();
 	Vector3D pos(catom->ptrGlBlock->position[0],catom->ptrGlBlock->position[1],catom->ptrGlBlock->position[2]);
-	potentiel = wrl->getSkeletonPotentiel(pos);
+	
 	catom->setColor(potentiel>1.0?YELLOW:DARKORANGE);
 
 	info << potentiel;

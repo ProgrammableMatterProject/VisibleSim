@@ -17,8 +17,9 @@
 #include "cell3DPosition.h"
 #include "catoms3DBlock.h"
 #include "objLoader.h"
-#include "skeleton.h"
 #include "trace.h"
+#include "polymer.h"
+
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
@@ -47,8 +48,9 @@ static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
  */
 class Catoms3DWorld : public BaseSimulator::World {
 protected:
+	Polymer *polymer;
+
     GLuint idTextureHexa,idTextureGrid;
-    Skeleton *skeleton = NULL;
 //Nurbs surface
 /*	GLfloat sknots[S_NUMKNOTS] =
 	    {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
@@ -103,9 +105,7 @@ public:
 
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation, bool master);
-    inline void setSkeleton(Skeleton *s) { skeleton=s; };
-    inline double getSkeletonPotentiel(const Vector3D& pos) { return (skeleton==NULL)?-1:skeleton->potentiel(pos); };
-
+    
     /**
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
@@ -129,7 +129,8 @@ public:
  * \brief load the background textures (internal)
  */
     void loadTextures(const string &str);
-
+	
+	void simulatePolymer();
 };
 
 inline void deleteWorld() {

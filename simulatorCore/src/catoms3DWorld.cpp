@@ -45,6 +45,8 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
     lattice = new FCCLattice2(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 
+	polymer=NULL;
+	
 /*	theNurb = gluNewNurbsRenderer();
 
     gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 50.0);
@@ -52,6 +54,8 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 	//gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_OUTLINE_POLYGON);
 	gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
 */}
+
+
 
 Catoms3DWorld::~Catoms3DWorld() {
     OUTPUT << "Catoms3DWorld destructor" << endl;
@@ -178,8 +182,6 @@ void Catoms3DWorld::glDrawId() {
     }
     unlock();
     glPopMatrix();
-
-    glDrawBackground();
 }
 
 void Catoms3DWorld::glDrawIdByMaterial() {
@@ -414,4 +416,33 @@ void Catoms3DWorld::exportConfiguration() {
   memset(targetGrid,emptyCell,sz*sizeof(presence));
   }
 */
-} // RobotBlock namespace
+
+void Catoms3DWorld::simulatePolymer() {
+	if (polymer!=NULL) delete polymer;
+	polymer = new Polymer(lattice->gridSize[0],lattice->gridSize[1],4,lattice->gridSize[2]*lattice->gridScale[2],lattice->gridScale[0],lattice->gridScale[0],lattice->gridScale[1]);
+	
+	Vector3D pt;
+	// calculer un table de Zmax
+	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+    while (ic!=tabGlBlocks.end()) {
+		if ((*ic)->color[3]!=0) {
+			pt.set((*ic)->position,3);
+			polymer->tabPt.push_back(pt);
+		}
+		ic++;
+    }
+
+	
+	cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+	double v;
+	do {
+		v = polymer->positionInstant(0.01);
+		cout << "*";
+	} while (v>10.0);
+	cout << endl;
+	polymer->calculerPolymer();
+}
+
+
+
+} // Catoms3DBlock namespace

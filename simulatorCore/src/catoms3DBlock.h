@@ -32,7 +32,6 @@ const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_
 											 {-1,0,0}, {0,-1,0}, {-0.5,-0.5,-M_SQRT2_2},
 											 {0.5,-0.5,-M_SQRT2_2},{0.5,0.5,-M_SQRT2_2},{-0.5,0.5,-M_SQRT2_2}};
 
-
 class Catoms3DBlockCode;
 
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
