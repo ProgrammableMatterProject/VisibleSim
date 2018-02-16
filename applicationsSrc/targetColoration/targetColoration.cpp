@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
 	/* createSimulator only returns at scheduler end.
      * Can perform some actions here before ending simulation... */
 
+
 	deleteSimulator(); // Deletion of allocated memory
 	
 	return(0);

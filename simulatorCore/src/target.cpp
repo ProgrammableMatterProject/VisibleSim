@@ -415,191 +415,105 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
         cout << "Call to the NURBS surface type initialization" << endl;
         //Initialization of the NURBS parameters, parsing from config file to be implemented later
 
-//Nurbs Surface
-/*
-        S_NUMPOINTS = 5;
-        S_ORDER = 3;
-        S_NUMKNOTS = S_NUMPOINTS + S_ORDER;
-        T_NUMPOINTS = 5;
-        T_ORDER = 3;
-        T_NUMKNOTS = T_NUMPOINTS + T_ORDER;
+        float scale = 1;
+        
+        TiXmlNode *scaleNode = methNode->FirstChild("scale");
+            if (scaleNode) {
+                element = scaleNode->ToElement();
+                const char *attr = element->Attribute("scale");
+                if (attr) {
+                    string str(attr);
+                    scale = atof(str.c_str());
+                }
+            }
 
-        //Filling sknots
-        sknots.push_back(0);
-        sknots.push_back(0.125);
-        sknots.push_back(0.25);
-        sknots.push_back(0.375);
-        sknots.push_back(0.5);
-        sknots.push_back(0.625);
-        sknots.push_back(0.75);
-        sknots.push_back(1);
+
+        TiXmlNode *sorderNode = methNode->FirstChild("sorder");
+            if (sorderNode) {
+                element = sorderNode->ToElement();
+                const char *attr = element->Attribute("order");
+                if (attr) {
+                    string str(attr);
+                    S_ORDER = atoi(str.c_str());
+                }
+            }
+
+            TiXmlNode *sknotNode = methNode->FirstChild("sknot");
+            while (sknotNode) {
+                element = sknotNode->ToElement();
+                const char *attr = element->Attribute("knot");
+                if (attr) {
+                    string str(attr);
+                    sknots.push_back(atof(str.c_str()));
+                }
+                sknotNode = sknotNode->NextSibling("sknot");
+            }
+
+            S_NUMKNOTS = sknots.size();
+            S_NUMPOINTS = S_NUMKNOTS-S_ORDER;
+
+            TiXmlNode *torderNode = methNode->FirstChild("torder");
+            if (torderNode) {
+                element = torderNode->ToElement();
+                const char *attr = element->Attribute("order");
+                if (attr) {
+                    string str(attr);
+                    T_ORDER = atoi(str.c_str());
+                }
+            }
+
+            TiXmlNode *tknotNode = methNode->FirstChild("tknot");
+            while (tknotNode) {
+                element = tknotNode->ToElement();
+                const char *attr = element->Attribute("knot");
+                if (attr) {
+                    string str(attr);
+                    tknots.push_back(atof(str.c_str()));
+                }
+                tknotNode = tknotNode->NextSibling("tknot");
+            }
+
+            T_NUMKNOTS = tknots.size();
+            T_NUMPOINTS = T_NUMKNOTS-T_ORDER;
+
+            TiXmlNode *ctlpointNode = methNode->FirstChild("ctlpoint");
+            vector<vector<float>> tctlpoint;
+            vector<float> point;
+            while (ctlpointNode) {
+                element = ctlpointNode->ToElement();
+                const char *attr = element->Attribute("coord");
+                if (attr) {
+                    string str(attr);
+                    int pos1 = str.find_first_of(',');
+                    int pos3 = str.find_last_of(',');
+                    str.replace(pos1,1,".");
+                    int pos2 = str.find_first_of(',');
+                    point.push_back(scale*atof(str.substr(0,pos1).c_str()));
+                    point.push_back(scale*atof(str.substr(pos1+1,pos2-pos1-1).c_str()));
+                    point.push_back(scale*atof(str.substr(pos2+1,pos3-pos2-1).c_str()));
+                    point.push_back(scale*atof(str.substr(pos3+1).c_str()));
+                    tctlpoint.push_back(point);
+                    point.clear();
+                }
+                if (tctlpoint.size()==T_NUMPOINTS){
+                    ctlpoints.push_back(tctlpoint);
+                    tctlpoint.clear();
+                }
+                ctlpointNode = ctlpointNode->NextSibling("ctlpoint");
+            }
+
+
 
         //Checking if sknots correctly filled
 
         for (int i=0; i < S_NUMKNOTS; i++){
             cout << "sknots[" << i << "] = " << sknots[i] << endl;
         }
-
-        //Filling tknots
-        tknots.push_back(0);
-        tknots.push_back(0.125);
-        tknots.push_back(0.25);
-        tknots.push_back(0.375);
-        tknots.push_back(0.5);
-        tknots.push_back(0.625);
-        tknots.push_back(0.75);
-        tknots.push_back(1);
-
         //Checking if tknots correctly filled
 
         for (int i=0; i < T_NUMKNOTS; i++){
             cout << "tknots[" << i << "] = " << tknots[i] << endl;
         }
-
-        //Filling ctlpoints
-        for (int i=0; i < S_NUMPOINTS; i++){
-            vector<vector<float>> tctlpoint;
-            for (int j=0; j < T_NUMPOINTS; j++){
-                vector<float> point;
-                point.push_back(i*45);
-                point.push_back(j*45);
-                point.push_back(0);
-                point.push_back(45);
-                tctlpoint.push_back(point);
-                point.clear();
-             }
-             ctlpoints.push_back(tctlpoint);
-             tctlpoint.clear();
-        }
-
-        ctlpoints[2][1][2]=270;
-        ctlpoints[3][3][2]=90;
-
-        //Checking ctlpoints
-
-        for (int i=0; i < S_NUMPOINTS; i++){
-            for (int j=0; j < T_NUMPOINTS; j++){
-                cout << "ctlpoints["<<i<<"]["<<j<<"][2] = "<< ctlpoints[i][j][2]<< endl;
-             }
-        }
-*/
-
-//Nurbs car
-
-      S_NUMPOINTS = 7;
-        S_ORDER = 3;
-        S_NUMKNOTS = S_NUMPOINTS + S_ORDER;
-        T_NUMPOINTS = 4;
-        T_ORDER = 3;
-        T_NUMKNOTS = T_NUMPOINTS + T_ORDER;
-
-        //Filling sknots
-        sknots.push_back(0);
-        sknots.push_back(0.1);
-        sknots.push_back(0.2);
-        sknots.push_back(0.3);
-        sknots.push_back(0.4);
-        sknots.push_back(0.5);
-        sknots.push_back(0.6);
-        sknots.push_back(0.7);
-        sknots.push_back(0.8);
-        sknots.push_back(1);
-
-        //Checking if sknots correctly filled
-
-        for (int i=0; i < S_NUMKNOTS; i++){
-            cout << "sknots[" << i << "] = " << sknots[i] << endl;
-        }
-
-        //Filling tknots
-        tknots.push_back(0);
-        tknots.push_back(0.15);
-        tknots.push_back(0.3);
-        tknots.push_back(0.45);
-        tknots.push_back(0.60);
-        tknots.push_back(0.75);
-        tknots.push_back(1);
-
-        //Checking if tknots correctly filled
-
-        for (int i=0; i < T_NUMKNOTS; i++){
-            cout << "tknots[" << i << "] = " << tknots[i] << endl;
-        }
-
-        //Filling ctlpoints
-        for (int i=0; i < S_NUMPOINTS; i++){
-            vector<vector<float>> tctlpoint;
-            for (int j=0; j < T_NUMPOINTS; j++){
-                vector<float> point;
-                float l=0;
-                float k=-33.33;
-                if (i==1) {
-                    l = 6.66;
-                    k = 40;
-                    if (j==1) {
-                        k = k+13.33;
-                    }
-                    if (j==2) {
-                        k = k+13.33;
-                    }
-                }
-                if (i==2) {
-                    l = 66.66;
-                    k = 66.66;
-                    if (j==1) {
-                        k = k+13.34;
-                    }
-                    if (j==2) {
-                        k = k+13.34;
-                    }
-                }
-                if (i==3) {
-                    l = 116.66;
-                    k = 66.66;
-                    if (j==1) {
-                        k = k+13.34;
-                    }
-                    if (j==2) {
-                        k = k+13.34;
-                    }
-                }
-                if (i==4) {
-                    l = 150;
-                    k = 26.66;
-                    if (j==1) {
-                        k = k+13.34;
-                    }
-                    if (j==2) {
-                        k = k+13.34;
-                    }
-                }
-                if (i==5) {
-                    l = 193.33;
-                    k = 26.66;
-                    if (j==1) {
-                        k = k+13.34;
-                    }
-                    if (j==2) {
-                        k = k+13.34;
-                    }
-                }
-                if (i==6) {
-                    l = 200;
-                    k = -20;
-                }
-                point.push_back(l);
-                point.push_back(j*33.33);
-                point.push_back(k);
-                point.push_back(33.33);
-                tctlpoint.push_back(point);
-                point.clear();
-             }
-             ctlpoints.push_back(tctlpoint);
-             tctlpoint.clear();
-        }
-
-        //ctlpoints[2][1][2]=270;
-        //ctlpoints[3][3][2]=90;
 
         //Checking ctlpoints
 

@@ -45,13 +45,13 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
     lattice = new FCCLattice2(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 
-	theNurb = gluNewNurbsRenderer();
+/*	theNurb = gluNewNurbsRenderer();
 
     gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 50.0);
     //gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_OUTLINE_PATCH);
 	//gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_OUTLINE_POLYGON);
 	gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
-}
+*/}
 
 Catoms3DWorld::~Catoms3DWorld() {
     OUTPUT << "Catoms3DWorld destructor" << endl;
@@ -131,7 +131,7 @@ void Catoms3DWorld::glDraw() {
 		map<bID, BuildingBlock*>::iterator it = buildingBlocksMap.begin();
 		it->second->blockCode->target->glDraw();
 	}*/
-	GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+/*	GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
     GLfloat mat_diffuse[] = { 0.8, 0.2, 0.8, 1.0 };
     GLfloat mat_specular[] = { 0.8, 0.8, 0.8, 1.0 };
     GLfloat mat_shininess[] = { 50.0 };
@@ -158,7 +158,7 @@ void Catoms3DWorld::glDraw() {
 	gluEndSurface(theNurb);
 
 	glPopMatrix();
-
+*/
 // material for the grid walls
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     if (background) {

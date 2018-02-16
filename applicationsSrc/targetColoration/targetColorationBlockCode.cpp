@@ -11,7 +11,7 @@ targetColorationBlockCode::targetColorationBlockCode(Catoms3DBlock *host):Catoms
 }
 
 targetColorationBlockCode::~targetColorationBlockCode() {
-    cout << "targetColorationBlockCode destructor" << endl;
+    //cout << "targetColorationBlockCode destructor" << endl;
 }
 
 void targetColorationBlockCode::startup() {

@@ -33,13 +33,13 @@ const int T_NUMKNOTS=(T_NUMPOINTS + T_ORDER);
 */
 
 //Nurbs car
-const int S_NUMPOINTS=7;
+/*const int S_NUMPOINTS=7;
 const int S_ORDER=3;
 const int S_NUMKNOTS=(S_NUMPOINTS + S_ORDER);
 const int T_NUMPOINTS=4;
 const int T_ORDER=3;
 const int T_NUMKNOTS=(T_NUMPOINTS + T_ORDER);
-
+*/
 static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 
 /**
@@ -64,7 +64,7 @@ protected:
 */
 
 //Nurbs car
-GLfloat sknots[S_NUMKNOTS] =
+/*GLfloat sknots[S_NUMKNOTS] =
     {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,1.0f};
 GLfloat tknots[T_NUMKNOTS] = {0.0,0.15,0.3,0.45,0.60,0.75,1.0f};
 
@@ -80,7 +80,7 @@ GLfloat ctlpoints[S_NUMPOINTS][T_NUMPOINTS][4] = {
 };
 
 	GLUnurbsObj *theNurb;
-
+*/
     virtual ~Catoms3DWorld();
 public:
     Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
