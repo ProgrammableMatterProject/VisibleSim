@@ -38,12 +38,12 @@ typedef std::shared_ptr<Message> MessagePtr;
 
 class Message {
 protected:
-	static uint64_t nextId;
+	static bID nextId;
 	//static unsigned int nextId;
-	static uint64_t nbMessages;
+	static bID nbMessages;
 	//static unsigned int nbMessages;
 public:
-    uint64_t id;
+    bID id;
 	//unsigned int id;
 	unsigned int type;
 	P2PNetworkInterface *sourceInterface, *destinationInterface;
@@ -64,14 +64,14 @@ template <class T>
 class MessageOf:public Message {
     T *ptrData;
     public :
-    MessageOf(unsigned int t,const T &data):Message(t) { ptrData = new T(data);};
+    MessageOf(unsigned int t,const T &data):Message(t) { ptrData = new T(data); };
     ~MessageOf() { delete ptrData; };
     T* getData() const { return ptrData; };
-    virtual Message* clone() {
+    virtual MessageOf<T>* clone() {
         MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
         ptr->sourceInterface = sourceInterface;
         ptr->destinationInterface = destinationInterface;
-        return ptr;
+		return ptr;
     }
 };
 
@@ -83,14 +83,14 @@ class MessageOf:public Message {
 
 class P2PNetworkInterface {
 protected:
-	static unsigned int nextId;
+	static bID nextId;
 	static int defaultDataRate;
 	
 	BaseSimulator::Rate* dataRate;
 public:
 	
-	unsigned int globalId;
-	unsigned int localId;
+	bID globalId;
+	bID localId;
 	deque<MessagePtr> outgoingQueue;
 
 	P2PNetworkInterface *connectedInterface;
@@ -109,6 +109,9 @@ public:
 	void connect(P2PNetworkInterface *ni);
 	int getConnectedBlockId() {
         return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:-1;
+	}
+	bID getConnectedBlockBId() {
+        return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:0;
 	}
 
     /*

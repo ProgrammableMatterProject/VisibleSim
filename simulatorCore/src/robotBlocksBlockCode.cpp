@@ -34,7 +34,7 @@ void RobotBlocksBlockCode::processLocalEvent(EventPtr pev) {
                 P2PNetworkInterface *recv_interface = message->destinationInterface;
                 (*im).second(this,message,recv_interface);
             } else {
-                OUTPUT << "ERROR: message Id #"<< message->type << " unknown!" << endl;
+                OUTPUT << "ERROR: message Id #" << message->type << " unknown!" << endl;
             }
         } break;
         case EVENT_ADD_NEIGHBOR: {

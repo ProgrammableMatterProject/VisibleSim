@@ -47,7 +47,7 @@ int BlockCode::sendMessage(const char*msgString,Message*msg,P2PNetworkInterface 
   int t1 = scheduler->now() + t0 + (int)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
 	if (msgString)
-		console << " sends " << msgString << " to " << dest->getConnectedBlockId() << " at " << t1 << "\n";
+		console << "sends " << msgString << " to " << dest->getConnectedBlockId() << " at " << t1 << "\n";
 
 	OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
 		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
@@ -74,7 +74,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t
 	return ret;
 }
 
-int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt, int nexcept, va_list args) {
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int t0, int dt, int nexcept, va_list args) {
     P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
     for (int i=0; i<nexcept; i++) {
         tabExceptions[i] = va_arg(args,P2PNetworkInterface*);

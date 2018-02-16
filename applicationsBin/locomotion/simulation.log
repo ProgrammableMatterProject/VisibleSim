@@ -61,6 +61,7 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 RobotBlocksBlockCode constructor
 RobotBlocksBlock constructor
+add target (0,1,1),(0,0,0,0)
 add target (2,1,1),(0,0,0,0)
 add target (3,1,1),(0,0,0,0)
 Simulator: 1 add neighbor 2 on Right
@@ -74,7 +75,7 @@ connection #3:Front to #2:Right
 loading ../../simulatorCore/resources/textures/robotBlocksTextures/robotTexture.tga
 0.000000 #1: start 1,(0,1,0,1)
 0.000000 #1: isSource
-0.000000 #1:  sends BFS to 2 at 1000
+0.000000 #1: sends BFS to 2 at 1000
 1 sends 1001 to 2 at 1000
 0.000000 #2: start 2,(1,1,0,1)
 0.000000 #2: isModule
@@ -85,39 +86,55 @@ ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 0.001032 #2: rec. BFS(1)
-0.001032 #2:  sends ConfirmEdge to 1 at 3064
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+0.001032 #2: sends ConfirmEdge to 1 at 3064
 2 sends 1002 to 1 at 3064
-0.001032 #2:  sends BFS to 3 at 3164
+msgData=1
+0.001032 #2: sends BFS to 3 at 3164
 2 sends 1001 to 3 at 3164
-0.001032 #2:  sends BFS to 1 at 3164
+0.001032 #2: sends BFS to 1 at 3164
 2 sends 1001 to 1 at 3164
 0.003096 #1: rec. ConfirmEdge
-0.003096 #1:  sends CutOff to 2 at 7192
+0.003096 #1: sends CutOff to 2 at 7192
 1 sends 1003 to 2 at 7192
 0.003196 #3: rec. BFS(1)
-0.003196 #3:  sends ConfirmEdge to 2 at 7392
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+0.003196 #3: sends ConfirmEdge to 2 at 7392
 3 sends 1002 to 2 at 7392
-0.003196 #3:  sends ConfirmPath to 2 at 7492
+0.003196 #3: sends ConfirmPath to 2 at 7492
 3 sends 1005 to 2 at 7492
 0.003196 #1: rec. BFS(1)
+mainPathIn=1
+mainPathOut={1,}
+pathsOld={}
 0.007224 #2: rec. CutOff(empty,0)
+0.007224 #2: sender = 1
+mainPathIn=1
+mainPathOut={}
+pathsOld={}
 isMainPathRemoved=1
 sendMessageToPath()
 sendMessageToPath()
 sendMessageToPath()
-0.007224 #2:  sends Available to 3 at 15448
-2 sends 1004 to 3 at 15448
-0.007224 #2:  sends Available to 1 at 15448
-2 sends 1004 to 1 at 15448
+0.007224 #2: sends Available to 3 at 15748
+2 sends 1004 to 3 at 15748
+0.007224 #2: sends Available to 1 at 15748
+2 sends 1004 to 1 at 15748
 0.007424 #2: rec. ConfirmEdge
-0.007424 #2:  sends CutOff to 3 at 15848
+0.007424 #2: sends CutOff to 3 at 15848
 2 sends 1003 to 3 at 15848
 0.007524 #2: rec. ConfirmPath
-0.015480 #3: rec. Available
-0.015480 #3:  sends BFS to 2 at 31960
-3 sends 1001 to 2 at 31960
-0.015480 #1: rec. Available
+0.015780 #3: rec. Available
+0.015780 #1: rec. Available
 0.015880 #3: rec. CutOff(empty,0)
+0.015880 #3: sender = 2
+mainPathIn=2
+mainPathOut={3,}
+pathsOld={}
 isMainPathRemoved=1
 sendMessageToPath(3,)
 lenght=1
@@ -125,115 +142,8 @@ path.front()=3
 next=0
 sendMessageToPath()
 sendMessageToPath()
-0.015880 #3:  sends Available to 2 at 32760
-3 sends 1004 to 2 at 32760
-0.031992 #2: rec. BFS(3)
-0.031992 #2:  sends ConfirmEdge to 3 at 64984
-2 sends 1002 to 3 at 64984
-0.031992 #2:  sends BFS to 3 at 65084
-2 sends 1001 to 3 at 65084
-0.031992 #2:  sends BFS to 1 at 65084
-2 sends 1001 to 1 at 65084
-0.032792 #2: rec. Available
-0.065016 #3: rec. ConfirmEdge
-0.065016 #3:  sends CutOff to 2 at 131032
-3 sends 1003 to 2 at 131032
-0.065116 #3: rec. BFS(3)
-0.065116 #3:  sends ConfirmEdge to 2 at 131232
-3 sends 1002 to 2 at 131232
-0.065116 #3:  sends ConfirmPath to 2 at 131332
-3 sends 1005 to 2 at 131332
-0.065116 #1: rec. BFS(3)
-0.131064 #2: rec. CutOff(empty,0)
-isMainPathRemoved=1
-sendMessageToPath()
-0.131064 #2:  sends Available to 3 at 263128
-2 sends 1004 to 3 at 263128
-0.131064 #2:  sends Available to 1 at 263128
-2 sends 1004 to 1 at 263128
-0.131264 #2: rec. ConfirmEdge
-0.131264 #2:  sends CutOff to 3 at 263528
-2 sends 1003 to 3 at 263528
-0.131364 #2: rec. ConfirmPath
-0.263160 #3: rec. Available
-0.263160 #3:  sends BFS to 2 at 527320
-3 sends 1001 to 2 at 527320
-0.263160 #1: rec. Available
-0.263560 #3: rec. CutOff(empty,0)
-isMainPathRemoved=1
-sendMessageToPath(3,)
-lenght=1
-path.front()=3
-next=0
-0.263560 #3:  sends Available to 2 at 528120
-3 sends 1004 to 2 at 528120
-0.527352 #2: rec. BFS(3)
-0.527352 #2:  sends ConfirmEdge to 3 at 1055704
-2 sends 1002 to 3 at 1055704
-0.527352 #2:  sends BFS to 3 at 1055804
-2 sends 1001 to 3 at 1055804
-0.527352 #2:  sends BFS to 1 at 1055804
-2 sends 1001 to 1 at 1055804
-0.528152 #2: rec. Available
-1.055736 #3: rec. ConfirmEdge
-1.055736 #3:  sends CutOff to 2 at 2112472
-3 sends 1003 to 2 at 2112472
-1.055836 #3: rec. BFS(3)
-1.055836 #3:  sends ConfirmEdge to 2 at 2112672
-3 sends 1002 to 2 at 2112672
-1.055836 #3:  sends ConfirmPath to 2 at 2112772
-3 sends 1005 to 2 at 2112772
-1.055836 #1: rec. BFS(3)
-2.112504 #2: rec. CutOff(empty,0)
-isMainPathRemoved=1
-sendMessageToPath()
-2.112504 #2:  sends Available to 3 at 4226008
-2 sends 1004 to 3 at 4226008
-2.112504 #2:  sends Available to 1 at 4226008
-2 sends 1004 to 1 at 4226008
-2.112704 #2: rec. ConfirmEdge
-2.112704 #2:  sends CutOff to 3 at 4226408
-2 sends 1003 to 3 at 4226408
-2.112804 #2: rec. ConfirmPath
-4.226040 #3: rec. Available
-4.226040 #3:  sends BFS to 2 at 8453080
-3 sends 1001 to 2 at 8453080
-4.226040 #1: rec. Available
-4.226440 #3: rec. CutOff(empty,0)
-isMainPathRemoved=1
-sendMessageToPath(3,)
-lenght=1
-path.front()=3
-next=0
-4.226440 #3:  sends Available to 2 at 8453880
-3 sends 1004 to 2 at 8453880
-8.453112 #2: rec. BFS(3)
-8.453112 #2:  sends ConfirmEdge to 3 at 16907224
-2 sends 1002 to 3 at 16907224
-8.453112 #2:  sends BFS to 3 at 16907324
-2 sends 1001 to 3 at 16907324
-8.453112 #2:  sends BFS to 1 at 16907324
-2 sends 1001 to 1 at 16907324
-8.453912 #2: rec. Available
-16.907256 #3: rec. ConfirmEdge
-16.907256 #3:  sends CutOff to 2 at 33815512
-3 sends 1003 to 2 at 33815512
-16.907356 #3: rec. BFS(3)
-16.907356 #3:  sends ConfirmEdge to 2 at 33815712
-3 sends 1002 to 2 at 33815712
-16.907356 #3:  sends ConfirmPath to 2 at 33815812
-3 sends 1005 to 2 at 33815812
-16.907356 #1: rec. BFS(3)
-33.815544 #2: rec. CutOff(empty,0)
-isMainPathRemoved=1
-sendMessageToPath()
-33.815544 #2:  sends Available to 3 at 67632088
-2 sends 1004 to 3 at 67632088
-33.815544 #2:  sends Available to 1 at 67632088
-2 sends 1004 to 1 at 67632088
-33.815744 #2: rec. ConfirmEdge
-33.815744 #2:  sends CutOff to 3 at 67632488
-2 sends 1003 to 3 at 67632488
-33.815844 #2: rec. ConfirmPath
+0.015880 #3: sends Available to 2 at 33060
+3 sends 1004 to 2 at 33060
+0.033092 #2: rec. Available
 [1;31mCPPScheduler destructor[0m
 Scheduler destructor
