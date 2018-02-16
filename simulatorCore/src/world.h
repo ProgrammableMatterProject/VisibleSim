@@ -315,7 +315,11 @@ public:
     /**
      * @brief Toggle world background
      */
-    void toggleBackground() { background = !background; }
+	void toggleBackground() { background = !background; }
+	/**
+     * @brief Simulate Polymer surface
+     */
+	virtual void simulatePolymer() {}
 };
 
 /**
