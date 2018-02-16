@@ -727,7 +727,7 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             //cout<<"y="<<y<<",y1="<<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
             count += 1;
         }
-        cout << "End of while: znurbs=" << znurbs << " ,précision =" << precision << endl;
+        //cout << "End of while: znurbs=" << znurbs << " ,précision =" << precision << endl;
         //Comparison between z
 /*        float znurbs=0;
 

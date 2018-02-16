@@ -163,6 +163,9 @@ void Catoms3DWorld::glDraw() {
 
 	glPopMatrix();
 */
+	if (polymer) {
+		polymer->glDraw();
+	}
 // material for the grid walls
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     if (background) {
@@ -418,29 +421,38 @@ void Catoms3DWorld::exportConfiguration() {
 */
 
 void Catoms3DWorld::simulatePolymer() {
-	if (polymer!=NULL) delete polymer;
-	polymer = new Polymer(lattice->gridSize[0],lattice->gridSize[1],4,lattice->gridSize[2]*lattice->gridScale[2],lattice->gridScale[0],lattice->gridScale[0],lattice->gridScale[1]);
 	
-	Vector3D pt;
-	// calculer un table de Zmax
-	vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
-    while (ic!=tabGlBlocks.end()) {
-		if ((*ic)->color[3]!=0) {
-			pt.set((*ic)->position,3);
-			polymer->tabPt.push_back(pt);
+	if (polymer==NULL) {
+		polymer = new Polymer(lattice->gridSize[0],lattice->gridSize[1],4,lattice->gridSize[2]*lattice->gridScale[2],lattice->gridScale[0],lattice->gridScale[0],lattice->gridScale[1]);
+		
+		cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+		Vector3D pt;
+		// calculer un table de Zmax
+		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+		lock();
+		while (ic!=tabGlBlocks.end()) {
+			if ((*ic)->color[3]!=0) {
+				//pt.set((*ic)->position,3);
+				pt.pt[0] = (*ic)->position[0];
+				pt.pt[1] = (*ic)->position[1];
+				pt.pt[2] = (*ic)->position[2];
+				polymer->tabPt.push_back(pt);
+			}
+			ic++;
 		}
-		ic++;
-    }
-
-	
-	cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+		unlock();
+	}
 	double v;
+	int i=100;
 	do {
 		v = polymer->positionInstant(0.01);
 		cout << "*";
-	} while (v>10.0);
+	} while (i--); //fabs(v)>2.0);
 	cout << endl;
+	
 	polymer->calculerPolymer();
+	cout << "--------------------END OF SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+	
 }
 
 

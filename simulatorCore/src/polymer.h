@@ -18,7 +18,7 @@ class Polymer {
   // tableau contenant toutes les informations g�om�triques
 	GLfloat *_tabGeom; // tableau de coordonn�es graphique
 	GLuint *_tabIndices; // tableau d'indices des faces graphique
-	double *_tabZ,*_tabZ_1,*_tabVitesseZ; // tableaux de position et vitesse des masses de la grille de simulation
+	float *_tabZ,*_tabZ_1,*_tabVitesseZ; // tableaux de position et vitesse des masses de la grille de simulation
 	float _dx,_dy;
 	float _radius; // radius of obstacles
 public :
@@ -26,8 +26,8 @@ public :
 
 	Polymer(int,int,int,float,float,float,float);
 	~Polymer();
-	void dessiner();
-	double positionInstant(double dt);
+	void glDraw();
+	float positionInstant(float dt);
 	void calculerPolymer();
 	bool collision(const Vector3D pos);
 };
