@@ -272,8 +272,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'T' : case 't' :
                 if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
+					popup->setTextSize(TextSize::TEXTSIZE_LARGE);
                 } else {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
+					popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
                 }
                 break;
                 //  case 'l' : showLinks = !showLinks; break;

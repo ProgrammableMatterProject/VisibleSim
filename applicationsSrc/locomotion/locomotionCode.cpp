@@ -27,6 +27,7 @@ void LocomotionCode::startup() {
 		mainPathState = BFS;
 		mainPathIn = module->blockId;
 		mainPathOut.push_back(module->blockId);
+		vector2string(mainPathOut,module->getGlBlock()->popupString);
 		isSource=true;
 		int t0=scheduler->now()+messageDelay;
 		sendMessageToAllNeighbors("BFS",new MessageOf<bID>(BFS_MSG,module->blockId),t0,messageDelayError,0);
@@ -70,8 +71,7 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 /**DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG**/	
 	
 	if (mainPathState==NONE && !isIn(pathsOld,msgData)) {
-		module->setColor(Colors[msgData % NB_COLORS]);
-		mainPathOut.push_back(msgData);
+		mainPathOld.push_back(msgData);
 		int t0=scheduler->now()+messageDelay;
 		sendMessage("ConfirmEdge",new Message(CONFIRM_EDGE_MSG),sender,t0,messageDelayError);
 		if (isSink) {
@@ -82,12 +82,14 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 			t0+=100;
 			sendMessage("ConfirmPath",new Message(CONFIRM_PATH_MSG),sender,t0,messageDelayError);
 		} else {
+			module->setColor(Colors[msgData % NB_COLORS]);
 			mainPathState = BFS;
 			mainPathIn = sender->getConnectedBlockId();
 			mainPathOut.clear();
 			t0+=100;
 			sendMessageToAllNeighbors("BFS",new MessageOf<bID>(BFS_MSG,msgData),t0,messageDelayError,0);
 		}
+		vector2string(mainPathOut,module->getGlBlock()->popupString);
 	} else if (mainPathState==Streamline && aug1PathState==NONE && msgFrom!=mainPathIn && msgFrom!=mainPathOut && !isIn(pathsOld,msgData)) {
 		aug1PathOut.push_back(msgData);
 		int t0=scheduler->now()+messageDelay;
@@ -112,11 +114,12 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 /** Processing ConfirmEdge messages **/
 void LocomotionCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
 	console << "rec. ConfirmEdge\n";
-	if (mainPathState==ConfPath) {
+	if (mainPathState==BFS) {
 		mainPathOut.push_back(sender->getConnectedBlockId());
-	} else if (aug1PathState==ConfPath) {
+		vector2string(mainPathOut,module->getGlBlock()->popupString);
+	} else if (aug1PathState==BFS) {
 		aug1PathOut.push_back(sender->getConnectedBlockId());
-	} else if (aug2PathState==ConfPath) {
+	} else if (aug2PathState==BFS) {
 		aug2PathOut.push_back(sender->getConnectedBlockId());
 	} else {
 		int t0=scheduler->now()+messageDelay;
@@ -190,15 +193,15 @@ void LocomotionCode::ProcCutOff(const MessageOf<PathMessageData> *msg,P2PNetwork
 void LocomotionCode::ProcAvailable(P2PNetworkInterface* sender) {
 	console << "rec. Available\n";
 	int t0=scheduler->now()+messageDelay;
-	if (mainPathState==ConfPath) {
+	if (mainPathState==BFS) {
 		if (!mainPathOld.empty()) {
 			sendMessage("BFS",new MessageOf<bID>(BFS_MSG,mainPathOld.front()),sender,t0,messageDelayError);
 		}
-	} else if (aug1PathState==ConfPath && sender->getConnectedBlockBId()==mainPathIn) {
+	} else if (aug1PathState==BFS && sender->getConnectedBlockBId()==mainPathIn) {
 		if (!aug1PathOld.empty()) {
 			sendMessage("BFS",new MessageOf<bID>(BFS_MSG,aug1PathOld.front()),sender,t0,messageDelayError);
 		}
-	} else if (aug2PathState==ConfPath && sender->getConnectedBlockBId()==mainPathOut) {
+	} else if (aug2PathState==BFS && sender->getConnectedBlockBId()==mainPathOut) {
 		if (!aug2PathOld.empty()) {
 			sendMessage("BFS",new MessageOf<bID>(BFS_MSG,aug2PathOld.front()),sender,t0,messageDelayError);
 		}
@@ -207,9 +210,9 @@ void LocomotionCode::ProcAvailable(P2PNetworkInterface* sender) {
 
 /** Processing the "ConfirmPath" message type **/
 void LocomotionCode::ProcConfirmPath(P2PNetworkInterface* sender) {
-	console << "rec. ConfirmPath\n";
+	console << "rec. ConfirmPath, mainPathState="<<mainPathState<<"\n";
 	bID msgFrom = sender->getConnectedBlockBId();
-	if (mainPathState==ConfPath && isIn(mainPathOut,msgFrom)) {
+	if (mainPathState==BFS && isIn(mainPathOut,msgFrom)) {
 		int t0=scheduler->now()+messageDelay;
 		sendMessageToPath("CutOff",CUT_OFF_MSG,mainPathOut,t0,messageDelayError,true);
 		t0+=100;
@@ -217,21 +220,21 @@ void LocomotionCode::ProcConfirmPath(P2PNetworkInterface* sender) {
 			mainPathState = Streamline;
 			sendMessage("ConfirmStreamline",new Message(CONFIRM_STREAMLINE_MSG),sender,t0,messageDelayError);
 		} else {
-			mainPathState = ConfStreamline;
+			mainPathState = ConfPath;
 			sendMessage("ConfirmPath",new Message(CONFIRM_PATH_MSG),module->getP2PNetworkInterfaceByDestBlockId(mainPathIn),t0,messageDelayError);
 		}
-	} else if (aug1PathState==ConfPath && msgFrom==mainPathIn) {
+	} else if (aug1PathState==BFS && msgFrom==mainPathIn) {
 		aug1PathOut.clear();
 		aug1PathOut.push_back(msgFrom);
-		aug1PathState=ConfStreamline;
+		aug1PathState=ConfPath;
 		int t0=scheduler->now()+messageDelay;
 		sendMessage("ConfirmPath",new Message(CONFIRM_PATH_MSG),module->getP2PNetworkInterfaceByDestBlockId(aug1PathIn),t0,messageDelayError);
-	} else if (aug2PathState==ConfPath && (aug1PathState!=ConfStreamline || msgFrom!=mainPathIn)) {
+	} else if (aug2PathState==BFS && (aug1PathState!=ConfPath || msgFrom!=mainPathIn)) {
 		int t0=scheduler->now()+messageDelay;
 		sendMessageToPath("CutOff",CUT_OFF_MSG,aug2PathOut,t0,messageDelayError,true);
 		aug2PathOut.clear();
 		aug2PathOut.push_back(msgFrom);
-		aug2PathState=ConfStreamline;
+		aug2PathState=ConfPath;
 		t0+=100;
 		sendMessage("ConfirmPath",new Message(CONFIRM_PATH_MSG),module->getP2PNetworkInterfaceByDestBlockId(aug2PathIn),t0,messageDelayError);
 	}
@@ -241,7 +244,7 @@ void LocomotionCode::ProcConfirmPath(P2PNetworkInterface* sender) {
 void LocomotionCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
 	console << "rec. ConfirmStreamline\n";
 	bID msgFrom = sender->getConnectedBlockBId();
-	if (mainPathState==ConfStreamline && msgFrom==mainPathIn) {
+	if (mainPathState==ConfPath && msgFrom==mainPathIn) {
 		mainPathState=Streamline;
 		int t0=scheduler->now()+messageDelay;
 		if (!isSink) {
@@ -252,7 +255,7 @@ void LocomotionCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
 		P2PNetworkInterface *p2pMainPathIn= module->getP2PNetworkInterfaceByDestBlockId(mainPathIn);
 		P2PNetworkInterface *p2p;
 		for (int i=0; i<hostBlock->getNbInterfaces(); i++) {
-			p2p = hostBlock->getInterface(i);
+			p2p = hostBlock->getInterface(i);	
 			if(p2p->connectedInterface) { // on regarde si elle n'est pas dans les interdits
 				if (p2p!=p2pMainPathIn && !isIn(mainPathOut,p2p->getConnectedBlockBId())) {
 					sendMessage("Available",new Message(AVAILABLE_MSG), p2p, t0, messageDelayError);
@@ -260,7 +263,7 @@ void LocomotionCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
 				}
 			}
 		}
-	} else if (aug1PathState==ConfStreamline && msgFrom==aug1PathIn) {
+	} else if (aug1PathState==ConfPath && msgFrom==aug1PathIn) {
 		mainPathIn = aug1PathIn;
 		int t0=scheduler->now()+messageDelay;
 		sendMessageToPath("ConfirmStreamline",CONFIRM_STREAMLINE_MSG,aug1PathOut,t0,messageDelayError);
@@ -282,7 +285,7 @@ void LocomotionCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
 		aug1PathState = NONE;
 		aug1PathIn = 0;
 		aug1PathOut.clear();
-	} else if (aug2PathState==ConfStreamline && msgFrom==aug2PathIn) {
+	} else if (aug2PathState==ConfPath && msgFrom==aug2PathIn) {
 		int t0=scheduler->now()+messageDelay;
 		sendMessageToPath("ConfirmStreamline",CONFIRM_STREAMLINE_MSG,aug2PathOut,t0,messageDelayError);
 
@@ -387,7 +390,6 @@ void LocomotionCode::sendMessageToPath(const string& str, int msgType, vector<bI
 	
 	if (!path.empty()) { 
 		int lenght = path.size();
-		OUTPUT << "lenght=" << lenght << endl;
 		PathMessageData msg;
 		msg.firstExcepted = firstExcepted;
 		vector<bID>::iterator it=path.begin();
@@ -404,4 +406,14 @@ void LocomotionCode::sendMessageToPath(const string& str, int msgType, vector<bI
 ostream& operator<<(ostream& f,const PathMessageData&p) { 
 	f << "path ";
 	return f;
+}
+
+void vector2string(const std::vector<bID>&v,string &s) {
+	vector<bID>::const_iterator it = v.begin();
+	s.clear();
+	while (it!=v.end()) {
+		s+= to_string(*it) + ",";
+		it++;
+	}
+	cout << s << endl;
 }

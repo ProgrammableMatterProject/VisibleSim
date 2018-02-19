@@ -71,7 +71,7 @@ string GlBlock::getInfo() {
 
 string GlBlock::getPopupInfo() {
     ostringstream out;
-	out << blockId << "\n";
+	out << blockId;
 
 	return out.str();
 }

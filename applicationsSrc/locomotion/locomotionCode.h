@@ -12,7 +12,7 @@ static const int CONFIRM_STREAMLINE_MSG=1005;
 
 using namespace RobotBlocks;
 
-enum PathState {NONE, BFS, ConfPath, ConfStreamline, Streamline};  
+enum PathState {NONE, BFS, ConfPath, Streamline};  
 
 class PathMessageData {
 public :
@@ -77,4 +77,6 @@ template <typename T> void operator+=(std::vector<T> &v1, const std::vector<T> &
 template <typename T> bool isIn(const std::vector<T> &v,T value);
 template <typename T> bool operator==(T value,const std::vector<T> &v);
 template <typename T> bool operator!=(T value,const std::vector<T> &v);
+
+void vector2string(const std::vector<bID>&v,string &s);
 #endif /* locomotionCode_H_ */

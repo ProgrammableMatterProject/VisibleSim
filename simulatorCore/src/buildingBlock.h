@@ -245,7 +245,7 @@ public:
 	 * @return global time corresponding to the local time in parameter
 	 */   	
 	Time getSimulationTime(Time localTime);
-
+	
 	/*************************************************
 	 *            MeldInterpreter Functions  
 	 *************************************************/
