@@ -14,18 +14,6 @@ using namespace RobotBlocks;
 
 enum PathState {NONE, BFS, ConfPath, Streamline};  
 
-class PathMessageData {
-public :
-	bool firstExcepted;
-	vector<bID> path;
-	
-	PathMessageData() { firstExcepted=false; };
-	bool empty() { 
-		return path.empty();
-	}
-	friend ostream& operator<<(ostream& f,const PathMessageData &p);
-};
-
 class LocomotionCode : public RobotBlocksBlockCode {
 private:
 	RobotBlocksBlock *module;
@@ -41,7 +29,7 @@ private:
 	bID aug2PathIn;				//! ID of parent meta-module on the augmenting tree (type 2)
 	vector<bID>aug2PathOut;		//! ID’s of child meta-modules on the augmenting tree (type 2)
 	vector<bID>aug2PathOld;		//! old ID’s of child meta-modules on the augmenting tree (type 2)
-	vector<bID>pathsOld;		//! list of path ID’s that has been processed in current step
+	//vector<bID>pathsOld;		//! list of path ID’s that has been processed in current step
 	bool isSource;				//! Is meta-module a source.
 	bool isSink;
 
@@ -52,12 +40,12 @@ public :
 	void startup();
 	void ProcBFS(const MessageOf<bID>*msg,P2PNetworkInterface *sender);
 	void ProcConfirmEdge(P2PNetworkInterface *sender);
-	void ProcCutOff(const MessageOf<PathMessageData>*msg,P2PNetworkInterface *sender);
+	void ProcCutOff(P2PNetworkInterface *sender);
 	void ProcAvailable(P2PNetworkInterface *sender);
 	void ProcConfirmPath(P2PNetworkInterface *sender);
 	void ProcConfirmStreamline(P2PNetworkInterface *sender);
 
-	void sendMessageToPath(const string &str, int msgType,vector<bID> &path,int time,int delta,bool firstExcepted=false);
+	void sendMessageToPath(const string &str, int msgType,vector<bID> &path,bool firstExcepted=false);
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
