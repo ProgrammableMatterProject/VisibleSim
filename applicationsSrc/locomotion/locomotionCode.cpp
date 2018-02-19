@@ -53,6 +53,7 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 	pathsOld += aug2PathOld;
 	
 /**DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG**/	
+	OUTPUT << "mainPathState=" << mainPathState << endl;
 	OUTPUT << "mainPathIn=" << mainPathIn << endl;
 	OUTPUT << "mainPathOut={";
 	vector<bID>::iterator it = mainPathOut.begin();
@@ -82,7 +83,6 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 			t0+=100;
 			sendMessage("ConfirmPath",new Message(CONFIRM_PATH_MSG),sender,t0,messageDelayError);
 		} else {
-			module->setColor(Colors[msgData % NB_COLORS]);
 			mainPathState = BFS;
 			mainPathIn = sender->getConnectedBlockId();
 			mainPathOut.clear();
