@@ -46,7 +46,7 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 	vector<bID> pathsOld;
 	bID msgData = *(msg->getData());
 	bID msgFrom = sender->getConnectedBlockId();
-	console << "rec. BFS(" << msgData << ")\n";	
+	console << "rec. BFS(" << msgData << ") from " << msgFrom << "\n";	
 	// pathsOld = mainPathsOld U aug1PathsOld U aug2PathsOld
 	pathsOld = mainPathOld;
 	pathsOld += aug1PathOld;
@@ -132,8 +132,7 @@ void LocomotionCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
 void LocomotionCode::ProcCutOff(const MessageOf<PathMessageData> *msg,P2PNetworkInterface* sender) {
 	PathMessageData *msgData = msg->getData();
 	bID senderID = sender->getConnectedBlockBId();
-	console << "rec. CutOff(" << (msgData->empty()?"empty":"not empty") << "," << (int)msgData->firstExcepted << ")\n";
-	console << "sender = " << senderID << "\n";
+	console << "rec. CutOff(" << (msgData->empty()?"empty":"not empty") << "," << (int)msgData->firstExcepted << ") from " << senderID << "\n";
 
 /**DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG**/	
 	OUTPUT << "mainPathIn=" << mainPathIn << endl;

@@ -325,7 +325,7 @@ ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
-0.001032 #1: rec. BFS(5)
+0.001032 #1: rec. BFS(5) from 5
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -335,7 +335,7 @@ pathsOld={}
 1 sends 1001 to 2 at 3164
 0.001032 #1: sends BFS to 5 at 3164
 1 sends 1001 to 5 at 3164
-0.001032 #6: rec. BFS(5)
+0.001032 #6: rec. BFS(5) from 5
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -349,7 +349,7 @@ pathsOld={}
 6 sends 1001 to 5 at 3164
 0.001032 #6: sends BFS to 11 at 3164
 6 sends 1001 to 11 at 3164
-0.001032 #10: rec. BFS(5)
+0.001032 #10: rec. BFS(5) from 5
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -361,7 +361,7 @@ pathsOld={}
 10 sends 1001 to 11 at 3164
 0.001032 #10: sends BFS to 9 at 3164
 10 sends 1001 to 9 at 3164
-0.001032 #9: rec. BFS(8)
+0.001032 #9: rec. BFS(8) from 8
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -373,7 +373,7 @@ pathsOld={}
 9 sends 1001 to 8 at 3164
 0.001032 #9: sends BFS to 13 at 3164
 9 sends 1001 to 13 at 3164
-0.001032 #13: rec. BFS(14)
+0.001032 #13: rec. BFS(14) from 14
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -388,7 +388,7 @@ pathsOld={}
 0.003096 #14: rec. ConfirmEdge
 0.003096 #5: rec. ConfirmEdge
 0.003096 #5: rec. ConfirmEdge
-0.003196 #2: rec. BFS(5)
+0.003196 #2: rec. BFS(5) from 1
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -400,11 +400,11 @@ pathsOld={}
 2 sends 1001 to 1 at 7492
 0.003196 #2: sends BFS to 6 at 7492
 2 sends 1001 to 6 at 7492
-0.003196 #5: rec. BFS(5)
+0.003196 #5: rec. BFS(5) from 1
 mainPathIn=5
 mainPathOut={5,1,6,10,}
 pathsOld={}
-0.003196 #7: rec. BFS(5)
+0.003196 #7: rec. BFS(5) from 6
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -412,7 +412,7 @@ pathsOld={}
 7 sends 1002 to 6 at 7392
 0.003196 #7: sends ConfirmPath to 6 at 7492
 7 sends 1005 to 6 at 7492
-0.003196 #11: rec. BFS(5)
+0.003196 #11: rec. BFS(5) from 6
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -424,50 +424,50 @@ pathsOld={}
 11 sends 1001 to 12 at 7492
 0.003196 #11: sends BFS to 10 at 7492
 11 sends 1001 to 10 at 7492
-0.003196 #9: rec. BFS(5)
+0.003196 #9: rec. BFS(5) from 10
 mainPathIn=8
 mainPathOut={}
 pathsOld={8,}
-0.003196 #10: rec. BFS(8)
+0.003196 #10: rec. BFS(8) from 9
 mainPathIn=5
 mainPathOut={}
 pathsOld={5,}
-0.003196 #8: rec. BFS(8)
+0.003196 #8: rec. BFS(8) from 9
 mainPathIn=8
 mainPathOut={8,9,}
 pathsOld={}
-0.003196 #13: rec. BFS(8)
+0.003196 #13: rec. BFS(8) from 9
 mainPathIn=14
 mainPathOut={}
 pathsOld={14,}
-0.003196 #14: rec. BFS(14)
+0.003196 #14: rec. BFS(14) from 13
 mainPathIn=14
 mainPathOut={14,13,}
 pathsOld={}
-0.003196 #2: rec. BFS(5)
+0.003196 #2: rec. BFS(5) from 6
 mainPathIn=1
 mainPathOut={}
 pathsOld={5,}
-0.003196 #5: rec. BFS(5)
+0.003196 #5: rec. BFS(5) from 6
 mainPathIn=5
 mainPathOut={5,1,6,10,}
 pathsOld={}
-0.003196 #11: rec. BFS(5)
+0.003196 #11: rec. BFS(5) from 10
 mainPathIn=6
 mainPathOut={}
 pathsOld={5,}
-0.003196 #9: rec. BFS(14)
+0.003196 #9: rec. BFS(14) from 13
 mainPathIn=8
 mainPathOut={}
 pathsOld={8,}
-0.003196 #5: rec. BFS(5)
+0.003196 #5: rec. BFS(5) from 10
 mainPathIn=5
 mainPathOut={5,1,6,10,}
 pathsOld={}
 0.007424 #1: rec. ConfirmEdge
 0.007424 #6: rec. ConfirmEdge
 0.007424 #6: rec. ConfirmEdge
-0.007524 #3: rec. BFS(5)
+0.007524 #3: rec. BFS(5) from 2
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -479,15 +479,15 @@ pathsOld={}
 3 sends 1001 to 2 at 16148
 0.007524 #3: sends BFS to 7 at 16148
 3 sends 1001 to 7 at 16148
-0.007524 #1: rec. BFS(5)
+0.007524 #1: rec. BFS(5) from 2
 mainPathIn=5
 mainPathOut={2,}
 pathsOld={5,}
-0.007524 #6: rec. BFS(5)
+0.007524 #6: rec. BFS(5) from 2
 mainPathIn=5
 mainPathOut={7,11,}
 pathsOld={5,}
-0.007524 #12: rec. BFS(5)
+0.007524 #12: rec. BFS(5) from 11
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -497,7 +497,7 @@ pathsOld={}
 12 sends 1001 to 7 at 16148
 0.007524 #12: sends BFS to 11 at 16148
 12 sends 1001 to 11 at 16148
-0.007524 #10: rec. BFS(5)
+0.007524 #10: rec. BFS(5) from 11
 mainPathIn=5
 mainPathOut={}
 pathsOld={5,}
@@ -509,21 +509,20 @@ next=7
 6 sends 1003 to 7 at 16048
 0.007524 #6: sends ConfirmPath to 5 at 16148
 6 sends 1005 to 5 at 16148
-0.007524 #6: rec. BFS(5)
+0.007524 #6: rec. BFS(5) from 11
 mainPathIn=5
 mainPathOut={7,11,}
 pathsOld={5,}
 0.016080 #2: rec. ConfirmEdge
 0.016080 #11: rec. ConfirmEdge
-0.016080 #7: rec. CutOff(not empty,1)
-0.016080 #7: sender = 6
+0.016080 #7: rec. CutOff(not empty,1) from 6
 mainPathIn=6
 mainPathOut={7,}
 pathsOld={}
 sendMessageToPath(7,)
 path.front()=7
 next=0
-0.016180 #4: rec. BFS(5)
+0.016180 #4: rec. BFS(5) from 3
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
@@ -531,15 +530,15 @@ pathsOld={}
 4 sends 1002 to 3 at 33360
 0.016180 #4: sends ConfirmPath to 3 at 33460
 4 sends 1005 to 3 at 33460
-0.016180 #2: rec. BFS(5)
+0.016180 #2: rec. BFS(5) from 3
 mainPathIn=1
 mainPathOut={3,}
 pathsOld={5,}
-0.016180 #7: rec. BFS(5)
+0.016180 #7: rec. BFS(5) from 3
 mainPathIn=6
 mainPathOut={7,}
 pathsOld={5,}
-0.016180 #11: rec. BFS(5)
+0.016180 #11: rec. BFS(5) from 12
 mainPathIn=6
 mainPathOut={12,}
 pathsOld={5,}
@@ -549,7 +548,7 @@ path.front()=5
 next=0
 0.016180 #5: sends ConfirmStreamline to 6 at 33460
 5 sends 1005 to 6 at 33460
-0.016180 #7: rec. BFS(5)
+0.016180 #7: rec. BFS(5) from 12
 mainPathIn=6
 mainPathOut={7,}
 pathsOld={5,}
@@ -563,8 +562,7 @@ next=4
 0.033492 #3: sends ConfirmPath to 2 at 68084
 3 sends 1005 to 2 at 68084
 0.033492 #6: rec. ConfirmPath, mainPathState=2
-0.068016 #4: rec. CutOff(empty,1)
-0.068016 #4: sender = 3
+0.068016 #4: rec. CutOff(empty,1) from 3
 mainPathIn=3
 mainPathOut={4,}
 pathsOld={}
@@ -584,8 +582,7 @@ next=3
 2 sends 1003 to 3 at 137232
 0.068116 #2: sends ConfirmPath to 1 at 137332
 2 sends 1005 to 1 at 137332
-0.137264 #3: rec. CutOff(empty,1)
-0.137264 #3: sender = 2
+0.137264 #3: rec. CutOff(empty,1) from 2
 mainPathIn=2
 mainPathOut={4,}
 pathsOld={}
@@ -612,16 +609,14 @@ next=2
 1 sends 1003 to 2 at 275728
 0.137364 #1: sends ConfirmPath to 5 at 275828
 1 sends 1005 to 5 at 275828
-0.275560 #4: rec. CutOff(empty,0)
-0.275560 #4: sender = 3
+0.275560 #4: rec. CutOff(empty,0) from 3
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
 isMainPathRemoved=0
 0.275560 #4: sends Available to 3 at 552120
 4 sends 1004 to 3 at 552120
-0.275760 #2: rec. CutOff(empty,1)
-0.275760 #2: sender = 1
+0.275760 #2: rec. CutOff(empty,1) from 1
 mainPathIn=1
 mainPathOut={3,}
 pathsOld={}
@@ -644,8 +639,7 @@ sendMessageToPath()
 0.275860 #7: rec. Available
 0.275860 #5: rec. ConfirmPath, mainPathState=3
 0.552152 #3: rec. Available
-0.552552 #3: rec. CutOff(empty,0)
-0.552552 #3: sender = 2
+0.552552 #3: rec. CutOff(empty,0) from 2
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
