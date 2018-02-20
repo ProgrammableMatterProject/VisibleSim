@@ -51,33 +51,6 @@ API::addModuleToPath(Catoms3DBlock *catom,
     return true;
 }
 
-bool
-API::buildRotationSequenceToTarget(Catoms3DBlock *pivot,
-                                   short pivotCon,
-                                   vector<PathHop>& path,                                   
-                                   list<Catoms3DMotionRulesLink*>& rotations)
-{
-    if (path.empty() || pivot == NULL) return false;
-
-    vector<Catoms3DMotionRulesLink*> startMotionRules;
-    // getMotionRules()->getValidRotationsListForCatom(bc->catom, startMotionRules);
-    // getMotionRules()->getValidMotionListFromPivot()
-    
-    // The algorithm is simple, all we have to do is find
-    //  a sequence of motion from the catom to the connector of the neighbor
-    //  with the minimum distance to the target, and then unfold the hop list
-    for (auto &hop : path) {
-        vector<short> orderedCons;
-        hop.getConnectorsByIncreasingDistance(orderedCons);
-        assert(!orderedCons.empty());
-        
-    }
-
-   throw NotImplementedException();
-    
-    return !rotations.empty();
-}
-
 bool API::getMotionRulesFromConnector(const Catoms3DBlock *catom,
                                       short conFrom,
                                       vector<Catoms3DMotionRulesLink*>& links)
@@ -95,7 +68,7 @@ API::computePathConnectorsAndDistances(const Catoms3DBlock *catom,
     getMotionRules()->getValidSurfaceLinksOnCatom(catom, motionRulesLinks);
     
     for (short conFrom : consFrom) {
-        computePathConnectorsAndDistances(motionRulesLinks, conFrom, distance);
+        computePathConnectorsAndDistances(motionRulesLinks, catom, conFrom, distance);
     }
 
     return !distance.empty();
@@ -103,6 +76,7 @@ API::computePathConnectorsAndDistances(const Catoms3DBlock *catom,
 
 bool
 API::computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
+                                       const Catoms3DBlock *catom,
                                        short conFrom,
                                        std::map<short, int>& distance)
 {
@@ -113,13 +87,8 @@ API::computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& m
     std::array<list<short>, 12> adj;
     for (const auto& link : motionRulesLinks) {
         std::array<short, 2> linkCons = link->getConnectors();
-
-        // cout << *link << endl;
         linkMatrix[linkCons[0]][linkCons[1]].push_back(link);
-        // linkMatrix[linkCons[1]][linkCons[0]].push_back(link);
-
         adj[linkCons[0]].push_back(linkCons[1]);
-        // adj[linkCons[1]].push_back(linkCons[0]);
     }
 
     // BFS-parent of every connector
@@ -135,6 +104,7 @@ API::computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& m
 
     list<short>::iterator itCon;
     short connector;
+    FCCLattice* lattice = static_cast<FCCLattice*>(Catoms3DWorld::getWorld()->lattice);
     
     while(!queue.empty()) {
         connector = queue.front();
@@ -148,20 +118,24 @@ API::computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& m
              itCon != adj[connector].end();
              itCon++)
         {
-            if (parent[*itCon] == -1) {                
-                parent[*itCon] = connector;
+            if (parent[*itCon] == -1) {
+                Cell3DPosition nPosCatom; catom->getNeighborPos(*itCon, nPosCatom);
 
-                int depth = distance[parent[*itCon]] + 1;
-                if (distance.find(*itCon) == distance.end()
-                    || distance[*itCon] > depth) {
-                    
-                    distance[*itCon] = depth;
-                    // cout << "inininin" << endl;
+                if (!lattice->isPositionBlocked(nPosCatom, catom->position)) {
+                    parent[*itCon] = connector;
+
+                    int depth = distance[parent[*itCon]] + 1;
+                    if (distance.find(*itCon) == distance.end()
+                        || distance[*itCon] > depth) {
+
+                        distance[*itCon] = depth;
+                    }
+
+                    queue.push_back(*itCon);
                 } else {
-                    // cout << "outoutoutout" << endl;
+                    cout << "findAdjacentConnectors: " << *itCon << " dist is -> "
+                         << " => UNREACHABLE!" << endl;
                 }
-
-                queue.push_back(*itCon);
             }
         }
     }
@@ -170,13 +144,13 @@ API::computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& m
 }
 
 
-bool
+Catoms3DMotionRulesLink*
 API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
                         short conFrom,
                         short conTo,
-                        list<Catoms3DMotionRulesLink*>& path)
+                        Catoms3DBlock *catom)
 {
-    if (motionRulesLinks.empty()) return false;
+    if (motionRulesLinks.empty()) return NULL;
 
     // Build an adjacency matrix out of the motion rules link for easier graph traversal
     list<Catoms3DMotionRulesLink*> linkMatrix[12][12];
@@ -200,6 +174,8 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
 
     list<short>::iterator itCon;
     short connector;
+
+    FCCLattice *lattice = static_cast<FCCLattice*>(Catoms3DWorld::getWorld()->lattice);
     
     while(!queue.empty()) {
         connector = queue.front();
@@ -218,19 +194,28 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
 
                 if (*itCon == conTo) {
                     // Found target connector, stop BFS and rebuild path
-                    for (short currentCon = *itCon;
-                         parent[currentCon] != 12;
-                         currentCon = parent[currentCon])
-                    {
+                    // for (short currentCon = *itCon;
+                    //      parent[currentCon] != 12;
+                    //      currentCon = parent[currentCon])
+                    // {
                         // For now, we simply take the first available link between the two connectors
-                        Catoms3DMotionRulesLink* nextMotion =
-                            linkMatrix[parent[currentCon]][currentCon].front();
-                        
-                        path.push_front(nextMotion);
-                    }
+                    Catoms3DMotionRulesLink* nextMotion =
+                        linkMatrix[parent[*itCon]][*itCon].front();
+                    assert(nextMotion);
+
+                    Cell3DPosition futurePos =
+                        nextMotion->getFinalPosition(catom);
+                    if (!lattice->isPositionBlocked(futurePos, catom->position))
+                        return nextMotion;
+                    else
+                        cout << "POS IS BLOCKED: " << futurePos
+                             << " with motion: " << *nextMotion << endl;
+                    
+                    //     path.push_front(nextMotion);
+                    // }
                     
 
-                    return !path.empty();
+                    // return !path.empty();
                 }
 
                 queue.push_back(*itCon);
@@ -239,42 +224,33 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
     }
 
     // Could not find direct link from conFrom to conTo, return false
-    return !path.empty();
+    return NULL;
 }                                        
 
-bool
+Catoms3DMotionRulesLink*
 API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
                         short conFrom,
                         const vector<short>& consTo,
-                        list<Catoms3DMotionRulesLink*>& shortestPath)
+                        Catoms3DBlock *catom)
 {
     if (motionRulesLinks.empty()
         || consTo.empty())
-        return false;
+        return NULL;
 
+    Catoms3DMotionRulesLink* shortestLink;
     // Compute path to each connector and return the shortest
+    // @attention They are all the shortest now, as we are only considering 1-link rotations
     for (short conTo : consTo) {
-        list<Catoms3DMotionRulesLink*> candidate;
-        API::findConnectorsPath(motionRulesLinks, conFrom, conTo, candidate);
+        shortestLink =
+            API::findConnectorsPath(motionRulesLinks, conFrom, conTo, catom);
 
-        cout << conFrom << " to " << conTo << ":" << endl << "\t";
-        for (Catoms3DMotionRulesLink* step : candidate) {
-            cout << " " << *step << " ->";
+        if (shortestLink) {
+            cout << "shortestLink:\t" << *shortestLink << endl;        
+            return shortestLink;
         }
-        cout << "|" << endl;
-        
-        if (!candidate.empty() &&
-            (shortestPath.empty() || candidate.size() < shortestPath.size()) )
-            shortestPath = candidate;
     }
-    
-    cout << "ShortestPath: " << endl << "\t";
-    for (auto const& step : shortestPath) {
-        cout << " " << *step << " ->";
-    }
-    cout << "|" << endl;
 
-    return !shortestPath.empty(); // might be empty if no path found
+    return NULL; // might be empty if no path found
 }
 
 void
@@ -298,6 +274,7 @@ API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
         getMotionRules()->getNeighborConnectors(pivotDockingConnector);
     std::set<short> pivotCons; hop.getConnectors(pivotCons);
 
+    FCCLattice* lattice = static_cast<FCCLattice*>(Catoms3DWorld::getWorld()->lattice);
     Catoms3DBlock *pivot = static_cast<Catoms3DBlock*>
         (Catoms3DWorld::getWorld()->lattice->getBlock(hop.getPosition()));
 
@@ -317,12 +294,15 @@ API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
 
                 cout << "findAdjacentConnectorsAndDistances: " << c << " and "
                      << oppC << " are NOT ADJACENT" << endl;                
-            } else {                
+            } else if (!lattice->isPositionBlocked(nPosCatom, catom->position)) {
                 adjacentConnectors.insert({oppC, hop.getDistance(c)});
             
                 cout << "findAdjacentConnectorsAndDistances: " << c << " opp is -> "
                      << oppC << " (" << hop.getDistance(c)
                      << ")" << endl;
+            } else {
+                cout << "findAdjacentConnectorsAndDistances: " << c << " opp is -> "
+                     << oppC << " => UNREACHABLE!" << endl;
             }
         }
     }
@@ -344,6 +324,7 @@ API::findAdjacentConnectors(const Catoms3DBlock *catom,
     bool inverted = catom->areOrientationsInverted(hop.getOrientation());
     bool lastHopIsSelf = catom->position == hop.getPosition();
 
+    FCCLattice* lattice = static_cast<FCCLattice*>(Catoms3DWorld::getWorld()->lattice);
     const short *pivotDockingConNeighbors =
         getMotionRules()->getNeighborConnectors(pivotDockingConnector);
 
@@ -358,13 +339,18 @@ API::findAdjacentConnectors(const Catoms3DBlock *catom,
                 getMirrorNeighborConnector(catomDockingConnector,
                                            (ConnectorDirection)idx,
                                            inverted);
+            Cell3DPosition nPosCatom; catom->getNeighborPos(oppC, nPosCatom);
 
-            adjacentConnectors.push_back(oppC);            
-            mirrorConnector[oppC] = c;
+            if (!lattice->isPositionBlocked(nPosCatom, catom->position)) {
+                adjacentConnectors.push_back(oppC);            
+                mirrorConnector[oppC] = c;
 
-            cout << "findAdjacentConnectors: " << c << " opp is -> " << oppC
-                 << " (" << hop.getDistance(c) << ")" << endl;
-            
+                cout << "findAdjacentConnectors: " << c << " opp is -> " << oppC
+                     << " (" << hop.getDistance(c) << ")" << endl;
+            } else  {
+                cout << "findAdjacentConnectors: " << c << " opp is -> "
+                     << oppC << " => UNREACHABLE!" << endl;
+            }
         } 
     }
 

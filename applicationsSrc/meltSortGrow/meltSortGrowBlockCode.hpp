@@ -95,7 +95,7 @@ public:
     P2PNetworkInterface *growthParent = NULL; //!< The module's parent in the DFS-tree created during the growth phase
     Cell3DPosition goalPosition; //!< Position to be filled by current growth     
 
-    std::list<Catoms3DMotionRulesLink*> rotationsPlan; //!< Ordered list of rotation motions along the path
+    Catoms3DMotionRulesLink* nextRotation; //!< 
 
     /**
      * \brief Initializes the local variables used by the articulation points labelling algorithm

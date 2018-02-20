@@ -17,9 +17,10 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
     short pivotDockingConnector = static_cast<Catoms3DBlock*>
         (sourceInterface->hostBlock)->getDirection(sourceInterface); // so-so
     
-    if (!bc->meltFather) {
+    if (!bc->meltFather) {        
         bc->meltFather = destinationInterface;
         bc->resetDFSFlags();
+        bc->path = this->path;
         
         if (!bc->articulationPoint && !bc->melted) {
             bool rotationIsPossible = bc->computeNextRotation(path);
@@ -27,14 +28,13 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
             {
                 cout << "Could not compute feasible rotation plan to parent,"
                      << " add myself to path" << endl;
-            }
+            } else return;
         } else {
             cout << "I am an articulation point, I cannot move" << endl;
         }
 
         // If module not mobile or a movement path could not be found,
         //  then propagate search to children        
-        bc->path = this->path;
         PathHop& lastHop = path.back();
 
         std::vector<short> adjacentPathConnectors;

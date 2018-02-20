@@ -267,7 +267,7 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
         } break;
 
         case EVENT_ROTATION3D_END: {            
-            assert(rotationsPlan.empty());
+            assert(!nextRotation);
             assert(!path.empty());
 
             if (!growing) {
@@ -323,7 +323,7 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
 
 void MeltSortGrowBlockCode::trimPath(vector<PathHop>& path) {
     for (auto it = path.begin(); it != path.end(); it = std::next(it)) {
-        PathHop& someHop = *(it); 
+        PathHop& someHop = *(it);
  
         // Next next hop is within reach, clear current hop
         if (someHop.isInVicinityOf(catom->position)
@@ -421,21 +421,19 @@ bool MeltSortGrowBlockCode::computeNextRotation(vector<PathHop>& path)
     // Check if module can move to any of the adjacent path connectors of pivot.
     // Input connector set is ordered by distance to target, so the search should stop
     // as soon as a solution has been found
-    rotationsPlan.clear();
-    API::findConnectorsPath(mrl, catomDockingConnector, adjacentPathConnectors,
-                            rotationsPlan);
+    nextRotation =
+        API::findConnectorsPath(mrl, catomDockingConnector, adjacentPathConnectors, catom);
             
-    if (!rotationsPlan.empty()) {
-        short dirTo = rotationsPlan.back()->getConToID();
+    if (nextRotation) {
+        short dirTo = nextRotation->getConToID();
         lastHop.prune(mirrorConnector[dirTo]);
         
-        Catoms3DMotionRulesLink *nextRotation = rotationsPlan.front();
         cout << "Moving : " << *nextRotation << endl << endl;
-        
-        rotationsPlan.pop_front();
+
         nextRotation->sendRotationEvent(catom,
                                         catom->getNeighborOnCell(lastHop.getPosition()),
                                         getScheduler()->now() + 100);
+        nextRotation = NULL;
 
         return true;        
     }

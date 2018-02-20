@@ -46,21 +46,6 @@ public:
                                 short pivotDockingConnector,
                                 short catomDockingConnector);
     
-    /** 
-        \brief Builds a sequence of rotation that goes from a catom's current location to the target of the path
-        \param catom the module that will be performing the rotations
-        \param pivotCon id of the connector of the pivot that is connected to the catom module
-        \param path the path hop list that will be used to build the motion sequence
-        \param rotations the output motion sequence 
-        \return false is the catom cannot be reach the path target, true otherwise
-        \attention path must be initialized and thus contain at least one entry
-        \attention CANNOT WORK, OPPOSING BLOCKING MODULES CANNOT BE DETECTED IN ADVANCE
-        \todo PTHA **/
-    static bool buildRotationSequenceToTarget(Catoms3DBlock *pivot,
-                                              short pivotCon,
-                                              vector<PathHop>& path,
-                                              list<Catoms3DMotionRulesLink*>& rotations);
-
 /**
    \brief For a given Catoms3D module acting as a pivot, enumerates all the possible catom surface links that
    a catom connected to the pivot on any connector could use to reach connector conId
@@ -97,11 +82,11 @@ public:
    \param conTo the destination connector of the desired connector path
    \return an ordered list of individual links that can be followed by a module to move from conFrom to conTo, or list.end() if no path has been found 
    \remarks The best option would be to find the fastest path from conFrom to conTo */
-    static bool findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                                   short conFrom,
-                                   short conTo,
-                                   list<Catoms3DMotionRulesLink*>& paths);
-
+    static Catoms3DMotionRulesLink* findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
+                                                       short conFrom,
+                                                       short conTo,
+                                                       Catoms3DBlock *catom);
+    
 /**
    \brief Given a catom used as pivot, searches a path (sequence of individual rotations) that leads from connector conFrom to connector any connector of the input set
    \param motionRulesLinks a set of surface links between connectors of a pivot module that another module can follow to rotate
@@ -111,10 +96,10 @@ public:
    \return true if a path exists, false otherwise
    \remarks The best option would be to find the fastest path from conFrom to a conTo connector, and also consider the distance of conFrom to the global target 
    \attention the consTo input vector should be ordered by distance to some target in order for this function to return the shortest path to that target */
-    static bool findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                                   short conFrom,
-                                   const std::vector<short>& consTo,
-                                   list<Catoms3DMotionRulesLink*>& shortestPath);
+    static Catoms3DMotionRulesLink* findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
+                                                       short conFrom,
+                                                       const std::vector<short>& consTo,
+                                                       Catoms3DBlock *catom);
 
     /** 
      * @brief For each connector conFrom in the consFrom set, searches through the graph described by the motionRulesLinks for all the other connectors conOther that are connected to it, and assign it a distance using distance[conOther] = distance[conFrom] + pathLength(conFrom -> conOther)
@@ -125,8 +110,8 @@ public:
      * @return true if distance not empty, false otherwise
      */
     static bool computePathConnectorsAndDistances(const Catoms3DBlock *catom,
-                                           std::set<short> consFrom,
-                                           std::map<short, int>& distance);
+                                                  std::set<short> consFrom,
+                                                  std::map<short, int>& distance);
 
     /** 
      * @brief Searches through the graph described by the motionRulesLinks for all connectors conOther that are connected to conFrom, and assign it a distance using distance[conOther] = distance[conFrom] + pathLength(conFrom -> conOther)
@@ -137,8 +122,9 @@ public:
      * @return true if distance not empty, false otherwise
      */
     static bool computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks,
-                                           short conFrom,
-                                           std::map<short, int>& distance);
+                                                  const Catoms3DBlock *catom,
+                                                  short conFrom,
+                                                  std::map<short, int>& distance);
 
     /** 
      * @brief Initializes a distance map with tailconnector and distance 0

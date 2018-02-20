@@ -174,7 +174,6 @@ public:
 
     /**
      * @brief Returns the Cell3DPosition in some direction from a reference cell
-     *
      * @return Position of the cell in direction "direction" from cell pRef
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
@@ -445,11 +444,71 @@ class FCCLattice : public Lattice3D {
             Cell3DPosition(0,-1,-1),  // 9
             Cell3DPosition(0,0,-1),   // 10
             Cell3DPosition(-1,0,-1) // 11
-      }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
+            }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
+    
+    //!< Neighborhood Planes for blocking cells computation
+    
+    Cell3DPosition sideOneOddXY[4] = { Cell3DPosition(1,0,-1), Cell3DPosition(1,1,-1),
+                                      Cell3DPosition(0,1,-1), Cell3DPosition(0,0,-1) };
+    Cell3DPosition sideTwoOddXY[4] = { Cell3DPosition(1,0,1),Cell3DPosition(1,1,1),
+                                       Cell3DPosition(0,1,1),Cell3DPosition(0,0,1) };
+    Cell3DPosition sideOneEvenXY[4] = { Cell3DPosition(0,0,-1),Cell3DPosition(-1,-1,-1),
+                                        Cell3DPosition(-1,0,-1),Cell3DPosition(0,-1,-1) };
+    Cell3DPosition sideTwoEvenXY[4] = { Cell3DPosition(0,0,1),Cell3DPosition(-1,-1,1),
+                                        Cell3DPosition(-1,0,1), Cell3DPosition(0,-1,1) };
+    
+    Cell3DPosition sideOneOddXZ[5] = { Cell3DPosition(1,0,-1),Cell3DPosition(1,1,-1),
+                                       Cell3DPosition(1,1,1),Cell3DPosition(1,0,1),
+                                       Cell3DPosition(1,0,0) };
+    Cell3DPosition sideTwoOddXZ[5] = { Cell3DPosition(0,1,-1),Cell3DPosition(0,0,-1),
+                                       Cell3DPosition(0,1,1),Cell3DPosition(0,0,1),
+                                       Cell3DPosition(-1,0,0) };
+    Cell3DPosition sideOneEvenXZ[5] = { Cell3DPosition(0,0,-1),Cell3DPosition(0,-1,-1),
+                                        Cell3DPosition(0,0,1),Cell3DPosition(0,-1,1),
+                                        Cell3DPosition(1,0,0) };
+    Cell3DPosition sideTwoEvenXZ[5] = { Cell3DPosition(-1,0,-1),Cell3DPosition(-1,-1,-1),
+                                        Cell3DPosition(-1,0,1),Cell3DPosition(-1,-1,1),
+                                        Cell3DPosition(-1,0,0) };
+    Cell3DPosition sideOneOddYZ[5] = { Cell3DPosition(0,0,-1),Cell3DPosition(1,0,-1),
+                                       Cell3DPosition(0,0,1),Cell3DPosition(1,0,1),
+                                       Cell3DPosition(0,-1,0) };
+    Cell3DPosition sideTwoOddYZ[5] = { Cell3DPosition(1,1,-1),Cell3DPosition(0,1,-1),
+                                       Cell3DPosition(1,1,1),Cell3DPosition(0,1,1),
+                                       Cell3DPosition(0,1,0) };
+    Cell3DPosition sideOneEvenYZ[5] = { Cell3DPosition(0,-1,-1),Cell3DPosition(-1,-1,-1),
+                                        Cell3DPosition(0,-1,1),Cell3DPosition(-1,-1,1),
+                                        Cell3DPosition(0,-1,0) };
+    Cell3DPosition sideTwoEvenYZ[5] = { Cell3DPosition(0,0,-1),Cell3DPosition(-1,0,-1),
+                                           Cell3DPosition(0,0,1),Cell3DPosition(-1,0,1),
+                                           Cell3DPosition(0,1,0) };    
 
+    Cell3DPosition xyPos[4] = { Cell3DPosition(-1,0,0), Cell3DPosition(1,0,0),
+                                Cell3DPosition(0,-1,0), Cell3DPosition(0,1,0) };
+    
     static const string directionName[];
     bool *tabLockedCells;
     unsigned short *tabDistances;
+
+    // NEIGHBORDHOOD RESTRICTIONS
+    enum class BlockingPositionPlane { XY, YZ, XZ };
+    /** 
+     * Sets the sideOne and sideTwo pointers to the cells from both sides of the input plane and in direction d, of the right odd/even neighborhood
+     * @param plane 
+     * @param pos reference position
+     * @param sideOne 
+     * @param sideTwo 
+     * @param d direction of the requested cell
+     * @param evenZ 
+     */
+    void setPlaneSides(BlockingPositionPlane plane,
+                       const Cell3DPosition& pos, 
+                       Cell3DPosition& sideOne, Cell3DPosition& sideTwo,
+                       int d, bool evenZ);
+    bool isPositionUnblockedSide(const Cell3DPosition &pos);
+    bool isPositionUnblocked(const Cell3DPosition &pos, BlockingPositionPlane plane);
+    bool isPositionUnblockedSide(const Cell3DPosition &pos, const Cell3DPosition &ignore);
+    bool isPositionUnblocked(const Cell3DPosition &pos, const Cell3DPosition &ignore,
+                             BlockingPositionPlane plane);
 public:
     enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
                     Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
@@ -495,6 +554,11 @@ public:
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                               int direction);
+
+    // NEIGHBORHOOD RESTRICTIONS
+    bool isPositionBlocked(const Cell3DPosition &pos);
+    bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore);
+    // bool isPositionBlockable(const Cell3DPosition &pos); 
     
     bool lockCell(const Cell3DPosition &pos);
     bool unlockCell(const Cell3DPosition &pos);

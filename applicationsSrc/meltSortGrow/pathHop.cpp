@@ -75,7 +75,11 @@ PathHop::getHopConnectorAtPosition(const Cell3DPosition &pos) const {
     Catoms3DBlock *pivot = static_cast<Catoms3DBlock*>(
         Catoms3DWorld::getWorld()->lattice->getBlock(position));
 
-    assert(pivot != NULL);
+    if (!pivot) {
+        cout << "no pivot on position: " << position << endl;
+        awaitKeyPressed();
+        assert(false);
+    }
     
     return pivot->getConnectorId(pos);
 }
@@ -84,7 +88,8 @@ bool
 PathHop::isInVicinityOf(const Cell3DPosition &pos) const {
     short conToFind = getHopConnectorAtPosition(pos);
     
-    return conDistanceMap.find(conToFind) != conDistanceMap.end();  
+    return conToFind != -1
+        && conDistanceMap.find(conToFind) != conDistanceMap.end();  
 }
 
 bool

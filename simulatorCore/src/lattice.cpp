@@ -419,7 +419,6 @@ Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int di
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
-
 bool FCCLattice::lockCell(const Cell3DPosition &pos) {
     if (!isInGrid(pos)) return true;
 
@@ -499,6 +498,123 @@ unsigned short FCCLattice::getDistance(const Cell3DPosition &pos) {
 void FCCLattice::setDistance(const Cell3DPosition &pos,unsigned short d) {
     if (isInGrid(pos)) tabDistances[getIndex(pos)]=d;
 }
+
+// === NEIGHBOR RESTRICTIONS ===
+
+void FCCLattice::setPlaneSides(BlockingPositionPlane plane,
+                               const Cell3DPosition& pos,
+                               Cell3DPosition& sideOne, Cell3DPosition& sideTwo,
+                               int d, bool evenZ) {
+    switch(plane) {
+        case BlockingPositionPlane::XY:
+            sideOne = evenZ ? pos + sideOneEvenXY[d] : pos + sideOneOddXY[d];
+            sideTwo = evenZ ? pos + sideTwoEvenXY[d] : pos + sideTwoOddXY[d];
+            break;
+        case BlockingPositionPlane::YZ:
+            sideOne = evenZ ? pos + sideOneEvenYZ[d] : pos + sideOneOddYZ[d];
+            sideTwo = evenZ ? pos + sideTwoEvenYZ[d] : pos + sideTwoOddYZ[d];
+            break;
+        case BlockingPositionPlane::XZ:
+            sideOne = evenZ ? pos + sideOneEvenXZ[d] : pos + sideOneOddXZ[d];
+            sideTwo = evenZ ? pos + sideTwoEvenXZ[d] : pos + sideTwoOddXZ[d];
+            break;
+    }
+}
+
+bool FCCLattice::isPositionUnblockedSide(const Cell3DPosition &pos) {
+    Cell3DPosition occupiedPosition = pos + xyPos[0];
+    Cell3DPosition forbiddenPosition = pos + xyPos[1];
+
+    if (cellHasBlock(occupiedPosition) && cellHasBlock(forbiddenPosition))
+        return false;
+    
+    occupiedPosition = pos + xyPos[2];
+    forbiddenPosition = pos + xyPos[3];
+
+    return !(cellHasBlock(occupiedPosition) && cellHasBlock(forbiddenPosition));
+}
+
+bool FCCLattice::isPositionUnblockedSide(const Cell3DPosition &pos,
+                                         const Cell3DPosition &ignore) {
+    Cell3DPosition occupiedPosition = pos + xyPos[0];
+    Cell3DPosition forbiddenPosition = pos + xyPos[1];
+
+    if ( (cellHasBlock(occupiedPosition) && (occupiedPosition != ignore))
+         && (cellHasBlock(forbiddenPosition) && (forbiddenPosition != ignore)) )
+        return false;
+    
+    occupiedPosition = pos + xyPos[2];
+    forbiddenPosition = pos + xyPos[3];
+
+    return !( (cellHasBlock(occupiedPosition) && (occupiedPosition != ignore))
+              && (cellHasBlock(forbiddenPosition) && (forbiddenPosition != ignore)) );
+}
+
+bool FCCLattice::isPositionUnblocked(const Cell3DPosition &pos,
+                                     BlockingPositionPlane plane) {
+    Cell3DPosition sideOne, sideTwo;
+    bool isInSide1 = false, isInSide2 = false;
+    bool evenZ = !(pos[2]%2);
+    
+    for (int i = 0; i < 4; i++) {
+        setPlaneSides(plane, pos, sideOne, sideTwo, i, evenZ);
+
+        if (cellHasBlock(sideOne)) isInSide1 = true;
+        if (cellHasBlock(sideTwo)) isInSide2 = true;
+    }
+    
+    return !(isInSide1 && isInSide2);
+}
+
+bool FCCLattice::isPositionUnblocked(const Cell3DPosition &pos,
+                                     const Cell3DPosition &ignore,
+                                     BlockingPositionPlane plane) {
+    Cell3DPosition sideOne, sideTwo;
+    bool isInSide1 = false, isInSide2 = false;
+    bool evenZ = !(pos[2]%2);
+    
+    for (int i = 0; i < 4; i++) {
+        setPlaneSides(plane, pos, sideOne, sideTwo, i, evenZ);
+
+        if (cellHasBlock(sideOne) && sideOne != ignore) isInSide1 = true;
+        if (cellHasBlock(sideTwo) && sideTwo != ignore) isInSide2 = true;
+    }
+    
+    return !(isInSide1 && isInSide2);
+}
+
+bool FCCLattice::isPositionBlocked(const Cell3DPosition &pos) {
+    return isPositionUnblockedSide(pos)
+        && !(isPositionUnblocked(pos, BlockingPositionPlane::XY)
+             || isPositionUnblocked(pos, BlockingPositionPlane::YZ)
+             || isPositionUnblocked(pos, BlockingPositionPlane::XZ));
+}
+
+
+bool FCCLattice::isPositionBlocked(const Cell3DPosition &pos,
+                                   const Cell3DPosition &ignore) {
+    return isPositionUnblockedSide(pos, ignore)
+        && !(isPositionUnblocked(pos, ignore, BlockingPositionPlane::XY)
+             || isPositionUnblocked(pos, ignore, BlockingPositionPlane::YZ)
+             || isPositionUnblocked(pos, ignore, BlockingPositionPlane::XZ));
+}
+
+// bool FCCLattice::isPositionBlockable(const Cell3DPosition &pos) {
+//     Cell3DPosition neighborPos;
+//     Catoms3DWorld *world = Catoms3DWorld::getWorld();
+
+//     for (int i = 0; i < 12; i++) {
+//         neighborPos = getCellInDirection(pos, i);
+ 
+//         if (isFree(neighborPos) && !isPositionBlocked(neighborPos)) {
+//            simulatedBlockPosition = pos; 
+//            if (isPositionBlocked(neighborPos))
+//                return true;
+//            simulatedBlockPosition.set(0,0,0);
+//         }
+//     }
+//     return false;
+// }
 
 /********************* SCLattice *********************/
 SCLattice::SCLattice() : Lattice3D() {}
