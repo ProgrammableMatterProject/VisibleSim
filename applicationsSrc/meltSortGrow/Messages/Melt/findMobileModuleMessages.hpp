@@ -60,4 +60,15 @@ public:
     virtual string getName() { return "FindMobileModuleNotFound"; }
 };
 
+class FindMobileModuleBlockedMessage : public MeltSortGrowMessage {
+    Catoms3DBlock *sender; //!<
+public:
+    FindMobileModuleBlockedMessage() {};
+    virtual ~FindMobileModuleBlockedMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new FindMobileModuleBlockedMessage(*this); }
+    virtual string getName() { return "FindMobileModuleBlocked"; }
+};
+
 #endif /* FIND_MOBILE_MODULE_MESSAGE_H_ */

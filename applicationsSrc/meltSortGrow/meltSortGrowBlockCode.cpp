@@ -283,7 +283,14 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                     propagateGraphResetBFS();
                 } else if (meltIsOver && !path.empty()) {
                     cout << "MELT: MODULE IS STUCK!" << endl;
-                    assert(false);
+
+                    PathHop& lastHop = path.back(); 
+                    P2PNetworkInterface* pathHopInterface =
+                        catom->getInterface(lastHop.getPosition());
+                    assert(pathHopInterface);
+                    
+                    sendMessage(new FindMobileModuleBlockedMessage(),
+                                pathHopInterface, 100, 0);        
                 }
             } else {
                 if (catom->position == goalPosition) {
@@ -462,10 +469,10 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(vector<PathHop>& path) {
     bool rotationIsPossible = computeNextRotation(this->path);
     if (!rotationIsPossible) 
     {
+        // Stay in place an restart mobileModuleSearch
         cout << "tryNextMeltRotation: Could not compute feasible rotation plan to parent"
              << endl;
-        awaitKeyPressed();        
-        assert(false);
+
         return true;
     }
 

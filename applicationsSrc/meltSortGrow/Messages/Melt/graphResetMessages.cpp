@@ -18,6 +18,9 @@ void ResetGraphMessage::handle(BaseSimulator::BlockCode* bsbc) {
 void handleResetGraphResponse(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
 
+    bc->resetDFSFlags();
+    bc->meltFather = NULL;
+
     if (!--bc->resetChildrenDecount) {
         if (bc->resetFather) {
             bc->sendMessage(new ResetGraphDoneMessage(),

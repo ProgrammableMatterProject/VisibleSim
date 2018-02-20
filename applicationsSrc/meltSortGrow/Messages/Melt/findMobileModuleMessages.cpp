@@ -95,8 +95,16 @@ void FindMobileModuleFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
     } else {
         bc->catom->setColor(ORANGE);
     }
+}
 
-    // Prepare data structures for the mobile module search DFS
-    bc->resetDFSFlags();
-    bc->meltFather = NULL;
+void FindMobileModuleBlockedMessage::handle(BaseSimulator::BlockCode* bsbc) {
+    MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
+    sender = static_cast<Catoms3DBlock*>(sourceInterface->hostBlock);
+    
+    if (!bc->source) {
+        bc->sendMessage(new FindMobileModuleBlockedMessage(),
+                        bc->meltFather, 100, 0);
+    } else {
+        bc->propagateGraphResetBFS();
+    }
 }
