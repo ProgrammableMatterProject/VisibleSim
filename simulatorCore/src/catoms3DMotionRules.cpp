@@ -21,7 +21,7 @@ const short neighborConnector[12][6] = {
     { 3, 4, 7, 8, 11, 1  }, // Con6 UP
     { 9, 8, 6, 4, 5, 0 }, // Con7 DOWN
     { 7, 9, 10, 11, 6, 4 }, // Con8 RIGHT
-    { 8, 7, 5, 0, 10, 11 }, // Con9 LEFT 
+    { 8, 7, 5, 0, 10, 11 }, // Con9 LEFT
     { 1, 11, 8, 9, 0, 2 }, // Con10 RIGHT
     { 10, 1, 3, 6, 8, 9 }, // Con11 LEFT
 };
@@ -65,7 +65,7 @@ Catoms3DMotionRules::getMotionRulesLinksForConnector(short con) {
 
     return tabConnectors[con]->tabLinks;
 }
-    
+
 
 Catoms3DMotionRules::Catoms3DMotionRules() {
 
@@ -79,7 +79,7 @@ Catoms3DMotionRules::Catoms3DMotionRules() {
         downright(+1,-1,-M_SQRT2),downleft(-1,-1,+M_SQRT2),
         left(0,0,1),right(0,0,-1),
         lup(-1,+1,0),rup(+1,+1,0);
-    
+
     addLinks3(1,2,3,up,downright,downleft);
     addLinks3(7,4,5,up,downright,downleft);
     addLinks3(0,5,2,down,upleft,upright);
@@ -102,11 +102,11 @@ Catoms3DMotionRules::~Catoms3DMotionRules() {
     }
 }
 
-bool Catoms3DMotionRulesLink::concernsConnector(short conId) const {    
+bool Catoms3DMotionRulesLink::concernsConnector(short conId) const {
     return getConnectors()[0] == conId || getConnectors()[1] == conId;
 }
 
-bool Catoms3DMotionRulesLink::concernsConnectors(short conId1, short conId2) const {    
+bool Catoms3DMotionRulesLink::concernsConnectors(short conId1, short conId2) const {
     return concernsConnector(conId1) && concernsConnector(conId2);
 }
 
@@ -293,17 +293,17 @@ bool Catoms3DMotionRules::getValidMotionList(const Catoms3DBlock* c3d,
             vec.push_back(*ci);
             notEmpty=true;
             OUTPUT << endl;
-        } 
+        }
         ci++;
     }
-    
+
     return notEmpty;
 }
 
 bool Catoms3DMotionRules::getValidSurfaceLinksOnCatom(const Catoms3DBlock* catom,
                                                       vector<Catoms3DMotionRulesLink*>& links) {
     Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
-    
+
     for (short from = 0; from < 12; from++) {
         Catoms3DMotionRulesConnector *con = tabConnectors[from];
         Cell3DPosition fromAdjPos;
@@ -315,11 +315,11 @@ bool Catoms3DMotionRules::getValidSurfaceLinksOnCatom(const Catoms3DBlock* catom
             int conTo = link->getConToID();
             bool isOk = false;
             Cell3DPosition pos;
-            
+
             // Destination must be in lattice and free
             catom->getNeighborPos(conTo,pos);
             isOk = lattice->isInGrid(pos) && !lattice->cellHasBlock(pos);
-            
+
             // list of cells that must be free
             if (link->isOctaFace()) {
                 const int *ptr = findTab4(from,conTo);
@@ -342,7 +342,7 @@ bool Catoms3DMotionRules::getValidSurfaceLinksOnCatom(const Catoms3DBlock* catom
                     i++;
                 }
             }
-        
+
             if (isOk) {
                 links.push_back(link);
                 // OUTPUT << "ADD " << from << " -> " << conTo << endl;
@@ -363,7 +363,7 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
     bool isOk;
     Cell3DPosition pos,pos2;
 
-    // source must be free or is not in goal 
+    // source must be free or is not in goal
     pivot->getNeighborPos(from,pos);
 //OUTPUT << "FROM pos=" << pos << endl;
     if (lattice->cellHasBlock(pos)
@@ -384,7 +384,7 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
         pos2 = 2*pos - pivot->position;
 //OUTPUT << "OPP TO pos=" << pos2 << endl;
         isOk = isOk && !lattice->cellHasBlock(pos2);
-        
+
         // list of cells that must be free
         if ((*ci)->isOctaFace()) {
             const int *ptr = findTab4(from,to);
@@ -407,7 +407,7 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
                 i++;
             }
         }
-        
+
         if (isOk) {
             vec.push_back(*ci);
             //OUTPUT << "ADD " << from << " -> " << to << endl;
@@ -415,7 +415,7 @@ bool Catoms3DMotionRules::getValidMotionListFromPivot(const Catoms3DBlock* pivot
         }
         ci++;
     }
-    
+
     return notEmpty;
 }
 
@@ -459,9 +459,9 @@ Cell3DPosition Catoms3DMotionRulesLink::getFinalPosition(Catoms3DBlock *c3d) {
     Cell3DPosition finalPosition;
     short orient;
     Catoms3DBlock *neighbor = (Catoms3DBlock *)c3d->
-        getInterface(conFrom->ID)->connectedInterface->hostBlock;    
+        getInterface(conFrom->ID)->connectedInterface->hostBlock;
     Rotations3D rotations(c3d,neighbor,radius,axis1,angle,axis2,angle);
-    
+
     rotations.init(((Catoms3DGlBlock*)c3d->ptrGlBlock)->mat);
     rotations.getFinalPositionAndOrientation(finalPosition,orient);
 //    OUTPUT << "rotation " << c3d->blockId << ":" << conFrom->ID << " et " << neighbor->blockId << endl;

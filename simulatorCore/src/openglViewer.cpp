@@ -276,8 +276,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'T' : case 't' :
                 if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
+										popup->setTextSize(TextSize::TEXTSIZE_LARGE);
                 } else {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
+										popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
                 }
                 break;
                 //  case 'l' : showLinks = !showLinks; break;
@@ -326,13 +328,13 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                     //     Scheduler::RUNNING : Scheduler::PAUSED;
                     std::unique_lock<std::mutex> lck(scheduler->pause_mtx);
                     if (scheduler->state == Scheduler::PAUSED) {
-                        scheduler->state = Scheduler::RUNNING;                        
+                        scheduler->state = Scheduler::RUNNING;
                         scheduler->pause_cv.notify_one();
                     } else {
                         scheduler->state = Scheduler::PAUSED;
                     }
                 }
-                break; 
+                break;
         }
     }
     glutPostRedisplay();
@@ -343,9 +345,9 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
 // - key : keycode of the pressed key
 // - x,y : window cursor coordinates
 void GlutContext::specialFunc(int key, int x, int y)
-{           
+{
     switch(key) {
-        
+
         case GLUT_KEY_PAGE_UP: {
             Rotations3D::rotationDelayMultiplier /= 1.5f;
             const float minRotationDelayMultiplier = 0.001f;
@@ -353,7 +355,7 @@ void GlutContext::specialFunc(int key, int x, int y)
                 Rotations3D::rotationDelayMultiplier = minRotationDelayMultiplier;
                 cout << "Max rotation speed reached: "
                      << Rotations3D::rotationDelayMultiplier << endl;
-            } else {            
+            } else {
                 cout << "Increased rotation speed: "
                      << Rotations3D::rotationDelayMultiplier << endl;
             }
@@ -367,7 +369,7 @@ void GlutContext::specialFunc(int key, int x, int y)
                 Rotations3D::rotationDelayMultiplier = maxRotationDelayMultiplier;
                 cout << "Min rotation speed reached: "
                      << Rotations3D::rotationDelayMultiplier << endl;
-            } else {            
+            } else {
                 cout << "Decreased rotation speed: "
                      << Rotations3D::rotationDelayMultiplier << endl;
             }
@@ -540,20 +542,20 @@ int GlutContext::selectFaceFunc(int x,int y) {
 // recherche du premier élément dans le tableau d'objet cliqués
 // tableau d'entiers : { [name,zmin,zmax,n],[name,zmin,zmax,n]...}
 int GlutContext::processHits(GLint hits, GLuint *buffer) {
-	if (hits==0) {
+    if (hits==0) {
         return 0;
     }
     GLuint *ptr=buffer;
     GLuint nmini = ptr[3];
     GLuint zmini = ptr[1];
     ptr+=4;
-    for (int i=1; i<hits; i++) {
-		if (ptr[1]<zmini) {
-			zmini = ptr[1];
-			nmini = ptr[3];
-		}
-		ptr+=4;
-	}
+    for (int i=1; i<hits; i++)
+    { if (ptr[1]<zmini)
+        { zmini = ptr[1];
+            nmini = ptr[3];
+        }
+        ptr+=4;
+    }
     // traitement d'une selection
     // nmini contient le numéro de l'élément sélectionné
     // celui de z minimum

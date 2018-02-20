@@ -22,7 +22,7 @@ TiXmlNode *Target::targetListNode = NULL;
 TiXmlNode *Target::targetNode = NULL;
 
 Target *Target::loadNextTarget() {
-    if (Target::targetListNode) {
+	if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
         Target::targetNode = targetListNode->IterateChildren(targetNode);
 
@@ -95,7 +95,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
                       atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
                       atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
         }
-
+		OUTPUT << "add target " << position << "," << color << endl;
         addTargetCell(position, color);
         cellNode = cellNode->NextSibling("cell");
     } // end while (cellNode)
@@ -181,13 +181,13 @@ bool RelativeTargetGrid::isInTarget(const Cell3DPosition &pos) const {
         throw MissingInitializationException();
 
     Cell3DPosition absolutePos = *origin + pos;
-    
+
     return TargetGrid::isInTarget(absolutePos);
 }
 
 void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
     assert(!tCells.empty());
-    
+
     origin = new Cell3DPosition(org);
 
     // Cell3DPosition minZYX =
@@ -195,7 +195,7 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
     //                      [](const std::pair<const Cell3DPosition, const Color>& a,
     //                         const std::pair<const Cell3DPosition, const Color>& b)
     //                      { return Cell3DPosition::compare_ZYX(a.first, b.first);})->first;
-    
+
     // Then update every relative position parsed from the configuration file to its absolute counterpart
     map<const Cell3DPosition, const Color> absMap;
     for (const auto& targetEntry : tCells) {
@@ -205,10 +205,10 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
     }
 
     tCells = absMap;
-    
+
     if (!targetCellsInConstructionOrder) {
         targetCellsInConstructionOrder = new list<Cell3DPosition>();
-        
+
         for (const auto &pair : tCells) {
             targetCellsInConstructionOrder->push_back(pair.first);
         }
@@ -222,7 +222,7 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
 list<Cell3DPosition>* RelativeTargetGrid::getTargetCellsInConstructionOrder() {
     if (!origin)
         throw MissingInitializationException();
-    
+
     return targetCellsInConstructionOrder;
 }
 

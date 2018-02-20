@@ -21,11 +21,11 @@ public :
     vector <Catoms3DMotionRulesLink*> tabLinks;
 
     Catoms3DMotionRulesConnector(int n):ID(n) {};
-    void addLink(Catoms3DMotionRulesLink *lnk);    
+    void addLink(Catoms3DMotionRulesLink *lnk);
 };
 
 class Catoms3DMotionRulesLink {
-    
+
     Catoms3DMotionRulesConnector *conFrom; //!< origin connector
     Catoms3DMotionRulesConnector *conTo; //!< destination connector
     double angle; //!< rotations angle
@@ -54,21 +54,21 @@ public :
     inline bool isOctaFace() { return MRLT==octaFace; };
 
     // inline Catoms3DLinkDirection getDirection() { return Catoms3DLinkDirection(axis1, axis2); };
-    
+
     /**
        \brief Returns an array containing the ids of the two connectors forming the link such that [fromCon, ToCon]
     **/
-    std::array<short, 2> getConnectors() const;    
+    std::array<short, 2> getConnectors() const;
 
-    /** \brief Indicates whether the link concerns the connector whose ID is passed as argument 
-        \param conId The ID of the connector 
+    /** \brief Indicates whether the link concerns the connector whose ID is passed as argument
+        \param conId The ID of the connector
         \return true if link concerns conId, false otherwise
     **/
     bool concernsConnector(short conId) const;
 
     /** \brief Indicates whether the link concerns the connectors whose ID are passed as arguments
-        \param conId1 The ID of the first connector 
-        \param conId2 The ID of the second connector 
+        \param conId1 The ID of the first connector
+        \param conId2 The ID of the second connector
         \return true if link connects conId1 and condId2, false otherwise
     **/
     bool concernsConnectors(short conId1, short conId2) const;
@@ -76,7 +76,7 @@ public :
     /**
        \brief Get string like "X->Y" where X is a character representing origin ID ('0..9,A,B') and Y is a character representing destination ID
     **/
-    string getID() const;    
+    string getID() const;
     /**
        \brief Add a blocking connector ID to the list
        \param id of the connector that must be free to allow the motion
@@ -113,29 +113,29 @@ public :
     **/
     void sendRotationEvent(Catoms3DBlock *mobile,Catoms3DBlock *fixed,double t);
 
-    /** \brief Could return something like TOP_TOPLEFT, so as to project one couple of connectors from one module over the ones of a neighbor 
+    /** \brief Could return something like TOP_TOPLEFT, so as to project one couple of connectors from one module over the ones of a neighbor
         \todo */
     Catoms3DMotionRulesLink* getDirectionTuple() const;
 };
 
-/** 
+/**
     \class Catoms3DMotionRules
     \brief Define the graph of possible motions for a 3D Catom
 **/
 class Catoms3DMotionRules {
     Catoms3DMotionRulesConnector *tabConnectors[12]; //!< array of connector rules
-public:    
+public:
     Catoms3DMotionRules();
     virtual ~Catoms3DMotionRules();
 
-    /** 
+    /**
      * @brief Gets a collection containing all outgoing links from connector con
      * @param con links source connector
      * @return a reference to the vector of links for that connector
      */
     const vector<Catoms3DMotionRulesLink*>& getMotionRulesLinksForConnector(short con);
-    
-    /** 
+
+    /**
      * @brief Transforms the input connector direction and returns the result
      * @param d input connector direction
      * @param inverted if false, mirroring will be done relative to the y-axis, and x-axis if true (\attention{false is default if left unspecified})
@@ -144,9 +144,9 @@ public:
     static ConnectorDirection getMirrorConnectorDirection(ConnectorDirection d,
                                                           bool inverted = false);
 
-    /** 
-     * @brief Returns connector in mirror direction of d from connector conFrom 
-     * @param conFrom source connector 
+    /**
+     * @brief Returns connector in mirror direction of d from connector conFrom
+     * @param conFrom source connector
      * @param d connector direction that must be mirrored to find mirror neighbor
      * @param inverted if false, mirroring will be done relative to the y-axis, and x-axis if true (\attention{false is default if left unspecified})
      * @return connector in mirror direction of d from connector conFrom, or -1 if conFrom invalid
@@ -154,7 +154,7 @@ public:
     static short getMirrorNeighborConnector(short conFrom, ConnectorDirection d,
                                             bool inverted = false);
 
-    /** 
+    /**
      * @brief Returns connector in direction d from conFrom
      * @param conFrom source connector
      * @param d direction of the neighbor
@@ -163,7 +163,7 @@ public:
     static short getNeighborConnector(short conFrom, ConnectorDirection d);
 
     static const short* getNeighborConnectors(short conFrom);
-    
+
     /**
        \brief Returns if c3d catom is able to turn from the orientation fromId to the toId one
        \param c3d: the catom
@@ -198,7 +198,7 @@ public:
      **/
     bool getValidSurfaceLinksOnCatom(const Catoms3DBlock* pivot,
                                      vector<Catoms3DMotionRulesLink*>& links);
-    
+
 protected:
 private:
     void addLinks3(int id1, int id2, int id3,

@@ -57,7 +57,7 @@ void TeleportationStartEvent::consume() {
         scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition));
     } else {
         OUTPUT << "ERROR: trying to teleport module to a position outside of lattice"
-               << endl;        
+               << endl;
     }
 }
 

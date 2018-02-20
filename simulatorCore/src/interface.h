@@ -27,7 +27,7 @@ namespace BaseSimulator {};
 using namespace std;
 using namespace BaseSimulator;
 
-enum class TextMode {TEXTMODE_STANDARD,TEXTMODE_TITLE,TEXTMODE_BOLD,TEXTMODE_ID};
+enum class TextMode {TEXTMODE_STANDARD,TEXTMODE_TITLE,TEXTMODE_BOLD,TEXTMODE_ID,TEXTMODE_POPUP};
 enum class TextSize {TEXTSIZE_STANDARD,TEXTSIZE_LARGE};
 
 class GlutWindow {

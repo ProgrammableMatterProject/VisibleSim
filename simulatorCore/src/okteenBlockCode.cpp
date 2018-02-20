@@ -66,6 +66,9 @@ void OkteenBlockCode::processLocalEvent(EventPtr pev) {
             c3d->setPosition(c3d->position);
             onMotionEnd();
         }  break;
+        case EVENT_TELEPORTATION_END: {
+            onMotionEnd();
+        } break;
     }
 }
 

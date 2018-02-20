@@ -10,12 +10,18 @@ class SimpleMotionCode : public OkteenBlockCode {
 private:
 	OkteenBlock *module;
 	int step;
+	// metamodule data
+	// leader
+	OkteenBlock* members;
+	// path to leader
+	P2PNetworkInterface *pathToLeader;
 public:
 	SimpleMotionCode(OkteenBlock *host):OkteenBlockCode(host) { module=host; };
 	~SimpleMotionCode() {};
 
 	void startup();
 	virtual void onMotionEnd(void);
+	void sendMessageToMMLeader();
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/

@@ -23,7 +23,7 @@ using namespace BaseSimulator::utils;
 uint64_t Message::nextId = 0;
 uint64_t Message::nbMessages = 0;
 
-unsigned int P2PNetworkInterface::nextId = 0;
+bID P2PNetworkInterface::nextId = 0;
 int P2PNetworkInterface::defaultDataRate = 1000000;
 
 //===========================================================================================================
@@ -57,7 +57,7 @@ Message* Message::clone() {
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
     ptr->type = type;
-    return ptr;
+	return ptr;
 }
 
 //===========================================================================================================

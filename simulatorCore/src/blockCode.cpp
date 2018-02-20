@@ -91,7 +91,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t
 	return ret;
 }
 
-int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt, int nexcept, va_list args) {
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int t0, int dt, int nexcept, va_list args) {
     P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
     for (int i=0; i<nexcept; i++) {
         tabExceptions[i] = va_arg(args,P2PNetworkInterface*);
@@ -134,7 +134,7 @@ void BlockCode::processLocalEvent(EventPtr pev) {
         case EVENT_ADD_NEIGHBOR: {
             // @PTHY 08/11/2017: Startup needs not be called every time a neighbor is added
             //  This would mean that a catom is disconnected from its power source everytime its
-            //   neighborhood is updated. 
+            //   neighborhood is updated.
             // startup();
         } break;
         case EVENT_TAP: {
