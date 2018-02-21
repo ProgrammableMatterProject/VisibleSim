@@ -42,7 +42,7 @@ Lattice::Lattice(const Cell3DPosition &gsz, const Vector3D &gsc) {
 }
 
 Lattice::~Lattice() {
-    delete []grid;
+    delete [] grid;
 }
 
 int Lattice::getIndex(const Cell3DPosition &p) const {
@@ -151,9 +151,40 @@ bool Lattice::cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p
 
     return false;
 }
-
-string Lattice::getDirectionString(short d) {
+/*
+string tabHightlightedCellsgetDirectionString(short d) {
     return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ? directionName[d] : "undefined";
+}
+*/
+
+vector<HighlightedCell>::iterator Lattice::find(const Cell3DPosition& val) {
+	vector<HighlightedCell>::iterator first = tabHighlightedCells.begin();
+	while (first!=tabHighlightedCells.end()) {
+		if ((*first).pos==val) return first;
+		++first;
+	}
+	return tabHighlightedCells.end();
+}
+
+void Lattice::highlightCell(const Cell3DPosition& pos, const Color &color) {
+	vector<HighlightedCell>::iterator existing = find(pos);
+	if (existing!=tabHighlightedCells.end()) {
+		(*existing).color=color;
+	} else {
+		HighlightedCell hc(pos,color);
+		tabHighlightedCells.push_back(hc);
+	}
+}
+
+void Lattice::unhighlightCell(const Cell3DPosition& pos) {
+	vector<HighlightedCell>::iterator existing = find(pos);
+	if (existing!=tabHighlightedCells.end()) {
+		tabHighlightedCells.erase(existing);
+	}
+}
+
+void Lattice::resetCellHighlights() {
+	tabHighlightedCells.clear();
 }
 
 /********************* Lattice2D *********************/
