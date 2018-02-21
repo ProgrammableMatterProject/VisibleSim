@@ -139,12 +139,6 @@ void Catoms3DWorld::glDraw() {
 // material for the grid walls
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0f};
-		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-
-        lattice->glDraw();
 
 		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
 		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
@@ -227,6 +221,8 @@ void Catoms3DWorld::glDraw() {
 		glPushMatrix();
 		objRepere->glDraw();
 		glPopMatrix();
+		
+        lattice->glDraw();
 }
 
 void Catoms3DWorld::glDrawId() {

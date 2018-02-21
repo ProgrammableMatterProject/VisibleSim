@@ -473,13 +473,24 @@ bool FCCLattice::unlockCell(const Cell3DPosition &pos) {
 }
 
 void FCCLattice::glDraw() {
-    
+static const float pts[24][3]={{2.928,0,4.996},{0,2.928,4.996},{-2.928,0,4.996},{0,-2.928,4.996},{4.996,2.069,2.069},{2.069,4.996,2.069},{-2.069,4.996,2.069},{-4.996,2.069,2.069},{-4.996,-2.069,2.069},{-2.069,-4.996,2.069},{2.069,-4.996,2.069},{4.996,-2.069,2.069},{4.996,2.069,-2.069},{2.069,4.996,-2.069},{-2.069,4.996,-2.069},{-4.996,2.069,-2.069},{-4.996,-2.069,-2.069},{-2.069,-4.996,-2.069},{2.069,-4.996,-2.069},{4.996,-2.069,-2.069},{2.928,0,-4.996},{0,2.928,-4.996},{-2.928,0,-4.996},{0,-2.928,-4.996}};
+static const uint8_t quads[72]={0,1,2,3,0,4,5,1,1,6,7,2,2,8,9,3,3,10,11,0,4,12,13,5,5,13,14,6,6,14,15,7,7,15,16,8,8,16,17,9,9,17,18,10,10,18,19,11,11,19,12,4,12,20,21,13,14,21,22,15,16,22,23,17,18,23,20,19,23,22,21,20};
+static const uint8_t tris[24]={1,5,6,2,7,8,3,9,10,0,11,4,13,21,14,15,22,16,17,23,18,19,23,12};
+static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+		gray[]={0.2f,0.2f,0.2f,1.0f};
+
     if (tabDistances) {
 		int ix,iy,iz;
 		Cell3DPosition gp;
 		Vector3D v;
 		unsigned short *ptrDistance = tabDistances;
 		bool *ptr = tabLockedCells;
+
+		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+
 		for (iz=0; iz<gridSize[2]; iz++) {
 			for (iy=0; iy<gridSize[1]; iy++) {
 				for (ix=0; ix<gridSize[0]; ix++) {
@@ -511,12 +522,34 @@ void FCCLattice::glDraw() {
     if (!tabHighlightedCells.empty()) {
 		vector<HighlightedCell>::const_iterator it = tabHighlightedCells.begin();
 		Vector3D v;
+		int i=72;
+		const uint8_t *ptr;
+		Color c;
 		while (it!=tabHighlightedCells.end()) {
 			glPushMatrix();
 			v = gridToWorldPosition((*it).pos);
 			glTranslatef(v.pt[0],v.pt[1],v.pt[2]);
-			glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,(*it).color.rgba);
-			glutWireSphere(5.0,12,6);
+			c.set((*it).color.rgba[0],(*it).color.rgba[1],(*it).color.rgba[2],0.5f);
+			glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
+			glBegin(GL_QUADS);
+			ptr = quads;
+			i=18;
+			while (i--) {
+				glVertex3fv(pts[*ptr++]);
+				glVertex3fv(pts[*ptr++]);
+				glVertex3fv(pts[*ptr++]);
+				glVertex3fv(pts[*ptr++]);
+			}
+			glEnd();
+			glBegin(GL_TRIANGLES);
+			ptr = tris;
+			i=8;
+			while (i--) {
+				glVertex3fv(pts[*ptr++]);
+				glVertex3fv(pts[*ptr++]);
+				glVertex3fv(pts[*ptr++]);
+			}
+			glEnd();
 			glPopMatrix();
 			++it;
 		}
