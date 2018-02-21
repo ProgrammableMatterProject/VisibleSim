@@ -43,7 +43,10 @@ void MeltSortGrowBlockCode::startup() {
     info << "Starting ";
 
     rtg = (RelativeTargetGrid*)target;
-    
+
+	if (catom->blockId==1) lattice->highlightCell(Cell3DPosition(8,10,4),GREEN);
+	
+	
     determineRoot();
     APLabellingInitialization();
 }

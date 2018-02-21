@@ -473,40 +473,54 @@ bool FCCLattice::unlockCell(const Cell3DPosition &pos) {
 }
 
 void FCCLattice::glDraw() {
-    int ix,iy,iz;
-    Cell3DPosition gp;
-    Vector3D v;
+    
+    if (tabDistances) {
+		int ix,iy,iz;
+		Cell3DPosition gp;
+		Vector3D v;
+		unsigned short *ptrDistance = tabDistances;
+		bool *ptr = tabLockedCells;
+		for (iz=0; iz<gridSize[2]; iz++) {
+			for (iy=0; iy<gridSize[1]; iy++) {
+				for (ix=0; ix<gridSize[0]; ix++) {
+					if (*ptr) {
+						glPushMatrix();
+						gp.set(ix,iy,iz);
+						v = gridToWorldPosition(gp);
+						glTranslatef(v[0],v[1],v[2]);
+						glutSolidSphere(0.065*gridScale[0],6,6);
+						glPopMatrix();
+					}
+					if (*ptrDistance!=USHRT_MAX) {
+						glPushMatrix();
+						gp.set(ix,iy,iz);
+						v = gridToWorldPosition(gp);
+						glTranslatef(v[0],v[1],v[2]);
 
-if (!tabDistances) return;
-    unsigned short *ptrDistance = tabDistances;
-    bool *ptr = tabLockedCells;
-    for (iz=0; iz<gridSize[2]; iz++) {
-        for (iy=0; iy<gridSize[1]; iy++) {
-            for (ix=0; ix<gridSize[0]; ix++) {
-                if (*ptr) {
-                    glPushMatrix();
-                    gp.set(ix,iy,iz);
-                    v = gridToWorldPosition(gp);
-                    glTranslatef(v[0],v[1],v[2]);
-                    glutSolidSphere(0.065*gridScale[0],6,6);
-                    glPopMatrix();
-                }
-                if (*ptrDistance!=USHRT_MAX) {
-                    glPushMatrix();
-                    gp.set(ix,iy,iz);
-                    v = gridToWorldPosition(gp);
-                    glTranslatef(v[0],v[1],v[2]);
+						glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
+						glutSolidCube(0.2*gridScale[0]);
+						glPopMatrix();
 
-                    glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
-                    glutSolidCube(0.2*gridScale[0]);
-                    glPopMatrix();
-
-                }
-                ptr++;
-                ptrDistance++;
-            }
-        }
-    }
+					}
+					ptr++;
+					ptrDistance++;
+				}
+			}
+		}
+	}
+    if (!tabHighlightedCells.empty()) {
+		vector<HighlightedCell>::const_iterator it = tabHighlightedCells.begin();
+		Vector3D v;
+		while (it!=tabHighlightedCells.end()) {
+			glPushMatrix();
+			v = gridToWorldPosition((*it).pos);
+			glTranslatef(v.pt[0],v.pt[1],v.pt[2]);
+			glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,(*it).color.rgba);
+			glutWireSphere(5.0,12,6);
+			glPopMatrix();
+			++it;
+		}
+	}
 }
 
 void FCCLattice::initTabDistances() {
