@@ -82,7 +82,7 @@ public:
     /* Path finding using connectors */
     // short tailConId; //!< Connector id corresponding to the position to be filled by the tai
     
-    vector<PathHop> path; //!< 
+    list<PathHop> path; //!< 
     P2PNetworkInterface *meltFather = NULL; //!< l'id de module du last hop
 
     
@@ -172,10 +172,10 @@ public:
      * \return true if candidateRoot is fitter than current root, false otherwise */
     bool challengeRootFitness(Cell3DPosition& candidateRoot);
 
-    bool computeNextRotation(vector<PathHop>& path);
-    bool tryNextMeltRotation(vector<PathHop>& path);
-    bool tryNextGrowthRotation(vector<PathHop>& path);
-    void trimPath(vector<PathHop>& path);
+    bool computeNextRotation(list<PathHop>& path);
+    bool tryNextMeltRotation(list<PathHop>& path);
+    bool tryNextGrowthRotation(list<PathHop>& path);
+    void trimPath(list<PathHop>& path);
 };
 
 #endif /* MELTSORTGROWBLOCKCODE_H_ */

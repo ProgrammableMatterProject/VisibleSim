@@ -69,8 +69,13 @@ void FindPathFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
     if (bc->growthParent) {
         // Add self as the next hop of the path
         bc->path = path;
-        assert(API::addModuleToPath(bc->catom, bc->path,
-                                    pivotDockingConnector, catomDockingConnector));
+        if (!API::addModuleToPath(bc->catom, bc->path,
+                                  pivotDockingConnector, catomDockingConnector))
+        {
+            awaitKeyPressed();
+            assert(false);
+        }
+        
         bc->sendMessage(new FindPathFoundMessage(bc->path),
                         bc->growthParent, 100, 0);
         

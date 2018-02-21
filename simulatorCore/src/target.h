@@ -154,6 +154,11 @@ public:
 
     //!< @copydoc Target::BoundingBox
     virtual void boundingBox(BoundingBox &bb);
+
+    virtual void highlight();
+    virtual void unhighlight();
+    
+    friend ostream& operator<<(ostream& f,const TargetGrid&tg);
 };  // class TargetGrid
 
 //<! @brief A target modeled as a container of unique positions using a coordinate system relative to some specific origin module, and colors
@@ -168,19 +173,21 @@ protected:
      };
 
 public:
-     std::list<Cell3DPosition> *targetCellsInConstructionOrder = NULL; //todo protected
-
-RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
-     virtual ~RelativeTargetGrid() {
-          delete origin;
-          delete targetCellsInConstructionOrder;
-     };
+    std::list<Cell3DPosition> *targetCellsInConstructionOrder = NULL; //todo protected
+    
+    RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
+    virtual ~RelativeTargetGrid() {
+        delete origin;
+        delete targetCellsInConstructionOrder;
+    };
      
     //!< @copydoc Target::getTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
      //!< @warning Can only be used once origin has been set, and expects a relative position as input     
     virtual bool isInTarget(const Cell3DPosition &pos) const;
 
+    bool reconfigurationIsComplete() const;
+    
     /**
      * @brief Returns a list of all cells in target in ascending order (x, y, and then z)
      * @param tgCells a reference to the output list of all cells in the target in ascending order
@@ -192,7 +199,9 @@ RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
      * @brief Sets the origin of the coordinate system used by the target
      * @warning Calling Target::isInTarget before setting the origin will result in an error
      */    
-    virtual void setOrigin(const Cell3DPosition &org);
+    virtual void setOrigin(const Cell3DPosition& org);
+    
+    void removeTargetCell(const Cell3DPosition& tc);
 };  // class RelativeTargetGrid
 
 //<! @brief A target modeled as an ensemble of shapes

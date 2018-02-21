@@ -172,6 +172,19 @@ void TargetGrid::boundingBox(BoundingBox &bb) {
     throw BaseSimulator::utils::NotImplementedException();
 }
 
+void TargetGrid::highlight() {
+    for (const auto& pair : tCells) {
+        getWorld()->lattice->highlightCell(pair.first, pair.second);
+    }
+}
+
+void TargetGrid::unhighlight() {
+    for (const auto& pair : tCells) {
+        getWorld()->lattice->unhighlightCell(pair.first);
+    }
+}
+
+
 /************************************************************
  *                      RelativeTargetGrid
  ************************************************************/
@@ -180,9 +193,7 @@ bool RelativeTargetGrid::isInTarget(const Cell3DPosition &pos) const {
     if (!origin)
         throw MissingInitializationException();
 
-    Cell3DPosition absolutePos = *origin + pos;
-
-    return TargetGrid::isInTarget(absolutePos);
+    return TargetGrid::isInTarget(pos);
 }
 
 void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
@@ -225,6 +236,12 @@ list<Cell3DPosition>* RelativeTargetGrid::getTargetCellsInConstructionOrder() {
 
     return targetCellsInConstructionOrder;
 }
+
+void RelativeTargetGrid::removeTargetCell(const Cell3DPosition& tc) {
+    tCells.erase(tc);
+}
+
+bool RelativeTargetGrid::reconfigurationIsComplete() const { return tCells.empty(); }
 
 /************************************************************
  *                      TargetCSG
@@ -284,6 +301,14 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
         throw InvalidPositionException();
     }
     return color;
+}
+
+ostream& operator<<(ostream& f,const TargetGrid&tg) {
+    for (const auto& pair : tg.tCells) {
+        f << pair.first << " -- " << pair.second << endl;
+    }
+    
+    return f;
 }
 
 } // namespace BaseSimulator

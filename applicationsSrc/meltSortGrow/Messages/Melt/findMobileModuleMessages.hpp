@@ -15,10 +15,10 @@
 #include "../../pathHop.hpp"
 
 class FindMobileModuleMessage : public MeltSortGrowMessage {
-    vector<PathHop> path; //!< Description of all the previous hop in the path
+    list<PathHop> path; //!< Description of all the previous hop in the path
     // short parentConId; //!< Id of the connector of the sender of this message that is connected to the receiving module
 public:
-    FindMobileModuleMessage(vector<PathHop> path);
+    FindMobileModuleMessage(list<PathHop> path);
     virtual ~FindMobileModuleMessage() {};
 
     virtual void handle(BaseSimulator::BlockCode*);
