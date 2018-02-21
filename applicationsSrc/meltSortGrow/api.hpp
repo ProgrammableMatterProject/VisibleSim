@@ -42,7 +42,7 @@ public:
         @return false is the catom cannot be connected to the path, true otherwise
     **/
     static bool addModuleToPath(Catoms3DBlock *catom,
-                                vector<PathHop>& path,
+                                list<PathHop>& path,
                                 short pivotDockingConnector,
                                 short catomDockingConnector);
     

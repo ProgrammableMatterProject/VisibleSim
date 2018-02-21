@@ -8,7 +8,7 @@
 #include "findMobileModuleMessages.hpp"
 #include "../../api.hpp"
 
-FindMobileModuleMessage::FindMobileModuleMessage(vector<PathHop> _path)
+FindMobileModuleMessage::FindMobileModuleMessage(list<PathHop> _path)
     : path(_path) {}
 
 void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {

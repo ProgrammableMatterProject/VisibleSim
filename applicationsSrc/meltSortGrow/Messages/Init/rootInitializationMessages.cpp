@@ -45,12 +45,14 @@ void handleRootUpdateAnswer(BaseSimulator::BlockCode* bsbc,
                             bc->parent, 0, 100);
         else {
             if (bc->catom->position == bc->currentRootPosition) { // Election Complete, module is root
-                bc->relPos = new Cell3DPosition(0,0,0);
+                bc->relPos = new Cell3DPosition(0,0,0);//?
                 bc->rtg->setOrigin(bc->catom->position);
                 cout << "Absolute Target Positions" << endl; 
-                for (auto x : *bc->rtg->getTargetCellsInConstructionOrder())
-                    cout << x << endl;                        
-                bc->rtg->getTargetCellsInConstructionOrder()->pop_front(); // this is the root's target position, in which it already is
+                // bc->rtg->getTargetCellsInConstructionOrder()->pop_front(); // this is the root's target position, in which it already is
+                cout << "xyz removing cell from target: " << bc->catom->position << endl;
+                bc->rtg->removeTargetCell(bc->catom->position);
+                cout << bc->rtg << endl;
+                bc->rtg->highlight();
                         
                 // Proceed to next stage
                 bc->meltOneModule();

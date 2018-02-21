@@ -32,9 +32,9 @@ public:
  * @attention We need to make sure that there is always a connector path from that module to the target position (maybe this can only be enforce by a construction ordering)
  */
 class FindPathFoundMessage : public MeltSortGrowMessage {
-    vector<PathHop> path; 
+    list<PathHop> path; 
 public:
-    FindPathFoundMessage(vector<PathHop> _path) : path(_path) {
+    FindPathFoundMessage(list<PathHop> _path) : path(_path) {
         type = MSG_GROW_FINDPATH_FOUND;
     };
     virtual ~FindPathFoundMessage() {};
@@ -57,7 +57,6 @@ public:
     virtual string getName() { return "FindPathIgnore"; }
 };
 
-
 class FindPathNotFoundMessage : public MeltSortGrowMessage {
 public:
     FindPathNotFoundMessage() {
@@ -70,7 +69,6 @@ public:
     virtual Message* clone() { return new FindPathNotFoundMessage(*this); }
     virtual string getName() { return "FindPathNotFound"; }
 };
-
 
 class GrowNextModuleMessage : public MeltSortGrowMessage {
 public:
