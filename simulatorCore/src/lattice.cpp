@@ -151,11 +151,12 @@ bool Lattice::cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p
 
     return false;
 }
-/*
-string tabHightlightedCellsgetDirectionString(short d) {
-    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ? directionName[d] : "undefined";
+
+
+string Lattice::getDirectionString(short d) {
+    return isInRange(d, 0, this->getMaxNumNeighbors() - 1) ?
+        directionName[d] : "undefined";
 }
-*/
 
 vector<HighlightedCell>::iterator Lattice::find(const Cell3DPosition& val) {
 	vector<HighlightedCell>::iterator first = tabHighlightedCells.begin();
