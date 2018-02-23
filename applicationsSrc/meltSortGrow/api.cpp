@@ -4,6 +4,8 @@
 
 #include <algorithm>
 
+// #define DEBUG_API
+
 bool
 API::addModuleToPath(Catoms3DBlock *catom,
                      list<PathHop>& path,
@@ -42,7 +44,10 @@ API::addModuleToPath(Catoms3DBlock *catom,
                              pathConnectorsDistance);
                              // pathAbsoluteDirectionsDistance);
 
+#ifdef DEBUG_API
     cout << "addModuleToPath: " << "newHop: " << newHop << endl;
+#endif
+    
     path.push_back(newHop);
 
     // for (PathHop& hop : path) cout << hop << endl;
@@ -133,8 +138,10 @@ API::computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& m
 
                     queue.push_back(*itCon);
                 } else {
+#ifdef DEBUG_API                    
                     cout << "findAdjacentConnectors: " << *itCon << " dist is -> "
                          << " => UNREACHABLE!" << endl;
+#endif
                 }
             }
         }
@@ -245,7 +252,9 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
             API::findConnectorsPath(motionRulesLinks, conFrom, conTo, catom);
 
         if (shortestLink) {
-            cout << "shortestLink:\t" << *shortestLink << endl;        
+#ifdef DEBUG_API
+            cout << "shortestLink:\t" << *shortestLink << endl;
+#endif
             return shortestLink;
         }
     }
@@ -292,17 +301,23 @@ API::findAdjacentConnectorsAndDistances(const Catoms3DBlock *catom,
             
             if (nPosPivot != nPosCatom) { // NOT ADJACENT
 
+#ifdef DEBUG_API
                 cout << "findAdjacentConnectorsAndDistances: " << c << " and "
-                     << oppC << " are NOT ADJACENT" << endl;                
+                     << oppC << " are NOT ADJACENT" << endl;
+#endif
             } else if (!lattice->isPositionBlocked(nPosCatom, catom->position)) {
                 adjacentConnectors.insert({oppC, hop.getDistance(c)});
-            
+
+#ifdef DEBUG_API            
                 cout << "findAdjacentConnectorsAndDistances: " << c << " opp is -> "
                      << oppC << " (" << hop.getDistance(c)
                      << ")" << endl;
+#endif
             } else {
+#ifdef DEBUG_API
                 cout << "findAdjacentConnectorsAndDistances: " << c << " opp is -> "
                      << oppC << " => UNREACHABLE!" << endl;
+#endif
             }
         }
     }
@@ -345,11 +360,15 @@ API::findAdjacentConnectors(const Catoms3DBlock *catom,
                 adjacentConnectors.push_back(oppC);            
                 mirrorConnector[oppC] = c;
 
+#ifdef DEBUG_API
                 cout << "findAdjacentConnectors: " << c << " opp is -> " << oppC
                      << " (" << hop.getDistance(c) << ")" << endl;
+#endif
             } else  {
+#ifdef DEBUG_API
                 cout << "findAdjacentConnectors: " << c << " opp is -> "
                      << oppC << " => UNREACHABLE!" << endl;
+#endif
             }
         } 
     }

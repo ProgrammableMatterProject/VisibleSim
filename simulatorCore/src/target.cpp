@@ -201,12 +201,6 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
 
     origin = new Cell3DPosition(org);
 
-    // Cell3DPosition minZYX =
-    //     std::min_element(tCells.begin(), tCells.end(),
-    //                      [](const std::pair<const Cell3DPosition, const Color>& a,
-    //                         const std::pair<const Cell3DPosition, const Color>& b)
-    //                      { return Cell3DPosition::compare_ZYX(a.first, b.first);})->first;
-
     // Then update every relative position parsed from the configuration file to its absolute counterpart
     map<const Cell3DPosition, const Color> absMap;
     for (const auto& targetEntry : tCells) {
@@ -224,8 +218,24 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
             targetCellsInConstructionOrder->push_back(pair.first);
         }
 
-        targetCellsInConstructionOrder->sort([=](const Cell3DPosition& first, const Cell3DPosition& second){
-                return first.dist_euclid(*origin) < second.dist_euclid(*origin);
+        targetCellsInConstructionOrder->sort([=](const Cell3DPosition& first,
+                                                 const Cell3DPosition& second){
+
+                if (first.dist_euclid(*origin) < second.dist_euclid(*origin))
+                    return true;
+                else if (first.dist_euclid(*origin) > second.dist_euclid(*origin))
+                    return false;
+                else {
+                    if (first[2] < second[2]) return true;
+                    else if (first[2] > second[2]) return false;
+                    else {
+                        if (first[1] < second[1]) return true;
+                        else if (first[1] > second[1]) return false;
+                        else {
+                            return first[2] > second[2];
+                        }
+                    }
+                }
             });
     }
 }

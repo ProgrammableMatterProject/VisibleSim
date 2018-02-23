@@ -8,6 +8,8 @@
 #include "findMobileModuleMessages.hpp"
 #include "../../api.hpp"
 
+// #define DEBUG_FMM
+
 FindMobileModuleMessage::FindMobileModuleMessage(list<PathHop> _path)
     : path(_path) {}
 
@@ -26,11 +28,15 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
             bool rotationIsPossible = bc->computeNextRotation(path);
             if (!rotationIsPossible) 
             {
+#ifdef DEBUG_FMM
                 cout << "Could not compute feasible rotation plan to parent,"
                      << " add myself to path" << endl;
+#endif
             } else return;
         } else {
+#ifdef DEBUG_FMM
             cout << "I am an articulation point, I cannot move" << endl;
+#endif
         }
 
         // If module not mobile or a movement path could not be found,
@@ -39,7 +45,9 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
         std::vector<short> adjacentPathConnectors;
         std::map<short, short> mirrorConnector;
+#ifdef DEBUG_FMM
         cout << endl << "Adding module " << bc->catom->blockId << " to path" << endl;
+#endif
         API::findAdjacentConnectors(bc->catom, lastHop,
                                     pivotDockingConnector, catomDockingConnector,
                                     adjacentPathConnectors, mirrorConnector);

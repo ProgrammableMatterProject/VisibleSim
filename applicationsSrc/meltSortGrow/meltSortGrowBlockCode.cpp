@@ -10,6 +10,7 @@
 #include <memory>
 #include <algorithm>
 #include <unordered_set>
+#include <random>
 
 #include "catoms3DWorld.h"
 #include "scheduler.h"
@@ -24,9 +25,16 @@
 #include "Messages/Melt/findMobileModuleMessages.hpp"
 #include "Messages/Growth/findPathMessages.hpp"
 #include "Messages/Growth/buildPathMessages.hpp"
+#include "Messages/Growth/findNextTCellMessages.hpp"
 #include "api.hpp"
 
 using namespace Catoms3D;
+
+// #define DEBUG_ROTATIONS
+#define DEBUG_GROWTH
+
+std::random_device random_dev;
+std::mt19937 generator(random_dev());
 
 MeltSortGrowBlockCode::MeltSortGrowBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
     scheduler = getScheduler();
@@ -154,7 +162,9 @@ void MeltSortGrowBlockCode::initializeMeltPath() {
     assert(lattice->isInGrid(tailPosition)); // If not, increase grid size in XML
     
     short tailConId = catom->getConnectorId(tailPosition);
+#ifdef DEBUG_ROTATIONS
     cout << "Tail is " << tailConId << endl;
+#endif
     lattice->highlightCell(tailPosition, RED);
 
     // Add self as the next hop of the path
@@ -198,33 +208,60 @@ void MeltSortGrowBlockCode::propagateGraphResetBFS() {
 
 void MeltSortGrowBlockCode::moveToGoal() {
     growthParent = NULL;
+    growthVisited = false;
+    path.clear();
 
-    // std::list<Cell3DPosition>* targetCellsInConstructionOrder =
-    //     rtg->getTargetCellsInConstructionOrder();    
+    std::list<Cell3DPosition>* targetCellsInConstructionOrder =
+        rtg->getTargetCellsInConstructionOrder();    
         
-    // if (!targetCellsInConstructionOrder->empty()) {
-    //     cout << " New growth target position: " << goalPosition << endl;
-
-    if (!rtg->reconfigurationIsComplete()) {
-        // Here we would normally have to DFS-send FINDPATH until we reach
-        //  goalPosition through path positions (surface movements)
-        // For now, teleporting there right away is sufficient.
+    if (!targetCellsInConstructionOrder->empty()) {
+        goalPosition = targetCellsInConstructionOrder->front();
+        targetCellsInConstructionOrder->pop_front();
+        lattice->highlightCell(goalPosition, BLUE);
+        
+#ifdef DEBUG_GROWTH
+        cout << "=== New growth target position: " << goalPosition << " ===" << endl;
+        OUTPUT << "=== New growth target position: " << goalPosition << " ===" << endl;
+#endif
 
         resetDFSFlags();
 
         P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
     
         if (unprocessedNeighbor) {
-            // sendMessage(new FindPathMessage(goalPosition),
-            //             unprocessedNeighbor, 100, 0);
+            short initCon = catom->getDirection(unprocessedNeighbor);
+            /// Add self as the first hop of the path
+            API::addModuleToPath(catom, path, initCon, initCon);
+        
+#ifdef DEBUG_GROWTH
+            OUTPUT << "Initial Path: " << path << endl;
+#endif
             
-            sendMessage(new BuildPathMessage(path),
+            sendMessage(new FindNextTCellMessage(path, goalPosition),
                         unprocessedNeighbor, 100, 0);
         } else {
             console << "Houston we have a problem." << "\n";
             catom->setColor(BLACK); // todo
             assert(false);
         }
+    
+    // if (!rtg->reconfigurationIsComplete()) {
+    //     resetDFSFlags();
+
+    //     P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
+    
+    //     if (unprocessedNeighbor) {
+    //         // sendMessage(new FindPathMessage(goalPosition),
+    //         //             unprocessedNeighbor, 100, 0);
+            
+    //         sendMessage(new FindNextTCellMessage(path, goalPosition),
+    //                     new BuildPathMessage(path),                
+    //                     unprocessedNeighbor, 100, 0);
+    //     } else {
+    //         console << "Houston we have a problem." << "\n";
+    //         catom->setColor(BLACK); // todo
+    //         assert(false);
+    //     }
     }else {        
         // Growth is over. Yee-pee
         catom->setColor(BLACK);
@@ -275,14 +312,18 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                 bool meltIsOver = tryNextMeltRotation(path);
 
                 if (meltIsOver && path.empty()) {
+#ifdef DEBUG_ROTATIONS
                     cout << "Final hop is empty, melt should be done" << endl;
+#endif
 
                     melted = true;
                     lattice->unhighlightCell(catom->position);
                     
                     propagateGraphResetBFS();
                 } else if (meltIsOver && !path.empty()) {
+#ifdef DEBUG_ROTATIONS
                     cout << "MELT: MODULE IS STUCK!" << endl;
+#endif
 
                     PathHop& lastHop = path.back(); 
                     P2PNetworkInterface* pathHopInterface =
@@ -299,10 +340,13 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                     meltFather = NULL;
                     resetDFSFlags();
 
-                    cout << catom->blockId << " has reached target position "
-                         << goalPosition << endl;
+#ifdef DEBUG_GROWTH_BLOCK                   
+                    cout << "--- Module #" << catom->blockId
+                         << " has reached target position " << goalPosition
+                         << " ---" << endl;
+#endif
                     lattice->unhighlightCell(goalPosition);
-                    rtg->removeTargetCell(goalPosition);
+                    // rtg->removeTargetCell(goalPosition);
 
                     // Send to single neigbor which will follow the message
                     //  route back to the new tail
@@ -399,13 +443,18 @@ void MeltSortGrowBlockCode::grow() {
 }
 
 P2PNetworkInterface *MeltSortGrowBlockCode::getNextUnprocessedInterface() {
+    vector<P2PNetworkInterface*> unflaggedItfs;
+    
     for (const auto& element : flag) {
         if (!element.second) {
-            return element.first;
+            // return element.first;
+            unflaggedItfs.push_back(element.first);
         }
     }
+   
+    std::shuffle(unflaggedItfs.begin(), unflaggedItfs.end(), generator);
 
-    return NULL;
+    return unflaggedItfs.empty() ? NULL : unflaggedItfs[0];
 }
 
 bool MeltSortGrowBlockCode::computeNextRotation(list<PathHop>& path) 
@@ -416,9 +465,11 @@ bool MeltSortGrowBlockCode::computeNextRotation(list<PathHop>& path)
     short pivotDockingConnector =
         lastHop.getHopConnectorAtPosition(catom->position); // so-so    
 
+#ifdef DEBUG_ROTATIONS
     cout << "computeNextRotation: " << "module is on " << pivotDockingConnector
          << " -> " << catomDockingConnector << endl
          << "input path: " << lastHop << endl;
+#endif
 
     std::vector<short> adjacentPathConnectors;
     std::map<short, short> mirrorConnector;
@@ -440,7 +491,9 @@ bool MeltSortGrowBlockCode::computeNextRotation(list<PathHop>& path)
         short dirTo = nextRotation->getConToID();
         lastHop.prune(mirrorConnector[dirTo]);
         
+#ifdef DEBUG_ROTATIONS
         cout << "Moving : " << *nextRotation << endl << endl;
+#endif
 
         nextRotation->sendRotationEvent(catom,
                                         catom->getNeighborOnCell(lastHop.getPosition()),
@@ -456,7 +509,9 @@ bool MeltSortGrowBlockCode::computeNextRotation(list<PathHop>& path)
 
 bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
     if (path.empty()) {
-        cout << "catom has reached target location" << endl;                    
+#ifdef DEBUG_ROTATIONS
+        cout << "catom has reached target location" << endl;
+#endif
         return true;
     }
         
@@ -475,8 +530,10 @@ bool MeltSortGrowBlockCode::tryNextMeltRotation(list<PathHop>& path) {
     if (!rotationIsPossible) 
     {
         // Stay in place an restart mobileModuleSearch
+#ifdef DEBUG_ROTATIONS
         cout << "tryNextMeltRotation: Could not compute feasible rotation plan to parent"
              << endl;
+#endif
 
         return true;
     }
@@ -500,8 +557,10 @@ bool MeltSortGrowBlockCode::tryNextGrowthRotation(list<PathHop>& path) {
     bool rotationIsPossible = computeNextRotation(this->path);
     if (!rotationIsPossible) 
     {
+#ifdef DEBUG_ROTATIONS
         cout << "tryNextGrowthRotation: Could not compute feasible rotation plan to parent"
              << endl;
+#endif
         
         OUTPUT << rtg << endl; 
         

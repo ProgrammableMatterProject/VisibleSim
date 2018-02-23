@@ -48,11 +48,12 @@ void handleRootUpdateAnswer(BaseSimulator::BlockCode* bsbc,
                 bc->relPos = new Cell3DPosition(0,0,0);//?
                 bc->rtg->setOrigin(bc->catom->position);
                 cout << "Absolute Target Positions" << endl; 
-                // bc->rtg->getTargetCellsInConstructionOrder()->pop_front(); // this is the root's target position, in which it already is
-                cout << "xyz removing cell from target: " << bc->catom->position << endl;
-                bc->rtg->removeTargetCell(bc->catom->position);
+                bc->rtg->getTargetCellsInConstructionOrder()->pop_front(); // this is the root's target position, in which it already is
+                // cout << "xyz removing cell from target: " << bc->catom->position << endl;
+                // bc->rtg->removeTargetCell(bc->catom->position);
                 cout << bc->rtg << endl;
                 bc->rtg->highlight();
+                bc->lattice->highlightCell(bc->catom->position, GREEN);
                         
                 // Proceed to next stage
                 bc->meltOneModule();

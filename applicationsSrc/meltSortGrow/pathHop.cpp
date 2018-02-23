@@ -14,7 +14,20 @@
 #include "catoms3DBlock.h"
 #include "lattice.h"
 
+// #define DEBUG_PATH_HOP
+
 using namespace Catoms3D;
+
+std::ostream& operator<<(std::ostream &stream, std::list<PathHop> const& path) {
+    stream << "------ PATH ------ " << endl;
+    stream << "size: " << path.size() << endl;
+    for (const PathHop& hop : path) {
+        stream << hop << endl;
+    }
+    stream << "------ END_PATH ------ " << endl << endl;
+
+    return stream;
+}
 
 PathHop::PathHop(PathHop const &copy) {
     position = copy.position;
@@ -76,7 +89,9 @@ PathHop::getHopConnectorAtPosition(const Cell3DPosition &pos) const {
         Catoms3DWorld::getWorld()->lattice->getBlock(position));
 
     if (!pivot) {
+#ifdef DEBUG_PATH_HOP
         cout << "no pivot on position: " << position << endl;
+#endif
         awaitKeyPressed();
         assert(false);
     }
@@ -116,13 +131,17 @@ PathHop::prune(short connector) {
     assert(conDistanceMap.find(connector) != conDistanceMap.end());
     int dPrune = conDistanceMap[connector];
 
+#ifdef DEBUG_PATH_HOP
     cout << "Prune " << connector << "(" << dPrune << ")" << endl;
+#endif
     
     utils::erase_if(conDistanceMap, [&](std::pair<short, int> pair) {
             return (pair.second >= dPrune); // (pair.first != connector) && ?
         });
 
-    cout << "Res: " << *this << endl;    
+#ifdef DEBUG_PATH_HOP
+    cout << "Res: " << *this << endl;
+#endif
 }
 
 std::ostream& operator<<(std::ostream &stream, PathHop const& hop) {   

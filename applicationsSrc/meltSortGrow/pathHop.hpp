@@ -11,15 +11,16 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <list>
 
 #include "cell3DPosition.h"
 
 /** @brief A hop in a path made of Catoms3D connectors **/
 class PathHop {
+public:
     Cell3DPosition position; /// Lattice position of the hop module
     short orientationCode; /// Determines the orientation of the hop module ori \in [0..23], where c \in [0..11] (the connector on the x axis), a \in [1..2] (the orientation of the connector, 1 = regular or 2 = upside-down) and ori = c * a
     std::map<short, int> conDistanceMap; /// A dictionary where each key is the ID of a connector in the path and each value its distance in number of rotations to the movement target using the shortest path
-public:
     PathHop(Cell3DPosition pos, short ori, std::map<short, int> map)
         : position(pos), orientationCode(ori), conDistanceMap(map) {}
     PathHop(PathHop const &copy);
@@ -27,7 +28,7 @@ public:
 
     inline short getOrientation() const { return orientationCode; }
     inline Cell3DPosition getPosition() const { return position; } 
-   bool getConnectors(std::set<short>& connectors) const;
+    bool getConnectors(std::set<short>& connectors) const;
 
     /** 
      * @brief Returns the distance corresponding to connector con
@@ -73,5 +74,6 @@ public:
 };
 
 std::ostream& operator<<(std::ostream &stream, PathHop const& hop);
+std::ostream& operator<<(std::ostream &stream, std::list<PathHop> const& path);
 
 #endif /* PATH_HOP_H_ */
