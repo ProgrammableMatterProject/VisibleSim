@@ -38,47 +38,49 @@ typedef std::shared_ptr<Message> MessagePtr;
 
 class Message {
 protected:
-	static bID nextId;
-	//static unsigned int nextId;
-	static bID nbMessages;
-	//static unsigned int nbMessages;
+    static bID nextId;
+    //static unsigned int nextId;
+    static bID nbMessages;
+    //static unsigned int nbMessages;
 public:
     bID id;
-	//unsigned int id;
-	unsigned int type;
-	P2PNetworkInterface *sourceInterface, *destinationInterface;
+    //unsigned int id;
+    unsigned int type;
+    P2PNetworkInterface *sourceInterface, *destinationInterface;
 
-	Message();
-	Message(unsigned int t):type(t) {};
-	virtual ~Message();
+    Message();
+    Message(unsigned int t):type(t) {};
+    virtual ~Message();
 
-	static uint64_t getNbMessages();
-	virtual string getMessageName();
+    static uint64_t getNbMessages();
+    virtual string getMessageName();
+    static void incrementMessageCounts() { nextId++; nbMessages++; }
 
-	virtual unsigned int size() { return(4); }
+
+    virtual unsigned int size() { return(4); }
     /**
      * @brief Clones the message. This is necessary when broadcasting
      * @attention Needs to overloaded in subclasses to avoid slicing (https://en.wikipedia.org/wiki/Object_slicing) when broadcasting subclasses of Message
      * @example virtual Message* clone() { return new MyMessageType(*this); }*/
-	virtual Message* clone();
+    virtual Message* clone();
     virtual bool isMessageHandleable() { return false; };
 };
 
 class HandleableMessage:public Message {
 public:
-	HandleableMessage();
-	virtual ~HandleableMessage();
+    HandleableMessage();
+    virtual ~HandleableMessage();
 
     virtual void handle(BaseSimulator::BlockCode*) = 0;
     virtual bool isMessageHandleable() { return true; };
     virtual string getName() = 0;
-	virtual Message* clone() = 0;
+    virtual Message* clone() = 0;
 };
 
 template <class T>
 class MessageOf:public Message {
     T *ptrData;
-    public :
+public :
     MessageOf(unsigned int t,const T &data):Message(t) { ptrData = new T(data); };
     ~MessageOf() { delete ptrData; };
     T* getData() const { return ptrData; };
@@ -86,7 +88,7 @@ class MessageOf:public Message {
         MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
         ptr->sourceInterface = sourceInterface;
         ptr->destinationInterface = destinationInterface;
-		return ptr;
+        return ptr;
     }
 };
 
@@ -98,41 +100,41 @@ class MessageOf:public Message {
 
 class P2PNetworkInterface {
 protected:
-	static bID nextId;
-	static int defaultDataRate;
+    static bID nextId;
+    static int defaultDataRate;
 
-	BaseSimulator::Rate* dataRate;
+    BaseSimulator::Rate* dataRate;
 public:
 
-	bID globalId;
-	bID localId;
-	deque<MessagePtr> outgoingQueue;
+    bID globalId;
+    bID localId;
+    deque<MessagePtr> outgoingQueue;
 
-	P2PNetworkInterface *connectedInterface;
-	BaseSimulator::BuildingBlock *hostBlock;
-	Time availabilityDate;
+    P2PNetworkInterface *connectedInterface;
+    BaseSimulator::BuildingBlock *hostBlock;
+    Time availabilityDate;
 
-	MessagePtr messageBeingTransmitted;
+    MessagePtr messageBeingTransmitted;
 
-	P2PNetworkInterface(BaseSimulator::BuildingBlock *b);
-	~P2PNetworkInterface();
+    P2PNetworkInterface(BaseSimulator::BuildingBlock *b);
+    ~P2PNetworkInterface();
 
-	void send(Message *m);
+    void send(Message *m);
 
-	bool addToOutgoingBuffer(MessagePtr msg);
-	void send();
-	void connect(P2PNetworkInterface *ni);
-	int getConnectedBlockId() {
+    bool addToOutgoingBuffer(MessagePtr msg);
+    void send();
+    void connect(P2PNetworkInterface *ni);
+    int getConnectedBlockId() {
         return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:-1;
-	}
-	bID getConnectedBlockBId() {
+    }
+    bID getConnectedBlockBId() {
         return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:0;
-	}
+    }
 
-	bool isConnected();
+    bool isConnected();
 
-	void setDataRate(BaseSimulator::Rate* r);
-	Time getTransmissionDuration(MessagePtr &m);
+    void setDataRate(BaseSimulator::Rate* r);
+    Time getTransmissionDuration(MessagePtr &m);
 };
 
 #endif /* NETWORK_H_ */

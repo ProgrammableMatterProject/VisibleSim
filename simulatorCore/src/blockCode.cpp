@@ -39,12 +39,12 @@ void BlockCode::addMessageEventFunc(int type,eventFunc func) {
     eventFuncMap.insert(pair<int,eventFunc>(type,func));
 }
 
-int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,int t0,int dt) {
+int BlockCode::sendMessage(Message*msg,P2PNetworkInterface *dest,Time t0,Time dt) {
 	return sendMessage(NULL, msg, dest, t0, dt);
 }
 
 int BlockCode::sendMessage(HandleableMessage*msg,
-                           P2PNetworkInterface *dest, int t0, int dt) {
+                           P2PNetworkInterface *dest, Time t0, Time dt) {
     int t1 = scheduler->now() + t0
       + (int)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
@@ -56,7 +56,7 @@ int BlockCode::sendMessage(HandleableMessage*msg,
 }
 
 int BlockCode::sendMessage(const char*msgString, Message*msg,
-                           P2PNetworkInterface *dest, int t0, int dt) {
+                           P2PNetworkInterface *dest, Time t0, Time dt) {
     int t1 = scheduler->now() + t0
       + (int)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
@@ -73,7 +73,7 @@ int BlockCode::sendMessage(const char*msgString, Message*msg,
     return 0;
 }
 
-int BlockCode::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int nexcept,...) {
+int BlockCode::sendMessageToAllNeighbors(Message*msg,Time t0,Time dt,int nexcept,...) {
 	va_list args;
 	va_start(args,nexcept);
 	int ret = sendMessageToAllNeighbors(NULL, msg, t0, dt, nexcept, args);
@@ -82,7 +82,8 @@ int BlockCode::sendMessageToAllNeighbors(Message*msg,int t0,int dt,int nexcept,.
 	return ret;
 }
 
-int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt,int nexcept,...) {
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
+                                         Time t0,Time dt,int nexcept,...) {
 	va_list args;
 	va_start(args,nexcept);
 	int ret = sendMessageToAllNeighbors(msgString, msg, t0, dt, nexcept, args);
@@ -91,7 +92,8 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t
 	return ret;
 }
 
-int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int t0, int dt, int nexcept, va_list args) {
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,
+                                         Time t0, Time dt, int nexcept, va_list args) {
     P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
     for (int i=0; i<nexcept; i++) {
         tabExceptions[i] = va_arg(args,P2PNetworkInterface*);
@@ -106,6 +108,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int 
             while (j<nexcept && p2p!=tabExceptions[j]) j++;
             if (j==nexcept) {
 				sendMessage(msgString, msg->clone(), p2p, t0, dt);
+                Message::incrementMessageCounts();
                 n++;
             }
         }
