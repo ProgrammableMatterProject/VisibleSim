@@ -71,6 +71,8 @@ public :
   void getNearFar(double &n,double &f) { n=near_plane; f=far_plane; };
   void setAngle(double a) { angle=a; };
   inline const double getAngle() { return angle; };
+  inline const double getNearPlane() { return near_plane; };
+  inline const double getFarPlane() { return far_plane; };
   inline void setTarget(const Vector3D &p) { target=p; updatePositionFromAngles(); }
   inline const Vector3D& getTarget() { return target; }
   inline void setDirection(double az,double ele) { theta=az*M_PI/180.0; phi=ele*M_PI/180.0; updatePositionFromAngles(); }
