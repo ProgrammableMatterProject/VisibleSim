@@ -5,38 +5,38 @@
 
 namespace BaseSimulator {
   
-class Rate {
- public:
-  Rate();
-  Rate(const Rate &r);
-  virtual ~Rate();
+     class Rate {
+     public:
+          Rate();
+          Rate(const Rate &r);
+          virtual ~Rate();
 
-  virtual double get() = 0;
-};
+          virtual double get() = 0;
+     };
 
-class StaticRate : public Rate {
- protected:
-  double value;
- public:
-  StaticRate();
-  StaticRate(double v);
-  StaticRate(const StaticRate &sr);
-  ~StaticRate();
+     class StaticRate : public Rate {
+     protected:
+          double value;
+     public:
+          StaticRate();
+          StaticRate(double v);
+          StaticRate(const StaticRate &sr);
+          ~StaticRate();
 
-  double get();
-};
+          double get();
+     };
 
-class RandomRate : public Rate {
- protected:
-  doubleRNG generator;
- public:
-  RandomRate();
-  RandomRate(doubleRNG &g);
-  RandomRate(const RandomRate &rr);
-  ~RandomRate();
+     class RandomRate : public Rate {
+     protected:
+          doubleRNG generator;
+     public:
+          RandomRate();
+          RandomRate(doubleRNG &g);
+          RandomRate(const RandomRate &rr);
+          ~RandomRate();
   
-  double get();
-};
+          double get();
+     };
 
 }
 #endif

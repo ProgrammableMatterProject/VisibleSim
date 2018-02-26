@@ -11,7 +11,7 @@ void ResetGraphMessage::handle(BaseSimulator::BlockCode* bsbc) {
         bc->propagateGraphResetBFS();
     else {
         bc->sendMessage(new ResetGraphNACKMessage(),
-                        destinationInterface, 100, 0);
+                        destinationInterface, MSG_DELAY, 0);
     }
 }
 
@@ -24,7 +24,7 @@ void handleResetGraphResponse(BaseSimulator::BlockCode* bsbc) {
     if (!--bc->resetChildrenDecount) {
         if (bc->resetFather) {
             bc->sendMessage(new ResetGraphDoneMessage(),
-                            bc->resetFather, 100, 0);
+                            bc->resetFather, MSG_DELAY, 0);
             bc->resetDFSForLabelling();
         } else { // isSource
             bc->resetDFSForLabelling();

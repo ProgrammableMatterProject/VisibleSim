@@ -172,6 +172,8 @@ protected:
           }
      };
 
+    std::map<const Cell3DPosition, int> geodesicToOrigin;
+    void computeGeodesics();
 public:
     std::list<Cell3DPosition> *targetCellsInConstructionOrder = NULL; //todo protected
     
@@ -187,6 +189,7 @@ public:
     virtual bool isInTarget(const Cell3DPosition &pos) const;
 
     bool reconfigurationIsComplete() const;
+    void highlightByDistanceToRoot() const;
     
     /**
      * @brief Returns a list of all cells in target in ascending order (x, y, and then z)
@@ -202,6 +205,11 @@ public:
     virtual void setOrigin(const Cell3DPosition& org);
     
     void removeTargetCell(const Cell3DPosition& tc);
+
+/** 
+ * @brief For configuration design only, takes an absolute target as input and make it relative to the cell at pos (min_z, min_y, min_x), and prints the output to stdout
+ */
+    void relatifyAndPrint();
 };  // class RelativeTargetGrid
 
 //<! @brief A target modeled as an ensemble of shapes

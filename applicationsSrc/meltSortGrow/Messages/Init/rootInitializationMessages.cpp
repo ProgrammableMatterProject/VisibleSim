@@ -18,17 +18,17 @@ void RootUpdateMessage::handle(BaseSimulator::BlockCode* bsbc) {
         bc->parent = destinationInterface;
         bc->sendMessageToAllNeighbors("RootUpdate",
                                       new RootUpdateMessage(bc->currentRootPosition),
-                                      0, 100, 1, bc->parent);
+                                      0, MSG_DELAY, 1, bc->parent);
         bc->expectedConfirms = bc->catom->getNbNeighbors() - 1; // Ignore parent
 
         if (!bc->expectedConfirms) {
             bc->sendMessage(new RootConfirmationMessage(bc->currentRootPosition),
-                            bc->parent, 0, 100);
+                            bc->parent, 0, MSG_DELAY);
         }    
     } else {
         // Received best root twice, send a NACK
         bc->sendMessage(new RootRefusalMessage(candidateRootPosition),
-                        destinationInterface, 0, 100);
+                        destinationInterface, 0, MSG_DELAY);
     }
 }
 
@@ -42,7 +42,7 @@ void handleRootUpdateAnswer(BaseSimulator::BlockCode* bsbc,
     if (!bc->expectedConfirms) {
         if (bc->parent)
             bc->sendMessage(new RootConfirmationMessage(bc->currentRootPosition),
-                            bc->parent, 0, 100);
+                            bc->parent, 0, MSG_DELAY);
         else {
             if (bc->catom->position == bc->currentRootPosition) { // Election Complete, module is root
                 bc->relPos = new Cell3DPosition(0,0,0);//?
@@ -52,8 +52,9 @@ void handleRootUpdateAnswer(BaseSimulator::BlockCode* bsbc,
                 // cout << "xyz removing cell from target: " << bc->catom->position << endl;
                 // bc->rtg->removeTargetCell(bc->catom->position);
                 cout << bc->rtg << endl;
-                bc->rtg->highlight();
+                // bc->rtg->highlight();
                 bc->lattice->highlightCell(bc->catom->position, GREEN);
+                bc->rtg->highlightByDistanceToRoot();
                         
                 // Proceed to next stage
                 bc->meltOneModule();

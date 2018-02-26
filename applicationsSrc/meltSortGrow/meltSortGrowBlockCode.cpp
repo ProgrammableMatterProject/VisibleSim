@@ -119,7 +119,7 @@ void MeltSortGrowBlockCode::APLabellingStart() {
         for (auto const& module : neighbors) {
             if (!sons.count(module))
                 sendMessage(new APLabellingVisitedMessage(dfn),
-                            module, 100, 0);
+                            module, MSG_DELAY, 0);
         }
     }
 }
@@ -131,7 +131,7 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
     if (unprocessedNeighbor) {
         // Send TOKEN(DFNcnt(i) + 1) to k
         sendMessage(new APLabellingTokenMessage(dfnCnt + 1),
-                    unprocessedNeighbor, 100, 0);
+                    unprocessedNeighbor, MSG_DELAY, 0);
         sons.insert(unprocessedNeighbor);
     } else if (source) { /* root checks for articulation point and terminates */
         if (sons.size() >= 2) articulationPoint = true;
@@ -151,7 +151,7 @@ void MeltSortGrowBlockCode::APLabellingSearch() {
 
         // send ECHO(L(i), DFNcnt(i)) to Father(i)
         sendMessage(new APLabellingEchoMessage(lDfn, dfnCnt),
-                    father, 100, 0);
+                    father, MSG_DELAY, 0);
     }
     
 }
@@ -176,7 +176,7 @@ void MeltSortGrowBlockCode::findMobileModule() {
     
     if (unprocessedNeighbor) {
         sendMessage(new FindMobileModuleMessage(path),
-                    unprocessedNeighbor, 100, 0);
+                    unprocessedNeighbor, MSG_DELAY, 0);
     } else if (source) {
         // No more module paths to explore
         lattice->unhighlightCell(catom->position - Cell3DPosition(1, 0, 0));
@@ -184,7 +184,7 @@ void MeltSortGrowBlockCode::findMobileModule() {
         grow();
     } else {
         sendMessage(new FindMobileModuleNotFoundMessage(),
-                    meltFather, 100, 0);
+                    meltFather, MSG_DELAY, 0);
         resetDFSFlags();
     }
 }
@@ -194,14 +194,14 @@ void MeltSortGrowBlockCode::propagateGraphResetBFS() {
     for (P2PNetworkInterface *nghbr : catom->getP2PNetworkInterfaces()) {
         if (nghbr->connectedInterface && nghbr != resetFather) {
             sendMessage(new ResetGraphMessage(),
-                        nghbr, 100, 0);
+                        nghbr, MSG_DELAY, 0);
             resetChildrenDecount++;
         }
     }
 
     if (!resetChildrenDecount && resetFather) { // No children, return 
         sendMessage(new ResetGraphDoneMessage(),
-                    resetFather, 100, 0);
+                    resetFather, MSG_DELAY, 0);
         resetDFSForLabelling();
     }
 }
@@ -238,7 +238,7 @@ void MeltSortGrowBlockCode::moveToGoal() {
 #endif
             
             sendMessage(new FindNextTCellMessage(path, goalPosition),
-                        unprocessedNeighbor, 100, 0);
+                        unprocessedNeighbor, MSG_DELAY, 0);
         } else {
             console << "Houston we have a problem." << "\n";
             catom->setColor(BLACK); // todo
@@ -252,11 +252,11 @@ void MeltSortGrowBlockCode::moveToGoal() {
     
     //     if (unprocessedNeighbor) {
     //         // sendMessage(new FindPathMessage(goalPosition),
-    //         //             unprocessedNeighbor, 100, 0);
+    //         //             unprocessedNeighbor, MSG_DELAY, 0);
             
     //         sendMessage(new FindNextTCellMessage(path, goalPosition),
     //                     new BuildPathMessage(path),                
-    //                     unprocessedNeighbor, 100, 0);
+    //                     unprocessedNeighbor, MSG_DELAY, 0);
     //     } else {
     //         console << "Houston we have a problem." << "\n";
     //         catom->setColor(BLACK); // todo
@@ -331,7 +331,7 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                     assert(pathHopInterface);
                     
                     sendMessage(new FindMobileModuleBlockedMessage(),
-                                pathHopInterface, 100, 0);        
+                                pathHopInterface, MSG_DELAY, 0);        
                 }
             } else {
                 if (catom->position == goalPosition) {
@@ -358,7 +358,7 @@ void MeltSortGrowBlockCode::processLocalEvent(EventPtr pev) {
                     assert(growthParent != NULL);
                     // growthParent = neighbors.front();
                     sendMessage(new GrowNextModuleMessage(),
-                                growthParent, 100, 0);
+                                growthParent, MSG_DELAY, 0);
                 } else {
                     // Perform next move towards current growth target
                     // Case 1: This is not the final hop
@@ -420,7 +420,7 @@ void MeltSortGrowBlockCode::determineRoot() {
     // Send a message to every neighbor that includes the block's own location, as a potential root
     sendMessageToAllNeighbors("RootUpdate",
                               new RootUpdateMessage(currentRootPosition),
-                              0, 100, 0);
+                              0, MSG_DELAY, 0);
 }
 
 // Initiates the Melt phase of the algorithm by the root node
@@ -497,7 +497,7 @@ bool MeltSortGrowBlockCode::computeNextRotation(list<PathHop>& path)
 
         nextRotation->sendRotationEvent(catom,
                                         catom->getNeighborOnCell(lastHop.getPosition()),
-                                        getScheduler()->now() + 100);
+                                        getScheduler()->now() + MSG_DELAY);
         nextRotation = NULL;
 
         return true;        

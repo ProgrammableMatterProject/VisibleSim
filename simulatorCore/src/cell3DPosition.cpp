@@ -1,4 +1,5 @@
 #include "cell3DPosition.h"
+#include <sstream>
 
 Cell3DPosition::Cell3DPosition() {
     set(0,0,0);
@@ -26,6 +27,13 @@ double Cell3DPosition::l2_norm() const {
 ostream& operator<<(ostream& f,const Cell3DPosition&p) {
     f << "(" << p.pt[0] << "," << p.pt[1] << "," << p.pt[2] << ")";
     return f;
+}
+
+string Cell3DPosition::config_print() const {
+    std::ostringstream oss;
+    oss << pt[0] << "," << pt[1] << "," << pt[2];
+
+    return oss.str();
 }
 
 bool Cell3DPosition::operator<(const Cell3DPosition &o) const {

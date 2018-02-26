@@ -60,7 +60,7 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
         } else {
             // Path to pathConnectors is blocked
             bc->sendMessage(new FindMobileModuleNotFoundMessage(),
-                            bc->meltFather, 100, 0);
+                            bc->meltFather, MSG_DELAY, 0);
             // Prepare data structures for the mobile module search DFS
             bc->resetDFSFlags();
             bc->meltFather = NULL;
@@ -68,7 +68,7 @@ void FindMobileModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
     } else {
         // Module already in DFS tree
         bc->sendMessage(new FindMobileModuleIgnoreMessage(),
-                        destinationInterface, 100, 0);
+                        destinationInterface, MSG_DELAY, 0);
     }
 }
 
@@ -99,7 +99,7 @@ void FindMobileModuleFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
     
     if (!bc->source) {
         bc->sendMessage(new FindMobileModuleFoundMessage(),
-                        bc->meltFather, 100, 0);
+                        bc->meltFather, MSG_DELAY, 0);
     } else {
         bc->catom->setColor(ORANGE);
     }
@@ -111,7 +111,7 @@ void FindMobileModuleBlockedMessage::handle(BaseSimulator::BlockCode* bsbc) {
     
     if (!bc->source) {
         bc->sendMessage(new FindMobileModuleBlockedMessage(),
-                        bc->meltFather, 100, 0);
+                        bc->meltFather, MSG_DELAY, 0);
     } else {
         bc->propagateGraphResetBFS();
     }

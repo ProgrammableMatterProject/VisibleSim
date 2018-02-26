@@ -30,7 +30,7 @@ void FindPathMessage::handle(BaseSimulator::BlockCode* bsbc) {
             API::addModuleToPath(bc->catom, bc->path, targetCon, targetCon);
             
             bc->sendMessage(new FindPathFoundMessage(bc->path),
-                            bc->growthParent, 100, 0);
+                            bc->growthParent, MSG_DELAY, 0);
 
             bc->console << "Path to " << goalPosition << " found" << "\n";
         } else {
@@ -39,17 +39,17 @@ void FindPathMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
             if (unprocessedNeighbor) {
                 bc->sendMessage(new FindPathMessage(goalPosition),
-                                unprocessedNeighbor, 100, 0);
+                                unprocessedNeighbor, MSG_DELAY, 0);
             } else {
                 bc->sendMessage(new FindPathNotFoundMessage(),
-                                bc->growthParent, 100, 0);
+                                bc->growthParent, MSG_DELAY, 0);
             }
 
         }
                      
     } else { // Module has already been considered in this phase
         bc->sendMessage(new FindPathIgnoreMessage(),
-                        destinationInterface, 100, 0);
+                        destinationInterface, MSG_DELAY, 0);
     }
 
 }
@@ -77,7 +77,7 @@ void FindPathFoundMessage::handle(BaseSimulator::BlockCode* bsbc) {
         }
         
         bc->sendMessage(new FindPathFoundMessage(bc->path),
-                        bc->growthParent, 100, 0);
+                        bc->growthParent, MSG_DELAY, 0);
         
         bc->growthVisited = false;
         bc->catom->setColor(GREEN); // todo
@@ -108,11 +108,11 @@ void handleFindPathResponse(BaseSimulator::BlockCode* bsbc,
 
     if (unprocessedNeighbor) {
         bc->sendMessage(new FindPathMessage(bc->goalPosition),
-                        unprocessedNeighbor, 100, 0);
+                        unprocessedNeighbor, MSG_DELAY, 0);
     } else {
         if (bc->growthParent) {
             bc->sendMessage(new FindPathNotFoundMessage(),
-                            bc->growthParent, 100, 0);
+                            bc->growthParent, MSG_DELAY, 0);
             bc->growthVisited = false;
         } else {
             bc->catom->setColor(WHITE); //todo probleeeeem
@@ -145,7 +145,7 @@ void GrowNextModuleMessage::handle(BaseSimulator::BlockCode* bsbc) {
                 
         if (bc->growthParent->isConnected()) {
             bc->sendMessage(new GrowNextModuleMessage(),
-                            bc->growthParent, 100, 0);
+                            bc->growthParent, MSG_DELAY, 0);
             bc->growthVisited = false;
         } else { // Current module should be new tail
             bc->moveToGoal();

@@ -63,7 +63,7 @@ void BuildPathMessage::handle(BaseSimulator::BlockCode* bsbc) {
             API::addModuleToPath(bc->catom, bc->path, targetCon, targetCon);
             
             bc->sendMessage(new BuildPathSuccessMessage(bc->path, goalPosition),
-                            bc->growthParent, 100, 0);
+                            bc->growthParent, MSG_DELAY, 0);
 
             bc->console << "Path to " << goalPosition << " found" << "\n";
             return;
@@ -73,18 +73,18 @@ void BuildPathMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
             if (unprocessedNeighbor) {
                 bc->sendMessage(new BuildPathMessage(bc->path),
-                                unprocessedNeighbor, 100, 0);
+                                unprocessedNeighbor, MSG_DELAY, 0);
                 return;
             } 
         }
 
         bc->sendMessage(new BuildPathFailureMessage(),
-                        bc->growthParent, 100, 0);
+                        bc->growthParent, MSG_DELAY, 0);
         bc->growthParent = NULL;
         bc->resetDFSFlags();
     } else { // Module has already been considered in this phase
         bc->sendMessage(new BuildPathIgnoreMessage(),
-                        destinationInterface, 100, 0);
+                        destinationInterface, MSG_DELAY, 0);
     }
 
 }
@@ -100,11 +100,11 @@ void handleBuildPathResponse(BaseSimulator::BlockCode* bsbc,
 
     if (unprocessedNeighbor) {
         bc->sendMessage(new BuildPathMessage(bc->path),
-                        unprocessedNeighbor, 100, 0);
+                        unprocessedNeighbor, MSG_DELAY, 0);
     } else {
         if (bc->growthParent) {
             bc->sendMessage(new BuildPathFailureMessage(),
-                            bc->growthParent, 100, 0);
+                            bc->growthParent, MSG_DELAY, 0);
             bc->growthVisited = false;
         } else {
             bc->catom->setColor(WHITE); //todo probleeeeem
@@ -148,7 +148,7 @@ void BuildPathSuccessMessage::handle(BaseSimulator::BlockCode* bsbc) {
         }
         
         bc->sendMessage(new BuildPathSuccessMessage(bc->path, goalPosition),
-                        bc->growthParent, 100, 0);
+                        bc->growthParent, MSG_DELAY, 0);
         
         bc->growthVisited = false;
         bc->catom->setColor(GREEN); // todo

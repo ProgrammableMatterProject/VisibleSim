@@ -97,7 +97,7 @@ void FindNextTCellMessage::handle(BaseSimulator::BlockCode* bsbc) {
                 API::addModuleToPath(bc->catom, bc->path, targetCon, targetCon);
             
                 bc->sendMessage(new FindNextTCellSuccessMessage(bc->path),
-                                nextHopItf, 100, 0);
+                                nextHopItf, MSG_DELAY, 0);
                 bc->catom->setColor(BLUE);
 
                 return;
@@ -107,14 +107,14 @@ void FindNextTCellMessage::handle(BaseSimulator::BlockCode* bsbc) {
 
                 if (unprocessedNeighbor) {
                     bc->sendMessage(new FindNextTCellMessage(bc->path, bc->goalPosition),
-                                    unprocessedNeighbor, 100, 0);                
+                                    unprocessedNeighbor, MSG_DELAY, 0);                
                     return;
                 } 
             }
         }
 
         bc->sendMessage(new FindNextTCellFailureMessage(),
-                        bc->growthParent, 100, 0);
+                        bc->growthParent, MSG_DELAY, 0);
         bc->catom->setColor(ORANGE);
         // bc->lattice->unhighlightCell(bc->catom->position);
             
@@ -124,7 +124,7 @@ void FindNextTCellMessage::handle(BaseSimulator::BlockCode* bsbc) {
         bc->path.clear();
     } else { // Module has already been considered in this phase
         bc->sendMessage(new FindNextTCellIgnoreMessage(),
-                        destinationInterface, 100, 0);
+                        destinationInterface, MSG_DELAY, 0);
     }
 
 }
@@ -140,12 +140,12 @@ void handleFindNextTCellResponse(BaseSimulator::BlockCode* bsbc,
 
     if (unprocessedNeighbor) {
         bc->sendMessage(new FindNextTCellMessage(bc->path, bc->goalPosition),
-                        unprocessedNeighbor, 100, 0);
+                        unprocessedNeighbor, MSG_DELAY, 0);
     } else {
         if (bc->growthParent) {
             // bc->lattice->unhighlightCell(bc->catom->position);
             bc->sendMessage(new FindNextTCellFailureMessage(),
-                            bc->growthParent, 100, 0);
+                            bc->growthParent, MSG_DELAY, 0);
             bc->growthVisited = false;
         } else {
             bc->catom->setColor(WHITE); //todo probleeeeem
@@ -202,7 +202,7 @@ void FindNextTCellSuccessMessage::handle(BaseSimulator::BlockCode* bsbc) {
         }
 
         bc->sendMessage(new FindNextTCellSuccessMessage(bc->path),
-                        nextHopItf, 100, 0);
+                        nextHopItf, MSG_DELAY, 0);
         
         bc->growthVisited = false;
         bc->catom->setColor(GREEN); // todo

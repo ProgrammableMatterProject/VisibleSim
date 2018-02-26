@@ -108,11 +108,10 @@ API::computePathConnectorsAndDistances(const vector<Catoms3DMotionRulesLink*>& m
     queue.push_back(conFrom);
 
     list<short>::iterator itCon;
-    short connector;
     FCCLattice* lattice = static_cast<FCCLattice*>(Catoms3DWorld::getWorld()->lattice);
     
     while(!queue.empty()) {
-        connector = queue.front();
+        short connector = queue.front();
         // cout << connector << " ";
         queue.pop_front();
 
@@ -180,12 +179,11 @@ API::findConnectorsPath(const vector<Catoms3DMotionRulesLink*>& motionRulesLinks
     queue.push_back(conFrom);
 
     list<short>::iterator itCon;
-    short connector;
 
     FCCLattice *lattice = static_cast<FCCLattice*>(Catoms3DWorld::getWorld()->lattice);
     
     while(!queue.empty()) {
-        connector = queue.front();
+        short connector = queue.front();
         // cout << connector << " ";
         queue.pop_front();
 

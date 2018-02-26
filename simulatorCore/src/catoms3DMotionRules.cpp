@@ -471,7 +471,7 @@ Cell3DPosition Catoms3DMotionRulesLink::getFinalPosition(Catoms3DBlock *c3d) {
 
 void Catoms3DMotionRulesLink::sendRotationEvent(Catoms3DBlock*mobile,
                                                 Catoms3DBlock*fixed,
-                                                double t) {
+                                                Time t) {
     Rotations3D rotations(mobile,fixed,radius,axis1,angle,axis2,angle);
     getScheduler()->schedule(new Rotation3DStartEvent(t,mobile,rotations));
 }

@@ -12,6 +12,8 @@
 #include "../meltSortGrowBlockCode.hpp"
 #include "../msgMessages.hpp"
 
+#define MSG_DELAY 1
+
 class MeltSortGrowMessage : public HandleableMessage {
 public:
     MeltSortGrowMessage() {};

@@ -24,6 +24,7 @@ public:
     void set(short x,short y,short z);
     double dist_euclid(const Cell3DPosition& p) const;
     double l2_norm() const;
+    string config_print() const;
     
     inline const short operator[](const int i) const { return pt[i]; };
     bool operator<(const Cell3DPosition &o) const;
@@ -38,7 +39,7 @@ public:
     static bool compare_ZYX(const Cell3DPosition& first, const Cell3DPosition& second);
 
     operator Vector3D() const { return Vector3D(pt[0], pt[1], pt[2], 1.0); };
-
+    
     friend ostream& operator<<(ostream& f,const Cell3DPosition&p);
     friend const Cell3DPosition operator +(const Cell3DPosition,const Cell3DPosition);
     friend const Cell3DPosition operator -(const Cell3DPosition,const Cell3DPosition);

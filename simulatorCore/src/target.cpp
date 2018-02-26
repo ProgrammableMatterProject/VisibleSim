@@ -199,6 +199,7 @@ bool RelativeTargetGrid::isInTarget(const Cell3DPosition &pos) const {
 void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
     assert(!tCells.empty());
 
+    // relatifyAndPrint();
     origin = new Cell3DPosition(org);
 
     // Then update every relative position parsed from the configuration file to its absolute counterpart
@@ -211,32 +212,79 @@ void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
 
     tCells = absMap;
 
+    computeGeodesics(); // Will populate each cell's distance to the origin in hops
+    
     if (!targetCellsInConstructionOrder) {
         targetCellsInConstructionOrder = new list<Cell3DPosition>();
 
         for (const auto &pair : tCells) {
-            targetCellsInConstructionOrder->push_back(pair.first);
+            cout << pair.first << " -dist: " << geodesicToOrigin[pair.first] << endl;
+            targetCellsInConstructionOrder->push_back(pair.first);            
         }
 
-        targetCellsInConstructionOrder->sort([=](const Cell3DPosition& first,
-                                                 const Cell3DPosition& second){
-
-                if (first.dist_euclid(*origin) < second.dist_euclid(*origin))
-                    return true;
-                else if (first.dist_euclid(*origin) > second.dist_euclid(*origin))
-                    return false;
-                else {
-                    if (first[2] < second[2]) return true;
-                    else if (first[2] > second[2]) return false;
+        targetCellsInConstructionOrder->
+            sort([=](const Cell3DPosition& first, const Cell3DPosition& second){
+                    // return geodesicToOrigin[first] < geodesicToOrigin[second];
+                    // if (first.dist_euclid(*origin) < second.dist_euclid(*origin))
+                    if (geodesicToOrigin[first] < geodesicToOrigin[second])
+                        return true;
+                    // else if (first.dist_euclid(*origin) > second.dist_euclid(*origin))
+                    else if (geodesicToOrigin[first] > geodesicToOrigin[second])
+                        return false;
                     else {
-                        if (first[1] < second[1]) return true;
-                        else if (first[1] > second[1]) return false;
+                        if (first[0] < second[0]) return true;
+                        else if (first[0] > second[0]) return false;
                         else {
-                            return first[2] > second[2];
+                            if (first[1] > second[1]) return true;
+                            else if (first[1] < second[1]) return false;
+                            else {
+                                return first[2] < second[2];
+                            }
                         }
                     }
-                }
-            });
+                });
+    }
+}
+
+void RelativeTargetGrid::computeGeodesics() {
+    geodesicToOrigin[*origin] = 0;
+        
+    // BFS-parent of every connector
+    std::map<Cell3DPosition, Cell3DPosition> parent;
+    parent[*origin] = *origin;
+
+    list<Cell3DPosition> queue;
+    queue.push_back(*origin);
+
+    list<Cell3DPosition>::iterator itCell;
+    Lattice* lattice = static_cast<Lattice*>(getWorld()->lattice);
+    
+    while(!queue.empty()) {
+        Cell3DPosition cell = queue.front();
+        queue.pop_front();
+
+        // Get all adjacent cells of dequeued cell.
+        // If one of the adjacent cells has not been visited, mark
+        //  it as visited and enqueue it
+        for (const auto& nCell : lattice->getNeighborhood(cell))
+        {
+            if (isInTarget(nCell) && parent.find(nCell) == parent.end()) {                
+                parent[nCell] = cell;
+                geodesicToOrigin[nCell] = geodesicToOrigin[cell] + 1;
+                
+                queue.push_back(nCell);
+            }
+        }
+    }
+}
+
+void RelativeTargetGrid::highlightByDistanceToRoot() const {
+    if (!origin)
+        throw MissingInitializationException();
+
+    for (const auto& cell : *targetCellsInConstructionOrder) {
+        short distColorIdx = geodesicToOrigin.find(cell)->second % NB_COLORS;
+        getWorld()->lattice->highlightCell(cell, Colors[distColorIdx]);
     }
 }
 
@@ -252,6 +300,24 @@ void RelativeTargetGrid::removeTargetCell(const Cell3DPosition& tc) {
 }
 
 bool RelativeTargetGrid::reconfigurationIsComplete() const { return tCells.empty(); }
+
+void RelativeTargetGrid::relatifyAndPrint() {
+    cout << endl << "=== START RELATIFIED TARGET ===" << endl << endl;
+    
+    const auto& minPair =
+        *std::min_element(tCells.begin(), tCells.end(),
+                          [](const std::pair<Cell3DPosition, Color>& pair1,
+                             const std::pair<Cell3DPosition, Color>& pair2) {
+                              return Cell3DPosition::compare_ZYX(pair1.first, pair2.first);
+                          });
+    
+    for (const auto &pair : tCells) {
+        Cell3DPosition relCell = pair.first - minPair.first;
+        cout << "<cell position=\"" << relCell.config_print() << "\" />" << endl;
+    }
+
+    cout << endl << "=== END RELATIFIED TARGET ===" << endl << endl;
+}
 
 /************************************************************
  *                      TargetCSG

@@ -24,7 +24,7 @@ void APLabellingTokenMessage::handle(BaseSimulator::BlockCode* bsbc) {
         for (auto const& module : bc->neighbors) {
             if (!bc->sons.count(module) && module != bc->father)
                 bc->sendMessage(new APLabellingVisitedMessage(bc->lDfn),
-                                module, 100, 0);
+                                module, MSG_DELAY, 0);
         }
 
     } else {

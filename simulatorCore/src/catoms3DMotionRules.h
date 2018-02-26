@@ -111,7 +111,7 @@ public :
        \param fixed : pivot catom of rotation
        \param t : time of start of rotation
     **/
-    void sendRotationEvent(Catoms3DBlock *mobile,Catoms3DBlock *fixed,double t);
+    void sendRotationEvent(Catoms3DBlock *mobile,Catoms3DBlock *fixed,Time t);
 
     /** \brief Could return something like TOP_TOPLEFT, so as to project one couple of connectors from one module over the ones of a neighbor
         \todo */
