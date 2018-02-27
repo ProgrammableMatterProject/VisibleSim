@@ -1,7 +1,7 @@
 [1;34mSimulator constructor[0m
-[1;34m  config2.xml successfully loaded [0m
+[1;34m  config15a_2.xml successfully loaded [0m
 [1;34mRobotBlocksSimulator constructor[0m
-grid size : 7 x 6 x 4
+grid size : 11 x 10 x 4
 blocksize =10,10,10
 World constructor
 initShaders
@@ -201,147 +201,308 @@ P2PNetworkInterface constructor
 P2PNetworkInterface constructor
 RobotBlocksBlockCode constructor
 RobotBlocksBlock constructor
-add target (2,4,1),(0,0,0,0)
-add target (3,4,1),(0,0,0,0)
-add target (4,4,1),(0,0,0,0)
-add target (5,4,1),(0,0,0,0)
-add target (3,3,1),(0,0,0,0)
-add target (4,3,1),(0,0,0,0)
-add target (1,2,1),(0,0,0,0)
-add target (2,2,1),(0,0,0,0)
-add target (3,2,1),(0,0,0,0)
-add target (4,2,1),(0,0,0,0)
-add target (2,1,1),(0,0,0,0)
-add target (5,4,1),(0,0,0,0)
-add target (1,3,1),(0,0,0,0)
-add target (1,2,2),(0,0,0,0)
-add target (1,2,3),(0,0,0,0)
-add target (1,1,3),(0,0,0,0)
-Simulator: 14 add neighbor 13 on Back
-Simulator: 13 add neighbor 14 on Left
-connection #14:Back to #13:Left
-Simulator: 13 add neighbor 10 on Back
-Simulator: 10 add neighbor 13 on Left
-connection #13:Back to #10:Left
-connection #13:Left to #14:Back
-Simulator: 8 add neighbor 9 on Right
-Simulator: 9 add neighbor 8 on Front
-connection #8:Right to #9:Front
-Simulator: 9 add neighbor 10 on Right
-Simulator: 10 add neighbor 9 on Front
-connection #9:Right to #10:Front
-connection #9:Front to #8:Right
-Simulator: 9 add neighbor 15 on Top
-Simulator: 15 add neighbor 9 on Bottom
-connection #9:Top to #15:Bottom
-Simulator: 10 add neighbor 5 on Back
-Simulator: 5 add neighbor 10 on Left
-connection #10:Back to #5:Left
-Simulator: 10 add neighbor 11 on Right
-Simulator: 11 add neighbor 10 on Front
-connection #10:Right to #11:Front
-connection #10:Front to #9:Right
-connection #10:Left to #13:Back
-Simulator: 11 add neighbor 6 on Back
-Simulator: 6 add neighbor 11 on Left
-connection #11:Back to #6:Left
-Simulator: 11 add neighbor 12 on Right
-Simulator: 12 add neighbor 11 on Front
-connection #11:Right to #12:Front
-connection #11:Front to #10:Right
-Simulator: 12 add neighbor 7 on Back
-Simulator: 7 add neighbor 12 on Left
-connection #12:Back to #7:Left
-connection #12:Front to #11:Right
-Simulator: 5 add neighbor 1 on Back
-Simulator: 1 add neighbor 5 on Left
-connection #5:Back to #1:Left
-Simulator: 5 add neighbor 6 on Right
-Simulator: 6 add neighbor 5 on Front
-connection #5:Right to #6:Front
-connection #5:Left to #10:Back
-Simulator: 6 add neighbor 2 on Back
-Simulator: 2 add neighbor 6 on Left
-connection #6:Back to #2:Left
-Simulator: 6 add neighbor 7 on Right
-Simulator: 7 add neighbor 6 on Front
-connection #6:Right to #7:Front
-connection #6:Front to #5:Right
-connection #6:Left to #11:Back
-Simulator: 7 add neighbor 3 on Back
-Simulator: 3 add neighbor 7 on Left
-connection #7:Back to #3:Left
-connection #7:Front to #6:Right
-connection #7:Left to #12:Back
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+new color :(0.25,0.25,0.25,1)
+BuildingBlock constructor (id:0)
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+P2PNetworkInterface constructor
+RobotBlocksBlockCode constructor
+RobotBlocksBlock constructor
+add target (2,2,1),(0.501961,0.501961,0.501961,1)
+add target (2,5,1),(0.501961,0.501961,0.501961,1)
+add target (2,6,1),(0.501961,0.501961,0.501961,1)
+add target (3,2,1),(0.501961,0.501961,0.501961,1)
+add target (3,5,1),(0.501961,0.501961,0.501961,1)
+add target (3,6,1),(0.501961,0.501961,0.501961,1)
+add target (4,2,1),(0.501961,0.501961,0.501961,1)
+add target (4,5,1),(0.501961,0.501961,0.501961,1)
+add target (4,6,1),(0.501961,0.501961,0.501961,1)
+add target (5,2,1),(0.501961,0.501961,0.501961,1)
+add target (5,3,1),(0.501961,0.501961,0.501961,1)
+add target (5,4,1),(0.501961,0.501961,0.501961,1)
+add target (5,5,1),(0.501961,0.501961,0.501961,1)
+add target (5,6,1),(0.501961,0.501961,0.501961,1)
+add target (6,2,1),(0.501961,0.501961,0.501961,1)
+add target (6,3,1),(0.501961,0.501961,0.501961,1)
+add target (6,6,1),(0.501961,0.501961,0.501961,1)
+add target (7,2,1),(0.501961,0.501961,0.501961,1)
+add target (7,3,1),(0.501961,0.501961,0.501961,1)
+add target (7,6,1),(0.501961,0.501961,0.501961,1)
+add target (8,2,1),(0.501961,0.501961,0.501961,1)
+add target (8,3,1),(0.501961,0.501961,0.501961,1)
+add target (8,6,1),(0.501961,0.501961,0.501961,1)
+Simulator: 1 add neighbor 10 on Back
+Simulator: 10 add neighbor 1 on Left
+connection #1:Back to #10:Left
 Simulator: 1 add neighbor 2 on Right
 Simulator: 2 add neighbor 1 on Front
 connection #1:Right to #2:Front
-connection #1:Left to #5:Back
+Simulator: 2 add neighbor 11 on Back
+Simulator: 11 add neighbor 2 on Left
+connection #2:Back to #11:Left
 Simulator: 2 add neighbor 3 on Right
 Simulator: 3 add neighbor 2 on Front
 connection #2:Right to #3:Front
 connection #2:Front to #1:Right
-connection #2:Left to #6:Back
 Simulator: 3 add neighbor 4 on Right
 Simulator: 4 add neighbor 3 on Front
 connection #3:Right to #4:Front
 connection #3:Front to #2:Right
-connection #3:Left to #7:Back
+Simulator: 4 add neighbor 12 on Back
+Simulator: 12 add neighbor 4 on Left
+connection #4:Back to #12:Left
+Simulator: 4 add neighbor 5 on Right
+Simulator: 5 add neighbor 4 on Front
+connection #4:Right to #5:Front
 connection #4:Front to #3:Right
-connection #15:Bottom to #9:Top
-Simulator: 15 add neighbor 16 on Top
-Simulator: 16 add neighbor 15 on Bottom
-connection #15:Top to #16:Bottom
-Simulator: 17 add neighbor 16 on Back
-Simulator: 16 add neighbor 17 on Left
-connection #17:Back to #16:Left
-connection #16:Bottom to #15:Top
-connection #16:Left to #17:Back
+Simulator: 5 add neighbor 13 on Back
+Simulator: 13 add neighbor 5 on Left
+connection #5:Back to #13:Left
+Simulator: 5 add neighbor 6 on Right
+Simulator: 6 add neighbor 5 on Front
+connection #5:Right to #6:Front
+connection #5:Front to #4:Right
+Simulator: 6 add neighbor 14 on Back
+Simulator: 14 add neighbor 6 on Left
+connection #6:Back to #14:Left
+Simulator: 6 add neighbor 7 on Right
+Simulator: 7 add neighbor 6 on Front
+connection #6:Right to #7:Front
+connection #6:Front to #5:Right
+Simulator: 7 add neighbor 15 on Back
+Simulator: 15 add neighbor 7 on Left
+connection #7:Back to #15:Left
+Simulator: 7 add neighbor 8 on Right
+Simulator: 8 add neighbor 7 on Front
+connection #7:Right to #8:Front
+connection #7:Front to #6:Right
+Simulator: 8 add neighbor 16 on Back
+Simulator: 16 add neighbor 8 on Left
+connection #8:Back to #16:Left
+Simulator: 8 add neighbor 9 on Right
+Simulator: 9 add neighbor 8 on Front
+connection #8:Right to #9:Front
+connection #8:Front to #7:Right
+Simulator: 9 add neighbor 17 on Back
+Simulator: 17 add neighbor 9 on Left
+connection #9:Back to #17:Left
+connection #9:Front to #8:Right
+Simulator: 10 add neighbor 18 on Back
+Simulator: 18 add neighbor 10 on Left
+connection #10:Back to #18:Left
+Simulator: 10 add neighbor 11 on Right
+Simulator: 11 add neighbor 10 on Front
+connection #10:Right to #11:Front
+connection #10:Left to #1:Back
+Simulator: 11 add neighbor 19 on Back
+Simulator: 19 add neighbor 11 on Left
+connection #11:Back to #19:Left
+connection #11:Front to #10:Right
+connection #11:Left to #2:Back
+Simulator: 12 add neighbor 20 on Back
+Simulator: 20 add neighbor 12 on Left
+connection #12:Back to #20:Left
+Simulator: 12 add neighbor 13 on Right
+Simulator: 13 add neighbor 12 on Front
+connection #12:Right to #13:Front
+connection #12:Left to #4:Back
+Simulator: 13 add neighbor 21 on Back
+Simulator: 21 add neighbor 13 on Left
+connection #13:Back to #21:Left
+Simulator: 13 add neighbor 14 on Right
+Simulator: 14 add neighbor 13 on Front
+connection #13:Right to #14:Front
+connection #13:Front to #12:Right
+connection #13:Left to #5:Back
+Simulator: 14 add neighbor 22 on Back
+Simulator: 22 add neighbor 14 on Left
+connection #14:Back to #22:Left
+Simulator: 14 add neighbor 15 on Right
+Simulator: 15 add neighbor 14 on Front
+connection #14:Right to #15:Front
+connection #14:Front to #13:Right
+connection #14:Left to #6:Back
+Simulator: 15 add neighbor 16 on Right
+Simulator: 16 add neighbor 15 on Front
+connection #15:Right to #16:Front
+connection #15:Front to #14:Right
+connection #15:Left to #7:Back
+Simulator: 16 add neighbor 23 on Back
+Simulator: 23 add neighbor 16 on Left
+connection #16:Back to #23:Left
+Simulator: 16 add neighbor 17 on Right
+Simulator: 17 add neighbor 16 on Front
+connection #16:Right to #17:Front
+connection #16:Front to #15:Right
+connection #16:Left to #8:Back
+Simulator: 17 add neighbor 24 on Back
+Simulator: 24 add neighbor 17 on Left
+connection #17:Back to #24:Left
+connection #17:Front to #16:Right
+connection #17:Left to #9:Back
+Simulator: 18 add neighbor 19 on Right
+Simulator: 19 add neighbor 18 on Front
+connection #18:Right to #19:Front
+connection #18:Left to #10:Back
+connection #19:Front to #18:Right
+connection #19:Left to #11:Back
+Simulator: 20 add neighbor 21 on Right
+Simulator: 21 add neighbor 20 on Front
+connection #20:Right to #21:Front
+connection #20:Left to #12:Back
+Simulator: 21 add neighbor 22 on Right
+Simulator: 22 add neighbor 21 on Front
+connection #21:Right to #22:Front
+connection #21:Front to #20:Right
+connection #21:Left to #13:Back
+connection #22:Front to #21:Right
+connection #22:Left to #14:Back
+Simulator: 23 add neighbor 24 on Right
+Simulator: 24 add neighbor 23 on Front
+connection #23:Right to #24:Front
+connection #23:Left to #16:Back
+connection #24:Front to #23:Right
+connection #24:Left to #17:Back
 loading ../../simulatorCore/resources/textures/robotBlocksTextures/robotTexture.tga
-0.000000 #1: start 1,(0,1,0,1)
-0.000000 #1: isModule
-0.000000 #2: start 2,(0,1,0,1)
+0.000000 #1: start 1,(1,0,0,1)
+0.000000 #1: isSource
+0.000000 #1: sends BFS to 10 at 54
+1 sends 1001 to 10 at 54
+0.000000 #1: sends BFS to 2 at 53
+1 sends 1001 to 2 at 53
+0.000000 #2: start 2,(0.501961,0.501961,0.501961,1)
 0.000000 #2: isModule
-0.000000 #3: start 3,(0,1,0,1)
+0.000000 #3: start 3,(0.501961,0.501961,0.501961,1)
 0.000000 #3: isModule
-0.000000 #4: start 4,(0,0,1,1)
-0.000000 #4: isSink
-0.000000 #5: start 5,(1,1,0,1)
-0.000000 #5: isSource
-0.000000 #5: sends BFS to 1 at 100
-5 sends 1001 to 1 at 100
-0.000000 #5: sends BFS to 6 at 100
-5 sends 1001 to 6 at 100
-0.000000 #5: sends BFS to 10 at 100
-5 sends 1001 to 10 at 100
-0.000000 #6: start 6,(0,1,0,1)
+0.000000 #4: start 4,(0.501961,0.501961,0.501961,1)
+0.000000 #4: isModule
+0.000000 #5: start 5,(0.501961,0.501961,0.501961,1)
+0.000000 #5: isModule
+0.000000 #6: start 6,(0.501961,0.501961,0.501961,1)
 0.000000 #6: isModule
-0.000000 #7: start 7,(0,0,1,1)
-0.000000 #7: isSink
-0.000000 #8: start 8,(1,1,0,1)
-0.000000 #8: isSource
-0.000000 #8: sends BFS to 9 at 100
-8 sends 1001 to 9 at 100
+0.000000 #7: start 7,(0.501961,0.501961,0.501961,1)
+0.000000 #7: isModule
+0.000000 #8: start 8,(0.501961,0.501961,0.501961,1)
+0.000000 #8: isModule
 0.000000 #9: start 9,(0,1,0,1)
-0.000000 #9: isModule
-0.000000 #10: start 10,(0,1,0,1)
-0.000000 #10: isModule
+0.000000 #9: isSink
+0.000000 #10: start 10,(1,0,0,1)
+0.000000 #10: isSource
+0.000000 #10: sends BFS to 18 at 54
+10 sends 1001 to 18 at 54
+0.000000 #10: sends BFS to 11 at 51
+10 sends 1001 to 11 at 51
+0.000000 #10: sends BFS to 1 at 52
+10 sends 1001 to 1 at 52
 0.000000 #11: start 11,(0,1,0,1)
-0.000000 #11: isModule
-0.000000 #12: start 12,(0,1,0,1)
-0.000000 #12: isModule
-0.000000 #13: start 13,(0,1,0,1)
+0.000000 #11: isSink
+0.000000 #12: start 12,(1,0,0,1)
+0.000000 #12: isSource
+0.000000 #12: sends BFS to 20 at 53
+12 sends 1001 to 20 at 53
+0.000000 #12: sends BFS to 13 at 53
+12 sends 1001 to 13 at 53
+0.000000 #12: sends BFS to 4 at 50
+12 sends 1001 to 4 at 50
+0.000000 #13: start 13,(0.501961,0.501961,0.501961,1)
 0.000000 #13: isModule
-0.000000 #14: start 14,(1,1,0,1)
-0.000000 #14: isSource
-0.000000 #14: sends BFS to 13 at 100
-14 sends 1001 to 13 at 100
-0.000000 #15: start 15,(0,1,0,1)
+0.000000 #14: start 14,(0.501961,0.501961,0.501961,1)
+0.000000 #14: isModule
+0.000000 #15: start 15,(0.501961,0.501961,0.501961,1)
 0.000000 #15: isModule
-0.000000 #16: start 16,(0,1,0,1)
+0.000000 #16: start 16,(0.501961,0.501961,0.501961,1)
 0.000000 #16: isModule
-0.000000 #17: start 17,(0,0,1,1)
+0.000000 #17: start 17,(0,1,0,1)
 0.000000 #17: isSink
+0.000000 #18: start 18,(1,0,0,1)
+0.000000 #18: isSource
+0.000000 #18: sends BFS to 19 at 52
+18 sends 1001 to 19 at 52
+0.000000 #18: sends BFS to 10 at 54
+18 sends 1001 to 10 at 54
+0.000000 #19: start 19,(0,1,0,1)
+0.000000 #19: isSink
+0.000000 #20: start 20,(1,0,0,1)
+0.000000 #20: isSource
+0.000000 #20: sends BFS to 21 at 54
+20 sends 1001 to 21 at 54
+0.000000 #20: sends BFS to 12 at 51
+20 sends 1001 to 12 at 51
+0.000000 #21: start 21,(0.501961,0.501961,0.501961,1)
+0.000000 #21: isModule
+0.000000 #22: start 22,(0,1,0,1)
+0.000000 #22: isSink
+0.000000 #23: start 23,(1,0,0,1)
+0.000000 #23: isSource
+0.000000 #23: sends BFS to 24 at 53
+23 sends 1001 to 24 at 53
+0.000000 #23: sends BFS to 16 at 52
+23 sends 1001 to 16 at 52
+0.000000 #24: start 24,(0,1,0,1)
+0.000000 #24: isSink
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
@@ -382,982 +543,630 @@ ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
 ADD_NEIGHBOR
-0.000132 #1: rec. BFS(5) from 5
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+ADD_NEIGHBOR
+0.000082 #4: rec. BFS(12) from 12
 mainPathState=0
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
-0.000132 #1: sends ConfirmEdge to 5 at 364
-1 sends 1002 to 5 at 364
-0.000132 #1: sends BFS to 2 at 374
-1 sends 1001 to 2 at 374
-0.000132 #1: sends BFS to 5 at 374
-1 sends 1001 to 5 at 374
-0.000132 #6: rec. BFS(5) from 5
+50
+0.000082 #4: sends ConfirmEdge to 12 at 136
+4 sends 1002 to 12 at 136
+0.000082 #4: sends BFS to 12 at 135
+4 sends 1001 to 12 at 135
+0.000082 #4: sends BFS to 5 at 136
+4 sends 1001 to 5 at 136
+0.000082 #4: sends BFS to 3 at 135
+4 sends 1001 to 3 at 135
+0.000083 #11: rec. BFS(10) from 10
 mainPathState=0
 mainPathIn=0
 mainPathOut={}
 pathsOld={}
-0.000132 #6: sends ConfirmEdge to 5 at 364
-6 sends 1002 to 5 at 364
-0.000132 #6: sends BFS to 2 at 374
-6 sends 1001 to 2 at 374
-0.000132 #6: sends BFS to 7 at 374
-6 sends 1001 to 7 at 374
-0.000132 #6: sends BFS to 5 at 374
-6 sends 1001 to 5 at 374
-0.000132 #6: sends BFS to 11 at 374
-6 sends 1001 to 11 at 374
-0.000132 #10: rec. BFS(5) from 5
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000132 #10: sends ConfirmEdge to 5 at 364
-10 sends 1002 to 5 at 364
-0.000132 #10: sends BFS to 5 at 374
-10 sends 1001 to 5 at 374
-0.000132 #10: sends BFS to 11 at 374
-10 sends 1001 to 11 at 374
-0.000132 #10: sends BFS to 9 at 374
-10 sends 1001 to 9 at 374
-0.000132 #10: sends BFS to 13 at 374
-10 sends 1001 to 13 at 374
-0.000132 #9: rec. BFS(8) from 8
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000132 #9: sends ConfirmEdge to 8 at 364
-9 sends 1002 to 8 at 364
-0.000132 #9: sends BFS to 10 at 374
-9 sends 1001 to 10 at 374
-0.000132 #9: sends BFS to 8 at 374
-9 sends 1001 to 8 at 374
-0.000132 #9: sends BFS to 15 at 374
-9 sends 1001 to 15 at 374
-0.000132 #13: rec. BFS(14) from 14
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000132 #13: sends ConfirmEdge to 14 at 364
-13 sends 1002 to 14 at 364
-0.000132 #13: sends BFS to 10 at 374
-13 sends 1001 to 10 at 374
-0.000132 #13: sends BFS to 14 at 374
-13 sends 1001 to 14 at 374
-0.000396 #5: rec. ConfirmEdge
-0.000396 #8: rec. ConfirmEdge
-0.000396 #14: rec. ConfirmEdge
-0.000396 #5: rec. ConfirmEdge
-0.000396 #5: rec. ConfirmEdge
-0.000406 #2: rec. BFS(5) from 1
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000406 #2: sends ConfirmEdge to 1 at 912
-2 sends 1002 to 1 at 912
-0.000406 #2: sends BFS to 3 at 922
-2 sends 1001 to 3 at 922
-0.000406 #2: sends BFS to 1 at 922
-2 sends 1001 to 1 at 922
-0.000406 #2: sends BFS to 6 at 922
-2 sends 1001 to 6 at 922
-0.000406 #7: rec. BFS(5) from 6
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000406 #7: sends ConfirmEdge to 6 at 912
-7 sends 1002 to 6 at 912
-0.000406 #7: sends ConfirmPath to 6 at 922
-7 sends 1005 to 6 at 922
-0.000406 #11: rec. BFS(5) from 6
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000406 #11: sends ConfirmEdge to 6 at 912
-11 sends 1002 to 6 at 912
-0.000406 #11: sends BFS to 6 at 922
-11 sends 1001 to 6 at 922
-0.000406 #11: sends BFS to 12 at 922
-11 sends 1001 to 12 at 922
-0.000406 #11: sends BFS to 10 at 922
-11 sends 1001 to 10 at 922
-0.000406 #9: rec. BFS(5) from 10
+50
+0.000083 #11: sends ConfirmEdge to 10 at 133
+11 sends 1002 to 10 at 133
+0.000083 #11: sends ConfirmPath to 10 at 134
+11 sends 1005 to 10 at 134
+0.000083 #12: rec. BFS(20) from 20
 mainPathState=1
-mainPathIn=8
+mainPathIn=12
 mainPathOut={}
-pathsOld={8,}
-0.000406 #13: rec. BFS(5) from 10
-mainPathState=1
-mainPathIn=14
-mainPathOut={}
-pathsOld={14,}
-0.000406 #10: rec. BFS(8) from 9
-mainPathState=1
-mainPathIn=5
-mainPathOut={}
-pathsOld={5,}
-0.000406 #15: rec. BFS(8) from 9
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000406 #15: sends ConfirmEdge to 9 at 912
-15 sends 1002 to 9 at 912
-0.000406 #15: sends BFS to 9 at 922
-15 sends 1001 to 9 at 922
-0.000406 #15: sends BFS to 16 at 922
-15 sends 1001 to 16 at 922
-0.000406 #2: rec. BFS(5) from 6
+pathsOld={12,}
+0.000084 #1: rec. BFS(10) from 10
 mainPathState=1
 mainPathIn=1
 mainPathOut={}
-pathsOld={5,}
-0.000406 #11: rec. BFS(5) from 10
-mainPathState=1
-mainPathIn=6
+pathsOld={1,}
+0.000084 #19: rec. BFS(18) from 18
+mainPathState=0
+mainPathIn=0
 mainPathOut={}
-pathsOld={5,}
-0.000406 #10: rec. BFS(14) from 13
+pathsOld={}
+50
+0.000084 #19: sends ConfirmEdge to 18 at 134
+19 sends 1002 to 18 at 134
+0.000084 #19: sends ConfirmPath to 18 at 134
+19 sends 1005 to 18 at 134
+0.000084 #16: rec. BFS(23) from 23
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000084 #16: sends ConfirmEdge to 23 at 134
+16 sends 1002 to 23 at 134
+0.000084 #16: sends BFS to 23 at 135
+16 sends 1001 to 23 at 135
+0.000084 #16: sends BFS to 17 at 139
+16 sends 1001 to 17 at 139
+0.000084 #16: sends BFS to 15 at 138
+16 sends 1001 to 15 at 138
+0.000084 #16: sends BFS to 8 at 136
+16 sends 1001 to 8 at 136
+0.000085 #2: rec. BFS(1) from 1
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000085 #2: sends ConfirmEdge to 1 at 138
+2 sends 1002 to 1 at 138
+0.000085 #2: sends BFS to 11 at 139
+2 sends 1001 to 11 at 139
+0.000085 #2: sends BFS to 3 at 136
+2 sends 1001 to 3 at 136
+0.000085 #2: sends BFS to 1 at 140
+2 sends 1001 to 1 at 140
+0.000085 #20: rec. BFS(12) from 12
+mainPathState=1
+mainPathIn=20
+mainPathOut={}
+pathsOld={20,}
+0.000085 #13: rec. BFS(12) from 12
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000085 #13: sends ConfirmEdge to 12 at 138
+13 sends 1002 to 12 at 138
+0.000085 #13: sends BFS to 21 at 138
+13 sends 1001 to 21 at 138
+0.000085 #13: sends BFS to 14 at 138
+13 sends 1001 to 14 at 138
+0.000085 #13: sends BFS to 12 at 140
+13 sends 1001 to 12 at 140
+0.000085 #13: sends BFS to 5 at 136
+13 sends 1001 to 5 at 136
+0.000085 #24: rec. BFS(23) from 23
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000085 #24: sends ConfirmEdge to 23 at 136
+24 sends 1002 to 23 at 136
+0.000085 #24: sends ConfirmPath to 23 at 139
+24 sends 1005 to 23 at 139
+0.000086 #10: rec. BFS(1) from 1
+mainPathState=1
+mainPathIn=10
+mainPathOut={}
+pathsOld={10,}
+0.000086 #18: rec. BFS(10) from 10
+mainPathState=1
+mainPathIn=18
+mainPathOut={}
+pathsOld={18,}
+0.000086 #21: rec. BFS(20) from 20
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000086 #21: sends ConfirmEdge to 20 at 137
+21 sends 1002 to 20 at 137
+0.000086 #21: sends BFS to 22 at 140
+21 sends 1001 to 22 at 140
+0.000086 #21: sends BFS to 20 at 137
+21 sends 1001 to 20 at 137
+0.000086 #21: sends BFS to 13 at 141
+21 sends 1001 to 13 at 141
+0.000086 #10: rec. BFS(18) from 18
+mainPathState=1
+mainPathIn=10
+mainPathOut={}
+pathsOld={10,}
+0.000165 #10: rec. ConfirmEdge
+0.000166 #18: rec. ConfirmEdge
+0.000166 #23: rec. ConfirmEdge
+0.000167 #12: rec. BFS(12) from 4
+mainPathState=1
+mainPathIn=12
+mainPathOut={}
+pathsOld={12,}
+0.000167 #3: rec. BFS(12) from 4
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000167 #3: sends ConfirmEdge to 4 at 220
+3 sends 1002 to 4 at 220
+0.000167 #3: sends BFS to 4 at 220
+3 sends 1001 to 4 at 220
+0.000167 #3: sends BFS to 2 at 222
+3 sends 1001 to 2 at 222
+0.000168 #5: rec. BFS(12) from 4
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000168 #5: sends ConfirmEdge to 4 at 218
+5 sends 1002 to 4 at 218
+0.000168 #5: sends BFS to 13 at 221
+5 sends 1001 to 13 at 221
+0.000168 #5: sends BFS to 6 at 223
+5 sends 1001 to 6 at 223
+0.000168 #5: sends BFS to 4 at 221
+5 sends 1001 to 4 at 221
+0.000168 #8: rec. BFS(23) from 16
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000168 #8: sends ConfirmEdge to 16 at 221
+8 sends 1002 to 16 at 221
+0.000168 #8: sends BFS to 16 at 222
+8 sends 1001 to 16 at 222
+0.000168 #8: sends BFS to 9 at 222
+8 sends 1001 to 9 at 222
+0.000168 #8: sends BFS to 7 at 223
+8 sends 1001 to 7 at 223
+0.000168 #3: rec. BFS(1) from 2
+mainPathState=1
+mainPathIn=4
+mainPathOut={}
+pathsOld={12,}
+0.000168 #23: rec. ConfirmEdge
+0.000168 #5: rec. BFS(12) from 13
+mainPathState=1
+mainPathIn=4
+mainPathOut={}
+pathsOld={12,}
+0.000169 #20: rec. ConfirmEdge
+0.000170 #15: rec. BFS(23) from 16
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000170 #15: sends ConfirmEdge to 16 at 223
+15 sends 1002 to 16 at 223
+0.000170 #15: sends BFS to 16 at 224
+15 sends 1001 to 16 at 224
+0.000170 #15: sends BFS to 14 at 223
+15 sends 1001 to 14 at 223
+0.000170 #15: sends BFS to 7 at 223
+15 sends 1001 to 7 at 223
+0.000170 #1: rec. ConfirmEdge
+0.000170 #12: rec. ConfirmEdge
+0.000170 #21: rec. BFS(12) from 13
+mainPathState=1
+mainPathIn=20
+mainPathOut={}
+pathsOld={20,}
+0.000170 #14: rec. BFS(12) from 13
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000170 #14: sends ConfirmEdge to 13 at 222
+14 sends 1002 to 13 at 222
+0.000170 #14: sends BFS to 22 at 223
+14 sends 1001 to 22 at 223
+0.000170 #14: sends BFS to 15 at 223
+14 sends 1001 to 15 at 223
+0.000170 #14: sends BFS to 13 at 221
+14 sends 1001 to 13 at 221
+0.000170 #14: sends BFS to 6 at 224
+14 sends 1001 to 6 at 224
+0.000171 #17: rec. BFS(23) from 16
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000171 #17: sends ConfirmEdge to 16 at 223
+17 sends 1002 to 16 at 223
+0.000171 #17: sends ConfirmPath to 16 at 225
+17 sends 1005 to 16 at 225
+0.000171 #11: rec. BFS(1) from 2
+mainPathState=2
+mainPathIn=10
+mainPathOut={11,}
+pathsOld={10,}
+0.000172 #22: rec. BFS(20) from 21
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000172 #22: sends ConfirmEdge to 21 at 226
+22 sends 1002 to 21 at 226
+0.000172 #22: sends ConfirmPath to 21 at 226
+22 sends 1005 to 21 at 226
+0.000173 #13: rec. BFS(20) from 21
+mainPathState=1
+mainPathIn=12
+mainPathOut={}
+pathsOld={12,}
+0.000197 #10: rec. ConfirmPath from 11
+mainPathState=1
+mainPathIn=10
+mainPathOut={11,}
+sendMessageToPath({11,},1)
+0.000197 #10: sends ConfirmStreamline to 11 at 250
+10 sends 1005 to 11 at 250
+0.000198 #18: rec. ConfirmPath from 19
+mainPathState=1
+mainPathIn=18
+mainPathOut={19,}
+sendMessageToPath({19,},1)
+0.000198 #18: sends ConfirmStreamline to 19 at 250
+18 sends 1005 to 19 at 250
+0.000198 #23: rec. BFS(23) from 16
+mainPathState=1
+mainPathIn=23
+mainPathOut={16,24,}
+pathsOld={23,}
+0.000199 #12: rec. ConfirmEdge
+0.000200 #23: rec. ConfirmPath from 24
+mainPathState=1
+mainPathIn=23
+mainPathOut={16,24,}
+sendMessageToPath({16,24,},1)
+p2p=24
+0.000200 #23: sends CutOff to 24 at 252
+23 sends 1003 to 24 at 252
+0.000200 #23: sends ConfirmStreamline to 24 at 254
+23 sends 1005 to 24 at 254
+0.000201 #20: rec. BFS(20) from 21
+mainPathState=1
+mainPathIn=20
+mainPathOut={21,}
+pathsOld={20,}
+0.000202 #1: rec. BFS(1) from 2
+mainPathState=1
+mainPathIn=1
+mainPathOut={2,}
+pathsOld={1,}
+0.000202 #12: rec. BFS(12) from 13
+mainPathState=1
+mainPathIn=12
+mainPathOut={13,4,}
+pathsOld={12,}
+0.000250 #4: rec. ConfirmEdge
+0.000252 #4: rec. ConfirmEdge
+0.000253 #13: rec. BFS(12) from 5
+mainPathState=1
+mainPathIn=12
+mainPathOut={}
+pathsOld={12,}
+0.000253 #16: rec. ConfirmEdge
+0.000253 #13: rec. BFS(12) from 14
+mainPathState=1
+mainPathIn=12
+mainPathOut={}
+pathsOld={12,}
+0.000254 #2: rec. BFS(12) from 3
+mainPathState=1
+mainPathIn=1
+mainPathOut={}
+pathsOld={1,}
+0.000254 #9: rec. BFS(23) from 8
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000254 #9: sends ConfirmEdge to 8 at 308
+9 sends 1002 to 8 at 308
+0.000254 #9: sends ConfirmPath to 8 at 304
+9 sends 1005 to 8 at 304
+0.000255 #6: rec. BFS(12) from 5
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000255 #6: sends ConfirmEdge to 5 at 309
+6 sends 1002 to 5 at 309
+0.000255 #6: sends BFS to 14 at 307
+6 sends 1001 to 14 at 307
+0.000255 #6: sends BFS to 7 at 307
+6 sends 1001 to 7 at 307
+0.000255 #6: sends BFS to 5 at 307
+6 sends 1001 to 5 at 307
+0.000255 #7: rec. BFS(23) from 8
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={}
+50
+0.000255 #7: sends ConfirmEdge to 8 at 305
+7 sends 1002 to 8 at 305
+0.000255 #7: sends BFS to 15 at 307
+7 sends 1001 to 15 at 307
+0.000255 #7: sends BFS to 8 at 307
+7 sends 1001 to 8 at 307
+0.000255 #7: sends BFS to 6 at 307
+7 sends 1001 to 6 at 307
+0.000255 #16: rec. ConfirmEdge
+0.000255 #14: rec. BFS(23) from 15
+mainPathState=1
+mainPathIn=13
+mainPathOut={}
+pathsOld={12,}
+0.000255 #22: rec. BFS(12) from 14
+mainPathState=2
+mainPathIn=21
+mainPathOut={22,}
+pathsOld={20,}
+0.000255 #15: rec. BFS(12) from 14
+mainPathState=1
+mainPathIn=16
+mainPathOut={}
+pathsOld={23,}
+0.000255 #7: rec. BFS(23) from 15
+mainPathState=1
+mainPathIn=8
+mainPathOut={}
+pathsOld={23,}
+0.000255 #16: rec. ConfirmEdge
+0.000256 #6: rec. BFS(12) from 14
 mainPathState=1
 mainPathIn=5
 mainPathOut={}
-pathsOld={5,}
-0.000428 #5: rec. BFS(5) from 1
+pathsOld={12,}
+0.000258 #21: rec. ConfirmEdge
+0.000282 #4: rec. BFS(12) from 5
+mainPathState=1
+mainPathIn=12
+mainPathOut={5,3,}
+pathsOld={12,}
+0.000282 #11: rec. ConfirmPath from 10
+mainPathState=2
+mainPathIn=10
+mainPathOut={11,}
+0.000282 #19: rec. ConfirmPath from 18
+mainPathState=2
+mainPathIn=18
+mainPathOut={19,}
+0.000284 #4: rec. BFS(12) from 3
+mainPathState=1
+mainPathIn=12
+mainPathOut={5,3,}
+pathsOld={12,}
+0.000284 #24: rec. CutOff from 23
+mainPathIn=23
+mainPathOut={24,}
+mainPathOld={23,}
+isMainPathRemoved=1
+sendMessageToPath({24,},0)
+p2p=0
+0.000284 #24: sends Available to 23 at 337
+24 sends 1004 to 23 at 337
+0.000284 #24: sends Available to 17 at 336
+24 sends 1004 to 17 at 336
+0.000285 #16: rec. BFS(23) from 8
+mainPathState=1
+mainPathIn=23
+mainPathOut={8,15,17,}
+pathsOld={23,}
+0.000285 #13: rec. ConfirmEdge
+0.000287 #16: rec. BFS(23) from 15
+mainPathState=1
+mainPathIn=23
+mainPathOut={8,15,17,}
+pathsOld={23,}
+0.000287 #16: rec. ConfirmPath from 17
+mainPathState=1
+mainPathIn=23
+mainPathOut={8,15,17,}
+sendMessageToPath({8,15,17,},1)
+p2p=15
+0.000287 #16: sends CutOff to 15 at 340
+16 sends 1003 to 15 at 340
+p2p=17
+0.000287 #16: sends CutOff to 17 at 338
+16 sends 1003 to 17 at 338
+0.000287 #16: sends ConfirmPath to 23 at 340
+16 sends 1005 to 23 at 340
+0.000290 #21: rec. ConfirmPath from 22
+mainPathState=1
+mainPathIn=20
+mainPathOut={22,}
+sendMessageToPath({22,},1)
+0.000290 #21: sends ConfirmPath to 20 at 344
+21 sends 1005 to 20 at 344
+0.000316 #24: rec. ConfirmPath from 23
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+0.000336 #8: rec. ConfirmPath from 9
+mainPathState=1
+mainPathIn=16
+mainPathOut={}
+0.000337 #8: rec. ConfirmEdge
+0.000339 #14: rec. BFS(12) from 6
+mainPathState=1
+mainPathIn=13
+mainPathOut={}
+pathsOld={12,}
+0.000339 #7: rec. BFS(12) from 6
+mainPathState=1
+mainPathIn=8
+mainPathOut={}
+pathsOld={23,}
+0.000339 #5: rec. BFS(12) from 6
+mainPathState=1
+mainPathIn=4
+mainPathOut={}
+pathsOld={12,}
+0.000339 #15: rec. BFS(23) from 7
+mainPathState=1
+mainPathIn=16
+mainPathOut={}
+pathsOld={23,}
+0.000339 #6: rec. BFS(23) from 7
 mainPathState=1
 mainPathIn=5
-mainPathOut={1,6,10,}
-pathsOld={5,}
-0.000428 #8: rec. BFS(8) from 9
+mainPathOut={}
+pathsOld={12,}
+0.000368 #8: rec. ConfirmEdge
+0.000368 #17: rec. Available from 24
+mainPathState=2
+mainPathIn=16
+mainPathOut={17,}
+mainPathOld={23,}
+0.000368 #17: sends BFS to 24 at 418
+17 sends 1001 to 24 at 418
+0.000369 #8: rec. BFS(23) from 7
 mainPathState=1
+mainPathIn=16
+mainPathOut={7,9,}
+pathsOld={23,}
+0.000369 #23: rec. Available from 24
+mainPathState=3
+mainPathIn=23
+mainPathOut={16,24,}
+mainPathOld={23,}
+0.000370 #17: rec. CutOff from 16
+mainPathIn=16
+mainPathOut={17,}
+mainPathOld={23,}
+isMainPathRemoved=1
+sendMessageToPath({17,},0)
+p2p=0
+0.000370 #17: sends Available to 24 at 421
+17 sends 1004 to 24 at 421
+0.000370 #17: sends Available to 16 at 425
+17 sends 1004 to 16 at 425
+0.000370 #17: sends Available to 9 at 425
+17 sends 1004 to 9 at 425
+0.000371 #5: rec. ConfirmEdge
+0.000372 #15: rec. CutOff from 16
+mainPathIn=16
+mainPathOut={}
+mainPathOld={23,}
+isMainPathRemoved=1
+sendMessageToPath({},0)
+0.000372 #15: sends Available to 16 at 426
+15 sends 1004 to 16 at 426
+0.000372 #15: sends Available to 14 at 426
+15 sends 1004 to 14 at 426
+0.000372 #15: sends Available to 7 at 423
+15 sends 1004 to 7 at 423
+0.000372 #23: rec. ConfirmPath from 16
+mainPathState=3
+mainPathIn=23
+mainPathOut={16,24,}
+0.000376 #20: rec. ConfirmPath from 21
+mainPathState=1
+mainPathIn=20
+mainPathOut={21,}
+sendMessageToPath({21,},1)
+0.000376 #20: sends ConfirmStreamline to 21 at 429
+20 sends 1005 to 21 at 429
+0.000450 #24: rec. BFS(23) from 17
+mainPathState=0
+mainPathIn=0
+mainPathOut={}
+pathsOld={23,}
+0.000455 #7: rec. Available from 15
+mainPathState=1
+mainPathIn=8
+mainPathOut={}
+mainPathOld={23,}
+0.000457 #16: rec. Available from 17
+mainPathState=2
+mainPathIn=23
+mainPathOut={8,15,17,}
+mainPathOld={23,}
+0.000457 #16: sends BFS to 17 at 510
+16 sends 1001 to 17 at 510
+0.000457 #9: rec. Available from 17
+mainPathState=2
 mainPathIn=8
 mainPathOut={9,}
-pathsOld={8,}
-0.000428 #14: rec. BFS(14) from 13
-mainPathState=1
-mainPathIn=14
-mainPathOut={13,}
-pathsOld={14,}
-0.000428 #5: rec. BFS(5) from 6
-mainPathState=1
-mainPathIn=5
-mainPathOut={1,6,10,}
-pathsOld={5,}
-0.000428 #5: rec. BFS(5) from 10
-mainPathState=1
-mainPathIn=5
-mainPathOut={1,6,10,}
-pathsOld={5,}
-0.000944 #1: rec. ConfirmEdge
-0.000944 #6: rec. ConfirmEdge
-0.000944 #9: rec. ConfirmEdge
-0.000944 #6: rec. ConfirmEdge
-0.000954 #3: rec. BFS(5) from 2
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000954 #3: sends ConfirmEdge to 2 at 2008
-3 sends 1002 to 2 at 2008
-0.000954 #3: sends BFS to 4 at 2018
-3 sends 1001 to 4 at 2018
-0.000954 #3: sends BFS to 2 at 2018
-3 sends 1001 to 2 at 2018
-0.000954 #3: sends BFS to 7 at 2018
-3 sends 1001 to 7 at 2018
-0.000954 #6: rec. BFS(5) from 2
-mainPathState=1
-mainPathIn=5
-mainPathOut={7,11,}
-pathsOld={5,}
-0.000954 #12: rec. BFS(5) from 11
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000954 #12: sends ConfirmEdge to 11 at 2008
-12 sends 1002 to 11 at 2008
-0.000954 #12: sends BFS to 7 at 2018
-12 sends 1001 to 7 at 2018
-0.000954 #12: sends BFS to 11 at 2018
-12 sends 1001 to 11 at 2018
-0.000954 #10: rec. BFS(5) from 11
-mainPathState=1
-mainPathIn=5
-mainPathOut={}
-pathsOld={5,}
-0.000954 #16: rec. BFS(8) from 15
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.000954 #16: sends ConfirmEdge to 15 at 2008
-16 sends 1002 to 15 at 2008
-0.000954 #16: sends BFS to 15 at 2018
-16 sends 1001 to 15 at 2018
-0.000954 #16: sends BFS to 17 at 2018
-16 sends 1001 to 17 at 2018
-0.000976 #1: rec. BFS(5) from 2
-mainPathState=1
-mainPathIn=5
-mainPathOut={2,}
-pathsOld={5,}
-0.000976 #6: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({7,11,},1)
-p2p=11
-0.000976 #6: sends CutOff to 11 at 2052
-6 sends 1003 to 11 at 2052
-0.000976 #6: sends ConfirmPath to 5 at 2062
-6 sends 1005 to 5 at 2062
-0.000976 #9: rec. BFS(8) from 15
-mainPathState=1
-mainPathIn=8
-mainPathOut={15,}
-pathsOld={8,}
-0.000976 #6: rec. BFS(5) from 11
+mainPathOld={23,}
+0.000457 #9: sends BFS to 17 at 508
+9 sends 1001 to 17 at 508
+0.000458 #16: rec. Available from 15
 mainPathState=2
-mainPathIn=5
-mainPathOut={7,11,}
-pathsOld={5,}
-0.002040 #2: rec. ConfirmEdge
-0.002040 #11: rec. ConfirmEdge
-0.002040 #15: rec. ConfirmEdge
-0.002050 #4: rec. BFS(5) from 3
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.002050 #4: sends ConfirmEdge to 3 at 4200
-4 sends 1002 to 3 at 4200
-0.002050 #4: sends ConfirmPath to 3 at 4210
-4 sends 1005 to 3 at 4210
-0.002050 #7: rec. BFS(5) from 3
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-pathsOld={5,}
-0.002050 #17: rec. BFS(8) from 16
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={}
-0.002050 #17: sends ConfirmEdge to 16 at 4200
-17 sends 1002 to 16 at 4200
-0.002050 #17: sends ConfirmPath to 16 at 4210
-17 sends 1005 to 16 at 4210
-0.002050 #7: rec. BFS(5) from 12
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-pathsOld={5,}
-0.002072 #2: rec. BFS(5) from 3
-mainPathState=1
-mainPathIn=1
-mainPathOut={3,}
-pathsOld={5,}
-0.002072 #11: rec. BFS(5) from 12
-mainPathState=1
-mainPathIn=6
-mainPathOut={12,}
-pathsOld={5,}
-0.002072 #15: rec. BFS(8) from 16
-mainPathState=1
-mainPathIn=9
-mainPathOut={16,}
-pathsOld={8,}
-0.002084 #11: rec. CutOff from 6
-mainPathIn=6
-mainPathOut={12,}
-mainPathOld={5,}
-isMainPathRemoved=1
-sendMessageToPath({12,},0)
-p2p=12
-0.002084 #11: sends CutOff to 12 at 4268
-11 sends 1003 to 12 at 4268
-sendMessageToPath({},0)
-sendMessageToPath({},0)
-0.002084 #11: sends Available to 6 at 4298
-11 sends 1004 to 6 at 4298
-0.002084 #11: sends Available to 12 at 4298
-11 sends 1004 to 12 at 4298
-0.002084 #11: sends Available to 10 at 4298
-11 sends 1004 to 10 at 4298
-0.002094 #5: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({1,6,10,},1)
-p2p=6
-0.002094 #5: sends CutOff to 6 at 4288
-5 sends 1003 to 6 at 4288
-p2p=10
-0.002094 #5: sends CutOff to 10 at 4298
-5 sends 1003 to 10 at 4298
-0.002094 #5: sends ConfirmStreamline to 6 at 4298
-5 sends 1005 to 6 at 4298
-0.004232 #3: rec. ConfirmEdge
-0.004232 #16: rec. ConfirmEdge
-0.004264 #3: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({4,},1)
-0.004264 #3: sends ConfirmPath to 2 at 8638
-3 sends 1005 to 2 at 8638
-0.004264 #16: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({17,},1)
-0.004264 #16: sends ConfirmPath to 15 at 8638
-16 sends 1005 to 15 at 8638
-0.004300 #12: rec. CutOff from 11
-mainPathIn=11
-mainPathOut={}
-mainPathOld={5,}
-isMainPathRemoved=1
-sendMessageToPath({},0)
-sendMessageToPath({},0)
-sendMessageToPath({},0)
-0.004300 #12: sends Available to 7 at 8730
-12 sends 1004 to 7 at 8730
-0.004300 #12: sends Available to 11 at 8730
-12 sends 1004 to 11 at 8730
-0.004320 #6: rec. CutOff from 5
-mainPathIn=5
-mainPathOut={7,11,}
-mainPathOld={5,}
-isMainPathRemoved=1
-sendMessageToPath({7,11,},0)
-p2p=7
-0.004320 #6: sends CutOff to 7 at 8740
-6 sends 1003 to 7 at 8740
-p2p=11
-0.004320 #6: sends CutOff to 11 at 8750
-6 sends 1003 to 11 at 8750
-sendMessageToPath({},0)
-sendMessageToPath({},0)
-0.004320 #6: sends Available to 2 at 8770
-6 sends 1004 to 2 at 8770
-0.004320 #6: sends Available to 7 at 8770
-6 sends 1004 to 7 at 8770
-0.004320 #6: sends Available to 5 at 8770
-6 sends 1004 to 5 at 8770
-0.004320 #6: sends Available to 11 at 8770
-6 sends 1004 to 11 at 8770
-0.004330 #6: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.004330 #10: rec. Available
-mainPathState=1
-mainPathIn=5
-mainPathOut={}
-mainPathOld={5,}
-0.004330 #10: sends BFS to 11 at 8760
-10 sends 1001 to 11 at 8760
-0.004330 #10: rec. CutOff from 5
-mainPathIn=5
-mainPathOut={}
-mainPathOld={5,}
-isMainPathRemoved=1
-sendMessageToPath({},0)
-sendMessageToPath({},0)
-sendMessageToPath({},0)
-0.004330 #10: sends Available to 5 at 8790
-10 sends 1004 to 5 at 8790
-0.004330 #10: sends Available to 11 at 8790
-10 sends 1004 to 11 at 8790
-0.004330 #10: sends Available to 9 at 8790
-10 sends 1004 to 9 at 8790
-0.004330 #10: sends Available to 13 at 8790
-10 sends 1004 to 13 at 8790
-0.004332 #12: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.004352 #6: rec. ConfirmPath, mainPathState=0
-0.008670 #2: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({3,},1)
-0.008670 #2: sends ConfirmPath to 1 at 17450
-2 sends 1005 to 1 at 17450
-0.008670 #15: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({16,},1)
-0.008670 #15: sends ConfirmPath to 9 at 17450
-15 sends 1005 to 9 at 17450
-0.008762 #7: rec. Available
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-mainPathOld={5,}
-0.008762 #11: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.008772 #7: rec. CutOff from 6
-mainPathIn=6
-mainPathOut={7,}
-mainPathOld={5,}
-isMainPathRemoved=1
-sendMessageToPath({7,},0)
-p2p=0
-sendMessageToPath({},0)
-sendMessageToPath({},0)
-0.008772 #7: sends Available to 3 at 17674
-7 sends 1004 to 3 at 17674
-0.008772 #7: sends Available to 6 at 17674
-7 sends 1004 to 6 at 17674
-0.008772 #7: sends Available to 12 at 17674
-7 sends 1004 to 12 at 17674
-0.008782 #11: rec. CutOff from 6
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-isMainPathRemoved=0
-0.008782 #11: sends Available to 6 at 17664
-11 sends 1004 to 6 at 17664
-0.008782 #11: sends Available to 12 at 17664
-11 sends 1004 to 12 at 17664
-0.008782 #11: sends Available to 10 at 17664
-11 sends 1004 to 10 at 17664
-0.008792 #11: rec. BFS(5) from 10
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,}
-0.008802 #2: rec. Available
-mainPathState=2
-mainPathIn=1
-mainPathOut={3,}
-mainPathOld={5,}
-0.008802 #5: rec. Available
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-mainPathOld={5,}
-0.008804 #7: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.008814 #11: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.008822 #5: rec. Available
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-mainPathOld={5,}
-0.008822 #9: rec. Available
-mainPathState=1
-mainPathIn=8
-mainPathOut={15,}
-mainPathOld={8,}
-0.008822 #9: sends BFS to 10 at 17744
-9 sends 1001 to 10 at 17744
-0.008822 #13: rec. Available
-mainPathState=1
-mainPathIn=14
-mainPathOut={}
-mainPathOld={14,}
-0.008822 #13: sends BFS to 10 at 17744
-13 sends 1001 to 10 at 17744
-0.008824 #11: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.017482 #1: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({2,},1)
-0.017482 #1: sends ConfirmPath to 5 at 35074
-1 sends 1005 to 5 at 35074
-0.017482 #9: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({15,},1)
-0.017482 #9: sends ConfirmPath to 8 at 35074
-9 sends 1005 to 8 at 35074
-0.017696 #6: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.017696 #12: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.017696 #10: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.017706 #3: rec. Available
-mainPathState=2
-mainPathIn=2
-mainPathOut={4,}
-mainPathOld={5,}
-0.017706 #6: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.017706 #12: rec. Available
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-mainPathOld={5,}
-0.017776 #10: rec. BFS(8) from 9
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,}
-0.017776 #10: sends ConfirmEdge to 9 at 35652
-10 sends 1002 to 9 at 35652
-0.017776 #10: sends BFS to 5 at 35662
-10 sends 1001 to 5 at 35662
-0.017776 #10: sends BFS to 11 at 35662
-10 sends 1001 to 11 at 35662
-0.017776 #10: sends BFS to 9 at 35662
-10 sends 1001 to 9 at 35662
-0.017776 #10: sends BFS to 13 at 35662
-10 sends 1001 to 13 at 35662
-0.017776 #10: rec. BFS(14) from 13
-mainPathState=1
-mainPathIn=9
-mainPathOut={}
-pathsOld={5,8,}
-0.035106 #5: rec. ConfirmPath, mainPathState=3
-0.035106 #8: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({9,},1)
-0.035106 #8: sends ConfirmStreamline to 9 at 70322
-8 sends 1005 to 9 at 70322
-0.035684 #9: rec. ConfirmEdge
-0.035684 #9: sends CutOff to 10 at 71468
-9 sends 1003 to 10 at 71468
-0.035694 #5: rec. BFS(8) from 10
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-pathsOld={5,}
-0.035694 #11: rec. BFS(8) from 10
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,}
-0.035694 #11: sends ConfirmEdge to 10 at 71488
-11 sends 1002 to 10 at 71488
-0.035694 #11: sends BFS to 6 at 71498
-11 sends 1001 to 6 at 71498
-0.035694 #11: sends BFS to 12 at 71498
-11 sends 1001 to 12 at 71498
-0.035694 #11: sends BFS to 10 at 71498
-11 sends 1001 to 10 at 71498
-0.035694 #13: rec. BFS(8) from 10
-mainPathState=1
-mainPathIn=14
-mainPathOut={}
-pathsOld={14,}
-0.035716 #9: rec. BFS(8) from 10
-mainPathState=2
-mainPathIn=8
-mainPathOut={15,}
-pathsOld={8,}
-0.070354 #9: rec. ConfirmPath, mainPathState=2
-0.071500 #10: rec. CutOff from 9
-mainPathIn=9
-mainPathOut={}
-mainPathOld={5,8,}
-isMainPathRemoved=1
-sendMessageToPath({},0)
-0.071500 #10: sends Available to 5 at 143110
-10 sends 1004 to 5 at 143110
-0.071500 #10: sends Available to 11 at 143110
-10 sends 1004 to 11 at 143110
-0.071500 #10: sends Available to 9 at 143110
-10 sends 1004 to 9 at 143110
-0.071500 #10: sends Available to 13 at 143110
-10 sends 1004 to 13 at 143110
-0.071520 #10: rec. ConfirmEdge
-0.071520 #10: sends CutOff to 11 at 143140
-10 sends 1003 to 11 at 143140
-0.071530 #6: rec. BFS(8) from 11
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,}
-0.071530 #6: sends ConfirmEdge to 11 at 143160
-6 sends 1002 to 11 at 143160
-0.071530 #6: sends BFS to 2 at 143170
-6 sends 1001 to 2 at 143170
-0.071530 #6: sends BFS to 7 at 143170
-6 sends 1001 to 7 at 143170
-0.071530 #6: sends BFS to 5 at 143170
-6 sends 1001 to 5 at 143170
-0.071530 #6: sends BFS to 11 at 143170
-6 sends 1001 to 11 at 143170
-0.071530 #12: rec. BFS(8) from 11
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,}
-0.071530 #12: sends ConfirmEdge to 11 at 143160
-12 sends 1002 to 11 at 143160
-0.071530 #12: sends BFS to 7 at 143170
-12 sends 1001 to 7 at 143170
-0.071530 #12: sends BFS to 11 at 143170
-12 sends 1001 to 11 at 143170
-0.071552 #10: rec. BFS(8) from 11
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,8,}
-0.143142 #5: rec. Available
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-mainPathOld={5,}
-0.143142 #11: rec. Available
-mainPathState=1
-mainPathIn=10
-mainPathOut={}
-mainPathOld={5,8,}
-0.143142 #11: sends BFS to 10 at 286384
-11 sends 1001 to 10 at 286384
-0.143142 #9: rec. Available
-mainPathState=2
-mainPathIn=8
-mainPathOut={15,}
-mainPathOld={8,}
-0.143142 #13: rec. Available
-mainPathState=1
-mainPathIn=14
-mainPathOut={}
-mainPathOld={14,}
-0.143142 #13: sends BFS to 10 at 286384
-13 sends 1001 to 10 at 286384
-0.143174 #11: rec. CutOff from 10
-mainPathIn=10
-mainPathOut={}
-mainPathOld={5,8,}
-isMainPathRemoved=1
-sendMessageToPath({},0)
-0.143174 #11: sends Available to 6 at 286458
-11 sends 1004 to 6 at 286458
-0.143174 #11: sends Available to 12 at 286458
-11 sends 1004 to 12 at 286458
-0.143174 #11: sends Available to 10 at 286458
-11 sends 1004 to 10 at 286458
-0.143192 #11: rec. ConfirmEdge
-0.143192 #11: sends CutOff to 6 at 286484
-11 sends 1003 to 6 at 286484
-0.143192 #11: rec. ConfirmEdge
-0.143192 #11: sends CutOff to 12 at 286484
-11 sends 1003 to 12 at 286484
-0.143202 #2: rec. BFS(8) from 6
-mainPathState=2
-mainPathIn=1
-mainPathOut={3,}
-pathsOld={5,}
-0.143202 #7: rec. BFS(8) from 6
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,}
-0.143202 #7: sends ConfirmEdge to 6 at 286504
-7 sends 1002 to 6 at 286504
-0.143202 #7: sends ConfirmPath to 6 at 286514
-7 sends 1005 to 6 at 286514
-0.143202 #5: rec. BFS(8) from 6
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-pathsOld={5,}
-0.143202 #7: rec. BFS(8) from 12
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-pathsOld={5,8,}
-0.143224 #11: rec. BFS(8) from 6
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,8,}
-0.143224 #11: rec. BFS(8) from 12
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,8,}
-0.286416 #10: rec. BFS(5) from 11
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,8,}
-0.286416 #10: rec. BFS(14) from 13
-mainPathState=0
-mainPathIn=0
-mainPathOut={}
-pathsOld={5,8,}
-0.286416 #10: sends ConfirmEdge to 13 at 572932
-10 sends 1002 to 13 at 572932
-0.286416 #10: sends BFS to 5 at 572942
-10 sends 1001 to 5 at 572942
-0.286416 #10: sends BFS to 11 at 572942
-10 sends 1001 to 11 at 572942
-0.286416 #10: sends BFS to 9 at 572942
-10 sends 1001 to 9 at 572942
-0.286416 #10: sends BFS to 13 at 572942
-10 sends 1001 to 13 at 572942
-0.286490 #6: rec. Available
-mainPathState=1
-mainPathIn=11
-mainPathOut={}
-mainPathOld={5,8,}
-0.286490 #6: sends BFS to 11 at 573080
-6 sends 1001 to 11 at 573080
-0.286490 #12: rec. Available
-mainPathState=1
-mainPathIn=11
-mainPathOut={}
-mainPathOld={5,8,}
-0.286490 #12: sends BFS to 11 at 573080
-12 sends 1001 to 11 at 573080
-0.286490 #10: rec. Available
+mainPathIn=23
+mainPathOut={8,15,17,}
+mainPathOld={23,}
+0.000458 #16: sends BFS to 15 at 508
+16 sends 1001 to 15 at 508
+0.000458 #14: rec. Available from 15
 mainPathState=1
 mainPathIn=13
 mainPathOut={}
-mainPathOld={5,8,14,}
-0.286490 #10: sends BFS to 11 at 573080
-10 sends 1001 to 11 at 573080
-0.286522 #6: rec. CutOff from 11
-mainPathIn=11
-mainPathOut={}
-mainPathOld={5,8,}
-isMainPathRemoved=1
-sendMessageToPath({},0)
-0.286522 #6: sends Available to 2 at 573154
-6 sends 1004 to 2 at 573154
-0.286522 #6: sends Available to 7 at 573154
-6 sends 1004 to 7 at 573154
-0.286522 #6: sends Available to 5 at 573154
-6 sends 1004 to 5 at 573154
-0.286522 #6: sends Available to 11 at 573154
-6 sends 1004 to 11 at 573154
-0.286522 #12: rec. CutOff from 11
-mainPathIn=11
-mainPathOut={}
-mainPathOld={5,8,}
-isMainPathRemoved=1
-sendMessageToPath({},0)
-0.286522 #12: sends Available to 7 at 573154
-12 sends 1004 to 7 at 573154
-0.286522 #12: sends Available to 11 at 573154
-12 sends 1004 to 11 at 573154
-0.286536 #6: rec. ConfirmEdge
-0.286536 #6: sends CutOff to 7 at 573172
-6 sends 1003 to 7 at 573172
-0.286568 #6: rec. ConfirmPath, mainPathState=0
-0.572964 #13: rec. ConfirmEdge
-0.572974 #5: rec. BFS(14) from 10
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-pathsOld={5,}
-0.572974 #11: rec. BFS(14) from 10
+mainPathOld={12,}
+0.000461 #21: rec. ConfirmPath from 20
+mainPathState=2
+mainPathIn=20
+mainPathOut={22,}
+0.000482 #24: rec. Available from 17
 mainPathState=0
 mainPathIn=0
 mainPathOut={}
-pathsOld={5,8,}
-0.572974 #11: sends ConfirmEdge to 10 at 1146048
-11 sends 1002 to 10 at 1146048
-0.572974 #11: sends BFS to 6 at 1146058
-11 sends 1001 to 6 at 1146058
-0.572974 #11: sends BFS to 12 at 1146058
-11 sends 1001 to 12 at 1146058
-0.572974 #11: sends BFS to 10 at 1146058
-11 sends 1001 to 10 at 1146058
-0.572974 #9: rec. BFS(14) from 10
-mainPathState=2
-mainPathIn=8
-mainPathOut={15,}
-pathsOld={8,}
-0.572996 #13: rec. BFS(14) from 10
-mainPathState=1
-mainPathIn=14
-mainPathOut={10,}
-pathsOld={14,}
-0.573112 #11: rec. BFS(5) from 6
-mainPathState=1
-mainPathIn=10
-mainPathOut={}
-pathsOld={5,8,14,}
-0.573112 #11: rec. BFS(5) from 12
-mainPathState=1
-mainPathIn=10
-mainPathOut={}
-pathsOld={5,8,14,}
-0.573112 #11: rec. BFS(5) from 10
-mainPathState=1
-mainPathIn=10
-mainPathOut={}
-pathsOld={5,8,14,}
-0.573186 #2: rec. Available
-mainPathState=2
-mainPathIn=1
-mainPathOut={3,}
-mainPathOld={5,}
-0.573186 #7: rec. Available
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-mainPathOld={5,8,}
-0.573186 #5: rec. Available
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-mainPathOld={5,}
-0.573186 #11: rec. Available
-mainPathState=1
-mainPathIn=10
-mainPathOut={}
-mainPathOld={5,8,14,}
-0.573186 #11: sends BFS to 6 at 1146472
-11 sends 1001 to 6 at 1146472
-0.573186 #7: rec. Available
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-mainPathOld={5,8,}
-0.573186 #11: rec. Available
-mainPathState=1
-mainPathIn=10
-mainPathOut={}
-mainPathOld={5,8,14,}
-0.573186 #11: sends BFS to 12 at 1146472
-11 sends 1001 to 12 at 1146472
-0.573218 #7: rec. CutOff from 6
-mainPathIn=6
-mainPathOut={7,}
-mainPathOld={5,8,}
-isMainPathRemoved=1
-sendMessageToPath({7,},0)
-p2p=0
-0.573218 #7: sends Available to 3 at 1146546
-7 sends 1004 to 3 at 1146546
-0.573218 #7: sends Available to 6 at 1146546
-7 sends 1004 to 6 at 1146546
-0.573218 #7: sends Available to 12 at 1146546
-7 sends 1004 to 12 at 1146546
-1.146080 #10: rec. ConfirmEdge
-1.146090 #6: rec. BFS(14) from 11
+mainPathOld={23,}
+0.000540 #17: rec. BFS(23) from 9
 mainPathState=0
 mainPathIn=0
 mainPathOut={}
-pathsOld={5,8,}
-1.146090 #6: sends ConfirmEdge to 11 at 2292280
-6 sends 1002 to 11 at 2292280
-1.146090 #6: sends BFS to 2 at 2292290
-6 sends 1001 to 2 at 2292290
-1.146090 #6: sends BFS to 7 at 2292290
-6 sends 1001 to 7 at 2292290
-1.146090 #6: sends BFS to 5 at 2292290
-6 sends 1001 to 5 at 2292290
-1.146090 #6: sends BFS to 11 at 2292290
-6 sends 1001 to 11 at 2292290
-1.146090 #12: rec. BFS(14) from 11
+pathsOld={23,}
+0.000540 #15: rec. BFS(23) from 16
 mainPathState=0
 mainPathIn=0
 mainPathOut={}
-pathsOld={5,8,}
-1.146090 #12: sends ConfirmEdge to 11 at 2292280
-12 sends 1002 to 11 at 2292280
-1.146090 #12: sends BFS to 7 at 2292290
-12 sends 1001 to 7 at 2292290
-1.146090 #12: sends BFS to 11 at 2292290
-12 sends 1001 to 11 at 2292290
-1.146112 #10: rec. BFS(14) from 11
-mainPathState=1
-mainPathIn=13
-mainPathOut={11,}
-pathsOld={5,8,14,}
-1.146504 #6: rec. BFS(5) from 11
-mainPathState=1
-mainPathIn=11
-mainPathOut={}
-pathsOld={5,8,14,}
-1.146504 #12: rec. BFS(5) from 11
-mainPathState=1
-mainPathIn=11
-mainPathOut={}
-pathsOld={5,8,14,}
-1.146578 #3: rec. Available
-mainPathState=2
-mainPathIn=2
-mainPathOut={4,}
-mainPathOld={5,}
-1.146578 #6: rec. Available
-mainPathState=1
-mainPathIn=11
-mainPathOut={}
-mainPathOld={5,8,14,}
-1.146578 #6: sends BFS to 7 at 2293256
-6 sends 1001 to 7 at 2293256
-1.146578 #12: rec. Available
-mainPathState=1
-mainPathIn=11
-mainPathOut={}
-mainPathOld={5,8,14,}
-1.146578 #12: sends BFS to 7 at 2293256
-12 sends 1001 to 7 at 2293256
-2.292312 #11: rec. ConfirmEdge
-2.292312 #11: rec. ConfirmEdge
-2.292322 #2: rec. BFS(14) from 6
-mainPathState=2
-mainPathIn=1
-mainPathOut={3,}
-pathsOld={5,}
-2.292322 #7: rec. BFS(14) from 6
+pathsOld={23,}
+0.000542 #17: rec. BFS(23) from 16
 mainPathState=0
 mainPathIn=0
 mainPathOut={}
-pathsOld={5,8,}
-2.292322 #7: sends ConfirmEdge to 6 at 4584744
-7 sends 1002 to 6 at 4584744
-2.292322 #7: sends ConfirmPath to 6 at 4584754
-7 sends 1005 to 6 at 4584754
-2.292322 #5: rec. BFS(14) from 6
-mainPathState=3
-mainPathIn=5
-mainPathOut={1,6,10,}
-pathsOld={5,}
-2.292322 #7: rec. BFS(14) from 12
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-pathsOld={5,8,14,}
-2.292344 #11: rec. BFS(14) from 6
-mainPathState=1
-mainPathIn=10
-mainPathOut={6,12,}
-pathsOld={5,8,14,}
-2.292344 #11: rec. BFS(14) from 12
-mainPathState=1
-mainPathIn=10
-mainPathOut={6,12,}
-pathsOld={5,8,14,}
-2.293288 #7: rec. BFS(5) from 6
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-pathsOld={5,8,14,}
-2.293288 #7: rec. BFS(5) from 12
-mainPathState=2
-mainPathIn=6
-mainPathOut={7,}
-pathsOld={5,8,14,}
-4.584776 #6: rec. ConfirmEdge
-4.584808 #6: rec. ConfirmPath, mainPathState=1
-sendMessageToPath({7,},1)
-4.584808 #6: sends ConfirmPath to 11 at 9169726
-6 sends 1005 to 11 at 9169726
+pathsOld={23,}
 [1;31mCPPScheduler destructor[0m
 Scheduler destructor
