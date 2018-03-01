@@ -31,6 +31,7 @@ void LocomotionCode::startup() {
 		mainPathIn = module->blockId;
 		mainPathOld.push_back(module->blockId);
 		vector2string(mainPathOut,module->getGlBlock()->popupString);
+		module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
 		isSource=true;
 		int t0=messageDelay;
 		sendMessageToAllNeighbors("BFS",new MessageOf<bID>(BFS_MSG,module->blockId),t0,messageDelayError,0);
@@ -95,6 +96,8 @@ void LocomotionCode::ProcBFS(const MessageOf<bID>*msg, P2PNetworkInterface*sende
 			sendMessageToAllNeighbors("BFS",new MessageOf<bID>(BFS_MSG,msgData),t0,messageDelayError,0);
 		}
 		vector2string(mainPathOut,module->getGlBlock()->popupString);
+		module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
+			
 	} else if (mainPathState==Streamline && aug1PathState==NONE && msgFrom!=mainPathIn && msgFrom!=mainPathOut && !isIn(pathsOld,msgData)) {
 /**DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG****DEBUG**/	
 	OUTPUT << "aug1PathState=" << aug1PathState << endl;
@@ -140,6 +143,8 @@ void LocomotionCode::ProcConfirmEdge(P2PNetworkInterface* sender) {
 	if (mainPathState==BFS) {
 		mainPathOut.push_back(msgFrom);
 		vector2string(mainPathOut,module->getGlBlock()->popupString);
+		module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
+			
 		module->setColor(isSource?RED:CYAN);
 	} else if (aug1PathState==BFS) {
 		aug1PathOut.push_back(msgFrom);
@@ -363,6 +368,7 @@ void LocomotionCode::ProcConfirmStreamline(P2PNetworkInterface* sender) {
 		} else {
 			mainPathOut=aug2PathOut;
 			vector2string(mainPathOut,module->getGlBlock()->popupString);
+			module->getGlBlock()->popupString = "(" + to_string(mainPathIn) + ")" + module->getGlBlock()->popupString;
 			module->setColor(CYAN);
 		}
 		aug2PathState = NONE; 
@@ -439,18 +445,16 @@ void LocomotionCode::sendMessageToPath(const string& str, int msgType, vector<bI
 	}
 	OUTPUT << "} but" << exception << ")"<< endl;
 	
-	if (!path.empty()) {
-		it=path.begin();
-		int t0=messageDelay;
-		while (it!=path.end()) {
-			if (*it!=exception) {
-				P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(*it);
-				OUTPUT << "p2p=" << ((p2p==NULL)?0:p2p->getConnectedBlockBId()) << endl;
-				if (p2p) sendMessage(str.c_str(),new Message(msgType),p2p,t0,messageDelayError);
-				t0+=messageDelayCons;
-			}
-			it++;
+	it=path.begin();
+	int t0=messageDelay;
+	while (it!=path.end()) {
+		if (*it!=exception) {
+			P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByDestBlockId(*it);
+			OUTPUT << "p2p=" << ((p2p==NULL)?0:p2p->getConnectedBlockBId()) << endl;
+			if (p2p) sendMessage(str.c_str(),new Message(msgType),p2p,t0,messageDelayError);
+			t0+=messageDelayCons;
 		}
+		it++;
 	}
 }
 
