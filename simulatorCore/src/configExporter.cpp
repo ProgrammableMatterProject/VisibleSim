@@ -8,6 +8,7 @@
 #include "simulator.h"
 #include "catoms3DBlock.h"
 #include "catoms2DBlock.h"
+#include "datomsBlock.h"
 
 namespace BaseSimulator {
 
@@ -184,7 +185,12 @@ void Catoms3DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, Buil
 }
 
 void Catoms2DConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
-    bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);    
+    bbElt->SetAttribute("angle", static_cast<Catoms2D::Catoms2DBlock *>(bb)->angle);
 }
+
+void DatomsConfigExporter::exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb) {
+    bbElt->SetAttribute("rotation", static_cast<Datoms::DatomsBlock *>(bb)->orientationCode);
+}
+
 
 }

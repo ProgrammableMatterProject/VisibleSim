@@ -66,7 +66,7 @@ public:
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
-    virtual void glDrawSpecificBg();
+    virtual void glDrawBackground();
     void updateGlData(BuildingBlock *bb);
     void updateGlData(DatomsBlock*blc,const Color &color);
     void updateGlData(DatomsBlock*blc, bool visible);

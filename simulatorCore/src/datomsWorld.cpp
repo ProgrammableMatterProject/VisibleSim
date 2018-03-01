@@ -138,8 +138,6 @@ void DatomsWorld::glDrawId() {
     }
     unlock();
     glPopMatrix();
-
-    glDrawBackground();
 }
 
 void DatomsWorld::glDrawIdByMaterial() {
@@ -157,7 +155,7 @@ void DatomsWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void DatomsWorld::glDrawSpecificBg() {
+void DatomsWorld::glDrawBackground() {
     static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
         gray[]={0.2f,0.2f,0.2f,1.0f};
         glMaterialfv(GL_FRONT,GL_AMBIENT,gray);

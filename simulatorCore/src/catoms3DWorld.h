@@ -17,7 +17,6 @@
 #include "cell3DPosition.h"
 #include "catoms3DBlock.h"
 #include "objLoader.h"
-#include "skeleton.h"
 #include "trace.h"
 #include "catoms3DMotionRules.h"
 
@@ -32,7 +31,6 @@ static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
 class Catoms3DWorld : public BaseSimulator::World {
 protected:
     GLuint idTextureHexa,idTextureGrid;
-    Skeleton *skeleton = NULL;
     Catoms3DMotionRules *motionRules;
 
     virtual ~Catoms3DWorld();
@@ -54,14 +52,10 @@ public:
         return((Catoms3DBlock*)World::getBlockById(bId));
     }
 
-
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation, bool master);
-    inline void setSkeleton(Skeleton *s) { skeleton=s; };
-    inline double getSkeletonPotentiel(const Vector3D& pos) { return (skeleton==NULL)?-1:skeleton->potentiel(pos); };
 
     inline Catoms3DMotionRules *getMotionRules() { return motionRules; };
-
 
     /**
      * \brief Connects block on grid cell pos to its neighbor
@@ -72,6 +66,7 @@ public:
     virtual void glDraw();
     virtual void glDrawId();
     virtual void glDrawIdByMaterial();
+    virtual void glDrawBackground();
     void updateGlData(BuildingBlock *bb);
     void updateGlData(Catoms3DBlock*blc,const Color &color);
     void updateGlData(Catoms3DBlock*blc, bool visible);

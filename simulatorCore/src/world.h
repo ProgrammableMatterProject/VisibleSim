@@ -241,11 +241,7 @@ public:
     /**
      * @brief Draws the world background
      */
-    void glDrawBackground();
-    /**
-     * @brief Draws the background for different types of world
-     */
-    virtual void glDrawSpecificBg() {};
+    virtual void glDrawBackground() {};
     /**
      * @brief Linearly scans the grid for blocks and calls linkBlock to connect the interfaces of neighbors
      */
