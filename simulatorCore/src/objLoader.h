@@ -121,25 +121,25 @@ struct vertexPosNrmTx {
 };
 
 #define BUFFER_OFFSET(i) ((char *)NULL+i)
-class ObjData
-{ public :
-  std::vector <Sommet*> tabVertex;
-  std::vector <FaceTri*> tabFaces;
-  vertexPosNrmTx *tabVertices;
-  GLuint *tabIndices;
-  GLuint nbreIndices;
-  GLuint vboId,indexVboId;
+class ObjData {
+	public :
+		std::vector <Sommet*> tabVertex;
+		std::vector <FaceTri*> tabFaces;
+		vertexPosNrmTx *tabVertices;
+		GLuint *tabIndices;
+		GLuint nbreIndices;
+		GLuint vboId,indexVboId;
+		GLuint objectNumber;
+		char nom[128],nomOriginal[64];
+		Mtl *objMtl;
 
-  char nom[128],nomOriginal[64];
-  Mtl *objMtl;
-  
-  ObjData(const char*);
-  ~ObjData();
-  void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
-  GLuint addVertex(const Sommet &s);
-  void glDraw(void);
-  void glDrawId(void);
-  void createVertexArray();
+		ObjData(const char*);
+		~ObjData();
+		void addFace(Sommet &ptr1,Sommet &ptr2,Sommet &ptr3);
+		GLuint addVertex(const Sommet &s);
+		void glDraw(void);
+		void glDrawId(void);
+		void createVertexArray();
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -155,8 +155,10 @@ public:
 	~ObjLoader(void);
 	void createVertexArrays();
 	void glDraw(void);
+	void glDraw(GLuint n);
 	void glDrawIdByMaterial(int &i);
 	void glDrawId(int &i);
+	void getObjectByName(string name,std::vector<ObjData*> &tabObjData);
 	void setLightedColor(GLfloat *color);
 	inline string getObjMtlName(int pos) { return tabObj[pos]->objMtl->name; };
 };

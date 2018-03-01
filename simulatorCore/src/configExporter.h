@@ -208,6 +208,27 @@ public:
 };
 
 
+/**
+ * @brief Datoms Configuration Exporter
+ */
+class DatomsConfigExporter : public ConfigExporter {
+public:
+    /**
+     * @brief Catoms3D Configuration Exporter constructor
+     */
+    DatomsConfigExporter (World *_world) : ConfigExporter(_world) {};
+    /**
+     * @brief Catoms3D Configuration Exporter destructor
+     */
+    virtual ~DatomsConfigExporter () { };
+
+    /**
+     * @copydoc ConfigExporter::exportAdditionalAttribute
+     *  Exports the rotation attribute of a Catoms3DBlock
+     */
+    virtual void exportAdditionalAttribute(TiXmlElement *bbElt, BuildingBlock *bb);
+};
+
 } // BASESIMULATOR_NAMESPACE
 
 #endif // CONFIGEXPORTER_H__

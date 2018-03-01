@@ -11,7 +11,7 @@
 
 #include "objLoader.h"
 #include "trace.h"
-//#define DEBUG	1
+#define DEBUG	1
 
 using namespace std;
 
@@ -58,6 +58,8 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	vector <Point3> tabNormal;
 	vector <Point2> tabTexture;
 	char txt[256];
+	GLuint currentObjectNumber=0;
+	
 #ifdef WIN32
 	sprintf_s(txt,256,"%s\\%s",rep,titre);
 #else
@@ -153,8 +155,9 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 
     	if (g_trouve) {
     		objCourant = new ObjData(nom);
+			objCourant->objectNumber=++currentObjectNumber;
 #ifdef DEBUG
-    		OUTPUT << "new object :" << nom << endl;
+    		OUTPUT << "new object :" << nom << " num= " << objCourant->objectNumber << endl;
 #endif
     		tabObj.push_back(objCourant);
     		objCourant->objMtl = NULL;
@@ -247,6 +250,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     									sprintf(nom2,"%s_%s",nom,ptrMtl->name);
 #endif
     									objCourant = new ObjData(objCourant->nomOriginal);
+										objCourant->objectNumber=currentObjectNumber;
     									tabObj.push_back(objCourant);
     									objCourant->objMtl = ptrMtl;
 #ifdef WIN32
@@ -255,7 +259,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     									sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
 #ifdef DEBUG
-					  					OUTPUT << "nouvel objet :" << objCourant->nom << endl;
+					  					OUTPUT << "nouvel objet :" << objCourant->nom << "num=" << objCourant->objectNumber<< endl;
 #endif
     								}
     							}
@@ -303,6 +307,15 @@ void ObjLoader::glDraw(void) {
 	}
 }
 
+void ObjLoader::glDraw(GLuint n) {
+	vector <ObjData*>::const_iterator ci = tabObj.begin();
+
+	while (ci!=tabObj.end()) {
+		if ((*ci)->objectNumber==n) (*ci)->glDraw();
+		ci++;
+	}
+}
+
 void ObjLoader::glDrawId(int &n) {
 	vector <ObjData*>::const_iterator ci = tabObj.begin();
 
@@ -330,7 +343,6 @@ void ObjLoader::setLightedColor(GLfloat *color) {
     ptrMtlLighted->Ka[1] = color[1]*0.3f;
     ptrMtlLighted->Ka[2] = color[2]*0.3f;
 }
-
 
 ObjLoader::~ObjLoader(void) {
 	vector <ObjData*>::const_iterator ci = tabObj.begin();
