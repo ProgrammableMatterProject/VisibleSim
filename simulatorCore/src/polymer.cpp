@@ -237,6 +237,7 @@ void Polymer::glDraw() {
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);*/
 	int ix,iy;
+        glTranslatef(_dx,_dy,0);
 	for (iy=0; iy<_ny; iy++) {
 		GLfloat *ptr0 = _tabGeom+3+iy*6*(_nx+1);
 		GLfloat *ptr1 = ptr0+6*(_nx+1);
@@ -250,14 +251,33 @@ void Polymer::glDraw() {
 		glEnd();
 	}
 	glPopMatrix();
+
+       /*float *ptrZ=_tabZ;
+
+        for (int iiy=0; iiy<=_ly; iiy++){
+            for (int iix=0; iix<=_lx; iix++){
+                float z=*ptrZ;
+                //for (int n=0; n<=20; n++){
+                    glPushMatrix();
+                    glTranslatef(iix*_dx,iiy*_dy,z);
+                    glutSolidSphere(_radius/2,20,10);
+                    glPopMatrix();
+                    z = z-_radius;
+                //}
+                    ptrZ++;
+            }
+        }*/
+
 }
 
 bool Polymer::collision(const Vector3D pos) {
 	vector<Vector3D>::iterator it = tabPt.begin();
 	float d;
 	while (it!=tabPt.end()) {
-		d = (pos-*it).norme2();
-		if (d<_radius) return true;
+		d = (pos-*it).norme();
+		if (d<=_radius){
+                    return true;
+                }
 		it++;
 	}
 	return false;
