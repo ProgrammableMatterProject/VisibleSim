@@ -154,8 +154,7 @@ void ConfigExporter::exportBlockList() {
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
 
     for(auto const& idBBPair : blocks) {
-        if (idBBPair.second->getState() <= BuildingBlock::REMOVED)
-            exportBlock(idBBPair.second);
+        exportBlock(idBBPair.second);
     }
         
     worldElt->LinkEndChild(blockListElt);

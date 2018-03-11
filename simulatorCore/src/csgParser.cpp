@@ -93,7 +93,7 @@ char* CSGParser::parseCsg(string str) {
 
     string line;
     size_t pos, keywordId;
-    bool debug = false;
+//    bool debug = true;
 
     CSGParser parser;
     while(getline(csgFile, line)) {
@@ -102,23 +102,23 @@ char* CSGParser::parseCsg(string str) {
             switch(keywordId) {
                 case 0: { // union
                     pos = line.find_first_of(")", pos);
-                    if (debug) cout << "union() " << endl;
+//                    if (debug) cout << "union() " << endl;
                     parser.writeType(csgFileBin, CSG_T::Union);
                 } break;
                 case 1: { // intersection
                     pos = line.find_first_of(")", pos);
-                    if (debug) cout << "intersection() " << endl;
+//                    if (debug) cout << "intersection() " << endl;
                     parser.writeType(csgFileBin, CSG_T::Intersection);
                 } break;
                 case 2: { //difference
                     pos = line.find_first_of(")", pos);
-                    if (debug) cout << "difference() " << endl;
+//                    if (debug) cout << "difference() " << endl;
                     parser.writeType(csgFileBin, CSG_T::Difference);
                 } break;
                 case 3: { //ŧranslate
                     double p1, p2, p3;
                     pos = parser.readParameters(line, pos, p1, p2, p3);
-                    if (debug) cout << "translate([" << p1 << "," << p2 << "," << p3 << "]) " << endl;
+//                    if (debug) cout << "translate([" << p1 << "," << p2 << "," << p3 << "]) " << endl;
                     parser.writeType(csgFileBin, CSG_T::Translate);
                     parser.writeFloat(csgFileBin, p1);
                     parser.writeFloat(csgFileBin, p2);
@@ -127,7 +127,7 @@ char* CSGParser::parseCsg(string str) {
                 case 4: { //rotate
                     double p1, p2, p3;
                     pos = parser.readParameters(line, pos, p1, p2, p3);
-                    if (debug) cout << "rotate([" << p1 << "," << p2 << "," << p3 << "]) " << endl;
+//                    if (debug) cout << "rotate([" << p1 << "," << p2 << "," << p3 << "]) " << endl;
                     parser.writeType(csgFileBin, CSG_T::Rotate);
                     parser.writeFloat(csgFileBin, p1);
                     parser.writeFloat(csgFileBin, p2);
@@ -136,7 +136,7 @@ char* CSGParser::parseCsg(string str) {
                 case 5: { //scale
                     double p1, p2, p3;
                     pos = parser.readParameters(line, pos, p1, p2, p3);
-                    if (debug) cout << "scale([" << p1 << "," << p2 << "," << p3 << "]) " << endl;
+//                    if (debug) cout << "scale([" << p1 << "," << p2 << "," << p3 << "]) " << endl;
                     parser.writeType(csgFileBin, CSG_T::Scale);
                     parser.writeFloat(csgFileBin, p1);
                     parser.writeFloat(csgFileBin, p2);
@@ -145,7 +145,7 @@ char* CSGParser::parseCsg(string str) {
                 case 6: { //cube
                     double p1, p2, p3;
                     pos = parser.readParameters(line, pos, p1, p2, p3);
-                    if (debug) cout << "cube([" << p1 << "," << p2 << "," << p3 << "],true); " << endl;
+  //                  if (debug) cout << "cube([" << p1 << "," << p2 << "," << p3 << "],true); " << endl;
                     parser.writeType(csgFileBin, CSG_T::Cube);
                     parser.writeFloat(csgFileBin, p1);
                     parser.writeFloat(csgFileBin, p2);
@@ -157,21 +157,21 @@ char* CSGParser::parseCsg(string str) {
                     parser.writeType(csgFileBin, CSG_T::Cylinder);
                     parser.writeFloat(csgFileBin, p1);
                     parser.writeFloat(csgFileBin, p2);
-                    if (debug) cout << "cylinder(" << p1 << "," << p2 << "," << p3 << ",true); " << endl;
+    //                if (debug) cout << "cylinder(" << p1 << "," << p2 << "," << p3 << ",true); " << endl;
                     if (p2 != p3)
                         cout << "ERROR Cylinder - " << p2 << ' ' << p3 << endl;
                 } break;
                 case 8: { //sphere
                     double p1;
                     pos = parser.readParameters(line, pos, p1);
-                    if (debug) cout << "sphere(" << p1 << "); " << endl;
+//                    if (debug) cout << "sphere(" << p1 << "); " << endl;
                     parser.writeType(csgFileBin, CSG_T::Sphere);
                     parser.writeFloat(csgFileBin, p1);
                 } break;
                 case 9: { // color
                     double p1, p2, p3;
                     pos = parser.readParameters(line, pos, p1, p2, p3);
-                    if (debug) cout << "color([" << p1 << ',' << p2 << ',' << p3 << "])\n";
+//                    if (debug) cout << "color([" << p1 << ',' << p2 << ',' << p3 << "])\n";
                     parser.writeType(csgFileBin, CSG_T::Color);
                     parser.writeChar(csgFileBin, (unsigned char)(p1*255));
                     parser.writeChar(csgFileBin, (unsigned char)(p2*255));
@@ -179,11 +179,11 @@ char* CSGParser::parseCsg(string str) {
                 } break;
                 case 10: { // {
                     pos++;
-                    if (debug) cout << "{\n";
+//                    if (debug) cout << "{\n";
                 } break;
                 case 11: { // }
                     pos++;
-                    if (debug) cout << "}\n";
+//                    if (debug) cout << "}\n";
                     parser.writeType(csgFileBin, CSG_T::END);
                 } break;
                 default:{
@@ -198,3 +198,4 @@ char* CSGParser::parseCsg(string str) {
     memcpy(csgBin, strBin.c_str(), strBin.size());
     return csgBin;
 }
+

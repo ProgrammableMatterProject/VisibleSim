@@ -14,16 +14,16 @@
 #include "statsIndividual.h"
 #include "utils.h"
 
-//#define TRANSMISSION_TIME_DEBUG
-
 using namespace std;
 using namespace BaseSimulator;
 using namespace BaseSimulator::utils;
 
+//unsigned int Message::nextId = 0;
+//unsigned int Message::nbMessages = 0;
 uint64_t Message::nextId = 0;
 uint64_t Message::nbMessages = 0;
 
-unsigned int P2PNetworkInterface::nextId = 0;
+bID P2PNetworkInterface::nextId = 0;
 int P2PNetworkInterface::defaultDataRate = 1000000;
 
 //===========================================================================================================
@@ -57,19 +57,7 @@ Message* Message::clone() {
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
     ptr->type = type;
-    return ptr;
-}
-
-//===========================================================================================================
-//
-//          HandleableMessage  (class)
-//
-//===========================================================================================================
-
-HandleableMessage::HandleableMessage() {
-}
-
-HandleableMessage::~HandleableMessage() {
+	return ptr;
 }
 
 //===========================================================================================================
@@ -149,18 +137,13 @@ void P2PNetworkInterface::send() {
 	BaseSimulator::utils::StatsIndividual::decOutgoingMessageQueueSize(hostBlock->stats);
 	
 	transmissionDuration = getTransmissionDuration(msg);
-	
-#ifdef TRANSMISSION_TIME_DEBUG
-	cerr << "Message size (bytes): " << msg->size() << endl;
-	cerr << "Data rate (bit/s): " << dataRate->get() << endl;
-	cerr << "Message transmission duration (us): " << transmissionDuration
-	     << endl;
-#endif
 	messageBeingTransmitted = msg;
 	messageBeingTransmitted->sourceInterface = this;
 	messageBeingTransmitted->destinationInterface = connectedInterface;
 
 	availabilityDate = BaseSimulator::getScheduler()->now()+transmissionDuration;
+/*	info << "*** sending (interface " << localId << " of block " << hostBlock->blockId << ")";
+	getScheduler()->trace(info.str());*/
 
 	BaseSimulator::getScheduler()->schedule(new NetworkInterfaceStopTransmittingEvent(BaseSimulator::getScheduler()->now()+transmissionDuration, this));
 	
@@ -193,9 +176,6 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
 Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
   double rate = dataRate->get();
   Time transmissionDuration = (m->size()*8000000ULL)/rate;
+  //cerr << "TransmissionDuration: " << transmissionDuration << endl;
   return transmissionDuration;
-}
-
-bool P2PNetworkInterface::isConnected() {
-  return connectedInterface != NULL;
 }

@@ -37,18 +37,22 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
     if (GlutContext::GUIisEnabled) {
 		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 											"catom3DV2connectorID.obj");
+        /*objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
+											"catom3Drepere3.obj");*/
 		objBlockForPicking =
 			new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
 									 "catom3D_picking.obj");
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
-	}   
+	}
 
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    motionRules = new Catoms3DMotionRules();
 }
 
 Catoms3DWorld::~Catoms3DWorld() {
     OUTPUT << "Catoms3DWorld destructor" << endl;
     /*	block linked are deleted by world::~world() */
+    delete motionRules;
 }
 
 void Catoms3DWorld::deleteWorld() {
@@ -61,23 +65,21 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
 		maxBlockId = blockId;
 	else if (blockId == 0)
 		blockId = incrementBlockId();
-	
+
     Catoms3DBlock *catom = new Catoms3DBlock(blockId,bcb);
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
 
     getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
 
-
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
-    glBlock->setPosition(lattice->gridToWorldPosition(pos));
+    tabGlBlocks.push_back(glBlock);
 
     catom->setGlBlock(glBlock);
     catom->setPositionAndOrientation(pos,orientation);
     catom->setColor(col);
     lattice->insert(catom, pos);
-
-    tabGlBlocks.push_back(glBlock);
+    glBlock->setPosition(lattice->gridToWorldPosition(pos));
 }
 
 /**
@@ -113,17 +115,104 @@ void Catoms3DWorld::glDraw() {
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
     while (ic!=tabGlBlocks.end()) {
-        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
-        ic++;
+		((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
+		ic++;
     }
     unlock();
     glPopMatrix();
 
+
 // material for the grid walls
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    if (background) {
-        glDrawBackground();
-    }
+	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
+		gray[]={0.2f,0.2f,0.2f,1.0f};
+		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+
+        lattice->glDraw();
+
+		glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
+		glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+		glMaterialfv(GL_FRONT,GL_SPECULAR,white);
+		glMaterialf(GL_FRONT,GL_SHININESS,40.0);
+
+		glPushMatrix();
+		enableTexture(true);
+		glBindTexture(GL_TEXTURE_2D,idTextureGrid);
+		glTranslatef(0,0,lattice->gridScale[2]*(0.5-M_SQRT2_2));
+		glScalef(lattice->gridSize[0]*lattice->gridScale[0],lattice->gridSize[1]*lattice->gridScale[1],lattice->gridSize[2]*lattice->gridScale[2]*M_SQRT2_2);
+		glBegin(GL_QUADS);
+		// bottom
+		glNormal3f(0,0,1.0f);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,-0.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
+		glVertex3f(1.0,1.0,0.0f);
+		glTexCoord2f(0,0.5f*lattice->gridSize[1]);
+		glVertex3f(0.0,1.0,0.0f);
+		// top
+		glNormal3f(0,0,-1.0f);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,1.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0);
+		glVertex3f(0.0,1.0,1.0f);
+		glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
+		glVertex3f(1.0,1.0,1.0f);
+		glTexCoord2f(0,0.5f*lattice->gridSize[1]);
+		glVertex3f(1.0f,0.0f,1.0f);
+		glEnd();
+		// draw hexa
+		glBindTexture(GL_TEXTURE_2D,idTextureHexa);
+		glBegin(GL_QUADS);
+		// left
+		glNormal3f(1.0f,0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,0);
+		glVertex3f(0.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,1.0,1.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,0.0,1.0f);
+		// right
+		glNormal3f(-1.0f,0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0,1.0,1.0f);
+		glTexCoord2f(lattice->gridSize[1]/3.0f,0);
+		glVertex3f(1.0f,1.0f,0.0f);
+		// back
+		glNormal3f(0,-1.0f,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,0);
+		glVertex3f(1.0f,1.0f,0.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0f,1.0,1.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,1.0,1.0f);
+		// front
+		glNormal3f(0,1.0,0);
+		glTexCoord2f(0,0);
+		glVertex3f(0.0f,0.0f,0.0f);
+		glTexCoord2f(0,lattice->gridSize[2]/1.5f);
+		glVertex3f(0.0,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
+		glVertex3f(1.0f,0.0,1.0f);
+		glTexCoord2f(lattice->gridSize[0]/3.0f,0);
+		glVertex3f(1.0f,0.0f,0.0f);
+		glEnd();
+		glPopMatrix();
+		// draw the axes
+		glPushMatrix();
+		objRepere->glDraw();
+		glPopMatrix();
 }
 
 void Catoms3DWorld::glDrawId() {
@@ -138,8 +227,6 @@ void Catoms3DWorld::glDrawId() {
     }
     unlock();
     glPopMatrix();
-
-    glDrawBackground();
 }
 
 void Catoms3DWorld::glDrawIdByMaterial() {
@@ -157,90 +244,6 @@ void Catoms3DWorld::glDrawIdByMaterial() {
     glPopMatrix();
 }
 
-void Catoms3DWorld::glDrawSpecificBg() {
-    static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
-        gray[]={0.2f,0.2f,0.2f,1.0f};
-        glMaterialfv(GL_FRONT,GL_AMBIENT,gray);
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
-        glMaterialfv(GL_FRONT,GL_SPECULAR,white);
-        glMaterialf(GL_FRONT,GL_SHININESS,40.0);
-        glPushMatrix();
-        enableTexture(true);
-        glBindTexture(GL_TEXTURE_2D,idTextureGrid);
-        glTranslatef(0,0,lattice->gridScale[2]*(0.5-M_SQRT2_2));
-        glScalef(lattice->gridSize[0]*lattice->gridScale[0],lattice->gridSize[1]*lattice->gridScale[1],lattice->gridSize[2]*lattice->gridScale[2]*M_SQRT2_2);
-        glBegin(GL_QUADS);
-        // bottom
-        glNormal3f(0,0,1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,-0.0f);
-        glTexCoord2f(0.5f*lattice->gridSize[0],0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,0.0f);
-        glTexCoord2f(0,0.5f*lattice->gridSize[1]);
-        glVertex3f(0.0,1.0,0.0f);
-        // top
-        glNormal3f(0,0,-1.0f);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,1.0f);
-        glTexCoord2f(0.5f*lattice->gridSize[0],0);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(0.5f*lattice->gridSize[0],0.5f*lattice->gridSize[1]);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(0,0.5f*lattice->gridSize[1]);
-        glVertex3f(1.0f,0.0f,1.0f);
-        glEnd();
-        // draw hexa
-        glBindTexture(GL_TEXTURE_2D,idTextureHexa);
-        glBegin(GL_QUADS);
-        // left
-        glNormal3f(1.0f,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1]/3.0f,0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
-        glVertex3f(0.0,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-        glVertex3f(0.0,0.0,1.0f);
-        // right
-        glNormal3f(-1.0f,0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-        glVertex3f(1.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1]/3.0f,lattice->gridSize[2]/1.5f);
-        glVertex3f(1.0,1.0,1.0f);
-        glTexCoord2f(lattice->gridSize[1]/3.0f,0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        // back
-        glNormal3f(0,-1.0f,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0]/3.0f,0);
-        glVertex3f(1.0f,1.0f,0.0f);
-        glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
-        glVertex3f(1.0f,1.0,1.0f);
-        glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-        glVertex3f(0.0,1.0,1.0f);
-        // front
-        glNormal3f(0,1.0,0);
-        glTexCoord2f(0,0);
-        glVertex3f(0.0f,0.0f,0.0f);
-        glTexCoord2f(0,lattice->gridSize[2]/1.5f);
-        glVertex3f(0.0,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0]/3.0f,lattice->gridSize[2]/1.5f);
-        glVertex3f(1.0f,0.0,1.0f);
-        glTexCoord2f(lattice->gridSize[0]/3.0f,0);
-        glVertex3f(1.0f,0.0f,0.0f);
-        glEnd();
-        glPopMatrix();
-        // draw the axes
-        glPushMatrix();
-        objRepere->glDraw();
-        glPopMatrix();
-}
 
 void Catoms3DWorld::loadTextures(const string &str) {
     string path = str+"//hexa.tga";

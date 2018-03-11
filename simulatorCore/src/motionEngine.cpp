@@ -34,15 +34,13 @@ double MotionEngine::getSpeed() {
 }
 
 Time MotionEngine::getDuration(Distance distance) {
-  double speed = getSpeed(); // mm/s
-  double time = distance/speed; // s
-  
+  double speed = getSpeed();
+  double time = distance/speed;
 #ifdef SPEED_DEBUG
-  cerr << "speed (mm/s) = " << speed << ", distance (mm) = " << distance
+  cerr << "speed (m/s) = " << speed << ", distance (m) = " << distance
        << ", time (s) = " << time << endl;
 #endif
-  
-  Time t = time*pow(10,6); // us
+  Time t = time*pow(10,6);
   return t;
 }
 

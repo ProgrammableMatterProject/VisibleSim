@@ -71,10 +71,6 @@ public:
      */
     virtual void glDrawIdByMaterial();
     /**
-     * @copydoc World::glDrawSpecificBg
-     */
-    virtual void glDrawSpecificBg();
-    /**
      * @copydoc World::updateGlData
      */
     virtual void updateGlData(RobotBlocksBlock*blc,int prev,int next);

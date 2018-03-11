@@ -143,15 +143,15 @@ void World::disconnectBlock(BuildingBlock *block) {
     for(int i = 0; i < block->getNbInterfaces(); i++) {
         fromBlock = block->getInterface(i);
         if (fromBlock && fromBlock->connectedInterface) {
-	    toBlock = fromBlock->connectedInterface;
+            toBlock = fromBlock->connectedInterface;
 
-	    // Clear message queue
-	    fromBlock->outgoingQueue.clear();
-	    toBlock->outgoingQueue.clear();
+            // Clear message queue
+            fromBlock->outgoingQueue.clear();
+            toBlock->outgoingQueue.clear();
 
-	    // Notify respective codeBlocks
-	    block->removeNeighbor(fromBlock);
-	    fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
+            // Notify respective codeBlocks
+            block->removeNeighbor(fromBlock);
+            fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
 
 	    // Disconnect the interfaces
             fromBlock->connectedInterface = NULL;
@@ -276,16 +276,6 @@ cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(num
 	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
-}
-
-void World::glDrawBackground() {
-    if (background) {
-        glClearColor(0.3f, 0.3f, 0.8f, 1.0f);
-        glDrawSpecificBg(); 
-    }
-    else { 
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
-    }
 }
 
 } // BaseSimulator namespace

@@ -186,11 +186,6 @@ public:
 	 */
 	inline unsigned short getNbInterfaces() {	return P2PNetworkInterfaces.size(); };
 	/**
-	 * @brief Returns the number of neighbors (connected interfaces) for this block
-	 * @return number of neighbor for this block
-	 */
-	unsigned short getNbNeighbors();
-	/**
 	 * @brief Schedules a stop event for this block at a given date and update its state
 	 * @param date : date at which the stop event must be processed
 	 * @param s : new state of the block
@@ -250,7 +245,7 @@ public:
 	 * @return global time corresponding to the local time in parameter
 	 */   	
 	Time getSimulationTime(Time localTime);
-
+	
 	/*************************************************
 	 *            MeldInterpreter Functions  
 	 *************************************************/

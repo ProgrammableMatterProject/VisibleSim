@@ -23,21 +23,27 @@
 #include "target.h"
 
 class CSG_message;
+class Distance_message;
 
 typedef std::shared_ptr<CSG_message> CSG_message_ptr;
+typedef std::shared_ptr<Distance_message> Distance_message_ptr;
 
 class CsgCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-    static bool bitmap[27000]; // used to generate the bitmap file from any method in use
-    static int side_size; // used to read the bitmap vector as a matrix
+    /* Debug Info */
+    static int side_size;
+    static bool bitmap[27000];
 
 	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
     Vector3D myPosition; // has relative position from the master
     bool hasPosition; // flag position
+    int distance;
+    CsgUtils csgUtils;
     StoyUtils stoyUtils;
     MeshUtils meshUtils;
     BitmapUtils bitmapUtils;
+    static CSGNode *csgRoot;
 
 	CsgCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~CsgCatoms3DBlockCode();
@@ -46,6 +52,7 @@ public:
 	void processLocalEvent(EventPtr pev);
     void createCSG();
     void sendCSGMessage();
+    void sendDistanceMessage();
 
     void benchmark();
     void calcBitmap();
@@ -59,16 +66,25 @@ public:
 
 };
 
+class Distance_message : public Message {
+    int distance;
+public :
+    Distance_message(int _dist);
+	int getDistance() { return distance; };
+};
+
 class CSG_message : public Message {
-    //char *csgBuffer;
+    char *csgBuffer;
+    int csgBufferSize;
     Vector3D position;
     vector<Brick> bricks;
     string bitmap;
 public :
-	CSG_message(vector<Brick> bricks, string _bitmap, Vector3D position);
+	CSG_message(char *_csgBuffer, int _csgBufferSize, vector<Brick> bricks, string _bitmap, Vector3D position);
 	~CSG_message();
 
-	//char* getCsgBuffer() { return csgBuffer; };
+	char* getCsgBuffer() { return csgBuffer; };
+	int getCsgBufferSize() { return csgBufferSize; };
 	vector<Brick> getBricks() { return bricks; };
 	string getBitmap() { return bitmap; };
 	Vector3D getPosition() { return position; };

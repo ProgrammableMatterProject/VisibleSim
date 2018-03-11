@@ -31,7 +31,7 @@ BlockCode::~BlockCode() {
 		delete target;
 		target = NULL;
 	}
-		
+
 	eventFuncMap.clear();
 }
 
@@ -47,11 +47,11 @@ int BlockCode::sendMessage(const char*msgString,Message*msg,P2PNetworkInterface 
   int t1 = scheduler->now() + t0 + (int)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
 	if (msgString)
-		console << " sends " << msgString << " to " << dest->getConnectedBlockId() << " at " << t1 << "\n";
+		console << "sends " << msgString << " to " << dest->getConnectedBlockId() << " at " << t1 << "\n";
 
 	OUTPUT << hostBlock->blockId << " sends " << msg->type << " to "
 		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
-	
+
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
     return 0;
 }
@@ -74,7 +74,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t
 	return ret;
 }
 
-int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt, int nexcept, va_list args) {
+int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int t0, int dt, int nexcept, va_list args) {
     P2PNetworkInterface *tabExceptions[hostBlock->getNbInterfaces()];
     for (int i=0; i<nexcept; i++) {
         tabExceptions[i] = va_arg(args,P2PNetworkInterface*);
@@ -94,7 +94,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg,int t
         }
     }
     delete msg;
-    return n;	
+    return n;
 }
 
 void BlockCode::processLocalEvent(EventPtr pev) {
@@ -115,6 +115,7 @@ void BlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
         case EVENT_ADD_NEIGHBOR: {
+            OUTPUT << "ADD_NEIGHBOR" << endl;
             startup();
         } break;
         case EVENT_TAP: {
@@ -128,7 +129,7 @@ void BlockCode::onTap(int face) {
 	stringstream info;
 	info.str("");
 	info << "Tapped on face " << lattice->getDirectionString(face);
-	scheduler->trace(info.str(),hostBlock->blockId);	
+	scheduler->trace(info.str(),hostBlock->blockId);
 }
 
 bool BlockCode::loadNextTarget() {

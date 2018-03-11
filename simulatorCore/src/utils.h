@@ -6,14 +6,14 @@
 
 namespace BaseSimulator {
 
-//!< utils Utilities namespace for providing globally needed constants, types, and helper methods   
+//!< utils Utilities namespace for providing globally needed constants, types, and helper methods
 namespace utils {
 
 #ifndef M_PI
 #define M_PI	3.1415926535897932384626433832795 //!< 31-digit pi constant
 #endif
 
-#define IS_ODD(x) ((x) % 2)     //!< returns 1 if x is odd, 0 otherwise
+#define IS_ODD(x) ((x>0?x:-x) % 2)     //!< returns 1 if x is odd, 0 otherwise
 #define IS_EVEN(x) (!IS_ODD(x)) //!< returns 1 if x is even, 0 otherwise
 
 //!< @brief Return true if a <= x <= b, false otherwise

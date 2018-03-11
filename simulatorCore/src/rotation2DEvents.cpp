@@ -64,11 +64,9 @@ Rotation2DStartEvent::Rotation2DStartEvent(Time t, Catoms2DBlock *block, Rotatio
     sens = m.getDirection();
     Distance r = defaultBlockSize[0]/2.0; // radius
     Distance d =  r*M_PI/3.0;
+    //cerr << "Distance: " << d << endl;
     duration = block->motionEngine->getDuration(d);
-#ifdef DURATION_MOTION_DEBUG
-    cerr << "Total motion duration (us): " << duration << endl;
-    cerr << "Total motion distance (mm): " << d << endl;
-#endif
+    //cerr << "Motion duration (us): " << duration << endl;
 }
 
 Rotation2DStartEvent::Rotation2DStartEvent(Rotation2DStartEvent *ev) : BlockEvent(ev) {
@@ -95,13 +93,15 @@ void Rotation2DStartEvent::consume() {
     Time stepDuration = (long double)duration/(long double)steps;
     Time remaining = duration - stepDuration;
 #ifdef DURATION_MOTION_DEBUG
-    cerr << "----------" << endl;
-    cerr << "@" << concernedBlock->blockId << endl;
-    cerr << "Duration: " << duration << endl;
-    cerr << "Step duration: " << stepDuration << endl;
-    cerr << "Motion start at " << getScheduler()->now() << endl;
-    cerr << "Motion should end at " << getScheduler()->now()+duration << endl; 
-    cerr << "----------" << endl;
+    if (concernedBlock->blockId == 7) {
+      cerr << "----------" << endl;
+      cerr << "@" << concernedBlock->blockId << endl;
+      cerr << "Duration: " << duration << endl;
+      cerr << "Step duration: " << stepDuration << endl;
+      cerr << "Motion start at " << getScheduler()->now() << endl;
+      cerr << "Motion should end at " << getScheduler()->now()+duration << endl; 
+      cerr << "----------" << endl;
+    }
 #endif
     scheduler->schedule(new Rotation2DStepEvent(scheduler->now() + stepDuration, rb,pivot,angle,sens,remaining));
 }
@@ -143,7 +143,9 @@ void Rotation2DStepEvent::consume() {
 
     Scheduler *scheduler = getScheduler();
 #ifdef DURATION_MOTION_DEBUG
-    cerr << "@" << rb->blockId << " motion step, angle " << angle << " at " << getScheduler()->now() << " (" << date << ")" << endl; 
+    if (concernedBlock->blockId == 7) {
+      cerr << "@" << rb->blockId << " motion step, angle " << angle << " at " << getScheduler()->now() << " (" << date << ")" << endl; 
+    }
 #endif
     Matrix roty;
 
@@ -214,18 +216,19 @@ void Rotation2DStopEvent::consume() {
 
     rb->setPosition(gridPos);
     
-    rb->angle = rb->angle%360;
 #ifdef COLOR_MOTION_DEBUG
     rb->setColor(YELLOW);
 #endif
 
 #ifdef DURATION_MOTION_DEBUG
-    cerr << "----------" << endl;
-    cerr << "@" << concernedBlock->blockId << endl;
-    cerr << "Now: " << getScheduler()->now() << endl;
-    cerr << "Motion end at " << date << endl;
-    cerr << "Communication should be re-established at " << date + COM_DELAY << endl;
-    cerr << "----------" << endl;
+    if (concernedBlock->blockId == 7) {
+      cerr << "----------" << endl;
+      cerr << "@" << concernedBlock->blockId << endl;
+      cerr << "Now: " << getScheduler()->now() << endl;
+      cerr << "Motion end at " << date << endl;
+      cerr << "Communication should be re-established at " << date + COM_DELAY << endl;
+      cerr << "----------" << endl;
+    }
 #endif
     
     stringstream info;

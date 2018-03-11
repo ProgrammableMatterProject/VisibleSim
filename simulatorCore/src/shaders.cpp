@@ -122,7 +122,7 @@ void initShaders() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL );
+  glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 2048, 2048, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL );
   glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D, depth_tex, 0); // attach it to the framebuffer
 
   // initialize depth renderbuffer
@@ -205,17 +205,17 @@ void shadowedRenderingStep3(Camera *camera) {
  // placement de la source de lumière
     glLightfv(GL_LIGHT0, GL_POSITION, camera->ls.pos);
 	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, camera->ls.dir );
-	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle );
+	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, camera->ls.falloffAngle);
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, WHITE.rgba);
     glLightfv(GL_LIGHT0, GL_AMBIENT, WHITE.rgba);
     glLightfv(GL_LIGHT0, GL_SPECULAR, WHITE.rgba);
 
 // activation du programme de shader
-    if(useShaders && shadersProgram)
-    glUseProgramObjectARB(shadersProgram);
-    else{
-    glEnable(GL_LIGHTING);
+    if(useShaders && shadersProgram) {
+        glUseProgramObjectARB(shadersProgram);
+    } else {
+        glEnable(GL_LIGHTING);
     }
 
     glUniform1iARB(locTex, 0);
