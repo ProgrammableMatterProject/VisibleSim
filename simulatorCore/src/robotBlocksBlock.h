@@ -17,13 +17,6 @@
 
 namespace RobotBlocks {
 
-class NeighborDirection {
-public:
-    enum Direction { Bottom = 0, Back = 1, Right = 2, Front = 3, Left = 4, Top =5};
-    static int getOpposite(int d);
-    static string getString(int d);
-};
-
 class RobotBlocksBlockCode;
 
 class RobotBlocksBlock : public BaseSimulator::BuildingBlock {

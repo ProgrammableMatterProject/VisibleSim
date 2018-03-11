@@ -100,7 +100,7 @@ class DatomsMotionRules {
    \param vec : vector of valid motion rules
    \return return if c3d catom is able to turn from the orientation fromId to the toId one */
         bool getValidMotionList(const DatomsBlock* c3d,int from,vector<DatomsMotionRulesLink*>&vec);
-        bool getValidMotionListFromPivot(const DatomsBlock* pivot,int from,vector<DatomsMotionRulesLink*>&vec,const FCCLattice *lattice,const Target *target);
+        bool getValidMotionListFromPivot(const DatomsBlock* pivot,int from,vector<DatomsMotionRulesLink*>&vec,const FCCLattice2 *lattice,const Target *target);
 
     protected:
     private:

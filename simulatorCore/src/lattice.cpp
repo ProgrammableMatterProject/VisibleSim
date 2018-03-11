@@ -49,7 +49,7 @@ Lattice::~Lattice() {
 int Lattice::getIndex(const Cell3DPosition &p) const {
     int index = p[0] + (p[1] + p[2] * gridSize[1]) * gridSize[0];
 #ifdef LATTICE_LOG
-    // cerr << "index: " << index << "(/total = " << gridSize[0]*gridSize[1]*gridSize[2] << ")" << endl;
+    cerr << "index: " << index << "(/total = " << gridSize[0]*gridSize[1]*gridSize[2] << ")" << endl;
 #endif
     return index;
 }
@@ -701,8 +701,8 @@ bool FCCLattice::isPositionBlocked(const Cell3DPosition &pos,
 
 /******************************************************/
 /********************* FCCLattice2 *********************/
-FCCLattice2::FCCLattice2() : Lattice3D() {}
-FCCLattice2::FCCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
+FCCLattice2::FCCLattice2() : FCCLattice() {}
+FCCLattice2::FCCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc) : FCCLattice(gsz,gsc) {}
 FCCLattice2::~FCCLattice2() {}
 
 vector<Cell3DPosition> FCCLattice2::getRelativeConnectivity(const Cell3DPosition &p) {
@@ -797,19 +797,19 @@ Cell3DPosition SCLattice::worldToGridPosition(const Vector3D &pos) {
                           pos[2] / gridScale[2]);
 }
 
-const string SCLattice::directionName[] = {"Bottom", "Back", "Right","Front", "Left", "Top"};
+const string SCLattice::directionName[] = {"Bottom", "Back", "Right", "Left", "Front", "Top"};
 
 int SCLattice::getOppositeDirection(int d) {
     switch (Direction(d)) {
-    case Front:	return Back; break;
-    case Back:	return Front; break;
-    case Left:	return Right; break;
-    case Right:	return Left; break;
-    case Top:	return Bottom; break;
-    case Bottom:	return Top; break;
-    default:
-		ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-		return -1;
+		case Front:	return Back; break;
+		case Back:	return Front; break;
+		case Left:	return Right; break;
+		case Right:	return Left; break;
+		case Top:	return Bottom; break;
+		case Bottom:	return Top; break;
+		default:
+			ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+			return -1;
 		break;
     }
 }

@@ -589,7 +589,7 @@ public:
  * Used by Datoms
  *
  */
-class FCCLattice2 : public Lattice3D {
+class FCCLattice2 : public FCCLattice {
     // The index i of the relative position in the vector corresponds to the cell on interface i of a block
     vector<Cell3DPosition> nCells{
         Cell3DPosition(1,0,0),  // 0
@@ -643,21 +643,10 @@ public:
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
-     * @copydoc Lattice::getMaxNumNeighbors
-     */
-    virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
-
-    /**
      * @copydoc Lattice::getCellInDirection
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                               int direction);
-
-    bool lockCell(const Cell3DPosition &pos);
-    bool unlockCell(const Cell3DPosition &pos);
-    void initTabDistances();
-    unsigned short getDistance(const Cell3DPosition &pos);
-    void setDistance(const Cell3DPosition &pos,unsigned short d);
     //void glDraw();
 
 };
@@ -678,7 +667,7 @@ class SCLattice : public Lattice3D {
             Cell3DPosition(0,-1,0),  // FRONT
             Cell3DPosition(0,0,1)  // TOP
             }; //!< Vector containing relative position of neighboring cells
-    static const string directionName[];
+    static const string directionName[6];
 public:
     enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection

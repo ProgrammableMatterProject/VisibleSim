@@ -79,19 +79,18 @@ void RobotBlocksWorld::linkBlock(const Cell3DPosition &pos) {
 	RobotBlocksBlock *ptrBlock = (RobotBlocksBlock*)lattice->getBlock(pos);
 	vector<Cell3DPosition> nRelCells = lattice->getRelativeConnectivity(pos);
 	Cell3DPosition nPos;
+	SCLattice *scl = (SCLattice*)(lattice);
 
 	// Check neighbors for each interface
 	for (int i = 0; i < 6; i++) {
 		nPos = pos + nRelCells[i];
-		ptrNeighbor = (RobotBlocksBlock*)lattice->getBlock(nPos);
+		ptrNeighbor = (RobotBlocksBlock*)scl->getBlock(nPos);
+		cerr << "ptrNeighbor:" << ((ptrNeighbor==NULL)?0:ptrNeighbor->blockId) << endl; 
 		if (ptrNeighbor) {
-			(ptrBlock)->getInterface(SCLattice::Direction(i))->
-				connect(ptrNeighbor->getInterface(SCLattice::Direction(
-													  lattice->getOppositeDirection(i))));
-
-			OUTPUT << "connection #" << (ptrBlock)->blockId << ":" << lattice->getDirectionString(i) <<
-				" to #" << ptrNeighbor->blockId << ":"
-				   << lattice->getDirectionString(lattice->getOppositeDirection(i)) << endl;
+			P2PNetworkInterface *p2p = (ptrBlock)->getInterface(SCLattice::Direction(i));
+			P2PNetworkInterface *p2pNeighbor = (ptrBlock)->getInterface(SCLattice::Direction(scl->getOppositeDirection(i)));
+			p2p->connect(p2pNeighbor);
+			
 		} else {
 			(ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
 		}

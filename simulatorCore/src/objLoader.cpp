@@ -11,7 +11,8 @@
 
 #include "objLoader.h"
 #include "trace.h"
-#define DEBUG	1
+
+// #define DEBUG_OBJ	1
 
 using namespace std;
 
@@ -28,8 +29,7 @@ int extraire(const char *src,char *dest,int size_dest)
 }
 
 #ifdef WIN32
-void __cdecl odprintf(const char *format, ...)
-{
+void __cdecl odprintf(const char *format, ...) {
 char    buf[4096], *p = buf;
 va_list args;
 int     n;
@@ -70,7 +70,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 		cerr << "File error : " << txt << endl;
 		exit(EXIT_FAILURE);
 	}
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
    OUTPUT << "Open " << txt  << " file..."<< endl;
 #endif
 	mtls=NULL;
@@ -85,7 +85,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	int i,numVert[4],numTex[4],numNorm[4];
 	Sommet S1,S2,S3,S4;
 	do {
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
 		OUTPUT << "Début de lecture" << endl;
 #endif
 	// headline
@@ -94,7 +94,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     	// delete spaces and tabs in the beginning of the lines
 	  if (fin.gcount()>0) {
 		  switch (ligne[0]) {
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
 		  	case '#' : // comment
 		  		OUTPUT << ligne << endl;
         	break;
@@ -118,14 +118,14 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     		if (fin.gcount()>1) {
     			switch (ligne[0]) {
     				case ' ' : break;
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     				case '#' :
     					OUTPUT << ligne << endl;
     				break; // comment
 #endif
     				case 'g' :
     					extraire(ligne+2,nom,63); // object name
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     					OUTPUT << "object : " << nom << endl;
 #endif
     					g_trouve = true;
@@ -142,21 +142,21 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     						tabVertex.push_back(p3);
     					}
     				break;
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     				default :
     					OUTPUT << "code '" << ligne[0] << " unknown :" << ligne << endl;
 #endif
     			}
     		}
     	} while (!fin.eof() && !g_trouve);
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     	OUTPUT <<"Fin de lecture des coordonnées"<< endl;
 #endif
 
     	if (g_trouve) {
     		objCourant = new ObjData(nom);
 			objCourant->objectNumber=++currentObjectNumber;
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     		OUTPUT << "new object :" << nom << " num= " << objCourant->objectNumber << endl;
 #endif
     		tabObj.push_back(objCourant);
@@ -168,7 +168,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     			if (fin.gcount()>1) {
     				switch (ligne[0]) {
     					case '#' :
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     						OUTPUT << ligne<< endl;
 #endif
     						g_trouve = true;
@@ -194,7 +194,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
                                 numeroPoint(str_pt4,numVert[3],numNorm[3],numTex[3]);
     						}
 /*
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     						OUTPUT << "Face : (" << numVert[0] << "," << numNorm[0] << "," << numTex[0] << ")";
     						OUTPUT << "(" << numVert[1] << "," << numNorm[1] << "," << numTex[1] << ")";
     						OUTPUT << "(" << numVert[2] << "," << numNorm[2] << "," << numTex[2] << ")" << endl;
@@ -202,7 +202,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 */
     						if (numTex[0]==0 || numTex[1]==0 || numTex[2]==0) {
     							ERRPUT << "No texture coordinates for this object : " << objCourant->nomOriginal << endl;
-    							system("PAUSE");
+    							//system("PAUSE");
     						}
     						S1.set(tabVertex[numVert[0]-1].v,tabNormal[numNorm[0]-1].v,tabTexture[numTex[0]-1].v);
     						S2.set(tabVertex[numVert[1]-1].v,tabNormal[numNorm[1]-1].v,tabTexture[numTex[1]-1].v);
@@ -215,7 +215,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     					break;
     					case 'u' : // usemtl 09_-_Default
     						if (strncmp(ligne,"usemtl",6)==0) {
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     							OUTPUT << ligne << endl;
 #endif
     							extraire(ligne+7,str_pt1,64);
@@ -227,7 +227,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 #else
     								sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     								OUTPUT << "associe l'objet " << objCourant->nom << endl;
 #endif
     							} else { // on fait un objet par texture
@@ -239,7 +239,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     								}
     								if (po!=tabObj.end()) {
     									objCourant = (*po);
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     									OUTPUT << "complete l'objet " << objCourant->nom << endl;
 #endif
     								} else {
@@ -258,7 +258,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 #else
     									sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
 					  					OUTPUT << "nouvel objet :" << objCourant->nom << "num=" << objCourant->objectNumber<< endl;
 #endif
     								}
@@ -268,7 +268,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     					case 's' : // gestion des groupes de lissage
     						ERRPUT << "Smoothing groups not managed !" << endl;
     					break;
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     					default :
     						OUTPUT << "symbole '" << ligne[0] << " inconnu de :" << ligne << endl;
 #endif
@@ -283,7 +283,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     tabVertex.clear();
     tabTexture.clear();
 	tabNormal.clear();
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
     OUTPUT << "fin de la lecture" << endl;
 #endif
 	} while (!fin.eof());
@@ -561,9 +561,9 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 	if (!fin.is_open()) {
 		char erreur[1024];
 #ifdef WIN32
-		sprintf_s(erreur,1024,"File error : %s",txt);
+		sprintf_s(erreur,1024,"File error: %s",txt);
 #else
-		sprintf(erreur,"File error : '%s'",txt);
+		sprintf(erreur,"File error: '%s'",txt);
 #endif
 		ERRPUT << erreur << endl;
 		perror("MtlLib");
@@ -580,7 +580,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 		if (fin.gcount()>i) {
 			switch (ligne[i]) {
 				case '#' : // commentaire
-#ifdef DEBUG
+#ifdef DEBUG_OBJ
 				OUTPUT << ligne << endl;
 #endif
 				break;
@@ -608,7 +608,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 #else
 						sscanf(ligne+i+2,"%f %f %f",&currentMtl->Ka[0],&currentMtl->Ka[1],&currentMtl->Ka[2]);
 #endif
-						currentMtl->Ka[3]=1.0;
+						currentMtl->Ka[3]=1.0f;
                //OUTPUT << "Ka :" << currentMtl->Ka.v[0] << "," << currentMtl->Ka.v[1] << "," << currentMtl->Ka.v[2] << endl;
 					} else if (ligne[i+1]=='d') { // Kd
 #ifdef WIN32
@@ -616,7 +616,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 #else
 						sscanf(ligne+i+2,"%f %f %f",&currentMtl->Kd[0],&currentMtl->Kd[1],&currentMtl->Kd[2]);
 #endif
-						currentMtl->Kd[3]=1.0;
+						currentMtl->Kd[3]=1.0f;
                //OUTPUT << "Kd :" << currentMtl->Kd.v[0] << "," << currentMtl->Kd.v[1] << "," << currentMtl->Kd.v[2] << endl;
 					} else if (ligne[i+1]=='s') { // Ks
 #ifdef WIN32
@@ -624,7 +624,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 #else
 						sscanf(ligne+i+2,"%f %f %f",&currentMtl->Ks[0],&currentMtl->Ks[1],&currentMtl->Ks[2]);
 #endif
-						currentMtl->Ks[3]=1.0;
+						currentMtl->Ks[3]=1.0f;
                //OUTPUT << "Ks :" << currentMtl->Ks.v[0] << "," << currentMtl->Ks.v[1] << "," << currentMtl->Ks.v[2] << endl;
 					} else if (ligne[i+1]=='e') { // Ke
 #ifdef WIN32
@@ -632,7 +632,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 #else
 						sscanf(ligne+i+2,"%f %f %f",&currentMtl->Ke[0],&currentMtl->Ke[1],&currentMtl->Ke[2]);
 #endif
-						currentMtl->Ke[3]=1.0;
+						currentMtl->Ke[3]=1.0f;
                //OUTPUT << "Ke :" << currentMtl->Ke.v[0] << "," << currentMtl->Ke.v[1] << "," << currentMtl->Ke.v[2] << endl;
 					}
 				break;
@@ -644,10 +644,10 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 						sscanf(ligne+i+2,"%f",&currentMtl->Ns);
 #endif
 						if (currentMtl->Ns==0) {
-							currentMtl->Ks[0]=0.;
-							currentMtl->Ks[1]=0.;
-							currentMtl->Ks[2]=0.;
-							currentMtl->Ks[3]=1.;
+							currentMtl->Ks[0]=0.0f;
+							currentMtl->Ks[1]=0.0f;
+							currentMtl->Ks[2]=0.0f;
+							currentMtl->Ks[3]=1.0f;
 						}
 						currentMtl->Ns*=2.55f;
 					}
@@ -661,10 +661,10 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 						if (pos==-1) {
                             pos = str.find_last_of('/');
 						}
-						/*currentMtl->Kd[0]=1.;
-						currentMtl->Kd[1]=1.;
-						currentMtl->Kd[2]=1.;*/
-						currentMtl->Kd[3]=1.;
+						/*currentMtl->Kd[0]=1.0f;
+						currentMtl->Kd[1]=1.0f;
+						currentMtl->Kd[2]=1.0f;*/
+						currentMtl->Kd[3]=1.0f;
 						currentMtl->mapKd = new char[strlen(rep)+str.length()+2-pos];
 #ifdef WIN32
 						strncpy_s(currentMtl->mapKd,lng,ligne+pos+1,lng);
@@ -675,8 +675,8 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 #endif
 					}
 				break;
-#ifdef DEBUG
-				default : OUTPUT << "Inconnu : " << ligne << endl;
+#ifdef DEBUG_OBJ
+				default : OUTPUT << "Unknown: " << ligne << endl;
 #endif
 			}
 		}
@@ -724,15 +724,15 @@ Mtl *MtlLib::getDefaultMtl() {
 		current->Ka[0]=0.1f;
 		current->Ka[1]=0.1f;
 		current->Ka[2]=0.1f;
-		current->Ka[3]=1.f;
+		current->Ka[3]=1.0f;
 		current->Kd[0]=0.5f;
 		current->Kd[1]=0.5f;
 		current->Kd[2]=0.5f;
-		current->Kd[3]=1.f;
+		current->Kd[3]=1.0f;
 		current->Ks[0]=0.8f;
 		current->Ks[1]=0.8f;
 		current->Ks[2]=0.8f;
-		current->Ks[3]=1.f;
+		current->Ks[3]=1.0f;
 		current->Ns=1.f;
 		tabMtl.push_back(current);
 	}
@@ -775,7 +775,7 @@ void Mtl::glBind() {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// pour DEBUG : affichage d'un Vector3D
+// pour DEBUG_OBJ : affichage d'un Vector3D
 istream& operator>>(istream& in, Sommet& p3)
 { in >> p3.v[0] >> p3.v[1] >> p3.v[2];
   return in;

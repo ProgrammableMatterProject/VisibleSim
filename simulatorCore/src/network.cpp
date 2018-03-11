@@ -161,7 +161,9 @@ void P2PNetworkInterface::connect(P2PNetworkInterface *ni) {
 				ni->hostBlock->removeNeighbor(ni);
 			}
 			ni->connectedInterface = this;
+			cerr << "addNeighbor" << endl;
 			hostBlock->addNeighbor(ni->connectedInterface, ni->hostBlock);
+			cerr << "addNeighbor" << endl;
 			ni->hostBlock->addNeighbor(ni, ni->connectedInterface->hostBlock);
 		}
 	} else if (connectedInterface != NULL) {

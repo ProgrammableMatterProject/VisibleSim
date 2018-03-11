@@ -116,9 +116,9 @@ bool DatomsMotionRules::getValidMotionList(const DatomsBlock* c3d,int from,vecto
     DatomsMotionRulesConnector *conn = tabConnectors[from];
     bool notEmpty=false;
 
-    vector <DatomsMotionRulesLink*>::const_iterator ci=conn->tabLinks.begin();
+	vector <DatomsMotionRulesLink*>::const_iterator ci=conn->tabLinks.begin();
     while (ci!=conn->tabLinks.end()) {
-        OUTPUT << from << " -> " << (*ci)->getConToID() << ", ";
+        OUTPUT << from << " -> " << (*ci)->getConToID() << ", " << endl;
         if ((*ci)->isValid(c3d)) {
             vec.push_back(*ci);
             notEmpty=true;
@@ -128,7 +128,7 @@ bool DatomsMotionRules::getValidMotionList(const DatomsBlock* c3d,int from,vecto
     return notEmpty;
 }
 
-bool DatomsMotionRules::getValidMotionListFromPivot(const DatomsBlock* pivot,int from,vector<DatomsMotionRulesLink*>&vec,const FCCLattice *lattice,const Target *target) {
+bool DatomsMotionRules::getValidMotionListFromPivot(const DatomsBlock* pivot,int from,vector<DatomsMotionRulesLink*>&vec,const FCCLattice2 *lattice,const Target *target) {
     DatomsMotionRulesConnector *conn = tabConnectors[from];
     bool notEmpty=false;
     bool isOk;
@@ -206,12 +206,14 @@ bool DatomsMotionRulesLink::isValid(const DatomsBlock *c3d) {
     vector<int>::const_iterator ci = tabBlockingIDs.begin();
 // final position (connector) must be free
     if (c3d->getInterface(conTo->ID)->connectedInterface!=NULL) return false;
+// TODO BLOCKING IDS	
 // all blocking connectors must be free
-    while (ci!=tabBlockingIDs.end() && c3d->getInterface(*ci)->connectedInterface==NULL) {
+    /*while (ci!=tabBlockingIDs.end() && c3d->getInterface(*ci)->connectedInterface==NULL) {
         ci++;
     }
     if (ci!=tabBlockingIDs.end()) OUTPUT << "blocking: "<< *ci << endl;
-    return (ci==tabBlockingIDs.end());
+    return (ci==tabBlockingIDs.end());*/
+	return true;
 }
 
 Cell3DPosition DatomsMotionRulesLink::getFinalPosition(DatomsBlock *c3d) {

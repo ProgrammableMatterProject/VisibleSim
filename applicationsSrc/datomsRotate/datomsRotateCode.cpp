@@ -7,9 +7,7 @@ void DatomsRotateCode::initDistances() {
 
     if (first) {
         first=false;
-
-        FCCLattice *lattice = (FCCLattice*)(Datoms::getWorld()->lattice);
-
+        
         short ix,iy,iz;
         Cell3DPosition pos;
         queue<Cell3DPosition> stkCells;
@@ -92,15 +90,15 @@ void DatomsRotateCode::startup() {
         module->setColor(target->getTargetColor(module->position));
     }
 
-    FCCLattice *lattice = (FCCLattice*)(Datoms::getWorld()->lattice);
+    lattice = (FCCLattice2*)(Datoms::getWorld()->lattice);
+	
     lattice->initTabDistances();
     initDistances();
-	//tryToMove();
+	tryToMove();
 }
 
 bool DatomsRotateCode::tryToMove() {
     if (isLocked || target->isInTarget(module->position)) return false;
-    FCCLattice *lattice = (FCCLattice*)(Datoms::getWorld()->lattice);
     unsigned short moduleDistance = lattice->getDistance(module->position);
 
 	console << "try to move p=" << module->position << ";" << moduleDistance << "\n";
@@ -121,10 +119,14 @@ bool DatomsRotateCode::tryToMove() {
             console << "interface#" << i << " to " << neighbor->blockId << "#" << neighbor->getDirection(p2p->connectedInterface) << "\n";
             // liste des mouvements possibles
             vml.clear();
+			cerr << "ok av" << (motionRules==NULL?0:1) << endl;
+
             if (motionRules->getValidMotionList(module,i,vml)) {
+				cerr << "ok" << endl;
                 vector <DatomsMotionRulesLink*>::const_iterator ci = vml.begin();
                 while (ci!=vml.end()) {
                     v = (*ci)->getFinalPosition(module);
+					OUTPUT << "position : " << v << endl;
                     if (lattice->isInGrid(v)) {
                         p = lattice->getDistance(v);
                         OUTPUT << (*ci)->getID() << ":" << v << ";" << p << endl;
@@ -155,12 +157,11 @@ void DatomsRotateCode::myLockFunc(const MessageOf<Motions>*msg, P2PNetworkInterf
 	Motions msgData = *msg->getData();
     bool answer = false;
     if (!isLocked) {
-        FCCLattice *FCClat = (FCCLattice*)(Datoms::getWorld()->lattice);
         answer=true;
         int n=0;
         vector <Cell3DPosition>::const_iterator ci = msgData.tabCells.begin();
         while (answer && ci!=msgData.tabCells.end()) {
-            answer = FCClat->lockCell(*ci);
+            answer = lattice->lockCell(*ci);
             OUTPUT << "lock " << *ci << " : " << answer << endl;
             ci++;
             n++;
@@ -171,7 +172,7 @@ void DatomsRotateCode::myLockFunc(const MessageOf<Motions>*msg, P2PNetworkInterf
             ci--;
             while(n--) {
                 OUTPUT << "unlock " << *ci << endl;
-                FCClat->unlockCell(*ci);
+                lattice->unlockCell(*ci);
                 ci--;
             }
         }
@@ -193,11 +194,10 @@ void DatomsRotateCode::myAnsLockFunc(const MessageOf<bool>*msg, P2PNetworkInterf
 void DatomsRotateCode::onMotionEnd() {
 // unlock cells
 
-    FCCLattice *FCClat = (FCCLattice*)(Datoms::getWorld()->lattice);
     vector <Cell3DPosition>::const_iterator ci = currentMotion->tabCells.begin();
     while (ci!=currentMotion->tabCells.end()) {
         OUTPUT << "unlock " << *ci << endl;
-        FCClat->unlockCell(*ci);
+        lattice->unlockCell(*ci);
         ci++;
     }
     delete currentMotion;

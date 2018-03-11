@@ -110,9 +110,11 @@ void World::linkBlocks() {
 		for (p.pt[1] = 0; p[1] < lattice->gridSize[1]; p.pt[1]++) { // y
 			for(p.pt[0] = 0; p[0] < lattice->gridSize[0]; p.pt[0]++) { // x
 				if (lattice->cellHasBlock(p)) {
-					// cerr << "l.cellHasBlock(" << p << "/" << lattice->getIndex(p) << ")  = true ; id: "
-					//	 << lattice->getBlock(p)->blockId << endl;
+					OUTPUT << "cell:" << p << endl;
+					 cerr << "l.cellHasBlock(" << p << "/" << lattice->getIndex(p) << ")  = true ; id: "
+						 << lattice->getBlock(p)->blockId << endl;
 					linkBlock(p);
+					cerr << "end linkBlock" << endl;
 				}
 			}
 		}
