@@ -4,6 +4,26 @@ const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
+double global_mass = 0;
+
+/* parse XML files extra data */
+/* be carefull, is run only one time by the first module! */
+void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
+	TiXmlNode *node = config->FirstChild("parameters");
+	
+	cerr << "blockId=" << module->blockId << endl;
+	TiXmlElement* element = node->ToElement();
+	const char *attr= element->Attribute("mass");
+	if (attr) {
+		string str=attr;
+		global_mass = atof(str.c_str());
+		cerr << "mass= " << mass << endl;
+	} else {
+			OUTPUT << "WARNING No mass in XML file" << endl;
+	}
+}
+
+
 void ForcesPredictionIPPTCode::startup() {
 	addMessageEventFunc(DU_MSG,_ProcSendDuFunc);
 

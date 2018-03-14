@@ -90,6 +90,7 @@ public :
 
 	void ProcSendDuFunc(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
 
+	void parseUserElements(TiXmlDocument* config);
 	
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
