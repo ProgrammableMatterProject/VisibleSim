@@ -32,7 +32,7 @@ private:
 	double beta=2/3.; //beta
 	vector<double> orient={0,0,-1};
 
-	double iterations = 2; //how many iterations with messages
+	int curIteration = 0; // current iteration
 
 
 	typedef vector< vector<double> > bMatrix;
