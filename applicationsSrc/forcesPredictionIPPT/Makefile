@@ -7,8 +7,8 @@ DEPS = $(SRCS:.cpp=.depends)
 
 INCLUDES = -I. -I../../simulatorCore/src $(GLOBAL_INCLUDES)
 
-LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimRobotBlocks -lm -L/usr/X11/lib -lmuparser -lglut -lGL -lGLU -lGLEW -lpthread
-SIMULATORLIB = ../../simulatorCore/lib/libsimRobotBlocks.a
+LIBS = -L./ -L../../simulatorCore/lib -L/usr/local/lib -L/opt/local/lib -lsimBlinkyBlocks -lm -L/usr/X11/lib -lmuparser -lglut -lGL -lGLU -lGLEW -lpthread
+SIMULATORLIB = ../../simulatorCore/lib/libsimBlinkyBlocks.a
 
 CCFLAGS = $(GLOBAL_CCFLAGS)
 CC = g++

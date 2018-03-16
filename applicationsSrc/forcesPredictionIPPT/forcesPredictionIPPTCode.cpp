@@ -139,35 +139,38 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 
 	//taking neighbors and adding them to our table
 
-
-
-	P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
+	//P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
+	P2PNetworkInterface *p2p = module->getInterface(SCLattice::Direction::Left);
 	if(p2p->getConnectedBlockBId()!=-1){
 		neighbors[2][0]=p2p->getConnectedBlockBId();
-	}
+	}	
 	
-	
-	p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(1,0,0));
+	//p2p = module->getInterface(Cell3DPosition(1,0,0));
+	p2p = module->getInterface(SCLattice::Direction::Right);
 	if(p2p->getConnectedBlockBId()!=-1){
 		neighbors[3][0]=p2p->getConnectedBlockBId();
 	}
 
-	p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
+	p2p = module->getInterface(SCLattice::Direction::Front);
 	if(p2p->getConnectedBlockBId()!=-1){
 		neighbors[4][0]=p2p->getConnectedBlockBId();
 	}
 
-	p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
+	p2p = module->getInterface(SCLattice::Direction::Back);
 	if(p2p->getConnectedBlockBId()!=-1){
 		neighbors[5][0]=p2p->getConnectedBlockBId();
 	}
 
-	p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
+	p2p = module->getInterface(SCLattice::Direction::Top);
 	if(p2p->getConnectedBlockBId()!=-1){
 		neighbors[0][0]=p2p->getConnectedBlockBId();
 	}
 
-	p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
+	p2p = module->getInterface(SCLattice::Direction::Bottom);
 	if(p2p->getConnectedBlockBId()!=-1){
 		neighbors[1][0]=p2p->getConnectedBlockBId();
 	}
@@ -187,10 +190,10 @@ void ForcesPredictionIPPTCode::CheckNeighbors(){
 	cout << endl;
 }
 
-bool ForcesPredictionIPPTCode::isFixed(RobotBlocksBlock *modR){
-	if(target->isInTarget(modR->position)){
+bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
+	/*if(target->isInTarget(modR->position)){
 		return true;
-	}else
+	}else*/
 		return false;
 
 }

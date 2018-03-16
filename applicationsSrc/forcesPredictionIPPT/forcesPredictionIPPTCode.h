@@ -1,7 +1,7 @@
 #ifndef forcesPredictionIPPTCode_H_
 #define forcesPredictionIPPTCode_H_
-#include "robotBlocksSimulator.h"
-#include "robotBlocksBlockCode.h"
+#include "blinkyBlocksSimulator.h"
+#include "blinkyBlocksBlockCode.h"
 
 static const int DU_MSG=1001;
 
@@ -11,15 +11,15 @@ static const int DU_MSG=1001;
 //static const int CONFIRM_PATH_MSG=1005;
 //static const int CONFIRM_STREAMLINE_MSG=1005;
 
-using namespace RobotBlocks;
+using namespace BlinkyBlocks;
 
 //enum PathState {NONE, BFS, ConfPath, Streamline};
 
-class ForcesPredictionIPPTCode : public RobotBlocksBlockCode {
+class ForcesPredictionIPPTCode : public BlinkyBlocksBlockCode {
 
 
 private:
-	RobotBlocksBlock *module;
+	BlinkyBlocksBlock *module;
 
 	double E=1; // elastic modulus
  	double L=4; //length
@@ -56,7 +56,7 @@ private:
 
 
 public :
-	ForcesPredictionIPPTCode(RobotBlocksBlock *host):RobotBlocksBlockCode(host) { module=host; };
+	ForcesPredictionIPPTCode(BlinkyBlocksBlock *host):BlinkyBlocksBlockCode(host) { module=host; };
 	~ForcesPredictionIPPTCode() {};
 
 	void startup();
@@ -66,7 +66,7 @@ public :
 
 	void calculateU();
 
-	bool isFixed(RobotBlocksBlock *modR);
+	bool isFixed(BlinkyBlocksBlock *modR);
 
 	void printMatrix(vector< vector<double> > &matrix, int row=3, int col=3);
 	void printVector(vector<double> &vec, int row=3);
@@ -95,7 +95,7 @@ public :
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
-	    return(new ForcesPredictionIPPTCode((RobotBlocksBlock*)host));
+	    return(new ForcesPredictionIPPTCode((BlinkyBlocksBlock*)host));
 	};
 /*****************************************************************************/
 };

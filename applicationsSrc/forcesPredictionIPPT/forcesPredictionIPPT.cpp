@@ -1,10 +1,10 @@
 #include <iostream>
-#include "robotBlocksSimulator.h"
-#include "robotBlocksBlockCode.h"
+#include "blinkyBlocksSimulator.h"
+#include "blinkyBlocksBlockCode.h"
 #include "forcesPredictionIPPTCode.h"
 
 using namespace std;
-using namespace RobotBlocks;
+using namespace BlinkyBlocks;
 
 int main(int argc, char **argv) {
 	createSimulator(argc, argv, ForcesPredictionIPPTCode::buildNewBlockCode);
