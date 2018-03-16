@@ -4,7 +4,8 @@ const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
-double global_mass = 0;
+double global_mass = 1; // mass of the module
+int maxIterations = 2; // max number of iterations
 
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
@@ -13,13 +14,21 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
-	const char *attr= element->Attribute("mass");
+	const char *attr= element->Attribute("globalMass");
 	if (attr) {
 		string str=attr;
 		global_mass = atof(str.c_str());
-		cerr << "mass= " << mass << endl;
+		cerr << "globalMass= " << global_mass << endl;
 	} else {
-			OUTPUT << "WARNING No mass in XML file" << endl;
+			OUTPUT << "WARNING No globalMass in XML file" << endl;
+	}
+	attr= element->Attribute("nofIterations");
+	if (attr) {
+		string str=attr;
+		maxIterations = atoi(str.c_str());
+		cerr << "maxNofIterations= " << maxIterations << endl;
+	} else {
+			OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
 	}
 }
 
@@ -30,6 +39,7 @@ void ForcesPredictionIPPTCode::startup() {
 	
 	console << "start " << module->blockId << "," << module->color << "\n";
 		
+	mass = global_mass;
 	
 	//sending my position to neighbors
 	Vector3D pos =  module->position;
@@ -203,14 +213,13 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	bID msgFrom = sender->getConnectedBlockBId();
 	vector<double> msgData = *(msg->getData());
 	
-	static int interationProc = 0; //how many iterations was calculated
 
-	if(interationProc > iterations)
+	if(curIteration > maxIterations)
 		return;
 
 	for(int i=0;i<6;i++){
 		if(neighbors[i][0]==msgFrom){
-			cout << "Received the message" << msgFrom<< endl;
+			cout << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
 			printVector(msgData);
 			neighbors[i][1]=1;
 			uq[i]=msgData;
@@ -228,7 +237,7 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	if(calculateDu){
 		cout << "Calculating du"<< endl;
 		calculateU();
-		interationProc++;
+		curIteration++;
 
 	}
 
@@ -257,7 +266,7 @@ Vector3D ForcesPredictionIPPTCode::toVec3D(vector<double> vec1){
 }
 
 void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
-	cout << "*************printVec********************"<< endl;
+//	cout << "*************printVec********************"<< endl;
 		for (int i=0;i<row;i++){
 			cout << vec[i]<< "\t";
 		}
