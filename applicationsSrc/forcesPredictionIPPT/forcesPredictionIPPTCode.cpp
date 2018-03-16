@@ -151,37 +151,43 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 
 	//P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
 	P2PNetworkInterface *p2p = module->getInterface(SCLattice::Direction::Left);
-	if(p2p->getConnectedBlockBId()!=-1){
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){ 
 		neighbors[2][0]=p2p->getConnectedBlockBId();
 	}	
 	
 	//p2p = module->getInterface(Cell3DPosition(1,0,0));
 	p2p = module->getInterface(SCLattice::Direction::Right);
-	if(p2p->getConnectedBlockBId()!=-1){
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){ 
 		neighbors[3][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
 	p2p = module->getInterface(SCLattice::Direction::Front);
-	if(p2p->getConnectedBlockBId()!=-1){
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){  
 		neighbors[4][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
 	p2p = module->getInterface(SCLattice::Direction::Back);
-	if(p2p->getConnectedBlockBId()!=-1){
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){ 
 		neighbors[5][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
 	p2p = module->getInterface(SCLattice::Direction::Top);
-	if(p2p->getConnectedBlockBId()!=-1){
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){ 
 		neighbors[0][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
 	p2p = module->getInterface(SCLattice::Direction::Bottom);
-	if(p2p->getConnectedBlockBId()!=-1){
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){ 
 		neighbors[1][0]=p2p->getConnectedBlockBId();
 	}
 
