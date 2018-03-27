@@ -87,9 +87,9 @@ public :
 	//vector<double> addVec(vector<double> vec1 ,vector<double> vec2);
 	Vector3D toVec3D(vector<double> vec1);
 
-	vector<double> multiMatVec(vector< vector<double> > A, vector<double> vec);
-	vector< vector<double> > multiMatScal(vector< vector<double> > A,double B);
-	vector< vector<double> > multiMat(vector< vector<double> > A,vector< vector<double> > B);
+	//vector<double> multiMatVec(vector< vector<double> > A, vector<double> vec);
+	//vector< vector<double> > multiMatScal(vector< vector<double> > A,double B);
+	//ector< vector<double> > multiMat(vector< vector<double> > A,vector< vector<double> > B);
 	vector< vector<double> > addMat(vector< vector<double> > A,vector< vector<double> > B);
 
 	void ProcSendDuFunc(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
@@ -111,6 +111,8 @@ vector<double> operator*(const vector<double> vec ,const double  scal);
 vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2);
 vector<double> operator*(const vector< vector<double> > A, const vector<double> vec);
 vector< vector<double> > operator*(const vector< vector<double> > A,const double B);
+vector< vector<double> > operator*(const vector< vector<double> > A,const vector< vector<double> > B);
+vector< vector<double> > operator+(const vector< vector<double> > A,const vector< vector<double> > B);
 
 void _ProcSendDuFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 

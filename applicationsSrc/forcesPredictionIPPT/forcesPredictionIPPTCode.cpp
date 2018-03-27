@@ -81,8 +81,8 @@ void ForcesPredictionIPPTCode::calculateU(){
 		for(int i=0;i<6;i++){
 				if(neighbors[i][0]!=0){
 					//cout << module->blockId << "has neighbor" << neighbors[i] << endl;
-					tmpK11 = addMat(tmpK11,K11[i]);
-					tmpK12 = tmpK12+multiMatVec(K12[i],uq[i]);
+					tmpK11 = tmpK11+K11[i];
+					tmpK12 = tmpK12+(K12[i]*uq[i]);
 				}
 
 		}
@@ -309,47 +309,47 @@ void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int
 
 }
 
-vector< vector<double> > ForcesPredictionIPPTCode::multiMatScal(vector< vector<double> > A,double B){
-	bMatrix tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
-	for(int i=0; i<A.size();i++){
-			for(int j=0;j<A.size();j++)	{
-				tmp[i][j] = A[i][j] * B;
-			}
-	}
-	return tmp;
-}
+//vector< vector<double> > ForcesPredictionIPPTCode::multiMatScal(vector< vector<double> > A,double B){
+//	bMatrix tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
+//	for(int i=0; i<A.size();i++){
+//			for(int j=0;j<A.size();j++)	{
+//				tmp[i][j] = A[i][j] * B;
+//			}
+//	}
+//	return tmp;
+//}
 
- vector<double>  ForcesPredictionIPPTCode::multiMatVec(vector< vector<double> > A, vector<double> vec){
-	vector<double> tmp = decltype(tmp)(vec.size(),0);
-	for (int i=0;i<vec.size();i++){
-	        for (int j=0;j<vec.size();j++){
-	            tmp[i]+=( A[i][j]*vec[j]);
-	        }
-	    }
-	return tmp;
-}
+ //vector<double>  ForcesPredictionIPPTCode::multiMatVec(vector< vector<double> > A, vector<double> vec){
+//	vector<double> tmp = decltype(tmp)(vec.size(),0);
+//	for (int i=0;i<vec.size();i++){
+//	        for (int j=0;j<vec.size();j++){
+//	            tmp[i]+=( A[i][j]*vec[j]);
+//	        }
+//	    }
+//	return tmp;
+//}
 
-vector< vector<double> > ForcesPredictionIPPTCode::multiMat(vector< vector<double> > A,vector< vector<double> > B){
-	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
-	for(int i=0; i<A.size();i++){
-		for(int j=0;j<A.size();j++)	{
-			for(int k=0;k<B.size();k++){
-				result[i][j] += A[i][k] * B[k][j]; // operation
-			}
-		}
-	}
-	return result;
-}
+//vector< vector<double> > ForcesPredictionIPPTCode::multiMat(vector< vector<double> > A,vector< vector<double> > B){
+//	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
+//	for(int i=0; i<A.size();i++){
+//		for(int j=0;j<A.size();j++)	{
+//			for(int k=0;k<B.size();k++){
+//				result[i][j] += A[i][k] * B[k][j]; // operation
+//			}
+//		}
+//	}
+//	return result;
+//}
 
-vector< vector<double> > ForcesPredictionIPPTCode::addMat(vector< vector<double> > A,vector< vector<double> > B){
-	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
-	for(int i=0; i<A.size();i++){
-			for(int j=0;j<A.size();j++)	{
-					result[i][j] = A[i][j] + B[i][j]; // operation
-			}
-		}
-	return result;
-}
+//vector< vector<double> > ForcesPredictionIPPTCode::addMat(vector< vector<double> > A,vector< vector<double> > B){
+//	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
+//	for(int i=0; i<A.size();i++){
+//			for(int j=0;j<A.size();j++)	{
+//					result[i][j] = A[i][j] + B[i][j]; // operation
+//			}
+//		}
+//	return result;
+//}
 void ForcesPredictionIPPTCode::createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result){
 
 	vector< vector<double> > tmp = decltype(tmp)(matrix.size(), vector<double>(matrix.size()));
@@ -482,4 +482,27 @@ vector< vector<double> > operator*(const vector< vector<double> > A,const double
 	}
 	return tmp;
 }
+
+vector< vector<double> > operator*(const vector< vector<double> > A,const vector< vector<double> > B){
+	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
+	for(int i=0; i<A.size();i++){
+		for(int j=0;j<A.size();j++)	{
+			for(int k=0;k<B.size();k++){
+				result[i][j] += A[i][k] * B[k][j]; // operation
+			}
+		}
+	}
+	return result;
+}
+
+vector< vector<double> > operator+(vector< vector<double> > A,vector< vector<double> > B){
+	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
+	for(int i=0; i<A.size();i++){
+			for(int j=0;j<A.size();j++)	{
+					result[i][j] = A[i][j] + B[i][j]; // operation
+			}
+		}
+	return result;
+}
+
 
