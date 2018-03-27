@@ -25,7 +25,7 @@ class ForcesPredictionIPPTCode : public BlinkyBlocksBlockCode {
 private:
 	BlinkyBlocksBlock *module;
 
-	double E=1; // elastic modulus
+	double E=10; // elastic modulus
  	double L=4; //length
 	double A=1; //cross sectional area
 	double I=1/12.; //area

@@ -4,7 +4,7 @@ const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
-double global_mass = 1; // mass of the module
+
 int maxIterations = 2; // max number of iterations
 
 /* parse XML files extra data */
@@ -15,13 +15,15 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
 	const char *attr= element->Attribute("globalMass");
+	//mass of module
 	if (attr) {
 		string str=attr;
-		global_mass = atof(str.c_str());
-		cerr << "globalMass= " << global_mass << endl;
+		mass = atof(str.c_str());
+		cerr << "Mass= " << mass << endl;
 	} else {
-			OUTPUT << "WARNING No globalMass in XML file" << endl;
+			OUTPUT << "WARNING No mass in XML file" << endl;
 	}
+
 	attr= element->Attribute("nofIterations");
 	if (attr) {
 		string str=attr;
@@ -29,6 +31,15 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 		cerr << "maxNofIterations= " << maxIterations << endl;
 	} else {
 			OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
+	}
+
+	attr= element->Attribute("E");
+		if (attr) {
+			string str=attr;
+			E = atoi(str.c_str());
+			cerr << "E= " << E << endl;
+	} else {
+			OUTPUT << "WARNING No E in XML file" << endl;
 	}
 }
 
@@ -39,10 +50,6 @@ void ForcesPredictionIPPTCode::startup() {
 	
 	console << "start " << module->blockId << "," << module->color << "\n";
 		
-	mass = global_mass;
-	
-	//sending my position to neighbors
-	Vector3D pos =  module->position;
 	
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
