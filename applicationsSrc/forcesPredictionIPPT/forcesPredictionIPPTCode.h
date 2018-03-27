@@ -110,7 +110,7 @@ public :
 vector<double> operator*(const vector<double> vec ,const double  scal);
 vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2);
 vector<double> operator*(const vector< vector<double> > A, const vector<double> vec);
-
+vector< vector<double> > operator*(const vector< vector<double> > A,const double B);
 
 void _ProcSendDuFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 

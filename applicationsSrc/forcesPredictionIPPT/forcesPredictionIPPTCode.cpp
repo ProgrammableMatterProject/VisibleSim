@@ -102,7 +102,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		bMatrix  tmpBD = decltype(tmpBD)(3, vector<double>(3));
 
 		//Beta * revD
-		tmpBD = multiMatScal(revD,beta);
+		tmpBD = revD*beta;
 
 		//Fp - fp
 		tmp = Fp+(fp*-1.);
@@ -473,3 +473,13 @@ vector<double>  operator*(const vector< vector<double> > A, const vector<double>
 	    }
 	return tmp;
 }
+vector< vector<double> > operator*(const vector< vector<double> > A,const double B){
+	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
+	for(int i=0; i<A.size();i++){
+			for(int j=0;j<A.size();j++)	{
+				tmp[i][j] = A[i][j] * B;
+			}
+	}
+	return tmp;
+}
+
