@@ -83,8 +83,8 @@ public :
 	void createD(vector< vector<double> > &A, vector< vector<double> > &result);
 	void createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result);
 
-	vector<double> multiVecScal(vector<double> vec ,double  scal);
-	vector<double> addVec(vector<double> vec1 ,vector<double> vec2);
+	//vector<double> multiVecScal(vector<double> vec ,double  scal);
+	//vector<double> addVec(vector<double> vec1 ,vector<double> vec2);
 	Vector3D toVec3D(vector<double> vec1);
 
 	vector<double> multiMatVec(vector< vector<double> > A, vector<double> vec);
@@ -105,9 +105,10 @@ public :
 	};
 /*****************************************************************************/
 };
+//OPERATORS
 
 vector<double> operator*(const vector<double> vec ,const double  scal);
-
+vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2);
 
 void _ProcSendDuFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 

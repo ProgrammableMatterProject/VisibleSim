@@ -57,7 +57,7 @@ void ForcesPredictionIPPTCode::startup() {
 	createK12(K12);
 
 	//setting of the Fp force
-	Fp=multiVecScal(orient,grav);
+	Fp=orient*grav;
 	printVector(Fp);
 
 
@@ -82,7 +82,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 				if(neighbors[i][0]!=0){
 					//cout << module->blockId << "has neighbor" << neighbors[i] << endl;
 					tmpK11 = addMat(tmpK11,K11[i]);
-					tmpK12 = addVec(tmpK12,multiMatVec(K12[i],uq[i]));
+					tmpK12 = tmpK12+multiMatVec(K12[i],uq[i]);
 				}
 
 		}
@@ -105,22 +105,22 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmpBD = multiMatScal(revD,beta);
 
 		//Fp - fp
-		tmp = addVec(Fp,multiVecScal(fp,-1.));
+		tmp = Fp+(fp*-1.);
 
 		//add Ru part
 		tmp1 = multiMatVec(R,u);
 		tmp1 = tmp1*-1.;
-		tmp = addVec(tmp,tmp1);
+		tmp = tmp+tmp1;
 
 		// add K12 part
-		tmp1 = multiVecScal(tmpK12,-1);
-		tmp = addVec(tmp,tmp1);
+		tmp1 = tmpK12*-1.;
+		tmp = tmp+tmp1;
 
 		//bd * ()
 		tmp = multiMatVec(tmpBD,tmp);
 
 		//bd*()-(1-B)u-1
-		tmp=addVec(tmp,multiVecScal(u,(1-beta)));
+		tmp=tmp+(u*(1-beta));
 
 		du=tmp;
 
@@ -281,21 +281,21 @@ void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
 
 
 
-vector<double> ForcesPredictionIPPTCode::multiVecScal(vector<double> vec ,double  scal){
-	vector<double> tmp = decltype(tmp)(3,0);
-	for (int i=0;i<3;i++){
-		tmp[i] = vec[i]*scal;
-	}
-return tmp;
-
-}
-vector<double> ForcesPredictionIPPTCode::addVec(vector<double> vec1 ,vector<double> vec2){
-	vector<double> tmp = decltype(tmp)(3,0);
-	for (int i=0;i<3;i++){
-				tmp[i] = vec1[i]+vec2[i];
-		}
-	return tmp;
-}
+//vector<double> ForcesPredictionIPPTCode::multiVecScal(vector<double> vec ,double  scal){
+//	vector<double> tmp = decltype(tmp)(3,0);
+//	for (int i=0;i<3;i++){
+//		tmp[i] = vec[i]*scal;
+//	}
+//return tmp;
+//
+//}
+//vector<double> ForcesPredictionIPPTCode::addVec(vector<double> vec1 ,vector<double> vec2){
+//	vector<double> tmp = decltype(tmp)(3,0);
+//	for (int i=0;i<3;i++){
+//				tmp[i] = vec1[i]+vec2[i];
+//		}
+//	return tmp;
+//}
 
 void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int row, int col){
 	cout << "*************printMatrix********************"<< endl;
@@ -452,6 +452,13 @@ vector<double> operator*(const vector<double> vec, const double  scal){
 	vector<double> tmp = decltype(tmp)(3,0);
 		for (int i=0;i<3;i++){
 			tmp[i] = vec[i]*scal;
+		}
+	return tmp;
+}
+vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2){
+	vector<double> tmp = decltype(tmp)(3,0);
+	for (int i=0;i<3;i++){
+				tmp[i] = vec1[i]+vec2[i];
 		}
 	return tmp;
 }
