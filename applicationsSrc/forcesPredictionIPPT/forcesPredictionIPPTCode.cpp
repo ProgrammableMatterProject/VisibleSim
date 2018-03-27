@@ -447,6 +447,7 @@ void vector2string(const std::vector<bID>&v,string &s) {
 		it++;
 	}
 }
+//OPERATORS
 
 vector<double> operator*(const vector<double> vec, const double  scal){
 	vector<double> tmp = decltype(tmp)(3,0);
