@@ -108,7 +108,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp = Fp+(fp*-1.);
 
 		//add Ru part
-		tmp1 = multiMatVec(R,u);
+		tmp1 = R*u;
 		tmp1 = tmp1*-1.;
 		tmp = tmp+tmp1;
 
@@ -117,7 +117,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp = tmp+tmp1;
 
 		//bd * ()
-		tmp = multiMatVec(tmpBD,tmp);
+		tmp = tmpBD*tmp;
 
 		//bd*()-(1-B)u-1
 		tmp=tmp+(u*(1-beta));
@@ -461,5 +461,15 @@ vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2){
 	for (int i=0;i<3;i++){
 				tmp[i] = vec1[i]+vec2[i];
 		}
+	return tmp;
+}
+
+vector<double>  operator*(const vector< vector<double> > A, const vector<double> vec){
+	vector<double> tmp = decltype(tmp)(vec.size(),0);
+	for (int i=0;i<vec.size();i++){
+	        for (int j=0;j<vec.size();j++){
+	            tmp[i]+=( A[i][j]*vec[j]);
+	        }
+	    }
 	return tmp;
 }
