@@ -109,7 +109,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 
 		//add Ru part
 		tmp1 = multiMatVec(R,u);
-		tmp1 = multiVecScal(tmp1,-1);
+		tmp1 = tmp1*-1.;
 		tmp = addVec(tmp,tmp1);
 
 		// add K12 part
@@ -279,6 +279,8 @@ void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
 		cout <<endl;
 }
 
+
+
 vector<double> ForcesPredictionIPPTCode::multiVecScal(vector<double> vec ,double  scal){
 	vector<double> tmp = decltype(tmp)(3,0);
 	for (int i=0;i<3;i++){
@@ -444,4 +446,12 @@ void vector2string(const std::vector<bID>&v,string &s) {
 		s+= to_string(*it) + ",";
 		it++;
 	}
+}
+
+vector<double> operator*(const vector<double> vec, const double  scal){
+	vector<double> tmp = decltype(tmp)(3,0);
+		for (int i=0;i<3;i++){
+			tmp[i] = vec[i]*scal;
+		}
+	return tmp;
 }

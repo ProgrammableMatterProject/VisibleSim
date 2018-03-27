@@ -11,6 +11,10 @@ static const int DU_MSG=1001;
 //static const int CONFIRM_PATH_MSG=1005;
 //static const int CONFIRM_STREAMLINE_MSG=1005;
 
+
+//#define K11(i,j){{E,M,1},{1,1,1}}[i][j];
+
+
 using namespace BlinkyBlocks;
 
 //enum PathState {NONE, BFS, ConfPath, Streamline};
@@ -92,6 +96,8 @@ public :
 
 	void parseUserElements(TiXmlDocument* config);
 	
+
+
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
@@ -99,6 +105,9 @@ public :
 	};
 /*****************************************************************************/
 };
+
+vector<double> operator*(const vector<double> vec ,const double  scal);
+
 
 void _ProcSendDuFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 
