@@ -281,22 +281,6 @@ void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
 
 
 
-//vector<double> ForcesPredictionIPPTCode::multiVecScal(vector<double> vec ,double  scal){
-//	vector<double> tmp = decltype(tmp)(3,0);
-//	for (int i=0;i<3;i++){
-//		tmp[i] = vec[i]*scal;
-//	}
-//return tmp;
-//
-//}
-//vector<double> ForcesPredictionIPPTCode::addVec(vector<double> vec1 ,vector<double> vec2){
-//	vector<double> tmp = decltype(tmp)(3,0);
-//	for (int i=0;i<3;i++){
-//				tmp[i] = vec1[i]+vec2[i];
-//		}
-//	return tmp;
-//}
-
 void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int row, int col){
 	cout << "*************printMatrix********************"<< endl;
 	for (int i=0;i<row;i++){
@@ -309,47 +293,6 @@ void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int
 
 }
 
-//vector< vector<double> > ForcesPredictionIPPTCode::multiMatScal(vector< vector<double> > A,double B){
-//	bMatrix tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
-//	for(int i=0; i<A.size();i++){
-//			for(int j=0;j<A.size();j++)	{
-//				tmp[i][j] = A[i][j] * B;
-//			}
-//	}
-//	return tmp;
-//}
-
- //vector<double>  ForcesPredictionIPPTCode::multiMatVec(vector< vector<double> > A, vector<double> vec){
-//	vector<double> tmp = decltype(tmp)(vec.size(),0);
-//	for (int i=0;i<vec.size();i++){
-//	        for (int j=0;j<vec.size();j++){
-//	            tmp[i]+=( A[i][j]*vec[j]);
-//	        }
-//	    }
-//	return tmp;
-//}
-
-//vector< vector<double> > ForcesPredictionIPPTCode::multiMat(vector< vector<double> > A,vector< vector<double> > B){
-//	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
-//	for(int i=0; i<A.size();i++){
-//		for(int j=0;j<A.size();j++)	{
-//			for(int k=0;k<B.size();k++){
-//				result[i][j] += A[i][k] * B[k][j]; // operation
-//			}
-//		}
-//	}
-//	return result;
-//}
-
-//vector< vector<double> > ForcesPredictionIPPTCode::addMat(vector< vector<double> > A,vector< vector<double> > B){
-//	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
-//	for(int i=0; i<A.size();i++){
-//			for(int j=0;j<A.size();j++)	{
-//					result[i][j] = A[i][j] + B[i][j]; // operation
-//			}
-//		}
-//	return result;
-//}
 void ForcesPredictionIPPTCode::createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result){
 
 	vector< vector<double> > tmp = decltype(tmp)(matrix.size(), vector<double>(matrix.size()));
