@@ -2,81 +2,9 @@
 #include <climits>
 #include "datomsRotateCode.h"
 
-void DatomsRotateCode::initDistances() {
-    static bool first=true;
+bool first=true;
 
-    if (first) {
-        first=false;
-        
-        short ix,iy,iz;
-        Cell3DPosition pos;
-        queue<Cell3DPosition> stkCells;
-        unsigned int ngoal=0,nwp=0;
-        for (iz=0; iz<lattice->gridSize.pt[2]; iz++) {
-            for (iy=0; iy<lattice->gridSize.pt[1]; iy++) {
-                for (ix=0; ix<lattice->gridSize.pt[0]; ix++) {
-                    pos.set(ix,iy,iz);
-                    // free cell that must be filled
-                    if (target->isInTarget(pos)) {
-                        ngoal++;
-                        if (!lattice->cellHasBlock(pos)) {
-                            lattice->setDistance(pos,0);
-                            OUTPUT << "dist0 : " << pos << endl;
-                            stkCells.push(pos);
-                            nwp++;
-                        }
-                    }
-                }
-            }
-        }
-        OUTPUT << "Target: " << ngoal-nwp << "/" << ngoal << " cells" << endl;
-        vector<Cell3DPosition> neighborhood;
-        vector <DatomsMotionRulesLink*>vml;
-        DatomsMotionRules *motionRules = Datoms::getWorld()->getMotionRules();
-        int currentLevel;
-        while (!stkCells.empty()) {
-            pos = stkCells.front();
-            stkCells.pop();
-            currentLevel = lattice->getDistance(pos)+1;
-            OUTPUT << pos << " LEVEL " << currentLevel << endl;
-            neighborhood = lattice->getNeighborhood(pos);
-            vector<Cell3DPosition>::const_iterator ci = neighborhood.begin();
-            while (ci!=neighborhood.end()) {
-                //OUTPUT << "neighbor " << (*ci) << endl;
-                DatomsBlock *pivot = (DatomsBlock*)lattice->getBlock(*ci);
-                if (pivot) {
-                    OUTPUT << "catom #" << pivot->blockId <<  endl;
-                    for (int i=0; i<12; i++) {
-                        //OUTPUT << "connector #" << i << endl;
-                        vml.clear();
-                        if (motionRules->getValidMotionListFromPivot(pivot,i,vml,lattice,target)) {
-                            //OUTPUT << "ans: " << vml.size() << endl;
-                            vector <DatomsMotionRulesLink*>::const_iterator ct = vml.begin();
-                            while (ct!=vml.end()) {
-                                Cell3DPosition destPos,fromPos;
-                                int to = (*ct)->getConToID();
-                                pivot->getNeighborPos(to,destPos);
-                                //OUTPUT << "to=" << to << ":" << destPos << endl;
-                                if (destPos==pos) {
-                                    pivot->getNeighborPos(i,fromPos);
-                                    bool full = lattice->cellHasBlock(fromPos);
-                                    if (lattice->isInGrid(fromPos) &&
-                                        lattice->getDistance(fromPos)>currentLevel ) {
-                                        OUTPUT << "dist " << currentLevel << " : "<< fromPos << " " << i << "->" << to << " " << destPos << " full=" << full << endl;
-                                        lattice->setDistance(fromPos,currentLevel);
-                                        stkCells.push(fromPos);
-                                    }
-                                }
-                                ct++;
-                            }
-                        }
-                    }
-                }
-                ci++;
-            }
-        }
-    }
-}
+
 
 void DatomsRotateCode::startup() {
     isLocked=false;
@@ -84,6 +12,7 @@ void DatomsRotateCode::startup() {
 
 	addMessageEventFunc(LOCK_MSG,_myLockFunc);
 	addMessageEventFunc(ANSLOCK_MSG,_myAnsLockFunc);
+	addMessageEventFunc(UNLOCK_MSG,_myUnlockFunc);
 
     assert(target!=NULL);
     if (target->isInTarget(module->position)) {
@@ -92,9 +21,84 @@ void DatomsRotateCode::startup() {
 
     lattice = (FCCLattice2*)(Datoms::getWorld()->lattice);
 	
-    lattice->initTabDistances();
-    initDistances();
+	if (first) {
+		lattice->initTabDistances();
+		first=false;
+	}
+	initDistances();
 	tryToMove();
+}
+
+void DatomsRotateCode::initDistances() {
+
+	short ix,iy,iz;
+	Cell3DPosition pos;
+	queue<Cell3DPosition> stkCells;
+	unsigned int ngoal=0,nwp=0;
+	for (iz=0; iz<lattice->gridSize.pt[2]; iz++) {
+		for (iy=0; iy<lattice->gridSize.pt[1]; iy++) {
+			for (ix=0; ix<lattice->gridSize.pt[0]; ix++) {
+				pos.set(ix,iy,iz);
+				// free cell that must be filled
+				if (target->isInTarget(pos)) {
+					ngoal++;
+					if (!lattice->cellHasBlock(pos)) {
+						lattice->setDistance(pos,0);
+						OUTPUT << "dist0 : " << pos << endl;
+						stkCells.push(pos);
+						nwp++;
+					}
+				}
+			}
+		}
+	}
+	OUTPUT << "Target: " << ngoal-nwp << "/" << ngoal << " cells" << endl;
+	vector<Cell3DPosition> neighborhood;
+	vector <DatomsMotionRulesLink*>vml;
+	DatomsMotionRules *motionRules = Datoms::getWorld()->getMotionRules();
+	int currentLevel;
+	while (!stkCells.empty()) {
+		pos = stkCells.front();
+		stkCells.pop();
+		currentLevel = lattice->getDistance(pos)+1;
+		OUTPUT << pos << " LEVEL " << currentLevel << endl;
+		neighborhood = lattice->getNeighborhood(pos);
+		vector<Cell3DPosition>::const_iterator ci = neighborhood.begin();
+		while (ci!=neighborhood.end()) {
+			//OUTPUT << "neighbor " << (*ci) << endl;
+			DatomsBlock *pivot = (DatomsBlock*)lattice->getBlock(*ci);
+			if (pivot) {
+				OUTPUT << "catom #" << pivot->blockId <<  endl;
+				for (int i=0; i<12; i++) {
+					//OUTPUT << "connector #" << i << endl;
+					vml.clear();
+					if (motionRules->getValidMotionListFromPivot(pivot,i,vml,lattice,target)) {
+						//OUTPUT << "ans: " << vml.size() << endl;
+						vector <DatomsMotionRulesLink*>::const_iterator ct = vml.begin();
+						while (ct!=vml.end()) {
+							Cell3DPosition destPos,fromPos;
+							int to = (*ct)->getConToID();
+							pivot->getNeighborPos(to,destPos);
+							//OUTPUT << "to=" << to << ":" << destPos << endl;
+							if (destPos==pos) {
+								pivot->getNeighborPos(i,fromPos);
+								bool full = lattice->cellHasBlock(fromPos);
+								if (lattice->isInGrid(fromPos) &&
+									lattice->getDistance(fromPos)>currentLevel ) {
+									OUTPUT << "dist " << currentLevel << " : "<< fromPos << " " 
+											<< i << "->" << to << " " << destPos << " full=" << full << endl;
+									lattice->setDistance(fromPos,currentLevel);
+									stkCells.push(fromPos);
+								}
+							}
+							ct++;
+						}
+					}
+				}
+			}
+			ci++;
+		}
+	}
 }
 
 bool DatomsRotateCode::tryToMove() {
@@ -119,11 +123,9 @@ bool DatomsRotateCode::tryToMove() {
             console << "interface#" << i << " to " << neighbor->blockId << "#" << neighbor->getDirection(p2p->connectedInterface) << "\n";
             // liste des mouvements possibles
             vml.clear();
-			cerr << "ok av" << (motionRules==NULL?0:1) << endl;
-
+			
             if (motionRules->getValidMotionList(module,i,vml)) {
-				cerr << "ok" << endl;
-                vector <DatomsMotionRulesLink*>::const_iterator ci = vml.begin();
+				vector <DatomsMotionRulesLink*>::const_iterator ci = vml.begin();
                 while (ci!=vml.end()) {
                     v = (*ci)->getFinalPosition(module);
 					OUTPUT << "position : " << v << endl;
@@ -147,7 +149,7 @@ bool DatomsRotateCode::tryToMove() {
         p2p=module->getInterface(bestOri);
         currentMotion = new Motions(module,(DatomsBlock *)p2p->connectedInterface->hostBlock,bestMRL);
         console << "send LOCK() to " << p2p->connectedInterface->hostBlock->blockId << "\n";
-        sendMessage(new MessageOf<Motions>(LOCK_MSG,*currentMotion),p2p,100,200);
+        sendMessage(new MessageOf<Motions>(LOCK_MSG,*currentMotion),p2p,100,0);
         return true;
     }
     return false;
@@ -177,10 +179,10 @@ void DatomsRotateCode::myLockFunc(const MessageOf<Motions>*msg, P2PNetworkInterf
             }
         }
         isLocked = answer;
-        if (isLocked) module->setColor(RED);
     }
+    if (isLocked) module->setColor(RED);
     console << "send ANSLOCK(" << answer << ") to " << sender->connectedInterface->hostBlock->blockId << "\n";
-    sendMessage(new MessageOf<bool>(ANSLOCK_MSG,answer),sender,100,200);
+    sendMessage(new MessageOf<bool>(ANSLOCK_MSG,answer),sender,100,0);
 };
 
 void DatomsRotateCode::myAnsLockFunc(const MessageOf<bool>*msg, P2PNetworkInterface*sender) {
@@ -191,7 +193,15 @@ void DatomsRotateCode::myAnsLockFunc(const MessageOf<bool>*msg, P2PNetworkInterf
     }
 };
 
+void DatomsRotateCode::myUnlockFunc(P2PNetworkInterface* sender) {
+	console << "rec. Unlock \n";
+	isLocked=false;
+	module->setColor(BLUE);
+}
+
+
 void DatomsRotateCode::onMotionEnd() {
+	OUTPUT << "onMotionEnd" << endl;
 // unlock cells
 
     vector <Cell3DPosition>::const_iterator ci = currentMotion->tabCells.begin();
@@ -202,8 +212,18 @@ void DatomsRotateCode::onMotionEnd() {
     }
     delete currentMotion;
     isLocked = false;
+	// unlock pivot module
+	P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByBlockRef(currentMotion->fixed);
+	assert(p2p!=NULL);
+	console << "send UNLOCK() to " << p2p->hostBlock->blockId << "\n";
+	sendMessage(new Message(UNLOCK_MSG),p2p,100,0);
     module->setColor(YELLOW);
     currentMotion=NULL;
+	
+	lattice->initTabDistances();
+	
+	initDistances();
+	tryToMove();
 }
 
 void DatomsRotateCode::onTap(int n) {
@@ -223,6 +243,11 @@ void _myAnsLockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*send
 	cb->myAnsLockFunc(msgType,sender);
 }
 
+void _myUnlockFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	DatomsRotateCode *cb = (DatomsRotateCode*)codebloc;
+	cb->myUnlockFunc(sender);
+}
+
 Motions::Motions(DatomsBlock *m,DatomsBlock *f,DatomsMotionRulesLink* mrl) {
     mobile = m;
     fixed = f;
@@ -233,3 +258,4 @@ Motions::Motions(DatomsBlock *m,DatomsBlock *f,DatomsMotionRulesLink* mrl) {
 Motions::~Motions() {
     tabCells.clear();
 }
+

@@ -107,8 +107,14 @@ void DatomsWorld::linkBlock(const Cell3DPosition& pos) {
  * \brief Draw catoms and axes
  */
 void DatomsWorld::glDraw() {
+// material for the grid walls
+    if (background) {
+        glDrawBackground();
+    }
+
     glPushMatrix();
     glDisable(GL_TEXTURE_2D);
+	
 // draw catoms
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
@@ -119,11 +125,9 @@ void DatomsWorld::glDraw() {
     unlock();
     glPopMatrix();
 
-// material for the grid walls
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    if (background) {
-        glDrawBackground();
-    }
+    enableTexture(false);
+	lattice->glDraw();
+	
 }
 
 void DatomsWorld::glDrawId() {

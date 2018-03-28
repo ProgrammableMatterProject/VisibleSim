@@ -56,7 +56,7 @@ OKTEEN_SRCS = okteenSimulator.cpp okteenBlock.cpp okteenBlockCode.cpp okteenWorl
 OKTEEN_OBJS = $(OKTEEN_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 OKTEEN_DEPS = $(OKTEEN_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 
-DATOMS_SRCS = datomsSimulator.cpp datomsBlock.cpp datomsBlockCode.cpp datomsWorld.cpp datomsGlBlock.cpp rotation3DEvents.cpp datomsMotionRules.cpp
+DATOMS_SRCS = datomsSimulator.cpp datomsBlock.cpp datomsBlockCode.cpp datomsWorld.cpp datomsGlBlock.cpp deformationEvents.cpp datomsMotionRules.cpp
 DATOMS_OBJS = $(DATOMS_SRCS:%.cpp=$(OBJDIR)/%.o) $(BASESIMULATOR_OBJS)
 DATOMS_DEPS = $(DATOMS_SRCS:%.cpp=$(DEPDIR)/%.depends) $(BASESIMULATOR_DEPS)
 

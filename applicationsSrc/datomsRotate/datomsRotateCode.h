@@ -6,6 +6,7 @@
 
 static const int LOCK_MSG=1001;
 static const int ANSLOCK_MSG=1002;
+static const int UNLOCK_MSG=1003;
 
 using namespace Datoms;
 
@@ -36,8 +37,11 @@ public :
 	bool tryToMove();
 	void myLockFunc(const MessageOf<Motions>*msg,P2PNetworkInterface *sender);
 	void myAnsLockFunc(const MessageOf<bool>*msg,P2PNetworkInterface *sender);
+    void myUnlockFunc(P2PNetworkInterface *sender);
     void onMotionEnd();
     void onTap(int);
+	
+	//void parseUserElements(TiXmlDocument *config);
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
@@ -48,5 +52,6 @@ public :
 
 void _myLockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 void _myAnsLockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
+void _myUnlockFunc(BlockCode *,MessagePtr,P2PNetworkInterface *sender);
 
 #endif /* datomsRotateCode_H_ */

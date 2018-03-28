@@ -22,15 +22,14 @@ class DatomsMotionRulesLink {
 
     DatomsMotionRulesConnector *conFrom; //!< origin connector
     DatomsMotionRulesConnector *conTo; //!< destination connector
-    double angle; //!< rotations angle
-    double radius; //!< radius of curvature
     Vector3D axis1; //!< first rotation axis
     Vector3D axis2; //!< second rotation axis
     vector <int> tabBlockingIDs; //!< array of blocking ID
     MotionRuleLinkType MRLT;
+	uint8_t modelId;
 public :
-    DatomsMotionRulesLink(MotionRuleLinkType m,DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,double a,double r,const Vector3D& ax1,const Vector3D& ax2):
-        MRLT(m),conFrom(from),conTo(to),angle(a),radius(r),axis1(ax1),axis2(ax2) {};
+    DatomsMotionRulesLink(MotionRuleLinkType m,DatomsMotionRulesConnector *from,DatomsMotionRulesConnector *to,const Vector3D& ax1,const Vector3D& ax2,uint8_t id):
+        MRLT(m),conFrom(from),conTo(to),axis1(ax1),axis2(ax2),modelId(id) {};
 /**
    \brief Get connector ID of destination of the motion
    \return destination connector ID
@@ -104,8 +103,8 @@ class DatomsMotionRules {
 
     protected:
     private:
-        void addLinks4(int id1, int id2, int id3, int id4,const Vector3D &left,const Vector3D &lup,const Vector3D &rup);
-        void addLink(MotionRuleLinkType mrlt,int id1, int id2,double angle,double radius,const Vector3D &axis1,const Vector3D &axis2,int n,int *tabBC);
+        void addLinks4(int id1, int id2, int id3, int id4,const Vector3D &left,const Vector3D &lup,const Vector3D &rup,uint8_t modelId);
+        void addLink(MotionRuleLinkType mrlt,int id1, int id2,const Vector3D &axis1,const Vector3D &axis2,int n,int *tabBC,uint8_t modelId);
 };
 
 } // Datoms namespace

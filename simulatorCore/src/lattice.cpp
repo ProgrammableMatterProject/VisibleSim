@@ -354,11 +354,11 @@ FCCLattice::FCCLattice() : Lattice3D() {
 
 FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {
     tabLockedCells = new bool[gridSize[0] * gridSize[1] * gridSize[2]]();
-    /*bool *ptr=tabLockedCells;
+    bool *ptr=tabLockedCells;
     int i=gridSize[0] * gridSize[1] * gridSize[2];
     while (--i) {
         *ptr++=false;
-    }*/
+    }
     // OUTPUT << "init Lattice" << endl;
     // for (int i=0; i<gridSize[0] * gridSize[1] * gridSize[2];i++) { OUTPUT << tabLockedCells[i] << " "; }
     // OUTPUT << endl;
@@ -511,7 +511,6 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 						gp.set(ix,iy,iz);
 						v = gridToWorldPosition(gp);
 						glTranslatef(v[0],v[1],v[2]);
-
 						glMaterialfv(GL_FRONT,GL_DIFFUSE,tabColors[*ptrDistance%12]);
 						glutSolidCube(0.2*gridScale[0]);
 						glPopMatrix();
@@ -523,7 +522,9 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 			}
 		}
 	}
-    if (!tabHighlightedCells.empty()) {
+    
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,white);
+	if (!tabHighlightedCells.empty()) {
 		vector<HighlightedCell>::const_iterator it = tabHighlightedCells.begin();
 		Vector3D v;
 		int i=72;
@@ -561,15 +562,14 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 }
 
 void FCCLattice::initTabDistances() {
+    int n = gridSize.pt[0]*gridSize.pt[1]*gridSize.pt[2];
     if (tabDistances==NULL) {
-        int n = gridSize.pt[0]*gridSize.pt[1]*gridSize.pt[2];
         tabDistances = new unsigned short[n];
-        // initialisation of tabDistances with value 'd'
-        unsigned short *ptr=tabDistances;
-        while (n--) {
-            *ptr++=USHRT_MAX;
-        }
-
+    }
+    // initialisation of tabDistances with value 'd'
+    unsigned short *ptr=tabDistances;
+    while (n--) {
+		*ptr++=USHRT_MAX;
     }
 }
 
