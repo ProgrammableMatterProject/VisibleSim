@@ -8,7 +8,13 @@ const int messageDelayCons=1;
 int maxIterations = 2; // max number of iterations
 double globalMass = 0; //mass from XML
 double globalE = 0; // E from XML
+double globalL=4; //length from XML
+double globalA=1; //cross sectional area from XML
+double globalI=1/12.; //area from XML
 
+
+double globalGrav=9.81; //gravity from XML
+double globalBeta=2/3.; //beta from XML
 
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
@@ -44,6 +50,41 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	} else {
 			OUTPUT << "WARNING No E in XML file" << endl;
 	}
+
+	attr= element->Attribute("A");
+			if (attr) {
+				string str=attr;
+				globalL = atoi(str.c_str());
+				cerr << "A= " << globalL << endl;
+		} else {
+				OUTPUT << "WARNING No A in XML file" << endl;
+		}
+
+	attr= element->Attribute("L");
+				if (attr) {
+					string str=attr;
+					globalL = atoi(str.c_str());
+					cerr << "L= " << globalA << endl;
+			} else {
+					OUTPUT << "WARNING No L in XML file" << endl;
+			}
+
+	attr= element->Attribute("I");
+					if (attr) {
+						string str=attr;
+						globalL = atoi(str.c_str());
+						cerr << "I= " << globalA << endl;
+				} else {
+						OUTPUT << "WARNING No I in XML file" << endl;
+				}
+	attr= element->Attribute("Beta");
+					if (attr) {
+						string str=attr;
+						globalBeta = atoi(str.c_str());
+						cerr << "I= " << globalBeta << endl;
+				} else {
+						OUTPUT << "WARNING No Beta in XML file" << endl;
+				}
 }
 
 
@@ -55,6 +96,12 @@ void ForcesPredictionIPPTCode::startup() {
 	//set attributes from xml file
 	mass = globalMass;
 	E = globalE;
+	L = globalL;
+	A = globalA;
+	I = globalI;
+	grav=globalGrav;
+	beta = globalBeta;
+
 
 	
 	//cheking neighbors and adding them to a list
