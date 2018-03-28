@@ -12,7 +12,9 @@ static const int DU_MSG=1001;
 //static const int CONFIRM_STREAMLINE_MSG=1005;
 
 
-//#define K11(i,j){{E,M,1},{1,1,1}}[i][j];
+#define K11(i,j){\\
+{E,M,1},\\
+{1,1,1}}[i][j]
 
 
 using namespace BlinkyBlocks;

@@ -6,6 +6,9 @@ const int messageDelayCons=1;
 
 
 int maxIterations = 2; // max number of iterations
+double globalMass = 0; //mass from XML
+double globalE = 0; // E from XML
+
 
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
@@ -18,8 +21,8 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	//mass of module
 	if (attr) {
 		string str=attr;
-		mass = atof(str.c_str());
-		cerr << "Mass= " << mass << endl;
+		globalMass = atof(str.c_str());
+		cerr << "Mass= " << globalMass << endl;
 	} else {
 			OUTPUT << "WARNING No mass in XML file" << endl;
 	}
@@ -36,8 +39,8 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("E");
 		if (attr) {
 			string str=attr;
-			E = atoi(str.c_str());
-			cerr << "E= " << E << endl;
+			globalE = atoi(str.c_str());
+			cerr << "E= " << globalE << endl;
 	} else {
 			OUTPUT << "WARNING No E in XML file" << endl;
 	}
@@ -49,7 +52,10 @@ void ForcesPredictionIPPTCode::startup() {
 
 	
 	console << "start " << module->blockId << "," << module->color << "\n";
-		
+	//set attributes from xml file
+	mass = globalMass;
+	E = globalE;
+
 	
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
