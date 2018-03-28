@@ -4,17 +4,8 @@ const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
-
+double global_mass = 1; // mass of the module
 int maxIterations = 2; // max number of iterations
-double globalMass = 0; //mass from XML
-double globalE = 0; // E from XML
-double globalL=4; //length from XML
-double globalA=1; //cross sectional area from XML
-double globalI=1/12.; //area from XML
-
-
-double globalGrav=9.81; //gravity from XML
-double globalBeta=2/3.; //beta from XML
 
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
@@ -24,15 +15,13 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
 	const char *attr= element->Attribute("globalMass");
-	//mass of module
 	if (attr) {
 		string str=attr;
-		globalMass = atof(str.c_str());
-		cerr << "Mass= " << globalMass << endl;
+		global_mass = atof(str.c_str());
+		cerr << "globalMass= " << global_mass << endl;
 	} else {
-			OUTPUT << "WARNING No mass in XML file" << endl;
+			OUTPUT << "WARNING No globalMass in XML file" << endl;
 	}
-
 	attr= element->Attribute("nofIterations");
 	if (attr) {
 		string str=attr;
@@ -41,50 +30,6 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	} else {
 			OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
 	}
-
-	attr= element->Attribute("E");
-		if (attr) {
-			string str=attr;
-			globalE = atoi(str.c_str());
-			cerr << "E= " << globalE << endl;
-	} else {
-			OUTPUT << "WARNING No E in XML file" << endl;
-	}
-
-	attr= element->Attribute("A");
-			if (attr) {
-				string str=attr;
-				globalL = atoi(str.c_str());
-				cerr << "A= " << globalL << endl;
-		} else {
-				OUTPUT << "WARNING No A in XML file" << endl;
-		}
-
-	attr= element->Attribute("L");
-				if (attr) {
-					string str=attr;
-					globalL = atoi(str.c_str());
-					cerr << "L= " << globalA << endl;
-			} else {
-					OUTPUT << "WARNING No L in XML file" << endl;
-			}
-
-	attr= element->Attribute("I");
-					if (attr) {
-						string str=attr;
-						globalL = atoi(str.c_str());
-						cerr << "I= " << globalA << endl;
-				} else {
-						OUTPUT << "WARNING No I in XML file" << endl;
-				}
-	attr= element->Attribute("Beta");
-					if (attr) {
-						string str=attr;
-						globalBeta = atoi(str.c_str());
-						cerr << "I= " << globalBeta << endl;
-				} else {
-						OUTPUT << "WARNING No Beta in XML file" << endl;
-				}
 }
 
 
@@ -93,16 +38,11 @@ void ForcesPredictionIPPTCode::startup() {
 
 	
 	console << "start " << module->blockId << "," << module->color << "\n";
-	//set attributes from xml file
-	mass = globalMass;
-	E = globalE;
-	L = globalL;
-	A = globalA;
-	I = globalI;
-	grav=globalGrav;
-	beta = globalBeta;
-
-
+		
+	mass = global_mass;
+	
+	//sending my position to neighbors
+	Vector3D pos =  module->position;
 	
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
@@ -117,7 +57,7 @@ void ForcesPredictionIPPTCode::startup() {
 	createK12(K12);
 
 	//setting of the Fp force
-	Fp=orient*grav;
+	Fp=multiVecScal(orient,grav);
 	printVector(Fp);
 
 
@@ -141,8 +81,8 @@ void ForcesPredictionIPPTCode::calculateU(){
 		for(int i=0;i<6;i++){
 				if(neighbors[i][0]!=0){
 					//cout << module->blockId << "has neighbor" << neighbors[i] << endl;
-					tmpK11 = tmpK11+K11[i];
-					tmpK12 = tmpK12+(K12[i]*uq[i]);
+					tmpK11 = addMat(tmpK11,K11[i]);
+					tmpK12 = addVec(tmpK12,multiMatVec(K12[i],uq[i]));
 				}
 
 		}
@@ -162,25 +102,25 @@ void ForcesPredictionIPPTCode::calculateU(){
 		bMatrix  tmpBD = decltype(tmpBD)(3, vector<double>(3));
 
 		//Beta * revD
-		tmpBD = revD*beta;
+		tmpBD = multiMatScal(revD,beta);
 
 		//Fp - fp
-		tmp = Fp+(fp*-1.);
+		tmp = addVec(Fp,multiVecScal(fp,-1.));
 
 		//add Ru part
-		tmp1 = R*u;
-		tmp1 = tmp1*-1.;
-		tmp = tmp+tmp1;
+		tmp1 = multiMatVec(R,u);
+		tmp1 = multiVecScal(tmp1,-1);
+		tmp = addVec(tmp,tmp1);
 
 		// add K12 part
-		tmp1 = tmpK12*-1.;
-		tmp = tmp+tmp1;
+		tmp1 = multiVecScal(tmpK12,-1);
+		tmp = addVec(tmp,tmp1);
 
 		//bd * ()
-		tmp = tmpBD*tmp;
+		tmp = multiMatVec(tmpBD,tmp);
 
 		//bd*()-(1-B)u-1
-		tmp=tmp+(u*(1-beta));
+		tmp=addVec(tmp,multiVecScal(u,(1-beta)));
 
 		du=tmp;
 
@@ -205,48 +145,48 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 	for(int i=0;i<6;i++){
 		neighbors[i][0] =0;
 		neighbors[i][1] =0;
-	}
+		}
 
 	//taking neighbors and adding them to our table
 
 	//P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
 	P2PNetworkInterface *p2p = module->getInterface(SCLattice::Direction::Left);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
 	if(p2p->getConnectedBlockBId()){ 
 		neighbors[2][0]=p2p->getConnectedBlockBId();
 	}	
 	
 	//p2p = module->getInterface(Cell3DPosition(1,0,0));
 	p2p = module->getInterface(SCLattice::Direction::Right);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
 	if(p2p->getConnectedBlockBId()){ 
 		neighbors[3][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
 	p2p = module->getInterface(SCLattice::Direction::Front);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
 	if(p2p->getConnectedBlockBId()){  
 		neighbors[4][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
 	p2p = module->getInterface(SCLattice::Direction::Back);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
 	if(p2p->getConnectedBlockBId()){ 
 		neighbors[5][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
 	p2p = module->getInterface(SCLattice::Direction::Top);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
 	if(p2p->getConnectedBlockBId()){ 
 		neighbors[0][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
 	p2p = module->getInterface(SCLattice::Direction::Bottom);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	//if(p2p->getConnectedBlockBId()!=-1){ // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
 	if(p2p->getConnectedBlockBId()){ 
 		neighbors[1][0]=p2p->getConnectedBlockBId();
 	}
@@ -339,7 +279,21 @@ void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
 		cout <<endl;
 }
 
+vector<double> ForcesPredictionIPPTCode::multiVecScal(vector<double> vec ,double  scal){
+	vector<double> tmp = decltype(tmp)(3,0);
+	for (int i=0;i<3;i++){
+		tmp[i] = vec[i]*scal;
+	}
+return tmp;
 
+}
+vector<double> ForcesPredictionIPPTCode::addVec(vector<double> vec1 ,vector<double> vec2){
+	vector<double> tmp = decltype(tmp)(3,0);
+	for (int i=0;i<3;i++){
+				tmp[i] = vec1[i]+vec2[i];
+		}
+	return tmp;
+}
 
 void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int row, int col){
 	cout << "*************printMatrix********************"<< endl;
@@ -353,6 +307,47 @@ void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int
 
 }
 
+vector< vector<double> > ForcesPredictionIPPTCode::multiMatScal(vector< vector<double> > A,double B){
+	bMatrix tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
+	for(int i=0; i<A.size();i++){
+			for(int j=0;j<A.size();j++)	{
+				tmp[i][j] = A[i][j] * B;
+			}
+	}
+	return tmp;
+}
+
+ vector<double>  ForcesPredictionIPPTCode::multiMatVec(vector< vector<double> > A, vector<double> vec){
+	vector<double> tmp = decltype(tmp)(vec.size(),0);
+	for (int i=0;i<vec.size();i++){
+	        for (int j=0;j<vec.size();j++){
+	            tmp[i]+=( A[i][j]*vec[j]);
+	        }
+	    }
+	return tmp;
+}
+
+vector< vector<double> > ForcesPredictionIPPTCode::multiMat(vector< vector<double> > A,vector< vector<double> > B){
+	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
+	for(int i=0; i<A.size();i++){
+		for(int j=0;j<A.size();j++)	{
+			for(int k=0;k<B.size();k++){
+				result[i][j] += A[i][k] * B[k][j]; // operation
+			}
+		}
+	}
+	return result;
+}
+
+vector< vector<double> > ForcesPredictionIPPTCode::addMat(vector< vector<double> > A,vector< vector<double> > B){
+	bMatrix result = decltype(result)(A.size(), vector<double>(A.size()));
+	for(int i=0; i<A.size();i++){
+			for(int j=0;j<A.size();j++)	{
+					result[i][j] = A[i][j] + B[i][j]; // operation
+			}
+		}
+	return result;
+}
 void ForcesPredictionIPPTCode::createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result){
 
 	vector< vector<double> > tmp = decltype(tmp)(matrix.size(), vector<double>(matrix.size()));
@@ -450,62 +445,3 @@ void vector2string(const std::vector<bID>&v,string &s) {
 		it++;
 	}
 }
-//OPERATORS
-
-vector<double> operator*(const vector<double> vec, const double  scal){
-	vector<double> tmp = decltype(tmp)(3,0);
-		for (int i=0;i<3;i++){
-			tmp[i] = vec[i]*scal;
-		}
-	return tmp;
-}
-vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2){
-	vector<double> tmp = decltype(tmp)(3,0);
-	for (int i=0;i<3;i++){
-				tmp[i] = vec1[i]+vec2[i];
-		}
-	return tmp;
-}
-
-vector<double>  operator*(const vector< vector<double> > A, const vector<double> vec){
-	vector<double> tmp = decltype(tmp)(vec.size(),0);
-	for (int i=0;i<vec.size();i++){
-	        for (int j=0;j<vec.size();j++){
-	            tmp[i]+=( A[i][j]*vec[j]);
-	        }
-	    }
-	return tmp;
-}
-vector< vector<double> > operator*(const vector< vector<double> > A,const double B){
-	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
-	for(int i=0; i<A.size();i++){
-			for(int j=0;j<A.size();j++)	{
-				tmp[i][j] = A[i][j] * B;
-			}
-	}
-	return tmp;
-}
-
-vector< vector<double> > operator*(const vector< vector<double> > A,const vector< vector<double> > B){
-	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
-	for(int i=0; i<A.size();i++){
-		for(int j=0;j<A.size();j++)	{
-			for(int k=0;k<B.size();k++){
-				result[i][j] += A[i][k] * B[k][j]; // operation
-			}
-		}
-	}
-	return result;
-}
-
-vector< vector<double> > operator+(vector< vector<double> > A,vector< vector<double> > B){
-	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
-	for(int i=0; i<A.size();i++){
-			for(int j=0;j<A.size();j++)	{
-					result[i][j] = A[i][j] + B[i][j]; // operation
-			}
-		}
-	return result;
-}
-
-

@@ -11,12 +11,6 @@ static const int DU_MSG=1001;
 //static const int CONFIRM_PATH_MSG=1005;
 //static const int CONFIRM_STREAMLINE_MSG=1005;
 
-
-#define K11(i,j){\\
-{E,M,1},\\
-{1,1,1}}[i][j]
-
-
 using namespace BlinkyBlocks;
 
 //enum PathState {NONE, BFS, ConfPath, Streamline};
@@ -27,7 +21,7 @@ class ForcesPredictionIPPTCode : public BlinkyBlocksBlockCode {
 private:
 	BlinkyBlocksBlock *module;
 
-	double E=10; // elastic modulus
+	double E=1; // elastic modulus
  	double L=4; //length
 	double A=1; //cross sectional area
 	double I=1/12.; //area
@@ -85,14 +79,19 @@ public :
 	void createD(vector< vector<double> > &A, vector< vector<double> > &result);
 	void createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result);
 
+	vector<double> multiVecScal(vector<double> vec ,double  scal);
+	vector<double> addVec(vector<double> vec1 ,vector<double> vec2);
 	Vector3D toVec3D(vector<double> vec1);
+
+	vector<double> multiMatVec(vector< vector<double> > A, vector<double> vec);
+	vector< vector<double> > multiMatScal(vector< vector<double> > A,double B);
+	vector< vector<double> > multiMat(vector< vector<double> > A,vector< vector<double> > B);
+	vector< vector<double> > addMat(vector< vector<double> > A,vector< vector<double> > B);
 
 	void ProcSendDuFunc(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
 
 	void parseUserElements(TiXmlDocument* config);
 	
-
-
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
@@ -100,14 +99,6 @@ public :
 	};
 /*****************************************************************************/
 };
-//OPERATORS
-
-vector<double> operator*(const vector<double> vec ,const double  scal);
-vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2);
-vector<double> operator*(const vector< vector<double> > A, const vector<double> vec);
-vector< vector<double> > operator*(const vector< vector<double> > A,const double B);
-vector< vector<double> > operator*(const vector< vector<double> > A,const vector< vector<double> > B);
-vector< vector<double> > operator+(const vector< vector<double> > A,const vector< vector<double> > B);
 
 void _ProcSendDuFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
 
