@@ -12,7 +12,7 @@ int maxIterations = 2; // max number of iterations
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	TiXmlNode *node = config->FirstChild("parameters");
 	
-	cerr << "blockId=" << module->blockId << endl;
+	cerr << "my blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
 	const char *attr= element->Attribute("globalMass");
 	if (attr) {
@@ -32,6 +32,14 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	}
 }
 
+void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
+	cerr << "blockId=" << module->blockId << endl;
+	
+	const char *attr = config->Attribute("myAttribute");
+	if (attr) {
+		cerr << "myAttribute =" << attr<< endl;
+	}
+}
 
 void ForcesPredictionIPPTCode::startup() {
 	addMessageEventFunc(DU_MSG,_ProcSendDuFunc);

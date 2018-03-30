@@ -54,7 +54,6 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
     }
 
     //setDefaultHardwareParameters();
-    
     blockCode = (BaseSimulator::BlockCode*)bcb(this);
 
     // Parse user configuration from configuration file, only performed once
@@ -62,7 +61,7 @@ bool BuildingBlock::userConfigHasBeenParsed = false;
       userConfigHasBeenParsed = true;
       blockCode->parseUserElements(Simulator::getSimulator()->getConfigDocument());
     }
-    
+
     isMaster = false;
 }
 

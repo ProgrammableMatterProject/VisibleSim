@@ -132,7 +132,9 @@ void BlinkyBlocksSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, Block
 	// ...Parsing code...
 
 	// Finally, add block to the world
-	((BlinkyBlocksWorld*)world)->addBlock(blockId, bcb, pos, color, 0, master);
+	BlinkyBlocksWorld *w = (BlinkyBlocksWorld*)world;
+	w->addBlock(blockId, bcb, pos, color, 0, master);
+	w->getBlockById(blockId)->blockCode->parseUserBlockElements(blockElt);	
 }
 
 } // BlinkyBlocks namespace

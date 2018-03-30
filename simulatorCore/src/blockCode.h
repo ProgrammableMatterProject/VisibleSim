@@ -63,6 +63,12 @@ public:
  */ 
     virtual void parseUserElements(TiXmlDocument *config) { }
 /**
+ * @brief Provides the user with a pointer to the configuration file parser, which can be used to read additional user information from each block config. Has to be overriden in the child class.
+ * @param config : pointer to the TiXmlElement representing the block configuration file, all information related to concerned block have already been parsed
+ *
+ */ 
+    virtual void parseUserBlockElements(TiXmlElement *config) { }
+/**
  * @brief Handler for all events received by the host block
  */ 
     virtual void processLocalEvent(EventPtr pev);

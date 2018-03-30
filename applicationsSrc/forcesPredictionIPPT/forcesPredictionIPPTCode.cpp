@@ -87,6 +87,15 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 				}
 }
 
+void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
+	cerr << "blockId=" << module->blockId << endl;
+	
+	const char *attr = config->Attribute("myAttribute");
+	if (attr) {
+		cerr << "myAttribute =" << attr<< endl;
+	}
+}
+
 
 void ForcesPredictionIPPTCode::startup() {
 	addMessageEventFunc(DU_MSG,_ProcSendDuFunc);
@@ -183,12 +192,8 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp=tmp+(u*(1-beta));
 
 		du=tmp;
-
-
 		//printVector(u);
-
-
-	}	else{//end isFixed
+	}	else { //end isFixed
 		du[0] = 0;
 		du[1] = 0;
 		du[2] = 0;
