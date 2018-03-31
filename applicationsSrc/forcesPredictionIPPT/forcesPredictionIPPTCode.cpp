@@ -112,7 +112,7 @@ void ForcesPredictionIPPTCode::startup() {
 	beta = globalBeta;
 
 
-	//cout << K111(1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
+	//OUTPUT << K111(1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
 	
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
@@ -150,7 +150,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		//checking neighbors and creating K11 and K12 matrixes
 		for(int i=0;i<6;i++){
 				if(neighbors[i][0]!=0){
-					//cout << module->blockId << "has neighbor" << neighbors[i] << endl;
+					//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
 					tmpK11 = tmpK11+K11[i];
 					tmpK12 = tmpK12+(K12[i]*uq[i]);
 				}
@@ -260,16 +260,16 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 }
 
 void ForcesPredictionIPPTCode::CheckNeighbors(){
-	cout << "neighbors for id= " << module->blockId << ": "<< endl;
+	OUTPUT << "neighbors for id= " << module->blockId << ": "<< endl;
 	for(int i=0;i<6;i++){
-		cout<<neighbors[i][0] << ", ";
+		OUTPUT<<neighbors[i][0] << ", ";
 	}
-	cout << endl;
+	OUTPUT << endl;
 	for(int i=0;i<6;i++){
-			cout<<neighbors[i][1] << ", ";
+			OUTPUT<<neighbors[i][1] << ", ";
 	}
-	cout << endl;
-	cout << endl;
+	OUTPUT << endl;
+	OUTPUT << endl;
 }
 
 bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
@@ -291,7 +291,7 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 
 	for(int i=0;i<6;i++){
 		if(neighbors[i][0]==msgFrom){
-			cout << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
+			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
 			printVector(msgData);
 			neighbors[i][1]=1;
 			uq[i]=msgData;
@@ -307,7 +307,7 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	CheckNeighbors();
 
 	if(calculateDu){
-		cout << "Calculating du"<< endl;
+		OUTPUT << "Calculating du"<< endl;
 		calculateU();
 		curIteration++;
 
@@ -332,30 +332,30 @@ Vector3D ForcesPredictionIPPTCode::toVec3D(vector<double> vec1){
 	Vector3D tmp{0,0,0};
 	Vector3D *wsk = &tmp;
 	for(int i=0;i<3;i++){
-		cout << *wsk;
+		OUTPUT << *wsk;
 	}
 	return tmp;
 }
 
 void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
-//	cout << "*************printVec********************"<< endl;
+//	OUTPUT << "*************printVec********************"<< endl;
 		for (int i=0;i<row;i++){
-			cout << vec[i]<< "\t";
+			OUTPUT << vec[i]<< "\t";
 		}
-		cout <<endl;
+		OUTPUT <<endl;
 }
 
 
 
 void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int row, int col){
-	cout << "*************printMatrix********************"<< endl;
+	OUTPUT << "*************printMatrix********************"<< endl;
 	for (int i=0;i<row;i++){
 		for(int j=0;j<col;j++){
-			cout << matrix[i][j]<< "\t";
+			OUTPUT << matrix[i][j]<< "\t";
 		}
-		cout << endl;
+		OUTPUT << endl;
 	}
-	cout << endl;
+	OUTPUT << endl;
 
 }
 
