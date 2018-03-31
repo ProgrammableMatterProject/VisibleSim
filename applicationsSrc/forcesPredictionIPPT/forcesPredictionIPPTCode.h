@@ -11,6 +11,7 @@ static const int DU_MSG=1001;
 //static const int CONFIRM_PATH_MSG=1005;
 //static const int CONFIRM_STREAMLINE_MSG=1005;
 
+//0 -z+1 1 z-1
 
 #define K111(i,j,k)((const double[1][6][6]) {\
 {\
@@ -26,12 +27,12 @@ static const int DU_MSG=1001;
 
 #define K112(i,j,k)((const double[1][6][6]) {\
 {\
-	{-E*A/L, 0, 0, 0, 0, 0},\
-	{0, -12.*E*Iz/(L*L*L), 0, 0, 0, 6*E*Iz/(L*L)},\
-	{0, 0, -12*E*Iy/(L*L*L), 0, -6*E*Iy/(L*L),0},\
-	{0, 0, 0, -E*J/(2*(1+nu)*L), 0, 0},\
-	{0, 0, -6*E*Iz/(L*L), 0, 2*E*Iy/L, 0},\
-	{0, -6*E*Iz/(L*L), 0, 0, 0, 2*E*Iz/L}\
+	{-12.*E*Iy/(L*L*L), 0, 0, 0, 6*E*Iy/L,0},\
+	{0,-12.*E*Iz/(L*L*L), 0, -6*E*Iz/(L*L), 0, 0},\
+	{0, 0, -A*E/L, 0, 0, 0},\
+	{0, 6*E*Iz/(L*L), 0, 2*E*Iz/L, 0, 0},\
+	{-6*E*Iy/(L*L), 0 ,0, 0, 2*E*Iy/L, 0},\
+	{0, 0, 0, 0, 0, -E*J/(2*L(1+nu))}\
 }\
 	}[i][j][k])
 
