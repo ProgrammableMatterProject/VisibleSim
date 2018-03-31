@@ -112,9 +112,6 @@ void ForcesPredictionIPPTCode::startup() {
 	beta = globalBeta;
 
 
-	cout << K11(0,1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
-	cout << K11(0,1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
-
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
 	//CheckNeighbors();
@@ -124,8 +121,8 @@ void ForcesPredictionIPPTCode::startup() {
 		module->setColor(RED);
 
 
-	createK11(K11);
-	createK12(K12);
+	//createK11(K11);
+	//createK12(K12);
 
 	//setting of the Fp force
 	Fp=orient*grav;
