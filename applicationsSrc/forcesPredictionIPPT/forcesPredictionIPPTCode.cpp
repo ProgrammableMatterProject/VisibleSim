@@ -112,7 +112,7 @@ void ForcesPredictionIPPTCode::startup() {
 	beta = globalBeta;
 
 
-	//OUTPUT << K111(1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
+	cout << K111(0,1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
 	
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
