@@ -113,7 +113,8 @@ void ForcesPredictionIPPTCode::startup() {
 
 
 	cout << K111(0,1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
-	
+	cout << K112(0,1,1) << "dddddddddddddddddddddddddddd"<< endl<< endl;
+
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
 	//CheckNeighbors();
