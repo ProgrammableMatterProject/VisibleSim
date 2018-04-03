@@ -48,10 +48,10 @@ private:
 
 
 
-	vector <double> u = decltype(u)(3,0); // vector u
-	bMatrix uq = decltype(uq)(6, vector<double>(3,0)); //vector u from -1 step neighbors
+	vector <double> u = decltype(u)(vectorSize,0); // vector u
+	bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from -1 step neighbors
 
-	vector <double> du = decltype(du)(3,0);
+	vector <double> du = decltype(du)(vectorSize,0);
 
 	vector <double> fp = decltype(fp)(3,0);
 	vector <double> Fp = decltype(Fp)(3,0);
@@ -74,7 +74,7 @@ public :
 
 	bool isFixed(BlinkyBlocksBlock *modR);
 
-	void printMatrix(vector< vector<double> > &matrix, int row=3, int col=3);
+	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize);
 	void printVector(vector<double> &vec, int row=3);
 	void clearNeighborsMessage(); //function to clear messages when calculated u
 

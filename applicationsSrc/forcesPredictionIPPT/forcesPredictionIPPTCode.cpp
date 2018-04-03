@@ -150,17 +150,20 @@ void ForcesPredictionIPPTCode::calculateU(){
 				if(neighbors[i][0]!=0){
 					//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
 					tmpK11=tmpK11+createK11(i);
-					//tmpK11 = tmpK11+K11[i];
-					//tmpK12 = tmpK12+(K12[i]*uq[i]);
+					tmpK12 = tmpK12+(createK12(i)*uq[i]);
 				}
 
 		}
-		/*
-		//creating R and D
-		bMatrix R = decltype(R)(3, vector<double>(3)); //R vector
-		bMatrix D = decltype(D)(3, vector<double>(3)); //D vector
-		bMatrix revD = decltype(revD)(3, vector<double>(3)); //revD vector
 
+		printMatrix(tmpK11);
+		printVector(tmpK12,6);
+
+
+		//creating R and D
+		bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize)); //R vector
+		bMatrix D = decltype(D)(vectorSize, vector<double>(vectorSize)); //D vector
+		bMatrix revD = decltype(revD)(vectorSize, vector<double>(vectorSize)); //revD vector
+/*
 		createD(tmpK11,D);
 		createR(tmpK11,R);
 		createRevD(D,revD);
@@ -372,7 +375,7 @@ void ForcesPredictionIPPTCode::createRevD(vector< vector<double> > &matrix, vect
 }
 vector< vector<double> > ForcesPredictionIPPTCode::createK11(int i){
 	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
-	cout << "creating K11 "<<i<< endl;
+	//cout << "creating K11 "<<i<< endl;
 	for(int k=0;k<vectorSize;k++)
 		for(int m=0;m<vectorSize;m++){
 			//cout << K11(i,k,m)<<"  ";
@@ -383,11 +386,11 @@ vector< vector<double> > ForcesPredictionIPPTCode::createK11(int i){
 
 vector< vector<double> > ForcesPredictionIPPTCode::createK12(int i){
 	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
-		cout << "creating K12 "<<i<< endl;
+		//cout << "creating K12 "<<i<< endl;
 		for(int k=0;k<vectorSize;k++)
 			for(int m=0;m<vectorSize;m++){
 				//cout << K12(i,k,m)<<"  ";
-				tmp[k][m]=K11(i,k,m);
+				tmp[k][m]=K12(i,k,m);
 			}
 		return tmp;
 }
@@ -422,8 +425,9 @@ void vector2string(const std::vector<bID>&v,string &s) {
 //OPERATORS
 
 vector<double> operator*(const vector<double> vec, const double  scal){
-	vector<double> tmp = decltype(tmp)(3,0);
-		for (int i=0;i<3;i++){
+	vector<double> tmp = decltype(tmp)(vec.size(),0);
+	cout << vec.size();
+		for (int i=0;i<vec.size();i++){
 			tmp[i] = vec[i]*scal;
 		}
 	return tmp;
