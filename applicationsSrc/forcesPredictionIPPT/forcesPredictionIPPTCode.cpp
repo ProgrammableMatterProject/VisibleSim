@@ -11,7 +11,10 @@ double globalE = 0; // E from XML
 double globalL=4; //length from XML
 double globalA=1; //cross sectional area from XML
 double globalI=1/12.; //area from XML
-
+double globalIz = 1; //second moment of area
+double globalIy = 1; //second moment of area
+double globalNu = 1; //Poisson ratio
+double globalJ=1; //torsion constant
 
 double globalGrav=9.81; //gravity from XML
 double globalBeta=2/3.; //beta from XML
@@ -54,7 +57,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("A");
 			if (attr) {
 				string str=attr;
-				globalL = atoi(str.c_str());
+				globalA = atoi(str.c_str());
 				cerr << "A= " << globalL << endl;
 		} else {
 				OUTPUT << "WARNING No A in XML file" << endl;
@@ -64,7 +67,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 				if (attr) {
 					string str=attr;
 					globalL = atoi(str.c_str());
-					cerr << "L= " << globalA << endl;
+					cerr << "L= " << globalL << endl;
 			} else {
 					OUTPUT << "WARNING No L in XML file" << endl;
 			}
@@ -72,8 +75,8 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("I");
 					if (attr) {
 						string str=attr;
-						globalL = atoi(str.c_str());
-						cerr << "I= " << globalA << endl;
+						globalI = atoi(str.c_str());
+						cerr << "I= " << globalI << endl;
 				} else {
 						OUTPUT << "WARNING No I in XML file" << endl;
 				}
@@ -81,12 +84,44 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 					if (attr) {
 						string str=attr;
 						globalBeta = atoi(str.c_str());
-						cerr << "I= " << globalBeta << endl;
+						cerr << "Beta= " << globalBeta << endl;
 				} else {
 						OUTPUT << "WARNING No Beta in XML file" << endl;
 				}
-}
+	attr= element->Attribute("Iz");
+						if (attr) {
+							string str=attr;
+							globalIz = atoi(str.c_str());
+							cerr << "Iz= " << globalIz << endl;
+					} else {
+							OUTPUT << "WARNING No Iz in XML file" << endl;
+					}
+attr= element->Attribute("Iy");
+					if (attr) {
+						string str=attr;
+						globalIy = atoi(str.c_str());
+						cerr << "Iy= " << globalIy << endl;
+				} else {
+						OUTPUT << "WARNING No Iy in XML file" << endl;
+				}
+attr= element->Attribute("nu");
+					if (attr) {
+						string str=attr;
+						globalNu = atoi(str.c_str());
+						cerr << "Iz= " << globalNu << endl;
+				} else {
+						OUTPUT << "WARNING No nu in XML file" << endl;
+				}
 
+attr= element->Attribute("J");
+					if (attr) {
+						string str=attr;
+						globalJ = atoi(str.c_str());
+						cerr << "J= " << globalJ << endl;
+				} else {
+						OUTPUT << "WARNING No J in XML file" << endl;
+				}
+}
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	cerr << "blockId=" << module->blockId << endl;
 	
@@ -108,6 +143,12 @@ void ForcesPredictionIPPTCode::startup() {
 	L = globalL;
 	A = globalA;
 	I = globalI;
+
+	Iz =  globalIz;
+	Iy = globalIy;
+	nu = globalNu;
+	J = globalJ;
+
 	grav=globalGrav;
 	beta = globalBeta;
 
@@ -163,20 +204,19 @@ void ForcesPredictionIPPTCode::calculateU(){
 		bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize)); //R vector
 		bMatrix D = decltype(D)(vectorSize, vector<double>(vectorSize)); //D vector
 		bMatrix revD = decltype(revD)(vectorSize, vector<double>(vectorSize)); //revD vector
-/*
+
 		createD(tmpK11,D);
 		createR(tmpK11,R);
 		createRevD(D,revD);
 
 		//printMatrix(tmpK11);
 
-		vector<double> tmp = decltype(tmp)(3,0); //tmp u
-		vector<double> tmp1 = decltype(tmp)(3,0);
-		bMatrix  tmpBD = decltype(tmpBD)(3, vector<double>(3));
+		vector<double> tmp = decltype(tmp)(vectorSize,0); //tmp u
+		vector<double> tmp1 = decltype(tmp)(vectorSize,0);
+		bMatrix  tmpBD = decltype(tmpBD)(vectorSize, vector<double>(vectorSize));
 
 		//Beta * revD
 		tmpBD = revD*beta;
-
 		//Fp - fp
 		tmp = Fp+(fp*-1.);
 
@@ -196,7 +236,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp=tmp+(u*(1-beta));
 
 		du=tmp;
-		*/
+
 		//printVector(u);
 	}	else { //end isFixed
 		du[0] = 0;
