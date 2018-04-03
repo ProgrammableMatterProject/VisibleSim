@@ -12,6 +12,7 @@ static const int DU_MSG=1001;
 //static const int CONFIRM_STREAMLINE_MSG=1005;
 
 
+#define vectorSize 6
 
 using namespace BlinkyBlocks;
 
@@ -77,8 +78,8 @@ public :
 	void printVector(vector<double> &vec, int row=3);
 	void clearNeighborsMessage(); //function to clear messages when calculated u
 
-	void createK11(vector<bMatrix> &matrix);
-	void createK12(vector<bMatrix> &matrix);
+	vector< vector<double> > createK11(int i);
+	vector< vector<double> > createK12(int i);
 
 	void createR(vector< vector<double> > &A, vector< vector<double> > &result);
 	void createD(vector< vector<double> > &A, vector< vector<double> > &result);

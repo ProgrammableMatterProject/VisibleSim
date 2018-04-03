@@ -141,19 +141,21 @@ void ForcesPredictionIPPTCode::startup() {
 void ForcesPredictionIPPTCode::calculateU(){
 
 	//temporary Matrixes
-	bMatrix tmpK11 = decltype(tmpK11)(3, vector<double>(3));
-	vector< double > tmpK12 = decltype(tmpK12)(3,0);
+	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize));
+	vector< double > tmpK12 = decltype(tmpK12)(vectorSize,0);
 
 	if(!isFixed(module)){
 		//checking neighbors and creating K11 and K12 matrixes
 		for(int i=0;i<6;i++){
 				if(neighbors[i][0]!=0){
 					//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
-					tmpK11 = tmpK11+K11[i];
-					tmpK12 = tmpK12+(K12[i]*uq[i]);
+					tmpK11=tmpK11+createK11(i);
+					//tmpK11 = tmpK11+K11[i];
+					//tmpK12 = tmpK12+(K12[i]*uq[i]);
 				}
 
 		}
+		/*
 		//creating R and D
 		bMatrix R = decltype(R)(3, vector<double>(3)); //R vector
 		bMatrix D = decltype(D)(3, vector<double>(3)); //D vector
@@ -191,6 +193,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp=tmp+(u*(1-beta));
 
 		du=tmp;
+		*/
 		//printVector(u);
 	}	else { //end isFixed
 		du[0] = 0;
@@ -202,6 +205,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 	sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
 	//clearing info about du from neighbors
 	clearNeighborsMessage();
+
 }
 
 void ForcesPredictionIPPTCode::SetNeighbors(){
@@ -366,65 +370,26 @@ void ForcesPredictionIPPTCode::createRevD(vector< vector<double> > &matrix, vect
 	result = tmp;
 
 }
-void ForcesPredictionIPPTCode::createK11(vector<bMatrix> &matrix){
-
-	//upper neighbor
-	matrix[0][0][0] = (12*E*I)/(pow(L,3));
-	matrix[0][0][2] = (-6*E*I)/(pow(L,2));
-	matrix[0][1][1] = (A*E)/L;
-	matrix[0][2][0] = (-6*E*I)/(pow(L,2));
-	matrix[0][2][2] = (4*E*I)/L;
-
-	//down neighbor
-	matrix[1][0][0] = (12*E*I)/(pow(L,3));
-	matrix[1][0][2] = (6*E*I)/(pow(L,2));
-	matrix[1][1][1] = (A*E)/L;
-	matrix[1][2][0] = (6*E*I)/(pow(L,2));
-	matrix[1][2][2] = (4*E*I)/L;
-
-	//left neighbor
-	matrix[2][0][0] = (A*E)/L;
-	matrix[2][1][1] = (12*E*I)/(pow(L,3));
-	matrix[2][1][2] = (-6*E*I)/(pow(L,2));
-	matrix[2][2][1] = (-6*E*I)/(pow(L,2));
-	matrix[2][2][2] = (4*E*I)/L;
-
-	//right neighbor
-	matrix[3][0][0] = (A*E)/L;
-	matrix[3][1][1] = (12*E*I)/(pow(L,3));
-	matrix[3][1][2] = (6*E*I)/(pow(L,2));
-	matrix[3][2][1] = (6*E*I)/(pow(L,2));
-	matrix[3][2][2] = (4*E*I)/L;
+vector< vector<double> > ForcesPredictionIPPTCode::createK11(int i){
+	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
+	cout << "creating K11 "<<i<< endl;
+	for(int k=0;k<vectorSize;k++)
+		for(int m=0;m<vectorSize;m++){
+			//cout << K11(i,k,m)<<"  ";
+			tmp[k][m]=K11(i,k,m);
+		}
+	return tmp;
 }
 
-void ForcesPredictionIPPTCode::createK12(vector<bMatrix> &matrix){
-	//upper neighbor
-	matrix[0][0][0] = (-12*E*I)/(pow(L,3));
-	matrix[0][0][2] = (-6*E*I)/(pow(L,2));
-	matrix[0][1][1] = (-A*E)/L;
-	matrix[0][2][0] = (6*E*I)/(pow(L,2));
-	matrix[0][2][2] = (2*E*I)/L;
-
-	//down neighbor
-	matrix[1][0][0] = (-12*E*I)/(pow(L,3));
-	matrix[1][0][2] = (6*E*I)/(pow(L,2));
-	matrix[1][1][1] = (-A*E)/L;
-	matrix[1][2][0] = (-6*E*I)/(pow(L,2));
-	matrix[1][2][2] = (2*E*I)/L;
-
-	//left neighbor
-	matrix[2][0][0] = (-A*E)/L;
-	matrix[2][1][1] = (-12*E*I)/(pow(L,3));
-	matrix[2][1][2] = (-6*E*I)/(pow(L,2));
-	matrix[2][2][1] = (6*E*I)/(pow(L,2));
-	matrix[2][2][2] = (2*E*I)/L;
-
-	//right neighbor
-	matrix[3][0][0] = (-A*E)/L;
-	matrix[3][1][1] = (-12*E*I)/(pow(L,3));
-	matrix[3][1][2] = (6*E*I)/(pow(L,2));
-	matrix[3][2][1] = (-6*E*I)/(pow(L,2));
-	matrix[3][2][2] = (2*E*I)/L;
+vector< vector<double> > ForcesPredictionIPPTCode::createK12(int i){
+	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
+		cout << "creating K12 "<<i<< endl;
+		for(int k=0;k<vectorSize;k++)
+			for(int m=0;m<vectorSize;m++){
+				//cout << K12(i,k,m)<<"  ";
+				tmp[k][m]=K11(i,k,m);
+			}
+		return tmp;
 }
 
 void ForcesPredictionIPPTCode::createD(vector< vector<double> > &A, vector< vector<double> > &result){
