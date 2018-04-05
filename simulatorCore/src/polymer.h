@@ -8,7 +8,7 @@ using namespace std;
 
 #define MASSE	0.1
 #define GRAVITE	9.81
-#define RAIDEUR1	20.
+#define RAIDEUR1	0.1
 #define AMORT	0.025
 
 
@@ -21,6 +21,7 @@ class Polymer {
 	float *_tabZ,*_tabZ_1,*_tabVitesseZ; // tableaux de position et vitesse des masses de la grille de simulation
 	float _dx,_dy;
 	float _radius; // radius of obstacles
+
 public :
 	vector <Vector3D> tabPt;
 
