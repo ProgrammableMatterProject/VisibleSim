@@ -134,7 +134,7 @@ void Polymer::calculerPolymer()
 
   int ix,iy,iix,iiy;
 
-  for (iix=0; iix<_lx-2; iix++)
+  for (iix=0; iix<_lx-1; iix++)
   { ptrZ=_tabZ+iix;
     ptra=tabax;
     *ptra++ = ( ptrZ[0] + 4.0*ptrZ[1] + ptrZ[2])/6.0 ; // (Pi-1 + 4 Pi + Pi+1)/6
@@ -157,7 +157,7 @@ void Polymer::calculerPolymer()
     *ptra++ = ( ptrZ[0] - 2.0*ptrZ[1] + ptrZ[2])/2.0 ; // (Pi-1 - 2 Pi + Pi+1)/2
     *ptra++ = (-ptrZ[0] + 3.0*ptrZ[1] - 3.0*ptrZ[2] + ptrZ[3])/6.0 ; // (-Pi-1 + 3 Pi - 3 Pi+1 + Pi+2)/6
 
-    for (iiy=0; iiy<_ly-2; iiy++)
+    for (iiy=0; iiy<_ly-1; iiy++)
     {
       for (ix=0,tx=0.; ix<_sub; ix++,tx+=1.0/_sub)
 	  { ptra = tabax;
@@ -190,33 +190,6 @@ void Polymer::calculerPolymer()
       *ptra++ = (-ptrZ[0] + 3.0*ptrZ[1] - 3.0*ptrZ[2] + ptrZ[3])/6.0 ; // (-Pi-1 + 3 Pi - 3 Pi+1 + Pi+2)/6
 	}
   }
-  /*
-  // remplissage du tableau de donn�es g�om�triques
-  int ix,iy;
-
-  GLfloat *ptr=_tabGeom+5; // d�calage pour pointer sur la composante Z
-  float *ptrZ=_tabZ;
-
-  ix=(_nx+1)*(_ny+1);
-  while (ix--)
-  { *ptr = (GLfloat)(*ptrZ++); // mise � jour de la position
-    ptr+=6;
-  }
-  // mise � jour des normales
-  ptr=_tabGeom;
-  ptrZ=_tabZ;
-  iy=_ny;
-  while (iy--)
-  { ix=_nx;
-    while (ix--)
-    { *ptr++ = (GLfloat)(ptrZ[1]-*ptrZ);
-      *ptr = (GLfloat)(ptrZ[_nx+1]-*ptrZ);
-      ptr+=5;
-      ptrZ++;
-    }
-    ptr+=6;
-    ptrZ++;
-  }*/
 }
 
 void Polymer::glDraw() { 
@@ -242,7 +215,9 @@ void Polymer::glDraw() {
 		GLfloat *ptr1 = ptr0+6*(_nx+1);
 		glBegin(GL_QUAD_STRIP);
 		for (ix=0; ix<_nx+1; ix++) {
+			glNormal3fv(ptr1-3);
 			glVertex3fv(ptr1);
+			glNormal3fv(ptr0-3);
 			glVertex3fv(ptr0);
 			ptr0+=6;
 			ptr1+=6;
