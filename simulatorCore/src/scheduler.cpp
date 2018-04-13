@@ -205,5 +205,16 @@ void Scheduler::printStats() {
   }
 }
 
+void Scheduler::toggle_pause() {
+    if (state > Scheduler::ENDED) {
+        std::unique_lock<std::mutex> lck(pause_mtx);
+        if (state == Scheduler::PAUSED) {
+            state = Scheduler::RUNNING;
+            pause_cv.notify_one();
+        } else {
+            state = Scheduler::PAUSED;
+        }
+    }
+}
 
 } // BaseSimulator namespace

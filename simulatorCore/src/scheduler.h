@@ -178,6 +178,8 @@ public:
 	 */
 	inline Time now() { return(currentDate); };
 
+        void toggle_pause();
+
 	/** @brief Print a block-relative colored message to the console
 	 *  @param message String to print
 	 *  @param id module identifier of the concerned block

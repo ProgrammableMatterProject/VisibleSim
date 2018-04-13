@@ -323,17 +323,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             } break;
             case 32: // SPACE
                 Scheduler *scheduler = getScheduler();
-                if (scheduler->state > Scheduler::ENDED) {
-                    // scheduler->state = scheduler->state == Scheduler::PAUSED ?
-                    //     Scheduler::RUNNING : Scheduler::PAUSED;
-                    std::unique_lock<std::mutex> lck(scheduler->pause_mtx);
-                    if (scheduler->state == Scheduler::PAUSED) {
-                        scheduler->state = Scheduler::RUNNING;
-                        scheduler->pause_cv.notify_one();
-                    } else {
-                        scheduler->state = Scheduler::PAUSED;
-                    }
-                }
+                scheduler->toggle_pause();
                 break;
         }
     }
