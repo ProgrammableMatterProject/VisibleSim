@@ -218,7 +218,7 @@ void ForcesPredictionIPPTCode::visualization(){
 			tmpK12 = createK12(i);
 			createR(tmpK11,R);
 
-		vizTable[i]=R*tmpK11*u+R*tmpK12*uq[i];
+		vizTable[i]=R*tmpK11*dup+R*tmpK12*uq[i];
 		}
 
 	}
@@ -344,7 +344,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp = Fp+(fp*-1.);
 
 		//add Ru part
-		tmp1 = R*u;
+		tmp1 = R*dup;
 		tmp1 = tmp1*-1.;
 		tmp = tmp+tmp1;
 
@@ -356,7 +356,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp = tmpBD*tmp;
 
 		//bd*()-(1-B)u-1
-		tmp=tmp+(u*(1-beta));
+		tmp=tmp+(dup*(1-beta));
 
 		du=tmp;
 
@@ -371,6 +371,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		du[4] = 0;
 		du[5] = 0;
 	}
+
 
 	//sending message to neighbors with du
 	sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
@@ -485,13 +486,14 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 		OUTPUT << "Calculating du"<< endl;
 		calculateU();
 		curIteration++;
+		dup=du;
 
 	}
 
 	//visualisation
 	visualization();
-
 	
+
 }
 
 void ForcesPredictionIPPTCode::clearNeighborsMessage(){

@@ -62,7 +62,7 @@ private:
 
 
 
-	vector <double> u = decltype(u)(vectorSize,0); // vector u
+	vector <double> dup = decltype(dup)(vectorSize,0); // vector u from previus step
 	bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from -1 step neighbors
 
 	vector <double> du = decltype(du)(vectorSize,0);
