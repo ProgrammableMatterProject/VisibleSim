@@ -6,7 +6,7 @@ const int messageDelayCons=1;
 
 
 int maxIterations = 2; // max number of iterations
-double globalMass = 0; //mass from XML
+double globalMass = 61; //mass from XML
 double globalE = 100; // E from XML // Young modulus MPa
 double globalL=40; //length from XML // arm length mm
 double globala = 40; //width of the square-cross-section arm  mm //
@@ -15,7 +15,7 @@ double globalI=pow(globala,4)/12.; // second moment of area from XML mm^4
 double globalIz = globalI; //second moment of area
 double globalIy = globalI; //second moment of area
 double globalNu = 0.3; //Poisson ratio
-double globalJ=1; //torsion constant
+double globalJ=2.25*pow((globala/2),4); //torsion constant
 
 double globalGrav=9.81; //gravity from XML
 double globalBeta=2/3.; //beta from XML
@@ -56,16 +56,6 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 		cerr << "globalGamma= " << globalGamma << endl;
 	} else {
 			OUTPUT << "WARNING No globalGamma in XML file" << endl;
-	}
-
-	attr= element->Attribute("globalEps");
-	//mass of module
-	if (attr) {
-		string str=attr;
-		globalEps = atof(str.c_str());
-		cerr << "globalEps= " << globalEps << endl;
-	} else {
-			OUTPUT << "WARNING No globalEps in XML file" << endl;
 	}
 
 	attr= element->Attribute("globalEps");
