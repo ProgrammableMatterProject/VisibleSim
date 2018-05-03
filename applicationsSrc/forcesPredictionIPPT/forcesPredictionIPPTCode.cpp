@@ -216,8 +216,8 @@ void ForcesPredictionIPPTCode::visualization(){
 	double fxMax = 25.5*61; // max force
 	double fxMmax = fxMax * 20; // max moment
 
-	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize));
-	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize));
+	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
+	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
 
 	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
 
@@ -231,10 +231,15 @@ void ForcesPredictionIPPTCode::visualization(){
 	}
 
 	for(int i=0;i<6;i++){
-
-		//vizTable[i]=R*tmpK11*u+R*tmpK12*uq;
+		if(neighbors[i][0]!=0){
+		vizTable[i]=R*tmpK11*u+R*tmpK12*uq[i];
+		}
 
 	}
+
+	printMatrix(vizTable,6,6,"VizTable"+module->blockId);
+	printMatrix(tmpK11,6,6,"tmpK11"+module->blockId);
+	printMatrix(tmpK12,6,6,"tmpK12"+module->blockId);
 
 }
 
@@ -292,7 +297,7 @@ void ForcesPredictionIPPTCode::startup() {
 
 	//setting of the Fp force
 	Fp=orient*grav;
-	printVector(Fp);
+	//printVector(Fp);
 
 
 
@@ -328,8 +333,8 @@ void ForcesPredictionIPPTCode::calculateU(){
 
 		}
 
-		printMatrix(tmpK11);
-		printVector(tmpK12,6);
+		//printMatrix(tmpK11);
+		//printVector(tmpK12,6);
 
 
 		//creating R and D
@@ -454,9 +459,9 @@ void ForcesPredictionIPPTCode::CheckNeighbors(){
 }
 
 bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
-	/*if(target->isInTarget(modR->position)){
+	if(target->isInTarget(modR->position)){
 		return true;
-	}else*/
+	}else
 		return false;
 
 }
@@ -473,7 +478,7 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	for(int i=0;i<6;i++){
 		if(neighbors[i][0]==msgFrom){
 			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
-			printVector(msgData);
+			printVector(msgData,6,"msgData");
 			neighbors[i][1]=1;
 			uq[i]=msgData;
 		}
@@ -522,7 +527,7 @@ Vector3D ForcesPredictionIPPTCode::toVec3D(vector<double> vec1){
 
 void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row,string desc){
 	OUTPUT << "*************printVec********************"<< endl;
-	OUTPUT << desc;
+	OUTPUT << desc << endl;
 		for (int i=0;i<row;i++){
 			OUTPUT << vec[i]<< "\t";
 		}
@@ -533,7 +538,7 @@ void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row,string d
 
 void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int row, int col,string desc){
 	OUTPUT << "*************printMatrix********************"<< endl;
-	OUTPUT << desc;
+	OUTPUT << desc<< endl;
 	for (int i=0;i<row;i++){
 		for(int j=0;j<col;j++){
 			OUTPUT << matrix[i][j]<< "\t";
@@ -606,7 +611,7 @@ void vector2string(const std::vector<bID>&v,string &s) {
 
 vector<double> operator*(const vector<double> vec, const double  scal){
 	vector<double> tmp = decltype(tmp)(vec.size(),0);
-	cout << vec.size();
+	//cout << vec.size();
 		for (int i=0;i<vec.size();i++){
 			tmp[i] = vec[i]*scal;
 		}
