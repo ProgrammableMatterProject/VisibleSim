@@ -24,7 +24,7 @@ double globalOmega = 2./3; // weight of Jacobi method
 double globalMu = 0.1; //friction coefficient
 double globalEps = pow(10,-8); // //tolerance
 double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilateral contact)
-double globalSupportZ = 2*globalL; //Z coordinate of the bottom modules (contacting with the support)
+double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with the support)
 
 
 
@@ -34,10 +34,71 @@ double globalSupportZ = 2*globalL; //Z coordinate of the bottom modules (contact
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	TiXmlNode *node = config->FirstChild("parameters");
 	
+
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
-	const char *attr= element->Attribute("globalMass");
+	const char *attr= element->Attribute("globalSupportZ");
 	//mass of module
+	if (attr) {
+		string str=attr;
+		globalSupportZ = atof(str.c_str());
+		cerr << "globalSupportZ= " << globalSupportZ << endl;
+	} else {
+			OUTPUT << "WARNING No globalSupportZ in XML file" << endl;
+	}
+
+
+	attr= element->Attribute("globalGamma");
+	//mass of module
+	if (attr) {
+		string str=attr;
+		globalGamma = atof(str.c_str());
+		cerr << "globalGamma= " << globalGamma << endl;
+	} else {
+			OUTPUT << "WARNING No globalGamma in XML file" << endl;
+	}
+
+	attr= element->Attribute("globalEps");
+	//mass of module
+	if (attr) {
+		string str=attr;
+		globalEps = atof(str.c_str());
+		cerr << "globalEps= " << globalEps << endl;
+	} else {
+			OUTPUT << "WARNING No globalEps in XML file" << endl;
+	}
+
+	attr= element->Attribute("globalEps");
+	//mass of module
+	if (attr) {
+		string str=attr;
+		globalEps = atof(str.c_str());
+		cerr << "globalEps= " << globalEps << endl;
+	} else {
+			OUTPUT << "WARNING No globalEps in XML file" << endl;
+	}
+
+	attr= element->Attribute("globalMu");
+	//mass of module
+	if (attr) {
+		string str=attr;
+		globalMu = atof(str.c_str());
+		cerr << "globalMu= " << globalMu << endl;
+	} else {
+			OUTPUT << "WARNING No globalMu in XML file" << endl;
+	}
+
+
+	attr= element->Attribute("globalOmega");
+	if (attr) {
+		string str=attr;
+		globalOmega = atof(str.c_str());
+		cerr << "globalOmega= " << globalOmega << endl;
+	} else {
+			OUTPUT << "WARNING No globalOmega in XML file" << endl;
+	}
+
+	attr= element->Attribute("globalMass");
 	if (attr) {
 		string str=attr;
 		globalMass = atof(str.c_str());
@@ -75,73 +136,78 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	}
 
 	attr= element->Attribute("A");
-			if (attr) {
-				string str=attr;
-				globalA = atoi(str.c_str());
-				cerr << "A= " << globalL << endl;
-		} else {
-				OUTPUT << "WARNING No A in XML file" << endl;
-		}
+		if (attr) {
+			string str=attr;
+			globalA = atoi(str.c_str());
+			cerr << "A= " << globalL << endl;
+	} else {
+			OUTPUT << "WARNING No A in XML file" << endl;
+	}
 
-	attr= element->Attribute("L");
-				if (attr) {
-					string str=attr;
-					globalL = atoi(str.c_str());
-					cerr << "L= " << globalL << endl;
-			} else {
-					OUTPUT << "WARNING No L in XML file" << endl;
-			}
+	attr= element->Attribute("globalL");
+		if (attr) {
+			string str=attr;
+			globalL = atoi(str.c_str());
+			cerr << "globalL= " << globalL << endl;
+	} else {
+			OUTPUT << "WARNING No globalL in XML file" << endl;
+	}
 
-	attr= element->Attribute("I");
+	attr= element->Attribute("globalI");
 					if (attr) {
 						string str=attr;
 						globalI = atoi(str.c_str());
-						cerr << "I= " << globalI << endl;
+						cerr << "globalI= " << globalI << endl;
 				} else {
-						OUTPUT << "WARNING No I in XML file" << endl;
+						OUTPUT << "WARNING No globalI in XML file" << endl;
 				}
-	attr= element->Attribute("Beta");
+	attr= element->Attribute("globalBeta");
 					if (attr) {
 						string str=attr;
 						globalBeta = atoi(str.c_str());
-						cerr << "Beta= " << globalBeta << endl;
+						cerr << "globalBeta= " << globalBeta << endl;
 				} else {
-						OUTPUT << "WARNING No Beta in XML file" << endl;
+						OUTPUT << "WARNING No globalBeta in XML file" << endl;
 				}
-	attr= element->Attribute("Iz");
+	attr= element->Attribute("globalIz");
 						if (attr) {
 							string str=attr;
 							globalIz = atoi(str.c_str());
-							cerr << "Iz= " << globalIz << endl;
+							cerr << "globalIz= " << globalIz << endl;
 					} else {
-							OUTPUT << "WARNING No Iz in XML file" << endl;
+							OUTPUT << "WARNING No globalIz in XML file" << endl;
 					}
-attr= element->Attribute("Iy");
+attr= element->Attribute("globalIy");
 					if (attr) {
 						string str=attr;
 						globalIy = atoi(str.c_str());
-						cerr << "Iy= " << globalIy << endl;
+						cerr << "globalIy= " << globalIy << endl;
 				} else {
-						OUTPUT << "WARNING No Iy in XML file" << endl;
+						OUTPUT << "WARNING No globalIy in XML file" << endl;
 				}
-attr= element->Attribute("nu");
+attr= element->Attribute("globalNu");
 					if (attr) {
 						string str=attr;
 						globalNu = atoi(str.c_str());
-						cerr << "Iz= " << globalNu << endl;
+						cerr << "globalNu= " << globalNu << endl;
 				} else {
-						OUTPUT << "WARNING No nu in XML file" << endl;
+						OUTPUT << "WARNING No globalNu in XML file" << endl;
 				}
 
-attr= element->Attribute("J");
+attr= element->Attribute("globalJ");
 					if (attr) {
 						string str=attr;
 						globalJ = atoi(str.c_str());
-						cerr << "J= " << globalJ << endl;
+						cerr << "globalJ= " << globalJ << endl;
 				} else {
-						OUTPUT << "WARNING No J in XML file" << endl;
+						OUTPUT << "WARNING No globalJ in XML file" << endl;
 				}
+
+
+cout << "Parse user elements"<< endl << endl;
 }
+
+
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	cerr << "blockId=" << module->blockId << endl;
 	
@@ -188,6 +254,8 @@ void ForcesPredictionIPPTCode::startup() {
 	if(isFixed(module))
 		module->setColor(RED);
 
+	//check is modue support
+	support = isSupport(module);
 
 	//createK11(K11);
 	//createK12(K12);
@@ -204,6 +272,11 @@ void ForcesPredictionIPPTCode::startup() {
 	
 
 
+}
+
+bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
+	if(modR->position[2]==supportZ)
+		modR->setColor(Color(0.8f,0.8f,0.6f));
 }
 
 void ForcesPredictionIPPTCode::calculateU(){

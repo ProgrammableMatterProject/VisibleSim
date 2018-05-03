@@ -43,6 +43,7 @@ private:
 	double Gamma; //stiffness reduction multiplier (for unilateral contact)
 	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
 
+	bool support = false;
 
 	vector<double> orient={0,0,-1};
 
@@ -81,6 +82,8 @@ public :
 	void calculateU();
 
 	bool isFixed(BlinkyBlocksBlock *modR);
+
+	bool isSupport(BlinkyBlocksBlock *modR);
 
 	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize);
 	void printVector(vector<double> &vec, int row=3);
