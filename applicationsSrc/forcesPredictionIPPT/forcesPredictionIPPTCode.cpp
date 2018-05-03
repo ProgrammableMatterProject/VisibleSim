@@ -223,9 +223,9 @@ void ForcesPredictionIPPTCode::visualization(){
 
 	}
 
-	printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
-	printMatrix(tmpK11,6,6,"tmpK11 "+to_string(module->blockId));
-	printMatrix(tmpK12,6,6,"tmpK12 "+to_string(module->blockId));
+	//printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
+	//printMatrix(tmpK11,6,6,"tmpK11 "+to_string(module->blockId));
+	//printMatrix(tmpK12,6,6,"tmpK12 "+to_string(module->blockId));
 
 }
 
@@ -305,8 +305,8 @@ bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
 void ForcesPredictionIPPTCode::calculateU(){
 
 	//temporary Matrixes
-	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize));
-	vector< double > tmpK12 = decltype(tmpK12)(vectorSize,0);
+	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
+	vector< double > tmpF12 = decltype(tmpF12)(vectorSize,0);
 
 	if(!isFixed(module)){
 		//checking neighbors and creating K11 and K12 matrixes
@@ -314,7 +314,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 				if(neighbors[i][0]!=0){
 					//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
 					tmpK11=tmpK11+createK11(i);
-					tmpK12 = tmpK12+(createK12(i)*uq[i]);
+					tmpF12 = tmpF12+(createK12(i)*uq[i]);
 				}
 
 		}
@@ -349,7 +349,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmp = tmp+tmp1;
 
 		// add K12 part
-		tmp1 = tmpK12*-1.;
+		tmp1 = tmpF12*-1.;
 		tmp = tmp+tmp1;
 
 		//bd * ()
@@ -360,13 +360,16 @@ void ForcesPredictionIPPTCode::calculateU(){
 
 		du=tmp;
 
-
+		printVector(du,6,"vector du" + to_string(module->blockId));
 
 		//printVector(u);
 	}	else { //end isFixed
 		du[0] = 0;
 		du[1] = 0;
 		du[2] = 0;
+		du[3] = 0;
+		du[4] = 0;
+		du[5] = 0;
 	}
 
 	//sending message to neighbors with du
@@ -502,14 +505,6 @@ void _ProcSendDuFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sen
 	cb->ProcSendDuFunc(msgType,sender);
 }
 
-Vector3D ForcesPredictionIPPTCode::toVec3D(vector<double> vec1){
-	Vector3D tmp{0,0,0};
-	Vector3D *wsk = &tmp;
-	for(int i=0;i<3;i++){
-		OUTPUT << *wsk;
-	}
-	return tmp;
-}
 
 void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row,string desc){
 	OUTPUT << "*************printVec********************"<< endl;
@@ -604,8 +599,8 @@ vector<double> operator*(const vector<double> vec, const double  scal){
 	return tmp;
 }
 vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2){
-	vector<double> tmp = decltype(tmp)(3,0);
-	for (int i=0;i<3;i++){
+	vector<double> tmp = decltype(tmp)(vec1.size(),0);
+	for (int i=0;i<vec1.size();i++){
 				tmp[i] = vec1[i]+vec2[i];
 		}
 	return tmp;
