@@ -223,7 +223,7 @@ void ForcesPredictionIPPTCode::visualization(){
 
 
 	for(int i=0;i<6;i++){
-		if(neighbors[i][0]!=0){
+		if(neighbors[i][0]!=0 and !support){
 			tmpK11 = createK11(i);
 			tmpK12 = createK12(i);
 			createR(tmpK11,R);
@@ -233,9 +233,9 @@ void ForcesPredictionIPPTCode::visualization(){
 
 	}
 
-	printMatrix(vizTable,6,6,"VizTable"+module->blockId);
-	printMatrix(tmpK11,6,6,"tmpK11"+module->blockId);
-	printMatrix(tmpK12,6,6,"tmpK12"+module->blockId);
+	printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
+	printMatrix(tmpK11,6,6,"tmpK11 "+to_string(module->blockId));
+	printMatrix(tmpK12,6,6,"tmpK12 "+to_string(module->blockId));
 
 }
 
@@ -474,7 +474,7 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	for(int i=0;i<6;i++){
 		if(neighbors[i][0]==msgFrom){
 			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
-			printVector(msgData,6,"msgData");
+			printVector(msgData,6,"msgData from "+to_string(msgFrom)+" to "+ to_string(module->blockId));
 			neighbors[i][1]=1;
 			uq[i]=msgData;
 		}
