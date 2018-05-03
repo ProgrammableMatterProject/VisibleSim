@@ -67,8 +67,8 @@ private:
 
 	vector <double> du = decltype(du)(vectorSize,0);
 
-	vector <double> fp = decltype(fp)(3,0);
-	vector <double> Fp = decltype(Fp)(3,0);
+	vector <double> fp = decltype(fp)(vectorSize,0);
+	vector <double> Fp = decltype(Fp)(vectorSize,0);
 
 
 
