@@ -52,6 +52,11 @@ private:
 
 	typedef vector< vector<double> > bMatrix;
 
+	//matrix for visualization pf calculated forces and moments
+	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
+
+
+
 	//vector<bMatrix> K11 = decltype(K11)(6,vector<vector<double> >(3,vector <double>(3,0))); //K11 vector
 	//vector<bMatrix> K12 = decltype(K12)(6,vector<vector<double> >(3,vector <double>(3,0))); //K12 vector
 
@@ -85,8 +90,10 @@ public :
 
 	bool isSupport(BlinkyBlocksBlock *modR);
 
-	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize);
-	void printVector(vector<double> &vec, int row=3);
+	void visualization();
+
+	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize, string desc="");
+	void printVector(vector<double> &vec, int row=3,string desc="");
 	void clearNeighborsMessage(); //function to clear messages when calculated u
 
 	vector< vector<double> > createK11(int i);

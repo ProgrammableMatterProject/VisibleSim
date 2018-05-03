@@ -161,6 +161,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 				} else {
 						OUTPUT << "WARNING No globalI in XML file" << endl;
 				}
+
 	attr= element->Attribute("globalBeta");
 					if (attr) {
 						string str=attr;
@@ -169,6 +170,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 				} else {
 						OUTPUT << "WARNING No globalBeta in XML file" << endl;
 				}
+
 	attr= element->Attribute("globalIz");
 						if (attr) {
 							string str=attr;
@@ -177,36 +179,64 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 					} else {
 							OUTPUT << "WARNING No globalIz in XML file" << endl;
 					}
-attr= element->Attribute("globalIy");
-					if (attr) {
-						string str=attr;
-						globalIy = atoi(str.c_str());
-						cerr << "globalIy= " << globalIy << endl;
-				} else {
-						OUTPUT << "WARNING No globalIy in XML file" << endl;
-				}
-attr= element->Attribute("globalNu");
-					if (attr) {
-						string str=attr;
-						globalNu = atoi(str.c_str());
-						cerr << "globalNu= " << globalNu << endl;
-				} else {
-						OUTPUT << "WARNING No globalNu in XML file" << endl;
-				}
 
-attr= element->Attribute("globalJ");
-					if (attr) {
-						string str=attr;
-						globalJ = atoi(str.c_str());
-						cerr << "globalJ= " << globalJ << endl;
-				} else {
-						OUTPUT << "WARNING No globalJ in XML file" << endl;
-				}
+	attr= element->Attribute("globalIy");
+						if (attr) {
+							string str=attr;
+							globalIy = atoi(str.c_str());
+							cerr << "globalIy= " << globalIy << endl;
+					} else {
+							OUTPUT << "WARNING No globalIy in XML file" << endl;
+					}
+
+	attr= element->Attribute("globalNu");
+						if (attr) {
+							string str=attr;
+							globalNu = atoi(str.c_str());
+							cerr << "globalNu= " << globalNu << endl;
+					} else {
+							OUTPUT << "WARNING No globalNu in XML file" << endl;
+					}
+
+	attr= element->Attribute("globalJ");
+						if (attr) {
+							string str=attr;
+							globalJ = atoi(str.c_str());
+							cerr << "globalJ= " << globalJ << endl;
+					} else {
+							OUTPUT << "WARNING No globalJ in XML file" << endl;
+					}
 
 
-cout << "Parse user elements"<< endl << endl;
 }
 
+
+void ForcesPredictionIPPTCode::visualization(){
+
+	double fxMax = 25.5*61; // max force
+	double fxMmax = fxMax * 20; // max moment
+
+	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize));
+	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize));
+
+	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
+
+	//creating K11 and K12
+	for(int i=0;i<6;i++){
+			if(neighbors[i][0]!=0){
+				//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
+				tmpK11=tmpK11+createK11(i);
+				tmpK12 = tmpK12+createK12(i);
+			}
+	}
+
+	for(int i=0;i<6;i++){
+
+		//vizTable[i]=R*tmpK11*u+R*tmpK12*uq;
+
+	}
+
+}
 
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	cerr << "blockId=" << module->blockId << endl;
@@ -275,8 +305,10 @@ void ForcesPredictionIPPTCode::startup() {
 }
 
 bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
-	if(modR->position[2]==supportZ)
+	if(modR->position[2]==supportZ){
 		modR->setColor(Color(0.8f,0.8f,0.6f));
+		return true;
+	}
 }
 
 void ForcesPredictionIPPTCode::calculateU(){
@@ -337,6 +369,8 @@ void ForcesPredictionIPPTCode::calculateU(){
 
 		du=tmp;
 
+
+
 		//printVector(u);
 	}	else { //end isFixed
 		du[0] = 0;
@@ -348,6 +382,8 @@ void ForcesPredictionIPPTCode::calculateU(){
 	sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
 	//clearing info about du from neighbors
 	clearNeighborsMessage();
+
+
 
 }
 
@@ -458,6 +494,8 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 
 	}
 
+	//visualisation
+	visualization();
 
 	
 }
@@ -482,8 +520,9 @@ Vector3D ForcesPredictionIPPTCode::toVec3D(vector<double> vec1){
 	return tmp;
 }
 
-void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
-//	OUTPUT << "*************printVec********************"<< endl;
+void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row,string desc){
+	OUTPUT << "*************printVec********************"<< endl;
+	OUTPUT << desc;
 		for (int i=0;i<row;i++){
 			OUTPUT << vec[i]<< "\t";
 		}
@@ -492,8 +531,9 @@ void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row){
 
 
 
-void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int row, int col){
+void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int row, int col,string desc){
 	OUTPUT << "*************printMatrix********************"<< endl;
+	OUTPUT << desc;
 	for (int i=0;i<row;i++){
 		for(int j=0;j<col;j++){
 			OUTPUT << matrix[i][j]<< "\t";
