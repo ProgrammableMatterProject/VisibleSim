@@ -109,7 +109,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("a");
 	if (attr) {
 		string str=attr;
-		globala = atoi(str.c_str());
+		globala = atof(str.c_str());
 		cerr << "a= " << globala << endl;
 	} else {
 			OUTPUT << "WARNING No a in XML file" << endl;
@@ -119,7 +119,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("E");
 		if (attr) {
 			string str=attr;
-			globalE = atoi(str.c_str());
+			globalE = atof(str.c_str());
 			cerr << "E= " << globalE << endl;
 	} else {
 			OUTPUT << "WARNING No E in XML file" << endl;
@@ -128,7 +128,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("A");
 		if (attr) {
 			string str=attr;
-			globalA = atoi(str.c_str());
+			globalA = atof(str.c_str());
 			cerr << "A= " << globalL << endl;
 	} else {
 			OUTPUT << "WARNING No A in XML file" << endl;
@@ -137,7 +137,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("globalL");
 		if (attr) {
 			string str=attr;
-			globalL = atoi(str.c_str());
+			globalL = atof(str.c_str());
 			cerr << "globalL= " << globalL << endl;
 	} else {
 			OUTPUT << "WARNING No globalL in XML file" << endl;
@@ -146,7 +146,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("globalI");
 					if (attr) {
 						string str=attr;
-						globalI = atoi(str.c_str());
+						globalI = atof(str.c_str());
 						cerr << "globalI= " << globalI << endl;
 				} else {
 						OUTPUT << "WARNING No globalI in XML file" << endl;
@@ -155,7 +155,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("globalBeta");
 					if (attr) {
 						string str=attr;
-						globalBeta = atoi(str.c_str());
+						globalBeta = atof(str.c_str());
 						cerr << "globalBeta= " << globalBeta << endl;
 				} else {
 						OUTPUT << "WARNING No globalBeta in XML file" << endl;
@@ -164,7 +164,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("globalIz");
 						if (attr) {
 							string str=attr;
-							globalIz = atoi(str.c_str());
+							globalIz = atof(str.c_str());
 							cerr << "globalIz= " << globalIz << endl;
 					} else {
 							OUTPUT << "WARNING No globalIz in XML file" << endl;
@@ -173,7 +173,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("globalIy");
 						if (attr) {
 							string str=attr;
-							globalIy = atoi(str.c_str());
+							globalIy = atof(str.c_str());
 							cerr << "globalIy= " << globalIy << endl;
 					} else {
 							OUTPUT << "WARNING No globalIy in XML file" << endl;
@@ -182,7 +182,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("globalNu");
 						if (attr) {
 							string str=attr;
-							globalNu = atoi(str.c_str());
+							globalNu = atof(str.c_str());
 							cerr << "globalNu= " << globalNu << endl;
 					} else {
 							OUTPUT << "WARNING No globalNu in XML file" << endl;
@@ -191,7 +191,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	attr= element->Attribute("globalJ");
 						if (attr) {
 							string str=attr;
-							globalJ = atoi(str.c_str());
+							globalJ = atof(str.c_str());
 							cerr << "globalJ= " << globalJ << endl;
 					} else {
 							OUTPUT << "WARNING No globalJ in XML file" << endl;
