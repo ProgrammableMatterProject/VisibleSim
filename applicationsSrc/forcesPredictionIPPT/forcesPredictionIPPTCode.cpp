@@ -7,17 +7,27 @@ const int messageDelayCons=1;
 
 int maxIterations = 2; // max number of iterations
 double globalMass = 0; //mass from XML
-double globalE = 0; // E from XML
-double globalL=4; //length from XML
-double globalA=1; //cross sectional area from XML
-double globalI=1/12.; //area from XML
-double globalIz = 1; //second moment of area
-double globalIy = 1; //second moment of area
-double globalNu = 1; //Poisson ratio
+double globalE = 100; // E from XML // Young modulus MPa
+double globalL=40; //length from XML // arm length mm
+double globala = 40; //width of the square-cross-section arm  mm //
+double globalA=globala*globala; //cross sectional area from XML mm^2
+double globalI=pow(globala,4)/12.; // second moment of area from XML mm^4
+double globalIz = globalI; //second moment of area
+double globalIy = globalI; //second moment of area
+double globalNu = 0.3; //Poisson ratio
 double globalJ=1; //torsion constant
 
 double globalGrav=9.81; //gravity from XML
 double globalBeta=2/3.; //beta from XML
+
+double globalOmega = 2./3; // weight of Jacobi method
+double globalMu = 0.1; //friction coefficient
+double globalEps = pow(10,-8); // //tolerance
+double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilateral contact)
+double supportZ = 2*globalL; //Z coordinate of the bottom modules (contacting with the support)
+
+
+
 
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
@@ -44,6 +54,16 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	} else {
 			OUTPUT << "WARNING No maxNofIterations in XML file" << endl;
 	}
+
+	attr= element->Attribute("a");
+	if (attr) {
+		string str=attr;
+		globala = atoi(str.c_str());
+		cerr << "a= " << globala << endl;
+	} else {
+			OUTPUT << "WARNING No a in XML file" << endl;
+	}
+
 
 	attr= element->Attribute("E");
 		if (attr) {
