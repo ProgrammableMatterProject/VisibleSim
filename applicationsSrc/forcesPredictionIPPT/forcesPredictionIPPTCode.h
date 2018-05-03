@@ -24,18 +24,26 @@ class ForcesPredictionIPPTCode : public BlinkyBlocksBlockCode {
 private:
 	BlinkyBlocksBlock *module;
 
-	double E=10; // elastic modulus
- 	double L=4; //length
-	double A=1; //cross sectional area
-	double I=1/12.; //area
-	double Iz = 1; //second moment of area
-	double Iy = 1; //second moment of area
-	double nu = 1; //Poisson ratio
-	double J=1; //torsion constant
+	double E; // elastic modulus
+ 	double L; //length
+	double A; //cross sectional area
+	double I; //area
+	double Iz; //second moment of area
+	double Iy; //second moment of area
+	double nu; //Poisson ratio
+	double J; //torsion constant
 
-	double mass=1; //mass
-	double grav=9.81; //gravity
-	double beta=2/3.; //beta
+	double mass; //mass
+	double grav; //gravity
+	double beta; //beta
+
+	double Omega; // weight of Jacobi method
+	double Mu; //friction coefficient
+	double Eps; // //tolerance
+	double Gamma; //stiffness reduction multiplier (for unilateral contact)
+	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
+
+
 	vector<double> orient={0,0,-1};
 
 	int curIteration = 0; // current iteration

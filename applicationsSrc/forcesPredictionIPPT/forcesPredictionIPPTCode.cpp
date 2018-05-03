@@ -24,7 +24,7 @@ double globalOmega = 2./3; // weight of Jacobi method
 double globalMu = 0.1; //friction coefficient
 double globalEps = pow(10,-8); // //tolerance
 double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilateral contact)
-double supportZ = 2*globalL; //Z coordinate of the bottom modules (contacting with the support)
+double globalSupportZ = 2*globalL; //Z coordinate of the bottom modules (contacting with the support)
 
 
 
@@ -171,6 +171,13 @@ void ForcesPredictionIPPTCode::startup() {
 
 	grav=globalGrav;
 	beta = globalBeta;
+
+
+	Omega = globalOmega; // weight of Jacobi method
+	Mu = globalMu; //friction coefficient
+	Eps = globalEps; // //tolerance
+	Gamma = globalGamma; //stiffness reduction multiplier (for unilateral contact)
+	supportZ = globalSupportZ; //Z coordinate of the bottom modules (contacting with the support)
 
 
 	//cheking neighbors and adding them to a list
