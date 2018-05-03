@@ -216,13 +216,19 @@ void ForcesPredictionIPPTCode::visualization(){
 	double fxMax = 25.5*61; // max force
 	double fxMmax = fxMax * 20; // max moment
 
+	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
+	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
 
 	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
 
 
 	for(int i=0;i<6;i++){
 		if(neighbors[i][0]!=0){
-		vizTable[i]=R*createK11(i)*u+R*createK12(i)*uq[i];
+			tmpK11 = createK11(i);
+			tmpK12 = createK12(i);
+			createR(tmpK11,R);
+
+		vizTable[i]=R*tmpK11*u+R*tmpK12*uq[i];
 		}
 
 	}
