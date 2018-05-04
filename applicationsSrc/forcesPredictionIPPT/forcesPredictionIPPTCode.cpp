@@ -243,7 +243,7 @@ void ForcesPredictionIPPTCode::startup() {
 	addMessageEventFunc(DU_MSG,_ProcSendDuFunc);
 
 	
-	console << "start " << module->blockId << "," << module->color << "\n";
+	console << "---start " << module->blockId << "," << module->color << "----\n";
 	//set attributes from xml file
 	mass = globalMass;
 	E = globalE;
@@ -287,9 +287,11 @@ void ForcesPredictionIPPTCode::startup() {
 
 
 
-	//first step - calculate DU and sends to neighbor
+	//first step - calculate DU and sends to neighbor only in first
+	if(curIteration == 0){
 	calculateU();
-
+	curIteration++;
+	}
 	
 
 
@@ -360,7 +362,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 
 		du=tmp;
 
-		printVector(du,6,"vector du" + to_string(module->blockId));
+		printVector(du,6,"vector du module id= " + to_string(module->blockId) + " interaction "+ to_string(curIteration));
 
 		//printVector(u);
 	}	else { //end isFixed
@@ -377,8 +379,6 @@ void ForcesPredictionIPPTCode::calculateU(){
 	sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
 	//clearing info about du from neighbors
 	clearNeighborsMessage();
-
-
 
 }
 
