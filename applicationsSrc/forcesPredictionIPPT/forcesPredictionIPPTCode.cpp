@@ -23,7 +23,7 @@ double globalBeta=2/3.; //beta from XML
 /* be carefull, is run only one time by the first module! */
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	TiXmlNode *node = config->FirstChild("parameters");
-	
+
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
 	const char *attr= element->Attribute("globalMass");
@@ -124,7 +124,7 @@ attr= element->Attribute("J");
 }
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	cerr << "blockId=" << module->blockId << endl;
-	
+
 	const char *attr = config->Attribute("myAttribute");
 	if (attr) {
 		cerr << "myAttribute =" << attr<< endl;
@@ -135,7 +135,7 @@ void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 void ForcesPredictionIPPTCode::startup() {
 	addMessageEventFunc(DU_MSG,_ProcSendDuFunc);
 
-	
+
 	console << "start " << module->blockId << "," << module->color << "\n";
 	//set attributes from xml file
 	mass = globalMass;
@@ -156,7 +156,7 @@ void ForcesPredictionIPPTCode::startup() {
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
 	//CheckNeighbors();
-	
+
 	//check is module fixed
 	if(isFixed(module))
 		module->setColor(RED);
@@ -174,7 +174,7 @@ void ForcesPredictionIPPTCode::startup() {
 	//first step - calculate DU and sends to neighbor
 	calculateU();
 
-	
+
 
 
 }
@@ -263,42 +263,42 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 	//P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
 	P2PNetworkInterface *p2p = module->getInterface(SCLattice::Direction::Left);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
+	if(p2p->getConnectedBlockBId()){
 		neighbors[2][0]=p2p->getConnectedBlockBId();
-	}	
-	
+	}
+
 	//p2p = module->getInterface(Cell3DPosition(1,0,0));
 	p2p = module->getInterface(SCLattice::Direction::Right);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
+	if(p2p->getConnectedBlockBId()){
 		neighbors[3][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
 	p2p = module->getInterface(SCLattice::Direction::Front);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){  
+	if(p2p->getConnectedBlockBId()){
 		neighbors[4][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
 	p2p = module->getInterface(SCLattice::Direction::Back);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
+	if(p2p->getConnectedBlockBId()){
 		neighbors[5][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
 	p2p = module->getInterface(SCLattice::Direction::Top);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
+	if(p2p->getConnectedBlockBId()){
 		neighbors[0][0]=p2p->getConnectedBlockBId();
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
 	p2p = module->getInterface(SCLattice::Direction::Bottom);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
+	if(p2p->getConnectedBlockBId()){
 		neighbors[1][0]=p2p->getConnectedBlockBId();
 	}
 
@@ -329,7 +329,7 @@ bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
 void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
 	bID msgFrom = sender->getConnectedBlockBId();
 	vector<double> msgData = *(msg->getData());
-	
+
 
 	if(curIteration > maxIterations)
 		return;
@@ -348,7 +348,7 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 		if(neighbors[i][0]!=0 && neighbors[i][1]==0)
 			calculateDu = false;
 	}
-	
+
 	CheckNeighbors();
 
 	if(calculateDu){
@@ -359,7 +359,7 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	}
 
 
-	
+
 }
 
 void ForcesPredictionIPPTCode::clearNeighborsMessage(){
@@ -413,6 +413,7 @@ void ForcesPredictionIPPTCode::createRevD(vector< vector<double> > &matrix, vect
 	result = tmp;
 
 }
+
 vector< vector<double> > ForcesPredictionIPPTCode::createK11(int i){
 	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
 	//cout << "creating K11 "<<i<< endl;
@@ -438,7 +439,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::createK12(int i){
 void ForcesPredictionIPPTCode::createD(vector< vector<double> > &A, vector< vector<double> > &result){
 
 	for(int i=0; i<A.size();i++){
-				result[i][i] = A[i][i]; // operation
+		result[i][i] = A[i][i]; // operation
 	}
 }
 void ForcesPredictionIPPTCode::createR(vector< vector<double> > &A, vector< vector<double> > &result){
@@ -448,7 +449,7 @@ void ForcesPredictionIPPTCode::createR(vector< vector<double> > &A, vector< vect
 
 	for(int i=0; i<A.size();i++){
 		for(int j=0; j<A.size();j++){
-				result[i][j] =A[i][j]- tmp[i][j];
+			result[i][j] =A[i][j]- tmp[i][j];
 		}// operation
 	}
 }
@@ -520,5 +521,3 @@ vector< vector<double> > operator+(vector< vector<double> > A,vector< vector<dou
 		}
 	return result;
 }
-
-
