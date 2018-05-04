@@ -24,18 +24,27 @@ class ForcesPredictionIPPTCode : public BlinkyBlocksBlockCode {
 private:
 	BlinkyBlocksBlock *module;
 
-	double E=10; // elastic modulus
- 	double L=4; //length
-	double A=1; //cross sectional area
-	double I=1/12.; //area
-	double Iz = 1; //second moment of area
-	double Iy = 1; //second moment of area
-	double nu = 1; //Poisson ratio
-	double J=1; //torsion constant
+	double E; // elastic modulus
+ 	double L; //length
+	double A; //cross sectional area
+	double I; //area
+	double Iz; //second moment of area
+	double Iy; //second moment of area
+	double nu; //Poisson ratio
+	double J; //torsion constant
 
-	double mass=1; //mass
-	double grav=9.81; //gravity
-	double beta=2/3.; //beta
+	double mass; //mass
+	double grav; //gravity
+	double beta; //beta
+
+	double Omega; // weight of Jacobi method
+	double Mu; //friction coefficient
+	double Eps; // //tolerance
+	double Gamma; //stiffness reduction multiplier (for unilateral contact)
+	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
+
+	bool support = false;
+
 	vector<double> orient={0,0,-1};
 
 	int curIteration = 0; // current iteration
@@ -43,18 +52,23 @@ private:
 
 	typedef vector< vector<double> > bMatrix;
 
+	//matrix for visualization pf calculated forces and moments
+	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
+
+
+
 	//vector<bMatrix> K11 = decltype(K11)(6,vector<vector<double> >(3,vector <double>(3,0))); //K11 vector
 	//vector<bMatrix> K12 = decltype(K12)(6,vector<vector<double> >(3,vector <double>(3,0))); //K12 vector
 
 
 
-	vector <double> u = decltype(u)(vectorSize,0); // vector u
+	vector <double> dup = decltype(dup)(vectorSize,0); // vector u from previus step
 	bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from -1 step neighbors
 
 	vector <double> du = decltype(du)(vectorSize,0);
 
-	vector <double> fp = decltype(fp)(3,0);
-	vector <double> Fp = decltype(Fp)(3,0);
+	vector <double> fp = decltype(fp)(vectorSize,0);
+	vector <double> Fp = decltype(Fp)(vectorSize,0);
 
 
 
@@ -74,8 +88,12 @@ public :
 
 	bool isFixed(BlinkyBlocksBlock *modR);
 
-	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize);
-	void printVector(vector<double> &vec, int row=3);
+	bool isSupport(BlinkyBlocksBlock *modR);
+
+	void visualization();
+
+	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize, string desc="");
+	void printVector(vector<double> &vec, int row=3,string desc="");
 	void clearNeighborsMessage(); //function to clear messages when calculated u
 
 	vector< vector<double> > createK11(int i);
@@ -85,7 +103,6 @@ public :
 	void createD(vector< vector<double> > &A, vector< vector<double> > &result);
 	void createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result);
 
-	Vector3D toVec3D(vector<double> vec1);
 
 	void ProcSendDuFunc(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
 
