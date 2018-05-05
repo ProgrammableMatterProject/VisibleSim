@@ -53,12 +53,23 @@ string Message::getMessageName() {
 }
 
 Message* Message::clone() {
+	OUTPUT << "Message::clone()"<<endl;
     Message* ptr = new Message();
     ptr->sourceInterface = sourceInterface;
     ptr->destinationInterface = destinationInterface;
     ptr->type = type;
 	return ptr;
 }
+
+/*template <class T>
+MessageOf<T>* MessageOf<T>::clone() {
+	OUTPUT << "clone(" << sizeof(*ptrData) << ")"<<endl;
+	MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
+	ptr->sourceInterface = sourceInterface;
+	ptr->destinationInterface = destinationInterface;
+	return ptr;
+}*/
+
 
 //===========================================================================================================
 //

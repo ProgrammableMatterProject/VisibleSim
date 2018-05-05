@@ -344,7 +344,10 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmpBD = revD*beta;
 		//Fp - fp
 		tmp = Fp+(fp*-1.);
-
+OUTPUT << "Fp.size=" << Fp.size() << endl;
+OUTPUT << "fp.size=" << fp.size() << endl;
+OUTPUT << "tmp.size=" << tmp.size() << endl;
+		
 		//add Ru part
 		tmp1 = R*dup;
 		tmp1 = tmp1*-1.;
@@ -374,9 +377,9 @@ void ForcesPredictionIPPTCode::calculateU(){
 		du[5] = 0;
 	}
 
-
 	//sending message to neighbors with du
-	sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double> >(DU_MSG,du),messageDelay,messageDelayError,0);
+	OUTPUT << "size=" << du.size() << endl;
+	sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double>>(DU_MSG,du),messageDelay,messageDelayError,0);
 	//clearing info about du from neighbors
 	clearNeighborsMessage();
 
@@ -601,10 +604,30 @@ vector<double> operator*(const vector<double> vec, const double  scal){
 	return tmp;
 }
 vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2){
-	vector<double> tmp = decltype(tmp)(vec1.size(),0);
-	for (int i=0;i<vec1.size();i++){
+	size_t smax = max(vec1.size(),vec2.size());
+	vector<double> tmp = decltype(tmp)(smax,0);
+	if (vec1.size()!=vec2.size()) {
+		if (vec1.size()<vec2.size()) {
+			for (size_t i=0;i<vec1.size();i++){
+					tmp[i] = vec1[i]+vec2[i];
+			}
+			for (size_t i=vec1.size();i<vec2.size();i++){
+					tmp[i] = vec2[i];
+			}
+		} else {
+			for (size_t i=0;i<vec2.size();i++){
+					tmp[i] = vec1[i]+vec2[i];
+			}
+			for (size_t i=vec2.size();i<vec1.size();i++){
+					tmp[i] = vec1[i];
+			}
+		
+		}
+	} else {
+		for (size_t i=0;i<smax;i++){
 				tmp[i] = vec1[i]+vec2[i];
 		}
+	}
 	return tmp;
 }
 
@@ -639,7 +662,7 @@ vector< vector<double> > operator*(const vector< vector<double> > A,const vector
 	return result;
 }
 
-vector< vector<double> > operator+(vector< vector<double> > A,vector< vector<double> > B){
+vector< vector<double> > operator+(vector< vector<double> > A,vector< vector<double> > B) {
 	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
 	for(int i=0; i<A.size();i++){
 			for(int j=0;j<A.size();j++)	{

@@ -89,6 +89,7 @@ int BlockCode::sendMessageToAllNeighbors(const char*msgString, Message*msg, int 
             while (j<nexcept && p2p!=tabExceptions[j]) j++;
             if (j==nexcept) {
 				sendMessage(msgString, msg->clone(), p2p, t0, dt);
+//				sendMessage(msgString, msg, p2p, t0, dt);
                 n++;
             }
         }

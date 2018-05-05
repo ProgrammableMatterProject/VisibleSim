@@ -65,14 +65,17 @@ class MessageOf:public Message {
     T *ptrData;
     public :
     MessageOf(unsigned int t,const T &data):Message(t) { ptrData = new T(data); };
-    ~MessageOf() { delete ptrData; };
+	MessageOf(const MessageOf &msg):Message(msg.type) { ptrData = new T(msg.data); };
+	~MessageOf() { delete ptrData; };
     T* getData() const { return ptrData; };
     virtual MessageOf<T>* clone() {
-        MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
-        ptr->sourceInterface = sourceInterface;
-        ptr->destinationInterface = destinationInterface;
+		OUTPUT << "clone(" << (*ptrData).size() << "/" << sizeof(double) << ")"<<endl;
+		MessageOf<T> *ptr = new MessageOf<T>(type,*ptrData);
+		ptr->sourceInterface = sourceInterface;
+		ptr->destinationInterface = destinationInterface;
 		return ptr;
-    }
+	}
+	unsigned int size() { return(4+sizeof(ptrData)); };
 };
 
 //===========================================================================================================
