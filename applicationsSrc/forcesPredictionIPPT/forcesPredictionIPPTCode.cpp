@@ -204,7 +204,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 void ForcesPredictionIPPTCode::visualization(){
 
 	double fxMax = 25.5*61; // max force
-	double fxMmax = fxMax * 20; // max moment
+	double fxMmax = fxMax * L; // max moment
 
 	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
 	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
@@ -218,14 +218,46 @@ void ForcesPredictionIPPTCode::visualization(){
 			tmpK12 = createK12(i);
 			createR(tmpK11,R);
 
-		vizTable[i]=R*tmpK11*dup+R*tmpK12*uq[i];
+		vizTable[i]=createRot(i)*tmpK11*dup+createRot(i)*tmpK12*uq[i];
 		}
 
 	}
 
-	//printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
+	printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
 	//printMatrix(tmpK11,6,6,"tmpK11 "+to_string(module->blockId));
 	//printMatrix(tmpK12,6,6,"tmpK12 "+to_string(module->blockId));
+
+	//searching max
+	double max = 0;
+	double color = 0;
+	for(int i = 0; i<6; i++)
+	{
+		if(vizTable[i][1]<0)
+			vizTable[i][1] = 0;
+		//set abs values of my and mz
+		vizTable[i][4] = abs(vizTable[i][4]);
+		vizTable[i][5] = abs(vizTable[i][5]);
+
+		if(vizTable[i][4]>fxMmax)
+			vizTable[i][4] = fxMmax;
+		if(vizTable[i][5]>fxMmax)
+			vizTable[i][5] = fxMmax;
+
+
+		for(int j=0;j<6;j++){
+			if(vizTable[i][j]>max)
+				max = vizTable[i][j];
+			if(j<3)
+				color = max / fxMax;
+			else
+				color = max /fxMmax;
+		}
+	}
+	cout << "Module " << module->blockId << " color = "<< color << endl;
+
+	//set color for module
+	cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
+	module->setColor(Color(min(2*color,1.),min(2*(1-color),1.),0.0));
 
 }
 
