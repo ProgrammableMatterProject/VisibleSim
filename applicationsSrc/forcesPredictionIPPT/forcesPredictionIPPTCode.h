@@ -99,6 +99,8 @@ public :
 	vector< vector<double> > createK11(int i);
 	vector< vector<double> > createK12(int i);
 
+	vector< vector<double> > createRot(int i);
+
 	void createR(vector< vector<double> > &A, vector< vector<double> > &result);
 	void createD(vector< vector<double> > &A, vector< vector<double> > &result);
 	void createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result);

@@ -566,6 +566,17 @@ vector< vector<double> > ForcesPredictionIPPTCode::createK12(int i){
 		return tmp;
 }
 
+vector< vector<double> > ForcesPredictionIPPTCode::createRot(int i){
+	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
+	//cout << "creating K11 "<<i<< endl;
+	for(int k=0;k<vectorSize;k++)
+		for(int m=0;m<vectorSize;m++){
+			//cout << K11(i,k,m)<<"  ";
+			tmp[k][m]=Rot(i,k,m);
+		}
+	return tmp;
+}
+
 void ForcesPredictionIPPTCode::createD(vector< vector<double> > &A, vector< vector<double> > &result){
 
 	for(int i=0; i<A.size();i++){
