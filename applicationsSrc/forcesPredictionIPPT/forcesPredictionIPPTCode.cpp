@@ -203,6 +203,10 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 
 void ForcesPredictionIPPTCode::visualization(){
 
+	//calculate only of not support
+	if(support)
+		return;
+
 	double fxMax = 25.5*61; // max force
 	double fxMmax = fxMax * L; // max moment
 
@@ -526,7 +530,8 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	}
 
 	//visualisation
-	visualization();
+	if(curIteration%100)
+		visualization();
 	
 
 }
