@@ -45,7 +45,7 @@ private:
 
 	bool support = false;
 
-	vector<double> orient={0,0,-1};
+	vector<double> orient={0,0,-1,0,0,0};
 
 	int curIteration = 0; // current iteration
 
