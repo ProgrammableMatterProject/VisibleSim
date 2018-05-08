@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
-<parameters globalMass="61.03" nofIterations="5000" globalSupportZ="0" />
-<world gridSize="6,6,4" windowSize="1800,900">
+<parameters globalMass="61.03" nofIterations="50000" globalSupportZ="0" />
+<world gridSize="10,10,4" windowSize="1800,900">
     <camera target="79.265,87.1618,63.0899" directionSpherical="-906151,16.6614,280" angle="45" />
 	<spotlight target="50,20,0" directionSpherical="45,60,200" angle="51" />
     <blockList  size="1,1,1" blockSize="40,40,41" >

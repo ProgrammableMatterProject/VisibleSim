@@ -314,8 +314,8 @@ void ForcesPredictionIPPTCode::startup() {
 	//createK11(K11);
 	//createK12(K12);
 
-	//setting of the Fp force
-	Fp=orient*grav;
+	//setting of the mass force vector
+	Fp=orient*grav*mass;
 	//printVector(Fp);
 
 
