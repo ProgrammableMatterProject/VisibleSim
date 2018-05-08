@@ -328,8 +328,8 @@ void ForcesPredictionIPPTCode::startup() {
 
 	//first step - calculate DU and sends to neighbor only in first
 	if(curIteration == 0){
-	calculateU();
-	curIteration++;
+		calculateU();
+		curIteration++;
 	}
 	
 
@@ -527,12 +527,14 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 	if(calculateDu){
 		OUTPUT << "Calculating du"<< endl;
 		calculateU();
-		curIteration++;
-		dup=du;
+
 
 		//visualisation
 		if(curIteration%100==0)
 			visualization();
+
+		curIteration++;
+		dup=du;
 
 	}
 
