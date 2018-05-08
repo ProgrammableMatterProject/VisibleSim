@@ -207,8 +207,8 @@ void ForcesPredictionIPPTCode::visualization(){
 	if(support)
 		return;
 
-	double fxMax = 25.5*61; // max force
-	double fxMmax = fxMax * L; // max moment
+	double fxMax = 25.5*mass; // max force
+	double mxMax = fxMax * L/2; // max moment
 
 	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
 	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
@@ -231,7 +231,7 @@ void ForcesPredictionIPPTCode::visualization(){
 	//printMatrix(tmpK12,6,6,"tmpK12 "+to_string(module->blockId));
 
 	//searching max
-	double max = 0;
+	double maxS = 0;
 	double color = 0;
 	for(int i = 0; i<6; i++)
 	{
@@ -244,27 +244,21 @@ void ForcesPredictionIPPTCode::visualization(){
 		if(vizTable[i][0]>fxMax)
 			vizTable[i][0] = fxMax;
 
-		if(vizTable[i][4]>fxMmax)
-			vizTable[i][4] = fxMmax;
+		if(vizTable[i][4]>mxMax)
+			vizTable[i][4] = mxMax;
 
-		if(vizTable[i][5]>fxMmax)
-			vizTable[i][5] = fxMmax;
+		if(vizTable[i][5]>mxMax)
+			vizTable[i][5] = mxMax;
 
-
-		for(int j=0;j<6;j++){
-			if(vizTable[i][j]>max)
-				max = vizTable[i][j];
-			if(j<3)
-				color = max / fxMax;
-			else
-				color = max /fxMmax;
-		}
+                maxS=max(vizTable[i][0]/fxMax, maxS);
+                maxS=max(vizTable[i][4]/mxMax, maxS);
+                maxS=max(vizTable[i][5]/mxMax, maxS);
 	}
-	OUTPUT << "Module " << module->blockId << " color = "<< color << endl;
+	OUTPUT << "Module " << module->blockId << " level of danger = "<< maxS << endl;
 
 	//set color for module
 	//cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
-	module->setColor(Color(min(2*color,1.),min(2*(1-color),1.),0.0));
+	module->setColor(Color(min(2*maxS,1.),min(2*(1-maxS),1.),0.0));
 
 }
 
