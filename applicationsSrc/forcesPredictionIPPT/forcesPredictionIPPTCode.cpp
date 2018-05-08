@@ -27,11 +27,14 @@ double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilatera
 double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with the support)
 
 
+
+
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	TiXmlNode *node = config->FirstChild("parameters");
 	
+
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
 	const char *attr= element->Attribute("globalSupportZ");
@@ -43,6 +46,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	} else {
 			OUTPUT << "WARNING No globalSupportZ in XML file" << endl;
 	}
+
 
 	attr= element->Attribute("globalGamma");
 	//mass of module
@@ -203,13 +207,13 @@ void ForcesPredictionIPPTCode::visualization(){
 	if(support)
 		return;
 
-	double fxMax = 25.5*mass; // max force
+	double fxMax = 25.5*grav*mass; // max force
 	double mxMax = fxMax * L/2; // max moment
 
 	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
 	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
 
-	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
+//	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
 
 
 	for(int i=0;i<6;i++){
@@ -217,7 +221,14 @@ void ForcesPredictionIPPTCode::visualization(){
 			tmpK11 = createK11(i);
 			tmpK12 = createK12(i);
 
-			vizTable[i]=createRot(i)*tmpK11*dup+createRot(i)*tmpK12*uq[i];
+			vizTable[i]=createRot(i)*(tmpK11*dup+tmpK12*uq[i]);
+
+			int di=1-2*(i%2);
+       			tmpK11 = createK11(i+di);
+        		tmpK12 = createK12(i+di);
+       			vizTable[i][4]=(vizTable[i][4]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[4])/2;
+       			vizTable[i][5]=(vizTable[i][5]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[5])/2;
+
 		}
 
 	}
@@ -229,7 +240,8 @@ void ForcesPredictionIPPTCode::visualization(){
 	//searching max
 	double maxS = 0;
 	double color = 0;
-	for(int i = 0; i<6; i++) {
+	for(int i = 0; i<6; i++)
+	{
 		if(vizTable[i][0]<0)
 			vizTable[i][0] = 0;
 		//set abs values of my and mz
@@ -245,15 +257,16 @@ void ForcesPredictionIPPTCode::visualization(){
 		if(vizTable[i][5]>mxMax)
 			vizTable[i][5] = mxMax;
 
-		maxS=max(vizTable[i][0]/fxMax, maxS);
-		maxS=max(vizTable[i][4]/mxMax, maxS);
-		maxS=max(vizTable[i][5]/mxMax, maxS);
+                maxS=max(vizTable[i][0]/fxMax, maxS);
+                maxS=max(vizTable[i][4]/mxMax, maxS);
+                maxS=max(vizTable[i][5]/mxMax, maxS);
 	}
 	OUTPUT << "Module " << module->blockId << " level of danger = "<< maxS << endl;
 
 	//set color for module
 	//cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
 	module->setColor(Color(min(2*maxS,1.),min(2*(1-maxS),1.),0.0));
+
 }
 
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
@@ -301,12 +314,12 @@ void ForcesPredictionIPPTCode::startup() {
 	//check is module fixed
 	if(isFixed(module)) {
 		module->setColor(RED);
-	}
-/*
+        }
+
 	if (module->blockId==2) {
 		module->setBlinkMode(true);
 	}
-	*/
+
 	//check is modue support
 	support = isSupport(module);
 
@@ -334,6 +347,7 @@ bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
 		modR->setColor(Color(0.8f,0.8f,0.6f));
 		return true;
 	}
+	return false;
 }
 
 void ForcesPredictionIPPTCode::calculateU(){
@@ -376,6 +390,10 @@ void ForcesPredictionIPPTCode::calculateU(){
 		tmpBD = revD*beta;
 		//Fp - fp
 		tmp = Fp+(fp*-1.);
+//OUTPUT << "Fp.size=" << Fp.size() << endl;
+//OUTPUT << "fp.size=" << fp.size() << endl;
+//OUTPUT << "tmp.size=" << tmp.size() << endl;
+		
 		//add Ru part
 		tmp1 = R*dup;
 		tmp1 = tmp1*-1.;
