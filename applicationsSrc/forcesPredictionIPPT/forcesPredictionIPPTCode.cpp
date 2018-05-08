@@ -220,9 +220,8 @@ void ForcesPredictionIPPTCode::visualization(){
 		if(neighbors[i][0]!=0 and !support){
 			tmpK11 = createK11(i);
 			tmpK12 = createK12(i);
-			createR(tmpK11,R);
 
-		vizTable[i]=createRot(i)*tmpK11*dup+createRot(i)*tmpK12*uq[i];
+			vizTable[i]=createRot(i)*tmpK11*dup+createRot(i)*tmpK12*uq[i];
 		}
 
 	}
@@ -236,14 +235,18 @@ void ForcesPredictionIPPTCode::visualization(){
 	double color = 0;
 	for(int i = 0; i<6; i++)
 	{
-		if(vizTable[i][1]<0)
-			vizTable[i][1] = 0;
+		if(vizTable[i][0]<0)
+			vizTable[i][0] = 0;
 		//set abs values of my and mz
 		vizTable[i][4] = abs(vizTable[i][4]);
 		vizTable[i][5] = abs(vizTable[i][5]);
 
+		if(vizTable[i][0]>fxMax)
+			vizTable[i][0] = fxMax;
+
 		if(vizTable[i][4]>fxMmax)
 			vizTable[i][4] = fxMmax;
+
 		if(vizTable[i][5]>fxMmax)
 			vizTable[i][5] = fxMmax;
 
