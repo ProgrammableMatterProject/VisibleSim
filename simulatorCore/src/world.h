@@ -55,8 +55,9 @@ public:
     ObjLoader::ObjLoader *objBlock = NULL;           //!< Object loader for a block
     ObjLoader::ObjLoader *objBlockForPicking = NULL; //!< Object loader for a block used during picking
     ObjLoader::ObjLoader *objRepere = NULL;          //!< Object loader for the frame
-
     GLint menuId;
+
+    bool isBlinkingBlocks=false;
     Camera *camera = NULL; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
     /************************************************************
@@ -365,6 +366,7 @@ public:
     * @brief get bounding box coordinate from centers of glBlocks
     */
     void getBoundingBox(float &xmin,float &ymin,float &zmin,float &xmax,float &ymax,float &zmax);
+    bool hasBlinkingBlocks() { return isBlinkingBlocks;};
 };
 
 /**
