@@ -260,10 +260,10 @@ void ForcesPredictionIPPTCode::visualization(){
 				color = max /fxMmax;
 		}
 	}
-	cout << "Module " << module->blockId << " color = "<< color << endl;
+	OUTPUT << "Module " << module->blockId << " color = "<< color << endl;
 
 	//set color for module
-	cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
+	//cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
 	module->setColor(Color(min(2*color,1.),min(2*(1-color),1.),0.0));
 
 }
@@ -530,11 +530,20 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 
 
 		//visualisation
-		if(curIteration%100==0)
+		if(curIteration%100==0){
 			visualization();
+			cout << "Current Iteration = "<< curIteration<< endl;
+		}
+
 
 		curIteration++;
 		dup=du;
+
+
+		if(curIteration==maxIterations){
+			if(support)
+				module->setColor(Color(0.0f,0.0f,1.0f));
+		}
 
 	}
 
