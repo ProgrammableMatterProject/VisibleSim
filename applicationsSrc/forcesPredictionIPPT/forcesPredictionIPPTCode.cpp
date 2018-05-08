@@ -530,12 +530,14 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 		curIteration++;
 		dup=du;
 
+		//visualisation
+		if(curIteration%100==0)
+			visualization();
+
 	}
 
-	//visualisation
-	if(curIteration%100==0)
-		visualization();
 	
+
 
 }
 
