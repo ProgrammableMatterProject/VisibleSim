@@ -27,8 +27,6 @@ double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilatera
 double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with the support)
 
 
-
-
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
@@ -46,7 +44,6 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	} else {
 			OUTPUT << "WARNING No globalSupportZ in XML file" << endl;
 	}
-
 
 	attr= element->Attribute("globalGamma");
 	//mass of module
@@ -260,6 +257,7 @@ void ForcesPredictionIPPTCode::visualization(){
 	//cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
 	module->setColor(Color(min(2*maxS,1.),min(2*(1-maxS),1.),0.0));
 
+	
 }
 
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
@@ -305,9 +303,14 @@ void ForcesPredictionIPPTCode::startup() {
 	//CheckNeighbors();
 	
 	//check is module fixed
-	if(isFixed(module))
+	if(isFixed(module)) {
 		module->setColor(RED);
+	}
 
+	if (module->blockId==2) {
+		module->setBlinkMode(true);
+	}
+	
 	//check is modue support
 	support = isSupport(module);
 

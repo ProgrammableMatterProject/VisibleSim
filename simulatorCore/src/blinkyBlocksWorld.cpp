@@ -107,8 +107,10 @@ void BlinkyBlocksWorld::glDraw() {
 		glDisable(GL_TEXTURE_2D);
 		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
 		lock();
+		isBlinkingBlocks=false;
 		while (ic!=tabGlBlocks.end()) {
 			((BlinkyBlocksGlBlock*)(*ic))->glDraw(objBlock);
+			isBlinkingBlocks |= ((BlinkyBlocksGlBlock*)(*ic))->isHighlighted;
 			ic++;
 		}
 		unlock();

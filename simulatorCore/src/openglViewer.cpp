@@ -354,7 +354,7 @@ void GlutContext::idleFunc(void) {
             glutPostRedisplay();
         }
     }
-    if (mainWindow->hasselectedGlBlock() || getScheduler()->state==Scheduler::RUNNING) {
+    if (mainWindow->hasselectedGlBlock() || getScheduler()->state==Scheduler::RUNNING || getWorld()->hasBlinkingBlocks()) {
         glutPostRedisplay(); // for blinking
     }
 }

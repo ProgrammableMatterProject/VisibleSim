@@ -55,6 +55,7 @@ protected:
     ObjLoader::ObjLoader *objRepere = NULL;          //!< Object loader for the frame
     
     GLint menuId; 
+	bool isBlinkingBlocks=false;
     Camera *camera = NULL; //!< Pointer to the camera object for the graphical simulation, also includes the light source
 
     /************************************************************
@@ -316,6 +317,7 @@ public:
      * @brief Toggle world background
      */
     void toggleBackground() { background = !background; }
+    bool hasBlinkingBlocks() { return isBlinkingBlocks;};
 };
 
 /**

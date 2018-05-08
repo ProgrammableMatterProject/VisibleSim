@@ -261,6 +261,7 @@ public:
 	 * @return the id of the face connected to block nId, or -1 if the two blocks are not neighbors
 	 */
 	int getFaceForNeighborID(int nId);
+	void setBlinkMode(bool b) { ptrGlBlock->isHighlighted=b; };
 };
 
 } // BaseSimulator namespace
