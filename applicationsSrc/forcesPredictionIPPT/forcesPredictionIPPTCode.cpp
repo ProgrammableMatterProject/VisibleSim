@@ -6,7 +6,7 @@ const int messageDelayCons=1;
 
 
 int maxIterations = 2; // max number of iterations
-double globalMass = 61; //mass from XML
+double globalMass = 61/1000; //mass from XML
 double globalE = 100; // E from XML // Young modulus MPa
 double globalL=40; //length from XML // arm length mm
 double globala = 40; //width of the square-cross-section arm  mm //
@@ -33,7 +33,7 @@ double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with
 /* be carefull, is run only one time by the first module! */
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	TiXmlNode *node = config->FirstChild("parameters");
-	
+
 
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
@@ -200,78 +200,76 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 
 }
 
-
-void ForcesPredictionIPPTCode::visualization(){
-
-	//calculate only of not support
-	if(support)
-		return;
-
-	double fxMax = 25.5*grav*mass; // max force
-	double mxMax = fxMax * L/2; // max moment
-
-	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
-	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
-
-//	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
-
-
+void ForcesPredictionIPPTCode::SetNeighbors(){
+	//set 0 for all empty neighbors
 	for(int i=0;i<6;i++){
-		if(neighbors[i][0]!=0 and !support){
-			tmpK11 = createK11(i);
-			tmpK12 = createK12(i);
-
-			vizTable[i]=createRot(i)*(tmpK11*dup+tmpK12*uq[i]);
-
-			int di=1-2*(i%2);
-       			tmpK11 = createK11(i+di);
-        		tmpK12 = createK12(i+di);
-       			vizTable[i][4]=(vizTable[i][4]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[4])/2;
-       			vizTable[i][5]=(vizTable[i][5]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[5])/2;
-
-		}
-
+		neighbors[i][0] =0;
+		neighbors[i][1] =0;
 	}
 
-	printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
-	//printMatrix(tmpK11,6,6,"tmpK11 "+to_string(module->blockId));
-	//printMatrix(tmpK12,6,6,"tmpK12 "+to_string(module->blockId));
+	//taking neighbors and adding them to our table
 
-	//searching max
-	double maxS = 0;
-	double color = 0;
-	for(int i = 0; i<6; i++)
-	{
-		if(vizTable[i][0]<0)
-			vizTable[i][0] = 0;
-		//set abs values of my and mz
-		vizTable[i][4] = abs(vizTable[i][4]);
-		vizTable[i][5] = abs(vizTable[i][5]);
-
-		if(vizTable[i][0]>fxMax)
-			vizTable[i][0] = fxMax;
-
-		if(vizTable[i][4]>mxMax)
-			vizTable[i][4] = mxMax;
-
-		if(vizTable[i][5]>mxMax)
-			vizTable[i][5] = mxMax;
-
-                maxS=max(vizTable[i][0]/fxMax, maxS);
-                maxS=max(vizTable[i][4]/mxMax, maxS);
-                maxS=max(vizTable[i][5]/mxMax, maxS);
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
+	P2PNetworkInterface *p2p = module->getInterface(SCLattice::Direction::Top);
+	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){
+		neighbors[0][0]=p2p->getConnectedBlockBId();
 	}
-	OUTPUT << "Module " << module->blockId << " level of danger = "<< maxS << endl;
 
-	//set color for module
-	//cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
-	module->setColor(Color(min(2*maxS,1.),min(2*(1-maxS),1.),0.0));
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
+	p2p = module->getInterface(SCLattice::Direction::Bottom);
+	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){
+		neighbors[1][0]=p2p->getConnectedBlockBId();
+	}
+
+	//P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
+	p2p = module->getInterface(SCLattice::Direction::Left);
+	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){
+		neighbors[2][0]=p2p->getConnectedBlockBId();
+	}
+
+	//p2p = module->getInterface(Cell3DPosition(1,0,0));
+	p2p = module->getInterface(SCLattice::Direction::Right);
+	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){
+		neighbors[3][0]=p2p->getConnectedBlockBId();
+	}
+
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
+	p2p = module->getInterface(SCLattice::Direction::Front);
+	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){
+		neighbors[4][0]=p2p->getConnectedBlockBId();
+	}
+
+	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
+	p2p = module->getInterface(SCLattice::Direction::Back);
+	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
+	if(p2p->getConnectedBlockBId()){
+		neighbors[5][0]=p2p->getConnectedBlockBId();
+	}
 
 }
 
+void ForcesPredictionIPPTCode::printNeighbors(){
+	OUTPUT << "neighbors for id= " << module->blockId << ": "<< endl;
+	for(int i=0;i<6;i++){
+		OUTPUT<<neighbors[i][0] << ", ";
+	}
+	OUTPUT << endl;
+	for(int i=0;i<6;i++){
+			OUTPUT<<neighbors[i][1] << ", ";
+	}
+	OUTPUT << endl;
+	OUTPUT << endl;
+}
+
+
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	cerr << "blockId=" << module->blockId << endl;
-	
+
 	const char *attr = config->Attribute("myAttribute");
 	if (attr) {
 		cerr << "myAttribute =" << attr<< endl;
@@ -280,9 +278,9 @@ void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 
 
 void ForcesPredictionIPPTCode::startup() {
-	addMessageEventFunc(DU_MSG,_ProcSendDuFunc);
+	addMessageEventFunc(DU_MSG,_receiveMessage);
 
-	
+
 	console << "---start " << module->blockId << "," << module->color << "----\n";
 	//set attributes from xml file
 	mass = globalMass;
@@ -310,15 +308,11 @@ void ForcesPredictionIPPTCode::startup() {
 	//cheking neighbors and adding them to a list
 	SetNeighbors();
 	//CheckNeighbors();
-	
+
 	//check is module fixed
 	if(isFixed(module)) {
 		module->setColor(RED);
         }
-
-	if (module->blockId==2) {
-		module->setBlinkMode(true);
-	}
 
 	//check is modue support
 	support = isSupport(module);
@@ -327,100 +321,114 @@ void ForcesPredictionIPPTCode::startup() {
 	//createK12(K12);
 
 	//setting of the mass force vector
-	Fp=orient*grav*mass;
+	Fp=orient*grav*mass*10;
 	//printVector(Fp);
 
 
 
 	//first step - calculate DU and sends to neighbor only in first
 	if(curIteration == 0){
-		calculateU();
+		computeDU();
 		curIteration++;
 	}
-	
+
 
 
 }
 
-bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
-	if(modR->position[2]==supportZ){
-		modR->setColor(Color(0.8f,0.8f,0.6f));
-		return true;
-	}
-	return false;
+vector< vector<double> > ForcesPredictionIPPTCode::tiltingStiffnessMatrix(vector<double> &dup){
+    vector< vector<double> > K11d = createK11(1); // stiffness matrix for DOWN direction
+    vector< vector<double> > TfrB, TmxB, TmyB, TmzB;
+    vector< double > Fd = K11d*dup;
+    double fx=Fd[0], fy=Fd[1], fz=Fd[2], mx=Fd[3], my=Fd[4], mz=Fd[5]; // elastic predictor
+
+    if(fz<0) { // contact
+        double mmax = -fz*L/2;
+        double fmax = -Mu*fz;
+
+        // condition for frictional sliding
+        if(sqrt(fx*fx+fy*fy)<fmax) { // frictional stick state
+            TfrB = IdentityMatrix6();
+        } else { // frictionaal slip state
+            if(sqrt(fx*fx+fy*fy)<Eps) { // near zero tangential force -> Mu is probably very low -> stiffness matrix for sliding = 0
+                TfrB = createTfr(0,0,0,0,0,0);
+            } else { // frictional sliding (radial return on the Coulomb friction cone
+                TfrB = createTfr(
+                                -fy*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
+                                fx*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
+                                -fx*Mu/pow(fx*fx+fy*fy,1/2),
+                                fx*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
+                                -fx*fx*fz*Mu/pow(fx*fx+fy*fy,3/2),
+                                -fy*Mu/pow(fx*fx+fy*fy,1/2)
+                                );
+                    }
+                }
+
+        // condition for x-tilting (over the y-directed edge (front or back))
+        if(fabs(mx) < mmax) { // stable bending
+            TmxB = IdentityMatrix6();
+        } else { // unstable bending (tilting over the y-directed edge)
+            if(fabs(mx)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
+                TmxB = createTmx(0);
+            } else { // tilting occurs
+                TmxB = createTmx(-sign(mx)*L/2);
+            }
+        }
+
+        // condition for y-tilting (over the x-directed edge (left or right))
+        if(fabs(my) < mmax) { // stable bending
+            TmyB = IdentityMatrix6();
+        } else { // unstable bending (tilting over the y-directed edge)
+            if(fabs(my)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
+                TmyB = createTmy(0);
+            } else { // tilting occurs
+                TmyB = createTmy(-sign(my)*L/2);
+            }
+        }
+
+        // condition for x-tilting (over the y-directed edge (front or back))
+        if(fabs(mz) < mmax) { // stable bending
+            TmzB = IdentityMatrix6();
+        } else { // unstable bending (tilting over the y-directed edge)
+            if(fabs(mz)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
+                TmzB = createTmz(0);
+            } else { // tilting occurs
+                TmzB = createTmz(-sign(mz)*Mu);
+            }
+        }
+        K11d=TfrB*TmxB*TmyB*TmzB*K11d;
+    } else { // separation
+        K11d=Gamma*K11d;
+    }
+    return K11d;
 }
 
-void ForcesPredictionIPPTCode::calculateU(){
+void ForcesPredictionIPPTCode::computeDU(){
 
 	//temporary Matrixes
-	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
-	vector< double > tmpF12 = decltype(tmpF12)(vectorSize,0);
+	vector< vector<double> > sumK11 = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
+	vector< double > Fpq = decltype(Fpq)(vectorSize,0);
 
 	if(!isFixed(module)){
 		//checking neighbors and creating K11 and K12 matrixes
 		for(int i=0;i<6;i++){
 				if(neighbors[i][0]!=0){
 					//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
-					tmpK11=tmpK11+createK11(i);
-					tmpF12 = tmpF12+(createK12(i)*uq[i]);
+					sumK11=sumK11+createK11(i);
+					Fpq = Fpq+(createK12(i)*uq[i]);
 				}
 
 		}
+		if(isSupport(module)) { // enforce the unilateral contact conditions with the support, located below the module
+            sumK11=sumK11+tiltingStiffnessMatrix(dup);
+		}
 
-		//printMatrix(tmpK11);
-		//printVector(tmpK12,6);
-
-
-		//creating R and D
-		bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize)); //R vector
-		bMatrix D = decltype(D)(vectorSize, vector<double>(vectorSize)); //D vector
-		bMatrix revD = decltype(revD)(vectorSize, vector<double>(vectorSize)); //revD vector
-
-		createD(tmpK11,D);
-		createR(tmpK11,R);
-		createRevD(D,revD);
-
-		//printMatrix(tmpK11);
-
-		vector<double> tmp = decltype(tmp)(vectorSize,0); //tmp u
-		vector<double> tmp1 = decltype(tmp)(vectorSize,0);
-		bMatrix  tmpBD = decltype(tmpBD)(vectorSize, vector<double>(vectorSize));
-
-		//Beta * revD
-		tmpBD = revD*beta;
-		//Fp - fp
-		tmp = Fp+(fp*-1.);
-//OUTPUT << "Fp.size=" << Fp.size() << endl;
-//OUTPUT << "fp.size=" << fp.size() << endl;
-//OUTPUT << "tmp.size=" << tmp.size() << endl;
-		
-		//add Ru part
-		tmp1 = R*dup;
-		tmp1 = tmp1*-1.;
-		tmp = tmp+tmp1;
-
-		// add K12 part
-		tmp1 = tmpF12*-1.;
-		tmp = tmp+tmp1;
-
-		//bd * ()
-		tmp = tmpBD*tmp;
-
-		//bd*()-(1-B)u-1
-		tmp=tmp+(dup*(1-beta));
-
-		du=tmp;
+        du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
 
 		printVector(du,6,"vector du module id= " + to_string(module->blockId) + " interaction "+ to_string(curIteration));
 
-		//printVector(u);
 	}	else { //end isFixed
-		du[0] = 0;
-		du[1] = 0;
-		du[2] = 0;
-		du[3] = 0;
-		du[4] = 0;
-		du[5] = 0;
+        du = du*0.;
 	}
 
 	//sending message to neighbors with du
@@ -431,85 +439,91 @@ void ForcesPredictionIPPTCode::calculateU(){
 
 }
 
-void ForcesPredictionIPPTCode::SetNeighbors(){
-	//set 0 for all empty neighbors
+void ForcesPredictionIPPTCode::visualization(){
+
+	//calculate only if not fixed
+	if(isFixed(module))
+		return;
+
+	double fxMax = 25.5*grav*mass*10; // max force in N
+	double myMax = fxMax * L/2; // max moment in N*mm
+
+	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
+	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
+
+//	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
+
+
 	for(int i=0;i<6;i++){
-		neighbors[i][0] =0;
-		neighbors[i][1] =0;
+		if(neighbors[i][0]!=0 and !isFixed(module)){
+			tmpK11 = createK11(i);
+			tmpK12 = createK12(i);
+
+			vizTable[i]=createRot(i)*(tmpK11*dup+tmpK12*uq[i]);
+
+            // the torque should be averaged between the neighbours (i.e. it is taken from the middle of the beam)
+			int di=1-2*(i%2);
+            tmpK11 = createK11(i+di);
+            tmpK12 = createK12(i+di);
+            vizTable[i][4]=(vizTable[i][4]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[4])/2;
+            vizTable[i][5]=(vizTable[i][5]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[5])/2;
+		}
+	}
+	double maxS = 0;
+	if(isSupport(module)) { // enforce the unilateral contact conditions with the support, located below the module
+        vector<double> Fd=tiltingStiffnessMatrix(dup)*dup;
+        double fx=Fd[0], fy=Fd[1], fz=Fd[2], mx=Fd[3], my=Fd[4], mz=Fd[5]; // in global coordinates
+        vizTable[1][0]=fx;  vizTable[1][1]=fy;  vizTable[1][2]=fz;  vizTable[1][3]=mx;  vizTable[1][4]=my;  vizTable[1][5]=mz;
+        if(fx<0) {
+            maxS = min(1.,max(abs(mx)/abs(fz*L/2),abs(my)/abs(fz*L/2)));
+        }
 	}
 
-	//taking neighbors and adding them to our table
+	printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
 
-	//P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
-	P2PNetworkInterface *p2p = module->getInterface(SCLattice::Direction::Left);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
-		neighbors[2][0]=p2p->getConnectedBlockBId();
-	}	
-	
-	//p2p = module->getInterface(Cell3DPosition(1,0,0));
-	p2p = module->getInterface(SCLattice::Direction::Right);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
-		neighbors[3][0]=p2p->getConnectedBlockBId();
+	// chacking the maximum load factor
+	for(int i = 0; i<6; i++)
+	{
+        if(neighbors[i][0]!=0 and !isFixed(module)) {
+            if(vizTable[i][0]<0)
+                vizTable[i][0] = 0;
+            //set abs values of my and mz
+            vizTable[i][4] = abs(vizTable[i][4]);
+            vizTable[i][5] = abs(vizTable[i][5]);
+
+            if(vizTable[i][0]>fxMax)
+                vizTable[i][0] = fxMax;
+
+            if(vizTable[i][4]>myMax)
+                vizTable[i][4] = myMax;
+
+            if(vizTable[i][5]>myMax)
+                vizTable[i][5] = myMax;
+
+            maxS=max(vizTable[i][0]/fxMax, maxS);
+            maxS=max(vizTable[i][4]/myMax, maxS);
+            maxS=max(vizTable[i][5]/myMax, maxS);
+        }
+	}
+	OUTPUT << "Module " << module->blockId << " maximum load factor = "<< maxS << endl;
+
+	//set color for module
+	//cout << min(2*color,1.) << " " << min(2*(1-color),1.) << endl;
+	module->setColor(Color(min(2*maxS,1.),min(2*(1-maxS),1.),0.0));
+
+	if (curIteration==maxIterations && maxS>=1.-Eps) {
+		module->setBlinkMode(true);
 	}
 
-	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
-	p2p = module->getInterface(SCLattice::Direction::Front);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){  
-		neighbors[4][0]=p2p->getConnectedBlockBId();
-	}
 
-	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
-	p2p = module->getInterface(SCLattice::Direction::Back);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
-		neighbors[5][0]=p2p->getConnectedBlockBId();
-	}
-
-	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
-	p2p = module->getInterface(SCLattice::Direction::Top);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
-		neighbors[0][0]=p2p->getConnectedBlockBId();
-	}
-
-	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
-	p2p = module->getInterface(SCLattice::Direction::Bottom);
-	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){ 
-		neighbors[1][0]=p2p->getConnectedBlockBId();
-	}
 
 }
 
-void ForcesPredictionIPPTCode::CheckNeighbors(){
-	OUTPUT << "neighbors for id= " << module->blockId << ": "<< endl;
-	for(int i=0;i<6;i++){
-		OUTPUT<<neighbors[i][0] << ", ";
-	}
-	OUTPUT << endl;
-	for(int i=0;i<6;i++){
-			OUTPUT<<neighbors[i][1] << ", ";
-	}
-	OUTPUT << endl;
-	OUTPUT << endl;
-}
 
-bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
-	if(target->isInTarget(modR->position)){
-		return true;
-	}else
-		return false;
-
-}
-
-
-void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
+void ForcesPredictionIPPTCode::receiveMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender) {
 	bID msgFrom = sender->getConnectedBlockBId();
 	vector<double> msgData = *(msg->getData());
-	
+
 
 	if(curIteration > maxIterations)
 		return;
@@ -523,17 +537,17 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 		}
 	}
 	//checking if there are all messages
-	bool calculateDu = true;
+	bool ready = true;
 	for(int i = 0;i<6;i++ ){
 		if(neighbors[i][0]!=0 && neighbors[i][1]==0)
-			calculateDu = false;
+			ready = false;
 	}
-	
-	CheckNeighbors();
 
-	if(calculateDu){
+	printNeighbors();
+
+	if(ready){
 		OUTPUT << "Calculating du"<< endl;
-		calculateU();
+		computeDU();
 
 
 		//visualisation
@@ -542,34 +556,55 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 			cout << "Current Iteration = "<< curIteration<< endl;
 		}
 
+		if(curIteration==maxIterations){
+			if(support) {
+				module->setColor(Color(0.0f,0.0f,1.0f));
+            }
+            visualization();
+		}
 
 		curIteration++;
 		dup=du;
-
-
-		if(curIteration==maxIterations){
-			if(support)
-				module->setColor(Color(0.0f,0.0f,1.0f));
-		}
-
 	}
 
-	
+
 
 
 }
 
-void ForcesPredictionIPPTCode::clearNeighborsMessage(){
-	for(int i =0;i<6;i++){
+void ForcesPredictionIPPTCode::clearNeighborsMessage() {
+	for(int i=0; i<6; i++){
 		neighbors[i][1]=0;
 	}
 }
-void _ProcSendDuFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+
+
+void _receiveMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	ForcesPredictionIPPTCode *cb = (ForcesPredictionIPPTCode*)codebloc;
 	MessageOf<vector<double> >*msgType = (MessageOf<vector<double> >*)msg.get();
-	cb->ProcSendDuFunc(msgType,sender);
+	cb->receiveMessage(msgType,sender);
 }
 
+
+bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
+	if(target->isInTarget(modR->position)){
+		modR->setColor(Color(0.8f,0.8f,0.6f));
+		return true;
+	}else
+		return false;
+
+}
+
+
+bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
+	if(modR->position[2]==supportZ){
+		return true;
+	}
+	return false;
+}
+
+
+// Auxiliary functions
 
 void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row,string desc){
 	OUTPUT << "*************printVec********************"<< endl;
@@ -595,16 +630,23 @@ void ForcesPredictionIPPTCode::printMatrix(vector< vector<double> > &matrix, int
 
 }
 
-void ForcesPredictionIPPTCode::createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result){
+vector< vector<double> > ForcesPredictionIPPTCode::IdentityMatrix6(){
+	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize,0));
+	//cout << "creating K11 "<<i<< endl;
+	for(int k=0;k<vectorSize;k++)
+			tmp[k][k]=1;
+	return tmp;
+}
 
-	vector< vector<double> > tmp = decltype(tmp)(matrix.size(), vector<double>(matrix.size()));
-	for(int i=0;i<matrix.size();i++)
-		tmp[i][i] = 1/matrix[i][i];
+vector< vector<double> > ForcesPredictionIPPTCode::RevD(vector< vector<double> > &A) {
+	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A[0].size(),0));
+	for(int i=0;i<A.size();i++)
+		tmp[i][i] = 1/A[i][i];
 
-	result = tmp;
+	return tmp;
 
 }
-vector< vector<double> > ForcesPredictionIPPTCode::createK11(int i){
+vector< vector<double> > ForcesPredictionIPPTCode::createK11(int i) {
 	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
 	//cout << "creating K11 "<<i<< endl;
 	for(int k=0;k<vectorSize;k++)
@@ -615,7 +657,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::createK11(int i){
 	return tmp;
 }
 
-vector< vector<double> > ForcesPredictionIPPTCode::createK12(int i){
+vector< vector<double> > ForcesPredictionIPPTCode::createK12(int i) {
 	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
 		//cout << "creating K12 "<<i<< endl;
 		for(int k=0;k<vectorSize;k++)
@@ -625,6 +667,37 @@ vector< vector<double> > ForcesPredictionIPPTCode::createK12(int i){
 			}
 		return tmp;
 }
+
+
+vector< vector<double> > ForcesPredictionIPPTCode::createTfr(double Txx, double Txy, double Txz,double Tyx, double Tyy, double Tyz) {
+    vector< vector<double> > t = IdentityMatrix6();
+    t[0][0]=Txx;    t[0][1]=Txy;    t[0][2]=Txz;
+    t[1][0]=Tyx;    t[1][1]=Tyy;    t[1][2]=Tyz;
+    return t;
+}
+
+vector< vector<double> > ForcesPredictionIPPTCode::createTmx(double Txz) {
+    vector< vector<double> > t = IdentityMatrix6();
+    t[3][3]=0;
+    t[3][2]=Txz;
+    return t;
+}
+
+vector< vector<double> > ForcesPredictionIPPTCode::createTmy(double Txz) {
+    vector< vector<double> > t = IdentityMatrix6();
+    t[4][4]=0;
+    t[4][2]=Txz;
+    return t;
+}
+
+vector< vector<double> > ForcesPredictionIPPTCode::createTmz(double Txz) {
+    vector< vector<double> > t = IdentityMatrix6();
+    t[5][5]=0;
+    t[5][2]=Txz;
+    return t;
+}
+
+
 
 vector< vector<double> > ForcesPredictionIPPTCode::createRot(int i){
 	vector< vector<double> > tmp = decltype(tmp)(vectorSize, vector<double>(vectorSize));
@@ -637,22 +710,25 @@ vector< vector<double> > ForcesPredictionIPPTCode::createRot(int i){
 	return tmp;
 }
 
-void ForcesPredictionIPPTCode::createD(vector< vector<double> > &A, vector< vector<double> > &result){
-
+vector< vector<double> > ForcesPredictionIPPTCode::createD(vector< vector<double> > &A){
+    vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A[0].size(),0));
 	for(int i=0; i<A.size();i++){
-				result[i][i] = A[i][i]; // operation
+				tmp[i][i] = A[i][i]; // operation
 	}
+	return tmp;
 }
-void ForcesPredictionIPPTCode::createR(vector< vector<double> > &A, vector< vector<double> > &result){
+vector< vector<double> > ForcesPredictionIPPTCode::createR(vector< vector<double> > &A){
 
-	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
-	createD(A,tmp);
+	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A[0].size(),0));
 
-	for(int i=0; i<A.size();i++){
-		for(int j=0; j<A.size();j++){
-				result[i][j] =A[i][j]- tmp[i][j];
+	for(int i=0; i<A.size();i++) {
+		for(int j=0; j<A[0].size();j++) {
+            if(i!=j) {
+				tmp[i][j] = A[i][j];
+            }
 		}// operation
 	}
+	return tmp;
 }
 
 
@@ -664,8 +740,11 @@ void vector2string(const std::vector<bID>&v,string &s) {
 		it++;
 	}
 }
+
+
 //OPERATORS
 
+// vec * scal
 vector<double> operator*(const vector<double> vec, const double  scal){
 	vector<double> tmp = decltype(tmp)(vec.size(),0);
 	//cout << vec.size();
@@ -674,57 +753,107 @@ vector<double> operator*(const vector<double> vec, const double  scal){
 		}
 	return tmp;
 }
-vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2){
+
+// scal * vec
+vector<double> operator*(const double  scal, const vector<double> vec){
+	vector<double> tmp = decltype(tmp)(vec.size(),0);
+	//cout << vec.size();
+		for (int i=0;i<vec.size();i++){
+			tmp[i] = vec[i]*scal;
+		}
+	return tmp;
+}
+
+// vec + vec
+vector<double> operator+(const vector<double> vec1, const vector<double> vec2){
 	size_t smax = max(vec1.size(),vec2.size());
 	vector<double> tmp = decltype(tmp)(smax,0);
-	if (vec1.size()!=vec2.size()) {
-		if (vec1.size()<vec2.size()) {
-			for (size_t i=0;i<vec1.size();i++){
-					tmp[i] = vec1[i]+vec2[i];
-			}
-			for (size_t i=vec1.size();i<vec2.size();i++){
-					tmp[i] = vec2[i];
-			}
-		} else {
-			for (size_t i=0;i<vec2.size();i++){
-					tmp[i] = vec1[i]+vec2[i];
-			}
-			for (size_t i=vec2.size();i<vec1.size();i++){
-					tmp[i] = vec1[i];
-			}
-		
+	if (vec1.size()<vec2.size()) {
+		for (size_t i=0;i<vec1.size();i++){
+				tmp[i] = vec1[i]+vec2[i];
+		}
+		for (size_t i=vec1.size();i<vec2.size();i++){
+				tmp[i] = vec2[i];
 		}
 	} else {
-		for (size_t i=0;i<smax;i++){
+		for (size_t i=0;i<vec2.size(); i++) {
 				tmp[i] = vec1[i]+vec2[i];
+		}
+		for (size_t i=vec2.size();i<vec1.size();i++) {
+				tmp[i] = vec1[i];
 		}
 	}
 	return tmp;
 }
 
-vector<double>  operator*(const vector< vector<double> > A, const vector<double> vec){
+// vec - vec
+vector<double> operator-(const vector<double> vec1, const vector<double> vec2) {
+	size_t smax = max(vec1.size(),vec2.size());
+	vector<double> tmp = decltype(tmp)(smax,0);
+	if (vec1.size()<vec2.size()) {
+		for (size_t i=0;i<vec1.size();i++){
+				tmp[i] = vec1[i]-vec2[i];
+		}
+		for (size_t i=vec1.size();i<vec2.size();i++){
+				tmp[i] = -vec2[i];
+		}
+	} else {
+		for (size_t i=0;i<vec2.size();i++){
+				tmp[i] = vec1[i]-vec2[i];
+		}
+		for (size_t i=vec2.size();i<vec1.size();i++){
+				tmp[i] = vec1[i];
+		}
+	}
+	return tmp;
+}
+
+// - vec
+vector<double> operator-(const vector<double> vec){
 	vector<double> tmp = decltype(tmp)(vec.size(),0);
-	for (int i=0;i<vec.size();i++){
+	for (size_t i=0;i<vec.size();i++)
+		tmp[i] = -vec[i];
+	return tmp;
+}
+
+// mat * vec
+vector<double>  operator*(const vector< vector<double> > A, const vector<double> vec){
+	vector<double> tmp = decltype(tmp)(A.size(),0);
+	for (int i=0;i<A.size();i++){
 	        for (int j=0;j<vec.size();j++){
 	            tmp[i]+=( A[i][j]*vec[j]);
 	        }
 	    }
 	return tmp;
 }
-vector< vector<double> > operator*(const vector< vector<double> > A,const double B){
-	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A.size()));
+
+// mat * scal
+vector< vector<double> > operator*(const vector< vector<double> > A, const double B){
+	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A[0].size()));
 	for(int i=0; i<A.size();i++){
-			for(int j=0;j<A.size();j++)	{
+			for(int j=0;j<A[0].size();j++)	{
 				tmp[i][j] = A[i][j] * B;
 			}
 	}
 	return tmp;
 }
 
-vector< vector<double> > operator*(const vector< vector<double> > A,const vector< vector<double> > B){
-	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
+// scal * mat
+vector< vector<double> > operator*(const double B, const vector< vector<double> > A){
+	vector< vector<double> > tmp = decltype(tmp)(A.size(), vector<double>(A[0].size()));
 	for(int i=0; i<A.size();i++){
-		for(int j=0;j<A.size();j++)	{
+			for(int j=0;j<A[0].size();j++)	{
+				tmp[i][j] = A[i][j] * B;
+			}
+	}
+	return tmp;
+}
+
+// mat * mat
+vector< vector<double> > operator*(const vector< vector<double> > A,const vector< vector<double> > B){
+	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(B[0].size()));
+	for(int i=0; i<A.size();i++){
+		for(int j=0;j<B[0].size();j++)	{
 			for(int k=0;k<B.size();k++){
 				result[i][j] += A[i][k] * B[k][j]; // operation
 			}
@@ -733,11 +862,34 @@ vector< vector<double> > operator*(const vector< vector<double> > A,const vector
 	return result;
 }
 
+// mat + mat
 vector< vector<double> > operator+(vector< vector<double> > A,vector< vector<double> > B) {
-	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
+	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A[0].size()));
 	for(int i=0; i<A.size();i++){
-			for(int j=0;j<A.size();j++)	{
+			for(int j=0;j<A[0].size();j++)	{
 					result[i][j] = A[i][j] + B[i][j]; // operation
+			}
+		}
+	return result;
+}
+
+// mat - mat
+vector< vector<double> > operator-(vector< vector<double> > A,vector< vector<double> > B) {
+	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A[0].size()));
+	for(int i=0; i<A.size();i++){
+			for(int j=0;j<A[0].size();j++)	{
+					result[i][j] = A[i][j] - B[i][j]; // operation
+			}
+		}
+	return result;
+}
+
+// - mat
+vector< vector<double> > operator-(vector< vector<double> > A) {
+	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A[0].size()));
+	for(int i=0; i<A.size();i++){
+			for(int j=0;j<A[0].size();j++)	{
+					result[i][j] = -A[i][j]; // operation
 			}
 		}
 	return result;
