@@ -75,7 +75,6 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 			OUTPUT << "WARNING No globalMu in XML file" << endl;
 	}
 
-
 	attr= element->Attribute("globalOmega");
 	if (attr) {
 		string str=attr;
