@@ -129,7 +129,7 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 		if (attr) {
 			string str=attr;
 			globalA = atof(str.c_str());
-			cerr << "A= " << globalL << endl;
+			cerr << "A= " << globalA << endl;
 	} else {
 			OUTPUT << "WARNING No A in XML file" << endl;
 	}
@@ -212,48 +212,66 @@ void ForcesPredictionIPPTCode::SetNeighbors(){
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,1));
 	P2PNetworkInterface *p2p = module->getInterface(SCLattice::Direction::Top);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){
+	if(p2p->getConnectedBlockBId()) {
 		neighbors[0][0]=p2p->getConnectedBlockBId();
+		neighbors[0][1]=1;
+	} else if(target->isInTarget(module->position+Cell3DPosition(0,0,1))) {
+        neighbors[0][1]=2; // virtual module
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,0,-1));
 	p2p = module->getInterface(SCLattice::Direction::Bottom);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){
+	if(p2p->getConnectedBlockBId()) {
 		neighbors[1][0]=p2p->getConnectedBlockBId();
+		neighbors[1][1]=1;
+	} else if(target->isInTarget(module->position+Cell3DPosition(0,0,-1))) {
+        neighbors[1][1]=2; // virtual module
 	}
 
 	//P2PNetworkInterface *p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(-1,0,0));
 	p2p = module->getInterface(SCLattice::Direction::Left);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){
+	if(p2p->getConnectedBlockBId()) {
 		neighbors[2][0]=p2p->getConnectedBlockBId();
+		neighbors[2][1]=1;
+	} else if(target->isInTarget(module->position+Cell3DPosition(-1,0,0))) {
+        neighbors[2][1]=2; // virtual module
 	}
 
 	//p2p = module->getInterface(Cell3DPosition(1,0,0));
 	p2p = module->getInterface(SCLattice::Direction::Right);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){
+	if(p2p->getConnectedBlockBId()) {
 		neighbors[3][0]=p2p->getConnectedBlockBId();
+		neighbors[3][1]=1;
+	} else if(target->isInTarget(module->position+Cell3DPosition(1,0,0))) {
+        neighbors[3][1]=2; // virtual module
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,-1,0));
 	p2p = module->getInterface(SCLattice::Direction::Front);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){
+	if(p2p->getConnectedBlockBId()) {
 		neighbors[4][0]=p2p->getConnectedBlockBId();
+		neighbors[4][1]=1;
+	} else if(target->isInTarget(module->position+Cell3DPosition(0,-1,0))) {
+        neighbors[4][1]=2; // virtual module
 	}
 
 	//p2p = module->getP2PNetworkInterfaceByRelPos(Cell3DPosition(0,1,0));
 	p2p = module->getInterface(SCLattice::Direction::Back);
 	//if(p2p->getConnectedBlockBId()!=-1) { // WARNING p2p->getConnectedBlockBId returns a unsigned int ! and 0 if no block is connected
-	if(p2p->getConnectedBlockBId()){
+	if(p2p->getConnectedBlockBId()) {
 		neighbors[5][0]=p2p->getConnectedBlockBId();
+		neighbors[5][1]=1;
+	} else if(target->isInTarget(module->position+Cell3DPosition(0,1,0))) {
+        neighbors[5][1]=2; // virtual module
 	}
 
 }
 
-void ForcesPredictionIPPTCode::printNeighbors(){
+void ForcesPredictionIPPTCode::printNeighbors() {
 	OUTPUT << "neighbors for id= " << module->blockId << ": "<< endl;
 	for(int i=0;i<6;i++){
 		OUTPUT<<neighbors[i][0] << ", ";
@@ -270,7 +288,13 @@ void ForcesPredictionIPPTCode::printNeighbors(){
 void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	cerr << "blockId=" << module->blockId << endl;
 
-	const char *attr = config->Attribute("myAttribute");
+	const char *attr = config->Attribute("fixed");
+	if (attr) {
+		cerr << "fixed =" << attr<< endl;
+		isFixed=true;
+	}
+
+	attr = config->Attribute("myAttribute");
 	if (attr) {
 		cerr << "myAttribute =" << attr<< endl;
 	}
@@ -286,6 +310,7 @@ void ForcesPredictionIPPTCode::startup() {
 	mass = globalMass;
 	E = globalE;
 	L = globalL;
+	a = globala;
 	A = globalA;
 	I = globalI;
 
@@ -302,7 +327,8 @@ void ForcesPredictionIPPTCode::startup() {
 	Mu = globalMu; //friction coefficient
 	Eps = globalEps; // //tolerance
 	Gamma = globalGamma; //stiffness reduction multiplier (for unilateral contact)
-	supportZ = globalSupportZ; //Z coordinate of the bottom modules (contacting with the support)
+//	supportZ = globalSupportZ; //Z coordinate of the bottom modules (contacting with the support)
+	if(module->position[2]==globalSupportZ) isSupport=true;
 
 
 	//cheking neighbors and adding them to a list
@@ -310,12 +336,12 @@ void ForcesPredictionIPPTCode::startup() {
 	//CheckNeighbors();
 
 	//check is module fixed
-	if(isFixed(module)) {
+	if(isFixed) {
 		module->setColor(RED);
-        }
+    }
 
-	//check is modue support
-	support = isSupport(module);
+//	//check is modue support
+//	support = isSupport(module);
 
 	//createK11(K11);
 	//createK12(K12);
@@ -327,7 +353,7 @@ void ForcesPredictionIPPTCode::startup() {
 
 
 	//first step - calculate DU and sends to neighbor only in first
-	if(curIteration == 0){
+	if(curIteration == 0) {
 		computeDU();
 		curIteration++;
 	}
@@ -336,14 +362,14 @@ void ForcesPredictionIPPTCode::startup() {
 
 }
 
-vector< vector<double> > ForcesPredictionIPPTCode::tiltingStiffnessMatrix(vector<double> &dup){
+vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector<double> &dup) {
     vector< vector<double> > K11d = createK11(1); // stiffness matrix for DOWN direction
     vector< vector<double> > TfrB, TmxB, TmyB, TmzB;
     vector< double > Fd = K11d*dup;
     double fx=Fd[0], fy=Fd[1], fz=Fd[2], mx=Fd[3], my=Fd[4], mz=Fd[5]; // elastic predictor
 
     if(fz<0) { // contact
-        double mmax = -fz*L/2;
+        double mmax = -fz*a/2;
         double fmax = -Mu*fz;
 
         // condition for frictional sliding
@@ -371,7 +397,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::tiltingStiffnessMatrix(vector
             if(fabs(mx)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
                 TmxB = createTmx(0);
             } else { // tilting occurs
-                TmxB = createTmx(-sign(mx)*L/2);
+                TmxB = createTmx(-sign(mx)*a/2);
             }
         }
 
@@ -382,7 +408,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::tiltingStiffnessMatrix(vector
             if(fabs(my)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
                 TmyB = createTmy(0);
             } else { // tilting occurs
-                TmyB = createTmy(-sign(my)*L/2);
+                TmyB = createTmy(-sign(my)*a/2);
             }
         }
 
@@ -403,29 +429,44 @@ vector< vector<double> > ForcesPredictionIPPTCode::tiltingStiffnessMatrix(vector
     return K11d;
 }
 
-void ForcesPredictionIPPTCode::computeDU(){
+void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
+
+	int di=1-2*(i%2);
+	vector< vector<double> > sumK11 = createK11(i+di);
+	vector< double > Fpq = createK12(i+di)*dup;
+
+	if(isSupport && i>1) { // enforce the unilateral contact conditions with the support, located below the module only if the neighbor is on left, right, back or front
+        sumK11=sumK11+contactStiffnessMatrix(uq[i]);
+	}
+    uq[i] = RevD(sumK11)*beta*(Fp-createR(sumK11)*uq[i]-Fpq)+(uq[i]*(1-beta));
+
+    printVector(uq[i],6,"neighbor vector uq["+ to_string(i) +"] of du module id= " + to_string(module->blockId) + ", iteration "+ to_string(curIteration));
+}
+
+
+void ForcesPredictionIPPTCode::computeDU() {
 
 	//temporary Matrixes
 	vector< vector<double> > sumK11 = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
 	vector< double > Fpq = decltype(Fpq)(vectorSize,0);
 
-	if(!isFixed(module)){
+	if(!isFixed) {
 		//checking neighbors and creating K11 and K12 matrixes
 		for(int i=0;i<6;i++){
-				if(neighbors[i][0]!=0){
-					//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
+				if(neighbors[i][1]!=0) { // messages received or a virtual module present
+					if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
 					sumK11=sumK11+createK11(i);
 					Fpq = Fpq+(createK12(i)*uq[i]);
 				}
 
 		}
-		if(isSupport(module)) { // enforce the unilateral contact conditions with the support, located below the module
-            sumK11=sumK11+tiltingStiffnessMatrix(dup);
+		if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
+            sumK11=sumK11+contactStiffnessMatrix(dup);
 		}
 
         du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
 
-		printVector(du,6,"vector du module id= " + to_string(module->blockId) + " interaction "+ to_string(curIteration));
+		printVector(du,6,"vector du module id= " + to_string(module->blockId) + ", iteration "+ to_string(curIteration));
 
 	}	else { //end isFixed
         du = du*0.;
@@ -439,14 +480,14 @@ void ForcesPredictionIPPTCode::computeDU(){
 
 }
 
-void ForcesPredictionIPPTCode::visualization(){
+void ForcesPredictionIPPTCode::visualization() {
 
 	//calculate only if not fixed
-	if(isFixed(module))
+	if(isFixed)
 		return;
 
 	double fxMax = 25.5*grav*mass*10; // max force in N
-	double myMax = fxMax * L/2; // max moment in N*mm
+	double myMax = fxMax * a/2; // max moment in N*mm
 
 	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
 	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
@@ -454,8 +495,8 @@ void ForcesPredictionIPPTCode::visualization(){
 //	bMatrix R = decltype(R)(vectorSize, vector<double>(vectorSize));
 
 
-	for(int i=0;i<6;i++){
-		if(neighbors[i][0]!=0 and !isFixed(module)){
+	for(int i=0;i<6;i++) {
+		if(neighbors[i][0]!=0 and !isFixed) {
 			tmpK11 = createK11(i);
 			tmpK12 = createK12(i);
 
@@ -470,8 +511,8 @@ void ForcesPredictionIPPTCode::visualization(){
 		}
 	}
 	double maxS = 0;
-	if(isSupport(module)) { // enforce the unilateral contact conditions with the support, located below the module
-        vector<double> Fd=tiltingStiffnessMatrix(dup)*dup;
+	if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
+        vector<double> Fd=contactStiffnessMatrix(dup)*dup;
         double fx=Fd[0], fy=Fd[1], fz=Fd[2], mx=Fd[3], my=Fd[4], mz=Fd[5]; // in global coordinates
         vizTable[1][0]=fx;  vizTable[1][1]=fy;  vizTable[1][2]=fz;  vizTable[1][3]=mx;  vizTable[1][4]=my;  vizTable[1][5]=mz;
         if(fx<0) {
@@ -484,7 +525,7 @@ void ForcesPredictionIPPTCode::visualization(){
 	// chacking the maximum load factor
 	for(int i = 0; i<6; i++)
 	{
-        if(neighbors[i][0]!=0 and !isFixed(module)) {
+        if(neighbors[i][0]!=0 and !isFixed) {
             if(vizTable[i][0]<0)
                 vizTable[i][0] = 0;
             //set abs values of my and mz
@@ -529,7 +570,7 @@ void ForcesPredictionIPPTCode::receiveMessage(const MessageOf<vector<double> >*m
 		return;
 
 	for(int i=0;i<6;i++){
-		if(neighbors[i][0]==msgFrom){
+		if(neighbors[i][0]==msgFrom) {
 			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
 			printVector(msgData,6,"msgData from "+to_string(msgFrom)+" to "+ to_string(module->blockId));
 			neighbors[i][1]=1;
@@ -538,26 +579,26 @@ void ForcesPredictionIPPTCode::receiveMessage(const MessageOf<vector<double> >*m
 	}
 	//checking if there are all messages
 	bool ready = true;
-	for(int i = 0;i<6;i++ ){
+	for(int i = 0;i<6;i++ ) {
 		if(neighbors[i][0]!=0 && neighbors[i][1]==0)
 			ready = false;
 	}
 
 	printNeighbors();
 
-	if(ready){
+	if(ready) {
 		OUTPUT << "Calculating du"<< endl;
 		computeDU();
 
 
 		//visualisation
-		if(curIteration%100==0){
+		if(curIteration%100==0) {
 			visualization();
 			cout << "Current Iteration = "<< curIteration<< endl;
 		}
 
-		if(curIteration==maxIterations){
-			if(support) {
+		if(curIteration==maxIterations) {
+			if(isSupport) {
 				module->setColor(Color(0.0f,0.0f,1.0f));
             }
             visualization();
@@ -573,8 +614,10 @@ void ForcesPredictionIPPTCode::receiveMessage(const MessageOf<vector<double> >*m
 }
 
 void ForcesPredictionIPPTCode::clearNeighborsMessage() {
-	for(int i=0; i<6; i++){
-		neighbors[i][1]=0;
+	for(int i=0; i<6; i++) {
+        if(neighbors[i][1]==1) {
+            neighbors[i][1]=0;
+		}
 	}
 }
 
@@ -586,6 +629,7 @@ void _receiveMessage(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sen
 }
 
 
+/*
 bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
 	if(target->isInTarget(modR->position)){
 		modR->setColor(Color(0.8f,0.8f,0.6f));
@@ -594,14 +638,17 @@ bool ForcesPredictionIPPTCode::isFixed(BlinkyBlocksBlock *modR){
 		return false;
 
 }
+*/
 
 
+/*
 bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
 	if(modR->position[2]==supportZ){
 		return true;
 	}
 	return false;
 }
+*/
 
 
 // Auxiliary functions

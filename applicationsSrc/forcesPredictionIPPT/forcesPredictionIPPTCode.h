@@ -28,6 +28,7 @@ private:
 
 	double E; // elastic modulus
  	double L; //length
+	double a; // width of the cross-section of the square arm
 	double A; //cross sectional area
 	double I; //area
 	double Iz; //second moment of area
@@ -43,9 +44,10 @@ private:
 	double Mu; //friction coefficient
 	double Eps; // //tolerance
 	double Gamma; //stiffness reduction multiplier (for unilateral contact)
-	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
+//	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
 
-	bool support = false;
+	bool isSupport = false;
+	bool isFixed = false;
 
 	vector<double> orient={0,0,-1,0,0,0};
 
@@ -57,7 +59,7 @@ private:
 	//matrix for visualization pf calculated forces and moments
 //	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
 	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
-	
+
 
 
 	//vector<bMatrix> K11 = decltype(K11)(6,vector<vector<double> >(3,vector <double>(3,0))); //K11 vector
@@ -86,13 +88,14 @@ public :
 
 	void SetNeighbors();
 
-	vector< vector<double> > tiltingStiffnessMatrix(vector<double> &dup);
+	vector< vector<double> > contactStiffnessMatrix(vector<double> &dup); // stiffness matrix for contact with the floor
 	void computeDU();
+	void computeNeighborDU(int i);
 	void visualization();
 
-	bool isFixed(BlinkyBlocksBlock *modR);
+//	bool isFixed(BlinkyBlocksBlock *modR);
 
-	bool isSupport(BlinkyBlocksBlock *modR);
+//	bool isSupport(BlinkyBlocksBlock *modR);
 
 	void printNeighbors();
 	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize, string desc="");

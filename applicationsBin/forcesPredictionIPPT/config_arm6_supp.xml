@@ -24,8 +24,7 @@
 </blockList>
 	<targetList>
 		<target format="grid">
-<!--		<cell position="1,1,0" color="0,255,0" />
-		<cell position="2,1,0" color="0,255,0" /> -->
+		<cell position="9,1,2" color="0,255,0" />
 
 		</target>
 	</targetList>

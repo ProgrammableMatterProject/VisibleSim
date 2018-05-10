@@ -13,8 +13,6 @@
 	<block position="1,1,2" color="0,255,0" />
 	<block position="2,1,2" color="0,255,0" />
 
-	<block position="3,1,2" color="0,255,0" />
-	<block position="4,1,2" color="0,255,0" />
 <!--	<block position="5,1,2" color="0,255,0" />
 
 	<block position="6,1,2" color="0,255,0" />
@@ -24,7 +22,7 @@
 </blockList>
 	<targetList>
 		<target format="grid">
-		<cell position="5,1,2" color="0,255,0" />
+		<cell position="3,1,2" color="0,255,0" />
 
 		</target>
 	</targetList>
