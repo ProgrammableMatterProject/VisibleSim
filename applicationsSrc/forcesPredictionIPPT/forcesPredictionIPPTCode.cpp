@@ -4,8 +4,7 @@ const int messageDelay=50;
 const int messageDelayError=5;
 const int messageDelayCons=1;
 
-
-int maxIterations = 2; // max number of iterations
+int maxIterations = 1000; // max number of iterations
 double globalMass = 61/1000; //mass from XML
 double globalE = 100; // E from XML // Young modulus MPa
 double globalL=40; //length from XML // arm length mm
