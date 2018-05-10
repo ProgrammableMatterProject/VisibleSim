@@ -33,7 +33,6 @@ double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	TiXmlNode *node = config->FirstChild("parameters");
 
-
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
 	const char *attr= element->Attribute("globalSupportZ");
@@ -45,7 +44,6 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	} else {
 			OUTPUT << "WARNING No globalSupportZ in XML file" << endl;
 	}
-
 
 	attr= element->Attribute("globalGamma");
 	//mass of module
