@@ -182,6 +182,45 @@ public:
 
 };  // class TargetCSG
 
+//<! @brief A target modeled as a container of unique positions and colors.c
+class TargetChrono : public Target {
+    // Only store target cells instead of the entire grid to save memory
+    map<const Cell3DPosition, const int> tCells; //!< the target cells as Cell/Color key-value pairs
+
+protected:
+    /**
+     * @brief Add a cell to the target cells container
+     * @param pos position of the target cell
+     * @param c color of the cell. If none provided, defaults to (0,0,0,0)
+     */
+    void addTargetCell(const Cell3DPosition &pos, int c = 0);
+
+    //!< @copydoc Target::print
+    virtual void print(ostream& where) const;
+public:
+    /**
+     * @copydoc Target::Target
+     * XML Description Format:
+     * <target format="grid">
+     *   <cell position="x,y,z" time="t" />
+     *   ...
+     * </target>
+     */
+    TargetChrono(TiXmlNode *targetNode);
+    virtual ~TargetChrono() {};
+
+    //!< @copydoc Target::getTargetColor
+    //!< a cell is in the target grid if and only if it is present in the target cells container
+    virtual bool isInTarget(const Cell3DPosition &pos) const;
+    //!< @copydoc Target::getTargetColor
+    //!< @throws InvalidPositionException is cell at position pos is not part of the target
+    virtual int getTargetTime(const Cell3DPosition &pos);
+
+    //!< @copydoc Target::BoundingBox
+    virtual void boundingBox(BoundingBox &bb);
+};  // class TargetChrono
+
+
 } // namespace BaseSimulator
 
 #endif  // TARGET_H__

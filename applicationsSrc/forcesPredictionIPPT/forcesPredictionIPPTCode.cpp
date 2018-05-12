@@ -26,15 +26,11 @@ double globalEps = pow(10,-8); // //tolerance
 double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilateral contact)
 double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with the support)
 
-
-
-
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	TiXmlNode *node = config->FirstChild("parameters");
 	
-
 	cerr << "blockId=" << module->blockId << endl;
 	TiXmlElement* element = node->ToElement();
 	const char *attr= element->Attribute("globalSupportZ");
@@ -46,7 +42,6 @@ void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
 	} else {
 			OUTPUT << "WARNING No globalSupportZ in XML file" << endl;
 	}
-
 
 	attr= element->Attribute("globalGamma");
 	//mass of module
@@ -228,7 +223,7 @@ void ForcesPredictionIPPTCode::visualization(){
         		tmpK12 = createK12(i+di);
        			vizTable[i][4]=(vizTable[i][4]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[4])/2;
        			vizTable[i][5]=(vizTable[i][5]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[5])/2;
-
+			printVector(uq[i],6,"uq["+to_string(i)+"] "+to_string(module->blockId));
 		}
 
 	}
@@ -315,11 +310,11 @@ void ForcesPredictionIPPTCode::startup() {
 	if(isFixed(module)) {
 		module->setColor(RED);
         }
-
+/*
 	if (module->blockId==2) {
 		module->setBlinkMode(true);
 	}
-
+*/
 	//check is modue support
 	support = isSupport(module);
 
@@ -337,9 +332,6 @@ void ForcesPredictionIPPTCode::startup() {
 		calculateU();
 		curIteration++;
 	}
-	
-
-
 }
 
 bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
@@ -363,12 +355,12 @@ void ForcesPredictionIPPTCode::calculateU(){
 					//OUTPUT << module->blockId << "has neighbor" << neighbors[i] << endl;
 					tmpK11=tmpK11+createK11(i);
 					tmpF12 = tmpF12+(createK12(i)*uq[i]);
+					printVector(uq[i],6,"uq["+to_string(i)+" id= "+ to_string(module->blockId));
 				}
-
 		}
 
 		//printMatrix(tmpK11);
-		//printVector(tmpK12,6);
+		printVector(tmpF12,6,"tmpF12 id= "+ to_string(module->blockId));
 
 
 		//creating R and D
@@ -424,7 +416,7 @@ void ForcesPredictionIPPTCode::calculateU(){
 	}
 
 	//sending message to neighbors with du
-	OUTPUT << "size=" << du.size() << endl;
+	//OUTPUT << "size=" << du.size() << endl;
 	sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double>>(DU_MSG,du),messageDelay,messageDelayError,0);
 	//clearing info about du from neighbors
 	clearNeighborsMessage();
@@ -553,10 +545,6 @@ void ForcesPredictionIPPTCode::ProcSendDuFunc(const MessageOf<vector<double> >*m
 		}
 
 	}
-
-	
-
-
 }
 
 void ForcesPredictionIPPTCode::clearNeighborsMessage(){
@@ -572,12 +560,11 @@ void _ProcSendDuFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sen
 
 
 void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row,string desc){
-	OUTPUT << "*************printVec********************"<< endl;
-	OUTPUT << desc << endl;
+	OUTPUT << "*************printVec******************** " << desc << " (";
 		for (int i=0;i<row;i++){
-			OUTPUT << vec[i]<< "\t";
+			OUTPUT << vec[i]<< ",";
 		}
-		OUTPUT <<endl;
+		OUTPUT << ")" << endl;
 }
 
 
@@ -736,10 +723,10 @@ vector< vector<double> > operator*(const vector< vector<double> > A,const vector
 vector< vector<double> > operator+(vector< vector<double> > A,vector< vector<double> > B) {
 	vector< vector<double> > result = decltype(result)(A.size(), vector<double>(A.size()));
 	for(int i=0; i<A.size();i++){
-			for(int j=0;j<A.size();j++)	{
-					result[i][j] = A[i][j] + B[i][j]; // operation
-			}
+		for(int j=0;j<A.size();j++)	{
+				result[i][j] = A[i][j] + B[i][j]; // operation
 		}
+	}
 	return result;
 }
 

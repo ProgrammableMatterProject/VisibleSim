@@ -223,4 +223,110 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
     return color;
 }
 
+/************************************************************
+ *                      TargetChrono
+ ************************************************************/
+
+TargetChrono::TargetChrono(TiXmlNode *targetNode) : Target(targetNode) {
+    TiXmlNode *cellNode = targetNode->FirstChild("cell");
+    const char* attr;
+    TiXmlElement *element;
+    Cell3DPosition position;
+    int time;
+
+    // Parse individual cells
+    while (cellNode) {
+        element = cellNode->ToElement();
+        time = 0;
+
+        attr = element->Attribute("position");
+        if (attr) {
+            string str(attr);
+            int pos1 = str.find_first_of(','),
+                pos2 = str.find_last_of(',');
+            position.pt[0] = atoi(str.substr(0,pos1).c_str());
+            position.pt[1] = atoi(str.substr(pos1+1,pos2-pos1-1).c_str());
+            position.pt[2] = atoi(str.substr(pos2+1,str.length()-pos1-1).c_str());
+        } else {
+            cerr << "error: position attribute missing for target cell" << endl;
+            throw TargetParsingException();
+        }
+        attr = element->Attribute("time");
+        if (attr) {
+            string str(attr);
+			time = atoi(str.c_str());
+        }
+		OUTPUT << "add target " << position << "," << time << endl;
+        addTargetCell(position, time);
+        cellNode = cellNode->NextSibling("cell");
+    } // end while (cellNode)
+
+    // Parse lines of cells
+    cellNode = targetNode->FirstChild("targetLine");
+    while (cellNode) {
+        int line = 0, plane = 0;
+        element = cellNode->ToElement();
+        time = 0;
+        attr = element->Attribute("time");
+        if (attr) {
+            string str(attr);
+            time = atoi(str.c_str());
+        }
+
+        attr = element->Attribute("line");
+        if (attr) {
+            line = atoi(attr);
+        }
+
+        attr = element->Attribute("plane");
+        if (attr) {
+            plane = atoi(attr);
+        }
+
+        attr = element->Attribute("values");
+        if (attr) {
+            string str(attr);
+            position.pt[0] = 0;
+            position.pt[1] = line;
+            position.pt[2] = plane;
+            int n = str.length();
+            for(int i=0; i<n; i++) {
+                if  (str[i] == '1') {
+                    position.pt[0] = i;
+                    addTargetCell(position, time);
+                }
+            }
+        }
+
+        cellNode = cellNode->NextSibling("blocksLine");
+    } // end while (cellNode)*/
+}
+
+bool TargetChrono::isInTarget(const Cell3DPosition &pos) const {
+    return tCells.count(pos);
+}
+
+int TargetChrono::getTargetTime(const Cell3DPosition &pos) {
+    if (!isInTarget(pos)) {
+        cerr << "error: attempting to get color of undefined target cell" << endl;
+        throw InvalidPositionException();
+    }
+    return tCells[pos];
+}
+
+void TargetChrono::addTargetCell(const Cell3DPosition &pos, int t) {
+    tCells.insert(std::pair<const Cell3DPosition, int>(pos, t));
+}
+
+void TargetChrono::print(ostream& where) const {
+    for(auto const& pair : tCells) {
+        where << "<cell position=" << pair.first << " time=" << pair.second << " />" << endl;
+    }
+}
+
+void TargetChrono::boundingBox(BoundingBox &bb) {
+    throw BaseSimulator::utils::NotImplementedException();
+}
+
+
 } // namespace BaseSimulator
