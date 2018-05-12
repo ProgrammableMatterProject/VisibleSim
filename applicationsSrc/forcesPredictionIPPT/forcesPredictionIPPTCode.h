@@ -14,6 +14,8 @@ static const int DU_MSG=1001;
 
 #define vectorSize 6
 
+#define sign(v) ((v)<0?-1:((v)>0))
+
 using namespace BlinkyBlocks;
 
 //enum PathState {NONE, BFS, ConfPath, Streamline};
@@ -26,6 +28,7 @@ private:
 
 	double E; // elastic modulus
  	double L; //length
+	double a; // width of the cross-section of the square arm
 	double A; //cross sectional area
 	double I; //area
 	double Iz; //second moment of area
@@ -41,9 +44,10 @@ private:
 	double Mu; //friction coefficient
 	double Eps; // //tolerance
 	double Gamma; //stiffness reduction multiplier (for unilateral contact)
-	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
+//	double supportZ; //Z coordinate of the bottom modules (contacting with the support)
 
-	bool support = false;
+	bool isSupport = false;
+	bool isFixed = false;
 
 	vector<double> orient={0,0,-1,0,0,0};
 
@@ -53,6 +57,7 @@ private:
 	typedef vector< vector<double> > bMatrix;
 
 	//matrix for visualization pf calculated forces and moments
+//	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
 	bMatrix vizTable = decltype(vizTable)(6, vector<double>(vectorSize,0));
 
 
@@ -62,17 +67,17 @@ private:
 
 
 
-	vector <double> dup = decltype(dup)(vectorSize,0); // vector u from previus step
-	bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from -1 step neighbors
+	vector <double> dup = decltype(dup)(vectorSize,0); // vector u from the previus iteration
+	bMatrix uq = decltype(uq)(6, vector<double>(vectorSize,0)); //vector u from 1-step neighbors
 
-	vector <double> du = decltype(du)(vectorSize,0);
+	vector <double> du = decltype(du)(vectorSize,0); // vector u from the current iteration
 
 	vector <double> fp = decltype(fp)(vectorSize,0);
 	vector <double> Fp = decltype(Fp)(vectorSize,0);
 
 
 
-	bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row  if tehre is a message with du
+	bID neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row  if tehre is a message with du. If the module is virtual (to be attached), we put MMAX in the first row
 
 
 public :
@@ -80,36 +85,42 @@ public :
 	~ForcesPredictionIPPTCode() {};
 
 	void startup();
-	
+
 	void SetNeighbors();
-	void CheckNeighbors();
 
-	void calculateU();
-
-	bool isFixed(BlinkyBlocksBlock *modR);
-
-	bool isSupport(BlinkyBlocksBlock *modR);
-
+	vector< vector<double> > contactStiffnessMatrix(vector<double> &dup); // stiffness matrix for contact with the floor
+	void computeDU();
+	void computeNeighborDU(int i);
 	void visualization();
 
+//	bool isFixed(BlinkyBlocksBlock *modR);
+
+//	bool isSupport(BlinkyBlocksBlock *modR);
+
+	void printNeighbors();
 	void printMatrix(vector< vector<double> > &matrix, int row=vectorSize, int col=vectorSize, string desc="");
 	void printVector(vector<double> &vec, int row=3,string desc="");
 	void clearNeighborsMessage(); //function to clear messages when calculated u
 
 	vector< vector<double> > createK11(int i);
 	vector< vector<double> > createK12(int i);
+	vector< vector<double> > createTfr(double Txx, double Txy, double Txz,double Tyx, double Tyy, double Tyz);
+	vector< vector<double> > createTmx(double Txz);
+	vector< vector<double> > createTmy(double Txz);
+	vector< vector<double> > createTmz(double Txz);
 
 	vector< vector<double> > createRot(int i);
 
-	void createR(vector< vector<double> > &A, vector< vector<double> > &result);
-	void createD(vector< vector<double> > &A, vector< vector<double> > &result);
-	void createRevD(vector< vector<double> > &matrix, vector< vector<double> > &result);
+	vector< vector<double> > IdentityMatrix6();
+	vector< vector<double> > createR(vector< vector<double> > &A);
+	vector< vector<double> > createD(vector< vector<double> > &A);
+	vector< vector<double> > RevD(vector< vector<double> > &A);
 
 
-	void ProcSendDuFunc(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
+	void receiveMessage(const MessageOf<vector<double> >*msg,P2PNetworkInterface *sender);
 
 	void parseUserElements(TiXmlDocument* config);
-	void parseUserBlockElements(TiXmlElement* config);	
+	void parseUserBlockElements(TiXmlElement* config);
 
 /*****************************************************************************/
 /** needed to associate code to module                                      **/
@@ -120,15 +131,20 @@ public :
 };
 //OPERATORS
 
+void _receiveMessage(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
+
 vector<double> operator*(const vector<double> vec ,const double  scal);
+vector<double> operator*(const double  scal, const vector<double> vec);
 vector<double> operator+(const vector<double> vec1 ,const vector<double> vec2);
+vector<double> operator-(const vector<double> vec1, const vector<double> vec2);
+vector<double> operator-(const vector<double> vec);
 vector<double> operator*(const vector< vector<double> > A, const vector<double> vec);
 vector< vector<double> > operator*(const vector< vector<double> > A,const double B);
+vector< vector<double> > operator*(const double B, const vector< vector<double> > A);
 vector< vector<double> > operator*(const vector< vector<double> > A,const vector< vector<double> > B);
 vector< vector<double> > operator+(const vector< vector<double> > A,const vector< vector<double> > B);
-
-void _ProcSendDuFunc(BlockCode*,MessagePtr,P2PNetworkInterface *sender);
-
+vector< vector<double> > operator-(vector< vector<double> > A,vector< vector<double> > B);
+vector< vector<double> > operator-(vector< vector<double> > A);
 
 void vector2string(const std::vector<bID>&v,string &s);
 #endif /* forcesPredictionIPPTCode_H_ */
