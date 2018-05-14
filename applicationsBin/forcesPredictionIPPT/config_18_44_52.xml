@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="18,4,6" windowSize="1800,900">
+    <camera target="305.576,92.791,81.6529" directionSpherical="-906499,24.6828,540" angle="45" />
+    <spotlight target="360,20,0" directionSpherical="245,60,500" angle="56" />
+    <blockList blockSize="40,40,41">
+        <block position="1,1,0" color="0,255,0" />
+        <block position="2,1,0" color="0,255,0" />
+        <block position="1,1,1" color="0,255,0" />
+        <block position="2,1,1" color="0,255,0" />
+        <block position="1,1,2" color="0,255,0" />
+        <block position="2,1,2" color="0,255,0" />
+        <block position="3,1,2" color="0,255,0" />
+        <block position="4,1,2" color="0,255,0" />
+        <block position="5,1,2" color="0,255,0" />
+        <block position="6,1,2" color="0,255,0" />
+        <block position="7,1,2" color="0,255,0" />
+        <block position="8,1,2" color="0,255,0" />
+        <block position="9,1,2" color="0,255,0" />
+        <block position="10,1,2" color="0,255,0" />
+        <block position="11,1,2" color="0,255,0" />
+        <block position="12,1,2" color="0,255,0" />
+        <block position="13,1,2" color="0,255,0" />
+        <block position="14,1,2" color="0,255,0" />
+        <block position="15,1,2" color="0,255,0" />
+        <block position="15,1,1" color="0,255,0" />
+        <block position="15,1,0" color="0,255,0" />
+        <block position="16,1,2" color="0,255,0" />
+        <block position="16,1,1" color="0,255,0" />
+        <block position="16,1,0" color="0,255,0" />
+    </blockList>
+</world>

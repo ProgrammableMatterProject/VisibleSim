@@ -296,7 +296,6 @@ void ForcesPredictionIPPTCode::parseUserBlockElements(TiXmlElement* config) {
 	}
 }
 
-
 void ForcesPredictionIPPTCode::startup() {
 	addMessageEventFunc(DU_MSG,_receiveMessage);
 
@@ -449,19 +448,24 @@ void ForcesPredictionIPPTCode::computeDU() {
 	if(!isFixed) {
 		//checking neighbors and creating K11 and K12 matrixes
 		for(int i=0;i<6;i++){
-				if(neighbors[i][1]!=0) { // messages received or a virtual module present
-					if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
-					sumK11=sumK11+createK11(i);
-					Fpq = Fpq+(createK12(i)*uq[i]);
-				}
+			if(neighbors[i][1]!=0) { // messages received or a virtual module present
+				if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
+				sumK11=sumK11+createK11(i);
+				Fpq = Fpq+(createK12(i)*uq[i]);
+			}
 
 		}
 		if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
             sumK11=sumK11+contactStiffnessMatrix(dup);
 		}
-
+		printMatrix(sumK11,6,6,"SumK11");
         du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
-
+		vector<double> vtmp = (dup*(1-beta));
+		printVector(vtmp,6,"vtmp");
+		printVector(Fp,6,"Fp");
+		printVector(Fpq,6,"Fqp");
+		vtmp = (Fp-createR(sumK11)*dup-Fpq);
+		printVector(vtmp,6,"(Fp-createR(sumK11)*dup-Fpq)");
 		printVector(du,6,"vector du module id= " + to_string(module->blockId) + ", iteration "+ to_string(curIteration));
 
 	}	else { //end isFixed
@@ -551,9 +555,6 @@ void ForcesPredictionIPPTCode::visualization() {
 	if (curIteration==maxIterations && maxS>=1.-Eps) {
 		module->setBlinkMode(true);
 	}
-
-
-
 }
 
 
@@ -651,7 +652,7 @@ bool ForcesPredictionIPPTCode::isSupport(BlinkyBlocksBlock *modR){
 
 void ForcesPredictionIPPTCode::printVector(vector<double> &vec, int row,string desc){
 	OUTPUT << "*************printVec********************"<< endl;
-	OUTPUT << desc << endl;
+	OUTPUT << desc << ":";
 		for (int i=0;i<row;i++){
 			OUTPUT << vec[i]<< "\t";
 		}
