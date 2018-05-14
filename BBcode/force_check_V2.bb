@@ -2,9 +2,11 @@
 #include "block.bbh"
 #include "clock.bbh"
 
+#define BLINK_AQUA	1
+
 threadtype typedef float bMatrix[6][6];
 
-threadvar int maxIterations = 2000; // max number of iterations
+threadvar int maxIterations ; // max number of iterations
 threaddef #define _E	100.0
 threaddef #define _L	40.0
 threaddef #define _a	40.0
@@ -38,8 +40,8 @@ threaddef #define Tmy(i,j,Kxz)((const float[6][6]) {{{1  ,0  ,0  ,0  ,0  ,0  },{
 
 threaddef #define Tmz(i,j,Kxz)((const float[6][6]) {{{1  ,0  ,0  ,0  ,0  ,0  },{0  ,1  ,0  ,0  ,0  ,0  },{0  ,0  ,1  ,0  ,0  ,0  },{0  ,0  ,0  ,1  ,0  ,0  },{0  ,0  ,0  ,0  ,1  ,0  },{0  ,0  ,Kxz,0  ,0  ,0  }}[i][j]);
 
-threadvar byte virtualPosition[4][3];//={{3,0,2},{4,0,2},{5,0,2},{6,0,2}};
-threadvar byte maxStages=4;
+threadvar byte virtualPosition[5][3];//={{3,0,2},{4,0,2},{5,0,2},{6,0,2},{7,0,2}};
+threadvar byte nbStages=5;
 threadvar byte currentStage=1;
 
 threadvar byte neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row  if tehre is a message with du
@@ -160,9 +162,9 @@ void myMain(void) {
 	isSupport=0;
 	isFixed=0;
 	curIteration = 0;
-	maxIterations = 2000;
-	nbStages=4;
-	currentStage=2;
+	maxIterations = 15000;
+	nbStages=5;
+	currentStage=3;
 	//={{3,0,2},{4,0,2},{5,0,2},{6,0,2}};
 	virtualPosition[0][0]=3;virtualPosition[0][1]=0;virtualPosition[0][2]=2;
 	virtualPosition[1][0]=4;virtualPosition[1][1]=0;virtualPosition[1][2]=2;
@@ -189,7 +191,7 @@ void myMain(void) {
 
 	//setting of the mass force vector
 	//Fp=orient*grav*mass;
-	multVectConst(orient,grav*mass*10,Fp);
+	multVectConst(orient,grav*mass,Fp);
 
 #ifdef CLOCK_SYNC
 	setLED(64,64,0,64);
@@ -461,7 +463,7 @@ void ForcesPredictionIPPTCode_computeDU() {
 	if(!isFixed) {
 		//checking neighbors and creating K11 and K12 matrixes
 		for(size_t i=0;i<6;i++){
-			printf("neighbor %d(%d)\n",i,neighbors[i][1]);
+			//printf("neighbor %d(%d)\n",(int)i,(int)neighbors[i][1]);
 			if(neighbors[i][1]!=0) { // messages received or a virtual module present
 				if(neighbors[i][1]==3) ForcesPredictionIPPTCode_computeNeighborDU(i); // compute uq[i] for a virtual module
 				//sumK11=sumK11+createK11(i);
@@ -473,7 +475,6 @@ void ForcesPredictionIPPTCode_computeDU() {
 				addVectors(Fpq,vtmp,Fpq);
 			}
 		}
-		printVector("_Fpq",Fpq);
 		if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
             // sumK11=sumK11+contactStiffnessMatrix(dup);
 			ForcesPredictionIPPTCode_contactStiffnessMatrix(dup,mtmp);
@@ -482,18 +483,13 @@ void ForcesPredictionIPPTCode_computeDU() {
 
         // du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
 		multVectConst(dup,1.0-beta,vtmp);
-		printVector("vtmp",vtmp);
 		ForcesPredictionIPPTCode_createR(sumK11,mtmp);
 		multMatrixVector(mtmp,dup,vtmp2);
 		subVectors(Fp,vtmp2,vtmp2);
 		subVectors(vtmp2,Fpq,vtmp2);
-		printVector("_Fp-createR(sumK11)*dup-_Fpq",vtmp2);
 		ForcesPredictionIPPTCode_createRevD(sumK11,mtmp);
-		printMatrix("mtmp",mtmp);
 		multMatrixConst(mtmp,beta,mtmp);
-		printMatrix("mtmp",mtmp);
 		multMatrixVector(mtmp,vtmp2,vtmp2);
-		printVector("vtmp2",vtmp2);
 		addVectors(vtmp2,vtmp,du);
 
 		char str[64];
@@ -562,7 +558,7 @@ void ForcesPredictionIPPTCode_setVirtualNeighbors() {
 				blinkMode=1;
 		} else {
 			//neighbors[i][1] = 2;
-			blinkMode=0;
+			//blinkMode=0;
 		}
 	}
 }
@@ -623,10 +619,10 @@ void ForcesPredictionIPPTCode_clearNeighborsMessage() {
 }
 
 void ForcesPredictionIPPTCode_sendMessageToAllNeighbors(float v[6]) {
-	printf("%d: Sends (%f,%f,%f,%f,%f,%f) to ",getGUID(),v[0],v[1],v[2],v[3],v[4],v[5]);
+	printf("%d: Sends (%f,%f,%f,%f,%f,%f) to ",(int)getGUID(),v[0],v[1],v[2],v[3],v[4],v[5]);
 	for(size_t i=0;i<6;i++) {
 		if (neighbors[i][0]) {
-			printf("%d(%d),",thisNeighborhood.n[i],i);
+			printf("%d(%d),",(int)thisNeighborhood.n[i],(int)i);
 			sendVectorPartToPort(i,v,0);
 			sendVectorPartToPort(i,v,3);
 		}
@@ -725,12 +721,15 @@ void ForcesPredictionIPPTCode_ProcSendDuFunc(float msgData[6], PRef sender, byte
 			//setColor(GREEN);
 			printf("%d: iter =%d\n",getGUID(),curIteration);
 			ForcesPredictionIPPTCode_visualization();
-		} else if (curIteration % 20==15) {
+		}
+#ifdef BLINK_AQUA
+		else if (curIteration % 20==15) {
 			currentBBColor[0]=0;
 			currentBBColor[1]=255;
 			currentBBColor[2]=255;
-			setColor(AQUA);
+			//setColor(AQUA);
 		}
+#endif
 		curIteration++;
 		//dup=du;
 		copyVector(du,dup);
@@ -834,8 +833,8 @@ void ForcesPredictionIPPTCode_visualization() {
 	//calculate only of not support
 	if(isFixed)	return;
 
-	float fxMax = 25.5*grav*mass*10; // max force
-	float mxMax = fxMax * _a/2.0; // max moment
+	float fxMaxV = 20.5*grav*mass; // max force in N (for up and down direction)
+	float fxMaxL = 25.5*grav*mass; // max force in N (for lateral directions)
 
 	bMatrix tmpK11;
 	initMatrix(tmpK11);
@@ -897,19 +896,23 @@ void ForcesPredictionIPPTCode_visualization() {
 
 	// chacking the maximum load factor
 	for(size_t i = 0; i<6; i++) {
+		float fxMeff = (i==UP || i==DOWN)?fxMaxV:fxMaxL;
+		//float fxMeff=((i<2)?fxMaxV:fxMaxL); // effective value of fxMax depending on the connection's type (vertical or lateral)
 		if (neighbors[i][0]!=0 && !isFixed) {
-			if(vizTable[i][0]<0) vizTable[i][0] = 0;
 			//set abs values of my and mz
 			vizTable[i][4] = fabs(vizTable[i][4]);
 			vizTable[i][5] = fabs(vizTable[i][5]);
 
-			if(vizTable[i][0]>fxMax) vizTable[i][0] = fxMax;
-			if(vizTable[i][4]>mxMax) vizTable[i][4] = mxMax;
-			if(vizTable[i][5]>mxMax) vizTable[i][5] = mxMax;
+			if(vizTable[i][0]>fxMeff) vizTable[i][0] = fxMeff;
 
-	        maxS=max(vizTable[i][0]/fxMax, maxS);
-	        maxS=max(vizTable[i][4]/mxMax, maxS);
-	        maxS=max(vizTable[i][5]/mxMax, maxS);
+			float mxMeff=(fxMeff-vizTable[i][0]) * _a/2; //effective value of mxMax depending on the connection's type (vertical or lateral)
+			if(vizTable[i][0]<0) // this must be executed AFTER the definition of mxMeff
+			if(vizTable[i][4]>mxMeff) vizTable[i][4] = mxMeff;
+			if(vizTable[i][5]>mxMeff) vizTable[i][5] = mxMeff;
+
+	        maxS=max(vizTable[i][0]/fxMeff, maxS);
+	        maxS=max(vizTable[i][4]/mxMeff, maxS);
+	        maxS=max(vizTable[i][5]/mxMeff, maxS);
 		}
 	}
 	//OUTPUT << "Module " << module->blockId << " level of danger = "<< maxS << endl;
