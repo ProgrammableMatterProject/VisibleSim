@@ -42,7 +42,7 @@ threaddef #define Tmz(i,j,Kxz)((const float[6][6]) {{{1  ,0  ,0  ,0  ,0  ,0  },{
 
 threadvar byte virtualPosition[5][3];//={{3,0,2},{4,0,2},{5,0,2},{6,0,2},{7,0,2}};
 threadvar byte nbStages=5;
-threadvar byte currentStage=1;
+threadvar byte currentStage;
 
 threadvar byte neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left x-1 3-right x+1 4-front y-1 5 - back y+1 ///// second row  if tehre is a message with du
 
@@ -118,6 +118,8 @@ byte vectorDataMessageHandler(void);
 //void parseUserElements(TiXmlDocument* config);
 //void parseUserBlockElements(TiXmlElement* config);
 
+byte opposite(byte face);
+
 void initMatrix(bMatrix mat);
 void identityMatrix(bMatrix mat);
 void initVector(float vec[6]);
@@ -162,9 +164,9 @@ void myMain(void) {
 	isSupport=0;
 	isFixed=0;
 	curIteration = 0;
-	maxIterations = 15000;
+	maxIterations = 5000;
 	nbStages=5;
-	currentStage=3;
+	currentStage=2;
 	//={{3,0,2},{4,0,2},{5,0,2},{6,0,2}};
 	virtualPosition[0][0]=3;virtualPosition[0][1]=0;virtualPosition[0][2]=2;
 	virtualPosition[1][0]=4;virtualPosition[1][1]=0;virtualPosition[1][2]=2;
@@ -419,12 +421,15 @@ void ForcesPredictionIPPTCode_contactStiffnessMatrix(float vdup[6],bMatrix K11d)
 }
 
 void ForcesPredictionIPPTCode_computeNeighborDU(int i) {
-	int di=1-2*(i%2);
+	//int di=1-2*(i%2);
+	int opp=opposite(i);
 	bMatrix sumK11;
-	ForcesPredictionIPPTCode_createK11(i+di,sumK11);
+	// vector< vector<double> > sumK11 = createK11(i+di);
+	ForcesPredictionIPPTCode_createK11(opp,sumK11);
 	bMatrix mtmp;
 	float Fpq[6];// = createK12(i+di)*dup;
-	ForcesPredictionIPPTCode_createK12(i+di,mtmp);
+	//vector< double > Fpq = createK12(i+di)*dup;
+	ForcesPredictionIPPTCode_createK12(opp,mtmp);
 	multMatrixVector(mtmp,dup,Fpq);
 
 	initMatrix(mtmp);
@@ -567,12 +572,6 @@ void ForcesPredictionIPPTCode_startup() {
 	started=1;
 	printf("Startup %d:(%d,%d,%d)\n",(int)getGUID(),position[0],position[1],position[2]);
 	//check is module fixed
-	if(isFixed) {
-	//setColor(RED);
-		currentBBColor[0]=255;
-		currentBBColor[1]=0;
-		currentBBColor[2]=0;
-    }
 	//check is module support
 	isSupport=ForcesPredictionIPPTCode_isSupport();
 	isFixed=ForcesPredictionIPPTCode_isFixed();
@@ -856,15 +855,16 @@ void ForcesPredictionIPPTCode_visualization() {
 			ForcesPredictionIPPTCode_createRot(i,mrot);
 			multMatrixVector(mrot,res1,vizTable[i]);
 
-			int di=1-2*(i%2);
-   			ForcesPredictionIPPTCode_createK11(i+di,tmpK11);
-    		ForcesPredictionIPPTCode_createK12(i+di,tmpK12);
+			//int di=1-2*(i%2);
+			int opp = opposite(i);
+   			ForcesPredictionIPPTCode_createK11(opp,tmpK11);
+    		ForcesPredictionIPPTCode_createK12(opp,tmpK12);
 			// --- vizTable[i][4]=(vizTable[i][4]+(createRot(i+di)*(tmpK11*uq[i]+tmpK12*dup))[4])/2;
 			multMatrixVector(tmpK11,uq[i],res1);
 			multMatrixVector(tmpK12,dup,res2);
 			addVectors(res1,res2,res1);
 
-			ForcesPredictionIPPTCode_createRot(i+di,mrot);
+			ForcesPredictionIPPTCode_createRot(opp,mrot);
 			multMatrixVector(mrot,res1,res2);
 			vizTable[i][4]=(vizTable[i][4]+res2[4])/2.0;
 
@@ -1096,4 +1096,8 @@ void AckCoordCallback(void) {
 	currentBBColor[2]=203;
   };
   freeChunk(thisChunk);
+}
+
+byte opposite(byte face) {
+	return 5-face;
 }
