@@ -342,7 +342,7 @@ void ForcesPredictionIPPTCode::startup() {
 	//createK12(K12);
 
 	//setting of the mass force vector
-	Fp=orient*grav*mass*10;
+	Fp=orient*grav*mass;
 	//printVector(Fp);
 
 
@@ -486,8 +486,8 @@ void ForcesPredictionIPPTCode::visualization() {
 	if(isFixed)
 		return;
 
-	double fxMax = 25.5*grav*mass*10; // max force in N
-	double myMax = fxMax * a/2; // max moment in N*mm
+	double fxMaxV = 20.5*grav*mass; // max force in N (for up and down direction)
+	double fxMaxL = 25.5*grav*mass; // max force in N (for lateral directions)
 
 	bMatrix tmpK11 = decltype(tmpK11)(vectorSize, vector<double>(vectorSize,0));
 	bMatrix tmpK12 = decltype(tmpK12)(vectorSize, vector<double>(vectorSize,0));
@@ -523,27 +523,32 @@ void ForcesPredictionIPPTCode::visualization() {
 	printMatrix(vizTable,6,6,"VizTable "+to_string(module->blockId));
 
 	// chacking the maximum load factor
-	for(int i = 0; i<6; i++)
-	{
+	for(int i = 0; i<6; i++) {
+        double fxMeff=((i<2)?fxMaxV:fxMaxL); // effective value of fxMax depending on the connection's type (vertical or lateral)
+
         if(neighbors[i][0]!=0 and !isFixed) {
-            if(vizTable[i][0]<0)
-                vizTable[i][0] = 0;
+
             //set abs values of my and mz
             vizTable[i][4] = abs(vizTable[i][4]);
             vizTable[i][5] = abs(vizTable[i][5]);
 
-            if(vizTable[i][0]>fxMax)
-                vizTable[i][0] = fxMax;
+            if(vizTable[i][0]>fxMeff)
+                vizTable[i][0] = fxMeff;
 
-            if(vizTable[i][4]>myMax)
-                vizTable[i][4] = myMax;
+            double mxMeff=(fxMeff-vizTable[i][0]) * a/2; // effective value of mxMax depending on the connection's type (vertical or lateral)
 
-            if(vizTable[i][5]>myMax)
-                vizTable[i][5] = myMax;
+            if(vizTable[i][0]<0) // this must be executed AFTER the definition of mxMeff
+                vizTable[i][0] = 0;
 
-            maxS=max(vizTable[i][0]/fxMax, maxS);
-            maxS=max(vizTable[i][4]/myMax, maxS);
-            maxS=max(vizTable[i][5]/myMax, maxS);
+            if(vizTable[i][4]>mxMeff)
+                vizTable[i][4] = mxMeff;
+
+            if(vizTable[i][5]>mxMeff)
+                vizTable[i][5] = mxMeff;
+
+            maxS=max(vizTable[i][0]/fxMeff, maxS);
+            maxS=max(vizTable[i][4]/mxMeff, maxS);
+            maxS=max(vizTable[i][5]/mxMeff, maxS);
         }
 	}
 	OUTPUT << "Module " << module->blockId << " maximum load factor = "<< maxS << endl;
