@@ -16,6 +16,7 @@
 
 ### Scheduler
 - [ ] Refactor Scheduler functions (e.g. startPaused), depends on Debugger implementation
+- [ ] Replace current event container `multimap<date, event>` to a more efficient one, e.g., a priority queue.  
 
 ### Configuration Files
 - [ ] Camera and Spotlight elements could be automatically deduced from the rest of the data in the configuration file. See Configuration::exportToVisibleSim method in https://github.com/nazandre/VisibleSimConfigGenerator/blob/master/build/configuration.cpp.
