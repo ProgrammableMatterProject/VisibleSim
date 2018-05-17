@@ -25,9 +25,6 @@ double globalEps = pow(10,-8); // //tolerance
 double globalGamma = pow(10,-6); //stiffness reduction multiplier (for unilateral contact)
 double globalSupportZ = 0; //Z coordinate of the bottom modules (contacting with the support)
 
-
-
-
 /* parse XML files extra data */
 /* be carefull, is run only one time by the first module! */
 void ForcesPredictionIPPTCode::parseUserElements(TiXmlDocument* config) {
@@ -352,9 +349,6 @@ void ForcesPredictionIPPTCode::startup() {
 		computeDU();
 		curIteration++;
 	}
-
-
-
 }
 
 vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector<double> &dup) {
@@ -375,12 +369,12 @@ vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector
                 TfrB = createTfr(0,0,0,0,0,0);
             } else { // frictional sliding (radial return on the Coulomb friction cone
                 TfrB = createTfr(
-                                -fy*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
-                                fx*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
-                                -fx*Mu/pow(fx*fx+fy*fy,1/2),
-                                fx*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
-                                -fx*fx*fz*Mu/pow(fx*fx+fy*fy,3/2),
-                                -fy*Mu/pow(fx*fx+fy*fy,1/2)
+                                -fy*fy*fz*Mu/pow(fx*fx+fy*fy,3.0/2.0),
+                                fx*fy*fz*Mu/pow(fx*fx+fy*fy,3.0/2.0),
+                                -fx*Mu/pow(fx*fx+fy*fy,1.0/2.0),
+                                fx*fy*fz*Mu/pow(fx*fx+fy*fy,3.0/2.0),
+                                -fx*fx*fz*Mu/pow(fx*fx+fy*fy,3.0/2.0),
+                                -fy*Mu/pow(fx*fx+fy*fy,1.0/2.0)
                                 );
                     }
                 }
@@ -392,7 +386,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector
             if(fabs(mx)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
                 TmxB = createTmx(0);
             } else { // tilting occurs
-                TmxB = createTmx(-sign(mx)*a/2);
+                TmxB = createTmx(-sign(mx)*a/2.0);
             }
         }
 
@@ -403,7 +397,7 @@ vector< vector<double> > ForcesPredictionIPPTCode::contactStiffnessMatrix(vector
             if(fabs(my)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
                 TmyB = createTmy(0);
             } else { // tilting occurs
-                TmyB = createTmy(-sign(my)*a/2);
+                TmyB = createTmy(-sign(my)*a/2.0);
             }
         }
 
@@ -435,7 +429,7 @@ void ForcesPredictionIPPTCode::computeNeighborDU(int i) {
 	}
     uq[i] = RevD(sumK11)*beta*(Fp-createR(sumK11)*uq[i]-Fpq)+(uq[i]*(1-beta));
 
-    printVector(uq[i],6,"neighbor vector uq["+ to_string(i) +"] of du module id= " + to_string(module->blockId) + ", iteration "+ to_string(curIteration));
+    printVector(uq[i],6,"neighbor vct uq["+ to_string(i) +"] id= " + to_string(module->blockId) + ", it "+ to_string(curIteration));
 }
 
 
@@ -444,7 +438,7 @@ void ForcesPredictionIPPTCode::computeDU() {
 	//temporary Matrixes
 	vector< vector<double> > sumK11 = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
 	vector< double > Fpq = decltype(Fpq)(vectorSize,0);
-
+vector< vector<double> > mtmp = decltype(sumK11)(vectorSize, vector<double>(vectorSize,0));
 	if(!isFixed) {
 		//checking neighbors and creating K11 and K12 matrixes
 		for(int i=0;i<6;i++){
@@ -452,20 +446,24 @@ void ForcesPredictionIPPTCode::computeDU() {
 				if(neighbors[i][1]==2) computeNeighborDU(i); // compute uq[i] for a virtual module
 				sumK11=sumK11+createK11(i);
 				Fpq = Fpq+(createK12(i)*uq[i]);
+				mtmp = createK12(i);
+//				printMatrix(mtmp,6,6,"CreateK12("+to_string(i)+")");
+//				printVector(uq[i],6,"uq["+to_string(i)+"]");
 			}
-
 		}
+//		printVector(Fpq,6,"Fpq");
 		if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
             sumK11=sumK11+contactStiffnessMatrix(dup);
 		}
-		printMatrix(sumK11,6,6,"SumK11");
+//		printMatrix(sumK11,6,6,"SumK11");
         du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
-		vector<double> vtmp = (dup*(1-beta));
-		printVector(vtmp,6,"vtmp");
+/*		vector<double> vtmp = (dup*(1-beta));
+		printVector(vtmp,6,"dup*(1-beta)");
 		printVector(Fp,6,"Fp");
 		printVector(Fpq,6,"Fqp");
 		vtmp = (Fp-createR(sumK11)*dup-Fpq);
 		printVector(vtmp,6,"(Fp-createR(sumK11)*dup-Fpq)");
+		*/
 		printVector(du,6,"vector du module id= " + to_string(module->blockId) + ", iteration "+ to_string(curIteration));
 
 	}	else { //end isFixed

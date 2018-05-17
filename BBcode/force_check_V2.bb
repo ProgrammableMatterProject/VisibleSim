@@ -2,11 +2,11 @@
 #include "block.bbh"
 #include "clock.bbh"
 
-#define BLINK_AQUA	1
-
 threadtype typedef float bMatrix[6][6];
 
-threadvar int maxIterations ; // max number of iterations
+threadvar uint16_t maxIterations ; // max number of iterations
+
+threaddef #define nbreDataMessageMax	4
 threaddef #define _E	100.0
 threaddef #define _L	40.0
 threaddef #define _a	40.0
@@ -19,9 +19,9 @@ threaddef #define _J	360000.0
 
 threaddef #define mass	0.06103
 threaddef #define grav	9.81
-threaddef #define beta	2.0/3.0
+threaddef #define beta	0.6666667
 
-threaddef #define Omega	2.0/3.0
+threaddef #define Omega	0.6666667
 threaddef #define Mu	0.1
 threaddef #define Eps	1.0E-8
 threaddef #define Gamma	1.0E-6
@@ -49,7 +49,7 @@ threadvar byte neighbors[6][2];// Neighbors 0 - up (z+1) 1 - down (z-1) 2 - left
 threadvar byte isSupport = 0;
 threadvar byte isFixed = 0;
 threadvar float orient[6];
-threadvar int curIteration = 0; // current iteration
+threadvar uint16_t curIteration = 0; // current iteration
 
 //matrix for visualization pf calculated forces and moments
 threadvar bMatrix vizTable;
@@ -104,8 +104,9 @@ void ForcesPredictionIPPTCode_createRot(int i,bMatrix mat);
 void ForcesPredictionIPPTCode_createR(bMatrix mat, bMatrix res);
 void ForcesPredictionIPPTCode_createD(bMatrix mat, bMatrix res);
 
-void ForcesPredictionIPPTCode_ProcSendDuFunc(float msgData[6], PRef sender, byte dec);
-void ForcesPredictionIPPTCode_sendMessageToAllNeighbors(float v[6]);
+//void ForcesPredictionIPPTCode_ProcSendDuFunc(float msgData[3], byte dec, PRef sender, uint16_t it);
+byte isReadyToCompute(void);
+void ForcesPredictionIPPTCode_sendMessageToAllNeighbors(float v[6],uint16_t it);
 void ForcesPredictionIPPTCode_CheckNeighbors(void);
 
 void ForcesPredictionIPPTCode_createTfr(float Txx, float Txy, float Txz,float Tyx, float Tyy, float Tyz, bMatrix res);
@@ -113,7 +114,7 @@ void ForcesPredictionIPPTCode_createTmx(float Txz, bMatrix res);
 void ForcesPredictionIPPTCode_createTmy(float Txz, bMatrix res);
 void ForcesPredictionIPPTCode_createTmz(float Txz, bMatrix res);
 
-byte sendVectorPartToPort(PRef p,float v[6],byte part);
+byte sendVectorPartToPort(PRef p,float v[6],byte part,uint16_t it);
 byte vectorDataMessageHandler(void);
 //void parseUserElements(TiXmlDocument* config);
 //void parseUserBlockElements(TiXmlElement* config);
@@ -141,6 +142,17 @@ float max(float a,float b) { return (a>b)?a:b; };
 float min(float a,float b) { return (a<b)?a:b; };
 float sign(float x) { return (x>=0)?1.0:-1.0; };
 
+//--------------------------------------------------------
+//--------------------------------------------------------
+threadtype typedef struct { uint16_t iter; byte parts; float v[6]; } dataBuffer;
+
+threadvar byte nbDataBuffer[6];
+threadvar dataBuffer msgBuffer[6][nbreDataMessageMax];
+void pushMessageToBuffer(float msgData[6],byte dec,byte sender,uint16_t it);
+byte isMessageInBuffer(byte sender,uint16_t it);
+void popMessageFromBuffer(byte sender,uint16_t it,float msgData[6]);
+void copyMsgData(dataBuffer *src,dataBuffer *dest);
+
 threaddef #define MYCHUNKS 24
 threadextern Chunk* thisChunk;
 threadvar Chunk myChunks[MYCHUNKS];
@@ -151,9 +163,9 @@ void myMain(void) {
 	position[0] = 0;
 	position[1] = 0;
 	position[2] = 0;
-	currentBBColor[0]=0;
-	currentBBColor[1]=0;
-	currentBBColor[2]=0;
+	currentBBColor[0]=64;
+	currentBBColor[1]=255;
+	currentBBColor[2]=128;
 	// Problems with BBsim, must reinit !
 	tree_parent=NO_PARENT;
 	nbreWaitedAnswers=0;
@@ -164,7 +176,7 @@ void myMain(void) {
 	isSupport=0;
 	isFixed=0;
 	curIteration = 0;
-	maxIterations = 5000;
+	maxIterations = 6000;
 	nbStages=5;
 	currentStage=2;
 	//={{3,0,2},{4,0,2},{5,0,2},{6,0,2}};
@@ -172,6 +184,10 @@ void myMain(void) {
 	virtualPosition[1][0]=4;virtualPosition[1][1]=0;virtualPosition[1][2]=2;
 	virtualPosition[2][0]=5;virtualPosition[2][1]=0;virtualPosition[2][2]=2;
 	virtualPosition[3][0]=6;virtualPosition[3][1]=0;virtualPosition[3][2]=2;
+
+	for (byte i=0; i<6; i++) {
+		nbDataBuffer[i]=0;
+	}
 
 	delayMS(500);
 	while(getNeighborCount()==0) {
@@ -187,13 +203,12 @@ void myMain(void) {
 	// vector<float> orient={0,0,-1,0,0,0};
 	initVector(orient);
 	orient[2]=-1.0f;
-
-	//cheking neighbors and adding them to a list
-	ForcesPredictionIPPTCode_setNeighbors();
-
 	//setting of the mass force vector
 	//Fp=orient*grav*mass;
 	multVectConst(orient,grav*mass,Fp);
+
+	//cheking neighbors and adding them to a list
+	ForcesPredictionIPPTCode_setNeighbors();
 
 #ifdef CLOCK_SYNC
 	setLED(64,64,0,64);
@@ -208,7 +223,6 @@ void myMain(void) {
 #else
 	if (getGUID()==1) {
 #endif
-		delayMS(1000);
 		setColor(RED);
 		position[0]=127;
 		position[1]=127;
@@ -222,13 +236,29 @@ void myMain(void) {
 	}
 
 	while (1) {
-		setLED(currentBBColor[0],currentBBColor[1],currentBBColor[2],255);
-		delayMS(100);
+		//setColor(curIteration % 9);
+		delayMS(10);
 		if (blinkMode) {
-		    delayMS(400);
-            setColor(WHITE);
-			delayMS(500);
+			if (curIteration % 10<5) {
+				setLED(currentBBColor[0],currentBBColor[1],currentBBColor[2],255);
+			} else {
+				setColor(WHITE);
+			}
+		} else {
+			setLED(currentBBColor[0],currentBBColor[1],currentBBColor[2],255);
 		}
+
+		if (curIteration>maxIterations) {
+			curIteration++;
+		}
+		if (isReadyToCompute()) {
+			ForcesPredictionIPPTCode_computeDU();
+			//dup=du;
+			copyVector(du,dup);
+			curIteration++;
+			if (curIteration%100==0) ForcesPredictionIPPTCode_visualization();
+		}
+
 	}
 }
 
@@ -358,21 +388,23 @@ void ForcesPredictionIPPTCode_contactStiffnessMatrix(float vdup[6],bMatrix K11d)
     if(fz<0) { // contact
         float mmax = -fz*_a/2.0;
         float fmax = -Mu*fz;
-
+		float sqrtfxfy=sqrt(fx*fx+fy*fy);
         // condition for frictional sliding
-        if(sqrt(fx*fx+fy*fy)<fmax) { // frictional stick state
+        if(sqrtfxfy<fmax) { // frictional stick state
 			identityMatrix(TfrB);
 		} else { // frictionaal slip state
-			if(sqrt(fx*fx+fy*fy)<Eps) { // near zero tangential force -> Mu is probably very low -> stiffness matrix for sliding = 0
+			if(sqrtfxfy<Eps) { // near zero tangential force -> Mu is probably very low -> stiffness matrix for sliding = 0
 				ForcesPredictionIPPTCode_createTfr(0,0,0,0,0,0,TfrB);
 			} else { // frictional sliding (radial return on the Coulomb friction cone
+				float Mu_fxfy32 = Mu/pow(fx*fx+fy*fy,3.0/2.0);
+				float Mu_fxfy12 = Mu/pow(fx*fx+fy*fy,1.0/2.0);
 				ForcesPredictionIPPTCode_createTfr(
-					-fy*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
-					fx*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
-					-fx*Mu/pow(fx*fx+fy*fy,1/2),
-					fx*fy*fz*Mu/pow(fx*fx+fy*fy,3/2),
-					-fx*fx*fz*Mu/pow(fx*fx+fy*fy,3/2),
-					-fy*Mu/pow(fx*fx+fy*fy,1/2),TfrB);
+					-fy*fy*fz*Mu_fxfy32,
+					fx*fy*fz*Mu_fxfy32,
+					-fx*Mu_fxfy12,
+					fx*fy*fz*Mu_fxfy32,
+					-fx*fx*fz*Mu_fxfy32,
+					-fy*Mu_fxfy12,TfrB);
 				}
 			}
 
@@ -383,7 +415,7 @@ void ForcesPredictionIPPTCode_contactStiffnessMatrix(float vdup[6],bMatrix K11d)
 			if(fabs(mx)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
 				ForcesPredictionIPPTCode_createTmx(0,TmxB);
 			} else { // tilting occurs
-				ForcesPredictionIPPTCode_createTmx(-sign(mx)*_a/2,TmxB);
+				ForcesPredictionIPPTCode_createTmx(-sign(mx)*_a/2.0,TmxB);
 			}
 		}
 
@@ -394,7 +426,7 @@ void ForcesPredictionIPPTCode_contactStiffnessMatrix(float vdup[6],bMatrix K11d)
 			if(fabs(my)<Eps) { // near-zero torque -> fz is near zero -> stiffness matrix for x-bending will be zero
 				ForcesPredictionIPPTCode_createTmy(0,TmyB);
 			} else { // tilting occurs
-				ForcesPredictionIPPTCode_createTmy(-sign(my)*_a/2,TmyB);
+				ForcesPredictionIPPTCode_createTmy(-sign(my)*_a/2.0,TmyB);
 			}
 		}
 
@@ -435,7 +467,7 @@ void ForcesPredictionIPPTCode_computeNeighborDU(int i) {
 	initMatrix(mtmp);
 	float vtmp[6],vtmp2[6];
 
-	if(isSupport && i>1) { // enforce the unilateral contact conditions with the support, located below the module only if the neighbor is on left, right, back or front
+	if(isSupport && i!=UP && i!=DOWN) { // enforce the unilateral contact conditions with the support, located below the module only if the neighbor is on left, right, back or front
         //sumK11=sumK11+contactStiffnessMatrix(uq[i]);
 		ForcesPredictionIPPTCode_contactStiffnessMatrix(uq[i],mtmp);
 		addMatrices(sumK11,mtmp,sumK11);
@@ -450,11 +482,15 @@ void ForcesPredictionIPPTCode_computeNeighborDU(int i) {
 	multMatrixConst(mtmp,beta,mtmp);
 	multMatrixVector(mtmp,vtmp2,vtmp2);
 	addVectors(vtmp2,vtmp,uq[i]);
-
+#ifdef BBSIM
+	char str[12];
+	sprintf(str,"_uq[%d]",i);
+	printVector(str,uq[i]);
+#endif
     //printVector(uq[i],6,"neighbor vector uq["+ to_string(i) +"] of du module id= " + to_string(module->blockId) + ", iteration "+ to_string(curIteration));
 }
 
-void ForcesPredictionIPPTCode_computeDU() {
+void ForcesPredictionIPPTCode_computeDU(void) {
 	//temporary Matrixes
 	bMatrix sumK11;
 	initMatrix(sumK11);
@@ -477,31 +513,46 @@ void ForcesPredictionIPPTCode_computeDU() {
 				//Fpq = Fpq+(createK12(i)*uq[i]);
 				ForcesPredictionIPPTCode_createK12(i,mtmp);
 				multMatrixVector(mtmp,uq[i],vtmp);
+				/*char str[32];
+				sprintf(str,"_K12[%d]",(int)i);
+				printMatrix(str,mtmp);
+				sprintf(str,"_uq[%d]",(int)i);
+				printVector(str,uq[i]);
+				printVector("vtmp",vtmp);*/
 				addVectors(Fpq,vtmp,Fpq);
+				//printVector("Fpq",Fpq);
 			}
 		}
+
 		if(isSupport) { // enforce the unilateral contact conditions with the support, located below the module
             // sumK11=sumK11+contactStiffnessMatrix(dup);
 			ForcesPredictionIPPTCode_contactStiffnessMatrix(dup,mtmp);
 			addMatrices(sumK11,mtmp,sumK11);
 		}
-
+		//printf("(%d,%d,%d)",position[0]-127,position[1]-127,position[2]-127);
+		//printMatrix("sumK11",sumK11);
         // du = RevD(sumK11)*beta*(Fp-createR(sumK11)*dup-Fpq)+(dup*(1-beta));
 		multVectConst(dup,1.0-beta,vtmp);
+		//printVector("_dup*(1-beta)",vtmp);
 		ForcesPredictionIPPTCode_createR(sumK11,mtmp);
 		multMatrixVector(mtmp,dup,vtmp2);
 		subVectors(Fp,vtmp2,vtmp2);
+		//printVector("_Fp",Fp);
+		//printVector("_Fpq",Fpq);
 		subVectors(vtmp2,Fpq,vtmp2);
+		//printVector("(_Fp-createR(sumK11)*_dup-_Fpq)",vtmp2);
 		ForcesPredictionIPPTCode_createRevD(sumK11,mtmp);
 		multMatrixConst(mtmp,beta,mtmp);
+
 		multMatrixVector(mtmp,vtmp2,vtmp2);
 		addVectors(vtmp2,vtmp,du);
 
+#ifdef BBSIM
 		char str[64];
 		sprintf(str,"vector _du module id= %d, iteration %d",(int)getGUID(),curIteration);
 		printVector(str,du);
+#endif
 		//printVector(du,6,"vector du module id= " + to_string(module->blockId) + ", iteration "+ to_string(curIteration));
-
 	}	else { //end isFixed
         // du = du*0.;
 		initVector(du);
@@ -509,16 +560,17 @@ void ForcesPredictionIPPTCode_computeDU() {
 
 	//sending message to neighbors with du
 //	OUTPUT << "size=" << du.size() << endl;
-	//sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double>>(DU_MSG,du),messageDelay,messageDelayError,0);
-	ForcesPredictionIPPTCode_sendMessageToAllNeighbors(du);
 	//clearing info about du from neighbors
 	ForcesPredictionIPPTCode_clearNeighborsMessage();
-
+	//sendMessageToAllNeighbors("DU_MSG",new MessageOf<vector<double>>(DU_MSG,du),messageDelay,messageDelayError,0);
+	ForcesPredictionIPPTCode_sendMessageToAllNeighbors(du,curIteration);
 }
 
-void ForcesPredictionIPPTCode_setNeighbors() {
+void ForcesPredictionIPPTCode_setNeighbors(void) {
 	//set 0 for all empty neighbors
+#ifdef BBSIM
 	printf("set %d:",(int)getGUID());
+#endif
 	size_t n=0;
 	do {
 		n=0;
@@ -531,10 +583,14 @@ void ForcesPredictionIPPTCode_setNeighbors() {
 				neighbors[i][0] = 0;
 				neighbors[i][1] = 0;
 			}
-printf("%d,",neighbors[i][0]);
+#ifdef BBSIM
+	printf("%d,",neighbors[i][0]);
+#endif
 		}
 	} while (n!=getNeighborCount());
-printf("\n");
+#ifdef BBSIM
+	printf("\n");
+#endif
 //	ForcesPredictionIPPTCode_CheckNeighbors();
 /*
 	neighbors[2][0] = thisNeighborhood.n[5-xplusBorder];
@@ -545,7 +601,7 @@ printf("\n");
 	neighbors[1][0] = thisNeighborhood.n[5-zplusBorder];*/
 }
 
-void ForcesPredictionIPPTCode_setVirtualNeighbors() {
+void ForcesPredictionIPPTCode_setVirtualNeighbors(void) {
 	int dir[6][3];
 	dir[xplusBorder][0]=1; dir[xplusBorder][1]=0; dir[xplusBorder][2]=0;
 	dir[5-xplusBorder][0]=-1; dir[5-xplusBorder][1]=0; dir[5-xplusBorder][2]=0;
@@ -556,7 +612,7 @@ void ForcesPredictionIPPTCode_setVirtualNeighbors() {
 
 	for(size_t i=0;i<6;i++) {
 //		printf("%d:(%d == %d) (%d == %d) (%d == %d)\n",(int)getGUID(),position[0]+dir[i][0],127+virtualPosition[currentStage][0], position[1]+dir[i][1],127+virtualPosition[currentStage][1], position[2]+dir[i][2],127+virtualPosition[currentStage][2]);
-		if (position[0]+dir[i][0]==(127+virtualPosition[currentStage][0]) &&
+/*		if (position[0]+dir[i][0]==(127+virtualPosition[currentStage][0]) &&
 			position[1]+dir[i][1]==(127+virtualPosition[currentStage][1]) &&
 			position[2]+dir[i][2]==(127+virtualPosition[currentStage][2])) {
 				neighbors[i][1] = 3;
@@ -564,19 +620,25 @@ void ForcesPredictionIPPTCode_setVirtualNeighbors() {
 		} else {
 			//neighbors[i][1] = 2;
 			//blinkMode=0;
-		}
+		}*/
+		if ((position[2]==127+2) && (
+			(position[0]>127+1 && neighbors[xplusBorder][0]==0 && i==xplusBorder) ||
+			(position[0]<127 && neighbors[5-xplusBorder][0]==0 && i==5-xplusBorder))) {
+				neighbors[i][1] = 3;
+				blinkMode=1;
+			}
 	}
 }
 
-void ForcesPredictionIPPTCode_startup() {
+void ForcesPredictionIPPTCode_startup(void) {
 	started=1;
+#ifdef BBSIM
 	printf("Startup %d:(%d,%d,%d)\n",(int)getGUID(),position[0],position[1],position[2]);
-	//check is module fixed
+#endif
 	//check is module support
 	isSupport=ForcesPredictionIPPTCode_isSupport();
+	//check is module fixed
 	isFixed=ForcesPredictionIPPTCode_isFixed();
-	// define who is fixed ?
-	// isFixed ?
 
 	//first step - calculate DU and sends to neighbor only in first
 	if(curIteration == 0){
@@ -586,18 +648,18 @@ void ForcesPredictionIPPTCode_startup() {
 	}
 }
 
-byte ForcesPredictionIPPTCode_isSupport() {
+byte ForcesPredictionIPPTCode_isSupport(void) {
 	if(position[2]==127){
 		// setColor(WHITE);
 		currentBBColor[0]=255;
-		currentBBColor[1]=255;
+		currentBBColor[1]=128;
 		currentBBColor[2]=255;
 		return 1;
 	}
 	return 0;
 }
 
-byte ForcesPredictionIPPTCode_isFixed() {
+byte ForcesPredictionIPPTCode_isFixed(void) {
 	if(getGUID()>100){
 		// setColor(WHITE);
 		currentBBColor[0]=255;
@@ -608,39 +670,54 @@ byte ForcesPredictionIPPTCode_isFixed() {
 	return 0;
 }
 
-void ForcesPredictionIPPTCode_clearNeighborsMessage() {
-	printf("%d rec clear\n",(int)getGUID());
+void ForcesPredictionIPPTCode_clearNeighborsMessage(void) {
+#ifdef BBSIM
+	printf("%d: clear\n",(int)getGUID());
+#endif
 	for(size_t i=0;i<6;i++) {
-		if(neighbors[i][1]==2) {
+		if(neighbors[i][1]!=3) {
 			neighbors[i][1]=0;
 		}
 	}
 }
 
-void ForcesPredictionIPPTCode_sendMessageToAllNeighbors(float v[6]) {
+void ForcesPredictionIPPTCode_sendMessageToAllNeighbors(float v[6],uint16_t it) {
+#ifdef BBSIM
 	printf("%d: Sends (%f,%f,%f,%f,%f,%f) to ",(int)getGUID(),v[0],v[1],v[2],v[3],v[4],v[5]);
+#endif
 	for(size_t i=0;i<6;i++) {
 		if (neighbors[i][0]) {
-			printf("%d(%d),",(int)thisNeighborhood.n[i],(int)i);
-			sendVectorPartToPort(i,v,0);
-			sendVectorPartToPort(i,v,3);
+#ifdef BBSIM
+			printf("%d:(%d),",(int)thisNeighborhood.n[i],(int)i);
+#endif
+			sendVectorPartToPort(i,v,0,it);
 		}
 	}
+	for(size_t i=0;i<6;i++) {
+		if (neighbors[i][0]) {
+#ifdef BBSIM
+			printf("%d:(%d),",(int)thisNeighborhood.n[i],(int)i);
+#endif
+			sendVectorPartToPort(i,v,3,it);
+		}
+	}
+#ifdef BBSIM
 	printf("\n");
+#endif
 }
 
-byte sendVectorPartToPort(PRef p,float v[6],byte part) {
+byte sendVectorPartToPort(PRef p,float v[6],byte part,uint16_t it) {
 	Chunk *c = getFreeUserChunk();
 	if (c != NULL) {
 		c->data[0]=part;
 		memcpy(&(c->data[1]),&(v[part]),4);
 		memcpy(&(c->data[5]),&(v[part+1]),4);
 		memcpy(&(c->data[9]),&(v[part+2]),4);
-
-		/*printf("to #%d/%d, ",p,part);
-		printVector("_du:",du);*/
-
-		if (sendMessageToPort(c, p, c->data, 13, vectorDataMessageHandler, AckCallback) == 0) {
+		memcpy(&(c->data[13]),&it,2);
+#ifdef BBSIM
+		printf("%d: to #%d/%d (%d), (%f,%f,%f)\n",(int)getGUID(),(int)p,(int)part,(int)it,v[part],v[part+1],v[part+2]);
+#endif
+		if (sendMessageToPort(c, p, c->data, 15, vectorDataMessageHandler, AckCallback) == 0) {
 			freeChunk(c);
 			//setColor(ORANGE);
 			currentBBColor[0]=255;
@@ -655,74 +732,69 @@ byte sendVectorPartToPort(PRef p,float v[6],byte part) {
 byte vectorDataMessageHandler(void) {
 	if (thisChunk == NULL) return 0;
 	byte sender = faceNum(thisChunk);
-	float res[6];
-	initVector(res);
+	float res[3];
 
 	byte dec=thisChunk->data[0];
-	memcpy(&(res[dec]),&(thisChunk->data[1]),4);
-	memcpy(&(res[dec+1]),&(thisChunk->data[5]),4);
-	memcpy(&(res[dec+2]),&(thisChunk->data[9]),4);
 
+	memcpy(&(res[0]),&(thisChunk->data[1]),4);
+	memcpy(&(res[1]),&(thisChunk->data[5]),4);
+	memcpy(&(res[2]),&(thisChunk->data[9]),4);
+	uint16_t it=0;
+	memcpy(&it,&(thisChunk->data[13]),2);
+#ifdef BBSIM
+	printf("%d: rec from %d: (%d) [%d] (%f,%f,%f,%f,%f,%f)\n",(int)getGUID(),(int)thisNeighborhood.n[sender],(int)dec,(int)it,res[0],res[1],res[2]);
+#endif
 	if (!started) ForcesPredictionIPPTCode_startup();
 
-	/*printf("%d rec from %d: (%d) (%f,%f,%f,%f,%f,%f)\n",getGUID(),thisNeighborhood.n[sender],sender,res[0],res[1],res[2],res[3],res[4],res[5]);*/
-	ForcesPredictionIPPTCode_ProcSendDuFunc(res,sender,dec);
+	pushMessageToBuffer(res,dec,sender,it);
 	return 1;
 }
 
-void ForcesPredictionIPPTCode_ProcSendDuFunc(float msgData[6], PRef sender, byte dec) {
-	/*bID msgFrom = sender->getConnectedBlockBId();
-	vector<float> msgData = *(msg->getData());*/
+byte isReadyToCompute(void) {
 	if(curIteration > maxIterations) {
-		return;
+		return 0;
 	}
-/*
-	for(int i=0;i<6;i++){
-		if(neighbors[i][0]==msgFrom){
-			OUTPUT << "Iter=" << curIteration  <<  ", ID="<< module->blockId << " received the message from " << msgFrom<< endl;
-			printVector(msgData,6,"msgData from "+to_string(msgFrom)+" to "+ to_string(module->blockId));
-			neighbors[i][1]=1;
-			uq[i]=msgData;
-		}
-	}
-*/
-	if (dec==0) {
-		neighbors[sender][1]=1;
-		//copyMatrixToVector(uq,sender,msgData);
-		copyVectorToMatrix(msgData,uq,sender);
-	} else {
-		neighbors[sender][1]=2;
-		addVectorsToMatrix(msgData,uq,sender);
-//		printVector("_uq",uq[sender]);
-	}
-	/*
+
 	//checking if there are all messages
-	bool calculateDu = true;
-	for(int i = 0;i<6;i++ ){
-		if(neighbors[i][0]!=0 && neighbors[i][1]==0)
-			calculateDu = false;
-	}
-	*/
-	//checking if there are all messages
-	byte calculateDu = (neighbors[0][0]==0 || neighbors[0][1]==2 || neighbors[0][1]==3);
+	byte calculateDu = (neighbors[0][0]==0 || isMessageInBuffer(0,curIteration-1)!=0 || neighbors[0][1]==3);
 	size_t i=1;
 	while (calculateDu && i<6) {
-		calculateDu = (neighbors[i][0]==0 || neighbors[i][1]==2 || neighbors[i][1]==3);
+		calculateDu = (neighbors[i][0]==0 || isMessageInBuffer(i,curIteration-1)!=0 || neighbors[i][1]==3);
 		i++;
 	}
 	//ForcesPredictionIPPTCode_CheckNeighbors();
 	if (calculateDu) {
+		for (size_t i=0; i<6; i++) {
+			if (isMessageInBuffer(i,curIteration-1)!=0) {
+				popMessageFromBuffer(i,curIteration-1,uq[i]);
+				neighbors[i][1]=2;
+#ifdef BBSIM
+				char str[30];
+				sprintf(str,"_uq[%d] verif=",(int)i);
+				printVector(str,uq[i]);
+#endif
+			}
+		}
+	}
+	return calculateDu;
+}
+
+/*#ifdef BBSIM
 		//OUTPUT << "Calculating du"<< endl;
 		printf("--------------Calculating du-%d---------------\n",getGUID());
-		ForcesPredictionIPPTCode_computeDU();
+#endif
+		//ForcesPredictionIPPTCode_computeDU();
+
 		//visualisation
-		if(curIteration % 20==0){
+		if(curIteration % 200==0){
 			//setColor(GREEN);
+#ifdef BBSIM
 			printf("%d: iter =%d\n",getGUID(),curIteration);
-			ForcesPredictionIPPTCode_visualization();
+#endif
+			//ForcesPredictionIPPTCode_visualization();
 		}
 #ifdef BLINK_AQUA
-		else if (curIteration % 20==15) {
+		else if (curIteration % 200==175) {
 			currentBBColor[0]=0;
 			currentBBColor[1]=255;
 			currentBBColor[2]=255;
@@ -734,7 +806,8 @@ void ForcesPredictionIPPTCode_ProcSendDuFunc(float msgData[6], PRef sender, byte
 		copyVector(du,dup);
 
 		if (curIteration==maxIterations) {
-			ForcesPredictionIPPTCode_visualization();
+			//ForcesPredictionIPPTCode_visualization();
+			mustVisualize=1;
 			if (isSupport) {
 	//			setColor(BLUE);
 				currentBBColor[0]=0;
@@ -744,7 +817,7 @@ void ForcesPredictionIPPTCode_ProcSendDuFunc(float msgData[6], PRef sender, byte
 		}
 	}
 }
-
+*/
 void ForcesPredictionIPPTCode_createRevD(bMatrix matrix, bMatrix result) {
 	initMatrix(result);
 	for(size_t i=0;i<6;i++) {
@@ -828,7 +901,7 @@ void ForcesPredictionIPPTCode_createTmz(float Txz,bMatrix res) {
     res[5][2]=Txz;
 }
 
-void ForcesPredictionIPPTCode_visualization() {
+void ForcesPredictionIPPTCode_visualization(void) {
 	//calculate only of not support
 	if(isFixed)	return;
 
@@ -924,9 +997,8 @@ void ForcesPredictionIPPTCode_visualization() {
 	currentBBColor[0]=min(2*maxS,1.)*255;
 	currentBBColor[1]=255-currentBBColor[0];
 	currentBBColor[2]=0;
-	if (curIteration==maxIterations && maxS>=1.-Eps) {
-		blinkMode=1;
-	}
+	//if (curIteration==maxIterations && maxS>=1.-Eps) {
+	blinkMode= (maxS>=1.-Eps);
 }
 
 void initMatrix(bMatrix mat) {
@@ -996,10 +1068,13 @@ void multMatrixVector(bMatrix mat,float vec[6],float res[6]) {
 }
 
 void printVector(char *titre,float vec[6]) {
+#ifdef BBSIM
 	printf("%d:%s(%f,%f,%f,%f,%f,%f)\n",getGUID(),titre,vec[0],vec[1],vec[2],vec[3],vec[4],vec[5]);
+#endif
 }
 
 void printMatrix(char *titre,bMatrix mat) {
+#ifdef BBSIM
 	printf("---%d:%s---\n",getGUID(),titre);
 	for (size_t i=0;i<6;i++) {
 		printf("(");
@@ -1008,6 +1083,7 @@ void printMatrix(char *titre,bMatrix mat) {
 		}
 		printf(")\n");
 	}
+#endif
 }
 
 void addMatrices(bMatrix mat1,bMatrix mat2,bMatrix res) {
@@ -1058,7 +1134,8 @@ void multMatrices(bMatrix mat1,bMatrix mat2,bMatrix res){
 }
 
 
-void ForcesPredictionIPPTCode_CheckNeighbors() {
+void ForcesPredictionIPPTCode_CheckNeighbors(void) {
+#ifdef BBSIM
 	printf("neighbors for id= %d\n",getGUID());
 	for(int i=0;i<6;i++) {
 		printf("%d,",neighbors[i][0]);
@@ -1068,29 +1145,31 @@ void ForcesPredictionIPPTCode_CheckNeighbors() {
 		printf("%d,",neighbors[i][1]);
 	}
 	printf("\n");
+#endif
 }
 
 
 void AckCallback(void) {
-  if (chunkResponseType(thisChunk) != MSG_RESP_ACK) { // good reception
-	printf("%d NOK\n",getGUID());
-	//setColor(PINK);
+
+  if (chunkResponseType(thisChunk) != MSG_RESP_ACK) { // not good reception
+	//printf("%d NOK\n",(int)getGUID());
+	setColor(PINK);
 	currentBBColor[0]=255;
 	currentBBColor[1]=192;
 	currentBBColor[2]=203;
 
-	//ForcesPredictionIPPTCode_sendMessageToAllNeighbors(du);
-	byte p = faceNum(thisChunk);
-	sendVectorPartToPort(p,du,0);
-	sendVectorPartToPort(p,du,3);
+    ForcesPredictionIPPTCode_sendMessageToAllNeighbors(du,curIteration);
+	/*byte p = faceNum(thisChunk);
+	sendVectorPartToPort(p,du,0,curIteration);
+	sendVectorPartToPort(p,du,3,curIteration);*/
   };
   freeChunk(thisChunk);
 }
 
 void AckCoordCallback(void) {
-  if (chunkResponseType(thisChunk) != MSG_RESP_ACK) { // good reception
-	printf("%d NOK\n",getGUID());
-	//setColor(PINK);
+  if (chunkResponseType(thisChunk) == MSG_RESP_NACK) { // not qgood reception
+	//printf("%d NOK\n",(int)getGUID());
+	setColor(PINK);
 	currentBBColor[0]=255;
 	currentBBColor[1]=192;
 	currentBBColor[2]=203;
@@ -1100,4 +1179,118 @@ void AckCoordCallback(void) {
 
 byte opposite(byte face) {
 	return 5-face;
+}
+
+void pushMessageToBuffer(float msgData[6],byte dec,byte sender,uint16_t it) {
+#ifdef BBSIM
+	printf("%d: push\n",(int)getGUID());
+#endif
+	byte n=nbDataBuffer[sender]; 		// number of data for sender
+	dataBuffer *ptr; 					// access to data
+	if (n==0) { 						// new first element
+		ptr = &(msgBuffer[sender][0]); 	// in first place
+		ptr->iter=it;					// set iter
+		ptr->parts=(dec==0)?1:2;		// set parts (01 if first part 10 if second)
+		ptr->v[dec] = msgData[0];		// fill vector
+		ptr->v[dec+1] = msgData[1];
+		ptr->v[dec+2] = msgData[2];
+		nbDataBuffer[sender]=1;			// new number of data for sender
+	} else {
+		int i=0;
+		ptr = &(msgBuffer[sender][0]);
+		// search last message for sender with the same iter
+		while (i<n && ptr->iter!=it) {
+			i++;
+			if (i<nbreDataMessageMax) ptr = &(msgBuffer[sender][i]);
+		}
+		if (i<n) { 							// if found
+		//	ptr = &(msgBuffer[sender][i]);
+			ptr->v[dec] = msgData[0];		// fill vector
+			ptr->v[dec+1] = msgData[1];
+			ptr->v[dec+2] = msgData[2];
+			ptr->parts|=(dec==0)?1:2;		// complete parts (01 if first part 10 if second)
+		} else if (n==nbreDataMessageMax) {
+#ifdef BBSIM
+			printf("%d:ERROR, out of memory\n",(int)getGUID());
+#endif
+			setColor(YELLOW);
+			currentBBColor[0]=255;
+			currentBBColor[1]=255;
+			currentBBColor[2]=0;
+		} else	{ 							// new element
+		//	ptr = &(msgBuffer[sender][n]);
+			ptr->parts=(dec==0)?1:2;		// set parts (01 if first part 10 if second)
+			ptr->v[dec] = msgData[0];		// fill vector
+			ptr->v[dec+1] = msgData[1];
+			ptr->v[dec+2] = msgData[2];
+			ptr->iter=it;
+			nbDataBuffer[sender]++;			// new number of data for sender
+		}
+	}
+#ifdef BBSIM
+	char str[40];
+	sprintf(str,"_uq[%d/%d](%d,%d,%d)",(int)sender,(int)thisNeighborhood.n[sender],(int)ptr->iter,(int)ptr->parts,(int)(nbDataBuffer[sender]));
+	printVector(str,ptr->v);
+#endif
+}
+
+byte isMessageInBuffer(byte sender,uint16_t it) {
+	byte n=nbDataBuffer[sender];	// number of data for sender
+	if (n==0) return 0;
+	byte i=0;
+	dataBuffer *ptr = &(msgBuffer[sender][0]);
+	// search data with the same iter
+	while (i<n && ptr->iter!=it) {
+		if (ptr->iter<it) currentBBColor[2]=1.0;
+		i++;
+		if (i<nbreDataMessageMax) ptr = &(msgBuffer[sender][i]);
+	}
+#ifdef BBSIM
+	printf("%d: isIn(%d,%d) res=%d\n",(int)getGUID(),(int)sender,(int)it,(i<n && ptr->parts==3));
+#endif
+	return (i<n && ptr->parts==3);	// data must be complete
+}
+
+void popMessageFromBuffer(byte sender,uint16_t it, float msgData[6]) {
+	byte n=nbDataBuffer[sender]; // number of data for sender
+	if (n==0) {
+#ifdef BBSIM
+		printf("%d:ERROR n=0\n",(int)getGUID());
+#endif
+/*		setColor(ORANGE);
+		currentBBColor[0]=255;
+		currentBBColor[1]=69;
+		currentBBColor[2]=0;*/
+	}
+	byte i=0;
+	dataBuffer *ptr = &(msgBuffer[sender][0]);
+	// search last message with the same iter
+	while (i<n && ptr->iter!=it) {
+		i++;
+		if (i<nbreDataMessageMax) ptr = &(msgBuffer[sender][i]);
+	}
+	if (i<n && ptr->parts==3) {
+		copyVector(ptr->v,msgData);
+		for (byte j=i; j<n-1; j++) { // on décale tous les messages de la liste vers la gauche
+			copyMsgData(&(msgBuffer[sender][i+1]),&(msgBuffer[sender][i]));
+		}
+		nbDataBuffer[sender]--;		// new number of Data
+#ifdef BBSIM
+		printf("%d:_nbDataBuffer[%d]=%d\n",(int)getGUID(),(int)sender,(int)nbDataBuffer[sender]);
+#endif
+	} else {
+#ifdef BBSIM
+		printf("%d:ERROR, data not found\n",(int)getGUID());
+#endif
+/*		setColor(RED);
+		currentBBColor[0]=255;
+		currentBBColor[1]=0;
+		currentBBColor[2]=0;*/
+	}
+}
+
+void copyMsgData(dataBuffer *src,dataBuffer*dest) {
+	dest->iter = src->iter;
+	dest->parts = src->parts;
+	copyVector(src->v,dest->v);
 }
