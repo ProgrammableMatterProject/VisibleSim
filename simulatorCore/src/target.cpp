@@ -626,10 +626,10 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         float precision = FLT_MAX;
         float precGoal = 100;
         float approx = 0.01;
-        float u0 = 0 + approx;
-        float u1 = 1 - approx;
-        float v0 = 0 + approx;
-        float v1 = 1 - approx;
+        float u0 = 0;// + approx;
+        float u1 = 1;// - approx;
+        float v0 = 0;// + approx;
+        float v1 = 1;// - approx;
         float znurbs = 0;
         int count = 0;
 
@@ -641,18 +641,24 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             if (count == 0){
                 //cout << "x1=" <<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
                 //cout << "y1=" <<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
-                float x1 = calculateNurbs(u0,v0,0);
-                float y1 = calculateNurbs(u0,v0,1);
-                float x2 = calculateNurbs(u1,v0,0);
-                float y2 = calculateNurbs(u1,v0,1);
-                float x3 = calculateNurbs(u0,v1,0);
-                float y3 = calculateNurbs(u0,v1,1);
-                float x4 = calculateNurbs(u1,v1,0);
-                float y4 = calculateNurbs(u1,v1,1);
+                float x1 = calculateNurbs(u0+approx,v0+approx,0);
+                float y1 = calculateNurbs(u0+approx,v0+approx,1);
+                float x2 = calculateNurbs(u1-approx,v0+approx,0);
+                float y2 = calculateNurbs(u1-approx,v0+approx,1);
+                float x3 = calculateNurbs(u0+approx,v1-approx,0);
+                float y3 = calculateNurbs(u0+approx,v1-approx,1);
+                float x4 = calculateNurbs(u1-approx,v1-approx,0);
+                float y4 = calculateNurbs(u1-approx,v1-approx,1);
                 if ( x1 < x && x2 < x && x3 < x && x4 < x ){
                     return false;
                 }
                 if ( y1 < y && y2 < y && y3 < y && y4 < y ){
+                    return false;
+                }
+                if ( x1 > x && x2 > x && x3 > x && x4 > x ){
+                    return false;
+                }
+                if ( y1 > y && y2 > y && y3 > y && y4 > y ){
                     return false;
                 }
             }
@@ -689,26 +695,26 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             if (quadrant == 1){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x1<<" y found="<<y1<<endl;
                 znurbs = calculateNurbs(u0,v0,2);
-                u1 = (u1+u0)/2;
-                v1 = (v1+v0)/2;
+                u1 = u;//(u1+u0)/2;
+                v1 = v;//(v1+v0)/2;
             }
             if (quadrant == 2){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x2<<" y found="<<y2<<endl;
                 znurbs = calculateNurbs(u1,v0,2);
-                u0 = (u1+u0)/2;
-                v1 = (v1+v0)/2;
+                u0 = u;//(u1+u0)/2;
+                v1 = v;//(v1+v0)/2;
             }
             if (quadrant == 3){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x3<<" y found="<<y3<<endl;
                 znurbs = calculateNurbs(u0,v1,2);
-                u1 = (u1+u0)/2;
-                v0 = (v1+v0)/2;
+                u1 = u;//(u1+u0)/2;
+                v0 = v;//(v1+v0)/2;
             }
             if (quadrant == 4){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x4<<" y found="<<y4<<endl;
                 znurbs = calculateNurbs(u1,v1,2);
-                u0 = (u1+u0)/2;
-                v0 = (v1+v0)/2;
+                u0 = u;//(u1+u0)/2;
+                v0 = v;//(v1+v0)/2;
             }
 
             precision = sqrt(mindist);

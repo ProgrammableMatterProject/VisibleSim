@@ -84,23 +84,23 @@ float Polymer::positionInstant(float dt) {
 			F = -MASSE*GRAVITE; // forces appliqu�es au point
 			if (ix!=0) { 
 				dz = *(ptrZ_1-1)-*ptrZ_1;
-				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
-				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
+				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
+				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
 			}
 			if (ix!=_lx) { 
 				dz = *(ptrZ_1+1)-*ptrZ_1;
-				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
-				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
+				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
+				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
 			}
 			if (iy!=0) { 
 				dz = *(ptrZ_1-_lx-1)-*ptrZ_1;
-				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
-				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
+				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
+				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
 			}
 			if (iy!=_ly) { 
 				dz = *(ptrZ_1+_lx+1)-*ptrZ_1;
-				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
-				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1;
+				if (dz>0.) F += (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
+				else F -= (sqrt(_sub*_sub+dz*dz)-_sub)*RAIDEUR1/(_sub*_sub);
 			}
 			F -= AMORT*(*ptrV);
 			*ptrV += dt*F/MASSE; // calcul de la nouvelle vitesse
@@ -108,7 +108,7 @@ float Polymer::positionInstant(float dt) {
 			// force de résistance si collision
 			pos.pt[2] = *ptrZ+dt*(*ptrV);
 			//cout << *ptrZ << "," << pos << endl;
-			if (collision(pos)) {
+			if (collision(pos)||*ptrZ<=0) {
 				*ptrV=0;
 			} else {
 				*ptrZ += dt*(*ptrV);

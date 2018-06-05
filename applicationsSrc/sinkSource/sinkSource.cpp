@@ -7,7 +7,7 @@ using namespace std;
 using namespace SmartBlocks;
 
 int main(int argc, char **argv) {
-	createSimulator(argc, argv, SimpleColorCode::buildNewBlockCode);
+	createSimulator(argc, argv, SinkSourceCode::buildNewBlockCode);
 
 	getSimulator()->printInfo();
 	BaseSimulator::getWorld()->printInfo();

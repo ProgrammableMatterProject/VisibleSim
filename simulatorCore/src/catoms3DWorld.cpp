@@ -47,13 +47,13 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
 	polymer=NULL;
 	
-/*	theNurb = gluNewNurbsRenderer();
+	theNurb = gluNewNurbsRenderer();
 
     gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 50.0);
     //gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_OUTLINE_PATCH);
 	//gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_OUTLINE_POLYGON);
 	gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
-*/}
+}
 
 
 
@@ -149,7 +149,9 @@ void Catoms3DWorld::glDraw() {
         // Nurbs surface
 	//glScalef(45,45,45);
         //Nurbs car
-        glScalef(33.33,33.33,33.33);
+        //glScalef(33.33,33.33,33.33);
+        //Nurbs mirror
+        glScalef(10,10,10);
 	gluBeginSurface(theNurb);
 	gluNurbsSurface(theNurb,
 		S_NUMKNOTS, sknots,
@@ -452,7 +454,28 @@ void Catoms3DWorld::simulatePolymer() {
 	
 	polymer->calculerPolymer();
 	cout << "--------------------END OF SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
-	
+	ofstream file ("polypnts.m");
+        file << "polypnts = [" << endl;
+        for (int x=0; x <= polymer->_nx ; x++){
+            for (int y=0; y <= polymer->_ny ; y++){
+                file << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+3] << " " << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+4] << " " << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+5] << ";" << endl;
+            } 
+        }
+        file << "]" << endl;
+        file.close();
+        ofstream file2 ("polygrid.m");
+        file2 << "polyx = [" << endl;
+        for (int x=0; x <= polymer->_nx ; x++){
+            file2 << polymer->_tabGeom[(x*6)+3] << ";" << endl;
+        }
+        file2 << "];" << endl;
+        file2 << "polyy = [" << endl;
+	for (int y=0; y <= polymer->_ny ; y++){
+            file2 << polymer->_tabGeom[(y*((polymer->_nx)+1)*6)+4] << ";" << endl;
+        }
+        file2 << "];" << endl;
+        file2.close();
+        cout << "file written" << endl;
 }
 
 

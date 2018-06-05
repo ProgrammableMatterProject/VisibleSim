@@ -6,17 +6,15 @@
 
 using namespace std;
 
-#define MASSE	0.1
+#define MASSE	1100
 #define GRAVITE	9.81
-#define RAIDEUR1	0.1
+#define RAIDEUR1 1000000
 #define AMORT	0.025
 
 
 class Polymer { 
-	int _nx,_ny, // r�solution de la g�om�trie
-        _lx,_ly,_sub; // r�solution du mod�le physique
+        int _lx,_ly,_sub; // r�solution du mod�le physique
   // tableau contenant toutes les informations g�om�triques
-	GLfloat *_tabGeom; // tableau de coordonn�es graphique
 	GLuint *_tabIndices; // tableau d'indices des faces graphique
 	float *_tabZ,*_tabZ_1,*_tabVitesseZ; // tableaux de position et vitesse des masses de la grille de simulation
 	float _dx,_dy;
@@ -24,6 +22,8 @@ class Polymer {
 
 public :
 	vector <Vector3D> tabPt;
+	int _nx,_ny; // r�solution de la g�om�trie
+	GLfloat *_tabGeom; // tableau de coordonn�es graphique
 
 	Polymer(int,int,int,float,float,float,float);
 	~Polymer();
