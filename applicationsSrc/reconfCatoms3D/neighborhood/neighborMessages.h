@@ -12,6 +12,7 @@
 #include "../sync/sync.h"
 #include "../sync/syncPlane.h"
 #include "neighborhood.h"
+#include "blockCode.h"
 
 #define NEW_CATOM_MSG_ID	9001
 #define NEW_CATOM_PARENT_MSG_ID	9002
@@ -56,7 +57,6 @@ public:
     void handleNewCatomParentResponseMsg(MessagePtr msg);
     void handleParentSeedMsg(MessagePtr msg);
 
-    void trySendMessagePlaneFinished();
     void sendMessagePlaneFinished();
     void sendMessagePlaneFinishedAck();
     void sendMessagesOnQueue(Cell3DPosition pos);
@@ -110,14 +110,18 @@ public:
 };
 typedef shared_ptr<Right_side_completed_message> Right_side_completed_ptr;
 
-class Plane_finished_message : public Message {
+class Plane_finished_message : public HandleableMessage {
 public:
     Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
+
+    void handle(BlockCode *blockCode);
 };
 
-class Plane_finished_ack_message : public Message {
+class Plane_finished_ack_message : public HandleableMessage {
 public:
     Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
+
+    void handle(BlockCode *blockCode);
 };
 
 class Can_start_next_plane_message : public Message {

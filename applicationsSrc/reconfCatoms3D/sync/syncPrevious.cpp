@@ -1,6 +1,6 @@
 #include "syncPrevious.h"
 
-#define MSG_TIME 1000
+#define MSG_TIME 0
 
 void SyncPrevious::sync() {
     shared_ptr<SyncPrevious_message> message(new SyncPrevious_message(3, catom->position.addX(1).addY(1), catom->position));

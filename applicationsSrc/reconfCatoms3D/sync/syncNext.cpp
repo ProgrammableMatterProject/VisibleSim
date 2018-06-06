@@ -1,6 +1,6 @@
 #include "syncNext.h"
 
-#define MSG_TIME 10000
+#define MSG_TIME 0
 
 void SyncNext::sync() {
     shared_ptr<SyncNext_message> message(new SyncNext_message(1, catom->position.addX(-1).addY(-1), catom->position));

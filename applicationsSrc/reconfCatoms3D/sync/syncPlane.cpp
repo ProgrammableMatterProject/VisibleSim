@@ -10,6 +10,9 @@ SyncPlane::SyncPlane(Catoms3D::Catoms3DBlock *c, Reconf *r) {
     this->reconf = r;
 }
 
+SyncPlane::~SyncPlane() {
+}
+
 bool SyncPlane::isOnBorder(Cell3DPosition pos)
 {
     if (BlockCode::target->isInTarget(pos) &&
@@ -66,12 +69,16 @@ bool SyncPlane::isSeed()
         int nTurns = 0;
         nTurns += getNextBorderNeighbor(idx, currentPos);
         while (currentPos != initialPos) {
-            if (isSeedBorderNextPlane(currentPos) && BlockCode::target->isInTarget(currentPos.addZ(-1)))
+            if (isSeedBorderNextPlane(currentPos) && BlockCode::target->isInTarget(currentPos.addZ(-1))) {
                 return false;
+            }
             nTurns += getNextBorderNeighbor(idx, currentPos);
         }
-        if (nTurns<= 0) return true;
+        return true;
+        //if (nTurns<= 0) return true;
     }
+
+
     return false;
 }
 
@@ -87,12 +94,14 @@ bool SyncPlane::isSeedBorder(Cell3DPosition pos)
 {
     if (BlockCode::target->isInTarget(pos.addZ(1)) && isOnBorder(pos) && isLowestOfBorder(pos))
         return true;
+    return false;
 }
 
 bool SyncPlane::isSeedBorderNextPlane(Cell3DPosition pos)
 {
     if (BlockCode::target->isInTarget(pos) && isOnBorder(pos) && isLowestOfBorderNext(pos))
         return true;
+    return false;
 }
 
 bool SyncPlane::isLowestOfBorderNext(Cell3DPosition pos) {

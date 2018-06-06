@@ -8,6 +8,9 @@ SyncPlaneManager::SyncPlaneManager(Catoms3D::Catoms3DBlock *c, Reconf *r, SyncPl
     this->neighborMessages = nm;
 }
 
+SyncPlaneManager::~SyncPlaneManager() {
+}
+
 void SyncPlaneManager::planeFinished()
 {
     neighborMessages->sendMessagePlaneFinished();

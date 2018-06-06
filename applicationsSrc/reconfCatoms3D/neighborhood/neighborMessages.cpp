@@ -1,8 +1,7 @@
 #include "neighborMessages.h"
+#include "../reconfCatoms3DBlockCode.h"
 
-#define MSG_TIME rand()%10
-#define MSG_TIME_ADD 100+rand()%100
-//#define MSG_TIME 0000
+#define MSG_TIME 0//rand()%10
 
 int NeighborMessages::nMessagesGetInfo = 0;
 int NeighborMessages::nMessagesBorderMessage = 0;
@@ -29,10 +28,10 @@ void NeighborMessages::init()
     }
 
     neighborhood->addNeighbors();
-    trySendMessagePlaneFinished();
 
-    if (reconf->areNeighborsPlaced() && reconf->nChildren == 0)
+    if (reconf->areNeighborsPlaced() && reconf->nChildren == 0) {
         sendMessagePlaneFinished();
+    }
 }
 
 void NeighborMessages::checkLineParent() {
@@ -116,10 +115,6 @@ New_catom_response_message::New_catom_response_message()
     id = NEW_CATOM_RESPONSE_MSG_ID;
 }
 
-void NeighborMessages::trySendMessagePlaneFinished()
-{
-}
-
 void NeighborMessages::sendMessagePlaneFinished() {
     Plane_finished_message *msg = new Plane_finished_message();
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, reconf->interfaceParent->connectedInterface));
@@ -155,7 +150,7 @@ void NeighborMessages::sendMessagesOnQueue(Cell3DPosition pos)
 
 void NeighborMessages::sendMessageCanStartNextPlane(Cell3DPosition origin)
 {
-    catom->setColor(RED);
+    //catom->setColor(RED);
     Can_start_next_plane_message *msg = new Can_start_next_plane_message();
     msg->origin = origin;
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, reconf->interfaceParent->connectedInterface));
@@ -163,14 +158,14 @@ void NeighborMessages::sendMessageCanStartNextPlane(Cell3DPosition origin)
 
 void NeighborMessages::sendMessageConfirmationCanStartNextPlane(Cell3DPosition pos)
 {
-    catom->setColor(LIGHTBLUE);
-    if (pos == catom->position)
-    {
-        neighborhood->addNeighborToNextPlane();
-    }
-    else {
-        broadcastConfirmationCanStartNextPlane(pos);
-    }
+    //catom->setColor(LIGHTBLUE);
+    //if (pos == catom->position)
+    //{
+        //neighborhood->addNeighborToNextPlane();
+    //}
+    //else {
+        //broadcastConfirmationCanStartNextPlane(pos);
+    //}
 }
 
 void NeighborMessages::broadcastConfirmationCanStartNextPlane(Cell3DPosition destination)
@@ -192,4 +187,34 @@ void NeighborMessages::broadcastConfirmationCanStartNextPlane(Cell3DPosition des
         msg->destination = destination;
         getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msg, catom->getInterface(catom->position.addZ(1))));
     }
+}
+
+void Plane_finished_message::handle(BlockCode *blockCode) {
+    ReconfCatoms3DBlockCode* b = static_cast<ReconfCatoms3DBlockCode*>(blockCode);
+    b->reconf->childConfirm++;
+
+    //b->catom->setColor(GREEN);
+
+    if (b->reconf->childConfirm == b->reconf->nChildren) {
+        if (b->reconf->isPlaneParent) {
+            b->neighborMessages->sendMessagePlaneFinishedAck();
+            if (b->syncPlane->isSeed()) {
+                b->neighborhood->addNeighborToNextPlane();
+            }
+        }
+        else {
+            b->neighborMessages->sendMessagePlaneFinished();
+        }
+    }
+    //std::this_thread::sleep_for(std::chrono::milliseconds(10));
+}
+
+void Plane_finished_ack_message::handle(BlockCode *blockCode) {
+    ReconfCatoms3DBlockCode* block = static_cast<ReconfCatoms3DBlockCode*>(blockCode);
+    block->neighborMessages->sendMessagePlaneFinishedAck();
+    if (block->syncPlane->isSeed()) {
+        block->neighborhood->addNeighborToNextPlane();
+    }
+    //block->catom->setColor(GREY);
+    //std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }

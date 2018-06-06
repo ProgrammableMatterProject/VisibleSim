@@ -12,6 +12,11 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
     isPlaneCompleted = false;
     syncPlaneNodeParent = NULL;
     syncPlaneNode = NULL;
+
+    isPlaneParent = false;
+
+    canFillLeft = false;
+    canFillRight = false;
 }
 
 bool Reconf::isInternalSeedNext()

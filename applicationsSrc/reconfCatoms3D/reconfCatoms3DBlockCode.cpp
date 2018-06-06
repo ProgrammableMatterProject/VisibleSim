@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 2
+#define CONSTRUCT_WAIT_TIME 0
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_FINISHED_TIME 0
@@ -26,19 +26,29 @@ ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBl
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
     delete reconf;
     delete neighborhood;
+    delete neighborMessages;
     delete syncNext;
     delete syncPrevious;
+    delete syncPlane;
+    delete syncPlaneManager;
 }
 
 void ReconfCatoms3DBlockCode::startup() {
     //if (catom->blockId == 1)
         //srand(time(NULL));
 
+    /* Run with the planning algorithm */
     planningRun();
+
+    /* Stochastically filling */
     //stochasticRun();
+
+    /* Fill in a FIFO order */
     //neighborhood->addAllNeighbors();
 
+    /* Run with a centralized node that keeps a register of planes in a tree format */
     //startTree();
+
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
 
@@ -88,6 +98,12 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
       message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+        if (message->isMessageHandeable()) {
+            shared_ptr<HandleableMessage> hm = static_pointer_cast<HandleableMessage>(message);
+            int connectedBlockId = message->sourceInterface->getConnectedBlockId();
+            BlockCode *block = World::getWorld()->getBlockById(connectedBlockId)->blockCode;
+            hm->handle(block);
+        }
         switch(message->id) {
             case NEW_CATOM_MSG_ID:
             {
@@ -132,64 +148,22 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case PLANE_FINISHED_MSG_ID:
             {
-                reconf->childConfirm++;
-                if (reconf->childConfirm == reconf->nChildren) {
-                    if (!reconf->isPlaneParent) {
-                        neighborMessages->sendMessagePlaneFinished();
-                    }
-                    else {
-                        neighborMessages->sendMessagePlaneFinishedAck();
-                    }
-                }
-                std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
             }
             case PLANE_FINISHED_ACK_MSG_ID:
             {
-                neighborMessages->sendMessagePlaneFinishedAck();
-                if (syncPlane->isSeed()) {
-                    //if(catom->getInterface(catom->position.addZ(1))->isConnected()) {
-                        if (catom->position[2] == 1)
-                            neighborhood->addNeighborToNextPlane();
-                        else
-                            neighborMessages->sendMessageCanStartNextPlane(catom->position);
-                        //neighborhood->addNeighborToNextPlane();
-                    //}
-                }
-                std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
             }
             case CANFILLLEFTRESPONSE_MESSAGE_ID:
             {
-                neighborhood->addNeighborToLeft();
+                reconf->canFillLeft = true;
+                neighborhood->addNeighbors();
                 break;
             }
             case CANFILLRIGHTRESPONSE_MESSAGE_ID:
             {
-                neighborhood->addNeighborToRight();
-                break;
-            }
-            case CAN_START_NEXT_PLANE_MSG_ID:
-            {
-                shared_ptr<Can_start_next_plane_message> recv_message = static_pointer_cast<Can_start_next_plane_message>(message);
-                catom->setColor(PINK);
-                if (catom->blockId == 1) {
-                    leafs.push_back(recv_message->origin);
-                    ReconfCatoms3DBlockCode* other = (ReconfCatoms3DBlockCode*)(World::getWorld()->getBlockByPosition(recv_message->origin)->blockCode);
-                    other->neighborhood->addNeighborToNextPlane();
-                    //neighborMessages->sendMessageConfirmationCanStartNextPlane(recv_message->origin);
-                }
-                else
-                    neighborMessages->sendMessageCanStartNextPlane(recv_message->origin);
-                break;
-            }
-            case CONFIRMATION_CAN_START_NEXT_PLANE_MSG_ID:
-            {
-                //shared_ptr<Confirmation_can_start_next_plane_message> recv_message = static_pointer_cast<Confirmation_can_start_next_plane_message>(message);
-                //catom->setColor(RED);
-                ////neighborMessages->sendMessageConfirmationCanStartNextPlane(recv_message->destination);
-                //ReconfCatoms3DBlockCode* other = (ReconfCatoms3DBlockCode*)(World::getWorld()->getBlockByPosition(recv_message->destination)->blockCode);
-                //other->neighborhood->addNeighborToNextPlane();
+                reconf->canFillRight = true;
+                neighborhood->addNeighbors();
                 break;
             }
           }
@@ -200,8 +174,9 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         if (!reconf->init)
             break;
 
-        if (reconf->areNeighborsPlaced() && reconf->nChildren == 0)
+        if (reconf->areNeighborsPlaced() && reconf->nChildren == 0) {
             neighborMessages->sendMessagePlaneFinished();
+        }
 
         if (face == 1 || face == 6)
         {
@@ -223,22 +198,22 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
     }
     case ADDLEFTBLOCK_EVENT_ID: {
         neighborhood->addNeighbor(catom->position.addX(-1));
-        //getStats();
+        getStats();
         break;
     }
     case ADDRIGHTBLOCK_EVENT_ID: {
         neighborhood->addNeighbor(catom->position.addX(1));
-        //getStats();
+        getStats();
         break;
     }
     case ADDNEXTLINE_EVENT_ID: {
-        neighborhood->addNextLineNeighbor();
-        //getStats();
+        neighborhood->addNeighbor(catom->position.addY(1));
+        getStats();
         break;
     }
     case ADDPREVIOUSLINE_EVENT_ID: {
-        neighborhood->addPreviousLineNeighbor();
-        //getStats();
+        neighborhood->addNeighbor(catom->position.addY(-1));
+        getStats();
         break;
     }
 	}
@@ -255,7 +230,7 @@ void ReconfCatoms3DBlockCode::getStats() {
     nMessages += NeighborMessages::nMessagesGetInfo;
     nMessages += Neighborhood::numberMessagesToAddBlock;
     nMessages += Sync::nMessagesSyncResponse*2;
-    cout << nbBlocks*100/12607 << ';' << count << ';' << nbBlocks << ';' << nMessages << endl;
+    //cout << nbBlocks*100/30729 << ';' << count << ';' << nbBlocks << ';' << nMessages <<  ';' << getScheduler()->now() << endl;
 }
 
 

@@ -36,8 +36,10 @@ public:
     bool isPlaneParent;
     bool isPlaneCompleted;
 
+    bool canFillLeft;
+    bool canFillRight;
+
     bool init;
-    //bool isLeaf;
     int childConfirm;
     int nChildren;
     P2PNetworkInterface* interfaceParent;
