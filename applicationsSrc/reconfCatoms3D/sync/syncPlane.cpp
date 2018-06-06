@@ -1,13 +1,16 @@
 #include "syncPlane.h"
 #include "catoms3DWorld.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 SyncPlane_node *SyncPlane_node_manager::root = new SyncPlane_node(1, 0);
 
 SyncPlane::SyncPlane(Catoms3D::Catoms3DBlock *c, Reconf *r) {
     this->catom = c;
     this->reconf = r;
+}
+
+SyncPlane::~SyncPlane() {
 }
 
 bool SyncPlane::isOnBorder(Cell3DPosition pos)
@@ -51,10 +54,6 @@ Cell3DPosition SyncPlane::getCurrentBorderForNextPlane()
 
 bool SyncPlane::isSeed()
 {
-    if (catom->blockId == 2748)
-        cout << "for id 2748 the next plane is " << BlockCode::target->isInTarget(catom->position.addZ(1)) << endl;
-    if (catom->blockId == 2744)
-        cout << "for id 2744 the next plane is " << BlockCode::target->isInTarget(catom->position.addZ(1)) << endl;
     // To avoid line cases
     if (couldBeSeed(catom->position.addX(-1)) || couldBeSeed(catom->position.addY(-1)))
         return false;
@@ -63,27 +62,23 @@ bool SyncPlane::isSeed()
         return true;
     }
 
-    int debugID = 9999;
     if (isSeedBorder(catom->position)) {
         Cell3DPosition initialPos = getCurrentBorderForNextPlane().addZ(1);
         Cell3DPosition currentPos = initialPos;
         int idx = getIdxForBorder(currentPos);
-        if (catom->blockId == debugID) {
-            cout << "looping on " << catom->position << endl;
-            cout << "idx = " << idx << endl;
-            debugPosition(currentPos);
-        }
-        getNextBorderNeighbor(idx, currentPos);
+        int nTurns = 0;
+        nTurns += getNextBorderNeighbor(idx, currentPos);
         while (currentPos != initialPos) {
-            if (catom->blockId == debugID) {
-                cout << "-" << currentPos << endl;
-            }
-            if (isSeedBorderNextPlane(currentPos) && BlockCode::target->isInTarget(currentPos.addZ(-1)))
+            if (isSeedBorderNextPlane(currentPos) && BlockCode::target->isInTarget(currentPos.addZ(-1))) {
                 return false;
-            getNextBorderNeighbor(idx, currentPos);
+            }
+            nTurns += getNextBorderNeighbor(idx, currentPos);
         }
         return true;
+        //if (nTurns<= 0) return true;
     }
+
+
     return false;
 }
 
@@ -97,51 +92,33 @@ bool SyncPlane::couldBeSeed(Cell3DPosition pos)
 
 bool SyncPlane::isSeedBorder(Cell3DPosition pos)
 {
-    if (BlockCode::target->isInTarget(pos.addZ(1)) && isOnBorder(pos) && isLowestOfBorder(pos) )
+    if (BlockCode::target->isInTarget(pos.addZ(1)) && isOnBorder(pos) && isLowestOfBorder(pos))
         return true;
+    return false;
 }
 
 bool SyncPlane::isSeedBorderNextPlane(Cell3DPosition pos)
 {
     if (BlockCode::target->isInTarget(pos) && isOnBorder(pos) && isLowestOfBorderNext(pos))
         return true;
+    return false;
 }
 
 bool SyncPlane::isLowestOfBorderNext(Cell3DPosition pos) {
     int nTurns = 0;
     int idx = getIdxForBorder(pos);
     Cell3DPosition currentPos = pos;
-    int debugID = 1529;
-    if (DEBUG) {
-       if (catom->blockId == debugID) {
-           cout << "starting next " << currentPos << endl;
-           cout << BlockCode::target->isInTarget(catom->position) << " -> " << catom->position << endl;
-           debugPosition(currentPos);
-       }
-    }
     nTurns += getNextBorderNeighbor(idx, currentPos);
     while(currentPos != pos) {
-        if (DEBUG) {
-           if (catom->blockId == debugID) {
-               cout << currentPos << endl;
-           }
-        }
         if ((currentPos[1] < pos[1] ||
                 (currentPos[1] == pos[1] && currentPos[0] < pos[0])) && Catoms3D::getWorld()->getBlockByPosition(currentPos.addZ(-1)) != NULL)
         {
-            if (DEBUG)
-               if (catom->blockId == debugID)
-                    cout << "false" << endl;
             return false;
 
         }
         nTurns += getNextBorderNeighbor(idx, currentPos);
     }
-    if (DEBUG) {
-       if (catom->blockId == debugID) {
-           cout << "true"  << currentPos << endl;
-       }
-    }
+    if (nTurns > 0) return false;
     return true;
 }
 
@@ -149,47 +126,23 @@ bool SyncPlane::isLowestOfBorder(Cell3DPosition pos) {
     int nTurns = 0;
     int idx = getIdxForBorder(pos);
     Cell3DPosition currentPos = pos;
-    int debugID = 1529;
-    if (DEBUG) {
-       if (catom->blockId == debugID) {
-           cout << "starting " << currentPos << endl;
-       }
-    }
     nTurns += getNextBorderNeighbor(idx, currentPos);
     while(currentPos != pos) {
-        if (DEBUG) {
-           if (catom->blockId == debugID) {
-               cout << currentPos << endl;
-               //Catoms3D::Catoms3DBlockCode* otherCatom = (Catoms3D::Catoms3DBlockCode*)Catoms3D::getWorld()->getBlockByPosition(currentPos)->blockCode;
-               //otherCatom->hostBlock->setColor(BLUE);
-               std::this_thread::sleep_for(std::chrono::milliseconds(100));
-           }
-        }
         if ((currentPos[1] < pos[1] ||
                 (currentPos[1] == pos[1] && currentPos[0] < pos[0])) && BlockCode::target->isInTarget(currentPos.addZ(1))) {
-            if (DEBUG)
-               if (catom->blockId == debugID)
-                    cout << "false" << endl;
             return false;
         }
         nTurns += getNextBorderNeighbor(idx, currentPos);
     }
-    if (DEBUG) {
-       if (catom->blockId == debugID) {
-           cout << "true" << endl;
-       }
-    }
-    return true;
+    if (nTurns <= 0) return true;
+    return false;
 }
 
 int SyncPlane::getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos) {
     vector<pair<int, int>> ccw_order = {{0,-1}, {1,0}, {0,1}, {-1,0}};
     int newIdx;
     for (int i = 0; i < 4; i++) {
-        //if (hasAllNeighbors(currentPos))
-            //newIdx = idx;
-        //else
-            newIdx = (((idx+i-1)%4)+4)%4;
+        newIdx = (((idx+i-1)%4)+4)%4;
         Cell3DPosition nextPos = currentPos.addX(ccw_order[newIdx].first)
                                           .addY(ccw_order[newIdx].second);
         if (BlockCode::target->isInTarget(nextPos)) {

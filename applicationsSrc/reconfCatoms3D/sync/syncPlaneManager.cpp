@@ -8,11 +8,14 @@ SyncPlaneManager::SyncPlaneManager(Catoms3D::Catoms3DBlock *c, Reconf *r, SyncPl
     this->neighborMessages = nm;
 }
 
+SyncPlaneManager::~SyncPlaneManager() {
+}
+
 void SyncPlaneManager::planeFinished()
 {
     neighborMessages->sendMessagePlaneFinished();
 
-    if (reconf->planeParent) {
+    if (reconf->isPlaneParent) {
         if (reconf->syncPlaneNodeParent != NULL)
             reconf->syncPlaneNodeParent->setCompleted();
         planeFinishedAck();
@@ -21,10 +24,10 @@ void SyncPlaneManager::planeFinished()
 
 void SyncPlaneManager::planeFinishedAck()
 {
-    if (!reconf->planeFinishedAck) {
+    if (!reconf->isPlaneCompleted) {
         if (syncPlane->isSeed()) {
             setSeedNextPlaneCentralized();
-            tryAddNextPlane();
+            //tryAddNextPlane();
         }
         neighborMessages->sendMessagePlaneFinishedAck();
     }
@@ -40,7 +43,8 @@ void SyncPlaneManager::tryAddNextPlane()
 
 void SyncPlaneManager::setSeedNextPlaneCentralized()
 {
-    catom->setColor(BLACK);
+    //catom->setColor(WHITE);
+    neighborhood->addNeighborToNextPlane();
     reconf->syncPlaneNode = new SyncPlane_node(catom->blockId, catom->position[2]+1);
     SyncPlane_node_manager::root->add(reconf->syncPlaneNode, reconf->syncPlaneNodeParent);
 }

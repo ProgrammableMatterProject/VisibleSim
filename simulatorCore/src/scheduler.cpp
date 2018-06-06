@@ -192,6 +192,33 @@ bool Scheduler::debug(const string &command,bID &id,string &result) {
 	return true;
 }
 
+int Scheduler::getNbEventsById(int id) {
+	lock();
+	multimap<Time,EventPtr>::iterator im = eventsMap.begin();
+    int count = 0;
+	while (im!=eventsMap.end()) {
+        if (im->second->eventType == id)
+            count++;
+		im++;
+	}
+	unlock();
+    return count;
+}
+
+bool Scheduler::hasEvent(int id, unsigned long blockId) {
+	lock();
+	multimap<Time,EventPtr>::iterator im = eventsMap.begin();
+	while (im!=eventsMap.end()) {
+        if (im->second->eventType == id && im->second->getConcernedBlock()->blockId == blockId) {
+            unlock();
+            return true;
+        }
+		im++;
+	}
+	unlock();
+    return false;
+}
+
 void Scheduler::printStats() {
   cout << StatsCollector::getInstance();
   if (StatsIndividual::enable) {

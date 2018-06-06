@@ -22,7 +22,6 @@ class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
 	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
-    Vector3D worldPosition;
 
     Neighborhood *neighborhood;
     NeighborMessages *neighborMessages;
@@ -47,11 +46,14 @@ public:
     void syncPreviousMessage(shared_ptr<Sync_message> recv_message);
     void syncResponse(shared_ptr<Sync_response_message> recv_message);
     void planeFinishedAck();
+    void startTree();
     void tryAddNextPlane();
     void planeFinished();
     void setSeedNextPlaneCentralized();
-    void continueOtherSeeds();
+    void planeContinue();
     void removeSeed();
+    void canFill();
+    void getStats();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:

@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	BaseSimulator::getWorld()->printInfo();
 
     cout << "Number of messages to get initial info: " << NeighborMessages::nMessagesGetInfo << endl;
-    cout << "Number of messages to get border messages: " << NeighborMessages::nMessagesBorderMessage << endl;
+    cout << "Number of messages to get permission to add blocks: " << Neighborhood::numberMessagesToAddBlock << endl;
     cout << "Number of messages to sync: " << Sync::nMessagesSync << endl;
     cout << "Number of messages to sync response: " << Sync::nMessagesSyncResponse << endl;
 	deleteSimulator();

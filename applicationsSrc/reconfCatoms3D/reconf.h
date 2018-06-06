@@ -13,21 +13,15 @@
 #include "directions.h"
 #include "sync/syncPlaneNode.h"
 
+class MessageQueue;
+
 class Reconf {
     Catoms3D::Catoms3DBlock *catom;
 
-    int numberSeedsLeft;
-    int numberSeedsRight;
-
     bool lineParent;
-    bool lineCompleted;
 
     bool seedNext;
     bool seedPrevious;
-
-    bool leftCompleted;
-    bool rightCompleted;
-
 
     bool isInternalSeedNext();
     bool isInternalSeedPrevious();
@@ -36,54 +30,49 @@ class Reconf {
 
     bool isHighestOfBorder(int idx);
     int getNextBorderNeighbor(int &idx, Cell3DPosition &currentPos);
-    bool isOnBorder();
     bool isHighest();
+
 public:
-    bool planeParent;
-    bool planeFinished;
-    bool planeFinishedAck;
-    bool createdFromPrevious;
-    queue<MessagePtr> requestQueue;
-    SIDE_DIRECTION lineParentDirection;
+    bool isPlaneParent;
+    bool isPlaneCompleted;
+
+    bool canFillLeft;
+    bool canFillRight;
+
+    bool init;
+    int childConfirm;
+    int nChildren;
+    P2PNetworkInterface* interfaceParent;
 
     SyncPlane_node *syncPlaneNodeParent;
     SyncPlane_node *syncPlaneNode;
+    Cell3DPosition lastMessage;
+
+    vector<MessageQueue> messageQueue;
 
     Reconf(Catoms3D::Catoms3DBlock *c);
 
     bool isSeedNext();
     bool isSeedPrevious();
-    bool needSync();
-
-    bool needSyncToLeftNext();
-    bool needSyncToLeftPrevious();
-
-    bool needSyncToRightNext();
-    bool needSyncToRightPrevious();
 
     bool isLineParent() { return lineParent; }
     void setLineParent() { lineParent = true; }
 
-    int getNumberSeedsLeft() { return numberSeedsLeft; }
-    void setNumberSeedsLeft(int nSeeds) { numberSeedsLeft = nSeeds; }
-
-    int getNumberSeedsRight() { return numberSeedsRight; }
-    void setNumberSeedsRight(int nSeeds) { numberSeedsRight = nSeeds; }
-
-    void setLineCompleted() { lineCompleted = true; }
-    bool isLineCompleted() { return lineCompleted; }
-
     void setSeedNext() { seedNext = true; };
     void setSeedPrevious() { seedPrevious = true; };
 
-    void setLeftCompleted();
-    bool isLeftCompleted() { return leftCompleted; }
-
-    void setRightCompleted();
-    bool isRightCompleted() { return rightCompleted; }
-
     bool checkPlaneCompleted();
+    bool areNeighborsPlaced();
+    bool isOnBorder();
 
+    void addMessageOnQueue(MessageQueue mQueue);
+};
+
+class MessageQueue {
+public:
+    Cell3DPosition destination;
+    Message* message;
+    MessageQueue(Cell3DPosition dest, Message *msg) : destination(dest), message(msg) {}
 };
 
 #endif /* RECONF_H_ */

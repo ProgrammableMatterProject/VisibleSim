@@ -12,6 +12,7 @@
 #include "../sync/sync.h"
 #include "../sync/syncPlane.h"
 #include "neighborhood.h"
+#include "blockCode.h"
 
 #define NEW_CATOM_MSG_ID	9001
 #define NEW_CATOM_PARENT_MSG_ID	9002
@@ -21,6 +22,8 @@
 #define RIGHT_SIDE_COMPLETED_MSG_ID	9006
 #define PLANE_FINISHED_MSG_ID	9007
 #define PLANE_FINISHED_ACK_MSG_ID	9008
+#define CAN_START_NEXT_PLANE_MSG_ID	9009
+#define CONFIRMATION_CAN_START_NEXT_PLANE_MSG_ID	9010
 
 class NeighborMessages
 {
@@ -46,8 +49,6 @@ public:
     void sendMessageToGetLineInfo();
     void sendMessageToGetParentInfo();
 
-    void checkAndSendLeftBorderMessage();
-    void checkAndSendRightBorderMessage();
     void checkLineParent();
 
     void handleNewCatomMsg(MessagePtr msg);
@@ -55,12 +56,13 @@ public:
     void handleNewCatomResponseMsg(MessagePtr msg);
     void handleNewCatomParentResponseMsg(MessagePtr msg);
     void handleParentSeedMsg(MessagePtr msg);
-    void handleLeftSideCompletedMsg(MessagePtr msg);
-    void handleRightSideCompletedMsg(MessagePtr msg);
 
-    void trySendMessagePlaneFinished();
     void sendMessagePlaneFinished();
     void sendMessagePlaneFinishedAck();
+    void sendMessagesOnQueue(Cell3DPosition pos);
+    void sendMessageCanStartNextPlane(Cell3DPosition);
+    void sendMessageConfirmationCanStartNextPlane(Cell3DPosition);
+    void broadcastConfirmationCanStartNextPlane(Cell3DPosition);
 };
 
 class New_catom_message : public Message {
@@ -87,11 +89,6 @@ typedef shared_ptr<New_catom_parent_response_message> New_catom_parent_response_
 
 class New_catom_response_message : public Message {
 public:
-    bID lineParent;
-    bool leftCompleted, rightCompleted;
-    bool createdFromPrevious;
-    int numberSeedsLeft, numberSeedsRight;
-    SIDE_DIRECTION lineParentDirection;
     queue<MessagePtr> requestQueue;
 
     SyncPlane_node *syncPlaneNodeParent;
@@ -113,14 +110,30 @@ public:
 };
 typedef shared_ptr<Right_side_completed_message> Right_side_completed_ptr;
 
-class Plane_finished_message : public Message {
+class Plane_finished_message : public HandleableMessage {
 public:
     Plane_finished_message() { id = PLANE_FINISHED_MSG_ID; };
+
+    void handle(BlockCode *blockCode);
 };
 
-class Plane_finished_ack_message : public Message {
+class Plane_finished_ack_message : public HandleableMessage {
 public:
     Plane_finished_ack_message() { id = PLANE_FINISHED_ACK_MSG_ID; };
+
+    void handle(BlockCode *blockCode);
+};
+
+class Can_start_next_plane_message : public Message {
+public:
+    Cell3DPosition origin;
+    Can_start_next_plane_message() { id = CAN_START_NEXT_PLANE_MSG_ID; };
+};
+
+class Confirmation_can_start_next_plane_message : public Message {
+public:
+    Cell3DPosition destination;
+    Confirmation_can_start_next_plane_message() { id = CONFIRMATION_CAN_START_NEXT_PLANE_MSG_ID; };
 };
 
 #endif /* NEIGHBORMESSAGES_H_ */
