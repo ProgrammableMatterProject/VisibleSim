@@ -83,7 +83,7 @@ bool Border::isLowestOfBorderOnNextPlane(Cell3DPosition pos) {
     nTurns += getNextBorderNeighbor(idx, currentPos);
     while(currentPos != pos) {
         if ((currentPos[1] < pos[1] ||
-                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && Catoms3D::getWorld()->getBlockByPosition(currentPos.addZ(-1)) != NULL)
+                (currentPos[1] == pos[1] && currentPos[0] > pos[0])) && BlockCode::target->isInTarget(currentPos.addZ(-1)))
         {
             return false;
 

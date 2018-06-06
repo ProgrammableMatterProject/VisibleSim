@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 1
+#define CONSTRUCT_WAIT_TIME 10
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -16,8 +16,13 @@ ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBl
 	catom = (Catoms3DBlock*)hostBlock;
 
     reconf = new Reconf(catom);
-    neighborhood = new Neighborhood(catom, reconf, buildNewBlockCode);
+
+    syncNext = new SyncNext(catom, reconf);
+    syncPrevious = new SyncPrevious(catom, reconf);
+
+    neighborhood = new Neighborhood(catom, reconf, syncNext, syncPrevious, buildNewBlockCode);
     neighborMessages = new NeighborMessages(catom, reconf, neighborhood);
+
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
@@ -42,6 +47,7 @@ void ReconfCatoms3DBlockCode::planningRun() {
     if (catom->blockId == 1) {
         neighborMessages->init();
         reconf->isPlaneParent = true;
+        catom->setColor(GREEN);
     }
     else if (neighborhood->isFirstCatomOfPlane()) {
         reconf->isPlaneParent = true;
@@ -105,26 +111,41 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 neighborMessages->init();
                 break;
             }
-            case CANFILLLEFT_MESSAGE_ID:
+            case SYNCNEXT_MESSAGE_ID:
             {
-                neighborhood->sendResponseMessageToAddLeft();
+                shared_ptr<Sync_message> recv_message = static_pointer_cast<Sync_message>(message);
+                syncNextMessage(recv_message);
+                break;
+            }
+            case SYNCPREVIOUS_MESSAGE_ID:
+            {
+                shared_ptr<Sync_message> recv_message = static_pointer_cast<Sync_message>(message);
+                syncPreviousMessage(recv_message);
+                break;
+            }
+            case SYNCNEXT_RESPONSE_MESSAGE_ID:
+            case SYNCPREVIOUS_RESPONSE_MESSAGE_ID:
+            {
+                shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
+                syncResponse(recv_message);
                 break;
             }
             case CANFILLLEFTRESPONSE_MESSAGE_ID:
             {
-                if (reconf->floor == 0 || (reconf->confirmWestLeft && reconf->confirmWestRight) || reconf->parentPlaneFinished)
-                    neighborhood->addNeighborToLeft();
-                break;
-            }
-            case CANFILLRIGHT_MESSAGE_ID:
-            {
-                neighborhood->sendResponseMessageToAddRight();
+                reconf->canFillLeft = true;
+                neighborhood->addNeighbors();
                 break;
             }
             case CANFILLRIGHTRESPONSE_MESSAGE_ID:
             {
-                if (reconf->floor == 0 || reconf->arePreviousPlaneNeighborsComplete() || reconf->parentPlaneFinished)
-                    neighborhood->addNeighborToRight();
+                reconf->canFillRight = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case CANFILLNEXTFLOOR_MESSAGE_ID:
+            {
+                reconf->canFillNextFloor = true;
+                neighborhood->addNeighbors();
                 break;
             }
             case NEXTPLANECONFIRMATION_NORTHLEFT_MESSAGE_ID:
@@ -191,6 +212,7 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case PLANE_FINISHED_ACK_MSG_ID:
             {
+                //catom->setColor(PINK);
                 planeFinishedAck();
                 std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
@@ -216,12 +238,22 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         break;
     }
     case ADDNEXTLINE_EVENT_ID: {
-        neighborhood->addNextLineNeighbor();
+        neighborhood->addNeighbor(catom->position.addY(1));
         //getStats();
         break;
     }
     case ADDPREVIOUSLINE_EVENT_ID: {
-        neighborhood->addPreviousLineNeighbor();
+        neighborhood->addNeighbor(catom->position.addY(-1));
+        //getStats();
+        break;
+    }
+    case ADDNEXTPLANE_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addZ(1));
+        //getStats();
+        break;
+    }
+    case ADDPREVIOUSPLANE_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addZ(-1));
         //getStats();
         break;
     }
@@ -233,6 +265,25 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
         if (reconf->areNeighborsPlaced() && reconf->nChildren == 0)
             neighborMessages->sendMessagePlaneFinished();
 
+        // Add neighbors on same plane next line
+        if (face == 1 || face == 6)
+        {
+            if (catom->getInterface(1)->isConnected() &&
+                    catom->getInterface(6)->isConnected())
+            {
+                neighborhood->sendResponseMessageToAddLeft();
+            }
+        }
+        if (face == 7 || face == 0)
+        {
+            if (catom->getInterface(7)->isConnected() &&
+                    catom->getInterface(0)->isConnected())
+            {
+                neighborhood->sendResponseMessageToAddRight();
+            }
+        }
+
+        // Rules to allow next plane to add neighbor
         if (face == 1 || face == 4)
         {
             if (catom->getInterface(1)->isConnected() &&
@@ -298,10 +349,15 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
         }
 
-        //if (catom->getInterface(9)->isConnected() && catom->getInterface(10)->isConnected())
-            //neighborhood->addRight();
-        //if (catom->getInterface(8)->isConnected() && catom->getInterface(11)->isConnected())
-            //neighborhood->addLeft();
+        if (catom->position[2]%2) {
+            if (face == 6 || face == 1)
+                neighborhood->sendMessageCanFillNextFloor();
+        }
+        else {
+            if (face == 0 || face == 7)
+                neighborhood->sendMessageCanFillNextFloor();
+        }
+
         neighborhood->addNeighbors();
         break;
     }
@@ -318,7 +374,7 @@ void ReconfCatoms3DBlockCode::getStats() {
     int nMessages = 0;
     nMessages += NeighborMessages::nMessagesGetInfo;
     nMessages += Neighborhood::numberMessagesToAddBlock;
-    cout << nbBlocks*100/12607 << ';' << count << ';' << nbBlocks << ';' << nMessages << endl;
+    //cout << nbBlocks*100/30729 << ';' << count << ';' << nbBlocks << ';' << nMessages << ';' << getScheduler()->now() << endl;
 }
 
 void ReconfCatoms3DBlockCode::planeFinishedAck() {
@@ -327,6 +383,60 @@ void ReconfCatoms3DBlockCode::planeFinishedAck() {
         if(catom->getInterface(catom->position.addZ(1))->isConnected()) {
             neighborMessages->sendMessageParentPlaneFinished(catom->position.addZ(1));
         }
+    }
+}
+
+void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_message)
+{
+    if (syncNext->needSyncToRight() &&
+            catom->position[1] == recv_message->goal[1] &&
+            catom->position[0] <= recv_message->goal[0]) {
+        syncNext->response(recv_message->origin);
+    }
+    else if (syncPrevious->needSyncToLeft() &&
+            catom->position[1] < recv_message->goal[1]) {
+        syncNext->response(recv_message->origin);
+    }
+    else {
+        if (syncNext->needSyncToRight() &&
+                catom->position[1] < recv_message->goal[1]) {
+            neighborhood->addNextLineNeighbor();
+        }
+        syncNext->handleMessage(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_message)
+{
+    if (syncPrevious->needSyncToLeft() &&
+            catom->position[1] == recv_message->goal[1] &&
+            catom->position[0] >= recv_message->goal[0]) {
+        syncPrevious->response(recv_message->origin);
+    }
+    else if (syncNext->needSyncToRight() &&
+            catom->position[1] > recv_message->goal[1]) {
+        syncPrevious->response(recv_message->origin);
+    }
+    else {
+        if (syncPrevious->needSyncToLeft() &&
+                catom->position[1] > recv_message->goal[1]) {
+            neighborhood->addPreviousLineNeighbor();
+        }
+        syncPrevious->handleMessage(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> recv_message)
+{
+    if (recv_message->origin == catom->position) {
+        neighborhood->addNeighborToLeft();
+        neighborhood->addNeighborToRight();
+    }
+    else {
+        syncNext->handleMessageResponse(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_RESPONSE_TIME));
     }
 }
 

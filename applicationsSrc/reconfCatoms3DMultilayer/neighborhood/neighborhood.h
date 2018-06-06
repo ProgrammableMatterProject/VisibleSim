@@ -8,27 +8,31 @@
 #ifndef NEIGHBOR_H_
 #define NEIGHBOR_H_
 
-#define CANFILLLEFT_MESSAGE_ID 12001
 #define CANFILLLEFTRESPONSE_MESSAGE_ID 12002
-#define CANFILLRIGHT_MESSAGE_ID 12003
-#define CANFILLRIGHTRESPONSE_MESSAGE_ID 12004
+#define CANFILLRIGHTRESPONSE_MESSAGE_ID 12003
+#define CANFILLNEXTFLOOR_MESSAGE_ID 12004
+
 #define ADDNEXTLINE_EVENT_ID 12005
 #define ADDPREVIOUSLINE_EVENT_ID 12006
 #define ADDLEFTBLOCK_EVENT_ID 12007
 #define ADDRIGHTBLOCK_EVENT_ID 12008
+#define ADDNEXTPLANE_EVENT_ID 12009
+#define ADDPREVIOUSPLANE_EVENT_ID 12010
 
-#define NEXTPLANECONFIRMATION_NORTHLEFT_MESSAGE_ID 12009
-#define NEXTPLANECONFIRMATION_NORTHRIGHT_MESSAGE_ID 12010
-#define NEXTPLANECONFIRMATION_WESTLEFT_MESSAGE_ID 12011
-#define NEXTPLANECONFIRMATION_WESTRIGHT_MESSAGE_ID 12012
-#define NEXTPLANECONFIRMATION_SOUTHLEFT_MESSAGE_ID 12013
-#define NEXTPLANECONFIRMATION_SOUTHRIGHT_MESSAGE_ID 12014
-#define NEXTPLANECONFIRMATION_EASTLEFT_MESSAGE_ID 12015
-#define NEXTPLANECONFIRMATION_EASTRIGHT_MESSAGE_ID 12016
+#define NEXTPLANECONFIRMATION_NORTHLEFT_MESSAGE_ID 12100
+#define NEXTPLANECONFIRMATION_NORTHRIGHT_MESSAGE_ID 12101
+#define NEXTPLANECONFIRMATION_WESTLEFT_MESSAGE_ID 12102
+#define NEXTPLANECONFIRMATION_WESTRIGHT_MESSAGE_ID 12103
+#define NEXTPLANECONFIRMATION_SOUTHLEFT_MESSAGE_ID 12104
+#define NEXTPLANECONFIRMATION_SOUTHRIGHT_MESSAGE_ID 12105
+#define NEXTPLANECONFIRMATION_EASTLEFT_MESSAGE_ID 12106
+#define NEXTPLANECONFIRMATION_EASTRIGHT_MESSAGE_ID 12107
 
 #include "cell3DPosition.h"
 #include "directions.h"
 #include "../reconf.h"
+#include "../sync/syncNext.h"
+#include "../sync/syncPrevious.h"
 
 class Neighborhood {
 private:
@@ -36,11 +40,13 @@ private:
     Reconf *reconf;
     BlockCodeBuilder blockCodeBuilder;
 
+    SyncNext *syncNext;
+    SyncPrevious *syncPrevious;
 
 public:
     static int numberBlockedModules;
     static int numberMessagesToAddBlock;
-    Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, BlockCodeBuilder bcb);
+    Neighborhood(Catoms3D::Catoms3DBlock *catom, Reconf *reconf, SyncNext *sn, SyncPrevious *sp, BlockCodeBuilder bcb);
 
     void addAllNeighbors();
     bool addFirstNeighbor();
@@ -56,10 +62,6 @@ public:
     bool isFirstCatomOfLine();
     bool isFirstCatomOfPlane();
 
-    void addEventAddNextLineNeighbor();
-    void addEventAddPreviousLineNeighbor();
-    void sendMessageToAddLeft();
-    void sendMessageToAddRight();
     void sendResponseMessageToAddLeft();
     void sendResponseMessageToAddRight();
 
@@ -80,6 +82,8 @@ public:
     void sendMessageToNextPlaneSouthRight();
     void sendMessageToNextPlaneEastLeft();
     void sendMessageToNextPlaneEastRight();
+
+    void sendMessageCanFillNextFloor();
 };
 
 class AddNextLine_event : public BlockEvent {
@@ -142,11 +146,34 @@ public:
     const string getEventName() { return "Add right block event"; }
 };
 
-class CanFillLeft_message : public Message {
+class AddNextPlane_event : public BlockEvent {
 public:
-    CanFillLeft_message() {
-        this->id = CANFILLLEFT_MESSAGE_ID;
+    AddNextPlane_event(Time t, BaseSimulator::BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
+        eventType = ADDNEXTPLANE_EVENT_ID;
     }
+    AddNextPlane_event(AddNextPlane_event *conBlock) : BlockEvent(conBlock) {
+    }
+
+    void consumeBlockEvent() {
+        concernedBlock->scheduleLocalEvent(EventPtr(new AddNextPlane_event(this)));
+    }
+
+    const string getEventName() { return "Add next plane block event"; }
+};
+
+class AddPreviousPlane_event : public BlockEvent {
+public:
+    AddPreviousPlane_event(Time t, BaseSimulator::BuildingBlock *conBlock) : BlockEvent(t, conBlock) {
+        eventType = ADDPREVIOUSPLANE_EVENT_ID;
+    }
+    AddPreviousPlane_event(AddPreviousPlane_event *conBlock) : BlockEvent(conBlock) {
+    }
+
+    void consumeBlockEvent() {
+        concernedBlock->scheduleLocalEvent(EventPtr(new AddPreviousPlane_event(this)));
+    }
+
+    const string getEventName() { return "Add previous plane block event"; }
 };
 
 class CanFillLeftResponse_message : public Message {
@@ -156,17 +183,17 @@ public:
     }
 };
 
-class CanFillRight_message : public Message {
-public:
-    CanFillRight_message() {
-        this->id = CANFILLRIGHT_MESSAGE_ID;
-    }
-};
-
 class CanFillRightResponse_message : public Message {
 public:
     CanFillRightResponse_message() {
         this->id = CANFILLRIGHTRESPONSE_MESSAGE_ID;
+    }
+};
+
+class CanFillNextFloor_message : public Message {
+public:
+    CanFillNextFloor_message() {
+        this->id = CANFILLNEXTFLOOR_MESSAGE_ID;
     }
 };
 

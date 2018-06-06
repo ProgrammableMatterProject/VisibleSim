@@ -35,6 +35,8 @@ public:
     bool isLineParent;
     bool isPlaneParent;
     bool planeSeed;
+
+    /* previous floor verification */
     bool confirmNorthLeft;
     bool confirmNorthRight;
     bool confirmWestLeft;
@@ -43,6 +45,13 @@ public:
     bool confirmSouthRight;
     bool confirmEastLeft;
     bool confirmEastRight;
+
+    /* current floor verification */
+    bool canFillLeft;
+    bool canFillRight;
+    /* Check module x+1 y+1 z or x-1 y-1 z */
+    bool canFillNextFloor;
+
     int floor;
     int childConfirm;
     int nChildren;
@@ -67,6 +76,11 @@ public:
 
     bool arePreviousPlaneNeighborsComplete();
     bool canAddNextPlaneSeed();
+
+    bool canFillNorth() { return confirmNorthLeft && confirmNorthRight; };
+    bool canFillWest() { return confirmWestLeft && confirmWestRight; };
+    bool canFillSouth() { return confirmSouthLeft && confirmSouthRight; };
+    bool canFillEast() { return confirmEastLeft && confirmEastRight; };
 };
 
 class MessageQueue {

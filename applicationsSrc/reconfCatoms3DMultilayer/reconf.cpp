@@ -16,6 +16,10 @@ Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
     confirmEastLeft = false;
     confirmEastRight = false;
 
+    canFillLeft = false;
+    canFillRight = false;
+    canFillNextFloor = false;
+
     childConfirm = 0;
     nChildren = 0;
 
@@ -78,16 +82,12 @@ bool Reconf::isBorderSeedPrevious()
 bool Reconf::isSeedNext()
 {
     seedNext = seedNext || ((isInternalSeedNext() || isBorderSeedNext()));// && !needSyncToRightNext());
-    //if (seedNext)
-        //catom->setColor(LIGHTBLUE);
     return seedNext;
 }
 
 bool Reconf::isSeedPrevious()
 {
     seedPrevious = seedPrevious || ((isInternalSeedPrevious() || isBorderSeedPrevious()));// && !needSyncToRightPrevious());
-    //if (seedPrevious)
-        //catom->setColor(YELLOW);
     return seedPrevious;
 }
 
@@ -125,21 +125,23 @@ bool Reconf::canAddNextPlaneSeed()
         neighbors[0] = catom->position.addY(1);
         neighbors[1] = catom->position.addX(1);
     }
+
     for (int i = 0; i < 2; i++) {
         if (BlockCode::target->isInTarget(neighbors[i]) &&
                 !catom->getInterface(neighbors[i])->isConnected()) {
             return false;
         }
     }
-    return true;
+
+    return canFillNextFloor;
 }
 
 
 bool Reconf::isPlaneSeed()
 {
-    if (planeSeed)
-        return true;
-    return planeSeed = Border::isPlaneSeed(catom->position);
+    if (!planeSeed)
+        planeSeed = Border::isPlaneSeed(catom->position);
+    return planeSeed;
 }
 
 

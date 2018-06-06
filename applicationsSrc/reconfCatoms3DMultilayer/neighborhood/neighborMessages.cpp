@@ -1,7 +1,6 @@
 #include "neighborMessages.h"
 
-#define MSG_TIME rand()%100
-#define MSG_TIME_ADD 10000+rand()%100
+#define MSG_TIME 0//rand()%100
 
 int NeighborMessages::nMessagesGetInfo = 0;
 int NeighborMessages::nMessagesBorderMessage = 0;
@@ -15,16 +14,33 @@ NeighborMessages::NeighborMessages(Catoms3D::Catoms3DBlock *c, Reconf *r, Neighb
 
 void NeighborMessages::init()
 {
+                //if (catom->blockId == 182) {
+                    //cout << reconf->confirmEastRight << endl;
+                //}
     reconf->init = true;
-    if (reconf->isPlaneSeed()) {
-        catom->setColor(WHITE);
-    }
+    //if (reconf->isPlaneSeed()) {
+        //catom->setColor(WHITE);
+    //}
 
     neighborhood->checkDependencies();
     neighborhood->addNeighbors();
 
+    //if (catom->blockId == 182) {
+        //cout << reconf->confirmEastRight << endl;
+    //}
     if (reconf->areNeighborsPlaced() && reconf->nChildren == 0)
         sendMessagePlaneFinished();
+
+    //if (catom->position[2]%2) {
+        //if (catom->getInterface(catom->position.addX(-1))->isConnected() &&
+                //catom->getInterface(catom->position.addY(1))->isConnected())
+            //neighborhood->sendMessageCanFillNextFloor();
+    //}
+    //else {
+        //if (catom->getInterface(catom->position.addX(1))->isConnected() &&
+                //catom->getInterface(catom->position.addY(-1))->isConnected())
+            //neighborhood->sendMessageCanFillNextFloor();
+    //}
 }
 
 void NeighborMessages::checkLineParent() {
@@ -42,8 +58,8 @@ void NeighborMessages::handleNewCatomMsg(MessagePtr message)
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
 
-    neighborhood->sendResponseMessageToAddLeft();
-    neighborhood->sendResponseMessageToAddRight();
+    //neighborhood->sendResponseMessageToAddLeft();
+    //neighborhood->sendResponseMessageToAddRight();
 
     sendMessagesOnQueue(recv_message->sourceInterface->hostBlock->position);
 }
@@ -56,8 +72,8 @@ void NeighborMessages::handleNewCatomLineParentMsg(MessagePtr message)
     getScheduler()->schedule(new NetworkInterfaceEnqueueOutgoingEvent(getScheduler()->now() + MSG_TIME, msgResponse, message->destinationInterface));
     nMessagesGetInfo++;
 
-    neighborhood->sendResponseMessageToAddLeft();
-    neighborhood->sendResponseMessageToAddRight();
+    //neighborhood->sendResponseMessageToAddLeft();
+    //neighborhood->sendResponseMessageToAddRight();
 
     sendMessagesOnQueue(message->sourceInterface->hostBlock->position);
 }
