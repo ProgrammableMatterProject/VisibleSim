@@ -4,7 +4,6 @@
 Reconf::Reconf(Catoms3D::Catoms3DBlock *c) : catom(c)
 {
     init = false;
-    //isLeaf = true;
     childConfirm = 0;
     nChildren = 0;
     seedNext = false;
