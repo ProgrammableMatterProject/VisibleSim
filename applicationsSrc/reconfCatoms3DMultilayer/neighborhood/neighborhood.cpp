@@ -34,7 +34,6 @@ void Neighborhood::addNeighborToRight()
     if (BlockCode::target->isInTarget(pos) && !catom->getInterface(pos)->isConnected()) {
         if (!Scheduler::getScheduler()->hasEvent(ADDRIGHTBLOCK_EVENT_ID, catom->blockId)) {
             getScheduler()->schedule(new AddRightBlock_event(getScheduler()->now()+MSG_TIME_ADD, catom));
-            cout << getScheduler()->getNbEventsById(ADDRIGHTBLOCK_EVENT_ID) << endl;
             reconf->nChildren++;
         }
     }

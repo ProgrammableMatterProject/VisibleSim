@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 10
+#define CONSTRUCT_WAIT_TIME 5
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -47,12 +47,10 @@ void ReconfCatoms3DBlockCode::planningRun() {
     if (catom->blockId == 1) {
         neighborMessages->init();
         reconf->isPlaneParent = true;
-        catom->setColor(GREEN);
     }
     else if (neighborhood->isFirstCatomOfPlane()) {
         reconf->isPlaneParent = true;
         neighborMessages->sendMessageToGetPlaneParentInfo();
-        catom->setColor(GREEN);
     }
     else if (neighborhood->isFirstCatomOfLine()) {
         neighborMessages->sendMessageToGetLineParentInfo();
@@ -212,7 +210,6 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
             case PLANE_FINISHED_ACK_MSG_ID:
             {
-                //catom->setColor(PINK);
                 planeFinishedAck();
                 std::this_thread::sleep_for(std::chrono::milliseconds(PLANE_FINISHED_TIME));
                 break;
