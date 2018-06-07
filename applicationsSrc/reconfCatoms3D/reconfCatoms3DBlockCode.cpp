@@ -1,246 +1,96 @@
-/*
- * reconfCatoms3DBlockCode.cpp
- *
- *  Created on: 17 October 2016
- *  Author: Thadeu
- */
-
 #include <iostream>
-#include <sstream>
 #include "reconfCatoms3DBlockCode.h"
-#include "catoms3DBlock.h"
-#include "scheduler.h"
-#include "csgUtils.h"
-#include "events.h"
-#include "lattice.h"
+#include "catoms3DWorld.h"
+
+#define CONSTRUCT_WAIT_TIME 0
+#define SYNC_WAIT_TIME 0
+#define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
+#define PLANE_FINISHED_TIME 0
 
 using namespace std;
 using namespace Catoms3D;
 
-int neighborDirectionsEven[12][3] = {{0,0,-1},{-1,-1,-1},{-1,0,-1},{0,-1,-1},{0,0,1},{-1,-1,1},{-1,0,1},{0,-1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
-int neighborDirectionsOdd[12][3] = {{0,0,-1},{1,1,-1},{1,0,-1},{0,1,-1},{0,0,1},{1,1,1},{1,0,1},{0,1,1},{1,0,0},{0,1,0},{-1,0,0},{0,-1,0}};
-
-int sideOneOddXY[4][3] = {{1,0,-1},{1,1,-1},{0,1,-1},{0,0,-1}};
-int sideTwoOddXY[4][3] = {{1,0,1},{1,1,1},{0,1,1},{0,0,1}};
-int sideOneEvenXY[4][3] = {{0,0,-1},{-1,-1,-1},{-1,0,-1},{0,-1,-1}};
-int sideTwoEvenXY[4][3] = {{0,0,1},{-1,-1,1},{-1,0,1},{0,-1,1}};
-
-int sideOneOddXZ[5][3] = {{1,0,-1},{1,1,-1},{1,1,1},{1,0,1},{1,0,0}};
-int sideTwoOddXZ[5][3] = {{0,1,-1},{0,0,-1},{0,1,1},{0,0,1},{-1,0,0}};
-int sideOneEvenXZ[5][3] = {{0,0,-1},{0,-1,-1},{0,0,1},{0,-1,1},{1,0,0}};
-int sideTwoEvenXZ[5][3] = {{-1,0,-1},{-1,-1,-1},{-1,0,1},{-1,-1,1},{-1,0,0}};
-
-int sideOneOddYZ[5][3] = {{0,0,-1},{1,0,-1},{0,0,1},{1,0,1},{0,-1,0}};
-int sideTwoOddYZ[5][3] = {{1,1,-1},{0,1,-1},{1,1,1},{0,1,1},{0,1,0}};
-int sideOneEvenYZ[5][3] = {{0,-1,-1},{-1,-1,-1},{0,-1,1},{-1,-1,1},{0,-1,0}};
-int sideTwoEvenYZ[5][3] = {{0,0,-1},{-1,0,-1},{0,0,1},{-1,0,1},{0,1,0}};
-CSGNode* ReconfCatoms3DBlockCode::csgRoot = NULL;
-queue<int> ReconfCatoms3DBlockCode::catomQueue;
-BoundingBox ReconfCatoms3DBlockCode::boundingBox;
-
 ReconfCatoms3DBlockCode::ReconfCatoms3DBlockCode(Catoms3DBlock *host):Catoms3DBlockCode(host) {
-	cout << "ReconfCatoms3DBlockCode constructor" << endl;
     scheduler = getScheduler();
 	catom = (Catoms3DBlock*)hostBlock;
-    world = (Catoms3DWorld*)Catoms3DWorld::getWorld();
+
+    reconf = new Reconf(catom);
+    syncNext = new SyncNext(catom, reconf);
+    syncPrevious = new SyncPrevious(catom, reconf);
+    syncPlane = new SyncPlane(catom, reconf);
+    neighborhood = new Neighborhood(catom, reconf, syncNext, syncPrevious, buildNewBlockCode);
+    neighborMessages = new NeighborMessages(catom, reconf, neighborhood, syncNext, syncPrevious, syncPlane);
+    syncPlaneManager = new SyncPlaneManager(catom, reconf, syncPlane, neighborhood, neighborMessages);
 }
 
 ReconfCatoms3DBlockCode::~ReconfCatoms3DBlockCode() {
-	cout << "ReconfCatoms3DBlockCode destructor" << endl;
-}
-
-Vector3D gridToWorldPosition(const Cell3DPosition &pos) {
-    Vector3D res;
-
-    res.pt[3] = 1.0;
-    res.pt[2] = M_SQRT2_2 * (pos[2] + 0.5);
-    if (IS_EVEN(pos[2])) {
-        res.pt[1] = (pos[1] + 0.5);
-        res.pt[0] = (pos[0] + 0.5);
-    } else {
-        res.pt[1] = (pos[1] + 1.0);
-        res.pt[0] = (pos[0] + 1.0);
-    }
-
-    return res;
-}
-
-Vector3D ReconfCatoms3DBlockCode::getWorldPosition(BoundingBox boundingBox) {
-    Vector3D worldPosition = gridToWorldPosition(catom->position);
-    cout << "Position = " << worldPosition << endl;
-    worldPosition.pt[0] += boundingBox.P0[0]; 
-    worldPosition.pt[1] += boundingBox.P0[1]; 
-    worldPosition.pt[2] += boundingBox.P0[2]; 
-    return worldPosition;
-}
-
-bool ReconfCatoms3DBlockCode::isPositionUnblockedSide(const Cell3DPosition &pos) {
-    int xyPos[4][3] = {{-1,0,0}, {1,0,0}, {0,-1,0}, {0,1,0}};
-    Cell3DPosition occupiedPosition(pos[0]+xyPos[0][0],pos[1]+xyPos[0][1], pos[2]+xyPos[0][2]);
-    Cell3DPosition forbiddenPosition(pos[0]+xyPos[1][0], pos[1]+xyPos[1][1], pos[2]+xyPos[1][2]);
-    if (cellHasBlock(occupiedPosition) && cellHasBlock(forbiddenPosition))
-        return false;
-    occupiedPosition.set(pos[0]+xyPos[2][0],pos[1]+xyPos[2][1], pos[2]+xyPos[2][2]);
-    forbiddenPosition.set(pos[0]+xyPos[3][0], pos[1]+xyPos[3][1], pos[2]+xyPos[3][2]);
-    if (cellHasBlock(occupiedPosition) && cellHasBlock(forbiddenPosition))
-        return false;
-    return true;
-}
-
-bool ReconfCatoms3DBlockCode::isPositionUnblockedXY(const Cell3DPosition &pos) {
-    int *sideOne, *sideTwo;
-    Cell3DPosition position1, position2;
-    bool isInSide1 = false, isInSide2 = false;
-    for (int i = 0; i < 4; i++) {
-        if (pos[2]%2) {
-            sideOne = sideOneOddXY[i];
-            sideTwo = sideTwoOddXY[i];
-        }
-        else {
-            sideOne = sideOneEvenXY[i];
-            sideTwo = sideTwoEvenXY[i];
-        }
-        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]); 
-        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]); 
-        if (cellHasBlock(position1))
-            isInSide1 = true;
-        if (cellHasBlock(position2))
-            isInSide2 = true;
-    }
-    if (isInSide1 && isInSide2)
-        return false;
-    return true;
-}
-
-bool ReconfCatoms3DBlockCode::isPositionUnblockedYZ(const Cell3DPosition &pos) {
-    int *sideOne, *sideTwo;
-    Cell3DPosition position1, position2;
-    bool isInSide1 = false, isInSide2 = false;
-    for (int i = 0; i < 5; i++) {
-        if (pos[2]%2) {
-            sideOne = sideOneOddYZ[i];
-            sideTwo = sideTwoOddYZ[i];
-        }
-        else {
-            sideOne = sideOneEvenYZ[i];
-            sideTwo = sideTwoEvenYZ[i];
-        }
-        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]); 
-        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]); 
-        if (cellHasBlock(position1))
-            isInSide1 = true;
-        if (cellHasBlock(position2))
-            isInSide2 = true;
-    }
-    if (isInSide1 && isInSide2)
-        return false;
-    return true;
-}
-
-bool ReconfCatoms3DBlockCode::isPositionUnblockedXZ(const Cell3DPosition &pos) {
-    int *sideOne, *sideTwo;
-    Cell3DPosition position1, position2;
-    bool isInSide1 = false, isInSide2 = false;
-    for (int i = 0; i < 5; i++) {
-        if (pos[2]%2) {
-            sideOne = sideOneOddXZ[i];
-            sideTwo = sideTwoOddXZ[i];
-        }
-        else {
-            sideOne = sideOneEvenXZ[i];
-            sideTwo = sideTwoEvenXZ[i];
-        }
-        position1.set(pos[0]+sideOne[0], pos[1] + sideOne[1], pos[2] + sideOne[2]); 
-        position2.set(pos[0]+sideTwo[0], pos[1] + sideTwo[1], pos[2] + sideTwo[2]); 
-        if (cellHasBlock(position1))
-            isInSide1 = true;
-        if (cellHasBlock(position2))
-            isInSide2 = true;
-    }
-    if (isInSide1 && isInSide2)
-        return false;
-    return true;
-}
-
-bool ReconfCatoms3DBlockCode::isPositionUnblocked(const Cell3DPosition &pos) {
-    if (isPositionUnblockedSide(pos)) {
-        if (isPositionUnblockedXZ(pos) || isPositionUnblockedYZ(pos) || isPositionUnblockedXY(pos)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool ReconfCatoms3DBlockCode::isPositionUnblockable(const Cell3DPosition &pos) {
-    Cell3DPosition neighborPos;
-    int *direction;
-    for (int i = 0; i < 12; i++) {
-        direction = pos[2]%2 ? neighborDirectionsOdd[i] : neighborDirectionsEven[i];
-        neighborPos.set(pos[0]+direction[0], pos[1] + direction[1], pos[2] + direction[2]); 
-        if (world->lattice->isFree(neighborPos) && isPositionUnblocked(neighborPos)) {
-           simulatedBlockPosition = pos; 
-           if (!isPositionUnblocked(neighborPos))
-               return false;
-           simulatedBlockPosition.set(0,0,0);
-        }
-    }
-    return true;
-}
-
-bool ReconfCatoms3DBlockCode::cellHasBlock(const Cell3DPosition &pos) {
-    if (simulatedBlockPosition == pos)
-        return true;
-    return world->lattice->cellHasBlock(pos);
-}
-
-void ReconfCatoms3DBlockCode::addNeighbors() {
-    for (int i = 0; i < 12; i++) {
-        Cell3DPosition neighborGridPos = catom->position;
-        int *neighborPosPointer = (catom->position[2]%2) ? neighborDirectionsOdd[i] : neighborDirectionsEven[i];
-        neighborGridPos.pt[0] += neighborPosPointer[0];
-        neighborGridPos.pt[1] += neighborPosPointer[1];
-        neighborGridPos.pt[2] += neighborPosPointer[2];
-        if (world->lattice->isFree(neighborGridPos)) {
-            Color color;
-            Vector3D newWorldPos = getWorldPosition(boundingBox);
-            if (csgRoot->isInBorder(newWorldPos, color, 1.5)) {
-                if (isPositionUnblockable(neighborGridPos)) {
-                    world->addBlock(0, ReconfCatoms3DBlockCode::buildNewBlockCode, neighborGridPos, color, 0, false);
-                    world->linkBlock(neighborGridPos);
-                    int neighborId = world->lattice->getBlock(neighborGridPos)->blockId;
-                    catomQueue.push(neighborId);
-                }
-                else {
-                    cout << "ERROR TO ADD BLOCK AT POSITION " << neighborGridPos << endl;
-                    world->addBlock(0, ReconfCatoms3DBlockCode::buildNewBlockCode, neighborGridPos, RED, 0, false);
-                    world->linkBlock(neighborGridPos);
-                    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                }
-
-            }
-            //std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-    }
+    delete reconf;
+    delete neighborhood;
+    delete neighborMessages;
+    delete syncNext;
+    delete syncPrevious;
+    delete syncPlane;
+    delete syncPlaneManager;
 }
 
 void ReconfCatoms3DBlockCode::startup() {
-	if (catom->blockId==1) {
-        csgRoot = csgUtils.readFile("data/mug.bc");
-        csgRoot->toString();
-            csgRoot->boundingBox(boundingBox);
-        cout << "Bounding box: " << boundingBox.P0 << ' ' << boundingBox.P1 << endl;
-        worldPosition = getWorldPosition(boundingBox);
-        Color color;
-        if (csgRoot->isInside(worldPosition, color)) {
-            catom->setColor(color);
-        }
-        else {
-            catom->setVisible(false);
-        }
-	}
-    addNeighbors();
+    //if (catom->blockId == 1)
+        //srand(time(NULL));
+
+    /* Run with the planning algorithm */
+    planningRun();
+
+    /* Stochastically filling */
+    //stochasticRun();
+
+    /* Fill in a FIFO order */
+    //neighborhood->addAllNeighbors();
+
+    /* Run with a centralized node that keeps a register of planes in a tree format */
+    //startTree();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }
 
+void ReconfCatoms3DBlockCode::planningRun() {
+    if (neighborhood->isFirstCatomOfPlane()) {
+        reconf->isPlaneParent = true;
+        if (catom->position[2]%2)
+            reconf->interfaceParent = catom->BaseSimulator::BuildingBlock::getInterface(8)->connectedInterface;
+        else
+            reconf->interfaceParent = catom->BaseSimulator::BuildingBlock::getInterface(10)->connectedInterface;
+
+        neighborMessages->init();
+    }
+    else if (neighborhood->isFirstCatomOfLine()) {
+        neighborMessages->sendMessageToGetParentInfo();
+    }
+    else {
+        neighborMessages->sendMessageToGetLineInfo();
+    }
+}
+
+void ReconfCatoms3DBlockCode::startTree() {
+    if (catom->blockId == 1) {
+        SyncPlane_node_manager::root->planeNumber = catom->position[2];
+        reconf->syncPlaneNode = SyncPlane_node_manager::root;
+        reconf->syncPlaneNodeParent = SyncPlane_node_manager::root;
+    }
+    else {
+        if (Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.addZ(-1)) != NULL) {
+            ReconfCatoms3DBlockCode *neighborBlockCode = (ReconfCatoms3DBlockCode*)Catoms3DWorld::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
+            reconf->syncPlaneNodeParent = neighborBlockCode->reconf->syncPlaneNode;
+        }
+    }
+}
+
+void ReconfCatoms3DBlockCode::stochasticRun() {
+    for (int i = 0; i < 100000; i++) {
+        ReconfCatoms3DBlockCode *catom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(rand()%Catoms3D::getWorld()->getSize() + 1)->blockCode;
+        if (catom->neighborhood->addFirstNeighbor())
+            break;
+    }
+}
 void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 	MessagePtr message;
 	stringstream info;
@@ -248,18 +98,222 @@ void ReconfCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
 	switch (pev->eventType) {
     case EVENT_NI_RECEIVE: {
       message = (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
+        if (message->isMessageHandeable()) {
+            shared_ptr<HandleableMessage> hm = static_pointer_cast<HandleableMessage>(message);
+            int connectedBlockId = message->sourceInterface->getConnectedBlockId();
+            BlockCode *block = World::getWorld()->getBlockById(connectedBlockId)->blockCode;
+            hm->handle(block);
+        }
         switch(message->id) {
-            case CATOM_MSG_ID:
+            case NEW_CATOM_MSG_ID:
             {
+                neighborMessages->handleNewCatomMsg(message);
+                break;
+            }
+            case NEW_CATOM_PARENT_MSG_ID:
+            {
+                neighborMessages->handleNewCatomParentMsg(message);
+                break;
+            }
+            case NEW_CATOM_RESPONSE_MSG_ID:
+            {
+                neighborMessages->handleNewCatomResponseMsg(message);
+                neighborMessages->init();
+                break;
+            }
+            case NEW_CATOM_PARENT_RESPONSE_MSG_ID:
+            {
+                neighborMessages->handleNewCatomParentResponseMsg(message);
+                neighborMessages->init();
+                break;
+            }
+            case SYNCNEXT_MESSAGE_ID:
+            {
+                shared_ptr<Sync_message> recv_message = static_pointer_cast<Sync_message>(message);
+                syncNextMessage(recv_message);
+                break;
+            }
+            case SYNCPREVIOUS_MESSAGE_ID:
+            {
+                shared_ptr<Sync_message> recv_message = static_pointer_cast<Sync_message>(message);
+                syncPreviousMessage(recv_message);
+                break;
+            }
+            case SYNCNEXT_RESPONSE_MESSAGE_ID:
+            case SYNCPREVIOUS_RESPONSE_MESSAGE_ID:
+            {
+                shared_ptr<Sync_response_message> recv_message = static_pointer_cast<Sync_response_message>(message);
+                syncResponse(recv_message);
+                break;
+            }
+            case PLANE_FINISHED_MSG_ID:
+            {
+                break;
+            }
+            case PLANE_FINISHED_ACK_MSG_ID:
+            {
+                break;
+            }
+            case CANFILLLEFTRESPONSE_MESSAGE_ID:
+            {
+                reconf->canFillLeft = true;
+                neighborhood->addNeighbors();
+                break;
+            }
+            case CANFILLRIGHTRESPONSE_MESSAGE_ID:
+            {
+                reconf->canFillRight = true;
+                neighborhood->addNeighbors();
                 break;
             }
           }
       }
       break;
+    case EVENT_ADD_NEIGHBOR: {
+        uint64_t face = Catoms3DWorld::getWorld()->lattice->getOppositeDirection((std::static_pointer_cast<AddNeighborEvent>(pev))->face);
+        if (!reconf->init)
+            break;
+
+        if (reconf->areNeighborsPlaced() && reconf->nChildren == 0) {
+            neighborMessages->sendMessagePlaneFinished();
+        }
+
+        if (face == 1 || face == 6)
+        {
+            if (catom->getInterface(1)->isConnected() &&
+                    catom->getInterface(6)->isConnected())
+            {
+                neighborhood->sendResponseMessageToAddLeft();
+            }
+        }
+        if (face == 7 || face == 0)
+        {
+            if (catom->getInterface(7)->isConnected() &&
+                    catom->getInterface(0)->isConnected())
+            {
+                neighborhood->sendResponseMessageToAddRight();
+            }
+        }
+        break;
+    }
+    case ADDLEFTBLOCK_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addX(-1));
+        getStats();
+        break;
+    }
+    case ADDRIGHTBLOCK_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addX(1));
+        getStats();
+        break;
+    }
+    case ADDNEXTLINE_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addY(1));
+        getStats();
+        break;
+    }
+    case ADDPREVIOUSLINE_EVENT_ID: {
+        neighborhood->addNeighbor(catom->position.addY(-1));
+        getStats();
+        break;
+    }
 	}
+}
+
+void ReconfCatoms3DBlockCode::getStats() {
+    int count = 0;
+    count += Scheduler::getScheduler()->getNbEventsById(ADDLEFTBLOCK_EVENT_ID);
+    count += Scheduler::getScheduler()->getNbEventsById(ADDRIGHTBLOCK_EVENT_ID);
+    count += Scheduler::getScheduler()->getNbEventsById(ADDNEXTLINE_EVENT_ID);
+    count += Scheduler::getScheduler()->getNbEventsById(ADDPREVIOUSLINE_EVENT_ID);
+    int nbBlocks = World::getWorld()->getNbBlocks();
+    int nMessages = 0;
+    nMessages += NeighborMessages::nMessagesGetInfo;
+    nMessages += Neighborhood::numberMessagesToAddBlock;
+    nMessages += Sync::nMessagesSyncResponse*2;
+    //cout << nbBlocks*100/30729 << ';' << count << ';' << nbBlocks << ';' << nMessages <<  ';' << getScheduler()->now() << endl;
+}
+
+
+void ReconfCatoms3DBlockCode::syncNextMessage(shared_ptr<Sync_message> recv_message)
+{
+    if (syncNext->needSyncToRight() &&
+            catom->position[1] == recv_message->goal[1] &&
+            catom->position[0] <= recv_message->goal[0]) {
+        syncNext->response(recv_message->origin);
+    }
+    else if (syncPrevious->needSyncToLeft() &&
+            catom->position[1] < recv_message->goal[1]) {
+        syncNext->response(recv_message->origin);
+    }
+    else {
+        if (syncNext->needSyncToRight() &&
+                catom->position[1] < recv_message->goal[1]) {
+            neighborhood->addNextLineNeighbor();
+        }
+        syncNext->handleMessage(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::syncPreviousMessage(shared_ptr<Sync_message> recv_message)
+{
+    if (syncPrevious->needSyncToLeft() &&
+            catom->position[1] == recv_message->goal[1] &&
+            catom->position[0] >= recv_message->goal[0]) {
+        syncPrevious->response(recv_message->origin);
+    }
+    else if (syncNext->needSyncToRight() &&
+            catom->position[1] > recv_message->goal[1]) {
+        syncPrevious->response(recv_message->origin);
+    }
+    else {
+        if (syncPrevious->needSyncToLeft() &&
+                catom->position[1] > recv_message->goal[1]) {
+            neighborhood->addPreviousLineNeighbor();
+        }
+        syncPrevious->handleMessage(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_WAIT_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::syncResponse(shared_ptr<Sync_response_message> recv_message)
+{
+    if (recv_message->origin == catom->position) {
+        neighborhood->addNeighborToLeft();
+        neighborhood->addNeighborToRight();
+    }
+    else {
+        syncNext->handleMessageResponse(recv_message);
+        std::this_thread::sleep_for(std::chrono::milliseconds(SYNC_RESPONSE_TIME));
+    }
+}
+
+void ReconfCatoms3DBlockCode::planeContinue()
+{
+    int continueBlockId = SyncPlane_node_manager::root->canContinue(catom->position[2]);
+    if (continueBlockId != 0) {
+        ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(continueBlockId)->blockCode;
+        otherCatom->neighborhood->addNeighborToNextPlane();
+    }
+    else {
+        int nextId = SyncPlane_node_manager::root->isOk(catom->position[2]+1);
+        if (nextId != 0) {
+            ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockById(nextId)->blockCode;
+            otherCatom->neighborhood->addNeighborToNextPlane();
+        }
+    }
+}
+
+void ReconfCatoms3DBlockCode::removeSeed()
+{
+    if (!reconf->isPlaneParent) {
+        if (catom->getInterface(catom->position.addZ(-1))->isConnected()) {
+            ReconfCatoms3DBlockCode* otherCatom = (ReconfCatoms3DBlockCode*)Catoms3D::getWorld()->getBlockByPosition(catom->position.addZ(-1))->blockCode;
+            SyncPlane_node_manager::root->remove(otherCatom->reconf->syncPlaneNode, otherCatom->reconf->syncPlaneNodeParent);
+        }
+    }
 }
 
 BlockCode* ReconfCatoms3DBlockCode::buildNewBlockCode(BuildingBlock *host) {
     return (new ReconfCatoms3DBlockCode((Catoms3DBlock*)host));
 }
-
