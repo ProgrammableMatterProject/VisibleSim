@@ -49,9 +49,11 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
 	}
 
-    lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+    lattice = new FCCLattice2(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
     motionRules = new Catoms3DMotionRules();
 }
+
+
 
 Catoms3DWorld::~Catoms3DWorld() {
 #ifdef DEBUG_OBJECT_LIFECYCLE
@@ -135,7 +137,44 @@ void Catoms3DWorld::glDraw() {
     unlock();
     glPopMatrix();
 
+	// draw the goal surface
+	/*if (buildingBlocksMap.begin()!=buildingBlocksMap.end()) {
+		map<bID, BuildingBlock*>::iterator it = buildingBlocksMap.begin();
+		it->second->blockCode->target->glDraw();
+	}*/
+/*	GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.2, 0.8, 1.0 };
+    GLfloat mat_specular[] = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
 
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	enableTexture(false);
+	glPushMatrix();
+        // Nurbs surface
+	//glScalef(45,45,45);
+        //Nurbs car
+        //glScalef(33.33,33.33,33.33);
+        //Nurbs mirror
+        glScalef(10,10,10);
+	gluBeginSurface(theNurb);
+	gluNurbsSurface(theNurb,
+		S_NUMKNOTS, sknots,
+		T_NUMKNOTS, tknots,
+		4 * T_NUMPOINTS,
+		4,
+		&ctlpoints[0][0][0],
+		S_ORDER, T_ORDER,
+		GL_MAP2_VERTEX_4);
+	gluEndSurface(theNurb);
+
+	glPopMatrix();
+*/
+	if (polymer) {
+		polymer->glDraw();
+	}
 // material for the grid walls
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0f};
@@ -221,7 +260,7 @@ void Catoms3DWorld::glDraw() {
 		glPushMatrix();
 		objRepere->glDraw();
 		glPopMatrix();
-		
+
         lattice->glDraw();
 }
 
@@ -471,4 +510,63 @@ void Catoms3DWorld::exportConfiguration() {
   memset(targetGrid,emptyCell,sz*sizeof(presence));
   }
 */
-} // RobotBlock namespace
+
+void Catoms3DWorld::simulatePolymer() {
+
+	if (polymer==NULL) {
+		polymer = new Polymer(lattice->gridSize[0],lattice->gridSize[1],4,lattice->gridSize[2]*lattice->gridScale[2],lattice->gridScale[0],lattice->gridScale[0],lattice->gridScale[1]);
+
+		cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+		Vector3D pt;
+		// calculer un table de Zmax
+		vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
+		lock();
+		while (ic!=tabGlBlocks.end()) {
+			if ((*ic)->color[3]!=0) {
+				//pt.set((*ic)->position,3);
+				pt.pt[0] = (*ic)->position[0];
+				pt.pt[1] = (*ic)->position[1];
+				pt.pt[2] = (*ic)->position[2];
+				polymer->tabPt.push_back(pt);
+			}
+			ic++;
+		}
+		unlock();
+	}
+	double v;
+	int i=100;
+	do {
+		v = polymer->positionInstant(0.01);
+		cout << "*";
+	} while (i--); //fabs(v)>2.0);
+	cout << endl;
+
+	polymer->calculerPolymer();
+	cout << "--------------------END OF SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
+	ofstream file ("polypnts.m");
+        file << "polypnts = [" << endl;
+        for (int x=0; x <= polymer->_nx ; x++){
+            for (int y=0; y <= polymer->_ny ; y++){
+                file << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+3] << " " << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+4] << " " << polymer->_tabGeom[((y*((polymer->_nx)+1)+x)*6)+5] << ";" << endl;
+            }
+        }
+        file << "]" << endl;
+        file.close();
+        ofstream file2 ("polygrid.m");
+        file2 << "polyx = [" << endl;
+        for (int x=0; x <= polymer->_nx ; x++){
+            file2 << polymer->_tabGeom[(x*6)+3] << ";" << endl;
+        }
+        file2 << "];" << endl;
+        file2 << "polyy = [" << endl;
+	for (int y=0; y <= polymer->_ny ; y++){
+            file2 << polymer->_tabGeom[(y*((polymer->_nx)+1)*6)+4] << ";" << endl;
+        }
+        file2 << "];" << endl;
+        file2.close();
+        cout << "file written" << endl;
+}
+
+
+
+} // Catoms3DBlock namespace

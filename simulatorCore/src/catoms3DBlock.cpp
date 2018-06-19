@@ -18,7 +18,7 @@ using namespace std;
 namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
-    : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
+    : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice2::MAX_NB_NEIGHBORS) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DBlock constructor" << endl;
 #endif
@@ -132,12 +132,12 @@ short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos
                                                       short nDirection) const {
     // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
     //      << "\tPosition: " << position << endl;
-    
+
     // Find cell on direction nDirection of neighbor at nPos
     Lattice *lattice = Catoms3DWorld::getWorld()->lattice;
-    Cell3DPosition projectedPos = lattice->getCellInDirection(nPos, nDirection); 
+    Cell3DPosition projectedPos = lattice->getCellInDirection(nPos, nDirection);
     // cout << "\tproj: " << projectedPos << endl;
-    
+
     // No corresponding connector on current module
     if (!lattice->cellsAreAdjacent(position, projectedPos)) return -1;
 
@@ -200,7 +200,7 @@ short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) const {
         d=x*x+y*y+z*z;
         i++;
     }
-    
+
     return d > 0.1 ? -1 : i - 1;
 }
 

@@ -125,14 +125,14 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
     vector<Cell3DPosition> neighborhood;
     vector<Cell3DPosition> relativeNCells =
         getRelativeConnectivity(pos);
-    
+
     for (Cell3DPosition p : relativeNCells) { // Check if each neighbor cell is in grid
         Cell3DPosition v = pos + p;
         if (isInGrid(v)) {
             neighborhood.push_back(v);         // Add its position to the result
         }
     }
-    
+
     return neighborhood;
 }
 
@@ -606,7 +606,7 @@ bool FCCLattice::isPositionUnblockedSide(const Cell3DPosition &pos) {
 
     if (cellHasBlock(occupiedPosition) && cellHasBlock(forbiddenPosition))
         return false;
-    
+
     occupiedPosition = pos + xyPos[2];
     forbiddenPosition = pos + xyPos[3];
 
@@ -621,7 +621,7 @@ bool FCCLattice::isPositionUnblockedSide(const Cell3DPosition &pos,
     if ( (cellHasBlock(occupiedPosition) && (occupiedPosition != ignore))
          && (cellHasBlock(forbiddenPosition) && (forbiddenPosition != ignore)) )
         return false;
-    
+
     occupiedPosition = pos + xyPos[2];
     forbiddenPosition = pos + xyPos[3];
 
@@ -634,14 +634,14 @@ bool FCCLattice::isPositionUnblocked(const Cell3DPosition &pos,
     Cell3DPosition sideOne, sideTwo;
     bool isInSide1 = false, isInSide2 = false;
     bool evenZ = !(pos[2]%2);
-    
+
     for (int i = 0; i < 4; i++) {
         setPlaneSides(plane, pos, sideOne, sideTwo, i, evenZ);
 
         if (cellHasBlock(sideOne)) isInSide1 = true;
         if (cellHasBlock(sideTwo)) isInSide2 = true;
     }
-    
+
     return !(isInSide1 && isInSide2);
 }
 
@@ -651,14 +651,14 @@ bool FCCLattice::isPositionUnblocked(const Cell3DPosition &pos,
     Cell3DPosition sideOne, sideTwo;
     bool isInSide1 = false, isInSide2 = false;
     bool evenZ = !(pos[2]%2);
-    
+
     for (int i = 0; i < 4; i++) {
         setPlaneSides(plane, pos, sideOne, sideTwo, i, evenZ);
 
         if (cellHasBlock(sideOne) && sideOne != ignore) isInSide1 = true;
         if (cellHasBlock(sideTwo) && sideTwo != ignore) isInSide2 = true;
     }
-    
+
     return !(isInSide1 && isInSide2);
 }
 
@@ -684,9 +684,9 @@ bool FCCLattice::isPositionBlocked(const Cell3DPosition &pos,
 
 //     for (int i = 0; i < 12; i++) {
 //         neighborPos = getCellInDirection(pos, i);
- 
+
 //         if (isFree(neighborPos) && !isPositionBlocked(neighborPos)) {
-//            simulatedBlockPosition = pos; 
+//            simulatedBlockPosition = pos;
 //            if (isPositionBlocked(neighborPos))
 //                return true;
 //            simulatedBlockPosition.set(0,0,0);
@@ -694,6 +694,77 @@ bool FCCLattice::isPositionBlocked(const Cell3DPosition &pos,
 //     }
 //     return false;
 // }
+/********************* FCCLattice2 *********************/
+FCCLattice2::FCCLattice2() : Lattice3D() {}
+FCCLattice2::FCCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
+FCCLattice2::~FCCLattice2() {}
+
+vector<Cell3DPosition> FCCLattice2::getRelativeConnectivity(const Cell3DPosition &p) {
+    return nCells;
+}
+
+
+Vector3D FCCLattice2::gridToWorldPosition(const Cell3DPosition &pos) {
+    Vector3D res;
+
+    res.pt[3] = 1.0;
+    res.pt[2] = (M_SQRT2_2 * pos[2]) * gridScale[2];
+    res.pt[1] = (pos[1]) * gridScale[1] + (gridScale[1]*pos[2]/2);
+    res.pt[0] = (pos[0]) * gridScale[0] + (gridScale[0]*pos[2]/2);
+
+//    OUTPUT << "world :"<< res << endl;
+
+    return res;
+}
+
+Cell3DPosition FCCLattice2::worldToGridPosition(const Vector3D &pos) {
+    Cell3DPosition res;
+
+    res.pt[2] = round(M_SQRT2 * pos[2] / gridScale[2]);
+    res.pt[1] = round((pos[1] - M_SQRT2_2 * pos[2]) / gridScale[1]);
+    res.pt[0] = round((pos[0] - M_SQRT2_2 * pos[2]) / gridScale[0]);
+
+    return res;
+}
+
+/************************************************************
+ *   FCCLattice2::NeighborDirections
+ ************************************************************/
+
+const string FCCLattice2::directionName[] = {"Con0", "Con1", "Con2",
+                                                               "Con3", "Con4", "Con5",
+                                                               "Con6", "Con7", "Con8",
+                                                               "Con9", "Con10", "Con11"};
+
+int FCCLattice2::getOppositeDirection(int d) {
+    switch (Direction(d)) {
+    case Con0:	return Con6; break;
+    case Con1:	return Con7; break;
+    case Con2:	return Con8; break;
+    case Con3:	return Con9; break;
+    case Con4:	return Con10; break;
+    case Con5:	return Con11; break;
+    case Con6:	return Con0; break;
+    case Con7:	return Con1; break;
+    case Con8:	return Con2; break;
+    case Con9:	return Con3; break;
+    case Con10:	return Con4; break;
+    case Con11:	return Con5; break;
+    default:
+		ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
+		return -1;
+		break;
+    }
+}
+
+string FCCLattice2::getDirectionString(int d) {
+    return directionName[d];
+}
+
+Cell3DPosition FCCLattice2::getCellInDirection(const Cell3DPosition &pRef, int direction)
+{
+    return pRef + getRelativeConnectivity(pRef)[direction];
+}
 
 /********************* SCLattice *********************/
 SCLattice::SCLattice() : Lattice3D() {}

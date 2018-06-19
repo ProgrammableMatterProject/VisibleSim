@@ -321,10 +321,13 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                 World *world = BaseSimulator::getWorld();
                 world->toggleBackground();
             } break;
-            case 32: // SPACE
+            case 32: { // SPACE
                 Scheduler *scheduler = getScheduler();
                 scheduler->toggle_pause();
-                break;
+          	} break;
+						case 'p' :
+							BaseSimulator::getWorld()->simulatePolymer();
+						break;
         }
     }
     glutPostRedisplay();

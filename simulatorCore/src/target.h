@@ -33,6 +33,9 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <vector>
+#include <Eigen/Dense>
+#include <cfloat>
 
 #define TIXML_USE_STL	1
 #include "TinyXML/tinyxml.h"
@@ -40,6 +43,7 @@
 #include "color.h"
 #include "cell3DPosition.h"
 #include "csg.h"
+#include "vector3D.h"
 
 using namespace std;
 
@@ -115,6 +119,11 @@ public:
      */
     virtual void boundingBox(BoundingBox &bb) = 0;
 
+    /*
+     * @brief Draw geometry of the target in the interfaces
+     */
+    virtual void glDraw();
+
     friend ostream& operator<<(ostream& out,const Target *t);
 };  // class Target
 
@@ -124,6 +133,7 @@ protected:
      // Only store target cells instead of the entire grid to save memory
     map<const Cell3DPosition, const Color> tCells; //!< the target cells as Cell/Color key-value pairs
 
+protected:
     /**
      * @brief Add a cell to the target cells container
      * @param pos position of the target cell
@@ -157,7 +167,7 @@ public:
 
     virtual void highlight();
     virtual void unhighlight();
-    
+
     friend ostream& operator<<(ostream& f,const TargetGrid&tg);
 };  // class TargetGrid
 
@@ -176,21 +186,21 @@ protected:
     void computeGeodesics();
 public:
     std::list<Cell3DPosition> *targetCellsInConstructionOrder = NULL; //todo protected
-    
+
     RelativeTargetGrid(TiXmlNode *targetNode) : TargetGrid(targetNode) {};
     virtual ~RelativeTargetGrid() {
         delete origin;
         delete targetCellsInConstructionOrder;
     };
-     
+
     //!< @copydoc Target::getTargetColor
     //!< a cell is in the target grid if and only if it is present in the target cells container
-     //!< @warning Can only be used once origin has been set, and expects a relative position as input     
+     //!< @warning Can only be used once origin has been set, and expects a relative position as input
     virtual bool isInTarget(const Cell3DPosition &pos) const;
 
     bool reconfigurationIsComplete() const;
     void highlightByDistanceToRoot() const;
-    
+
     /**
      * @brief Returns a list of all cells in target in ascending order (x, y, and then z)
      * @param tgCells a reference to the output list of all cells in the target in ascending order
@@ -201,12 +211,12 @@ public:
     /**
      * @brief Sets the origin of the coordinate system used by the target
      * @warning Calling Target::isInTarget before setting the origin will result in an error
-     */    
+     */
     virtual void setOrigin(const Cell3DPosition& org);
-    
+
     void removeTargetCell(const Cell3DPosition& tc);
 
-/** 
+/**
  * @brief For configuration design only, takes an absolute target as input and make it relative to the cell at pos (min_z, min_y, min_x), and prints the output to stdout
  */
     void relatifyAndPrint();
@@ -224,12 +234,13 @@ public:
     TargetCSG(TiXmlNode *targetNode);
     virtual ~TargetCSG() {};
 
+    //!< @copydoc Target::BoundingBox
+    virtual void boundingBox(BoundingBox &bb);
     //!< @copydoc Target::isInTarget
     virtual bool isInTarget(const Cell3DPosition &pos) const;
     //!< @copydoc Target::getTargetColor
     virtual const Color getTargetColor(const Cell3DPosition &pos);
-    //!< @copydoc Target::boundingBox
-    virtual void boundingBox(BoundingBox &bb);
+
     /**
      * @brief Grid to world position within bounding box
      * @param pos position of the target cell
@@ -243,6 +254,65 @@ public:
     bool isInTargetBorder(const Cell3DPosition &pos, double radius) const;
 
 };  // class TargetCSG
+
+//<! @brief A target modeling a surface by a point cloud
+class TargetSurface : public Target {
+    // Stores the points of the point cloud
+    vector<Vector3D> pcl; //!< the point cloud
+    vector<float> coeffs; //!< the coefficients of the interpolating polynom
+    string method;
+    int S_NUMPOINTS;
+    int S_ORDER;
+    int S_NUMKNOTS;
+    int T_NUMPOINTS;
+    int T_ORDER;
+    int T_NUMKNOTS;
+    vector<float> sknots;
+    vector<float> tknots;
+    vector<vector<vector<float>>> ctlpoints;
+	float *float_sknots,*float_tknots,***float_ctlpoints;
+	GLUnurbsObj *theNurb;
+protected:
+    /**
+     * @brief Add a cell to the target cells container
+     * @param pos position of the target cell
+     * @param c color of the cell. If none provided, defaults to (0,0,0,0)
+     */
+    void addTargetCell(const Cell3DPosition &pos, const Color c = Color());
+
+    float calculateNurbs(float u, float v, int coord) const;
+
+    float dist(float x1, float y1, float x2, float y2) const;
+
+    //!< @copydoc Target::print
+    virtual void print(ostream& where) const;
+public:
+    /**
+     * @copydoc Target::Target
+     * XML Description Format:
+     * <target format="surface">
+     *   <method meth="type">
+     *     <cell position="x,y,z" color="r,g,b"/>
+     *     ...
+     *   </method>
+     * </target>
+     */
+    TargetSurface(TiXmlNode *targetNode);
+    virtual ~TargetSurface() {};
+
+    //!< @copydoc Target::getTargetColor
+    //!< a cell is in the target grid if it is at the same level or under as the surface described for a couple (x,y)
+    virtual bool isInTarget(const Cell3DPosition &pos) const;
+    //!< @copydoc Target::getTargetColor
+    //!< @throws InvalidPositionException is cell at position pos is not part of the target
+    virtual const Color getTargetColor(const Cell3DPosition &pos);
+
+    //!< @copydoc Target::BoundingBox
+    virtual void boundingBox(BoundingBox &bb);
+
+	void glDraw();
+};  // class TargetSurface
+
 
 } // namespace BaseSimulator
 
