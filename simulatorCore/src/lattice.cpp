@@ -703,14 +703,13 @@ vector<Cell3DPosition> FCCLattice2::getRelativeConnectivity(const Cell3DPosition
     return nCells;
 }
 
-
 Vector3D FCCLattice2::gridToWorldPosition(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[3] = 1.0;
-    res.pt[2] = (M_SQRT2_2 * pos[2]) * gridScale[2];
-    res.pt[1] = (pos[1]) * gridScale[1] + (gridScale[1]*pos[2]/2);
-    res.pt[0] = (pos[0]) * gridScale[0] + (gridScale[0]*pos[2]/2);
+    res.pt[2] = (M_SQRT2_2 * (pos[2] + 0.5)) * gridScale[2];
+    res.pt[1] = (pos[1] + 0.5) * gridScale[1] + (gridScale[1]*pos[2]/2);
+    res.pt[0] = (pos[0] + 0.5) * gridScale[0] + (gridScale[0]*pos[2]/2);
 
 //    OUTPUT << "world :"<< res << endl;
 
