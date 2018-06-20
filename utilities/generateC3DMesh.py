@@ -39,8 +39,9 @@ def main(argv):
         isFree = [[[True for i in xrange(gridSize)] for j in xrange(gridSize)] for k in xrange(gridSize)]
         
         XMLBlock = "\t\t<block position=\"%d,%d,%d\" orientation=\"0\"/>\n"
+        filename = "config.xml"
         
-        file = open("config.xml", "w")
+        file = open(filename, "w")
         file.write('<?xml version="1.0" standalone="no" ?>\n\
 <world gridSize="%d, %d, %d">\n\
     <camera target="50,50,10" directionSpherical="-20,30,100"\n\
@@ -65,6 +66,8 @@ def main(argv):
                     
         file.write('\t</blockList>\n</world>\n')
         file.close()
+
+        print "VisibleSim Configuration generated in file " + filename
     except:
         print "error: An error occured during initialization, please try again."
         print "usage: python " + __file__ + " <gridSize> <meshScale> <#branches>"

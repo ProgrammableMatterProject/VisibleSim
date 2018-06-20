@@ -18,7 +18,7 @@ using namespace std;
 namespace Catoms3D {
 
 Catoms3DBlock::Catoms3DBlock(int bId, BlockCodeBuilder bcb)
-    : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice2::MAX_NB_NEIGHBORS) {
+    : BaseSimulator::BuildingBlock(bId, bcb, FCCLattice::MAX_NB_NEIGHBORS) {
 #ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms3DBlock constructor" << endl;
 #endif

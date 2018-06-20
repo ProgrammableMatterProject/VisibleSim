@@ -48,8 +48,12 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 											"catom3Drepere3.obj");*/
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
 	}
-
-    lattice = new FCCLattice2(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+#ifdef UseC3DSkewFCC
+    lattice = new SkewFCCLattice(gridSize,
+                                 gridScale.hasZero() ? defaultBlockSize : gridScale);
+#else
+    lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
+#endif
     motionRules = new Catoms3DMotionRules();
 }
 

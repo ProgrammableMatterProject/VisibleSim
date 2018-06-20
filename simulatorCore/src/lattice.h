@@ -585,12 +585,12 @@ public:
 };
 
 
-/*! @brief 3D Face-Centered Cubic Lattice with new coordinates system
+/*! @brief 3D Face-Centered Cubic Lattice with skew coordinate system (bent z-axis)
  *
  * Used by Catoms3D
  *
  */
-class FCCLattice2 : public Lattice3D {
+class SkewFCCLattice : public FCCLattice {
     // The index i of the relative position in the vector corresponds to the cell on interface i of a block
     vector<Cell3DPosition> nCells{
         Cell3DPosition(1,0,0),  // 0
@@ -609,27 +609,20 @@ class FCCLattice2 : public Lattice3D {
 
     static const string directionName[];
 public:
-    enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
-                    Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
-    //!< @copydoc Lattice::getOppositeDirection
-    virtual int getOppositeDirection(int d);
-    //!< @copydoc Lattice::getDirectionString
-    virtual string getDirectionString(int d);
-    
     /**
-     * @brief FCCLattice2 constructor. 
+     * @brief SkewFCCLattice constructor. 
      */
-    FCCLattice2();
+    SkewFCCLattice();
     /**
-     * @brief FCCLattice2 constructor. 
+     * @brief SkewFCCLattice constructor. 
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
-    FCCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc);
+    SkewFCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
      * @brief FCCLattice destructor. 
      */
-    ~FCCLattice2();
+    ~SkewFCCLattice();
     
     /**
      * @copydoc Lattice::gridToWorldPosition
@@ -643,10 +636,7 @@ public:
      * @copydoc Lattice::getRelativeConnectivity
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
-    /**
-     * @copydoc Lattice::getMaxNumNeighbors
-     */    
-    virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
     /**
      * @copydoc Lattice::getCellInDirection
      */

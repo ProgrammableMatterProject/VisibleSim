@@ -678,32 +678,16 @@ bool FCCLattice::isPositionBlocked(const Cell3DPosition &pos,
              || isPositionUnblocked(pos, ignore, BlockingPositionPlane::XZ));
 }
 
-// bool FCCLattice::isPositionBlockable(const Cell3DPosition &pos) {
-//     Cell3DPosition neighborPos;
-//     Catoms3DWorld *world = Catoms3DWorld::getWorld();
+/********************* SkewFCCLattice *********************/
+SkewFCCLattice::SkewFCCLattice() : FCCLattice() {}
+SkewFCCLattice::SkewFCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : FCCLattice(gsz,gsc) {}
+SkewFCCLattice::~SkewFCCLattice() {}
 
-//     for (int i = 0; i < 12; i++) {
-//         neighborPos = getCellInDirection(pos, i);
-
-//         if (isFree(neighborPos) && !isPositionBlocked(neighborPos)) {
-//            simulatedBlockPosition = pos;
-//            if (isPositionBlocked(neighborPos))
-//                return true;
-//            simulatedBlockPosition.set(0,0,0);
-//         }
-//     }
-//     return false;
-// }
-/********************* FCCLattice2 *********************/
-FCCLattice2::FCCLattice2() : Lattice3D() {}
-FCCLattice2::FCCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {}
-FCCLattice2::~FCCLattice2() {}
-
-vector<Cell3DPosition> FCCLattice2::getRelativeConnectivity(const Cell3DPosition &p) {
+vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
     return nCells;
 }
 
-Vector3D FCCLattice2::gridToWorldPosition(const Cell3DPosition &pos) {
+Vector3D SkewFCCLattice::gridToWorldPosition(const Cell3DPosition &pos) {
     Vector3D res;
 
     res.pt[3] = 1.0;
@@ -716,7 +700,7 @@ Vector3D FCCLattice2::gridToWorldPosition(const Cell3DPosition &pos) {
     return res;
 }
 
-Cell3DPosition FCCLattice2::worldToGridPosition(const Vector3D &pos) {
+Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) {
     Cell3DPosition res;
 
     res.pt[2] = round(M_SQRT2 * pos[2] / gridScale[2]);
@@ -727,40 +711,10 @@ Cell3DPosition FCCLattice2::worldToGridPosition(const Vector3D &pos) {
 }
 
 /************************************************************
- *   FCCLattice2::NeighborDirections
+ *   SkewFCCLattice::NeighborDirections
  ************************************************************/
 
-const string FCCLattice2::directionName[] = {"Con0", "Con1", "Con2",
-                                                               "Con3", "Con4", "Con5",
-                                                               "Con6", "Con7", "Con8",
-                                                               "Con9", "Con10", "Con11"};
-
-int FCCLattice2::getOppositeDirection(int d) {
-    switch (Direction(d)) {
-    case Con0:	return Con6; break;
-    case Con1:	return Con7; break;
-    case Con2:	return Con8; break;
-    case Con3:	return Con9; break;
-    case Con4:	return Con10; break;
-    case Con5:	return Con11; break;
-    case Con6:	return Con0; break;
-    case Con7:	return Con1; break;
-    case Con8:	return Con2; break;
-    case Con9:	return Con3; break;
-    case Con10:	return Con4; break;
-    case Con11:	return Con5; break;
-    default:
-		ERRPUT << "*** ERROR *** : unknown face: " << d << endl;
-		return -1;
-		break;
-    }
-}
-
-string FCCLattice2::getDirectionString(int d) {
-    return directionName[d];
-}
-
-Cell3DPosition FCCLattice2::getCellInDirection(const Cell3DPosition &pRef, int direction)
+Cell3DPosition SkewFCCLattice::getCellInDirection(const Cell3DPosition &pRef, int direction)
 {
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
