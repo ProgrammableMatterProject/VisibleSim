@@ -25,21 +25,24 @@ public:
     double dist_euclid(const Cell3DPosition& p) const;
     double l2_norm() const;
     string config_print() const;
-    
+
+    Cell3DPosition addX(short x) const;
+    Cell3DPosition addY(short y) const;
+    Cell3DPosition addZ(short z) const;
+
     inline const short operator[](const int i) const { return pt[i]; };
     bool operator<(const Cell3DPosition &o) const;
     bool operator==(const Cell3DPosition &o) const
         { return (pt[0] == o.pt[0]) && (pt[1] == o.pt[1]) && (pt[2] == o.pt[2]) ; };
-    bool operator!=(const Cell3DPosition &o) const
-        { return (pt[0] != o.pt[0]) || (pt[1] != o.pt[1]) || (pt[2] != o.pt[2]) ; };
 
-    /** 
+    /**
      * @brief Compares two position by considering first the Z component, then Y, and X, and returns true if first is smaller than second
      **/
     static bool compare_ZYX(const Cell3DPosition& first, const Cell3DPosition& second);
 
+    bool operator!=(const Cell3DPosition &o) const { return !(operator==(o)); }
     operator Vector3D() const { return Vector3D(pt[0], pt[1], pt[2], 1.0); };
-    
+
     friend ostream& operator<<(ostream& f,const Cell3DPosition&p);
     friend const Cell3DPosition operator +(const Cell3DPosition,const Cell3DPosition);
     friend const Cell3DPosition operator -(const Cell3DPosition,const Cell3DPosition);

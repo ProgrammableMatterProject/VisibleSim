@@ -353,9 +353,9 @@ Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
         worldPosition.pt[1] = (pos[1] + 1.0);
         worldPosition.pt[0] = (pos[0] + 1.0);
     }
-    worldPosition.pt[0] += bb.P0[0];
-    worldPosition.pt[1] += bb.P0[1];
-    worldPosition.pt[2] += bb.P0[2];
+    worldPosition.pt[0] += bb.P0[0]-1;
+    worldPosition.pt[1] += bb.P0[1]-1;
+    worldPosition.pt[2] += bb.P0[2]-1;
     return worldPosition;
 }
 

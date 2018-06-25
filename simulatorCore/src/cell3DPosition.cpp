@@ -24,6 +24,24 @@ double Cell3DPosition::l2_norm() const {
     return sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
 }
 
+Cell3DPosition Cell3DPosition::addX(short x) const {
+    Cell3DPosition r(*this);
+    r.pt[0] += x;
+    return r;
+}
+
+Cell3DPosition Cell3DPosition::addY(short y) const {
+    Cell3DPosition r(*this);
+    r.pt[1] += y;
+    return r;
+}
+
+Cell3DPosition Cell3DPosition::addZ(short z) const {
+    Cell3DPosition r(*this);
+    r.pt[2] += z;
+    return r;
+}
+
 ostream& operator<<(ostream& f,const Cell3DPosition&p) {
     f << "(" << p.pt[0] << "," << p.pt[1] << "," << p.pt[2] << ")";
     return f;
@@ -49,7 +67,7 @@ bool Cell3DPosition::operator<(const Cell3DPosition &o) const {
     }
 }
 
-bool Cell3DPosition::compare_ZYX(const Cell3DPosition& first, const Cell3DPosition& second) {    
+bool Cell3DPosition::compare_ZYX(const Cell3DPosition& first, const Cell3DPosition& second) {
     // Consider positions in order z -> y -> x
     if (first.pt[2] < second.pt[2]) return true;
     else if (first.pt[2] > second.pt[2]) return false;
