@@ -2,6 +2,11 @@
 #ifndef UTILS_H__
 #define UTILS_H__
 
+#include <iostream>
+#include <fstream>
+#include <ctime>
+#include <sstream>
+
 #include "tDefs.h"
 
 namespace BaseSimulator {
@@ -17,7 +22,7 @@ namespace utils {
 #define IS_EVEN(x) (!IS_ODD(x)) //!< returns 1 if x is even, 0 otherwise
 
 inline static void awaitKeyPressed() {
-    cout << "Press ENTER to continue..." << endl; cin.ignore();
+    std::cout << "Press ENTER to continue..." << std::endl; std::cin.ignore();
 }
 
 //!< @brief Return true if a <= x <= b, false otherwise
@@ -27,16 +32,44 @@ const float M_SQRT2_2 = sqrt(2.0) / 2.0; //!< $\frac{\sqrt{2}}{2}$
 const double M_SQRT3_2 = sqrt(3.0) / 2.0; //!< $\frac{\sqrt{3}}{2}$
 const double EPS = 1E-5;                  //!< Epsilon
 
+//!< @brief Generates a formatted filename string
+//!< @param prefix e.g, config
+//!< @param ext e.g, xml
+//!< @return a string with format <prefix>_hh_mm_ss.<ext>
+inline static const std::string
+generateTimestampedFilename(const std::string& prefix, const std::string& ext) {
+    std::ostringstream out;
+
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    
+    out << prefix << "_" << ltm->tm_hour << "_"
+        << ltm->tm_min << "_" << ltm->tm_sec << "." << ext;
+    
+    return out.str();
+}
+
+//!< @brief Generates a formatted directory name string
+//!< @param dirBasename e.g, dir
+//!< @return a string with format <dirBasename>_hh_mm_ss
+inline static const std::string
+generateTimestampedDirName(const std::string& dirBasename) {
+    std::ostringstream out;
+
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    
+    out << dirBasename << "_" << ltm->tm_hour << "_"
+        << ltm->tm_min << "_" << ltm->tm_sec;
+    
+    return out.str();
+}
+
 //!< Return true if file at path fileName exists and can be read, false otherwise
-inline static bool file_exists(const string fileName) {
+inline static bool file_exists(const std::string fileName) {
     std::ifstream infile(fileName);
     return infile.good();
 }
-
-//!< An exception for marking functions as not implemented
-struct NotImplementedException : std::exception {
-    const char* what() const noexcept { return "not yet implemented!\n"; }
-};
 
 //!< Swaps the value of two pointers a and b
 inline static void swap(int* a, int* b) {
@@ -56,46 +89,5 @@ template< typename ContainerT, typename PredicateT >
 } // namespace utils
 
 } // namespace BaseSimulator
-
-class Cell3DPosition;
-namespace Catoms3D {
-
-// Utility functions that return cell in direction d of a given Catoms3D Position
-typedef Cell3DPosition (*conProj)(const Cell3DPosition&);
-static const conProj CONPROJECTOR[12] {
-    [] (const Cell3DPosition &p) { return Cell3DPosition(p[0]+1, p[1], p[2]); },
-           
-       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0], p[1]+1, p[2]); },
-               
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1], p[2]+1):Cell3DPosition(p[0]+1, p[1]+1, p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1], p[2]+1):Cell3DPosition(p[0], p[1]+1, p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1]-1, p[2]+1):Cell3DPosition(p[0], p[1], p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1]-1, p[2]+1):Cell3DPosition(p[0]+1, p[1], p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0]-1, p[1], p[2]); },
-
-       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0], p[1]-1, p[2]); },
-           
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1]-1, p[2]-1):Cell3DPosition(p[0], p[1], p[2]-1); },
-           
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1]-1, p[2]-1):Cell3DPosition(p[0]+1, p[1], p[2]-1); },
-           
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1], p[2]-1):Cell3DPosition(p[0]+1, p[1]+1, p[2]-1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1], p[2]-1):Cell3DPosition(p[0], p[1]+1, p[2]-1); },
-  };
-
-} // namespace Catoms3D
 
 #endif

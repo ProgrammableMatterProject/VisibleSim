@@ -198,7 +198,7 @@ void World::deleteBlock(BuildingBlock *bb) {
             cit++;
         }
         if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-    }
+   }
 
     delete bb->ptrGlBlock;
 }

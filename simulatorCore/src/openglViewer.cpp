@@ -8,6 +8,8 @@
 #include "openglViewer.h"
 
 #include <chrono>
+#include <errno.h>
+#include <sys/stat.h>
 
 #include "world.h"
 #include "scheduler.h"
@@ -15,6 +17,7 @@
 #include "events.h"
 #include "trace.h"
 #include "rotation3DEvents.h"
+#include "utils.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessDebugger.h"
@@ -40,7 +43,6 @@ int GlutContext::lastMousePos[2];
 //bool GlutContext::showLinks=false;
 bool GlutContext::fullScreenMode=false;
 bool GlutContext::saveScreenMode=false;
-bool GlutContext::mustSaveImage=false;
 GlutSlidingMainWindow *GlutContext::mainWindow=NULL;
 GlutSlidingDebugWindow *GlutContext::debugWindow=NULL;
 GlutPopupWindow *GlutContext::popup=NULL;
@@ -49,6 +51,8 @@ GlutHelpWindow *GlutContext::helpWindow=NULL;
 int GlutContext::frameCount = 0;
 int GlutContext::previousTime = 0;
 float GlutContext::fps = 0;
+
+std::string animationDirName;
 
 void GlutContext::init(int argc, char **argv) {
 	if (GUIisEnabled) {
@@ -276,15 +280,15 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'T' : case 't' :
                 if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
-										popup->setTextSize(TextSize::TEXTSIZE_LARGE);
+                    popup->setTextSize(TextSize::TEXTSIZE_LARGE);
                 } else {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
-										popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
+                    popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
                 }
                 break;
                 //  case 'l' : showLinks = !showLinks; break;
             case 'r' : getScheduler()->start(SCHEDULER_MODE_REALTIME); break;
-    //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
+                //          case 'p' : getScheduler()->pauseSimulation(getScheduler()->now()); break;
                 //case 'p' : BlinkyBlocks::getDebugger()->handlePauseRequest(); break;
             case 'd' : getScheduler()->stop(getScheduler()->now()); break;
             case 'R' : getScheduler()->start(SCHEDULER_MODE_FASTEST); break;
@@ -315,8 +319,39 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'i' : case 'I' :
                 mainWindow->openClose();
                 break;
-            case 's' : saveScreenMode=!saveScreenMode; break;
-            case 'S' : saveScreen((char *)("capture.ppm")); break;
+            case 'S' : {
+                if (not saveScreenMode) {
+                    // Will start animation capture,
+                    //  make sure animation directory exists 
+                    int err; extern int errno;
+                    struct stat sb;
+                    animationDirName = generateTimestampedDirName("animation");
+                    static const char* animationDirNameC = animationDirName.c_str();
+
+                    err = stat(animationDirNameC, &sb);
+                    if (err and errno == ENOENT) {
+                        // Create directory
+                        err = mkdir(animationDirNameC, S_IRWXU);
+                        if (err != 0) {
+                            cerr << "An error occured when creating the directory for animation export" << endl;
+                            break;
+                        }
+                    }
+                    // else: directory exists, all good
+                    cerr << "Recording animation frames in directory: "
+                         << animationDirName << endl;
+                } else {
+                    cerr << "Animation recording has ended" << endl;
+
+                }
+                
+                saveScreenMode=!saveScreenMode;
+            } break;
+            case 's' : {
+                const string ssName = generateTimestampedFilename("capture", "ppm");
+                saveScreen(ssName.c_str());
+                cerr << "Screenshot saved to file: " << ssName << endl;
+            } break;
             case 'B' : {
                 World *world = BaseSimulator::getWorld();
                 world->toggleBackground();
@@ -382,12 +417,14 @@ void GlutContext::idleFunc(void) {
 #ifdef showStatsFPS
     calculateFPS();
 #endif
-    if (saveScreenMode && mustSaveImage) {
+    if (saveScreenMode) {
         static int num=0;
-        char title[16];
-        sprintf(title,"save%04d.ppm",num++);
+        char title[32];
+        strncpy(title, animationDirName.c_str(), sizeof(title));
+        strncat(title, "/save%04d.ppm", sizeof(title));
+                
+        sprintf(title,title,num++);
         saveScreen(title);
-        mustSaveImage=false;
     }
     if (lastMotionTime) {
         int tm = glutGet(GLUT_ELAPSED_TIME);
@@ -589,7 +626,7 @@ void GlutContext::addTrace(const string &message,int id,const Color &color) {
         mainWindow->addTrace(id,message,color);
 }
 
-bool GlutContext::saveScreen(char *title) {
+bool GlutContext::saveScreen(const char *title) {
 #ifdef WIN32
     FILE *fichier;
     fopen_s(&fichier,title,"wb");

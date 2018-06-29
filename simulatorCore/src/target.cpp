@@ -39,7 +39,7 @@ Target *Target::loadNextTarget() {
                     return new TargetSurface(Target::targetNode);
                 }
             } else {
-                throw UnknownTargetFormatException();
+                throw UnknownTargetFormatException(attr);
             }
         }
     }
@@ -156,7 +156,7 @@ bool TargetGrid::isInTarget(const Cell3DPosition &pos) const {
 const Color TargetGrid::getTargetColor(const Cell3DPosition &pos) {
     if (!isInTarget(pos)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
-        throw InvalidPositionException();
+        throw InvalidPositionException(pos);
     }
 
     return tCells[pos];
@@ -173,7 +173,7 @@ void TargetGrid::print(ostream& where) const {
 }
 
 void TargetGrid::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::utils::NotImplementedException();
+    throw BaseSimulator::NotImplementedException("TargetGrid::boundingBox");
 }
 
 void TargetGrid::highlight() {
@@ -343,20 +343,13 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
 }
 
 Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
-    Vector3D worldPosition;
-    worldPosition.pt[3] = 1.0;
-    worldPosition.pt[2] = M_SQRT2_2 * (pos[2] + 0.5);
-    if (IS_EVEN(pos[2])) {
-        worldPosition.pt[1] = (pos[1] + 0.5);
-        worldPosition.pt[0] = (pos[0] + 0.5);
-    } else {
-        worldPosition.pt[1] = (pos[1] + 1.0);
-        worldPosition.pt[0] = (pos[0] + 1.0);
-    }
-    worldPosition.pt[0] += bb.P0[0]-1;
-    worldPosition.pt[1] += bb.P0[1]-1;
-    worldPosition.pt[2] += bb.P0[2]-1;
-    return worldPosition;
+    Vector3D res = getWorld()->lattice->gridToUnscaledWorldPosition(pos);
+
+    res.pt[0] += bb.P0[0] - 1.0;
+    res.pt[1] += bb.P0[1] - 1.0;
+    res.pt[2] += bb.P0[2] - 1.0;
+
+    return res;       
 }
 
 bool TargetCSG::isInTarget(const Cell3DPosition &pos) const {
@@ -378,7 +371,7 @@ const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
     Color color;
     if (!csgRoot->isInside(gridToWorldPosition(pos), color)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
-        throw InvalidPositionException();
+        throw InvalidPositionException(pos);
     }
     return color;
 }
@@ -905,12 +898,12 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) const {
     }
 
     else {
-        throw BaseSimulator::utils::NotImplementedException();
+        throw BaseSimulator::NotImplementedException();
     }
 }
 
 const Color TargetSurface::getTargetColor(const Cell3DPosition &pos) {
-    throw BaseSimulator::utils::NotImplementedException();
+    throw BaseSimulator::NotImplementedException("TargetSurface::getTargetColor");
 }
 
 void TargetSurface::addTargetCell(const Cell3DPosition &pos, const Color c) {
@@ -1036,12 +1029,12 @@ void TargetSurface::print(ostream& where) const {
     }
 
     else {
-        throw BaseSimulator::utils::NotImplementedException();
+        throw BaseSimulator::NotImplementedException("TargetSurface::print");
     }
 }
 
 void TargetSurface::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::utils::NotImplementedException();
+    throw BaseSimulator::NotImplementedException("TargetSurface::boundingBox");
 }
 
 void TargetSurface::glDraw() {
