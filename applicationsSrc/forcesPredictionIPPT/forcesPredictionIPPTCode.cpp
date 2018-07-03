@@ -513,8 +513,10 @@ void ForcesPredictionIPPTCode::visualization() {
         vector<double> Fd=contactStiffnessMatrix(dup)*dup;
         double fx=Fd[0], fy=Fd[1], fz=Fd[2], mx=Fd[3], my=Fd[4], mz=Fd[5]; // in global coordinates
         vizTable[1][0]=fx;  vizTable[1][1]=fy;  vizTable[1][2]=fz;  vizTable[1][3]=mx;  vizTable[1][4]=my;  vizTable[1][5]=mz;
-        if(fx<0) {
+        if(fz<0) { // if in contact then check the condition on torque
             maxS = min(1.,max(abs(mx)/abs(fz*L/2),abs(my)/abs(fz*L/2)));
+        } else { // if no contact then possible lost of balance
+            maxS =1.;
         }
 	}
 
