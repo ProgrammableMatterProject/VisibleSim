@@ -20,7 +20,8 @@ public:
     short pt[3]; //!< (x,y,z) values of the vector
     Cell3DPosition();
     Cell3DPosition(short x,short y,short z);
-
+    Cell3DPosition(const Vector3D& v);
+    
     void set(short x,short y,short z);
     double dist_euclid(const Cell3DPosition& p) const;
     double l2_norm() const;

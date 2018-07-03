@@ -738,9 +738,9 @@ Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) 
 Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) {
     Cell3DPosition res;
 
-    res.pt[2] = round(M_SQRT2 * pos[2] / gridScale[2]);
-    res.pt[1] = round((pos[1] - M_SQRT2_2 * pos[2]) / gridScale[1]);
-    res.pt[0] = round((pos[0] - M_SQRT2_2 * pos[2]) / gridScale[0]);
+    res.pt[2] = round((2 * pos[2]) / (M_SQRT2 * gridScale[2]) - 0.5);
+    res.pt[1] = round(pos[1] / gridScale[1] - 0.5 - res.pt[2] / 2.0);
+    res.pt[0] = round(pos[0] / gridScale[0] - 0.5 - res.pt[2] / 2.0);
 
     return res;
 }

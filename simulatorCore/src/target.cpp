@@ -354,6 +354,7 @@ Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
 
 bool TargetCSG::isInTarget(const Cell3DPosition &pos) const {
     Color color;
+    // cout << "isInTarget:pos: " << pos << endl;
     return csgRoot->isInside(gridToWorldPosition(pos), color);
 }
 

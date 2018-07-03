@@ -1,5 +1,10 @@
 #include "csg.h"
 #include "color.h"
+#include "cell3DPosition.h"
+#include "world.h"
+
+#include "target.h"
+
 #define EPS 1e-10
 
 /******************************************************************/
@@ -11,9 +16,9 @@ void CSGCube::toString() const {
 
 bool CSGCube::isInside(const Vector3D &p, Color &color) const {
     if (center) {
-        if (p.pt[0] <= size_x/2 && p.pt[0] >= -size_x/2 &&
-                p.pt[1] <= size_y/2 && p.pt[1] >= -size_y/2 &&
-                p.pt[2] <= size_z/2 && p.pt[2] >= -size_z/2)
+        if (p.pt[0] <= size_x/2.0 && p.pt[0] >= -size_x/2.0 &&
+                p.pt[1] <= size_y/2.0 && p.pt[1] >= -size_y/2.0 &&
+                p.pt[2] <= size_z/2.0 && p.pt[2] >= -size_z/2.0)
             return true;
     }
     else { // TODO
@@ -308,12 +313,57 @@ bool CSGDifference::isInside(const Vector3D &p, Color &color) const {
 }
 
 bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) const {
-    if (children.size() > 0 && children[0]->isInBorder(p, color, border)) {
-        for (unsigned int i = 1; i < children.size(); i++) {
-            if (children[i]->isInside(p, color)) return false;
-        }
-        return true;
+    // CSGDifference upscaledDiff;
+    // CSGScale upScaleOp;
+    // for (unsigned int i = 1; i < children.size(); i++) {
+    //     upScaleOp = upScaleOp();
+    //     upScaleOp.addChild(children[i]);
+    //     upscaledDiff.addChild(upScaleOp);
+    // }
+        
+    // if (children.size() > 0 and isInside(p, color)) {
+    //     for (unsigned int i = 0; i < upscaledChildren.size(); i++) {
+    //         if (not upscaledDiff.isInside(p, color)) return true;
+    //     }
+    // }
+
+    Cell3DPosition plat = getWorld()->lattice->worldToGridPosition(p);
+    cout << endl << "p: " << p << " plat: " << plat << endl;
+    for (unsigned int i = 0; i < children.size(); i++) {        
+        cout << "\t";
+        children[i]->toString();
+        bool ii = children[i]->isInside(p, color);
+        bool ib = children[i]->isInBorder(p, color, border);
+        cout << "ii: " << ii << " ib:" << ib << endl;
     }
+    
+    if (children.size() > 0 and isInside(p, color)) {
+        if (children[0]->isInBorder(p, color, border)) return true;
+        else if (children[0]->isInside(p, color)) {
+            const Cell3DPosition pPos = Cell3DPosition(p);
+            for (const Cell3DPosition& nPos : getWorld()->lattice->getNeighborhood(pPos)) {
+                // for (unsigned int i = 1; i < children.size(); i++) {
+                //     if (border > 1.0) throw NotImplementedException("CSG Border on difference operation for border > 1.0");
+                //     if (children[i]->isInBorder(Vector3D(nPos), color, -border)) return true;
+                // }
+                Vector3D nVec = static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(nPos); // getWorld()->lattice->gridToWorldPosition(nPos);
+                cout << "nPos: " << nPos << " nVec:" << nVec << endl;
+                if (not !isInside(nVec, color)) 
+                    return true;
+            }
+        }
+    }            
+
+    // } else {
+    //     CSGIntersection inter;
+    //     for (unsigned int i = 0; i < children.size(); i++) {
+    //         inter.addChild(children[i]);
+    //     }
+        
+    //     if (inter.isInBorder(p, color, 0.00000000)) return true;        
+    // }
+
+    cout << "false" << endl;
     return false;
 }
 

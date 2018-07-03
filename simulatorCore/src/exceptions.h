@@ -6,7 +6,7 @@
 
 namespace BaseSimulator {
 
-class VisibleSimException : std::exception {
+class VisibleSimException : public std::exception {
 protected:
     std::string m_msg;
 public:

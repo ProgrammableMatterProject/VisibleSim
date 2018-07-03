@@ -64,7 +64,7 @@ def main(argv):
         file.write('<?xml version="1.0" standalone="no" ?>\n\
 <world gridSize="%d, %d, %d">\n\
     <camera target="50,50,10" directionSpherical="-20,30,100"\n\
-        angle="45" near="0.1" far="2000.0" />\n\
+        angle="45" near="0.1" far="2000.0" />\n\n\
     <blockList color="128,128,128" blocksize="10,10,10">\n' %
                    (boxSize, boxSize, boxSize))
 	
@@ -88,7 +88,7 @@ def main(argv):
                             addMeshModule(file, xp, yp, z, meshScale)
                             isFree[x][y][z] = False;
                     
-        file.write('\t</blockList>\n</world>\n')
+        file.write('\t</blockList>\n\n</world>\n')
         file.close()
 
         print "VisibleSim Configuration generated in file " + filename

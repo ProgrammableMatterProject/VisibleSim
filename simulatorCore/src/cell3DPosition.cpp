@@ -9,6 +9,12 @@ Cell3DPosition::Cell3DPosition(short x,short y,short z) {
     set(x,y,z);
 }
 
+Cell3DPosition::Cell3DPosition(const Vector3D& v) {
+    pt[0] = v.pt[0];
+    pt[1] = v.pt[1];
+    pt[2] = v.pt[2];
+}
+                                                         
 void Cell3DPosition::set(short x,short y,short z) {
     pt[0]=x;
     pt[1]=y;
