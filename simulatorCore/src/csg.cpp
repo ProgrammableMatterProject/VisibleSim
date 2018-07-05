@@ -303,6 +303,8 @@ void CSGDifference::toString() const {
 }
 
 bool CSGDifference::isInside(const Vector3D &p, Color &color) const {
+    // cout << endl << "\nisInside:p: " << p << "\t";
+
     if (children.size() > 0 && children[0]->isInside(p, color)) {
         for (unsigned int i = 1; i < children.size(); i++) {
             if (children[i]->isInside(p, color)) return false;
@@ -327,15 +329,15 @@ bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) c
     //     }
     // }
 
-    Cell3DPosition plat = getWorld()->lattice->worldToGridPosition(p);
-    cout << endl << "p: " << p << " plat: " << plat << endl;
-    for (unsigned int i = 0; i < children.size(); i++) {        
-        cout << "\t";
-        children[i]->toString();
-        bool ii = children[i]->isInside(p, color);
-        bool ib = children[i]->isInBorder(p, color, border);
-        cout << "ii: " << ii << " ib:" << ib << endl;
-    }
+    // Cell3DPosition plat = getWorld()->lattice->worldToGridPosition(p);
+    // cout << "p: " << p << endl; // << " plat: " << plat << endl; // 
+    // for (unsigned int i = 0; i < children.size(); i++) {        
+    //     cout << "\t";
+    //     children[i]->toString();
+    //     bool ii = children[i]->isInside(p, color);
+    //     bool ib = children[i]->isInBorder(p, color, border);
+    //     cout << "ii: " << ii << " ib:" << ib << endl;
+    // }
     
     if (children.size() > 0 and isInside(p, color)) {
         if (children[0]->isInBorder(p, color, border)) return true;
@@ -347,8 +349,8 @@ bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) c
                 //     if (children[i]->isInBorder(Vector3D(nPos), color, -border)) return true;
                 // }
                 Vector3D nVec = static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(nPos); // getWorld()->lattice->gridToWorldPosition(nPos);
-                cout << "nPos: " << nPos << " nVec:" << nVec << endl;
-                if (not !isInside(nVec, color)) 
+                // cout << "nPos: " << nPos << " nVec:" << nVec << endl;
+                if (not BlockCode::target->isInTarget(nPos))
                     return true;
             }
         }
@@ -362,8 +364,7 @@ bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) c
         
     //     if (inter.isInBorder(p, color, 0.00000000)) return true;        
     // }
-
-    cout << "false" << endl;
+    
     return false;
 }
 

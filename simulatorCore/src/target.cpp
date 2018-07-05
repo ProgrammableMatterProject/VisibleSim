@@ -345,22 +345,26 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
 Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
     Vector3D res = getWorld()->lattice->gridToUnscaledWorldPosition(pos);
 
+    Vector3D ires = res;
+    
     res.pt[0] += bb.P0[0] - 1.0;
     res.pt[1] += bb.P0[1] - 1.0;
     res.pt[2] += bb.P0[2] - 1.0;
 
+    // cout << "gridToWorldPosition" << pos << " -> " << ires << " -> " << res << endl;
+        
     return res;       
 }
 
 bool TargetCSG::isInTarget(const Cell3DPosition &pos) const {
     Color color;
-    // cout << "isInTarget:pos: " << pos << endl;
     return csgRoot->isInside(gridToWorldPosition(pos), color);
 }
 
 bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) const {
     Color color;
 
+    // cout << endl << "\nisInTargetBorder:pos: " << pos << "\t";
     return csgRoot->isInBorder(gridToWorldPosition(pos), color, radius);
 }
 

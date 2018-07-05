@@ -113,7 +113,9 @@ vector<Cell3DPosition> Lattice::getActiveNeighborCells(const Cell3DPosition &pos
 }
 
 Vector3D Lattice::gridToWorldPosition(const Cell3DPosition &pos) {
-    return gridToUnscaledWorldPosition(pos).dot(gridScale);
+    Vector3D res = gridToUnscaledWorldPosition(pos).dot(gridScale);
+    // OUTPUT << "gridToWorldPosition" << pos << " -> " << res << endl;
+    return res;
 }
 
 vector<Cell3DPosition> Lattice::getFreeNeighborCells(const Cell3DPosition &pos) {
@@ -730,7 +732,7 @@ Vector3D SkewFCCLattice::gridToUnscaledWorldPosition(const Cell3DPosition &pos) 
     res.pt[1] = pos[1] + 0.5 + pos[2] / 2.0;
     res.pt[0] = pos[0] + 0.5 + pos[2] / 2.0;
 
-   // OUTPUT << "world :"<< res << endl;
+    // OUTPUT << "gridToUnscaledWorldPosition" << pos << " -> " << res << endl;
 
     return res;
 }
@@ -742,6 +744,12 @@ Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) {
     res.pt[1] = round(pos[1] / gridScale[1] - 0.5 - res.pt[2] / 2.0);
     res.pt[0] = round(pos[0] / gridScale[0] - 0.5 - res.pt[2] / 2.0);
 
+    // OUTPUT << "worldToGridPosition" << pos << " -> " << res << endl;
+    // Vector3D check = gridToWorldPosition(res);
+    // OUTPUT << "\tcheck" << res << " -> " << check << endl;
+    // assert(check == pos);
+    
+    
     return res;
 }
 

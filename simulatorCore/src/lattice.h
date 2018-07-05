@@ -38,7 +38,7 @@ public:
         OutOfLatticeInsertionException(const Cell3DPosition& p)
             {
                 stringstream ss;
-                ss <<  "Trying to insert a block out of the lattice at " << p << endl;
+                ss <<  "Trying to insert a block out of the grid at " << p << endl;
                 m_msg = ss.str();
             }        
     };
