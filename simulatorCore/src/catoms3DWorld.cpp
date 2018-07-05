@@ -179,6 +179,7 @@ void Catoms3DWorld::glDraw() {
 	if (polymer) {
 		polymer->glDraw();
 	}
+    
 // material for the grid walls
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0f};
@@ -517,7 +518,7 @@ void Catoms3DWorld::exportConfiguration() {
 
 void Catoms3DWorld::simulatePolymer() {
 
-	if (polymer==NULL) {
+	if (polymer == NULL) {
 		polymer = new Polymer(lattice->gridSize[0],lattice->gridSize[1],4,lattice->gridSize[2]*lattice->gridScale[2],lattice->gridScale[0],lattice->gridScale[0],lattice->gridScale[1]);
 
 		cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;
