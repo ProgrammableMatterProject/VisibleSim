@@ -56,6 +56,21 @@ void GlBlock::setVisible(bool visible) {
 }
 
 void GlBlock::toggleHighlight() {
+    Vector3D v = Vector3D(position[0],position[1],position[2]);
+    cout << v << endl;
+    const Cell3DPosition &p = getWorld()->lattice->worldToGridPosition(v);
+    cout << p << endl;
+    unsigned short idx = 0;
+    for (const Cell3DPosition& np : getWorld()->lattice->getNeighborhood(p)) {
+        cout << idx++ << ": " << np << " - inBorder: "
+            << static_cast<TargetCSG*>(BlockCode::target)->isInTargetBorder(np, 1.0) << endl;
+    }
+    
+    cout << blockId << endl;
+
+    bool ib = static_cast<TargetCSG*>(BlockCode::target)->isInTargetBorder(p, 1.0);
+    cout << "isInBorder: " << ib << endl;
+
 	isHighlighted=!isHighlighted;
 }
 
