@@ -7619,10 +7619,11 @@
     <target format="csg">
       <csg content="
 
-scale([1.00000, 1.00000, 1.00000]) 
+scale([0.500000, 0.500000, 0.500000]) 
 difference() {
-    cube([16, 15, 12], true);
-    #cube([5, 15, 7], true);
+    cube([21, 15, 25], true);
+    #cube([7, 15, 25], true);            
+}
 
 "/>
 
