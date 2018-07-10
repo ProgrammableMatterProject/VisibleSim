@@ -181,7 +181,7 @@ void World::disconnectBlock(BuildingBlock *block) {
 void World::deleteBlock(BuildingBlock *bb) {
     if (bb->getState() >= BuildingBlock::ALIVE ) {
         // cut links between bb and others and remove it from the grid
-	disconnectBlock(bb);
+        disconnectBlock(bb);
         bb->setState(BuildingBlock::REMOVED);
     }
 
@@ -191,6 +191,7 @@ void World::deleteBlock(BuildingBlock *bb) {
     }
 
     // remove the associated glBlock
+    // FIXME: Block removal corrupts tabGlBlocks that is accessed through the OpenGL interaction menu menu by blockId == index
     std::vector<GlBlock*>::iterator cit=tabGlBlocks.begin();
     if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
     else {
@@ -198,7 +199,7 @@ void World::deleteBlock(BuildingBlock *bb) {
             cit++;
         }
         if (*cit==bb->ptrGlBlock) tabGlBlocks.erase(cit);
-   }
+    }
 
     delete bb->ptrGlBlock;
 }
@@ -212,8 +213,9 @@ void World::stopSimulation() {
 
 bool World::canAddBlockToFace(bID numSelectedGlBlock, int numSelectedFace) {
 	BuildingBlock *bb = getBlockById(tabGlBlocks[numSelectedGlBlock]->blockId);
-	Cell3DPosition pos = bb->position;
-	vector<Cell3DPosition> nCells = lattice->getRelativeConnectivity(pos);
+	const Cell3DPosition &pos = bb->position;
+    cout << pos << endl;
+	const vector<Cell3DPosition> &nCells = lattice->getRelativeConnectivity(pos);
 	// if (numSelectedFace < lattice->getMaxNumNeighbors())
 	// 	cerr << "numSelectedFace: " << numSelectedFace << " f"
 	// 		 << pos << "+" << nCells[numSelectedFace]
@@ -262,7 +264,8 @@ void World::tapBlock(Time date, bID bId, int face) {
 }
 
 void World::addObstacle(const Cell3DPosition &pos,const Color &col) {
-	GlBlock *glBlock = new GlBlock(-1);
+    // FIXME: Block with -1 id corrupts tabGlBlocks that is accessed through the OpenGL interaction menu by blockId == index
+	GlBlock *glBlock = new GlBlock(-1); 
     Vector3D position(lattice->gridScale[0]*pos[0],
 					  lattice->gridScale[1]*pos[1],
 					  lattice->gridScale[2]*pos[2]);
@@ -287,7 +290,8 @@ cerr << "Block " << numSelectedGlBlock << ":" << lattice->getDirectionString(num
          << " selected" << endl;
 	// cerr << "Block " << numSelectedGlBlock << ":" << numSelectedFace << " selected" << endl;
 
-	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock, (int)numSelectedFace));
+	GlutContext::popupMenu->activate(1, canAddBlockToFace((int)numSelectedGlBlock,
+                                                          (int)numSelectedFace));
 	GlutContext::popupMenu->setCenterPosition(ix,GlutContext::screenHeight-iy);
 	GlutContext::popupMenu->show(true);
 }

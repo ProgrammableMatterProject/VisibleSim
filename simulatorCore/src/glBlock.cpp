@@ -56,21 +56,40 @@ void GlBlock::setVisible(bool visible) {
 }
 
 void GlBlock::toggleHighlight() {
-    Vector3D v = Vector3D(position[0],position[1],position[2]);
-    cout << v << endl;
-    const Cell3DPosition &p = getWorld()->lattice->worldToGridPosition(v);
-    cout << p << endl;
-    unsigned short idx = 0;
-    for (const Cell3DPosition& np : getWorld()->lattice->getNeighborhood(p)) {
-        cout << idx++ << ": " << np << " - inBorder: "
-            << static_cast<TargetCSG*>(BlockCode::target)->isInTargetBorder(np, 1.0) << endl;
-    }
+    // TODO: @PTHY REMOVE COMMENTS FOR CSG BORDER DEBUG
+    // TargetCSG* target = static_cast<TargetCSG*>(BlockCode::target);
+    // Color c = Color();
+
+    // Vector3D v = Vector3D(position[0],position[1],position[2]);
+    // // cout << v << endl;
+    // const Cell3DPosition &p = getWorld()->lattice->worldToGridPosition(v);
+    // // cout << p << endl;
+    // Vector3D vt = target->gridToCSGPosition(p);
+    // // cout << "vt: " << vt << endl;
+
+    // const Cell3DPosition pPos = static_cast<TargetCSG*>(BlockCode::target)->
+    //     CSGToGridPosition(vt);
+
+    // cout << "\t World: " << v << endl;
+    // cout << "\t Grid: " << p << endl;
+    // cout << "\t CSG: " << vt << endl;
+    // cout << "\t CSGToGrid: " << pPos << endl;
     
-    cout << blockId << endl;
-
-    bool ib = static_cast<TargetCSG*>(BlockCode::target)->isInTargetBorder(p, 1.0);
-    cout << "isInBorder: " << ib << endl;
-
+    // bool it = target->isInTarget(p);
+    // bool ib = target->isInTargetBorder(p, 1.0);
+    // cout << "isInTarget: " << it << " - isInBorder: " << ib;
+    // cout << " isInside: " << target->csgRoot->isInside(vt, c) << endl;
+    
+    // unsigned short idx = 0;       
+    // for (const Cell3DPosition& np : getWorld()->lattice->getNeighborhood(p)) {
+    //     Vector3D vnt = target->gridToCSGPosition(np);
+        
+    //     cout << idx++ << ": " << np << " - inBorder: " << target->isInTargetBorder(np, 1.0)
+    //          << " - isInTarget: " << target->isInTarget(np);
+    //     cout << " - isInside: " << target->csgRoot->isInside(vnt, c);
+    //     cout << " - vnt: " << vnt << endl;
+    // }
+    
 	isHighlighted=!isHighlighted;
 }
 

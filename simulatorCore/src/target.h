@@ -240,6 +240,7 @@ public:
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
+public: // FIXME:
     CSGNode *csgRoot;
     BoundingBox bb;
 protected:
@@ -257,11 +258,17 @@ public:
     virtual const Color getTargetColor(const Cell3DPosition &pos);
 
     /**
-     * @brief Grid to world position within bounding box
+     * @brief Grid to unscaled world position within bounding box
      * @param pos position of the target cell
      */
-    Vector3D gridToWorldPosition(const Cell3DPosition &pos) const;
+    Vector3D gridToCSGPosition(const Cell3DPosition &pos) const;
 
+    /**
+     * @brief Unscaled world position for CSG within bounding box to grid position
+     * @param pos position of the target cell
+     */
+    Cell3DPosition CSGToGridPosition(const Vector3D &pos) const;
+    
     /**
      * @brief The object is in the border of the target
      * @param pos position of the target cell
@@ -269,6 +276,7 @@ public:
      */
     bool isInTargetBorder(const Cell3DPosition &pos, double radius) const;
 
+    void highlight();
 };  // class TargetCSG
 
 //<! @brief A target modeling a surface by a point cloud

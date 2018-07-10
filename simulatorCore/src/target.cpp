@@ -339,42 +339,62 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
 
-    if (boundingBox) csgRoot->boundingBox(bb);
+    if (boundingBox) {
+        csgRoot->boundingBox(bb);
+
+        cout << bb.P0 << endl;
+        cout << bb.P1 << endl;
+    }
 }
 
-Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
+Vector3D TargetCSG::gridToCSGPosition(const Cell3DPosition &pos) const {
     Vector3D res = getWorld()->lattice->gridToUnscaledWorldPosition(pos);
-
-    Vector3D ires = res;
     
     res.pt[0] += bb.P0[0] - 1.0;
     res.pt[1] += bb.P0[1] - 1.0;
     res.pt[2] += bb.P0[2] - 1.0;
 
-    // cout << "gridToWorldPosition" << pos << " -> " << ires << " -> " << res << endl;
+    // cout << "gridToWorldPosition" << pos << " -> " << res << endl;
         
     return res;       
 }
 
+Cell3DPosition TargetCSG::CSGToGridPosition(const Vector3D &pos) const {
+    Vector3D unboundPos = pos;
+    
+    unboundPos.pt[0] -= bb.P0[0] - 1.0;
+    unboundPos.pt[1] -= bb.P0[1] - 1.0;
+    unboundPos.pt[2] -= bb.P0[2] - 1.0;
+    
+    Cell3DPosition res = getWorld()->lattice->unscaledWorldToGridPosition(unboundPos);
+        
+    return res;
+}
+
 bool TargetCSG::isInTarget(const Cell3DPosition &pos) const {
     Color color;
-    return csgRoot->isInside(gridToWorldPosition(pos), color);
+    return csgRoot->isInside(gridToCSGPosition(pos), color);
 }
 
 bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) const {
     Color color;
 
     // cout << endl << "\nisInTargetBorder:pos: " << pos << "\t";
-    return csgRoot->isInBorder(gridToWorldPosition(pos), color, radius);
+    return csgRoot->isInBorder(gridToCSGPosition(pos), color, radius);
 }
 
 void TargetCSG::boundingBox(BoundingBox &bb) {
     csgRoot->boundingBox(bb);
 }
 
+void TargetCSG::highlight() {
+    glTranslatef(bb.P1[0] + 1, bb.P1[1] + 1, bb.P1[2] + 1);
+    csgRoot->glDraw();
+}
+
 const Color TargetCSG::getTargetColor(const Cell3DPosition &pos) {
     Color color;
-    if (!csgRoot->isInside(gridToWorldPosition(pos), color)) {
+    if (!csgRoot->isInside(gridToCSGPosition(pos), color)) {
         cerr << "error: attempting to get color of undefined target cell" << endl;
         throw InvalidPositionException(pos);
     }

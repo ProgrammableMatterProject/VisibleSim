@@ -46,6 +46,7 @@ public:
     virtual bool isInside(const Vector3D &p, Color &color) const = 0;
     virtual bool isInBorder(const Vector3D &p, Color &color, double border) const = 0;
     virtual void boundingBox(BoundingBox &bb) = 0;
+    virtual void glDraw() ;
 };
 
 /******************************************************************/
@@ -64,6 +65,7 @@ public:
     bool isInside(const Vector3D &point, Color &color) const;
     bool isInBorder(const Vector3D &p, Color &color, double border) const;
     void boundingBox(BoundingBox &bb);
+    void glDraw() override;
 };
 
 class CSGSphere : public CSGNode
@@ -108,6 +110,7 @@ public:
     bool isInside(const Vector3D &point, Color &color) const;
     bool isInBorder(const Vector3D &p, Color &color, double border) const;
     void boundingBox(BoundingBox &bb);
+    void glDraw() override;    
 };
 
 class CSGIntersection : public CSGNode

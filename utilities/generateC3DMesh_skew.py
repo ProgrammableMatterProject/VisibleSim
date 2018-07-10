@@ -93,14 +93,14 @@ def main(argv):
 
         print "VisibleSim Configuration generated in file " + filename
 
-# except:
-#         print "error: An error occured during initialization, please try again."
-#         print "usage: python " + __file__ + " <gridSize> <meshScale> <#branches>"
-#         print "\t\t <gridSize>  [1..n] the cubic size of the lattice"
-#         print "\t\t <meshScale> [1..n] the number of modules on a single mesh branch"
-#         print "\t\t <#branches> [1..5] the number of mesh branches"
-#         print "\t\t <coordinates> {[default], skew} indicates whether or not to use skew coordinate system"
-#         return False
+except:
+        print "error: An error occured during initialization, please try again."
+        print "usage: python " + __file__ + " <gridSize> <meshScale> <#branches>"
+        print "\t\t <gridSize>  [1..n] the cubic size of the lattice"
+        print "\t\t <meshScale> [1..n] the number of modules on a single mesh branch"
+        print "\t\t <#branches> [1..6] the number of mesh branches"
+        print "\t\t <coordinates> {[default], skew} indicates whether or not to use skew coordinate system"
+        return False
 
 if __name__ == "__main__":
     main(sys.argv)

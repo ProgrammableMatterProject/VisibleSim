@@ -41,14 +41,14 @@ static std::set<Cell3DPosition> placedBorderCatoms;
 void MeshCatoms3DBlockCode::startup() {
     stringstream info;
 
-    Cell3DPosition check = Cell3DPosition(2,-1,4);
-    static bool done = false;
-    if (not done) {
-        cout << "isInTarget:" << target->isInTarget(check) << endl;
-        cout << "isInTargetBorder:" << static_cast<TargetCSG*>(target)->isInTargetBorder(check, 1.0) << endl;
+    // Cell3DPosition check = Cell3DPosition(2,-1,4);
+    // static bool done = false;
+    // if (not done) {
+    //     cout << "isInTarget:" << target->isInTarget(check) << endl;
+    //     cout << "isInTargetBorder:" << static_cast<TargetCSG*>(target)->isInTargetBorder(check, 1.0) << endl;
                 
-        done = true;
-    }
+    //     done = true;
+    // }
     
     info << "Starting ";
     if (target == NULL) {
@@ -86,7 +86,7 @@ void MeshCatoms3DBlockCode::startup() {
         catom->setColor(target->getTargetColor(catom->position));
     }
    
-    static const bool ENABLE_COATING = true;
+    static const bool ENABLE_COATING = false;
     if  (ENABLE_COATING) {
         for (auto const& cell : world->lattice->getNeighborhood(catom->position)) {
             

@@ -185,7 +185,14 @@ public:
      * @param pos The grid position to consider
      * @return The corresponding world position
      */
-    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) = 0;
+    virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) = 0; // TODO: REFACTOR
+
+    /**
+     * @brief Transforms a real world position considering a 1x1x1 grid scale into an integer grid position 
+     * @param pos The unscaled world position to consider
+     * @return The corresponding grid position
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) = 0;
 
     /**
      * @brief Transforms an integer grid position into a real world position considering the actual scale of the lattice
@@ -254,6 +261,12 @@ public:
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) = 0;
+
+    /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) = 0;
+
     /**
      * @copydoc Lattice::worldToGridPosition
      */
@@ -302,6 +315,10 @@ public:
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) = 0;
+    /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) = 0;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
@@ -362,6 +379,10 @@ public:
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
     /**
      * @copydoc Lattice::worldToGridPosition
      */
@@ -434,6 +455,10 @@ public:
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -586,6 +611,10 @@ public:
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
     /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    /**
      * @copydoc Lattice::worldToGridPosition
      */
     virtual Cell3DPosition worldToGridPosition(const Vector3D &pos);
@@ -670,6 +699,10 @@ public:
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
     /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    /**
      * @copydoc Lattice::worldToGridPosition
      */
     virtual Cell3DPosition worldToGridPosition(const Vector3D &pos);
@@ -727,6 +760,10 @@ public:
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
     /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
+    /**
      * @copydoc Lattice::worldToGridPosition
      */
     virtual Cell3DPosition worldToGridPosition(const Vector3D &pos);
@@ -781,6 +818,10 @@ public:
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */
     virtual Vector3D gridToUnscaledWorldPosition(const Cell3DPosition &pos) override;
+    /**
+     * @copydoc Lattice::unscaledWorldToGridPosition
+     */
+    virtual Cell3DPosition unscaledWorldToGridPosition(const Vector3D &pos) override;
     /**
      * @copydoc Lattice::worldToGridPosition
      */

@@ -35,7 +35,7 @@ def isOnPlus45DegZBranch(x, y, z, meshScale):
             and x % meshScale == 0)
     
 def main(argv):
-    try: 
+    # try: 
         gridSize = int(argv[1])
         assert gridSize > 0
         boxSize = int(round(gridSize * 1))
@@ -56,6 +56,7 @@ def main(argv):
     <blockList color="128,128,128" blocksize="10,10,10">\n' %
                    (boxSize, boxSize, boxSize))
 
+        XMLBlock = "\t\t<block position=\"%d,%d,%d\"/>\n"
         for x in xrange(gridSize):
             for y in xrange(gridSize):
                 for z in xrange(gridSize):
@@ -63,10 +64,9 @@ def main(argv):
                     if ( (isOnXBranch(x, y, z, meshScale) and numBranches > 0
                         or isOnYBranch(x, y, z, meshScale) and numBranches > 1
                         or isOnZBranch(x, y, z, meshScale) and numBranches > 2
-                        # or isOnRevZBranch(x, y, z, meshScale) and numBranches > 3
-                        # or isOnPlus45DegZBranch(x, y, z, meshScale) and numBranches > 4
-                        # or isOnMinus45DegZBranch(x, y, z, meshScale) and numBranches >  5)
-                         )\
+                        or isOnRevZBranch(x, y, z, meshScale) and numBranches > 3
+                        or isOnPlus45DegZBranch(x, y, z, meshScale) and numBranches > 4
+                        or isOnMinus45DegZBranch(x, y, z, meshScale) and numBranches >  5)                         
                         and isInGrid(x, y, z, gridSize) and isFree[x][y][z]):
                             file.write(XMLBlock % (x, y, z))
                             isFree[x][y][z] = False
@@ -75,14 +75,14 @@ def main(argv):
         file.close()
 
         print "VisibleSim Configuration generated in file " + filename
-    except:
-        print "error: An error occured during initialization, please try again."
-        print "usage: python " + __file__ + " <gridSize> <meshScale> <#branches>"
-        print "\t\t <gridSize>  [1..n] the cubic size of the lattice"
-        print "\t\t <meshScale> [1..n] the number of modules on a single mesh branch"
-        print "\t\t <#branches> [1..5] the number of mesh branches"
-        print "\t\t <coordinates> {[default], skew} "
-        return False
+    # except:
+    #     print "error: An error occured during initialization, please try again."
+    #     print "usage: python " + __file__ + " <gridSize> <meshScale> <#branches>"
+    #     print "\t\t <gridSize>  [1..n] the cubic size of the lattice"
+    #     print "\t\t <meshScale> [1..n] the number of modules on a single mesh branch"
+    #     print "\t\t <#branches> [1..6] the number of mesh branches"
+    #     print "\t\t <coordinates> {[default], skew} "
+    #     return False
 
 if __name__ == "__main__":
     main(sys.argv)

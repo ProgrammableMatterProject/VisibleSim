@@ -7,6 +7,11 @@
 
 #define EPS 1e-10
 
+// TODO: VIRTUALIZE
+void CSGNode::glDraw() {
+    throw NotImplementedException("CSGNode::glDraw");
+}
+
 /******************************************************************/
 CSGCube::CSGCube (double x, double y, double z) : size_x(x), size_y(y), size_z(z), center(true) {};
 
@@ -14,7 +19,7 @@ void CSGCube::toString() const {
     printf("cube([%lf, %lf, %lf], true);\n", size_x, size_y, size_z);
 }
 
-bool CSGCube::isInside(const Vector3D &p, Color &color) const {
+bool CSGCube::isInside(const Vector3D &p, Color &color) const {    
     if (center) {
         if (p.pt[0] <= size_x/2.0 && p.pt[0] >= -size_x/2.0 &&
                 p.pt[1] <= size_y/2.0 && p.pt[1] >= -size_y/2.0 &&
@@ -59,6 +64,54 @@ void CSGCube::boundingBox(BoundingBox &bb) {
         bb.P0.set(0, 0, 0, 1);
         bb.P1.set(size_x, size_y, size_z, 1);
     }
+}
+
+void CSGCube::glDraw() {
+    // c.set(1.0f, 0.0f, 0.0,0.5f);
+    // glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,c.rgba);
+    
+    // White side - BACK    
+    glBegin(GL_POLYGON);
+    glVertex3f(  size_x / 2.0, -size_y / 2.0, size_z / 2.0 );
+    glVertex3f(  size_x / 2.0,  size_y / 2.0, size_z / 2.0 );
+    glVertex3f( -size_x / 2.0,  size_y / 2.0, size_z / 2.0 );
+    glVertex3f( -size_x / 2.0, -size_y / 2.0, size_z / 2.0 );
+    glEnd();
+ 
+    // Purple side - RIGHT
+    glBegin(GL_POLYGON);
+    glVertex3f( size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
+    glVertex3f( size_x / 2.0,  size_y / 2.0, -size_z / 2.0 );
+    glVertex3f( size_x / 2.0,  size_y / 2.0,  size_z / 2.0 );
+    glVertex3f( size_x / 2.0, -size_y / 2.0,  size_z / 2.0 );
+    glEnd();
+ 
+    // Green side - LEFT
+    glBegin(GL_POLYGON);
+    glVertex3f( -size_x / 2.0, -size_y / 2.0,  size_z / 2.0 );
+    glVertex3f( -size_x / 2.0,  size_y / 2.0,  size_z / 2.0 );
+    glVertex3f( -size_x / 2.0,  size_y / 2.0, -size_z / 2.0 );
+    glVertex3f( -size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
+    glEnd();
+ 
+    // Blue side - TOP
+    glBegin(GL_POLYGON);
+    glVertex3f(  size_x / 2.0,  size_y / 2.0,  size_z / 2.0 );
+    glVertex3f(  size_x / 2.0,  size_y / 2.0, -size_z / 2.0 );
+    glVertex3f( -size_x / 2.0,  size_y / 2.0, -size_z / 2.0 );
+    glVertex3f( -size_x / 2.0,  size_y / 2.0,  size_z / 2.0 );
+    glEnd();
+ 
+    // Red side - BOTTOM
+    glBegin(GL_POLYGON);
+    glVertex3f(  size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
+    glVertex3f(  size_x / 2.0, -size_y / 2.0,  size_z / 2.0 );
+    glVertex3f( -size_x / 2.0, -size_y / 2.0,  size_z / 2.0 );
+    glVertex3f( -size_x / 2.0, -size_y / 2.0, -size_z / 2.0 );
+    glEnd();
+ 
+    // glFlush();
+    // glutSwapBuffers();
 }
 
 /******************************************************************/
@@ -316,12 +369,13 @@ bool CSGDifference::isInBorder(const Vector3D &p, Color &color, double border) c
     if (children.size() > 0 and isInside(p, color)) {
         if (children[0]->isInBorder(p, color, border)) return true;
         else if (children[0]->isInside(p, color)) {
-            const Cell3DPosition pPos = Cell3DPosition(p);
-            for (const Cell3DPosition& nPos : getWorld()->lattice->getNeighborhood(pPos)) {
-                Vector3D nVec = static_cast<TargetCSG*>(BlockCode::target)->
-                    gridToWorldPosition(nPos);
-
-                // cout << "nPos: " << nPos << " nVec:" << nVec << endl;
+            const Cell3DPosition pPos = static_cast<TargetCSG*>(BlockCode::target)->
+                CSGToGridPosition(p);
+            
+            // cout << "\t" << pPos << " - p: " << p << endl;
+            if (border > 1.0) throw NotImplementedException("CSG difference border > 1.0");
+            
+            for (const Cell3DPosition& nPos : getWorld()->lattice->getNeighborhood(pPos)) { 
                 if (not BlockCode::target->isInTarget(nPos))
                     return true;
             }
@@ -336,6 +390,13 @@ void CSGDifference::boundingBox(BoundingBox &bb) {
         children[0]->boundingBox(bb);
     }
 }
+
+void CSGDifference::glDraw() {
+    for (unsigned int i = 1; i < children.size(); i++) {
+        children[i]->glDraw();
+    }    
+}
+
 /******************************************************************/
 void CSGIntersection::toString() const {
     printf("intersection() {\n");
