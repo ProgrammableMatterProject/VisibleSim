@@ -117,17 +117,21 @@ void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
 }
 
 void World::linkBlocks() {
-	Cell3DPosition p;
+const Cell3DPosition& lb = lattice->getGridLowerBounds();
+const Cell3DPosition& ub = lattice->getGridUpperBounds();
+Cell3DPosition p;
 
-	for (p.pt[2] = 0; p[2] < lattice->gridSize[2]; p.pt[2]++) { // z
-		for (p.pt[1] = 0; p[1] < lattice->gridSize[1]; p.pt[1]++) { // y
-			for(p.pt[0] = 0; p[0] < lattice->gridSize[0]; p.pt[0]++) { // x
-				if (lattice->cellHasBlock(p)) {
-					// cerr << "l.cellHasBlock(" << p << "/" << lattice->getIndex(p) << ")  = true ; id: "
+	for (p.pt[2] = lb.pt[2]; p[2] < ub.pt[2]; p.pt[2]++) { // z
+        for (p.pt[1] = lb.pt[1]; p[1] < ub.pt[1]; p.pt[1]++) { // y
+            for (p.pt[0] = lb.pt[0]; p[0] < ub.pt[0]; p.pt[0]++) { // x
+                if (lattice->cellHasBlock(p)) {
+					// cerr << "l.cellHasBlock(" << p << "/"
+                    //   << lattice->getIndex(p) << ")  = true ; id: "
 					//	 << lattice->getBlock(p)->blockId << endl;
+                    
 					linkBlock(p);
 				}
-			}
+            }
 		}
 	}
 }

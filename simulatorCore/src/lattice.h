@@ -92,6 +92,16 @@ public:
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
 
+    /** 
+     * @return the coordinates of the start of the grid
+     */
+    virtual Cell3DPosition getGridLowerBounds() const;
+    
+    /** 
+     * @return the coordinates of the end of the grid
+     */    
+    virtual Cell3DPosition getGridUpperBounds() const;
+    
     /**
      * @brief Abstract Lattice constructor.
      */
@@ -690,10 +700,22 @@ public:
      * @copydoc Lattice::getIndex
      */
     virtual unsigned int getIndex(const Cell3DPosition &p) const override;
+
     /**
      * @copydoc Lattice::isInGrid
      */
-    virtual bool isInGrid(const Cell3DPosition &p) const override;    
+    virtual bool isInGrid(const Cell3DPosition &p) const override;
+
+    /** 
+     * @copydoc Lattice::getGridLowerBounds
+     */
+    virtual Cell3DPosition getGridLowerBounds() const override;
+  
+    /** 
+     * @copydoc Lattice::getGridUpperBounds
+     */    
+    virtual Cell3DPosition getGridUpperBounds() const override;
+    
     /**
      * @copydoc Lattice::gridToUnscaledWorldPosition
      */

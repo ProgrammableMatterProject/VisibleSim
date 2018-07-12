@@ -57,6 +57,15 @@ unsigned int Lattice::getIndex(const Cell3DPosition &p) const {
     return index;
 }
 
+Cell3DPosition Lattice::getGridLowerBounds() const {
+    return Cell3DPosition(0,0,0);
+}
+   
+Cell3DPosition Lattice::getGridUpperBounds() const {
+    return gridSize - Cell3DPosition(1,1,1);
+}
+
+
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
     int index = getIndex(p);
     if (not isInGrid(p))
@@ -95,9 +104,12 @@ bool Lattice::cellHasBlock(const Cell3DPosition &p) const {
 }
 
 bool Lattice::isInGrid(const Cell3DPosition &p) const {
-    return isInRange(p[0], 0, gridSize[0] - 1)
-        && isInRange(p[1], 0, gridSize[1] - 1)
-        && isInRange(p[2], 0, gridSize[2] - 1);
+    const Cell3DPosition& lb = getGridLowerBounds();
+    const Cell3DPosition& ub = getGridUpperBounds();
+    
+    return isInRange(p[0], lb.pt[0], ub.pt[0])
+        && isInRange(p[1], lb.pt[1], ub.pt[1])
+        && isInRange(p[2], lb.pt[2], ub.pt[2]);
 }
 
 vector<Cell3DPosition> Lattice::getActiveNeighborCells(const Cell3DPosition &pos) {
@@ -137,9 +149,9 @@ vector<Cell3DPosition> Lattice::getNeighborhood(const Cell3DPosition &pos) {
 
     for (const Cell3DPosition &p : relativeNCells) { // Check if each neighbor cell is in grid
         Cell3DPosition v = pos + p;
-        // if (isInGrid(v)) { FIXME: 
+        if (isInGrid(v)) { 
             neighborhood.push_back(v);         // Add its position to the result
-        // }
+        }
     }
 
     return neighborhood;
@@ -754,6 +766,16 @@ bool SkewFCCLattice::isInGrid(const Cell3DPosition &p) const {
         return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - ceil(p[2] / 2) - 1)
             && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - ceil(p[2] / 2) - 1)
             && isInRange(p[2], 0, gridSize[2] - 1);            
+}
+
+Cell3DPosition SkewFCCLattice::getGridLowerBounds() const {
+    return Cell3DPosition(-gridSize.pt[2] / 2,
+                          -gridSize.pt[2] / 2,
+                          0);
+}
+
+Cell3DPosition SkewFCCLattice::getGridUpperBounds() const {
+    return gridSize - Cell3DPosition(1, 1, 1);
 }
 
 vector<Cell3DPosition> SkewFCCLattice::getRelativeConnectivity(const Cell3DPosition &p) {
