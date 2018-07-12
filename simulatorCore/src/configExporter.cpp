@@ -67,7 +67,7 @@ ConfigExporter::ConfigExporter(World *_world) {
     world = _world;
     config = new TiXmlDocument();
     configName = Simulator::regrTesting ?
-        ".confCheck.xml" : generateTimestampedFilename("config", "ext");
+        ".confCheck.xml" : generateTimestampedFilename("config", "xml");
     config->LinkEndChild(new TiXmlDeclaration("1.0", "", "no"));
 }
 
