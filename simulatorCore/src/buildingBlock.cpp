@@ -207,13 +207,15 @@ void BuildingBlock::setColor(int idColor) {
 void BuildingBlock::setColor(const Color &c) {
     if (state.load() >= ALIVE) {
 		color = c;
+        getWorld()->updateGlData(this);
     }
-    getWorld()->updateGlData(this);
 }
 
 void BuildingBlock::setPosition(const Cell3DPosition &p) {
-    position = p;
-    getWorld()->updateGlData(this);
+    if (state.load() >= ALIVE) {
+        position = p;
+        getWorld()->updateGlData(this);
+    }
 }
     
 void BuildingBlock::tap(Time date, int face) {
