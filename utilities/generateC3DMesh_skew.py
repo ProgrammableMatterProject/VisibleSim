@@ -9,13 +9,13 @@ def isInGrid(x, y, z, gridSize):
     #         (x - abs(z / 2) < gridSize and y - abs(z / 2) < gridSize and z < gridSize))
     if z % 2 == 0:
         return (isInRange(x, 0 - z/ 2, gridSize - z / 2 - 1) 
-            and isInRange(y, 0 - z / 2, gridSize - z / 2 - 1)
-            and isInRange(z, 0, gridSize - 1))
+                and isInRange(y, 0 - z / 2, gridSize - z / 2 - 1)
+                and isInRange(z, 0, gridSize - 1))
     else:
         return (isInRange(x, 0 - z/ 2, gridSize - z / 2 - 2)
                 and isInRange(y, 0 - z / 2, gridSize - z / 2 - 2)
                 and isInRange(z, 0, gridSize - 1))
-            
+    
 def isOnXBranch(x, y, z, meshScale):
     return x % meshScale == 0 and z % meshScale == 0
 
@@ -46,7 +46,7 @@ def addMeshModule(fd, x, y, z, meshScale):
     fd.write(XMLBlock % (x, y, z, r, g, b))
     
 def main(argv):
-    # try: 
+    try: 
         gridSize = int(argv[1])
         assert gridSize > 0
         boxSize = int(gridSize)
@@ -77,23 +77,23 @@ def main(argv):
                     yp = y - abs(z / 2)
                     # 3 Regular Axes
                     if ( ( isOnXBranch(xp, yp, z, meshScale) and numBranches > 0
-                        or isOnYBranch(xp, yp, z, meshScale) and numBranches > 1
-                        or isOnZBranch(xp, yp, z, meshScale) and numBranches > 2
-                        or isOnRevZBranch(xp, yp, z, meshScale) and numBranches > 3
-                        or isOnPlus45DegZBranch(xp, yp, z, meshScale) and numBranches > 4
-                        or isOnMinus45DegZBranch(xp, yp, z, meshScale) and numBranches >  5)
-                    \
-                        and isInGrid(xp, yp, z, gridSize)
+                           or isOnYBranch(xp, yp, z, meshScale) and numBranches > 1
+                           or isOnZBranch(xp, yp, z, meshScale) and numBranches > 2
+                           or isOnRevZBranch(xp, yp, z, meshScale) and numBranches > 3
+                           or isOnPlus45DegZBranch(xp, yp, z, meshScale) and numBranches > 4
+                           or isOnMinus45DegZBranch(xp, yp, z, meshScale) and numBranches >  5)
+                         \
+                         and isInGrid(xp, yp, z, gridSize)
                          and isFree[x][y][z]):
-                            addMeshModule(file, xp, yp, z, meshScale)
-                            isFree[x][y][z] = False;
-                    
+                        addMeshModule(file, xp, yp, z, meshScale)
+                        isFree[x][y][z] = False;
+                        
         file.write('\t</blockList>\n\n</world>\n')
         file.close()
 
         print "VisibleSim Configuration generated in file " + filename
-
-except:
+        
+    except:
         print "error: An error occured during initialization, please try again."
         print "usage: python " + __file__ + " <gridSize> <meshScale> <#branches>"
         print "\t\t <gridSize>  [1..n] the cubic size of the lattice"
