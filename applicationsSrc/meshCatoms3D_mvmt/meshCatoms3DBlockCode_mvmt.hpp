@@ -19,6 +19,8 @@
 #include "catoms3DBlock.h"
 
 #include "catoms3DMotionEngine.hpp"
+#include "messages.hpp"
+#include "meshSpanningTree.hpp"
 
 #define MSG_DELAY_MC 5000
 
@@ -26,13 +28,16 @@ class MeshCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
 public:
     static const uint B = 6;
+    static uint X_MAX;
+    static uint Y_MAX;
     
     Scheduler *scheduler;
     World *world;
     Lattice *lattice;
     Catoms3D::Catoms3DBlock *catom;
     Catoms3DMotionEngine* engine;
-
+    MeshSpanningTree::MeshSpanningTreeRuleMatcher *ruleMatcher;
+    
     P2PNetworkInterface* stParent = NULL;
     uint expectedConfirms = 0;
     

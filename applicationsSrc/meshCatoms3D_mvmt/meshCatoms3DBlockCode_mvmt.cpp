@@ -24,14 +24,24 @@
 #include "catoms3DMotionEngine.hpp"
 
 using namespace Catoms3D;
+using namespace MeshSpanningTree;
+
+uint MeshCatoms3DBlockCode::X_MAX;
+uint MeshCatoms3DBlockCode::Y_MAX;
 
 MeshCatoms3DBlockCode::MeshCatoms3DBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
     scheduler = getScheduler();
     world = BaseSimulator::getWorld();
-    lattice = world->lattice;
+    lattice = world->lattice;   
     catom = host;
     engine = new Catoms3DMotionEngine(*this, *host);
+    
+    const Cell3DPosition& ub = lattice->getGridUpperBounds();
+    X_MAX = ub[0];
+    Y_MAX = ub[1];
+
+    ruleMatcher = new MeshSpanningTreeRuleMatcher(X_MAX, Y_MAX, B);
 }
 
 MeshCatoms3DBlockCode::~MeshCatoms3DBlockCode() {
@@ -98,8 +108,8 @@ void MeshCatoms3DBlockCode::startup() {
 
         for (const Cell3DPosition& pos : lattice->getActiveNeighborCells(catom->position)) {
             if (moduleInSpanningTree(pos)) {
-                sendMessage("Spanning Tree A",
-                            new SpanningTreeAMessage(),
+                sendMessage("Mesh Spanning Tree Message",
+                            new MeshSpanningTreeMessage(*ruleMatcher),
                             catom->getInterface(pos), MSG_DELAY_MC, 0);
                 expectedConfirms++;
             }

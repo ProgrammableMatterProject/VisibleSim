@@ -72,7 +72,8 @@ string GlBlock::getInfo() {
 
 string GlBlock::getPopupInfo() {
     ostringstream out;
-	out << blockId << " - " << World::getWorld()->lattice->worldToGridPosition(getPosition()) <<"\n";
+	out << blockId << " - "
+        << World::getWorld()->lattice->worldToGridPosition(getPosition()) <<"\n";
 
 	return out.str();
 }

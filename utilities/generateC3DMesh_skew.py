@@ -12,8 +12,8 @@ def isInGrid(x, y, z, gridSize):
                 and isInRange(y, 0 - z / 2, gridSize - z / 2 - 1)
                 and isInRange(z, 0, gridSize - 1))
     else:
-        return (isInRange(x, 0 - z/ 2, gridSize - z / 2 - 2)
-                and isInRange(y, 0 - z / 2, gridSize - z / 2 - 2)
+        return (isInRange(x, 0 - z/ 2, gridSize - z / 2 - 1)
+                and isInRange(y, 0 - z / 2, gridSize - z / 2 - 1)
                 and isInRange(z, 0, gridSize - 1))
     
 def isOnXBranch(x, y, z, meshScale):

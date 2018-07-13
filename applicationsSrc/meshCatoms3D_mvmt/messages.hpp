@@ -24,9 +24,6 @@ static const uint C3DMENG_FPF = 65;
 static const uint C3DMENG_FPI = 66;
 static const uint C3DMENG_FPNF = 67;
 
-static const uint MC_ST_A = 68;
-static const uint MC_ST_B = 69;
-
 class Catoms3DMotionEngineMessage : public HandleableMessage {
 public:
     Catoms3DMotionEngineMessage() {};
@@ -89,26 +86,6 @@ public:
     virtual void handle(Catoms3DMotionEngine&);
     virtual Message* clone() { return new FindPathNotFoundMessage(*this); }
     virtual string getName() { return "FindPathNotFound"; }
-};
-
-class SpanningTreeAMessage : public HandleableMessage {
-public:
-    SpanningTreeAMessage() {};
-    virtual ~SpanningTreeAMessage() {};
-
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new SpanningTreeAMessage(*this); }
-    virtual string getName() { return "SpanningTreeA"; }
-};
-
-class SpanningTreeBMessage : public HandleableMessage {
-public:
-    SpanningTreeBMessage() {};
-    virtual ~SpanningTreeBMessage() {};
-
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new SpanningTreeBMessage(*this); }
-    virtual string getName() { return "SpanningTreeB"; }
 };
 
 #endif /* MC3D_MESSAGES_H_ */

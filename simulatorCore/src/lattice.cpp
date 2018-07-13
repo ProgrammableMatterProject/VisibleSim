@@ -758,14 +758,14 @@ bool SkewFCCLattice::isInGrid(const Cell3DPosition &p) const {
     // cout << isInRange(p[1], 1 - gridSize[2] / 2, gridSize[1] - gridSize[2] / 2) << endl;
     // cout << isInRange(p[2], 0, gridSize[2] - 1) << endl;
 
-    if (IS_EVEN((int)gridScale[2]))
+    // if (IS_EVEN((int)gridScale[2]))
         return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - p[2] / 2 - 1)
             && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - p[2] / 2 - 1)
             && isInRange(p[2], 0, gridSize[2] - 1);
-    else
-        return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - ceil(p[2] / 2) - 1)
-            && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - ceil(p[2] / 2) - 1)
-            && isInRange(p[2], 0, gridSize[2] - 1);            
+    // else
+    //     return isInRange(p[0], 0 - p[2]/ 2, gridSize[0] - ceil(p[2] / 2) - 1)
+    //         && isInRange(p[1], 0 - p[2] / 2, gridSize[1] - ceil(p[2] / 2) - 1)
+    //         && isInRange(p[2], 0, gridSize[2] - 1);            
 }
 
 Cell3DPosition SkewFCCLattice::getGridLowerBounds() const {
