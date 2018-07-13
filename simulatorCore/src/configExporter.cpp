@@ -99,7 +99,7 @@ void ConfigExporter::exportCameraAndLightSource() {
                                                                ds.pt[1],
                                                                ds.pt[2]));
         cam->SetAttribute("angle", camera->getAngle());
-        cam->SetAttribute("near", camera->getNearPlane());                        
+        cam->SetAttribute("near", camera->getNearPlane());          
         cam->SetAttribute("far", camera->getFarPlane());
         
         worldElt->LinkEndChild(cam);
@@ -139,7 +139,8 @@ void ConfigExporter::exportBlockList() {
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
 
     for(auto const& idBBPair : blocks) {
-        if (idBBPair.second->getState() != BuildingBlock::REMOVED)
+        if (idBBPair.second->getState() != BuildingBlock::REMOVED
+            and (idBBPair.second->ptrGlBlock and idBBPair.second->ptrGlBlock->isVisible()))
             exportBlock(idBBPair.second);
     }
         

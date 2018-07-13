@@ -88,7 +88,7 @@ BuildingBlock* World::getBlockById(int bId) {
 	}
 }
 
-BuildingBlock* World::getBlockByPosition(Cell3DPosition pos) {
+BuildingBlock* World::getBlockByPosition(const Cell3DPosition &pos) {
 	map<bID, BuildingBlock*>::iterator it;
     for (it = buildingBlocksMap.begin(); it != buildingBlocksMap.end(); it++) {
         if (it->second->position == pos)

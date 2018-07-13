@@ -135,7 +135,7 @@ void Catoms3DWorld::glDraw() {
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
     while (ic!=tabGlBlocks.end()) {
-        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
+        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock)            ;
         ic++;
     }
     unlock();

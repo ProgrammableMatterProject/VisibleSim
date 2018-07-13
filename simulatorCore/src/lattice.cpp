@@ -389,6 +389,7 @@ FCCLattice::FCCLattice() : Lattice3D() {
 
 FCCLattice::FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc) : Lattice3D(gsz,gsc) {
     tabLockedCells = new bool[gridSize[0] * gridSize[1] * gridSize[2]]();
+    // FIXME:
     /*bool *ptr=tabLockedCells;
     int i=gridSize[0] * gridSize[1] * gridSize[2];
     while (--i) {

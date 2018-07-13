@@ -136,7 +136,7 @@ public:
      * @param pos : position of the block to get
      * @return a pointer to block of id bId, or NULL if it does not exist
      */    
-    BuildingBlock* getBlockByPosition(Cell3DPosition pos);
+    BuildingBlock* getBlockByPosition(const Cell3DPosition &pos);
     /**
      * @brief Updates color and position of glBlock associated with block bb
      *

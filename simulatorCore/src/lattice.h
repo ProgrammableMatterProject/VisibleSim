@@ -1,6 +1,7 @@
 /*! @file lattice.h
  * @brief Header file for the lattice simulation environment.
- *
+ * @author pthalamy
+ * 
  * Inspired by github.com/nazandre:VisibleSimConfigGenerator
  *
  */

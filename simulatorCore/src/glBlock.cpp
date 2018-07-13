@@ -51,6 +51,10 @@ void GlBlock::setColor(const Color &col) {
 	color[3] = 1.0;
 }
 
+bool GlBlock::isVisible() {
+    return color[3];
+}
+
 void GlBlock::setVisible(bool visible) {
     color[3] = visible;
 }

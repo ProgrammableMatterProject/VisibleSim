@@ -144,11 +144,12 @@ void FindPathNotFoundMessage::handle(Catoms3DMotionEngine& engine) {
 
 AbstractMeshSpanningTreeMessage*
 DisassemblyTriggerMessage::buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
-                                                           const bool isAck) {    
+                                                           const bool isAck) {
     MeshCatoms3DBlockCode& mcbc = static_cast<MeshCatoms3DBlockCode&>(bc);
     return new DisassemblyTriggerMessage(*mcbc.ruleMatcher, isAck);
 }
 
+static const bool COLOR_SPANNING_TREE = false;
 void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);    
 
@@ -156,7 +157,7 @@ void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
         
         if (!mcbc.stParent) {
             mcbc.stParent = destinationInterface;
-            // mcbc.catom->setColor(BLUE);
+            if (COLOR_SPANNING_TREE) mcbc.catom->setColor(BLUE);
         } else {
             cout << mcbc.catom->blockId << " " << mcbc.catom->position << endl;
             mcbc.catom->setColor(WHITE);
@@ -172,27 +173,13 @@ void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
     if (not mcbc.expectedConfirms) {
         acknowledgeToParent(*bc, mcbc.stParent);
 
-        if (not mcbc.target->isInTarget(mcbc.catom->position)) {
+        if (not mcbc.target->isInTarget(mcbc.catom->position)) { //{
             // mcbc.catom->setColor(WHITE);
             mcbc.catom->setVisible(false);
-            // mcbc.world->deleteBlock(mcbc.catom);  
-        } else {
-            // mcbc.catom->setColor(PINK);
+            // mcbc.world->deleteBlock(mcbc.catom);
+        } else if (COLOR_SPANNING_TREE) {
+            mcbc.catom->setColor(PINK);
         }
     }
         
 }
-
-// void MeshSpanningTreeAckMessage::handle(BaseSimulator::BlockCode* bc) {
-//     MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);
-
-//     if (not --mcbc.expectedConfirms) {
-//         mcbc.catom->setColor(RED);
-
-//         if (mcbc.stParent) {
-//             mcbc.sendMessage("Spanning Tree B",
-//                     new MeshSpanningTreeAckMessage(),
-//                         mcbc.stParent, MSG_DELAY_MC, 0);
-//         }
-//     }
-// }

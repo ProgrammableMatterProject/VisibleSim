@@ -106,18 +106,4 @@ public:
                                     const bool isAck) override;
 };
 
-// class DisassemblyAckMessage : public AbstractMeshSpanningTreeMessage {
-// public:
-//     DisassemblyAckMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher)
-//         : AbstractMeshSpanningTreeMessage(_ruleMatcher) {};
-//     virtual ~DisassemblyAckMessage() {};
-
-//     virtual void handle(BaseSimulator::BlockCode*);
-//     virtual Message* clone() { return new DisassemblyAckMessage(*this); }
-//     virtual string getName() { return "DisassemblyAck"; }
-//     virtual AbstractMeshSpanningTreeMessage*
-//     buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
-//                                     const bool isAck) override;
-// };
-
 #endif /* MC3D_MESSAGES_H_ */
