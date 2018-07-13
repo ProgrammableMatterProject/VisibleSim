@@ -62,23 +62,22 @@ void MeshCatoms3DBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
-    if (target == NULL) {
-        target = (Target::loadNextTarget());
-    }
-
+    static const bool ENABLE_MANUAL_DISASSEMBLY = false;
     static const double BORDER_WIDTH = 1.0;
-    if ((!target->isInTarget(catom->position)
-        // or static_cast<TargetCSG*>(target)->isInTargetBorder(catom->position, BORDER_WIDTH)
-            )
-        // ensure newly placed border catom is not removed on init
-        and placedBorderCatoms.find(catom->position) == placedBorderCatoms.end()) {
-        catom->setColor(WHITE);
-        catom->setVisible(false);
-        world->deleteBlock(catom);
-    } else if (!static_cast<TargetCSG*>(target)->
-               isInTargetBorder(catom->position, BORDER_WIDTH)) {
+    if (ENABLE_MANUAL_DISASSEMBLY) {
+        if ((!target->isInTarget(catom->position)
+             // or static_cast<TargetCSG*>(target)->isInTargetBorder(catom->position, BORDER_WIDTH)
+                )
+            // ensure newly placed border catom is not removed on init
+            and placedBorderCatoms.find(catom->position) == placedBorderCatoms.end()) {
+            catom->setColor(WHITE);
+            catom->setVisible(false);
+            world->deleteBlock(catom);
+        } else if (!static_cast<TargetCSG*>(target)->
+                   isInTargetBorder(catom->position, BORDER_WIDTH)) {
+        }
     }
-
+    
     static const bool ENABLE_COATING = false;
     static const int SANDBOX_DEPTH = B;
     if  (ENABLE_COATING) {
@@ -114,6 +113,8 @@ void MeshCatoms3DBlockCode::startup() {
             }
         }        
     }
+
+    
 }    
 
 void MeshCatoms3DBlockCode::processReceivedMessage(MessagePtr msg,

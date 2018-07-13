@@ -156,7 +156,7 @@ void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
         
         if (!mcbc.stParent) {
             mcbc.stParent = destinationInterface;
-            mcbc.catom->setColor(BLUE);
+            // mcbc.catom->setColor(BLUE);
         } else {
             cout << mcbc.catom->blockId << " " << mcbc.catom->position << endl;
             mcbc.catom->setColor(WHITE);
@@ -170,8 +170,15 @@ void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
     }
 
     if (not mcbc.expectedConfirms) {
-        mcbc.catom->setColor(PINK);
         acknowledgeToParent(*bc, mcbc.stParent);
+
+        if (not mcbc.target->isInTarget(mcbc.catom->position)) {
+            // mcbc.catom->setColor(WHITE);
+            mcbc.catom->setVisible(false);
+            // mcbc.world->deleteBlock(mcbc.catom);  
+        } else {
+            // mcbc.catom->setColor(PINK);
+        }
     }
         
 }
