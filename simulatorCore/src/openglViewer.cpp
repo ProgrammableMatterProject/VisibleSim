@@ -341,7 +341,8 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                     cerr << "Recording animation frames in directory: "
                          << animationDirName << endl;
                 } else {
-                    cerr << "Animation recording has ended" << endl;
+                    cerr << "Recording of " << animationDirName.c_str()
+                         << " has ended" << endl;
 
                 }
                 
