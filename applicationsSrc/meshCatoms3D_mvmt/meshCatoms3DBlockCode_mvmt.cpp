@@ -108,8 +108,7 @@ void MeshCatoms3DBlockCode::startup() {
 
         for (const Cell3DPosition& pos : lattice->getActiveNeighborCells(catom->position)) {
             if (moduleInSpanningTree(pos)) {
-                sendMessage("Mesh Spanning Tree Message",
-                            new MeshSpanningTreeMessage(*ruleMatcher),
+                sendMessage(new DisassemblyTriggerMessage(*ruleMatcher, false),
                             catom->getInterface(pos), MSG_DELAY_MC, 0);
                 expectedConfirms++;
             }

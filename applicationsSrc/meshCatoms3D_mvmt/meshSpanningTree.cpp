@@ -10,6 +10,7 @@
 
 #include "meshSpanningTree.hpp"
 
+#include "network.h"
 #include "meshCatoms3DBlockCode_mvmt.hpp" //FIXME:
 
 using namespace MeshSpanningTree;
@@ -104,71 +105,55 @@ bool MeshSpanningTreeRuleMatcher::partialBorderMeshRulesApply(const Cell3DPositi
              ));
 }
 
-bool MeshSpanningTreeMessage::forwardToNeighbors(MeshCatoms3DBlockCode& mcbc) {
-    return false;
-}
-
-void MeshSpanningTreeMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);    
-    
-    if (!mcbc.stParent) {
-        mcbc.stParent = destinationInterface;
-        mcbc.catom->setColor(BLUE);
-    } else {
-        cout << mcbc.catom->blockId << " " << mcbc.catom->position << endl;
-        mcbc.catom->setColor(WHITE);
-        awaitKeyPressed();
-        assert(!mcbc.stParent);
-    }
-
-    for (const Cell3DPosition& pos :
-             mcbc.lattice->getActiveNeighborCells(mcbc.catom->position)) {
-                
-        P2PNetworkInterface* itf = mcbc.catom->getInterface(pos);
-        assert (itf != NULL);
-
-
-        const Cell3DPosition& myPos = mcbc.catom->position;
-        if (mcbc.moduleInSpanningTree(pos)
+bool MeshSpanningTreeRuleMatcher::shouldSendToNeighbor(const Cell3DPosition& own,
+                                                       const Cell3DPosition& other) const {
+    return (not isOnPartialBorderMesh(own)
             and (
-                 (
-                  not ruleMatcher.isOnPartialBorderMesh(myPos)
-                  and (
-                       ruleMatcher.planarBranchRulesApply(myPos, pos)
-                       or ruleMatcher.meshRootBranchRulesApply(myPos, pos)
-                       or ruleMatcher.upwardBranchRulesApply(myPos, pos)
-                       )
-                  ) 
-                 or ruleMatcher.partialBorderMeshRulesApply(myPos, pos)
-                 )
-            and itf != mcbc.stParent) {
-            mcbc.sendMessage("Spanning Tree A",
-                             new MeshSpanningTreeMessage(ruleMatcher),
-                             itf, MSG_DELAY_MC, 0);
-            mcbc.expectedConfirms++;
+                planarBranchRulesApply(own, other)
+                or meshRootBranchRulesApply(own, other)
+                or upwardBranchRulesApply(own, other)
+                )
+        ) 
+        or partialBorderMeshRulesApply(own, other);
+}
+
+int AbstractMeshSpanningTreeMessage::forwardToNeighbors(BaseSimulator::BlockCode& bc,
+                                                        const P2PNetworkInterface* except_itf) {
+    Catoms3DBlock *catom = static_cast<Catoms3DBlock*>(bc.hostBlock);
+    
+    uint sentCounter = 0;    
+    for (const Cell3DPosition& pos :
+             bc.lattice->getActiveNeighborCells(catom->position)) {
+                
+        P2PNetworkInterface* itf = catom->getInterface(pos);
+        assert (itf != NULL);        
+
+        if (itf != except_itf and ruleMatcher.shouldSendToNeighbor(catom->position, pos)) {
+            AbstractMeshSpanningTreeMessage *message =
+                buildNewMeshSpanningTreeMessage(bc, false);
+
+            assert(message);
+            
+            bc.sendMessage(message, itf, MSG_DELAY_MC, 0);
+            sentCounter++;
         }
     }
 
-    if (not mcbc.expectedConfirms)
-        mcbc.sendMessage("Spanning Tree B",
-                    new MeshSpanningTreeAckMessage(),
-                    mcbc.stParent, MSG_DELAY_MC, 0);        
+    return sentCounter;
 }
 
-bool MeshSpanningTreeAckMessage::acknowledgeToParent() {
+bool AbstractMeshSpanningTreeMessage::acknowledgeToParent(BaseSimulator::BlockCode& bc,
+                                                          P2PNetworkInterface* parent_itf) {
+    if (parent_itf) {
+        AbstractMeshSpanningTreeMessage *ack =
+            buildNewMeshSpanningTreeMessage(bc, true);
+
+        assert(ack);
+        
+        bc.sendMessage(ack, parent_itf, MSG_DELAY_MC, 0);
+
+        return true;
+    }
+
     return false;
-}
-
-void MeshSpanningTreeAckMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);
-
-    if (not --mcbc.expectedConfirms) {
-        mcbc.catom->setColor(RED);
-
-        if (mcbc.stParent) {
-            mcbc.sendMessage("Spanning Tree B",
-                    new MeshSpanningTreeAckMessage(),
-                        mcbc.stParent, MSG_DELAY_MC, 0);
-        }
-    }
 }

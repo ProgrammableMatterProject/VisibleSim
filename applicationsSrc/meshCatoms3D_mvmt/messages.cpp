@@ -42,7 +42,7 @@ void FindPathMessage::handle(Catoms3DMotionEngine& engine) {
             engine.addModuleToPath(engine.catom, engine.path, targetCon, targetCon);
             
             engine.bc.sendMessage(new FindPathFoundMessage(engine.path),
-                               engine.searchParent, MSG_DELAY, 0);
+                                  engine.searchParent, MSG_DELAY, 0);
 
             // engine.console << "Path to " << destination << " found" << "\n";
         } else {
@@ -51,17 +51,17 @@ void FindPathMessage::handle(Catoms3DMotionEngine& engine) {
 
             if (unprocessedNeighbor) {
                 engine.bc.sendMessage(new FindPathMessage(destination),
-                                unprocessedNeighbor, MSG_DELAY, 0);
+                                      unprocessedNeighbor, MSG_DELAY, 0);
             } else {
                 engine.bc.sendMessage(new FindPathNotFoundMessage(),
-                                engine.searchParent, MSG_DELAY, 0);
+                                      engine.searchParent, MSG_DELAY, 0);
             }
 
         }
                      
     } else { // Module has already been considered in this phase
         engine.bc.sendMessage(new FindPathIgnoreMessage(),
-                               destinationInterface, MSG_DELAY, 0);
+                              destinationInterface, MSG_DELAY, 0);
     }
 
 }
@@ -82,13 +82,13 @@ void FindPathFoundMessage::handle(Catoms3DMotionEngine& engine) {
         engine.path = path;
         if (!engine.addModuleToPath(engine.catom, engine.path,
                                     pivotDockingConnector, catomDockingConnector))
-        {
-            awaitKeyPressed();
-            assert(false);
-        }
+            {
+                awaitKeyPressed();
+                assert(false);
+            }
         
         engine.bc.sendMessage(new FindPathFoundMessage(engine.path),
-                           engine.searchParent, MSG_DELAY, 0);
+                              engine.searchParent, MSG_DELAY, 0);
         
         engine.visited = false;
         engine.catom.setColor(GREEN); // todo
@@ -117,11 +117,11 @@ void handleFindPathResponse(Catoms3DMotionEngine& engine,
 
     if (unprocessedNeighbor) {
         engine.bc.sendMessage(new FindPathMessage(engine.posToLocate),
-                               unprocessedNeighbor, MSG_DELAY, 0);
+                              unprocessedNeighbor, MSG_DELAY, 0);
     } else {
         if (engine.searchParent) {
             engine.bc.sendMessage(new FindPathNotFoundMessage(),
-                                   engine.searchParent, MSG_DELAY, 0);
+                                  engine.searchParent, MSG_DELAY, 0);
             engine.visited = false;
         } else {
             engine.catom.setColor(WHITE); //todo probleeeeem
@@ -140,3 +140,52 @@ void FindPathIgnoreMessage::handle(Catoms3DMotionEngine& engine) {
 void FindPathNotFoundMessage::handle(Catoms3DMotionEngine& engine) {
     handleFindPathResponse(engine, destinationInterface);
 }
+
+
+AbstractMeshSpanningTreeMessage*
+DisassemblyTriggerMessage::buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
+                                                           const bool isAck) {    
+    MeshCatoms3DBlockCode& mcbc = static_cast<MeshCatoms3DBlockCode&>(bc);
+    return new DisassemblyTriggerMessage(*mcbc.ruleMatcher, isAck);
+}
+
+void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);    
+
+    if (not isAck) {
+        
+        if (!mcbc.stParent) {
+            mcbc.stParent = destinationInterface;
+            mcbc.catom->setColor(BLUE);
+        } else {
+            cout << mcbc.catom->blockId << " " << mcbc.catom->position << endl;
+            mcbc.catom->setColor(WHITE);
+            awaitKeyPressed();
+            assert(!mcbc.stParent);
+        }
+
+        mcbc.expectedConfirms = forwardToNeighbors(*bc, mcbc.stParent);
+    } else {
+        --mcbc.expectedConfirms;
+    }
+
+    if (not mcbc.expectedConfirms) {
+        mcbc.catom->setColor(PINK);
+        acknowledgeToParent(*bc, mcbc.stParent);
+    }
+        
+}
+
+// void MeshSpanningTreeAckMessage::handle(BaseSimulator::BlockCode* bc) {
+//     MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);
+
+//     if (not --mcbc.expectedConfirms) {
+//         mcbc.catom->setColor(RED);
+
+//         if (mcbc.stParent) {
+//             mcbc.sendMessage("Spanning Tree B",
+//                     new MeshSpanningTreeAckMessage(),
+//                         mcbc.stParent, MSG_DELAY_MC, 0);
+//         }
+//     }
+// }

@@ -47,32 +47,26 @@ public:
     bool shouldSendToNeighbor(const Cell3DPosition& own,
                               const Cell3DPosition& other) const;
 };
-    
-class MeshSpanningTreeMessage : public HandleableMessage {
+
+class AbstractMeshSpanningTreeMessage : public HandleableMessage {
+protected:
     const MeshSpanningTreeRuleMatcher& ruleMatcher;
+    const bool isAck;
 public:
-    MeshSpanningTreeMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher)
-        : ruleMatcher(_ruleMatcher) {};
-    virtual ~MeshSpanningTreeMessage() {};
+    AbstractMeshSpanningTreeMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher,
+                                    const bool _isAck)
+        : ruleMatcher(_ruleMatcher), isAck(_isAck) {};
+    virtual ~AbstractMeshSpanningTreeMessage() {};
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new MeshSpanningTreeMessage(*this); }
-    virtual string getName() { return "MeshSpanningTree"; }
-    bool forwardToNeighbors(MeshCatoms3DBlockCode&);
-};
+    virtual int forwardToNeighbors(BaseSimulator::BlockCode& bc,
+                                   const P2PNetworkInterface* except_itf);
 
-class MeshSpanningTreeAckMessage : public HandleableMessage {
-    // const P2PNetworkInterface& parent;
-public:
-    // MeshSpanningTreeAckMessage(const P2PNetworkInterface& itf) : parent(itf) {};
-    MeshSpanningTreeAckMessage() {};
-    virtual ~MeshSpanningTreeAckMessage() {};
+    virtual bool acknowledgeToParent(BaseSimulator::BlockCode& bc,
+                                     P2PNetworkInterface* parent_itf);
+    
+    virtual AbstractMeshSpanningTreeMessage*
+    buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc, const bool isAck) = 0;
+};  
 
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new MeshSpanningTreeAckMessage(*this); }
-    virtual string getName() { return "MeshSpanningTreeAck"; }
-    bool acknowledgeToParent();
-};
-
-};
+}
 #endif /* MESH_SPANNING_TREE_HPP_ */

@@ -16,6 +16,7 @@
 #include "../meltSortGrow/pathHop.hpp"
 
 #include "catoms3DMotionEngine.hpp"
+#include "meshSpanningTree.hpp"
 
 static const uint MSG_DELAY = 1;
 
@@ -87,5 +88,36 @@ public:
     virtual Message* clone() { return new FindPathNotFoundMessage(*this); }
     virtual string getName() { return "FindPathNotFound"; }
 };
+
+using namespace MeshSpanningTree;
+
+class DisassemblyTriggerMessage : public AbstractMeshSpanningTreeMessage {
+public:
+    DisassemblyTriggerMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher,
+                              const bool isAck)
+        : AbstractMeshSpanningTreeMessage(_ruleMatcher, isAck) {};
+    virtual ~DisassemblyTriggerMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new DisassemblyTriggerMessage(*this); }
+    virtual string getName() { return "DisassemblyTrigger"; }
+    virtual AbstractMeshSpanningTreeMessage*
+    buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
+                                    const bool isAck) override;
+};
+
+// class DisassemblyAckMessage : public AbstractMeshSpanningTreeMessage {
+// public:
+//     DisassemblyAckMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher)
+//         : AbstractMeshSpanningTreeMessage(_ruleMatcher) {};
+//     virtual ~DisassemblyAckMessage() {};
+
+//     virtual void handle(BaseSimulator::BlockCode*);
+//     virtual Message* clone() { return new DisassemblyAckMessage(*this); }
+//     virtual string getName() { return "DisassemblyAck"; }
+//     virtual AbstractMeshSpanningTreeMessage*
+//     buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
+//                                     const bool isAck) override;
+// };
 
 #endif /* MC3D_MESSAGES_H_ */
