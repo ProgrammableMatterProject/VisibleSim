@@ -98,9 +98,9 @@ void ConfigExporter::exportCameraAndLightSource() {
         cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
                                                                ds.pt[1],
                                                                ds.pt[2]));
-        cam->SetAttribute("angle", camera->getAngle());
-        cam->SetAttribute("near", camera->getNearPlane());          
-        cam->SetAttribute("far", camera->getFarPlane());
+        cam->SetAttribute("angle", to_string(camera->getAngle()));
+        cam->SetAttribute("near", to_string(camera->getNearPlane()));          
+        cam->SetAttribute("far", to_string(camera->getFarPlane()));
         
         worldElt->LinkEndChild(cam);
                                   
@@ -116,7 +116,7 @@ void ConfigExporter::exportCameraAndLightSource() {
         spotlight->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
                                                                      ds.pt[1],
                                                                      ds.pt[2]));
-        spotlight->SetAttribute("angle", ls->getAngle());        
+        spotlight->SetAttribute("angle", to_string(ls->getAngle()));        
         worldElt->LinkEndChild(spotlight);
     }
 }
