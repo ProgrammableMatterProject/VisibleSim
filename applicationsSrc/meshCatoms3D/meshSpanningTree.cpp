@@ -15,51 +15,6 @@
 
 using namespace MeshSpanningTree;
 
-bool MeshSpanningTreeRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
-    return isOnXBranch(pos) or isOnYBranch(pos) or isOnZBranch(pos)
-        or isOnRevZBranch(pos) or isOnMinus45DegZBranch(pos) or isOnPlus45DegZBranch(pos);
-}
-
-bool MeshSpanningTreeRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
-    return pos[0] % (int)B == 0 and pos[2] % (int)B == 0;
-}
-
-bool MeshSpanningTreeRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
-    return pos[1] % (int)B == 0 and pos[2] % (int)B == 0;
-}
-
-bool MeshSpanningTreeRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
-    const int x = (pos[0] < 0 ? B + pos[0] : pos[0]);
-    const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
-    
-    return x % (int)B == 0 and y % (int)B == 0;
-}
-
-bool MeshSpanningTreeRuleMatcher::isOnRevZBranch(const Cell3DPosition& pos) const {
-    const int x = (pos[0] < 0 ? B + pos[0] : pos[0]);
-    const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
-    const int z = pos[2];
-    
-    return ( x % (int)B == y % (int)B
-            and z % (int)B == (((int)B - x) % (int)B));
-}
-
-bool MeshSpanningTreeRuleMatcher::isOnMinus45DegZBranch(const Cell3DPosition& pos) const {
-    const int x = (pos[0] < 0 ? B + pos[0] : pos[0]);
-    const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
-    const int z = pos[2];
-    
-    return (x % (int)B + z % (int)B == (int)B and y % (int)B == 0);
-}
-
-bool MeshSpanningTreeRuleMatcher::isOnPlus45DegZBranch(const Cell3DPosition& pos) const {
-    const int x = (pos[0] < 0 ? B + pos[0] : pos[0]);
-    const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
-    const int z = pos[2];
-
-    return (y % (int)B + z % (int)B == (int)B and x % (int)B == 0);
-}
-
 bool MeshSpanningTreeRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
     const int zCoeff = pos[2] / B;
     const int intB = B;
@@ -152,16 +107,6 @@ bool MeshSpanningTreeRuleMatcher::partialBorderMeshRulesApply(const Cell3DPositi
 
 bool MeshSpanningTreeRuleMatcher::shouldSendToNeighbor(const Cell3DPosition& own,
                                                        const Cell3DPosition& other) const {
-    
-    // if (own == Cell3DPosition(0, -1, 6) and other == Cell3DPosition(-1,-1,6)) {
-    //     cout << "isOnPartialBorderMesh(own):" << isOnPartialBorderMesh(own) << endl;
-    //     cout << "planarBranchRulesApply():" << planarBranchRulesApply(own,other) << endl;
-    //     cout << "meshRootBranchRulesApply():"<< meshRootBranchRulesApply(own,other) << endl;
-    //     cout << "upwardBranchRulesApply():" << upwardBranchRulesApply(own,other) << endl;
-    //     cout << "partialBorderMeshRulesApply():"
-    //          << partialBorderMeshRulesApply(own,other) << endl;
-    // }
-    
     return (not isOnPartialBorderMesh(own)
             and (
                 planarBranchRulesApply(own, other)

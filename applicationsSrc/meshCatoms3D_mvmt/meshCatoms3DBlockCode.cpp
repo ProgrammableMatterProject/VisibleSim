@@ -17,7 +17,7 @@
 #include "trace.h"
 #include "tDefs.h"
 
-#include "meshCatoms3DBlockCode_mvmt.hpp"
+#include "meshCatoms3DBlockCode.hpp"
 
 // C3D Motion Engine
 #include "messages.hpp"
@@ -62,46 +62,16 @@ void MeshCatoms3DBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
-    static const bool ENABLE_MANUAL_DISASSEMBLY = false;
-    static const double BORDER_WIDTH = 1.0;
-    if (ENABLE_MANUAL_DISASSEMBLY) {
-        if ((!target->isInTarget(catom->position)
-             // or static_cast<TargetCSG*>(target)->isInTargetBorder(catom->position, BORDER_WIDTH)
-                )
-            // ensure newly placed border catom is not removed on init
-            and placedBorderCatoms.find(catom->position) == placedBorderCatoms.end()) {
-            catom->setColor(WHITE);
-            catom->setVisible(false);
-            world->deleteBlock(catom);
-        } else if (!static_cast<TargetCSG*>(target)->
-                   isInTargetBorder(catom->position, BORDER_WIDTH)) {
+    for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
+        if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
+            and ruleMatcher->isInMesh(nPos)) {
+            static bID id = 1;
+            world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
+            //awaitKeyPressed();
         }
-    }
-    
-    static const bool ENABLE_COATING = false;
-    static const int SANDBOX_DEPTH = B;
-    if  (ENABLE_COATING) {
-        for (auto const& cell : world->lattice->getNeighborhood(catom->position)) {
-            
-            if (static_cast<TargetCSG*>(target)->isInTargetBorder(cell, BORDER_WIDTH)
-                and cell.pt[2] > SANDBOX_DEPTH
-                and world->lattice->isFree(cell)) {
-                static bID id = 1;
-                world->addBlock(++id, buildNewBlockCode, cell, ORANGE);
-                placedBorderCatoms.insert(cell);
-            }
-        }
-    }
+    }    
 
-    static const bool COLOR_ROOTS = true;
-    if (COLOR_ROOTS and target->isInTarget(catom->position)) {
-        if (isMeshRoot(catom->position))
-            catom->setColor(GREEN);
-        else
-            catom->setColor(target->getTargetColor(catom->position));
-    }
-
-    static const bool SIMULATE_SPANNINGTREE = true;
+    static const bool SIMULATE_SPANNINGTREE = false;
     if (SIMULATE_SPANNINGTREE and catom->blockId == 1) {
         catom->setColor(RED);
 

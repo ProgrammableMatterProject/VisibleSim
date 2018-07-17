@@ -12,7 +12,7 @@
 #include <iostream>
 #include "catoms3DSimulator.h"
 #include "catoms3DBlockCode.h"
-#include "meshCatoms3DBlockCode_mvmt.hpp"
+#include "meshCatoms3DBlockCode.hpp"
 
 using namespace std;
 using namespace Catoms3D;

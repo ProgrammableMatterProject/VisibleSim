@@ -15,7 +15,12 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # You will find instructions below on how to edit the Makefile to fit your needs.
 #
 # SRCS contains all the sources of your codeBlocks
-SRCS =  meshCatoms3D_mvmt.cpp meshCatoms3DBlockCode_mvmt.cpp messages.cpp catoms3DMotionEngine.cpp ../meltSortGrow/pathHop.cpp meshSpanningTree.cpp #
+SRCS =  meshCatoms3D_mvmt.cpp \
+	meshCatoms3DBlockCode.cpp \
+	messages.cpp \
+	catoms3DMotionEngine.cpp \
+	../meltSortGrow/pathHop.cpp \
+	meshSpanningTree.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = ../../applicationsBin/meshCatoms3D/meshCatoms3D_mvmt
 #

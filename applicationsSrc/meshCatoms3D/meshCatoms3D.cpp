@@ -1,9 +1,13 @@
-/*
- * meshCatoms3D.cpp
- *
- *  Created on: 26/06/2018
- *      Author: pthalamy
+/**
+ * @file   meshCatoms3D_mvmt.cpp
+ * @author pthalamy <pthalamy@p3520-pthalamy-linux>
+ * @date   Tue Jul 10 13:47:35 2018
+ * 
+ * @brief  
+ * 
+ * 
  */
+
 
 #include <iostream>
 #include "catoms3DSimulator.h"
