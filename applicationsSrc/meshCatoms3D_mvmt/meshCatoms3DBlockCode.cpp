@@ -62,16 +62,19 @@ void MeshCatoms3DBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
-    for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
-        if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
-            and ruleMatcher->isInMesh(nPos)) {
-            static bID id = 1;
-            world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
-            //awaitKeyPressed();
-        }
-    }    
-
-    static const bool SIMULATE_SPANNINGTREE = false;
+    static const bool ASSEMBLE_SCAFFOLD = true;
+    if (ASSEMBLE_SCAFFOLD) {
+        for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
+            if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
+                and ruleMatcher->isInMesh(nPos)) {
+                static bID id = 1;
+                world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
+                awaitKeyPressed();
+            }
+        }    
+    }
+    
+    static const bool SIMULATE_SPANNINGTREE = true;
     if (SIMULATE_SPANNINGTREE and catom->blockId == 1) {
         catom->setColor(RED);
 

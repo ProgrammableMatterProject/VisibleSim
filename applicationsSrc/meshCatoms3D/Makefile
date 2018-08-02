@@ -17,10 +17,10 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # SRCS contains all the sources of your codeBlocks
 SRCS =  meshCatoms3D.cpp \
 	meshCatoms3DBlockCode.cpp \
-	messages.cpp \
-	catoms3DMotionEngine.cpp \
-	../meltSortGrow/pathHop.cpp \
-	meshSpanningTree.cpp #
+	../meshCatoms3D_mvmt/catoms3DMotionEngine.cpp \
+	../meshCatoms3D_mvmt/messages.cpp \
+	../meshCatoms3D_mvmt/meshSpanningTree.cpp \
+	../meltSortGrow/pathHop.cpp 
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/meshCatoms3D
 #

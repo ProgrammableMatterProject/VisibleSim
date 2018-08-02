@@ -6,6 +6,7 @@
 #include <fstream>
 #include <ctime>
 #include <sstream>
+#include <cassert>
 
 #include "tDefs.h"
 
@@ -20,6 +21,17 @@ namespace utils {
 
 #define IS_ODD(x) ((x>0?x:-x) % 2)     //!< returns 1 if x is odd, 0 otherwise
 #define IS_EVEN(x) (!IS_ODD(x)) //!< returns 1 if x is even, 0 otherwise
+
+/** 
+ * @brief Custom modulus fonction, python style e.g. -2 % 6 = 4
+ * @param l left operand
+ * @param mod right operand, modulus value
+ * @return python style modulus operation result
+ */
+inline static int m_mod(int l, int mod) {
+    assert(mod != 0);
+    return l < 0 and l % mod != 0 ? mod - (-l % mod) : l % mod;
+}
 
 inline static void awaitKeyPressed() {
     std::cout << "Press ENTER to continue..." << std::endl; std::cin.ignore();

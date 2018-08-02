@@ -200,6 +200,6 @@ Time P2PNetworkInterface::getTransmissionDuration(MessagePtr &m) {
   return transmissionDuration;
 }
 
-bool P2PNetworkInterface::isConnected() {
+bool P2PNetworkInterface::isConnected() const {
   return connectedInterface != NULL;
 }

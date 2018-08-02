@@ -11,6 +11,7 @@
 #include "meshSpanningTree.hpp"
 
 #include "network.h"
+#include "utils.h"
 #include "meshCatoms3DBlockCode.hpp" //FIXME:
 
 using namespace MeshSpanningTree;
@@ -21,18 +22,18 @@ bool MeshSpanningTreeRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
-    return pos[0] % (int)B == 0 and pos[2] % (int)B == 0;
+    return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0;
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
-    return pos[1] % (int)B == 0 and pos[2] % (int)B == 0;
+    return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0;
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
     const int x = (pos[0] < 0 ? B + pos[0] : pos[0]);
     const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
     
-    return x % (int)B == 0 and y % (int)B == 0;
+    return m_mod(x, B) == 0 and m_mod(y, B) == 0;
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnRevZBranch(const Cell3DPosition& pos) const {
@@ -40,8 +41,7 @@ bool MeshSpanningTreeRuleMatcher::isOnRevZBranch(const Cell3DPosition& pos) cons
     const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
     const int z = pos[2];
     
-    return ( x % (int)B == y % (int)B
-            and z % (int)B == (((int)B - x) % (int)B));
+    return m_mod(x, B) == m_mod(y, B) and m_mod(z, B) == m_mod(B - x, B);
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnMinus45DegZBranch(const Cell3DPosition& pos) const {
@@ -49,7 +49,7 @@ bool MeshSpanningTreeRuleMatcher::isOnMinus45DegZBranch(const Cell3DPosition& po
     const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
     const int z = pos[2];
     
-    return (x % (int)B + z % (int)B == (int)B and y % (int)B == 0);
+    return (m_mod(x, B) + m_mod(z, B) == (int)B and m_mod(y, B) == 0);
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnPlus45DegZBranch(const Cell3DPosition& pos) const {
@@ -57,26 +57,33 @@ bool MeshSpanningTreeRuleMatcher::isOnPlus45DegZBranch(const Cell3DPosition& pos
     const int y = (pos[1] < 0 ? B + pos[1] : pos[1]);
     const int z = pos[2];
 
-    return (y % (int)B + z % (int)B == (int)B and x % (int)B == 0);
+    return (m_mod(y, B) + m_mod(z, B) == (int)B and m_mod(x, B) == 0);
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
-    const int zCoeff = pos[2] / B;
-    const int intB = B;
-    
-    return (pos[2] % B == 0 and (IS_ODD(zCoeff) // Planar case (lower bounds)
-                                 and ((pos[0] < -intB * (zCoeff / 2)
-                                       or pos[1] < -intB * (zCoeff / 2))) ))
-        or (pos[2] % B != 0 and ((pos[0] > 0 // Downward oblique case (upper bounds)
-                                  and pos[0] > (int)(B * ((X_MAX - (zCoeff / 2) * B) / B)))
-                                 or (pos[1] > 0 and
-                                     pos[1] > (int)(B * ((Y_MAX - (zCoeff / 2) * B) / B))))
+    return (m_mod(pos[2], B) == 0 and not isTileRoot(pos)
+            and (
+                (isOnYBranch(pos)
+                 and (pos[0] - m_mod(pos[0], B)  < - (pos[2] / 2)) )
+                or (isOnXBranch(pos)
+                     and (pos[1] - m_mod(pos[1], B) < - (pos[2] / 2)) )
+                ))
+        or (m_mod(pos[2], B) != 0 and // Downward oblique case (ub)
+            // (pos[2] - pos[2] % (int)B) is expected z of tileRoot
+            ( (m_mod(pos[0], B) > 0         
+               // and isOnMinus45DegZBranch(pos)
+               and pos[0] + (int)B - m_mod(pos[0], B) >
+               (int)X_MAX - (pos[2] - m_mod(pos[2], B)) / 2 )
+              or (m_mod(pos[1], B) > 0 
+                  // and isOnRevZBranch(pos)
+                  and pos[1] + (int)B - m_mod(pos[1], (int)B) >
+                  (int)Y_MAX - (pos[2] - m_mod(pos[2], (int)B)) / 2 )
+                )
             );
 }
 
-bool MeshSpanningTreeRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {
-    return (int)(abs(pos[0])) % B == 0 and (int)(abs(pos[1])) % B == 0
-        and (int)(abs(pos[2])) % B == 0;
+bool MeshSpanningTreeRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {    
+    return m_mod(pos[0], B) == 0 and m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0;
 }
 
 bool MeshSpanningTreeRuleMatcher::upwardBranchRulesApply(const Cell3DPosition& own,
@@ -84,27 +91,27 @@ bool MeshSpanningTreeRuleMatcher::upwardBranchRulesApply(const Cell3DPosition& o
     const int zCoeff = other[2] / B;
     
     // Module is on branch if z is NOT a multiple of B
-    return not isTileRoot(own) and own[2] % B != 0
+    return not m_mod(own[2], B) == 0
         and (
             // In that case, only allow upward transmission
             own[2] < other[2]
             // Unless neighbor is not on branch
-            and (other[2] % B != 0
+            and (m_mod(other[2], B) != 0
                  // Transmitting to the next root only along z axis from (0,0,0)
                  or (isTileRoot(other)
                      and (
-                          other[0] == (int)(-zCoeff / 2 * B)
-                          and other[0] == other[1]
-                          and (
-                               (IS_EVEN(zCoeff)
-                                // If o.z / B even, then we need to go up/backward
-                                and other - own == Cell3DPosition(-1, -1, 1))
-                               or
-                               (IS_ODD(zCoeff)
-                                // if o.z / B odd, then we need to go up/forward
-                                and other - own == Cell3DPosition(0, 0, 1))
-                               )
-                          )
+                         other[0] == (int)(-zCoeff / 2 * B)
+                         and other[0] == other[1]
+                         and (
+                             (IS_EVEN(zCoeff)
+                              // If o.z / B even, then we need to go up/backward
+                              and other - own == Cell3DPosition(-1, -1, 1))
+                             or
+                             (IS_ODD(zCoeff)
+                              // if o.z / B odd, then we need to go up/forward
+                              and other - own == Cell3DPosition(0, 0, 1))
+                             )
+                         )
                      )
                 )
             );            
@@ -113,7 +120,7 @@ bool MeshSpanningTreeRuleMatcher::upwardBranchRulesApply(const Cell3DPosition& o
 bool MeshSpanningTreeRuleMatcher::planarBranchRulesApply(const Cell3DPosition& own,
                                                          const Cell3DPosition& other) const {
     // Module is on plan if z is a multiple of B
-    return own[2] % B == 0 and own[2] == other[2]
+    return m_mod(own[2], B) == 0 and own[2] == other[2]
         and (
             // In that case, only allow transmission to increasing x...
             // (except if other is a root as transmission to roots occur along y axis,
@@ -147,21 +154,11 @@ bool MeshSpanningTreeRuleMatcher::partialBorderMeshRulesApply(const Cell3DPositi
              and ((own[2] % B == 0 and own[2] == other[2] and (own[0] > other[0]
                                                                or own[1] > other[1]))
                   or (own[2] % B != 0 and other[2] < own[2]))
-             ));
+                ));
 }
 
 bool MeshSpanningTreeRuleMatcher::shouldSendToNeighbor(const Cell3DPosition& own,
                                                        const Cell3DPosition& other) const {
-    
-    // if (own == Cell3DPosition(0, -1, 6) and other == Cell3DPosition(-1,-1,6)) {
-    //     cout << "isOnPartialBorderMesh(own):" << isOnPartialBorderMesh(own) << endl;
-    //     cout << "planarBranchRulesApply():" << planarBranchRulesApply(own,other) << endl;
-    //     cout << "meshRootBranchRulesApply():"<< meshRootBranchRulesApply(own,other) << endl;
-    //     cout << "upwardBranchRulesApply():" << upwardBranchRulesApply(own,other) << endl;
-    //     cout << "partialBorderMeshRulesApply():"
-    //          << partialBorderMeshRulesApply(own,other) << endl;
-    // }
-    
     return (not isOnPartialBorderMesh(own)
             and (
                 planarBranchRulesApply(own, other)
@@ -170,6 +167,52 @@ bool MeshSpanningTreeRuleMatcher::shouldSendToNeighbor(const Cell3DPosition& own
                 )
         ) 
         or partialBorderMeshRulesApply(own, other);
+}
+
+const Cell3DPosition
+MeshSpanningTreeRuleMatcher::getTreeParentPosition(const Cell3DPosition& pos) const {
+    if (isTileRoot(pos)) {
+        if (pos[0] == 0 and pos[1] == 0) {
+            // Mesh Root
+            if (pos[2] == 0) return pos;
+            // Upward propagating branch, parent is branch predecessor
+            else return pos + Cell3DPosition(0,0,-1);
+        }
+
+        assert(false);
+    } else if (isOnPartialBorderMesh(pos)) {
+        // parent is either x - 1 or y - 1 if planar
+        if (isOnXBranch(pos)) return pos + Cell3DPosition(1,0,0);
+        else if (isOnYBranch(pos)) return pos + Cell3DPosition(0,1,0);
+        //  or z + 1 if on an incomplete downward branch
+        else if (isOnZBranch(pos)) return pos + Cell3DPosition(1,0,0);
+        else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(1,1,1);
+        else if (isOnMinus45DegZBranch(pos)) return pos + Cell3DPosition(1,0,1);
+        else if (isOnPlus45DegZBranch(pos)) return pos + Cell3DPosition(0,1,1);
+        
+        assert(false);
+    }    
+    // Planar cases X and Y
+    else if (isOnYBranch(pos)) return pos + Cell3DPosition(0,-1,0);
+    else if (isOnXBranch(pos)) return pos + Cell3DPosition(-1,0,0);
+    // Branch cases
+    else if (isOnZBranch(pos)) return pos + Cell3DPosition(-1,0,0);
+    else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(-1,-1,-1);
+    else if (isOnMinus45DegZBranch(pos)) return pos + Cell3DPosition(-1,0,-1);
+    else if (isOnPlus45DegZBranch(pos)) return pos + Cell3DPosition(0,-1,-1);
+
+    assert(false);
+}
+
+unsigned int AbstractMeshSpanningTreeMessage::
+getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) {
+    unsigned int expectedConfirms = 0;
+    for (const Cell3DPosition& nPos :
+             Catoms3D::getWorld()->lattice->getActiveNeighborCells(pos)) {
+        if (ruleMatcher.shouldSendToNeighbor(nPos, pos)) expectedConfirms++;
+    }
+
+    return expectedConfirms;
 }
 
 int AbstractMeshSpanningTreeMessage::forwardToNeighbors(BaseSimulator::BlockCode& bc,
@@ -194,6 +237,9 @@ int AbstractMeshSpanningTreeMessage::forwardToNeighbors(BaseSimulator::BlockCode
         }
     }
 
+    // TODO: Should be stored in some kind of counter dictionary with a different ID foreach
+    //  messaging session (the could be selected by the first sender if it propagates down
+    //  a subtree or using a constant id if propagated up from several leaves.
     return sentCounter;
 }
 

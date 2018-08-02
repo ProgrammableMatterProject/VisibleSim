@@ -20,8 +20,8 @@
 #include "meshCatoms3DBlockCode.hpp"
 
 // C3D Motion Engine
-#include "messages.hpp"
-#include "catoms3DMotionEngine.hpp"
+#include "../meshCatoms3D_mvmt/messages.hpp"
+#include "../meshCatoms3D_mvmt/catoms3DMotionEngine.hpp"
 
 using namespace Catoms3D;
 using namespace MeshSpanningTree;
@@ -104,7 +104,7 @@ void MeshCatoms3DBlockCode::startup() {
     static const bool SIMULATE_SPANNINGTREE = true;
     if (SIMULATE_SPANNINGTREE and catom->blockId == 1) {
         catom->setColor(RED);
-
+        
         for (const Cell3DPosition& pos : lattice->getActiveNeighborCells(catom->position)) {
             if (moduleInSpanningTree(pos)) {
                 sendMessage(new DisassemblyTriggerMessage(*ruleMatcher, false),

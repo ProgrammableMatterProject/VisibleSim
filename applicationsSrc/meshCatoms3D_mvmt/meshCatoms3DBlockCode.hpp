@@ -40,6 +40,7 @@ public:
     
     P2PNetworkInterface* stParent = NULL;
     uint expectedConfirms = 0;
+    uint subTreeScaffoldConstructionThreshold = 13;
     
     // TargetCSG *target;
     MeshCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);

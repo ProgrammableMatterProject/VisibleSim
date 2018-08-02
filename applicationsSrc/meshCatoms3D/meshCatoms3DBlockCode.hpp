@@ -18,9 +18,9 @@
 #include "rotation3DEvents.h"
 #include "catoms3DBlock.h"
 
-#include "catoms3DMotionEngine.hpp"
-#include "messages.hpp"
-#include "meshSpanningTree.hpp"
+#include "../meshCatoms3D_mvmt/catoms3DMotionEngine.hpp"
+#include "../meshCatoms3D_mvmt/messages.hpp"
+#include "../meshCatoms3D_mvmt/meshSpanningTree.hpp"
 
 #define MSG_DELAY_MC 5000
 

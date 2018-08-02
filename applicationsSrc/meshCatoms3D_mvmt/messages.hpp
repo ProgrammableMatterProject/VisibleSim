@@ -106,4 +106,19 @@ public:
                                     const bool isAck) override;
 };
 
+class SubTreeScaffoldConstructionDoneMessage : public AbstractMeshSpanningTreeMessage {
+public:
+    SubTreeScaffoldConstructionDoneMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher,
+                                           const bool isAck)
+        : AbstractMeshSpanningTreeMessage(_ruleMatcher, true) {};
+    virtual ~SubTreeScaffoldConstructionDoneMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new SubTreeScaffoldConstructionDoneMessage(*this); }
+    virtual string getName() { return "SubTreeScaffoldConstructionDone"; }
+    virtual AbstractMeshSpanningTreeMessage*
+    buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
+                                    const bool isAck) override;
+};
+
 #endif /* MC3D_MESSAGES_H_ */

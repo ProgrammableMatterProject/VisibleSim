@@ -55,6 +55,12 @@ public:
                               const Cell3DPosition& other) const;
 
     bool isInMesh(const Cell3DPosition& pos) const;
+
+    /** 
+     * @param pos position of the module to consider
+     * @return the position of the parent module in the spanning tree, or pos if module has no parent
+     */
+    const Cell3DPosition getTreeParentPosition(const Cell3DPosition& pos) const;
 };
 
 class AbstractMeshSpanningTreeMessage : public HandleableMessage {
@@ -75,6 +81,13 @@ public:
     
     virtual AbstractMeshSpanningTreeMessage*
     buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc, const bool isAck) = 0;
+
+    /** 
+     * @param pos the module's position
+     * @return the number of messages that should be received from the subtree before 
+     *  propagating a response up the tree
+     */
+    unsigned int getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos);
 };  
 
 }

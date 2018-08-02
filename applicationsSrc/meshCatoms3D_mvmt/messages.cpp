@@ -152,7 +152,7 @@ DisassemblyTriggerMessage::buildNewMeshSpanningTreeMessage(BaseSimulator::BlockC
 static const bool COLOR_SPANNING_TREE = true;
 void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);    
-
+    
     if (not isAck) {
         
         if (!mcbc.stParent) {
@@ -164,7 +164,7 @@ void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
             awaitKeyPressed();
             assert(!mcbc.stParent);
         }
-
+        
         mcbc.expectedConfirms = forwardToNeighbors(*bc, mcbc.stParent);
     } else {
         --mcbc.expectedConfirms;
@@ -182,4 +182,31 @@ void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
         }
     }
         
+}
+
+AbstractMeshSpanningTreeMessage* SubTreeScaffoldConstructionDoneMessage::
+buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc, const bool isAck) {
+    return new DisassemblyTriggerMessage(ruleMatcher, isAck);
+}
+
+void SubTreeScaffoldConstructionDoneMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshCatoms3DBlockCode& mcbc = *static_cast<MeshCatoms3DBlockCode*>(bc);    
+
+    if (mcbc.subTreeScaffoldConstructionThreshold > 12) 
+        mcbc.subTreeScaffoldConstructionThreshold =
+            getNumberOfExpectedSubTreeConfirms(mcbc.catom->position);
+        
+    
+    if (not --mcbc.subTreeScaffoldConstructionThreshold) {
+        mcbc.catom->setColor(GREEN);
+
+        const Cell3DPosition& parentPos =
+            ruleMatcher.getTreeParentPosition(mcbc.catom->position);
+
+        if (parentPos != mcbc.catom->position) {
+            P2PNetworkInterface* parentItf = mcbc.catom->getInterface(parentPos);
+            assert(parentItf->isConnected());
+            acknowledgeToParent(mcbc, parentItf);
+        }
+   }        
 }

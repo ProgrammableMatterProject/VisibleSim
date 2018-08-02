@@ -51,6 +51,11 @@ int BlockCode::sendMessage(HandleableMessage*msg,
 
     console << " sends " << msg->getName() << " to "
             << dest->getConnectedBlockId() << " at " << t1 << "\n";
+#ifdef DEBUG_MESSAGES
+    OUTPUT << "#" << hostBlock->blockId << " " << hostBlock->position
+           << " sends " << msg->type << " to "
+		   << dest->connectedInterface->hostBlock->blockId << " at " << t1 << endl;
+#endif
     assert(dest->getConnectedBlockId() > 0);
 
     scheduler->schedule(new NetworkInterfaceEnqueueOutgoingEvent(t1, msg, dest));
