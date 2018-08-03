@@ -62,32 +62,40 @@ void MeshCatoms3DBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
+    bool isLeaf = true;
     static const bool ASSEMBLE_SCAFFOLD = true;
-    if (ASSEMBLE_SCAFFOLD) {
+    if (ASSEMBLE_SCAFFOLD) {        
         for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
             if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
                 and ruleMatcher->isInMesh(nPos)) {
                 static bID id = 1;
                 world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
-                awaitKeyPressed();
+
+                isLeaf = false;
             }
         }    
     }
-    
-    static const bool SIMULATE_SPANNINGTREE = true;
-    if (SIMULATE_SPANNINGTREE and catom->blockId == 1) {
-        catom->setColor(RED);
 
-        for (const Cell3DPosition& pos : lattice->getActiveNeighborCells(catom->position)) {
-            if (moduleInSpanningTree(pos)) {
-                sendMessage(new DisassemblyTriggerMessage(*ruleMatcher, false),
-                            catom->getInterface(pos), MSG_DELAY_MC, 0);
-                expectedConfirms++;
-            }
-        }        
-    }
+    if (isLeaf) {
+        // Notify ST parent that scaffold construction is complete
+        const Cell3DPosition& parentPos =
+            ruleMatcher->getTreeParentPosition(catom->position);
 
-    
+        if (parentPos != catom->position) {
+            // cout << "myPos: " << catom->position << " -- parentPos: " << parentPos << endl;
+            
+            P2PNetworkInterface* parentItf = catom->getInterface(parentPos);
+            assert(parentItf);
+            assert(parentItf->isConnected());
+            sendMessage(new SubTreeScaffoldConstructionDoneMessage(*ruleMatcher, true),
+                        parentItf, MSG_DELAY_MC, 0);
+
+            catom->setColor(BLUE);
+        } // else module is mesh root, and therefore the only module is the configuration?!
+    } else {
+        subTreeScaffoldConstructionThreshold =
+            ruleMatcher->getNumberOfExpectedSubTreeConfirms(catom->position);
+    }    
 }    
 
 void MeshCatoms3DBlockCode::processReceivedMessage(MessagePtr msg,

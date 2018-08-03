@@ -25,7 +25,9 @@ class MeshSpanningTreeRuleMatcher {
     const uint X_MAX, Y_MAX, B;
 
     bool isOnXBranch(const Cell3DPosition& pos) const;
+    bool isOnXBorder(const Cell3DPosition& pos) const;
     bool isOnYBranch(const Cell3DPosition& pos) const;
+    bool isOnYBorder(const Cell3DPosition& pos) const;
     bool isOnZBranch(const Cell3DPosition& pos) const;
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
     bool isOnMinus45DegZBranch(const Cell3DPosition& pos) const;
@@ -56,11 +58,20 @@ public:
 
     bool isInMesh(const Cell3DPosition& pos) const;
 
+    void printDebugInfo(const Cell3DPosition& pos) const;
+  
     /** 
      * @param pos position of the module to consider
      * @return the position of the parent module in the spanning tree, or pos if module has no parent
      */
     const Cell3DPosition getTreeParentPosition(const Cell3DPosition& pos) const;
+
+    /** 
+     * @param pos the module's position
+     * @return the number of messages that should be received from the subtree before 
+     *  propagating a response up the tree
+     */
+    unsigned int getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const;
 };
 
 class AbstractMeshSpanningTreeMessage : public HandleableMessage {
@@ -81,13 +92,6 @@ public:
     
     virtual AbstractMeshSpanningTreeMessage*
     buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc, const bool isAck) = 0;
-
-    /** 
-     * @param pos the module's position
-     * @return the number of messages that should be received from the subtree before 
-     *  propagating a response up the tree
-     */
-    unsigned int getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos);
 };  
 
 }

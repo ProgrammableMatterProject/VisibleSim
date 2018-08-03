@@ -117,9 +117,10 @@ void World::updateGlData(BuildingBlock*blc, Vector3D &p) {
 }
 
 void World::linkBlocks() {
-const Cell3DPosition& lb = lattice->getGridLowerBounds();
-const Cell3DPosition& ub = lattice->getGridUpperBounds();
-Cell3DPosition p;
+    //TODO: Might not be necessary anymore, since a module is now linked to its neighbors when added to the lattice
+    const Cell3DPosition& lb = lattice->getGridLowerBounds();
+    const Cell3DPosition& ub = lattice->getGridUpperBounds();
+    Cell3DPosition p;
 
 	for (p.pt[2] = lb.pt[2]; p[2] < ub.pt[2]; p.pt[2]++) { // z
         for (p.pt[1] = lb.pt[1]; p[1] < ub.pt[1]; p.pt[1]++) { // y

@@ -16,17 +16,42 @@
 
 using namespace MeshSpanningTree;
 
+void MeshSpanningTreeRuleMatcher::printDebugInfo(const Cell3DPosition& pos) const {
+  cout << "--- DEBUG INFO: " << pos << endl;
+  cout << "getTreeParentPosition(pos): " << getTreeParentPosition(pos) << endl;
+  cout << "isTileRoot(pos): " << isTileRoot(pos) << endl;
+  cout << "isOnPartialBorderMesh(pos): " << isOnPartialBorderMesh(pos) << endl;
+  cout << "isOnXBranch(pos): " << isOnXBranch(pos) << endl;
+  cout << "isOnXBorder(pos): " << isOnXBorder(pos) << endl;
+  cout << "isOnYBranch(pos): " << isOnYBranch(pos) << endl;
+  cout << "isOnYBorder(pos): " << isOnYBorder(pos) << endl;
+  cout << "isOnZBranch(pos): " << isOnZBranch(pos) << endl;
+  cout << "isOnRevZBranch(pos): " << isOnRevZBranch(pos) << endl;
+  cout << "isOnMinus45DegZBranch(pos): " << isOnMinus45DegZBranch(pos) << endl;
+  cout << "isOnPlus45DegZBranch(pos): " << isOnPlus45DegZBranch(pos) << endl;
+  cout << "--- END DEBUG INFO ---" << endl << endl;
+}
+
 bool MeshSpanningTreeRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
     return isOnXBranch(pos) or isOnYBranch(pos) or isOnZBranch(pos)
         or isOnRevZBranch(pos) or isOnMinus45DegZBranch(pos) or isOnPlus45DegZBranch(pos);
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
+    return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0;
+}
+
+bool MeshSpanningTreeRuleMatcher::isOnXBorder(const Cell3DPosition& pos) const {
+    return pos[1] == (int)(-(int)(pos[2] / B) / 2 * B) and m_mod(pos[2], B) == 0;
+}
+
+
+bool MeshSpanningTreeRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
     return m_mod(pos[0], B) == 0 and m_mod(pos[2], B) == 0;
 }
 
-bool MeshSpanningTreeRuleMatcher::isOnYBranch(const Cell3DPosition& pos) const {
-    return m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0;
+bool MeshSpanningTreeRuleMatcher::isOnYBorder(const Cell3DPosition& pos) const {
+    return pos[0] == (int)(-(int)(pos[2] / B) / 2 * B) and m_mod(pos[2], B) == 0;
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnZBranch(const Cell3DPosition& pos) const {
@@ -63,19 +88,17 @@ bool MeshSpanningTreeRuleMatcher::isOnPlus45DegZBranch(const Cell3DPosition& pos
 bool MeshSpanningTreeRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& pos) const {
     return (m_mod(pos[2], B) == 0 and not isTileRoot(pos)
             and (
-                (isOnYBranch(pos)
+                (isOnXBranch(pos)
                  and (pos[0] - m_mod(pos[0], B)  < - (pos[2] / 2)) )
-                or (isOnXBranch(pos)
+                or (isOnYBranch(pos)
                      and (pos[1] - m_mod(pos[1], B) < - (pos[2] / 2)) )
                 ))
         or (m_mod(pos[2], B) != 0 and // Downward oblique case (ub)
             // (pos[2] - pos[2] % (int)B) is expected z of tileRoot
             ( (m_mod(pos[0], B) > 0         
-               // and isOnMinus45DegZBranch(pos)
                and pos[0] + (int)B - m_mod(pos[0], B) >
                (int)X_MAX - (pos[2] - m_mod(pos[2], B)) / 2 )
               or (m_mod(pos[1], B) > 0 
-                  // and isOnRevZBranch(pos)
                   and pos[1] + (int)B - m_mod(pos[1], (int)B) >
                   (int)Y_MAX - (pos[2] - m_mod(pos[2], (int)B)) / 2 )
                 )
@@ -172,46 +195,51 @@ bool MeshSpanningTreeRuleMatcher::shouldSendToNeighbor(const Cell3DPosition& own
 const Cell3DPosition
 MeshSpanningTreeRuleMatcher::getTreeParentPosition(const Cell3DPosition& pos) const {
     if (isTileRoot(pos)) {
-        if (pos[0] == 0 and pos[1] == 0) {
-            // Mesh Root
-            if (pos[2] == 0) return pos;
-            // Upward propagating branch, parent is branch predecessor
-            else return pos + Cell3DPosition(0,0,-1);
+        const int zCoeff = pos[2] / B;
+        // Mesh Root
+        if (pos[0] == 0 and pos[1] == 0 and pos[2] == 0) return pos;
+        // Upward propagating branch, parent is branch predecessor
+        else if (pos[0] == (int)(-zCoeff / 2 * B) and pos[1] == pos[0]) {
+            return IS_EVEN(zCoeff) ?
+                pos + Cell3DPosition(1, 1, -1) : pos + Cell3DPosition(0, 0, -1);
         }
+    }
 
-        assert(false);
-    } else if (isOnPartialBorderMesh(pos)) {
+    if (isOnPartialBorderMesh(pos)) {
         // parent is either x - 1 or y - 1 if planar
-        if (isOnXBranch(pos)) return pos + Cell3DPosition(1,0,0);
-        else if (isOnYBranch(pos)) return pos + Cell3DPosition(0,1,0);
+        if (isOnYBranch(pos)) return pos + Cell3DPosition(0,1,0);
+        else if (isOnXBranch(pos)) return pos + Cell3DPosition(1,0,0);
         //  or z + 1 if on an incomplete downward branch
-        else if (isOnZBranch(pos)) return pos + Cell3DPosition(1,0,0);
-        else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(1,1,1);
-        else if (isOnMinus45DegZBranch(pos)) return pos + Cell3DPosition(1,0,1);
-        else if (isOnPlus45DegZBranch(pos)) return pos + Cell3DPosition(0,1,1);
+        else if (isOnZBranch(pos)) return pos + Cell3DPosition(0,0,1);
+        else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(-1,-1,1);
+        else if (isOnMinus45DegZBranch(pos)) return pos + Cell3DPosition(-1,0,1);
+        else if (isOnPlus45DegZBranch(pos)) return pos + Cell3DPosition(0,-1,1);
         
         assert(false);
-    }    
+    }
+    
     // Planar cases X and Y
-    else if (isOnYBranch(pos)) return pos + Cell3DPosition(0,-1,0);
-    else if (isOnXBranch(pos)) return pos + Cell3DPosition(-1,0,0);
+    else if (isOnYBranch(pos) and !isOnXBorder(pos)) return pos + Cell3DPosition(0,-1,0);
+    else if (isOnXBranch(pos) and !isOnYBorder(pos)) return pos + Cell3DPosition(-1,0,0);
     // Branch cases
-    else if (isOnZBranch(pos)) return pos + Cell3DPosition(-1,0,0);
-    else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(-1,-1,-1);
-    else if (isOnMinus45DegZBranch(pos)) return pos + Cell3DPosition(-1,0,-1);
-    else if (isOnPlus45DegZBranch(pos)) return pos + Cell3DPosition(0,-1,-1);
+    else if (isOnZBranch(pos)) return pos + Cell3DPosition(0,0,-1);
+    else if (isOnRevZBranch(pos)) return pos + Cell3DPosition(1,1,-1);
+    else if (isOnMinus45DegZBranch(pos)) return pos + Cell3DPosition(1,0,-1);
+    else if (isOnPlus45DegZBranch(pos)) return pos + Cell3DPosition(0,1,-1);
 
     assert(false);
 }
 
-unsigned int AbstractMeshSpanningTreeMessage::
-getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) {
+unsigned int MeshSpanningTreeRuleMatcher::
+getNumberOfExpectedSubTreeConfirms(const Cell3DPosition& pos) const {
     unsigned int expectedConfirms = 0;
     for (const Cell3DPosition& nPos :
              Catoms3D::getWorld()->lattice->getActiveNeighborCells(pos)) {
-        if (ruleMatcher.shouldSendToNeighbor(nPos, pos)) expectedConfirms++;
+        if (shouldSendToNeighbor(pos, nPos)) expectedConfirms++;
     }
 
+    OUTPUT << "NumberExpectedConfirms for " << pos << " : " << expectedConfirms << endl;
+    
     return expectedConfirms;
 }
 

@@ -94,6 +94,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     lattice->insert(catom, pos);
 
     tabGlBlocks.push_back(glBlock);
+    linkBlock(pos);
 }
 
 /**
