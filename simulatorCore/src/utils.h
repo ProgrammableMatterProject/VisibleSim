@@ -3,10 +3,6 @@
 #define UTILS_H__
 
 #include <iostream>
-#include <fstream>
-#include <ctime>
-#include <sstream>
-#include <cassert>
 
 #include "tDefs.h"
 
@@ -28,17 +24,36 @@ namespace utils {
  * @param mod right operand, modulus value
  * @return python style modulus operation result
  */
-inline static int m_mod(int l, int mod) {
-    assert(mod != 0);
-    return l < 0 and l % mod != 0 ? mod - (-l % mod) : l % mod;
-}
+int m_mod(int l, int mod);
 
-inline static void awaitKeyPressed() {
-    std::cout << "Press ENTER to continue..." << std::endl; std::cin.ignore();
-}
+/** 
+ * Pause the current thread until a key is pressed
+ */
+void awaitKeyPressed();
+
+/** 
+ * For a given triggered assert, display its location and freeze current simulation until user provides an input
+ * @return always true
+ */
+bool assert_handler(bool cond, const char *file,
+                           const int line, const char* func,
+                           const char *msg = NULL);
+
+/** 
+ * Custom assertion macro used for debugging, it shows a message
+ *  on stderr, before pausing the simulation until a key is pressed
+ *  (for simulation environment analysis in the GUI), then triggers 
+ *  a standard C assert
+ * @param cond assertion condition
+ */
+#define VS_ASSERT(cond) \
+    ((void)(!(cond) && assert_handler(cond, __FILE__, __LINE__, __PRETTY_FUNCTION__)))
+
+#define VS_ASSERT_MSG(cond, msg) \
+    ((void)(!(cond) && assert_handler(cond, __FILE__, __LINE__, __PRETTY_FUNCTION__, #msg)))
 
 //!< @brief Return true if a <= x <= b, false otherwise
-inline static bool isInRange(int x, int a, int b) { return (a <= x && x <= b); };
+inline bool isInRange(int x, int a, int b) { return (a <= x && x <= b); };
 
 const float M_SQRT2_2 = sqrt(2.0) / 2.0; //!< $\frac{\sqrt{2}}{2}$
 const double M_SQRT3_2 = sqrt(3.0) / 2.0; //!< $\frac{\sqrt{3}}{2}$
@@ -48,47 +63,20 @@ const double EPS = 1E-5;                  //!< Epsilon
 //!< @param prefix e.g, config
 //!< @param ext e.g, xml
 //!< @return a string with format <prefix>_hh_mm_ss.<ext>
-inline static const std::string
-generateTimestampedFilename(const std::string& prefix, const std::string& ext) {
-    std::ostringstream out;
-
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    
-    out << prefix << "_" << ltm->tm_hour << "_"
-        << ltm->tm_min << "_" << ltm->tm_sec << "." << ext;
-    
-    return out.str();
-}
+const std::string
+generateTimestampedFilename(const std::string& prefix, const std::string& ext);
 
 //!< @brief Generates a formatted directory name string
 //!< @param dirBasename e.g, dir
 //!< @return a string with format <dirBasename>_hh_mm_ss
-inline static const std::string
-generateTimestampedDirName(const std::string& dirBasename) {
-    std::ostringstream out;
-
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    
-    out << dirBasename << "_" << ltm->tm_hour << "_"
-        << ltm->tm_min << "_" << ltm->tm_sec;
-    
-    return out.str();
-}
+const std::string
+generateTimestampedDirName(const std::string& dirBasename);
 
 //!< Return true if file at path fileName exists and can be read, false otherwise
-inline static bool file_exists(const std::string fileName) {
-    std::ifstream infile(fileName);
-    return infile.good();
-}
+bool file_exists(const std::string fileName);
 
 //!< Swaps the value of two pointers a and b
-inline static void swap(int* a, int* b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-}
+void swap(int* a, int* b);
 
 template< typename ContainerT, typename PredicateT >
      void erase_if( ContainerT& items, const PredicateT& predicate ) {
@@ -97,7 +85,7 @@ template< typename ContainerT, typename PredicateT >
           else ++it;
      }
 };
- 
+
 } // namespace utils
 
 } // namespace BaseSimulator
