@@ -475,3 +475,33 @@ void ShakeEvent::consumeBlockEvent() {
 const string ShakeEvent::getEventName() {
 	return("Shake Event");
 }
+
+//===========================================================================================================
+//
+//          InterruptionEvent  (class)
+//
+//===========================================================================================================
+
+InterruptionEvent::InterruptionEvent(Time t, BuildingBlock *conBlock, uint64_t m): BlockEvent(t, conBlock) {
+	EVENT_CONSTRUCTOR_INFO();
+	eventType = EVENT_INTERRUPTION;
+	mode = m;
+}
+
+InterruptionEvent::InterruptionEvent(InterruptionEvent *ev) : BlockEvent(ev) {
+	EVENT_CONSTRUCTOR_INFO();
+    mode = ev->mode;
+}
+
+InterruptionEvent::~InterruptionEvent() {
+	EVENT_DESTRUCTOR_INFO();
+}
+
+void InterruptionEvent::consumeBlockEvent() {
+	EVENT_CONSUME_INFO();
+	concernedBlock->scheduleLocalEvent(EventPtr(new InterruptionEvent(this)));
+}
+
+const string InterruptionEvent::getEventName() {
+	return("Interruption Event");
+}

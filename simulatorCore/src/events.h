@@ -313,6 +313,25 @@ public:
 	const virtual string getEventName();
 };
 
+//===========================================================================================================
+//
+//          InterruptionEvent  (class)
+//
+//===========================================================================================================
+
+/** InterruptionEvent is meant to be used as an interruption triggered by one module
+ * it is meant to model this behavior to enable module actions such as periodically 
+ * checking some sensor information or updating its state based on local information **/
+class InterruptionEvent : public BlockEvent {
+public:
+    uint64_t mode; //!< A used-defined identifier for non general-purpose interruptions
+    
+	InterruptionEvent(Time, BaseSimulator::BuildingBlock *conBlock, uint64_t mode);
+	InterruptionEvent(InterruptionEvent *ev);
+	~InterruptionEvent();
+	void consumeBlockEvent();
+	const virtual string getEventName();
+};
 
 
 #endif /* EVENTS_H_ */
