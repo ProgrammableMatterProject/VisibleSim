@@ -24,6 +24,7 @@ static const uint MC_ST_B = 69;
 class MeshSpanningTreeRuleMatcher {
     const uint X_MAX, Y_MAX, B;
 
+public:
     bool isOnXBranch(const Cell3DPosition& pos) const;
     bool isOnXBorder(const Cell3DPosition& pos) const;
     bool isOnYBranch(const Cell3DPosition& pos) const;
@@ -32,7 +33,7 @@ class MeshSpanningTreeRuleMatcher {
     bool isOnRevZBranch(const Cell3DPosition& pos) const;
     bool isOnMinus45DegZBranch(const Cell3DPosition& pos) const;
     bool isOnPlus45DegZBranch(const Cell3DPosition& pos) const;
-public:
+
     MeshSpanningTreeRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _B) :
         X_MAX(_X_MAX), Y_MAX(_Y_MAX), B(_B) {};
     virtual ~MeshSpanningTreeRuleMatcher() {};

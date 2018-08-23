@@ -28,7 +28,7 @@ public:
     // const ConsoleStream& console;
     
     list<PathHop> path;
-    Cell3DPosition posToLocate;
+    Cell3DPosition goalPosition;
     P2PNetworkInterface *searchParent = NULL;
     Catoms3DMotionRulesLink* nextRotation; //!<
     
@@ -36,15 +36,16 @@ public:
     P2PNetworkInterface *getNextUnprocessedInterface(bool randomly = false);
     
     Catoms3DMotionEngine(BlockCode& _bc, Catoms3DBlock& _catom)
-        : bc(_bc), catom(_catom) {}
+        : bc(_bc), catom(_catom) { }
     
     static inline Catoms3DMotionRules* getMotionRules() {
         return Catoms3DWorld::getWorld()->getMotionRules();
     }
 
-    void moveToPosition(const Cell3DPosition& dest);
-    bool computeNextRotation(list<PathHop>& path);
-        
+    void resetDFS();
+    void attemptMovingTo(const Cell3DPosition& dest);
+    bool computeNextRotation(list<PathHop>& path);    
+    
     /** 
         @brief Add a new path entry at the back of the path hop list
         @param catom the module for which a hop entry needs to be created
@@ -173,6 +174,10 @@ public:
                                        short catomDockingConnector,
                                        std::vector<short>& adjacentConnectors,
                                        std::map<short, short>& mirrorConnector);
+
+    void trimPath();
+    void handleRotationEnd();
+    void performNextMoveTowardsGoal();
 };
 
 #endif //CATOMS3DMOTIONENGINE_H_

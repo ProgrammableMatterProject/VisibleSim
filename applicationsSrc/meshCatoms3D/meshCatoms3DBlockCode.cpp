@@ -113,7 +113,6 @@ void MeshCatoms3DBlockCode::startup() {
             }
         }        
     }
-
     
 }    
 

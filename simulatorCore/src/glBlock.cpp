@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "objLoader.h"
+#include "catoms3DBlock.h" // FIXME:
 
 GlBlock::GlBlock(bID id):blockId(id) {
 	position[0] = 0.0;
@@ -63,14 +64,24 @@ void GlBlock::toggleHighlight() {
 	isHighlighted=!isHighlighted;
 }
 
+using namespace Catoms3D; //FIXME:
 string GlBlock::getInfo() {
     ostringstream out;
 	out << blockId << "\n";
 	out << fixed;
-	out.precision(1);
+	out.precision(1);    
 	out << "Pos=(" << position[0] << "," << position[1] << "," << position[2] << ") ";
 	out << "Col=(" << (int)(color[0] * 255) << "," << (int)(color[1] * 255) << "," << (int)(color[2] * 255) << ")";
 
+    Lattice *lattice = World::getWorld()->lattice;
+    const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
+    Catoms3DBlock* catom = static_cast<Catoms3DBlock*>(lattice->getBlock(bbPos));
+
+    for (uint i = 0; i <= 12; i++) {
+        Cell3DPosition conPos; catom->getNeighborPos(i, conPos);
+        cout << i << ": " << conPos << endl;
+    }
+    
 	return out.str();
 }
 

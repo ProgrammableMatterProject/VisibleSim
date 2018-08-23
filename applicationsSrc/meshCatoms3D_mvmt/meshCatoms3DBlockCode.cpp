@@ -28,6 +28,10 @@ using namespace MeshSpanningTree;
 
 uint MeshCatoms3DBlockCode::X_MAX;
 uint MeshCatoms3DBlockCode::Y_MAX;
+bool MeshCatoms3DBlockCode::skipMeshInit = false;
+bID id = 1;
+
+#define IT_MODE_TILE_INSERTION 1
 
 MeshCatoms3DBlockCode::MeshCatoms3DBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
@@ -62,41 +66,89 @@ void MeshCatoms3DBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
-    bool isLeaf = true;
-    static const bool ASSEMBLE_SCAFFOLD = true;
-    if (ASSEMBLE_SCAFFOLD) {        
-        for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
-            if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
-                and ruleMatcher->isInMesh(nPos)) {
-                static bID id = 1;
-                world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
+    if (not skipMeshInit) {
+        bool isLeaf = true;
+        static const bool ASSEMBLE_SCAFFOLD = true;
+        if (ASSEMBLE_SCAFFOLD) {        
+            for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
+                if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
+                    and ruleMatcher->isInMesh(nPos)) {
 
-                isLeaf = false;
-            }
-        }    
-    }
+                    if (ruleMatcher->isTileRoot(nPos)) {
+                        if (checkOrthogonalIncidentBranchCompletion(catom->position)
+                            or ruleMatcher->isOnXBorder(catom->position)
+                            or ruleMatcher->isOnYBorder(catom->position))
+                            world->addBlock(++id, buildNewBlockCode, nPos, GREEN);
+                        else {
+                            posTileAwaitingPlacement = nPos;
+                            getScheduler()->schedule(
+                                new InterruptionEvent(getScheduler()->now() + 200, catom,
+                                                      IT_MODE_TILE_INSERTION));
+                        }
+                    } else {
+                        world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
+                    }
 
-    if (isLeaf) {
-        // Notify ST parent that scaffold construction is complete
-        const Cell3DPosition& parentPos =
-            ruleMatcher->getTreeParentPosition(catom->position);
+                    awaitKeyPressed();
+                    isLeaf = false;
+                }
+            }    
+        }
 
-        if (parentPos != catom->position) {
-            // cout << "myPos: " << catom->position << " -- parentPos: " << parentPos << endl;
+        static const bool NOTIFY_SCAFFOLD_COMPLETION = true;
+        static const bool DISASSEMBLE_INTO_OBJECT = not NOTIFY_SCAFFOLD_COMPLETION;
+        if (isLeaf) {
+            // Notify ST parent that scaffold construction is complete
+            const Cell3DPosition& parentPos =
+                ruleMatcher->getTreeParentPosition(catom->position);
+
+            if (parentPos != catom->position) {
+                // cout << "myPos: " << catom->position << " -- parentPos: " << parentPos << endl;
             
-            P2PNetworkInterface* parentItf = catom->getInterface(parentPos);
-            assert(parentItf);
-            assert(parentItf->isConnected());
-            sendMessage(new SubTreeScaffoldConstructionDoneMessage(*ruleMatcher, true),
-                        parentItf, MSG_DELAY_MC, 0);
+                P2PNetworkInterface* parentItf = catom->getInterface(parentPos);
+                assert(parentItf);
+                assert(parentItf->isConnected());
 
-            catom->setColor(BLUE);
-        } // else module is mesh root, and therefore the only module is the configuration?!
+                if (DISASSEMBLE_INTO_OBJECT) {
+                    sendMessage(new DisassemblyTriggerMessage(*ruleMatcher, true),
+                                parentItf, MSG_DELAY_MC, 0);
+
+                    if (not target->isInTarget(catom->position)) catom->setVisible(false);
+                    else catom->setColor(target->getTargetColor(catom->position));
+                } else {
+                    sendMessage(new SubTreeScaffoldConstructionDoneMessage(*ruleMatcher, true),
+                                parentItf, MSG_DELAY_MC, 0);
+                    catom->setColor(BLUE);
+                }
+            
+            } // else module is mesh root, and therefore the only module is the configuration?!
+        } else {
+            numberExpectedAcksFromSubTree =
+                ruleMatcher->getNumberOfExpectedSubTreeConfirms(catom->position);
+        }
+
+        engine->resetDFS();
     } else {
-        subTreeScaffoldConstructionThreshold =
-            ruleMatcher->getNumberOfExpectedSubTreeConfirms(catom->position);
-    }    
+        // Any module added after skipMeshInit has been set to true will run this code
+        //  and therefore explore the mesh
+        goalPosition = Cell3DPosition(1,-3,6);
+        engine->attemptMovingTo(goalPosition);
+    }
 }    
+
+// const Cell3DPosition& MeshCatoms3DBlockCode::chooseNextHop() {
+//     const Cell3DPosition &diff = dest - catom->position;
+//     if (diff[2] < )
+// }
+
+void MeshCatoms3DBlockCode::triggerMeshTraversalProcess() {
+    const Cell3DPosition& startingPos = Cell3DPosition(-1,-1,2);
+    static const bool PERFORM_SCAFFOLD_TRAVERSAL = true;
+    if (PERFORM_SCAFFOLD_TRAVERSAL) {
+        skipMeshInit = true;
+        world->addBlock(++id, buildNewBlockCode, startingPos, GREEN);
+    }
+}
 
 void MeshCatoms3DBlockCode::processReceivedMessage(MessagePtr msg,
                                                    P2PNetworkInterface *sender) {
@@ -132,10 +184,39 @@ void MeshCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
 
-            
+        case EVENT_ROTATION3D_END: {
+            engine->handleRotationEnd();
+        } break;            
             
         case EVENT_TAP: {
             // ?
         } break;
+
+        case EVENT_INTERRUPTION: {
+            std::shared_ptr<InterruptionEvent> itev =
+                std::static_pointer_cast<InterruptionEvent>(pev);
+            switch(itev->mode) {
+                case IT_MODE_TILE_INSERTION:
+                    if (checkOrthogonalIncidentBranchCompletion(catom->position))
+                        world->addBlock(++id, buildNewBlockCode,
+                                        posTileAwaitingPlacement, GREEN);
+                    else
+                        getScheduler()->schedule(
+                            new InterruptionEvent(getScheduler()->now() + 200, catom,
+                                                  IT_MODE_TILE_INSERTION));                    
+                    break;
+            }
+        }
     }
+}
+
+bool MeshCatoms3DBlockCode::
+checkOrthogonalIncidentBranchCompletion(const Cell3DPosition& pos) {
+    VS_ASSERT(ruleMatcher->isInMesh(pos));
+    
+    if (ruleMatcher->isOnXBranch(pos))
+        return lattice->cellHasBlock(pos + Cell3DPosition(1,-1,0));
+    else if (ruleMatcher->isOnYBranch(pos))
+        return lattice->cellHasBlock(pos + Cell3DPosition(-1,1,0));
+    else return true; // FIXME:
 }

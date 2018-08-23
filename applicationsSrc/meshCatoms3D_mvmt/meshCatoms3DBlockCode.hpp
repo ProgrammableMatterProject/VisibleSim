@@ -37,10 +37,14 @@ public:
     Catoms3D::Catoms3DBlock *catom;
     Catoms3DMotionEngine* engine;
     MeshSpanningTree::MeshSpanningTreeRuleMatcher *ruleMatcher;
+    static bool skipMeshInit;
+    Cell3DPosition goalPosition;
+
+    Cell3DPosition posTileAwaitingPlacement;
     
     P2PNetworkInterface* stParent = NULL;
     uint expectedConfirms = 0;
-    uint subTreeScaffoldConstructionThreshold = 13;
+    uint numberExpectedAcksFromSubTree = 13;
     
     // TargetCSG *target;
     MeshCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
@@ -68,6 +72,9 @@ public:
 
     bool moduleInSpanningTree(const Cell3DPosition& pos);
     bool isMeshRoot(const Cell3DPosition& pos);
+
+    void triggerMeshTraversalProcess();
+    bool checkOrthogonalIncidentBranchCompletion(const Cell3DPosition& pos);
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

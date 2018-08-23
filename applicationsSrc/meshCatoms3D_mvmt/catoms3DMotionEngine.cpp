@@ -32,21 +32,82 @@ P2PNetworkInterface *Catoms3DMotionEngine::getNextUnprocessedInterface(bool rand
     return unflaggedItfs.empty() ? NULL : unflaggedItfs[0];
 }
 
+void Catoms3DMotionEngine::resetDFS() {
+    flag.clear();
+    
+    for (P2PNetworkInterface *itf : catom.getP2PNetworkInterfaces()) {
+        if (itf->isConnected()) {
+            flag[itf] = false;
+        }
+    }
+}
 
-void Catoms3DMotionEngine::moveToPosition(const Cell3DPosition& dest) {
-    BaseSimulator::getWorld()->lattice->highlightCell(dest, RED);
+void Catoms3DMotionEngine::attemptMovingTo(const Cell3DPosition& dest) {
+    resetDFS();
 
+    goalPosition = dest;
+    path.clear();
+    BaseSimulator::getWorld()->lattice->highlightCell(dest, YELLOW);
+
+    if (catom.position == dest) return;
+    
     P2PNetworkInterface *unprocessedNeighbor = getNextUnprocessedInterface();
     if (unprocessedNeighbor) {        
-        bc.sendMessage(new FindPathMessage(dest),
+        bc.sendMessage(new FindPathMessage(goalPosition),
                        unprocessedNeighbor, 0, 0);
     } else {
         // console << "Houston we have a problem." << "\n";
         catom.setColor(BLACK); // todo
+        cout << "No Neighbor found" << endl;
+        awaitKeyPressed();
         assert(false);
     }
 }
 
+void Catoms3DMotionEngine::handleRotationEnd() {
+    assert(!path.empty());
+
+    trimPath();
+    
+    if (catom.position == goalPosition) {
+#ifdef DEBUG_GROWTH_BLOCK                   
+        cout << "--- Module #" << catom.blockId
+             << " has reached target position " << goalPosition
+             << " ---" << endl;
+#endif
+        BaseSimulator::getWorld()->lattice->unhighlightCell(goalPosition);
+    } else {
+        // Perform next move towards current target
+        performNextMoveTowardsGoal();
+    }
+}
+
+void Catoms3DMotionEngine::performNextMoveTowardsGoal() {
+    assert(!path.empty());
+        
+    // List all connectors that could be filled in order to connect
+    //  a neighbor module to the last hop or that would help reach parent's path connectors
+    PathHop &lastHop = path.back();
+
+    if (lastHop.catomIsAlreadyOnBestConnector(catom.position)) {
+        path.pop_back();
+        if (path.empty()) return;
+        else lastHop = path.back();
+    }
+    
+    bool rotationIsPossible = computeNextRotation(path);
+    if (!rotationIsPossible) 
+    {
+#ifdef DEBUG_ROTATIONS
+        cout << "performNextMoveTowardsGoal: "
+             << "Could not compute feasible rotation plan to parent" << endl;
+#endif
+                
+        awaitKeyPressed();        
+        
+        assert(false);
+    } 
+}
 
 bool Catoms3DMotionEngine::computeNextRotation(list<PathHop>& path) 
 {
@@ -79,6 +140,12 @@ bool Catoms3DMotionEngine::computeNextRotation(list<PathHop>& path)
         findConnectorsPath(mrl, catomDockingConnector, adjacentPathConnectors, catom);
             
     if (nextRotation) {
+        // FIXME:
+        for (auto const& ph : path)
+            cout << "ph: " << ph;
+        cout << *nextRotation << endl;
+        // FIXME:
+        
         short dirTo = nextRotation->getConToID();
         lastHop.prune(mirrorConnector[dirTo]);
         
@@ -86,6 +153,9 @@ bool Catoms3DMotionEngine::computeNextRotation(list<PathHop>& path)
         cout << "Moving : " << *nextRotation << endl << endl;
 #endif
 
+        // // FIXME:
+        // awaitKeyPressed();
+        // // FIXME:
         nextRotation->sendRotationEvent(&catom,
                                         catom.getNeighborOnCell(lastHop.getPosition()),
                                         getScheduler()->now() + MSG_DELAY);
@@ -463,4 +533,22 @@ Catoms3DMotionEngine::findAdjacentConnectors(const Catoms3DBlock& catom,
     }
 
     return !adjacentConnectors.empty();
+}
+
+void Catoms3DMotionEngine::trimPath() {
+    for (auto it = path.begin(); it != path.end(); it = std::next(it)) {
+        PathHop& someHop = *(it);
+ 
+        // Next next hop is within reach, clear current hop
+        if (someHop.isInVicinityOf(catom.position)
+            || someHop.catomIsAlreadyOnBestConnector(catom.position)) {
+            OUTPUT << "Skipping until: " << *it << endl;
+            path.erase(++it, path.end());
+
+            OUTPUT << "Updated path: " << endl;
+            for (auto hop:path) OUTPUT << hop << endl;
+                            
+            break;
+        } 
+    }
 }
