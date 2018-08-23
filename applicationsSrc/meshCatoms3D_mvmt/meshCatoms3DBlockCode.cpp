@@ -66,9 +66,7 @@ void MeshCatoms3DBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
-    if (not skipMeshInit) {
-        bool isLeaf = true;
-        static const bool ASSEMBLE_SCAFFOLD = true;
+    if (not skipMeshInit) {        
         if (ASSEMBLE_SCAFFOLD) {        
             for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
                 if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
@@ -89,14 +87,11 @@ void MeshCatoms3DBlockCode::startup() {
                         world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
                     }
 
-                    awaitKeyPressed();
                     isLeaf = false;
                 }
             }    
         }
 
-        static const bool NOTIFY_SCAFFOLD_COMPLETION = true;
-        static const bool DISASSEMBLE_INTO_OBJECT = not NOTIFY_SCAFFOLD_COMPLETION;
         if (isLeaf) {
             // Notify ST parent that scaffold construction is complete
             const Cell3DPosition& parentPos =
@@ -146,7 +141,7 @@ void MeshCatoms3DBlockCode::triggerMeshTraversalProcess() {
     static const bool PERFORM_SCAFFOLD_TRAVERSAL = true;
     if (PERFORM_SCAFFOLD_TRAVERSAL) {
         skipMeshInit = true;
-        world->addBlock(++id, buildNewBlockCode, startingPos, GREEN);
+        world->addBlock(++id, buildNewBlockCode, startingPos, WHITE);
     }
 }
 
@@ -197,13 +192,16 @@ void MeshCatoms3DBlockCode::processLocalEvent(EventPtr pev) {
                 std::static_pointer_cast<InterruptionEvent>(pev);
             switch(itev->mode) {
                 case IT_MODE_TILE_INSERTION:
-                    if (checkOrthogonalIncidentBranchCompletion(catom->position))
+                    if (checkOrthogonalIncidentBranchCompletion(catom->position)) {
                         world->addBlock(++id, buildNewBlockCode,
                                         posTileAwaitingPlacement, GREEN);
-                    else
+                        numberExpectedAcksFromSubTree++;
+                    } else {
                         getScheduler()->schedule(
                             new InterruptionEvent(getScheduler()->now() + 200, catom,
-                                                  IT_MODE_TILE_INSERTION));                    
+                                                  IT_MODE_TILE_INSERTION));
+                    }
+                    
                     break;
             }
         }

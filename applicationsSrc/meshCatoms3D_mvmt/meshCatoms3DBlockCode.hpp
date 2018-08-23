@@ -30,6 +30,10 @@ public:
     static const uint B = 6;
     static uint X_MAX;
     static uint Y_MAX;
+
+    static const bool ASSEMBLE_SCAFFOLD = true;
+    static const bool NOTIFY_SCAFFOLD_COMPLETION = true;
+    static const bool DISASSEMBLE_INTO_OBJECT = not NOTIFY_SCAFFOLD_COMPLETION;
     
     Scheduler *scheduler;
     World *world;
@@ -41,6 +45,7 @@ public:
     Cell3DPosition goalPosition;
 
     Cell3DPosition posTileAwaitingPlacement;
+    bool isLeaf = true;
     
     P2PNetworkInterface* stParent = NULL;
     uint expectedConfirms = 0;
