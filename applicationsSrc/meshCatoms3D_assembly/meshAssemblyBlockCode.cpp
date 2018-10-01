@@ -76,7 +76,10 @@ void MeshAssemblyBlockCode::startup() {
             shouldGrowMinus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
         
 
-        // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )        
+        // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
+        getScheduler()->schedule(
+            new InterruptionEvent(getScheduler()->now() + 200, catom,
+                                  IT_MODE_TILEROOT_ACTIVATION));
     }
     
     // if (not skipMeshInit) {        
@@ -157,7 +160,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
         case EVENT_INTERRUPTION: {
             std::shared_ptr<InterruptionEvent> itev =
                 std::static_pointer_cast<InterruptionEvent>(pev);
-            // switch(itev->mode) {
+            switch(itev->mode) {
             //     case IT_MODE_TILE_INSERTION:
                     // if (checkOrthogonalIncidentBranchCompletion(catom->position)) {
                     //     world->addBlock(++id, buildNewBlockCode,
@@ -170,7 +173,42 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // }
                     
                     // break;
-        //     }
+                case IT_MODE_TILEROOT_ACTIVATION: {
+                    bool fedCatomOnLastRound[6] = { false, false, false, false, false, false };
+
+                    // Policy: Prioritize horizontal growth
+                    if ((catomReqByBranch[XBranch] > 0 or catomReqByBranch[YBranch] > 0) and 
+                        not (fedCatomOnLastRound[XBranch] or fedCatomOnLastRound[YBranch])) {
+                        if (catomReqByBranch[XBranch] > 0) {
+                            // FIXME: What if cell has module?
+                            
+                            world->addBlock(++id, buildNewBlockCode,
+                                            catom->position + Cell3DPosition(1, 0, -1),
+                                            ORANGE);
+                            catomReqByBranch[XBranch]--;
+                            fedCatomOnLastRound[XBranch] = true;
+                        } else {
+                            fedCatomOnLastRound[XBranch] = false;
+                        }
+
+                        if (catomReqByBranch[YBranch] > 0) {
+                            // FIXME: What if cell has module?
+                            
+                            world->addBlock(++id, buildNewBlockCode,
+                                            catom->position + Cell3DPosition(0, -1, -1),
+                                            ORANGE);
+                            catomReqByBranch[YBranch]--;
+                            fedCatomOnLastRound[YBranch] = true;
+                        } else {
+                            fedCatomOnLastRound[XBranch] = false;
+                        }
+                    } else {
+                        fedCatomOnLastRound[XBranch] = false;
+                        fedCatomOnLastRound[YBranch] = false;
+                        int numInsertedCatoms = 0;
+                    }
+                } break;
+            }
         }
     }
 }

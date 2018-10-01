@@ -21,6 +21,8 @@
 #include "messages.hpp"
 #include "meshSpanningTree.hpp"
 
+#define IT_MODE_TILEROOT_ACTIVATION 1 
+
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
 public:
@@ -40,7 +42,8 @@ public:
     
     Cell3DPosition goalPosition;
     uint catomReqByBranch[4] = {0,0,0,0};
-    enum BranchIndex { ZBranch, RevZBranch, Plus45DegZBranch, Minus45DegZBranch };
+    enum BranchIndex { ZBranch, RevZBranch, Plus45DegZBranch,
+                       Minus45DegZBranch, XBranch, YBranch };
     
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
