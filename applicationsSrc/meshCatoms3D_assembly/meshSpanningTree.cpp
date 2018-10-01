@@ -108,6 +108,32 @@ bool MeshSpanningTreeRuleMatcher::isOnPartialBorderMesh(const Cell3DPosition& po
             );
 }
 
+bool MeshSpanningTreeRuleMatcher::
+shouldGrowZBranch(const Cell3DPosition& pos) const {
+    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0], pos[1], pos[2] + (B - 1)));
+}
+
+bool MeshSpanningTreeRuleMatcher::
+shouldGrowRevZBranch(const Cell3DPosition& pos) const {
+    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0] - (B - 1),
+                                                       pos[1] - (B - 1),
+                                                       pos[2] + (B - 1)));
+}
+
+bool MeshSpanningTreeRuleMatcher::
+shouldGrowPlus45DegZBranch(const Cell3DPosition& pos) const {
+    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0],
+                                                       pos[1] - (B - 1),
+                                                       pos[2] + (B - 1)));
+}
+
+bool MeshSpanningTreeRuleMatcher::
+shouldGrowMinus45DegZBranch(const Cell3DPosition& pos) const {
+    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0] - (B - 1),
+                                                       pos[1],
+                                                       pos[2] + (B - 1)));
+}
+
 bool MeshSpanningTreeRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {    
     return m_mod(pos[0], B) == 0 and m_mod(pos[1], B) == 0 and m_mod(pos[2], B) == 0;
 }

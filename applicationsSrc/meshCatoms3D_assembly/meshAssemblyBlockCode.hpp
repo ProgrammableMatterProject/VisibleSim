@@ -30,14 +30,17 @@ public:
 
     static const bool ASSEMBLE_SCAFFOLD = true;
     static const bool NOTIFY_SCAFFOLD_COMPLETION = true;
+    static Cell3DPosition MeshSeedPosition; //const
     
     Scheduler *scheduler;
     World *world;
     Lattice *lattice;
     Catoms3D::Catoms3DBlock *catom;
     MeshSpanningTree::MeshSpanningTreeRuleMatcher *ruleMatcher;
-
+    
     Cell3DPosition goalPosition;
+    uint catomReqByBranch[4] = {0,0,0,0};
+    enum BranchIndex { ZBranch, RevZBranch, Plus45DegZBranch, Minus45DegZBranch };
     
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
@@ -56,6 +59,8 @@ public:
         return (new MeshAssemblyBlockCode((Catoms3DBlock*)host));
     }
 
+    static const Cell3DPosition normalize_pos(const Cell3DPosition& pos);
+    
 /**
      * \brief Uses central planning to find a path to a destination cell and follow it through rotating motions
      * \param dest Destination lattice position

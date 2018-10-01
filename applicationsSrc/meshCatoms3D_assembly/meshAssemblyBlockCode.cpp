@@ -27,9 +27,8 @@ using namespace MeshSpanningTree;
 
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
+Cell3DPosition MeshAssemblyBlockCode::MeshSeedPosition = Cell3DPosition(1,1,1);
 bID id = 1;
-
-#define IT_MODE_TILE_INSERTION 1
 
 MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
@@ -53,15 +52,33 @@ bool MeshAssemblyBlockCode::moduleInSpanningTree(const Cell3DPosition& pos) {
     return target->isInTarget(pos) and lattice->isInGrid(pos);
 }
 
-bool MeshAssemblyBlockCode::isMeshRoot(const Cell3DPosition& pos) {
-    return pos.pt[0] % B == 0 and pos.pt[1] % B == 0 and pos.pt[2] % B == 0;
-}
+// bool MeshAssemblyBlockCode::isMeshRoot(const Cell3DPosition& pos) {
+//     return pos.pt[0] % B == 0 and pos.pt[1] % B == 0 and pos.pt[2] % B == 0;
+// }
 
 static std::set<Cell3DPosition> placedBorderCatoms;
 void MeshAssemblyBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
+    // Do stuff
+    if (ruleMatcher->isTileRoot(normalize_pos(catom->position))) {
+
+        // Determine how many branches need to grow from here
+        // and initialize growth data structures
+        catomReqByBranch[ZBranch] = ruleMatcher->
+            shouldGrowZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
+        catomReqByBranch[RevZBranch] = ruleMatcher->
+            shouldGrowRevZBranch(normalize_pos(catom->position)) ? B - 1 : 0;       
+        catomReqByBranch[Plus45DegZBranch] = ruleMatcher->
+            shouldGrowPlus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;       
+        catomReqByBranch[Minus45DegZBranch] = ruleMatcher->
+            shouldGrowMinus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
+        
+
+        // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )        
+    }
+    
     // if (not skipMeshInit) {        
     //     if (ASSEMBLE_SCAFFOLD) {        
     //         for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
@@ -88,6 +105,11 @@ void MeshAssemblyBlockCode::startup() {
     //         }    
     //     }
 
+}
+
+const Cell3DPosition
+MeshAssemblyBlockCode::normalize_pos(const Cell3DPosition& pos) {    
+    return pos - MeshSeedPosition;
 }
 
 void MeshAssemblyBlockCode::processReceivedMessage(MessagePtr msg,

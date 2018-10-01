@@ -36,6 +36,11 @@ public:
     bool isOnMinus45DegZBranch(const Cell3DPosition& pos) const;
     bool isOnPlus45DegZBranch(const Cell3DPosition& pos) const;
 
+    bool shouldGrowZBranch(const Cell3DPosition& pos) const;
+    bool shouldGrowRevZBranch(const Cell3DPosition& pos) const;
+    bool shouldGrowPlus45DegZBranch(const Cell3DPosition& pos) const;
+    bool shouldGrowMinus45DegZBranch(const Cell3DPosition& pos) const;
+    
     MeshSpanningTreeRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _B) :
         X_MAX(_X_MAX), Y_MAX(_Y_MAX), B(_B) {};
     virtual ~MeshSpanningTreeRuleMatcher() {};
@@ -62,7 +67,7 @@ public:
     bool isInMesh(const Cell3DPosition& pos) const;
 
     void printDebugInfo(const Cell3DPosition& pos) const;
-  
+    
     /** 
      * @param pos position of the module to consider
      * @return the position of the parent module in the spanning tree, or pos if module has no parent
