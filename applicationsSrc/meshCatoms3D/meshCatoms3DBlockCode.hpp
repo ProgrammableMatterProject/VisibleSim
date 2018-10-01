@@ -67,6 +67,8 @@ public:
 
     bool moduleInSpanningTree(const Cell3DPosition& pos);
     bool isMeshRoot(const Cell3DPosition& pos);
+    //FIXME: linking error
+    void triggerMeshTraversalProcess();
 };
 
 #endif /* MESHCATOMS3DBLOCKCODE_H_ */

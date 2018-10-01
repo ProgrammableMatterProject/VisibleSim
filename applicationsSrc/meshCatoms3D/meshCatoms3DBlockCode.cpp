@@ -29,6 +29,10 @@ using namespace MeshSpanningTree;
 uint MeshCatoms3DBlockCode::X_MAX;
 uint MeshCatoms3DBlockCode::Y_MAX;
 
+//FIXME: linking error
+void MeshCatoms3DBlockCode::triggerMeshTraversalProcess() {
+}
+
 MeshCatoms3DBlockCode::MeshCatoms3DBlockCode(Catoms3DBlock *host):
     Catoms3DBlockCode(host) {
     scheduler = getScheduler();
@@ -62,7 +66,7 @@ void MeshCatoms3DBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
-    static const bool ENABLE_MANUAL_DISASSEMBLY = false;
+    static const bool ENABLE_MANUAL_DISASSEMBLY = true;
     static const double BORDER_WIDTH = 1.0;
     if (ENABLE_MANUAL_DISASSEMBLY) {
         if ((!target->isInTarget(catom->position)
@@ -101,7 +105,7 @@ void MeshCatoms3DBlockCode::startup() {
             catom->setColor(target->getTargetColor(catom->position));
     }
 
-    static const bool SIMULATE_SPANNINGTREE = true;
+    static const bool SIMULATE_SPANNINGTREE = false;
     if (SIMULATE_SPANNINGTREE and catom->blockId == 1) {
         catom->setColor(RED);
         
