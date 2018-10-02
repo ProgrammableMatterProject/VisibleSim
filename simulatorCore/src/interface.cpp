@@ -236,8 +236,18 @@ void GlutSlidingMainWindow::glDraw() {
 		drawString(42.0,h-20.0,str,TextMode::TEXTMODE_TITLE);
 		glColor3f(1.0,1.0,1.0);
 		if (selectedGlBlock) {
+            GLfloat posy = h-40;
+            int ss = 0; // index of slice start
+            uint str_length; 
 			sprintf(str,"Selected Block : %s",selectedGlBlock->getInfo().c_str());
-			GLfloat posy = drawString(42.0,h-40.0,str,TextMode::TEXTMODE_TITLE);
+            str_length = strlen(str);
+            for (uint i = 0; i < str_length + 1; i++) { // draw lines one at a time
+                if (str[i] == '\n' || str[i] == '\0') {
+                    str[i] = '\0';
+                    posy = drawString(42.0,posy,str + ss,TextMode::TEXTMODE_TITLE);
+                    ss = i + 1;
+                } 
+            }                                                      
 			multimap<Time,BlockDebugData*>::iterator it = traces.begin();
 			//GLfloat posy = h-65;
 			stringstream line;
