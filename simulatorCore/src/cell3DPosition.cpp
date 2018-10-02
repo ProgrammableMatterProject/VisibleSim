@@ -30,22 +30,19 @@ double Cell3DPosition::l2_norm() const {
     return sqrt(pt[0]*pt[0] + pt[1]*pt[1] + pt[2]*pt[2]);
 }
 
-Cell3DPosition Cell3DPosition::addX(short x) const {
-    Cell3DPosition r(*this);
-    r.pt[0] += x;
-    return r;
+Cell3DPosition& Cell3DPosition::addX(short x) {
+    pt[0] += x;
+    return *this;
 }
 
-Cell3DPosition Cell3DPosition::addY(short y) const {
-    Cell3DPosition r(*this);
-    r.pt[1] += y;
-    return r;
+Cell3DPosition& Cell3DPosition::addY(short y) {
+    pt[1] += y;
+    return *this;
 }
 
-Cell3DPosition Cell3DPosition::addZ(short z) const {
-    Cell3DPosition r(*this);
-    r.pt[2] += z;
-    return r;
+Cell3DPosition& Cell3DPosition::addZ(short z) {   
+    pt[2] += z;
+    return *this;
 }
 
 ostream& operator<<(ostream& f,const Cell3DPosition&p) {
@@ -87,7 +84,15 @@ bool Cell3DPosition::compare_ZYX(const Cell3DPosition& first, const Cell3DPositi
     }
 }
 
-const Cell3DPosition operator +(const Cell3DPosition p1, const Cell3DPosition p2)
+const Cell3DPosition& Cell3DPosition::operator +=(const Cell3DPosition& p)
+{    
+    pt[0] = p.pt[0];
+    pt[1] = p.pt[1];
+    pt[2] = p.pt[2];
+    return *this;
+}
+
+const Cell3DPosition operator +(const Cell3DPosition& p1, const Cell3DPosition& p2)
 {
     Cell3DPosition r;
     r.pt[0] = p1.pt[0]+p2.pt[0];
@@ -96,7 +101,7 @@ const Cell3DPosition operator +(const Cell3DPosition p1, const Cell3DPosition p2
     return r;
 }
 
-const Cell3DPosition operator -(const Cell3DPosition p1, const Cell3DPosition p2)
+const Cell3DPosition operator -(const Cell3DPosition& p1, const Cell3DPosition& p2)
 {
     Cell3DPosition r;
     r.pt[0] = p1.pt[0]-p2.pt[0];
@@ -105,7 +110,7 @@ const Cell3DPosition operator -(const Cell3DPosition p1, const Cell3DPosition p2
     return r;
 }
 
-const Cell3DPosition operator *(const Cell3DPosition p1, const Cell3DPosition p2)
+const Cell3DPosition operator *(const Cell3DPosition& p1, const Cell3DPosition& p2)
 {
     Cell3DPosition r;
     r.pt[0] = p1.pt[0]*p2.pt[0];
@@ -114,7 +119,7 @@ const Cell3DPosition operator *(const Cell3DPosition p1, const Cell3DPosition p2
     return r;
 }
 
-const Cell3DPosition operator *(int n, const Cell3DPosition p)
+const Cell3DPosition operator *(int n, const Cell3DPosition& p)
 {
     Cell3DPosition r;
     r.pt[0] = n*p.pt[0];
