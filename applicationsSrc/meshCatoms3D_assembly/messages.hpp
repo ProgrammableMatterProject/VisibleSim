@@ -14,11 +14,11 @@
 
 #include "network.h"
 
-#include "meshSpanningTree.hpp"
+#include "meshRuleMatcher.hpp"
 
 static const uint MSG_DELAY = 1;
 
-using namespace MeshSpanningTree;
+using namespace MeshCoating;
 
 class RequestTargetCellMessage : public HandleableMessage {
 public:
@@ -41,37 +41,6 @@ public:
     virtual void handle(BaseSimulator::BlockCode*);
     virtual Message* clone() { return new ProvideTargetCellMessage(*this); }
     virtual string getName() { return "ProvideTargetCell"; }
-};
-
-
-class DisassemblyTriggerMessage : public AbstractMeshSpanningTreeMessage {
-public:
-    DisassemblyTriggerMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher,
-                              const bool isAck)
-        : AbstractMeshSpanningTreeMessage(_ruleMatcher, isAck) {};
-    virtual ~DisassemblyTriggerMessage() {};
-
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new DisassemblyTriggerMessage(*this); }
-    virtual string getName() { return "DisassemblyTrigger"; }
-    virtual AbstractMeshSpanningTreeMessage*
-    buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
-                                    const bool isAck) override;
-};
-
-class SubTreeScaffoldConstructionDoneMessage : public AbstractMeshSpanningTreeMessage {
-public:
-    SubTreeScaffoldConstructionDoneMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher,
-                                           const bool isAck)
-        : AbstractMeshSpanningTreeMessage(_ruleMatcher, true) {};
-    virtual ~SubTreeScaffoldConstructionDoneMessage() {};
-
-    virtual void handle(BaseSimulator::BlockCode*);
-    virtual Message* clone() { return new SubTreeScaffoldConstructionDoneMessage(*this); }
-    virtual string getName() { return "SubTreeScaffoldConstructionDone"; }
-    virtual AbstractMeshSpanningTreeMessage*
-    buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
-                                    const bool isAck) override;
 };
 
 #endif /* MC3D_MESSAGES_H_ */

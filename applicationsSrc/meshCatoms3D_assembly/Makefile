@@ -18,7 +18,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 SRCS =  meshCatoms3D_assembly.cpp \
 	meshAssemblyBlockCode.cpp \
 	messages.cpp \
-	meshSpanningTree.cpp #
+	meshRuleMatcher.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/meshAssembly
 #

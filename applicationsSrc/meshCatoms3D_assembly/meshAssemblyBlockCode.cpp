@@ -23,7 +23,7 @@
 #include "messages.hpp"
 
 using namespace Catoms3D;
-using namespace MeshSpanningTree;
+using namespace MeshCoating;
 
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
@@ -43,7 +43,9 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     Y_MAX = ub[1];
     Z_MAX = ub[2];
 
-    ruleMatcher = new MeshSpanningTreeRuleMatcher(X_MAX, Y_MAX, Z_MAX, B);
+    ruleMatcher = new MeshRuleMatcher(X_MAX - MeshSeedPosition[0],
+                                      Y_MAX - MeshSeedPosition[1],
+                                      Z_MAX - MeshSeedPosition[2], B);
 }
 
 MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
@@ -57,9 +59,15 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         cout << catomReqByBranch[i] << ", ";
     cout << " ]" << endl;
 
-    cout << "Last round: [ ";
+    cout << "Last Round: [ ";
     for (int i = 0; i < 6; i++)
         cout << fedCatomOnLastRound[i] << ", ";
+    cout << " ]" << endl;
+
+    cout << "Open Positions: [ ";
+    for (int i = 0; i < 6; i++)
+        cout << endl << "\t\t  "
+             <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
     cout << " ]" << endl;
 }
 
@@ -82,7 +90,7 @@ void MeshAssemblyBlockCode::startup() {
         catomReqByBranch[ZBranch] = ruleMatcher->
             shouldGrowZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
         catomReqByBranch[RevZBranch] = ruleMatcher->
-            shouldGrowRevZBranch(normalize_pos(catom->position)) ? B - 1 : 0;       
+            shouldGrowRevZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
         catomReqByBranch[Plus45DegZBranch] = ruleMatcher->
             shouldGrowPlus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;       
         catomReqByBranch[Minus45DegZBranch] = ruleMatcher->
@@ -91,6 +99,10 @@ void MeshAssemblyBlockCode::startup() {
             shouldGrowXBranch(normalize_pos(catom->position)) ? B - 1 : 0;        
         catomReqByBranch[YBranch] = ruleMatcher->
             shouldGrowYBranch(normalize_pos(catom->position)) ? B - 1 : 0;
+
+        // Compute the corresponding list of cells to be filled
+        updateOpenPositions();
+        
         // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
         getScheduler()->schedule(
             new InterruptionEvent(getScheduler()->now() + 200, catom,
@@ -170,18 +182,18 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             console << "IT Triggered, mode: " << itev->mode << "\n";
             
             switch(itev->mode) {
-            //     case IT_MODE_TILE_INSERTION:
-                    // if (checkOrthogonalIncidentBranchCompletion(catom->position)) {
-                    //     world->addBlock(++id, buildNewBlockCode,
-                    //                     posTileAwaitingPlacement, GREEN);
-                    //     numberExpectedAcksFromSubTree++;
-                    // } else {
-                    //     getScheduler()->schedule(
-                    //         new InterruptionEvent(getScheduler()->now() + 200, catom,
-                    //                               IT_MODE_TILE_INSERTION));
-                    // }
+                //     case IT_MODE_TILE_INSERTION:
+                // if (checkOrthogonalIncidentBranchCompletion(catom->position)) {
+                //     world->addBlock(++id, buildNewBlockCode,
+                //                     posTileAwaitingPlacement, GREEN);
+                //     numberExpectedAcksFromSubTree++;
+                // } else {
+                //     getScheduler()->schedule(
+                //         new InterruptionEvent(getScheduler()->now() + 200, catom,
+                //                               IT_MODE_TILE_INSERTION));
+                // }
                     
-                    // break;
+                // break;
                 case IT_MODE_TILEROOT_ACTIVATION: {
                     // Policy: Prioritize horizontal growth
                     if ((catomReqByBranch[XBranch] > 0 or catomReqByBranch[YBranch] > 0) and 
@@ -218,6 +230,22 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 } break;
             }
         }
+    }
+}
+
+void MeshAssemblyBlockCode::updateOpenPositions() {
+    for (int i = 0; i < N_BRANCHES; i++) {        
+        // [1..B], the number of already placed catoms + 1.
+        // B means that branch is finished or should not be grown
+        int multiplier = B - catomReqByBranch[i];
+        
+        if (catomReqByBranch[i] > 0 and openPositions[i])
+            *openPositions[i] = Cell3DPosition(catom->position + multiplier * ruleMatcher->
+                                               getBranchUnitOffset((BranchIndex)i));
+        else if (catomReqByBranch[i] > 0 and not openPositions[i])
+            openPositions[i] = new Cell3DPosition(catom->position + multiplier * ruleMatcher->
+                                                  getBranchUnitOffset((BranchIndex)i));
+        else openPositions[i] = NULL;
     }
 }
 

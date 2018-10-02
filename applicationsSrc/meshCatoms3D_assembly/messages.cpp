@@ -12,78 +12,42 @@
 #include <sstream>
 
 #include "utils.h"
-#include "messages.hpp"
 
-#include "meshAssemblyBlockCode.hpp" //FIXME:
+#include "messages.hpp"
+#include "meshRuleMatcher.hpp"
+#include "meshAssemblyBlockCode.hpp"
 
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshAssemblyBlockCode& mcbc = *static_cast<MeshAssemblyBlockCode*>(bc);    
+    MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    
     
+    // A neighboring catom requested an objective, check needs an make decision based on their distance.
+    // FIXME: For now, route towards horizontal growth
+    Cell3DPosition closestPos = Cell3DPosition(mabc.X_MAX, mabc.Y_MAX, mabc.Z_MAX);    
+    int i; int cP_idx = -1;
+    for (i = 0; i < N_BRANCHES; i++) {
+        if (mabc.openPositions[i]
+            and closestPos.dist_euclid(mabc.catom->position)
+            >= mabc.catom->position.dist_euclid(*mabc.openPositions[i])) {
+
+            closestPos = *mabc.openPositions[i];
+            cP_idx = i;
+        }
+    }
+
+    cout << cP_idx << endl;
+    VS_ASSERT(cP_idx >= 0 and cP_idx < N_BRANCHES);
+
+    // Update open position for that branch
+    mabc.catomReqByBranch[cP_idx]--;
+    if (mabc.catomReqByBranch[cP_idx] == 0) mabc.openPositions[cP_idx] = NULL;
+    else *mabc.openPositions[cP_idx] = mabc.ruleMatcher->getBranchUnitOffset(cP_idx);
+
+    // Send to requesting catom
+    VS_ASSERT(destinationInterface->isConnected());
+    mabc.sendMessage(new ProvideTargetCellMessage(closestPos),
+                     destinationInterface, MSG_DELAY_MC, 0);
 }
 
 void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshAssemblyBlockCode& mcbc = *static_cast<MeshAssemblyBlockCode*>(bc);    
-    
+    MeshAssemblyBlockCode& mcbc = *static_cast<MeshAssemblyBlockCode*>(bc);       
 }
-
-AbstractMeshSpanningTreeMessage*
-DisassemblyTriggerMessage::buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,
-                                                           const bool isAck) {
-    MeshAssemblyBlockCode& mcbc = static_cast<MeshAssemblyBlockCode&>(bc);
-    return new DisassemblyTriggerMessage(*mcbc.ruleMatcher, isAck);
-}
-
-void DisassemblyTriggerMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshAssemblyBlockCode& mcbc = *static_cast<MeshAssemblyBlockCode*>(bc);    
-    
-    // if (not --mcbc.numberExpectedAcksFromSubTree) {
-    //     mcbc.catom->setColor(GREEN);
-    //     const Cell3DPosition& parentPos =
-    //         ruleMatcher.getTreeParentPosition(mcbc.catom->position);
-
-    //     if (parentPos != mcbc.catom->position) {
-    //         if (not mcbc.target->isInTarget(mcbc.catom->position)) {
-    //             // mcbc.catom->setColor(WHITE);
-    //             mcbc.catom->setVisible(false);
-    //             // mcbc.world->deleteBlock(mcbc.catom);
-    //         } else {
-    //             mcbc.catom->setColor(mcbc.target->getTargetColor(mcbc.catom->position));
-    //         }
-            
-    //         P2PNetworkInterface* parentItf = mcbc.catom->getInterface(parentPos);
-    //         assert(parentItf->isConnected());
-    //         acknowledgeToParent(mcbc, parentItf);
-    //     } else {
-    //         BaseSimulator::getWorld()->lattice->highlightCell(mcbc.catom->position, BLUE);
-    //         cout << "-- Shape disassembly into CSG object done." << endl;
-    //     }
-    // }        
-}
-
-AbstractMeshSpanningTreeMessage* SubTreeScaffoldConstructionDoneMessage::
-buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc, const bool isAck) {
-    return new SubTreeScaffoldConstructionDoneMessage(ruleMatcher, isAck);
-}
-
-void SubTreeScaffoldConstructionDoneMessage::handle(BaseSimulator::BlockCode* bc) {
-    MeshAssemblyBlockCode& mcbc = *static_cast<MeshAssemblyBlockCode*>(bc);    
-    
-    
-    // if (not --mcbc.numberExpectedAcksFromSubTree) {        
-    //     mcbc.catom->setColor(RED);
-
-    //     const Cell3DPosition& parentPos =
-    //         ruleMatcher.getTreeParentPosition(mcbc.catom->position);
-
-    //     if (parentPos != mcbc.catom->position) {
-    //         P2PNetworkInterface* parentItf = mcbc.catom->getInterface(parentPos);
-    //         assert(parentItf->isConnected());
-    //         acknowledgeToParent(mcbc, parentItf);
-    //     } else {
-    //         BaseSimulator::getWorld()->lattice->highlightCell(mcbc.catom->position, BLUE);
-	// 		cout << "-- Scaffold construction done." << endl;
-    //         mcbc.triggerMeshTraversalProcess();
-    //     }
-    // }
-}
-

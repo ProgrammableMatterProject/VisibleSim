@@ -19,7 +19,7 @@
 #include "catoms3DBlock.h"
 
 #include "messages.hpp"
-#include "meshSpanningTree.hpp"
+#include "meshRuleMatcher.hpp"
 
 #define IT_MODE_TILEROOT_ACTIVATION 1 
 
@@ -37,14 +37,13 @@ public:
     World *world;
     Lattice *lattice;
     Catoms3D::Catoms3DBlock *catom;
-    MeshSpanningTree::MeshSpanningTreeRuleMatcher *ruleMatcher;
+    MeshCoating::MeshRuleMatcher *ruleMatcher;
     
     Cell3DPosition goalPosition;
-    uint catomReqByBranch[6] = {0,0,0,0,0,0};
-    bool fedCatomOnLastRound[6] = { false, false, false, false, false, false };
-    enum BranchIndex { ZBranch, RevZBranch, Plus45DegZBranch,
-                       Minus45DegZBranch, XBranch, YBranch };
-    
+    std::array<uint, 6> catomReqByBranch = {0,0,0,0,0,0};
+    std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
+    std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
+
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
     ~MeshAssemblyBlockCode();          
@@ -64,7 +63,8 @@ public:
     }
 
     static const Cell3DPosition normalize_pos(const Cell3DPosition& pos);
-    
+    void updateOpenPositions();
+        
 /**
      * \brief Uses central planning to find a path to a destination cell and follow it through rotating motions
      * \param dest Destination lattice position

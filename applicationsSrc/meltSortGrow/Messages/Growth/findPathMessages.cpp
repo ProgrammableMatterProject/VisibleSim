@@ -4,7 +4,7 @@
 #include "teleportationEvents.h"
 
 #include "../../api.hpp"
-b
+
 void FindPathMessage::handle(BaseSimulator::BlockCode* bsbc) {
     MeltSortGrowBlockCode *bc = static_cast<MeltSortGrowBlockCode*>(bsbc);
 
