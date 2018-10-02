@@ -57,12 +57,24 @@ simulatorCode/deps/
 *.xcworkspace
 *.cbp
 *.layout
+utilities/LMParser/LMParser
+utilities/meld-compiler/dists/quicklisp/archives/
+utilities/meld-compiler/dists/quicklisp/software/
 
 # Doxyfile documentation output
 doc/xml/
 doc/html/
 
+# Configuration files (must be added manually)
+applicationsBin/*/*.xml
 
-utilities/LMParser/LMParser
-utilities/meld-compiler/dists/quicklisp/archives/
-utilities/meld-compiler/dists/quicklisp/software/
+# Screenshot exports
+applicationsBin/*/*.ppm
+applicationsBin/*/*.jpeg
+applicationsBin/*/animation_*/
+applicationsBin/*/Screenshots/
+
+# User-generated files
+applicationsBin/*/*.m
+TAGS
+
