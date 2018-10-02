@@ -20,6 +20,30 @@ static const uint MSG_DELAY = 1;
 
 using namespace MeshSpanningTree;
 
+class RequestTargetCellMessage : public HandleableMessage {
+public:
+    RequestTargetCellMessage()
+        : HandleableMessage() {};
+    virtual ~RequestTargetCellMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new RequestTargetCellMessage(*this); }
+    virtual string getName() { return "RequestTargetCell"; }
+};
+
+class ProvideTargetCellMessage : public HandleableMessage {
+    const Cell3DPosition tPos;
+public:
+    ProvideTargetCellMessage(const Cell3DPosition& _tPos)
+        : HandleableMessage(), tPos(_tPos) {};
+    virtual ~ProvideTargetCellMessage() {};
+
+    virtual void handle(BaseSimulator::BlockCode*);
+    virtual Message* clone() { return new ProvideTargetCellMessage(*this); }
+    virtual string getName() { return "ProvideTargetCell"; }
+};
+
+
 class DisassemblyTriggerMessage : public AbstractMeshSpanningTreeMessage {
 public:
     DisassemblyTriggerMessage(const MeshSpanningTreeRuleMatcher& _ruleMatcher,

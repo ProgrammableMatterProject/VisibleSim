@@ -24,7 +24,7 @@ static const uint MC_ST_A = 68;
 static const uint MC_ST_B = 69;
 
 class MeshSpanningTreeRuleMatcher {
-    const uint X_MAX, Y_MAX, B;
+    const uint X_MAX, Y_MAX, Z_MAX, B;
 
 public:
     bool isOnXBranch(const Cell3DPosition& pos) const;
@@ -40,9 +40,12 @@ public:
     bool shouldGrowRevZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowPlus45DegZBranch(const Cell3DPosition& pos) const;
     bool shouldGrowMinus45DegZBranch(const Cell3DPosition& pos) const;
-    
-    MeshSpanningTreeRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _B) :
-        X_MAX(_X_MAX), Y_MAX(_Y_MAX), B(_B) {};
+    bool shouldGrowXBranch(const Cell3DPosition& pos) const;
+    bool shouldGrowYBranch(const Cell3DPosition& pos) const;    
+
+    MeshSpanningTreeRuleMatcher(const uint _X_MAX, const uint _Y_MAX, const uint _Z_MAX,
+                                const uint _B) :
+        X_MAX(_X_MAX), Y_MAX(_Y_MAX), Z_MAX(_Z_MAX), B(_B) {};
     virtual ~MeshSpanningTreeRuleMatcher() {};
     
     bool isOnPartialBorderMesh(const Cell3DPosition& pos) const;

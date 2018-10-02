@@ -27,8 +27,7 @@ class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
 public:
     static const uint B = 6;
-    static uint X_MAX;
-    static uint Y_MAX;
+    static uint X_MAX, Y_MAX, Z_MAX; // const
 
     static const bool ASSEMBLE_SCAFFOLD = true;
     static const bool NOTIFY_SCAFFOLD_COMPLETION = true;
@@ -41,7 +40,8 @@ public:
     MeshSpanningTree::MeshSpanningTreeRuleMatcher *ruleMatcher;
     
     Cell3DPosition goalPosition;
-    uint catomReqByBranch[4] = {0,0,0,0};
+    uint catomReqByBranch[6] = {0,0,0,0,0,0};
+    bool fedCatomOnLastRound[6] = { false, false, false, false, false, false };
     enum BranchIndex { ZBranch, RevZBranch, Plus45DegZBranch,
                        Minus45DegZBranch, XBranch, YBranch };
     
@@ -57,6 +57,7 @@ public:
     
     void startup();
     void processLocalEvent(EventPtr pev);
+    void onBlockSelected();
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
         return (new MeshAssemblyBlockCode((Catoms3DBlock*)host));
