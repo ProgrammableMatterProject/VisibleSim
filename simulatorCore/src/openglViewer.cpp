@@ -241,8 +241,11 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
             // unselect current if exists
             if (slct) slct->toggleHighlight();
             // set n-1 block selected block (no selected block if n=0
-            if (n) BaseSimulator::getWorld()->setselectedGlBlock(n-1)->toggleHighlight();
-            else BaseSimulator::getWorld()->setselectedGlBlock(-1);
+            if (n) {
+                GlBlock *glB = BaseSimulator::getWorld()->setselectedGlBlock(n-1);
+                glB->toggleHighlight();
+                glB->fireSelectedTrigger();
+            } else BaseSimulator::getWorld()->setselectedGlBlock(-1);
             mainWindow->select(BaseSimulator::getWorld()->getselectedGlBlock());
             if (button==GLUT_RIGHT_BUTTON && n) {
                 int n=selectFaceFunc(x,y);

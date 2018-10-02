@@ -67,20 +67,11 @@ void GlBlock::toggleHighlight() {
 using namespace Catoms3D; //FIXME:
 string GlBlock::getInfo() {
     ostringstream out;
-	out << blockId << "\n";
+	out << blockId << endl;
 	out << fixed;
 	out.precision(1);    
 	out << "Pos=(" << position[0] << "," << position[1] << "," << position[2] << ") ";
 	out << "Col=(" << (int)(color[0] * 255) << "," << (int)(color[1] * 255) << "," << (int)(color[2] * 255) << ")";
-
-    Lattice *lattice = World::getWorld()->lattice;
-    const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
-    Catoms3DBlock* catom = static_cast<Catoms3DBlock*>(lattice->getBlock(bbPos));
-
-    for (uint i = 0; i <= 12; i++) {
-        Cell3DPosition conPos; catom->getNeighborPos(i, conPos);
-        cout << i << ": " << conPos << endl;
-    }
     
 	return out.str();
 }
@@ -105,4 +96,13 @@ void GlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glTranslatef(position[0],position[1],position[2]);
 	ptrObj->glDrawIdByMaterial(n);
 	glPopMatrix();
+}
+
+void GlBlock::fireSelectedTrigger() {
+    Lattice *lattice = World::getWorld()->lattice;
+    const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
+    Catoms3DBlock* catom = static_cast<Catoms3DBlock*>(lattice->getBlock(bbPos));
+
+    // custom user debug procedure
+    if (catom and catom->blockCode) catom->blockCode->onBlockSelected(); 
 }
