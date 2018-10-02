@@ -49,7 +49,7 @@ int BlockCode::sendMessage(HandleableMessage*msg,
     Time t1 = scheduler->now() + t0
       + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
-    console << " sends " << msg->getName() << " to "
+    console << "sends " << msg->getName() << " to "
             << dest->getConnectedBlockId() << " at " << t1 << "\n";
 #ifdef DEBUG_MESSAGES
     OUTPUT << "#" << hostBlock->blockId << " " << hostBlock->position
@@ -69,7 +69,7 @@ int BlockCode::sendMessage(const char*msgString, Message*msg,
       + (Time)(((double)dt*hostBlock->getRandomUint())/((double)uintRNG::max()));
 
 	if (msgString)
-		console << " sends " << msgString << " to "
+		console << "sends " << msgString << " to "
                 << dest->getConnectedBlockId() << " at " << t1 << "\n";
 
 #ifdef DEBUG_MESSAGES
