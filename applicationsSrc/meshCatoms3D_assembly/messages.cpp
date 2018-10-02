@@ -14,10 +14,17 @@
 #include "utils.h"
 #include "messages.hpp"
 
-#include "meshAssemblyBlockCode.hpp" //FIXME
+#include "meshAssemblyBlockCode.hpp" //FIXME:
 
-static bool COLORIZE_PATH_SEARCH = false;
-const Color visitedColor = ORANGE;
+void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mcbc = *static_cast<MeshAssemblyBlockCode*>(bc);    
+    
+}
+
+void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
+    MeshAssemblyBlockCode& mcbc = *static_cast<MeshAssemblyBlockCode*>(bc);    
+    
+}
 
 AbstractMeshSpanningTreeMessage*
 DisassemblyTriggerMessage::buildNewMeshSpanningTreeMessage(BaseSimulator::BlockCode& bc,

@@ -27,6 +27,7 @@ using namespace MeshSpanningTree;
 
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
+uint MeshAssemblyBlockCode::Z_MAX;
 Cell3DPosition MeshAssemblyBlockCode::MeshSeedPosition = Cell3DPosition(1,1,1);
 bID id = 1;
 
@@ -40,13 +41,27 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     const Cell3DPosition& ub = lattice->getGridUpperBounds();
     X_MAX = ub[0];
     Y_MAX = ub[1];
+    Z_MAX = ub[2];
 
-    ruleMatcher = new MeshSpanningTreeRuleMatcher(X_MAX, Y_MAX, B);
+    ruleMatcher = new MeshSpanningTreeRuleMatcher(X_MAX, Y_MAX, Z_MAX, B);
 }
 
 MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
 }
 
+void MeshAssemblyBlockCode::onBlockSelected() {
+// Debug:
+    // (1) Print details of branch growth plan and previous round            
+    cout << "Growth Plan: [ ";
+    for (int i = 0; i < 6; i++)
+        cout << catomReqByBranch[i] << ", ";
+    cout << " ]" << endl;
+
+    cout << "Last round: [ ";
+    for (int i = 0; i < 6; i++)
+        cout << fedCatomOnLastRound[i] << ", ";
+    cout << " ]" << endl;
+}
 
 bool MeshAssemblyBlockCode::moduleInSpanningTree(const Cell3DPosition& pos) {
     return target->isInTarget(pos) and lattice->isInGrid(pos);
@@ -56,14 +71,12 @@ bool MeshAssemblyBlockCode::moduleInSpanningTree(const Cell3DPosition& pos) {
 //     return pos.pt[0] % B == 0 and pos.pt[1] % B == 0 and pos.pt[2] % B == 0;
 // }
 
-static std::set<Cell3DPosition> placedBorderCatoms;
 void MeshAssemblyBlockCode::startup() {
     stringstream info;
     info << "Starting ";
 
     // Do stuff
-    if (ruleMatcher->isTileRoot(normalize_pos(catom->position))) {
-
+    if (ruleMatcher->isTileRoot(normalize_pos(catom->position))) {        
         // Determine how many branches need to grow from here
         // and initialize growth data structures
         catomReqByBranch[ZBranch] = ruleMatcher->
@@ -74,40 +87,29 @@ void MeshAssemblyBlockCode::startup() {
             shouldGrowPlus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;       
         catomReqByBranch[Minus45DegZBranch] = ruleMatcher->
             shouldGrowMinus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
-        
-
+        catomReqByBranch[XBranch] = ruleMatcher->
+            shouldGrowXBranch(normalize_pos(catom->position)) ? B - 1 : 0;        
+        catomReqByBranch[YBranch] = ruleMatcher->
+            shouldGrowYBranch(normalize_pos(catom->position)) ? B - 1 : 0;
         // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
         getScheduler()->schedule(
             new InterruptionEvent(getScheduler()->now() + 200, catom,
                                   IT_MODE_TILEROOT_ACTIVATION));
+        console << "Scheduled IT" << "\n";
+    } else {
+        // Ask parent module where it should be headed
+        for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
+            if (ruleMatcher->isTileRoot(normalize_pos(nPos))) {
+                P2PNetworkInterface* nItf = catom->getInterface(nPos);
+                VS_ASSERT(nItf);
+                
+                sendMessage(new RequestTargetCellMessage(), nItf, MSG_DELAY_MC, 0);
+                return; // Await answer
+            }
+        }
+
+        VS_ASSERT_MSG(false, "meshAssembly: spawned module cannot be without a tile root in its vicinity.");
     }
-    
-    // if (not skipMeshInit) {        
-    //     if (ASSEMBLE_SCAFFOLD) {        
-    //         for (auto const& nPos : world->lattice->getNeighborhood(catom->position)) {            
-    //             if (ruleMatcher->shouldSendToNeighbor(catom->position, nPos)
-    //                 and ruleMatcher->isInMesh(nPos)) {
-
-    //                 if (ruleMatcher->isTileRoot(nPos)) {
-    //                     if (checkOrthogonalIncidentBranchCompletion(catom->position)
-    //                         or ruleMatcher->isOnXBorder(catom->position)
-    //                         or ruleMatcher->isOnYBorder(catom->position))
-    //                         world->addBlock(++id, buildNewBlockCode, nPos, GREEN);
-    //                     else {
-    //                         posTileAwaitingPlacement = nPos;
-    //                         getScheduler()->schedule(
-    //                             new InterruptionEvent(getScheduler()->now() + 200, catom,
-    //                                                   IT_MODE_TILE_INSERTION));
-    //                     }
-    //                 } else {
-    //                     world->addBlock(++id, buildNewBlockCode, nPos, ORANGE);
-    //                 }
-
-    //                 isLeaf = false;
-    //             }
-    //         }    
-    //     }
-
 }
 
 const Cell3DPosition
@@ -139,8 +141,13 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 (std::static_pointer_cast<NetworkInterfaceReceiveEvent>(pev))->message;
 
             if (message->isMessageHandleable()) {
-                // (std::static_pointer_cast<Catoms3DMotionEngineMessage>(message))->
-                //     handle(this);
+                std::shared_ptr<HandleableMessage> hMsg =
+                    (std::static_pointer_cast<HandleableMessage>(message));
+                
+                console << "received " << hMsg->getName() << " from "
+                        << message->sourceInterface->hostBlock->blockId
+                        << " at " << getScheduler()->now() << "\n";
+                hMsg->handle(this);
             } else {
                 P2PNetworkInterface * recv_interface = message->destinationInterface;
             
@@ -154,12 +161,14 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
         } break;            
             
         case EVENT_TAP: {
-            // ?
         } break;
 
         case EVENT_INTERRUPTION: {
             std::shared_ptr<InterruptionEvent> itev =
                 std::static_pointer_cast<InterruptionEvent>(pev);
+
+            console << "IT Triggered, mode: " << itev->mode << "\n";
+            
             switch(itev->mode) {
             //     case IT_MODE_TILE_INSERTION:
                     // if (checkOrthogonalIncidentBranchCompletion(catom->position)) {
@@ -174,8 +183,6 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     
                     // break;
                 case IT_MODE_TILEROOT_ACTIVATION: {
-                    bool fedCatomOnLastRound[6] = { false, false, false, false, false, false };
-
                     // Policy: Prioritize horizontal growth
                     if ((catomReqByBranch[XBranch] > 0 or catomReqByBranch[YBranch] > 0) and 
                         not (fedCatomOnLastRound[XBranch] or fedCatomOnLastRound[YBranch])) {
@@ -195,7 +202,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             // FIXME: What if cell has module?
                             
                             world->addBlock(++id, buildNewBlockCode,
-                                            catom->position + Cell3DPosition(0, -1, -1),
+                                            catom->position + Cell3DPosition(0, 1, -1),
                                             ORANGE);
                             catomReqByBranch[YBranch]--;
                             fedCatomOnLastRound[YBranch] = true;
@@ -207,6 +214,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         fedCatomOnLastRound[YBranch] = false;
                         int numInsertedCatoms = 0;
                     }
+                    
                 } break;
             }
         }

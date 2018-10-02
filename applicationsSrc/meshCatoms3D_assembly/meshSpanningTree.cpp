@@ -36,8 +36,10 @@ void MeshSpanningTreeRuleMatcher::printDebugInfo(const Cell3DPosition& pos) cons
 }
 
 bool MeshSpanningTreeRuleMatcher::isInMesh(const Cell3DPosition& pos) const {
-    return isOnXBranch(pos) or isOnYBranch(pos) or isOnZBranch(pos)
-        or isOnRevZBranch(pos) or isOnMinus45DegZBranch(pos) or isOnPlus45DegZBranch(pos);
+    return (pos[0] < (int)X_MAX and pos[1] < (int)Y_MAX and pos[2] < (int)Z_MAX)
+        and ((isOnXBranch(pos) or isOnYBranch(pos) or isOnZBranch(pos)
+              or isOnRevZBranch(pos) or isOnMinus45DegZBranch(pos)
+              or isOnPlus45DegZBranch(pos)));
 }
 
 bool MeshSpanningTreeRuleMatcher::isOnXBranch(const Cell3DPosition& pos) const {
@@ -127,11 +129,26 @@ shouldGrowPlus45DegZBranch(const Cell3DPosition& pos) const {
                                                        pos[2] + (B - 1)));
 }
 
+
 bool MeshSpanningTreeRuleMatcher::
 shouldGrowMinus45DegZBranch(const Cell3DPosition& pos) const {
     return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0] - (B - 1),
                                                        pos[1],
                                                        pos[2] + (B - 1)));
+}
+
+bool MeshSpanningTreeRuleMatcher::
+shouldGrowXBranch(const Cell3DPosition& pos) const {
+    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0] + (B - 1),
+                                                       pos[1],
+                                                       pos[2]));
+}
+
+bool MeshSpanningTreeRuleMatcher::
+shouldGrowYBranch(const Cell3DPosition& pos) const {
+    return isTileRoot(pos) and isInMesh(Cell3DPosition(pos[0],
+                                                       pos[1] + (B - 1),
+                                                       pos[2]));
 }
 
 bool MeshSpanningTreeRuleMatcher::isTileRoot(const Cell3DPosition& pos) const {    
