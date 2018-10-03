@@ -86,9 +86,9 @@ bool Cell3DPosition::compare_ZYX(const Cell3DPosition& first, const Cell3DPositi
 
 const Cell3DPosition& Cell3DPosition::operator +=(const Cell3DPosition& p)
 {    
-    pt[0] = p.pt[0];
-    pt[1] = p.pt[1];
-    pt[2] = p.pt[2];
+    pt[0] += p.pt[0];
+    pt[1] += p.pt[1];
+    pt[2] += p.pt[2];
     return *this;
 }
 
