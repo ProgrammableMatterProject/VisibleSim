@@ -23,6 +23,8 @@
 
 #define IT_MODE_TILEROOT_ACTIVATION 1 
 
+enum AgentRole { FreeAgent, Coordinator, PassiveBeam };
+
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
 private:
 public:
@@ -31,15 +33,16 @@ public:
 
     static const bool ASSEMBLE_SCAFFOLD = true;
     static const bool NOTIFY_SCAFFOLD_COMPLETION = true;
-    static Cell3DPosition MeshSeedPosition; //const
+    static Cell3DPosition MeshSeedPosition; //const   
     
     Scheduler *scheduler;
     World *world;
     Lattice *lattice;
     Catoms3D::Catoms3DBlock *catom;
     MeshCoating::MeshRuleMatcher *ruleMatcher;
-    
-    Cell3DPosition goalPosition;
+
+    AgentRole role;
+    Cell3DPosition targetPosition;
     std::array<uint, 6> catomReqByBranch = {0,0,0,0,0,0};
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};

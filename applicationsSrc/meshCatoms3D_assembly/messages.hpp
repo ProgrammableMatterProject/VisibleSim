@@ -16,7 +16,7 @@
 
 #include "meshRuleMatcher.hpp"
 
-static const uint MSG_DELAY = 1;
+static const uint MSG_DELAY = 0;
 
 using namespace MeshCoating;
 

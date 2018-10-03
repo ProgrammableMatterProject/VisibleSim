@@ -84,7 +84,10 @@ void MeshAssemblyBlockCode::startup() {
     info << "Starting ";
 
     // Do stuff
-    if (ruleMatcher->isTileRoot(normalize_pos(catom->position))) {        
+    if (ruleMatcher->isTileRoot(normalize_pos(catom->position))) {
+        // Switch role
+        role = Coordinator;
+        
         // Determine how many branches need to grow from here
         // and initialize growth data structures
         catomReqByBranch[ZBranch] = ruleMatcher->
@@ -105,10 +108,12 @@ void MeshAssemblyBlockCode::startup() {
         
         // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
         getScheduler()->schedule(
-            new InterruptionEvent(getScheduler()->now() + 200, catom,
+            new InterruptionEvent(getScheduler()->now() + 40000, catom,
                                   IT_MODE_TILEROOT_ACTIVATION));
-        console << "Scheduled IT" << "\n";
+        console << "Scheduled Coordinator IT" << "\n";
     } else {
+        role = FreeAgent;
+        
         // Ask parent module where it should be headed
         for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
             if (ruleMatcher->isTileRoot(normalize_pos(nPos))) {
@@ -168,33 +173,35 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             }
         } break;
 
-        case EVENT_ROTATION3D_END: {
-            // engine->handleRotationEnd();
+        case EVENT_TELEPORTATION_END: {
+            // engine->handleRotationEnd();            
+            if (catom->position == targetPosition) {
+                role = PassiveBeam;
+                catom->setColor(BLUE);
+            } else {
+                Cell3DPosition nextHop;
+                if (lattice->cellsAreAdjacent(catom->position, targetPosition))
+                    nextHop = targetPosition;
+                else
+                    nextHop = catom->position + ruleMatcher->getBranchUnitOffset(
+                        ruleMatcher->getBranchIndexForNonRootPosition(targetPosition));
+        
+                // throw NotImplementedException("Movement chaining");
+            }
         } break;            
             
         case EVENT_TAP: {
         } break;
 
-        case EVENT_INTERRUPTION: {
+        case EVENT_INTERRUPTION: {            
             std::shared_ptr<InterruptionEvent> itev =
                 std::static_pointer_cast<InterruptionEvent>(pev);
 
             console << "IT Triggered, mode: " << itev->mode << "\n";
             
             switch(itev->mode) {
-                //     case IT_MODE_TILE_INSERTION:
-                // if (checkOrthogonalIncidentBranchCompletion(catom->position)) {
-                //     world->addBlock(++id, buildNewBlockCode,
-                //                     posTileAwaitingPlacement, GREEN);
-                //     numberExpectedAcksFromSubTree++;
-                // } else {
-                //     getScheduler()->schedule(
-                //         new InterruptionEvent(getScheduler()->now() + 200, catom,
-                //                               IT_MODE_TILE_INSERTION));
-                // }
-                    
-                // break;
                 case IT_MODE_TILEROOT_ACTIVATION: {
+                    int numInsertedCatoms = 0;
                     // Policy: Prioritize horizontal growth
                     if ((catomReqByBranch[XBranch] > 0 or catomReqByBranch[YBranch] > 0) and 
                         not (fedCatomOnLastRound[XBranch] or fedCatomOnLastRound[YBranch])) {
@@ -206,6 +213,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                             ORANGE);
                             catomReqByBranch[XBranch]--;
                             fedCatomOnLastRound[XBranch] = true;
+                            numInsertedCatoms++;
                         } else {
                             fedCatomOnLastRound[XBranch] = false;
                         }
@@ -218,15 +226,24 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                             ORANGE);
                             catomReqByBranch[YBranch]--;
                             fedCatomOnLastRound[YBranch] = true;
+                            numInsertedCatoms++;
                         } else {
                             fedCatomOnLastRound[XBranch] = false;
                         }
                     } else {
                         fedCatomOnLastRound[XBranch] = false;
-                        fedCatomOnLastRound[YBranch] = false;
-                        int numInsertedCatoms = 0;
+                        fedCatomOnLastRound[YBranch] = false;                        
                     }
                     
+                    cout << "[t-" << scheduler->now() << "] Round Summary: [ ";
+                    for (int i = 0; i < 6; i++) cout << fedCatomOnLastRound[i] << ", ";
+                    cout << " ]" << endl;
+                    // cout << "(" << catom->blockId << ") Not spawning any catom this round" << endl;
+
+                    getScheduler()->schedule(
+                        new InterruptionEvent(getScheduler()->now() + 40001, catom,
+                                              IT_MODE_TILEROOT_ACTIVATION));
+                    console << "Scheduled Coordinator IT" << "\n";
                 } break;
             }
         }

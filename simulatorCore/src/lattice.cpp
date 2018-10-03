@@ -112,6 +112,11 @@ bool Lattice::isInGrid(const Cell3DPosition &p) const {
         && isInRange(p[2], lb.pt[2], ub.pt[2]);
 }
 
+unsigned int
+Lattice::getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) {
+    throw NotImplementedException("distance function for current lattice type");
+}
+
 vector<Cell3DPosition> Lattice::getActiveNeighborCells(const Cell3DPosition &pos) {
     vector<Cell3DPosition> activeNeighborCells;
 
@@ -512,27 +517,6 @@ Cell3DPosition FCCLattice::getCellInDirection(const Cell3DPosition &pRef, int di
     return pRef + getRelativeConnectivity(pRef)[direction];
 }
 
-bool FCCLattice::lockCell(const Cell3DPosition &pos) {
-    if (!isInGrid(pos)) return true;
-
-    int ind = getIndex(pos);
-    OUTPUT << "ind=" << ind << " / pos=" << pos << " / state=" << tabLockedCells[ind] << " / bb=" << (grid[ind]==NULL?0:1) << endl;
-    if (tabLockedCells[ind] || grid[ind]!=NULL) {
-        return false;
-    }
-    tabLockedCells[ind] = true;
-    return true;
-}
-
-bool FCCLattice::unlockCell(const Cell3DPosition &pos) {
-    if (!isInGrid(pos)) return true;
-
-    int ind = getIndex(pos);
-    bool prev = tabLockedCells[ind];
-    tabLockedCells[ind] = false;
-    return prev;
-}
-
 void FCCLattice::glDraw() {
 static const float pts[24][3]={{2.928,0,4.996},{0,2.928,4.996},{-2.928,0,4.996},{0,-2.928,4.996},{4.996,2.069,2.069},{2.069,4.996,2.069},{-2.069,4.996,2.069},{-4.996,2.069,2.069},{-4.996,-2.069,2.069},{-2.069,-4.996,2.069},{2.069,-4.996,2.069},{4.996,-2.069,2.069},{4.996,2.069,-2.069},{2.069,4.996,-2.069},{-2.069,4.996,-2.069},{-4.996,2.069,-2.069},{-4.996,-2.069,-2.069},{-2.069,-4.996,-2.069},{2.069,-4.996,-2.069},{4.996,-2.069,-2.069},{2.928,0,-4.996},{0,2.928,-4.996},{-2.928,0,-4.996},{0,-2.928,-4.996}};
 static const uint8_t quads[72]={0,1,2,3,0,4,5,1,1,6,7,2,2,8,9,3,3,10,11,0,4,12,13,5,5,13,14,6,6,14,15,7,7,15,16,8,8,16,17,9,9,17,18,10,10,18,19,11,11,19,12,4,12,20,21,13,14,21,22,15,16,22,23,17,18,23,20,19,23,22,21,20};
@@ -615,6 +599,27 @@ static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 			++it;
 		}
 	}
+}
+
+bool FCCLattice::lockCell(const Cell3DPosition &pos) {
+    if (!isInGrid(pos)) return true;
+
+    int ind = getIndex(pos);
+    OUTPUT << "ind=" << ind << " / pos=" << pos << " / state=" << tabLockedCells[ind] << " / bb=" << (grid[ind]==NULL?0:1) << endl;
+    if (tabLockedCells[ind] || grid[ind]!=NULL) {
+        return false;
+    }
+    tabLockedCells[ind] = true;
+    return true;
+}
+
+bool FCCLattice::unlockCell(const Cell3DPosition &pos) {
+    if (!isInGrid(pos)) return true;
+
+    int ind = getIndex(pos);
+    bool prev = tabLockedCells[ind];
+    tabLockedCells[ind] = false;
+    return prev;
 }
 
 void FCCLattice::initTabDistances() {
@@ -820,6 +825,13 @@ Cell3DPosition SkewFCCLattice::worldToGridPosition(const Vector3D &pos) {
     
     
     return res;
+}
+
+unsigned int
+SkewFCCLattice::getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2) {
+    if (p1 == p2) return 0;
+    if (cellsAreAdjacent(p1,p2)) return 1;
+    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1]) + abs(p1[2] - p2[2]) ;
 }
 
 /************************************************************

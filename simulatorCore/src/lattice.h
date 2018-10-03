@@ -236,6 +236,16 @@ public:
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                               int direction) = 0;
+
+    /** 
+     * Computes the distance between two lattice cells (Manhattan/network distance).
+     * 
+     * @param p1 first cell
+     * @param p2 second cell
+     * 
+     * @return distance between p1 and p2
+     */
+    virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2);
     
     virtual void glDraw() {};
 	
@@ -643,18 +653,19 @@ public:
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                               int direction);
-
+    
     // NEIGHBORHOOD RESTRICTIONS
     bool isPositionBlocked(const Cell3DPosition &pos);
     bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore);
     // bool isPositionBlockable(const Cell3DPosition &pos); 
-    
+
+    // FIXME: @Pthy: These are blockcode related and should not be in the simulator core.
     bool lockCell(const Cell3DPosition &pos);
     bool unlockCell(const Cell3DPosition &pos);
     void initTabDistances();
     unsigned short getDistance(const Cell3DPosition &pos);
     void setDistance(const Cell3DPosition &pos,unsigned short d);
-    void glDraw();
+    void glDraw();    
 };
 
 
@@ -739,7 +750,12 @@ public:
      */
     virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
                                               int direction);
-};
+
+    /** 
+     * @copydoc Lattice::getCellDistance
+     */
+    virtual unsigned int getCellDistance(const Cell3DPosition &p1, const Cell3DPosition &p2);
+}; // SkewFCCLattice
 
 /*! @brief 3D Simple Cubic Lattice
  *

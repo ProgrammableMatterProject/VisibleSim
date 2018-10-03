@@ -96,7 +96,7 @@ void TeleportationStopEvent::consume() {
     OUTPUT << "connect Block " << bb->blockId << "\n";
     wrld->connectBlock(bb);
     Scheduler *scheduler = getScheduler();
-    scheduler->schedule(new TeleportationEndEvent(scheduler->now() + ANIMATION_DELAY, bb));
+    scheduler->schedule(new TeleportationEndEvent(scheduler->now(), bb));
 }
 
 const string TeleportationStopEvent::getEventName() {
