@@ -26,10 +26,6 @@ namespace BaseSimulator {
 //
 //===========================================================================================================
 
-// TeleportationStartEvent::TeleportationStartEvent(Time t,
-//                                                  BuildingBlock *block,
-//                                                  BuildingBlock *pivot,
-//                                                  MovementDirection mDir): BlockEvent(t,block) {
 TeleportationStartEvent::TeleportationStartEvent(Time t,
                                                  BuildingBlock *block,
                                                  const Cell3DPosition &fpos): BlockEvent(t,block) {
@@ -54,6 +50,8 @@ void TeleportationStartEvent::consume() {
 
     Time t = scheduler->now() + ANIMATION_DELAY;
     if (getWorld()->lattice->isInGrid(finalPosition)) {
+        bb->blockCode->console << " starting Teleportation to " << finalPosition
+                               << " at " << t << "\n";
         scheduler->schedule(new TeleportationStopEvent(t, bb, finalPosition));
     } else {
         OUTPUT << "ERROR: trying to teleport module to a position outside of lattice"
@@ -125,6 +123,8 @@ TeleportationEndEvent::~TeleportationEndEvent() {
 void TeleportationEndEvent::consume() {
     EVENT_CONSUME_INFO();
     BuildingBlock *bb = concernedBlock;
+    bb->blockCode->console << " finished Teleportation to " << bb->position
+                           << " at " << date + COM_DELAY << "\n";
     concernedBlock->blockCode->processLocalEvent(
         EventPtr(new TeleportationEndEvent(date + COM_DELAY,bb))
         );
