@@ -10,6 +10,7 @@
 #include <chrono>
 #include <errno.h>
 #include <sys/stat.h>
+#include <future>
 
 #include "world.h"
 #include "scheduler.h"
@@ -345,8 +346,26 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                          << animationDirName << endl;
                 } else {
                     cerr << "Recording of " << animationDirName.c_str()
-                         << " has ended" << endl;
-
+                         << " has ended, attempting conversion" << endl;
+                    // Add a script for converting into a video, asynchronously
+#ifndef WIN32
+                    std::async([](const std::string& animDir){
+                                   const string& vidName = generateTimestampedFilename("video", "mpeg");
+                                   int r = system(
+                                       string("ffmpeg -pattern_type glob -framerate 30 -i \""
+                                              + animationDirName + "/*.ppm\" " + vidName
+                                              + ">/dev/null 2>/dev/null").c_str());
+                                   
+                                   if (r == 0) {
+                                       system(string("rm -rf " + animationDirName).c_str());
+                                       cerr << "Animation video exported to "
+                                            << vidName << endl;
+                                   } else {
+                                       cerr << animationDirName.c_str()
+                                            << " conversion failure" << endl;
+                                   }
+                               }, animationDirName);
+#endif
                 }
                 
                 saveScreenMode=!saveScreenMode;
