@@ -16,6 +16,7 @@
 #include "events.h"
 #include "trace.h"
 #include "tDefs.h"
+#include "teleportationEvents.h"
 
 #include "meshAssemblyBlockCode.hpp"
 
@@ -56,7 +57,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     // (1) Print details of branch growth plan and previous round            
     cout << "Growth Plan: [ ";
     for (int i = 0; i < 6; i++)
-        cout << catomReqByBranch[i] << ", ";
+        cout << catomsReqByBranch[i] << ", ";
     cout << " ]" << endl;
 
     cout << "Last Round: [ ";
@@ -87,20 +88,21 @@ void MeshAssemblyBlockCode::startup() {
     if (ruleMatcher->isTileRoot(normalize_pos(catom->position))) {
         // Switch role
         role = Coordinator;
+        coordinatorPos = catom->position;
         
         // Determine how many branches need to grow from here
         // and initialize growth data structures
-        catomReqByBranch[ZBranch] = ruleMatcher->
+        catomsReqByBranch[ZBranch] = ruleMatcher->
             shouldGrowZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
-        catomReqByBranch[RevZBranch] = ruleMatcher->
+        catomsReqByBranch[RevZBranch] = ruleMatcher->
             shouldGrowRevZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
-        catomReqByBranch[Plus45DegZBranch] = ruleMatcher->
+        catomsReqByBranch[Plus45DegZBranch] = ruleMatcher->
             shouldGrowPlus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;       
-        catomReqByBranch[Minus45DegZBranch] = ruleMatcher->
+        catomsReqByBranch[Minus45DegZBranch] = ruleMatcher->
             shouldGrowMinus45DegZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
-        catomReqByBranch[XBranch] = ruleMatcher->
+        catomsReqByBranch[XBranch] = ruleMatcher->
             shouldGrowXBranch(normalize_pos(catom->position)) ? B - 1 : 0;        
-        catomReqByBranch[YBranch] = ruleMatcher->
+        catomsReqByBranch[YBranch] = ruleMatcher->
             shouldGrowYBranch(normalize_pos(catom->position)) ? B - 1 : 0;
 
         // Compute the corresponding list of cells to be filled
@@ -108,7 +110,7 @@ void MeshAssemblyBlockCode::startup() {
         
         // Schedule next growth iteration (at t + MOVEMENT_DURATION (?) )
         getScheduler()->schedule(
-            new InterruptionEvent(getScheduler()->now() + 40000, catom,
+            new InterruptionEvent(getScheduler()->now() + 42000, catom,
                                   IT_MODE_TILEROOT_ACTIVATION));
         console << "Scheduled Coordinator IT" << "\n";
     } else {
@@ -161,7 +163,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 std::shared_ptr<HandleableMessage> hMsg =
                     (std::static_pointer_cast<HandleableMessage>(message));
                 
-                console << "received " << hMsg->getName() << " from "
+                console << " received " << hMsg->getName() << " from "
                         << message->sourceInterface->hostBlock->blockId
                         << " at " << getScheduler()->now() << "\n";
                 hMsg->handle(this);
@@ -182,11 +184,29 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 Cell3DPosition nextHop;
                 if (lattice->cellsAreAdjacent(catom->position, targetPosition))
                     nextHop = targetPosition;
-                else
-                    nextHop = catom->position + ruleMatcher->getBranchUnitOffset(
-                        ruleMatcher->getBranchIndexForNonRootPosition(targetPosition));
-        
-                // throw NotImplementedException("Movement chaining");
+                else {
+                    // Deduce next position
+                    BranchIndex bi = ruleMatcher->
+                        getBranchIndexForNonRootPosition(normalize_pos(targetPosition));
+
+                    if (bi > 3)
+                        nextHop = catom->position
+                            + ruleMatcher->getBranchUnitOffset(bi);
+                    else if (bi == ZBranch) {
+                        // FIXME: STATIC RULES
+                        if (catom->position[0] < coordinatorPos[0])
+                            nextHop = catom->position + Cell3DPosition(1,0,0);
+                        else nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);
+                    } else {
+                        throw NotImplementedException();
+                    }
+                }
+
+                scheduler->schedule(
+                    new TeleportationStartEvent(getScheduler()->now(), catom, nextHop));
+#ifdef INTERACTIVE_MODE
+                awaitKeyPressed();
+#endif
             }
         } break;            
             
@@ -200,39 +220,61 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
             console << "IT Triggered, mode: " << itev->mode << "\n";
             
             switch(itev->mode) {
+
                 case IT_MODE_TILEROOT_ACTIVATION: {
                     int numInsertedCatoms = 0;
                     // Policy: Prioritize horizontal growth
-                    if ((catomReqByBranch[XBranch] > 0 or catomReqByBranch[YBranch] > 0) and 
+                    if ((catomsReqByBranch[XBranch] > 0 or catomsReqByBranch[YBranch] > 0) and 
                         not (fedCatomOnLastRound[XBranch] or fedCatomOnLastRound[YBranch])) {
-                        if (catomReqByBranch[XBranch] > 0) {
+
+                        if (catomsReqByBranch[XBranch] > 0) {
                             // FIXME: What if cell has module?
+                            const Cell3DPosition& entryPos =
+                                catom->position + Cell3DPosition(1,0,-1);
+                            VS_ASSERT(lattice->isFree(entryPos));
                             
-                            world->addBlock(++id, buildNewBlockCode,
-                                            catom->position + Cell3DPosition(1, 0, -1),
-                                            ORANGE);
-                            catomReqByBranch[XBranch]--;
+                            world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
+                            // catomsReqByBranch[XBranch]--;
                             fedCatomOnLastRound[XBranch] = true;
                             numInsertedCatoms++;
                         } else {
                             fedCatomOnLastRound[XBranch] = false;
                         }
 
-                        if (catomReqByBranch[YBranch] > 0) {
+                        if (catomsReqByBranch[YBranch] > 0) {
                             // FIXME: What if cell has module?
+                            const Cell3DPosition& entryPos =
+                                catom->position + Cell3DPosition(0,1,-1);
+                            VS_ASSERT(lattice->isFree(entryPos));
                             
-                            world->addBlock(++id, buildNewBlockCode,
-                                            catom->position + Cell3DPosition(0, 1, -1),
-                                            ORANGE);
-                            catomReqByBranch[YBranch]--;
+                                world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
+                            // catomsReqByBranch[YBranch]--;
                             fedCatomOnLastRound[YBranch] = true;
                             numInsertedCatoms++;
                         } else {
                             fedCatomOnLastRound[XBranch] = false;
                         }
+
+                        // OR we could have an array<BranchIndex, 4> floorNPosTargets, that
+                        //  keeps track of where the most recently spawned catom on a given
+                        //  neighbor position should go. Actually we are taking a decision
+                        //  twice otherwise, with the current model.
+                        for (int i = 0; i < N_BRANCHES - 2; i++) fedCatomOnLastRound[i] = false;
                     } else {
                         fedCatomOnLastRound[XBranch] = false;
-                        fedCatomOnLastRound[YBranch] = false;                        
+                        fedCatomOnLastRound[YBranch] = false;
+
+                        // TODO:
+                        if (catomsReqByBranch[ZBranch] > 0) {
+                            const Cell3DPosition& entryPos =
+                                catom->position + Cell3DPosition(0,0,-1);
+                            VS_ASSERT(lattice->isFree(entryPos));
+                            
+                            world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
+                            fedCatomOnLastRound[ZBranch] = true;
+                            // catomsReqByBranch[ZBranch]--;
+                            numInsertedCatoms++;
+                        } else fedCatomOnLastRound[ZBranch] = false;
                     }
                     
                     cout << "[t-" << scheduler->now() << "] Round Summary: [ ";
@@ -241,11 +283,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // cout << "(" << catom->blockId << ") Not spawning any catom this round" << endl;
 
                     getScheduler()->schedule(
-                        new InterruptionEvent(getScheduler()->now() + 40001, catom,
+                        new InterruptionEvent(getScheduler()->now() + 40000, catom,
                                               IT_MODE_TILEROOT_ACTIVATION));
-                    console << "Scheduled Coordinator IT" << "\n";
                 } break;
             }
+            
         }
     }
 }
@@ -254,12 +296,12 @@ void MeshAssemblyBlockCode::updateOpenPositions() {
     for (int i = 0; i < N_BRANCHES; i++) {        
         // [1..B], the number of already placed catoms + 1.
         // B means that branch is finished or should not be grown
-        int multiplier = B - catomReqByBranch[i];
+        int multiplier = B - catomsReqByBranch[i];
         
-        if (catomReqByBranch[i] > 0 and openPositions[i])
+        if (catomsReqByBranch[i] > 0 and openPositions[i])
             *openPositions[i] = Cell3DPosition(catom->position + multiplier * ruleMatcher->
                                                getBranchUnitOffset((BranchIndex)i));
-        else if (catomReqByBranch[i] > 0 and not openPositions[i])
+        else if (catomsReqByBranch[i] > 0 and not openPositions[i])
             openPositions[i] = new Cell3DPosition(catom->position + multiplier * ruleMatcher->
                                                   getBranchUnitOffset((BranchIndex)i));
         else openPositions[i] = NULL;

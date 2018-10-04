@@ -16,7 +16,7 @@
 using namespace BaseSimulator::utils;
 
 const int ANIMATION_DELAY=40000;
-const int COM_DELAY=2000;
+const int COM_DELAY=0; //
 
 namespace BaseSimulator {
 

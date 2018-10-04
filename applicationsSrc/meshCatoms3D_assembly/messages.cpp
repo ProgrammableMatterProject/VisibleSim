@@ -46,8 +46,8 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     VS_ASSERT(cP_idx >= 0 and cP_idx < N_BRANCHES);
 
     // Update open position for that branch
-    mabc.catomReqByBranch[cP_idx]--;
-    if (mabc.catomReqByBranch[cP_idx] == 0) mabc.openPositions[cP_idx] = NULL;
+    mabc.catomsReqByBranch[cP_idx]--;
+    if (mabc.catomsReqByBranch[cP_idx] == 0) mabc.openPositions[cP_idx] = NULL;
     else *mabc.openPositions[cP_idx] += mabc.ruleMatcher->getBranchUnitOffset(cP_idx);
 
     // Send to requesting catom
@@ -59,6 +59,7 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
 void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);
 
+    mabc.coordinatorPos = sourceInterface->hostBlock->position;
     mabc.targetPosition = tPos;
 
     Cell3DPosition nextHop;
@@ -77,17 +78,27 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         ///  the direction of the branch until reaching a neighboring position to the target;
         ///  this should always be possible.        
         const Cell3DPosition& relPos =
-            mabc.catom->position - sourceInterface->hostBlock->position;
+            mabc.catom->position - mabc.coordinatorPos;
 
         cout << "Relative position to local coordinator: " <<  relPos << endl;
         
         // Deduce next position
-        nextHop = mabc.catom->position + mabc.ruleMatcher->
-            getBranchUnitOffset(mabc.ruleMatcher->
-                                getBranchIndexForNonRootPosition(mabc.normalize_pos(tPos)));
+        BranchIndex bi = mabc.ruleMatcher->
+            getBranchIndexForNonRootPosition(mabc.normalize_pos(tPos));
+
+        if (bi > 3)
+            nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
+        else if (bi == ZBranch) {
+            nextHop = mabc.catom->position + Cell3DPosition(-1,-1,2);
+        } else {
+            throw NotImplementedException();
+        }
     }
     
     mabc.scheduler->schedule(
         new TeleportationStartEvent(getScheduler()->now(), mabc.catom, nextHop));
-    // awaitKeyPressed();
+
+#ifdef INTERACTIVE_MODE
+    awaitKeyPressed();
+#endif
 }

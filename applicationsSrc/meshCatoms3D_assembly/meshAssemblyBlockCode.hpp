@@ -23,6 +23,8 @@
 
 #define IT_MODE_TILEROOT_ACTIVATION 1 
 
+// #define INTERACTIVE_MODE
+
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam };
 
 class MeshAssemblyBlockCode : public Catoms3D::Catoms3DBlockCode {
@@ -42,8 +44,9 @@ public:
     MeshCoating::MeshRuleMatcher *ruleMatcher;
 
     AgentRole role;
+    Cell3DPosition coordinatorPos;
     Cell3DPosition targetPosition;
-    std::array<uint, 6> catomReqByBranch = {0,0,0,0,0,0};
+    std::array<uint, 6> catomsReqByBranch = {0,0,0,0,0,0};
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
 
