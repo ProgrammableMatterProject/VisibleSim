@@ -128,6 +128,10 @@ short Catoms3DBlock::getAbsoluteDirection(short connector) {
     return lattice->getDirection(position, conPos);
 }
 
+short Catoms3DBlock::getAbsoluteDirection(const Cell3DPosition& pos) {
+    return getAbsoluteDirection(getConnectorId(pos));
+}
+
 short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos,
                                                       short nDirection) const {
     // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl

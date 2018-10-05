@@ -90,7 +90,6 @@ public:
      * @brief Given a neighbor at position nPos and a lattice absolute direction (connector Id if neighbor had con0 aligned with x-axis) from that position, deduce what connector of the current module is adjacent to cell on direction nDirection of nPos.
      * @param nPos 
      * @param nDirection 
-     * @param includeSelf if true, returns connector if cell on nDirection of nPos is own cell
      * @return connector of the current module is adjacent to cell on direction nDirection of nPos, or -1 if that cell and the current module are not adjacent */
     short projectAbsoluteNeighborDirection(const Cell3DPosition& nPos, short nDirection) const;
 
@@ -110,7 +109,8 @@ public:
      *  relative to a catom whose 0 connector is aligned with the x-axis
      * @param connector the connector for which the absolute direction wants to be known
      * @return a short int in {0..11}, the direction of the connector, or -1 if connector is invalid or adjacent to a cell outside the lattice */
-    short getAbsoluteDirection(short connector);
+    short getAbsoluteDirection(short connector);    
+    short getAbsoluteDirection(const Cell3DPosition& pos);
     
     /**
      * @brief Sets the grid position of the catom, and updates its position matrix
