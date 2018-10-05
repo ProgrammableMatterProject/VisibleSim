@@ -29,7 +29,7 @@ using namespace MeshCoating;
 uint MeshAssemblyBlockCode::X_MAX;
 uint MeshAssemblyBlockCode::Y_MAX;
 uint MeshAssemblyBlockCode::Z_MAX;
-Cell3DPosition MeshAssemblyBlockCode::MeshSeedPosition = Cell3DPosition(1,1,1);
+Cell3DPosition MeshAssemblyBlockCode::meshSeedPosition = Cell3DPosition(1,1,1);
 bID id = 1;
 
 MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
@@ -44,9 +44,9 @@ MeshAssemblyBlockCode::MeshAssemblyBlockCode(Catoms3DBlock *host):
     Y_MAX = ub[1];
     Z_MAX = ub[2];
 
-    ruleMatcher = new MeshRuleMatcher(X_MAX - MeshSeedPosition[0],
-                                      Y_MAX - MeshSeedPosition[1],
-                                      Z_MAX - MeshSeedPosition[2], B);
+    ruleMatcher = new MeshRuleMatcher(X_MAX - meshSeedPosition[0],
+                                      Y_MAX - meshSeedPosition[1],
+                                      Z_MAX - meshSeedPosition[2], B);
 }
 
 MeshAssemblyBlockCode::~MeshAssemblyBlockCode() {
@@ -70,15 +70,15 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         cout << endl << "\t\t  "
              <<(openPositions[i] ? openPositions[i]->config_print() : "NULL") << ", ";
     cout << " ]" << endl;
-}
 
-bool MeshAssemblyBlockCode::moduleInSpanningTree(const Cell3DPosition& pos) {
-    return target->isInTarget(pos) and lattice->isInGrid(pos);
-}
+    
+    cout << "Targets for Entry Points: [ ";
+    for (int i = 0; i < 4; i++)
+        cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
+    cout << " ]" << endl;
 
-// bool MeshAssemblyBlockCode::isMeshRoot(const Cell3DPosition& pos) {
-//     return pos.pt[0] % B == 0 and pos.pt[1] % B == 0 and pos.pt[2] % B == 0;
-// }
+    // catom->setColor(debugColorIndex++);
+}
 
 void MeshAssemblyBlockCode::startup() {
     stringstream info;
@@ -133,7 +133,7 @@ void MeshAssemblyBlockCode::startup() {
 
 const Cell3DPosition
 MeshAssemblyBlockCode::normalize_pos(const Cell3DPosition& pos) {    
-    return pos - MeshSeedPosition;
+    return pos - meshSeedPosition;
 }
 
 void MeshAssemblyBlockCode::processReceivedMessage(MessagePtr msg,
@@ -176,18 +176,28 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
         } break;
 
         case EVENT_TELEPORTATION_END: {
-            // engine->handleRotationEnd();            
+            // engine->handleRotationEnd();
+            BranchIndex bi = ruleMatcher->
+                getBranchIndexForNonRootPosition(normalize_pos(targetPosition));
+                                
             if (catom->position == targetPosition) {
                 role = PassiveBeam;
                 catom->setColor(BLUE);
+
+                const Cell3DPosition& nextPos =
+                    catom->position + ruleMatcher->getBranchUnitOffset(bi);
+
+                if (ruleMatcher->isTileRoot(normalize_pos(nextPos))
+                    and lattice->isFree(nextPos)
+                    and catom->position[2] == meshSeedPosition[2]) {
+                    world->addBlock(++id, buildNewBlockCode, nextPos, RED);
+                }
             } else {
                 Cell3DPosition nextHop;
                 if (lattice->cellsAreAdjacent(catom->position, targetPosition))
                     nextHop = targetPosition;
                 else {
                     // Deduce next position
-                    BranchIndex bi = ruleMatcher->
-                        getBranchIndexForNonRootPosition(normalize_pos(targetPosition));
 
                     if (bi > 3)
                         nextHop = catom->position
@@ -198,7 +208,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             nextHop = catom->position + Cell3DPosition(1,0,0);
                         else nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);
                     } else {
-                        throw NotImplementedException();
+                        throw NotImplementedException("routing non XYZ branches");
                     }
                 }
 
@@ -224,58 +234,21 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                 case IT_MODE_TILEROOT_ACTIVATION: {
                     int numInsertedCatoms = 0;
                     // Policy: Prioritize horizontal growth
-                    if ((catomsReqByBranch[XBranch] > 0 or catomsReqByBranch[YBranch] > 0) and 
-                        not (fedCatomOnLastRound[XBranch] or fedCatomOnLastRound[YBranch])) {
-
-                        if (catomsReqByBranch[XBranch] > 0) {
-                            // FIXME: What if cell has module?
-                            const Cell3DPosition& entryPos =
-                                catom->position + Cell3DPosition(1,0,-1);
-                            VS_ASSERT(lattice->isFree(entryPos));
-                            
-                            world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
-                            // catomsReqByBranch[XBranch]--;
-                            fedCatomOnLastRound[XBranch] = true;
+                    for (int i = 5; i >= 0; i--) {
+                        if (numInsertedCatoms < 2 && handleNewCatomInsertion((BranchIndex)i)) {
                             numInsertedCatoms++;
+                            fedCatomOnLastRound[i] = true;
                         } else {
-                            fedCatomOnLastRound[XBranch] = false;
+                            fedCatomOnLastRound[i] = false;
                         }
-
-                        if (catomsReqByBranch[YBranch] > 0) {
-                            // FIXME: What if cell has module?
-                            const Cell3DPosition& entryPos =
-                                catom->position + Cell3DPosition(0,1,-1);
-                            VS_ASSERT(lattice->isFree(entryPos));
-                            
-                                world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
-                            // catomsReqByBranch[YBranch]--;
-                            fedCatomOnLastRound[YBranch] = true;
-                            numInsertedCatoms++;
-                        } else {
-                            fedCatomOnLastRound[XBranch] = false;
-                        }
-
-                        // OR we could have an array<BranchIndex, 4> floorNPosTargets, that
-                        //  keeps track of where the most recently spawned catom on a given
-                        //  neighbor position should go. Actually we are taking a decision
-                        //  twice otherwise, with the current model.
-                        for (int i = 0; i < N_BRANCHES - 2; i++) fedCatomOnLastRound[i] = false;
-                    } else {
-                        fedCatomOnLastRound[XBranch] = false;
-                        fedCatomOnLastRound[YBranch] = false;
-
-                        // TODO:
-                        if (catomsReqByBranch[ZBranch] > 0) {
-                            const Cell3DPosition& entryPos =
-                                catom->position + Cell3DPosition(0,0,-1);
-                            VS_ASSERT(lattice->isFree(entryPos));
-                            
-                            world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
-                            fedCatomOnLastRound[ZBranch] = true;
-                            // catomsReqByBranch[ZBranch]--;
-                            numInsertedCatoms++;
-                        } else fedCatomOnLastRound[ZBranch] = false;
                     }
+                        
+                    // OR we could have an array<BranchIndex, 4> floorNPosTargets, that
+                    //  keeps track of where the most recently spawned catom on a given
+                    //  neighbor position should go. Actually we are taking a decision
+                    //  twice otherwise, with the current model.
+                    // for (int i = 0; i < N_BRANCHES - 2; i++) fedCatomOnLastRound[i] = false;
+                    VS_ASSERT_MSG(numInsertedCatoms <= 2, "more than two catoms inserted in single round");
                     
                     cout << "[t-" << scheduler->now() << "] Round Summary: [ ";
                     for (int i = 0; i < 6; i++) cout << fedCatomOnLastRound[i] << ", ";
@@ -286,8 +259,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         new InterruptionEvent(getScheduler()->now() + 40000, catom,
                                               IT_MODE_TILEROOT_ACTIVATION));
                 } break;
-            }
-            
+            }            
         }
     }
 }
@@ -298,13 +270,14 @@ void MeshAssemblyBlockCode::updateOpenPositions() {
         // B means that branch is finished or should not be grown
         int multiplier = B - catomsReqByBranch[i];
         
-        if (catomsReqByBranch[i] > 0 and openPositions[i])
+        if (catomsReqByBranch[i] > 0 and openPositions[i]) {
             *openPositions[i] = Cell3DPosition(catom->position + multiplier * ruleMatcher->
                                                getBranchUnitOffset((BranchIndex)i));
-        else if (catomsReqByBranch[i] > 0 and not openPositions[i])
+            
+        } else if (catomsReqByBranch[i] > 0 and not openPositions[i]) {
             openPositions[i] = new Cell3DPosition(catom->position + multiplier * ruleMatcher->
                                                   getBranchUnitOffset((BranchIndex)i));
-        else openPositions[i] = NULL;
+        } else openPositions[i] = NULL;
     }
 }
 
@@ -317,4 +290,71 @@ checkOrthogonalIncidentBranchCompletion(const Cell3DPosition& pos) {
     else if (ruleMatcher->isOnYBranch(pos))
         return lattice->cellHasBlock(pos + Cell3DPosition(-1,1,0));
     else return true; // FIXME:
+}
+
+short MeshAssemblyBlockCode::getEntryPointDirectionForCell(const Cell3DPosition& pos) {
+    short conId = catom->getAbsoluteDirection(pos);
+    cout << conId << endl;
+    return conId > 7 ? conId - 8 : -1; // There are 8 others connectors/dirs numbered <<<< 
+} 
+
+short MeshAssemblyBlockCode::getEntryPointDirectionForBranch(BranchIndex bi) {
+    switch(bi) {
+        case ZBranch: return 0;
+        case XBranch: return 1;
+        case YBranch: return 3;
+        case RevZBranch:
+        case Plus45DegZBranch:
+        case Minus45DegZBranch:
+            throw NotImplementedException("getEPD for non XYZ branches");
+        default: VS_ASSERT_MSG(false, "Invalid branch index"); 
+    }
+
+    return -1; // unreachable
+}
+
+Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
+    switch(bi) {
+        case ZBranch: return Cell3DPosition(0,0,-1);
+        case XBranch: return Cell3DPosition(1,0,-1);
+        case YBranch: return Cell3DPosition(0,1,-1);
+        case RevZBranch:
+        case Plus45DegZBranch:
+        case Minus45DegZBranch:
+            VS_ASSERT(false);
+            throw NotImplementedException("getEP for non XYZ branches");
+        default:
+            cerr << "invalid branch index: " << bi << endl;;
+            VS_ASSERT(false); 
+    }
+
+    return Cell3DPosition(-1,-1,-1); // unreachable
+}
+
+bool MeshAssemblyBlockCode::handleNewCatomInsertion(BranchIndex bi) {
+    if (catomsReqByBranch[bi] > 0 and not fedCatomOnLastRound[bi]) {
+        // FIXME: What if cell has module?
+        const Cell3DPosition& entryPos =
+            catom->position + getEntryPointForBranch(bi);
+        VS_ASSERT(lattice->isFree(entryPos));
+
+        // Introduce new catom
+        console << "introduced catom at " << entryPos << "for " << bi << "\n";
+        world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
+
+        // Set target position for introduced catom
+        VS_ASSERT(openPositions[bi]);
+        short epd = getEntryPointDirectionForCell(entryPos);
+        cout << entryPos << " -> epd: " << epd << endl;
+        targetForEntryPoint[getEntryPointDirectionForCell(entryPos)] = *openPositions[bi];
+
+        // Update open position for that branch
+        catomsReqByBranch[bi]--;
+        if (catomsReqByBranch[bi] == 0) openPositions[bi] = NULL;
+        else *openPositions[bi] += ruleMatcher->getBranchUnitOffset(bi);
+                            
+        return true;
+    }
+    
+    return false;
 }

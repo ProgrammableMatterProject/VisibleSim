@@ -24,35 +24,18 @@ void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     // A neighboring catom requested an objective, check needs an make decision based on their distance.
     // FIXME: For now, route towards horizontal growth
     const Cell3DPosition& nPos = sourceInterface->hostBlock->position;
-    cout << "Spawnee Position: " << nPos << endl;
-    Cell3DPosition closestPos = Cell3DPosition(mabc.X_MAX, mabc.Y_MAX, mabc.Z_MAX);    
-    int i; int cP_idx = -1;
-    for (i = 0; i < N_BRANCHES; i++) {
-        if (mabc.openPositions[i])
-            cout << "i: " << i << " - oP: " << *mabc.openPositions[i] << " - d: "
-                 << mabc.lattice->getCellDistance(nPos, *mabc.openPositions[i]) << endl;
-        
-        if (mabc.openPositions[i]
-            and mabc.fedCatomOnLastRound[i]
-            and mabc.lattice->getCellDistance(nPos, closestPos)
-            >= mabc.lattice->getCellDistance(nPos, *mabc.openPositions[i])) {
-
-            closestPos = *mabc.openPositions[i];
-            cP_idx = i;
-        }
-    }
-
-    cout << cP_idx << endl;
-    VS_ASSERT(cP_idx >= 0 and cP_idx < N_BRANCHES);
-
-    // Update open position for that branch
-    mabc.catomsReqByBranch[cP_idx]--;
-    if (mabc.catomsReqByBranch[cP_idx] == 0) mabc.openPositions[cP_idx] = NULL;
-    else *mabc.openPositions[cP_idx] += mabc.ruleMatcher->getBranchUnitOffset(cP_idx);
-
+    const Cell3DPosition& rPos = nPos - mabc.catom->position;
+    short epd = mabc.getEntryPointDirectionForCell(nPos);
+    const Cell3DPosition& tPos =
+        mabc.targetForEntryPoint[mabc.getEntryPointDirectionForCell(nPos)];
+    cout << "Spawnee Position: " << nPos 
+         << " -- Target Position: " << tPos
+         << " -- Relative Position: " << rPos
+         << " -- epd" << epd << endl;
+    
     // Send to requesting catom
     VS_ASSERT(destinationInterface->isConnected());
-    mabc.sendMessage(new ProvideTargetCellMessage(closestPos),
+    mabc.sendMessage(new ProvideTargetCellMessage(tPos),
                      destinationInterface, MSG_DELAY_MC, 0);
 }
 
