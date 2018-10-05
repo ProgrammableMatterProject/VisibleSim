@@ -7,6 +7,7 @@
 
 #include "openglViewer.h"
 
+#include <string>
 #include <chrono>
 #include <errno.h>
 #include <sys/stat.h>
@@ -211,28 +212,28 @@ void GlutContext::mouseFunc(int button,int state,int x,int y) {
     if (keyboardModifier!=GLUT_ACTIVE_CTRL) { // rotation du point de vue
         Camera* camera=getWorld()->getCamera();
         switch (button) {
-        case GLUT_LEFT_BUTTON:
-            if (state==GLUT_DOWN) {
-                camera->mouseDown(x,y);
-            } else
-                if (state==GLUT_UP) {
-                    camera->mouseUp(x,y);
-                }
-            break;
-        case GLUT_RIGHT_BUTTON:
-            if (state==GLUT_DOWN) {
-                camera->mouseDown(x,y,true);
-            } else
-                if (state==GLUT_UP) {
-                    camera->mouseUp(x,y);
-                }
-            break;
-        case 3 :
-            camera->mouseZoom(-10);
-            break;
-        case 4 :
-            camera->mouseZoom(10);
-            break;
+            case GLUT_LEFT_BUTTON:
+                if (state==GLUT_DOWN) {
+                    camera->mouseDown(x,y);
+                } else
+                    if (state==GLUT_UP) {
+                        camera->mouseUp(x,y);
+                    }
+                break;
+            case GLUT_RIGHT_BUTTON:
+                if (state==GLUT_DOWN) {
+                    camera->mouseDown(x,y,true);
+                } else
+                    if (state==GLUT_UP) {
+                        camera->mouseUp(x,y);
+                    }
+                break;
+            case 3 :
+                camera->mouseZoom(-10);
+                break;
+            case 4 :
+                camera->mouseZoom(10);
+                break;
         }
         //cout << *camera << endl;
     } else { // selection of the clicked block
@@ -371,10 +372,20 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                 saveScreenMode=!saveScreenMode;
             } break;
             case 's' : {
-                const string ssName = generateTimestampedFilename("capture", "ppm");
+                const string& ssName = generateTimestampedFilename("capture", "ppm");
+                string ssNameJpg = ssName;
+                ssNameJpg.replace(ssName.length() - 3, 3, "jpg");
                 saveScreen(ssName.c_str());
-                cerr << "Screenshot saved to file: " << ssName << endl;
+#ifndef WIN32
+                std::async([ssNameJpg, ssName](){
+                               system(string("convert " + ssName + " " + ssNameJpg
+                                             + " >/dev/null 2>/dev/null").c_str());
+                           });
+#endif
+                cerr << "Screenshot saved to files: " << ssName
+                     << " and " << ssNameJpg << endl;
             } break;
+
             case 'B' : {
                 World *world = BaseSimulator::getWorld();
                 world->toggleBackground();
@@ -382,10 +393,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 32: { // SPACE
                 Scheduler *scheduler = getScheduler();
                 scheduler->toggle_pause();
-          	} break;
-						case 'p' :
-							BaseSimulator::getWorld()->simulatePolymer();
-						break;
+            } break;
+            case 'p' :
+                BaseSimulator::getWorld()->simulatePolymer();
+                break;
         }
     }
     glutPostRedisplay();
@@ -486,7 +497,7 @@ void GlutContext::calculateFPS(void) {
 void GlutContext::showFPS(void) {
     char fpsStr[50];
     sprintf(fpsStr, "FPS = %4.2f", fps);
-	glColor3f(255,255,0);
+    glColor3f(255,255,0);
     GlutWindow::drawString(50, 50, fpsStr);
 }
 
