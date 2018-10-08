@@ -19,7 +19,7 @@ class Cell3DPosition {
 public:
     short pt[3]; //!< (x,y,z) values of the vector
     Cell3DPosition();
-    Cell3DPosition(short x,short y,short z);
+    constexpr Cell3DPosition(short x,short y,short z) : pt{x,y,z} { }
     Cell3DPosition(const Vector3D& v);
     
     void set(short x,short y,short z);

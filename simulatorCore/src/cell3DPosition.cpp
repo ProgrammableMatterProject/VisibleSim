@@ -5,10 +5,6 @@ Cell3DPosition::Cell3DPosition() {
     set(0,0,0);
 }
 
-Cell3DPosition::Cell3DPosition(short x,short y,short z) {
-    set(x,y,z);
-}
-
 Cell3DPosition::Cell3DPosition(const Vector3D& v) {
     pt[0] = v.pt[0];
     pt[1] = v.pt[1];
