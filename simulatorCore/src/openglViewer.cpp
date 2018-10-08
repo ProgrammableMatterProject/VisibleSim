@@ -351,7 +351,7 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
                     // Add a script for converting into a video, asynchronously
 #ifndef WIN32
                     std::async([](const std::string& animDir){
-                                   const string& vidName = generateTimestampedFilename("video", "mpeg");
+                                   const string& vidName = generateTimestampedFilename("video", "mkv");
                                    int r = system(
                                        string("ffmpeg -pattern_type glob -framerate 30 -i \""
                                               + animationDirName + "/*.ppm\" " + vidName
