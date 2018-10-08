@@ -67,12 +67,17 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         
         // Deduce next position
         BranchIndex bi = mabc.ruleMatcher->
-            getBranchIndexForNonRootPosition(mabc.normalize_pos(tPos));
+            getBranchIndexForNonRootPosition(mabc.norm(tPos));
 
         if (bi > 3)
             nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
         else if (bi == ZBranch) {
-            nextHop = mabc.catom->position + Cell3DPosition(-1,-1,2);
+            if (mabc.coordinatorPos == mabc.meshSeedPosition)
+                nextHop = mabc.catom->position + Cell3DPosition(-1,-1,2);
+            else
+                nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
+        } else if (bi == RevZBranch) {
+            nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
         } else {
             throw NotImplementedException();
         }

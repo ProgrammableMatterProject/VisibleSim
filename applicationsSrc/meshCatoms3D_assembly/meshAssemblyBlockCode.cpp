@@ -86,7 +86,7 @@ void MeshAssemblyBlockCode::startup() {
     info << "Starting ";
 
     // Do stuff
-    if (ruleMatcher->isTileRoot(normalize_pos(catom->position))) {
+    if (ruleMatcher->isTileRoot(norm(catom->position))) {
         // Switch role
         role = Coordinator;
         coordinatorPos = catom->position;
@@ -94,18 +94,23 @@ void MeshAssemblyBlockCode::startup() {
         // Determine how many branches need to grow from here
         // and initialize growth data structures
         catomsReqByBranch[ZBranch] = ruleMatcher->
-            shouldGrowZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
+            shouldGrowZBranch(norm(catom->position)) ? B - 1 : 0;
         catomsReqByBranch[RevZBranch] = ruleMatcher->
-            shouldGrowRevZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
+            shouldGrowRevZBranch(norm(catom->position)) ? B - 1 : 0;
         catomsReqByBranch[LeftZBranch] = ruleMatcher->
-            shouldGrowLeftZBranch(normalize_pos(catom->position)) ? B - 1 : 0;       
+            shouldGrowLeftZBranch(norm(catom->position)) ? B - 1 : 0;       
         catomsReqByBranch[RightZBranch] = ruleMatcher->
-            shouldGrowRightZBranch(normalize_pos(catom->position)) ? B - 1 : 0;
+            shouldGrowRightZBranch(norm(catom->position)) ? B - 1 : 0;
         catomsReqByBranch[XBranch] = ruleMatcher->
-            shouldGrowXBranch(normalize_pos(catom->position)) ? B - 1 : 0;        
+            shouldGrowXBranch(norm(catom->position)) ? B - 1 : 0;        
         catomsReqByBranch[YBranch] = ruleMatcher->
-            shouldGrowYBranch(normalize_pos(catom->position)) ? B - 1 : 0;
+            shouldGrowYBranch(norm(catom->position)) ? B - 1 : 0;
 
+        // TODO: The spawning behavior and entry points might have to be different depending on whether or not a tile root is on a border
+        if (catomsReqByBranch[ZBranch] > 0 and catomsReqByBranch[RevZBranch] > 0
+            and catomsReqByBranch[LeftZBranch] > 0 and catomsReqByBranch[RightZBranch] > 0)
+            hasToGrowFourDiagBranches = true;
+        
         // Compute the corresponding list of cells to be filled
         updateOpenPositions();
         
@@ -119,7 +124,7 @@ void MeshAssemblyBlockCode::startup() {
         
         // Ask parent module where it should be headed
         for (const Cell3DPosition& nPos : lattice->getActiveNeighborCells(catom->position)) {
-            if (ruleMatcher->isTileRoot(normalize_pos(nPos))) {
+            if (ruleMatcher->isTileRoot(norm(nPos))) {
                 P2PNetworkInterface* nItf = catom->getInterface(nPos);
                 VS_ASSERT(nItf);
                 
@@ -133,7 +138,7 @@ void MeshAssemblyBlockCode::startup() {
 }
 
 const Cell3DPosition
-MeshAssemblyBlockCode::normalize_pos(const Cell3DPosition& pos) {    
+MeshAssemblyBlockCode::norm(const Cell3DPosition& pos) {    
     return pos - meshSeedPosition;
 }
 
@@ -179,7 +184,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
         case EVENT_TELEPORTATION_END: {
             // engine->handleRotationEnd();
             BranchIndex bi = ruleMatcher->
-                getBranchIndexForNonRootPosition(normalize_pos(targetPosition));
+                getBranchIndexForNonRootPosition(norm(targetPosition));
                                 
             if (catom->position == targetPosition) {
                 role = PassiveBeam;
@@ -189,7 +194,7 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     catom->position + ruleMatcher->getBranchUnitOffset(bi);
 
                 // Coordinate to let the last arrived branch continue the construction
-                if (ruleMatcher->isTileRoot(normalize_pos(nextPos))
+                if (ruleMatcher->isTileRoot(norm(nextPos))
                     and lattice->isFree(nextPos)
                     and catom->position[2] == meshSeedPosition[2]) {
 
@@ -218,11 +223,32 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     if (bi > 3)
                         nextHop = catom->position
                             + ruleMatcher->getBranchUnitOffset(bi);
+
                     else if (bi == ZBranch) {
                         // FIXME: STATIC RULES
-                        if (catom->position[0] < coordinatorPos[0])
-                            nextHop = catom->position + Cell3DPosition(1,0,0);
-                        else nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);
+                        if (coordinatorPos == meshSeedPosition) {
+                            if (catom->position[0] < coordinatorPos[0])
+                                nextHop = catom->position + Cell3DPosition(1,0,0);
+                            else
+                                nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);
+                        } else {
+                            if (catom->position[2] == coordinatorPos[2])
+                                nextHop = catom->position + Cell3DPosition(0,0,1);
+                            else if (catom->position[0] < coordinatorPos[0])
+                                nextHop = catom->position + Cell3DPosition(1,0,0);
+                            else
+                                nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);                                
+                        }
+
+                    } else if (bi == RevZBranch) {
+                        // FIXME: STATIC RULES                    
+                            if (catom->position[2] < coordinatorPos[2])
+                                nextHop = catom->position + Cell3DPosition(-1,-1,1);
+                            else if (catom->position[0] == coordinatorPos[0])
+                                nextHop = catom->position + Cell3DPosition(-1,0,0);
+                            else
+                                nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);                                
+                        
                     } else {
                         throw NotImplementedException("routing non XYZ branches");
                     }
@@ -249,9 +275,14 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
 
                 case IT_MODE_TILEROOT_ACTIVATION: {
                     int numInsertedCatoms = 0;
-                    // Policy: Prioritize horizontal growth
+                    // Policy: Prioritize horizontal growth                    
                     for (int i = 5; i >= 0; i--) {
-                        if (numInsertedCatoms < 2 && handleNewCatomInsertion((BranchIndex)i)) {
+                        if (numInsertedCatoms < 2
+                            and (i != ZBranch or
+                                 // (i == ZBranch and catomsReqByBranch[RevZBranch] == 0))
+                                 (i == ZBranch
+                                  and not ruleMatcher->shouldGrowRevZBranch(norm(coordinatorPos))))
+                            and handleNewCatomInsertion((BranchIndex)i)) {
                             numInsertedCatoms++;
                             fedCatomOnLastRound[i] = true;
                         } else {
@@ -297,17 +328,6 @@ void MeshAssemblyBlockCode::updateOpenPositions() {
     }
 }
 
-bool MeshAssemblyBlockCode::
-checkOrthogonalIncidentBranchCompletion(const Cell3DPosition& pos) {
-    VS_ASSERT(ruleMatcher->isInMesh(pos));
-    
-    if (ruleMatcher->isOnXBranch(pos))
-        return lattice->cellHasBlock(pos + Cell3DPosition(1,-1,0));
-    else if (ruleMatcher->isOnYBranch(pos))
-        return lattice->cellHasBlock(pos + Cell3DPosition(-1,1,0));
-    else return true; // FIXME:
-}
-
 short MeshAssemblyBlockCode::getEntryPointDirectionForCell(const Cell3DPosition& pos) {
     short conId = catom->getAbsoluteDirection(pos);
     cout << conId << endl;
@@ -316,10 +336,10 @@ short MeshAssemblyBlockCode::getEntryPointDirectionForCell(const Cell3DPosition&
 
 short MeshAssemblyBlockCode::getEntryPointDirectionForBranch(BranchIndex bi) {
     switch(bi) {
-        case ZBranch: return 0;
-        case XBranch: return 1;
-        case YBranch: return 3;
-        case RevZBranch:
+        case ZBranch: return Dir8;
+        case XBranch: return Dir9;
+        case YBranch: return Dir11;
+        case RevZBranch: return Dir10;
         case LeftZBranch:
         case RightZBranch:
             throw NotImplementedException("getEPD for non XYZ branches");
@@ -334,7 +354,7 @@ Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
         case ZBranch: return Cell3DPosition(0,0,-1);
         case XBranch: return Cell3DPosition(1,0,-1);
         case YBranch: return Cell3DPosition(0,1,-1);
-        case RevZBranch:
+        case RevZBranch: return Cell3DPosition(1,1,-1);
         case LeftZBranch:
         case RightZBranch:
             VS_ASSERT(false);
@@ -349,7 +369,7 @@ Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
 
 bool MeshAssemblyBlockCode::handleNewCatomInsertion(BranchIndex bi) {
     if (catomsReqByBranch[bi] > 0 and not fedCatomOnLastRound[bi]
-        and bi != RevZBranch and bi != LeftZBranch and bi != RightZBranch) { //FIXME:
+        and bi != LeftZBranch and bi != RightZBranch) { //FIXME:
         // FIXME: What if cell has module?
         const Cell3DPosition& entryPos =
             catom->position + getEntryPointForBranch(bi);
@@ -358,7 +378,7 @@ bool MeshAssemblyBlockCode::handleNewCatomInsertion(BranchIndex bi) {
         // Introduce new catom
         console << "introduced catom at " << entryPos << "for " << bi << "\n";
         world->addBlock(++id, buildNewBlockCode, entryPos, ORANGE);
-
+        
         // Set target position for introduced catom
         VS_ASSERT(openPositions[bi]);
         short epd = getEntryPointDirectionForCell(entryPos);
@@ -378,8 +398,8 @@ bool MeshAssemblyBlockCode::handleNewCatomInsertion(BranchIndex bi) {
 
 bool MeshAssemblyBlockCode::
 incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
-    VS_ASSERT(ruleMatcher->isInMesh(normalize_pos(pos))
-              and ruleMatcher->isTileRoot(normalize_pos(pos)));
+    VS_ASSERT(ruleMatcher->isInMesh(norm(pos))
+              and ruleMatcher->isTileRoot(norm(pos)));
 
     for (int i = 0; i < N_BRANCHES; i++) {
         if (!isIncidentBranchTipInPlace(pos, static_cast<BranchIndex>(i))) return false;
@@ -391,6 +411,6 @@ incidentBranchesToRootAreComplete(const Cell3DPosition& pos) {
 bool MeshAssemblyBlockCode::
 isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi) {
     const Cell3DPosition& tipp = trp + incidentTipRelativePos[bi];
-    return (not ruleMatcher->isInMesh(normalize_pos(tipp)))
+    return (not ruleMatcher->isInMesh(norm(tipp)))
         or lattice->cellHasBlock(tipp);
 }

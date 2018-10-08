@@ -60,6 +60,7 @@ public:
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
     std::array<Cell3DPosition, 4> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
+    bool hasToGrowFourDiagBranches = false;
     
     // TargetCSG *target;
     MeshAssemblyBlockCode(Catoms3D::Catoms3DBlock *host);
@@ -67,7 +68,8 @@ public:
     
     /**
      * \brief Global message handler for this instance of the blockcode
-     * \param msg Message received by the module
+     * \param msg Message received b
+y the module
      * \param sender Connector that has received the message and hence that is connected to the sender */
     void processReceivedMessage(MessagePtr msg, P2PNetworkInterface* sender);
     
@@ -86,11 +88,9 @@ public:
      * @param pos position to normalize
      * @return the corresponding position of pos in the coordinate system of the mesh
      */
-    static const Cell3DPosition normalize_pos(const Cell3DPosition& pos);
+    static const Cell3DPosition norm(const Cell3DPosition& pos);
     void updateOpenPositions();
         
-    bool checkOrthogonalIncidentBranchCompletion(const Cell3DPosition& pos);
-
     /** 
      * Computes the entry point direction identifier corresponding to neighbor cell pos
      * @param pos a cell that is adjacent to the current module 
