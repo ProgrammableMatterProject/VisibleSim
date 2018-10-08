@@ -17,6 +17,7 @@
 #include "catoms3DMotionRules.h"
 #include "rotation3DEvents.h"
 #include "catoms3DBlock.h"
+#include "cell3DPosition.h"
 
 #include "messages.hpp"
 #include "meshRuleMatcher.hpp"
@@ -33,7 +34,16 @@ private:
 public:
     static const uint B = 6;
     static uint X_MAX, Y_MAX, Z_MAX; // const
-    static Cell3DPosition meshSeedPosition; //const
+    static constexpr Cell3DPosition meshSeedPosition = Cell3DPosition(1,1,1);
+    static constexpr std::array<Cell3DPosition, 6> incidentTipRelativePos =
+        {
+         Cell3DPosition(0,0,-1), // ZBranch
+         Cell3DPosition(1,1,-1), // RevZBranch
+         Cell3DPosition(0,1,-1), // LeftZBranch
+         Cell3DPosition(1,0,-1), // RightZBranch
+         Cell3DPosition(-1,0,0), // XBranch
+         Cell3DPosition(0,-1,0) // YBranch
+        };
     
     int debugColorIndex = 0;
     
@@ -109,6 +119,21 @@ public:
      * @return index of chosen entry point
      */
     short getEntryPointDirectionForBranch(BranchIndex bi);
+
+    /** 
+     * Checks if all the incident branches around a tile root are complete
+     * @param pos position of the tile root
+     * @return true if all incident branches are complete, false otherwise
+     */
+    bool incidentBranchesToRootAreComplete(const Cell3DPosition& pos);
+
+    /** 
+     * Checks if branch tip from branch bi is in place around tile root at trp
+     * @param trp tile root position
+     * @param bi index of the incident branch that needs checking
+     * @return true if the tip of branch bi is in place next ot trp
+     */
+    bool isIncidentBranchTipInPlace(const Cell3DPosition& trp, BranchIndex bi);
 
 };
 
