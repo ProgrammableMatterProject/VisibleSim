@@ -7,7 +7,7 @@ void SimpleColorCode::startup() {
 	console << "start\n";
     srand(time(NULL));
 	if (hostBlock->blockId==1) { // master id is 1
-        hostBlock->setColor(RED);
+        hostBlock->setColor(Color(0.8,0.8,0.6));
         distance=0;
         sendMessageToAllNeighbors("Broadcast",new MessageOf<int>(BROADCAST_MSG,distance),100,200,0);
 	} else {
