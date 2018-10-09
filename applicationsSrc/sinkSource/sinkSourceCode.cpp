@@ -252,9 +252,12 @@ void _myAnswerFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sende
 	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
 	cb->myAnswerFunc(msgType,sender);
 }
+<<<<<<< HEAD
 
 void _myMoveFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
 	SinkSourceCode *cb = (SinkSourceCode*)codebloc;
 	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
 	cb->myMoveFunc(msgType,sender);
 }
+=======
+>>>>>>> f75afd168bdfaa22880c768b34b63e3696c99d1f
