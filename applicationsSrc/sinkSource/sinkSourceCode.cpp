@@ -7,11 +7,13 @@ void SinkSourceCode::startup() {
 	addMessageEventFunc(DISTANCE_MSG,_myDistanceFunc);
 	addMessageEventFunc(PROPOSE_MSG,_myProposeFunc);
 	addMessageEventFunc(ANSWER_MSG,_myAnswerFunc);
+	addMessageEventFunc(MOVE_MSG,_myMoveFunc);
 	console << "start\n";
     srand(time(NULL));
         wait = false;
         proposePath = NULL;
         answerPath = NULL;
+        movePath = NULL;
 	if (hostBlock->blockId==1) { // master id is 1
         //hostBlock->setColor(RED);
         //distance=0;
@@ -122,6 +124,9 @@ void SinkSourceCode::myBroadcastFunc(const MessageOf<int>*msg, P2PNetworkInterfa
 
 void SinkSourceCode::myDistanceFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
     int d = *msg->getData()+1;
+/*    if (distance==0){
+	sendMessageToAllNeighbors("Distance",new MessageOf<int>(DISTANCE_MSG,distance),100,200,0);
+    }*/
     if (distance==-1 || distance>d) {
         distance = d;
         if (!wait){
@@ -142,7 +147,7 @@ void SinkSourceCode::myProposeFunc(const MessageOf<int>*msg, P2PNetworkInterface
     int proposed = *msg->getData();
     if (proposePath == NULL) {
         int taken = min(abs(value),proposed);
-        value += taken;
+        //value += taken;
         sendMessage("Answer",new MessageOf<int>(ANSWER_MSG,taken),sender,100,200);
     }
     else {
@@ -150,41 +155,77 @@ void SinkSourceCode::myProposeFunc(const MessageOf<int>*msg, P2PNetworkInterface
         sendMessage("Propose",new MessageOf<int>(PROPOSE_MSG,proposed),proposePath,100,200);
         proposePath = NULL;
     }
-    if (value < 0){
-        hostBlock->setColor(RED);
-	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
+/*    if (value < 0){
+        distance = 0;
+        //hostBlock->setColor(RED);
+	//((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
 	}
     else if (value > 0){
-	hostBlock->setColor(GREEN);
-	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
+        distance = -1; 
+	//hostBlock->setColor(GREEN);
+	//((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
 	}
     else if (value == 0){
-	hostBlock->setColor(ORANGE);
-	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
-	}
+        distance = -1; 
+	//hostBlock->setColor(ORANGE);
+	//((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
+	}*/
 };
 
 void SinkSourceCode::myAnswerFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
     int taken = *msg->getData();
     if (answerPath == NULL){
         value -= taken;
+        distance = -1;
         wait = false;
+        sendMessage("Move",new MessageOf<int>(MOVE_MSG,taken),sender,100,200);
     }
     else {
+        movePath = sender;
         sendMessage("Answer",new MessageOf<int>(ANSWER_MSG,taken),answerPath,100,200);
         answerPath = NULL;
     }
     if (value < 0){
         hostBlock->setColor(RED);
+        //distance = 0;
 	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
 	}
     else if (value > 0){
 	hostBlock->setColor(GREEN);
+        //distance = -1;
 	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
 	}
     else if (value == 0){
 	hostBlock->setColor(ORANGE);
+        //distance = -1;
 	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
+	}
+};
+
+void SinkSourceCode::myMoveFunc(const MessageOf<int>*msg, P2PNetworkInterface*sender) {
+    int taken = *msg->getData();
+    //value += taken;
+    if (movePath == NULL){
+        value += taken;
+    }
+    else {
+        sendMessage("Move",new MessageOf<int>(MOVE_MSG,taken),movePath,100,200);        movePath = NULL;
+    }
+    if (value < 0){
+        hostBlock->setColor(RED);
+	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
+        distance = 0;
+	sendMessageToAllNeighbors("Distance",new MessageOf<int>(DISTANCE_MSG,distance),100,200,0);
+	}
+    else if (value > 0){
+	hostBlock->setColor(GREEN);
+	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
+        distance = -1;
+	}
+    else if (value == 0){
+	hostBlock->setColor(ORANGE);
+	((SmartBlocksGlBlock*)(hostBlock->ptrGlBlock))->setDisplayedValue(abs(value));
+        distance = -1;
 	}
 };
 
@@ -212,3 +253,8 @@ void _myAnswerFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sende
 	cb->myAnswerFunc(msgType,sender);
 }
 
+void _myMoveFunc(BlockCode *codebloc,MessagePtr msg, P2PNetworkInterface*sender) {
+	SinkSourceCode *cb = (SinkSourceCode*)codebloc;
+	MessageOf<int>*msgType = (MessageOf<int>*)msg.get();
+	cb->myMoveFunc(msgType,sender);
+}
