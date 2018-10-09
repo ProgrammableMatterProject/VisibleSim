@@ -59,7 +59,7 @@ static const Vector3D defaultBlockSize{10.0, 10.0, 10.0};
  */
 class Catoms3DWorld : public BaseSimulator::World {
 protected:
-	Polymer *polymer;
+	Polymer *polymer=NULL;
 
     GLuint idTextureHexa,idTextureGrid;
     Catoms3DMotionRules *motionRules;
