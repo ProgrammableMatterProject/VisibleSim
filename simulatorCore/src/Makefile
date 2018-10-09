@@ -19,6 +19,7 @@ MELDPROCESS_SRCS = $(MELDDEBUGGER_SRCS) meldProcessScheduler.cpp meldProcessVM.c
 MELDINTERPRET_SRCS = meldInterpretScheduler.cpp meldInterpretVM.cpp meldInterpretMessages.cpp meldInterpretEvents.cpp
 
 TARGETENCODING_SRCS = targetEncoding/CSG/csg.cpp targetEncoding/CSG/csgParser.cpp targetEncoding/CSG/csgUtils.cpp
+OUTDIRS += $(OBJDIR)/targetEncoding/CSG $(DEPDIR)/targetEncoding/CSG
 
 BASESIMULATOR_SRCS = $(MELDINTERPRET_SRCS) $(TINYXMLSRCS) $(TARGETENCODING_SRCS) simulator.cpp buildingBlock.cpp blockCode.cpp scheduler.cpp world.cpp network.cpp events.cpp glBlock.cpp interface.cpp openglViewer.cpp shaders.cpp vector3D.cpp matrix44.cpp color.cpp camera.cpp objLoader.cpp vertexArray.cpp trace.cpp clock.cpp qclock.cpp clockNoise.cpp configStat.cpp commandLine.cpp cppScheduler.cpp cell3DPosition.cpp configExporter.cpp lattice.cpp target.cpp statsCollector.cpp translationEvents.cpp statsIndividual.cpp random.cpp rate.cpp motionEngine.cpp teleportationEvents.cpp utils.cpp
 
