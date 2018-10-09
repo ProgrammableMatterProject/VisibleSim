@@ -2,7 +2,7 @@
 #include "reconfCatoms3DBlockCode.h"
 #include "catoms3DWorld.h"
 
-#define CONSTRUCT_WAIT_TIME 5
+#define CONSTRUCT_WAIT_TIME 0
 #define SYNC_WAIT_TIME 0
 #define SYNC_RESPONSE_TIME SYNC_WAIT_TIME
 #define PLANE_WAIT_TIME 0
@@ -36,9 +36,9 @@ void ReconfCatoms3DBlockCode::startup() {
         reconf->floor = 0;
     }
 
-    planningRun();
+    //planningRun();
     //stochasticRun();
-    //neighborhood->addAllNeighbors();
+    neighborhood->addAllNeighbors();
 
     std::this_thread::sleep_for(std::chrono::milliseconds(CONSTRUCT_WAIT_TIME));
 }

@@ -42,7 +42,7 @@
 
 #include "color.h"
 #include "cell3DPosition.h"
-#include "csg.h"
+#include "targetEncoding/CSG/csg.h"
 #include "vector3D.h"
 #include "exceptions.h"
 
