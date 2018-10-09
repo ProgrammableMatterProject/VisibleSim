@@ -67,14 +67,19 @@ Cell3DPosition Lattice::getGridUpperBounds() const {
 
 
 void Lattice::insert(BuildingBlock* bb, const Cell3DPosition &p) {
-    int index = getIndex(p);
-    if (not isInGrid(p))
-        throw OutOfLatticeInsertionException(p);
-    else if (not isFree(p))  
-        throw DoubleInsertionException(p);
-    else 
-        grid[index] = bb;      
-
+    try {        
+        int index = getIndex(p);
+        if (not isInGrid(p))
+            throw OutOfLatticeInsertionException(p);
+        else if (not isFree(p))  
+            throw DoubleInsertionException(p);
+        else 
+            grid[index] = bb;      
+    } catch (DoubleInsertionException const& e) {
+        cerr << e.what();
+        VS_ASSERT(false);//FIXME: should be handled by thes user, but catch clauses in main are not catching the exceptions for some reason.
+    }
+    
 #ifdef LATTICE_LOG
     cerr << "l.insert(" << bb->blockId << ") on " << p << " = i:" << getIndex(p) << endl;
 #endif
