@@ -11,11 +11,11 @@ SUBDIRS = #C3DRotate simpleColorC2D simpleColorRB simpleColorSB distanceRB simpl
 # TESTED Legacy codeBlocks
 #SUBDIRS += noneCatoms2D robot01 sphereCatoms3D sbReconf smartBlocks1 bbCycle bbCycle-bak msrSync reconfCatoms2D csgCatoms3D coloration
 #SUBDIRS += noneCatoms2D robot01 sphereCatoms3D sbReconf smartBlocks1 bbCycle bbCycle-bak msrSync c2srCatoms2D csgCatoms3D coloration
-SUBDIRS = reconfCatoms3D reconfCatoms3DMultilayer
 # ALL
 # SUBDIRS =  blinkyMeld blinky01 bbCycle sbReconf coloration coloration_v2 leader_election smartBlocks1 detection map02 map03 map04 mElection01 reconfCatoms2D ABCcenterC2D csgCatoms3D sphereCatoms3D msrSync musicPlayer noneCatoms2D robot01 robot02 simpleCatoms3D simpleColorC2D simpleColorRB
 #SUBDIRS += #meshCatoms3D_mvmt csgCatoms3D meltSortGrow targetColoration simpleMotionOkteen reconfCatoms3D
-#SUBDIRS += meshCatoms3D meshCatoms3D_assembly
+# SUBDIRS = reconfCatoms3D reconfCatoms3DMultilayer
+SUBDIRS += meshCatoms3D_assembly
 
 .PHONY: subdirs $(SUBDIRS) test
 

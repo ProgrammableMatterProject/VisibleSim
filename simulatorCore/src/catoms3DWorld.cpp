@@ -38,22 +38,34 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
     if (GlutContext::GUIisEnabled) {
 /* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
-/*
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
-		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
-*/
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");
+#define CATOMS3D_TEXTURE_ID 0
+        
+#if CATOMS3D_TEXTURE_ID == 1 // Standard, no conID
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");
 		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
-        /*objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-											"catom3Drepere3.obj");*/
+#elif CATOMS3D_TEXTURE_ID == 2 // w/ coordinates
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures", "catom3Drepere3.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+#elif CATOMS3D_TEXTURE_ID == 2 // filled catoms
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+#else // 0 standard, with conIDs
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2connectorID.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");        
+
+#endif        
+
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
 	}
-#ifdef UseC3DSkewFCC
+    
+#define UseC3DSkewFCC 1
+#if UseC3DSkewFCC == 1
     lattice = new SkewFCCLattice(gridSize,
                                  gridScale.hasZero() ? defaultBlockSize : gridScale);
 #else
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 #endif
+    
     motionRules = new Catoms3DMotionRules();
 }
 
