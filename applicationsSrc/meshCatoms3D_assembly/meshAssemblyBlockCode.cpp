@@ -79,6 +79,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << " ]" << endl;
 
     // catom->setColor(debugColorIndex++);
+    cout << "isOnLeftZBranch: " << ruleMatcher->isOnLeftZBranch(catom->position) << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -94,17 +95,17 @@ void MeshAssemblyBlockCode::startup() {
         // Determine how many branches need to grow from here
         // and initialize growth data structures
         catomsReqByBranch[ZBranch] = ruleMatcher->
-            shouldGrowZBranch(norm(catom->position)) ? B - 1 : 0;
+            shouldGrowZBranch(norm(catom->position)) ? B - 1 : -1;
         catomsReqByBranch[RevZBranch] = ruleMatcher->
-            shouldGrowRevZBranch(norm(catom->position)) ? B - 1 : 0;
+            shouldGrowRevZBranch(norm(catom->position)) ? B - 1 : -1;
         catomsReqByBranch[LeftZBranch] = ruleMatcher->
-            shouldGrowLeftZBranch(norm(catom->position)) ? B - 1 : 0;       
+            shouldGrowLeftZBranch(norm(catom->position)) ? B - 1 : -1;       
         catomsReqByBranch[RightZBranch] = ruleMatcher->
-            shouldGrowRightZBranch(norm(catom->position)) ? B - 1 : 0;
+            shouldGrowRightZBranch(norm(catom->position)) ? B - 1 : -1;
         catomsReqByBranch[XBranch] = ruleMatcher->
-            shouldGrowXBranch(norm(catom->position)) ? B - 1 : 0;        
+            shouldGrowXBranch(norm(catom->position)) ? B - 1 : -1;        
         catomsReqByBranch[YBranch] = ruleMatcher->
-            shouldGrowYBranch(norm(catom->position)) ? B - 1 : 0;
+            shouldGrowYBranch(norm(catom->position)) ? B - 1 : -1;
 
         // TODO: The spawning behavior and entry points might have to be different depending on whether or not a tile root is on a border
         if (catomsReqByBranch[ZBranch] > 0 and catomsReqByBranch[RevZBranch] > 0
@@ -248,6 +249,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                                 nextHop = catom->position + Cell3DPosition(-1,0,0);
                             else
                                 nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);                                
+
+                    } else if (bi == LeftZBranch) {
+                        if (ruleMatcher->isOnXBorder(norm(coordinatorPos))) {
+                            nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);
+                        }
                         
                     } else {
                         throw NotImplementedException("routing non XYZ branches");
@@ -278,11 +284,23 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                     // Policy: Prioritize horizontal growth                    
                     for (int i = 5; i >= 0; i--) {
                         if (numInsertedCatoms < 2
+
                             and (i != ZBranch or
-                                 // (i == ZBranch and catomsReqByBranch[RevZBranch] == 0))
-                                 (i == ZBranch
-                                  and not ruleMatcher->shouldGrowRevZBranch(norm(coordinatorPos))))
+                                 (i == ZBranch and catomsReqByBranch[RevZBranch] == -1))
+
+                            and (i != LeftZBranch or
+                                 (i == LeftZBranch and
+                                  ruleMatcher->isOnXBorder(norm(catom->position))
+                                  and catomsReqByBranch[ZBranch] == 0))
+
+                            // and (i != LeftZBranch or
+                            //      (i == LeftZBranch and ((catomsReqByBranch[RevZBranch] == -1 and catomsReqByBranch[ZBranch] == 0) or catomsReqByBranch[RevZBranch] == 0)) )
+
+                            // and (i != RightZBranch or
+                            //      (i == RightZBranch and ((catomsReqByBranch[RevZBranch] == -1 and catomsReqByBranch[ZBranch] == 0) or catomsReqByBranch[RevZBranch] == 0)) )
+                            
                             and handleNewCatomInsertion((BranchIndex)i)) {
+                            
                             numInsertedCatoms++;
                             fedCatomOnLastRound[i] = true;
                         } else {
@@ -351,11 +369,18 @@ short MeshAssemblyBlockCode::getEntryPointDirectionForBranch(BranchIndex bi) {
 
 Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
     switch(bi) {
-        case ZBranch: return Cell3DPosition(0,0,-1);
+        case ZBranch:
+            if (catomsReqByBranch[RevZBranch] == -1)
+                return Cell3DPosition(0,0,-1);
+            else
+                throw NotImplementedException("getEP for non XYZ branches");
+    
         case XBranch: return Cell3DPosition(1,0,-1);
         case YBranch: return Cell3DPosition(0,1,-1);
         case RevZBranch: return Cell3DPosition(1,1,-1);
         case LeftZBranch:
+            if (ruleMatcher->isOnXBorder(norm(catom->position)))
+                return Cell3DPosition(0,0,-1);
         case RightZBranch:
             VS_ASSERT(false);
             throw NotImplementedException("getEP for non XYZ branches");
@@ -369,7 +394,7 @@ Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
 
 bool MeshAssemblyBlockCode::handleNewCatomInsertion(BranchIndex bi) {
     if (catomsReqByBranch[bi] > 0 and not fedCatomOnLastRound[bi]
-        and bi != LeftZBranch and bi != RightZBranch) { //FIXME:
+        and bi != RightZBranch) { //FIXME:
         // FIXME: What if cell has module?
         const Cell3DPosition& entryPos =
             catom->position + getEntryPointForBranch(bi);

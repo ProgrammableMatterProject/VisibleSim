@@ -63,12 +63,13 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         const Cell3DPosition& relPos =
             mabc.catom->position - mabc.coordinatorPos;
 
-        cout << "Relative position to local coordinator: " <<  relPos << endl;
-        
         // Deduce next position
         BranchIndex bi = mabc.ruleMatcher->
             getBranchIndexForNonRootPosition(mabc.norm(tPos));
 
+        cout << "Relative position to local coordinator: " <<  relPos
+             << " -- branch: " << bi << endl;
+        
         if (bi > 3)
             nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
         else if (bi == ZBranch) {
@@ -78,8 +79,14 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
                 nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
         } else if (bi == RevZBranch) {
             nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
+        } else if (bi == LeftZBranch) {
+            if (mabc.ruleMatcher->isOnXBorder(mabc.norm(mabc.coordinatorPos))) {
+                nextHop = mabc.catom->position + Cell3DPosition(0,-1,1);
+            } else {
+                VS_ASSERT(false);
+            }
         } else {
-            throw NotImplementedException();
+            VS_ASSERT(false);
         }
     }
     
