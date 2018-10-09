@@ -21,7 +21,7 @@ bool SyncPrevious::needSyncToLeft() {
         BoundingBox bb;
         BlockCode::target->boundingBox(bb);
 
-        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToWorldPosition(catom->position.addX(-i))[0] < bb.P1[0]; i++) {
+        for (int i = 2; static_cast<TargetCSG*>(BlockCode::target)->gridToCSGPosition(catom->position.addX(-i))[0] < bb.P1[0]; i++) {
             if (!BlockCode::target->isInTarget(catom->position.addX(-i)) &&
                 BlockCode::target->isInTarget(catom->position.addX(-i).addY(-1)))
                 continue;
