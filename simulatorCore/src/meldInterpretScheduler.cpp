@@ -27,7 +27,9 @@ using get_time = chrono::steady_clock;
 namespace MeldInterpret {
 
 MeldInterpretScheduler::MeldInterpretScheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "MeldInterpretScheduler constructor" << endl;
+#endif
     state = NOTREADY;
     schedulerMode = SCHEDULER_MODE_REALTIME;
     schedulerThread = new thread(bind(&MeldInterpretScheduler::startPaused, this));
@@ -200,7 +202,7 @@ void *MeldInterpretScheduler::startPaused(/*void *param*/) {
 			if (!eventsMap.empty()) {
 				first=eventsMap.begin();
 				pev = (*first).second;
-				while (!eventsMap.empty() && pev->date <= chrono::duration_cast<us>(systemCurrentTimeMax).count()) {
+				while (!eventsMap.empty() && pev->date <= static_cast<uint64_t>(chrono::duration_cast<us>(systemCurrentTimeMax).count())) {
 					first=eventsMap.begin();
 					pev = (*first).second;
 					currentDate = pev->date;

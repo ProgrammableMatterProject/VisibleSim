@@ -174,7 +174,14 @@ protected:
 	 */
 	bID parseRandomStep();
 	
-	/*! @fn loadScheduler(int maximumDate)
+	/**
+	 *  @brief Parses the configuration file's attributes related to the behavioral customization of VisibleSim (e.g., adjusting the rotation speed of catoms)
+	 *  @throw ParsingException if any of the customization variable is ill-formatted
+	 */
+	void parseCustomizations();
+
+
+        /*! @fn loadScheduler(int maximumDate)
 	 *  @brief Instantiates a scheduler instance for the simulation based on the type of CodeBlock
 	 *
 	 *  MeldProcessScheduler, MeldInterpretScheduler, or CPPScheduler

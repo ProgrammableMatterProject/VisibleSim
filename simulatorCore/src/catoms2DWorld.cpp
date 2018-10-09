@@ -42,7 +42,9 @@ Catoms2DWorld::Catoms2DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 }
 
 Catoms2DWorld::~Catoms2DWorld() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "Catoms2DWorld destructor" << endl;
+#endif
     /*	block linked are deleted by world::~world() */
 }
 
@@ -96,8 +98,10 @@ void Catoms2DWorld::linkBlock(const Cell3DPosition &pos) {
                 connect(ptrNeighbor->getInterface(HLattice::Direction(
                                                       lattice->getOppositeDirection(i))));
 
-            // OUTPUT << "connection #" << (ptrBlock)->blockId <<
-            //     " to #" << ptrNeighbor->blockId << endl;
+#ifdef DEBUG_NEIGHBORHOOD
+            OUTPUT << "connection #" << (ptrBlock)->blockId <<
+                " to #" << ptrNeighbor->blockId << endl;
+#endif
         } else {
             (ptrBlock)->getInterface(HLattice::Direction(i))->connect(NULL);
         }

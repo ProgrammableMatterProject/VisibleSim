@@ -38,7 +38,9 @@ BlinkyBlocksWorld::BlinkyBlocksWorld(const Cell3DPosition &gridSize, const Vecto
 }
 
 BlinkyBlocksWorld::~BlinkyBlocksWorld() {
+#ifdef OBJECT_LIFECYCLE_DEBUG
 	OUTPUT << "BlinkyBlocksWorld destructor" << endl;
+#endif
 	/*	block linked are deleted by world::~world() */
 }
 
@@ -89,8 +91,10 @@ void BlinkyBlocksWorld::linkBlock(const Cell3DPosition &pos) {
                 connect(ptrNeighbor->getInterface(SCLattice::Direction(
                                                       lattice->getOppositeDirection(i))));
 
+#ifdef DEBUG_NEIGHBORHOOD
             OUTPUT << "connection #" << (ptrBlock)->blockId <<
                 " to #" << ptrNeighbor->blockId << endl;
+#endif
         } else {
             (ptrBlock)->getInterface(SCLattice::Direction(i))->connect(NULL);
         }

@@ -17,7 +17,9 @@ namespace BlinkyBlocks {
 
 BlinkyBlocksSimulator::BlinkyBlocksSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
 	: BaseSimulator::Simulator(argc, argv, bcb) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator constructor" << "\033[0m" << endl;
+#endif
 }
 
 // PTHY: TODO: Refactor / Genericize
@@ -104,7 +106,9 @@ void BlinkyBlocksSimulator::parseScenario() {
 }
 
 BlinkyBlocksSimulator::~BlinkyBlocksSimulator() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "\033[1;34m" << "BlinkyBlocksSimulator destructor" << "\033[0m" <<endl;
+#endif
 }
 
 void BlinkyBlocksSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {

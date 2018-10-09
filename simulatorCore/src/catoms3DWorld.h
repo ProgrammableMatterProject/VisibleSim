@@ -18,6 +18,7 @@
 #include "catoms3DBlock.h"
 #include "objLoader.h"
 #include "trace.h"
+#include "catoms3DMotionRules.h"
 #include "polymer.h"
 
 
@@ -61,6 +62,7 @@ protected:
 	Polymer *polymer;
 
     GLuint idTextureHexa,idTextureGrid;
+    Catoms3DMotionRules *motionRules;
 //Nurbs surface
 /*	GLfloat sknots[S_NUMKNOTS] =
 	    {0.0,0.125,0.25,0.375,0.5,0.625f,0.750f,1.0f};
@@ -158,10 +160,11 @@ public:
         return((Catoms3DBlock*)World::getBlockById(bId));
     }
 
-
     virtual void addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosition &pos, const Color &col,
                           short orientation, bool master);
-    
+
+    inline Catoms3DMotionRules *getMotionRules() { return motionRules; };
+
     /**
      * \brief Connects block on grid cell pos to its neighbor
      * \param pos : Position of the block to connect
@@ -185,7 +188,7 @@ public:
  * \brief load the background textures (internal)
  */
     void loadTextures(const string &str);
-	
+
 	void simulatePolymer();
 };
 
@@ -194,6 +197,7 @@ inline void deleteWorld() {
 }
 
 inline Catoms3DWorld* getWorld() { return(Catoms3DWorld::getWorld()); }
+
 
 } // Catoms3D namespace
 

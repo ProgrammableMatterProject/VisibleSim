@@ -116,7 +116,10 @@ void ConfigExporter::exportCameraAndLightSource() {
         cam->SetAttribute("directionSpherical", toXmlAttribute(ds.pt[0],
                                                                ds.pt[1],
                                                                ds.pt[2]));
-        cam->SetAttribute("angle", camera->getAngle());        
+        cam->SetAttribute("angle", camera->getAngle());
+        cam->SetAttribute("near", camera->getNearPlane());                        
+        cam->SetAttribute("far", camera->getFarPlane());
+        
         worldElt->LinkEndChild(cam);
                                   
         // Export LightSource
@@ -154,7 +157,7 @@ void ConfigExporter::exportBlockList() {
     blockListElt->SetAttribute("blockSize", toXmlAttribute(blockSize));
 
     for(auto const& idBBPair : blocks) {
-        if (idBBPair.second->getState() <= BuildingBlock::REMOVED)
+        if (idBBPair.second->getState() != BuildingBlock::REMOVED)
             exportBlock(idBBPair.second);
     }
         

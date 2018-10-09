@@ -1,13 +1,17 @@
 VisibleSim
 ==================
+
+## Getting Started
+A [__User Manual__](doc/UserManual.md) and a [__Technical Reference__](doc/TechnicalReference.md) are available in the `doc` directory, to get users and contributors started with VisibleSim.
+
+## Installation
+
 Dependencies:
  - Boost C++ Libraries >= 1.47.0 (If using Meld Process only)
  - GLUT
  - GLEW
  - SBCL - to compile Meld programs
  - MUPARSER - to use CSG
-
-## Installation
 
 ### Installing Submodules
 There are a number of other repositories included as [git submodules] in VisibleSim and used as utilities (e.g. a configuration generator). They need to be fetched from their respective repositories before they can be used. This can be done with the following commands, from the project's root:
@@ -46,9 +50,6 @@ sudo apt-get install sbcl
 sudo apt-get install libmuparser-dev
 ```
 2\. `make`
-
-## Getting Started
-A [__User Manual__](doc/UserManual.md) and a [__Technical Reference__](doc/TechnicalReference.md) are available in the `doc` directory, to get users and contributors started with VisibleSim.
 
 [boost1.56-ticket]:https://svn.boost.org/trac/boost/ticket/11154
 [git submodules]:https://git-scm.com/book/en/v2/Git-Tools-Submodules

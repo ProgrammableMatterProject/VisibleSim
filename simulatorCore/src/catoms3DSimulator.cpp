@@ -24,11 +24,15 @@ void Catoms3DSimulator::help() {
 
 Catoms3DSimulator::Catoms3DSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
 	: BaseSimulator::Simulator(argc, argv, bcb) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "\033[1;34m" << "Catoms3DSimulator constructor" << "\033[0m" << endl;
+#endif
 }
 
 Catoms3DSimulator::~Catoms3DSimulator() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "\033[1;34m" << "Catoms3DSimulator destructor" << "\033[0m" <<endl;
+#endif
 }
 
 void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {
@@ -38,7 +42,7 @@ void Catoms3DSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder
 }
 
 void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D &gridScale,
-				      int argc, char *argv[]) {
+                                  int argc, char *argv[]) {
     world = new Catoms3DWorld(gridSize, gridScale, argc, argv);
 
 	if (GlutContext::GUIisEnabled) 
@@ -47,8 +51,9 @@ void Catoms3DSimulator::loadWorld(const Cell3DPosition &gridSize, const Vector3D
     World::setWorld(world);
 }
 
-void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCodeBuilder bcb,
-								  const Cell3DPosition &pos, const Color &color, bool master) {
+void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId,
+                                  BlockCodeBuilder bcb, const Cell3DPosition &pos,
+                                  const Color &color, bool master) {
 
 	// Any additional configuration file parsing exclusive to this type of block should be performed
 	//  here, using the blockElt TiXmlElement.
@@ -58,7 +63,9 @@ void Catoms3DSimulator::loadBlock(TiXmlElement *blockElt, bID blockId, BlockCode
 	const char *attr = blockElt->Attribute("orientation");
 	if (attr) {
 		orientation = atoi(attr);
-		OUTPUT << "orientation : " << orientation << endl;
+#ifdef DEBUG_WORLD_LOAD
+        OUTPUT << "orientation : " << orientation << endl;
+#endif
 	}
 
 	// Finally, add block to the world

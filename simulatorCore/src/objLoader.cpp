@@ -68,7 +68,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 		cerr << "File error : " << txt << endl;
 		exit(EXIT_FAILURE);
 	}
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
    OUTPUT << "Open " << txt  << " file..."<< endl;
 #endif
 	mtls=NULL;
@@ -83,7 +83,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	int i,numVert[4],numTex[4],numNorm[4];
 	Sommet S1,S2,S3,S4;
 	do {
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 		OUTPUT << "Début de lecture" << endl;
 #endif
 	// headline
@@ -92,7 +92,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     	// delete spaces and tabs in the beginning of the lines
 	  if (fin.gcount()>0) {
 		  switch (ligne[0]) {
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 		  	case '#' : // comment
 		  		OUTPUT << ligne << endl;
         	break;
@@ -116,14 +116,14 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     		if (fin.gcount()>1) {
     			switch (ligne[0]) {
     				case ' ' : break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     				case '#' :
     					OUTPUT << ligne << endl;
     				break; // comment
 #endif
     				case 'g' :
     					extraire(ligne+2,nom,63); // object name
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     					OUTPUT << "object : " << nom << endl;
 #endif
     					g_trouve = true;
@@ -140,20 +140,20 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     						tabVertex.push_back(p3);
     					}
     				break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     				default :
     					OUTPUT << "code '" << ligne[0] << " unknown :" << ligne << endl;
 #endif
     			}
     		}
     	} while (!fin.eof() && !g_trouve);
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     	OUTPUT <<"Fin de lecture des coordonnées"<< endl;
 #endif
 
     	if (g_trouve) {
     		objCourant = new ObjData(nom);
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     		OUTPUT << "new object :" << nom << endl;
 #endif
     		tabObj.push_back(objCourant);
@@ -165,7 +165,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     			if (fin.gcount()>1) {
     				switch (ligne[0]) {
     					case '#' :
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     						OUTPUT << ligne<< endl;
 #endif
     						g_trouve = true;
@@ -191,7 +191,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
                                 numeroPoint(str_pt4,numVert[3],numNorm[3],numTex[3]);
     						}
 /*
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     						OUTPUT << "Face : (" << numVert[0] << "," << numNorm[0] << "," << numTex[0] << ")";
     						OUTPUT << "(" << numVert[1] << "," << numNorm[1] << "," << numTex[1] << ")";
     						OUTPUT << "(" << numVert[2] << "," << numNorm[2] << "," << numTex[2] << ")" << endl;
@@ -212,7 +212,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     					break;
     					case 'u' : // usemtl 09_-_Default
     						if (strncmp(ligne,"usemtl",6)==0) {
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     							OUTPUT << ligne << endl;
 #endif
     							extraire(ligne+7,str_pt1,64);
@@ -224,7 +224,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 #else
     								sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     								OUTPUT << "associe l'objet " << objCourant->nom << endl;
 #endif
     							} else { // on fait un objet par texture
@@ -236,7 +236,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     								}
     								if (po!=tabObj.end()) {
     									objCourant = (*po);
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     									OUTPUT << "complete l'objet " << objCourant->nom << endl;
 #endif
     								} else {
@@ -254,7 +254,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 #else
     									sprintf(objCourant->nom,"%s_%s",objCourant->nomOriginal,ptrMtl->name);
 #endif
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 					  					OUTPUT << "nouvel objet :" << objCourant->nom << endl;
 #endif
     								}
@@ -262,9 +262,11 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     						}
     					break;
     					case 's' : // gestion des groupes de lissage
-    						ERRPUT << "Smoothing groups not managed !" << endl;
+#ifdef DEBUG_GRAPHICS
+                            ERRPUT << "warning: Smoothing groups not managed !" << endl;
+#endif
     					break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     					default :
     						OUTPUT << "symbole '" << ligne[0] << " inconnu de :" << ligne << endl;
 #endif
@@ -279,7 +281,7 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
     tabVertex.clear();
     tabTexture.clear();
 	tabNormal.clear();
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
     OUTPUT << "fin de la lecture" << endl;
 #endif
 	} while (!fin.eof());
@@ -289,7 +291,9 @@ ObjLoader::ObjLoader(const char *rep,const char *titre) {
 	// find 'lighted' texture
 	ptrMtlLighted = mtls->getMtlByName("lighted");
 	if (!ptrMtlLighted) {
-		ERRPUT << "No 'lighted' texture in obj file :" << titre << endl;
+#ifdef DEBUG_GRAPHICS
+		ERRPUT << "warning: No 'lighted' texture in obj file :" << titre << endl;
+#endif
 		ptrMtlLighted = mtls->getMtlById(1);
 	}
 }
@@ -568,7 +572,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 		if (fin.gcount()>i) {
 			switch (ligne[i]) {
 				case '#' : // commentaire
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 				OUTPUT << ligne << endl;
 #endif
 				break;
@@ -663,7 +667,7 @@ MtlLib::MtlLib(const char *rep,const char *titre) {
 #endif
 					}
 				break;
-#ifdef DEBUG
+#ifdef DEBUG_GRAPHICS
 				default : OUTPUT << "Inconnu : " << ligne << endl;
 #endif
 			}

@@ -17,10 +17,20 @@
 
 namespace BaseSimulator {
 
+class HighlightedCell {
+public :
+	Cell3DPosition pos;
+	Color color;
+	
+	HighlightedCell(const Cell3DPosition &p,const Color&c=YELLOW):pos(p),color(c) {};
+
+};
+	
 /*! @brief Abstract class Lattice
  *
  */
 class Lattice {
+protected :
     struct InvalidInsertionException : std::exception {
         const char* what() const noexcept {
             return "trying to insert a block out of the lattice\n";
@@ -32,7 +42,9 @@ class Lattice {
         }
     };
 
-    static const string directionName[];    
+    static const string directionName[];
+	
+	vector<HighlightedCell> tabHighlightedCells;
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< Labels for a lattice cell's neighboring cells (virtual)
     /**
@@ -40,20 +52,27 @@ public:
      * @param d id of the direction from which we want the opposite
      * @return id of direction opposite to d
      */
-    virtual int getOppositeDirection(int d) { return -1; };
+    virtual short getOppositeDirection(short d) { return -1; };
     /**
      * @brief Returns the name string corresponding to direction d
      * @param d id of the direction from which we want the name
      * @return name string corresponding to direction d
      */
-    virtual string getDirectionString(int d);
+    virtual string getDirectionString(short d);
 
+    /** 
+     * @brief Returns the direction in which cell neighbor is, relative to cell p
+     * @param p the reference cell 
+     * @return a short int representing a lattice specific direction enum value
+     */
+    short getDirection(const Cell3DPosition &p, const Cell3DPosition &neighbor);
+    
     Cell3DPosition gridSize; //!< The size of the 3D grid
     Vector3D gridScale; //!< The real size of a cell in the simulated world (Dimensions of a block)
     BuildingBlock **grid; //!< The grid as a 1-Dimensional array of BuildingBlock pointers
-   
+
     /**
-     * @brief Abstract Lattice constructor. 
+     * @brief Abstract Lattice constructor.
      */
     Lattice();
     /**
@@ -83,31 +102,31 @@ public:
      * @param p The position of the cell to test
      * @return true if cell at position p is in grid, false otherwise
      */
-    bool isInGrid(const Cell3DPosition &p);
+    bool isInGrid(const Cell3DPosition &p) const;
     /**
      * @brief Returns a one-dimensional array index for grid position p
      * @param p The position of the cell for which the index is needed
      * @return The index of the cell in the lattice's 1D array of cells
      */
-    int getIndex(const Cell3DPosition &p);
+    int getIndex(const Cell3DPosition &p) const;
     /**
      * @brief Indicates if cell at position p has a block on it
      * @param p The position of the cell to test
      * @return true if cell at position p has a block on it, false otherwise or if p is out of grid
      */
-    bool cellHasBlock(const Cell3DPosition &p);
+    bool cellHasBlock(const Cell3DPosition &p) const;
     /**
      * @brief Indicates if cell at position p is an empty grid cell
      * @param p The position of the cell to test
      * @return true if cell at position p is in grid and empty, false otherwise
      */
-    bool isFree(const Cell3DPosition &p);
+    bool isFree(const Cell3DPosition &p) const;
     /**
      * @brief Returns a pointer to the block on cell p of the grid
      * @param p The position of the block to get
      * @return A pointer to the block on cell p or NULL if p is not in grid or empty
      */
-    BuildingBlock *getBlock(const Cell3DPosition &p);
+    BuildingBlock *getBlock(const Cell3DPosition &p) const;
     /**
      * @brief Returns the location of all alive neighbors for cell pos
      * @param pos The cell to consider
@@ -115,12 +134,25 @@ public:
      */
     std::vector<Cell3DPosition> getActiveNeighborCells(const Cell3DPosition &pos);
     /**
+     * @brief Returns the location of all empty neighbor cell positions around pos
+     * @param pos The cell to consider
+     * @return A vector containing the position of all free cells around pos
+     */
+    std::vector<Cell3DPosition> getFreeNeighborCells(const Cell3DPosition &pos);        
+    /**
      * @brief Returns the location of all neighbor cells for cell pos
      * @param pos The cell to consider
      * @return A vector containing the position of all cells (empty and full) around pos
      */
     std::vector<Cell3DPosition> getNeighborhood(const Cell3DPosition &pos);
-
+    /**
+     * @brief Indicates whether cells in argument are adjacent to each other
+     * @param p1 the first cell
+     * @param p2 the second cell
+     * @return a boolean indicating whether the two cells p1 and p2 are adjacent
+     */    
+    bool cellsAreAdjacent(const Cell3DPosition &p1, const Cell3DPosition &p2);
+    
     /**
      * @brief Returns the total number of cells on the grid
      * @return Total number of cells on the grid
@@ -150,22 +182,36 @@ public:
      * @return the maximum number of neighbor for the callee lattice
      */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; };
+
+    /**
+     * @brief Returns the Cell3DPosition in some direction from a reference cell
+     * @return Position of the cell in direction "direction" from cell pRef
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction) = 0;
+    
+    virtual void glDraw() {};
+	
+	virtual void highlightCell(const Cell3DPosition& pos, const Color &color);
+	virtual void unhighlightCell(const Cell3DPosition& pos);
+	virtual void resetCellHighlights(); // Unhighlight all highlighted cells
+	vector<HighlightedCell>::iterator find(const Cell3DPosition &pos);
 };
 
 /*! @brief 2-Dimensional Lattice abstract class
  *
  */
 class Lattice2D : public Lattice {
-    static const string directionName[];    
+    static const string directionName[];
 public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
     /**
-     * @brief Abstract Lattice 2D constructor. 
+     * @brief Abstract Lattice 2D constructor.
      */
     Lattice2D();
     /**
-     * @brief Abstract Lattice 2D constructor. 
+     * @brief Abstract Lattice 2D constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
@@ -189,8 +235,15 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() = 0;
+
+    
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction) = 0;
 };
 
 /*! @brief 3-Dimensional Lattice abstract class
@@ -202,11 +255,11 @@ public:
     enum Direction {MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
 
     /**
-     * @brief Abstract Lattice 3D constructor. 
+     * @brief Abstract Lattice 3D constructor.
      */
     Lattice3D();
     /**
-     * @brief Abstract Lattice 3D constructor. 
+     * @brief Abstract Lattice 3D constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
@@ -230,8 +283,14 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p) = 0;
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() = 0;
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction) = 0;
 };
 
 /*! @brief Square 2D Lattice
@@ -254,22 +313,22 @@ public:
     virtual int getOppositeDirection(int d);
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(int d);
-    
+
     /**
-     * @brief SLattice constructor. 
+     * @brief SLattice constructor.
      */
     SLattice();
     /**
-     * @brief SLattice constructor. 
+     * @brief SLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     SLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief SLattice destructor. 
+     * @brief SLattice destructor.
      */
     ~SLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -284,8 +343,14 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
 };
 
 /*! @brief Hexagonal 2D Lattice
@@ -313,7 +378,7 @@ class HLattice : public Lattice2D {
             }; //!< Vector containing relative position of neighboring cells for odd(z) cells
 
     static const string directionName[];
-public:   
+public:
     enum Direction {Right = 0, TopRight = 1, TopLeft = 2,
                     Left = 3, BottomLeft = 4, BottomRight = 5, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
@@ -322,20 +387,20 @@ public:
     virtual string getDirectionString(int d);
 
     /**
-     * @brief HLattice constructor. 
+     * @brief HLattice constructor.
      */
     HLattice();
     /**
-     * @brief HLattice constructor. 
+     * @brief HLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     HLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief HLattice destructor. 
+     * @brief HLattice destructor.
      */
     ~HLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -350,8 +415,14 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
 };
 
 /*! @brief 3D Face-Centered Cubic Lattice
@@ -389,9 +460,71 @@ class FCCLattice : public Lattice3D {
             Cell3DPosition(0,-1,-1),  // 9
             Cell3DPosition(0,0,-1),   // 10
             Cell3DPosition(-1,0,-1) // 11
-      }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
+            }; //!< Vector containing relative position of neighboring cells for odd(z) cells;
+    
+    //!< Neighborhood Planes for blocking cells computation
+    
+    Cell3DPosition sideOneOddXY[4] = { Cell3DPosition(1,0,-1), Cell3DPosition(1,1,-1),
+                                      Cell3DPosition(0,1,-1), Cell3DPosition(0,0,-1) };
+    Cell3DPosition sideTwoOddXY[4] = { Cell3DPosition(1,0,1),Cell3DPosition(1,1,1),
+                                       Cell3DPosition(0,1,1),Cell3DPosition(0,0,1) };
+    Cell3DPosition sideOneEvenXY[4] = { Cell3DPosition(0,0,-1),Cell3DPosition(-1,-1,-1),
+                                        Cell3DPosition(-1,0,-1),Cell3DPosition(0,-1,-1) };
+    Cell3DPosition sideTwoEvenXY[4] = { Cell3DPosition(0,0,1),Cell3DPosition(-1,-1,1),
+                                        Cell3DPosition(-1,0,1), Cell3DPosition(0,-1,1) };
+    
+    Cell3DPosition sideOneOddXZ[5] = { Cell3DPosition(1,0,-1),Cell3DPosition(1,1,-1),
+                                       Cell3DPosition(1,1,1),Cell3DPosition(1,0,1),
+                                       Cell3DPosition(1,0,0) };
+    Cell3DPosition sideTwoOddXZ[5] = { Cell3DPosition(0,1,-1),Cell3DPosition(0,0,-1),
+                                       Cell3DPosition(0,1,1),Cell3DPosition(0,0,1),
+                                       Cell3DPosition(-1,0,0) };
+    Cell3DPosition sideOneEvenXZ[5] = { Cell3DPosition(0,0,-1),Cell3DPosition(0,-1,-1),
+                                        Cell3DPosition(0,0,1),Cell3DPosition(0,-1,1),
+                                        Cell3DPosition(1,0,0) };
+    Cell3DPosition sideTwoEvenXZ[5] = { Cell3DPosition(-1,0,-1),Cell3DPosition(-1,-1,-1),
+                                        Cell3DPosition(-1,0,1),Cell3DPosition(-1,-1,1),
+                                        Cell3DPosition(-1,0,0) };
+    Cell3DPosition sideOneOddYZ[5] = { Cell3DPosition(0,0,-1),Cell3DPosition(1,0,-1),
+                                       Cell3DPosition(0,0,1),Cell3DPosition(1,0,1),
+                                       Cell3DPosition(0,-1,0) };
+    Cell3DPosition sideTwoOddYZ[5] = { Cell3DPosition(1,1,-1),Cell3DPosition(0,1,-1),
+                                       Cell3DPosition(1,1,1),Cell3DPosition(0,1,1),
+                                       Cell3DPosition(0,1,0) };
+    Cell3DPosition sideOneEvenYZ[5] = { Cell3DPosition(0,-1,-1),Cell3DPosition(-1,-1,-1),
+                                        Cell3DPosition(0,-1,1),Cell3DPosition(-1,-1,1),
+                                        Cell3DPosition(0,-1,0) };
+    Cell3DPosition sideTwoEvenYZ[5] = { Cell3DPosition(0,0,-1),Cell3DPosition(-1,0,-1),
+                                           Cell3DPosition(0,0,1),Cell3DPosition(-1,0,1),
+                                           Cell3DPosition(0,1,0) };    
 
+    Cell3DPosition xyPos[4] = { Cell3DPosition(-1,0,0), Cell3DPosition(1,0,0),
+                                Cell3DPosition(0,-1,0), Cell3DPosition(0,1,0) };
+    
     static const string directionName[];
+    bool *tabLockedCells;
+    unsigned short *tabDistances;
+
+    // NEIGHBORDHOOD RESTRICTIONS
+    enum class BlockingPositionPlane { XY, YZ, XZ };
+    /** 
+     * Sets the sideOne and sideTwo pointers to the cells from both sides of the input plane and in direction d, of the right odd/even neighborhood
+     * @param plane 
+     * @param pos reference position
+     * @param sideOne 
+     * @param sideTwo 
+     * @param d direction of the requested cell
+     * @param evenZ 
+     */
+    void setPlaneSides(BlockingPositionPlane plane,
+                       const Cell3DPosition& pos, 
+                       Cell3DPosition& sideOne, Cell3DPosition& sideTwo,
+                       int d, bool evenZ);
+    bool isPositionUnblockedSide(const Cell3DPosition &pos);
+    bool isPositionUnblocked(const Cell3DPosition &pos, BlockingPositionPlane plane);
+    bool isPositionUnblockedSide(const Cell3DPosition &pos, const Cell3DPosition &ignore);
+    bool isPositionUnblocked(const Cell3DPosition &pos, const Cell3DPosition &ignore,
+                             BlockingPositionPlane plane);
 public:
     enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
                     Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
@@ -399,22 +532,22 @@ public:
     virtual int getOppositeDirection(int d);
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(int d);
-    
+
     /**
-     * @brief FCCLattice constructor. 
+     * @brief FCCLattice constructor.
      */
     FCCLattice();
     /**
-     * @brief FCCLattice constructor. 
+     * @brief FCCLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     FCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief FCCLattice destructor. 
+     * @brief FCCLattice destructor.
      */
     ~FCCLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -429,17 +562,35 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
+
+    // NEIGHBORHOOD RESTRICTIONS
+    bool isPositionBlocked(const Cell3DPosition &pos);
+    bool isPositionBlocked(const Cell3DPosition &pos, const Cell3DPosition &ignore);
+    // bool isPositionBlockable(const Cell3DPosition &pos); 
+    
+    bool lockCell(const Cell3DPosition &pos);
+    bool unlockCell(const Cell3DPosition &pos);
+    void initTabDistances();
+    unsigned short getDistance(const Cell3DPosition &pos);
+    void setDistance(const Cell3DPosition &pos,unsigned short d);
+    void glDraw();
 };
 
 
-/*! @brief 3D Face-Centered Cubic Lattice with new coordinates system
+/*! @brief 3D Face-Centered Cubic Lattice with skew coordinate system (bent z-axis)
  *
  * Used by Catoms3D
  *
  */
-class FCCLattice2 : public Lattice3D {
+class SkewFCCLattice : public FCCLattice {
     // The index i of the relative position in the vector corresponds to the cell on interface i of a block
     vector<Cell3DPosition> nCells{
         Cell3DPosition(1,0,0),  // 0
@@ -458,27 +609,20 @@ class FCCLattice2 : public Lattice3D {
 
     static const string directionName[];
 public:
-    enum Direction {Con0 = 0, Con1, Con2, Con3, Con4, Con5,
-                    Con6, Con7, Con8, Con9, Con10, Con11, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
-    //!< @copydoc Lattice::getOppositeDirection
-    virtual int getOppositeDirection(int d);
-    //!< @copydoc Lattice::getDirectionString
-    virtual string getDirectionString(int d);
-    
     /**
-     * @brief FCCLattice2 constructor. 
+     * @brief SkewFCCLattice constructor. 
      */
-    FCCLattice2();
+    SkewFCCLattice();
     /**
-     * @brief FCCLattice2 constructor. 
+     * @brief SkewFCCLattice constructor. 
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
-    FCCLattice2(const Cell3DPosition &gsz, const Vector3D &gsc);
+    SkewFCCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
      * @brief FCCLattice destructor. 
      */
-    ~FCCLattice2();
+    ~SkewFCCLattice();
     
     /**
      * @copydoc Lattice::gridToWorldPosition
@@ -492,15 +636,17 @@ public:
      * @copydoc Lattice::getRelativeConnectivity
      */
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
+
     /**
-     * @copydoc Lattice::getMaxNumNeighbors
-     */    
-    virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
 };
 
 /*! @brief 3D Simple Cubic Lattice
  *
- * Used by BlinkyBlocks and RobotBlocks
+ * Used by BlinkyBlocks, RobotBlocks and Okteen
  *
  */
 class SCLattice : public Lattice3D {
@@ -508,33 +654,33 @@ class SCLattice : public Lattice3D {
         Cell3DPosition(0,0,-1), // BOTTOM
             Cell3DPosition(0,1,0), // BACK
             Cell3DPosition(1,0,0),  // RIGHT
-            Cell3DPosition(0,-1,0),  // FRONT
             Cell3DPosition(-1,0,0),  // LEFT
+            Cell3DPosition(0,-1,0),  // FRONT
             Cell3DPosition(0,0,1)  // TOP
             }; //!< Vector containing relative position of neighboring cells
     static const string directionName[];
 public:
-    enum Direction { Bottom = 0, Back = 1, Right, Front, Left, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
+    enum Direction { Bottom = 0, Back = 1, Right, Left, Front, Top, MAX_NB_NEIGHBORS}; //!< @copydoc Lattice::Direction
     //!< @copydoc Lattice::getOppositeDirection
     virtual int getOppositeDirection(int d);
     //!< @copydoc Lattice::getDirectionString
     virtual string getDirectionString(int d);
-    
+    Cell3DPosition getNeighborRelativePos(Direction d) { return nCells[d]; };
     /**
-     * @brief SCLattice constructor. 
+     * @brief SCLattice constructor.
      */
     SCLattice();
     /**
-     * @brief SCLattice constructor. 
+     * @brief SCLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     SCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief SCLattice destructor. 
+     * @brief SCLattice destructor.
      */
     ~SCLattice();
-    
+
     /**
      * @copydoc Lattice::gridToWorldPosition
      */
@@ -549,8 +695,14 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction);
 };
 
 /*! @brief 3D Broadcast Lattice
@@ -568,19 +720,19 @@ public:
     virtual string getDirectionString(int d);
 
     list<BuildingBlock*> connected; //!< contains all cells with a block on it
-    
+
     /**
-     * @brief BCLattice constructor. 
+     * @brief BCLattice constructor.
      */
     BCLattice();
     /**
-     * @brief BCLattice constructor. 
+     * @brief BCLattice constructor.
      * @param gsz The size of the grid
      * @param gsc The real size of a block on the grid, also equal to the scale of the grid
      */
     BCLattice(const Cell3DPosition &gsz, const Vector3D &gsc);
     /**
-     * @brief BCLattice destructor. 
+     * @brief BCLattice destructor.
      */
     ~BCLattice();
 
@@ -598,8 +750,18 @@ public:
     virtual std::vector<Cell3DPosition> getRelativeConnectivity(const Cell3DPosition &p);
     /**
      * @copydoc Lattice::getMaxNumNeighbors
-     */    
+     */
     virtual inline const int getMaxNumNeighbors() { return MAX_NB_NEIGHBORS; }
+
+    /**
+     * @copydoc Lattice::getCellInDirection
+     */
+    virtual Cell3DPosition getCellInDirection(const Cell3DPosition &pRef,
+                                              int direction)
+    {
+         // Does not apply to mobile-type modular robots
+         return Cell3DPosition(0,0,0);
+    }
 };
 
 

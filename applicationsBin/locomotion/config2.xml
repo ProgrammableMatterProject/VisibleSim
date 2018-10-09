@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="7,6,4" windowSize="1800,900">
+    <camera target="30,30,10" directionSpherical="44.6907,43.6439,100" angle="45" />
+    <spotlight target="50,20,0" directionSpherical="45,60,200" angle="51" />
+    <blockList blockSize="10,10,10">
+        <block position="2,4,1" color="0,255,0" />
+        <block position="3,4,1" color="0,255,0" />
+		<block position="4,4,1" color="0,255,0" />
+		<block position="5,4,1" color="0,0,255" />
+		<block position="2,3,1" color="255,255,0" />
+        <block position="3,3,1" color="0,255,0" />
+        <block position="4,3,1" color="0,0,255" />
+		<block position="0,2,1" color="255,255,0" />
+		<block position="1,2,1" color="0,255,0" />
+        <block position="2,2,1" color="0,255,0" />
+        <block position="3,2,1" color="0,255,0" />
+        <block position="4,2,1" color="0,255,0" />
+        <block position="2,1,1" color="0,255,0" />
+		<block position="2,0,1" color="255,255,0" />
+		<block position="1,2,2" color="0,255,0" />
+		<block position="1,2,3" color="0,255,0" />
+		<block position="1,1,3" color="0,0,255" />
+    </blockList>
+	<targetList>
+		<target format="grid">
+			<cell position="2,4,1" />
+			<cell position="3,4,1" />
+			<cell position="4,4,1" />
+			<cell position="5,4,1" />
+			<cell position="3,3,1" />
+			<cell position="4,3,1" />
+			<cell position="1,2,1" />
+			<cell position="2,2,1" />
+			<cell position="3,2,1" />
+			<cell position="4,2,1" />
+			<cell position="2,1,1" />
+			<cell position="5,4,1" />
+			<cell position="1,3,1" />
+			<cell position="1,2,2" />
+			<cell position="1,2,3" />
+			<cell position="1,1,3" />
+		</target>
+	</targetList>
+</world>
