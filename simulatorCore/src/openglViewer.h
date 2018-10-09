@@ -59,6 +59,7 @@ private :
     static void motionFunc(int x,int y);
     static void mouseFunc(int button,int state,int x,int y);
     static void keyboardFunc(unsigned char c, int x, int y);
+    static void specialFunc(int key, int x, int y);
     static void drawFunc(void);
     static void idleFunc(void);
     static int selectFunc(int x,int y);

@@ -111,20 +111,24 @@ void GlutWindow::bindTexture() {
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 }
 
-// function printing a string on the glut screen on x,y
-// warning : must be ended by \0
+/***************************************************************************************/
+/** drawString(x,y,str,mode,height                                                     */
+/** /param x,y : position of first line of the string                                  */
+/** /param str : string, must be ended by \0                                           */
+/** /param mode : glutBitmapCharacter decoration mode, default is GLUT_BITMAP_8_BY_13  */
+/** /param height : height of lines for multiline texts, default is 13				   */
 GLfloat GlutWindow::drawString(GLfloat x,GLfloat y,const char *str,void *mode,GLint height) {
-  glRasterPos2f(x,y);
-  while (*str)
-  { if (*str=='\n')
-    { y-=height;
-	  glRasterPos2f(x,y);
-    } else
-    { glutBitmapCharacter(mode,*str);
-    }
-    str++;
-  }
-  return y-height;
+	glRasterPos2f(x,y);
+	while (*str) {
+		if (*str=='\n') {
+		y-=height;
+		glRasterPos2f(x,y);
+		} else {
+			glutBitmapCharacter(mode,*str);
+		}
+		str++;
+	}
+	return y-height;
 }
 
 
@@ -133,17 +137,25 @@ GLfloat GlutWindow::drawString(GLfloat x,GLfloat y,const char *str,void *mode,GL
 /** /param x,y : position of first line of the string                                  */
 /** /param str : string                                                                */
 /** /param mode : character decoration mode                                            */
-GLfloat GlutWindow::drawString(GLfloat x,GLfloat y,const char *str, TextMode mode) {
-    glRasterPos2f(x,y);
+GLfloat GlutWindow::drawString(GLfloat x0,GLfloat y,const char *str, TextMode mode) {
+    glRasterPos2f(x0,y);
     void *tm = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?GLUT_BITMAP_9_BY_15:GLUT_BITMAP_TIMES_ROMAN_24;
-    GLfloat height = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?15:24;
+    GLint height = (currentTextSize==TextSize::TEXTSIZE_STANDARD)?15:24;
+	GLfloat x=x0;
 
+	bool isBold = (mode==TextMode::TEXTMODE_BOLD || mode==TextMode::TEXTMODE_TITLE || mode==TextMode::TEXTMODE_POPUP);
     while (*str) {
-        if (*str=='\n') {
+		if (*str=='\n') {
             y-=height;
-            glRasterPos2f(x,y);
+            glRasterPos2f(x0,y);
         } else {
-            glutBitmapCharacter(tm,*str);
+            glRasterPos2d(x,y);
+			glutBitmapCharacter(tm,*str);
+			if (isBold) {
+				glRasterPos2d(x+1,y);
+				glutBitmapCharacter(tm,*str);
+			}
+			x+= glutBitmapWidth(tm,*str);
         }
         str++;
     }
@@ -585,7 +597,9 @@ bool GlutButton::passiveMotionFunc(int mx,int my) {
 GLuint GlutWindow::loadTexture(const char *titre,int &tw,int &th) {
 	unsigned char *image;
 	GLuint id=0;
-	OUTPUT << "loading " << titre << endl;
+#ifdef DEBUG_GRAPHICS
+    OUTPUT << "loading " << titre << endl;
+#endif
 	if (!(image=lectureTarga(titre,tw,th))) {
 		ERRPUT << "Error : can't open " << titre << endl;
 	} else {
@@ -711,7 +725,7 @@ void GlutPopupWindow::glDraw() {
 	if (isVisible) {
 		glDisable(GL_LIGHTING);
 		glDisable(GL_TEXTURE_2D);
-		glColor4f(1.0,1.0,0.0,0.75);
+		glColor4f(1.0,1.0,0.0,0.9);
 		glPushMatrix();
 		glTranslatef(x,y,0);
 		glBegin(GL_QUADS);
@@ -721,7 +735,7 @@ void GlutPopupWindow::glDraw() {
 		glVertex2i(0,h);
 		glEnd();
 		glColor4f(0.0,0.0,0.5,1.0);
-		drawString(5.0,h-20.0,info.c_str());
+		drawString(5.0,h-20.0,info.c_str(),TextMode::TEXTMODE_POPUP);
 		glPopMatrix();
 	}
 }

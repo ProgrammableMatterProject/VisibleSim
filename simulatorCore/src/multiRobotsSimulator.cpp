@@ -17,11 +17,15 @@ namespace MultiRobots {
 
 MultiRobotsSimulator::MultiRobotsSimulator(int argc, char *argv[], BlockCodeBuilder bcb)
 	: BaseSimulator::Simulator(argc, argv, bcb) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "\033[1;34m" << "MultiRobotsSimulator constructor" << "\033[0m" << endl;
+#endif
 }
 
 MultiRobotsSimulator::~MultiRobotsSimulator() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "\033[1;34m" << "MultiRobotsSimulator destructor" << "\033[0m" <<endl;
+#endif
 }
 
 void MultiRobotsSimulator::createSimulator(int argc, char *argv[], BlockCodeBuilder bcb) {

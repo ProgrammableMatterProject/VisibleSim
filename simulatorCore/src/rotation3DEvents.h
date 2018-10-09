@@ -15,12 +15,14 @@
 #include "catoms3DBlock.h"
 #include "events.h"
 
-const int nbRotationSteps = 100;
+const int nbRotationSteps = 20;
 
 using namespace Catoms3D;
 
-class Rotations3D {
+class Rotations3D {    
 public :
+    static float rotationDelayMultiplier;
+    
 /**
     \brief Create a couple of rotations
     \param p : fixed pivot catom
@@ -29,14 +31,14 @@ public :
     \param ax2 : rotation axe for the second rotation
     \param ang2 : rotation angle for the second rotation
 */
-    Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2);
+    Rotations3D(Catoms3DBlock *mobile,Catoms3DBlock *fixe,double rprim,const Vector3D &ax1,double ang1,const Vector3D &ax2,double ang2);
     Rotations3D() {};
 
     void init(const Matrix& m) {
         firstRotation=true;
         step=0;
         initialMatrix=m;
-        firstStepMatrix.identity();
+        finalMatrix=m*finalMatrix;
     }
 
 /**
@@ -54,14 +56,12 @@ public :
 protected :
     bool firstRotation;
     short step;
-    Matrix initialMatrix,firstStepMatrix;//,matTBA,matTAB,matTBC,matTCB;
-    Vector3D AB,AD,CB;
+    Matrix initialMatrix,finalMatrix;
+    Vector3D A0C0,A0D0,A1C1,A1D1;
     Vector3D axe1;
     Vector3D axe2;
     double angle1;
     double angle2;
-    static constexpr double angleArticulation=6.46237535743;
-    static constexpr double coefRayonCourbure=1.00639465274;
 };
 
 //===========================================================================================================

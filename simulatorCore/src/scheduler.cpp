@@ -23,9 +23,13 @@ namespace BaseSimulator {
 
 Scheduler *Scheduler::scheduler=NULL;
 std::mutex Scheduler::delMutex;
+std::mutex Scheduler::pause_mtx;
+std::condition_variable Scheduler::pause_cv;
 
 Scheduler::Scheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Scheduler constructor" << endl;
+#endif
 
 	if (sizeof(Time) != 8) {
 		ERRPUT << "\033[1;31m" << "ERROR : Scheduler requires 8bytes integer that are not available on this computer" << "\033[0m" << endl;
@@ -43,7 +47,9 @@ Scheduler::Scheduler() {
 }
 
 Scheduler::~Scheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "Scheduler destructor" << endl;
+#endif
 	removeKeywords();
 	if (schedulerThread)
 		delete schedulerThread;
@@ -62,10 +68,10 @@ bool Scheduler::schedule(Event *ev) {
 	trace(info.str());*/
 
 	if (pev->date < Scheduler::currentDate) {
-	        if (!possibleOverflow) {
-	            cerr << "WARNING: Attempt to schedule an event in the past (possible overflow detected?)!" << endl;
-	            possibleOverflow = true;
-	        }
+		if (!possibleOverflow) {
+			cerr << "WARNING: Attempt to schedule an event in the past (possible overflow detected?)!" << endl;
+			possibleOverflow = true;
+		}
 		OUTPUT << "ERROR : An event cannot be scheduled in the past !\n";
 		OUTPUT << "current time : " << Scheduler::currentDate << endl;
 		OUTPUT << "ev->eventDate : " << pev->date << endl;
@@ -74,10 +80,10 @@ bool Scheduler::schedule(Event *ev) {
 	}
 
 	if (pev->date > maximumDate) {
-	        if (!tooLate) {
-	            cerr << "WARNING: Maximum simulation date reached!" << endl;
-	            tooLate = true;
-	        }
+		if (!tooLate) {
+			cerr << "WARNING: Maximum simulation date reached!" << endl;
+			tooLate = true;
+		}
 		OUTPUT << "WARNING : An event should not be scheduled beyond the end of simulation date !\n";
 		OUTPUT << "pev->date : " << pev->date << endl;
 		OUTPUT << "maximumDate : " << maximumDate << endl;
@@ -199,5 +205,16 @@ void Scheduler::printStats() {
   }
 }
 
+void Scheduler::toggle_pause() {
+    if (state > Scheduler::ENDED) {
+        std::unique_lock<std::mutex> lck(pause_mtx);
+        if (state == Scheduler::PAUSED) {
+            state = Scheduler::RUNNING;
+            pause_cv.notify_one();
+        } else {
+            state = Scheduler::PAUSED;
+        }
+    }
+}
 
 } // BaseSimulator namespace

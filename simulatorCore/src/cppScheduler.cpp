@@ -23,14 +23,18 @@ using us = chrono::microseconds;
 using get_time = chrono::steady_clock;
 
 CPPScheduler::CPPScheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "CPPScheduler constructor" << endl;
+#endif
 	state = NOTREADY;
 	schedulerMode = SCHEDULER_MODE_REALTIME;
 	schedulerThread = new thread(bind(&CPPScheduler::startPaused, this));
 }
 
 CPPScheduler::~CPPScheduler() {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "\033[1;31mCPPScheduler destructor\33[0m" << endl;
+#endif
 }
 
 void CPPScheduler::createScheduler() {
@@ -71,67 +75,80 @@ void *CPPScheduler::startPaused(/*void *param*/) {
 					//
 
 					// Check that we have not reached the maximum simulation date, if there is one
-					if (currentDate > maximumDate) {
-						cout << "\033[1;33m" << "Scheduler : maximum simulation date (" << maximumDate
-							 << ") has been reached. Terminating..." << "\033[0m" << endl;
-						break;
-					}
+                    if (currentDate > maximumDate) {
+                        cout << "\033[1;33m" << "Scheduler : maximum simulation date (" << maximumDate
+                             << ") has been reached. Terminating..." << "\033[0m" << endl;
+                        break;
+                    }
 
-					if (!eventsMap.empty()) {
-						first=eventsMap.begin();
-						pev = (*first).second;
-						currentDate = pev->date;
-						pev->consume();
-						StatsCollector::getInstance().incEventsCount();
-						eventsMap.erase(first);
-						eventsMapSize--;
-					}
+                    if (!eventsMap.empty()) {
+                        first=eventsMap.begin();
+                        pev = (*first).second;
+                        currentDate = pev->date;
+                        pev->consume();
+                        StatsCollector::getInstance().incEventsCount();
+                        eventsMap.erase(first);
+                        eventsMapSize--;
+                    }
 
-					if (terminate.load()) {
-						break;
-					}
+                    if (terminate.load()) {
+                        break;
+                    }
 				}
 				break;
-			case SCHEDULER_MODE_REALTIME:
+			case SCHEDULER_MODE_REALTIME: {
 				cout << "Realtime mode scheduler\n";
-				while((state != ENDED && !eventsMap.empty()) || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
-					//gettimeofday(&heureGlobaleActuelle,NULL);
-					auto systemCurrentTime = get_time::now();
-					auto systemCurrentTimeMax = systemCurrentTime - systemStartTime;
-					//ev = *(listeEvenements.begin());
-					if (!eventsMap.empty()) {
-						first=eventsMap.begin();
-						pev = (*first).second;
-						while (!eventsMap.empty() && pev->date <= chrono::duration_cast<us>(systemCurrentTimeMax).count()) {
-							first=eventsMap.begin();
-							pev = (*first).second;
-							currentDate = pev->date;
-							//lock();
-							pev->consume();
-							StatsCollector::getInstance().incEventsCount();
-							//unlock();
-							eventsMap.erase(first);
-							eventsMapSize--;
-						}
-					}
+                auto globalPauseTime = get_time::now() - get_time::now();
+                while((state != ENDED && !eventsMap.empty())
+                      || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
+                    
+                    //gettimeofday(&heureGlobaleActuelle,NULL);
+                    // cout << "globalPauseTime1: " << static_cast<uint64_t>(chrono::duration_cast<us>(globalPauseTime).count()) << endl;
+                    auto systemCurrentTime = get_time::now() - globalPauseTime;
+                    auto systemCurrentTimeMax = systemCurrentTime - systemStartTime;
+                    //ev = *(listeEvenements.begin());
+                    if (!eventsMap.empty()) {
+                        first=eventsMap.begin();
+                        pev = (*first).second;
+                        while (!eventsMap.empty() && pev->date <= static_cast<uint64_t>(chrono::duration_cast<us>(systemCurrentTimeMax).count())) {
 
-					if (!eventsMap.empty()) {
-						//ev = *(listeEvenements.begin());
-						first=eventsMap.begin();
-						pev = (*first).second;
-					}
+                            auto prePauseTime = get_time::now();
+                            std::unique_lock<std::mutex> lck(scheduler->pause_mtx);
+                            pause_cv.wait(lck, [=]() { return state == RUNNING; });
+                            auto pauseDuration = get_time::now() - prePauseTime;
+                            globalPauseTime += pauseDuration;
+                            // cout << "PAUSED FOR: " << static_cast<uint64_t>(chrono::duration_cast<us>(pauseDuration).count()) << endl;
+                            // cout << "globalPauseTime2: " << static_cast<uint64_t>(chrono::duration_cast<us>(globalPauseTime).count()) << endl;
+                            
+                            first=eventsMap.begin();
+                            pev = (*first).second;
+                            currentDate = pev->date;
+                            //lock();
+                            pev->consume();
+                            StatsCollector::getInstance().incEventsCount();
+                            //unlock();
+                            eventsMap.erase(first);
+                            eventsMapSize--;
+                        }
+                    }
+
+                    if (!eventsMap.empty()) {
+                        //ev = *(listeEvenements.begin());
+                        first=eventsMap.begin();
+                        pev = (*first).second;
+                    }
 			
-					if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
-						std::chrono::milliseconds timespan(5);
-						std::this_thread::sleep_for(timespan);
-					}
+                    if (!eventsMap.empty() || schedulerLength == SCHEDULER_LENGTH_INFINITE) {
+                        std::chrono::milliseconds timespan(5);
+                        std::this_thread::sleep_for(timespan);
+                    }
 
-					if (terminate.load()) {
-						break;
-					}
+                    if (terminate.load()) {
+                        break;
+                    }
 				}
 
-				break;
+            } break;
 			default:
 				cout << "ERROR : Scheduler mode not recognized !!" << endl;
 		}

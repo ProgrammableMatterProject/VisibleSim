@@ -19,6 +19,7 @@
 class Event;
 typedef std::shared_ptr<Event> EventPtr;
 class Message;
+class HandleableMessage;
 class P2PNetworkInterface;
 
 namespace BaseSimulator {
@@ -35,7 +36,7 @@ typedef std::function<void (BlockCode*,std::shared_ptr<Message>,P2PNetworkInterf
  */ 
 class BlockCode {
 private:
-    int sendMessageToAllNeighbors(const char*msgString, Message*msg,int t0,int dt, int nexcept, va_list args);
+    int sendMessageToAllNeighbors(const char*msgString, Message*msg,Time t0,Time dt, int nexcept, va_list args);
 public:
     BuildingBlock *hostBlock; 	//!< The block to which this instance of the user program belongs 
     Time availabilityDate = 0; //!< If the host is busy, the date at which it will be available
@@ -107,24 +108,36 @@ public:
      * @param ... variadic parameters: pointer to the nexcept interfaces to ignore
      * @return Number of messages effectively sent
      */
-    int sendMessageToAllNeighbors(Message *msg,int t0,int dt,int nexcept,...);
+    int sendMessageToAllNeighbors(Message *msg, Time t0, Time dt,int nexcept,...);
     /**
      * @copydoc BlockCode::sendMessageToAllNeighbors
      * Identical to sendMessageToAllNeighbors, but prints msgString to the console when the message is sent
      * @param msgString string of the message to be printed when sent
      */
-    int sendMessageToAllNeighbors(const char *msgString,Message *msg,int t0,int dt,int nexcept,...);    
+    int sendMessageToAllNeighbors(const char *msgString,Message *msg,
+                                  Time t0,Time dt,int nexcept,...);
+    /**
+     * @brief Send message to interface dest at time t0 + [0,1]dt
+     * @param msg message to be sent (will print the handleable message's name)
+     * @param dest destination interface. 
+     * @param t0 time to wait before sending
+     * @param dt potential delay in sending time */
+    int sendMessage(HandleableMessage *msg,P2PNetworkInterface *dest,
+                    Time t0,Time dt);
+
     /**
      * @brief Send message to interface dest at time t0 + [0,1]dt
      * @param msg message to be sent
      * @param dest destination interface. 
      * @param t0 time to wait before sending
      * @param dt potential delay in sending time */
-    int sendMessage(Message *msg,P2PNetworkInterface *dest,int t0,int dt);
+    int sendMessage(Message *msg,P2PNetworkInterface *dest,
+                    Time t0,Time dt);
     /**
      * @copydoc BlockCode::sendMessage
      * @param msgString string to be printed to the console upon sending */
-    int sendMessage(const char *msgString,Message *msg,P2PNetworkInterface *dest,int t0,int dt);
+    int sendMessage(const char *msgString,Message *msg,P2PNetworkInterface *dest,
+                     Time t0,Time dt);
 };
 
 } // BaseSimulator namespace

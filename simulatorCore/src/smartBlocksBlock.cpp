@@ -15,11 +15,15 @@ namespace SmartBlocks {
     
 SmartBlocksBlock::SmartBlocksBlock(int bId, BlockCodeBuilder bcb)
     : BaseSimulator::BuildingBlock(bId, bcb, SLattice::MAX_NB_NEIGHBORS) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "SmartBlocksBlock #" << bId << " constructor" << endl;
+#endif
 }
 
 SmartBlocksBlock::~SmartBlocksBlock() {
+#ifdef DEBUG_OBJECT_LIFECYCLE    
     OUTPUT << "SmartBlocksBlock #" << blockId << " destructor" << endl;
+#endif
 }
 
 P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByRelPos(const Cell3DPosition &pos) {
@@ -80,16 +84,20 @@ P2PNetworkInterface *SmartBlocksBlock::getP2PNetworkInterfaceByDestBlockId(bID i
 
 
 void SmartBlocksBlock::addNeighbor(P2PNetworkInterface *ni, BuildingBlock* target) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " add neighbor " << target->blockId << " on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new AddNeighborEvent(getScheduler()->now(), this,
 							 getWorld()->lattice->getOppositeDirection(getDirection(ni)), target->blockId));
 }
 
 void SmartBlocksBlock::removeNeighbor(P2PNetworkInterface *ni) {
+#ifdef DEBUG_NEIGHBORHOOD
     OUTPUT << "Simulator: "<< blockId << " remove neighbor on "
 		   << getWorld()->lattice->getDirectionString(getDirection(ni)) << endl;
+#endif
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));

@@ -19,7 +19,8 @@ public:
 	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
 
-    double potentiel;
+    int step;
+    int currentOr;
 
 	SimpleCatom3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~SimpleCatom3DBlockCode();
@@ -31,6 +32,7 @@ public:
 	static BlockCode *buildNewBlockCode(BuildingBlock *host) {
 			return (new SimpleCatom3DBlockCode((Catoms3DBlock*)host));
 	}
+	void nextRotation();
 
 };
 

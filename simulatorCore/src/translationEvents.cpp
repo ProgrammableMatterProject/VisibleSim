@@ -143,12 +143,12 @@ void TranslationStopEvent::consume() {
     World *wrld = getWorld();
     bb->setPosition(Cell3DPosition(finalPosition.pt[0], finalPosition.pt[1], finalPosition.pt[2]));
     wrld->updateGlData(bb);
-    bb->setColor(YELLOW);
 
-    stringstream info;
-    info.str("");
-    info << "connect Block " << bb->blockId;
-    getScheduler()->trace(info.str(),bb->blockId,LIGHTBLUE);
+#ifdef COLOR_MOTION_DEBUG
+    bb->setColor(YELLOW);
+#endif
+
+    OUTPUT << "connect Block " << bb->blockId << "\n";
     wrld->connectBlock(bb);
     Scheduler *scheduler = getScheduler();
     scheduler->schedule(new TranslationEndEvent(scheduler->now() + ANIMATION_DELAY, bb));

@@ -1,5 +1,4 @@
-/*! @file target.cpp
- * @brief Defines a target configuration for reconfiguration algorithms,
+/*! @file target.cpp01??* @brief Defines a target configuration for reconfiguration  algorithms,
  * several ways of defining the configuration are provided to the user.
  * @author Pierre Thalamy
  * @date 21/07/2016
@@ -11,6 +10,8 @@
 #include "csg.h"
 #include "catoms3DWorld.h"
 
+#include <algorithm>
+
 namespace BaseSimulator {
 
 using namespace BaseSimulator::utils;
@@ -19,28 +20,30 @@ TiXmlNode *Target::targetListNode = NULL;
 TiXmlNode *Target::targetNode = NULL;
 
 Target *Target::loadNextTarget() {
-    if (Target::targetListNode) {
+	if (Target::targetListNode) {
         // Move targetNode pointer to next target (or NULL if there is none)
         Target::targetNode = targetListNode->IterateChildren(targetNode);
 
         if (Target::targetNode) {
-            TiXmlElement* element;
-            if (Target::targetNode) {
-                element = Target::targetNode->ToElement();
-                const char *attr = element->Attribute("format");
-                if (attr) {
-                    string str(attr);
-                    if (str.compare("grid") == 0) {
-                        return new TargetGrid(Target::targetNode);
-                    } else if (str.compare("csg") == 0) {
-                        return new TargetCSG(Target::targetNode);
-                    } else if (str.compare("surface") == 0) {
-                        return new TargetSurface(Target::targetNode);
-                    }
+            TiXmlElement* element = Target::targetNode->ToElement();
+            const char *attr = element->Attribute("format");
+            if (attr) {
+                string str(attr);
+                if (str.compare("grid") == 0) {
+                    return new TargetGrid(Target::targetNode);
+                } else if (str.compare("csg") == 0) {
+                    return new TargetCSG(Target::targetNode);
+                } else if (str.compare("relativeGrid") == 0) {
+                    return new RelativeTargetGrid(Target::targetNode);
+                } else if (str.compare("surface") == 0) {
+                    return new TargetSurface(Target::targetNode);
                 }
+            } else {
+                throw UnknownTargetFormatException();
             }
         }
     }
+
 
     return NULL;
 }
@@ -96,7 +99,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
                       atof(str.substr(pos1+1,pos2-pos1-1).c_str())/255.0,
                       atof(str.substr(pos2+1,str.length()-pos1-1).c_str())/255.0);
         }
-
+		OUTPUT << "add target " << position << "," << color << endl;
         addTargetCell(position, color);
         cellNode = cellNode->NextSibling("cell");
     } // end while (cellNode)
@@ -146,7 +149,7 @@ TargetGrid::TargetGrid(TiXmlNode *targetNode) : Target(targetNode) {
     } // end while (cellNode)*/
 }
 
-bool TargetGrid::isInTarget(const Cell3DPosition &pos) {
+bool TargetGrid::isInTarget(const Cell3DPosition &pos) const {
     return tCells.count(pos);
 }
 
@@ -173,6 +176,153 @@ void TargetGrid::boundingBox(BoundingBox &bb) {
     throw BaseSimulator::utils::NotImplementedException();
 }
 
+void TargetGrid::highlight() {
+    for (const auto& pair : tCells) {
+        getWorld()->lattice->highlightCell(pair.first, pair.second);
+    }
+}
+
+void TargetGrid::unhighlight() {
+    for (const auto& pair : tCells) {
+        getWorld()->lattice->unhighlightCell(pair.first);
+    }
+}
+
+
+/************************************************************
+ *                      RelativeTargetGrid
+ ************************************************************/
+
+bool RelativeTargetGrid::isInTarget(const Cell3DPosition &pos) const {
+    if (!origin)
+        throw MissingInitializationException();
+
+    return TargetGrid::isInTarget(pos);
+}
+
+void RelativeTargetGrid::setOrigin(const Cell3DPosition &org) {
+    assert(!tCells.empty());
+
+    // relatifyAndPrint();
+    origin = new Cell3DPosition(org);
+
+    // Then update every relative position parsed from the configuration file to its absolute counterpart
+    map<const Cell3DPosition, const Color> absMap;
+    for (const auto& targetEntry : tCells) {
+        absMap.insert(
+            std::pair<const Cell3DPosition, const Color>(targetEntry.first + *origin,
+                                                        targetEntry.second));
+    }
+
+    tCells = absMap;
+
+    computeGeodesics(); // Will populate each cell's distance to the origin in hops
+
+    if (!targetCellsInConstructionOrder) {
+        targetCellsInConstructionOrder = new list<Cell3DPosition>();
+
+        for (const auto &pair : tCells) {
+            cout << pair.first << " -dist: " << geodesicToOrigin[pair.first] << endl;
+            targetCellsInConstructionOrder->push_back(pair.first);
+        }
+
+        targetCellsInConstructionOrder->
+            sort([=](const Cell3DPosition& first, const Cell3DPosition& second){
+                    // return geodesicToOrigin[first] < geodesicToOrigin[second];
+                    // if (first.dist_euclid(*origin) < second.dist_euclid(*origin))
+                    if (geodesicToOrigin[first] < geodesicToOrigin[second])
+                        return true;
+                    // else if (first.dist_euclid(*origin) > second.dist_euclid(*origin))
+                    else if (geodesicToOrigin[first] > geodesicToOrigin[second])
+                        return false;
+                    else {
+                        if (first[0] < second[0]) return true;
+                        else if (first[0] > second[0]) return false;
+                        else {
+                            if (first[1] > second[1]) return true;
+                            else if (first[1] < second[1]) return false;
+                            else {
+                                return first[2] < second[2];
+                            }
+                        }
+                    }
+                });
+    }
+}
+
+void RelativeTargetGrid::computeGeodesics() {
+    geodesicToOrigin[*origin] = 0;
+
+    // BFS-parent of every connector
+    std::map<Cell3DPosition, Cell3DPosition> parent;
+    parent[*origin] = *origin;
+
+    list<Cell3DPosition> queue;
+    queue.push_back(*origin);
+
+    list<Cell3DPosition>::iterator itCell;
+    Lattice* lattice = static_cast<Lattice*>(getWorld()->lattice);
+
+    while(!queue.empty()) {
+        Cell3DPosition cell = queue.front();
+        queue.pop_front();
+
+        // Get all adjacent cells of dequeued cell.
+        // If one of the adjacent cells has not been visited, mark
+        //  it as visited and enqueue it
+        for (const auto& nCell : lattice->getNeighborhood(cell))
+        {
+            if (isInTarget(nCell) && parent.find(nCell) == parent.end()) {
+                parent[nCell] = cell;
+                geodesicToOrigin[nCell] = geodesicToOrigin[cell] + 1;
+
+                queue.push_back(nCell);
+            }
+        }
+    }
+}
+
+void RelativeTargetGrid::highlightByDistanceToRoot() const {
+    if (!origin)
+        throw MissingInitializationException();
+
+    for (const auto& cell : *targetCellsInConstructionOrder) {
+        short distColorIdx = geodesicToOrigin.find(cell)->second % NB_COLORS;
+        getWorld()->lattice->highlightCell(cell, Colors[distColorIdx]);
+    }
+}
+
+list<Cell3DPosition>* RelativeTargetGrid::getTargetCellsInConstructionOrder() {
+    if (!origin)
+        throw MissingInitializationException();
+
+    return targetCellsInConstructionOrder;
+}
+
+void RelativeTargetGrid::removeTargetCell(const Cell3DPosition& tc) {
+    tCells.erase(tc);
+}
+
+bool RelativeTargetGrid::reconfigurationIsComplete() const { return tCells.empty(); }
+
+void RelativeTargetGrid::relatifyAndPrint() {
+    cout << endl << "=== START RELATIFIED TARGET ===" << endl << endl;
+
+    const auto& minPair =
+        *std::min_element(tCells.begin(), tCells.end(),
+                          [](const std::pair<Cell3DPosition, Color>& pair1,
+                             const std::pair<Cell3DPosition, Color>& pair2) {
+                              return Cell3DPosition::compare_ZYX(pair1.first, pair2.first);
+                          });
+
+    for (const auto &pair : tCells) {
+        Cell3DPosition relCell = pair.first - minPair.first;
+        cout << "<cell position=\"" << relCell.config_print() << "\" />" << endl;
+    }
+
+    cout << endl << "=== END RELATIFIED TARGET ===" << endl << endl;
+}
+
 /************************************************************
  *                      TargetCSG
  ************************************************************/
@@ -188,11 +338,11 @@ TargetCSG::TargetCSG(TiXmlNode *targetNode) : Target(targetNode) {
     CsgUtils csgUtils;
     csgRoot = csgUtils.readCSGBuffer(csgBin);
     csgRoot->toString();
-    if (boundingBox)
-        csgRoot->boundingBox(bb);
+
+    if (boundingBox) csgRoot->boundingBox(bb);
 }
 
-Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
+Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) const {
     Vector3D worldPosition;
     worldPosition.pt[3] = 1.0;
     worldPosition.pt[2] = M_SQRT2_2 * (pos[2] + 0.5);
@@ -209,13 +359,14 @@ Vector3D TargetCSG::gridToWorldPosition(const Cell3DPosition &pos) {
     return worldPosition;
 }
 
-bool TargetCSG::isInTarget(const Cell3DPosition &pos) {
+bool TargetCSG::isInTarget(const Cell3DPosition &pos) const {
     Color color;
     return csgRoot->isInside(gridToWorldPosition(pos), color);
 }
 
-bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) {
+bool TargetCSG::isInTargetBorder(const Cell3DPosition &pos, double radius) const {
     Color color;
+
     return csgRoot->isInBorder(gridToWorldPosition(pos), color, radius);
 }
 
@@ -416,7 +567,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
         //Initialization of the NURBS parameters, parsing from config file to be implemented later
 
         float scale = 1;
-        
+
         TiXmlNode *scaleNode = methNode->FirstChild("scale");
             if (scaleNode) {
                 element = scaleNode->ToElement();
@@ -558,7 +709,7 @@ TargetSurface::TargetSurface(TiXmlNode *targetNode) : Target(targetNode) {
 
 }
 
-bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
+bool TargetSurface::isInTarget(const Cell3DPosition &pos) const {
     //Initialization
     Vector3D cartesianpos = getWorld()->lattice->gridToWorldPosition(pos);
     float x = cartesianpos.pt[0];
@@ -626,10 +777,10 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
         float precision = FLT_MAX;
         float precGoal = 100;
         float approx = 0.01;
-        float u0 = 0 + approx;
-        float u1 = 1 - approx;
-        float v0 = 0 + approx;
-        float v1 = 1 - approx;
+        float u0 = 0;// + approx;
+        float u1 = 1;// - approx;
+        float v0 = 0;// + approx;
+        float v1 = 1;// - approx;
         float znurbs = 0;
         int count = 0;
 
@@ -641,18 +792,24 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             if (count == 0){
                 //cout << "x1=" <<x1<<",x2="<<x2<<",x3="<<x3<<",x4="<<x4<<endl;
                 //cout << "y1=" <<y1<<",y2="<<y2<<",y3="<<y3<<",y4="<<y4<<endl;
-                float x1 = calculateNurbs(u0,v0,0);
-                float y1 = calculateNurbs(u0,v0,1);
-                float x2 = calculateNurbs(u1,v0,0);
-                float y2 = calculateNurbs(u1,v0,1);
-                float x3 = calculateNurbs(u0,v1,0);
-                float y3 = calculateNurbs(u0,v1,1);
-                float x4 = calculateNurbs(u1,v1,0);
-                float y4 = calculateNurbs(u1,v1,1);
+                float x1 = calculateNurbs(u0+approx,v0+approx,0);
+                float y1 = calculateNurbs(u0+approx,v0+approx,1);
+                float x2 = calculateNurbs(u1-approx,v0+approx,0);
+                float y2 = calculateNurbs(u1-approx,v0+approx,1);
+                float x3 = calculateNurbs(u0+approx,v1-approx,0);
+                float y3 = calculateNurbs(u0+approx,v1-approx,1);
+                float x4 = calculateNurbs(u1-approx,v1-approx,0);
+                float y4 = calculateNurbs(u1-approx,v1-approx,1);
                 if ( x1 < x && x2 < x && x3 < x && x4 < x ){
                     return false;
                 }
                 if ( y1 < y && y2 < y && y3 < y && y4 < y ){
+                    return false;
+                }
+                if ( x1 > x && x2 > x && x3 > x && x4 > x ){
+                    return false;
+                }
+                if ( y1 > y && y2 > y && y3 > y && y4 > y ){
                     return false;
                 }
             }
@@ -689,26 +846,26 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
             if (quadrant == 1){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x1<<" y found="<<y1<<endl;
                 znurbs = calculateNurbs(u0,v0,2);
-                u1 = (u1+u0)/2;
-                v1 = (v1+v0)/2;
+                u1 = u;//(u1+u0)/2;
+                v1 = v;//(v1+v0)/2;
             }
             if (quadrant == 2){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x2<<" y found="<<y2<<endl;
                 znurbs = calculateNurbs(u1,v0,2);
-                u0 = (u1+u0)/2;
-                v1 = (v1+v0)/2;
+                u0 = u;//(u1+u0)/2;
+                v1 = v;//(v1+v0)/2;
             }
             if (quadrant == 3){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x3<<" y found="<<y3<<endl;
                 znurbs = calculateNurbs(u0,v1,2);
-                u1 = (u1+u0)/2;
-                v0 = (v1+v0)/2;
+                u1 = u;//(u1+u0)/2;
+                v0 = v;//(v1+v0)/2;
             }
             if (quadrant == 4){
 //                cout << "my x="<<x<<" my y="<<y<<" x found="<<x4<<" y found="<<y4<<endl;
                 znurbs = calculateNurbs(u1,v1,2);
-                u0 = (u1+u0)/2;
-                v0 = (v1+v0)/2;
+                u0 = u;//(u1+u0)/2;
+                v0 = v;//(v1+v0)/2;
             }
 
             precision = sqrt(mindist);
@@ -764,7 +921,7 @@ void TargetSurface::addTargetCell(const Cell3DPosition &pos, const Color c) {
 }
 
 
-float TargetSurface::calculateNurbs(float u, float v, int coord){
+float TargetSurface::calculateNurbs(float u, float v, int coord) const {
 
     //cout<<"u="<<u<<endl;
     //cout<<"v="<<v<<endl;
@@ -855,7 +1012,7 @@ float TargetSurface::calculateNurbs(float u, float v, int coord){
     return S;
 }
 
-float TargetSurface::dist(float x1, float y1, float x2, float y2){
+float TargetSurface::dist(float x1, float y1, float x2, float y2) const {
     float distance = (x2-x1)*(x2-x1)+(y2-y1)*(y2-y1);
     //cout << "dist = " << distance << endl;
     return distance;

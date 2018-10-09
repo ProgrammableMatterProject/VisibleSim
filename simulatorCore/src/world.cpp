@@ -20,7 +20,9 @@ map<bID, BuildingBlock*>World::buildingBlocksMap;
 vector <GlBlock*>World::tabGlBlocks;
 
 World::World(int argc, char *argv[]) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
 	OUTPUT << "World constructor" << endl;
+#endif
 	selectedGlBlock = NULL;
 	numSelectedFace=0;
 	numSelectedGlBlock=0;
@@ -70,7 +72,9 @@ World::~World() {
     delete objBlockForPicking;
     delete objRepere;
 
+#ifdef DEBUG_OBJECT_LIFECYCLE    
 	OUTPUT << "World destructor" << endl;
+#endif
 }
 
 
@@ -143,17 +147,17 @@ void World::disconnectBlock(BuildingBlock *block) {
     for(int i = 0; i < block->getNbInterfaces(); i++) {
         fromBlock = block->getInterface(i);
         if (fromBlock && fromBlock->connectedInterface) {
-	    toBlock = fromBlock->connectedInterface;
+            toBlock = fromBlock->connectedInterface;
 
-	    // Clear message queue
-	    fromBlock->outgoingQueue.clear();
-	    toBlock->outgoingQueue.clear();
+            // Clear message queue
+            fromBlock->outgoingQueue.clear();
+            toBlock->outgoingQueue.clear();
 
-	    // Notify respective codeBlocks
-	    block->removeNeighbor(fromBlock);
-	    fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
+            // Notify respective codeBlocks
+            block->removeNeighbor(fromBlock);
+            fromBlock->connectedInterface->hostBlock->removeNeighbor(fromBlock->connectedInterface);
 
-	    // Disconnect the interfaces
+            // Disconnect the interfaces
             fromBlock->connectedInterface = NULL;
             toBlock->connectedInterface = NULL;
         }
@@ -168,7 +172,8 @@ void World::disconnectBlock(BuildingBlock *block) {
 void World::deleteBlock(BuildingBlock *bb) {
     if (bb->getState() >= BuildingBlock::ALIVE ) {
         // cut links between bb and others and remove it from the grid
-		disconnectBlock(bb);
+	disconnectBlock(bb);
+        bb->setState(BuildingBlock::REMOVED);
     }
 
     if (selectedGlBlock == bb->ptrGlBlock) {

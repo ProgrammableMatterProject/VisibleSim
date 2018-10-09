@@ -14,10 +14,13 @@
 #include "simulator.h"
 #include "events.h"
 #include "trace.h"
+#include "rotation3DEvents.h"
 
 #ifdef ENABLE_MELDPROCESS
 #include "meldProcessDebugger.h"
 #endif
+
+//#define showStatsFPS	1
 
 //===========================================================================================================
 //
@@ -86,6 +89,7 @@ void GlutContext::init(int argc, char **argv) {
 		glutMotionFunc(motionFunc);
 		glutPassiveMotionFunc(passiveMotionFunc);
 		glutKeyboardFunc(keyboardFunc);
+        glutSpecialFunc(specialFunc);
 		glutIdleFunc(idleFunc);
 
 		mainWindow = new GlutSlidingMainWindow(screenWidth-40,60,40,screenHeight-60,
@@ -272,8 +276,10 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 'T' : case 't' :
                 if (mainWindow->getTextSize()==TextSize::TEXTSIZE_STANDARD) {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_LARGE);
+										popup->setTextSize(TextSize::TEXTSIZE_LARGE);
                 } else {
                     mainWindow->setTextSize(TextSize::TEXTSIZE_STANDARD);
+										popup->setTextSize(TextSize::TEXTSIZE_STANDARD);
                 }
                 break;
                 //  case 'l' : showLinks = !showLinks; break;
@@ -312,16 +318,57 @@ void GlutContext::keyboardFunc(unsigned char c, int x, int y)
             case 's' : saveScreenMode=!saveScreenMode; break;
             case 'S' : saveScreen((char *)("capture.ppm")); break;
             case 'B' : {
-					World *world = BaseSimulator::getWorld();
-					world->toggleBackground();
-				}
-                break;
-			case 'p' : 
-				BaseSimulator::getWorld()->simulatePolymer();
-				break;
-
+                World *world = BaseSimulator::getWorld();
+                world->toggleBackground();
+            } break;
+            case 32: { // SPACE
+                Scheduler *scheduler = getScheduler();
+                scheduler->toggle_pause();
+          	} break;
+						case 'p' :
+							BaseSimulator::getWorld()->simulatePolymer();
+						break;
         }
     }
+    glutPostRedisplay();
+}
+
+/////////////////////////////////////run/////////////////////////////////////////
+// fonction associée aux interruptions clavier de caractères spéciaux
+// - key : keycode of the pressed key
+// - x,y : window cursor coordinates
+void GlutContext::specialFunc(int key, int x, int y)
+{
+    switch(key) {
+
+        case GLUT_KEY_PAGE_UP: {
+            Rotations3D::rotationDelayMultiplier /= 1.5f;
+            const float minRotationDelayMultiplier = 0.001f;
+            if (Rotations3D::rotationDelayMultiplier < minRotationDelayMultiplier) {
+                Rotations3D::rotationDelayMultiplier = minRotationDelayMultiplier;
+                cout << "Max rotation speed reached: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            } else {
+                cout << "Increased rotation speed: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            }
+        } break;
+
+        case GLUT_KEY_PAGE_DOWN: {
+            // PTHA: #TODO Should consider creating a configuration variables system
+            Rotations3D::rotationDelayMultiplier *= 1.5f;
+            const float maxRotationDelayMultiplier = 10.0f;
+            if (Rotations3D::rotationDelayMultiplier > maxRotationDelayMultiplier) {
+                Rotations3D::rotationDelayMultiplier = maxRotationDelayMultiplier;
+                cout << "Min rotation speed reached: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            } else {
+                cout << "Decreased rotation speed: "
+                     << Rotations3D::rotationDelayMultiplier << endl;
+            }
+        } break;
+    }
+
     glutPostRedisplay();
 }
 
@@ -332,7 +379,9 @@ void GlutContext::idleFunc(void) {
     std::chrono::milliseconds timespan(20);
     std::this_thread::sleep_for(timespan);
 
-    //calculateFPS();
+#ifdef showStatsFPS
+    calculateFPS();
+#endif
     if (saveScreenMode && mustSaveImage) {
         static int num=0;
         char title[16];
@@ -367,8 +416,7 @@ void GlutContext::calculateFPS(void) {
 
     //  Calculate time passed
     int timeInterval = currentTime - previousTime;
-    if(timeInterval > 1000)
-    {
+    if(timeInterval > 200) {
         fps = frameCount / (timeInterval / 1000.0f);
         previousTime = currentTime;
         frameCount = 0;
@@ -378,6 +426,7 @@ void GlutContext::calculateFPS(void) {
 void GlutContext::showFPS(void) {
     char fpsStr[50];
     sprintf(fpsStr, "FPS = %4.2f", fps);
+	glColor3f(255,255,0);
     GlutWindow::drawString(50, 50, fpsStr);
 }
 
@@ -413,8 +462,9 @@ void GlutContext::drawFunc(void) {
     popup->glDraw();
     if (popupMenu) popupMenu->glDraw();
     if (helpWindow) helpWindow->glDraw();
-    //showFPS();
-
+#ifdef showStatsFPS
+    showFPS();
+#endif
     glEnable(GL_DEPTH_TEST);
     glutSwapBuffers();
 }

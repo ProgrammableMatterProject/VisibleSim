@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no" ?>
+<world gridSize="10,10,5" windowSize="1280,720">
+  <camera target="42.7949,18.6666,16.4332" directionSpherical="-42.1848,7.49409,160"
+          angle="30" />
+  <spotlight target="25,25,0" directionSpherical="-35,40,150" angle="78" />
+
+  <customization>
+    <rotationDelay multiplier="0.1f"/>
+  </customization>
+
+  <blockList blockSize="10,10,10">
+    <block position="3,2,2" color="128,128,128" /> <!-- orientation="13" /> -->
+    <block position="4,2,2" color="128,128,128" /> <!-- orientation="3" /> -->
+    <block position="5,2,2" color="128,128,128" /> <!-- orientation="3" /> -->
+  </blockList>
+
+  <targetList>
+    <target format="relativeGrid">      
+      <cell position="0,0,0" />
+      <cell position="0,0,1" />
+      <cell position="0,0,2" />            
+    </target>
+  </targetList>
+
+</world>

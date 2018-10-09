@@ -22,7 +22,9 @@ namespace MultiRobots {
 
 MultiRobotsBlock::MultiRobotsBlock(int bId, BlockCodeBuilder bcb)
 	: BaseSimulator::BuildingBlock(bId, bcb, BCLattice::MAX_NB_NEIGHBORS) {
+#ifdef DEBUG_OBJECT_LIFECYCLE
     OUTPUT << "MultiRobotsBlock constructor" << endl;
+#endif
 }
 
 MultiRobotsBlock::~MultiRobotsBlock() {

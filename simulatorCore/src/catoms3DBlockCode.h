@@ -14,20 +14,23 @@
 #include "catoms3DBlock.h"
 #include "network.h"
 #include "scheduler.h"
+/* #include "catoms3DMotionRules.h" */
 
 using namespace BaseSimulator;
 
 namespace Catoms3D {
 
+/* class Catoms3DMotionRules; */
 class Catoms3DBlock;
 
 class Catoms3DBlockCode : public BaseSimulator::BlockCode {
+     /* Catoms3DMotionRules *motionRules; */
 public:
-
 	Catoms3DBlockCode(Catoms3DBlock *host);
 	virtual ~Catoms3DBlockCode();
 
-//	virtual void processLocalEvent(EventPtr pev) = 0;
+	virtual void processLocalEvent(EventPtr pev);
+	virtual void onMotionEnd() {};
 
     void addDebugAttributes(Scheduler* scheduler);
 };
