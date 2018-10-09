@@ -79,7 +79,6 @@ void MeshAssemblyBlockCode::onBlockSelected() {
     cout << " ]" << endl;
 
     // catom->setColor(debugColorIndex++);
-    cout << "isOnLeftZBranch: " << ruleMatcher->isOnLeftZBranch(catom->position) << endl;
 }
 
 void MeshAssemblyBlockCode::startup() {
@@ -254,7 +253,12 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                         if (ruleMatcher->isOnXBorder(norm(coordinatorPos))) {
                             nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);
                         }
-                        
+
+                    } else if (bi == RightZBranch) {
+                        if (ruleMatcher->isOnYBorder(norm(coordinatorPos))) {
+                            nextHop = catom->position + ruleMatcher->getBranchUnitOffset(bi);
+                        }
+
                     } else {
                         throw NotImplementedException("routing non XYZ branches");
                     }
@@ -291,6 +295,11 @@ void MeshAssemblyBlockCode::processLocalEvent(EventPtr pev) {
                             and (i != LeftZBranch or
                                  (i == LeftZBranch and
                                   ruleMatcher->isOnXBorder(norm(catom->position))
+                                  and catomsReqByBranch[ZBranch] == 0))
+
+                            and (i != RightZBranch or
+                                 (i == RightZBranch and
+                                  ruleMatcher->isOnYBorder(norm(catom->position))
                                   and catomsReqByBranch[ZBranch] == 0))
 
                             // and (i != LeftZBranch or
@@ -358,9 +367,8 @@ short MeshAssemblyBlockCode::getEntryPointDirectionForBranch(BranchIndex bi) {
         case XBranch: return Dir9;
         case YBranch: return Dir11;
         case RevZBranch: return Dir10;
-        case LeftZBranch:
-        case RightZBranch:
-            throw NotImplementedException("getEPD for non XYZ branches");
+        case LeftZBranch: return Dir8;
+        case RightZBranch: return Dir11;
         default: VS_ASSERT_MSG(false, "Invalid branch index"); 
     }
 
@@ -381,9 +389,11 @@ Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
         case LeftZBranch:
             if (ruleMatcher->isOnXBorder(norm(catom->position)))
                 return Cell3DPosition(0,0,-1);
+            else VS_ASSERT(false);                
         case RightZBranch:
-            VS_ASSERT(false);
-            throw NotImplementedException("getEP for non XYZ branches");
+            if (ruleMatcher->isOnYBorder(norm(catom->position)))
+                return Cell3DPosition(0,1,-1);
+            else VS_ASSERT(false);                
         default:
             cerr << "invalid branch index: " << bi << endl;;
             VS_ASSERT(false); 
@@ -393,8 +403,7 @@ Cell3DPosition MeshAssemblyBlockCode::getEntryPointForBranch(BranchIndex bi) {
 }
 
 bool MeshAssemblyBlockCode::handleNewCatomInsertion(BranchIndex bi) {
-    if (catomsReqByBranch[bi] > 0 and not fedCatomOnLastRound[bi]
-        and bi != RightZBranch) { //FIXME:
+    if (catomsReqByBranch[bi] > 0 and not fedCatomOnLastRound[bi]) {
         // FIXME: What if cell has module?
         const Cell3DPosition& entryPos =
             catom->position + getEntryPointForBranch(bi);

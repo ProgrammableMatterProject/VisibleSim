@@ -72,19 +72,30 @@ void ProvideTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
         
         if (bi > 3)
             nextHop = mabc.catom->position + mabc.ruleMatcher->getBranchUnitOffset(bi);
+
         else if (bi == ZBranch) {
             if (mabc.coordinatorPos == mabc.meshSeedPosition)
                 nextHop = mabc.catom->position + Cell3DPosition(-1,-1,2);
             else
                 nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
+
         } else if (bi == RevZBranch) {
             nextHop = mabc.catom->position + Cell3DPosition(0,0,1);
+
         } else if (bi == LeftZBranch) {
             if (mabc.ruleMatcher->isOnXBorder(mabc.norm(mabc.coordinatorPos))) {
                 nextHop = mabc.catom->position + Cell3DPosition(0,-1,1);
             } else {
                 VS_ASSERT(false);
             }
+
+        } else if (bi == RightZBranch) {
+            if (mabc.ruleMatcher->isOnYBorder(mabc.norm(mabc.coordinatorPos))) {
+                nextHop = mabc.catom->position + Cell3DPosition(-1,-1,1);
+            } else {
+                VS_ASSERT(false);
+            }
+
         } else {
             VS_ASSERT(false);
         }

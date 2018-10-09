@@ -24,7 +24,7 @@
 
 #define IT_MODE_TILEROOT_ACTIVATION 1 
 
-// #define INTERACTIVE_MODE
+#define INTERACTIVE_MODE
 
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam };
 enum EntryPointDirection { Dir8, Dir9, Dir10, Dir11, NUM_EPD };
@@ -56,7 +56,7 @@ public:
     AgentRole role;
     Cell3DPosition coordinatorPos;
     Cell3DPosition targetPosition;
-    std::array<int, 6> catomsReqByBranch = {0,0,0,0,0,0}; // We could have -1 if branch should not be grown
+    std::array<int, 6> catomsReqByBranch = {-1,-1,-1,-1,-1,-1}; // We could have -1 if branch should not be grown
     std::array<bool, 6> fedCatomOnLastRound = { false, false, false, false, false, false };
     std::array<Cell3DPosition*, 6> openPositions = {NULL, NULL, NULL, NULL, NULL, NULL};
     std::array<Cell3DPosition, 4> targetForEntryPoint; //<! for a coordinator, the target cells to which each of the modules that it has called in should move to once they are initialized
