@@ -55,12 +55,12 @@ void CsgCatoms3DBlockCode::startup() {
 	scheduler->trace(info.str(),hostBlock->blockId);
 
     hasPosition = false;
-	if (catom->blockId==1) {
+	//if (catom->blockId==1) {
 
-        stoyUtils.readFile("data/mug-high.stoy");
-        meshUtils.readFile("data/mug-highresolution.obj");
-        bitmapUtils.readFile("data/mug.bmp");
-        myPosition = Catoms3DWorld::getWorld()->lattice->gridToWorldPosition(catom->position);
+        //stoyUtils.readFile("data/mug-high.stoy");
+        //meshUtils.readFile("data/mug-highresolution.obj");
+        //bitmapUtils.readFile("data/mug.bmp");
+        //myPosition = Catoms3DWorld::getWorld()->lattice->gridToWorldPosition(catom->position);
 
         if (BlockCode::target->isInTarget(catom->position)) {
             catom->setColor(BlockCode::target->getTargetColor(catom->position));
@@ -69,9 +69,9 @@ void CsgCatoms3DBlockCode::startup() {
             catom->setVisible(false);
         }
 
-        hasPosition = true;
-        sendCSGMessage();
-	}
+        //hasPosition = true;
+        //sendCSGMessage();
+	//}
 }
 
 

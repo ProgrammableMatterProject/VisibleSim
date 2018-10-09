@@ -230,12 +230,12 @@ bool Neighborhood::addNeighbor(Cell3DPosition pos)
         if (neighbors.isPositionBlockable(pos))
             world->addBlock(0, blockCodeBuilder, pos, c, 0, false);
         else if (neighbors.isPositionBlocked(pos)) {
-            world->addBlock(0, blockCodeBuilder, pos, RED, 0, false);
+            world->addBlock(0, blockCodeBuilder, pos, c, 0, false);
             numberBlockedModules++;
             cout << "number of blocked modules = " << numberBlockedModules << endl;
             cout << "---- ERROR ----\nPosition " << pos << " blocked" << endl;
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(100000));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(100000));
         }
         else {
             world->addBlock(0, blockCodeBuilder, pos, c, 0, false);
