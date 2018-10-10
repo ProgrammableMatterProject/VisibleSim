@@ -131,7 +131,7 @@ public:
         return (connectedInterface!=NULL && connectedInterface->hostBlock!=NULL)?connectedInterface->hostBlock->blockId:0;
     }
 
-    bool isConnected();
+    bool isConnected() const;
 
     void setDataRate(BaseSimulator::Rate* r);
     Time getTransmissionDuration(MessagePtr &m);

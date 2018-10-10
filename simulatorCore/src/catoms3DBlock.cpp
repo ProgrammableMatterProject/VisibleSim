@@ -128,6 +128,10 @@ short Catoms3DBlock::getAbsoluteDirection(short connector) {
     return lattice->getDirection(position, conPos);
 }
 
+short Catoms3DBlock::getAbsoluteDirection(const Cell3DPosition& pos) {
+    return getAbsoluteDirection(getConnectorId(pos));
+}
+
 short Catoms3DBlock::projectAbsoluteNeighborDirection(const Cell3DPosition& nPos,
                                                       short nDirection) const {
     // cout << "pAND: " << "nPos: " << nPos << "/" << nDirection << endl
@@ -200,7 +204,7 @@ short Catoms3DBlock::getConnectorId(const Cell3DPosition& pos) const {
         d=x*x+y*y+z*z;
         i++;
     }
-
+    
     return d > 0.1 ? -1 : i - 1;
 }
 
@@ -234,6 +238,19 @@ void Catoms3DBlock::removeNeighbor(P2PNetworkInterface *ni) {
     getScheduler()->schedule(
 		new RemoveNeighborEvent(getScheduler()->now(), this,
 								getWorld()->lattice->getOppositeDirection(getDirection(ni))));
+}
+
+Catoms3DBlock *Catoms3DBlock::getNeighborBlock(const Cell3DPosition& nPos) const {     
+    return static_cast<Catoms3DBlock*>(getWorld()->lattice->getBlock(nPos));
+}
+
+Catoms3DBlock *Catoms3DBlock::getNeighborBlock(short conId) const {
+    P2PNetworkInterface *itfId = getInterface(conId);
+
+    if (itfId and itfId->isConnected())
+        return static_cast<Catoms3DBlock*>(itfId->connectedInterface->hostBlock);
+
+    return NULL;
 }
 
 }

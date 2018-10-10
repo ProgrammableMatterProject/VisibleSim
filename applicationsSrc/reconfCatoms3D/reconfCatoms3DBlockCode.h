@@ -1,61 +1,63 @@
 /*
- * csgCatoms3DBlockCode.h
+ *  reconfCatoms3DBlockCode.h
  *
- *  Created on: 06 august 2015
+ *  Created on: 17 October 2016
  *  Author: Thadeu
  */
 
 #ifndef RECONFCATOMS3DBLOCKCODE_H_
 #define RECONFCATOMS3DBLOCKCODE_H_
 
-#define CATOM_MSG_ID	9001
-
-#include <queue>
 #include "catoms3DBlockCode.h"
-#include "catoms3DSimulator.h"
-#include "catoms3DBlock.h"
-#include "scheduler.h"
-#include "events.h"
-#include "csgUtils.h"
-#include "target.h"
-
-enum RECONF_STATUS { WAITING, READY };
+#include "directions.h"
+#include "reconf.h"
+#include "neighborhood/neighborhood.h"
+#include "neighborhood/neighborMessages.h"
+#include "sync/syncNext.h"
+#include "sync/syncPrevious.h"
+#include "sync/syncPlane.h"
+#include "sync/syncPlaneManager.h"
 
 class ReconfCatoms3DBlockCode : public Catoms3D::Catoms3DBlockCode {
 public:
-    static CSGNode *csgRoot;
-    static queue<int> catomQueue;
-    static BoundingBox boundingBox;
-
 	Scheduler *scheduler;
 	Catoms3D::Catoms3DBlock *catom;
-	Catoms3D::Catoms3DWorld *world;
-    CsgUtils csgUtils;
-    Vector3D worldPosition;
-    Cell3DPosition simulatedBlockPosition;
+
+    Neighborhood *neighborhood;
+    NeighborMessages *neighborMessages;
+
+    // Reconfiguration Variables
+    Reconf *reconf;
+    SyncNext *syncNext;
+    SyncPrevious *syncPrevious;
+    SyncPlane *syncPlane;
+    SyncPlaneManager *syncPlaneManager;
+
 	ReconfCatoms3DBlockCode(Catoms3D::Catoms3DBlock *host);
 	~ReconfCatoms3DBlockCode();
 
 	void startup();
 	void processLocalEvent(EventPtr pev);
-    Vector3D getWorldPosition(BoundingBox bb);
-    void createCSG();
-    void sendCSGMessage();
-    void addNeighbors();
+
+    void planningRun();
+    void stochasticRun();
+
+    void syncNextMessage(shared_ptr<Sync_message> recv_message);
+    void syncPreviousMessage(shared_ptr<Sync_message> recv_message);
+    void syncResponse(shared_ptr<Sync_response_message> recv_message);
+    void planeFinishedAck();
+    void startTree();
+    void tryAddNextPlane();
+    void planeFinished();
+    void setSeedNextPlaneCentralized();
+    void planeContinue();
+    void removeSeed();
+    void canFill();
+    void getStats();
 
 	static BlockCode *buildNewBlockCode(BuildingBlock *host);
 private:
-    bool isPositionUnblockedSide(const Cell3DPosition &pos);
-    bool isPositionUnblockedXY(const Cell3DPosition &pos);
-    bool isPositionUnblockedYZ(const Cell3DPosition &pos);
-    bool isPositionUnblockedXZ(const Cell3DPosition &pos);
-    bool isPositionUnblocked(const Cell3DPosition &pos);
-    bool isPositionUnblockable(const Cell3DPosition &pos);
     bool cellHasBlock(const Cell3DPosition &pos);
 };
 
-class Catom_message : public Message {
-    Catom_message() {};
-    ~Catom_message();
-};
 #endif /* RECONFCATOMS3DBLOCKCODE_H_ */

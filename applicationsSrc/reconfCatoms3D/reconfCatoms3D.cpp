@@ -20,6 +20,20 @@ int main(int argc, char **argv) {
 	getSimulator()->printInfo();
 	BaseSimulator::getWorld()->printInfo();
 
+    cout << "Number of messages to get initial info: " << NeighborMessages::nMessagesGetInfo << endl;
+    cout << "Number of messages to get permission to add blocks: " << Neighborhood::numberMessagesToAddBlock << endl;
+    cout << "Number of messages to sync: " << Sync::nMessagesSync << endl;
+    cout << "Number of messages to sync response: " << Sync::nMessagesSyncResponse << endl;
 	deleteSimulator();
 	return(0);
+}
+
+void printXML()
+{
+    cout << "<blockList color=\"128,128,128\" blocksize=\"10,10,10\">" << endl;
+    for (int i = 1; i <= BaseSimulator::getWorld()->getNbBlocks(); i++) {
+        Cell3DPosition pos =  BaseSimulator::getWorld()->getBlockById(i)->position;
+        cout << "<block position=\"" << pos[0] << "," << pos[1] << "," << pos[2] << "\"/>" << endl;
+    }
+    cout << "</blockList>" << endl;
 }

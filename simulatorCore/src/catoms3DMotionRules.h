@@ -3,14 +3,15 @@
 
 #include "lattice.h"
 #include "catoms3DBlock.h"
+#include "rotation3DEvents.h"
 
 //!< \namespace Catoms3D
 namespace Catoms3D {
-enum MotionRuleLinkType { hexaFace, octaFace};
 enum ConnectorDirection { NORTH_WEST, NORTH_EAST,
                           EAST,
                           SOUTH_EAST, SOUTH_WEST,
-                          WEST };
+                          WEST,
+                          NUM_CONDIRS};
 enum ConnectorOrientation { UP, DOWN, LEFT, RIGHT };
 
 class Catoms3DMotionRulesLink;
@@ -33,9 +34,9 @@ class Catoms3DMotionRulesLink {
     Vector3D axis1; //!< first rotation axis
     Vector3D axis2; //!< second rotation axis
     vector <int> tabBlockingIDs; //!< array of blocking ID
-    MotionRuleLinkType MRLT;
+    RotationLinkType MRLT;
 public :
-    Catoms3DMotionRulesLink(MotionRuleLinkType m,
+    Catoms3DMotionRulesLink(RotationLinkType m,
                             Catoms3DMotionRulesConnector *from,
                             Catoms3DMotionRulesConnector *to,
                             double a,double r,const Vector3D& ax1,const Vector3D& ax2):
@@ -44,17 +45,25 @@ public :
        \brief Get connector ID of destination of the motion
        \return destination connector ID
     **/
-    inline short getConToID() { return conTo->ID; };
+    inline short getConToID() const { return conTo->ID; };
     /**
        \brief Gets the connector ID of source of the motion
        \return source connector ID
     **/
-    inline short getConFromID() { return conFrom->ID; };
+    inline short getConFromID() const { return conFrom->ID; };
 
-    inline bool isOctaFace() { return MRLT==octaFace; };
+    inline bool isOctaFace() const { return MRLT==OctaFace; };
+    inline bool isHexaFace() const { return MRLT==HexaFace; };
 
     // inline Catoms3DLinkDirection getDirection() { return Catoms3DLinkDirection(axis1, axis2); };
 
+    /** 
+     * @param mobile Catom about to move
+     * @param pivot Fixed catom that will be used as a pivot
+     * @return Rotation object corresponding to this specific connector link on surface of pivot
+     */
+    Rotations3D getRotations(Catoms3DBlock* mobile, Catoms3DBlock* pivot) const;
+    
     /**
        \brief Returns an array containing the ids of the two connectors forming the link such that [fromCon, ToCon]
     **/
@@ -104,7 +113,7 @@ public :
        \param The evaluated 3D catom
        \return Position in the grid
     **/
-    Cell3DPosition getFinalPosition(Catoms3DBlock *c3d);
+    Cell3DPosition getFinalPosition(Catoms3DBlock *c3d) const;
     /**
        \brief Send a rotation event associated to the rule
        \param mobile : mobile catom that will turn
@@ -135,6 +144,13 @@ public:
      */
     const vector<Catoms3DMotionRulesLink*>& getMotionRulesLinksForConnector(short con);
 
+    /** 
+     * @param anchorCon latching connector to another catom
+     * @param conTo connector whose direction to determine relative to anchorCon
+     * @return ConnectorDirection corresponding to conTo relative to anchorCon or -1 if an input is invalid or anchorCon and conTo are not neighbor connectors
+     */
+    short getConnectorDirection(short anchorCon, short conTo);
+        
     /**
      * @brief Transforms the input connector direction and returns the result
      * @param d input connector direction
@@ -205,7 +221,7 @@ private:
                    const Vector3D &axis1,const Vector3D &axis2,const Vector3D &axis3);
     void addLinks4(int id1, int id2, int id3, int id4,
                    const Vector3D &left,const Vector3D &lup,const Vector3D &rup);
-    void addLink(MotionRuleLinkType mrlt,int id1, int id2,
+    void addLink(RotationLinkType mrlt,int id1, int id2,
                  double angle,double radius,
                  const Vector3D &axis1,const Vector3D &axis2,int n,int *tabBC);
 };

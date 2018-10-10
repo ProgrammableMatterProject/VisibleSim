@@ -28,7 +28,7 @@ TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 # You can add any of the following debug flags to get a more verbose output
 # TEMP_CCFLAGS += -DDEBUG_EVENTS #          : trace creation and destruction of all events
 # TEMP_CCFLAGS += -DDEBUG_CONSUME_EVENTS #  : trace the consomption of all events
-# TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
+TEMP_CCFLAGS += -DDEBUG_MESSAGES #        : traces the sending and receiving of messages
 # TEMP_CCFLAGS += -DDEBUG_VM_MESSAGES #     : trace the messages sent to the multicores VM
 # TEMP_CCFLAGS += -DDEBUG_OBJECT_LIFECYCLE #: trace objects construction and destruction
 # TEMP_CCFLAGS += -DDEBUG_GRAPHICS #        : trace graphic environment initialization and updates
@@ -36,7 +36,7 @@ TEMP_CCFLAGS = -g -Wall -std=c++11 -DTINYXML_USE_STL -DTIXML_USE_STL
 # TEMP_CCFLAGS += -DDEBUG_CONF_PARSING #: trace configuration file parsing
 # TEMP_CCFLAGS += -DDEBUG_WORLD_LOADING #: trace world initialization
 TEMP_CCFLAGS += -DshowStatsFPS
-TEMP_CCFLAGS += -DUseC3DSkewFCC #: if activated, Catoms3D will use a FCC Lattice with skew coordinates
+#TEMP_CCFLAGS += -DUseC3DSkewFCC #: if activated, Catoms3D will use a FCC Lattice with skew coordinates
 
 #for production version
 #TEMP_CCFLAGS = "-O6 -DNDEBUG -Wall -DTINYXML_USE_STL -DTIXML_USE_STL"

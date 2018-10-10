@@ -9,6 +9,7 @@
 
 #include "rotation3DEvents.h"
 #include "catoms3DWorld.h"
+#include "catoms3DMotionEngine.h"
 
 using namespace BaseSimulator::utils;
 
@@ -18,7 +19,7 @@ float Rotations3D::rotationDelayMultiplier = 1.0f;
 
 //===========================================================================================================
 //
-//          Rotation2DStartEvent  (class)
+//          Rotation3DStartEvent  (class)
 //
 //===========================================================================================================
 
@@ -26,6 +27,54 @@ Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *block,const Ro
     EVENT_CONSTRUCTOR_INFO();
     eventType = EVENT_ROTATION3D_START;
     rot = r;
+}
+
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
+                                           const Cell3DPosition& tPos,
+                                           RotationLinkType ft)
+    : Rotation3DStartEvent(t, m, pivot, pivot ? pivot->getConnectorId(tPos) : -1, ft)
+{}
+
+Rotation3DStartEvent::Rotation3DStartEvent(Time t, Catoms3DBlock *m, Catoms3DBlock *pivot,
+                                           short toCon,
+                                           RotationLinkType ft) : BlockEvent(t, m) {
+    EVENT_CONSTRUCTOR_INFO();
+    eventType = EVENT_ROTATION3D_START;
+
+    VS_ASSERT_MSG(m and pivot, "mobile or pivot module pointers cannot be NULL!");
+
+    // Determine anchor connectors of module _pivot_ and m are connected to each other_
+    short fromConM = m->getConnectorId(pivot->position);
+    short fromConP = pivot->getConnectorId(m->position);
+
+    // Deduce which connector of m will latch to pivot con toCon
+    short toConM = Catoms3DMotionEngine::getMirrorConnectorOnModule(pivot, m, fromConP,
+                                                                    fromConM, toCon);
+
+    VS_ASSERT_MSG(toConM != -1, "cannot compute mirror connector of toCon on mobile module");
+    
+    // Determine target cell of motion
+    Cell3DPosition tPos = Cell3DPosition(-1,-1,-1);
+    pivot->getNeighborPos(toCon, tPos);
+    cerr << "Building rotation from piv_con " << fromConP << " / " << m->position
+         << " to piv_con " << toCon << "/ " << tPos
+         << " [m_con(" << fromConM << " -> " << toConM << ")]"
+         << " on surface of pivot #" << pivot->blockId << " " << pivot->position <<  endl;
+    OUTPUT << "Building rotation from piv_con " << fromConP << " / " << m->position
+           << " to piv_con " << toCon << "/ " << tPos
+           << " [m_con(" << fromConM << " -> " << toConM << ")]"
+           << " on surface of pivot #" << pivot->blockId << " " << pivot->position <<  endl;
+    
+    VS_ASSERT_MSG(fromConM >= 0 and toConM >= 0,
+                  "attempting rotation to or from an unreachable position");
+    
+    // Get valid links on surface of m
+    const Catoms3DMotionRulesLink* link =
+        Catoms3DMotionEngine::findConnectorLink(m, fromConM, toConM, ft);
+
+    if (link == NULL)
+        throw NoRotationPathForFaceException(m->position, pivot->position, tPos, ft);
+    else rot = link->getRotations(m, pivot);
 }
 
 Rotation3DStartEvent::Rotation3DStartEvent(Rotation3DStartEvent *ev) : BlockEvent(ev) {
@@ -122,7 +171,6 @@ Rotation3DStopEvent::~Rotation3DStopEvent() {
 void Rotation3DStopEvent::consume() {
     EVENT_CONSUME_INFO();
     Catoms3DBlock *catom = (Catoms3DBlock*)concernedBlock;
-    catom->setColor(YELLOW);
 
     Cell3DPosition position;
     short orientation;

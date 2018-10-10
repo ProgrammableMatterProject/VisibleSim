@@ -42,8 +42,9 @@
 
 #include "color.h"
 #include "cell3DPosition.h"
-#include "csg.h"
+#include "targetEncoding/CSG/csg.h"
 #include "vector3D.h"
+#include "exceptions.h"
 
 using namespace std;
 
@@ -51,12 +52,46 @@ namespace BaseSimulator {
 
 //<! @brief Abstract Target. Provides the user with functions for checking a target position and color.
 class Target {
-     struct UnknownTargetFormatException : std::exception {
-          const char* what() const noexcept {
-               return "Unknown target format found in configuration file\n";
-          }
-     };
+public: // exceptions
+    class UnknownTargetFormatException : public VisibleSimException {
+    public:
+        UnknownTargetFormatException(const string& format) {
+            stringstream ss;
+            ss << "Unknown target format found in configuration file: "
+                << format << endl;
+            m_msg = ss.str();
+        }
+    };
 
+    //<! @brief Exception thrown if an error as occured during parsing
+    class TargetParsingException : public VisibleSimException {
+    public:
+        TargetParsingException() :
+            VisibleSimException(std::string("Invalid target description in configuration file\n")) {}
+    };
+
+//<! @brief Exception thrown if the user is attempting to check a position that is not part of the target
+    class InvalidPositionException : public VisibleSimException {
+    public:
+        InvalidPositionException(const Cell3DPosition& pos) {
+            stringstream ss;
+            ss << "Position does not belong to the target: "
+                << pos << endl;
+            m_msg = ss.str();
+        }
+    };
+
+    //<! @brief Exception thrown if the user provides incorrect dimensions for the target
+    class InvalidDimensionsException : public VisibleSimException {
+    public:
+        InvalidDimensionsException(const Cell3DPosition& dim) {
+            stringstream ss;
+            ss << "Target dimensions are invalid: "
+               << dim << endl;
+            m_msg = ss.str();
+        }
+    };
+    
 protected:
 
     /**
@@ -66,25 +101,6 @@ protected:
     virtual void print(ostream& where) const {};
 
 public:
-    //<! @brief Exception thrown if an error as occured during parsing
-    struct TargetParsingException : std::exception {
-        const char* what() const noexcept {
-            return "Invalid target description in configuration file\n";
-        }
-    };
-    //<! @brief Exception thrown if the user is attempting to check a position that is not part of the target
-    struct InvalidPositionException : std::exception {
-        const char* what() const noexcept {
-            return "Position does not belong to the target\n";
-        }
-    };
-    //<! @brief Exception thrown if the user provides incorrect dimensions for the target
-    struct InvalidDimensionsException : std::exception {
-        const char* what() const noexcept {
-            return "Target dimensions are invalid\n";
-        }
-    };
-
     static TiXmlNode *targetListNode; //!< pointer to the target list node from the XML configuration file
     static TiXmlNode *targetNode; //!< pointer to the current target node from the XML configuration file
 
@@ -224,9 +240,9 @@ public:
 
 //<! @brief A target modeled as an ensemble of shapes
 class TargetCSG : public Target {
+public: // FIXME:
     CSGNode *csgRoot;
     BoundingBox bb;
-
 protected:
     //!< @copydoc Target::print
     virtual void print(ostream& where) const {};
@@ -242,10 +258,17 @@ public:
     virtual const Color getTargetColor(const Cell3DPosition &pos);
 
     /**
-     * @brief Grid to world position within bounding box
+     * @brief Grid to unscaled world position within bounding box
      * @param pos position of the target cell
      */
-    Vector3D gridToWorldPosition(const Cell3DPosition &pos) const;
+    Vector3D gridToCSGPosition(const Cell3DPosition &pos) const;
+
+    /**
+     * @brief Unscaled world position for CSG within bounding box to grid position
+     * @param pos position of the target cell
+     */
+    Cell3DPosition CSGToGridPosition(const Vector3D &pos) const;
+    
     /**
      * @brief The object is in the border of the target
      * @param pos position of the target cell
@@ -253,6 +276,7 @@ public:
      */
     bool isInTargetBorder(const Cell3DPosition &pos, double radius) const;
 
+    void highlight();
 };  // class TargetCSG
 
 //<! @brief A target modeling a surface by a point cloud

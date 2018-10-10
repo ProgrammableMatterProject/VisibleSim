@@ -168,7 +168,7 @@ void TargetGrid::print(ostream& where) const {
 }
 
 void TargetGrid::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::utils::NotImplementedException();
+    throw BaseSimulator::NotImplementedException("TargetGrid::boundingBox");
 }
 
 /************************************************************
@@ -708,12 +708,12 @@ bool TargetSurface::isInTarget(const Cell3DPosition &pos) {
     }
     
     else {
-        throw BaseSimulator::utils::NotImplementedException();
+        throw BaseSimulator::NotImplementedException("TargetSurface::isInTarget");
     }
 }
 
 const Color TargetSurface::getTargetColor(const Cell3DPosition &pos) {
-    throw BaseSimulator::utils::NotImplementedException();
+    throw BaseSimulator::utils::NotImplementedException("TargetSurface::getTargetColor");
 }
 
 void TargetSurface::addTargetCell(const Cell3DPosition &pos, const Color c) {
@@ -835,12 +835,12 @@ void TargetSurface::print(ostream& where) const {
     }
     
     else {
-        throw BaseSimulator::utils::NotImplementedException();
+        throw BaseSimulator::NotImplementedException("TargetSurface::print");
     }
 }
 
 void TargetSurface::boundingBox(BoundingBox &bb) {
-    throw BaseSimulator::utils::NotImplementedException();
+    throw BaseSimulator::utils::NotImplementedException("TargetSurface::boundingBox");
 }
 
 } // namespace BaseSimulator

@@ -52,6 +52,12 @@ class Vector3D
     void set(const float *tab,short s,float extra=0.0f);
     void setMin(double x,double y,double z) { if (x<pt[0]) pt[0]=x; if (y<pt[1]) pt[1]=y; if (z<pt[2]) pt[2]=z; };
     void setMax(double x,double y,double z) { if (x>pt[0]) pt[0]=x; if (y>pt[1]) pt[1]=y; if (z>pt[2]) pt[2]=z; };
+
+    /**
+       \brief Return the scalar product of current vector with another
+    */    
+    const Vector3D dot(const Vector3D p) const;
+    
 /**
    \brief Return a normalized copy of the vector
 */
@@ -83,6 +89,7 @@ class Vector3D
    \param p : vector to compare to the current vector
 */
     bool operator ==(const Vector3D &V1) { return (V1.pt[0]==pt[0] && V1.pt[1]==pt[1] && V1.pt[2]==pt[2] && V1.pt[3]==pt[3]); };
+    bool operator !=(const Vector3D &V1) { return not operator==(V1); }
     friend istream& operator>>(istream& f,Vector3D &p);
     friend ostream& operator<<(ostream& f,const Vector3D &p);
     friend const Vector3D operator *(double,const Vector3D);

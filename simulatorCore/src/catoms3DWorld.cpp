@@ -38,22 +38,34 @@ Catoms3DWorld::Catoms3DWorld(const Cell3DPosition &gridSize, const Vector3D &gri
 
     if (GlutContext::GUIisEnabled) {
 /* Toggle to use catoms3D with max connector size (no rotation) but very simple models*/
-/*
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
-		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
-*/
-		objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2connectorID.obj");
+#define CATOMS3D_TEXTURE_ID 0
+        
+#if CATOMS3D_TEXTURE_ID == 1 // Standard, no conID
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2.obj");
 		objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");
-        /*objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures",
-											"catom3Drepere3.obj");*/
+#elif CATOMS3D_TEXTURE_ID == 2 // w/ coordinates
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures", "catom3Drepere3.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+#elif CATOMS3D_TEXTURE_ID == 2 // filled catoms
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom_max_vs.obj");
+#else // 0 standard, with conIDs
+        objBlock = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3DV2connectorID.obj");
+        objBlockForPicking = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","catom3D_picking.obj");        
+
+#endif        
+
 		objRepere = new ObjLoader::ObjLoader("../../simulatorCore/resources/textures/catoms3DTextures","repereCatom3D.obj");
 	}
-#ifdef UseC3DSkewFCC
+    
+#define UseC3DSkewFCC 1
+#if UseC3DSkewFCC == 1
     lattice = new SkewFCCLattice(gridSize,
                                  gridScale.hasZero() ? defaultBlockSize : gridScale);
 #else
     lattice = new FCCLattice(gridSize, gridScale.hasZero() ? defaultBlockSize : gridScale);
 #endif
+    
     motionRules = new Catoms3DMotionRules();
 }
 
@@ -82,7 +94,11 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     buildingBlocksMap.insert(std::pair<int,BaseSimulator::BuildingBlock*>
 							 (catom->blockId, (BaseSimulator::BuildingBlock*)catom));
 
-    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now(), catom));
+    // FIXME: Adversarial start, randomly initiate start event
+    std::mt19937 rng;
+    rng.seed(std::random_device()());
+    std::uniform_int_distribution<std::mt19937::result_type> u500(0,500); 
+    getScheduler()->schedule(new CodeStartEvent(getScheduler()->now() + u500(rng), catom));
 
 
     Catoms3DGlBlock *glBlock = new Catoms3DGlBlock(blockId);
@@ -94,6 +110,7 @@ void Catoms3DWorld::addBlock(bID blockId, BlockCodeBuilder bcb, const Cell3DPosi
     lattice->insert(catom, pos);
 
     tabGlBlocks.push_back(glBlock);
+    linkBlock(pos);
 }
 
 /**
@@ -115,7 +132,7 @@ void Catoms3DWorld::linkBlock(const Cell3DPosition& pos) {
 				&& (neighborBlock = (Catoms3DBlock *)lattice->getBlock(neighborPos))!=NULL) {
 				catom->getInterface(i)->connect(neighborBlock->getInterface(pos));
 #ifdef DEBUG_NEIGHBORHOOD
-                OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #"
+				OUTPUT << "connection #" << catom->blockId << "(" << i << ") to #"
 					   << neighborBlock->blockId << endl;
 #endif
 			}
@@ -135,7 +152,7 @@ void Catoms3DWorld::glDraw() {
     vector <GlBlock*>::iterator ic=tabGlBlocks.begin();
     lock();
     while (ic!=tabGlBlocks.end()) {
-        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock);
+        ((Catoms3DGlBlock*)(*ic))->glDraw(objBlock)            ;
         ic++;
     }
     unlock();
@@ -179,6 +196,7 @@ void Catoms3DWorld::glDraw() {
 	if (polymer) {
 		polymer->glDraw();
 	}
+    
 // material for the grid walls
 	static const GLfloat white[]={0.8f,0.8f,0.8f,1.0f},
 		gray[]={0.2f,0.2f,0.2f,1.0f};
@@ -266,6 +284,11 @@ void Catoms3DWorld::glDraw() {
 		glPopMatrix();
 
         lattice->glDraw();
+
+        // if (BlockCode::target and dynamic_cast<TargetCSG*>(BlockCode::target)) {
+        //     glScalef(lattice->gridScale[0], lattice->gridScale[1], lattice->gridScale[2]);
+        //     static_cast<TargetCSG*>(BlockCode::target)->highlight();
+        // }
 }
 
 void Catoms3DWorld::glDrawId() {
@@ -517,7 +540,7 @@ void Catoms3DWorld::exportConfiguration() {
 
 void Catoms3DWorld::simulatePolymer() {
 
-	if (polymer==NULL) {
+	if (polymer == NULL) {
 		polymer = new Polymer(lattice->gridSize[0],lattice->gridSize[1],4,lattice->gridSize[2]*lattice->gridScale[2],lattice->gridScale[0],lattice->gridScale[0],lattice->gridScale[1]);
 
 		cout << "---------------------------SIMULATION OF THE POLYMER SURFACE-------------------------------" << endl;

@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "objLoader.h"
+#include "catoms3DBlock.h" // FIXME:
 
 GlBlock::GlBlock(bID id):blockId(id) {
 	position[0] = 0.0;
@@ -51,6 +52,10 @@ void GlBlock::setColor(const Color &col) {
 	color[3] = 1.0;
 }
 
+bool GlBlock::isVisible() {
+    return color[3];
+}
+
 void GlBlock::setVisible(bool visible) {
     color[3] = visible;
 }
@@ -59,20 +64,22 @@ void GlBlock::toggleHighlight() {
 	isHighlighted=!isHighlighted;
 }
 
+using namespace Catoms3D; //FIXME:
 string GlBlock::getInfo() {
     ostringstream out;
-	out << blockId << "\n";
+	out << blockId << endl;
 	out << fixed;
-	out.precision(1);
+	out.precision(1);    
 	out << "Pos=(" << position[0] << "," << position[1] << "," << position[2] << ") ";
 	out << "Col=(" << (int)(color[0] * 255) << "," << (int)(color[1] * 255) << "," << (int)(color[2] * 255) << ")";
-
+    
 	return out.str();
 }
 
 string GlBlock::getPopupInfo() {
     ostringstream out;
-	out << blockId << " - " << World::getWorld()->lattice->worldToGridPosition(getPosition()) <<"\n";
+	out << blockId << " - "
+        << World::getWorld()->lattice->worldToGridPosition(getPosition()) <<"\n";
 
 	return out.str();
 }
@@ -89,4 +96,13 @@ void GlBlock::glDrawIdByMaterial(ObjLoader::ObjLoader *ptrObj,int &n) {
 	glTranslatef(position[0],position[1],position[2]);
 	ptrObj->glDrawIdByMaterial(n);
 	glPopMatrix();
+}
+
+void GlBlock::fireSelectedTrigger() {
+    Lattice *lattice = World::getWorld()->lattice;
+    const Cell3DPosition& bbPos = lattice->worldToGridPosition(getPosition());
+    Catoms3DBlock* catom = static_cast<Catoms3DBlock*>(lattice->getBlock(bbPos));
+
+    // custom user debug procedure
+    if (catom and catom->blockCode) catom->blockCode->onBlockSelected(); 
 }

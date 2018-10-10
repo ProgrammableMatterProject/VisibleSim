@@ -65,7 +65,7 @@ private :
     static int selectFunc(int x,int y);
     static int selectFaceFunc(int x,int y);
     static int processHits(GLint hits, GLuint *buffer);
-    static bool saveScreen(char *title);
+    static bool saveScreen(const char *title);
     static void *lanceScheduler(void *param);
     static void calculateFPS(void);
     static void showFPS(void);

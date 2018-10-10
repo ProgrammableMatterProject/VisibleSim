@@ -2,6 +2,8 @@
 #ifndef UTILS_H__
 #define UTILS_H__
 
+#include <iostream>
+
 #include "tDefs.h"
 
 namespace BaseSimulator {
@@ -16,34 +18,65 @@ namespace utils {
 #define IS_ODD(x) ((x>0?x:-x) % 2)     //!< returns 1 if x is odd, 0 otherwise
 #define IS_EVEN(x) (!IS_ODD(x)) //!< returns 1 if x is even, 0 otherwise
 
-inline static void awaitKeyPressed() {
-    cout << "Press ENTER to continue..." << endl; cin.ignore();
-}
+/** 
+ * @brief Custom modulus fonction, python style e.g. -2 % 6 = 4
+ * @param l left operand
+ * @param mod right operand, modulus value
+ * @return python style modulus operation result
+ */
+int m_mod(int l, int mod);
+
+/** 
+ * Pause the current thread until a key is pressed
+ */
+void awaitKeyPressed();
+
+/** 
+ * For a given triggered assert, display its location and freeze current simulation until user provides an input
+ * @return always true
+ */
+bool assert_handler(bool cond, const char *file,
+                           const int line, const char* func,
+                           const char *msg = NULL);
+
+/** 
+ * Custom assertion macro used for debugging, it shows a message
+ *  on stderr, before pausing the simulation until a key is pressed
+ *  (for simulation environment analysis in the GUI), then triggers 
+ *  a standard C assert
+ * @param cond assertion condition
+ */
+#define VS_ASSERT(cond) \
+    ((void)(!(cond) && assert_handler(cond, __FILE__, __LINE__, __PRETTY_FUNCTION__)))
+
+#define VS_ASSERT_MSG(cond, msg) \
+    ((void)(!(cond) && assert_handler(cond, __FILE__, __LINE__, __PRETTY_FUNCTION__, #msg)))
 
 //!< @brief Return true if a <= x <= b, false otherwise
-inline static bool isInRange(int x, int a, int b) { return (a <= x && x <= b); };
+inline bool isInRange(int x, int a, int b) { return (a <= x && x <= b); };
 
 const float M_SQRT2_2 = sqrt(2.0) / 2.0; //!< $\frac{\sqrt{2}}{2}$
 const double M_SQRT3_2 = sqrt(3.0) / 2.0; //!< $\frac{\sqrt{3}}{2}$
 const double EPS = 1E-5;                  //!< Epsilon
 
-//!< Return true if file at path fileName exists and can be read, false otherwise
-inline static bool file_exists(const string fileName) {
-    std::ifstream infile(fileName);
-    return infile.good();
-}
+//!< @brief Generates a formatted filename string
+//!< @param prefix e.g, config
+//!< @param ext e.g, xml
+//!< @return a string with format <prefix>_hh_mm_ss.<ext>
+const std::string
+generateTimestampedFilename(const std::string& prefix, const std::string& ext);
 
-//!< An exception for marking functions as not implemented
-struct NotImplementedException : std::exception {
-    const char* what() const noexcept { return "not yet implemented!\n"; }
-};
+//!< @brief Generates a formatted directory name string
+//!< @param dirBasename e.g, dir
+//!< @return a string with format <dirBasename>_hh_mm_ss
+const std::string
+generateTimestampedDirName(const std::string& dirBasename);
+
+//!< Return true if file at path fileName exists and can be read, false otherwise
+bool file_exists(const std::string fileName);
 
 //!< Swaps the value of two pointers a and b
-inline static void swap(int* a, int* b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-}
+void swap(int* a, int* b);
 
 template< typename ContainerT, typename PredicateT >
      void erase_if( ContainerT& items, const PredicateT& predicate ) {
@@ -52,50 +85,9 @@ template< typename ContainerT, typename PredicateT >
           else ++it;
      }
 };
- 
+
 } // namespace utils
 
 } // namespace BaseSimulator
-
-class Cell3DPosition;
-namespace Catoms3D {
-
-// Utility functions that return cell in direction d of a given Catoms3D Position
-typedef Cell3DPosition (*conProj)(const Cell3DPosition&);
-static const conProj CONPROJECTOR[12] {
-    [] (const Cell3DPosition &p) { return Cell3DPosition(p[0]+1, p[1], p[2]); },
-           
-       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0], p[1]+1, p[2]); },
-               
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1], p[2]+1):Cell3DPosition(p[0]+1, p[1]+1, p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1], p[2]+1):Cell3DPosition(p[0], p[1]+1, p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1]-1, p[2]+1):Cell3DPosition(p[0], p[1], p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1]-1, p[2]+1):Cell3DPosition(p[0]+1, p[1], p[2]+1); },
-
-       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0]-1, p[1], p[2]); },
-
-       [] (const Cell3DPosition &p) { return Cell3DPosition(p[0], p[1]-1, p[2]); },
-           
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1]-1, p[2]-1):Cell3DPosition(p[0], p[1], p[2]-1); },
-           
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1]-1, p[2]-1):Cell3DPosition(p[0]+1, p[1], p[2]-1); },
-           
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0], p[1], p[2]-1):Cell3DPosition(p[0]+1, p[1]+1, p[2]-1); },
-
-       [] (const Cell3DPosition &p) { return IS_EVEN(p[2])?
-               Cell3DPosition(p[0]-1, p[1], p[2]-1):Cell3DPosition(p[0], p[1]+1, p[2]-1); },
-  };
-
-} // namespace Catoms3D
 
 #endif

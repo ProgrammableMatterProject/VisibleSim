@@ -138,6 +138,12 @@ public:
      * @param msgString string to be printed to the console upon sending */
     int sendMessage(const char *msgString,Message *msg,P2PNetworkInterface *dest,
                      Time t0,Time dt);
+
+    /** 
+     * User-implemented debug function that gets called when a module is selected in the GUI
+     * @note call is made from GlBlock::getInfo() as it is convenient there. Adding an actual GUI button could more convenient and less "hacky"
+     */
+    virtual void onBlockSelected() {};
 };
 
 } // BaseSimulator namespace
