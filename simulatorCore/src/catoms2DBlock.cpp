@@ -28,7 +28,7 @@ Catoms2DBlock::Catoms2DBlock(int bId, BlockCodeBuilder bcb)
     angle = 0;
     doubleRNG g = Random::getNormalDoubleRNG(getRandomUint(),CATOMS2D_MOTION_SPEED_MEAN,CATOMS2D_MOTION_SPEED_SD);
     RandomRate *speed = new RandomRate(g);
-    motionEngine = new MotionEngine(speed);
+    motionEngine = new Catoms2DMotionEngine(speed);
 }
 
 Catoms2DBlock::~Catoms2DBlock() {
