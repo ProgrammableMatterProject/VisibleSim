@@ -1,5 +1,5 @@
-#ifndef MOTION_ENGINE_H_
-#define MOTION_ENGINE_H_
+#ifndef CATOMS2D_MOTION_ENGINE_H_
+#define CATOMS2D_MOTION_ENGINE_H_
 
 #include "tDefs.h"
 #include "rate.h"
@@ -10,13 +10,13 @@
 
 namespace BaseSimulator {
 
-class MotionEngine {
+class Catoms2DMotionEngine {
  protected:
   Rate *speed; //<! mm/s (beaucse mm is the distance unit in the simulator)
  public:
-  MotionEngine();
-  MotionEngine(Rate *s);
-  ~MotionEngine();
+  Catoms2DMotionEngine();
+  Catoms2DMotionEngine(Rate *s);
+  ~Catoms2DMotionEngine();
 
   void setSpeed(Rate *s);
   double getSpeed();
