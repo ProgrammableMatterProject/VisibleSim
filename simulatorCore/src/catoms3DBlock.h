@@ -46,14 +46,14 @@ const float tabConnectorPositions[12][3] = { {1,0,0}, {0,1,0}, {0.5,0.5,M_SQRT2_
 
 class Catoms3DBlockCode;
 
+enum RotationLinkType { HexaFace, OctaFace, Any, None }; //!< Kind of face to be used for a rotation. Any refers to no preference and None is used as a return statement to indicate an absence of possible link
+
 /*! @class Catoms3DBlock
   @brief Special treatement and data for 3D quasi-spherical robot
 */
 class Catoms3DBlock : public BaseSimulator::BuildingBlock {
 public :
     short orientationCode; //!< number of the connector that is along the x axis.
-
-
 public:
     /**
        @brief Constructor
@@ -86,6 +86,21 @@ public:
        @return return true if the cell is in the grid, false otherwise. */
     bool getNeighborPos(short connectorId,Cell3DPosition &pos) const;
 
+    /** 
+     * Gets a pointer to direct neighbor on connector conId
+     * @param connectorId connector identifier
+     * @return a pointer to neighbor on connector conId of catom, or NULL if there is none
+     */
+    Catoms3DBlock *getNeighborBlock(short conId) const;
+
+    /** 
+     * Gets a pointer to neighbor (direct neighborhood or distant) at cell nPos
+     * @param nPos neighbor cell
+     * @attention this function does not check whether nPos is in the local neighborhood of the catom. This is a feature since a neighbor in the second- or nth-neighborhood of the catom could be asked. Prefer getNeighborBlock(short conId) for local neighborhood.
+     * @return a pointer to neighbor at ABSOLUTE position nPos
+     */
+    Catoms3DBlock *getNeighborBlock(const Cell3DPosition& nPos) const;
+    
     /** 
      * @brief Given a neighbor at position nPos and a lattice absolute direction (connector Id if neighbor had con0 aligned with x-axis) from that position, deduce what connector of the current module is adjacent to cell on direction nDirection of nPos.
      * @param nPos 
