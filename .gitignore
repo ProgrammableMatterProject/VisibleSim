@@ -68,9 +68,11 @@ doc/html/
 # Configuration files (must be added manually)
 applicationsBin/*/*.xml
 
-# Screenshot exports
+# Screenshot and video exports
 applicationsBin/*/*.ppm
 applicationsBin/*/*.jpeg
+applicationsBin/*/*.mkv
+applicationsBin/*/*.mpeg
 applicationsBin/*/animation_*/
 applicationsBin/*/Screenshots/
 
