@@ -78,7 +78,7 @@ void MeshAssemblyBlockCode::onBlockSelected() {
         cout << endl << "\t\t  " << targetForEntryPoint[i].config_print() << ", ";
     cout << " ]" << endl;
 
-    // catom->setColor(debugColorIndex++);
+    // catom->setColor(debugColorIndex++);    
 }
 
 void MeshAssemblyBlockCode::startup() {

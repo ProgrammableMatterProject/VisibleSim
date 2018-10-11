@@ -19,12 +19,12 @@
 #include "catoms3DBlock.h"
 #include "cell3DPosition.h"
 
-#include "messages.hpp"
+#include "meshAssemblyMessages.hpp"
 #include "meshRuleMatcher.hpp"
 
 #define IT_MODE_TILEROOT_ACTIVATION 1 
 
-#define INTERACTIVE_MODE
+// #define INTERACTIVE_MODE
 
 enum AgentRole { FreeAgent, Coordinator, PassiveBeam };
 enum EntryPointDirection { Dir8, Dir9, Dir10, Dir11, NUM_EPD };
