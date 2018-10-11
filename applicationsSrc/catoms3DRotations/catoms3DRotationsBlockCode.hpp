@@ -40,6 +40,7 @@ y the module
     void startup();
     void processLocalEvent(EventPtr pev);
     void onBlockSelected();
+    void maFunc();
 
     static BlockCode *buildNewBlockCode(BuildingBlock *host) {
         return (new Catoms3DRotationsBlockCode((Catoms3DBlock*)host));
