@@ -107,6 +107,10 @@ void Catoms3DRotationsBlockCode::processLocalEvent(EventPtr pev) {
             // Do something when rotation has ended...
             // e.g.:
             catom->setColor(YELLOW);
+
+            const Cell3DPosition nextBlockPos = Cell3DPosition(4,3,3);
+            Catoms3DBlock* nextBlock = static_cast<Catoms3DBlock*>(lattice->getBlock(nextBlockPos));
+            static_cast<Catoms3DRotationsBlockCode*>(nextBlock->blockCode)->maFunc();
         } break;            
             
         case EVENT_TAP: {
@@ -119,4 +123,8 @@ void Catoms3DRotationsBlockCode::processLocalEvent(EventPtr pev) {
             console << "IT Triggered, mode: " << itev->mode << "\n";
         }
     }
+}
+
+void Catoms3DRotationsBlockCode::maFunc() {
+    catom->setColor(BLUE);
 }
