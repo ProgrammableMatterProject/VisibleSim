@@ -20,7 +20,7 @@
 #include "catoms3DBlock.h"
 
 #include "catoms3DRotationsBlockCode.hpp"
-
+#include "messages.hpp"
 
 using namespace Catoms3D;
 
@@ -69,7 +69,11 @@ void Catoms3DRotationsBlockCode::processReceivedMessage(MessagePtr msg,
     stringstream info;
 
     switch (msg->type) {
-        // ALL MOVED TO HANDLEABLE MESSAGES
+        // Pas besoin, HandleableMessage
+        // case MOVE_NEXT_MODULE_MSG:
+        // {
+
+        // } break;
         default:
             cout << "Unknown Generic Message Type" << endl;
             assert(false);
@@ -108,9 +112,17 @@ void Catoms3DRotationsBlockCode::processLocalEvent(EventPtr pev) {
             // e.g.:
             catom->setColor(YELLOW);
 
+
             const Cell3DPosition nextBlockPos = Cell3DPosition(4,3,3);
-            Catoms3DBlock* nextBlock = static_cast<Catoms3DBlock*>(lattice->getBlock(nextBlockPos));
-            static_cast<Catoms3DRotationsBlockCode*>(nextBlock->blockCode)->maFunc();
+            
+            // Si pas message : 
+            // Catoms3DBlock* nextBlock = static_cast<Catoms3DBlock*>(lattice->getBlock(nextBlockPos));
+            // static_cast<Catoms3DRotationsBlockCode*>(nextBlock->blockCode)->maFunc();
+
+            const Cell3DPosition& firstHop = catom->position - Cell3DPosition(0,0,-1);
+            P2PNetworkInterface* firstHopItf = catom->getInterface(firstHop);
+            Time delaiEnvoi = 0; // ms
+            sendMessage(new MoveNextModuleMessage(nextBlockPos), firstHopItf, delaiEnvoi, 0);
         } break;            
             
         case EVENT_TAP: {

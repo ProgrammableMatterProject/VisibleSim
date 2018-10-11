@@ -17,6 +17,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # SRCS contains all the sources of your codeBlocks
 SRCS =  catoms3DRotations.cpp \
 	catoms3DRotationsBlockCode.cpp \
+	messages.cpp
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/catoms3DRotations
 #
