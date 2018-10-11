@@ -14,9 +14,9 @@
 #include "utils.h"
 #include "teleportationEvents.h"
 
-#include "messages.hpp"
 #include "meshRuleMatcher.hpp"
 #include "meshAssemblyBlockCode.hpp"
+#include "meshAssemblyMessages.hpp"
 
 void RequestTargetCellMessage::handle(BaseSimulator::BlockCode* bc) {
     MeshAssemblyBlockCode& mabc = *static_cast<MeshAssemblyBlockCode*>(bc);    

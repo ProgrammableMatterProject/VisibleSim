@@ -17,7 +17,7 @@ APPDIR = ../../applicationsBin/$(current_dir)
 # SRCS contains all the sources of your codeBlocks
 SRCS =  meshCatoms3D_assembly.cpp \
 	meshAssemblyBlockCode.cpp \
-	messages.cpp \
+	meshAssemblyMessages.cpp \
 	meshRuleMatcher.cpp #
 # OUT is the output binary, where APPDIR is its enclosing directory
 OUT = $(APPDIR)/meshAssembly

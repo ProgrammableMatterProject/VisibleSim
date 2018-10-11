@@ -20,9 +20,6 @@
 
 #include "meshAssemblyBlockCode.hpp"
 
-// C3D Motion Engine
-#include "messages.hpp"
-
 using namespace Catoms3D;
 using namespace MeshCoating;
 
